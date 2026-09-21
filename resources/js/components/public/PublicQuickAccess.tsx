@@ -1,46 +1,27 @@
-import { ArrowRight, FileText, Megaphone, Search } from 'lucide-react';
+import { BookOpenCheck, Building2, FileDown, FileText, Gavel, PhoneCall, ScrollText } from 'lucide-react';
+import type { PublicContent } from './types';
 
-const quickLinks = [
-    {
-        href: '#services',
-        title: 'Find a municipal service',
-        description: 'Office and service guidance',
-        icon: Search,
-    },
-    {
-        href: '#news',
-        title: 'Read news & notices',
-        description: 'Public announcements and advisories',
-        icon: Megaphone,
-    },
-    {
-        href: '#transparency',
-        title: 'Open public documents',
-        description: 'Transparency and document previews',
-        icon: FileText,
-    },
-] as const;
+const icons = [FileDown, BookOpenCheck, Building2, FileText, Gavel, PhoneCall, ScrollText];
 
-export default function PublicQuickAccess() {
-    return <section className="public-quick-access" aria-labelledby="public-quick-access-title">
-        <div className="public-quick-access-intro">
-            <p className="public-quick-access-kicker">Quick access</p>
-            <h2 id="public-quick-access-title">Common public tasks</h2>
+export default function PublicQuickAccess({ content }: { content: PublicContent }) {
+    return <section className="public-quick-strip" aria-labelledby="public-quick-access-title">
+        <div className="public-quick-label">
+            <span>Citizen Resources</span>
+            <h2 id="public-quick-access-title">Quick Access</h2>
         </div>
-
-        <nav className="public-quick-access-links" aria-label="Quick access">
-            {quickLinks.map(({ href, title, description, icon: Icon }) => <a
-                key={href}
-                href={href}
-                className="public-quick-access-link"
-            >
-                <Icon size={18} aria-hidden="true" />
-                <span>
-                    <strong>{title}</strong>
-                    <small>{description}</small>
-                </span>
-                <ArrowRight size={16} aria-hidden="true" />
-            </a>)}
-        </nav>
+        <div className="public-quick-items">
+            {content.quickAccess.map((item, index) => {
+                const Icon = icons[index] ?? FileText;
+                return item.href
+                    ? <a key={item.label} href={item.href} className="public-quick-item">
+                        <Icon size={19} aria-hidden="true" />
+                        <span>{item.label}</span>
+                    </a>
+                    : <div key={item.label} className="public-quick-item is-static" aria-label={`${item.label}, information pending`}>
+                        <Icon size={19} aria-hidden="true" />
+                        <span>{item.label}</span>
+                    </div>;
+            })}
+        </div>
     </section>;
 }
