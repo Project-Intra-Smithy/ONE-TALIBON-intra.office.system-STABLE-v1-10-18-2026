@@ -1,38 +1,28 @@
 import { Head } from '@inertiajs/react';
 import { Info } from 'lucide-react';
 import PublicFooter from '../../components/public/PublicFooter';
-import PublicGlance from '../../components/public/PublicGlance';
 import PublicHeader from '../../components/public/PublicHeader';
 import PublicHero from '../../components/public/PublicHero';
 import PublicQuickAccess from '../../components/public/PublicQuickAccess';
 import PublicServices from '../../components/public/PublicServices';
-import PublicUpdates from '../../components/public/PublicUpdates';
 import type { PublicContent } from '../../components/public/types';
 
 type Props = { appName: string; authenticated: boolean; content: PublicContent };
 
-export default function Home({ appName, authenticated, content }: Props) {
+export default function Home({ authenticated, content }: Props) {
     return <>
-        <Head title={`One Talibon — ${appName}`} />
+        <Head title="Municipality of Talibon — Public Website" />
         <div className="public-portal min-h-screen">
-            <a href="#public-content" className="public-skip-link sr-only z-[80] rounded bg-white p-3 text-blue-900 focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to main content</a>
-            <PublicHeader authenticated={authenticated} />
+            <a href="#public-content" className="public-skip-link">Skip to main content</a>
+            <PublicHeader authenticated={authenticated} content={content} />
             <main id="public-content" tabIndex={-1}>
-                <div className="public-content">
-                    <div className="public-disclosure">
-                        <Info size={14} className="mt-0.5 shrink-0" aria-hidden="true" />
-                        <p>Prototype preview — sample public content is shown for evaluation and does not represent official municipal reporting.</p>
-                    </div>
-                    <div className="public-primary">
-                        <PublicHero content={content} />
-                        <PublicQuickAccess />
-                        <PublicServices content={content} />
-                        <div className="public-information-zone">
-                            <PublicGlance content={content} />
-                            <PublicUpdates content={content} />
-                        </div>
-                    </div>
+                <PublicHero content={content} />
+                <div className="public-disclosure">
+                    <Info size={14} aria-hidden="true" />
+                    <p>{content.sampleLabel}: sample public content is shown for evaluation and does not represent official municipal reporting.</p>
                 </div>
+                <PublicServices content={content} />
+                <PublicQuickAccess content={content} />
             </main>
             <PublicFooter content={content} authenticated={authenticated} />
         </div>
