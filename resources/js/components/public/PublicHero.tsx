@@ -20,7 +20,7 @@ export default function PublicHero({ content }: { content: PublicContent }) {
                     <a href="#tourism" className="public-secondary-action">Discover Talibon</a>
                 </div>
             </div>
-            <div className="public-civic-values" aria-label="Municipal civic values">
+            <div className="public-civic-values" aria-label="Public website focus areas">
                 {content.hero.values.map(value => <span key={value}>
                     <CheckCircle2 size={15} aria-hidden="true" />
                     {value}
