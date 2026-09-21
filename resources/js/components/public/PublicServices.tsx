@@ -1,60 +1,62 @@
-import { ArrowRight } from 'lucide-react';
-import type { PublicContent, ServiceItem } from './types';
+import {
+    ArrowRight,
+    Building2,
+    BriefcaseBusiness,
+    FileText,
+    Info,
+    Landmark,
+    MapPinned,
+    Newspaper,
+} from 'lucide-react';
+import { talibonAssets } from '../../branding/talibonAssets';
+import type { PublicContent } from './types';
 
-const groupContent = {
-    services: {
-        title: 'Services & office guidance',
-        description: 'Start with the kind of municipal help or office guidance you need.',
-    },
-    information: {
-        title: 'Public information & records',
-        description: 'Find notices, advisories, documents, and transparency information available in this prototype.',
-    },
+const iconById = {
+    news: Newspaper,
+    tourism: MapPinned,
+    services: Landmark,
+    transparency: FileText,
+    officials: Building2,
+    business: BriefcaseBusiness,
+    'public-information': Info,
 } as const;
 
-function ServiceRow({ service }: { service: ServiceItem }) {
-    return <li className="public-service-row">
-        <div className="public-service-copy">
-            <h4>{service.title}</h4>
-            <p>{service.description}</p>
-            <span className="public-service-meta">{service.meta}</span>
-        </div>
-        {service.href && service.action && <a href={service.href} className="public-service-action">
-            {service.action}
-            <ArrowRight size={15} aria-hidden="true" />
-        </a>}
-    </li>;
-}
-
 export default function PublicServices({ content }: { content: PublicContent }) {
-    const grouped = {
-        services: content.services.filter(service => service.group === 'services'),
-        information: content.services.filter(service => service.group === 'information'),
-    };
-
-    return <section id="services" className="public-services" aria-labelledby="public-services-title">
+    return <section className="public-feature-section" aria-labelledby="public-features-title">
         <div className="public-section-heading">
             <div>
-                <h2 id="public-services-title">Municipal Services</h2>
-                <p>Find service guidance, public information, and the appropriate next destination. This prototype does not provide online applications.</p>
+                <span>Public Website Directory</span>
+                <h2 id="public-features-title">Information and services for residents, visitors, and businesses</h2>
             </div>
+            <p>Prototype content remains clearly identified until verified municipal records and official publishing workflows are supplied.</p>
         </div>
 
-        <div className="public-service-directory">
-            {(Object.keys(groupContent) as Array<keyof typeof groupContent>).map(group => {
-                const items = grouped[group];
-                if (!items.length) return null;
-                const copy = groupContent[group];
-
-                return <section key={group} className="public-service-group" aria-labelledby={`public-service-group-${group}`}>
-                    <header className="public-service-group-header">
-                        <h3 id={`public-service-group-${group}`}>{copy.title}</h3>
-                        <p>{copy.description}</p>
+        <div className="public-feature-grid">
+            {content.features.map(feature => {
+                const Icon = iconById[feature.id as keyof typeof iconById] ?? Landmark;
+                return <article key={feature.id} id={feature.id} className="public-feature-card">
+                    <header>
+                        <Icon size={21} aria-hidden="true" />
+                        <div>
+                            <h3>{feature.title}</h3>
+                            <p>{feature.description}</p>
+                        </div>
                     </header>
-                    <ul className="public-service-list">
-                        {items.map(service => <ServiceRow key={service.title} service={service} />)}
+                    <div className="public-feature-visual" aria-hidden="true">
+                        <img
+                            src={feature.image || (feature.id === 'tourism' ? talibonAssets.publicPromoImage : talibonAssets.publicLandmark)}
+                            alt=""
+                        />
+                    </div>
+                    <ul>
+                        {feature.items.map(item => <li key={item}>{item}</li>)}
                     </ul>
-                </section>;
+                    {feature.href && feature.action
+                        ? <a className="public-feature-action" href={feature.href}>
+                            {feature.action}<ArrowRight size={14} aria-hidden="true" />
+                        </a>
+                        : <span className="public-feature-unavailable">Verified directory data pending</span>}
+                </article>;
             })}
         </div>
     </section>;
