@@ -30,9 +30,9 @@ return [
         'lead' => 'Your gateway to local governance, tourism, and public services.',
         'description' => 'Explore public information, municipal service guidance, community updates, and visitor resources through the Municipality of Talibon public website.',
         'values' => [
-            'A Progressive Municipality',
-            'A United Community',
-            'A Sustainable Tomorrow',
+            'Local Governance',
+            'Tourism & Visitor Information',
+            'Public Services & Information',
         ],
     ],
     'features' => [
@@ -42,8 +42,8 @@ return [
             'description' => 'Municipal announcements and public updates.',
             'image' => null,
             'items' => ['Municipal advisory preview', 'Community event preview', 'Municipal update preview'],
-            'action' => 'View news',
-            'href' => '#news',
+            'action' => null,
+            'href' => null,
         ],
         [
             'id' => 'tourism',
@@ -51,8 +51,8 @@ return [
             'description' => 'Discover Talibon and its local character.',
             'image' => null,
             'items' => ['Visitor information', 'Local destinations', 'Community highlights'],
-            'action' => 'Explore Talibon',
-            'href' => '#tourism',
+            'action' => null,
+            'href' => null,
         ],
         [
             'id' => 'services',
@@ -60,8 +60,8 @@ return [
             'description' => 'Find municipal service and office guidance.',
             'image' => null,
             'items' => ['Business permits & licensing', 'Civil & community services', 'Municipal offices'],
-            'action' => 'Browse services',
-            'href' => '#services',
+            'action' => null,
+            'href' => null,
         ],
         [
             'id' => 'transparency',
@@ -69,8 +69,8 @@ return [
             'description' => 'Public document and report previews.',
             'image' => null,
             'items' => ['Public document library preview', 'Municipal report preview', 'Public notice preview'],
-            'action' => 'Public documents',
-            'href' => '#transparency',
+            'action' => null,
+            'href' => null,
         ],
         [
             'id' => 'officials',
@@ -96,8 +96,8 @@ return [
             'description' => 'Notices, advisories, and citizen information.',
             'image' => null,
             'items' => ['Public notices', 'Citizen guidance', 'Municipal information'],
-            'action' => 'Public information',
-            'href' => '#public-information',
+            'action' => null,
+            'href' => null,
         ],
     ],
     'quickAccess' => [
