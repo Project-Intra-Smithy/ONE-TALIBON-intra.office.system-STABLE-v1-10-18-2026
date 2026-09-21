@@ -78,8 +78,7 @@ export default function PublicHeader({ authenticated, content }: Props) {
                 </div>
             </a>
 
-            <div className="public-masthead-tools">
-                <div className="public-search-wrap">
+            <div className="public-search-wrap">
                     <Search size={18} aria-hidden="true" />
                     <label htmlFor="public-search" className="sr-only">Search public website content</label>
                     <input
@@ -108,12 +107,13 @@ export default function PublicHeader({ authenticated, content }: Props) {
                                 </a>
                             </li>)}</ul> : <p>No matching public content found.</p>}
                     </div>}
-                </div>
+            </div>
 
+            <div className="public-masthead-tools">
                 <div className="public-masthead-actions" aria-label="Public website actions">
                     <a href="#contact">Contact Us</a>
                     <a href="#tourism">Visit Talibon</a>
-                    <a href="#contact">Report a Concern</a>
+                    <a href="#contact">Concern &amp; Contact Guidance</a>
                 </div>
 
                 <details ref={appearanceMenu} className="public-appearance-menu">
@@ -143,11 +143,10 @@ export default function PublicHeader({ authenticated, content }: Props) {
 
         <nav id="public-navigation" className={`public-navigation ${open ? 'is-open' : ''}`} aria-label="Public navigation">
             <div className="public-nav-inner">
-                {content.navigation.map((item, index) => <a
+                {content.navigation.map(item => <a
                     key={item.label}
                     href={item.href}
                     className="public-nav-link"
-                    aria-current={index === 0 ? 'page' : undefined}
                     onClick={() => setOpen(false)}
                 >
                     {item.label}
