@@ -55,7 +55,9 @@ export default function PublicServices({ content }: { content: PublicContent }) 
                         ? <a className="public-feature-action" href={feature.href}>
                             {feature.action}<ArrowRight size={14} aria-hidden="true" />
                         </a>
-                        : <span className="public-feature-unavailable">Verified directory data pending</span>}
+                        : feature.id === 'officials'
+                            ? <span className="public-feature-unavailable">Verified directory data pending</span>
+                            : null}
                 </article>;
             })}
         </div>
