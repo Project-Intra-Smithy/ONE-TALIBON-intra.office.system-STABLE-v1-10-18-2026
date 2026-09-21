@@ -13,6 +13,7 @@ export default function PublicHeader({ authenticated, content }: Props) {
     const [searchOpen, setSearchOpen] = useState(false);
     const trigger = useRef<HTMLButtonElement>(null);
     const searchInput = useRef<HTMLInputElement>(null);
+    const suppressSearchFocusOpen = useRef(false);
     const appearanceMenu = useRef<HTMLDetailsElement>(null);
 
     const searchable = useMemo(() => [
@@ -39,7 +40,11 @@ export default function PublicHeader({ authenticated, content }: Props) {
             if (searchOpen) {
                 setSearchOpen(false);
                 setQuery('');
+                suppressSearchFocusOpen.current = true;
                 searchInput.current?.focus();
+                queueMicrotask(() => {
+                    suppressSearchFocusOpen.current = false;
+                });
             }
             if (appearanceMenu.current?.open) {
                 appearanceMenu.current.open = false;
@@ -83,7 +88,9 @@ export default function PublicHeader({ authenticated, content }: Props) {
                         type="search"
                         value={query}
                         placeholder="Search public website"
-                        onFocus={() => setSearchOpen(true)}
+                        onFocus={() => {
+                            if (!suppressSearchFocusOpen.current) setSearchOpen(true);
+                        }}
                         onChange={event => {
                             setQuery(event.target.value);
                             setSearchOpen(true);
