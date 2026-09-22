@@ -69,7 +69,7 @@ export default function PublicHeader({ authenticated, content }: Props) {
         </div>
 
         <div className="public-masthead">
-            <a href="#home" className="public-municipal-identity" aria-label="Municipality of Talibon public website home">
+            <a href="#home" className="public-municipal-identity" aria-label="ONE TALIBON · LGU Intra-Office Portal home">
                 <img src={talibonAssets.municipalSeal} alt="" className="public-seal" />
                 <div>
                     <span className="public-masthead-eyebrow">{content.masthead.eyebrow}</span>
@@ -80,13 +80,13 @@ export default function PublicHeader({ authenticated, content }: Props) {
 
             <div className="public-search-wrap">
                     <Search size={18} aria-hidden="true" />
-                    <label htmlFor="public-search" className="sr-only">Search public website content</label>
+                    <label htmlFor="public-search" className="sr-only">Search portal overview</label>
                     <input
                         ref={searchInput}
                         id="public-search"
                         type="search"
                         value={query}
-                        placeholder="Search public website"
+                        placeholder="Search portal overview"
                         onFocus={() => {
                             if (!suppressSearchFocusOpen.current) setSearchOpen(true);
                         }}
@@ -98,24 +98,18 @@ export default function PublicHeader({ authenticated, content }: Props) {
                         aria-controls="public-search-results"
                         autoComplete="off"
                     />
-                    {searchOpen && <div id="public-search-results" className="public-search-results" role="region" aria-label="Public search results">
-                        {query.trim() === '' ? <p>Search public services, news, tourism, transparency, business, and citizen information.</p> :
+                    {searchOpen && <div id="public-search-results" className="public-search-results" role="region" aria-label="Portal overview search results">
+                        {query.trim() === '' ? <p>Search the current portal overview and municipal information.</p> :
                             results.length ? <ul>{results.map(result => <li key={`${result.href}-${result.title}`}>
                                 <a href={result.href} onClick={() => { setSearchOpen(false); setQuery(''); }}>
                                     <span>{result.title}</span>
                                     <ChevronRight size={15} aria-hidden="true" />
                                 </a>
-                            </li>)}</ul> : <p>No matching public content found.</p>}
+                            </li>)}</ul> : <p>No matching portal overview content found.</p>}
                     </div>}
             </div>
 
             <div className="public-masthead-tools">
-                <div className="public-masthead-actions" aria-label="Public website actions">
-                    <a href="#contact">Contact Us</a>
-                    <a href="#tourism">Visit Talibon</a>
-                    <a href="#contact">Concern &amp; Contact Guidance</a>
-                </div>
-
                 <details ref={appearanceMenu} className="public-appearance-menu">
                     <summary className="public-appearance-trigger" title="Appearance settings">
                         <Sun size={17} aria-hidden="true" />
@@ -134,14 +128,14 @@ export default function PublicHeader({ authenticated, content }: Props) {
                     onClick={() => setOpen(current => !current)}
                     aria-expanded={open}
                     aria-controls="public-navigation"
-                    aria-label={open ? 'Close public navigation' : 'Open public navigation'}
+                    aria-label={open ? 'Close portal navigation' : 'Open portal navigation'}
                 >
                     {open ? <X size={22} aria-hidden="true" /> : <Menu size={22} aria-hidden="true" />}
                 </button>
             </div>
         </div>
 
-        <nav id="public-navigation" className={`public-navigation ${open ? 'is-open' : ''}`} aria-label="Public navigation">
+        <nav id="public-navigation" className={`public-navigation ${open ? 'is-open' : ''}`} aria-label="LGU Intra-Office Portal navigation">
             <div className="public-nav-inner">
                 {content.navigation.map(item => <a
                     key={item.label}
@@ -153,7 +147,7 @@ export default function PublicHeader({ authenticated, content }: Props) {
                 </a>)}
                 <Link href={authenticated ? '/dashboard' : '/login'} className="public-employee-link">
                     <Building2 size={16} aria-hidden="true" />
-                    {authenticated ? 'Employee Portal' : 'Employee Login'}
+                    {authenticated ? 'Portal' : 'Login'}
                 </Link>
             </div>
         </nav>
