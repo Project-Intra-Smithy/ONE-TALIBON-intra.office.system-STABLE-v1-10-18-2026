@@ -1,16 +1,16 @@
-/* Municipality of Talibon public website. Scoped to .public-portal so employee UI remains isolated. */
+/* Municipality of Talibon pre-login intra-office portal. Scoped to .public-portal so authenticated employee UI remains isolated. */
 .public-portal {
-    --public-green-950: #0f3a25;
-    --public-green-900: #174d31;
-    --public-green-800: #1d633d;
-    --public-green-700: #24784a;
-    --public-green-100: #e8f1ea;
-    --public-green-50: #f4f8f5;
-    --public-gold: #e6b84a;
-    --public-cream: #f6f5ef;
-    --public-text: #183126;
-    --public-muted: #66736b;
-    --public-line: #d7e0d9;
+    --public-green-950: #0b442d;
+    --public-green-900: #12613f;
+    --public-green-800: #12613f;
+    --public-green-700: #19754b;
+    --public-green-100: #e9f2ec;
+    --public-green-50: #f3f7f4;
+    --public-gold: #d2ad45;
+    --public-cream: #f7f5ed;
+    --public-text: #163027;
+    --public-muted: #64736c;
+    --public-line: #d5dfd8;
     --public-surface: #ffffff;
     --public-frame: 1680px;
     --public-gutter: clamp(18px, 2.4vw, 42px);
@@ -122,9 +122,10 @@
 .public-masthead-title {
     margin-top: 3px;
     font-family: Georgia, 'Times New Roman', serif;
-    font-size: clamp(32px, 3vw, 48px);
+    font-size: clamp(23px, 2.15vw, 34px);
     font-weight: 800;
-    letter-spacing: -.03em;
+    line-height: 1.04;
+    letter-spacing: -.025em;
     text-transform: uppercase;
 }
 .public-masthead-subtitle {
@@ -171,7 +172,7 @@
 .public-search-wrap input::placeholder { color: var(--public-muted); }
 .public-search-wrap:focus-within {
     border-color: var(--public-green-700);
-    box-shadow: 0 0 0 3px rgba(36,120,74,.14);
+    box-shadow: 0 0 0 3px rgba(25,117,75,.14);
 }
 .public-search-results {
     position: absolute;
@@ -181,7 +182,7 @@
     z-index: 65;
     border: 1px solid var(--public-line);
     background: var(--public-surface);
-    box-shadow: 0 14px 32px rgba(15,58,37,.16);
+    box-shadow: 0 14px 32px rgba(11,68,45,.16);
     max-height: 340px;
     overflow-y: auto;
 }
@@ -246,7 +247,7 @@
     border: 1px solid var(--public-line);
     background: var(--public-surface);
     padding: 12px;
-    box-shadow: 0 14px 34px rgba(15,58,37,.16);
+    box-shadow: 0 14px 34px rgba(11,68,45,.16);
 }
 .public-appearance-label {
     margin-bottom: 8px;
@@ -310,8 +311,8 @@
     position: absolute;
     inset: 0;
     background:
-        linear-gradient(90deg, rgba(8,44,26,.92) 0%, rgba(12,67,38,.76) 38%, rgba(12,67,38,.35) 68%, rgba(8,44,26,.18) 100%),
-        linear-gradient(0deg, rgba(8,44,26,.45), transparent 45%);
+        linear-gradient(90deg, rgba(11,68,45,.94) 0%, rgba(18,97,63,.8) 38%, rgba(18,97,63,.42) 68%, rgba(11,68,45,.2) 100%),
+        linear-gradient(0deg, rgba(11,68,45,.48), transparent 45%);
 }
 .public-hero-inner {
     position: relative;
@@ -329,7 +330,7 @@
     font-family: Georgia, 'Times New Roman', serif;
     font-size: clamp(22px, 2vw, 32px);
     font-style: italic;
-    color: #f8e8b7;
+    color: var(--public-gold);
 }
 .public-hero-title {
     margin-top: 2px;
@@ -374,14 +375,14 @@
     font-weight: 800;
 }
 .public-primary-action {
-    background: white;
-    color: var(--public-green-950);
+    background: var(--public-green-700);
+    color: white;
 }
 .public-secondary-action {
     background: rgba(12,67,38,.5);
     color: white;
 }
-.public-primary-action:hover { background: #f4f8f5; }
+.public-primary-action:hover { background: var(--public-green-900); }
 .public-secondary-action:hover { background: rgba(12,67,38,.72); }
 .public-civic-values {
     display: flex;
@@ -406,7 +407,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    background: #eef3ee;
+    background: var(--public-green-100);
     color: #5f6e64;
     font-size: 11px;
     line-height: 1.45;
@@ -528,9 +529,9 @@
 }
 
 .public-quick-strip {
-    border-top: 1px solid #cfdbd1;
-    border-bottom: 1px solid #cfdbd1;
-    background: #e8f1ea;
+    border-top: 1px solid var(--public-line);
+    border-bottom: 1px solid var(--public-line);
+    background: var(--public-green-100);
     color: var(--public-green-950);
     display: grid;
     grid-template-columns: minmax(180px, .7fr) minmax(0, 6.3fr);
@@ -538,7 +539,7 @@
 .dark .public-quick-strip { background: #172b20; }
 .public-quick-label {
     padding: 14px var(--public-gutter);
-    border-right: 1px solid #cfdbd1;
+    border-right: 1px solid var(--public-line);
 }
 .public-quick-label span {
     color: var(--public-green-700);
@@ -705,7 +706,7 @@
         gap: 18px;
     }
     .public-seal { width: 64px; height: 64px; }
-    .public-masthead-title { font-size: 36px; }
+    .public-masthead-title { font-size: 28px; }
     .public-search-wrap { width: 100%; min-width: 0; }
     .public-masthead-actions { display: none; }
     .public-nav-link { padding-inline: 11px; font-size: 11px; }
@@ -742,7 +743,7 @@
     .public-feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .public-feature-card { border-left: 0 !important; }
     .public-quick-strip { grid-template-columns: 1fr; }
-    .public-quick-label { border-right: 0; border-bottom: 1px solid #cfdbd1; padding-block: 10px; }
+    .public-quick-label { border-right: 0; border-bottom: 1px solid var(--public-line); padding-block: 10px; }
     .public-quick-items { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .public-footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
     .public-footer-employee { grid-column: auto; border-top: 0; padding-top: 0; }
@@ -765,7 +766,7 @@
     }
     .public-seal { width: 54px; height: 54px; }
     .public-masthead-eyebrow { font-size: 9px; }
-    .public-masthead-title { font-size: 29px; }
+    .public-masthead-title { font-size: 24px; }
     .public-masthead-subtitle { font-size: 9px; }
     .public-masthead-tools {
         grid-column: 2;
@@ -798,7 +799,7 @@
     .public-masthead { gap: 9px 10px; }
     .public-municipal-identity { gap: 9px; }
     .public-seal { width: 47px; height: 47px; }
-    .public-masthead-title { font-size: 25px; }
+    .public-masthead-title { font-size: 21px; }
     .public-menu-button { width: 42px; min-height: 42px; }
     .public-nav-inner { grid-template-columns: 1fr; }
     .public-employee-link { grid-column: auto; }
