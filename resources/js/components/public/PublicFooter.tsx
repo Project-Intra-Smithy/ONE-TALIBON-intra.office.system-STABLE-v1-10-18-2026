@@ -11,39 +11,39 @@ export default function PublicFooter({ content, authenticated }: { content: Publ
                 <div>
                     <span>Municipality of</span>
                     <strong>Talibon</strong>
-                    <small>Province of Bohol · Public Website</small>
+                    <small>Province of Bohol · LGU Intra-Office Portal</small>
                 </div>
                 <p><MapPin size={15} aria-hidden="true" />{content.contact.location}</p>
-                <p className="public-footer-note">Prototype public website. Sample information is for interface evaluation and is not an official municipal publication.</p>
+                <p className="public-footer-note">Pre-login portal overview for authorized municipal personnel. Sign in to access the authenticated municipal workspace.</p>
             </div>
 
-            <nav className="public-footer-links" aria-label="Public website footer links">
-                <h2>Public Website</h2>
+            <nav className="public-footer-links" aria-label="Portal overview footer links">
+                <h2>Portal Overview</h2>
                 {content.navigation.slice(1).map(item => <a key={item.label} href={item.href}>{item.label}</a>)}
             </nav>
 
             <div className="public-footer-contact">
-                <h2>Contact &amp; Guidance</h2>
+                <h2>Municipal Information</h2>
                 <p>{content.contact.description}</p>
                 {content.contact.telephone && <p>{content.contact.telephone}</p>}
                 {content.contact.email && <p>{content.contact.email}</p>}
                 {content.contact.officeHours && <p>{content.contact.officeHours}</p>}
-                <a href="#services">Municipal service guidance <ArrowRight size={14} aria-hidden="true" /></a>
+                <a href="#services">Portal overview <ArrowRight size={14} aria-hidden="true" /></a>
             </div>
 
             <div className="public-footer-employee">
-                <h2>Employee Access</h2>
-                <p>The authenticated LGU Intra-Office Portal is a separate workspace for authorized municipal employees.</p>
+                <h2>Authorized Access</h2>
+                <p>The LGU Intra-Office Portal is for authorized municipal personnel.</p>
                 <Link href={authenticated ? '/dashboard' : '/login'} className="public-footer-login">
                     <Building2 size={16} aria-hidden="true" />
-                    {authenticated ? 'Open Employee Intra-Office Portal' : 'Employee Intra-Office Portal'}
+                    {authenticated ? 'Portal' : 'Login'}
                     <ArrowRight size={14} aria-hidden="true" />
                 </Link>
             </div>
         </div>
         <div className="public-footer-bottom">
             <span>Municipality of Talibon · Province of Bohol</span>
-            <strong>PUBLIC WEBSITE</strong>
+            <strong>LGU INTRA-OFFICE PORTAL</strong>
         </div>
     </footer>;
 }

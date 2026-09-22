@@ -11,7 +11,7 @@ type Props = { appName: string; authenticated: boolean; content: PublicContent }
 
 export default function Home({ authenticated, content }: Props) {
     return <>
-        <Head title="Municipality of Talibon — Public Website" />
+        <Head title="ONE TALIBON — LGU Intra-Office Portal" />
         <div className="public-portal min-h-screen">
             <a href="#public-content" className="public-skip-link">Skip to main content</a>
             <PublicHeader authenticated={authenticated} content={content} />
@@ -19,7 +19,7 @@ export default function Home({ authenticated, content }: Props) {
                 <PublicHero content={content} />
                 <div className="public-disclosure">
                     <Info size={14} aria-hidden="true" />
-                    <p>{content.sampleLabel}: sample public content is shown for evaluation and does not represent official municipal reporting.</p>
+                    <p>{content.sampleLabel}: this pre-login overview uses sample content for interface evaluation and does not represent an official municipal publication.</p>
                 </div>
                 <PublicServices content={content} />
                 <PublicQuickAccess content={content} />

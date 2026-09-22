@@ -6,7 +6,7 @@ const icons = [FileDown, BookOpenCheck, Building2, FileText, Gavel, PhoneCall, S
 export default function PublicQuickAccess({ content }: { content: PublicContent }) {
     return <section className="public-quick-strip" aria-labelledby="public-quick-access-title">
         <div className="public-quick-label">
-            <span>Citizen Resources</span>
+            <span>Portal Resources</span>
             <h2 id="public-quick-access-title">Quick Access</h2>
         </div>
         <div className="public-quick-items">

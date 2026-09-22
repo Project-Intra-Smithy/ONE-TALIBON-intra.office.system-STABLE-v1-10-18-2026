@@ -25,10 +25,10 @@ export default function PublicServices({ content }: { content: PublicContent }) 
     return <section className="public-feature-section" aria-labelledby="public-features-title">
         <div className="public-section-heading">
             <div>
-                <span>Public Website Directory</span>
-                <h2 id="public-features-title">Information and services for residents, visitors, and businesses</h2>
+                <span>Portal Overview</span>
+                <h2 id="public-features-title">Municipal information and office reference areas</h2>
             </div>
-            <p>Prototype content remains clearly identified until verified municipal records and official publishing workflows are supplied.</p>
+            <p>Use this pre-login overview for general municipal reference. Authorized personnel can sign in to access the secure intra-office workspace.</p>
         </div>
 
         <div className="public-feature-grid">
