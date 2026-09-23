@@ -40,17 +40,22 @@ export default function PublicHeader({ authenticated }: Props) {
     }, [open]);
 
     return <header className="public-header sticky top-0 z-50">
-        <div className="mx-auto flex min-h-[72px] w-full max-w-[1360px] items-center gap-3 px-[var(--public-page-gutter)] py-2.5 xl:gap-5">
-            <a href="#home" aria-label="ONE TALIBON · LGU Intra-Office Portal home" className="public-brand min-w-0 flex-1 xl:flex-none">
+        <div className="mx-auto flex min-h-[64px] w-full max-w-[1360px] items-center gap-2 px-[var(--public-page-gutter)] py-1.5 xl:gap-3">
+            <a
+                href="#home"
+                aria-label="ONE TALIBON · LGU Intra-Office Portal home"
+                className="public-brand min-w-0 flex-1 xl:flex-none"
+                style={{ gap: '12px' }}
+            >
                 <MunicipalBrand />
-                <span className="hidden min-w-0 border-l pl-4 xl:grid [border-color:var(--public-divider)]">
-                    <strong className="text-[10px] font-extrabold uppercase tracking-[0.14em] [color:var(--public-link)]">Internal Workspace</strong>
-                    <span className="mt-0.5 text-[11px] font-medium [color:var(--public-muted)]">Municipality of Talibon, Bohol</span>
+                <span className="hidden min-w-0 border-l pl-3 xl:grid [border-color:var(--public-divider)]">
+                    <strong className="text-[9px] font-extrabold uppercase tracking-[0.13em] [color:var(--public-link)]">Internal Workspace</strong>
+                    <span className="text-[10px] font-medium leading-4 [color:var(--public-muted)]">Municipality of Talibon, Bohol</span>
                 </span>
             </a>
 
-            <nav aria-label="LGU Intra-Office Portal navigation" className="ml-auto hidden items-stretch gap-1 xl:flex">
-                {publicLinks.map(([label, href]) => <a key={href} href={href} className="public-nav-link px-2.5">
+            <nav aria-label="LGU Intra-Office Portal navigation" className="ml-auto hidden items-stretch xl:flex">
+                {publicLinks.map(([label, href]) => <a key={href} href={href} className="public-nav-link px-2">
                     {label}
                 </a>)}
             </nav>
@@ -67,8 +72,12 @@ export default function PublicHeader({ authenticated }: Props) {
                     </div>
                 </details>
 
-                <Link href={authenticated ? '/dashboard' : '/login'} className="public-login-link">
-                    <LogIn size={16} aria-hidden="true" />
+                <Link
+                    href={authenticated ? '/dashboard' : '/login'}
+                    className="public-login-link"
+                    style={{ minHeight: '44px', paddingInline: '12px' }}
+                >
+                    <LogIn size={15} aria-hidden="true" />
                     <span>{authenticated ? 'Portal' : 'Login'}</span>
                 </Link>
 
@@ -77,11 +86,12 @@ export default function PublicHeader({ authenticated }: Props) {
                     type="button"
                     onClick={() => setOpen(!open)}
                     className="public-menu-button xl:hidden"
+                    style={{ width: '44px', minHeight: '44px' }}
                     aria-label={open ? 'Close portal navigation' : 'Open portal navigation'}
                     aria-expanded={open}
                     aria-controls="public-mobile-navigation"
                 >
-                    {open ? <X size={21} aria-hidden="true" /> : <Menu size={21} aria-hidden="true" />}
+                    {open ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
                 </button>
             </div>
         </div>
@@ -91,7 +101,7 @@ export default function PublicHeader({ authenticated }: Props) {
             aria-label="Mobile LGU Intra-Office Portal navigation"
             className={`${open ? 'block' : 'hidden'} public-navigation xl:hidden`}
         >
-            <div className="mx-auto flex w-full max-w-[1360px] flex-col px-[var(--public-page-gutter)] py-2">
+            <div className="mx-auto flex w-full max-w-[1360px] flex-col px-[var(--public-page-gutter)] py-1.5">
                 {publicLinks.map(([label, href]) => <a
                     key={href}
                     href={href}
