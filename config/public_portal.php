@@ -10,6 +10,59 @@ return [
         'lead' => 'CONNECTED OFFICES. BETTER SERVICE.',
         'description' => 'A secure municipal workspace for coordinating offices, documents, requests, employees, projects, schedules, and official workflows across the LGU.',
     ],
+    'capabilities' => [
+        'title' => 'Portal Capabilities',
+        'description' => 'A pre-login overview of the municipal work areas available to authorized personnel after authentication.',
+        'items' => [
+            [
+                'id' => 'transactions',
+                'title' => 'Inter-Office Transactions',
+                'description' => 'Route requests, endorsements, and actions between municipal offices.',
+            ],
+            [
+                'id' => 'documents',
+                'title' => 'Documents & Memoranda',
+                'description' => 'Coordinate official documents, memoranda, records, and correspondence.',
+            ],
+            [
+                'id' => 'projects',
+                'title' => 'Programs & Projects',
+                'description' => 'Organize municipal programs, projects, assignments, and activity.',
+            ],
+            [
+                'id' => 'people',
+                'title' => 'Employees & Offices',
+                'description' => 'Work with municipal office and personnel information inside the authenticated portal.',
+            ],
+            [
+                'id' => 'calendar',
+                'title' => 'Calendar & Coordination',
+                'description' => 'Coordinate schedules, municipal events, deadlines, and office activity.',
+            ],
+            [
+                'id' => 'follow-up',
+                'title' => 'Notifications & Follow-Up',
+                'description' => 'Keep track of work requiring review, action, or follow-up.',
+            ],
+        ],
+    ],
+    'workflow' => [
+        'eyebrow' => 'How Work Moves',
+        'title' => 'Clear ownership from creation to completion',
+        'description' => 'Work moves through the appropriate offices with clear ownership, review, action, and completion inside the authenticated portal.',
+        'steps' => ['Create', 'Route', 'Review', 'Act', 'Complete'],
+    ],
+    'officeOverview' => [
+        'eyebrow' => 'Connected Offices',
+        'title' => 'ONE MUNICIPALITY. CONNECTED OFFICES.',
+        'description' => 'The portal provides a common digital workspace for municipal departments and authorized personnel while each office retains responsibility for its own official work.',
+    ],
+    'secureAccess' => [
+        'eyebrow' => 'Secure Access',
+        'title' => 'SECURE MUNICIPAL WORKSPACE',
+        'description' => 'Authorized personnel sign in to access official transactions, documents, assignments, schedules, and internal coordination.',
+        'note' => 'This pre-login overview does not display live transactions, employee records, documents, schedules, or notifications.',
+    ],
     'services' => [
         [
             'title' => 'Business permits & licensing',
