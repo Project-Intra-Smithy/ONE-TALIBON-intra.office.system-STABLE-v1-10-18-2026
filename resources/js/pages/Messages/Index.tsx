@@ -1,2 +1,135 @@
-import { useMemo,useState } from 'react';import { MessageSquareText,Search } from 'lucide-react';import AppLayout from '../../layouts/AppLayout';import PageFrame from '../../components/PageFrame';import PageHeader from '../../components/PageHeader';import MessageHistory from '../../components/messages/MessageHistory';import {messageChannels,municipalMessages} from '../../data/municipal/messages';
-export default function Index(){const[query,setQuery]=useState('');const[channel,setChannel]=useState('');const messages=useMemo(()=>{const q=query.trim().toLowerCase();return municipalMessages.filter(m=>(!channel||m.channel===channel)&&(!q||[m.subject,m.office,m.body,m.reference,m.channel].join(' ').toLowerCase().includes(q)))},[query,channel]);return <AppLayout title="Messages"><PageFrame><PageHeader eyebrow="Internal coordination" title="Messages" description="Read-only inter-office coordination history for plans, projects, meetings, documents, deadlines, and municipal operating concerns." icon={MessageSquareText} aside={<div className="rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-700 dark:bg-[#142236]"><div className="text-xl font-bold text-slate-950 dark:text-slate-100">{messages.length}</div><div className="text-[10px] font-bold uppercase text-slate-500">Visible messages</div></div>}/><div className="grid gap-2 rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-[#142236] sm:grid-cols-[1fr_240px]"><label className="relative"><Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search coordination history" className="min-h-10 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-3 text-sm dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"/></label><select aria-label="Filter messages by channel" value={channel} onChange={e=>setChannel(e.target.value)} className="min-h-10 rounded-lg border border-slate-300 bg-white px-3 text-sm dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"><option value="">All channels</option>{messageChannels.map(c=><option key={c}>{c}</option>)}</select></div><MessageHistory messages={messages}/></PageFrame></AppLayout>}
+import { useEffect, useMemo, useRef, useState } from 'react';
+import ConversationList from '../../components/messages/ConversationList';
+import MessageThread from '../../components/messages/MessageThread';
+import {
+    buildMessageConversations,
+    filterMessageConversations,
+    findConversationByChannel,
+    findMessageById,
+} from '../../components/messages/messageWorkspace';
+import { municipalMessages } from '../../data/municipal/messages';
+import AppLayout from '../../layouts/AppLayout';
+
+type MobileView = 'conversations' | 'thread';
+
+type InitialMessagesState = {
+    query: string;
+    channel: string | null;
+    messageId: string | null;
+    view: MobileView | null;
+};
+
+function readInitialMessagesState(): InitialMessagesState {
+    if (typeof window === 'undefined') return { query: '', channel: null, messageId: null, view: null };
+    const params = new URLSearchParams(window.location.search);
+    const view = params.get('view');
+    return {
+        query: params.get('q') ?? '',
+        channel: params.get('channel'),
+        messageId: params.get('message'),
+        view: view === 'conversations' || view === 'thread' ? view : null,
+    };
+}
+
+export default function Index() {
+    const initialState = useMemo(readInitialMessagesState, []);
+    const conversations = useMemo(() => buildMessageConversations(municipalMessages), []);
+    const initialMessage = useMemo(() => findMessageById(municipalMessages, initialState.messageId), [initialState.messageId]);
+    const initialChannelConversation = useMemo(
+        () => findConversationByChannel(conversations, initialState.channel),
+        [conversations, initialState.channel],
+    );
+    const initialConversation = initialMessage
+        ? findConversationByChannel(conversations, initialMessage.channel)
+        : initialChannelConversation ?? conversations[0] ?? null;
+    const initialSelectionExplicit = Boolean(initialMessage || initialChannelConversation);
+    const initialMobileView: MobileView = initialState.view
+        ?? (initialSelectionExplicit ? 'thread' : 'conversations');
+
+    const [query, setQuery] = useState(initialState.query);
+    const [selectedChannel, setSelectedChannel] = useState<string | null>(initialConversation?.channel ?? null);
+    const [highlightMessageId, setHighlightMessageId] = useState<string | null>(initialMessage?.id ?? null);
+    const [selectionExplicit, setSelectionExplicit] = useState(initialSelectionExplicit);
+    const [mobileView, setMobileView] = useState<MobileView>(initialMobileView);
+    const conversationButtons = useRef(new Map<string, HTMLButtonElement>());
+    const lastConversationTrigger = useRef<HTMLButtonElement | null>(null);
+    const threadHeading = useRef<HTMLHeadingElement | null>(null);
+    const searchInput = useRef<HTMLInputElement | null>(null);
+
+    const visibleConversations = useMemo(
+        () => filterMessageConversations(conversations, query),
+        [conversations, query],
+    );
+    const selectedConversation = useMemo(
+        () => findConversationByChannel(conversations, selectedChannel),
+        [conversations, selectedChannel],
+    );
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const params = new URLSearchParams();
+        const normalizedQuery = query.trim();
+        if (normalizedQuery) params.set('q', normalizedQuery);
+        if (selectionExplicit && selectedChannel) params.set('channel', selectedChannel);
+        if (highlightMessageId) params.set('message', highlightMessageId);
+        if (selectionExplicit) params.set('view', mobileView);
+
+        const search = params.toString();
+        const nextUrl = `${window.location.pathname}${search ? `?${search}` : ''}${window.location.hash}`;
+        const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+        if (nextUrl !== currentUrl) window.history.replaceState(window.history.state, '', nextUrl);
+    }, [highlightMessageId, mobileView, query, selectedChannel, selectionExplicit]);
+
+    const selectConversation = (channel: string, trigger: HTMLButtonElement) => {
+        lastConversationTrigger.current = trigger;
+        setSelectedChannel(channel);
+        setHighlightMessageId(null);
+        setSelectionExplicit(true);
+        setMobileView('thread');
+
+        if (window.matchMedia('(max-width: 767px)').matches) {
+            window.requestAnimationFrame(() => threadHeading.current?.focus());
+        }
+    };
+
+    const returnToConversations = () => {
+        setMobileView('conversations');
+        window.requestAnimationFrame(() => {
+            const selectedButton = selectedChannel ? conversationButtons.current.get(selectedChannel) : null;
+            (lastConversationTrigger.current ?? selectedButton ?? searchInput.current)?.focus();
+        });
+    };
+
+    const registerConversationButton = (channel: string, node: HTMLButtonElement | null) => {
+        if (node) conversationButtons.current.set(channel, node);
+        else conversationButtons.current.delete(channel);
+    };
+
+    return (
+        <AppLayout title="Messages">
+            <div className="mx-auto h-[calc(100dvh-7.25rem)] min-h-[32rem] max-w-[1500px] overflow-hidden rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] shadow-sm">
+                <div className="grid h-full min-h-0 md:grid-cols-[288px_minmax(0,1fr)]">
+                    <div className={`${mobileView === 'thread' ? 'hidden md:block' : 'block'} h-full min-h-0 md:border-r md:border-[var(--municipal-border)]`}>
+                        <ConversationList
+                            conversations={visibleConversations}
+                            selectedChannel={selectedChannel}
+                            query={query}
+                            onQueryChange={setQuery}
+                            onSelect={selectConversation}
+                            registerButton={registerConversationButton}
+                            registerSearch={(node) => { searchInput.current = node; }}
+                        />
+                    </div>
+                    <div className={`${mobileView === 'conversations' ? 'hidden md:block' : 'block'} h-full min-h-0`}>
+                        <MessageThread
+                            conversation={selectedConversation}
+                            highlightMessageId={highlightMessageId}
+                            onBack={returnToConversations}
+                            registerHeading={(node) => { threadHeading.current = node; }}
+                        />
+                    </div>
+                </div>
+            </div>
+        </AppLayout>
+    );
+}
