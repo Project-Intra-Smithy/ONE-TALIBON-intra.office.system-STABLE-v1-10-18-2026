@@ -1246,3 +1246,90 @@
     .public-hero-copy { padding-inline: 21px; }
     .public-hero-title { font-size: 30px; }
 }
+
+/* Lane 2 capability layout owns its responsive structure independently of the legacy service directory. */
+.public-capabilities {
+    padding: 48px 0 52px;
+    border-bottom: 1px solid var(--public-divider);
+}
+
+.public-capability-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid var(--public-divider);
+}
+
+.public-capability-column {
+    min-width: 0;
+}
+
+.public-capability-column + .public-capability-column {
+    margin-left: 38px;
+    border-left: 1px solid var(--public-divider);
+    padding-left: 38px;
+}
+
+.public-capability-list {
+    list-style: none;
+}
+
+.public-capability-row {
+    display: grid;
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 24px;
+    border-bottom: 1px solid var(--public-divider);
+    padding: 18px 0;
+}
+
+.public-capability-row > svg {
+    color: var(--public-link);
+}
+
+.public-capability-copy {
+    min-width: 0;
+}
+
+.public-capability-copy h3 {
+    color: var(--public-text);
+    font-size: var(--public-type-title);
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.public-capability-copy > p {
+    max-width: 620px;
+    margin-top: 5px;
+    color: var(--public-muted);
+    font-size: var(--public-type-body);
+    line-height: 1.6;
+}
+
+@media (max-width: 1023px) {
+    .public-capability-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .public-capability-column + .public-capability-column {
+        margin-left: 0;
+        border-left: 0;
+        padding-left: 0;
+    }
+}
+
+@media (max-width: 767px) {
+    .public-capabilities {
+        padding: 36px 0 40px;
+    }
+
+    .public-capability-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 14px;
+        padding: 16px 0;
+    }
+
+    .public-capability-copy > p {
+        font-size: 14px;
+    }
+}

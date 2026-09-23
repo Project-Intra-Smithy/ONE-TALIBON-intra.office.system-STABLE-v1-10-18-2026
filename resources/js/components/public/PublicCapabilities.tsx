@@ -2,19 +2,19 @@ import { CheckCircle2 } from 'lucide-react';
 import type { CapabilityItem, PublicContent } from './types';
 
 function CapabilityRow({ capability }: { capability: CapabilityItem }) {
-    return <li className="public-service-row">
-        <div className="public-service-copy">
-            <h4>{capability.title}</h4>
+    return <li className="public-capability-row">
+        <div className="public-capability-copy">
+            <h3>{capability.title}</h3>
             <p>{capability.description}</p>
         </div>
-        <CheckCircle2 size={18} className="shrink-0 [color:var(--public-link)]" aria-hidden="true" />
+        <CheckCircle2 size={18} aria-hidden="true" />
     </li>;
 }
 
 export default function PublicCapabilities({ content }: { content: PublicContent }) {
     const groups = [content.capabilities.items.slice(0, 3), content.capabilities.items.slice(3)];
 
-    return <section id="capabilities" className="public-services" aria-labelledby="public-capabilities-title">
+    return <section id="capabilities" className="public-capabilities" aria-labelledby="public-capabilities-title">
         <div className="public-section-heading">
             <div>
                 <h2 id="public-capabilities-title">{content.capabilities.title}</h2>
@@ -22,9 +22,9 @@ export default function PublicCapabilities({ content }: { content: PublicContent
             </div>
         </div>
 
-        <div className="public-service-directory">
-            {groups.map((items, index) => <div key={index} className="public-service-group">
-                <ul className="public-service-list">
+        <div className="public-capability-grid">
+            {groups.map((items, index) => <div key={index} className="public-capability-column">
+                <ul className="public-capability-list">
                     {items.map(capability => <CapabilityRow key={capability.id} capability={capability} />)}
                 </ul>
             </div>)}
