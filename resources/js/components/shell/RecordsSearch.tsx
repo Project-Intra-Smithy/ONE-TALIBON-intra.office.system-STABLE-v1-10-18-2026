@@ -46,7 +46,7 @@ export default function RecordsSearch() {
                 ref={trigger}
                 type="button"
                 onClick={() => setOpen((value) => !value)}
-                className={`flex h-11 items-center gap-2 rounded-lg px-2.5 text-sm font-semibold transition-colors ${open ? 'bg-blue-50 text-blue-800 dark:bg-blue-950/45 dark:text-blue-200' : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'}`}
+                className={`flex h-11 items-center gap-2 rounded-lg px-2.5 text-sm font-semibold transition-colors ${open ? 'bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand)]' : 'text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] hover:text-[var(--municipal-text)]'}`}
                 aria-label="Search municipal records"
                 aria-expanded={open}
                 aria-haspopup="dialog"
@@ -58,18 +58,18 @@ export default function RecordsSearch() {
             </button>
 
             {open && (
-                <div id="records-search-dialog" className="absolute right-0 top-11 z-50 w-[min(22rem,calc(100vw-2rem))] rounded-xl border border-slate-200 bg-white p-3 shadow-2xl dark:border-slate-700 dark:bg-[#142236]" role="dialog" aria-label="Search municipal records">
+                <div id="records-search-dialog" className="absolute right-0 top-11 z-50 w-[min(22rem,calc(100vw-2rem))] rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-3 text-[var(--municipal-text)] shadow-2xl" role="dialog" aria-label="Search municipal records">
                     <form onSubmit={searchRecords} role="search">
                         <div className="flex items-center justify-between gap-3 px-1 pb-2">
                             <div>
-                                <div className="text-xs font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">Records search</div>
-                                <div className="text-xs leading-4 text-slate-500 dark:text-slate-400">Find municipal records without occupying the workspace header.</div>
+                                <div className="text-xs font-bold uppercase tracking-wide text-[var(--municipal-text)]">Records search</div>
+                                <div className="text-xs leading-4 text-[var(--municipal-muted)]">Find municipal records without occupying the workspace header.</div>
                             </div>
-                            <button type="button" onClick={closeAndRestoreFocus} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Close records search"><X size={16} aria-hidden="true" /></button>
+                            <button type="button" onClick={closeAndRestoreFocus} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]" aria-label="Close records search"><X size={16} aria-hidden="true" /></button>
                         </div>
                         <label className="relative block">
                             <span className="sr-only">Search records</span>
-                            <Search size={16} className="pointer-events-none absolute left-3 top-3 text-slate-500" aria-hidden="true" />
+                            <Search size={16} className="pointer-events-none absolute left-3 top-3 text-[var(--municipal-muted)]" aria-hidden="true" />
                             <input
                                 ref={input}
                                 type="search"
@@ -78,7 +78,7 @@ export default function RecordsSearch() {
                                 autoComplete="off"
                                 enterKeyHint="search"
                                 spellCheck={false}
-                                className="h-11 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-3 text-sm text-slate-900 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-400"
+                                className="h-11 w-full rounded-lg border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] pl-9 pr-3 text-sm text-[var(--municipal-text)] placeholder:text-[var(--municipal-muted)] focus:border-[var(--municipal-brand-active)]"
                             />
                         </label>
                     </form>

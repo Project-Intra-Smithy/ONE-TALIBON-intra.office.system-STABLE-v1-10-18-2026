@@ -44,7 +44,7 @@ export default function WorkspaceLauncher({ groups }: { groups: PortalNavigation
                 aria-controls="workspace-sections"
                 title="Workspace sections"
                 onClick={() => setOpen((value) => !value)}
-                className="flex h-11 w-11 items-center justify-center rounded-lg text-[#0b2852] hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700/30 dark:text-blue-200 dark:hover:bg-slate-800"
+                className="flex h-11 w-11 items-center justify-center rounded-lg text-[var(--municipal-brand-deep)] hover:bg-[var(--municipal-brand-soft)] dark:text-[var(--municipal-brand)]"
             >
                 <Grid3X3 size={19} aria-hidden="true" />
             </button>
@@ -72,7 +72,7 @@ export default function WorkspaceLauncher({ groups }: { groups: PortalNavigation
                             const columns = group.items.length === 1 ? 'grid-cols-1' : 'grid-cols-2';
                             return (
                                 <section key={group.key} aria-labelledby={headingId}>
-                                    <div id={headingId} className="mb-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
+                                    <div id={headingId} className="mb-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--municipal-muted)]">
                                         {group.label}
                                     </div>
                                     <div className={`grid gap-2 ${columns}`}>
@@ -89,11 +89,11 @@ export default function WorkspaceLauncher({ groups }: { groups: PortalNavigation
                                                     aria-current={active ? 'page' : undefined}
                                                     className={`flex items-center gap-2 rounded-lg p-3 text-sm font-semibold ${
                                                         active
-                                                            ? 'bg-blue-100 text-blue-950 dark:bg-blue-950/50 dark:text-blue-100'
-                                                            : 'bg-slate-50 hover:bg-blue-50 dark:bg-slate-800 dark:hover:bg-slate-700'
+                                                            ? 'bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand-deep)] dark:text-[var(--municipal-brand)]'
+                                                            : 'bg-[var(--municipal-surface-subtle)] hover:bg-[var(--municipal-hover)]'
                                                     }`}
                                                 >
-                                                    <Icon size={17} className="shrink-0 text-blue-600 dark:text-blue-300" aria-hidden="true" />
+                                                    <Icon size={17} className="shrink-0 text-[var(--municipal-brand)]" aria-hidden="true" />
                                                     <span>{label}</span>
                                                 </Link>
                                             );
