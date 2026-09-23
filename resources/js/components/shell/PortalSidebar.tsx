@@ -31,7 +31,7 @@ export default function PortalSidebar({
     const compact = !mobile && collapsed;
 
     return (
-        <div className="flex h-full flex-col bg-[#0b2852] text-white">
+        <div className="flex h-full flex-col bg-[var(--municipal-brand-deep)] text-white">
             <SidebarBrand compact={compact} mobile={mobile} />
 
             {!mobile && (

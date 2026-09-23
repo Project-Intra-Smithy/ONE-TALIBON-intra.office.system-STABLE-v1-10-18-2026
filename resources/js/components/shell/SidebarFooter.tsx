@@ -33,7 +33,7 @@ export default function SidebarFooter({ compact, user }: Props) {
                         type="button"
                         onClick={signOut}
                         disabled={signingOut}
-                        className="flex h-11 w-11 items-center justify-center rounded-md text-blue-200 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 disabled:cursor-wait disabled:opacity-60"
+                        className="flex h-11 w-11 items-center justify-center rounded-md text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 disabled:cursor-wait disabled:opacity-60"
                         aria-label={signingOut ? 'Signing out' : 'Sign out'}
                         title={signingOut ? 'Signing out' : 'Sign out'}
                     >
@@ -48,7 +48,7 @@ export default function SidebarFooter({ compact, user }: Props) {
         <div className="min-w-0" aria-busy={signingOut}>
             <SidebarIdentity compact={false} user={user} persona={showcasePersona} />
             <div className="mt-2 flex min-w-0 items-center justify-between gap-2">
-                <span className="truncate text-[11px] font-semibold uppercase tracking-[0.06em] text-blue-300/75">Account</span>
+                <span className="truncate text-[11px] font-semibold uppercase tracking-[0.06em] text-white/50">Account</span>
                 <div className="flex shrink-0 items-center gap-0.5">
                     {showcaseSession?.active && <WorkspaceSwitcher compact />}
                     <SidebarAppearanceMenu compact align="end" />
@@ -56,7 +56,7 @@ export default function SidebarFooter({ compact, user }: Props) {
                         type="button"
                         onClick={signOut}
                         disabled={signingOut}
-                        className="flex h-11 w-11 items-center justify-center rounded-md text-blue-200 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 disabled:cursor-wait disabled:opacity-60"
+                        className="flex h-11 w-11 items-center justify-center rounded-md text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 disabled:cursor-wait disabled:opacity-60"
                         aria-label={signingOut ? 'Signing out' : 'Sign out'}
                         title={signingOut ? 'Signing out' : 'Sign out'}
                     >

@@ -54,7 +54,7 @@ export default function SidebarIdentity({ compact, user, persona = null }: Props
                     {name || 'Signed-in employee'}
                 </div>
                 {context && (
-                    <div className="mt-0.5 truncate text-xs leading-4 text-blue-200" title={context}>
+                    <div className="mt-0.5 truncate text-xs leading-4 text-white/65" title={context}>
                         {context}
                     </div>
                 )}
