@@ -8,9 +8,7 @@ export default function PublicHero({ content }: { content: PublicContent }) {
             <div className="public-hero-copy">
                 <p className="public-welcome">{content.hero.eyebrow}</p>
                 <h1 id="public-hero-title" className="public-hero-title">{content.hero.title}</h1>
-                <p className="public-hero-lead">
-                    CONNECTED OFFICES.<br />BETTER SERVICE.
-                </p>
+                <p className="public-hero-lead">{content.hero.lead}</p>
                 <p className="public-hero-description">{content.hero.description}</p>
                 <div className="public-hero-actions">
                     <a href="/login" className="public-primary-action">
