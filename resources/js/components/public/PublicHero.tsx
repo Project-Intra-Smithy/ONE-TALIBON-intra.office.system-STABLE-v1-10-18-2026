@@ -2,14 +2,15 @@ import { Link } from '@inertiajs/react';
 import { ArrowRight, LockKeyhole } from 'lucide-react';
 import PublicPortalPreview from './PublicPortalPreview';
 import { PUBLIC_CONTENT_FRAME_CLASS, PUBLIC_SECTION_ANCHOR_STYLE } from './publicLayout';
-import type { PublicContent } from './types';
+import type { PublicContent, PublicInfoSelection } from './types';
 
 type Props = {
     content: PublicContent;
     authenticated: boolean;
+    onOpenInfo: (item: PublicInfoSelection, trigger: HTMLElement) => void;
 };
 
-export default function PublicHero({ content, authenticated }: Props) {
+export default function PublicHero({ content, authenticated, onOpenInfo }: Props) {
     return <section
         id="home"
         style={PUBLIC_SECTION_ANCHOR_STYLE}
@@ -40,7 +41,7 @@ export default function PublicHero({ content, authenticated }: Props) {
             <div className="public-hero-preview-final relative flex min-w-0 items-center border-t border-white/10 bg-white/[0.045] lg:border-l lg:border-t-0">
                 <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_18%,rgba(210,173,69,0.13),transparent_34%)]" aria-hidden="true" />
                 <div className="relative w-full">
-                    <PublicPortalPreview content={content} />
+                    <PublicPortalPreview content={content} onOpenInfo={onOpenInfo} />
                 </div>
             </div>
         </div>

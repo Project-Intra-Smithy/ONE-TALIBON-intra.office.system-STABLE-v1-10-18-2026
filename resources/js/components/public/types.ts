@@ -10,6 +10,13 @@ export type PublicInfoDetail = {
     note?: string;
 };
 
+export type PublicInfoSelection = {
+    eyebrow: string;
+    title: string;
+    description: string;
+    detail: PublicInfoDetail;
+};
+
 export type CapabilityItem = {
     id: 'transactions' | 'documents' | 'projects' | 'people' | 'calendar' | 'follow-up';
     title: string;

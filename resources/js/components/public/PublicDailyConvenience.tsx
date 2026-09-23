@@ -1,6 +1,6 @@
-import { BellRing, CalendarDays, CloudSun, FileText } from 'lucide-react';
+import { ArrowUpRight, BellRing, CalendarDays, CloudSun, FileText } from 'lucide-react';
 import { PUBLIC_CONTENT_FRAME_CLASS, PUBLIC_SECTION_ANCHOR_STYLE } from './publicLayout';
-import type { PreviewModuleItem, PreviewModuleKind, PublicContent } from './types';
+import type { PreviewModuleItem, PreviewModuleKind, PublicContent, PublicInfoSelection } from './types';
 
 const moduleIcons: Record<PreviewModuleKind, typeof FileText> = {
     memorandum: FileText,
@@ -9,19 +9,36 @@ const moduleIcons: Record<PreviewModuleKind, typeof FileText> = {
     weather: CloudSun,
 };
 
-function ConvenienceModule({ item }: { item: PreviewModuleItem }) {
+type OpenInfo = (item: PublicInfoSelection, trigger: HTMLElement) => void;
+
+function ConvenienceModule({ item, onOpenInfo }: { item: PreviewModuleItem; onOpenInfo: OpenInfo }) {
     const Icon = moduleIcons[item.kind];
 
-    return <article className="min-w-0 rounded-lg border p-4 transition-[border-color,transform] duration-150 hover:-translate-y-px [border-color:var(--public-divider)] [background:var(--public-surface)] hover:[border-color:var(--public-divider-strong)]">
-        <span className="flex h-9 w-9 items-center justify-center rounded-md [background:var(--public-surface-soft)] [color:var(--public-link)]">
-            <Icon size={17} aria-hidden="true" />
-        </span>
+    if (!item.detail) return null;
+
+    return <button
+        type="button"
+        aria-haspopup="dialog"
+        onClick={event => onOpenInfo({
+            eyebrow: 'Everyday Coordination',
+            title: item.title,
+            description: item.description,
+            detail: item.detail!,
+        }, event.currentTarget)}
+        className="public-interactive-card min-w-0 rounded-lg border p-4 text-left [border-color:var(--public-divider)] [background:var(--public-surface)]"
+    >
+        <div className="flex items-start justify-between gap-3">
+            <span className="flex h-9 w-9 items-center justify-center rounded-md [background:var(--public-surface-soft)] [color:var(--public-link)]">
+                <Icon size={17} aria-hidden="true" />
+            </span>
+            <ArrowUpRight size={15} className="mt-0.5 shrink-0 [color:var(--public-muted)]" aria-hidden="true" />
+        </div>
         <h3 className="mt-3 text-[13px] font-extrabold tracking-[-0.01em] [color:var(--public-text)]">{item.title}</h3>
         <p className="mt-1.5 text-[12px] leading-5 [color:var(--public-muted)]">{item.description}</p>
-    </article>;
+    </button>;
 }
 
-export default function PublicDailyConvenience({ content }: { content: PublicContent }) {
+export default function PublicDailyConvenience({ content, onOpenInfo }: { content: PublicContent; onOpenInfo: OpenInfo }) {
     return <section
         id="everyday"
         style={PUBLIC_SECTION_ANCHOR_STYLE}
@@ -35,7 +52,7 @@ export default function PublicDailyConvenience({ content }: { content: PublicCon
         </header>
 
         <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 xl:grid-cols-4">
-            {content.dailyConvenience.items.map(item => <ConvenienceModule key={item.id} item={item} />)}
+            {content.dailyConvenience.items.map(item => <ConvenienceModule key={item.id} item={item} onOpenInfo={onOpenInfo} />)}
         </div>
     </section>;
 }

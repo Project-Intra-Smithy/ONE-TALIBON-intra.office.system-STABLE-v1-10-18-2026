@@ -1,20 +1,30 @@
 import { Head } from '@inertiajs/react';
 import { Info } from 'lucide-react';
+import { useRef, useState } from 'react';
 import PublicAbout from '../../components/public/PublicAbout';
 import PublicCapabilities from '../../components/public/PublicCapabilities';
 import PublicDailyConvenience from '../../components/public/PublicDailyConvenience';
 import PublicFooter from '../../components/public/PublicFooter';
 import PublicHeader from '../../components/public/PublicHeader';
 import PublicHero from '../../components/public/PublicHero';
+import PublicInfoDialog from '../../components/public/PublicInfoDialog';
 import PublicOfficeOverview from '../../components/public/PublicOfficeOverview';
 import PublicSecureAccess from '../../components/public/PublicSecureAccess';
 import PublicWorkflow from '../../components/public/PublicWorkflow';
 import { PUBLIC_CONTENT_FRAME_CLASS } from '../../components/public/publicLayout';
-import type { PublicContent } from '../../components/public/types';
+import type { PublicContent, PublicInfoSelection } from '../../components/public/types';
 
 type Props = { appName: string; authenticated: boolean; content: PublicContent };
 
 export default function Home({ authenticated, content }: Props) {
+    const [activeInfo, setActiveInfo] = useState<PublicInfoSelection | null>(null);
+    const returnFocusRef = useRef<HTMLElement | null>(null);
+
+    const openInfo = (item: PublicInfoSelection, trigger: HTMLElement) => {
+        returnFocusRef.current = trigger;
+        setActiveInfo(item);
+    };
+
     return <>
         <Head title="ONE TALIBON — LGU Intra-Office Portal" />
         <div className="public-portal min-h-screen">
@@ -30,10 +40,10 @@ export default function Home({ authenticated, content }: Props) {
                         </p>
                     </div>
                     <div className="public-primary">
-                        <PublicHero content={content} authenticated={authenticated} />
+                        <PublicHero content={content} authenticated={authenticated} onOpenInfo={openInfo} />
                         <PublicAbout content={content} />
-                        <PublicDailyConvenience content={content} />
-                        <PublicCapabilities content={content} />
+                        <PublicDailyConvenience content={content} onOpenInfo={openInfo} />
+                        <PublicCapabilities content={content} onOpenInfo={openInfo} />
                         <PublicWorkflow content={content} />
                         <PublicOfficeOverview content={content} />
                         <PublicSecureAccess content={content} authenticated={authenticated} />
@@ -41,6 +51,7 @@ export default function Home({ authenticated, content }: Props) {
                 </div>
             </main>
             <PublicFooter content={content} authenticated={authenticated} />
+            <PublicInfoDialog item={activeInfo} onClose={() => setActiveInfo(null)} returnFocusRef={returnFocusRef} />
         </div>
     </>;
 }
