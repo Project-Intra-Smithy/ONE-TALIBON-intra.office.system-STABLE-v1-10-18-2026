@@ -57,6 +57,10 @@
     transform: translateY(0);
 }
 
+.public-info-dialog::backdrop {
+    background: rgba(8, 27, 19, .55);
+}
+
 .public-info-dialog[open] {
     animation: public-dialog-panel-in 190ms ease-out both;
 }

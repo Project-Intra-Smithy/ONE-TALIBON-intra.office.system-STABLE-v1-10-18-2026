@@ -1,5 +1,5 @@
 import { CheckCircle2, X } from 'lucide-react';
-import { useEffect, useRef, type RefObject } from 'react';
+import { useEffect, useRef, type KeyboardEvent, type RefObject } from 'react';
 import type { PublicInfoSelection } from './types';
 
 type Props = {
@@ -39,7 +39,7 @@ export default function PublicInfoDialog({ item, onClose, returnFocusRef }: Prop
         if (dialogRef.current?.open) dialogRef.current.close();
     }, []);
 
-    const trapFocus = (event: React.KeyboardEvent<HTMLDialogElement>) => {
+    const trapFocus = (event: KeyboardEvent<HTMLDialogElement>) => {
         if (event.key !== 'Tab') return;
 
         const dialog = dialogRef.current;
@@ -69,7 +69,8 @@ export default function PublicInfoDialog({ item, onClose, returnFocusRef }: Prop
 
     return <dialog
         ref={dialogRef}
-        className="public-info-dialog m-auto max-h-[calc(100dvh-32px)] w-[min(580px,calc(100vw-32px))] overflow-y-auto rounded-xl border p-0 shadow-2xl [border-color:var(--public-divider)] [background:var(--public-surface)] [color:var(--public-text)] backdrop:bg-[#081b13]/55"
+        className="public-info-dialog m-auto max-h-[calc(100dvh-32px)] w-[min(580px,calc(100vw-32px))] overflow-y-auto rounded-xl border p-0 shadow-2xl [border-color:var(--public-divider)] [background:var(--public-surface)] [color:var(--public-text)]"
+        aria-modal="true"
         aria-labelledby="public-info-dialog-title"
         aria-describedby="public-info-dialog-summary"
         onCancel={event => {
@@ -91,7 +92,7 @@ export default function PublicInfoDialog({ item, onClose, returnFocusRef }: Prop
                     ref={closeButtonRef}
                     type="button"
                     onClick={onClose}
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md transition-colors hover:[background:var(--public-hover)] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:[outline-color:var(--public-focus-ring)]"
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md transition-colors hover:[background:var(--public-hover)] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:[outline-color:var(--public-focus-ring)]"
                     aria-label="Close details"
                 >
                     <X size={18} aria-hidden="true" />
@@ -116,7 +117,7 @@ export default function PublicInfoDialog({ item, onClose, returnFocusRef }: Prop
                 </div>}
 
                 <div className="mt-5 flex justify-end">
-                    <button type="button" onClick={onClose} className="inline-flex min-h-10 items-center justify-center rounded-md border px-4 text-[12px] font-bold transition-colors [border-color:var(--public-divider-strong)] hover:[background:var(--public-hover)] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:[outline-color:var(--public-focus-ring)]">
+                    <button type="button" onClick={onClose} className="inline-flex min-h-10 items-center justify-center rounded-md border px-4 text-[12px] font-bold transition-colors [border-color:var(--public-divider-strong)] hover:[background:var(--public-hover)] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:[outline-color:var(--public-focus-ring)]">
                         Close
                     </button>
                 </div>

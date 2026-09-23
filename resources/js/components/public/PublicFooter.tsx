@@ -18,9 +18,9 @@ export default function PublicFooter({ content, authenticated }: { content: Publ
             <nav aria-label="Footer portal links" className="public-footer-links">
                 <h2>Portal</h2>
                 <a href="#home">Overview</a>
+                <a href="#about">About</a>
                 <a href="#capabilities">Capabilities</a>
                 <a href="#workflow">Workflow</a>
-                <a href="#secure-access">Security</a>
             </nav>
 
             <div className="public-footer-access">
