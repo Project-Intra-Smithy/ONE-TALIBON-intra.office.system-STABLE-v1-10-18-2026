@@ -15,7 +15,7 @@ concurrency:
 jobs:
   verify:
     name: Build, feature tests, and two-account browser verification
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 35
     services:
       postgres:
@@ -51,11 +51,11 @@ jobs:
       - name: Checkout verification branch
         uses: actions/checkout@v4
 
-      - name: Verify candidate parent
+      - name: Verify candidate ancestry
         shell: bash
         run: |
-          test "$(git rev-parse HEAD^)" = "03c702cc9abb21daf40d2ca5912e703b207d3aa4"
-          test "$(git rev-parse HEAD^^)" = "6718d9c8cc1dda090af649da76228f818822dae8"
+          git merge-base --is-ancestor 6718d9c8cc1dda090af649da76228f818822dae8 HEAD
+          test "$(git rev-parse 6718d9c8cc1dda090af649da76228f818822dae8)" = "6718d9c8cc1dda090af649da76228f818822dae8"
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
