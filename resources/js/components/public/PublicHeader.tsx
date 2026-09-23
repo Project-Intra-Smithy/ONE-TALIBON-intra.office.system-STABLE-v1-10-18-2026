@@ -7,12 +7,11 @@ import MunicipalBrand from '../MunicipalBrand';
 type Props = { authenticated: boolean };
 
 export const publicLinks = [
-    ['Services', '#services'],
-    ['News & Notices', '#news'],
-    ['Public Documents', '#transparency'],
-    ['Projects', '#projects'],
-    ['About Talibon', '#about'],
-    ['Contact', '#contact'],
+    ['Overview', '#home'],
+    ['Capabilities', '#capabilities'],
+    ['How Work Moves', '#workflow'],
+    ['Offices', '#offices'],
+    ['Secure Access', '#secure-access'],
 ] as const;
 
 export default function PublicHeader({ authenticated }: Props) {

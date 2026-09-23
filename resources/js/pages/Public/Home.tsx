@@ -1,11 +1,10 @@
 import { Head } from '@inertiajs/react';
 import { Info } from 'lucide-react';
+import PublicCapabilities from '../../components/public/PublicCapabilities';
 import PublicFooter from '../../components/public/PublicFooter';
 import PublicGlance from '../../components/public/PublicGlance';
 import PublicHeader from '../../components/public/PublicHeader';
 import PublicHero from '../../components/public/PublicHero';
-import PublicQuickAccess from '../../components/public/PublicQuickAccess';
-import PublicServices from '../../components/public/PublicServices';
 import PublicUpdates from '../../components/public/PublicUpdates';
 import type { PublicContent } from '../../components/public/types';
 
@@ -25,8 +24,7 @@ export default function Home({ authenticated, content }: Props) {
                     </div>
                     <div className="public-primary">
                         <PublicHero content={content} />
-                        <PublicQuickAccess />
-                        <PublicServices content={content} />
+                        <PublicCapabilities content={content} />
                         <div className="public-information-zone">
                             <PublicGlance content={content} />
                             <PublicUpdates content={content} />
