@@ -1,10 +1,13 @@
 import { ArrowLeft, PanelRightOpen } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import usePrototypeMessaging from '../../hooks/messaging/usePrototypeMessaging';
 import type { MessageConversation } from './messageWorkspace';
 import PrototypeMessageBubble from './PrototypeMessageBubble';
 import PrototypeMessageComposer from './PrototypeMessageComposer';
+import { normalizePrototypeChannel } from './prototypeMessaging';
 import StaticCoordinationHistory from './StaticCoordinationHistory';
+
+const NEAR_BOTTOM_THRESHOLD = 120;
 
 type Props = {
     conversation: MessageConversation | null;
@@ -14,17 +17,34 @@ type Props = {
     registerHeading: (node: HTMLHeadingElement | null) => void;
 };
 
+function isNearBottom(scroller: HTMLDivElement): boolean {
+    return scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight <= NEAR_BOTTOM_THRESHOLD;
+}
+
+function scrollToBottom(scroller: HTMLDivElement): void {
+    scroller.scrollTop = scroller.scrollHeight;
+}
+
 export default function MessageThread({ conversation, highlightMessageId, onBack, onOpenContext, registerHeading }: Props) {
     const highlightedMessage = useRef<HTMLElement | null>(null);
     const threadScroller = useRef<HTMLDivElement | null>(null);
     const scrollPositions = useRef(new Map<string, number>());
+    const nearBottom = useRef(true);
+    const lastLiveCursor = useRef(0);
+    const [ownSendVersion, setOwnSendVersion] = useState(0);
     const prototype = usePrototypeMessaging(conversation?.channel ?? null);
+    const liveMessages = conversation
+        ? prototype.messages.filter((message) => message.channel === normalizePrototypeChannel(conversation.channel))
+        : [];
+    const latestLiveCursor = liveMessages.at(-1)?.cursor ?? 0;
 
     useEffect(() => {
         const scroller = threadScroller.current;
         const channel = conversation?.channel;
         if (!scroller || !channel) return;
+        lastLiveCursor.current = 0;
         if (!highlightMessageId) scroller.scrollTop = scrollPositions.current.get(channel) ?? 0;
+        nearBottom.current = isNearBottom(scroller);
 
         return () => {
             scrollPositions.current.set(channel, scroller.scrollTop);
@@ -33,9 +53,38 @@ export default function MessageThread({ conversation, highlightMessageId, onBack
 
     useEffect(() => {
         if (!highlightMessageId || !highlightedMessage.current) return;
-        const frame = window.requestAnimationFrame(() => highlightedMessage.current?.scrollIntoView({ block: 'center' }));
+        const frame = window.requestAnimationFrame(() => {
+            highlightedMessage.current?.scrollIntoView({ block: 'center' });
+            if (threadScroller.current) nearBottom.current = isNearBottom(threadScroller.current);
+        });
         return () => window.cancelAnimationFrame(frame);
     }, [conversation?.channel, highlightMessageId]);
+
+    useEffect(() => {
+        const previousCursor = lastLiveCursor.current;
+        lastLiveCursor.current = Math.max(previousCursor, latestLiveCursor);
+        if (latestLiveCursor <= previousCursor || !nearBottom.current || !threadScroller.current) return;
+        const frame = window.requestAnimationFrame(() => {
+            if (threadScroller.current) scrollToBottom(threadScroller.current);
+            nearBottom.current = true;
+        });
+        return () => window.cancelAnimationFrame(frame);
+    }, [latestLiveCursor]);
+
+    useEffect(() => {
+        if (ownSendVersion === 0 || !threadScroller.current) return;
+        const frame = window.requestAnimationFrame(() => {
+            if (threadScroller.current) scrollToBottom(threadScroller.current);
+            nearBottom.current = true;
+        });
+        return () => window.cancelAnimationFrame(frame);
+    }, [ownSendVersion]);
+
+    const sendAndFollow = async (body: string): Promise<boolean> => {
+        const sent = await prototype.send(body);
+        if (sent) setOwnSendVersion((version) => version + 1);
+        return sent;
+    };
 
     if (!conversation) {
         return (
@@ -65,7 +114,10 @@ export default function MessageThread({ conversation, highlightMessageId, onBack
                 </button>
             </header>
 
-            <div ref={threadScroller} className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-[var(--municipal-surface-subtle)]" aria-label={`${conversation.channel} coordination history`}>
+            <div ref={threadScroller} onScroll={(event) => { nearBottom.current = isNearBottom(event.currentTarget); }} className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-[var(--municipal-surface-subtle)]" aria-label={`${conversation.channel} coordination history and live messages`}>
+                <div className="mx-auto max-w-4xl">
+                    <StaticCoordinationHistory conversation={conversation} highlightMessageId={highlightMessageId} registerHighlighted={(node) => { highlightedMessage.current = node; }} />
+                </div>
                 <section aria-labelledby="live-prototype-title" className="mx-auto max-w-4xl px-3 py-4 sm:px-4">
                     <div className="mb-3 flex flex-wrap items-start justify-between gap-2">
                         <div>
@@ -75,16 +127,13 @@ export default function MessageThread({ conversation, highlightMessageId, onBack
                         {prototype.pollError && <div role="status" aria-live="polite" className="text-xs font-medium text-amber-700 dark:text-amber-300">{prototype.pollError}</div>}
                     </div>
                     <div className="space-y-2.5">
-                        {prototype.messages.map((message) => <PrototypeMessageBubble key={message.publicId} message={message} />)}
-                        {prototype.messages.length === 0 && <div className="rounded-lg border border-dashed border-[var(--municipal-border)] px-4 py-6 text-center text-sm text-[var(--municipal-muted)]">No live prototype messages in this channel yet.</div>}
+                        {liveMessages.map((message) => <PrototypeMessageBubble key={message.publicId} message={message} />)}
+                        {liveMessages.length === 0 && <div className="rounded-lg border border-dashed border-[var(--municipal-border)] px-4 py-6 text-center text-sm text-[var(--municipal-muted)]">No live prototype messages in this channel yet.</div>}
                     </div>
                 </section>
-                <div className="mx-auto max-w-4xl">
-                    <StaticCoordinationHistory conversation={conversation} highlightMessageId={highlightMessageId} registerHighlighted={(node) => { highlightedMessage.current = node; }} />
-                </div>
             </div>
 
-            <PrototypeMessageComposer sending={prototype.sending} error={prototype.sendError} onSend={prototype.send} />
+            <PrototypeMessageComposer sending={prototype.sending} error={prototype.sendError} onSend={sendAndFollow} />
         </section>
     );
 }
