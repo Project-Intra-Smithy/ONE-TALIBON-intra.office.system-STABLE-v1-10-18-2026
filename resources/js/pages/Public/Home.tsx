@@ -5,7 +5,7 @@ import PublicFooter from '../../components/public/PublicFooter';
 import PublicHeader from '../../components/public/PublicHeader';
 import PublicHero from '../../components/public/PublicHero';
 import PublicOfficeOverview from '../../components/public/PublicOfficeOverview';
-import PublicUpdates from '../../components/public/PublicUpdates';
+import PublicSecureAccess from '../../components/public/PublicSecureAccess';
 import PublicWorkflow from '../../components/public/PublicWorkflow';
 import type { PublicContent } from '../../components/public/types';
 
@@ -29,7 +29,7 @@ export default function Home({ authenticated, content }: Props) {
                         <div className="public-information-zone">
                             <PublicWorkflow content={content} />
                             <PublicOfficeOverview content={content} />
-                            <PublicUpdates content={content} />
+                            <PublicSecureAccess content={content} authenticated={authenticated} />
                         </div>
                     </div>
                 </div>

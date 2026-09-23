@@ -13,25 +13,25 @@ export default function PublicFooter({ content, authenticated }: { content: Publ
                 <p className="public-footer-note">Prototype presentation. Official municipal content and final photography remain subject to LGU confirmation.</p>
             </div>
 
-            <nav aria-label="Footer municipal information links" className="public-footer-links">
-                <h2>Municipal Information</h2>
-                <a href="#services">Municipal Services</a>
-                <a href="#news">News &amp; Notices</a>
-                <a href="#transparency">Public Documents</a>
-                <a href="#projects">Projects &amp; Programs</a>
-                <a href="#about">About Talibon</a>
+            <nav aria-label="Footer portal overview links" className="public-footer-links">
+                <h2>Portal Overview</h2>
+                <a href="#home">Overview</a>
+                <a href="#capabilities">Capabilities</a>
+                <a href="#workflow">How Work Moves</a>
+                <a href="#offices">Connected Offices</a>
+                <a href="#secure-access">Secure Access</a>
             </nav>
 
             <div className="public-footer-access">
                 <h2>Authorized Access</h2>
                 <p>Authorized municipal personnel use the secure LGU Intra-Office Portal for official internal work.</p>
                 <Link href={authenticated ? '/dashboard' : '/login'} className="public-footer-login">
-                    {authenticated ? 'Portal' : 'Login'}
+                    {authenticated ? 'Open Portal' : 'Login to Portal'}
                     <ArrowRight size={15} aria-hidden="true" />
                 </Link>
                 <div className="public-footer-contact">
-                    <h3>Contact</h3>
-                    <p>{content.contact.description}</p>
+                    <h3>Pre-Login Boundary</h3>
+                    <p>{content.secureAccess.note}</p>
                 </div>
             </div>
         </div>
