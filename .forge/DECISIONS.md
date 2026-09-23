@@ -105,3 +105,25 @@ STATUS: ACCEPTED
 Forge writers should maximize **meaningful atomic commits** by committing each independently reviewable improvement separately rather than batching unrelated work.
 
 Commit count is not an acceptance criterion. Empty commits, revert-for-count commits, whitespace-only padding, artificial split/rejoin sequences, and knowingly broken intermediate commits created only to increase contribution count remain prohibited.
+
+## UXD-017 — AUTHENTICATED MUNICIPAL GREEN IDENTITY
+
+STATUS: ACCEPTED
+
+ONE TALIBON green becomes the authenticated product brand identity.
+
+Neutral surfaces remain the dominant work surfaces.
+
+Amber remains warning / due.
+
+Rose/red remains danger / overdue / failure.
+
+Blue remains available only for genuine informational semantics.
+
+Success green must remain distinguishable from brand actions by surface, shape, label, or context.
+
+Homepage and login remain frozen evidence.
+
+Shared tokens and primitives must be migrated before page-local recoloring.
+
+This authority transition does not redesign feature IA or behavior.

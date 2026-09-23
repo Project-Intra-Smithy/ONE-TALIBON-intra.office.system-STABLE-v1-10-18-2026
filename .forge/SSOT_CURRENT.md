@@ -12,6 +12,20 @@ Accepted correction baseline: `0913a37f96affd2c2a681697bdf6fdb6c381a99e`
 
 Forge pin: `Kirch-Nairu/KIRION-FORGE@44eb57e5b45b343be0033bf22a7a5e74d543c01a`
 
+## Current visual authority
+
+Authenticated product identity authority is governed by `UXD-017 — AUTHENTICATED MUNICIPAL GREEN IDENTITY`.
+
+Accepted product-line evidence:
+
+- homepage: `KIRCH-TALIBON-INTRA-OFFICE-HOMEPAGE-GREEN-REDESIGN@568ceaf11cd22927437fc83831c9b91301f13bd7`;
+- login: `KIRCH-TALIBON-INTRA-OFFICE-LOGIN-GREEN-REDESIGN@c03d6c57488126da8b0a064616f6e9d4f26c2bd2`;
+- authenticated workspace foundation branch: `KIRCH-TALIBON-INTRA-OFFICE-WORKSPACE-GREEN-FOUNDATION`, sourced exactly from the accepted login SHA.
+
+Green owns municipal/product identity. Neutral surfaces own work. Blue remains available only for genuine informational semantics; amber and rose/red retain warning and danger meaning.
+
+This authority supersedes the earlier visual direction that treated municipal navy/blue as the primary authenticated brand. It does not reopen the accepted shell architecture, dashboard hierarchy, feature IA, routes, auth, workflow semantics, or backend behavior.
+
 ## Product purpose
 
 One Talibon is a dense internal municipal digital workspace for day-to-day office coordination. It is not a marketing site, consumer social product, AI assistant, or security showcase.

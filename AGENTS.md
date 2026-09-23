@@ -68,7 +68,7 @@ Visible content should answer practical municipal questions:
 
 Do not add AI assistants, AI branding, generated recommendation language, sales copy, fake efficiency metrics, fake charts, decorative glassmorphism, neon, giant hero space, startup landing layouts, random animation, or oversized whitespace.
 
-Retain municipal navy, neutral surfaces, restrained shadows, dense but readable tables/lists, clear office context, consistent typography, restrained status treatment, and complete light/dark compatibility.
+Retain ONE TALIBON green as municipal/product identity, neutral work surfaces, restrained shadows, dense but readable tables/lists, clear office context, consistent typography, restrained semantic status treatment, and complete light/dark compatibility. Blue is reserved for genuine informational semantics; warning/due remains amber and danger/overdue/failure remains rose/red.
 
 ## Security presentation boundary
 
