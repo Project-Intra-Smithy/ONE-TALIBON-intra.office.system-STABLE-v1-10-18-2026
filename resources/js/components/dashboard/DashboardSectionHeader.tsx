@@ -20,7 +20,7 @@ export default function DashboardSectionHeader({ icon, title, headingId, descrip
             </div>
             {description ? <p className="employee-supporting-text mt-1 text-slate-500 dark:text-slate-400">{description}</p> : null}
         </div>
-        {href && linkLabel ? <Link href={href} className="employee-supporting-text inline-flex w-fit shrink-0 items-center gap-1 font-semibold text-blue-700 hover:underline dark:text-blue-300">
+        {href && linkLabel ? <Link href={href} className="employee-supporting-text inline-flex w-fit shrink-0 items-center gap-1 font-semibold [color:var(--municipal-brand)] hover:underline">
             {linkLabel}<ArrowRight size={13} aria-hidden="true" />
         </Link> : null}
     </header>;
