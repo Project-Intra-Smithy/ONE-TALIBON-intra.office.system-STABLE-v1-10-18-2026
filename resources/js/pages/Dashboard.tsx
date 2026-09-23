@@ -100,7 +100,7 @@ export default function Dashboard({
                 <section aria-labelledby="dashboard-operating-picture" className="space-y-[0.875rem]">
                     <div className="flex flex-wrap items-end justify-between gap-2 border-b border-slate-200 pb-2 dark:border-slate-700">
                         <div>
-                            <div className="employee-functional-label text-blue-700 dark:text-blue-300">Current work context</div>
+                            <div className="employee-functional-label text-[var(--municipal-brand)]">Current work context</div>
                             <h2 id="dashboard-operating-picture" className="employee-section-title mt-0.5 text-slate-950 dark:text-slate-100">Office state, municipal delivery, and active projects</h2>
                         </div>
                     </div>
@@ -122,8 +122,8 @@ export default function Dashboard({
                             <div className="employee-functional-label text-slate-500 dark:text-slate-400">Reference and history</div>
                             <div className="employee-record-title mt-0.5 text-slate-950 dark:text-slate-100">Recent records, correspondence, announcements, and activity</div>
                         </div>
-                        <span className="employee-supporting-text shrink-0 font-semibold text-blue-700 group-open:hidden dark:text-blue-300">Show context</span>
-                        <span className="employee-supporting-text hidden shrink-0 font-semibold text-blue-700 group-open:inline dark:text-blue-300">Hide context</span>
+                        <span className="employee-supporting-text shrink-0 font-semibold text-[var(--municipal-brand)] group-open:hidden">Show context</span>
+                        <span className="employee-supporting-text hidden shrink-0 font-semibold text-[var(--municipal-brand)] group-open:inline">Hide context</span>
                     </summary>
                     <div className="space-y-2.5 border-t border-slate-200 p-3 dark:border-slate-700">
                         <div className="grid min-w-0 gap-2.5 @min-[1120px]:grid-cols-2">

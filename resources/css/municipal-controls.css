@@ -13,7 +13,7 @@
 }
 
 #portal-content :where(input[type="checkbox"], input[type="radio"]) {
-    accent-color: var(--municipal-blue);
+    accent-color: var(--municipal-brand);
 }
 
 #portal-content select {
@@ -38,7 +38,7 @@
 }
 
 #portal-content :where(input, select, textarea):focus-visible {
-    outline: 2px solid var(--municipal-blue);
+    outline: 2px solid var(--municipal-focus);
     outline-offset: 2px;
 }
 
@@ -110,5 +110,5 @@
     color: #93c5fd;
 }
 .dark #portal-content :is(.hover\:bg-slate-50, .hover\:bg-slate-100, .hover\:bg-blue-50):not([class*="dark:hover:bg-"]):hover {
-    background-color: #27384f;
+    background-color: var(--municipal-hover);
 }

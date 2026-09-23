@@ -10,12 +10,12 @@ export default function Index({ memoranda, canPublish }: { memoranda: Memo[]; ca
     return <AppLayout title="Memoranda"><PageFrame width="standard">
         <PageHeader eyebrow="Central issuance" title="Memoranda" icon={FileText}
             description="Municipal memoranda delivered to the appropriate employees and offices."
-            aside={canPublish && <Link href="/memoranda/create" className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#0b2852] px-4 py-3 text-sm font-semibold text-white"><Plus size={17} />Publish memorandum</Link>}
+            aside={canPublish && <Link href="/memoranda/create" className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--municipal-brand-deep)] px-4 py-3 text-sm font-semibold text-white"><Plus size={17} />Publish memorandum</Link>}
         />
         <div className="municipal-panel divide-y divide-slate-100 overflow-hidden dark:divide-slate-700">
-            {memoranda.map((memo) => <Link key={memo.id} href={`/memoranda/${memo.id}`} className="flex flex-col gap-3 px-4 py-4 transition hover:bg-blue-50/50 dark:hover:bg-slate-800 sm:px-5 md:flex-row md:items-center md:justify-between">
+            {memoranda.map((memo) => <Link key={memo.id} href={`/memoranda/${memo.id}`} className="flex flex-col gap-3 px-4 py-4 transition hover:bg-[var(--municipal-hover)] sm:px-5 md:flex-row md:items-center md:justify-between">
                 <div className="min-w-0">
-                    <div className="text-xs font-bold uppercase tracking-wide text-blue-700 dark:text-blue-300">{memo.memo_number}</div>
+                    <div className="text-xs font-bold uppercase tracking-wide text-[var(--municipal-brand)]">{memo.memo_number}</div>
                     <div className="mt-1 break-words text-base font-semibold">{memo.title}</div>
                     <div className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">{memo.issuing_department.short_name || memo.issuing_department.name} · {new Date(memo.published_at).toLocaleString('en-PH', { timeZone: 'Asia/Manila' })}</div>
                 </div>
