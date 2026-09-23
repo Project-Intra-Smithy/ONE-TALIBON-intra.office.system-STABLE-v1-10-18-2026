@@ -1,4 +1,4 @@
-import { ArrowLeft, Building2, FileText } from 'lucide-react';
+import { ArrowLeft, Building2, FileText, PanelRightOpen } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import type { MessageConversation } from './messageWorkspace';
 
@@ -6,10 +6,11 @@ type Props = {
     conversation: MessageConversation | null;
     highlightMessageId: string | null;
     onBack: () => void;
+    onOpenContext: () => void;
     registerHeading: (node: HTMLHeadingElement | null) => void;
 };
 
-export default function MessageThread({ conversation, highlightMessageId, onBack, registerHeading }: Props) {
+export default function MessageThread({ conversation, highlightMessageId, onBack, onOpenContext, registerHeading }: Props) {
     const highlightedMessage = useRef<HTMLElement | null>(null);
 
     useEffect(() => {
@@ -54,6 +55,15 @@ export default function MessageThread({ conversation, highlightMessageId, onBack
                         <span>Latest {conversation.latestMessage.date}</span>
                     </div>
                 </div>
+                <button
+                    type="button"
+                    onClick={onOpenContext}
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] min-[1440px]:hidden"
+                    aria-label="Open thread context"
+                    aria-haspopup="dialog"
+                >
+                    <PanelRightOpen size={18} aria-hidden="true" />
+                </button>
             </header>
 
             <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-[var(--municipal-surface-subtle)]" aria-label={`${conversation.channel} coordination history`}>

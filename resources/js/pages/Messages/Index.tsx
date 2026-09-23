@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import ConversationList from '../../components/messages/ConversationList';
+import MessageContextPanel, { MessageContextDialog } from '../../components/messages/MessageContextPanel';
 import MessageThread from '../../components/messages/MessageThread';
 import {
     buildMessageConversations,
@@ -51,6 +52,7 @@ export default function Index() {
     const [highlightMessageId, setHighlightMessageId] = useState<string | null>(initialMessage?.id ?? null);
     const [selectionExplicit, setSelectionExplicit] = useState(initialSelectionExplicit);
     const [mobileView, setMobileView] = useState<MobileView>(initialMobileView);
+    const [contextOpen, setContextOpen] = useState(false);
     const conversationButtons = useRef(new Map<string, HTMLButtonElement>());
     const lastConversationTrigger = useRef<HTMLButtonElement | null>(null);
     const threadHeading = useRef<HTMLHeadingElement | null>(null);
@@ -85,6 +87,7 @@ export default function Index() {
         setSelectedChannel(channel);
         setHighlightMessageId(null);
         setSelectionExplicit(true);
+        setContextOpen(false);
         setMobileView('thread');
 
         if (window.matchMedia('(max-width: 767px)').matches) {
@@ -93,6 +96,7 @@ export default function Index() {
     };
 
     const returnToConversations = () => {
+        setContextOpen(false);
         setMobileView('conversations');
         window.requestAnimationFrame(() => {
             const selectedButton = selectedChannel ? conversationButtons.current.get(selectedChannel) : null;
@@ -108,7 +112,7 @@ export default function Index() {
     return (
         <AppLayout title="Messages">
             <div className="mx-auto h-[calc(100dvh-7.25rem)] min-h-[32rem] max-w-[1500px] overflow-hidden rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] shadow-sm">
-                <div className="grid h-full min-h-0 md:grid-cols-[288px_minmax(0,1fr)]">
+                <div className="grid h-full min-h-0 md:grid-cols-[288px_minmax(0,1fr)] min-[1440px]:grid-cols-[288px_minmax(0,1fr)_280px]">
                     <div className={`${mobileView === 'thread' ? 'hidden md:block' : 'block'} h-full min-h-0 md:border-r md:border-[var(--municipal-border)]`}>
                         <ConversationList
                             conversations={visibleConversations}
@@ -125,11 +129,14 @@ export default function Index() {
                             conversation={selectedConversation}
                             highlightMessageId={highlightMessageId}
                             onBack={returnToConversations}
+                            onOpenContext={() => setContextOpen(true)}
                             registerHeading={(node) => { threadHeading.current = node; }}
                         />
                     </div>
+                    <MessageContextPanel conversation={selectedConversation} />
                 </div>
             </div>
+            <MessageContextDialog open={contextOpen} onClose={() => setContextOpen(false)} conversation={selectedConversation} />
         </AppLayout>
     );
 }
