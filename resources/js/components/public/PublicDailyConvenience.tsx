@@ -34,7 +34,7 @@ export default function PublicDailyConvenience({ content }: { content: PublicCon
             <p className="mt-3 max-w-2xl text-sm leading-6 [color:var(--public-muted)]">{content.dailyConvenience.description}</p>
         </header>
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
             {content.dailyConvenience.items.map(item => <ConvenienceModule key={item.id} item={item} />)}
         </div>
     </section>;

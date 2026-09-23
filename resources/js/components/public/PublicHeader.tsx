@@ -40,8 +40,8 @@ export default function PublicHeader({ authenticated }: Props) {
     }, [open]);
 
     return <header className="public-header sticky top-0 z-50">
-        <div className="mx-auto flex min-h-[72px] w-full max-w-[1360px] items-center gap-3 px-[var(--public-page-gutter)] py-2.5 lg:gap-5">
-            <a href="#home" aria-label="ONE TALIBON · LGU Intra-Office Portal home" className="public-brand min-w-0 flex-1 lg:flex-none">
+        <div className="mx-auto flex min-h-[72px] w-full max-w-[1360px] items-center gap-3 px-[var(--public-page-gutter)] py-2.5 xl:gap-5">
+            <a href="#home" aria-label="ONE TALIBON · LGU Intra-Office Portal home" className="public-brand min-w-0 flex-1 xl:flex-none">
                 <MunicipalBrand />
                 <span className="hidden min-w-0 border-l pl-4 xl:grid [border-color:var(--public-divider)]">
                     <strong className="text-[10px] font-extrabold uppercase tracking-[0.14em] [color:var(--public-link)]">Internal Workspace</strong>
@@ -49,14 +49,14 @@ export default function PublicHeader({ authenticated }: Props) {
                 </span>
             </a>
 
-            <nav aria-label="LGU Intra-Office Portal navigation" className="ml-auto hidden items-stretch gap-1 lg:flex">
+            <nav aria-label="LGU Intra-Office Portal navigation" className="ml-auto hidden items-stretch gap-1 xl:flex">
                 {publicLinks.map(([label, href]) => <a key={href} href={href} className="public-nav-link px-2.5">
                     {label}
                 </a>)}
             </nav>
 
             <div className="public-header-actions">
-                <details ref={appearanceMenu} className="public-appearance-menu hidden lg:block">
+                <details ref={appearanceMenu} className="public-appearance-menu hidden xl:block">
                     <summary className="public-appearance-trigger" title="Appearance settings">
                         <Sun size={16} aria-hidden="true" />
                         <span className="sr-only">Appearance settings</span>
@@ -76,7 +76,7 @@ export default function PublicHeader({ authenticated }: Props) {
                     ref={trigger}
                     type="button"
                     onClick={() => setOpen(!open)}
-                    className="public-menu-button lg:hidden"
+                    className="public-menu-button xl:hidden"
                     aria-label={open ? 'Close portal navigation' : 'Open portal navigation'}
                     aria-expanded={open}
                     aria-controls="public-mobile-navigation"
@@ -89,14 +89,14 @@ export default function PublicHeader({ authenticated }: Props) {
         <nav
             id="public-mobile-navigation"
             aria-label="Mobile LGU Intra-Office Portal navigation"
-            className={`${open ? 'block' : 'hidden'} public-navigation lg:hidden`}
+            className={`${open ? 'block' : 'hidden'} public-navigation xl:hidden`}
         >
-            <div className="public-nav-inner">
+            <div className="mx-auto flex w-full max-w-[1360px] flex-col px-[var(--public-page-gutter)] py-2">
                 {publicLinks.map(([label, href]) => <a
                     key={href}
                     href={href}
                     onClick={() => setOpen(false)}
-                    className="public-nav-link"
+                    className="public-nav-link px-1"
                 >
                     {label}
                 </a>)}
