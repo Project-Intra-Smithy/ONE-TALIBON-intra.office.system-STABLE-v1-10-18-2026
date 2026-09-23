@@ -41,6 +41,37 @@ return [
         ],
         'quickAccess' => ['Transactions', 'Documents', 'Calendar', 'Notifications', 'Employees', 'Projects'],
     ],
+    'dailyConvenience' => [
+        'eyebrow' => 'Everyday Coordination',
+        'title' => 'YOUR WORKDAY AT A GLANCE',
+        'description' => 'A clear starting point for the information and coordination employees use throughout the municipal workday.',
+        'items' => [
+            [
+                'id' => 'latest-memoranda',
+                'kind' => 'memorandum',
+                'title' => 'Latest Memoranda',
+                'description' => 'See newly issued internal memoranda and important office communications from one municipal workspace.',
+            ],
+            [
+                'id' => 'events-calendar',
+                'kind' => 'schedule',
+                'title' => 'Events & Calendar',
+                'description' => 'Keep meetings, deadlines, municipal activities and office schedules visible in one place.',
+            ],
+            [
+                'id' => 'notifications-follow-up',
+                'kind' => 'notification',
+                'title' => 'Notifications & Follow-Up',
+                'description' => 'Know when work requires review, action, acknowledgment or follow-up.',
+            ],
+            [
+                'id' => 'weather-context',
+                'kind' => 'weather',
+                'title' => 'Local Weather Context',
+                'description' => 'See local conditions that may affect field work, municipal activities, travel and coordination.',
+            ],
+        ],
+    ],
     'capabilities' => [
         'title' => 'Portal Capabilities',
         'description' => 'A pre-login overview of the municipal work areas available to authorized personnel after authentication.',

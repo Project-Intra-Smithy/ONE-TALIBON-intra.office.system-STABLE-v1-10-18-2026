@@ -21,6 +21,7 @@ export type PublicContent = {
     municipality: string;
     hero: { eyebrow: string; title: string; lead: string; description: string };
     portalPreview: { eyebrow: string; title: string; modules: PreviewModuleItem[]; quickAccess: string[] };
+    dailyConvenience: { eyebrow: string; title: string; description: string; items: PreviewModuleItem[] };
     capabilities: { title: string; description: string; items: CapabilityItem[] };
     workflow: { eyebrow: string; title: string; description: string; steps: string[] };
     officeOverview: { eyebrow: string; title: string; description: string };

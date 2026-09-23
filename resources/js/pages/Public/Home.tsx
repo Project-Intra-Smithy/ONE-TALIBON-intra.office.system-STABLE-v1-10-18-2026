@@ -1,6 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { Info } from 'lucide-react';
 import PublicCapabilities from '../../components/public/PublicCapabilities';
+import PublicDailyConvenience from '../../components/public/PublicDailyConvenience';
 import PublicFooter from '../../components/public/PublicFooter';
 import PublicHeader from '../../components/public/PublicHeader';
 import PublicHero from '../../components/public/PublicHero';
@@ -25,6 +26,7 @@ export default function Home({ authenticated, content }: Props) {
                     </div>
                     <div className="public-primary">
                         <PublicHero content={content} authenticated={authenticated} />
+                        <PublicDailyConvenience content={content} />
                         <PublicCapabilities content={content} />
                         <div className="public-information-zone">
                             <PublicWorkflow content={content} />
