@@ -1,8 +1,14 @@
+import { Link } from '@inertiajs/react';
 import { ArrowRight } from 'lucide-react';
 import { talibonAssets } from '../../branding/talibonAssets';
 import type { PublicContent } from './types';
 
-export default function PublicHero({ content }: { content: PublicContent }) {
+type Props = {
+    content: PublicContent;
+    authenticated: boolean;
+};
+
+export default function PublicHero({ content, authenticated }: Props) {
     return <section id="home" className="public-hero" aria-labelledby="public-hero-title">
         <div className="public-hero-intro">
             <div className="public-hero-copy">
@@ -11,10 +17,10 @@ export default function PublicHero({ content }: { content: PublicContent }) {
                 <p className="public-hero-lead">{content.hero.lead}</p>
                 <p className="public-hero-description">{content.hero.description}</p>
                 <div className="public-hero-actions">
-                    <a href="/login" className="public-primary-action">
-                        Login to Portal
+                    <Link href={authenticated ? '/dashboard' : '/login'} className="public-primary-action">
+                        {authenticated ? 'Open Portal' : 'Login to Portal'}
                         <ArrowRight size={16} aria-hidden="true" />
-                    </a>
+                    </Link>
                 </div>
             </div>
             <figure className="public-hero-landscape" aria-label="Talibon municipal landscape placeholder">

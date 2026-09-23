@@ -24,7 +24,7 @@ export default function Home({ authenticated, content }: Props) {
                         <p>Prototype preview — sample portal overview content is shown for evaluation and does not represent live municipal operational data.</p>
                     </div>
                     <div className="public-primary">
-                        <PublicHero content={content} />
+                        <PublicHero content={content} authenticated={authenticated} />
                         <PublicCapabilities content={content} />
                         <div className="public-information-zone">
                             <PublicWorkflow content={content} />
