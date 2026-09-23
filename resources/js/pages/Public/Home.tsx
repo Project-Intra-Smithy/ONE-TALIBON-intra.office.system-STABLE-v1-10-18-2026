@@ -20,12 +20,12 @@ export default function Home({ authenticated, content }: Props) {
             <a href="#public-content" className="public-skip-link sr-only z-[80] rounded bg-white p-3 text-blue-900 focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to main content</a>
             <PublicHeader authenticated={authenticated} />
             <main id="public-content" tabIndex={-1}>
-                <div className="public-content">
+                <div className="public-content" style={{ paddingBottom: 0 }}>
                     <div className={`${PUBLIC_CONTENT_FRAME_CLASS} public-disclosure`}>
                         <Info size={14} className="mt-0.5 shrink-0" aria-hidden="true" />
                         <p>
                             <strong className="mr-2 font-extrabold uppercase tracking-[0.08em] [color:var(--public-text)]">{content.sampleLabel}</strong>
-                            <span>Prototype portal preview for evaluation. No live municipal operational data is shown.</span>
+                            <span>Prototype portal preview for evaluation. No live municipal operational data shown.</span>
                         </p>
                     </div>
                     <div className="public-primary">

@@ -5,11 +5,14 @@ import type { PublicContent } from './types';
 
 export default function PublicFooter({ content, authenticated }: { content: PublicContent; authenticated: boolean }) {
     return <footer className="public-footer">
-        <div className="public-footer-grid" style={{ maxWidth: '1360px' }}>
+        <div
+            className="public-footer-grid"
+            style={{ maxWidth: '1360px', gap: '28px', paddingTop: '30px', paddingBottom: '24px' }}
+        >
             <div className="public-footer-identity">
                 <MunicipalBrand inverse />
                 <p className="public-footer-municipality"><Landmark size={15} aria-hidden="true" />{content.municipality}</p>
-                <p className="public-footer-note">LGU Intra-Office Portal · For authorized municipal personnel.</p>
+                <p className="public-footer-note">LGU Intra-Office Portal · Authorized municipal personnel.</p>
             </div>
 
             <nav aria-label="Footer portal links" className="public-footer-links">
@@ -22,14 +25,21 @@ export default function PublicFooter({ content, authenticated }: { content: Publ
 
             <div className="public-footer-access">
                 <h2>Access</h2>
-                <p>Authorized municipal personnel enter the authenticated workspace to continue official work.</p>
-                <Link href={authenticated ? '/dashboard' : '/login'} className="public-footer-login">
+                <p>Continue official work inside the authenticated portal.</p>
+                <Link
+                    href={authenticated ? '/dashboard' : '/login'}
+                    className="public-footer-login"
+                    style={{ marginTop: '12px' }}
+                >
                     {authenticated ? 'Open Portal' : 'Login to Portal'}
                     <ArrowRight size={15} aria-hidden="true" />
                 </Link>
             </div>
         </div>
-        <div className="public-footer-bottom" style={{ maxWidth: '1360px' }}>
+        <div
+            className="public-footer-bottom"
+            style={{ maxWidth: '1360px', paddingTop: '10px', paddingBottom: '12px' }}
+        >
             <span>ONE TALIBON · Municipality of Talibon, Bohol</span>
             <span>LGU Intra-Office Portal</span>
         </div>
