@@ -1,22 +1,40 @@
 @layer base {
     :root {
-        --municipal-navy: #0b2852;
-        --municipal-blue: #1769aa;
-        --municipal-deep: #071e3d;
-        --municipal-coastal: #2d8bc3;
-        --municipal-green: #2f7d45;
-        --municipal-amber: #c98616;
-        --municipal-danger: #c83d4e;
-        --municipal-canvas: #f4f7fb;
-        --municipal-text: #10233f;
-        --municipal-muted: #5c6b7d;
-        --municipal-gold: #e5b63a;
+        /* Authenticated municipal product identity. */
+        --municipal-brand-deep: #0b442d;
+        --municipal-brand: #12613f;
+        --municipal-brand-active: #19754b;
+        --municipal-brand-soft: #e9f2ec;
+        --municipal-brand-soft-strong: #dcebe1;
+        --municipal-brand-contrast: #ffffff;
+
+        /* Neutral work canvas. */
+        --municipal-canvas: #f5f7f4;
         --municipal-surface: #ffffff;
-        --municipal-surface-subtle: #f8fafc;
-        --municipal-border: #dce4ee;
-        --municipal-border-strong: #c7d3e1;
-        --municipal-hover: #f3f6fa;
-        --municipal-progress-track: #e5ebf2;
+        --municipal-surface-subtle: #f7f9f6;
+        --municipal-hover: #f0f5f1;
+        --municipal-text: #163027;
+        --municipal-muted: #64736c;
+        --municipal-border: #d9e2dc;
+        --municipal-border-strong: #c5d2ca;
+        --municipal-focus: #19754b;
+        --municipal-gold: #d2ad45;
+
+        /* Semantic roles remain distinct from product identity. */
+        --municipal-info: #1769aa;
+        --municipal-warning: #c98616;
+        --municipal-danger: #c83d4e;
+        --municipal-success: #2f7d45;
+
+        /* Compatibility aliases while consumers migrate to explicit roles. */
+        --municipal-navy: var(--municipal-brand-deep);
+        --municipal-blue: var(--municipal-info);
+        --municipal-deep: var(--municipal-brand-deep);
+        --municipal-coastal: #2d8bc3;
+        --municipal-green: var(--municipal-success);
+        --municipal-amber: var(--municipal-warning);
+
+        --municipal-progress-track: #e5ebe7;
         --municipal-status-blue-bg: #eaf2fb;
         --municipal-status-blue-text: #0b4f87;
         --municipal-status-green-bg: #eaf6ee;
@@ -25,19 +43,40 @@
         --municipal-status-amber-text: #815208;
         --municipal-status-rose-bg: #fcedef;
         --municipal-status-rose-text: #8e2c39;
-        --municipal-status-slate-bg: #eef2f6;
+        --municipal-status-slate-bg: #eef2f0;
         --municipal-status-slate-text: #475569;
     }
     :root.dark {
-        --municipal-surface: #142236;
-        --municipal-surface-subtle: #101d2e;
-        --municipal-border: #27384f;
-        --municipal-border-strong: #3a4d66;
-        --municipal-canvas: #0d1624;
-        --municipal-text: #eef4fa;
-        --municipal-muted: #a9b7c8;
-        --municipal-hover: #1a2a3f;
-        --municipal-progress-track: #2a3b51;
+        --municipal-brand-deep: #0b442d;
+        --municipal-brand: #72c995;
+        --municipal-brand-active: #8bd7a8;
+        --municipal-brand-soft: #173326;
+        --municipal-brand-soft-strong: #204432;
+        --municipal-brand-contrast: #ffffff;
+
+        --municipal-canvas: #0d1713;
+        --municipal-surface: #13241c;
+        --municipal-surface-subtle: #172b21;
+        --municipal-hover: #1b3327;
+        --municipal-text: #edf6f0;
+        --municipal-muted: #a8b9af;
+        --municipal-border: #284137;
+        --municipal-border-strong: #395748;
+        --municipal-focus: #84d6a3;
+        --municipal-gold: #d2ad45;
+
+        --municipal-info: #93c5fd;
+        --municipal-warning: #e5b63a;
+        --municipal-danger: #f29ca7;
+        --municipal-success: #8ec9a0;
+
+        --municipal-navy: var(--municipal-brand-deep);
+        --municipal-blue: var(--municipal-info);
+        --municipal-deep: var(--municipal-brand-deep);
+        --municipal-green: var(--municipal-success);
+        --municipal-amber: var(--municipal-warning);
+
+        --municipal-progress-track: #284137;
         --municipal-status-blue-bg: #153451;
         --municipal-status-blue-text: #bfdbfe;
         --municipal-status-green-bg: #173b28;
@@ -46,7 +85,7 @@
         --municipal-status-amber-text: #fde68a;
         --municipal-status-rose-bg: #3b1c24;
         --municipal-status-rose-text: #fecdd3;
-        --municipal-status-slate-bg: #26364a;
+        --municipal-status-slate-bg: #24362d;
         --municipal-status-slate-text: #cbd5e1;
     }
 }
@@ -283,10 +322,10 @@
         width: min(var(--municipal-progress, 0%), 100%);
         height: 100%;
         border-radius: inherit;
-        background: var(--municipal-blue);
+        background: var(--municipal-info);
     }
-    .municipal-progress-bar--complete { background: var(--municipal-green); }
-    .municipal-progress-bar--attention { background: var(--municipal-amber); }
+    .municipal-progress-bar--complete { background: var(--municipal-success); }
+    .municipal-progress-bar--attention { background: var(--municipal-warning); }
     .municipal-progress-bar--delayed { background: var(--municipal-danger); }
 
     .municipal-photo {
@@ -298,11 +337,11 @@
         pointer-events: none;
     }
     .municipal-link {
-        color: var(--municipal-blue);
+        color: var(--municipal-brand);
         font-size: .8125rem;
         font-weight: 650;
     }
-    .dark .municipal-link { color: #93c5fd; }
+    .dark .municipal-link { color: var(--municipal-brand); }
     .municipal-link:hover { text-decoration: underline; }
 
     @media (max-width: 767px) {
@@ -344,11 +383,12 @@
 .public-landscape { height: 160%; object-position: center top; filter: saturate(.45); opacity: .75; }
 
 @theme {
+    /* Blue remains semantic/informational; do not alias it to product green. */
     --color-blue-500: #2d8bc3;
     --color-blue-600: #1769aa;
     --color-blue-700: #1769aa;
-    --color-blue-800: #0b2852;
-    --color-blue-900: #0b2852;
+    --color-blue-800: #0b4f87;
+    --color-blue-900: #0b4f87;
     --color-emerald-600: #2f7d45;
     --color-emerald-700: #2f7d45;
     --color-amber-600: #c98616;
