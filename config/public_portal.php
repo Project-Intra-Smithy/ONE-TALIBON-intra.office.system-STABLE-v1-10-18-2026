@@ -5,10 +5,10 @@ return [
     'sampleLabel' => 'PROTOTYPE SAMPLE DATA',
     'municipality' => 'Municipality of Talibon, Bohol',
     'hero' => [
-        'eyebrow' => 'One Talibon Digital Government Portal',
-        'title' => 'One Talibon',
-        'lead' => 'Connected services. Clear information. Better coordination.',
-        'description' => 'One Talibon brings municipal information and employee access into one portal. This public preview is for evaluation.',
+        'eyebrow' => 'ONE TALIBON',
+        'title' => 'ONE PORTAL.',
+        'lead' => 'CONNECTED OFFICES. BETTER SERVICE.',
+        'description' => 'A secure municipal workspace for coordinating offices, documents, requests, employees, projects, schedules, and official workflows across the LGU.',
     ],
     'services' => [
         [

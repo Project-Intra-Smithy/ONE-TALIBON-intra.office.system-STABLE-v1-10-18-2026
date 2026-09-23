@@ -42,8 +42,8 @@ export default function PublicHeader({ authenticated }: Props) {
 
     return <header className="public-header sticky top-0 z-50">
         <div className="public-masthead">
-            <a href="#home" aria-label="One Talibon home" className="public-brand">
-                <MunicipalBrand publicPortal />
+            <a href="#home" aria-label="ONE TALIBON · LGU Intra-Office Portal home" className="public-brand">
+                <MunicipalBrand />
                 <span className="public-brand-caption">Municipality of Talibon, Bohol</span>
             </a>
 
@@ -61,7 +61,7 @@ export default function PublicHeader({ authenticated }: Props) {
 
                 <Link href={authenticated ? '/dashboard' : '/login'} className="public-login-link">
                     <LogIn size={16} aria-hidden="true" />
-                    <span className="hidden sm:inline">{authenticated ? 'Employee Portal' : 'Employee Login'}</span>
+                    <span className="hidden sm:inline">{authenticated ? 'Portal' : 'Login'}</span>
                     <span className="sm:hidden">{authenticated ? 'Portal' : 'Login'}</span>
                 </Link>
 
@@ -70,7 +70,7 @@ export default function PublicHeader({ authenticated }: Props) {
                     type="button"
                     onClick={() => setOpen(!open)}
                     className="public-menu-button lg:hidden"
-                    aria-label={open ? 'Close public navigation' : 'Open public navigation'}
+                    aria-label={open ? 'Close portal navigation' : 'Open portal navigation'}
                     aria-expanded={open}
                     aria-controls="public-navigation"
                 >
@@ -79,7 +79,7 @@ export default function PublicHeader({ authenticated }: Props) {
             </div>
         </div>
 
-        <nav id="public-navigation" aria-label="Public navigation" className={`${open ? 'block' : 'hidden'} public-navigation lg:block`}>
+        <nav id="public-navigation" aria-label="LGU Intra-Office Portal navigation" className={`${open ? 'block' : 'hidden'} public-navigation lg:block`}>
             <div className="public-nav-inner">
                 {publicLinks.map(([label, href]) => <a
                     key={href}
