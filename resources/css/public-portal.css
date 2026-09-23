@@ -103,6 +103,10 @@
     gap: 18px;
 }
 
+.public-portal .public-brand .municipal-brand {
+    color: var(--public-text);
+}
+
 .public-brand-caption {
     max-width: 210px;
     border-left: 1px solid var(--public-divider);
