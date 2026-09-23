@@ -1,3 +1,4 @@
+import '../../../css/public-homepage-lane5.css';
 import { Head } from '@inertiajs/react';
 import { Info } from 'lucide-react';
 import { useRef, useState } from 'react';
@@ -9,6 +10,7 @@ import PublicHeader from '../../components/public/PublicHeader';
 import PublicHero from '../../components/public/PublicHero';
 import PublicInfoDialog from '../../components/public/PublicInfoDialog';
 import PublicOfficeOverview from '../../components/public/PublicOfficeOverview';
+import PublicReveal from '../../components/public/PublicReveal';
 import PublicSecureAccess from '../../components/public/PublicSecureAccess';
 import PublicWorkflow from '../../components/public/PublicWorkflow';
 import { PUBLIC_CONTENT_FRAME_CLASS } from '../../components/public/publicLayout';
@@ -41,12 +43,12 @@ export default function Home({ authenticated, content }: Props) {
                     </div>
                     <div className="public-primary">
                         <PublicHero content={content} authenticated={authenticated} onOpenInfo={openInfo} />
-                        <PublicAbout content={content} />
-                        <PublicDailyConvenience content={content} onOpenInfo={openInfo} />
-                        <PublicCapabilities content={content} onOpenInfo={openInfo} />
-                        <PublicWorkflow content={content} />
-                        <PublicOfficeOverview content={content} />
-                        <PublicSecureAccess content={content} authenticated={authenticated} />
+                        <PublicReveal><PublicAbout content={content} /></PublicReveal>
+                        <PublicReveal><PublicDailyConvenience content={content} onOpenInfo={openInfo} /></PublicReveal>
+                        <PublicReveal><PublicCapabilities content={content} onOpenInfo={openInfo} /></PublicReveal>
+                        <PublicReveal><PublicWorkflow content={content} /></PublicReveal>
+                        <PublicReveal><PublicOfficeOverview content={content} /></PublicReveal>
+                        <PublicReveal><PublicSecureAccess content={content} authenticated={authenticated} /></PublicReveal>
                     </div>
                 </div>
             </main>

@@ -1,0 +1,121 @@
+.public-portal .public-interactive-card {
+    width: 100%;
+    cursor: pointer;
+    transition:
+        transform 150ms ease,
+        border-color 150ms ease,
+        background-color 150ms ease,
+        box-shadow 150ms ease;
+}
+
+@media (hover: hover) {
+    .public-portal .public-interactive-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--public-divider-strong);
+        background: var(--public-hover);
+        box-shadow: 0 8px 22px rgba(11, 68, 45, 0.07);
+    }
+
+    .dark .public-portal .public-interactive-card:hover {
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
+    }
+}
+
+.public-portal .public-interactive-card:active {
+    transform: scale(.995);
+}
+
+.public-portal .public-interactive-card:focus-visible {
+    outline: 3px solid var(--public-focus-ring);
+    outline-offset: 3px;
+}
+
+.public-hero-copy-final {
+    animation: public-hero-copy-in 220ms ease-out both;
+}
+
+.public-hero-preview-final {
+    animation: public-hero-preview-in 260ms ease-out 70ms both;
+}
+
+.public-reveal {
+    opacity: 1;
+    transform: none;
+}
+
+.public-reveal[data-reveal-ready="true"] {
+    transition: opacity 240ms ease-out, transform 240ms ease-out;
+}
+
+.public-reveal[data-reveal-ready="true"][data-reveal-visible="false"] {
+    opacity: 0;
+    transform: translateY(8px);
+}
+
+.public-reveal[data-reveal-visible="true"] {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.public-info-dialog[open] {
+    animation: public-dialog-panel-in 190ms ease-out both;
+}
+
+.public-info-dialog[open]::backdrop {
+    animation: public-dialog-backdrop-in 150ms ease-out both;
+}
+
+@keyframes public-hero-copy-in {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes public-hero-preview-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes public-dialog-panel-in {
+    from {
+        opacity: 0;
+        transform: translateY(6px) scale(.985);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes public-dialog-backdrop-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .public-portal .public-interactive-card,
+    .public-hero-copy-final,
+    .public-hero-preview-final,
+    .public-reveal,
+    .public-info-dialog[open],
+    .public-info-dialog[open]::backdrop {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+    }
+
+    .public-reveal[data-reveal-ready="true"][data-reveal-visible="false"] {
+        opacity: 1;
+    }
+}
