@@ -1,0 +1,135 @@
+name: MP0 Maintainer Verification
+
+on:
+  push:
+    branches:
+      - KIRCH-TALIBON-MP0-CI-VERIFICATION
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mp0-maintainer-verification-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Build, feature tests, and two-account browser verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: talibon_portal
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d talibon_portal"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      APP_ENV: local
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: talibon_portal
+      DB_USERNAME: postgres
+      DB_PASSWORD: ''
+      SESSION_DRIVER: file
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
+      SHOWCASE_MODE: 'true'
+      QA_BASE_URL: http://127.0.0.1:8000
+
+    steps:
+      - name: Checkout verification branch
+        uses: actions/checkout@v4
+
+      - name: Verify candidate parent
+        shell: bash
+        run: |
+          test "$(git rev-parse HEAD^)" = "03c702cc9abb21daf40d2ca5912e703b207d3aa4"
+          test "$(git rev-parse HEAD^^)" = "6718d9c8cc1dda090af649da76228f818822dae8"
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+          tools: composer:v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Install frontend dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Prepare Laravel environment
+        shell: bash
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          php artisan config:clear
+          PW="$(openssl rand -hex 24)"
+          echo "::add-mask::$PW"
+          echo "PROTOTYPE_DEMO_PASSWORD=$PW" >> "$GITHUB_ENV"
+          echo "QA_DEMO_PASSWORD=$PW" >> "$GITHUB_ENV"
+
+      - name: Type check
+        run: npm run types:check
+
+      - name: Production build
+        run: npm run build
+
+      - name: MP0 feature tests
+        run: php artisan test tests/Feature/PrototypeMessaging
+
+      - name: Full Laravel test suite
+        run: composer test
+
+      - name: Fresh migration and seed
+        run: php artisan migrate:fresh --seed --force
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Start Laravel server
+        shell: bash
+        run: |
+          mkdir -p storage/app/qa/mp0-maintainer storage/logs
+          php artisan serve --host=127.0.0.1 --port=8000 > storage/logs/mp0-ci-server.log 2>&1 &
+          echo $! > storage/app/qa/mp0-maintainer/server.pid
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:8000/login >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat storage/logs/mp0-ci-server.log
+          exit 1
+
+      - name: MP0 two-account browser verification
+        run: node tests/Browser/mp0-maintainer-verification.mjs
+
+      - name: Upload MP0 verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mp0-maintainer-verification
+          if-no-files-found: warn
+          path: |
+            storage/app/qa/mp0-maintainer/**
+            storage/logs/mp0-ci-server.log
+            storage/logs/laravel.log
