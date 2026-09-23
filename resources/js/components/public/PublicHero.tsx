@@ -6,18 +6,16 @@ export default function PublicHero({ content }: { content: PublicContent }) {
     return <section id="home" className="public-hero" aria-labelledby="public-hero-title">
         <div className="public-hero-intro">
             <div className="public-hero-copy">
-                <p className="public-welcome">{content.municipality}</p>
-                <h1 id="public-hero-title" className="public-hero-title">Municipal services and public information for Talibon</h1>
+                <p className="public-welcome">{content.hero.eyebrow}</p>
+                <h1 id="public-hero-title" className="public-hero-title">{content.hero.title}</h1>
                 <p className="public-hero-lead">
-                    Access municipal services, notices, public documents, and local government information in one place.
+                    CONNECTED OFFICES.<br />BETTER SERVICE.
                 </p>
+                <p className="public-hero-description">{content.hero.description}</p>
                 <div className="public-hero-actions">
-                    <a href="#services" className="public-primary-action">
-                        Explore Municipal Services
+                    <a href="/login" className="public-primary-action">
+                        Login to Portal
                         <ArrowRight size={16} aria-hidden="true" />
-                    </a>
-                    <a href="#transparency" className="public-secondary-action">
-                        Public Documents
                     </a>
                 </div>
             </div>
