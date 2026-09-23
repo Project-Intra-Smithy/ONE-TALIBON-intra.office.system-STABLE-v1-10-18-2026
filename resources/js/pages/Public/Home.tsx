@@ -11,9 +11,9 @@ import type { PublicContent } from '../../components/public/types';
 
 type Props = { appName: string; authenticated: boolean; content: PublicContent };
 
-export default function Home({ appName, authenticated, content }: Props) {
+export default function Home({ authenticated, content }: Props) {
     return <>
-        <Head title={`One Talibon — ${appName}`} />
+        <Head title="ONE TALIBON — LGU Intra-Office Portal" />
         <div className="public-portal min-h-screen">
             <a href="#public-content" className="public-skip-link sr-only z-[80] rounded bg-white p-3 text-blue-900 focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to main content</a>
             <PublicHeader authenticated={authenticated} />

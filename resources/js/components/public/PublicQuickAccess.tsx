@@ -9,13 +9,13 @@ const quickLinks = [
     },
     {
         href: '#news',
-        title: 'Read news & notices',
-        description: 'Public announcements and advisories',
+        title: 'Read municipal updates',
+        description: 'Announcements and advisories',
         icon: Megaphone,
     },
     {
         href: '#transparency',
-        title: 'Open public documents',
+        title: 'Open municipal documents',
         description: 'Transparency and document previews',
         icon: FileText,
     },
@@ -25,7 +25,7 @@ export default function PublicQuickAccess() {
     return <section className="public-quick-access" aria-labelledby="public-quick-access-title">
         <div className="public-quick-access-intro">
             <p className="public-quick-access-kicker">Quick access</p>
-            <h2 id="public-quick-access-title">Common public tasks</h2>
+            <h2 id="public-quick-access-title">Portal resources</h2>
         </div>
 
         <nav className="public-quick-access-links" aria-label="Quick access">
