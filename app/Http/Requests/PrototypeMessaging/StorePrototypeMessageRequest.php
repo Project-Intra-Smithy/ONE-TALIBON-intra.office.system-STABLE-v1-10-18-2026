@@ -15,9 +15,13 @@ final class StorePrototypeMessageRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        if (is_string($this->input('body'))) {
-            $this->merge(['body' => trim($this->input('body'))]);
+        $body = $this->input('body');
+        if (! is_string($body)) {
+            return;
         }
+
+        $trimmed = preg_replace('/^\s+|\s+$/u', '', $body);
+        $this->merge(['body' => $trimmed ?? trim($body)]);
     }
 
     public function rules(): array

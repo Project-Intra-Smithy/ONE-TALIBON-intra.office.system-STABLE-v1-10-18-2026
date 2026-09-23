@@ -1,5 +1,6 @@
 import { Send } from 'lucide-react';
-import { FormEvent, KeyboardEvent, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
+import type { FormEvent, KeyboardEvent } from 'react';
 
 type Props = {
     sending: boolean;
@@ -45,7 +46,6 @@ export default function PrototypeMessageComposer({ sending, error, onSend }: Pro
                     value={body}
                     onChange={(event) => setBody(event.target.value)}
                     onKeyDown={onKeyDown}
-                    maxLength={2000}
                     rows={2}
                     readOnly={sending}
                     aria-label="Message"

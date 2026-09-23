@@ -72,7 +72,7 @@ final class PrototypeMessageStoreTest extends TestCase
             'body' => 'Hello',
         ])->assertUnprocessable()->assertJsonValidationErrors('channel');
 
-        foreach (['', '   '] as $body) {
+        foreach (['', '   ', "\u{00A0}\u{2003}"] as $body) {
             $this->postJson(route('messages.prototype.store'), [
                 'channel' => 'General',
                 'body' => $body,

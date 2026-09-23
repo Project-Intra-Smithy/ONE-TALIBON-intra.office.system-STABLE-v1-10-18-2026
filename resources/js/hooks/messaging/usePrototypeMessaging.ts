@@ -95,7 +95,6 @@ export default function usePrototypeMessaging(channel: string | null) {
             if (!response.ok) throw new Error('Prototype message could not be sent.');
             const payload = await response.json() as SinglePayload;
             setMessages((current) => mergePrototypeMessages(current, [payload.data]));
-            cursor.current = Math.max(cursor.current, payload.data.cursor);
             return true;
         } catch (error) {
             if (!(error instanceof DOMException && error.name === 'AbortError')) {
