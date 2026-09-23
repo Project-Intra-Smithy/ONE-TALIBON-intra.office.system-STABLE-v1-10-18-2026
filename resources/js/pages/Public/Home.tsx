@@ -21,7 +21,7 @@ export default function Home({ authenticated, content }: Props) {
                 <div className="public-content">
                     <div className="public-disclosure">
                         <Info size={14} className="mt-0.5 shrink-0" aria-hidden="true" />
-                        <p>Prototype preview — sample public content is shown for evaluation and does not represent official municipal reporting.</p>
+                        <p>Prototype preview — sample portal overview content is shown for evaluation and does not represent live municipal operational data.</p>
                     </div>
                     <div className="public-primary">
                         <PublicHero content={content} />
