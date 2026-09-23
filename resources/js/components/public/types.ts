@@ -8,11 +8,19 @@ export type CapabilityItem = {
     title: string;
     description: string;
 };
+export type PreviewModuleKind = 'memorandum' | 'schedule' | 'notification' | 'weather';
+export type PreviewModuleItem = {
+    id: string;
+    kind: PreviewModuleKind;
+    title: string;
+    description: string;
+};
 export type PublicContent = {
     dataMode: string;
     sampleLabel: string;
     municipality: string;
     hero: { eyebrow: string; title: string; lead: string; description: string };
+    portalPreview: { eyebrow: string; title: string; modules: PreviewModuleItem[]; quickAccess: string[] };
     capabilities: { title: string; description: string; items: CapabilityItem[] };
     workflow: { eyebrow: string; title: string; description: string; steps: string[] };
     officeOverview: { eyebrow: string; title: string; description: string };

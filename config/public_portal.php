@@ -6,9 +6,40 @@ return [
     'municipality' => 'Municipality of Talibon, Bohol',
     'hero' => [
         'eyebrow' => 'ONE TALIBON',
-        'title' => 'ONE PORTAL.',
+        'title' => 'ONE WORKSPACE FOR MUNICIPAL WORK.',
         'lead' => 'CONNECTED OFFICES. BETTER SERVICE.',
         'description' => 'A secure municipal workspace for coordinating offices, documents, requests, employees, projects, schedules, and official workflows across the LGU.',
+    ],
+    'portalPreview' => [
+        'eyebrow' => 'Employee Portal Preview',
+        'title' => 'Your workday at a glance',
+        'modules' => [
+            [
+                'id' => 'memorandum',
+                'kind' => 'memorandum',
+                'title' => 'Latest Memorandum',
+                'description' => 'Internal updates in one place.',
+            ],
+            [
+                'id' => 'schedule',
+                'kind' => 'schedule',
+                'title' => 'Today & Upcoming',
+                'description' => 'Calendar and coordination context.',
+            ],
+            [
+                'id' => 'notification',
+                'kind' => 'notification',
+                'title' => 'Notifications',
+                'description' => 'Work that may require review or follow-up.',
+            ],
+            [
+                'id' => 'weather',
+                'kind' => 'weather',
+                'title' => 'Weather Context',
+                'description' => 'Local conditions for field and activity planning.',
+            ],
+        ],
+        'quickAccess' => ['Transactions', 'Documents', 'Calendar', 'Notifications', 'Employees', 'Projects'],
     ],
     'capabilities' => [
         'title' => 'Portal Capabilities',
