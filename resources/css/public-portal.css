@@ -1,4 +1,4 @@
-/* One Talibon public portal: civic/editorial composition, intentionally distinct from the authenticated console. */
+/* One Talibon pre-login intra-office portal overview, intentionally distinct from the authenticated console. */
 .public-portal {
     --public-type-display: clamp(2.125rem, 3.1vw, 2.875rem);
     --public-type-section: 1.4375rem;
@@ -10,23 +10,26 @@
     --public-frame-max: 1680px;
     --public-page-gutter: clamp(1.375rem, 2.5vw, 2.5rem);
 
-    /* Public theme roles: light is the civic reference; identity colors stay fixed below. */
-    --public-bg: #f4f7fb;
+    /* Lane 1 identity roles: green authority with white/off-white information surfaces. */
+    --public-bg: #f7f5ed;
     --public-surface: #ffffff;
-    --public-surface-soft: #f8fafc;
-    --public-text: #10233f;
-    --public-muted: #5c6b7d;
-    --public-divider: #dce4ee;
-    --public-divider-strong: #c7d3e1;
-    --public-link: #1769aa;
-    --public-link-hover: #0f5a94;
-    --public-hover: #f3f6fa;
-    --public-active: #e5edf5;
+    --public-surface-soft: #e9f2ec;
+    --public-text: #163027;
+    --public-muted: #64736c;
+    --public-divider: #d6e1da;
+    --public-divider-strong: #bdcec3;
+    --public-link: #12613f;
+    --public-link-hover: #0b442d;
+    --public-hover: #f0f5f1;
+    --public-active: #e9f2ec;
     --public-header-bg: #ffffff;
-    --public-action-bg: #0b2852;
-    --public-action-hover: #071e3d;
-    --public-focus-ring: #1769aa;
-    --public-focus-on-dark: #f0c85a;
+    --public-action-bg: #12613f;
+    --public-action-hover: #0b442d;
+    --public-focus-ring: #19754b;
+    --public-focus-on-dark: #d2ad45;
+    --municipal-deep: #0b442d;
+    --municipal-navy: #12613f;
+    --municipal-gold: #d2ad45;
 
     min-height: 100vh;
     background: var(--public-bg);
@@ -34,21 +37,24 @@
 }
 
 .dark .public-portal {
-    --public-bg: #101a29;
-    --public-surface: #17263a;
-    --public-surface-soft: #132238;
-    --public-text: #eef4fa;
-    --public-muted: #aebdd0;
-    --public-divider: #314158;
-    --public-divider-strong: #44566e;
-    --public-link: #93c5fd;
-    --public-link-hover: #bfdbfe;
-    --public-hover: #1d3047;
-    --public-active: #243a55;
-    --public-header-bg: #132238;
-    --public-action-bg: #1769aa;
-    --public-action-hover: #1f78be;
-    --public-focus-ring: #f0c85a;
+    --public-bg: #0f1a15;
+    --public-surface: #15251d;
+    --public-surface-soft: #1b2e24;
+    --public-text: #edf5f0;
+    --public-muted: #adbbb3;
+    --public-divider: #30473a;
+    --public-divider-strong: #496354;
+    --public-link: #8fc9a7;
+    --public-link-hover: #b8e1c8;
+    --public-hover: #1c3025;
+    --public-active: #23402f;
+    --public-header-bg: #13231b;
+    --public-action-bg: #19754b;
+    --public-action-hover: #21875a;
+    --public-focus-ring: #d2ad45;
+    --municipal-deep: #0b442d;
+    --municipal-navy: #12613f;
+    --municipal-gold: #d2ad45;
 }
 
 .public-content {
@@ -159,7 +165,7 @@
     border-radius: 8px;
     background: var(--public-surface);
     padding: 12px;
-    box-shadow: 0 12px 28px rgba(17, 34, 55, .14);
+    box-shadow: 0 12px 28px rgba(11, 68, 45, .14);
 }
 
 .public-appearance-label,
@@ -327,10 +333,10 @@
 }
 
 .public-welcome {
-    color: #f0c85a;
+    color: var(--municipal-gold);
     font-size: var(--public-type-supporting);
-    font-weight: 700;
-    letter-spacing: .025em;
+    font-weight: 800;
+    letter-spacing: .08em;
     line-height: 1.45;
 }
 
@@ -348,9 +354,18 @@
 .public-hero-lead {
     max-width: 620px;
     margin-top: 16px;
-    color: #f3f7fb;
+    color: #f5faf7;
     font-size: 1.0625rem;
-    font-weight: 500;
+    font-weight: 800;
+    letter-spacing: .045em;
+    line-height: 1.4;
+}
+
+.public-hero-description {
+    max-width: 650px;
+    margin-top: 12px;
+    color: rgba(255, 255, 255, .84);
+    font-size: var(--public-type-body);
     line-height: 1.6;
 }
 
@@ -376,12 +391,13 @@
 }
 
 .public-primary-action {
-    background: white;
-    color: var(--municipal-navy);
+    border: 1px solid rgba(255, 255, 255, .28);
+    background: #19754b;
+    color: white;
 }
 
-.public-primary-action:hover { background: #eef4fa; }
-.public-primary-action:active { background: #dfeaf5; }
+.public-primary-action:hover { background: #12613f; }
+.public-primary-action:active { background: #0b442d; }
 
 .public-secondary-action {
     border: 1px solid rgba(255, 255, 255, .28);
@@ -395,7 +411,7 @@
     position: relative;
     min-width: 0;
     overflow: hidden;
-    background: #18344a;
+    background: #163027;
 }
 
 .public-hero-landscape img {
@@ -420,7 +436,7 @@
 
 .dark .public-hero-landscape img { opacity: .72; }
 
-/* Citizen task shortcuts: a flat editorial band, separate from the hero and global navigation. */
+/* Portal overview shortcuts: a flat editorial band, separate from the hero and global navigation. */
 .public-quick-access {
     display: grid;
     grid-template-columns: minmax(190px, .55fr) minmax(0, 2.45fr);
@@ -663,7 +679,7 @@
     position: relative;
     min-height: 270px;
     overflow: hidden;
-    background: #dce7eb;
+    background: var(--public-surface-soft);
 }
 
 .public-about-visual img {
@@ -906,20 +922,20 @@
     display: flex;
     align-items: flex-start;
     gap: 8px;
-    color: #d7e3f0;
+    color: #e9f2ec;
     font-size: 13px;
     line-height: 1.5;
 }
 
 .public-footer-municipality { margin-top: 20px; }
-.public-footer-location { margin-top: 8px; color: #aec0d4; }
+.public-footer-location { margin-top: 8px; color: rgba(255, 255, 255, .68); }
 .public-footer-municipality svg,
-.public-footer-location svg { margin-top: 2px; flex-shrink: 0; color: #e5b63a; }
+.public-footer-location svg { margin-top: 2px; flex-shrink: 0; color: var(--municipal-gold); }
 
 .public-footer-note {
     max-width: 520px;
     margin-top: 16px;
-    color: #91a6bd;
+    color: rgba(255, 255, 255, .58);
     font-size: 12px;
     line-height: 1.6;
 }
@@ -942,7 +958,7 @@
     display: flex;
     min-height: 32px;
     align-items: center;
-    color: #c8d7e7;
+    color: rgba(255, 255, 255, .78);
     font-size: 13px;
 }
 
@@ -951,7 +967,7 @@
 
 .public-footer-access > p {
     max-width: 420px;
-    color: #b7c8da;
+    color: rgba(255, 255, 255, .72);
     font-size: 13px;
     line-height: 1.55;
 }
@@ -987,7 +1003,7 @@
 
 .public-footer-contact p {
     margin-top: 6px;
-    color: #9fb2c8;
+    color: rgba(255, 255, 255, .62);
     font-size: 12px;
     line-height: 1.55;
 }
@@ -1001,7 +1017,7 @@
     gap: 20px;
     border-top: 1px solid rgba(255, 255, 255, .14);
     padding: 14px var(--public-page-gutter) 18px;
-    color: #8fa5bd;
+    color: rgba(255, 255, 255, .58);
     font-size: 12px;
 }
 
@@ -1226,4 +1242,3 @@
     .public-hero-copy { padding-inline: 21px; }
     .public-hero-title { font-size: 30px; }
 }
-
