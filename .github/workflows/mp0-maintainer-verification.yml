@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - KIRCH-TALIBON-MP0-CI-VERIFICATION
+  pull_request:
+    branches:
+      - KIRCH-TALIBON-MP0-PROTOTYPE-MESSAGING-BRIDGE
 
 permissions:
   contents: read
