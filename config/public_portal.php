@@ -110,20 +110,46 @@ return [
     ],
     'workflow' => [
         'eyebrow' => 'How Work Moves',
-        'title' => 'Clear ownership from creation to completion',
+        'title' => 'HOW MUNICIPAL WORK MOVES',
         'description' => 'Work moves through the appropriate offices with clear ownership, review, action, and completion inside the authenticated portal.',
-        'steps' => ['Create', 'Route', 'Review', 'Act', 'Complete'],
+        'steps' => [
+            [
+                'title' => 'Create',
+                'description' => 'Begin official work.',
+            ],
+            [
+                'title' => 'Route',
+                'description' => 'Send it to the responsible office.',
+            ],
+            [
+                'title' => 'Review',
+                'description' => 'Assigned personnel assess it.',
+            ],
+            [
+                'title' => 'Act',
+                'description' => 'Required municipal action proceeds.',
+            ],
+            [
+                'title' => 'Complete',
+                'description' => 'The workflow reaches resolution.',
+            ],
+        ],
     ],
     'officeOverview' => [
         'eyebrow' => 'Connected Offices',
-        'title' => 'ONE MUNICIPALITY. CONNECTED OFFICES.',
-        'description' => 'The portal provides a common digital workspace for municipal departments and authorized personnel while each office retains responsibility for its own official work.',
+        'title' => 'ONE MUNICIPALITY. CONNECTED WORK.',
+        'description' => 'A common municipal workspace helps offices coordinate while each office retains responsibility for its official work.',
     ],
     'secureAccess' => [
         'eyebrow' => 'Secure Access',
         'title' => 'SECURE MUNICIPAL WORKSPACE',
-        'description' => 'Authorized personnel sign in to access official transactions, documents, assignments, schedules, and internal coordination.',
-        'note' => 'This pre-login overview does not display live transactions, employee records, documents, schedules, or notifications.',
+        'description' => 'Official operational work remains inside the authenticated LGU Intra-Office Portal.',
+        'note' => 'No operational records are exposed on this landing page.',
+        'trustPoints' => [
+            'Authorized personnel',
+            'Protected internal workspace',
+            'No operational records exposed on this landing page',
+        ],
     ],
     'services' => [
         [

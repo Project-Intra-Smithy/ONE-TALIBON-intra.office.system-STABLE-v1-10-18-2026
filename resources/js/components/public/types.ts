@@ -15,6 +15,7 @@ export type PreviewModuleItem = {
     title: string;
     description: string;
 };
+export type WorkflowStep = { title: string; description: string };
 export type PublicContent = {
     dataMode: string;
     sampleLabel: string;
@@ -23,9 +24,9 @@ export type PublicContent = {
     portalPreview: { eyebrow: string; title: string; modules: PreviewModuleItem[]; quickAccess: string[] };
     dailyConvenience: { eyebrow: string; title: string; description: string; items: PreviewModuleItem[] };
     capabilities: { title: string; description: string; items: CapabilityItem[] };
-    workflow: { eyebrow: string; title: string; description: string; steps: string[] };
+    workflow: { eyebrow: string; title: string; description: string; steps: WorkflowStep[] };
     officeOverview: { eyebrow: string; title: string; description: string };
-    secureAccess: { eyebrow: string; title: string; description: string; note: string };
+    secureAccess: { eyebrow: string; title: string; description: string; note: string; trustPoints: string[] };
     services: ServiceItem[];
     transparency: TransparencyItem[];
     projects: ProjectItem[];
