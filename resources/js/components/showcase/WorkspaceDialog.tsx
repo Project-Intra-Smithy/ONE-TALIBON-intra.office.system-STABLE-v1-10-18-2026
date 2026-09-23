@@ -117,7 +117,7 @@ export default function WorkspaceDialog({ open, personas, onClose }: Props) {
 
     return (
         <div
-            className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/45 p-0 sm:items-center sm:p-5"
+            className="fixed inset-0 z-50 flex items-end justify-center bg-[#071b13]/65 p-0 backdrop-blur-[2px] sm:items-center sm:p-5"
             onMouseDown={(event) => {
                 if (event.target === event.currentTarget && !processing) onClose();
             }}
@@ -128,24 +128,25 @@ export default function WorkspaceDialog({ open, personas, onClose }: Props) {
                 aria-modal="true"
                 aria-labelledby="workspace-dialog-title"
                 aria-describedby="workspace-dialog-description"
-                className="max-h-[92dvh] w-full overflow-y-auto rounded-t-2xl border border-slate-200 bg-slate-50 shadow-2xl sm:max-w-3xl sm:rounded-2xl dark:border-slate-700 dark:bg-slate-950"
+                className="max-h-[92dvh] w-full overflow-y-auto rounded-t-2xl border border-[#d6e1da] bg-[#f7f5ed] shadow-2xl sm:max-w-3xl sm:rounded-2xl dark:border-[#30473a] dark:bg-[#0f1a15]"
             >
-                <div className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-slate-200 bg-slate-50 px-5 py-4 sm:px-6 dark:border-slate-800 dark:bg-slate-950">
+                <div className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-[#d6e1da] bg-[#f7f5ed]/95 px-5 py-4 backdrop-blur sm:px-6 dark:border-[#30473a] dark:bg-[#0f1a15]/95">
                     <div className="min-w-0">
                         {step === 'departments' && (
                             <button
                                 type="button"
                                 onClick={() => setStep('roles')}
                                 disabled={processing}
-                                className="mb-2 inline-flex min-h-9 items-center gap-2 rounded-lg px-2 text-sm font-medium text-slate-600 hover:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 disabled:opacity-60 dark:text-slate-300 dark:hover:bg-slate-800"
+                                className="mb-2 inline-flex min-h-9 items-center gap-2 rounded-lg px-2 text-sm font-medium text-[#64736c] transition-colors hover:bg-[#e9f2ec] hover:text-[#163027] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#19754b] disabled:opacity-60 dark:text-[#adbbb3] dark:hover:bg-[#1b2e24] dark:hover:text-[#edf5f0]"
                             >
                                 <ArrowLeft size={16} aria-hidden="true" /> Back
                             </button>
                         )}
-                        <h2 id="workspace-dialog-title" className="text-xl font-bold text-slate-950 dark:text-white">
+                        <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#12613f] dark:text-[#8fc9a7]">ONE TALIBON</p>
+                        <h2 id="workspace-dialog-title" className="mt-1 text-xl font-extrabold tracking-[-0.02em] text-[#163027] dark:text-[#edf5f0]">
                             {step === 'roles' ? 'Choose your workspace' : 'Choose office context'}
                         </h2>
-                        <p id="workspace-dialog-description" className="mt-1 text-sm leading-5 text-slate-600 dark:text-slate-300">
+                        <p id="workspace-dialog-description" className="mt-1 text-sm leading-5 text-[#64736c] dark:text-[#adbbb3]">
                             {step === 'roles'
                                 ? 'Select the municipal role you want to enter.'
                                 : 'Select the department head office to open.'}
@@ -157,7 +158,7 @@ export default function WorkspaceDialog({ open, personas, onClose }: Props) {
                         onClick={onClose}
                         disabled={processing}
                         aria-label="Close workspace selector"
-                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-200 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 disabled:opacity-60 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
+                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-[#64736c] transition-colors hover:bg-[#e9f2ec] hover:text-[#163027] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#19754b] disabled:opacity-60 dark:text-[#adbbb3] dark:hover:bg-[#1b2e24] dark:hover:text-[#edf5f0]"
                     >
                         <X size={19} aria-hidden="true" />
                     </button>
