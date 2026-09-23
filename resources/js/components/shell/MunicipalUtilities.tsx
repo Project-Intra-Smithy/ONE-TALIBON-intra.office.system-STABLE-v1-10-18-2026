@@ -1,9 +1,9 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { ArrowLeft, CalendarDays, ChevronDown, CloudSun, Megaphone, MessageSquareText, Minus, PanelRightClose, X } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from 'react';
 import { municipalAnnouncements } from '../../data/municipal/announcements';
 import { municipalCalendarItems } from '../../data/municipal/meetingsCalendar';
-import { municipalMessages } from '../../data/municipal/messages';
+import { municipalMessages, type MunicipalMessage } from '../../data/municipal/messages';
 
 type WeatherSummary = {
     temperature: number;
@@ -20,6 +20,11 @@ function openQuickMessages(messageId?: string) {
     window.dispatchEvent(new CustomEvent<QuickMessagesEventDetail>(QUICK_MESSAGES_EVENT, {
         detail: { messageId },
     }));
+}
+
+function messageWorkspaceHref(message?: MunicipalMessage | null) {
+    if (!message) return '/messages';
+    return `/messages?channel=${encodeURIComponent(message.channel)}&message=${encodeURIComponent(message.id)}`;
 }
 
 function localDateKey() {
@@ -123,6 +128,8 @@ function DailyContext() {
 }
 
 export function MunicipalUtilityContent({ idPrefix }: { idPrefix: string }) {
+    const page = usePage();
+    const messagesWorkspace = page.url === '/messages' || page.url.startsWith('/messages?');
     const calendar = calendarPreview();
     const announcements = announcementPreview();
     const messages = messagePreview(3);
@@ -183,21 +190,38 @@ export function MunicipalUtilityContent({ idPrefix }: { idPrefix: string }) {
                     <Link href="/messages" className="text-[11px] font-semibold text-[var(--municipal-brand)] hover:underline">Open</Link>
                 </div>
                 <div className="mt-1.5 divide-y divide-[var(--municipal-border)] overflow-hidden rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)]">
-                    {messages.slice(0, 2).map((message) => (
-                        <button
-                            key={message.id}
-                            type="button"
-                            onClick={() => openQuickMessages(message.id)}
-                            className="block w-full px-2.5 py-1.5 text-left transition hover:bg-[var(--municipal-hover)] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--municipal-focus)]"
-                            title={`Open ${message.subject} in quick Messages`}
-                        >
-                            <div className="flex items-start justify-between gap-2">
-                                <div className="line-clamp-2 min-w-0 text-[11px] font-semibold leading-4 text-[var(--municipal-text)]">{message.subject}</div>
-                                {message.priority === 'High' && <span className="shrink-0 text-[9px] font-bold uppercase text-rose-700 dark:text-rose-300">High</span>}
-                            </div>
-                            <div className="line-clamp-1 text-[10px] leading-4 text-[var(--municipal-muted)]">{message.office} · {message.date}</div>
-                        </button>
-                    ))}
+                    {messages.slice(0, 2).map((message) => {
+                        const content = (
+                            <>
+                                <div className="flex items-start justify-between gap-2">
+                                    <div className="line-clamp-2 min-w-0 text-[11px] font-semibold leading-4 text-[var(--municipal-text)]">{message.subject}</div>
+                                    {message.priority === 'High' && <span className="shrink-0 text-[9px] font-bold uppercase text-rose-700 dark:text-rose-300">High</span>}
+                                </div>
+                                <div className="line-clamp-1 text-[10px] leading-4 text-[var(--municipal-muted)]">{message.office} · {message.date}</div>
+                            </>
+                        );
+
+                        return messagesWorkspace ? (
+                            <Link
+                                key={message.id}
+                                href={messageWorkspaceHref(message)}
+                                className="block w-full px-2.5 py-1.5 text-left transition hover:bg-[var(--municipal-hover)] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--municipal-focus)]"
+                                title={`Open ${message.subject} in full Messages`}
+                            >
+                                {content}
+                            </Link>
+                        ) : (
+                            <button
+                                key={message.id}
+                                type="button"
+                                onClick={() => openQuickMessages(message.id)}
+                                className="block w-full px-2.5 py-1.5 text-left transition hover:bg-[var(--municipal-hover)] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--municipal-focus)]"
+                                title={`Open ${message.subject} in quick Messages`}
+                            >
+                                {content}
+                            </button>
+                        );
+                    })}
                 </div>
             </section>
         </div>
@@ -205,6 +229,8 @@ export function MunicipalUtilityContent({ idPrefix }: { idPrefix: string }) {
 }
 
 export function QuickMessagesPanel() {
+    const page = usePage();
+    const messagesWorkspace = page.url === '/messages' || page.url.startsWith('/messages?');
     const [open, setOpen] = useState(false);
     const [selectedMessageId, setSelectedMessageId] = useState<string | null>(null);
     const panel = useRef<HTMLDivElement>(null);
@@ -221,6 +247,7 @@ export function QuickMessagesPanel() {
     }, [selectedMessage]);
 
     useEffect(() => {
+        if (messagesWorkspace) return;
         const openFromUtility = (event: Event) => {
             const detail = (event as CustomEvent<QuickMessagesEventDetail>).detail;
             setSelectedMessageId(detail?.messageId ?? null);
@@ -228,10 +255,10 @@ export function QuickMessagesPanel() {
         };
         window.addEventListener(QUICK_MESSAGES_EVENT, openFromUtility);
         return () => window.removeEventListener(QUICK_MESSAGES_EVENT, openFromUtility);
-    }, []);
+    }, [messagesWorkspace]);
 
     useEffect(() => {
-        if (!open) return;
+        if (messagesWorkspace || !open) return;
         const closeOnEscape = (event: KeyboardEvent) => {
             if (event.key === 'Escape') setOpen(false);
         };
@@ -244,7 +271,9 @@ export function QuickMessagesPanel() {
             document.removeEventListener('keydown', closeOnEscape);
             document.removeEventListener('pointerdown', closeOnOutsideClick);
         };
-    }, [open]);
+    }, [messagesWorkspace, open]);
+
+    if (messagesWorkspace) return null;
 
     return (
         <div ref={panel} className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] right-3 z-40 flex flex-col items-end gap-2 print:hidden sm:bottom-4 sm:right-4">
@@ -322,7 +351,7 @@ export function QuickMessagesPanel() {
 
                     <div className="flex items-center justify-between gap-3 border-t border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 py-2.5">
                         <div className="min-w-0 text-[10px] leading-4 text-[var(--municipal-muted)]">Read-only preview. Sending is not enabled.</div>
-                        <Link href="/messages" onClick={() => setOpen(false)} className="shrink-0 text-xs font-bold text-[var(--municipal-brand)] hover:underline">Open full Messages</Link>
+                        <Link href={messageWorkspaceHref(selectedMessage)} onClick={() => setOpen(false)} className="shrink-0 text-xs font-bold text-[var(--municipal-brand)] hover:underline">Open full Messages</Link>
                     </div>
                 </section>
             )}
