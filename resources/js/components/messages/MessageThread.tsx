@@ -12,6 +12,20 @@ type Props = {
 
 export default function MessageThread({ conversation, highlightMessageId, onBack, onOpenContext, registerHeading }: Props) {
     const highlightedMessage = useRef<HTMLElement | null>(null);
+    const threadScroller = useRef<HTMLDivElement | null>(null);
+    const scrollPositions = useRef(new Map<string, number>());
+
+    useEffect(() => {
+        const scroller = threadScroller.current;
+        const channel = conversation?.channel;
+        if (!scroller || !channel) return;
+
+        if (!highlightMessageId) scroller.scrollTop = scrollPositions.current.get(channel) ?? 0;
+
+        return () => {
+            scrollPositions.current.set(channel, scroller.scrollTop);
+        };
+    }, [conversation?.channel]);
 
     useEffect(() => {
         if (!highlightMessageId || !highlightedMessage.current) return;
@@ -66,7 +80,7 @@ export default function MessageThread({ conversation, highlightMessageId, onBack
                 </button>
             </header>
 
-            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-[var(--municipal-surface-subtle)]" aria-label={`${conversation.channel} coordination history`}>
+            <div ref={threadScroller} className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-[var(--municipal-surface-subtle)]" aria-label={`${conversation.channel} coordination history`}>
                 <div className="mx-auto max-w-4xl px-3 sm:px-4">
                     {conversation.messages.map((message) => {
                         const highlighted = message.id === highlightMessageId;

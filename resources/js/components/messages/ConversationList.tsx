@@ -45,40 +45,42 @@ export default function ConversationList({
                 </label>
             </div>
 
-            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain" role="list" aria-label="Message conversations">
-                {conversations.map((conversation) => {
-                    const selected = conversation.channel === selectedChannel;
-                    return (
-                        <button
-                            key={conversation.channel}
-                            ref={(node) => registerButton(conversation.channel, node)}
-                            type="button"
-                            role="listitem"
-                            aria-current={selected ? 'true' : undefined}
-                            onClick={(event) => onSelect(conversation.channel, event.currentTarget)}
-                            className={`block min-h-[76px] w-full border-b border-[var(--municipal-border)] px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--municipal-focus)] sm:px-4 ${selected ? 'bg-[var(--municipal-brand-soft)]' : 'bg-[var(--municipal-surface)] hover:bg-[var(--municipal-hover)]'}`}
-                        >
-                            <div className="flex items-start gap-2.5">
-                                <div className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${selected ? 'bg-[var(--municipal-brand)] text-white' : 'bg-[var(--municipal-surface-subtle)] text-[var(--municipal-brand)]'}`}>
-                                    <MessageSquareText size={15} aria-hidden="true" />
-                                </div>
-                                <div className="min-w-0 flex-1">
-                                    <div className="flex items-start justify-between gap-2">
-                                        <div className="truncate text-xs font-bold text-[var(--municipal-text)]">{conversation.channel}</div>
-                                        <time className="shrink-0 text-[9px] text-[var(--municipal-muted)]">{conversation.latestMessage.date.slice(5)}</time>
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+                <ul aria-label="Message conversations">
+                    {conversations.map((conversation) => {
+                        const selected = conversation.channel === selectedChannel;
+                        return (
+                            <li key={conversation.channel} className="border-b border-[var(--municipal-border)]">
+                                <button
+                                    ref={(node) => registerButton(conversation.channel, node)}
+                                    type="button"
+                                    aria-current={selected ? 'true' : undefined}
+                                    onClick={(event) => onSelect(conversation.channel, event.currentTarget)}
+                                    className={`block min-h-[76px] w-full px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--municipal-focus)] sm:px-4 ${selected ? 'bg-[var(--municipal-brand-soft)]' : 'bg-[var(--municipal-surface)] hover:bg-[var(--municipal-hover)]'}`}
+                                >
+                                    <div className="flex items-start gap-2.5">
+                                        <div className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${selected ? 'bg-[var(--municipal-brand)] text-white' : 'bg-[var(--municipal-surface-subtle)] text-[var(--municipal-brand)]'}`}>
+                                            <MessageSquareText size={15} aria-hidden="true" />
+                                        </div>
+                                        <div className="min-w-0 flex-1">
+                                            <div className="flex items-start justify-between gap-2">
+                                                <div className="truncate text-xs font-bold text-[var(--municipal-text)]">{conversation.channel}</div>
+                                                <time className="shrink-0 text-[9px] text-[var(--municipal-muted)]">{conversation.latestMessage.date.slice(5)}</time>
+                                            </div>
+                                            <div className="mt-0.5 line-clamp-1 text-[11px] font-semibold text-[var(--municipal-text)]">{conversation.latestMessage.subject}</div>
+                                            <div className="mt-1 flex min-w-0 items-center gap-2 text-[10px] text-[var(--municipal-muted)]">
+                                                <span className="truncate">{conversation.latestMessage.office}</span>
+                                                <span aria-hidden="true">·</span>
+                                                <span className="shrink-0">{conversation.messageCount} messages</span>
+                                            </div>
+                                            {conversation.hasHighPriority && <div className="mt-1 text-[9px] font-bold uppercase tracking-wide text-rose-700 dark:text-rose-300">High-priority activity</div>}
+                                        </div>
                                     </div>
-                                    <div className="mt-0.5 line-clamp-1 text-[11px] font-semibold text-[var(--municipal-text)]">{conversation.latestMessage.subject}</div>
-                                    <div className="mt-1 flex min-w-0 items-center gap-2 text-[10px] text-[var(--municipal-muted)]">
-                                        <span className="truncate">{conversation.latestMessage.office}</span>
-                                        <span aria-hidden="true">·</span>
-                                        <span className="shrink-0">{conversation.messageCount} messages</span>
-                                    </div>
-                                    {conversation.hasHighPriority && <div className="mt-1 text-[9px] font-bold uppercase tracking-wide text-rose-700 dark:text-rose-300">High-priority activity</div>}
-                                </div>
-                            </div>
-                        </button>
-                    );
-                })}
+                                </button>
+                            </li>
+                        );
+                    })}
+                </ul>
                 {conversations.length === 0 && (
                     <div className="px-4 py-10 text-center text-sm text-[var(--municipal-muted)]">
                         No conversations match your search.

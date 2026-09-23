@@ -6,35 +6,39 @@ type ContextProps = {
     conversation: MessageConversation | null;
 };
 
-function ContextDetails({ conversation }: ContextProps) {
+type ContextDetailsProps = ContextProps & {
+    idPrefix: string;
+};
+
+function ContextDetails({ conversation, idPrefix }: ContextDetailsProps) {
     if (!conversation) {
         return <div className="px-4 py-8 text-sm text-[var(--municipal-muted)]">No additional thread context is available.</div>;
     }
 
     return (
         <div className="divide-y divide-[var(--municipal-border)]">
-            <section className="px-4 py-4" aria-labelledby="messages-context-channel">
+            <section className="px-4 py-4" aria-labelledby={`${idPrefix}-channel`}>
                 <div className="flex items-center gap-2 text-[var(--municipal-brand)]">
                     <MessageSquareText size={15} aria-hidden="true" />
-                    <h3 id="messages-context-channel" className="text-[10px] font-bold uppercase tracking-[0.14em]">Channel</h3>
+                    <h3 id={`${idPrefix}-channel`} className="text-[10px] font-bold uppercase tracking-[0.14em]">Channel</h3>
                 </div>
                 <div className="mt-2 break-words text-sm font-bold text-[var(--municipal-text)]">{conversation.channel}</div>
             </section>
 
-            <section className="px-4 py-4" aria-labelledby="messages-context-offices">
+            <section className="px-4 py-4" aria-labelledby={`${idPrefix}-offices`}>
                 <div className="flex items-center gap-2 text-[var(--municipal-brand)]">
                     <Building2 size={15} aria-hidden="true" />
-                    <h3 id="messages-context-offices" className="text-[10px] font-bold uppercase tracking-[0.14em]">Offices represented</h3>
+                    <h3 id={`${idPrefix}-offices`} className="text-[10px] font-bold uppercase tracking-[0.14em]">Offices represented</h3>
                 </div>
                 <ul className="mt-2 space-y-1.5 text-xs leading-5 text-[var(--municipal-text)]">
                     {conversation.offices.map((office) => <li key={office}>{office}</li>)}
                 </ul>
             </section>
 
-            <section className="px-4 py-4" aria-labelledby="messages-context-references">
+            <section className="px-4 py-4" aria-labelledby={`${idPrefix}-references`}>
                 <div className="flex items-center gap-2 text-[var(--municipal-brand)]">
                     <FileText size={15} aria-hidden="true" />
-                    <h3 id="messages-context-references" className="text-[10px] font-bold uppercase tracking-[0.14em]">Related references</h3>
+                    <h3 id={`${idPrefix}-references`} className="text-[10px] font-bold uppercase tracking-[0.14em]">Related references</h3>
                 </div>
                 {conversation.references.length > 0 ? (
                     <ul className="mt-2 space-y-1.5 text-xs leading-5 text-[var(--municipal-muted)]">
@@ -76,7 +80,7 @@ export default function MessageContextPanel({ conversation }: ContextProps) {
                 <h2 id="messages-context-title" className="mt-0.5 text-sm font-bold text-[var(--municipal-text)]">Thread context</h2>
             </div>
             <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
-                <ContextDetails conversation={conversation} />
+                <ContextDetails conversation={conversation} idPrefix="messages-context-panel" />
             </div>
         </aside>
     );
@@ -107,6 +111,7 @@ export function MessageContextDialog({ open, onClose, conversation }: ContextPro
     return (
         <dialog
             ref={dialog}
+            aria-modal="true"
             aria-labelledby="messages-context-dialog-title"
             className="fixed inset-y-0 right-0 m-0 ml-auto h-dvh max-h-none w-[min(22rem,calc(100vw-1rem))] max-w-none overflow-hidden border-0 border-l border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-0 text-[var(--municipal-text)] shadow-2xl backdrop:bg-[#051911]/50"
             onCancel={(event) => {
@@ -134,7 +139,7 @@ export function MessageContextDialog({ open, onClose, conversation }: ContextPro
                     </button>
                 </header>
                 <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
-                    <ContextDetails conversation={conversation} />
+                    <ContextDetails conversation={conversation} idPrefix="messages-context-dialog" />
                 </div>
             </div>
         </dialog>
