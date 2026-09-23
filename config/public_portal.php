@@ -5,10 +5,29 @@ return [
     'sampleLabel' => 'PROTOTYPE SAMPLE DATA',
     'municipality' => 'Municipality of Talibon, Bohol',
     'hero' => [
-        'eyebrow' => 'ONE TALIBON',
-        'title' => 'ONE WORKSPACE FOR MUNICIPAL WORK.',
-        'lead' => 'CONNECTED OFFICES. BETTER SERVICE.',
-        'description' => 'A secure municipal workspace for coordinating offices, documents, requests, projects, schedules, and official workflows.',
+        'eyebrow' => 'LGU INTRA-OFFICE PORTAL',
+        'title' => 'ONE TALIBON. ONE WORKSPACE.',
+        'lead' => 'MUNICIPAL WORK, CONNECTED ACROSS OFFICES.',
+        'description' => 'Manage documents, memoranda, schedules, projects, requests, and office coordination in one secure workspace.',
+    ],
+    'about' => [
+        'eyebrow' => 'About the Portal',
+        'title' => 'Built for municipal coordination.',
+        'description' => 'ONE TALIBON is the LGU’s shared intra-office workspace for coordinating official work, information, documents, schedules, and processes across municipal offices.',
+        'pillars' => [
+            [
+                'title' => 'Coordinate',
+                'description' => 'Move official work between responsible offices.',
+            ],
+            [
+                'title' => 'Centralize',
+                'description' => 'Keep documents, schedules, and office information in one municipal workspace.',
+            ],
+            [
+                'title' => 'Follow Through',
+                'description' => 'Keep work visible from creation through completion.',
+            ],
+        ],
     ],
     'portalPreview' => [
         'eyebrow' => 'Employee Portal Preview',
@@ -39,7 +58,14 @@ return [
                 'description' => 'Local conditions for field activity.',
             ],
         ],
-        'quickAccess' => ['Transactions', 'Documents', 'Calendar', 'Notifications', 'Employees', 'Projects'],
+        'quickAccess' => [
+            ['capabilityId' => 'transactions', 'label' => 'Transactions'],
+            ['capabilityId' => 'documents', 'label' => 'Documents'],
+            ['capabilityId' => 'calendar', 'label' => 'Calendar'],
+            ['capabilityId' => 'follow-up', 'label' => 'Notifications'],
+            ['capabilityId' => 'people', 'label' => 'Employees'],
+            ['capabilityId' => 'projects', 'label' => 'Projects'],
+        ],
     ],
     'dailyConvenience' => [
         'eyebrow' => 'Everyday Coordination',
@@ -51,24 +77,60 @@ return [
                 'kind' => 'memorandum',
                 'title' => 'Latest Memoranda',
                 'description' => 'Review newly issued memoranda and internal office notices.',
+                'detail' => [
+                    'summary' => 'Keep recently issued memoranda and internal notices easy to review from one municipal workspace.',
+                    'highlights' => [
+                        'Review recent internal communication',
+                        'Keep official notices visible',
+                        'Reduce missed office updates',
+                    ],
+                    'note' => 'Available inside the authenticated portal.',
+                ],
             ],
             [
                 'id' => 'events-calendar',
                 'kind' => 'schedule',
                 'title' => 'Events & Calendar',
                 'description' => 'See meetings, schedules, deadlines, and municipal activities.',
+                'detail' => [
+                    'summary' => 'Keep office schedules, deadlines, meetings, and municipal activities visible from one workspace.',
+                    'highlights' => [
+                        'See upcoming meetings and deadlines',
+                        'Coordinate office schedules',
+                        'Keep municipal activities visible',
+                    ],
+                    'note' => 'Available inside the authenticated portal.',
+                ],
             ],
             [
                 'id' => 'notifications-follow-up',
                 'kind' => 'notification',
                 'title' => 'Notifications & Follow-Up',
                 'description' => 'Track work that needs review, action, or acknowledgment.',
+                'detail' => [
+                    'summary' => 'Surface work that needs review, acknowledgment, action, or follow-up so responsibilities stay visible.',
+                    'highlights' => [
+                        'See work requiring attention',
+                        'Support timely acknowledgment',
+                        'Keep follow-up responsibilities visible',
+                    ],
+                    'note' => 'Available inside the authenticated portal.',
+                ],
             ],
             [
                 'id' => 'weather-context',
                 'kind' => 'weather',
                 'title' => 'Local Weather Context',
                 'description' => 'Check local conditions that may affect field work and travel.',
+                'detail' => [
+                    'summary' => 'Provide local weather awareness that may support field work, travel, and municipal activity planning.',
+                    'highlights' => [
+                        'Support field activity awareness',
+                        'Inform travel and scheduling context',
+                        'Keep local conditions visible at a glance',
+                    ],
+                    'note' => 'Presentation concept only. This public homepage does not retrieve live weather data.',
+                ],
             ],
         ],
     ],
@@ -80,31 +142,85 @@ return [
                 'id' => 'transactions',
                 'title' => 'Inter-Office Transactions',
                 'description' => 'Route requests, endorsements, and actions between offices.',
+                'detail' => [
+                    'summary' => 'Coordinate requests, endorsements, and official actions between responsible municipal offices.',
+                    'highlights' => [
+                        'Route official work between offices',
+                        'Keep office responsibility clear',
+                        'Follow work through the municipal process',
+                    ],
+                    'note' => 'Available inside the authenticated portal.',
+                ],
             ],
             [
                 'id' => 'documents',
                 'title' => 'Documents & Memoranda',
                 'description' => 'Manage official documents, memoranda, records, and correspondence.',
+                'detail' => [
+                    'summary' => 'Coordinate official documents, memoranda, records, and correspondence within one municipal workspace.',
+                    'highlights' => [
+                        'Review internal memoranda',
+                        'Coordinate official correspondence',
+                        'Work with municipal records',
+                    ],
+                    'note' => 'Available inside the authenticated portal.',
+                ],
             ],
             [
                 'id' => 'projects',
                 'title' => 'Programs & Projects',
                 'description' => 'Coordinate programs, projects, assignments, and activity.',
+                'detail' => [
+                    'summary' => 'Keep municipal programs, projects, assignments, and related activity organized in one workspace.',
+                    'highlights' => [
+                        'Coordinate programs and projects',
+                        'Keep assignments visible',
+                        'Support office follow-through',
+                    ],
+                    'note' => 'Available inside the authenticated portal.',
+                ],
             ],
             [
                 'id' => 'people',
                 'title' => 'Employees & Offices',
                 'description' => 'Find office and personnel information in one workspace.',
+                'detail' => [
+                    'summary' => 'Access municipal office and personnel information from the shared authenticated workspace.',
+                    'highlights' => [
+                        'Find responsible offices',
+                        'Reference personnel information',
+                        'Support inter-office coordination',
+                    ],
+                    'note' => 'Available inside the authenticated portal.',
+                ],
             ],
             [
                 'id' => 'calendar',
                 'title' => 'Calendar & Coordination',
                 'description' => 'Coordinate meetings, deadlines, activities, and schedules.',
+                'detail' => [
+                    'summary' => 'Coordinate meetings, deadlines, municipal activities, and office schedules from one shared calendar context.',
+                    'highlights' => [
+                        'See office schedules',
+                        'Track deadlines and meetings',
+                        'Coordinate municipal activities',
+                    ],
+                    'note' => 'Available inside the authenticated portal.',
+                ],
             ],
             [
                 'id' => 'follow-up',
                 'title' => 'Notifications & Follow-Up',
                 'description' => 'Track work that needs review, action, or follow-up.',
+                'detail' => [
+                    'summary' => 'Keep work requiring review, action, acknowledgment, or follow-up visible to authorized personnel.',
+                    'highlights' => [
+                        'Surface items needing attention',
+                        'Support review and acknowledgment',
+                        'Keep follow-up work visible',
+                    ],
+                    'note' => 'Available inside the authenticated portal.',
+                ],
             ],
         ],
     ],
