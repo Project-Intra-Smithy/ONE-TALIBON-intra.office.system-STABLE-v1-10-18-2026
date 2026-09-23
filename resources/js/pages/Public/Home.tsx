@@ -2,10 +2,11 @@ import { Head } from '@inertiajs/react';
 import { Info } from 'lucide-react';
 import PublicCapabilities from '../../components/public/PublicCapabilities';
 import PublicFooter from '../../components/public/PublicFooter';
-import PublicGlance from '../../components/public/PublicGlance';
 import PublicHeader from '../../components/public/PublicHeader';
 import PublicHero from '../../components/public/PublicHero';
+import PublicOfficeOverview from '../../components/public/PublicOfficeOverview';
 import PublicUpdates from '../../components/public/PublicUpdates';
+import PublicWorkflow from '../../components/public/PublicWorkflow';
 import type { PublicContent } from '../../components/public/types';
 
 type Props = { appName: string; authenticated: boolean; content: PublicContent };
@@ -26,7 +27,8 @@ export default function Home({ authenticated, content }: Props) {
                         <PublicHero content={content} />
                         <PublicCapabilities content={content} />
                         <div className="public-information-zone">
-                            <PublicGlance content={content} />
+                            <PublicWorkflow content={content} />
+                            <PublicOfficeOverview content={content} />
                             <PublicUpdates content={content} />
                         </div>
                     </div>
