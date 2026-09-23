@@ -103,13 +103,13 @@ function DailyContext() {
     }, []);
 
     return (
-        <section className="rounded-lg border border-blue-100 bg-blue-50/70 px-3 py-2.5 dark:border-blue-900/70 dark:bg-blue-950/25" aria-label="Today in Talibon">
+        <section className="rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-brand-soft)] px-3 py-2.5" aria-label="Today in Talibon">
             <div className="flex items-start gap-2.5">
-                <CloudSun size={18} className="mt-0.5 shrink-0 text-blue-700 dark:text-blue-300" aria-hidden="true" />
+                <CloudSun size={18} className="mt-0.5 shrink-0 text-[var(--municipal-brand)]" aria-hidden="true" />
                 <div className="min-w-0 flex-1">
-                    <div className="text-[9px] font-bold uppercase tracking-[0.14em] text-blue-700 dark:text-blue-300">Today in Talibon</div>
-                    <div className="mt-0.5 text-xs font-semibold leading-4 text-slate-900 dark:text-slate-100">{today}</div>
-                    <div className="mt-1 text-[11px] leading-4 text-slate-600 dark:text-slate-300" aria-live="polite">
+                    <div className="text-[9px] font-bold uppercase tracking-[0.14em] text-[var(--municipal-brand)]">Today in Talibon</div>
+                    <div className="mt-0.5 text-xs font-semibold leading-4 text-[var(--municipal-text)]">{today}</div>
+                    <div className="mt-1 text-[11px] leading-4 text-[var(--municipal-muted)]" aria-live="polite">
                         {weather
                             ? `${Math.round(weather.temperature)}°C · ${weather.label}`
                             : weatherUnavailable
@@ -137,17 +137,17 @@ export function MunicipalUtilityContent({ idPrefix }: { idPrefix: string }) {
             <section aria-labelledby={calendarTitleId}>
                 <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
-                        <CalendarDays size={15} className="text-blue-700 dark:text-blue-300" aria-hidden="true" />
-                        <h2 id={calendarTitleId} className="text-[11px] font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">Calendar</h2>
+                        <CalendarDays size={15} className="text-[var(--municipal-brand)]" aria-hidden="true" />
+                        <h2 id={calendarTitleId} className="text-[11px] font-bold uppercase tracking-wide text-[var(--municipal-text)]">Calendar</h2>
                     </div>
-                    <Link href="/calendar" className="text-[11px] font-semibold text-blue-700 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-700/30 dark:text-blue-300">Open</Link>
+                    <Link href="/calendar" className="text-[11px] font-semibold text-[var(--municipal-brand)] hover:underline">Open</Link>
                 </div>
                 <div className="mt-1.5 space-y-1">
                     {calendar.map((item) => (
-                        <div key={item.id} className="rounded-md border border-slate-200 bg-white px-2.5 py-1.5 dark:border-slate-700 dark:bg-slate-900/45">
-                            <div className="text-[9px] font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">{item.date} · {item.time}</div>
-                            <div className="mt-0.5 line-clamp-2 text-[11px] font-semibold leading-4 text-slate-900 dark:text-slate-100" title={item.title}>{item.title}</div>
-                            <div className="line-clamp-1 text-[10px] leading-4 text-slate-500 dark:text-slate-400" title={item.office}>{item.office}</div>
+                        <div key={item.id} className="rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2.5 py-1.5">
+                            <div className="text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">{item.date} · {item.time}</div>
+                            <div className="mt-0.5 line-clamp-2 text-[11px] font-semibold leading-4 text-[var(--municipal-text)]" title={item.title}>{item.title}</div>
+                            <div className="line-clamp-1 text-[10px] leading-4 text-[var(--municipal-muted)]" title={item.office}>{item.office}</div>
                         </div>
                     ))}
                 </div>
@@ -156,19 +156,19 @@ export function MunicipalUtilityContent({ idPrefix }: { idPrefix: string }) {
             <section aria-labelledby={announcementsTitleId}>
                 <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
-                        <Megaphone size={15} className="text-blue-700 dark:text-blue-300" aria-hidden="true" />
-                        <h2 id={announcementsTitleId} className="text-[11px] font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">Announcements</h2>
+                        <Megaphone size={15} className="text-[var(--municipal-brand)]" aria-hidden="true" />
+                        <h2 id={announcementsTitleId} className="text-[11px] font-bold uppercase tracking-wide text-[var(--municipal-text)]">Announcements</h2>
                     </div>
-                    <Link href="/announcements" className="text-[11px] font-semibold text-blue-700 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-700/30 dark:text-blue-300">Open</Link>
+                    <Link href="/announcements" className="text-[11px] font-semibold text-[var(--municipal-brand)] hover:underline">Open</Link>
                 </div>
-                <div className="mt-1.5 divide-y divide-slate-100 rounded-md border border-slate-200 bg-white dark:divide-slate-700 dark:border-slate-700 dark:bg-slate-900/45">
+                <div className="mt-1.5 divide-y divide-[var(--municipal-border)] rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)]">
                     {announcements.map((item) => (
                         <div key={item.id} className="px-2.5 py-1.5">
                             <div className="flex items-start justify-between gap-2">
-                                <div className="line-clamp-2 min-w-0 text-[11px] font-semibold leading-4 text-slate-900 dark:text-slate-100" title={item.title}>{item.title}</div>
+                                <div className="line-clamp-2 min-w-0 text-[11px] font-semibold leading-4 text-[var(--municipal-text)]" title={item.title}>{item.title}</div>
                                 {item.priority !== 'Routine' && <span className="shrink-0 text-[9px] font-bold uppercase text-amber-700 dark:text-amber-300">{item.priority}</span>}
                             </div>
-                            <div className="line-clamp-1 text-[10px] leading-4 text-slate-500 dark:text-slate-400" title={item.issuingOffice}>{item.issuingOffice}</div>
+                            <div className="line-clamp-1 text-[10px] leading-4 text-[var(--municipal-muted)]" title={item.issuingOffice}>{item.issuingOffice}</div>
                         </div>
                     ))}
                 </div>
@@ -177,25 +177,25 @@ export function MunicipalUtilityContent({ idPrefix }: { idPrefix: string }) {
             <section aria-labelledby={messagesTitleId}>
                 <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
-                        <MessageSquareText size={15} className="text-blue-700 dark:text-blue-300" aria-hidden="true" />
-                        <h2 id={messagesTitleId} className="text-[11px] font-bold uppercase tracking-wide text-slate-700 dark:text-slate-200">Recent coordination</h2>
+                        <MessageSquareText size={15} className="text-[var(--municipal-brand)]" aria-hidden="true" />
+                        <h2 id={messagesTitleId} className="text-[11px] font-bold uppercase tracking-wide text-[var(--municipal-text)]">Recent coordination</h2>
                     </div>
-                    <Link href="/messages" className="text-[11px] font-semibold text-blue-700 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-700/30 dark:text-blue-300">Open</Link>
+                    <Link href="/messages" className="text-[11px] font-semibold text-[var(--municipal-brand)] hover:underline">Open</Link>
                 </div>
-                <div className="mt-1.5 divide-y divide-slate-100 overflow-hidden rounded-md border border-slate-200 bg-white dark:divide-slate-700 dark:border-slate-700 dark:bg-slate-900/45">
+                <div className="mt-1.5 divide-y divide-[var(--municipal-border)] overflow-hidden rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)]">
                     {messages.slice(0, 2).map((message) => (
                         <button
                             key={message.id}
                             type="button"
                             onClick={() => openQuickMessages(message.id)}
-                            className="block w-full px-2.5 py-1.5 text-left transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 dark:hover:bg-slate-800/50"
+                            className="block w-full px-2.5 py-1.5 text-left transition hover:bg-[var(--municipal-hover)] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--municipal-focus)]"
                             title={`Open ${message.subject} in quick Messages`}
                         >
                             <div className="flex items-start justify-between gap-2">
-                                <div className="line-clamp-2 min-w-0 text-[11px] font-semibold leading-4 text-slate-900 dark:text-slate-100">{message.subject}</div>
+                                <div className="line-clamp-2 min-w-0 text-[11px] font-semibold leading-4 text-[var(--municipal-text)]">{message.subject}</div>
                                 {message.priority === 'High' && <span className="shrink-0 text-[9px] font-bold uppercase text-rose-700 dark:text-rose-300">High</span>}
                             </div>
-                            <div className="line-clamp-1 text-[10px] leading-4 text-slate-500 dark:text-slate-400">{message.office} · {message.date}</div>
+                            <div className="line-clamp-1 text-[10px] leading-4 text-[var(--municipal-muted)]">{message.office} · {message.date}</div>
                         </button>
                     ))}
                 </div>
@@ -251,47 +251,47 @@ export function QuickMessagesPanel() {
             {open && (
                 <section
                     id="quick-messages-panel"
-                    className="flex h-[min(30rem,calc(100dvh-6rem))] w-[min(23rem,calc(100vw-1.5rem))] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-900/20 dark:border-slate-700 dark:bg-[#142236]"
+                    className="flex h-[min(30rem,calc(100dvh-6rem))] w-[min(23rem,calc(100vw-1.5rem))] flex-col overflow-hidden rounded-2xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] shadow-2xl shadow-slate-900/20"
                     aria-label="Quick Messages"
                 >
-                    <div className="flex min-h-14 items-center justify-between gap-2 border-b border-slate-100 px-2.5 dark:border-slate-700">
+                    <div className="flex min-h-14 items-center justify-between gap-2 border-b border-[var(--municipal-border)] px-2.5">
                         <div className="flex min-w-0 items-center gap-1.5">
                             {selectedMessage && (
-                                <button type="button" onClick={() => setSelectedMessageId(null)} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800" aria-label="Back to recent conversations">
+                                <button type="button" onClick={() => setSelectedMessageId(null)} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]" aria-label="Back to recent conversations">
                                     <ArrowLeft size={17} />
                                 </button>
                             )}
-                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#0b2852] text-white dark:bg-blue-700">
+                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--municipal-brand-deep)] text-white">
                                 <MessageSquareText size={17} aria-hidden="true" />
                             </div>
                             <div className="min-w-0">
-                                <div className="truncate text-sm font-bold text-slate-950 dark:text-slate-100">{selectedMessage ? selectedMessage.channel : 'Messages'}</div>
-                                <div className="truncate text-[10px] text-slate-500 dark:text-slate-400">{selectedMessage ? 'Read-only coordination thread' : 'Portable coordination history'}</div>
+                                <div className="truncate text-sm font-bold text-[var(--municipal-text)]">{selectedMessage ? selectedMessage.channel : 'Messages'}</div>
+                                <div className="truncate text-[10px] text-[var(--municipal-muted)]">{selectedMessage ? 'Read-only coordination thread' : 'Portable coordination history'}</div>
                             </div>
                         </div>
                         <div className="flex shrink-0 items-center gap-0.5">
-                            <button type="button" onClick={() => setOpen(false)} className="flex h-9 w-9 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Minimize quick Messages"><Minus size={17} /></button>
-                            <button type="button" onClick={() => { setOpen(false); setSelectedMessageId(null); }} className="flex h-9 w-9 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Close quick Messages"><X size={17} /></button>
+                            <button type="button" onClick={() => setOpen(false)} className="flex h-9 w-9 items-center justify-center rounded-full text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]" aria-label="Minimize quick Messages"><Minus size={17} /></button>
+                            <button type="button" onClick={() => { setOpen(false); setSelectedMessageId(null); }} className="flex h-9 w-9 items-center justify-center rounded-full text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]" aria-label="Close quick Messages"><X size={17} /></button>
                         </div>
                     </div>
 
                     {!selectedMessage ? (
                         <div className="min-h-0 flex-1 overflow-y-auto">
-                            <div className="px-3 pb-1 pt-3 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">Recent coordination</div>
-                            <div className="divide-y divide-slate-100 dark:divide-slate-700">
+                            <div className="px-3 pb-1 pt-3 text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--municipal-muted)]">Recent coordination</div>
+                            <div className="divide-y divide-[var(--municipal-border)]">
                                 {messages.map((message) => (
-                                    <button key={message.id} type="button" onClick={() => setSelectedMessageId(message.id)} className="block w-full px-3 py-2.5 text-left transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 dark:hover:bg-slate-800/50">
+                                    <button key={message.id} type="button" onClick={() => setSelectedMessageId(message.id)} className="block w-full px-3 py-2.5 text-left transition hover:bg-[var(--municipal-hover)] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--municipal-focus)]">
                                         <div className="flex items-start gap-2.5">
-                                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-50 text-[10px] font-bold text-blue-800 dark:bg-blue-950/50 dark:text-blue-200">
+                                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--municipal-brand-soft)] text-[10px] font-bold text-[var(--municipal-brand)]">
                                                 {message.channel.split(/\s+/).slice(0, 2).map((part) => part[0]).join('').toUpperCase()}
                                             </div>
                                             <div className="min-w-0 flex-1">
                                                 <div className="flex items-start justify-between gap-2">
-                                                    <div className="line-clamp-1 text-xs font-bold text-slate-900 dark:text-slate-100">{message.subject}</div>
-                                                    <div className="shrink-0 text-[9px] text-slate-400">{message.date.slice(5)}</div>
+                                                    <div className="line-clamp-1 text-xs font-bold text-[var(--municipal-text)]">{message.subject}</div>
+                                                    <div className="shrink-0 text-[9px] text-[var(--municipal-muted)]">{message.date.slice(5)}</div>
                                                 </div>
-                                                <div className="mt-0.5 line-clamp-1 text-[10px] font-medium text-blue-700 dark:text-blue-300">{message.channel}</div>
-                                                <p className="mt-0.5 line-clamp-2 text-[11px] leading-4 text-slate-600 dark:text-slate-300">{message.body}</p>
+                                                <div className="mt-0.5 line-clamp-1 text-[10px] font-medium text-[var(--municipal-brand)]">{message.channel}</div>
+                                                <p className="mt-0.5 line-clamp-2 text-[11px] leading-4 text-[var(--municipal-muted)]">{message.body}</p>
                                             </div>
                                         </div>
                                     </button>
@@ -299,37 +299,37 @@ export function QuickMessagesPanel() {
                             </div>
                         </div>
                     ) : (
-                        <div className="min-h-0 flex-1 overflow-y-auto bg-slate-50/70 px-3 py-3 dark:bg-slate-950/20">
-                            <div className="mb-3 rounded-lg border border-blue-100 bg-blue-50/70 px-3 py-2 dark:border-blue-900/60 dark:bg-blue-950/20">
-                                <div className="line-clamp-2 text-xs font-bold text-slate-950 dark:text-slate-100">{selectedMessage.subject}</div>
-                                <div className="mt-0.5 text-[10px] text-slate-500 dark:text-slate-400">{selectedMessage.office} · {selectedMessage.reference}</div>
+                        <div className="min-h-0 flex-1 overflow-y-auto bg-[var(--municipal-surface-subtle)] px-3 py-3">
+                            <div className="mb-3 rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-brand-soft)] px-3 py-2">
+                                <div className="line-clamp-2 text-xs font-bold text-[var(--municipal-text)]">{selectedMessage.subject}</div>
+                                <div className="mt-0.5 text-[10px] text-[var(--municipal-muted)]">{selectedMessage.office} · {selectedMessage.reference}</div>
                             </div>
                             <div className="space-y-2.5">
                                 {threadMessages.map((message) => (
-                                    <article key={message.id} className="max-w-[92%] rounded-2xl rounded-bl-md border border-slate-200 bg-white px-3 py-2 shadow-sm dark:border-slate-700 dark:bg-[#142236]">
+                                    <article key={message.id} className="max-w-[92%] rounded-2xl rounded-bl-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 py-2 shadow-sm">
                                         <div className="flex items-start justify-between gap-3">
-                                            <div className="line-clamp-1 text-[10px] font-bold text-blue-700 dark:text-blue-300">{message.office}</div>
-                                            <time className="shrink-0 text-[9px] text-slate-400">{message.date}</time>
+                                            <div className="line-clamp-1 text-[10px] font-bold text-[var(--municipal-brand)]">{message.office}</div>
+                                            <time className="shrink-0 text-[9px] text-[var(--municipal-muted)]">{message.date}</time>
                                         </div>
-                                        <div className="mt-1 text-[11px] font-semibold leading-4 text-slate-900 dark:text-slate-100">{message.subject}</div>
-                                        <p className="mt-1 text-[11px] leading-4 text-slate-600 dark:text-slate-300">{message.body}</p>
-                                        <div className="mt-1.5 text-[9px] text-slate-400">{message.reference}</div>
+                                        <div className="mt-1 text-[11px] font-semibold leading-4 text-[var(--municipal-text)]">{message.subject}</div>
+                                        <p className="mt-1 text-[11px] leading-4 text-[var(--municipal-muted)]">{message.body}</p>
+                                        <div className="mt-1.5 text-[9px] text-[var(--municipal-muted)]">{message.reference}</div>
                                     </article>
                                 ))}
                             </div>
                         </div>
                     )}
 
-                    <div className="flex items-center justify-between gap-3 border-t border-slate-100 bg-white px-3 py-2.5 dark:border-slate-700 dark:bg-[#142236]">
-                        <div className="min-w-0 text-[10px] leading-4 text-slate-500 dark:text-slate-400">Read-only preview. Sending is not enabled.</div>
-                        <Link href="/messages" onClick={() => setOpen(false)} className="shrink-0 text-xs font-bold text-blue-700 hover:underline dark:text-blue-300">Open full Messages</Link>
+                    <div className="flex items-center justify-between gap-3 border-t border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 py-2.5">
+                        <div className="min-w-0 text-[10px] leading-4 text-[var(--municipal-muted)]">Read-only preview. Sending is not enabled.</div>
+                        <Link href="/messages" onClick={() => setOpen(false)} className="shrink-0 text-xs font-bold text-[var(--municipal-brand)] hover:underline">Open full Messages</Link>
                     </div>
                 </section>
             )}
             <button
                 type="button"
                 onClick={() => setOpen((value) => !value)}
-                className="flex h-11 w-11 items-center justify-center gap-2 rounded-full bg-[#0b2852] text-sm font-semibold text-white shadow-lg shadow-slate-900/20 hover:bg-[#123865] focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:bg-blue-700 dark:hover:bg-blue-600 sm:w-auto sm:px-4"
+                className="flex h-11 w-11 items-center justify-center gap-2 rounded-full bg-[var(--municipal-brand-deep)] text-sm font-semibold text-white shadow-lg shadow-slate-900/20 hover:bg-[var(--municipal-brand-active)] sm:w-auto sm:px-4"
                 aria-expanded={open}
                 aria-controls="quick-messages-panel"
                 aria-label={open ? 'Minimize quick Messages' : 'Open quick Messages'}
@@ -343,13 +343,13 @@ export function QuickMessagesPanel() {
 
 export function MunicipalUtilityRail() {
     return (
-        <aside className="hidden border-l border-slate-200/80 bg-slate-50/70 p-3 dark:border-slate-700/80 dark:bg-[#101b2a] 2xl:block" aria-label="Municipal utilities">
+        <aside className="hidden border-l border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] p-3 2xl:block" aria-label="Municipal utilities">
             <div className="sticky top-14 max-h-[calc(100vh-3.5rem)] overflow-y-auto overscroll-contain pb-20 pr-1">
-                <div className="mb-2.5 flex items-center gap-2 text-slate-700 dark:text-slate-200">
+                <div className="mb-2.5 flex items-center gap-2 text-[var(--municipal-text)]">
                     <PanelRightClose size={16} aria-hidden="true" />
                     <div>
                         <div className="text-[11px] font-bold uppercase tracking-wide">Municipal utilities</div>
-                        <div className="text-[10px] text-slate-500 dark:text-slate-400">Schedule, notices, coordination</div>
+                        <div className="text-[10px] text-[var(--municipal-muted)]">Schedule, notices, coordination</div>
                     </div>
                 </div>
                 <MunicipalUtilityContent idPrefix="utility-rail" />
@@ -393,15 +393,15 @@ export function MunicipalUtilityDrawer({ onClose }: { onClose: () => void }) {
             onClick={closeFromBackdrop}
             aria-labelledby="municipal-utilities-drawer-title"
             aria-modal="true"
-            className="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none border-0 bg-transparent p-0 text-slate-900 backdrop:bg-slate-950/55 dark:text-slate-100"
+            className="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none border-0 bg-transparent p-0 text-[var(--municipal-text)] backdrop:bg-slate-950/55"
         >
-            <section className="ml-auto flex h-full w-[min(92vw,350px)] flex-col border-l border-slate-200 bg-slate-50 shadow-2xl dark:border-slate-700 dark:bg-[#101b2a]">
-                <div className="flex items-center justify-between gap-3 border-b border-slate-200 px-3 py-2.5 dark:border-slate-700">
+            <section className="ml-auto flex h-full w-[min(92vw,350px)] flex-col border-l border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] shadow-2xl">
+                <div className="flex items-center justify-between gap-3 border-b border-[var(--municipal-border)] px-3 py-2.5">
                     <div>
-                        <h2 id="municipal-utilities-drawer-title" className="text-sm font-bold text-slate-950 dark:text-slate-100">Municipal utilities</h2>
-                        <div className="text-xs text-slate-500 dark:text-slate-400">Calendar, notices, and coordination</div>
+                        <h2 id="municipal-utilities-drawer-title" className="text-sm font-bold text-[var(--municipal-text)]">Municipal utilities</h2>
+                        <div className="text-xs text-[var(--municipal-muted)]">Calendar, notices, and coordination</div>
                     </div>
-                    <button ref={closeButton} type="button" onClick={onClose} className="flex h-11 w-11 items-center justify-center rounded-lg text-slate-600 hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-700/30 dark:text-slate-300 dark:hover:bg-slate-800" aria-label="Close municipal utilities"><X size={18} /></button>
+                    <button ref={closeButton} type="button" onClick={onClose} className="flex h-11 w-11 items-center justify-center rounded-lg text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]" aria-label="Close municipal utilities"><X size={18} /></button>
                 </div>
                 <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 pb-20"><MunicipalUtilityContent idPrefix="utility-drawer" /></div>
             </section>
