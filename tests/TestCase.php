@@ -21,28 +21,44 @@ abstract class TestCase extends BaseTestCase
 
     protected function assertSafeTestEnvironment(): void
     {
-        $appEnvironment = $this->processEnvironmentValue('APP_ENV');
-        $database = $this->processEnvironmentValue('DB_DATABASE');
+        $this->assertSafeEnvironmentVariable('APP_ENV', 'testing');
+        $this->assertSafeEnvironmentVariable('DB_DATABASE', 'talibon_portal_test');
+    }
 
-        if ($appEnvironment !== 'testing' || $database !== 'talibon_portal_test') {
-            throw new RuntimeException(sprintf(
-                'Refusing to run tests against a non-test environment or database. APP_ENV=%s; DB_DATABASE=%s',
-                $appEnvironment ?? '[unset]',
-                $database ?? '[unset]',
-            ));
+    private function assertSafeEnvironmentVariable(string $name, string $expected): void
+    {
+        $sources = [
+            'getenv' => $this->getenvValue($name),
+            '$_ENV' => $this->superglobalValue($_ENV, $name),
+            '$_SERVER' => $this->superglobalValue($_SERVER, $name),
+        ];
+
+        foreach ($sources as $source => $value) {
+            if ($value !== $expected) {
+                throw new RuntimeException(sprintf(
+                    'Refusing to run tests against a non-test environment or database. %s[%s]=%s; expected %s',
+                    $source,
+                    $name,
+                    $value ?? '[unset]',
+                    $expected,
+                ));
+            }
         }
     }
 
-    private function processEnvironmentValue(string $name): ?string
+    private function getenvValue(string $name): ?string
     {
         $value = getenv($name);
-        if ($value !== false) {
-            return (string) $value;
-        }
 
-        $fallback = $_ENV[$name] ?? $_SERVER[$name] ?? null;
+        return $value === false ? null : (string) $value;
+    }
 
-        return is_scalar($fallback) ? (string) $fallback : null;
+    /** @param array<string, mixed> $source */
+    private function superglobalValue(array $source, string $name): ?string
+    {
+        $value = $source[$name] ?? null;
+
+        return is_scalar($value) ? (string) $value : null;
     }
 
     /**
