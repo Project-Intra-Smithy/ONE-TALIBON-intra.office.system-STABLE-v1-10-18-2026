@@ -167,7 +167,7 @@ export default function MessageThread({ conversation, highlightMessageId, onBack
                     pollError={prototype.pollError}
                     registerEnd={(node) => { liveEnd.current = node; }}
                 />
-                <StaticCoordinationHistory
+                <StaticCoordinationHistory key={conversation.channel}
                     conversation={conversation}
                     highlightMessageId={highlightMessageId}
                     registerHighlighted={(node) => { highlightedMessage.current = node; }}
