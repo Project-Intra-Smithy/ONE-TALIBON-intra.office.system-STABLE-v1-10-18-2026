@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-    csrfToken,
     mergePrototypeMessages,
     normalizePrototypeChannel,
     prototypeMessagesEndpoint,
     type PrototypeMessage,
+    xsrfToken,
 } from '../../components/messages/prototypeMessaging';
 
 type Payload = { data: PrototypeMessage[] };
@@ -106,7 +106,7 @@ export default function usePrototypeMessaging(channel: string | null) {
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken(),
+                    'X-XSRF-TOKEN': xsrfToken(),
                 },
                 body: JSON.stringify({ channel: normalizePrototypeChannel(channel), body: trimmed }),
                 signal: controller.signal,
