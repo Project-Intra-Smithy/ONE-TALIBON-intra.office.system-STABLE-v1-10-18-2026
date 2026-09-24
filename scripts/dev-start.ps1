@@ -20,10 +20,7 @@ if ([string]::IsNullOrWhiteSpace($LanHost)) {
         Where-Object { $_ -and $_ -notlike '169.254.*' } |
         Select-Object -First 1
 }
-
-if ([string]::IsNullOrWhiteSpace($LanHost)) {
-    throw 'Could not determine a LAN IPv4 address. Pass -LanHost <ip>.'
-}
+if ([string]::IsNullOrWhiteSpace($LanHost)) { throw 'Could not determine a LAN IPv4 address. Pass -LanHost <ip>.' }
 
 $AppUrl = "http://$LanHost`:8000"
 $ViteUrl = "http://$LanHost`:5173"
@@ -41,24 +38,15 @@ Remove-Item (Join-Path $Root '.phpunit.result.cache') -Force -ErrorAction Silent
 
 if ($Pull) {
     $dirty = git status --porcelain
-    if ($dirty) {
-        throw 'Working tree is dirty. Commit or stash before -Pull.'
-    }
-
+    if ($dirty) { throw 'Working tree is dirty. Commit or stash before -Pull.' }
     git fetch origin --prune
     if ($LASTEXITCODE -ne 0) { throw 'git fetch failed.' }
     git pull --ff-only
     if ($LASTEXITCODE -ne 0) { throw 'git pull --ff-only failed.' }
 }
 
-if (-not (Test-Path (Join-Path $Root 'node_modules'))) {
-    throw 'node_modules is missing. Run npm.cmd ci once.'
-}
-
-if (-not (Test-Path (Join-Path $Root 'vendor\autoload.php'))) {
-    throw 'vendor is missing. Run composer install once.'
-}
-
+if (-not (Test-Path (Join-Path $Root 'node_modules'))) { throw 'node_modules is missing. Run npm.cmd ci once.' }
+if (-not (Test-Path (Join-Path $Root 'vendor\autoload.php'))) { throw 'vendor is missing. Run composer install once.' }
 if (-not (Test-Path (Join-Path $Root 'public\build\manifest.json'))) {
     Write-Host 'Production fallback missing; building once...' -ForegroundColor Yellow
     npm.cmd run build
@@ -74,6 +62,22 @@ $env:VITE_PORT = '5173'
 
 php artisan optimize:clear
 if ($LASTEXITCODE -ne 0) { throw 'artisan optimize:clear failed.' }
+
+Write-Host 'Checking PostgreSQL and migrations...' -ForegroundColor Cyan
+php artisan migrate --force --no-interaction
+if ($LASTEXITCODE -ne 0) {
+    throw 'PostgreSQL or migration readiness failed. Browser was not opened.'
+}
+Write-Host 'PostgreSQL + migrations: ready' -ForegroundColor Green
+
+Write-Host 'Checking MP0 showcase persona...' -ForegroundColor Cyan
+$showcaseOutput = & php artisan tinker --execute="echo (\App\Models\User::query()->where('email', 'engineering@talibon.demo')->where('is_active', true)->exists() ? 'SHOWCASE_READY' : 'SHOWCASE_MISSING');" 2>&1
+$showcaseExit = $LASTEXITCODE
+$showcaseText = $showcaseOutput -join [Environment]::NewLine
+if ($showcaseExit -ne 0 -or $showcaseText -notmatch 'SHOWCASE_READY') {
+    throw 'Active engineering@talibon.demo showcase persona is missing. Seed the configured showcase data before starting the stack.'
+}
+Write-Host 'Showcase persona: ready' -ForegroundColor Green
 
 $ViteLauncher = Join-Path $env:TEMP 'talibon-vite.ps1'
 @"
@@ -107,16 +111,12 @@ for ($i = 0; $i -lt 60; $i++) {
         if ($hotUrl -eq $ViteUrl) {
             try {
                 $response = Invoke-WebRequest -Uri "$ViteUrl/@vite/client" -UseBasicParsing -TimeoutSec 2
-                if ($response.StatusCode -eq 200) {
-                    $viteReady = $true
-                    break
-                }
+                if ($response.StatusCode -eq 200) { $viteReady = $true; break }
             } catch {}
         }
     }
     Start-Sleep -Milliseconds 500
 }
-
 if (-not $viteReady) {
     Remove-Item $HotFile -Force -ErrorAction SilentlyContinue
     throw 'Vite failed its health check. Laravel was not started, so no white-shell state was exposed.'
@@ -128,17 +128,11 @@ $laravelReady = $false
 for ($i = 0; $i -lt 60; $i++) {
     try {
         $response = Invoke-WebRequest -Uri "$AppUrl/login" -UseBasicParsing -TimeoutSec 2
-        if ($response.StatusCode -eq 200 -and $response.Content -match [regex]::Escape($ViteUrl)) {
-            $laravelReady = $true
-            break
-        }
+        if ($response.StatusCode -eq 200 -and $response.Content -match [regex]::Escape($ViteUrl)) { $laravelReady = $true; break }
     } catch {}
     Start-Sleep -Milliseconds 500
 }
-
-if (-not $laravelReady) {
-    throw 'Laravel/Vite integration failed its health check. Browser was not opened.'
-}
+if (-not $laravelReady) { throw 'Laravel/Vite integration failed its health check. Browser was not opened.' }
 
 Write-Host 'DEV STACK READY' -ForegroundColor Green
 Write-Host "Laravel: $AppUrl"
@@ -156,13 +150,7 @@ $chrome = @(
 
 if ($chrome) {
     $profile = Join-Path $env:LOCALAPPDATA 'TalibonDevChrome'
-    Start-Process $chrome -ArgumentList @(
-        '--new-window',
-        "--user-data-dir=$profile",
-        "--window-position=$($screen.WorkingArea.X),$($screen.WorkingArea.Y)",
-        "--window-size=$($screen.WorkingArea.Width),$($screen.WorkingArea.Height)",
-        "$AppUrl/login"
-    )
+    Start-Process $chrome -ArgumentList @('--new-window', "--user-data-dir=$profile", "--window-position=$($screen.WorkingArea.X),$($screen.WorkingArea.Y)", "--window-size=$($screen.WorkingArea.Width),$($screen.WorkingArea.Height)", "$AppUrl/login")
 } else {
     Start-Process "$AppUrl/login"
 }

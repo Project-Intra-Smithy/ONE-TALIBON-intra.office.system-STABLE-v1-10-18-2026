@@ -1,0 +1,123 @@
+name: MP0 Messaging Closure
+
+on:
+  push:
+    branches:
+      - KIRCH-TALIBON-MP0-MESSAGING-RUNTIME-UI-REWORK
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mp0-messaging-closure-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  closure:
+    name: MP0 exact-SHA closure
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d talibon_portal_test"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+    env:
+      APP_ENV: testing
+      APP_DEBUG: true
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: postgres
+      DB_PASSWORD: ''
+      SESSION_DRIVER: file
+      SHOWCASE_MODE: true
+      PROTOTYPE_DEMO_PASSWORD: CI-MP0-Closure-Only-Password-2026!
+      VITE_DEV_HOST: 127.0.0.1
+      VITE_HMR_HOST: 127.0.0.1
+      VITE_PORT: 5173
+      QA_BASE_URL: http://127.0.0.1:8000
+
+    steps:
+      - name: Checkout exact SHA
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: |
+          npm ci --no-audit --no-fund
+          composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare disposable database
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          php artisan migrate:fresh --seed --force
+
+      - name: TYPECHECK
+        run: npm run types:check
+
+      - name: BUILD
+        run: npm run build
+
+      - name: PROTOTYPE TESTS
+        run: php artisan test tests/Feature/PrototypeMessaging
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Start Laravel
+        run: |
+          php artisan serve --host=127.0.0.1 --port=8000 > storage/logs/mp0-ci-laravel.log 2>&1 &
+          echo $! > /tmp/mp0-laravel.pid
+          for i in {1..60}; do curl -fsS http://127.0.0.1:8000/login >/dev/null && exit 0; sleep 1; done
+          cat storage/logs/mp0-ci-laravel.log
+          exit 1
+
+      - name: HMR SEND + CHANNEL SWITCH
+        run: |
+          npm run dev > /tmp/mp0-vite.log 2>&1 &
+          echo $! > /tmp/mp0-vite.pid
+          for i in {1..60}; do curl -fsS http://127.0.0.1:5173/@vite/client >/dev/null && break; sleep 1; done
+          test -f storage/framework/vite.hot
+          QA_MODE=hmr node tests/Browser/mp0-messaging-closure.mjs
+          kill $(cat /tmp/mp0-vite.pid) || true
+          rm -f storage/framework/vite.hot public/hot
+
+      - name: PRODUCTION SEND
+        run: |
+          test ! -e storage/framework/vite.hot
+          test ! -e public/hot
+          QA_MODE=production node tests/Browser/mp0-messaging-closure.mjs
+
+      - name: Runtime logs on failure
+        if: failure()
+        run: |
+          cat storage/logs/mp0-ci-laravel.log || true
+          cat /tmp/mp0-vite.log || true
