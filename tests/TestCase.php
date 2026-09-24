@@ -7,13 +7,42 @@ use App\Models\User;
 use App\Services\AuthenticationAssurance;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use RuntimeException;
 
 abstract class TestCase extends BaseTestCase
 {
     protected function setUp(): void
     {
+        $this->assertSafeTestEnvironment();
+
         parent::setUp();
         $this->withoutVite();
+    }
+
+    protected function assertSafeTestEnvironment(): void
+    {
+        $appEnvironment = $this->processEnvironmentValue('APP_ENV');
+        $database = $this->processEnvironmentValue('DB_DATABASE');
+
+        if ($appEnvironment !== 'testing' || $database !== 'talibon_portal_test') {
+            throw new RuntimeException(sprintf(
+                'Refusing to run tests against a non-test environment or database. APP_ENV=%s; DB_DATABASE=%s',
+                $appEnvironment ?? '[unset]',
+                $database ?? '[unset]',
+            ));
+        }
+    }
+
+    private function processEnvironmentValue(string $name): ?string
+    {
+        $value = getenv($name);
+        if ($value !== false) {
+            return (string) $value;
+        }
+
+        $fallback = $_ENV[$name] ?? $_SERVER[$name] ?? null;
+
+        return is_scalar($fallback) ? (string) $fallback : null;
     }
 
     /**
