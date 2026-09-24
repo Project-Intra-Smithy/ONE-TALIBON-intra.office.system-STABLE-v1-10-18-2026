@@ -1,6 +1,7 @@
-import { ArrowLeft, PanelRightOpen } from 'lucide-react';
+import { ArrowLeft, Info } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import usePrototypeMessaging from '../../hooks/messaging/usePrototypeMessaging';
+import GroupIdentity from './GroupIdentity';
 import LiveMessageTimeline from './LiveMessageTimeline';
 import type { MessageConversation } from './messageWorkspace';
 import PrototypeMessageComposer from './PrototypeMessageComposer';
@@ -48,7 +49,6 @@ export default function MessageThread({ conversation, highlightMessageId, onBack
         const scroller = threadScroller.current;
         const channel = conversation?.channel;
         if (!scroller || !channel) return;
-
         const savedPosition = scrollPositions.current.get(channel);
         lastLiveCursor.current = 0;
         pendingRestore.current = !highlightMessageId && savedPosition !== undefined ? savedPosition : null;
@@ -66,9 +66,7 @@ export default function MessageThread({ conversation, highlightMessageId, onBack
         }
 
         nearBottom.current = false;
-        return () => {
-            scrollPositions.current.set(channel, scroller.scrollTop);
-        };
+        return () => { scrollPositions.current.set(channel, scroller.scrollTop); };
     }, [conversation?.channel]);
 
     useEffect(() => {
@@ -126,28 +124,24 @@ export default function MessageThread({ conversation, highlightMessageId, onBack
     };
 
     if (!conversation) {
-        return (
-            <section aria-label="Active conversation" className="flex h-full min-h-0 items-center justify-center bg-[var(--municipal-surface-subtle)] p-6">
-                <div className="max-w-sm text-center">
-                    <div className="text-sm font-bold text-[var(--municipal-text)]">No conversation selected</div>
-                    <p className="mt-1 text-sm text-[var(--municipal-muted)]">Choose a conversation to start messaging.</p>
-                </div>
-            </section>
-        );
+        return <section aria-label="Active chat" className="flex h-full items-center justify-center text-sm text-[var(--municipal-muted)]">Choose a chat.</section>;
     }
+
+    const officeCount = conversation.offices.length;
 
     return (
         <section aria-labelledby="messages-thread-title" className="flex h-full min-h-0 flex-col bg-[var(--municipal-surface)]">
-            <header className="flex min-h-16 shrink-0 items-center gap-2 border-b border-[var(--municipal-border)] px-3 py-2 sm:px-4">
-                <button type="button" onClick={onBack} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] md:hidden" aria-label="Back to conversations">
+            <header className="flex min-h-16 shrink-0 items-center gap-3 border-b border-[var(--municipal-border)] px-3 py-2 sm:px-4">
+                <button type="button" onClick={onBack} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] md:hidden" aria-label="Back to chats">
                     <ArrowLeft size={18} aria-hidden="true" />
                 </button>
+                <GroupIdentity offices={conversation.offices} size="sm" />
                 <div className="min-w-0 flex-1">
                     <h2 ref={registerHeading} tabIndex={-1} id="messages-thread-title" className="truncate text-sm font-bold text-[var(--municipal-text)] outline-none">{conversation.channel}</h2>
-                    <div className="mt-0.5 text-[10px] font-semibold text-[var(--municipal-brand)]">Live intra-office conversation</div>
+                    <div className="mt-0.5 text-[11px] text-[var(--municipal-muted)]">{officeCount} {officeCount === 1 ? 'office' : 'offices'}</div>
                 </div>
-                <button type="button" onClick={onOpenContext} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] 2xl:hidden" aria-label="Open thread context" aria-haspopup="dialog">
-                    <PanelRightOpen size={18} aria-hidden="true" />
+                <button type="button" onClick={onOpenContext} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] 2xl:hidden" aria-label="Open chat info" aria-haspopup="dialog">
+                    <Info size={18} aria-hidden="true" />
                 </button>
             </header>
 
@@ -159,22 +153,18 @@ export default function MessageThread({ conversation, highlightMessageId, onBack
                     if (!atBottom) followInitialLoad.current = false;
                 }}
                 className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-[var(--municipal-surface-subtle)]"
-                aria-label={`${conversation.channel} live messages and older coordination records`}
+                aria-label={`${conversation.channel} messages`}
             >
-                <LiveMessageTimeline
-                    channel={conversation.channel}
-                    messages={liveMessages}
-                    pollError={prototype.pollError}
-                    registerEnd={(node) => { liveEnd.current = node; }}
-                />
-                <StaticCoordinationHistory key={conversation.channel}
+                <LiveMessageTimeline messages={liveMessages} pollError={prototype.pollError} registerEnd={(node) => { liveEnd.current = node; }} />
+                <StaticCoordinationHistory
+                    key={conversation.channel}
                     conversation={conversation}
                     highlightMessageId={highlightMessageId}
                     registerHighlighted={(node) => { highlightedMessage.current = node; }}
                 />
             </div>
 
-            <PrototypeMessageComposer sending={prototype.sending} error={prototype.sendError} onSend={sendAndFollow} />
+            <PrototypeMessageComposer channel={conversation.channel} sending={prototype.sending} error={prototype.sendError} onSend={sendAndFollow} />
         </section>
     );
 }

@@ -106,8 +106,8 @@ export default function Index() {
 
     return (
         <AppLayout title="Messages">
-            <div className="mx-auto h-[calc(100dvh-7.75rem)] min-h-0 max-w-[1500px] overflow-hidden rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] shadow-sm">
-                <div className="grid h-full min-h-0 grid-rows-[minmax(0,1fr)] md:grid-cols-[280px_minmax(0,1fr)] 2xl:grid-cols-[280px_minmax(0,1fr)_300px]">
+            <div className="mx-auto h-[calc(100dvh-7.75rem)] min-h-0 max-w-[1600px] overflow-hidden rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] shadow-sm">
+                <div className="grid h-full min-h-0 grid-rows-[minmax(0,1fr)] md:grid-cols-[300px_minmax(0,1fr)] 2xl:grid-cols-[300px_minmax(0,1fr)_300px]">
                     <div className={`${mobileView === 'thread' ? 'hidden md:block' : 'block'} h-full min-h-0 md:border-r md:border-[var(--municipal-border)]`}>
                         <ConversationList
                             conversations={visibleConversations}
