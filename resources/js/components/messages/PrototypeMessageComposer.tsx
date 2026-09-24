@@ -35,7 +35,7 @@ export default function PrototypeMessageComposer({ sending, error, onSend }: Pro
     return (
         <form
             onSubmit={onSubmit}
-            className="border-t border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 pt-3 sm:px-4"
+            className="shrink-0 border-t border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 pt-3 sm:px-4"
             style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
         >
             <label htmlFor="prototype-message-body" className="sr-only">Message</label>
@@ -51,13 +51,13 @@ export default function PrototypeMessageComposer({ sending, error, onSend }: Pro
                     aria-label="Message"
                     aria-invalid={Boolean(error)}
                     aria-describedby={error ? 'prototype-message-error' : 'prototype-message-help'}
-                    placeholder="Type a message"
-                    className="min-h-11 min-w-0 flex-1 resize-none rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 py-2 text-sm leading-5 text-[var(--municipal-text)] outline-none placeholder:text-[var(--municipal-muted)] focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]"
+                    placeholder="Write a message"
+                    className="min-h-11 min-w-0 flex-1 resize-none rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 py-2 text-sm leading-5 text-[var(--municipal-text)] outline-none placeholder:text-[var(--municipal-muted)] focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]"
                 />
                 <button
                     type="submit"
                     disabled={!canSend}
-                    className="flex min-h-11 shrink-0 items-center gap-2 rounded-lg bg-[var(--municipal-brand)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--municipal-brand-active)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex min-h-11 shrink-0 items-center gap-2 rounded-xl bg-[var(--municipal-brand)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--municipal-brand-active)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     <Send size={16} aria-hidden="true" />
                     <span className="hidden sm:inline">Send</span>
