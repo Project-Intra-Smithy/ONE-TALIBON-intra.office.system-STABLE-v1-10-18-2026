@@ -9,6 +9,25 @@ import {
 
 type Payload = { data: PrototypeMessage[] };
 type SinglePayload = { data: PrototypeMessage };
+type SendFailureCategory = 'session-csrf' | 'validation' | 'throttle' | 'server' | 'route' | 'http' | 'network';
+
+function classifySendFailure(status: number): SendFailureCategory {
+    if (status === 419) return 'session-csrf';
+    if (status === 422) return 'validation';
+    if (status === 429) return 'throttle';
+    if (status === 404) return 'route';
+    if (status >= 500) return 'server';
+    return 'http';
+}
+
+function reportSendFailure(status: number, contentType: string | null, category: SendFailureCategory): void {
+    if (!import.meta.env.DEV) return;
+    console.warn('[MP0 messaging] send failed', {
+        status,
+        contentType: contentType ?? 'unknown',
+        category,
+    });
+}
 
 export default function usePrototypeMessaging(channel: string | null) {
     const [messages, setMessages] = useState<PrototypeMessage[]>([]);
@@ -92,12 +111,24 @@ export default function usePrototypeMessaging(channel: string | null) {
                 body: JSON.stringify({ channel: normalizePrototypeChannel(channel), body: trimmed }),
                 signal: controller.signal,
             });
-            if (!response.ok) throw new Error('Prototype message could not be sent.');
+
+            const contentType = response.headers.get('content-type');
+            if (!response.ok) {
+                reportSendFailure(response.status, contentType, classifySendFailure(response.status));
+                throw new Error('Prototype message could not be sent.');
+            }
+
+            if (!contentType?.includes('application/json')) {
+                reportSendFailure(response.status, contentType, 'http');
+            }
             const payload = await response.json() as SinglePayload;
             setMessages((current) => mergePrototypeMessages(current, [payload.data]));
             return true;
         } catch (error) {
             if (!(error instanceof DOMException && error.name === 'AbortError')) {
+                if (import.meta.env.DEV && error instanceof TypeError) {
+                    reportSendFailure(0, null, 'network');
+                }
                 setSendError('Message was not sent. Keep the text and try again.');
             }
             return false;
