@@ -22,10 +22,10 @@ export default function ConversationList({
 }: Props) {
     return (
         <section aria-label="Conversations" className="flex h-full min-h-0 flex-col bg-[var(--municipal-surface)]">
-            <div className="border-b border-[var(--municipal-border)] px-3 py-3 sm:px-4">
+            <div className="shrink-0 border-b border-[var(--municipal-border)] px-3 py-3 sm:px-4">
                 <div className="flex items-end justify-between gap-3">
                     <div>
-                        <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--municipal-brand)]">Coordination</div>
+                        <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--municipal-brand)]">Intra-office messaging</div>
                         <h1 className="mt-0.5 text-base font-bold text-[var(--municipal-text)]">Conversations</h1>
                     </div>
                     <span className="text-[10px] font-semibold text-[var(--municipal-muted)]">{conversations.length} shown</span>
@@ -39,7 +39,7 @@ export default function ConversationList({
                         onChange={(event) => onQueryChange(event.target.value)}
                         type="search"
                         aria-label="Search conversations"
-                        placeholder="Search coordination history"
+                        placeholder="Search conversations"
                         className="min-h-11 w-full rounded-lg border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] pl-9 pr-3 text-sm text-[var(--municipal-text)] outline-none placeholder:text-[var(--municipal-muted)] focus-visible:border-[var(--municipal-focus)] focus-visible:ring-2 focus-visible:ring-[var(--municipal-brand-soft-strong)]"
                     />
                 </label>
@@ -71,7 +71,7 @@ export default function ConversationList({
                                             <div className="mt-1 flex min-w-0 items-center gap-2 text-[10px] text-[var(--municipal-muted)]">
                                                 <span className="truncate">{conversation.latestMessage.office}</span>
                                                 <span aria-hidden="true">·</span>
-                                                <span className="shrink-0">{conversation.messageCount} messages</span>
+                                                <span className="shrink-0">{conversation.messageCount} records</span>
                                             </div>
                                             {conversation.hasHighPriority && <div className="mt-1 text-[9px] font-bold uppercase tracking-wide text-rose-700 dark:text-rose-300">High-priority activity</div>}
                                         </div>

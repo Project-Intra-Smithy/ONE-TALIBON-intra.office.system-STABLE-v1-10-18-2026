@@ -74,7 +74,7 @@ function ContextDetails({ conversation, idPrefix }: ContextDetailsProps) {
 
 export default function MessageContextPanel({ conversation }: ContextProps) {
     return (
-        <aside className="hidden h-full min-h-0 flex-col border-l border-[var(--municipal-border)] bg-[var(--municipal-surface)] min-[1440px]:flex" aria-labelledby="messages-context-title">
+        <aside className="hidden h-full min-h-0 flex-col border-l border-[var(--municipal-border)] bg-[var(--municipal-surface)] 2xl:flex" aria-labelledby="messages-context-title">
             <div className="border-b border-[var(--municipal-border)] px-4 py-3">
                 <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--municipal-brand)]">Coordination</div>
                 <h2 id="messages-context-title" className="mt-0.5 text-sm font-bold text-[var(--municipal-text)]">Thread context</h2>

@@ -104,15 +104,10 @@ export default function Index() {
         });
     };
 
-    const registerConversationButton = (channel: string, node: HTMLButtonElement | null) => {
-        if (node) conversationButtons.current.set(channel, node);
-        else conversationButtons.current.delete(channel);
-    };
-
     return (
         <AppLayout title="Messages">
-            <div className="mx-auto h-[calc(100dvh-7.25rem)] min-h-[32rem] max-w-[1500px] overflow-hidden rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] shadow-sm">
-                <div className="grid h-full min-h-0 md:grid-cols-[288px_minmax(0,1fr)] min-[1440px]:grid-cols-[288px_minmax(0,1fr)_280px]">
+            <div className="mx-auto h-[calc(100dvh-7.5rem)] min-h-0 max-w-[1500px] overflow-hidden rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] shadow-sm">
+                <div className="grid h-full min-h-0 grid-rows-[minmax(0,1fr)] md:grid-cols-[280px_minmax(0,1fr)] 2xl:grid-cols-[280px_minmax(0,1fr)_300px]">
                     <div className={`${mobileView === 'thread' ? 'hidden md:block' : 'block'} h-full min-h-0 md:border-r md:border-[var(--municipal-border)]`}>
                         <ConversationList
                             conversations={visibleConversations}
@@ -120,7 +115,10 @@ export default function Index() {
                             query={query}
                             onQueryChange={setQuery}
                             onSelect={selectConversation}
-                            registerButton={registerConversationButton}
+                            registerButton={(channel, node) => {
+                                if (node) conversationButtons.current.set(channel, node);
+                                else conversationButtons.current.delete(channel);
+                            }}
                             registerSearch={(node) => { searchInput.current = node; }}
                         />
                     </div>
