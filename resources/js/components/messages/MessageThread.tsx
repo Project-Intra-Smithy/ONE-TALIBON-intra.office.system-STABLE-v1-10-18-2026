@@ -30,6 +30,7 @@ export default function MessageThread({ conversation, highlightMessageId, onBack
     const threadScroller = useRef<HTMLDivElement | null>(null);
     const scrollPositions = useRef(new Map<string, number>());
     const nearBottom = useRef(true);
+    const followInitialLoad = useRef(false);
     const lastLiveCursor = useRef(0);
     const [ownSendVersion, setOwnSendVersion] = useState(0);
     const prototype = usePrototypeMessaging(conversation?.channel ?? null);
@@ -42,8 +43,13 @@ export default function MessageThread({ conversation, highlightMessageId, onBack
         const scroller = threadScroller.current;
         const channel = conversation?.channel;
         if (!scroller || !channel) return;
+        const savedPosition = scrollPositions.current.get(channel);
         lastLiveCursor.current = 0;
-        if (!highlightMessageId) scroller.scrollTop = scrollPositions.current.get(channel) ?? 0;
+        followInitialLoad.current = !highlightMessageId && savedPosition === undefined;
+        if (!highlightMessageId) {
+            if (savedPosition === undefined) scrollToBottom(scroller);
+            else scroller.scrollTop = savedPosition;
+        }
         nearBottom.current = isNearBottom(scroller);
 
         return () => {
@@ -53,6 +59,7 @@ export default function MessageThread({ conversation, highlightMessageId, onBack
 
     useEffect(() => {
         if (!highlightMessageId || !highlightedMessage.current) return;
+        followInitialLoad.current = false;
         const frame = window.requestAnimationFrame(() => {
             highlightedMessage.current?.scrollIntoView({ block: 'center' });
             if (threadScroller.current) nearBottom.current = isNearBottom(threadScroller.current);
@@ -63,10 +70,12 @@ export default function MessageThread({ conversation, highlightMessageId, onBack
     useEffect(() => {
         const previousCursor = lastLiveCursor.current;
         lastLiveCursor.current = Math.max(previousCursor, latestLiveCursor);
-        if (latestLiveCursor <= previousCursor || !nearBottom.current || !threadScroller.current) return;
+        const shouldFollow = followInitialLoad.current || nearBottom.current;
+        if (latestLiveCursor <= previousCursor || !shouldFollow || !threadScroller.current) return;
         const frame = window.requestAnimationFrame(() => {
             if (threadScroller.current) scrollToBottom(threadScroller.current);
             nearBottom.current = true;
+            followInitialLoad.current = false;
         });
         return () => window.cancelAnimationFrame(frame);
     }, [latestLiveCursor]);
@@ -76,6 +85,7 @@ export default function MessageThread({ conversation, highlightMessageId, onBack
         const frame = window.requestAnimationFrame(() => {
             if (threadScroller.current) scrollToBottom(threadScroller.current);
             nearBottom.current = true;
+            followInitialLoad.current = false;
         });
         return () => window.cancelAnimationFrame(frame);
     }, [ownSendVersion]);
@@ -114,7 +124,7 @@ export default function MessageThread({ conversation, highlightMessageId, onBack
                 </button>
             </header>
 
-            <div ref={threadScroller} onScroll={(event) => { nearBottom.current = isNearBottom(event.currentTarget); }} className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-[var(--municipal-surface-subtle)]" aria-label={`${conversation.channel} coordination history and live messages`}>
+            <div ref={threadScroller} onScroll={(event) => { const atBottom = isNearBottom(event.currentTarget); nearBottom.current = atBottom; if (!atBottom) followInitialLoad.current = false; }} className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-[var(--municipal-surface-subtle)]" aria-label={`${conversation.channel} coordination history and live messages`}>
                 <div className="mx-auto max-w-4xl">
                     <StaticCoordinationHistory conversation={conversation} highlightMessageId={highlightMessageId} registerHighlighted={(node) => { highlightedMessage.current = node; }} />
                 </div>
