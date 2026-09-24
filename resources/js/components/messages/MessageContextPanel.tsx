@@ -1,4 +1,4 @@
-import { Building2, ChevronDown, FileText, X } from 'lucide-react';
+import { Building2, X } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import GroupIdentity from './GroupIdentity';
 import type { MessageConversation } from './messageWorkspace';
@@ -18,8 +18,8 @@ function ContextDetails({ conversation, idPrefix }: ContextDetailsProps) {
                 <p className="mt-1 text-xs text-[var(--municipal-muted)]">{officeCount} participating {officeCount === 1 ? 'office' : 'offices'}</p>
             </section>
 
-            <section className="border-t border-[var(--municipal-border)] px-4 py-4" aria-labelledby={`${idPrefix}-members`}>
-                <h3 id={`${idPrefix}-members`} className="text-xs font-bold text-[var(--municipal-text)]">Members</h3>
+            <section className="border-t border-[var(--municipal-border)] px-4 py-4" aria-labelledby={`${idPrefix}-offices`}>
+                <h3 id={`${idPrefix}-offices`} className="text-xs font-bold text-[var(--municipal-text)]">Participating offices</h3>
                 <ul className="mt-3 space-y-2.5">
                     {conversation.offices.map((office) => (
                         <li key={office} className="flex items-center gap-2.5 text-xs text-[var(--municipal-text)]">
@@ -29,31 +29,6 @@ function ContextDetails({ conversation, idPrefix }: ContextDetailsProps) {
                     ))}
                 </ul>
             </section>
-
-            <details className="group border-t border-[var(--municipal-border)] px-4 py-4">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-xs font-bold text-[var(--municipal-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]">
-                    <span className="flex items-center gap-2"><FileText size={14} className="text-[var(--municipal-brand)]" aria-hidden="true" /> Shared references</span>
-                    <span className="flex items-center gap-1 text-[10px] font-medium text-[var(--municipal-muted)]">{conversation.references.length}<ChevronDown size={14} className="transition-transform group-open:rotate-180" /></span>
-                </summary>
-                <ul className="mt-3 space-y-2 text-xs leading-5 text-[var(--municipal-muted)]">
-                    {conversation.references.map((reference) => <li key={reference} className="break-words">{reference}</li>)}
-                </ul>
-            </details>
-
-            <details className="group border-t border-[var(--municipal-border)] px-4 py-4">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-xs font-bold text-[var(--municipal-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]">
-                    <span>Demo history</span>
-                    <span className="flex items-center gap-1 text-[10px] font-medium text-[var(--municipal-muted)]">{conversation.messageCount} records<ChevronDown size={14} className="transition-transform group-open:rotate-180" /></span>
-                </summary>
-                <ul className="mt-3 space-y-3">
-                    {conversation.messages.map((message) => (
-                        <li key={message.id}>
-                            <div className="text-xs font-semibold text-[var(--municipal-text)]">{message.subject}</div>
-                            <div className="mt-0.5 text-[10px] text-[var(--municipal-muted)]">{message.office} · {message.date}</div>
-                        </li>
-                    ))}
-                </ul>
-            </details>
         </div>
     );
 }
