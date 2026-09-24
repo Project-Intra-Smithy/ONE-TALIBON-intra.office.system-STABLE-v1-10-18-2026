@@ -37,6 +37,7 @@ Stop-Listener 5173
 Remove-Item (Join-Path $Root 'public\hot') -Force -ErrorAction SilentlyContinue
 Remove-Item $HotFile -Force -ErrorAction SilentlyContinue
 Remove-Item (Join-Path $Root 'node_modules\.vite') -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item (Join-Path $Root '.phpunit.result.cache') -Force -ErrorAction SilentlyContinue
 
 if ($Pull) {
     $dirty = git status --porcelain
