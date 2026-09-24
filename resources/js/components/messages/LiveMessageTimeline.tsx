@@ -7,13 +7,22 @@ type Props = {
     registerEnd: (node: HTMLDivElement | null) => void;
 };
 
+const GROUP_WINDOW_MS = 5 * 60 * 1000;
+
 function continuesSender(messages: PrototypeMessage[], index: number): boolean {
     if (index === 0) return false;
     const current = messages[index];
     const previous = messages[index - 1];
+    const currentTime = Date.parse(current.createdAt);
+    const previousTime = Date.parse(previous.createdAt);
+    const elapsed = currentTime - previousTime;
+
     return current.isMine === previous.isMine
         && current.sender.name === previous.sender.name
-        && current.sender.office === previous.sender.office;
+        && current.sender.office === previous.sender.office
+        && Number.isFinite(elapsed)
+        && elapsed >= 0
+        && elapsed <= GROUP_WINDOW_MS;
 }
 
 export default function LiveMessageTimeline({ messages, pollError, registerEnd }: Props) {
@@ -24,19 +33,12 @@ export default function LiveMessageTimeline({ messages, pollError, registerEnd }
             {messages.length > 0 ? (
                 <div className="space-y-1.5">
                     {messages.map((message, index) => (
-                        <PrototypeMessageBubble
-                            key={message.publicId}
-                            message={message}
-                            showSender={!continuesSender(messages, index)}
-                        />
+                        <PrototypeMessageBubble key={message.publicId} message={message} showSender={!continuesSender(messages, index)} />
                     ))}
                 </div>
             ) : (
                 <div className="flex min-h-40 items-center justify-center text-center">
-                    <div>
-                        <div className="text-sm font-semibold text-[var(--municipal-text)]">No messages yet</div>
-                        <div className="mt-1 text-xs text-[var(--municipal-muted)]">Start the conversation.</div>
-                    </div>
+                    <div><div className="text-sm font-semibold text-[var(--municipal-text)]">No messages yet</div><div className="mt-1 text-xs text-[var(--municipal-muted)]">Start the conversation.</div></div>
                 </div>
             )}
 
