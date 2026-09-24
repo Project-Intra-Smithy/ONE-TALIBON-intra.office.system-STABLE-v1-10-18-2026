@@ -11,7 +11,6 @@ const NEAR_BOTTOM_THRESHOLD = 120;
 
 type Props = {
     conversation: MessageConversation | null;
-    highlightMessageId: string | null;
     onBack: () => void;
     onOpenContext: () => void;
     registerHeading: (node: HTMLHeadingElement | null) => void;

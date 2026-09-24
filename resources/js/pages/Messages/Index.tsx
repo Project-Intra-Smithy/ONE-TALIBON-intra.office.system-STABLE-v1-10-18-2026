@@ -6,9 +6,7 @@ import {
     buildMessageConversations,
     filterMessageConversations,
     findConversationByChannel,
-    findMessageById,
 } from '../../components/messages/messageWorkspace';
-import { municipalMessages } from '../../data/municipal/messages';
 import AppLayout from '../../layouts/AppLayout';
 
 type MobileView = 'conversations' | 'thread';
@@ -16,40 +14,32 @@ type MobileView = 'conversations' | 'thread';
 type InitialMessagesState = {
     query: string;
     channel: string | null;
-    messageId: string | null;
     view: MobileView | null;
 };
 
 function readInitialMessagesState(): InitialMessagesState {
-    if (typeof window === 'undefined') return { query: '', channel: null, messageId: null, view: null };
+    if (typeof window === 'undefined') return { query: '', channel: null, view: null };
     const params = new URLSearchParams(window.location.search);
     const view = params.get('view');
     return {
         query: params.get('q') ?? '',
         channel: params.get('channel'),
-        messageId: params.get('message'),
         view: view === 'conversations' || view === 'thread' ? view : null,
     };
 }
 
 export default function Index() {
     const initialState = useMemo(readInitialMessagesState, []);
-    const conversations = useMemo(() => buildMessageConversations(municipalMessages), []);
-    const initialMessage = useMemo(() => findMessageById(municipalMessages, initialState.messageId), [initialState.messageId]);
-    const initialChannelConversation = useMemo(
-        () => findConversationByChannel(conversations, initialState.channel),
+    const conversations = useMemo(buildMessageConversations, []);
+    const initialConversation = useMemo(
+        () => findConversationByChannel(conversations, initialState.channel) ?? conversations[0] ?? null,
         [conversations, initialState.channel],
     );
-    const initialConversation = initialMessage
-        ? findConversationByChannel(conversations, initialMessage.channel)
-        : initialChannelConversation ?? conversations[0] ?? null;
-    const initialSelectionExplicit = Boolean(initialMessage || initialChannelConversation);
-    const initialMobileView: MobileView = initialState.view
-        ?? (initialSelectionExplicit ? 'thread' : 'conversations');
+    const initialSelectionExplicit = Boolean(findConversationByChannel(conversations, initialState.channel));
+    const initialMobileView: MobileView = initialState.view ?? (initialSelectionExplicit ? 'thread' : 'conversations');
 
     const [query, setQuery] = useState(initialState.query);
     const [selectedChannel, setSelectedChannel] = useState<string | null>(initialConversation?.channel ?? null);
-    const [highlightMessageId, setHighlightMessageId] = useState<string | null>(initialMessage?.id ?? null);
     const [selectionExplicit, setSelectionExplicit] = useState(initialSelectionExplicit);
     const [mobileView, setMobileView] = useState<MobileView>(initialMobileView);
     const [contextOpen, setContextOpen] = useState(false);
@@ -73,23 +63,20 @@ export default function Index() {
         const normalizedQuery = query.trim();
         if (normalizedQuery) params.set('q', normalizedQuery);
         if (selectionExplicit && selectedChannel) params.set('channel', selectedChannel);
-        if (highlightMessageId) params.set('message', highlightMessageId);
         if (selectionExplicit) params.set('view', mobileView);
 
         const search = params.toString();
         const nextUrl = `${window.location.pathname}${search ? `?${search}` : ''}${window.location.hash}`;
         const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
         if (nextUrl !== currentUrl) window.history.replaceState(window.history.state, '', nextUrl);
-    }, [highlightMessageId, mobileView, query, selectedChannel, selectionExplicit]);
+    }, [mobileView, query, selectedChannel, selectionExplicit]);
 
     const selectConversation = (channel: string, trigger: HTMLButtonElement) => {
         lastConversationTrigger.current = trigger;
         setSelectedChannel(channel);
-        setHighlightMessageId(null);
         setSelectionExplicit(true);
         setContextOpen(false);
         setMobileView('thread');
-
         if (window.matchMedia('(max-width: 767px)').matches) {
             window.requestAnimationFrame(() => threadHeading.current?.focus());
         }
@@ -125,7 +112,6 @@ export default function Index() {
                     <div className={`${mobileView === 'conversations' ? 'hidden md:block' : 'block'} h-full min-h-0`}>
                         <MessageThread
                             conversation={selectedConversation}
-                            highlightMessageId={highlightMessageId}
                             onBack={returnToConversations}
                             onOpenContext={() => setContextOpen(true)}
                             registerHeading={(node) => { threadHeading.current = node; }}
