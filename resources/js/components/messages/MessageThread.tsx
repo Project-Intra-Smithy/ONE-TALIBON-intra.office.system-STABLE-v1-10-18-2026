@@ -6,7 +6,6 @@ import LiveMessageTimeline from './LiveMessageTimeline';
 import type { MessageConversation } from './messageWorkspace';
 import PrototypeMessageComposer from './PrototypeMessageComposer';
 import { normalizePrototypeChannel } from './prototypeMessaging';
-import StaticCoordinationHistory from './StaticCoordinationHistory';
 
 const NEAR_BOTTOM_THRESHOLD = 120;
 
@@ -29,8 +28,7 @@ function scrollToLiveEnd(scroller: HTMLDivElement, liveEnd: HTMLDivElement | nul
     scroller.scrollTop += delta + 12;
 }
 
-export default function MessageThread({ conversation, highlightMessageId, onBack, onOpenContext, registerHeading }: Props) {
-    const highlightedMessage = useRef<HTMLElement | null>(null);
+export default function MessageThread({ conversation, onBack, onOpenContext, registerHeading }: Props) {
     const threadScroller = useRef<HTMLDivElement | null>(null);
     const liveEnd = useRef<HTMLDivElement | null>(null);
     const scrollPositions = useRef(new Map<string, number>());
@@ -51,10 +49,10 @@ export default function MessageThread({ conversation, highlightMessageId, onBack
         if (!scroller || !channel) return;
         const savedPosition = scrollPositions.current.get(channel);
         lastLiveCursor.current = 0;
-        pendingRestore.current = !highlightMessageId && savedPosition !== undefined ? savedPosition : null;
-        followInitialLoad.current = !highlightMessageId && savedPosition === undefined;
+        pendingRestore.current = savedPosition !== undefined ? savedPosition : null;
+        followInitialLoad.current = savedPosition === undefined;
 
-        if (!highlightMessageId && savedPosition === undefined) {
+        if (savedPosition === undefined) {
             const frame = window.requestAnimationFrame(() => {
                 if (threadScroller.current) scrollToLiveEnd(threadScroller.current, liveEnd.current);
                 nearBottom.current = true;
@@ -68,17 +66,6 @@ export default function MessageThread({ conversation, highlightMessageId, onBack
         nearBottom.current = false;
         return () => { scrollPositions.current.set(channel, scroller.scrollTop); };
     }, [conversation?.channel]);
-
-    useEffect(() => {
-        if (!highlightMessageId || !highlightedMessage.current) return;
-        followInitialLoad.current = false;
-        pendingRestore.current = null;
-        const frame = window.requestAnimationFrame(() => {
-            highlightedMessage.current?.scrollIntoView({ block: 'center' });
-            if (threadScroller.current) nearBottom.current = isNearLiveEnd(threadScroller.current, liveEnd.current);
-        });
-        return () => window.cancelAnimationFrame(frame);
-    }, [conversation?.channel, highlightMessageId]);
 
     useEffect(() => {
         const scroller = threadScroller.current;
@@ -156,12 +143,6 @@ export default function MessageThread({ conversation, highlightMessageId, onBack
                 aria-label={`${conversation.channel} messages`}
             >
                 <LiveMessageTimeline messages={liveMessages} pollError={prototype.pollError} registerEnd={(node) => { liveEnd.current = node; }} />
-                <StaticCoordinationHistory
-                    key={conversation.channel}
-                    conversation={conversation}
-                    highlightMessageId={highlightMessageId}
-                    registerHighlighted={(node) => { highlightedMessage.current = node; }}
-                />
             </div>
 
             <PrototypeMessageComposer channel={conversation.channel} sending={prototype.sending} error={prototype.sendError} onSend={sendAndFollow} />
