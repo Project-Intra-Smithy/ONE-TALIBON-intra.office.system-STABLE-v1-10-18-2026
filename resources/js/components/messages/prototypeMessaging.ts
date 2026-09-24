@@ -27,6 +27,17 @@ export function mergePrototypeMessages(
     return [...byPublicId.values()].sort((left, right) => left.cursor - right.cursor);
 }
 
-export function csrfToken(): string {
-    return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '';
+export function xsrfToken(): string {
+    const entry = document.cookie
+        .split('; ')
+        .find((cookie) => cookie.startsWith('XSRF-TOKEN='));
+
+    if (!entry) return '';
+
+    const encoded = entry.slice('XSRF-TOKEN='.length);
+    try {
+        return decodeURIComponent(encoded);
+    } catch {
+        return encoded;
+    }
 }
