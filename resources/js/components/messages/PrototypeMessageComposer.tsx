@@ -37,7 +37,11 @@ export default function PrototypeMessageComposer({ channel, sending, error, onSe
     };
 
     return (
-        <form onSubmit={onSubmit} className="shrink-0 border-t border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 py-2.5 sm:px-4">
+        <form
+            onSubmit={onSubmit}
+            className="shrink-0 border-t border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 pt-2.5 sm:px-4"
+            style={{ paddingBottom: 'max(0.625rem, env(safe-area-inset-bottom))' }}
+        >
             <div className="flex items-end gap-2">
                 <label htmlFor="prototype-message-body" className="sr-only">Message {channel}</label>
                 <textarea
