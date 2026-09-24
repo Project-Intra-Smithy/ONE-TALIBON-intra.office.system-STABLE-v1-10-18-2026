@@ -4,6 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
+    "dev:stack": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dev-start.ps1",
+    "dev:stack:pull": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dev-start.ps1 -Pull",
+    "dev:stack:stop": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dev-stop.ps1",
     "build": "vite build",
     "types:check": "tsc --noEmit"
   },
