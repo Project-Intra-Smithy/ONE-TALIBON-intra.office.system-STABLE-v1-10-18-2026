@@ -5,7 +5,6 @@ import GroupIdentity from './GroupIdentity';
 import LiveMessageTimeline from './LiveMessageTimeline';
 import type { MessageConversation } from './messageWorkspace';
 import PrototypeMessageComposer from './PrototypeMessageComposer';
-import { normalizePrototypeChannel } from './prototypeMessaging';
 
 const NEAR_BOTTOM_THRESHOLD = 120;
 
@@ -38,7 +37,7 @@ export default function MessageThread({ conversation, onBack, onOpenContext, reg
     const [ownSendVersion, setOwnSendVersion] = useState(0);
     const prototype = usePrototypeMessaging(conversation?.channel ?? null);
     const liveMessages = conversation
-        ? prototype.messages.filter((message) => message.channel === normalizePrototypeChannel(conversation.channel))
+        ? prototype.messages.filter((message) => message.channel === conversation.channel)
         : [];
     const latestLiveCursor = liveMessages.at(-1)?.cursor ?? 0;
 

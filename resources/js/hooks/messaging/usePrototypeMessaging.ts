@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
     mergePrototypeMessages,
-    normalizePrototypeChannel,
     prototypeMessagesEndpoint,
     type PrototypeMessage,
     xsrfToken,
@@ -48,7 +47,7 @@ export default function usePrototypeMessaging(channel: string | null) {
             const request = new AbortController();
             pollController = request;
             inFlight = true;
-            const params = new URLSearchParams({ channel: normalizePrototypeChannel(channel) });
+            const params = new URLSearchParams({ channel });
             if (!initial) params.set('after', String(cursor));
 
             try {
@@ -105,7 +104,7 @@ export default function usePrototypeMessaging(channel: string | null) {
                     'Content-Type': 'application/json',
                     'X-XSRF-TOKEN': xsrfToken(),
                 },
-                body: JSON.stringify({ channel: normalizePrototypeChannel(channel), body: trimmed }),
+                body: JSON.stringify({ channel, body: trimmed }),
                 signal: controller.signal,
             });
             const contentType = response.headers.get('content-type');

@@ -13,10 +13,6 @@ export type PrototypeMessage = {
 
 export const prototypeMessagesEndpoint = '/messages/prototype/messages';
 
-export function normalizePrototypeChannel(channel: string): string {
-    return channel === 'Mayor’s Office' ? "Mayor's Office" : channel;
-}
-
 export function mergePrototypeMessages(
     current: PrototypeMessage[],
     incoming: PrototypeMessage[],
