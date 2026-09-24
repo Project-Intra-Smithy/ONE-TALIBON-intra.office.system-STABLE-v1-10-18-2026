@@ -1,0 +1,29 @@
+import { useMemo, useRef, useState } from 'react';
+import CalendarEventChip from './CalendarEventChip';
+import { eventsForDate } from './calendarLayout';
+import { formatDate, monthGridDates, sameMonth } from './calendarDate';
+import type { CalendarEvent, CalendarMeta, DateOnly, EventOpenHandler } from './calendarTypes';
+
+const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+type OverflowState = { date: DateOnly; trigger: HTMLButtonElement } | null;
+
+export default function MonthCalendarView({ events, calendar, onDateSelect, onEventOpen }: { events: CalendarEvent[]; calendar: CalendarMeta; onDateSelect: (date: DateOnly) => void; onEventOpen: EventOpenHandler }) {
+    const dates = useMemo(() => monthGridDates(calendar.anchor_date), [calendar.anchor_date]);
+    const [overflow, setOverflow] = useState<OverflowState>(null);
+    const dialog = useRef<HTMLDialogElement>(null);
+    const selectedEvents = useMemo(() => eventsForDate(events, calendar.anchor_date), [events, calendar.anchor_date]);
+
+    const openOverflow = (date: DateOnly, trigger: HTMLButtonElement) => { setOverflow({ date, trigger }); window.requestAnimationFrame(() => dialog.current?.showModal()); };
+    const closeOverflow = () => { dialog.current?.close(); overflow?.trigger.focus(); setOverflow(null); };
+
+    return <div className="flex h-full min-h-0 flex-col bg-[var(--municipal-surface)]">
+        <div className="hidden grid-cols-7 border-b border-[var(--municipal-border)] md:grid">{weekdays.map((day) => <div key={day} className="px-2 py-2 text-center text-[10px] font-semibold tracking-wide text-[var(--municipal-muted)]">{day}</div>)}</div>
+        <div className="hidden min-h-0 flex-1 grid-cols-7 grid-rows-6 md:grid">{dates.map((date) => {
+            const dayEvents = eventsForDate(events, date); const visible = dayEvents.slice(0, 3); const outside = !sameMonth(date, calendar.anchor_date); const selected = date === calendar.anchor_date; const today = date === calendar.today;
+            return <div key={date} className={`min-h-0 overflow-hidden border-b border-r border-[var(--municipal-border)] p-1.5 ${outside ? 'bg-[var(--municipal-surface-subtle)] text-[var(--municipal-muted)]' : ''} ${selected ? 'ring-1 ring-inset ring-[var(--municipal-focus)]/40' : ''}`}><button type="button" onClick={() => onDateSelect(date)} className={`mb-1 flex h-7 w-7 items-center justify-center rounded-full text-xs font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] ${today ? 'bg-[var(--municipal-brand)] text-white' : 'hover:bg-[var(--municipal-hover)]'}`} aria-current={today ? 'date' : undefined}>{Number(date.slice(8))}</button><div className="space-y-1">{visible.map((event) => <CalendarEventChip key={`${date}-${event.id}`} event={event} date={date} onOpen={onEventOpen} compact />)}{dayEvents.length > visible.length && <button type="button" onClick={(click) => openOverflow(date, click.currentTarget)} className="w-full rounded px-1 text-left text-[10px] font-semibold text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]">+{dayEvents.length - visible.length} more</button>}</div></div>;
+        })}</div>
+        <div className="min-h-0 flex-1 overflow-y-auto md:hidden"><div className="grid grid-cols-7 border-b border-[var(--municipal-border)]">{weekdays.map((day) => <div key={day} className="py-2 text-center text-[9px] font-semibold text-[var(--municipal-muted)]">{day[0]}</div>)}{dates.map((date) => { const count = eventsForDate(events, date).length; const selected = date === calendar.anchor_date; const today = date === calendar.today; return <button key={date} type="button" onClick={() => onDateSelect(date)} className={`relative flex h-11 flex-col items-center justify-center border-t border-[var(--municipal-border)] text-xs ${!sameMonth(date, calendar.anchor_date) ? 'text-[var(--municipal-muted)] opacity-55' : ''} ${selected ? 'bg-[var(--municipal-brand-soft)]' : ''}`}><span className={today ? 'flex h-6 w-6 items-center justify-center rounded-full bg-[var(--municipal-brand)] text-white' : ''}>{Number(date.slice(8))}</span>{count > 0 && <span className="mt-0.5 text-[9px] font-semibold text-[var(--municipal-brand-active)]">{count > 9 ? '9+' : count}</span>}</button>; })}</div><section className="p-3"><h2 className="mb-2 text-sm font-semibold">{formatDate(calendar.anchor_date, { weekday: 'long', month: 'long', day: 'numeric' })}</h2><div className="space-y-2">{selectedEvents.map((event) => <CalendarEventChip key={event.id} event={event} date={calendar.anchor_date} onOpen={onEventOpen} />)}{selectedEvents.length === 0 && <p className="py-4 text-sm text-[var(--municipal-muted)]">No events.</p>}</div></section></div>
+        <dialog ref={dialog} onCancel={(cancel) => { cancel.preventDefault(); closeOverflow(); }} className="w-[min(92vw,420px)] rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-4 text-[var(--municipal-text)] shadow-2xl backdrop:bg-slate-950/35">{overflow && <><div className="mb-3 flex items-center justify-between"><h2 className="font-semibold">{formatDate(overflow.date, { weekday: 'long', month: 'long', day: 'numeric' })}</h2><button type="button" onClick={closeOverflow} className="rounded px-2 py-1 text-sm hover:bg-[var(--municipal-hover)]">Close</button></div><div className="space-y-2">{eventsForDate(events, overflow.date).map((event) => <CalendarEventChip key={event.id} event={event} date={overflow.date} onOpen={(item) => { const trigger = overflow.trigger; dialog.current?.close(); setOverflow(null); onEventOpen(item, trigger); }} />)}</div></>}</dialog>
+    </div>;
+}
