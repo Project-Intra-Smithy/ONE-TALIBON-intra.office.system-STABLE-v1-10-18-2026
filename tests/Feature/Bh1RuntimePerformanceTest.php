@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Services\AuthenticationAssurance;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\TestResponse;
+use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
@@ -68,6 +69,7 @@ final class Bh1RuntimePerformanceTest extends TestCase
         $headers = $inertia
             ? [
                 'X-Inertia' => 'true',
+                'X-Inertia-Version' => (string) Inertia::getVersion(),
                 'X-Requested-With' => 'XMLHttpRequest',
                 'Accept' => 'text/html, application/xhtml+xml',
             ]
