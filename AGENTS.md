@@ -1,115 +1,107 @@
-# AGENTS.md — ONE TALIBON V1 FORGE GOVERNANCE
+# AGENTS.md — ONE TALIBON V1 GOVERNANCE
 
-## Authority
+## Human authority
 
-Repository: `Kirch-Nairu/Talibon-Sales-Prototype`
+Repository:
 
-Maintainer / technical authority: Kirch Ivan Balite.
+`Kirch-Nairu/Talibon-Sales-Prototype`
 
-Forge source: `Kirch-Nairu/KIRION-FORGE`
+**Technical Authority: Kirch Ivan Balite**
 
-Pinned Forge authority for this program: `main@44eb57e5b45b343be0033bf22a7a5e74d543c01a`.
+Kirch Ivan Balite is the sole human Technical Authority for architecture, product scope, authority transitions, integration, promotion, release disposition, deployment authorization, and destructive branch cleanup.
 
-Accepted UI/UX correction baseline:
+All other contributors are **Developers / Contributors** unless Kirch explicitly issues a repository-local bounded delegation.
 
-`KIRCH-TALIBON-V1-SHOWCASE-ACCESS@0913a37f96affd2c2a681697bdf6fdb6c381a99e`
+A contributor may perform implementation, frontend, backend, DevOps, QA, review, documentation, or operator work. Those functions do not independently grant Technical Authority.
 
-Historical parent integration authority:
+## Forge operating roles
 
-`KIRCH-TALIBON-SALES-V1@fdb7f5a272bad3c0f3efc352951a9746c544012a`
+Forge roles are bounded working roles, not ownership titles.
 
-Active correction integration branch:
+- Maintainer coordinates under Technical Authority.
+- Code Writer implements a bounded handoff.
+- Reviewer inspects evidence and reports defects/disposition.
+- Acceptance evaluates a stated promotion contract when explicitly authorized.
+- Integration Writer performs an explicitly authorized integration.
 
-`KIRCH-TALIBON-V1-UIUX-CORRECTION`
+No operating role may silently override the Technical Authority.
 
-The accepted baseline SHA is immutable evidence. Do not move or rewrite it as part of correction work.
+Writers do not self-promote. Review is not promotion. Build evidence is not runtime evidence. Runtime evidence is not deployment evidence.
 
-## Forge role boundaries
+## Current authority
 
-- **Maintainer** owns authority transitions, decomposition, work coordination, acceptance routing, integration authorization, Nest state, and conflict resolution.
-- **Reviewer** inspects and classifies evidence. Reviewer does not implement, integrate, promote, or accept unless separately re-authorized.
-- **Acceptance** decides whether evidence satisfies a stated promotion contract. Acceptance does not silently broaden that contract.
-- **Code Writer** implements only the bounded files and decisions in its handoff, on its own branch, from the exact starting SHA.
-- **Integration Writer** integrates only explicitly accepted candidates into the authorized integration branch and does not redesign the product.
+Current hardened product authority entering DA1:
 
-Writers do not self-promote. Review is not acceptance. Build evidence is not runtime evidence. Runtime evidence is not deployment evidence.
+`KIRCH-TALIBON-BH1-BACKEND-RUNTIME-HARDENING@27824223d5169c8eadf16ab863d09aab9585db9c`
 
-## Branch and commit policy
+Current audit branch:
 
-Writers branch only from the exact SHA named in their handoff. Do not modify `main`, `KIRCH-TALIBON-SALES-V1`, or the accepted Showcase baseline branch unless an explicit Maintainer transition authorizes it.
+`KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT`
 
-Do not force push. Do not deploy from a writer branch. Do not modify `Kirch-Nairu/Talibon-Intra-Office-Portal` from this program.
+CAL1 is feature-frozen.
 
-Forge-controlled commits use:
+BH1 is reviewed and closed.
 
-`KIRCH-FORGE-<ROLE>-<REASON>`
+`main` is not yet the current hardened product authority and must not be promoted by force.
 
-Examples:
+## Evidence precedence
 
-- `KIRCH-FORGE-MAINTAINER-ESTABLISH-ONE-TALIBON-UIUX-NEST`
-- `KIRCH-FORGE-CODE-WRITER-W01-SHELL-COMPACTION`
-- `KIRCH-FORGE-INTEGRATION-W01-SHELL-CANDIDATE`
+When information conflicts:
 
-Every commit must still be a real, reviewable change. The naming convention does not justify empty or commit-count padding.
+1. directly observed live Git/runtime state;
+2. explicit instruction from Kirch Ivan Balite as Technical Authority;
+3. current repository-local governance;
+4. accepted/review evidence;
+5. historical documentation;
+6. chat memory.
+
+Do not silently reconcile a material conflict.
+
+## Prototype-day program
+
+Until the prototype-day consolidation program closes:
+
+- no unrelated feature wave;
+- no speculative backend optimization;
+- no Calendar redesign;
+- no deployment from stale historical branches;
+- no branch deletion before validated main promotion and archival preservation;
+- only confirmed blockers/material hindrances may trigger product repair.
+
+## Branch policy
+
+Temporary writer/audit/reconciliation branches are allowed only as necessary to reach the single-branch target.
+
+Target end state:
+
+```text
+main
+```
+
+Before deleting non-`main` branches, preserve required historical branch tips with archival tags and verify the promoted `main` lineage.
+
+Do not force push or rewrite accepted history.
 
 ## Product direction
 
-Build One Talibon as a dense internal municipal digital workspace. It should read like a system the Municipality of Talibon uses for day-to-day coordination, not a marketing site or startup dashboard.
+ONE TALIBON should present as a dense, credible municipal digital workspace already used for day-to-day coordination.
 
-Visible content should answer practical municipal questions:
+Do not add fake actions, fake efficiency metrics, AI branding, startup marketing language, decorative product theater, or non-working controls.
 
-- what is this record or work item;
-- which office owns it;
-- who is responsible;
-- what is its status;
-- when is it due or scheduled;
-- what action is required;
-- which document, plan, program, project, office or meeting it relates to.
+Primary actions shown to stakeholders must work.
 
-Do not add AI assistants, AI branding, generated recommendation language, sales copy, fake efficiency metrics, fake charts, decorative glassmorphism, neon, giant hero space, startup landing layouts, random animation, or oversized whitespace.
+## Security boundary
 
-Retain ONE TALIBON green as municipal/product identity, neutral work surfaces, restrained shadows, dense but readable tables/lists, clear office context, consistent typography, restrained semantic status treatment, and complete light/dark compatibility. Blue is reserved for genuine informational semantics; warning/due remains amber and danger/overdue/failure remains rose/red.
+Preserve authentication, authorization, sessions, CSRF, MFA, audit logging, private-file controls, and role/office visibility boundaries.
 
-## Security presentation boundary
-
-Do not advertise Audit & Security as an ordinary product surface. Do not add security posture navigation, MFA posture cards, authentication-event summaries, or security walkthrough blocks.
-
-Do not weaken or remove authentication, authorization, sessions, CSRF, policies, audit logging, private-file controls, or other underlying security behavior.
-
-## Backend and interaction boundary
-
-Reuse working backend behavior. Do not replace real implementation with frontend mocks when a domain already exists.
-
-Do not introduce microservices, a second authorization system, another workflow engine, realtime messaging infrastructure, video-conferencing infrastructure, another database architecture, or an external weather provider unless separately authorized.
-
-Primary actions must work. If an action is not implemented, remove it or use an honest read-only action such as `View details`, `Open record`, `View agenda`, or `Open document`.
-
-Do not display fake `Send`, `Approve`, `Submit`, `Save`, or `Join Meeting` controls.
-
-## UI/UX correction doctrine
-
-The correction program optimizes **Operational Compression**: reduce unnecessary scrolling, wasted whitespace, repeated information, action hunting, route bouncing, context loss, horizontal task travel, and equal visual weighting of unequal information while preserving readability and accessibility.
-
-Accepted program decisions are recorded in `.forge/DECISIONS.md` and `.forge/SSOT_CURRENT.md`. Writers implement those decisions; they do not reopen them opportunistically.
-
-Key boundaries include:
-
-- shared density primitives before random page-local shrinking;
-- compact shell/header/footer hierarchy;
-- role-aware dashboard priority;
-- context-preserving list/detail flows;
-- adaptive Planning behavior on narrow screens;
-- read-oriented Messages quick access only unless real collaboration backend is separately authorized;
-- weather deferred from the first correction program;
-- no visible ordinary Audit & Security entry point;
-- accessibility is an acceptance gate, not optional polish.
+Security implementation remains functional even when security is not an ordinary presentation surface.
 
 ## Validation discipline
 
-Run only checks relevant to the changed surface, but report only what actually ran. Before candidate handoff, the writer must perform the handoff-specified type/build/test checks available in its environment.
+Only claim what actually ran.
 
-Do not convert source inspection into a passing runtime claim. `NOT RUN`, `NOT OBSERVED`, and `UNKNOWN` are valid evidence states.
+Valid evidence states include:
 
-## Final boundary
+`PASS`, `FAIL`, `NOT RUN`, `NOT OBSERVED`, and `UNKNOWN`.
 
-Writers build their assigned candidate and stop. They do not integrate the correction branch, update `main`, deploy, or begin another writer's scope without a new Maintainer handoff.
+Prototype-day readiness requires exact-SHA runtime proof, not source confidence.
