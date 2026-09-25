@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Services\AuthenticationAssurance;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\TestResponse;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,7 @@ final class Bh1RuntimePerformanceTest extends TestCase
             ->where('email', 'engineering@talibon.demo')
             ->firstOrFail();
 
+        $this->assure($user);
         $this->actingAs($user);
 
         $this->measure('dashboard.first_html', '/dashboard', false);
@@ -38,6 +40,27 @@ final class Bh1RuntimePerformanceTest extends TestCase
         }
 
         $this->measureJson('notifications.feed', '/notifications/feed');
+    }
+
+    private function assure(User $user): void
+    {
+        $assurance = app(AuthenticationAssurance::class);
+        if (! $assurance->requiresMfa($user)) {
+            return;
+        }
+
+        $user->forceFill([
+            'mfa_secret' => 'JBSWY3DPEHPK3PXP',
+            'mfa_confirmed_at' => now(),
+            'mfa_version' => max(1, (int) $user->mfa_version),
+        ])->save();
+        $user->refresh();
+
+        $this->withSession([
+            AuthenticationAssurance::SESSION_USER_KEY => $user->id,
+            AuthenticationAssurance::SESSION_VERSION_KEY => $user->mfa_version,
+            AuthenticationAssurance::SESSION_VERIFIED_AT_KEY => now()->getTimestamp(),
+        ]);
     }
 
     private function measure(string $label, string $url, bool $inertia): void
