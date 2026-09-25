@@ -1,7 +1,7 @@
 $ErrorActionPreference = 'Stop'
 $Root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 Set-Location $Root
-$Branch = 'KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT'
+$Branch = 'KIRCH-TALIBON-DA1-H1-CARRIER-NAVIGATION-REPAIR'
 $TargetDb = 'talibon_h1_mutations'
 
 function Assert-NativeSuccess([string]$Label) { if ($LASTEXITCODE -ne 0) { throw "$Label failed with exit code $LASTEXITCODE." } }
@@ -112,18 +112,27 @@ $Out = 'storage\logs\da1-h1-runtime.out.log'
 $Err = 'storage\logs\da1-h1-runtime.err.log'
 Remove-Item $Out -Force -ErrorAction SilentlyContinue
 Remove-Item $Err -Force -ErrorAction SilentlyContinue
-$Server = Start-Process -FilePath 'php' -ArgumentList @('artisan','serve','--host=127.0.0.1','--port=8000') -WorkingDirectory $Root -RedirectStandardOutput $Out -RedirectStandardError $Err -PassThru -WindowStyle Hidden
+$ServerScript = Join-Path $Root 'vendor\laravel\framework\src\Illuminate\Foundation\resources\server.php'
+if (-not (Test-Path $ServerScript)) { throw "Laravel built-in server router not found: $ServerScript" }
+Write-Host "Runtime DB target: $env:DB_DATABASE" -ForegroundColor DarkGray
+$Server = Start-Process -FilePath 'php' -ArgumentList @('-S','127.0.0.1:8000',$ServerScript) -WorkingDirectory $Root -RedirectStandardOutput $Out -RedirectStandardError $Err -PassThru -WindowStyle Hidden
 
 try {
     Write-Host ''
     Write-Host '=== WAITING FOR H1 SERVER ===' -ForegroundColor Cyan
     $Ready = $false
     for ($i = 0; $i -lt 60; $i++) {
-        try {
-            $Response = Invoke-WebRequest -Uri 'http://127.0.0.1:8000/login' -UseBasicParsing -TimeoutSec 2
-            if ($Response.StatusCode -eq 200) { $Ready = $true; break }
-        } catch {}
         if ($Server.HasExited) { throw 'H1 Laravel server exited before readiness.' }
+        $CurrentListener = Get-NetTCPConnection -LocalPort 8000 -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1
+        if ($CurrentListener -and $CurrentListener.OwningProcess -ne $Server.Id) {
+            throw "Port 8000 listener is not the current H1 server. Expected PID=$($Server.Id) Actual PID=$($CurrentListener.OwningProcess)"
+        }
+        if ($CurrentListener -and $CurrentListener.OwningProcess -eq $Server.Id) {
+            try {
+                $Response = Invoke-WebRequest -Uri 'http://127.0.0.1:8000/login' -UseBasicParsing -TimeoutSec 2
+                if ($Response.StatusCode -eq 200) { $Ready = $true; break }
+            } catch {}
+        }
         Start-Sleep -Milliseconds 500
     }
     if (-not $Ready) { throw 'H1 Laravel server did not become ready.' }
@@ -137,7 +146,17 @@ try {
     }
     Write-Host 'H1 REAL MUTATION AUDIT: PASS' -ForegroundColor Green
 } finally {
-    if ($Server -and -not $Server.HasExited) { Stop-Process -Id $Server.Id -Force -ErrorAction SilentlyContinue }
+    if ($Server -and -not $Server.HasExited) {
+        Stop-Process -Id $Server.Id -Force -ErrorAction SilentlyContinue
+    }
+    for ($i = 0; $i -lt 30; $i++) {
+        $Leftover = Get-NetTCPConnection -LocalPort 8000 -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1
+        if (-not $Leftover) { break }
+        if ($Leftover.OwningProcess -ne $Server.Id) {
+            throw "STOP: port 8000 changed ownership during H1. PID=$($Leftover.OwningProcess)"
+        }
+        Start-Sleep -Milliseconds 100
+    }
 }
 
 Write-Host ''
