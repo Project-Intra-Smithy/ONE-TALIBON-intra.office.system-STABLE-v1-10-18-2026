@@ -43,7 +43,7 @@ The unavailable Actions probe workflow and temporary BH1 validation trigger were
 
 The test was corrected to establish MFA assurance for the privileged Engineering persona before measuring protected pages.
 
-**Elapsed localhost before/after milliseconds are NOT OBSERVED in this evidence record.** No duration values are invented.
+**Initial elapsed localhost before/after milliseconds were not available during implementation. They are now supplemented by the observed local runtime probe appended below. No pre-repair elapsed milliseconds are invented.**
 
 ## PROVEN REQUEST / QUERY BOTTLENECKS
 
@@ -144,3 +144,74 @@ From an updated checkout of the writer branch, run:
 Retain every `BH1_METRIC` line. This is the missing server-duration/query-count/payload observation needed to determine whether the localhost latency reduction is materially visible and to complete the exact before/after runtime record.
 
 BH1 must not be called Accepted solely from this Code Writer evidence.
+
+
+## OBSERVED LOCAL RUNTIME PROBE — 2026-09-25
+
+The previously missing localhost runtime evidence was executed successfully on Windows from an isolated BH1 worktree at the exact candidate SHA:
+
+`58f2b8e82020b6072591ff619e6ff268ed2148c2`
+
+The probe first failed only because the isolated worktree had no PostgreSQL password. After loading the existing local ignored `.env` into the isolated worktree and clearing Laravel config cache, the exact repository-local performance test completed successfully.
+
+Command:
+
+`php artisan test tests/Feature/Bh1RuntimePerformanceTest.php`
+
+Result:
+
+`1 passed / 10 assertions`
+
+Observed metrics:
+
+| Path | Elapsed | Queries | DB time | Payload | Status |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| dashboard.first_html | 227.09 ms | 17 | 29.82 ms | 7,982 B | 200 |
+| dashboard.inertia | 45.13 ms | 15 | 23.94 ms | 6,612 B | 200 |
+| my_work.inertia | 70.42 ms | 10 | 19.85 ms | 5,359 B | 200 |
+| correspondence.inertia | 17.20 ms | 3 | 3.83 ms | 4,842 B | 200 |
+| records.inertia | 65.05 ms | 10 | 37.04 ms | 3,884 B | 200 |
+| calendar.month.inertia | 27.72 ms | 2 | 15.58 ms | 1,183 B | 200 |
+| calendar.week.inertia | 9.08 ms | 2 | 1.70 ms | 1,181 B | 200 |
+| calendar.day.inertia | 9.65 ms | 2 | 1.70 ms | 1,179 B | 200 |
+| messages.inertia | 7.43 ms | 1 | 0.86 ms | 960 B | 200 |
+| notifications.feed | 22.38 ms | 5 | 12.55 ms | 117 B | 200 |
+
+### Runtime interpretation
+
+The persistent authenticated navigation paths no longer show the multi-hundred-millisecond behavior that motivated BH1.
+
+All measured warm Inertia paths are below 71 ms in this local probe.
+
+The only 200+ ms observation is `dashboard.first_html` at 227.09 ms. Because the subsequent Dashboard Inertia request is 45.13 ms and its database time is 23.94 ms, the first-request cost is not evidence of a persistent page-query bottleneck. It remains a cold/request-bootstrap observation and is not decomposed further by this probe.
+
+The two heaviest warm paths are:
+
+- My Work: 70.42 ms total / 19.85 ms DB / 10 queries;
+- Records: 65.05 ms total / 37.04 ms DB / 10 queries.
+
+Those values do not establish a pathological remaining bottleneck requiring another speculative repair. Any further optimization of those surfaces should be driven by a reproduced user-visible delay or a later targeted profile, not by BH1 scope expansion.
+
+Calendar remains especially bounded after CAL1 freeze:
+
+- Month: 27.72 ms / 2 queries;
+- Week: 9.08 ms / 2 queries;
+- Day: 9.65 ms / 2 queries.
+
+Messages is 7.43 ms / 1 query. Correspondence is 17.20 ms / 3 queries.
+
+### BH1 disposition from Code Writer evidence
+
+The local runtime probe now closes the missing measurement gap.
+
+BH1 has:
+- observed local runtime evidence;
+- proven query-shape reductions;
+- successful representative endpoint execution;
+- no Calendar implementation changes;
+- no migration/index/package/config impact;
+- preserved authorization and MFA boundaries.
+
+No additional Code Writer repair is justified by the observed metrics before independent Maintainer review.
+
+This is still not a self-Acceptance claim. The candidate should proceed to Maintainer review at the exact post-evidence HEAD.
