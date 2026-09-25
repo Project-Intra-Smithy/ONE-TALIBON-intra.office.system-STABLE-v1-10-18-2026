@@ -341,16 +341,18 @@ async function waitForSemanticConvergence(page, row, {
   marker = null,
   timeout = 8000,
 }) {
-  row.expectedConvergence = { path: expectedPath, marker: markerLabel };
-  row._semanticMarkerProbe = marker
-    ? async () => marker().isVisible().catch(() => false)
-    : null;
-
   try {
     await page.waitForURL((url) => pathMatches(url, pathMatcher), { timeout });
     if (marker) await marker().waitFor({ state: 'visible', timeout });
     return true;
   } catch {
+    if (!row._semanticConvergenceFailed) {
+      row.expectedConvergence = { path: expectedPath, marker: markerLabel };
+      row._semanticMarkerProbe = marker
+        ? async () => marker().isVisible().catch(() => false)
+        : null;
+    }
+    row._semanticConvergenceFailed = true;
     return false;
   }
 }
@@ -581,8 +583,11 @@ async function runScenario(page, meta, body) {
   const fatalConsole = delta.filter((item) => item.type === 'console-runtime-error').length;
   check(row, 'no-fatal-console-runtime-error', fatalConsole === 0, `fatalConsole=${fatalConsole}`);
 
-  if (row.uiConvergenceVerdict === 'FAIL') await captureSanitizedConvergenceDiagnostics(page, row);
+  if (row._semanticConvergenceFailed || row.uiConvergenceVerdict === 'FAIL') {
+    await captureSanitizedConvergenceDiagnostics(page, row);
+  }
   delete row._semanticMarkerProbe;
+  delete row._semanticConvergenceFailed;
 
   row.failureReason = row._failures.length ? row._failures.join(' | ') : null;
   const deferredH2 = meta.disposition === 'DEFERRED_H2';
