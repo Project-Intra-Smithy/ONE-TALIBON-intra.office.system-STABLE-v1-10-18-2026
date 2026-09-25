@@ -7,7 +7,6 @@ const administrativeLinks: DashboardExperience['quickActions'] = [
     { label: 'Administration', description: 'Open the existing municipal administration workspace.', url: '/admin' },
     { label: 'Operations', description: 'Review current municipal operational workload.', url: '/operations' },
     { label: 'Records', description: 'Open the authorized internal records repository.', url: '/records' },
-    { label: 'Correspondence', description: 'Review registered municipal correspondence.', url: '/correspondence' },
     { label: 'Calendar', description: 'Review municipal meetings and scheduled items.', url: '/calendar' },
 ];
 
