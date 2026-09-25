@@ -1,39 +1,86 @@
-# ONE TALIBON V1 — Integration Policy
+# ONE TALIBON V1 — CURRENT INTEGRATION POLICY
 
-## Active integration authority
+## Technical Authority
 
-`KIRCH-TALIBON-V1-UIUX-CORRECTION`
+**Kirch Ivan Balite**
 
-## Writer boundary
+## Current integration state
 
-Code Writers do not move the integration branch. They return an exact candidate SHA with validation evidence and limitations.
+The prior UI/UX correction integration branch is historical context.
 
-## Integration prerequisites
+Current hardened product authority:
 
-Before integrating a candidate:
+`KIRCH-TALIBON-BH1-BACKEND-RUNTIME-HARDENING@27824223d5169c8eadf16ab863d09aab9585db9c`
 
-1. verify the integration branch still resolves to the expected authority SHA;
-2. verify the candidate exact SHA and parent/source authority;
-3. inspect the candidate diff and ownership boundary;
-4. obtain required Reviewer/Acceptance outcome for the stated promotion;
-5. ensure unresolved findings/limitations are recorded;
-6. stop on unexpected branch movement or overlap.
+Current temporary audit branch:
 
-## Integration method
+`KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT`
 
-Prefer non-force integration preserving candidate history. Do not rewrite accepted evidence branches merely to simplify history.
+Current pre-promotion `main`:
 
-An Integration Writer may perform bounded mechanical integration when explicitly handed off. Product redesign remains Maintainer authority.
+`9cc1b50b28762402c3b24a721cd5ba7ae961817c`
 
-## Post-integration verification
+## Next integration target
 
-After integration:
+The next integration is a bounded reconciliation into a temporary RC1 candidate after DA1 is green.
 
-- verify remote branch HEAD;
-- record resulting SHA in the work ledger;
-- rerun or preserve the validation required by the integration handoff;
-- update evidence/engineering log where the promotion contract requires it.
+Suggested temporary branch:
 
-## Main and deployment
+`KIRCH-TALIBON-RC1-MAIN-CONSOLIDATION`
 
-The UI/UX correction integration branch is not `main` and does not authorize deployment. Promotion beyond it requires a separate Maintainer/Acceptance contract.
+RC1 must begin from the final audited/repaired hardened line.
+
+## Main reconciliation rules
+
+1. inventory `main`-only changes;
+2. classify them RETAIN / SUPERSEDED / REJECT;
+3. integrate only intentional retained work;
+4. preserve CAL1, BH1, and DA1 behavior;
+5. use normal ancestry-preserving Git;
+6. no force push;
+7. no squash/rebase reconstruction of accepted product history;
+8. validate the exact RC1 candidate before main promotion.
+
+The currently observed effective main-only product diff is bounded to public-portal files. That observation must be reverified immediately before RC1.
+
+## Promotion prerequisites
+
+Before `main` may move:
+
+- DA1 complete;
+- confirmed blockers repaired;
+- RC1 complete;
+- exact RC1 candidate passes full release/browser/mutation validation;
+- pre-promotion main tip preserved;
+- Technical Authority authorizes promotion.
+
+## Main promotion
+
+Promotion must be non-force.
+
+The preferred topology makes current `main` an ancestor of the validated RC1 candidate before promotion.
+
+After promotion:
+
+- verify remote `main` exact SHA;
+- rerun smoke validation on exact `main`;
+- declare `main` the sole continuing branch only after that proof.
+
+## Branch cleanup
+
+Branch deletion is a post-promotion operation.
+
+Before deletion:
+
+- refresh remote branch inventory;
+- preserve required tips with archival tags;
+- verify tags;
+- verify final main authority;
+- delete every non-main branch;
+- re-enumerate refs and require only `refs/heads/main`.
+
+## Developer boundary
+
+Developers / Contributors do not independently promote `main`, delete remote branches, rewrite history, or authorize deployment.
+
+Those transitions require Kirch Ivan Balite as Technical Authority.
