@@ -19,7 +19,7 @@ class PrototypeAuthenticationTest extends TestCase
         $source = file_get_contents(resource_path('js/pages/Auth/Login.tsx'));
         $this->assertIsString($source);
         $this->assertStringContainsString('Municipal Workspace', $source);
-        $this->assertStringContainsString('Enter Workspace', $source);
+        $this->assertStringContainsString('Open Municipal Workspace', $source);
         $this->assertStringContainsString('WorkspaceDialog', $source);
 
         foreach (['type="email"', 'type="password"', 'Remember me', 'Continue with Google', 'Activate Employee Account', 'prototype environment', 'Secure municipal employee access'] as $forbidden) {
