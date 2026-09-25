@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use App\Services\AuthenticationAssurance;
 use App\Services\DashboardExperienceResolver;
-use App\Services\NotificationFeedQuery;
 use App\Services\PortalNavigationAccess;
 use App\Services\ShowcaseSession;
 use Illuminate\Http\Request;
@@ -22,6 +21,10 @@ class HandleInertiaRequests extends Middleware
                 'appName' => config('app.name'),
                 'authenticated' => $request->user() !== null,
             ];
+        }
+
+        if ($request->expectsJson()) {
+            return parent::share($request);
         }
 
         $user = $request->user();
@@ -46,19 +49,6 @@ class HandleInertiaRequests extends Middleware
             && $user->employee->department?->is_active === true) {
             $workspaceExperience = app(DashboardExperienceResolver::class)->resolve($user)['key'];
         }
-
-        $feed = null;
-        $notificationFeed = function () use (
-            &$feed,
-            $user,
-            $applicationAssured,
-        ): array {
-            if (! $user || ! $applicationAssured) {
-                return NotificationFeedQuery::emptyFeed();
-            }
-
-            return $feed ??= app(NotificationFeedQuery::class)->feed($user);
-        };
 
         return [
             ...parent::share($request),
@@ -93,11 +83,6 @@ class HandleInertiaRequests extends Middleware
                 'reports' => $navigation['reports'],
                 'navigation' => $navigation,
             ],
-            'pendingMemo' => fn () => $notificationFeed()['pendingMemo'],
-            'unreadMemoCount' => fn () => $notificationFeed()['unreadMemoCount'],
-            'unreadPlatformNotificationCount' => fn () => $notificationFeed()['unreadPlatformNotificationCount'],
-            'notifications' => fn () => $notificationFeed()['notifications'],
-            'notificationCount' => fn () => $notificationFeed()['notificationCount'],
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),

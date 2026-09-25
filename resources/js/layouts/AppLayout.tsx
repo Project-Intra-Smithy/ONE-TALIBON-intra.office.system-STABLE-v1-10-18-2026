@@ -16,6 +16,13 @@ const SIDEBAR_COLLAPSED_STORAGE_KEY = 'talibon.sidebar.collapsed';
 const UTILITY_RAIL_STORAGE_KEY = 'talibon.utilities.open';
 const UTILITY_DOCK_QUERY = '(min-width: 1536px)';
 const HRIS_DARK_PARITY_CLASSES = 'dark:[&_.bg-white]:bg-[#142236] dark:[&_.bg-slate-50]:bg-slate-900/50 dark:[&_.bg-slate-100]:bg-slate-800 dark:[&_.border-slate-100]:border-slate-700 dark:[&_.border-slate-200]:border-slate-700 dark:[&_.border-slate-300]:border-slate-600 dark:[&_.divide-slate-100]:divide-slate-700 dark:[&_.text-slate-950]:text-slate-100 dark:[&_.text-slate-900]:text-slate-100 dark:[&_.text-slate-800]:text-slate-200 dark:[&_.text-slate-700]:text-slate-300 dark:[&_.text-slate-600]:text-slate-300 dark:[&_.text-slate-500]:text-slate-400 dark:[&_.text-blue-900]:text-blue-300 dark:[&_.text-blue-800]:text-blue-300 dark:[&_.bg-blue-50]:bg-blue-950/40 dark:[&_.border-blue-100]:border-blue-900 dark:[&_.border-blue-200]:border-blue-900 dark:[&_.bg-emerald-50]:bg-emerald-950/40 dark:[&_.text-emerald-800]:text-emerald-300 dark:[&_.bg-rose-50]:bg-rose-950/40 dark:[&_.text-rose-700]:text-rose-300 dark:[&_.bg-amber-50]:bg-amber-950/35 dark:[&_.border-amber-200]:border-amber-900 dark:[&_.text-amber-950]:text-amber-200';
+const EMPTY_NOTIFICATION_FEED: NotificationFeed = {
+    pendingMemo: null,
+    unreadMemoCount: 0,
+    unreadPlatformNotificationCount: 0,
+    notifications: [],
+    notificationCount: 0,
+};
 
 function relativeTime(value?: string | null): string {
     if (!value) return '';
@@ -35,13 +42,7 @@ export default function AppLayout({ title, children }: Props) {
     const page = usePage<SharedProps>();
     const pageProps = page.props;
     const { auth, flash } = pageProps;
-    const [feed, setFeed] = useState<NotificationFeed>(() => ({
-        pendingMemo: pageProps.pendingMemo,
-        unreadMemoCount: pageProps.unreadMemoCount,
-        unreadPlatformNotificationCount: pageProps.unreadPlatformNotificationCount,
-        notifications: pageProps.notifications,
-        notificationCount: pageProps.notificationCount,
-    }));
+    const [feed, setFeed] = useState<NotificationFeed>(() => EMPTY_NOTIFICATION_FEED);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [utilitiesOpen, setUtilitiesOpen] = useState(false);
     const [desktopUtilitiesOpen, setDesktopUtilitiesOpen] = useState(false);
@@ -124,21 +125,11 @@ export default function AppLayout({ title, children }: Props) {
         };
     }, [notificationsOpen]);
 
-    useEffect(() => {
-        setFeed({
-            pendingMemo: pageProps.pendingMemo,
-            unreadMemoCount: pageProps.unreadMemoCount,
-            unreadPlatformNotificationCount: pageProps.unreadPlatformNotificationCount,
-            notifications: pageProps.notifications,
-            notificationCount: pageProps.notificationCount,
-        });
-    }, [pageProps.pendingMemo, pageProps.unreadMemoCount, pageProps.unreadPlatformNotificationCount, pageProps.notifications, pageProps.notificationCount]);
-
     useVisiblePolling(async (signal) => {
         const response = await fetch('/notifications/feed', { credentials: 'same-origin', headers: { Accept: 'application/json' }, signal });
         if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) return;
         setFeed(await response.json() as NotificationFeed);
-    }, 8000);
+    }, 8000, true, true);
 
     useEffect(() => {
         const workflowNotifications = notifications.filter((notification) => notification.type === 'transaction');

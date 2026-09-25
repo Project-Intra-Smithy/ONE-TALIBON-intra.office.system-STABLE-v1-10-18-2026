@@ -10,6 +10,8 @@ use LogicException;
 
 final class AuthenticationAssurance
 {
+    private const REQUEST_SATISFIED_ATTRIBUTE = 'auth.assurance.satisfied';
+
     public const SESSION_USER_KEY = 'auth.assurance.mfa_user_id';
 
     public const SESSION_VERIFIED_AT_KEY = 'auth.assurance.mfa_verified_at';
@@ -32,23 +34,32 @@ final class AuthenticationAssurance
 
     public function isSatisfied(Request $request, User $user): bool
     {
+        if ($request->isMethodSafe()) {
+            $cached = $request->attributes->get(self::REQUEST_SATISFIED_ATTRIBUTE);
+            if (is_array($cached)
+                && (int) ($cached['user_id'] ?? 0) === (int) $user->id
+                && array_key_exists('satisfied', $cached)) {
+                return (bool) $cached['satisfied'];
+            }
+        }
+
         $current = $user->fresh();
 
-        if (! $current) {
-            return false;
+        $satisfied = $current !== null
+            && (! $this->requiresMfa($current)
+                || ($this->enrollmentExists($current)
+                    && (int) $request->session()->get(self::SESSION_USER_KEY) === (int) $current->id
+                    && (int) $request->session()->get(self::SESSION_VERSION_KEY, -1) === (int) $current->mfa_version
+                    && $request->session()->has(self::SESSION_VERIFIED_AT_KEY)));
+
+        if ($request->isMethodSafe()) {
+            $request->attributes->set(self::REQUEST_SATISFIED_ATTRIBUTE, [
+                'user_id' => (int) $user->id,
+                'satisfied' => $satisfied,
+            ]);
         }
 
-        if (! $this->requiresMfa($current)) {
-            return true;
-        }
-
-        if (! $this->enrollmentExists($current)) {
-            return false;
-        }
-
-        return (int) $request->session()->get(self::SESSION_USER_KEY) === (int) $current->id
-            && (int) $request->session()->get(self::SESSION_VERSION_KEY, -1) === (int) $current->mfa_version
-            && $request->session()->has(self::SESSION_VERIFIED_AT_KEY);
+        return $satisfied;
     }
 
     public function markSatisfied(Request $request, User $user, ConfirmedMfaEnrollment $proof): void

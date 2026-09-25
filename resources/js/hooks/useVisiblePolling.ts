@@ -6,6 +6,7 @@ export function useVisiblePolling(
     task: PollTask,
     intervalMs: number,
     enabled = true,
+    immediate = false,
 ) {
     const taskRef = useRef(task);
     const inFlight = useRef(false);
@@ -44,6 +45,10 @@ export function useVisiblePolling(
             }
         };
 
+        if (immediate) {
+            void run();
+        }
+
         const timer = window.setInterval(() => void run(), intervalMs);
         const onFocus = () => void run();
         const onVisibilityChange = () => {
@@ -62,5 +67,5 @@ export function useVisiblePolling(
             window.removeEventListener('focus', onFocus);
             document.removeEventListener('visibilitychange', onVisibilityChange);
         };
-    }, [enabled, intervalMs]);
+    }, [enabled, immediate, intervalMs]);
 }

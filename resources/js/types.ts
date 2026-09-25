@@ -46,11 +46,6 @@ export type LiveNotification = {
 };
 
 export type NotificationFeed = {
-    pendingMemo: PendingMemo | null;
-    unreadMemoCount: number;
-    unreadPlatformNotificationCount: number;
-    notifications: LiveNotification[];
-    notificationCount: number;
 };
 
 export type NavigationPermissions = {
