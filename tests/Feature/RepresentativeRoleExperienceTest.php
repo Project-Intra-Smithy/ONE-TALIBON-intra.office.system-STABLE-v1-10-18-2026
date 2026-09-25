@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\WorkflowTransaction;
 use App\Services\CorrespondenceAccessDecider;
 use App\Services\DashboardExperienceResolver;
+use App\Services\PortalNavigationAccess;
 use App\Services\WorkQueueExperienceResolver;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +56,23 @@ class RepresentativeRoleExperienceTest extends TestCase
                     : $this->assertNotContains($officeView, $workQueue['allowedViews'], $role);
             }
         }
+    }
+
+    public function test_system_admin_navigation_does_not_advertise_correspondence_content_authority(): void
+    {
+        $roles = $this->representativeUsers();
+        $admin = $roles['system_admin'];
+        $head = $roles['department_head'];
+
+        $this->assertFalse(app(PortalNavigationAccess::class)->for($admin)['correspondence']);
+        $this->assertTrue(app(PortalNavigationAccess::class)->for($head)['correspondence']);
+
+        $quickActions = file_get_contents(resource_path('js/components/dashboard/QuickActions.tsx'));
+        $this->assertIsString($quickActions);
+        $this->assertStringNotContainsString(
+            "{ label: 'Correspondence', description: 'Review registered municipal correspondence.', url: '/correspondence' }",
+            $quickActions,
+        );
     }
 
     public function test_admin_and_department_routes_keep_representative_roles_in_their_existing_authority(): void
