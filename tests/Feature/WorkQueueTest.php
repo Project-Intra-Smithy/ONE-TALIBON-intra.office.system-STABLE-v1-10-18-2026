@@ -518,6 +518,33 @@ class WorkQueueTest extends TestCase
         $this->assertLessThanOrEqual(30, $expanded);
     }
 
+    public function test_scope_badge_counts_are_consolidated_into_one_aggregate_query(): void
+    {
+        $office = $this->department('SCOPE-AGG');
+        $head = $this->human('department_head', $office);
+        $staff = $this->human('department_staff', $office);
+        $this->transaction('Scope aggregate fixture', $office, $office, $head, $staff->employee, now()->addDays(2));
+
+        DB::flushQueryLog();
+        DB::enableQueryLog();
+
+        app(WorkQueueQuery::class)->workspace($head->fresh('employee.department'), ['view' => 'office_queue']);
+        $queries = collect(DB::getQueryLog());
+
+        DB::disableQueryLog();
+        DB::flushQueryLog();
+
+        $scopeAggregates = $queries->filter(function (array $query): bool {
+            $sql = strtolower((string) ($query['query'] ?? ''));
+
+            return str_contains($sql, 'count_all')
+                && str_contains($sql, 'count_recently_completed')
+                && str_contains($sql, 'count_escalations');
+        });
+
+        $this->assertCount(1, $scopeAggregates);
+    }
+
     public function test_existing_transaction_detail_and_transition_actions_remain_unchanged(): void
     {
         $office = $this->department('DETAIL');

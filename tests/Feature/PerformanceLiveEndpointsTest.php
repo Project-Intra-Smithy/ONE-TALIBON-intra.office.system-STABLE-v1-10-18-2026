@@ -10,8 +10,10 @@ use App\Models\PlatformNotification;
 use App\Models\TransactionEvent;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
+use App\Services\NotificationFeedQuery;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -102,6 +104,66 @@ class PerformanceLiveEndpointsTest extends TestCase
                 'type' => 'transaction',
                 'urgent' => true,
             ]);
+    }
+
+    public function test_notification_feed_query_shape_is_bounded_after_consolidation(): void
+    {
+        $office = $this->department('FEED-QUERY', 'Feed Query Office');
+        $user = $this->human('department_staff', $office);
+
+        $memo = Memorandum::query()->create([
+            'memo_number' => 'MEMO-PERF-QUERY-001',
+            'title' => 'Performance query feed memorandum',
+            'body' => 'Synthetic notification query fixture.',
+            'issued_by_user_id' => $user->id,
+            'issued_by_department_id' => $office->id,
+            'audience_type' => 'employees',
+            'requires_acknowledgement' => true,
+            'classification' => 'internal',
+            'status' => 'published',
+            'published_at' => now()->subMinute(),
+        ]);
+
+        MemoRecipient::query()->create([
+            'memorandum_id' => $memo->id,
+            'user_id' => $user->id,
+            'delivered_at' => now()->subMinute(),
+        ]);
+
+        PlatformNotification::query()->create([
+            'user_id' => $user->id,
+            'department_id' => $office->id,
+            'event_key' => 'perf-feed-query-platform',
+            'source_domain' => 'transaction',
+            'source_type' => WorkflowTransaction::class,
+            'source_id' => 101,
+            'priority' => 'action_required',
+            'title' => 'Query-shape workflow action',
+            'message' => 'Synthetic bounded query notification.',
+            'action_url' => '/transactions/101',
+            'requires_acknowledgement' => false,
+        ]);
+
+        DB::flushQueryLog();
+        DB::enableQueryLog();
+
+        $feed = app(NotificationFeedQuery::class)->feed($user->fresh('employee.department'));
+        $queries = collect(DB::getQueryLog());
+
+        DB::disableQueryLog();
+        DB::flushQueryLog();
+
+        $memoRecipientReads = $queries->filter(
+            fn (array $query): bool => str_contains(strtolower((string) ($query['query'] ?? '')), 'memo_recipients'),
+        );
+        $platformReads = $queries->filter(
+            fn (array $query): bool => str_contains(strtolower((string) ($query['query'] ?? '')), 'platform_notifications'),
+        );
+
+        $this->assertSame(1, $feed['unreadMemoCount']);
+        $this->assertSame(1, $feed['unreadPlatformNotificationCount']);
+        $this->assertCount(1, $memoRecipientReads);
+        $this->assertCount(2, $platformReads);
     }
 
     public function test_notification_feed_preserves_transaction_event_fallback(): void
