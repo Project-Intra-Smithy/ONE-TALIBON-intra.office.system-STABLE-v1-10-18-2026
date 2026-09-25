@@ -295,28 +295,34 @@ final class RecordsSearchQuery
         Builder $transactions,
         Builder $travelOrders,
     ): array {
-        $values = collect();
+        $sources = [];
 
         if ($this->includesSource($recordType, 'correspondence')) {
-            $values = $values->merge($this->stateValues($correspondence, 'lifecycle_state'));
+            $sources[] = (clone $correspondence)->selectRaw('lifecycle_state AS value');
         }
 
         if ($this->includesSource($recordType, 'transaction')) {
-            $values = $values->merge($this->stateValues($transactions, 'status'));
+            $sources[] = (clone $transactions)->selectRaw('status AS value');
         }
 
         if ($this->includesSource($recordType, 'travel_order')) {
-            $values = $values->merge($this->stateValues($travelOrders, 'status'));
+            $sources[] = (clone $travelOrders)->selectRaw('status AS value');
         }
 
-        return $values
-            ->filter()
-            ->unique()
-            ->sort()
-            ->values()
-            ->map(fn (string $value): array => [
-                'value' => $value,
-                'label' => Str::headline($value),
+        $union = array_shift($sources);
+        foreach ($sources as $source) {
+            $union->unionAll($source);
+        }
+
+        return DB::query()
+            ->fromSub($union->toBase(), 'record_states')
+            ->whereNotNull('value')
+            ->distinct()
+            ->orderBy('value')
+            ->pluck('value')
+            ->map(fn ($value): array => [
+                'value' => (string) $value,
+                'label' => Str::headline((string) $value),
             ])
             ->all();
     }
@@ -327,40 +333,48 @@ final class RecordsSearchQuery
         Builder $transactions,
         Builder $travelOrders,
     ): array {
-        $ids = collect();
+        $sources = [];
 
         if ($this->includesSource($recordType, 'correspondence')) {
             $workflowIds = (clone $correspondence)
                 ->whereNotNull('workflow_transaction_id')
                 ->select('workflow_transaction_id');
 
-            $ids = $ids
-                ->merge(
-                    WorkflowTransaction::query()
-                        ->whereIn('id', $workflowIds)
-                        ->distinct()
-                        ->pluck('current_department_id'),
-                )
-                ->merge(
-                    (clone $correspondence)
-                        ->whereNull('workflow_transaction_id')
-                        ->whereNotNull('receiving_department_id')
-                        ->distinct()
-                        ->pluck('receiving_department_id'),
-                );
+            $sources[] = WorkflowTransaction::query()
+                ->whereIn('id', $workflowIds)
+                ->selectRaw('current_department_id AS department_id');
+
+            $sources[] = (clone $correspondence)
+                ->whereNull('workflow_transaction_id')
+                ->selectRaw('receiving_department_id AS department_id');
         }
 
         if ($this->includesSource($recordType, 'transaction')) {
-            $ids = $ids->merge((clone $transactions)->distinct()->pluck('current_department_id'));
+            $sources[] = (clone $transactions)
+                ->selectRaw('current_department_id AS department_id');
         }
 
         if ($this->includesSource($recordType, 'travel_order')) {
-            $ids = $ids->merge((clone $travelOrders)->distinct()->pluck('department_id'));
+            $sources[] = (clone $travelOrders)
+                ->selectRaw('department_id AS department_id');
         }
+
+        $union = array_shift($sources);
+        foreach ($sources as $source) {
+            $union->unionAll($source);
+        }
+
+        $ids = DB::query()
+            ->fromSub($union->toBase(), 'record_offices')
+            ->whereNotNull('department_id')
+            ->distinct()
+            ->pluck('department_id')
+            ->map(fn ($id): int => (int) $id)
+            ->all();
 
         return Department::query()
             ->where('is_active', true)
-            ->whereIn('id', $ids->filter()->unique()->values()->all())
+            ->whereIn('id', $ids)
             ->orderBy('branch')
             ->orderBy('sort_order')
             ->orderBy('name')
@@ -372,16 +386,6 @@ final class RecordsSearchQuery
                 'shortName' => $department->short_name,
             ])
             ->all();
-    }
-
-    private function stateValues(Builder $query, string $column)
-    {
-        return (clone $query)
-            ->distinct()
-            ->pluck($column)
-            ->map(fn ($value): string => $value instanceof \BackedEnum
-                ? (string) $value->value
-                : (string) $value);
     }
 
     private function includesSource(string $recordType, string $source): bool
