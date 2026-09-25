@@ -219,9 +219,29 @@ Assert-NativeSuccess 'npm types:check'
 npm.cmd run build
 Assert-NativeSuccess 'npm build'
 
-if (-not $SkipPlaywrightInstall) {
+$chromeCandidates = @(
+    "$env:ProgramFiles\Google\Chrome\Application\chrome.exe",
+    "$env:ProgramFiles(x86)\Google\Chrome\Application\chrome.exe",
+    "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe"
+) | Where-Object { $_ -and (Test-Path $_) }
+
+$chrome = $chromeCandidates | Select-Object -First 1
+
+if ($chrome) {
+    $env:QA_BROWSER_EXECUTABLE_PATH = $chrome
+    Write-Host ""
+    Write-Host '=== BROWSER RUNTIME ===' -ForegroundColor Cyan
+    Write-Host "Using installed Google Chrome: $chrome" -ForegroundColor Green
+}
+elseif (-not $SkipPlaywrightInstall) {
+    Write-Host ""
+    Write-Host '=== BROWSER RUNTIME ===' -ForegroundColor Cyan
+    Write-Host 'Google Chrome not found; installing Playwright-managed Chromium.' -ForegroundColor Yellow
     npx.cmd playwright install chromium
     Assert-NativeSuccess 'playwright install chromium'
+}
+else {
+    throw 'No installed Google Chrome found and -SkipPlaywrightInstall was supplied.'
 }
 
 Reset-AuditDatabase 'talibon_portal_test'

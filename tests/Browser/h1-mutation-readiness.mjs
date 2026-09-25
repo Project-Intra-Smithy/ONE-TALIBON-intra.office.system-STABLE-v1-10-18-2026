@@ -447,7 +447,7 @@ async function main() {
   }
   probe('setup', marker);
 
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, ...(process.env.QA_BROWSER_EXECUTABLE_PATH ? { executablePath: process.env.QA_BROWSER_EXECUTABLE_PATH } : {}) });
   const sessions = [];
   const shared = {};
 

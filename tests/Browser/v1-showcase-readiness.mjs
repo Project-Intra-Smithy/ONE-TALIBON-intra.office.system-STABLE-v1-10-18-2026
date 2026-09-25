@@ -261,7 +261,7 @@ async function responsiveMatrix(browser) {
 await write();
 let browser;
 try {
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ headless: true, ...(process.env.QA_BROWSER_EXECUTABLE_PATH ? { executablePath: process.env.QA_BROWSER_EXECUTABLE_PATH } : {}) });
     await gatewayMatrix(browser);
     await executiveMatrix(browser);
     await departmentHeadMatrix(browser);

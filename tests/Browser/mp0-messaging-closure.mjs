@@ -84,7 +84,7 @@ async function assertChannelErrorIsolation(page) {
 }
 
 async function run() {
-    const browser = await chromium.launch({ headless: true });
+    const browser = await chromium.launch({ headless: true, ...(process.env.QA_BROWSER_EXECUTABLE_PATH ? { executablePath: process.env.QA_BROWSER_EXECUTABLE_PATH } : {}) });
     try {
         const contextA = await browser.newContext({ viewport: { width: 1440, height: 900 } });
         const contextB = await browser.newContext({ viewport: { width: 1440, height: 900 } });
