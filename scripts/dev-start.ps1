@@ -70,14 +70,26 @@ if ($LASTEXITCODE -ne 0) {
 }
 Write-Host 'PostgreSQL + migrations: ready' -ForegroundColor Green
 
-Write-Host 'Checking MP0 showcase persona...' -ForegroundColor Cyan
-$showcaseOutput = & php artisan tinker --execute="echo (\App\Models\User::query()->where('email', 'engineering@talibon.demo')->where('is_active', true)->exists() ? 'SHOWCASE_READY' : 'SHOWCASE_MISSING');" 2>&1
+Write-Host 'Checking prototype-day showcase seed readiness...' -ForegroundColor Cyan
+$showcaseOutput = & php artisan tinker --execute="
+    $emails = array_column(config('showcase.personas'), 'email');
+    $active = \App\Models\User::query()->whereIn('email', $emails)->where('is_active', true)->count();
+    $transaction = \App\Models\WorkflowTransaction::query()->where('title', 'Road Rehabilitation Funding Request')->exists();
+    $memorandum = \App\Models\Memorandum::query()->where('status', 'published')->exists();
+    $legislative = \App\Models\LegislativeRecord::query()->exists();
+    $employee = \App\Models\User::query()->where('email', 'employee@talibon.demo')->with('employee.leaveCreditAccounts')->first();
+    $leaveReady = $employee?->employee?->leaveCreditAccounts?->isNotEmpty() === true;
+    if ($active !== 7 || !$transaction || !$memorandum || !$legislative || !$leaveReady) {
+        throw new RuntimeException('Prototype-day seed preflight failed: personas='.$active.', transaction='.(int)$transaction.', memorandum='.(int)$memorandum.', legislative='.(int)$legislative.', leave='.(int)$leaveReady);
+    }
+    echo 'PROTOTYPE_DAY_SEED_READY personas='.$active.PHP_EOL;
+" 2>&1
 $showcaseExit = $LASTEXITCODE
-$showcaseText = $showcaseOutput -join [Environment]::NewLine
-if ($showcaseExit -ne 0 -or $showcaseText -notmatch 'SHOWCASE_READY') {
-    throw 'Active engineering@talibon.demo showcase persona is missing. Seed the configured showcase data before starting the stack.'
+$showcaseOutput | Write-Host
+if ($showcaseExit -ne 0) {
+    throw 'Prototype-day showcase data is incomplete. Seed the configured demo database before starting the stack.'
 }
-Write-Host 'Showcase persona: ready' -ForegroundColor Green
+Write-Host 'Prototype-day showcase data: ready' -ForegroundColor Green
 
 $ViteLauncher = Join-Path $env:TEMP 'talibon-vite.ps1'
 @"
