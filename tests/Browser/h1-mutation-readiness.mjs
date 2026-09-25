@@ -973,6 +973,12 @@ async function main() {
       const formerOfficeDenied = formerOfficeResponse?.status() === 403;
       await formerOfficePage.close();
       const originResponse = await engineering.page.goto(`${BASE}/transactions/${before.id}`, { waitUntil: 'domcontentloaded', timeout: 15000 });
+      const originSettled = await waitForSemanticConvergence(engineering.page, row, {
+        pathMatcher: `/transactions/${before.id}`,
+        expectedPath: '/transactions/{id}',
+        markerLabel: 'origin transaction heading',
+        marker: () => engineering.page.getByRole('heading', { name: returnTitle }),
+      });
       const originVisible = await engineering.page.getByRole('heading', { name: returnTitle }).isVisible().catch(() => false);
       const backendTruth = after.status === 'returned'
         && after.currentDepartmentCode === 'ENG'
@@ -984,15 +990,16 @@ async function main() {
         && authorizedDestination
         && formerOfficeDenied
         && originResponse?.status() === 200
+        && originSettled
         && originVisible;
       row.visibleResult = uiTruth ? 'Return-to-origin handoff restored origin accountability immediately.' : 'Return-to-origin handoff did not fully converge.';
       markBackend(row, backendTruth, JSON.stringify(after));
-      markUiConvergence(row, uiTruth, `listSettled=${listSettled} originStatus=${originResponse?.status()}`);
+      markUiConvergence(row, uiTruth, `listSettled=${listSettled} originSettled=${originSettled} originStatus=${originResponse?.status()}`);
       check(row, 'assignment-cleared', after.assignedEmployeeId === null, `assignedEmployeeId=${after.assignedEmployeeId}`);
       check(row, 'received-at-refreshed', !!after.receivedAt && after.receivedAt !== before.receivedAt, `before=${before.receivedAt} after=${after.receivedAt}`);
       check(row, 'truthful-return-event', eventTruth, JSON.stringify(after.latestEvent));
       check(row, 'previous-current-access-truthful', formerOfficeDenied, `status=${formerOfficeResponse?.status()}`);
-      check(row, 'origin-visibility-truthful', originResponse?.status() === 200 && originVisible, `status=${originResponse?.status()}`);
+      check(row, 'origin-visibility-truthful', originResponse?.status() === 200 && originSettled && originVisible, `status=${originResponse?.status()} semantic=${originSettled}`);
       check(row, 'exactly-one-event-appended', eventDelta === 1, `eventDelta=${eventDelta}`);
       check(row, 'no-duplicate-effective-mutation', row.duplicateMutationCount === 0, `duplicateMutationCount=${row.duplicateMutationCount}`);
 
@@ -1094,10 +1101,10 @@ async function main() {
       });
       setMutationEvidence(row, evidence);
       const mayorSettled = await waitForSemanticConvergence(mayor.page, row, {
-        pathMatcher: '/transactions',
-        expectedPath: '/transactions',
-        markerLabel: 'transaction handoff success confirmation',
-        marker: () => mayor.page.getByText(/Accountability moved to the receiving office/i).first(),
+        pathMatcher: `/transactions/${created.id}`,
+        expectedPath: '/transactions/{id}',
+        markerLabel: 'information requested status',
+        marker: () => mayor.page.getByText('information requested', { exact: true }).first(),
       });
       const after = probe('transaction', requestInformationTitle);
       row.database.after = after;
@@ -1109,6 +1116,12 @@ async function main() {
         && after.latestEvent?.fromDepartmentCode === 'MAYOR'
         && after.latestEvent?.toDepartmentCode === 'ENG';
       const originResponse = await engineering.page.goto(`${BASE}/transactions/${created.id}`, { waitUntil: 'domcontentloaded', timeout: 15000 });
+      const originSettled = await waitForSemanticConvergence(engineering.page, row, {
+        pathMatcher: `/transactions/${created.id}`,
+        expectedPath: '/transactions/{id}',
+        markerLabel: 'origin information requested status',
+        marker: () => engineering.page.getByText('information requested', { exact: true }).first(),
+      });
       const originVisible = await engineering.page.getByRole('heading', { name: requestInformationTitle }).isVisible().catch(() => false);
       const originStatusVisible = await engineering.page.getByText('information requested', { exact: true }).first().isVisible().catch(() => false);
       const backendTruth = after.status === 'information_requested'
@@ -1118,15 +1131,18 @@ async function main() {
         && eventDelta === 1
         && eventTruth;
       const uiTruth = mayorSettled
+        && pathOnly(mayor.page.url()) === `/transactions/${created.id}`
         && originResponse?.status() === 200
+        && originSettled
         && originVisible
         && originStatusVisible;
       row.visibleResult = uiTruth ? 'Information request returned accountability to origin immediately.' : 'Information-request accountability did not fully converge.';
       markBackend(row, backendTruth, JSON.stringify(after));
-      markUiConvergence(row, uiTruth, `mayorSettled=${mayorSettled} originStatus=${originResponse?.status()}`);
+      markUiConvergence(row, uiTruth, `mayorSettled=${mayorSettled} mayorPath=${pathOnly(mayor.page.url())} originSettled=${originSettled} originStatus=${originResponse?.status()}`);
       check(row, 'assignment-cleared', after.assignedEmployeeId === null, `assignedEmployeeId=${after.assignedEmployeeId}`);
       check(row, 'received-at-refreshed', !!after.receivedAt && after.receivedAt !== before.receivedAt, `before=${before.receivedAt} after=${after.receivedAt}`);
-      check(row, 'origin-regained-accountability', originResponse?.status() === 200 && originVisible && originStatusVisible, `status=${originResponse?.status()}`);
+      check(row, 'mayor-retains-authorized-detail-visibility', mayorSettled && pathOnly(mayor.page.url()) === `/transactions/${created.id}`, `path=${pathOnly(mayor.page.url())}`);
+      check(row, 'origin-regained-accountability', originResponse?.status() === 200 && originSettled && originVisible && originStatusVisible, `status=${originResponse?.status()} semantic=${originSettled}`);
       check(row, 'truthful-request-information-event', eventTruth, JSON.stringify(after.latestEvent));
       check(row, 'exactly-one-request-information-event', eventDelta === 1, `eventDelta=${eventDelta}`);
       check(row, 'no-duplicate-effective-mutation', row.duplicateMutationCount === 0, `duplicateMutationCount=${row.duplicateMutationCount}`);
