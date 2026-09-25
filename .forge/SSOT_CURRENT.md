@@ -16,11 +16,19 @@ Hardened closeout:
 
 `KIRCH-TALIBON-BH1-BACKEND-RUNTIME-HARDENING@27824223d5169c8eadf16ab863d09aab9585db9c`
 
+DA1 reviewed repair integration:
+
+`KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT@f48fb9381fee81490f43635ff289cce67ff7779b`
+
+DA1 closeout evidence:
+
+`.forge/evidence/maintainer/DA1-REPAIR-WAVE-CLOSEOUT.md`
+
 Active program:
 
-`DA1 — PROTOTYPE-DAY BLOCKER AUDIT / MAIN CONSOLIDATION PREPARATION`
+`RC1 — MAIN CONSOLIDATION / RECONCILIATION PREPARATION`
 
-Active temporary audit branch:
+Current coordination branch:
 
 `KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT`
 
@@ -33,7 +41,9 @@ Current `main` before promotion:
 - MP0 messaging/runtime cleanup: historical completed ancestry;
 - CAL1 Calendar workspace: completed and feature-frozen;
 - BH1 backend/runtime hardening: reviewed and closed;
-- DA1 heavy audit: active;
+- DA1 repair wave: closed with recorded validation limitations;
+- aggregate `=== DA1 FULL AUDIT PASS ===` marker: not observed and must not be claimed;
+- next transition: RC1 main consolidation / reconciliation;
 - main promotion: not yet performed;
 - branch cleanup: not yet performed;
 - deployment from final consolidated main: not yet authorized.
@@ -42,14 +52,13 @@ Current `main` before promotion:
 
 Before prototype day:
 
-1. identify and repair blockers/material presentation hindrances;
-2. prove the exact current product with full build/test/browser evidence;
-3. reconcile intentional main-only public-portal work into the hardened product;
-4. validate the exact reconciliation candidate;
-5. promote that candidate to `main` without force/history rewrite;
-6. archive required historical tips;
-7. delete all remote branches except `main`;
-8. rehearse the exact prototype flow from final `main`.
+1. preserve the closed CAL1 / BH1 / DA1 product state;
+2. reconcile intentional main-only public-portal work through RC1;
+3. validate the exact RC1 candidate through RV1;
+4. promote only the validated candidate to `main` without force/history rewrite;
+5. archive required historical tips;
+6. delete non-main remote branches only after promotion and archival proof;
+7. rehearse the exact prototype flow from final `main`.
 
 ## Product direction
 
