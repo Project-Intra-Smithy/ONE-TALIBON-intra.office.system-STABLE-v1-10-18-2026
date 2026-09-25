@@ -48,6 +48,8 @@ async function noOverflow(page, label) {
     check(`${label}: no horizontal overflow`, dimensions.root <= dimensions.viewport + 1 && dimensions.body <= dimensions.viewport + 1, JSON.stringify(dimensions));
 }
 async function onePrimaryHeading(page, label) {
+    const heading = page.locator('h1').first();
+    await heading.waitFor({ state: 'visible', timeout: 10000 });
     const count = await page.locator('h1:visible').count();
     check(`${label}: one primary heading`, count === 1, `h1=${count}`);
 }
@@ -133,7 +135,8 @@ async function gatewayMatrix(browser) {
     const page = await context.newPage();
     pageRef = page;
     monitor(page);
-    await page.goto(`${BASE}/login`);
+    const response = await page.goto(`${BASE}/login`);
+    check('Gateway: route loads', response?.status() === 200, `/login status=${response?.status()}`);
     await onePrimaryHeading(page, 'Gateway');
     check('gateway has no email input', await page.locator('input[type="email"]').count() === 0);
     check('gateway has no password input', await page.locator('input[type="password"]').count() === 0);
