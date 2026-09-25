@@ -91,10 +91,21 @@ class W03ContextContinuityTest extends TestCase
                 'target_department_id' => $target->id,
                 'remarks' => 'Forward beyond current office scope.',
             ])
-            ->assertRedirect($returnTo);
+            ->assertRedirect($returnTo)
+            ->assertSessionHas('success', 'Transaction workflow updated. Accountability moved to the receiving office.');
 
         $this->assertSame($target->id, $transaction->fresh()->current_department_id);
         $this->actingAs($actor)->get('/transactions/'.$transaction->id)->assertForbidden();
+    }
+
+    public function test_transaction_detail_related_work_uses_server_owned_workspace_scope_for_office_link(): void
+    {
+        $source = file_get_contents(resource_path('js/pages/Transactions/Show.tsx'));
+
+        $this->assertIsString($source);
+        $this->assertStringContainsString("page.props.workspaceExperience === 'department_head'", $source);
+        $this->assertStringContainsString("href: '/transactions?view=office_queue'", $source);
+        $this->assertStringContainsString("href: '/transactions?view=all'", $source);
     }
 
     public function test_correspondence_register_and_classify_preserve_validated_list_context(): void

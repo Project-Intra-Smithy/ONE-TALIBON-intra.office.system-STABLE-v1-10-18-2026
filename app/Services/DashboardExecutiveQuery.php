@@ -40,12 +40,12 @@ final class DashboardExecutiveQuery
 
         return [
             'metrics' => [
-                'pendingExecutiveAction' => $this->metric('Pending Mayor Action', $pendingExecutiveAction, '/transactions?status=for_approval'),
-                'activeMunicipalWork' => $this->metric('Active Municipal Work', $summary['activeMunicipalWork'] ?? 0, '/transactions'),
-                'municipalOverdue' => $this->metric('Municipal Overdue', $summary['municipalOverdue'] ?? 0, '/transactions?view=overdue'),
-                'dueSoon' => $this->metric('Due Soon', $summary['dueSoon'] ?? 0, '/transactions?view=due_soon'),
+                'pendingExecutiveAction' => $this->metric('Pending Mayor Action', $pendingExecutiveAction, '/mayor-office'),
+                'activeMunicipalWork' => $this->metric('Active Municipal Work', $summary['activeMunicipalWork'] ?? 0, '/reports'),
+                'municipalOverdue' => $this->metric('Municipal Overdue', $summary['municipalOverdue'] ?? 0, '/reports'),
+                'dueSoon' => $this->metric('Due Soon', $summary['dueSoon'] ?? 0, '/reports'),
                 'bottleneckOffices' => $this->metric('Offices With Overdue Work', collect($workload)->where('overdue', '>', 0)->count(), '/reports'),
-                'recentlyCompleted' => $this->metric('Recently Completed', $summary['completedThisMonth'] ?? 0, '/transactions?view=recently_completed'),
+                'recentlyCompleted' => $this->metric('Recently Completed', $summary['completedThisMonth'] ?? 0, '/reports'),
             ],
             'summary' => $summary,
             'departmentWorkload' => $workload,

@@ -76,7 +76,7 @@ final class CorrespondenceWorkspaceActionController extends Controller
 
         return redirect()
             ->to($returnContext->target())
-            ->with('success', 'Correspondence routed successfully.');
+            ->with('success', 'Correspondence routed successfully. Accountability moved to the destination office.');
     }
 
     public function act(

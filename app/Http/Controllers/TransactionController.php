@@ -163,7 +163,10 @@ class TransactionController extends Controller
         );
 
         if (! $request->user()->can('view', $updated)) {
-            return redirect()->to($returnContext->target())->with('success', 'Transaction workflow updated.');
+            return redirect()->to($returnContext->target())->with(
+                'success',
+                'Transaction workflow updated. Accountability moved to the receiving office.',
+            );
         }
 
         return redirect()

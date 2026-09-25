@@ -32,7 +32,7 @@ final class PortalNavigationAccess
             'systemAdministration' => $this->systemAdministration->allowed($user),
             'dashboard' => $hasOperationalIdentity,
             'transactions' => $hasOperationalIdentity,
-            'correspondence' => $hasOperationalIdentity,
+            'correspondence' => $hasOperationalIdentity && ! $user->isRole('system_admin'),
             'records' => $hasOperationalIdentity,
             'travelOrders' => $this->travelOrders->canAccessIndex($user),
             'reports' => $this->reports->allows($user),
