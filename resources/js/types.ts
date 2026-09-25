@@ -46,6 +46,11 @@ export type LiveNotification = {
 };
 
 export type NotificationFeed = {
+    pendingMemo: PendingMemo | null;
+    unreadMemoCount: number;
+    unreadPlatformNotificationCount: number;
+    notifications: LiveNotification[];
+    notificationCount: number;
 };
 
 export type NavigationPermissions = {
@@ -75,10 +80,5 @@ export type SharedProps = {
     showcaseSession: ShowcaseSessionState;
     auth: { user: AuthUser | null };
     permissions: { reports: boolean; navigation: NavigationPermissions };
-    pendingMemo: PendingMemo | null;
-    unreadMemoCount: number;
-    unreadPlatformNotificationCount: number;
-    notifications: LiveNotification[];
-    notificationCount: number;
     flash: { success?: string; error?: string };
 };
