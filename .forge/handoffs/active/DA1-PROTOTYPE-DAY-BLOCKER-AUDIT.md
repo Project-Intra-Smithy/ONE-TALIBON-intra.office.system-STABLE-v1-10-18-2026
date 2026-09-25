@@ -14,7 +14,9 @@ Repository:
 
 Technical Authority:
 
-Kirch Ivan Balite
+**Kirch Ivan Balite — sole Technical Authority**
+
+All other contributors are Developers / Contributors unless explicitly delegated a bounded operating role.
 
 Audit branch:
 
@@ -135,8 +137,8 @@ A repair wave requires separate Maintainer authorization.
 2. **HIGH — current hardened branch lacks an automatic full CI carrier.**
    Existing Forge UIUX validation watches old UIUX branches. MP0 closure watches the MP0 branch. Exact DA1/BH1 authority therefore lacks automatic full Feature + TypeScript + build + browser proof.
 
-3. **HIGH / CONDITIONAL SECURITY — public tunnel plus passwordless showcase gateway.**
-   Showcase mode intentionally permits curated one-click privileged personas. If exposed through an unauthenticated public Cloudflare Quick Tunnel, possession/discovery of the URL is sufficient to enter curated privileged workspaces. This is acceptable only as an explicitly controlled demo exposure, not an ordinary public deployment.
+3. **EXCLUDED BY TECHNICAL AUTHORITY — public-tunnel/showcase exposure.**
+   This is not classified as a DA1 code blocker or code defect. Do not spend DA1 repair scope on it.
 
 4. **MEDIUM — stale demo-script navigation instruction.**
    `docs/DEMO_FLOW.md` says to open Audit & Security as a normal presentation step, while current presentation governance intentionally removes ordinary Audit & Security navigation. The route remains authorized/directly reachable, so this is currently classified as presenter-script drift rather than a backend failure.
@@ -167,3 +169,25 @@ A repair wave requires separate Maintainer authorization.
 13. exact next Maintainer repair/validation action.
 
 Do not declare prototype-day readiness until required runtime gates have actually been observed.
+
+
+## TECHNICAL AUTHORITY EXPANSION — 2026-09-25
+
+Kirch Ivan Balite authorized DA1 to address governance/documentation and validation-carrier defects discovered by the audit, while keeping product-code repairs evidence-driven.
+
+Authorized immediately:
+
+- update stale README/current-authority documentation;
+- establish Kirch Ivan Balite as sole Technical Authority and classify all other contributors as Developers / Contributors unless explicitly delegated;
+- prepare a safe main-promotion and branch-cleanup plan;
+- add/repair audit and release-validation carriers needed to test the current authority;
+- continue heavy source/runtime audit.
+
+Still prohibited until a defect is observed:
+
+- speculative product-feature repair;
+- unrelated feature work;
+- Calendar redesign;
+- additional performance optimization without evidence;
+- main promotion before exact-candidate validation;
+- branch deletion before promotion plus archival preservation.
