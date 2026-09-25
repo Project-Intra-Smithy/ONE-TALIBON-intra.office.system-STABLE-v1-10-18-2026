@@ -97,21 +97,6 @@ if ($active !== 7 || !$transaction || !$memorandum || !$legislative || !$leaveRe
     if ($exit -ne 0) { throw 'Prototype seed contract failed.' }
 }
 
-function Get-AuditPortListener {
-    return Get-NetTCPConnection -LocalPort 8000 -State Listen -ErrorAction SilentlyContinue |
-        Select-Object -First 1
-}
-
-function Assert-AuditPortFree {
-    $listener = Get-AuditPortListener
-    if (-not $listener) { return }
-
-    $pidValue = $listener.OwningProcess
-    $process = Get-CimInstance Win32_Process -Filter "ProcessId = $pidValue" -ErrorAction SilentlyContinue
-    $command = [string]$process.CommandLine
-    throw "Port 8000 is already occupied before audit server startup. PID=$pidValue COMMAND=$command"
-}
-
 function Start-AuditServer {
     param([Parameter(Mandatory = $true)][string]$Label)
 
@@ -123,50 +108,21 @@ function Start-AuditServer {
     Remove-Item (Join-Path $Root 'public\hot') -Force -ErrorAction SilentlyContinue
     Remove-Item (Join-Path $Root 'storage\framework\vite.hot') -Force -ErrorAction SilentlyContinue
 
-    Assert-AuditPortFree
-
-    $serverScript = Join-Path $Root 'vendor\laravel\framework\src\Illuminate\Foundation\resources\server.php'
-    if (-not (Test-Path $serverScript)) {
-        throw "Laravel built-in server router not found: $serverScript"
-    }
-
-    Write-Host "Runtime DB target: $env:DB_DATABASE" -ForegroundColor DarkGray
-
-    # Directly own the PHP listener. Avoid artisan serve on Windows because its
-    # cmd/php child can outlive the process handle and contaminate the next phase.
-    $proc = Start-Process `
-        -FilePath 'php' `
-        -ArgumentList @('-S','127.0.0.1:8000',$serverScript) `
-        -WorkingDirectory $Root `
-        -RedirectStandardOutput $outLog `
-        -RedirectStandardError $errLog `
-        -PassThru `
-        -WindowStyle Hidden
+    $proc = Start-Process -FilePath 'php' -ArgumentList @('artisan','serve','--host=127.0.0.1','--port=8000') -WorkingDirectory $Root -RedirectStandardOutput $outLog -RedirectStandardError $errLog -PassThru -WindowStyle Hidden
 
     for ($i = 0; $i -lt 60; $i++) {
+        try {
+            $response = Invoke-WebRequest -Uri 'http://127.0.0.1:8000/login' -UseBasicParsing -TimeoutSec 2
+            if ($response.StatusCode -eq 200) {
+                return @{ Process = $proc; OutLog = $outLog; ErrLog = $errLog }
+            }
+        } catch {}
+
         if ($proc.HasExited) {
             Get-Content $outLog -Tail 100 -ErrorAction SilentlyContinue
             Get-Content $errLog -Tail 100 -ErrorAction SilentlyContinue
             throw "Laravel audit server exited during $Label."
         }
-
-        $listener = Get-AuditPortListener
-        if ($listener -and $listener.OwningProcess -ne $proc.Id) {
-            Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
-            $other = Get-CimInstance Win32_Process -Filter "ProcessId = $($listener.OwningProcess)" -ErrorAction SilentlyContinue
-            $otherCommand = [string]$other.CommandLine
-            throw "Port 8000 listener does not belong to the current $Label server. PID=$($listener.OwningProcess) COMMAND=$otherCommand"
-        }
-
-        if ($listener -and $listener.OwningProcess -eq $proc.Id) {
-            try {
-                $response = Invoke-WebRequest -Uri 'http://127.0.0.1:8000/login' -UseBasicParsing -TimeoutSec 2
-                if ($response.StatusCode -eq 200) {
-                    return @{ Process = $proc; OutLog = $outLog; ErrLog = $errLog }
-                }
-            } catch {}
-        }
-
         Start-Sleep -Milliseconds 500
     }
 
@@ -178,24 +134,9 @@ function Start-AuditServer {
 
 function Stop-AuditServer {
     param($Server)
-
     if ($Server -and $Server.Process -and -not $Server.Process.HasExited) {
         Stop-Process -Id $Server.Process.Id -Force -ErrorAction SilentlyContinue
-    }
-
-    for ($i = 0; $i -lt 30; $i++) {
-        $listener = Get-AuditPortListener
-        if (-not $listener) { return }
-        if ($Server -and $Server.Process -and $listener.OwningProcess -ne $Server.Process.Id) {
-            Write-Host "WARNING: port 8000 is owned by another process after audit stop. PID=$($listener.OwningProcess)" -ForegroundColor Yellow
-            return
-        }
-        Start-Sleep -Milliseconds 100
-    }
-
-    $leftover = Get-AuditPortListener
-    if ($leftover) {
-        Write-Host "WARNING: audit server PID $($leftover.OwningProcess) still owns port 8000 after stop." -ForegroundColor Yellow
+        Start-Sleep -Milliseconds 500
     }
 }
 
