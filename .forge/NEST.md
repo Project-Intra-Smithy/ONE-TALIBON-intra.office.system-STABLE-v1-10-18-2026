@@ -1,93 +1,101 @@
-# ONE TALIBON V1 — Forge Nest Record
+# ONE TALIBON V1 — FORGE NEST RECORD
 
-## Nest identity
+## Identity
 
-PROJECT: ONE TALIBON V1 — UI/UX Correction & Enhancement Program
+Project:
 
-REPOSITORY: `Kirch-Nairu/Talibon-Sales-Prototype`
+`ONE TALIBON V1`
 
-TECHNICAL AUTHORITY: Kirch Ivan Balite
+Repository:
 
-NEST MATURITY: **NEST-2 — Governed**
+`Kirch-Nairu/Talibon-Sales-Prototype`
 
-STATUS: ACTIVE — PRE_IMPLEMENTATION
+Technical Authority:
 
-## Forge authority
+**Kirch Ivan Balite**
 
-Forge repository: `Kirch-Nairu/KIRION-FORGE`
+Nest maturity:
 
-Pinned Forge authority: `main@44eb57e5b45b343be0033bf22a7a5e74d543c01a`
+`NEST-2 — GOVERNED`
 
-This project uses Forge role, evidence, handoff, acceptance, integration, and recovery doctrine according to that pinned authority unless a later explicit Maintainer transition updates the pin.
+## Forge source
 
-## Inherited-project Nest authorization
+`Kirch-Nairu/KIRION-FORGE@44eb57e5b45b343be0033bf22a7a5e74d543c01a`
 
-This repository existed before this Nest. It is therefore an inherited project rather than a born-nested project.
+Forge provides operating doctrine. Technical Authority remains Kirch Ivan Balite.
 
-The Maintainer performed G0 reconnaissance, independent Reviewer inspection, and correction-baseline Acceptance before materializing the Nest.
+## Historical materialization
 
-Accepted correction baseline:
-
-`KIRCH-TALIBON-V1-SHOWCASE-ACCESS@0913a37f96affd2c2a681697bdf6fdb6c381a99e`
-
-Acceptance result:
-
-**ACCEPT WITH RECORDED LIMITATION**
-
-The baseline is accepted as the immutable source starting point for correction work only. It is not release/UAT/deployment/production acceptance.
-
-## Nest materialization anchor
-
-The parent immediately before repository-local `.forge/` governance is materialized is:
+The repository-local Nest was originally materialized during the UI/UX correction program from accepted baseline:
 
 `0913a37f96affd2c2a681697bdf6fdb6c381a99e`
 
-The commit containing this record necessarily has a later SHA. Current exact branch authority must be read directly from Git/GitHub rather than self-referentially written into this file.
+That remains historical provenance.
 
-## Active correction authority
+It is not the current product authority.
 
-Integration branch:
+## Current product authority
 
-`KIRCH-TALIBON-V1-UIUX-CORRECTION`
+CAL1 frozen candidate:
 
-Historical parent integration:
+`9dba054d34377ce76149d8474ddeb66b5c20130e`
 
-`KIRCH-TALIBON-SALES-V1@fdb7f5a272bad3c0f3efc352951a9746c544012a`
+BH1 hardened closeout:
 
-## Why NEST-2
+`27824223d5169c8eadf16ab863d09aab9585db9c`
 
-This Nest installs or establishes:
+Current active program:
 
-- explicit repository/project authority;
+`DA1 — Prototype-Day Blocker Audit / Main Consolidation Preparation`
+
+Current temporary branch:
+
+`KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT`
+
+## Current target
+
+The repository is being consolidated toward one continuing branch:
+
+`main`
+
+Temporary/historical branches will remain until:
+
+- audit is complete;
+- confirmed blockers are repaired;
+- main-only intentional work is reconciled;
+- exact candidate validation passes;
+- main promotion completes;
+- historical tips are archived.
+
+After those gates, non-main remote branches may be deleted under Technical Authority.
+
+## Governance installed
+
+The Nest currently governs:
+
+- Technical Authority;
 - current SSOT;
-- architecture boundary;
-- engineering log;
-- accepted decision record;
-- continuity/handoff mechanism;
-- Forge role boundaries;
-- branch policy;
-- validation/evidence policy;
+- architecture boundaries;
+- handoffs;
+- review/evidence discipline;
 - integration policy;
 - recovery policy;
-- active work coordination ledger.
+- prototype-day audit;
+- promotion rules;
+- branch cleanup rules.
 
-NEST-3 is not claimed. Runtime/deployment/release governance has not been demonstrated for this correction program. NEST-4 is not claimed.
+## Evidence law
 
-## Evidence limitation inherited at Nest birth
+Observed Git/runtime evidence outranks stale branch references in historical records.
 
-At baseline acceptance:
+Historical review/acceptance files remain immutable provenance and should not be rewritten to look current.
 
-- runtime: NOT RUN;
-- build: NOT RUN by Reviewer/Acceptance;
-- type check: NOT RUN by Reviewer/Acceptance;
-- PHP tests: NOT RUN by Reviewer/Acceptance;
-- browser harness: NOT RUN by Reviewer/Acceptance;
-- exact-SHA CI result: NOT OBSERVED;
-- responsive acceptance: NOT PERFORMED;
-- accessibility acceptance: NOT PERFORMED.
+## Role boundary
 
-Known UI/UX defects are intentionally inherited into the program and are not represented as resolved.
+All contributors other than Kirch Ivan Balite are Developers / Contributors unless explicitly delegated a bounded Forge role.
+
+A bounded Forge role does not transfer Technical Authority.
 
 ## Secrets
 
-No secret values, private credentials, private employee data, private correspondence, signatures, phone numbers, or other sensitive material belong in `.forge/` durable memory.
+Do not store credentials, passwords, private employee data, private correspondence, keys, session material, or tokens in `.forge/`.
