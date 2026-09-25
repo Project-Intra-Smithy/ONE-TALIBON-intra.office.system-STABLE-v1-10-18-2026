@@ -80,3 +80,28 @@ Accessibility checks include:
 ## Promotion rule
 
 Acceptance must name the exact promotion being evaluated. Source-baseline acceptance, candidate acceptance, release acceptance, UAT, deployment, and production are separate transitions and must not be conflated.
+
+
+## DA1 closeout evidence — 2026-09-26
+
+DA1 repair-wave Reviewer disposition:
+
+`SUITABLE WITH RECORDED LIMITATIONS`
+
+Observed component evidence:
+
+- Full H1: PASS, 20 scenarios at `5883d703924921bf5baed587eba01df9c57b6f54`;
+- exact review candidate `9fa1ec1a00be72984db651c5b251b36183444d64` has the identical Git tree as `5883d703...`;
+- V1 showcase: PASS / frozen evidence;
+- MP0 targeted reproduction: PASS after one transient aggregate timeout;
+- full Feature suite: PASS before later carrier-stage failure;
+- NAV-01 through NAV-04: Reviewer source/regression disposition PASS.
+
+Not observed:
+
+- aggregate `=== DA1 FULL AUDIT PASS ===` marker;
+- exact-SHA runtime rerun at `9fa1ec1...`.
+
+Evidence rule:
+
+Do not rewrite content-equivalent runtime evidence as exact-SHA execution. Do not claim full DA1 aggregate PASS. These limitations carry into RC1 / RV1.
