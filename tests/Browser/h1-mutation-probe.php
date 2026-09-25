@@ -300,6 +300,7 @@ function memorandumSnapshot(string $memoNumber, string $recipientEmail): array
     return [
         'count' => $count,
         'id' => $memorandum?->id,
+        'status' => $memorandum?->status,
         'recipientCount' => $memorandum?->recipients()->count() ?? 0,
         'acknowledgedCount' => $memorandum?->recipients()->whereNotNull('acknowledged_at')->count() ?? 0,
         'targetAcknowledged' => $recipient?->acknowledged_at !== null,
