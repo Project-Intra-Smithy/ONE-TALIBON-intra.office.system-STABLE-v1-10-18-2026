@@ -96,9 +96,8 @@ async function switchWorkspace(page) {
 }
 async function assertNavigation(page, label, expected, forbidden = []) {
     const collapsedGroups = page.locator('nav[aria-label="Primary navigation"] button[aria-expanded="false"]');
-    const collapsedCount = await collapsedGroups.count();
-    for (let index = 0; index < collapsedCount; index += 1) {
-        await collapsedGroups.nth(index).click();
+    while (await collapsedGroups.count() > 0) {
+        await collapsedGroups.first().click();
     }
 
     for (const item of expected) {
