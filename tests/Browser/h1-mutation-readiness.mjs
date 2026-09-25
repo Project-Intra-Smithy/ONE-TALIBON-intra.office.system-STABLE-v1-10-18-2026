@@ -12,8 +12,8 @@ const SHOTS = 'storage/app/qa/h1-mutation-failures';
 const CORRESPONDENCE_ID = '11000000-0000-4000-8000-000000000001';
 const MAYOR_SEEDED_TRANSACTION = 'Road Rehabilitation Funding Request';
 
-if (!PASSWORD || !EXPECTED_SHA) {
-  throw new Error('QA_DEMO_PASSWORD and QA_EXPECTED_SHA are required');
+if (!EXPECTED_SHA) {
+  throw new Error('QA_EXPECTED_SHA is required');
 }
 
 const marker = EXPECTED_SHA.slice(0, 10);
@@ -27,7 +27,7 @@ const returnTitle = `H3 return transaction ${marker}`;
 const requestInformationTitle = `H3 request information transaction ${marker}`;
 const disapproveTitle = `H3 mayor disapprove transaction ${marker}`;
 const cancelTravelReference = `H3-TO-CANCEL-${marker.toUpperCase()}`;
-const secrets = new Set([PASSWORD]);
+const secrets = new Set(PASSWORD ? [PASSWORD] : []);
 const runtimeByPage = new WeakMap();
 
 const report = {
@@ -204,45 +204,28 @@ async function login(browser, spec) {
   const response = await page.goto(`${BASE}/login`, { waitUntil: 'domcontentloaded', timeout: 20000 });
   if (response?.status() !== 200) throw new Error(`${spec.label} login page returned ${response?.status()}`);
   await appReady(page);
-  await page.getByLabel('Email').fill(spec.email);
-  await page.getByLabel('Password').fill(PASSWORD);
 
-  const destinations = spec.privileged
-    ? ['/dashboard', '/security/mfa/enroll', '/security/mfa/challenge']
-    : ['/dashboard'];
+  await page.getByRole('button', { name: 'Open Municipal Workspace', exact: true }).click();
+  await page.getByRole('dialog').waitFor({ state: 'visible', timeout: 10000 });
 
-  await Promise.all([
-    page.waitForURL((url) => destinations.includes(url.pathname), { timeout: 15000 }),
-    page.getByRole('button', { name: 'Sign In' }).click(),
-  ]);
+  const personaByEmail = {
+    'engineering@talibon.demo': { role: 'Department Head', office: 'Municipal Engineering Office' },
+    'budget@talibon.demo': { role: 'Department Head', office: 'Municipal Budget Office' },
+    'mayor@talibon.demo': { role: 'Municipal Executive', office: null },
+    'employee@talibon.demo': { role: 'Employee', office: null },
+  };
 
-  let current = new URL(page.url()).pathname;
-  if (current === '/security/mfa/challenge') {
-    throw new Error(`${spec.label} unexpectedly required an existing MFA challenge in a fresh isolated database`);
+  const persona = personaByEmail[spec.email];
+  if (!persona) throw new Error(`${spec.label} has no showcase gateway mapping for ${spec.email}`);
+
+  await page.getByRole('button', { name: new RegExp(`^${persona.role}`) }).click();
+
+  if (persona.office) {
+    await page.getByRole('heading', { name: 'Choose office context', exact: true }).waitFor({ state: 'visible', timeout: 10000 });
+    await page.getByRole('button', { name: new RegExp(`^${persona.office}`) }).click();
   }
 
-  if (current === '/security/mfa/enroll') {
-    const secret = (await page.locator('code').first().innerText()).trim();
-    secrets.add(secret);
-    const code = totp(secret);
-    secrets.add(code);
-    await page.getByLabel('Six-digit verification code').fill(code);
-    await Promise.all([
-      page.waitForURL((url) => url.pathname === '/security/mfa/recovery-codes', { timeout: 15000 }),
-      page.getByRole('button', { name: /Confirm MFA enrollment/i }).click(),
-    ]);
-    const recovery = page.locator('pre').first();
-    if (await recovery.count()) {
-      for (const recoveryCode of (await recovery.innerText()).trim().split(/\s+/)) secrets.add(recoveryCode);
-    }
-    await Promise.all([
-      page.waitForURL((url) => url.pathname === '/dashboard', { timeout: 15000 }),
-      page.getByRole('link', { name: /Continue to portal/i }).click(),
-    ]);
-    current = new URL(page.url()).pathname;
-  }
-
-  if (current !== '/dashboard') throw new Error(`${spec.label} did not reach the dashboard`);
+  await page.waitForURL((url) => url.pathname === '/dashboard', { timeout: 15000 });
   await appReady(page);
   return { context, page };
 }
