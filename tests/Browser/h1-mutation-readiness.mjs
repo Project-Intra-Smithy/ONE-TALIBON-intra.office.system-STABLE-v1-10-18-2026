@@ -947,8 +947,12 @@ async function main() {
         action: () => button.click(),
       });
       setMutationEvidence(row, evidence);
-      await budget.page.waitForURL((url) => url.pathname === '/transactions', { timeout: 5000 }).catch(() => {});
-      const ready = await appReady(budget.page, 2500).catch(() => null);
+      const listSettled = await waitForSemanticConvergence(budget.page, row, {
+        pathMatcher: '/transactions',
+        expectedPath: '/transactions',
+        markerLabel: 'transaction handoff success confirmation',
+        marker: () => budget.page.getByText(/Accountability moved to the receiving office/i).first(),
+      });
       const after = probe('transaction', returnTitle);
       row.database.after = after;
       const eventDelta = after.eventCount - before.eventCount;
@@ -964,23 +968,21 @@ async function main() {
       const formerOfficeDenied = formerOfficeResponse?.status() === 403;
       await formerOfficePage.close();
       const originResponse = await engineering.page.goto(`${BASE}/transactions/${before.id}`, { waitUntil: 'domcontentloaded', timeout: 15000 });
-      const originReady = await appReady(engineering.page, 2500).catch(() => null);
       const originVisible = await engineering.page.getByRole('heading', { name: returnTitle }).isVisible().catch(() => false);
-      const immediate = !!ready
-        && authorizedDestination
-        && formerOfficeDenied
-        && originResponse?.status() === 200
-        && !!originReady
-        && originVisible
-        && after.status === 'returned'
+      const backendTruth = after.status === 'returned'
         && after.currentDepartmentCode === 'ENG'
         && after.assignedEmployeeId === null
         && after.receivedAt !== before.receivedAt
         && eventDelta === 1
         && eventTruth;
-      row.visibleResult = immediate ? 'Return-to-origin handoff restored origin accountability immediately.' : 'Return-to-origin handoff did not fully converge.';
-      row.immediateConvergence = immediate ? 'PASS' : 'FAIL';
-      check(row, 'return-authoritative-state', immediate, JSON.stringify(after));
+      const uiTruth = listSettled
+        && authorizedDestination
+        && formerOfficeDenied
+        && originResponse?.status() === 200
+        && originVisible;
+      row.visibleResult = uiTruth ? 'Return-to-origin handoff restored origin accountability immediately.' : 'Return-to-origin handoff did not fully converge.';
+      markBackend(row, backendTruth, JSON.stringify(after));
+      markUiConvergence(row, uiTruth, `listSettled=${listSettled} originStatus=${originResponse?.status()}`);
       check(row, 'assignment-cleared', after.assignedEmployeeId === null, `assignedEmployeeId=${after.assignedEmployeeId}`);
       check(row, 'received-at-refreshed', !!after.receivedAt && after.receivedAt !== before.receivedAt, `before=${before.receivedAt} after=${after.receivedAt}`);
       check(row, 'truthful-return-event', eventTruth, JSON.stringify(after.latestEvent));
@@ -1020,7 +1022,13 @@ async function main() {
       });
       check(row, 'prerequisite-create-one-request', createEvidence.requests.length === 1, `requests=${createEvidence.requests.length}`);
       check(row, 'prerequisite-create-success', createEvidence.responses[0]?.status >= 200 && createEvidence.responses[0]?.status < 400, `status=${createEvidence.responses[0]?.status ?? null}`);
-      await appReady(engineering.page, 2500);
+      const createSettled = await waitForSemanticConvergence(engineering.page, row, {
+        pathMatcher: /^\/transactions\/\d+$/,
+        expectedPath: '/transactions/{id}',
+        markerLabel: 'created transaction heading',
+        marker: () => engineering.page.getByRole('heading', { name: requestInformationTitle }),
+      });
+      check(row, 'prerequisite-create-ui-convergence', createSettled);
       const created = probe('transaction', requestInformationTitle);
       if (!created.id) throw new Error('Request-information prerequisite create failed');
       check(row, 'prerequisite-created-submitted', created.count === 1 && created.status === 'submitted' && created.currentDepartmentCode === 'BUDGET' && created.eventCount === 1, JSON.stringify(created));
@@ -1035,8 +1043,13 @@ async function main() {
       });
       check(row, 'prerequisite-review-one-request', reviewEvidence.requests.length === 1, `requests=${reviewEvidence.requests.length}`);
       check(row, 'prerequisite-review-success', reviewEvidence.responses[0]?.status >= 200 && reviewEvidence.responses[0]?.status < 400, `status=${reviewEvidence.responses[0]?.status ?? null}`);
-      await budget.page.getByText('for review', { exact: true }).first().waitFor({ state: 'visible', timeout: 2500 }).catch(() => {});
-      await appReady(budget.page, 2500);
+      const reviewSettled = await waitForSemanticConvergence(budget.page, row, {
+        pathMatcher: `/transactions/${created.id}`,
+        expectedPath: '/transactions/{id}',
+        markerLabel: 'for review status',
+        marker: () => budget.page.getByText('for review', { exact: true }).first(),
+      });
+      check(row, 'prerequisite-review-ui-convergence', reviewSettled);
       const reviewed = probe('transaction', requestInformationTitle);
       check(row, 'prerequisite-reviewed', reviewed.status === 'for_review' && reviewed.currentDepartmentCode === 'BUDGET' && reviewed.eventCount === created.eventCount + 1, JSON.stringify(reviewed));
 
@@ -1048,7 +1061,13 @@ async function main() {
       });
       check(row, 'prerequisite-mayor-route-one-request', sendEvidence.requests.length === 1, `requests=${sendEvidence.requests.length}`);
       check(row, 'prerequisite-mayor-route-success', sendEvidence.responses[0]?.status >= 200 && sendEvidence.responses[0]?.status < 400, `status=${sendEvidence.responses[0]?.status ?? null}`);
-      await appReady(budget.page, 2500).catch(() => null);
+      const mayorRouteSettled = await waitForSemanticConvergence(budget.page, row, {
+        pathMatcher: '/transactions',
+        expectedPath: '/transactions',
+        markerLabel: 'transaction handoff success confirmation',
+        marker: () => budget.page.getByText(/Accountability moved to the receiving office/i).first(),
+      });
+      check(row, 'prerequisite-mayor-route-ui-convergence', mayorRouteSettled);
       const before = probe('transaction', requestInformationTitle);
       row.database.prerequisite = before;
       check(row, 'prerequisite-for-mayor-decision', before.status === 'for_approval' && before.currentDepartmentCode === 'MAYOR' && before.assignedEmployeeId === null && before.eventCount === reviewed.eventCount + 1, JSON.stringify(before));
@@ -1069,7 +1088,12 @@ async function main() {
         action: () => button.click(),
       });
       setMutationEvidence(row, evidence);
-      const mayorReady = await appReady(mayor.page, 2500).catch(() => null);
+      const mayorSettled = await waitForSemanticConvergence(mayor.page, row, {
+        pathMatcher: '/transactions',
+        expectedPath: '/transactions',
+        markerLabel: 'transaction handoff success confirmation',
+        marker: () => mayor.page.getByText(/Accountability moved to the receiving office/i).first(),
+      });
       const after = probe('transaction', requestInformationTitle);
       row.database.after = after;
       const eventDelta = after.eventCount - before.eventCount;
@@ -1080,23 +1104,21 @@ async function main() {
         && after.latestEvent?.fromDepartmentCode === 'MAYOR'
         && after.latestEvent?.toDepartmentCode === 'ENG';
       const originResponse = await engineering.page.goto(`${BASE}/transactions/${created.id}`, { waitUntil: 'domcontentloaded', timeout: 15000 });
-      const originReady = await appReady(engineering.page, 2500).catch(() => null);
       const originVisible = await engineering.page.getByRole('heading', { name: requestInformationTitle }).isVisible().catch(() => false);
       const originStatusVisible = await engineering.page.getByText('information requested', { exact: true }).first().isVisible().catch(() => false);
-      const immediate = !!mayorReady
-        && originResponse?.status() === 200
-        && !!originReady
-        && originVisible
-        && originStatusVisible
-        && after.status === 'information_requested'
+      const backendTruth = after.status === 'information_requested'
         && after.currentDepartmentCode === 'ENG'
         && after.assignedEmployeeId === null
         && after.receivedAt !== before.receivedAt
         && eventDelta === 1
         && eventTruth;
-      row.visibleResult = immediate ? 'Information request returned accountability to origin immediately.' : 'Information-request accountability did not fully converge.';
-      row.immediateConvergence = immediate ? 'PASS' : 'FAIL';
-      check(row, 'information-request-authoritative-state', immediate, JSON.stringify(after));
+      const uiTruth = mayorSettled
+        && originResponse?.status() === 200
+        && originVisible
+        && originStatusVisible;
+      row.visibleResult = uiTruth ? 'Information request returned accountability to origin immediately.' : 'Information-request accountability did not fully converge.';
+      markBackend(row, backendTruth, JSON.stringify(after));
+      markUiConvergence(row, uiTruth, `mayorSettled=${mayorSettled} originStatus=${originResponse?.status()}`);
       check(row, 'assignment-cleared', after.assignedEmployeeId === null, `assignedEmployeeId=${after.assignedEmployeeId}`);
       check(row, 'received-at-refreshed', !!after.receivedAt && after.receivedAt !== before.receivedAt, `before=${before.receivedAt} after=${after.receivedAt}`);
       check(row, 'origin-regained-accountability', originResponse?.status() === 200 && originVisible && originStatusVisible, `status=${originResponse?.status()}`);
@@ -1200,18 +1222,23 @@ async function main() {
         action: () => button.click(),
       });
       setMutationEvidence(row, evidence);
-      await engineering.page.getByRole('heading', { name: /^Classify correspondence$/i }).waitFor({ state: 'visible', timeout: 2000 }).catch(() => {});
-      const ready = await appReady(engineering.page, 2500).catch(() => null);
+      const semanticSettled = await waitForSemanticConvergence(engineering.page, row, {
+        pathMatcher: `/correspondence/${CORRESPONDENCE_ID}/workspace`,
+        expectedPath: '/correspondence/{id}/workspace',
+        markerLabel: 'Classify correspondence action',
+        marker: () => engineering.page.getByRole('heading', { name: /^Classify correspondence$/i }),
+      });
       const after = probe('correspondence', CORRESPONDENCE_ID);
       row.database.after = after;
       const eventDelta = after.eventCount - before.eventCount;
       row.duplicateMutationCount = Math.max(0, eventDelta - 1);
       const nextAction = await engineering.page.getByRole('heading', { name: /^Classify correspondence$/i }).isVisible().catch(() => false);
       const priorGone = await engineering.page.getByRole('button', { name: /^Register correspondence$/i }).count() === 0;
-      row.visibleResult = nextAction ? 'Registered state converged to the Classify Correspondence action immediately.' : 'Registered state did not converge immediately.';
-      const immediate = nextAction && priorGone && !!ready && after.lifecycle === 'registered' && eventDelta === 1;
-      row.immediateConvergence = immediate ? 'PASS' : 'FAIL';
-      check(row, 'immediate-authoritative-state', immediate, JSON.stringify(after));
+      const backendTruth = after.lifecycle === 'registered' && eventDelta === 1;
+      const uiTruth = semanticSettled && nextAction && priorGone;
+      row.visibleResult = uiTruth ? 'Registered state converged to the Classify Correspondence action immediately.' : 'Registered state did not converge immediately.';
+      markBackend(row, backendTruth, JSON.stringify(after));
+      markUiConvergence(row, uiTruth, `semanticSettled=${semanticSettled} nextAction=${nextAction} priorGone=${priorGone}`);
       check(row, 'previous-action-removed', priorGone, 'Register action remains available');
       check(row, 'exactly-one-event-appended', eventDelta === 1, `eventDelta=${eventDelta}`);
 
@@ -1231,11 +1258,10 @@ async function main() {
     }, async (row) => {
       const before = probe('correspondence', CORRESPONDENCE_ID);
       row.database.before = before;
-      const classify = engineering.page.getByRole('heading', { name: /^Classify correspondence$/i });
-      if (!await classify.isVisible().catch(() => false)) {
-        await engineering.page.goto(`${BASE}/correspondence/${CORRESPONDENCE_ID}/workspace`, { waitUntil: 'domcontentloaded' });
-        await appReady(engineering.page);
-      }
+      const response = await engineering.page.goto(`${BASE}/correspondence/${CORRESPONDENCE_ID}/workspace`, { waitUntil: 'domcontentloaded', timeout: 15000 });
+      check(row, 'starting-page-200', response?.status() === 200, `status=${response?.status()}`);
+      await appReady(engineering.page);
+      await engineering.page.getByRole('heading', { name: /^Classify correspondence$/i }).waitFor({ state: 'visible', timeout: 5000 });
       await engineering.page.getByLabel('Classification').selectOption('internal');
       const button = engineering.page.getByRole('button', { name: /^Save classification$/i });
       const evidence = await browserMutation(engineering.page, {
@@ -1243,18 +1269,23 @@ async function main() {
         action: () => button.click(),
       });
       setMutationEvidence(row, evidence);
-      await engineering.page.getByRole('heading', { name: /^Route correspondence$/i }).waitFor({ state: 'visible', timeout: 2000 }).catch(() => {});
-      const ready = await appReady(engineering.page, 2500).catch(() => null);
+      const semanticSettled = await waitForSemanticConvergence(engineering.page, row, {
+        pathMatcher: `/correspondence/${CORRESPONDENCE_ID}/workspace`,
+        expectedPath: '/correspondence/{id}/workspace',
+        markerLabel: 'Route correspondence action',
+        marker: () => engineering.page.getByRole('heading', { name: /^Route correspondence$/i }),
+      });
       const after = probe('correspondence', CORRESPONDENCE_ID);
       row.database.after = after;
       const eventDelta = after.eventCount - before.eventCount;
       row.duplicateMutationCount = Math.max(0, eventDelta - 1);
       const nextAction = await engineering.page.getByRole('heading', { name: /^Route correspondence$/i }).isVisible().catch(() => false);
       const priorGone = await engineering.page.getByRole('button', { name: /^Save classification$/i }).count() === 0;
-      row.visibleResult = nextAction ? 'Classified state converged to the Route Correspondence action immediately.' : 'Classified state did not converge immediately.';
-      const immediate = nextAction && priorGone && !!ready && after.lifecycle === 'classified' && after.classification === 'internal' && eventDelta === 1;
-      row.immediateConvergence = immediate ? 'PASS' : 'FAIL';
-      check(row, 'immediate-authoritative-state', immediate, JSON.stringify(after));
+      const backendTruth = after.lifecycle === 'classified' && after.classification === 'internal' && eventDelta === 1;
+      const uiTruth = semanticSettled && nextAction && priorGone;
+      row.visibleResult = uiTruth ? 'Classified state converged to the Route Correspondence action immediately.' : 'Classified state did not converge immediately.';
+      markBackend(row, backendTruth, JSON.stringify(after));
+      markUiConvergence(row, uiTruth, `semanticSettled=${semanticSettled} nextAction=${nextAction} priorGone=${priorGone}`);
       check(row, 'previous-action-removed', priorGone, 'Classify action remains available');
       check(row, 'exactly-one-event-appended', eventDelta === 1, `eventDelta=${eventDelta}`);
 
@@ -1274,10 +1305,10 @@ async function main() {
     }, async (row) => {
       const before = probe('correspondence', CORRESPONDENCE_ID);
       row.database.before = before;
-      if (!await engineering.page.getByRole('heading', { name: /^Route correspondence$/i }).isVisible().catch(() => false)) {
-        await engineering.page.goto(`${BASE}/correspondence/${CORRESPONDENCE_ID}/workspace`, { waitUntil: 'domcontentloaded' });
-        await appReady(engineering.page);
-      }
+      const response = await engineering.page.goto(`${BASE}/correspondence/${CORRESPONDENCE_ID}/workspace`, { waitUntil: 'domcontentloaded', timeout: 15000 });
+      check(row, 'starting-page-200', response?.status() === 200, `status=${response?.status()}`);
+      await appReady(engineering.page);
+      await engineering.page.getByRole('heading', { name: /^Route correspondence$/i }).waitFor({ state: 'visible', timeout: 5000 });
       await selectByText(engineering.page.getByLabel('Destination Office'), /Budget/i);
       const button = engineering.page.getByRole('button', { name: /^Route correspondence$/i });
       const evidence = await browserMutation(engineering.page, {
@@ -1285,15 +1316,19 @@ async function main() {
         action: () => button.click({ clickCount: 2, delay: 0 }),
       });
       setMutationEvidence(row, evidence);
-      await engineering.page.getByText('Correspondence routed successfully.', { exact: true }).waitFor({ state: 'visible', timeout: 2500 }).catch(() => {});
-      const ready = await appReady(engineering.page, 2500).catch(() => null);
+      const originSettled = await waitForSemanticConvergence(engineering.page, row, {
+        pathMatcher: '/correspondence',
+        expectedPath: '/correspondence',
+        markerLabel: 'correspondence handoff success confirmation',
+        marker: () => engineering.page.getByText(/Accountability moved to the destination office/i).first(),
+      });
       const after = probe('correspondence', CORRESPONDENCE_ID);
       row.database.after = after;
       const eventDelta = after.eventCount - before.eventCount;
       const workflowEventDelta = after.workflowEventCount - before.workflowEventCount;
       row.duplicateMutationCount = Math.max(0, eventDelta - 1, workflowEventDelta - 1);
 
-      const successVisible = await engineering.page.getByText('Correspondence routed successfully.', { exact: true }).isVisible().catch(() => false);
+      const successVisible = await engineering.page.getByText(/Correspondence routed successfully\. Accountability moved to the destination office\./i).first().isVisible().catch(() => false);
       const authorizedDestination = pathOnly(engineering.page.url()) === '/correspondence';
       const denialVisible = await engineering.page.getByRole('heading', { name: /cannot open this page/i }).isVisible().catch(() => false);
       const originStillListsRecord = await engineering.page.getByText('H1 mutation correspondence acceptance', { exact: true }).count() > 0;
@@ -1302,7 +1337,12 @@ async function main() {
       const budgetRuntime = runtimeByPage.get(budget.page) || [];
       const budgetRuntimeStart = budgetRuntime.length;
       const destinationResponse = await budget.page.goto(`${BASE}/correspondence/${CORRESPONDENCE_ID}/workspace`, { waitUntil: 'domcontentloaded', timeout: 15000 });
-      const destinationReady = await appReady(budget.page, 2500).catch(() => null);
+      const destinationSettled = await waitForSemanticConvergence(budget.page, row, {
+        pathMatcher: `/correspondence/${CORRESPONDENCE_ID}/workspace`,
+        expectedPath: '/correspondence/{id}/workspace',
+        markerLabel: 'Routed lifecycle',
+        marker: () => budget.page.getByText('Routed', { exact: true }).first(),
+      });
       const destinationRouted = await budget.page.getByText('Routed', { exact: true }).first().isVisible().catch(() => false);
       const destinationWorkflow = after.workflowReference
         ? await budget.page.getByText(after.workflowReference, { exact: true }).first().isVisible().catch(() => false)
@@ -1317,28 +1357,27 @@ async function main() {
         && after.workflowDepartmentCode === 'BUDGET'
         && eventDelta === 1
         && workflowEventDelta === 1;
-      const immediate = successVisible
+      const uiTruth = originSettled
+        && successVisible
         && authorizedDestination
         && !denialVisible
         && !originStillListsRecord
         && originReopen.status() === 403
         && destinationResponse?.status() === 200
+        && destinationSettled
         && destinationRouted
         && destinationWorkflow
         && preparationVisible
-        && destinationRuntimeClean
-        && !!destinationReady
-        && !!ready
-        && authoritative;
+        && destinationRuntimeClean;
 
-      row.visibleResult = immediate
+      row.visibleResult = uiTruth
         ? 'Routing returns the origin actor to the authorized correspondence inbox while the Budget office immediately owns and can open the routed record.'
         : 'Post-route ownership, authorized destination, or destination-office visibility did not converge immediately.';
-      row.immediateConvergence = immediate ? 'PASS' : 'FAIL';
-      check(row, 'database-routed-exactly-once', authoritative, JSON.stringify(after));
+      markBackend(row, authoritative, JSON.stringify(after));
+      markUiConvergence(row, uiTruth, `originSettled=${originSettled} destinationSettled=${destinationSettled}`);
       check(row, 'origin-post-route-destination-authorized', authorizedDestination && successVisible && !denialVisible, `path=${pathOnly(engineering.page.url())}`);
       check(row, 'origin-no-longer-owns-current-work', !originStillListsRecord && originReopen.status() === 403, `reopenStatus=${originReopen.status()}`);
-      check(row, 'destination-office-can-open-routed-record', destinationResponse?.status() === 200 && destinationRouted && destinationWorkflow && preparationVisible && !!destinationReady, `status=${destinationResponse?.status()}`);
+      check(row, 'destination-office-can-open-routed-record', destinationResponse?.status() === 200 && destinationSettled && destinationRouted && destinationWorkflow && preparationVisible, `status=${destinationResponse?.status()}`);
       check(row, 'destination-runtime-clean', destinationRuntimeClean, `diagnostics=${destinationRuntimeDelta.length}`);
       check(row, 'no-duplicate-effective-mutation', row.duplicateMutationCount === 0, `duplicateMutationCount=${row.duplicateMutationCount}`);
 
@@ -1391,8 +1430,13 @@ async function main() {
       });
       check(row, 'prerequisite-one-request-emitted', prerequisiteEvidence.requests.length === 1, `observed ${prerequisiteEvidence.requests.length} requests`);
       check(row, 'prerequisite-response-success', prerequisiteEvidence.responses[0]?.status >= 200 && prerequisiteEvidence.responses[0]?.status < 400, `status=${prerequisiteEvidence.responses[0]?.status ?? null}`);
-      await budget.page.getByText('for review', { exact: true }).first().waitFor({ state: 'visible', timeout: 2500 }).catch(() => {});
-      await appReady(budget.page, 2500);
+      const prerequisiteSettled = await waitForSemanticConvergence(budget.page, row, {
+        pathMatcher: `/transactions/${routed.workflowId}`,
+        expectedPath: '/transactions/{id}',
+        markerLabel: 'for review status',
+        marker: () => budget.page.getByText('for review', { exact: true }).first(),
+      });
+      check(row, 'prerequisite-ui-convergence', prerequisiteSettled);
 
       const prepared = probe('correspondence', CORRESPONDENCE_ID);
       row.database.prerequisite = prepared;
@@ -1414,8 +1458,12 @@ async function main() {
         action: () => button.click(),
       });
       setMutationEvidence(row, evidence);
-      await budget.page.getByText('In Action', { exact: true }).first().waitFor({ state: 'visible', timeout: 2500 }).catch(() => {});
-      const ready = await appReady(budget.page, 2500).catch(() => null);
+      const semanticSettled = await waitForSemanticConvergence(budget.page, row, {
+        pathMatcher: `/correspondence/${CORRESPONDENCE_ID}/workspace`,
+        expectedPath: '/correspondence/{id}/workspace',
+        markerLabel: 'In Action lifecycle',
+        marker: () => budget.page.getByText('In Action', { exact: true }).first(),
+      });
       const after = probe('correspondence', CORRESPONDENCE_ID);
       row.database.after = after;
       const eventDelta = after.eventCount - beforeAct.eventCount;
@@ -1423,19 +1471,17 @@ async function main() {
       row.duplicateMutationCount = Math.max(0, eventDelta - 1, workflowEventDelta);
       const visible = await budget.page.getByText('In Action', { exact: true }).first().isVisible().catch(() => false);
       const actionGone = await budget.page.getByRole('button', { name: /^Start action$/i }).count() === 0;
-      const immediate = visible
-        && actionGone
-        && !!ready
-        && after.lifecycle === 'in_action'
+      const backendTruth = after.lifecycle === 'in_action'
         && !!after.actionStartedAt
         && after.workflowStatus === 'for_review'
         && after.workflowDepartmentCode === 'BUDGET'
         && eventDelta === 1
         && workflowEventDelta === 0;
+      const uiTruth = semanticSettled && visible && actionGone;
 
-      row.visibleResult = visible ? 'In Action lifecycle is visible immediately after the legitimate linked-workflow prerequisite.' : 'In Action lifecycle is not visible immediately.';
-      row.immediateConvergence = immediate ? 'PASS' : 'FAIL';
-      check(row, 'immediate-authoritative-state', immediate, JSON.stringify(after));
+      row.visibleResult = uiTruth ? 'In Action lifecycle is visible immediately after the legitimate linked-workflow prerequisite.' : 'In Action lifecycle is not visible immediately.';
+      markBackend(row, backendTruth, JSON.stringify(after));
+      markUiConvergence(row, uiTruth, `semanticSettled=${semanticSettled} actionGone=${actionGone}`);
       check(row, 'previous-action-removed', actionGone, 'Start Action remains available');
       check(row, 'action-started-at-populated', !!after.actionStartedAt, `actionStartedAt=${after.actionStartedAt}`);
       check(row, 'exactly-one-correspondence-event-appended', eventDelta === 1, `eventDelta=${eventDelta}`);
@@ -1474,17 +1520,22 @@ async function main() {
         action: () => mayor.page.getByRole('button', { name: /Publish & Deliver/i }).click(),
       });
       setMutationEvidence(row, evidence);
-      await mayor.page.getByText(memorandumNumber, { exact: true }).waitFor({ state: 'visible', timeout: 2000 }).catch(() => {});
-      const ready = await appReady(mayor.page, 2500).catch(() => null);
       const after = probe('memorandum', memorandumNumber, 'employee@talibon.demo');
+      const semanticSettled = await waitForSemanticConvergence(mayor.page, row, {
+        pathMatcher: after.id ? `/memoranda/${after.id}` : '/memoranda/__missing__',
+        expectedPath: '/memoranda/{id}',
+        markerLabel: 'published memorandum number',
+        marker: () => mayor.page.getByText(memorandumNumber, { exact: true }).first(),
+      });
       row.database.after = after;
       shared.memorandumId = after.id;
       row.duplicateMutationCount = Math.max(0, after.count - before.count - 1);
       const visible = await mayor.page.getByText(new RegExp(memorandumNumber, 'i')).first().isVisible().catch(() => false);
-      row.visibleResult = visible ? 'Published memorandum detail is visible immediately.' : 'Published memorandum did not converge visibly immediately.';
-      const immediate = visible && !!ready && before.count === 0 && after.count === 1 && after.recipientCount > 0;
-      row.immediateConvergence = immediate ? 'PASS' : 'FAIL';
-      check(row, 'immediate-authoritative-state', immediate, JSON.stringify(after));
+      const backendTruth = before.count === 0 && after.count === 1 && after.status === 'published' && after.recipientCount > 0;
+      const uiTruth = semanticSettled && visible;
+      row.visibleResult = uiTruth ? 'Published memorandum detail is visible immediately.' : 'Published memorandum did not converge visibly immediately.';
+      markBackend(row, backendTruth, JSON.stringify(after));
+      markUiConvergence(row, uiTruth, `semanticSettled=${semanticSettled}`);
       check(row, 'no-duplicate-effective-mutation', row.duplicateMutationCount === 0, `duplicateMutationCount=${row.duplicateMutationCount}`);
 
       await reloadAndVerify(mayor.page, row, async () => {
@@ -1562,18 +1613,28 @@ async function main() {
         action: () => mayor.page.getByRole('button', { name: /Record approved order/i }).click(),
       });
       setMutationEvidence(row, evidence);
-      await mayor.page.getByRole('heading', { name: travelReference }).waitFor({ state: 'visible', timeout: 2000 }).catch(() => {});
-      const ready = await appReady(mayor.page, 2500).catch(() => null);
       const after = probe('travel', travelReference);
+      const semanticSettled = await waitForSemanticConvergence(mayor.page, row, {
+        pathMatcher: after.publicId ? `/travel-orders/${after.publicId}` : '/travel-orders/__missing__',
+        expectedPath: '/travel-orders/{publicId}',
+        markerLabel: 'approved Travel Order reference',
+        marker: () => mayor.page.getByRole('heading', { name: travelReference }),
+      });
       row.database.after = after;
       shared.travelPublicId = after.publicId;
       row.duplicateMutationCount = Math.max(0, after.count - before.count - 1);
       const visible = await mayor.page.getByRole('heading', { name: travelReference }).isVisible().catch(() => false);
       const approved = await mayor.page.getByText('Approved', { exact: true }).first().isVisible().catch(() => false);
-      row.visibleResult = visible && approved ? 'Approved Travel Order is visible immediately.' : 'Approved Travel Order did not converge visibly immediately.';
-      const immediate = visible && approved && !!ready && before.count === 0 && after.count === 1 && after.status === 'approved' && after.eventCount === 1 && after.issuedToCount === 1;
-      row.immediateConvergence = immediate ? 'PASS' : 'FAIL';
-      check(row, 'immediate-authoritative-state', immediate, JSON.stringify(after));
+      const backendTruth = before.count === 0
+        && after.count === 1
+        && after.status === 'approved'
+        && after.eventCount === 1
+        && after.issuedToCount === 1
+        && after.latestEvent?.event === 'recorded_approved';
+      const uiTruth = semanticSettled && visible && approved;
+      row.visibleResult = uiTruth ? 'Approved Travel Order is visible immediately.' : 'Approved Travel Order did not converge visibly immediately.';
+      markBackend(row, backendTruth, JSON.stringify(after));
+      markUiConvergence(row, uiTruth, `semanticSettled=${semanticSettled}`);
       check(row, 'exactly-one-record-event', after.eventCount === 1, `eventCount=${after.eventCount}`);
 
       await reloadAndVerify(mayor.page, row, async () => {
