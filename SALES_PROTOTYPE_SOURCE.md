@@ -1,31 +1,42 @@
-﻿# Talibon Sales Prototype
+# Talibon Sales Prototype — Repository Provenance
 
-This repository is an independent sales and stakeholder demonstration workspace.
+## Current authority
 
-## Engineering source
+This repository is the active ONE TALIBON stakeholder/prototype workspace governed by:
 
-Source repository:
+**Technical Authority: Kirch Ivan Balite**
 
-Kirch-Nairu/Talibon-Intra-Office-Portal
+For the current prototype-day program, live Git state in this repository is authoritative for this repository's product line.
 
-Exact imported engineering SHA:
+## Historical import provenance
 
-a7d7be17feb435b50c52cacd063e11d92ad047e1
+This repository originated from engineering source imported from:
 
-The original engineering repository remains the technical source of truth.
+`Kirch-Nairu/Talibon-Intra-Office-Portal`
+
+Historical imported SHA:
+
+`a7d7be17feb435b50c52cacd063e11d92ad047e1`
+
+That relationship is provenance, not a rule that a stale external branch overrides newer accepted work in this repository.
 
 ## Purpose
 
-This repository exists for:
+This repository contains:
 
-- sales demonstrations
-- stakeholder presentations
-- high-fidelity municipal prototype work
-- Talibon-specific visual content
-- rapid presentation iteration
-- prototype expansion concepts
+- stakeholder and sales demonstration work;
+- Talibon-specific product presentation;
+- real prototype workflows and writes;
+- UI/UX correction work;
+- Calendar workspace work;
+- messaging prototype work;
+- backend/runtime hardening;
+- prototype-day audit, reconciliation, validation, and promotion evidence.
 
-This repository intentionally uses an independent Git history.
+## Current rule
 
-It must not be treated as the engineering authority for the production
-Intra-Office Portal.
+For decisions about this repository:
+
+`Git truth + explicit Technical Authority > stale cross-repository documentation > chat memory`
+
+Cross-repository changes are not implicitly imported. Any future synchronization must be separately authorized and evidence-backed.
