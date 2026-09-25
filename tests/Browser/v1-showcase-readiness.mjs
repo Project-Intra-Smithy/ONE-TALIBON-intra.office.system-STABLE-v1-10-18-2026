@@ -95,6 +95,12 @@ async function switchWorkspace(page) {
     check('Switch Workspace returns to gateway', safePath(page.url()) === '/login', safePath(page.url()));
 }
 async function assertNavigation(page, label, expected, forbidden = []) {
+    const collapsedGroups = page.locator('nav[aria-label="Primary navigation"] button[aria-expanded="false"]');
+    const collapsedCount = await collapsedGroups.count();
+    for (let index = 0; index < collapsedCount; index += 1) {
+        await collapsedGroups.nth(index).click();
+    }
+
     for (const item of expected) {
         check(`${label}: ${item} visible`, await page.getByRole('link', { name: item, exact: true }).first().isVisible().catch(() => false));
     }
