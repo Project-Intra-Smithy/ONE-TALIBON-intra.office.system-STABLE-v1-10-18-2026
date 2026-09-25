@@ -1,0 +1,56 @@
+name: BH1 Runtime Probe
+
+on:
+  push:
+    branches:
+      - KIRCH-TALIBON-BH1-BACKEND-RUNTIME-HARDENING
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bh1-runtime-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  runtime-probe:
+    name: PostgreSQL-backed runtime probe
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d talibon_portal_test"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout BH1 candidate
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+          tools: composer:v2
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare Laravel environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Run BH1 representative runtime probe
+        run: php artisan test tests/Feature/Bh1RuntimePerformanceTest.php
