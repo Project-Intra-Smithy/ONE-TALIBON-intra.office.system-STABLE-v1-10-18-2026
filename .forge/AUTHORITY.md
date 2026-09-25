@@ -1,89 +1,86 @@
-# ONE TALIBON V1 — Authority
+# ONE TALIBON V1 — CURRENT AUTHORITY
 
-## Human technical authority
+## Technical Authority
 
-Kirch Ivan Balite
+**Kirch Ivan Balite**
+
+Kirch Ivan Balite is the sole Technical Authority for this repository.
+
+All other contributors are Developers / Contributors unless an explicit repository-local handoff delegates a narrower operating responsibility.
+
+No contributor title, commit volume, branch ownership, QA role, reviewer role, DevOps role, frontend/backend specialization, or operator role independently grants product or promotion authority.
 
 ## Repository
 
 `Kirch-Nairu/Talibon-Sales-Prototype`
 
-## Forge authority
+## Forge source
 
-`Kirch-Nairu/KIRION-FORGE`
+`Kirch-Nairu/KIRION-FORGE@44eb57e5b45b343be0033bf22a7a5e74d543c01a`
 
-Pinned authority for this program:
+Forge provides operating doctrine. It does not supersede Kirch Ivan Balite's Technical Authority over this repository.
 
-`main@44eb57e5b45b343be0033bf22a7a5e74d543c01a`
+## Current product lineage
 
-## Accepted correction baseline
+CAL1 frozen candidate:
 
-`KIRCH-TALIBON-V1-SHOWCASE-ACCESS@0913a37f96affd2c2a681697bdf6fdb6c381a99e`
+`9dba054d34377ce76149d8474ddeb66b5c20130e`
 
-This exact SHA is immutable baseline evidence. The branch name does not redefine the accepted baseline if it later moves.
+BH1 hardened closeout:
 
-## Active correction integration branch
+`27824223d5169c8eadf16ab863d09aab9585db9c`
 
-`KIRCH-TALIBON-V1-UIUX-CORRECTION`
+Current program:
 
-This branch is the coordination/integration authority for the UI/UX correction program after Nest materialization. Writers branch from exact SHAs supplied by the Maintainer; branch names alone are insufficient authority.
+`DA1 — PROTOTYPE-DAY BLOCKER AUDIT`
 
-## Historical parent integration
+Current audit branch:
 
-`KIRCH-TALIBON-SALES-V1@fdb7f5a272bad3c0f3efc352951a9746c544012a`
+`KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT`
 
-It is lineage context, not the active integration target for new correction waves unless explicitly re-authorized.
+## Main status
 
-## Current authority rule
+`main` is currently a divergent historical/public-portal line and is **not yet** the hardened product authority.
 
-Directly observed Git/GitHub state outranks remembered state and stale documentation.
+It must not be force-updated.
 
-Within the correction program, use this order when evidence conflicts:
+Main promotion requires:
 
-1. directly observed Git/GitHub state and runtime evidence;
-2. explicit human/Maintainer authority transition;
-3. `.forge/AUTHORITY.md`, `.forge/SSOT_CURRENT.md`, `.forge/DECISIONS.md`, and root `AGENTS.md` as current repository governance;
-4. accepted Reviewer/Acceptance evidence;
-5. historical repository documents as provenance/cold memory.
+1. completed blocker audit;
+2. bounded repair of confirmed blockers;
+3. explicit reconciliation of intentional main-only product work;
+4. exact-candidate full validation;
+5. Technical Authority promotion decision;
+6. non-force promotion;
+7. post-promotion verification.
 
-Do not silently reconcile a material conflict. Escalate it to the Maintainer.
+## Single-branch target
+
+The final branch topology target is:
+
+`main`
+
+Historical evidence will be preserved through Git history and archival tags before temporary/historical branches are deleted.
+
+## Authority precedence
+
+1. observed Git/runtime truth;
+2. Kirch Ivan Balite's explicit Technical Authority instruction;
+3. current repository-local governance;
+4. durable review/acceptance evidence;
+5. historical documentation;
+6. memory/chat reconstruction.
 
 ## Mutation policy
 
-- accepted baseline SHA remains untouched;
-- writers mutate only their assigned candidate branch/files;
-- writers never self-integrate or self-promote;
-- integration requires accepted evidence plus exact authority precheck;
-- non-force transitions only by default;
-- deployment is outside writer authority;
-- `main` is not a correction work branch;
-- `Kirch-Nairu/Talibon-Intra-Office-Portal` is outside this program's mutation authority.
-
-## Commit identity convention
-
-Forge-controlled project commits use:
-
-`KIRCH-FORGE-<ROLE>-<REASON>`
-
-The prefix communicates operating role; it does not replace atomic commit quality or evidence requirements.
-
-## Promotion model
-
-```text
-ACCEPTED CORRECTION AUTHORITY
-→ BOUNDED WRITER HANDOFF
-→ WRITER CANDIDATE
-→ REVIEW
-→ ACCEPTANCE
-→ INTEGRATION AUTHORIZATION
-→ AUTHORITY PRECHECK
-→ NON-FORCE INTEGRATION
-→ REMOTE VERIFICATION
-→ WORK LEDGER / EVIDENCE UPDATE
-```
+- no reset/rebase/force-push of accepted history as a convenience;
+- no silent authority drift;
+- no deployment from stale historical branches;
+- no destructive branch cleanup before promotion and archival preservation;
+- product repairs during DA1 must correspond to confirmed prototype-day blockers/hindrances and require explicit Technical Authority authorization.
 
 ## Release boundary
 
-Source-baseline acceptance is not release acceptance.
+Prototype-day readiness, deployment readiness, production readiness, and commercial completion are separate claims.
 
-Any later release/UAT/deployment/production claim requires its own explicit evidence and promotion contract.
+Only observed evidence may support each claim.
