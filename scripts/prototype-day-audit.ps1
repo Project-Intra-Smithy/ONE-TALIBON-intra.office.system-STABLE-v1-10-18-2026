@@ -145,10 +145,17 @@ Write-Host '=== ONE TALIBON — DA1 FULL PROTOTYPE-DAY AUDIT ===' -ForegroundCol
 if (-not (Test-Path '.git')) { throw 'Run this script from the ONE TALIBON Git checkout.' }
 if (-not (Test-Path '.env')) { throw 'Missing .env. Prepare a private local environment first.' }
 
-$head = (git rev-parse HEAD).Trim()
+$headOutput = git rev-parse HEAD
 Assert-NativeSuccess 'git rev-parse HEAD'
-$branchName = (git branch --show-current).Trim()
+$head = ($headOutput | Out-String).Trim()
+
+$branchOutput = git branch --show-current
 Assert-NativeSuccess 'git branch --show-current'
+$branchName = ($branchOutput | Out-String).Trim()
+
+if ([string]::IsNullOrWhiteSpace($branchName)) {
+    $branchName = '(detached HEAD — expected for isolated audit worktree)'
+}
 
 Write-Host "Branch: $branchName"
 Write-Host "HEAD:   $head"
