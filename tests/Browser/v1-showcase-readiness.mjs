@@ -54,7 +54,7 @@ async function onePrimaryHeading(page, label) {
     check(`${label}: one primary heading`, count === 1, `h1=${count}`);
 }
 async function appearance(page, label) {
-    const group = page.locator('[role="group"][aria-label="Appearance"]:visible').first();
+    const group = page.getByRole('group', { name: 'Appearance preference', exact: true }).first();
     await group.waitFor({ state: 'visible' });
     await group.getByRole('button', { name: label, exact: true }).click();
     await page.waitForFunction((value) => document.documentElement.dataset.appearance === value, label.toLowerCase());
