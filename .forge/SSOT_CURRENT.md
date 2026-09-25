@@ -1,181 +1,111 @@
-# ONE TALIBON V1 — Current SSOT
+# ONE TALIBON V1 — CURRENT SSOT
 
-## Program
+## Technical Authority
 
-ONE TALIBON V1 — UI/UX CORRECTION & ENHANCEMENT PROGRAM
+**Kirch Ivan Balite**
 
-Repository: `Kirch-Nairu/Talibon-Sales-Prototype`
+All other contributors are Developers / Contributors unless explicitly delegated a bounded operating role.
 
-Active integration branch: `KIRCH-TALIBON-V1-UIUX-CORRECTION`
+## Repository
 
-Accepted correction baseline: `0913a37f96affd2c2a681697bdf6fdb6c381a99e`
+`Kirch-Nairu/Talibon-Sales-Prototype`
 
-Forge pin: `Kirch-Nairu/KIRION-FORGE@44eb57e5b45b343be0033bf22a7a5e74d543c01a`
+## Current product authority
 
-## Current visual authority
+Hardened closeout:
 
-Authenticated product identity authority is governed by `UXD-017 — AUTHENTICATED MUNICIPAL GREEN IDENTITY`.
+`KIRCH-TALIBON-BH1-BACKEND-RUNTIME-HARDENING@27824223d5169c8eadf16ab863d09aab9585db9c`
 
-Accepted product-line evidence:
+Active program:
 
-- homepage: `KIRCH-TALIBON-INTRA-OFFICE-HOMEPAGE-GREEN-REDESIGN@568ceaf11cd22927437fc83831c9b91301f13bd7`;
-- login: `KIRCH-TALIBON-INTRA-OFFICE-LOGIN-GREEN-REDESIGN@c03d6c57488126da8b0a064616f6e9d4f26c2bd2`;
-- authenticated workspace foundation branch: `KIRCH-TALIBON-INTRA-OFFICE-WORKSPACE-GREEN-FOUNDATION`, sourced exactly from the accepted login SHA.
+`DA1 — PROTOTYPE-DAY BLOCKER AUDIT / MAIN CONSOLIDATION PREPARATION`
 
-Green owns municipal/product identity. Neutral surfaces own work. Blue remains available only for genuine informational semantics; amber and rose/red retain warning and danger meaning.
+Active temporary audit branch:
 
-This authority supersedes the earlier visual direction that treated municipal navy/blue as the primary authenticated brand. It does not reopen the accepted shell architecture, dashboard hierarchy, feature IA, routes, auth, workflow semantics, or backend behavior.
+`KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT`
 
-## Product purpose
+Current `main` before promotion:
 
-One Talibon is a dense internal municipal digital workspace for day-to-day office coordination. It is not a marketing site, consumer social product, AI assistant, or security showcase.
+`9cc1b50b28762402c3b24a721cd5ba7ae961817c`
 
-The correction program preserves the existing municipal workspace architecture while improving operational ergonomics, density, context continuity, role relevance, responsive reachability, accessibility, and visual hierarchy.
+## State
 
-## Governing UX principle
+- MP0 messaging/runtime cleanup: historical completed ancestry;
+- CAL1 Calendar workspace: completed and feature-frozen;
+- BH1 backend/runtime hardening: reviewed and closed;
+- DA1 heavy audit: active;
+- main promotion: not yet performed;
+- branch cleanup: not yet performed;
+- deployment from final consolidated main: not yet authorized.
 
-### Operational Compression
+## Program objective
 
-Reduce unnecessary scrolling, wasted whitespace, repeated information, oversized treatment, action hunting, route bouncing, context loss, horizontal task traversal, and equal visual weighting of unequal information while preserving readability and accessibility.
+Before prototype day:
 
-The target is not maximum compactness. The target is shorter operational distance between user intent, action, context, and consequence.
+1. identify and repair blockers/material presentation hindrances;
+2. prove the exact current product with full build/test/browser evidence;
+3. reconcile intentional main-only public-portal work into the hardened product;
+4. validate the exact reconciliation candidate;
+5. promote that candidate to `main` without force/history rewrite;
+6. archive required historical tips;
+7. delete all remote branches except `main`;
+8. rehearse the exact prototype flow from final `main`.
 
-## Accepted pre-Nest decisions
+## Product direction
 
-### 1. Density system
+ONE TALIBON is a dense, credible municipal digital workspace, not a marketing dashboard.
 
-Use shared primitives and shell/page spacing rules first. Do not randomly shrink text or locally compress pages without a system.
+Primary presentation surfaces must be functional and honest.
 
-### 2. Sidebar hierarchy
+Do not introduce unrelated feature work during DA1.
 
-Preserve the current structural pattern where navigation owns the scroll region and the footer remains separate. Reduce footer consumption, compress identity, demote Appearance, and keep Switch Workspace / Sign out easy to reach.
+Do not reopen CAL1/BH1 without new evidence.
 
-### 3. Header/search
+## Prototype-day critical proof
 
-Compact the shell header. Keep Records search semantically honest; do not relabel it as universal search. Expansion-on-focus/popover treatment is allowed where needed for space.
+Required evidence includes:
 
-### 4. Dashboard hierarchy
+- clean dependency install;
+- deterministic PostgreSQL migration/seed;
+- all seven showcase personas;
+- TypeScript;
+- production frontend build;
+- route/view/config cacheability where applicable;
+- full Feature suite;
+- Dashboard/My Work/Correspondence/Records;
+- Calendar Month/Week/Day/Schedule;
+- Messages and two-user send/polling;
+- Engineering -> Budget -> Mayor transaction lifecycle;
+- memorandum publish/acknowledge;
+- legislative read/search;
+- HR leave flow;
+- authorization-denial proof;
+- browser pageerror/server-5xx monitoring;
+- desktop/mobile presentation checks.
 
-Organize role-relevant information around:
+## Authority precedence
 
-`ACT NOW → NEXT / SOON → CURRENT OPERATING PICTURE → REFERENCE / HISTORY`
+1. observed Git/runtime state;
+2. explicit Technical Authority instruction from Kirch Ivan Balite;
+3. current repository-local governance;
+4. durable review/acceptance evidence;
+5. historical documents;
+6. chat memory.
 
-Do not solve hierarchy merely by shrinking every card.
+## Historical records
 
-### 5. List/detail continuity
+Older UI/UX correction records, handoffs, and accepted baseline SHAs remain valid historical provenance.
 
-Standardize clear Back/breadcrumb recovery, preserve list/filter state where practical, keep selected context near the trigger, and expose real related-work links where they already exist or are supported by real relationships.
+They do not define current branch authority merely because their documents still name historical branches.
 
-### 6. Planning responsiveness
+## Consolidation plan
 
-Desktop may retain dense tables. Narrow tablet/mobile must not require traversing 1000+ pixel tables to reach the primary record action. Use compact adaptive row/card/list treatment with direct record opening. Detail should remain near the selected record via adjacent panel, sticky panel, or responsive drawer/sheet rather than appearing after an arbitrarily long register.
+See:
 
-### 7. Persistent utility architecture
+`docs/PROTOTYPE_DAY_MAIN_CONSOLIDATION_PLAN.md`
 
-A restrained right-side utility surface is authorized for real, read-oriented information such as next Calendar items, brief announcements, and recent Messages/channel summaries.
+Target branch topology after closeout:
 
-Wide desktop may expose it; ordinary laptop should default compact/collapsed; tablet/mobile should use drawer/overlay behavior. It must not materially crush the primary work canvas.
-
-### 8. Messages boundary
-
-Quick access is read-oriented in this program. Do not invent Send, typing indicators, presence, realtime chat, or other collaboration semantics not backed by the current system.
-
-### 9. Weather
-
-External weather/provider integration is deferred from the initial correction program. No API/provider should be introduced incidentally inside shell cleanup.
-
-### 10. Human Resources
-
-Improve HRIS discoverability and HR-relevant home/shortcut context for the Human Resources persona. A separate bespoke shell is not required unless later evidence proves it necessary.
-
-### 11. Legislative Office
-
-Keep the shared municipal shell. Add role-relevant Legislative home context/shortcuts where useful rather than creating a separate shell by default.
-
-### 12. Administration / security presentation
-
-Remove ordinary visible Audit & Security entry points from the V1 presentation while preserving underlying security behavior. Do not fake Users/Departments surfaces while routes/integration remain pending; materialize them only when real navigation targets are available.
-
-### 13. Error-state normalization
-
-Normalize dedicated 403/status presentation, dark-mode parity, recovery wording, and remove unnecessary implementation/security-audit language from normal user copy.
-
-### 14. Accessibility
-
-Accessible names, focus return, keyboard flow, reflow/zoom, contrast, semantic headings/landmarks, and responsive action reachability are acceptance concerns, not optional polish.
-
-## Inherited confirmed correction debt
-
-The G0 Reviewer confirmed or source-established issues including:
-
-- Planning mobile action reachability;
-- Planning list/detail locality below 2XL;
-- Showcase selector focus restoration;
-- Messages search/channel accessible names;
-- Legislative search accessible name;
-- Calendar omission of existing end/all-day/location data;
-- visible Audit & Security presentation contradiction;
-- HR persona/HRIS discoverability mismatch;
-- HRIS dark-mode/design inconsistency and prototype/simulation wording;
-- dedicated 403 dark/copy inconsistency;
-- Employee Directory narrow-screen table dependence;
-- Development Plans / Municipal Plans naming inconsistency.
-
-Likely risks remain open for dashboard hierarchy, Calendar dual-schedule comprehension, sidebar footer priority, and list/filter-state preservation.
-
-## Runtime evidence state at program start
-
-- runtime: NOT RUN;
-- build: NOT RUN by Reviewer/Acceptance;
-- type check: NOT RUN by Reviewer/Acceptance;
-- PHP tests: NOT RUN by Reviewer/Acceptance;
-- browser harness: NOT RUN by Reviewer/Acceptance;
-- exact-SHA CI: NOT OBSERVED;
-- responsive acceptance: NOT PERFORMED;
-- accessibility acceptance: NOT PERFORMED.
-
-Do not reinterpret these as failures or passes. They are open evidence states.
-
-## Non-goals
-
-- no giant CSS rewrite;
-- no backend-auth redesign merely for navigation;
-- no wholesale removal of useful information;
-- no all-tables-to-cards mandate;
-- no decorative/fake charts;
-- no fake actions/realtime behavior;
-- no Facebook visual clone;
-- no external weather integration in initial waves;
-- no AI product surface;
-- no ordinary Audit & Security marketing/presentation surface;
-- no conversion into a marketing site.
-
-## Planned correction waves
-
-`W1 — Shell Compaction & Density Foundation`
-
-`W2 — Dashboard Hierarchy`
-
-`W3 — Context-Preserving Review Workflows`
-
-`W4 — Planning Responsive UX`
-
-`W5 — Calendar + Persistent Utility Rail`
-
-`W6 — Messaging Quick Access`
-
-`W7 — Role / HRIS / Admin / Error Completion`
-
-`W8 — Cross-Product Acceptance & Harness Expansion`
-
-Dependency shape:
-
-`W1 → {W2, W3, W4}`
-
-`W1 → W5 → W6`
-
-`W1 + W2 → W7`
-
-`W2 + W3 + W4 + W5 + W6 + W7 → W8`
-
-No wave is authorized merely by appearing here. Each requires a bounded Maintainer handoff with exact source SHA, ownership, decisions, validation, and stop conditions.
+```text
+main
+```
