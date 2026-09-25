@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - KIRCH-TALIBON-V1-UIUX-CORRECTION
-      - KIRCH-TALIBON-BH1-BACKEND-RUNTIME-HARDENING
       - 'KIRCH-TALIBON-UIUX-W*'
   pull_request:
     branches:
