@@ -11,7 +11,7 @@ function check(name, ok, details = '') {
 
 async function enterDepartmentHead(page, office) {
     await page.goto(`${BASE}/login`);
-    await page.getByRole('button', { name: 'Enter Workspace', exact: true }).click();
+    await page.getByRole('button', { name: 'Open Municipal Workspace', exact: true }).click();
     await page.getByRole('button', { name: /^Department Head/ }).click();
     await page.getByRole('heading', { name: 'Choose office context', exact: true }).waitFor();
     await page.getByRole('button', { name: new RegExp(`^${office}`) }).click();
