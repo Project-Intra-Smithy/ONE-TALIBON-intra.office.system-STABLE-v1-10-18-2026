@@ -36,9 +36,21 @@ final class NotificationFeedQuery
                     });
             });
 
-        $unreadMemoCount = (clone $recipientQuery)->whereNull('viewed_at')->count();
-        $pendingMemo = $this->pendingMemo($recipientQuery);
-        $memoNotifications = $this->memoNotifications($recipientQuery);
+        $unreadMemoRecipients = (clone $recipientQuery)
+            ->whereNull('viewed_at')
+            ->select('memo_recipients.*')
+            ->selectRaw('COUNT(*) OVER() AS unread_total')
+            ->with([
+                'memorandum.issuer:id,name',
+                'memorandum.issuingDepartment:id,name,short_name',
+            ])
+            ->latest('delivered_at')
+            ->limit(4)
+            ->get();
+
+        $unreadMemoCount = (int) ($unreadMemoRecipients->first()?->getAttribute('unread_total') ?? 0);
+        $pendingMemo = $this->pendingMemo($unreadMemoRecipients->first());
+        $memoNotifications = $this->memoNotifications($unreadMemoRecipients);
 
         $platformBase = PlatformNotification::query()
             ->where('user_id', $user->id)
@@ -46,10 +58,12 @@ final class NotificationFeedQuery
                 $expiry->whereNull('expires_at')->orWhere('expires_at', '>', now());
             });
 
-        $hasPlatformHistory = (clone $platformBase)->exists();
-        $unreadPlatformNotificationCount = (clone $platformBase)
-            ->whereNull('read_at')
-            ->count();
+        $platformStats = (clone $platformBase)
+            ->selectRaw('COUNT(*) AS total_count')
+            ->selectRaw('SUM(CASE WHEN read_at IS NULL THEN 1 ELSE 0 END) AS unread_count')
+            ->first();
+        $hasPlatformHistory = (int) ($platformStats?->total_count ?? 0) > 0;
+        $unreadPlatformNotificationCount = (int) ($platformStats?->unread_count ?? 0);
         $platformNotifications = $this->platformNotifications($platformBase);
         $workflowNotifications = $hasPlatformHistory
             ? []
@@ -74,17 +88,8 @@ final class NotificationFeedQuery
         ];
     }
 
-    private function pendingMemo($recipientQuery): ?array
+    private function pendingMemo(?MemoRecipient $recipient): ?array
     {
-        $recipient = (clone $recipientQuery)
-            ->whereNull('viewed_at')
-            ->with([
-                'memorandum.issuer:id,name',
-                'memorandum.issuingDepartment:id,name,short_name',
-            ])
-            ->latest('delivered_at')
-            ->first();
-
         if (! $recipient) {
             return null;
         }
@@ -100,14 +105,9 @@ final class NotificationFeedQuery
         ];
     }
 
-    private function memoNotifications($recipientQuery): array
+    private function memoNotifications($recipients): array
     {
-        return (clone $recipientQuery)
-            ->whereNull('viewed_at')
-            ->with('memorandum:id,memo_number,title,requires_acknowledgement')
-            ->latest('delivered_at')
-            ->limit(4)
-            ->get()
+        return $recipients
             ->map(fn (MemoRecipient $recipient): array => [
                 'key' => 'memo-'.$recipient->id,
                 'type' => 'memorandum',
@@ -125,6 +125,17 @@ final class NotificationFeedQuery
     {
         return (clone $platformBase)
             ->whereNull('read_at')
+            ->select([
+                'id',
+                'user_id',
+                'source_domain',
+                'priority',
+                'title',
+                'message',
+                'action_url',
+                'requires_acknowledgement',
+                'created_at',
+            ])
             ->latest('created_at')
             ->limit(6)
             ->get()
