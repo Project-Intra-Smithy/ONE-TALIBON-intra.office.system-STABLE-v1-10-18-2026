@@ -207,7 +207,7 @@ class CorrespondenceDetailWorkspaceTest extends TestCase
                 ->where('correspondence.accountability.workflow.status', 'for_review')
                 ->where('correspondence.accountability.workflow.assignedEmployee.name', $recipient->employee->full_name)
                 ->where('correspondence.accountability.workflow.assignedEmployee.position', 'Correspondence Officer')
-                ->where('correspondence.accountability.workflow.detailUrl', '/transactions/'.$workflow->id));
+                ->where('correspondence.accountability.workflow.detailUrl', '/transactions/'.$workflow->id.'?return_to=%2Fcorrespondence'));
     }
 
     public function test_capability_props_match_backend_state_and_actionability_boundaries(): void
