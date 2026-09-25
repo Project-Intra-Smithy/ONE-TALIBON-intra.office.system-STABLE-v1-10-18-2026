@@ -600,12 +600,14 @@ async function main() {
         action: () => button.click(),
       });
       setMutationEvidence(row, evidence);
+      const selectedName = selected.label.split(' · ')[0];
+      await budget.page.getByText(selectedName, { exact: true }).first().waitFor({ state: 'visible', timeout: 5000 }).catch(() => {});
       const ready = await appReady(budget.page, 2500).catch(() => null);
       const after = probe('transaction', assignTitle);
       row.database.after = after;
       const eventDelta = after.eventCount - before.eventCount;
       row.duplicateMutationCount = Math.max(0, eventDelta - 1);
-      const officerBlock = budget.page.getByText('Responsible Officer', { exact: true }).locator('..');
+      const officerBlock = budget.page.getByText(/^Responsible officer$/i).locator('..');
       const assignedVisible = !(await officerBlock.innerText().catch(() => 'Unassigned')).includes('Unassigned');
       const eventTruth = after.latestEvent?.action === 'assign'
         && after.latestEvent?.previousStatus === 'for_review'
@@ -631,7 +633,7 @@ async function main() {
       await reloadAndVerify(budget.page, row, async () => {
         const reloadState = probe('transaction', assignTitle);
         row.database.reload = reloadState;
-        const block = budget.page.getByText('Responsible Officer', { exact: true }).locator('..');
+        const block = budget.page.getByText(/^Responsible officer$/i).locator('..');
         return !(await block.innerText().catch(() => 'Unassigned')).includes('Unassigned')
           && reloadState.currentDepartmentCode === 'BUDGET'
           && reloadState.assignedEmployeeId === Number(selected.value)
@@ -659,6 +661,7 @@ async function main() {
         action: () => button.click(),
       });
       setMutationEvidence(row, evidence);
+      await budget.page.waitForURL((url) => url.pathname === '/transactions', { timeout: 5000 }).catch(() => {});
       const ready = await appReady(budget.page, 2500).catch(() => null);
       const after = probe('transaction', forwardTitle);
       row.database.after = after;
@@ -731,6 +734,7 @@ async function main() {
         action: () => button.click(),
       });
       setMutationEvidence(row, evidence);
+      await budget.page.waitForURL((url) => url.pathname === '/transactions', { timeout: 5000 }).catch(() => {});
       const ready = await appReady(budget.page, 2500).catch(() => null);
       const after = probe('transaction', returnTitle);
       row.database.after = after;
@@ -975,7 +979,7 @@ async function main() {
       await appReady(engineering.page);
       const before = probe('correspondence', CORRESPONDENCE_ID);
       row.database.before = before;
-      const button = engineering.page.getByRole('button', { name: 'Register Correspondence', exact: true });
+      const button = engineering.page.getByRole('button', { name: /^Register correspondence$/i });
       await button.waitFor({ state: 'visible', timeout: 5000 });
       engineering.page.once('dialog', (dialog) => dialog.accept());
       const evidence = await browserMutation(engineering.page, {
@@ -983,14 +987,14 @@ async function main() {
         action: () => button.click(),
       });
       setMutationEvidence(row, evidence);
-      await engineering.page.getByRole('heading', { name: 'Classify Correspondence' }).waitFor({ state: 'visible', timeout: 2000 }).catch(() => {});
+      await engineering.page.getByRole('heading', { name: /^Classify correspondence$/i }).waitFor({ state: 'visible', timeout: 2000 }).catch(() => {});
       const ready = await appReady(engineering.page, 2500).catch(() => null);
       const after = probe('correspondence', CORRESPONDENCE_ID);
       row.database.after = after;
       const eventDelta = after.eventCount - before.eventCount;
       row.duplicateMutationCount = Math.max(0, eventDelta - 1);
-      const nextAction = await engineering.page.getByRole('heading', { name: 'Classify Correspondence' }).isVisible().catch(() => false);
-      const priorGone = await engineering.page.getByRole('button', { name: 'Register Correspondence', exact: true }).count() === 0;
+      const nextAction = await engineering.page.getByRole('heading', { name: /^Classify correspondence$/i }).isVisible().catch(() => false);
+      const priorGone = await engineering.page.getByRole('button', { name: /^Register correspondence$/i }).count() === 0;
       row.visibleResult = nextAction ? 'Registered state converged to the Classify Correspondence action immediately.' : 'Registered state did not converge immediately.';
       const immediate = nextAction && priorGone && !!ready && after.lifecycle === 'registered' && eventDelta === 1;
       row.immediateConvergence = immediate ? 'PASS' : 'FAIL';
@@ -1001,7 +1005,7 @@ async function main() {
       await reloadAndVerify(engineering.page, row, async () => {
         const reloadState = probe('correspondence', CORRESPONDENCE_ID);
         row.database.reload = reloadState;
-        return await engineering.page.getByRole('heading', { name: 'Classify Correspondence' }).isVisible().catch(() => false)
+        return await engineering.page.getByRole('heading', { name: /^Classify correspondence$/i }).isVisible().catch(() => false)
           && reloadState.lifecycle === 'registered'
           && reloadState.eventCount === after.eventCount;
       });
@@ -1014,26 +1018,26 @@ async function main() {
     }, async (row) => {
       const before = probe('correspondence', CORRESPONDENCE_ID);
       row.database.before = before;
-      const classify = engineering.page.getByRole('heading', { name: 'Classify Correspondence' });
+      const classify = engineering.page.getByRole('heading', { name: /^Classify correspondence$/i });
       if (!await classify.isVisible().catch(() => false)) {
         await engineering.page.goto(`${BASE}/correspondence/${CORRESPONDENCE_ID}/workspace`, { waitUntil: 'domcontentloaded' });
         await appReady(engineering.page);
       }
       await engineering.page.getByLabel('Classification').selectOption('internal');
-      const button = engineering.page.getByRole('button', { name: 'Save Classification', exact: true });
+      const button = engineering.page.getByRole('button', { name: /^Save classification$/i });
       const evidence = await browserMutation(engineering.page, {
         pathMatcher: `/correspondence/${CORRESPONDENCE_ID}/workspace/classify`,
         action: () => button.click(),
       });
       setMutationEvidence(row, evidence);
-      await engineering.page.getByRole('heading', { name: 'Route Correspondence' }).waitFor({ state: 'visible', timeout: 2000 }).catch(() => {});
+      await engineering.page.getByRole('heading', { name: /^Route correspondence$/i }).waitFor({ state: 'visible', timeout: 2000 }).catch(() => {});
       const ready = await appReady(engineering.page, 2500).catch(() => null);
       const after = probe('correspondence', CORRESPONDENCE_ID);
       row.database.after = after;
       const eventDelta = after.eventCount - before.eventCount;
       row.duplicateMutationCount = Math.max(0, eventDelta - 1);
-      const nextAction = await engineering.page.getByRole('heading', { name: 'Route Correspondence' }).isVisible().catch(() => false);
-      const priorGone = await engineering.page.getByRole('button', { name: 'Save Classification', exact: true }).count() === 0;
+      const nextAction = await engineering.page.getByRole('heading', { name: /^Route correspondence$/i }).isVisible().catch(() => false);
+      const priorGone = await engineering.page.getByRole('button', { name: /^Save classification$/i }).count() === 0;
       row.visibleResult = nextAction ? 'Classified state converged to the Route Correspondence action immediately.' : 'Classified state did not converge immediately.';
       const immediate = nextAction && priorGone && !!ready && after.lifecycle === 'classified' && after.classification === 'internal' && eventDelta === 1;
       row.immediateConvergence = immediate ? 'PASS' : 'FAIL';
@@ -1044,7 +1048,7 @@ async function main() {
       await reloadAndVerify(engineering.page, row, async () => {
         const reloadState = probe('correspondence', CORRESPONDENCE_ID);
         row.database.reload = reloadState;
-        return await engineering.page.getByRole('heading', { name: 'Route Correspondence' }).isVisible().catch(() => false)
+        return await engineering.page.getByRole('heading', { name: /^Route correspondence$/i }).isVisible().catch(() => false)
           && reloadState.lifecycle === 'classified'
           && reloadState.eventCount === after.eventCount;
       });
@@ -1057,12 +1061,12 @@ async function main() {
     }, async (row) => {
       const before = probe('correspondence', CORRESPONDENCE_ID);
       row.database.before = before;
-      if (!await engineering.page.getByRole('heading', { name: 'Route Correspondence' }).isVisible().catch(() => false)) {
+      if (!await engineering.page.getByRole('heading', { name: /^Route correspondence$/i }).isVisible().catch(() => false)) {
         await engineering.page.goto(`${BASE}/correspondence/${CORRESPONDENCE_ID}/workspace`, { waitUntil: 'domcontentloaded' });
         await appReady(engineering.page);
       }
       await selectByText(engineering.page.getByLabel('Destination Office'), /Budget/i);
-      const button = engineering.page.getByRole('button', { name: 'Route Correspondence', exact: true });
+      const button = engineering.page.getByRole('button', { name: /^Route correspondence$/i });
       const evidence = await browserMutation(engineering.page, {
         pathMatcher: `/correspondence/${CORRESPONDENCE_ID}/workspace/route`,
         action: () => button.click({ clickCount: 2, delay: 0 }),
@@ -1154,7 +1158,7 @@ async function main() {
       check(row, 'starting-page-200', response?.status() === 200, `status=${response?.status()}`);
       await appReady(budget.page);
 
-      const startUnavailable = await budget.page.getByRole('button', { name: 'Start Action', exact: true }).count() === 0;
+      const startUnavailable = await budget.page.getByRole('button', { name: /^Start action$/i }).count() === 0;
       const preparationVisible = await budget.page.getByText('Prepare the linked workflow for action', { exact: true }).isVisible().catch(() => false);
       const linkedWorkflow = budget.page.getByRole('link', { name: 'Open linked workflow', exact: true }).first();
       const linkVisible = await linkedWorkflow.isVisible().catch(() => false);
@@ -1188,7 +1192,7 @@ async function main() {
 
       await budget.page.goto(`${BASE}/correspondence/${CORRESPONDENCE_ID}/workspace`, { waitUntil: 'domcontentloaded', timeout: 15000 });
       await appReady(budget.page);
-      const button = budget.page.getByRole('button', { name: 'Start Action', exact: true });
+      const button = budget.page.getByRole('button', { name: /^Start action$/i });
       await button.waitFor({ state: 'visible', timeout: 5000 });
       const beforeAct = probe('correspondence', CORRESPONDENCE_ID);
 
@@ -1205,7 +1209,7 @@ async function main() {
       const workflowEventDelta = after.workflowEventCount - beforeAct.workflowEventCount;
       row.duplicateMutationCount = Math.max(0, eventDelta - 1, workflowEventDelta);
       const visible = await budget.page.getByText('In Action', { exact: true }).first().isVisible().catch(() => false);
-      const actionGone = await budget.page.getByRole('button', { name: 'Start Action', exact: true }).count() === 0;
+      const actionGone = await budget.page.getByRole('button', { name: /^Start action$/i }).count() === 0;
       const immediate = visible
         && actionGone
         && !!ready
@@ -1229,7 +1233,7 @@ async function main() {
         const reloadState = probe('correspondence', CORRESPONDENCE_ID);
         row.database.reload = reloadState;
         return await budget.page.getByText('In Action', { exact: true }).first().isVisible().catch(() => false)
-          && await budget.page.getByRole('button', { name: 'Start Action', exact: true }).count() === 0
+          && await budget.page.getByRole('button', { name: /^Start action$/i }).count() === 0
           && reloadState.lifecycle === 'in_action'
           && !!reloadState.actionStartedAt
           && reloadState.workflowStatus === 'for_review'
