@@ -12,6 +12,63 @@ const SHOTS = 'storage/app/qa/h1-mutation-failures';
 const CORRESPONDENCE_ID = '11000000-0000-4000-8000-000000000001';
 const MAYOR_SEEDED_TRANSACTION = 'Road Rehabilitation Funding Request';
 
+const ALL_H1_SCENARIOS = [
+  'transactions-create',
+  'transactions-mark-review-double-click',
+  'transactions-mayor-approve',
+  'transactions-assign',
+  'transactions-forward-handoff',
+  'transactions-return-origin',
+  'transactions-request-information',
+  'transactions-mayor-disapprove',
+  'correspondence-register',
+  'correspondence-classify',
+  'correspondence-route-double-click',
+  'correspondence-begin-action',
+  'memorandum-publish',
+  'memorandum-acknowledge-double-click',
+  'travel-order-record-approved',
+  'travel-order-complete-double-click',
+  'travel-order-terminal-action-unavailable',
+  'travel-order-cancel',
+  'transaction-validation-visible',
+  'travel-order-unauthorized-create-denial',
+];
+
+const SCENARIO_DEPENDENCIES = {
+  'transactions-mark-review-double-click': ['transactions-create'],
+  'correspondence-classify': ['correspondence-register'],
+  'correspondence-route-double-click': ['correspondence-classify'],
+  'correspondence-begin-action': ['correspondence-route-double-click'],
+  'memorandum-acknowledge-double-click': ['memorandum-publish'],
+  'travel-order-complete-double-click': ['travel-order-record-approved'],
+  'travel-order-terminal-action-unavailable': ['travel-order-complete-double-click'],
+};
+
+const requestedScenarios = (process.env.QA_H1_SCENARIOS || '')
+  .split(',')
+  .map((value) => value.trim())
+  .filter(Boolean);
+const unknownScenarios = requestedScenarios.filter((scenario) => !ALL_H1_SCENARIOS.includes(scenario));
+if (unknownScenarios.length > 0) {
+  throw new Error(`Unknown QA_H1_SCENARIOS: ${unknownScenarios.join(', ')}`);
+}
+const targetedMode = requestedScenarios.length > 0;
+const executionScenarios = new Set();
+
+function includeScenarioWithDependencies(scenario) {
+  for (const dependency of SCENARIO_DEPENDENCIES[scenario] || []) {
+    includeScenarioWithDependencies(dependency);
+  }
+  executionScenarios.add(scenario);
+}
+
+if (targetedMode) {
+  requestedScenarios.forEach(includeScenarioWithDependencies);
+} else {
+  ALL_H1_SCENARIOS.forEach((scenario) => executionScenarios.add(scenario));
+}
+
 if (!EXPECTED_SHA) {
   throw new Error('QA_EXPECTED_SHA is required');
 }
@@ -31,7 +88,7 @@ const secrets = new Set(PASSWORD ? [PASSWORD] : []);
 const runtimeByPage = new WeakMap();
 
 const report = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   generatedAt: new Date().toISOString(),
   environment: ENVIRONMENT,
   git: { expectedSha: EXPECTED_SHA, actualSha: '', exactHead: false },
@@ -42,8 +99,14 @@ const report = {
     failed: 0,
     failH1: 0,
     deferredH2: 0,
+    skippedDependency: 0,
     pageerrorCount: 0,
     server5xxCount: 0,
+  },
+  execution: {
+    targeted: targetedMode,
+    requestedScenarios,
+    executionScenarios: ALL_H1_SCENARIOS.filter((scenario) => executionScenarios.has(scenario)),
   },
   coverage: {
     transactions: [
@@ -255,13 +318,111 @@ async function browserMutation(page, { method = 'POST', pathMatcher, action }) {
     ).catch(() => null);
     await action();
     await firstResponse;
-    await page.waitForTimeout(650);
   } finally {
     page.off('request', requestListener);
     page.off('response', responseListener);
   }
 
   return { requests, responses };
+}
+
+function pathMatches(url, matcher) {
+  const pathname = url.pathname;
+  const fullPath = `${url.pathname}${url.search}`;
+  if (matcher instanceof RegExp) return matcher.test(pathname) || matcher.test(fullPath);
+  if (typeof matcher === 'function') return Boolean(matcher(url));
+  return pathname === matcher || fullPath === matcher;
+}
+
+async function waitForSemanticConvergence(page, row, {
+  pathMatcher,
+  expectedPath,
+  markerLabel = null,
+  marker = null,
+  timeout = 8000,
+}) {
+  row.expectedConvergence = { path: expectedPath, marker: markerLabel };
+  row._semanticMarkerProbe = marker
+    ? async () => marker().isVisible().catch(() => false)
+    : null;
+
+  try {
+    await page.waitForURL((url) => pathMatches(url, pathMatcher), { timeout });
+    if (marker) await marker().waitFor({ state: 'visible', timeout });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function markBackend(row, ok, detail = '') {
+  row.backendVerdict = ok ? 'PASS' : 'FAIL';
+  check(row, 'backend-authoritative-state', ok, detail);
+  return ok;
+}
+
+function markUiConvergence(row, ok, detail = '') {
+  row.immediateConvergence = ok ? 'PASS' : 'FAIL';
+  row.uiConvergenceVerdict = row.immediateConvergence;
+  check(row, 'ui-semantic-convergence', ok, detail);
+  return ok;
+}
+
+async function captureSanitizedConvergenceDiagnostics(page, row) {
+  const dom = await page.evaluate(() => {
+    const app = document.querySelector('#app');
+    const visible = (element) => {
+      if (!(element instanceof HTMLElement)) return false;
+      const style = window.getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      return style.visibility !== 'hidden' && style.display !== 'none' && rect.width > 0 && rect.height > 0;
+    };
+
+    return {
+      readyState: document.readyState,
+      appExists: Boolean(app),
+      appChildCount: app?.children.length ?? 0,
+      appTextLength: app?.textContent?.length ?? 0,
+      bodyTextLength: document.body?.textContent?.length ?? 0,
+      visibleH1Count: [...document.querySelectorAll('h1')].filter(visible).length,
+      visibleMainCount: [...document.querySelectorAll('main')].filter(visible).length,
+    };
+  }).catch(() => ({
+    readyState: 'unavailable',
+    appExists: false,
+    appChildCount: 0,
+    appTextLength: 0,
+    bodyTextLength: 0,
+    visibleH1Count: 0,
+    visibleMainCount: 0,
+  }));
+
+  const markerPresent = row._semanticMarkerProbe
+    ? await row._semanticMarkerProbe().catch(() => false)
+    : null;
+
+  const diagnostic = {
+    at: new Date().toISOString(),
+    scenario: row.scenario,
+    type: 'semantic-convergence-failure',
+    currentPath: pathOnly(page.url()),
+    expectedPath: row.expectedConvergence?.path ?? null,
+    expectedMarker: row.expectedConvergence?.marker ?? null,
+    responseStatus: row.responseStatus,
+    readyState: dom.readyState,
+    appExists: dom.appExists,
+    appChildCount: dom.appChildCount,
+    appTextLength: dom.appTextLength,
+    bodyTextLength: dom.bodyTextLength,
+    visibleH1Count: dom.visibleH1Count,
+    visibleMainCount: dom.visibleMainCount,
+    pageerrorCount: row.pageerrorCount,
+    http5xxCount: row.http5xxCount,
+    markerPresent,
+  };
+
+  report.diagnostics.push(diagnostic);
+  row.convergenceDiagnostic = diagnostic;
 }
 
 function newRow(meta) {
@@ -279,6 +440,12 @@ function newRow(meta) {
     visibleResult: null,
     immediateConvergence: 'FAIL',
     reloadConsistency: 'NOT_RUN',
+    requestVerdict: 'NOT_RUN',
+    backendVerdict: 'NOT_RUN',
+    uiConvergenceVerdict: 'NOT_RUN',
+    reloadVerdict: 'NOT_RUN',
+    expectedConvergence: null,
+    dependency: null,
     duplicateMutationCount: null,
     pageerrorCount: 0,
     http5xxCount: 0,
@@ -301,6 +468,12 @@ function setMutationEvidence(row, evidence) {
   row.requestCount = evidence.requests.length;
   row.responseStatuses = evidence.responses.map((item) => item.status);
   row.responseStatus = evidence.responses[0]?.status ?? null;
+  row.requestVerdict = row.requestCount === 1
+    && row.responseStatus !== null
+    && row.responseStatus >= 200
+    && row.responseStatus < 400
+    ? 'PASS'
+    : 'FAIL';
   check(row, 'one-request-emitted', row.requestCount === 1, `observed ${row.requestCount} matching requests`);
   check(
     row,
@@ -351,6 +524,37 @@ async function safeScreenshot(page, row) {
   }
 }
 
+const scenarioResults = new Map();
+
+async function executeScenario(page, meta, body) {
+  if (!executionScenarios.has(meta.scenario)) return null;
+
+  const blockedBy = (SCENARIO_DEPENDENCIES[meta.scenario] || [])
+    .find((dependency) => scenarioResults.get(dependency)?.result !== 'PASS');
+
+  if (blockedBy) {
+    const row = newRow(meta);
+    row.finalUrl = pathOnly(page.url());
+    row.result = 'SKIPPED_DEPENDENCY';
+    row.dependency = {
+      blockedBy,
+      prerequisiteResult: scenarioResults.get(blockedBy)?.result ?? 'NOT_RUN',
+    };
+    row.failureReason = null;
+    delete row._failures;
+    report.scenarios.push(row);
+    report.summary.scenarios++;
+    report.summary.skippedDependency++;
+    scenarioResults.set(meta.scenario, row);
+    await writeReport();
+    return row;
+  }
+
+  const row = await runScenario(page, meta, body);
+  scenarioResults.set(meta.scenario, row);
+  return row;
+}
+
 async function runScenario(page, meta, body) {
   const row = newRow(meta);
   const runtime = runtimeByPage.get(page) || [];
@@ -368,10 +572,17 @@ async function runScenario(page, meta, body) {
   const delta = runtime.slice(runtimeStart);
   row.pageerrorCount = delta.filter((item) => item.type === 'pageerror').length;
   row.http5xxCount = delta.filter((item) => item.type === 'server-5xx').length;
+  if (row.requestVerdict === 'NOT_RUN' && row.requestCount === 0) row.requestVerdict = 'NOT_APPLICABLE';
+  if (row.backendVerdict === 'NOT_RUN' && row.immediateConvergence === 'PASS' && row.database.after) row.backendVerdict = 'PASS';
+  if (row.uiConvergenceVerdict === 'NOT_RUN') row.uiConvergenceVerdict = row.immediateConvergence;
+  if (row.reloadVerdict === 'NOT_RUN' && row.reloadConsistency !== 'NOT_RUN') row.reloadVerdict = row.reloadConsistency;
   check(row, 'no-pageerror', row.pageerrorCount === 0, `pageerrorCount=${row.pageerrorCount}`);
   check(row, 'no-http-5xx', row.http5xxCount === 0, `http5xxCount=${row.http5xxCount}`);
   const fatalConsole = delta.filter((item) => item.type === 'console-runtime-error').length;
   check(row, 'no-fatal-console-runtime-error', fatalConsole === 0, `fatalConsole=${fatalConsole}`);
+
+  if (row.uiConvergenceVerdict === 'FAIL') await captureSanitizedConvergenceDiagnostics(page, row);
+  delete row._semanticMarkerProbe;
 
   row.failureReason = row._failures.length ? row._failures.join(' | ') : null;
   const deferredH2 = meta.disposition === 'DEFERRED_H2';
@@ -404,9 +615,11 @@ async function reloadAndVerify(page, row, verify) {
     await appReady(page, 6000);
     const ok = await verify();
     row.reloadConsistency = ok ? 'PASS' : 'FAIL';
+    row.reloadVerdict = row.reloadConsistency;
     check(row, 'reload-consistency', ok, `final=${pathOnly(page.url())}`);
   } catch (error) {
     row.reloadConsistency = 'FAIL';
+    row.reloadVerdict = 'FAIL';
     check(row, 'reload-consistency', false, error.message);
   }
 }
@@ -441,7 +654,7 @@ async function main() {
     const employee = await login(browser, { email: 'employee@talibon.demo', label: 'Employee', privileged: false });
     sessions.push(engineering, budget, mayor, employee);
 
-    await runScenario(engineering.page, {
+    await executeScenario(engineering.page, {
       scenario: 'transactions-create',
       actor: 'Engineering Department Head',
       mutation: 'Create and route transaction',
@@ -493,7 +706,7 @@ async function main() {
       });
     });
 
-    await runScenario(budget.page, {
+    await executeScenario(budget.page, {
       scenario: 'transactions-mark-review-double-click',
       actor: 'Budget Department Head',
       mutation: 'Mark transaction for review with rapid duplicate interaction',
@@ -535,7 +748,7 @@ async function main() {
       });
     });
 
-    await runScenario(mayor.page, {
+    await executeScenario(mayor.page, {
       scenario: 'transactions-mayor-approve',
       actor: 'Mayor Approver',
       mutation: 'Approve deterministic seeded transaction',
@@ -579,7 +792,7 @@ async function main() {
       });
     });
 
-    await runScenario(budget.page, {
+    await executeScenario(budget.page, {
       scenario: 'transactions-assign',
       actor: 'Budget Department Head',
       mutation: 'Assign responsible same-office employee',
@@ -641,7 +854,7 @@ async function main() {
       });
     });
 
-    await runScenario(budget.page, {
+    await executeScenario(budget.page, {
       scenario: 'transactions-forward-handoff',
       actor: 'Budget Department Head',
       mutation: 'Forward transaction to another office',
@@ -715,7 +928,7 @@ async function main() {
       });
     });
 
-    await runScenario(budget.page, {
+    await executeScenario(budget.page, {
       scenario: 'transactions-return-origin',
       actor: 'Budget Department Head',
       mutation: 'Return transaction to origin office',
@@ -787,7 +1000,7 @@ async function main() {
       });
     });
 
-    await runScenario(mayor.page, {
+    await executeScenario(mayor.page, {
       scenario: 'transactions-request-information',
       actor: 'Mayor Approver',
       mutation: 'Request information after legitimate browser prerequisites',
@@ -903,7 +1116,7 @@ async function main() {
       });
     });
 
-    await runScenario(mayor.page, {
+    await executeScenario(mayor.page, {
       scenario: 'transactions-mayor-disapprove',
       actor: 'Mayor Approver',
       mutation: 'Disapprove deterministic H3 transaction',
@@ -968,7 +1181,7 @@ async function main() {
       });
     });
 
-    await runScenario(engineering.page, {
+    await executeScenario(engineering.page, {
       scenario: 'correspondence-register',
       actor: 'Engineering Department Head',
       mutation: 'Register received correspondence',
@@ -1011,7 +1224,7 @@ async function main() {
       });
     });
 
-    await runScenario(engineering.page, {
+    await executeScenario(engineering.page, {
       scenario: 'correspondence-classify',
       actor: 'Engineering Department Head',
       mutation: 'Classify registered correspondence',
@@ -1054,7 +1267,7 @@ async function main() {
       });
     });
 
-    await runScenario(engineering.page, {
+    await executeScenario(engineering.page, {
       scenario: 'correspondence-route-double-click',
       actor: 'Engineering Department Head',
       mutation: 'Route correspondence with rapid duplicate interaction',
@@ -1144,7 +1357,7 @@ async function main() {
       });
     });
 
-    await runScenario(budget.page, {
+    await executeScenario(budget.page, {
       scenario: 'correspondence-begin-action',
       actor: 'Budget Department Head',
       mutation: 'Prepare linked workflow and begin action on routed correspondence',
@@ -1243,7 +1456,7 @@ async function main() {
       });
     });
 
-    await runScenario(mayor.page, {
+    await executeScenario(mayor.page, {
       scenario: 'memorandum-publish',
       actor: 'Mayor Approver',
       mutation: 'Publish memorandum to all employees',
@@ -1283,7 +1496,7 @@ async function main() {
       });
     });
 
-    await runScenario(employee.page, {
+    await executeScenario(employee.page, {
       scenario: 'memorandum-acknowledge-double-click',
       actor: 'Employee',
       mutation: 'Acknowledge memorandum with rapid duplicate interaction',
@@ -1326,7 +1539,7 @@ async function main() {
       });
     });
 
-    await runScenario(mayor.page, {
+    await executeScenario(mayor.page, {
       scenario: 'travel-order-record-approved',
       actor: 'Mayor Approver',
       mutation: 'Record approved Travel Order',
@@ -1372,7 +1585,7 @@ async function main() {
       });
     });
 
-    await runScenario(mayor.page, {
+    await executeScenario(mayor.page, {
       scenario: 'travel-order-complete-double-click',
       actor: 'Mayor Approver',
       mutation: 'Complete Travel Order with rapid duplicate interaction',
@@ -1418,7 +1631,7 @@ async function main() {
       });
     });
 
-    await runScenario(mayor.page, {
+    await executeScenario(mayor.page, {
       scenario: 'travel-order-terminal-action-unavailable',
       actor: 'Mayor Approver',
       mutation: 'Terminal-state repeat prevention',
@@ -1446,7 +1659,7 @@ async function main() {
       });
     });
 
-    await runScenario(mayor.page, {
+    await executeScenario(mayor.page, {
       scenario: 'travel-order-cancel',
       actor: 'Mayor Approver',
       mutation: 'Cancel independent approved Travel Order',
@@ -1501,7 +1714,7 @@ async function main() {
       });
     });
 
-    await runScenario(engineering.page, {
+    await executeScenario(engineering.page, {
       scenario: 'transaction-validation-visible',
       actor: 'Engineering Department Head',
       mutation: 'Submit invalid transaction and present validation',
@@ -1534,7 +1747,7 @@ async function main() {
       check(row, 'invalid-submit-did-not-mutate', after.transactions === before.transactions, 'transaction count changed on denied validation');
     });
 
-    await runScenario(employee.page, {
+    await executeScenario(employee.page, {
       scenario: 'travel-order-unauthorized-create-denial',
       actor: 'Employee',
       mutation: 'Unauthorized Travel Order creation denial',
@@ -1568,7 +1781,9 @@ async function main() {
     await browser.close().catch(() => {});
   }
 
-  report.completed = report.summary.failH1 === 0 && report.summary.scenarios === report.summary.passed + report.summary.deferredH2 && report.git.exactHead;
+  report.completed = report.summary.failH1 === 0
+    && report.summary.scenarios === report.summary.passed + report.summary.deferredH2 + report.summary.skippedDependency
+    && report.git.exactHead;
   if (!report.completed) {
     report.failure = {
       stage: 'mutation-acceptance',
