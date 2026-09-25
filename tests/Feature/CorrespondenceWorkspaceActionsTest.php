@@ -127,7 +127,7 @@ class CorrespondenceWorkspaceActionsTest extends TestCase
                 'remarks' => 'Please review immediately.',
             ])
             ->assertRedirect('/correspondence')
-            ->assertSessionHas('success', 'Correspondence routed successfully.');
+            ->assertSessionHas('success', 'Correspondence routed successfully. Accountability moved to the destination office.');
 
         $routed = $record->fresh('workflowTransaction');
         $workflow = $routed->workflowTransaction;
