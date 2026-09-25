@@ -12,9 +12,13 @@ Current hardened product authority:
 
 `KIRCH-TALIBON-BH1-BACKEND-RUNTIME-HARDENING@27824223d5169c8eadf16ab863d09aab9585db9c`
 
-Current temporary audit branch:
+Current DA1 reviewed repair integration:
 
-`KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT`
+`KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT@f48fb9381fee81490f43635ff289cce67ff7779b`
+
+DA1 disposition:
+
+`CLOSED — SUITABLE WITH RECORDED LIMITATIONS`
 
 Current pre-promotion `main`:
 
@@ -22,13 +26,13 @@ Current pre-promotion `main`:
 
 ## Next integration target
 
-The next integration is a bounded reconciliation into a temporary RC1 candidate after DA1 is green.
+The next integration is a bounded reconciliation into a temporary RC1 candidate after the reviewed DA1 repair-wave closeout.
 
 Suggested temporary branch:
 
 `KIRCH-TALIBON-RC1-MAIN-CONSOLIDATION`
 
-RC1 must begin from the final audited/repaired hardened line.
+RC1 must begin from the final DA1 closeout coordination authority containing the reviewed integration and closeout governance.
 
 ## Main reconciliation rules
 
