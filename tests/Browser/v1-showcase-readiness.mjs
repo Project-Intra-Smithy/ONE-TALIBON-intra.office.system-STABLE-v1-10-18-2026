@@ -71,7 +71,7 @@ async function openRoute(page, route, label) {
 }
 async function openSelector(page) {
     await page.goto(`${BASE}/login`);
-    await page.getByRole('button', { name: 'Enter Workspace', exact: true }).click();
+    await page.getByRole('button', { name: 'Open Municipal Workspace', exact: true }).click();
     await page.getByRole('dialog').waitFor({ state: 'visible' });
 }
 async function enterWorkspace(page, role, office = null) {
