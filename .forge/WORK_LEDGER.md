@@ -16,9 +16,13 @@ BH1 hardened closeout:
 
 `27824223d5169c8eadf16ab863d09aab9585db9c`
 
-DA1 audit branch:
+DA1 reviewed integration:
 
-`KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT`
+`KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT@f48fb9381fee81490f43635ff289cce67ff7779b`
+
+DA1 closeout evidence:
+
+`.forge/evidence/maintainer/DA1-REPAIR-WAVE-CLOSEOUT.md`
 
 Pre-promotion main:
 
@@ -30,7 +34,7 @@ Pre-promotion main:
 
 State:
 
-`ACTIVE`
+`CLOSED — SUITABLE WITH RECORDED LIMITATIONS`
 
 Purpose:
 
@@ -73,16 +77,36 @@ Durable snapshot:
 
 No branch cleanup has been authorized before main promotion and archival preservation.
 
+## DA1 closeout summary
+
+Reviewed candidate:
+
+`9fa1ec1a00be72984db651c5b251b36183444d64`
+
+Integrated through PR #11:
+
+`f48fb9381fee81490f43635ff289cce67ff7779b`
+
+Disposition:
+
+- NAV-01 through NAV-04: reviewed PASS;
+- H1 full component evidence: PASS 20/20 at content-equivalent `5883d703...`;
+- V1: PASS / frozen;
+- MP0 targeted reproduction: PASS after one transient aggregate timeout;
+- Feature suite: PASS before later carrier-stage failure;
+- aggregate DA1 full-audit marker: NOT OBSERVED;
+- no further DA1 product implementation required by review.
+
 ## Next transitions
 
-1. finish DA1 source/runtime audit;
-2. repair only confirmed blockers;
-3. rerun full audit;
-4. RC1 reconcile intentional main-only public portal work;
+1. start RC1 from the final DA1 closeout authority;
+2. re-inventory current main-only work;
+3. classify RETAIN / SUPERSEDED / REJECT;
+4. reconcile intentional retained public-portal work;
 5. RV1 validate exact RC1;
-6. Technical Authority promotes main;
+6. Technical Authority decides main promotion;
 7. archive historical tips;
-8. delete all non-main branches;
+8. delete non-main branches only after validated promotion plus archival proof;
 9. final prototype rehearsal from main.
 
 ## Main-only reconciliation observation
