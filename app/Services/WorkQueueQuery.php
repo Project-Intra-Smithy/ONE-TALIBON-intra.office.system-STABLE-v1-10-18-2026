@@ -107,15 +107,100 @@ final class WorkQueueQuery
      */
     private function scopeGroups(Builder $filtered, User $actor, array $groups): array
     {
-        return collect($groups)->map(function (array $group) use ($filtered, $actor): array {
-            $group['views'] = collect($group['views'])->map(function (array $view) use ($filtered, $actor): array {
-                $view['count'] = $this->applyView(clone $filtered, $actor, $view['key'])->count();
+        $counts = $this->scopeCounts($filtered, $actor);
+
+        return collect($groups)->map(function (array $group) use ($counts): array {
+            $group['views'] = collect($group['views'])->map(function (array $view) use ($counts): array {
+                $view['count'] = (int) ($counts[$view['key']] ?? 0);
 
                 return $view;
             })->all();
 
             return $group;
         })->all();
+    }
+
+    /** @return array<string, int> */
+    private function scopeCounts(Builder $filtered, User $actor): array
+    {
+        $terminal = $this->terminalStatuses();
+        $terminalPlaceholders = implode(', ', array_fill(0, count($terminal), '?'));
+        $personal = '(created_by_user_id = ? OR assigned_employee_id = ?)';
+        $active = "status NOT IN ({$terminalPlaceholders})";
+        $employeeId = (int) ($actor->employee?->id ?? 0);
+        $departmentId = (int) ($actor->employee?->department_id ?? 0);
+        $actorId = (int) $actor->id;
+        $now = now();
+        $dueSoonEnd = $now->copy()->addDay();
+        $recentlyUpdatedStart = $now->copy()->subDays(7);
+        $recentlyCompletedStart = $now->copy()->subDays(30);
+
+        $definitions = [
+            'all' => [
+                "{$personal} AND {$active}",
+                [$actorId, $employeeId, ...$terminal],
+            ],
+            'needs_my_action' => [
+                "{$personal} AND {$active} AND assigned_employee_id = ?",
+                [$actorId, $employeeId, ...$terminal, $employeeId],
+            ],
+            'assigned_to_me' => [
+                "{$personal} AND {$active} AND assigned_employee_id = ?",
+                [$actorId, $employeeId, ...$terminal, $employeeId],
+            ],
+            'due_soon' => [
+                "{$personal} AND {$active} AND assigned_employee_id = ? AND due_at BETWEEN ? AND ?",
+                [$actorId, $employeeId, ...$terminal, $employeeId, $now, $dueSoonEnd],
+            ],
+            'overdue' => [
+                "{$personal} AND {$active} AND assigned_employee_id = ? AND due_at IS NOT NULL AND due_at < ?",
+                [$actorId, $employeeId, ...$terminal, $employeeId, $now],
+            ],
+            'recently_updated' => [
+                "{$personal} AND {$active} AND updated_at >= ?",
+                [$actorId, $employeeId, ...$terminal, $recentlyUpdatedStart],
+            ],
+            'waiting_on_others' => [
+                "{$personal} AND {$active} AND created_by_user_id = ? AND origin_department_id = ? AND current_department_id != ?",
+                [$actorId, $employeeId, ...$terminal, $actorId, $departmentId, $departmentId],
+            ],
+            'recently_completed' => [
+                "{$personal} AND status IN ({$terminalPlaceholders}) AND completed_at IS NOT NULL AND completed_at >= ?",
+                [$actorId, $employeeId, ...$terminal, $recentlyCompletedStart],
+            ],
+            'office_queue' => [
+                $active,
+                $terminal,
+            ],
+            'staff_workload' => [
+                "{$active} AND current_department_id = ?",
+                [...$terminal, $departmentId],
+            ],
+            'unassigned' => [
+                "{$active} AND current_department_id = ? AND assigned_employee_id IS NULL",
+                [...$terminal, $departmentId],
+            ],
+            'escalations' => [
+                "{$active} AND current_department_id = ? AND (priority = ? OR (due_at IS NOT NULL AND due_at < ?))",
+                [...$terminal, $departmentId, 'urgent', $now],
+            ],
+        ];
+
+        $query = clone $filtered;
+        foreach ($definitions as $key => [$condition, $bindings]) {
+            $query->selectRaw(
+                "SUM(CASE WHEN {$condition} THEN 1 ELSE 0 END) AS count_{$key}",
+                $bindings,
+            );
+        }
+
+        $row = $query->first();
+
+        return collect(array_keys($definitions))
+            ->mapWithKeys(fn (string $key): array => [
+                $key => (int) ($row?->{"count_{$key}"} ?? 0),
+            ])
+            ->all();
     }
 
     private function records(Builder $filtered, User $actor, string $view): LengthAwarePaginator
