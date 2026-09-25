@@ -7,6 +7,7 @@ import RelatedWorkPanel from '../../components/workflow/RelatedWorkPanel';
 import { useVisiblePolling } from '../../hooks/useVisiblePolling';
 import AppLayout from '../../layouts/AppLayout';
 import { returnTargetFromDetailUrl } from '../../navigation/returnContext';
+import type { SharedProps } from '../../types';
 
 type Dept = { id: number; code: string; name: string; short_name?: string };
 type Employee = { id: number; employee_number: string; full_name?: string; position_title: string };
@@ -91,8 +92,9 @@ export default function Show({
     transactionPermissions: Permissions;
     evidence: EvidencePayload;
 }) {
-    const { url } = usePage();
-    const returnTarget = returnTargetFromDetailUrl(url, '/transactions');
+    const page = usePage<SharedProps>();
+    const returnTarget = returnTargetFromDetailUrl(page.url, '/transactions');
+    const hasOfficeWorkScope = page.props.workspaceExperience === 'department_head';
     const [tx, setTx] = useState(initialTx);
     const [assignableEmployees, setAssignableEmployees] = useState(initialAssignableEmployees);
     const [accountability, setAccountability] = useState(initialAccountability);
@@ -160,7 +162,9 @@ export default function Show({
     const dueLabel = accountability.dueState.replaceAll('_', ' ').toUpperCase();
     const relatedWork = [
         { label: 'Back to work queue', detail: 'Return to the exact list and query context that opened this request.', href: returnTarget },
-        { label: 'Open office work', detail: `${tx.current_department.short_name || tx.current_department.name} · ${tx.status.replaceAll('_', ' ')}`, href: '/transactions?view=office_queue' },
+        hasOfficeWorkScope
+            ? { label: 'Open office work', detail: `${tx.current_department.short_name || tx.current_department.name} · ${tx.status.replaceAll('_', ' ')}`, href: '/transactions?view=office_queue' }
+            : { label: 'Open my work', detail: `Authorized personal work · ${tx.status.replaceAll('_', ' ')}`, href: '/transactions?view=all' },
         { label: 'Search this reference in Records', detail: 'Find other municipal records using this exact workflow reference.', href: `/records?search=${encodeURIComponent(tx.reference_no)}` },
         { label: 'Open correspondence', detail: 'Check incoming and routed correspondence without returning through Home.', href: '/correspondence' },
     ];
