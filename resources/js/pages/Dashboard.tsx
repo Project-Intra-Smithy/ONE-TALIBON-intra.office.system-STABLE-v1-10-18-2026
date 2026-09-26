@@ -13,7 +13,6 @@ import MetricGroup from '../components/dashboard/MetricGroup';
 import MunicipalUpdates from '../components/dashboard/MunicipalUpdates';
 import OfficeActivityFeed from '../components/dashboard/OfficeActivityFeed';
 import OfficeOverview from '../components/dashboard/OfficeOverview';
-import PortalMenuOverview from '../components/dashboard/PortalMenuOverview';
 import PortalQuickAccess from '../components/dashboard/PortalQuickAccess';
 import ProjectPortfolio from '../components/dashboard/ProjectPortfolio';
 import QuickActions from '../components/dashboard/QuickActions';
@@ -78,7 +77,6 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
                 </div>
                 </div>
             </details>
-            <PortalMenuOverview />
         </div>
     </AppLayout>;
 }
