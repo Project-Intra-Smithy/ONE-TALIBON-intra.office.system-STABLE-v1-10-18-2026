@@ -370,3 +370,19 @@ MP5 is successful when the accepted product remains functionally the same munici
 - later approved workflow/communication corrections remain bounded;
 - Messages and accepted backend/security/workflow behavior remain intact;
 - all claims are tied to exact candidate evidence.
+
+
+## 2026-09-26 cadence amendment — integrated execution gate
+
+Technical Authority has chosen the practical Forge cadence for the remainder of MP5:
+
+- each writer still receives exact bounded authority;
+- each candidate still receives independent source/ownership Review;
+- expensive TypeScript/build/Feature/browser execution may remain `NOT RUN / NOT OBSERVED` per wave;
+- those missing gates are accumulated and executed once against the exact integrated MP5 candidate;
+- a confirmed source defect still blocks integration immediately;
+- CI does not imply CD; deployment remains separate.
+
+This amendment supersedes any earlier wording that made Batch 1 execution evidence a prerequisite to opening Batch 2.
+
+See `.forge/evidence/maintainer/MP5-VALIDATION-CADENCE-DECISION.md`.
