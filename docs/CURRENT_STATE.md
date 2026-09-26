@@ -60,17 +60,17 @@ Those claims must not be retroactively upgraded.
 
 The promoted exact candidate did receive current-contract browser runtime proof.
 
+## MP3 governance closeout
+
+`COMPLETE`
+
+MP3 changed documentation/governance only and did not mutate the validated application payload.
+
 ## Current transition
-
-`MP3 — MAIN GOVERNANCE / DOCUMENTATION CLOSEOUT`
-
-This is documentation/governance work only.
-
-Next:
 
 `MP4 — FINAL PROTOTYPE-DAY REHEARSAL FROM MAIN`
 
-Deployment remains a separate explicit decision.
+Deployment remains a separate explicit decision after rehearsal.
 
 ## Active prototype capabilities
 
