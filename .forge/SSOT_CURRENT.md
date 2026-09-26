@@ -74,15 +74,17 @@ RC1 validated/promoted product candidate:
 - remote branch topology: `main` only;
 - deployment: not performed.
 
-## Current program
+## MP3 closeout
 
 `MP3 — MAIN GOVERNANCE / DOCUMENTATION CLOSEOUT`
 
-MP3 is documentation/governance only. It must not mutate application behavior.
+Status:
 
-## Next transition
+`COMPLETE`
 
-After MP3:
+Observed MP3 boundary: Markdown/governance only; no application/runtime file changed from the exact promoted payload baseline.
+
+## Current program
 
 `MP4 — FINAL PROTOTYPE-DAY REHEARSAL FROM MAIN`
 
