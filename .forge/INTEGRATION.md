@@ -49,11 +49,13 @@ Do not recreate historical RC1/DA1/UIUX branch names as implicit authority.
 
 ## Current transition
 
-MP3 is documentation/governance closeout only.
+MP3 documentation/governance closeout is complete.
 
-No application integration is authorized by MP3.
+Current transition:
 
-After MP3, MP4 performs a bounded final prototype-day rehearsal from `main`.
+`MP4 — FINAL PROTOTYPE-DAY REHEARSAL FROM MAIN`
+
+No application integration is implied by the MP3 documentation commits.
 
 ## Deployment boundary
 
