@@ -22,12 +22,12 @@ export default function PPARegister({ records, selectedId, onSelect }: Props) {
     const selected = selectedId ? records.find((record) => record.id === selectedId) ?? null : null;
 
     return <>
-        <div className="space-y-3 lg:hidden" aria-label="PPA register">
+        <div className="space-y-3 xl:hidden" aria-label="PPA register">
             {records.map((record) => {
                 const active = selectedId === record.id;
                 return <article key={record.id} className={`rounded-xl border bg-white p-4 dark:bg-[#142236] ${active ? 'border-emerald-300 ring-1 ring-emerald-100 dark:border-emerald-800 dark:ring-emerald-950/60' : 'border-slate-200 dark:border-slate-700'}`}>
                     <div className="flex flex-wrap items-start justify-between gap-3">
-                        <div className="min-w-0"><div className="text-[11px] font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-300">{record.id} · {record.year}</div><h2 className="mt-1 text-sm font-semibold leading-5 text-slate-950 dark:text-slate-100">{record.title}</h2></div>
+                        <div className="min-w-0"><div className="text-[11px] font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-300">{record.id}  /  {record.year}</div><h2 className="mt-1 text-sm font-semibold leading-5 text-slate-950 dark:text-slate-100">{record.title}</h2></div>
                         <span className={`shrink-0 rounded-full px-2 py-1 text-[11px] font-bold ${statusClass[record.status]}`}>{record.status}</span>
                     </div>
                     <dl className="mt-4 grid grid-cols-2 gap-3 text-xs">
@@ -44,13 +44,13 @@ export default function PPARegister({ records, selectedId, onSelect }: Props) {
             })}
         </div>
 
-        <div className="hidden overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236] lg:block">
+        <div className="hidden overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236] xl:block">
             <div className="overflow-x-auto">
                 <table className="w-full table-fixed text-left text-sm">
                     <thead className="bg-slate-50 text-[11px] uppercase tracking-wide text-slate-500 dark:bg-slate-900/50 dark:text-slate-400"><tr><th className="w-[30%] px-3 py-3">PPA</th><th className="w-[19%] px-3 py-3">Office</th><th className="px-3 py-3">Status</th><th className="px-3 py-3 text-right">Projects</th><th className="px-3 py-3"><span className="sr-only">Open</span></th></tr></thead>
                     <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                         {records.map((record) => <tr key={record.id} className={selectedId === record.id ? 'bg-emerald-50/70 dark:bg-emerald-950/20' : 'hover:bg-slate-50 dark:hover:bg-slate-900/30'}>
-                            <td className="px-3 py-3 align-top"><div className="font-semibold text-slate-950 dark:text-slate-100">{record.title}</div><div className="mt-1 flex flex-wrap gap-x-2 text-xs text-slate-500 dark:text-slate-400"><span>{record.id} · {record.year}</span><span>{record.sector}</span><span>{record.priority} priority</span></div></td>
+                            <td className="px-3 py-3 align-top"><div className="font-semibold text-slate-950 dark:text-slate-100">{record.title}</div><div className="mt-1 flex flex-wrap gap-x-2 text-xs text-slate-500 dark:text-slate-400"><span>{record.id}  /  {record.year}</span><span>{record.sector}</span><span>{record.priority} priority</span></div></td>
                             <td className="max-w-[240px] px-3 py-3 align-top text-xs leading-5 text-slate-600 dark:text-slate-300">{record.responsibleOffice}</td>
 
 

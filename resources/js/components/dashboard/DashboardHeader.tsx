@@ -26,7 +26,7 @@ export default function DashboardHeader({ experience }: { experience: DashboardE
             <div className="employee-metadata flex shrink-0 items-center gap-2 text-slate-500 dark:text-slate-400">
                 <CalendarDays size={14} className="text-slate-400 dark:text-slate-500" aria-hidden="true" />
                 <span>{today}</span>
-                <span className="hidden text-slate-400 sm:inline">· Philippine time</span>
+                <span className="hidden text-slate-400 sm:inline"> /  Philippine time</span>
             </div>
         </div>
 
@@ -35,14 +35,14 @@ export default function DashboardHeader({ experience }: { experience: DashboardE
                 <UserRound size={13} className="shrink-0 [color:var(--municipal-brand)]" aria-hidden="true" />
                 <dt className="sr-only">Employee</dt>
                 <dd className="truncate font-semibold text-slate-800 dark:text-slate-200">{auth.user?.name || 'Signed-in user'}</dd>
-                <span className="text-slate-400" aria-hidden="true">·</span>
+                <span className="text-slate-400" aria-hidden="true"> / </span>
                 <span className="text-slate-500 dark:text-slate-400">{role}</span>
             </div>
             <div className="flex min-w-0 items-center gap-1.5">
                 <Building2 size={13} className="shrink-0 [color:var(--municipal-brand)]" aria-hidden="true" />
                 <dt className="sr-only">Department and scope</dt>
                 <dd className="truncate text-slate-600 dark:text-slate-300">{experience.department.shortName || experience.department.code}</dd>
-                <span className="text-slate-400" aria-hidden="true">·</span>
+                <span className="text-slate-400" aria-hidden="true"> / </span>
                 <span className="text-slate-500 dark:text-slate-400">{dashboardScopeLabel(experience)}</span>
             </div>
         </dl>

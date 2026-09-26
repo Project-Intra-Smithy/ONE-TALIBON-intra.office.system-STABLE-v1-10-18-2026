@@ -36,9 +36,9 @@ export default function Index() {
             <PortalWorkspaceNav current="ppas" destinations={['ppas', 'projectMonitoring', 'developmentPlans']} />
             <PPASummary records={records} />
             <PPAFilters filters={filters} onChange={(next) => { setFilters(next); setSelected(null); }} />
-            <div className="grid min-w-0 gap-3 ">
+            <div className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1fr)_340px]">
                 <PPARegister records={records} selectedId={selected?.id} onSelect={setSelected} />
-                <div className="hidden min-w-0 lg:block"><PPADetailPanel record={selected} onClose={() => setSelected(null)} /></div>
+                <div className="hidden min-w-0 xl:block"><PPADetailPanel record={selected} onClose={() => setSelected(null)} /></div>
             </div>
         </PageFrame>
     </AppLayout>;

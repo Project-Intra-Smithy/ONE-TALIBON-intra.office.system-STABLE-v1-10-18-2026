@@ -39,7 +39,7 @@ export default function ProjectPortfolio({ projects }: { projects: DashboardProj
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                     <div className="min-w-0">
                         <div className="employee-record-title text-slate-950 dark:text-slate-100">{project.title}</div>
-                        <div className="employee-metadata mt-0.5 text-slate-500 dark:text-slate-400">{project.leadOffice} · {project.stage}</div>
+                        <div className="employee-metadata mt-0.5 text-slate-500 dark:text-slate-400">{project.leadOffice}  /  {project.stage}</div>
                     </div>
                     <div className={`employee-metadata shrink-0 font-semibold ${statusClass[project.status]}`}>{statusLabel[project.status]}</div>
                 </div>

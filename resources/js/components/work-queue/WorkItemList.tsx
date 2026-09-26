@@ -26,7 +26,7 @@ export default function WorkItemList({ records, title }: { records: Paginator; t
             <div className="employee-panel-header flex flex-col gap-1 border-b border-slate-200 bg-slate-50/70 sm:flex-row sm:items-center sm:justify-between dark:border-slate-700 dark:bg-slate-900/30">
                 <h2 id="work-item-list-title" className="employee-section-title text-slate-950 dark:text-slate-100">{title}</h2>
                 <div className="employee-metadata text-slate-500 dark:text-slate-400">
-                    {records.total === 0 ? 'No matching items' : `Showing ${records.from || 1}–${records.to || records.data.length} of ${records.total}`}
+                    {records.total === 0 ? 'No matching items' : `Showing ${records.from || 1}-${records.to || records.data.length} of ${records.total}`}
                 </div>
             </div>
 
@@ -51,11 +51,11 @@ export default function WorkItemList({ records, title }: { records: Paginator; t
                                     <h3 className="employee-record-title mt-0.5 line-clamp-2 text-slate-950 dark:text-slate-100">{item.title}</h3>
                                     <div className="employee-metadata mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
                                         <span className={`${workStatusTone(item.status)} font-semibold`}>{statusLabel}</span>
-                                        <span className="text-slate-300 dark:text-slate-600" aria-hidden="true">·</span>
+                                        <span className="text-slate-300 dark:text-slate-600" aria-hidden="true"> / </span>
                                         <span className={priorityTone[item.priority] || priorityTone.normal}>{humanizeWorkValue(item.priority)} priority</span>
-                                        <span className="text-slate-300 dark:text-slate-600" aria-hidden="true">·</span>
+                                        <span className="text-slate-300 dark:text-slate-600" aria-hidden="true"> / </span>
                                         <span className={`font-semibold ${workDueTone[item.dueState]}`}>{workDueLabel[item.dueState]}</span>
-                                        {item.requiresAction ? <><span className="text-slate-300 dark:text-slate-600" aria-hidden="true">·</span><span className="employee-tone-info font-semibold">Needs action</span></> : null}
+                                        {item.requiresAction ? <><span className="text-slate-300 dark:text-slate-600" aria-hidden="true"> / </span><span className="employee-tone-info font-semibold">Needs action</span></> : null}
                                     </div>
                                 </div>
 
@@ -81,7 +81,7 @@ export default function WorkItemList({ records, title }: { records: Paginator; t
                                         </div>
                                         <div className="employee-metadata mt-0.5 text-slate-500 dark:text-slate-400" title={updatedExact}>
                                             Updated {updatedRecency || updatedExact}
-                                            {updatedRecency ? <span className="sr-only"> · {updatedExact}</span> : null}
+                                            {updatedRecency ? <span className="sr-only">  /  {updatedExact}</span> : null}
                                         </div>
                                     </div>
                                 </div>

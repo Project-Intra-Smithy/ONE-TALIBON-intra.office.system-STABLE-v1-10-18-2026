@@ -43,7 +43,7 @@ export default function MunicipalUpdates({
                             {announcement.priority === 'important' ? <span className="shrink-0 text-[11px] font-bold uppercase tracking-wide text-amber-700 dark:text-amber-300">For attention</span> : null}
                         </div>
                         <p className="mt-1.5 text-xs leading-5 text-slate-600 dark:text-slate-300">{announcement.body}</p>
-                        <div className="mt-2 text-[11px] text-slate-500 dark:text-slate-400">{announcement.office} · {formatDate(announcement.postedAt)}</div>
+                        <div className="mt-2 text-[11px] text-slate-500 dark:text-slate-400">{announcement.office}  /  {formatDate(announcement.postedAt)}</div>
                     </article>)}
                     {announcements.length === 0 ? <div className="px-5 py-6 text-center text-sm text-slate-500 dark:text-slate-400">No current announcements.</div> : null}
                 </div>
@@ -54,7 +54,7 @@ export default function MunicipalUpdates({
                     {planningUpdates.slice(0, 4).map((update) => <article key={update.id} className="px-4 py-3 sm:px-5">
                         <div className="text-[11px] font-bold uppercase tracking-wide text-blue-700 dark:text-blue-300">{update.plan}</div>
                         <div className="mt-1 text-sm font-semibold leading-5 text-slate-950 dark:text-slate-100">{update.title}</div>
-                        <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">{update.ownerOffice} · {update.status}</div>
+                        <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">{update.ownerOffice}  /  {update.status}</div>
                         <div className="mt-1.5 text-xs leading-5 text-slate-600 dark:text-slate-300">Next: {update.nextStep}</div>
                         <div className="mt-1.5 text-[11px] text-slate-500 dark:text-slate-400">Updated {formatDate(update.updatedAt)}</div>
                     </article>)}

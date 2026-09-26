@@ -19,6 +19,6 @@ export default function PortalMenuOverview() {
         <div className="grid min-w-0 gap-3 @min-[560px]:grid-cols-2 @min-[800px]:grid-cols-3 @min-[1000px]:grid-cols-4 @min-[1400px]:grid-cols-5">
             {modules.map((module) => <PortalModuleCard key={module.key} module={module} />)}
         </div>
-        {modules.length === 0 && <p role="status" className="py-6 text-sm text-slate-500">No modules match “{query}”. Try another name.</p>}
+        {modules.length === 0 && <p role="status" className="py-6 text-sm text-slate-500">No modules match {query}. Try another name.</p>}
     </section>;
 }

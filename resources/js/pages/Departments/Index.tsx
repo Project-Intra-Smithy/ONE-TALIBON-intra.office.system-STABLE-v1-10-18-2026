@@ -198,7 +198,7 @@ function SummaryItem({ value, label, quiet = false }: { value: number; label: st
 }
 
 function Separator({ className = '' }: { className?: string }) {
-    return <span className={`text-slate-300 dark:text-slate-600 ${className}`} aria-hidden="true">·</span>;
+    return <span className={`text-slate-300 dark:text-slate-600 ${className}`} aria-hidden="true"> / </span>;
 }
 
 function OfficeSection({ id, title, description, offices, branch }: { id: string; title: string; description: string; offices: Office[]; branch: 'executive' | 'legislative' }) {

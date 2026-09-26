@@ -31,7 +31,7 @@ export default function DepartmentOperationsCard({ office }: { office: Office })
                         <h2 className="break-words text-base font-bold leading-5 text-slate-950 dark:text-slate-100 sm:text-[17px]">{office.name}</h2>
                         <div className={`mt-1 text-xs font-semibold leading-4 ${headTone}`}>{profile.headRole}</div>
                         <div className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-400 dark:text-slate-500">
-                            {office.code} <span aria-hidden="true">·</span> {pretty(office.office_type)}
+                            {office.code} <span aria-hidden="true"> / </span> {pretty(office.office_type)}
                         </div>
                     </div>
                 </div>

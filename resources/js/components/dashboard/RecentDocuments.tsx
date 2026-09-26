@@ -20,7 +20,7 @@ export default function RecentDocuments({ documents }: { documents: DashboardDoc
                 <div className="min-w-0">
                     <div className="employee-metadata break-all font-bold text-blue-700 dark:text-blue-300">{document.reference}</div>
                     <div className="employee-record-title mt-0.5 text-slate-950 dark:text-slate-100">{document.title}</div>
-                    <div className="employee-metadata mt-0.5 text-slate-500 dark:text-slate-400">{document.office} · {document.documentType}</div>
+                    <div className="employee-metadata mt-0.5 text-slate-500 dark:text-slate-400">{document.office}  /  {document.documentType}</div>
                 </div>
                 <div className="employee-metadata text-slate-500 dark:text-slate-400 @min-[620px]:text-right">Updated {formatDate(document.updatedAt)}</div>
             </article>)}

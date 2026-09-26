@@ -37,7 +37,7 @@ export default function AttentionQueue({
                             <span className="min-w-0 truncate text-slate-500 dark:text-slate-400" title={item.transactionType}>{item.transactionType}</span>
                         </div>
                         <div className="employee-record-title mt-0.5 line-clamp-2 break-words text-slate-950 dark:text-slate-100" title={item.title}>{item.title}</div>
-                        <div className="employee-metadata mt-0.5 line-clamp-1 text-slate-500 dark:text-slate-400" title={`${item.currentOffice?.shortName || item.currentOffice?.name || 'Office not recorded'} · ${humanize(item.priority)}`}>{item.currentOffice?.shortName || item.currentOffice?.name || 'Office not recorded'} · {humanize(item.priority)}</div>
+                        <div className="employee-metadata mt-0.5 line-clamp-1 text-slate-500 dark:text-slate-400" title={`${item.currentOffice?.shortName || item.currentOffice?.name || 'Office not recorded'}  /  ${humanize(item.priority)}`}>{item.currentOffice?.shortName || item.currentOffice?.name || 'Office not recorded'}  /  {humanize(item.priority)}</div>
                     </div>
                     <div className="employee-metadata min-w-0 text-slate-600 dark:text-slate-300"><span className="@min-[760px]:hidden">Status: </span><span className="break-words">{humanize(item.status)}</span></div>
                     <div className="employee-metadata min-w-0 text-slate-600 dark:text-slate-300"><span className="@min-[760px]:hidden">Assigned: </span><span className="break-words">{item.assignedEmployee?.name || 'Unassigned'}</span></div>

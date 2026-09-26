@@ -50,7 +50,7 @@ export default function SchedulePanel({ meetings, deadlines }: { meetings: Dashb
                             </div>
                             <div className="min-w-0 flex-1">
                                 <div className="employee-record-title text-slate-950 dark:text-slate-100">{meeting.title}</div>
-                                <div className="employee-metadata mt-1 text-slate-500 dark:text-slate-400">{meeting.location} · {meeting.convenor}</div>
+                                <div className="employee-metadata mt-1 text-slate-500 dark:text-slate-400">{meeting.location}  /  {meeting.convenor}</div>
                                 <div className="employee-supporting-text mt-0.5 line-clamp-2 text-slate-600 dark:text-slate-300">{meeting.purpose}</div>
                             </div>
                         </div>
@@ -70,7 +70,7 @@ export default function SchedulePanel({ meetings, deadlines }: { meetings: Dashb
                                 <Clock3 size={14} className={'mt-0.5 shrink-0 ' + urgencyClass[urgency]} aria-hidden="true" />
                                 <div className="min-w-0 flex-1">
                                     <div className="employee-record-title text-slate-950 dark:text-slate-100">{deadline.title}</div>
-                                    <div className={'employee-metadata mt-1 font-semibold ' + urgencyClass[urgency]}>{urgencyCopy[urgency]} · {formatDate(deadline.dueAt)}</div>
+                                    <div className={'employee-metadata mt-1 font-semibold ' + urgencyClass[urgency]}>{urgencyCopy[urgency]}  /  {formatDate(deadline.dueAt)}</div>
                                     <div className="employee-metadata mt-0.5 text-slate-500 dark:text-slate-400">{deadline.ownerOffice}</div>
                                     <div className="employee-supporting-text mt-0.5 line-clamp-2 text-slate-600 dark:text-slate-300">{deadline.requirement}</div>
                                 </div>

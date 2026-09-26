@@ -58,8 +58,8 @@ type Props = {
 
 type Tone = 'blue' | 'slate' | 'amber' | 'rose' | 'emerald';
 
-const pretty = (value?: string | null) => value ? value.replaceAll('_', ' ').replace(/\b\w/g, (char) => char.toUpperCase()) : '—';
-const when = (value?: string | null) => value ? new Date(value).toLocaleString() : '—';
+const pretty = (value?: string | null) => value ? value.replaceAll('_', ' ').replace(/\b\w/g, (char) => char.toUpperCase()) : '-';
+const when = (value?: string | null) => value ? new Date(value).toLocaleString() : '-';
 
 const metricOrder = [
     'active',
@@ -354,8 +354,8 @@ function RecentActivityPanel({ items }: { items: ActivityItem[] }) {
                                     <span className="text-[10px] font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-300">{item.actionLabel}</span>
                                     <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">{pretty(item.status)}</span>
                                 </div>
-                                <div className="mt-1 break-words text-xs font-bold leading-5 text-slate-950 dark:text-slate-100 sm:text-sm">{item.reference || 'Workflow'} · {item.title || 'Untitled work item'}</div>
-                                <div className="mt-1 text-[11px] leading-4 text-slate-500 dark:text-slate-400">{item.fromOffice || '—'} → {item.toOffice || '—'}{item.actor ? ` · ${item.actor}` : ''}</div>
+                                <div className="mt-1 break-words text-xs font-bold leading-5 text-slate-950 dark:text-slate-100 sm:text-sm">{item.reference || 'Workflow'}  /  {item.title || 'Untitled work item'}</div>
+                                <div className="mt-1 text-[11px] leading-4 text-slate-500 dark:text-slate-400">{item.fromOffice || '-'} → {item.toOffice || '-'}{item.actor ? `  /  ${item.actor}` : ''}</div>
                             </div>
                             <div className="flex shrink-0 items-center gap-3 sm:flex-col sm:items-end sm:gap-1">
                                 <time className="text-[10px] text-slate-400 dark:text-slate-500">{when(item.createdAt)}</time>
@@ -391,9 +391,9 @@ function OldestUnresolvedPanel({ items }: { items: WorkItem[] }) {
                             <div className="mt-1 text-xs font-semibold leading-5 text-slate-950 group-hover:text-emerald-800 dark:text-slate-100 dark:group-hover:text-emerald-300 sm:text-sm">{item.title}</div>
                             <div className="mt-1.5 flex flex-wrap gap-x-2 gap-y-1 text-[10px] text-slate-500 dark:text-slate-400">
                                 <span>{pretty(item.status)}</span>
-                                <span>·</span>
+                                <span> / </span>
                                 <span>{pretty(item.transactionType)}</span>
-                                {item.assignedEmployee ? <><span>·</span><span>{item.assignedEmployee.name}</span></> : <><span>·</span><span>Unassigned</span></>}
+                                {item.assignedEmployee ? <><span> / </span><span>{item.assignedEmployee.name}</span></> : <><span> / </span><span>Unassigned</span></>}
                             </div>
                         </a>
                     );
