@@ -105,11 +105,11 @@ export default function ReportsIndex({ catalog, activeReport, filters, filterOpt
     const hasAdvancedFilters = ['date_from', 'date_to', 'priority', 'transaction_type', 'lifecycle', 'classification'].some(supports);
 
     return <AppLayout title="Operational Reports">
-        <div className="mx-auto max-w-7xl space-y-4 sm:space-y-6">
+        <div className="mx-auto max-w-7xl space-y-4">
             <PageHeader eyebrow="Municipal operational reporting" title="Operational Reports" icon={FileBarChart}
-                description="Operational evidence from current transactions and incoming correspondence."
+                description="Generated summaries and export views over authorized operational data. Use Records Register for authoritative individual records; this is not a separate archive."
                 aside={
-                <label className="block min-w-64 text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-300 sm:text-xs">Report
+                <label className="block min-w-64 text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-300 sm:text-xs">Report view
                     <select value={activeReport} onChange={(event) => selectReport(event.target.value)} className="mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm normal-case tracking-normal text-slate-900 dark:bg-[#142236] dark:text-slate-100 dark:border-slate-700">
                         {catalog.map((item) => <option key={item.key} value={item.key}>{item.label}</option>)}
                     </select>
@@ -119,17 +119,17 @@ export default function ReportsIndex({ catalog, activeReport, filters, filterOpt
 
             <form onSubmit={apply} className="space-y-3">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                    <div><h2 className="font-bold text-slate-950 dark:text-white">{report.label}</h2><p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500 dark:text-slate-300">{report.description}</p></div>
-                    <a href={exportUrl} className="inline-flex w-fit items-center gap-2 rounded-xl bg-[#0b2852] px-4 py-2.5 text-xs font-semibold text-white"><Download size={15} /> Export CSV</a>
+                    <div className="min-w-0"><div className="text-[10px] font-bold uppercase tracking-[0.13em] text-blue-700 dark:text-blue-300">Selected report</div><h2 className="mt-0.5 font-bold text-slate-950 dark:text-white">{report.label}</h2><p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500 dark:text-slate-300">{report.description}</p></div>
+                    <a href={exportUrl} className="inline-flex w-fit items-center gap-2 rounded-lg bg-[#0b2852] px-3 py-2 text-xs font-semibold text-white"><Download size={15} /> Export CSV</a>
                 </div>
 
                 <ProgressiveFilterBar
-                    title="Report filters"
+                    title="Filter scope"
                     activeFilters={activeFilters}
                     primary={(
                         <div className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 dark:bg-slate-900/40 dark:border-slate-700">
-                            <div className="text-xs font-bold uppercase tracking-[0.14em] text-blue-700 sm:text-xs">Current report scope</div>
-                            <div className="mt-0.5 text-[13px] font-semibold text-slate-800 sm:text-xs dark:text-slate-100">{report.label}</div>
+                            <div className="text-xs font-bold uppercase tracking-[0.14em] text-blue-700 sm:text-xs">Filter scope</div>
+                            <div className="mt-0.5 text-[13px] font-semibold text-slate-800 sm:text-xs dark:text-slate-100">Filters apply to {report.label} only.</div>
                         </div>
                     )}
                     common={hasCommonFilters ? (
@@ -160,20 +160,20 @@ export default function ReportsIndex({ catalog, activeReport, filters, filterOpt
             <section aria-label={`${report.label} results`} className="overflow-hidden rounded-xl border border-slate-200 bg-white text-slate-900  dark:bg-[#142236] dark:text-slate-100 dark:border-slate-700">
                 <div className="flex flex-col gap-1 border-b border-slate-200 bg-slate-50 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5 dark:bg-slate-900/40 dark:border-slate-700">
                     <div>
-                        <div className="text-[13px] font-bold text-slate-800 sm:text-sm dark:text-slate-100">{report.kind === 'aggregate' ? 'Office summary' : 'Detailed results'}</div>
+                        <div className="text-[13px] font-bold text-slate-800 sm:text-sm dark:text-slate-100">Results · {report.kind === 'aggregate' ? 'Office summary' : 'Detailed results'}</div>
                         <div className="mt-0.5 text-xs text-slate-500 sm:text-xs dark:text-slate-400">{report.label}</div>
                     </div>
                     <span className="text-xs font-semibold text-slate-500 sm:text-xs dark:text-slate-400">{result.total.toLocaleString()} {result.total === 1 ? 'result' : 'results'}</span>
                 </div>
 
                 {result.data.length === 0 ? (
-                    <div className="px-5 py-12 text-center">
+                    <div className="px-5 py-8 text-center">
                         <div className="text-sm font-semibold text-slate-700 dark:text-slate-300">No authorized report results match these filters.</div>
                         <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">Adjust the report criteria or reset the filters.</div>
                     </div>
                 ) : <ReportResultList report={report} rows={result.data} />}
 
-                {result.last_page > 1 && <nav aria-label="Report result pages" className="flex flex-wrap gap-1 border-t border-slate-200 px-4 py-3 dark:border-slate-700">{result.links.map((link, index) => link.url ? <Link key={`${link.label}-${index}`} href={link.url} preserveScroll className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${link.active ? 'bg-blue-700 text-white' : 'border border-slate-200 text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:border-slate-700'}`} dangerouslySetInnerHTML={{ __html: link.label }} /> : <span key={`${link.label}-${index}`} className="rounded-lg px-3 py-1.5 text-xs text-slate-300" dangerouslySetInnerHTML={{ __html: link.label }} />)}</nav>}
+                {result.last_page > 1 && <nav aria-label="Report result pages" className="flex flex-wrap gap-1 border-t border-slate-200 px-4 py-2.5 dark:border-slate-700">{result.links.map((link, index) => link.url ? <Link key={`${link.label}-${index}`} href={link.url} preserveScroll className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${link.active ? 'bg-blue-700 text-white' : 'border border-slate-200 text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:border-slate-700'}`} dangerouslySetInnerHTML={{ __html: link.label }} /> : <span key={`${link.label}-${index}`} className="rounded-lg px-3 py-1.5 text-xs text-slate-300" dangerouslySetInnerHTML={{ __html: link.label }} />)}</nav>}
             </section>
         </div>
     </AppLayout>;
@@ -188,7 +188,7 @@ function ReportResultList({ report, rows }: { report: Report; rows: Row[] }) {
 
     return <div className="divide-y divide-slate-100 dark:divide-slate-700">
         {rows.map((row) => (
-            <article key={row.id} className="px-4 py-4 sm:px-5">
+            <article key={row.id} className="px-4 py-3 sm:px-5">
                 <div className="grid gap-4 lg:grid-cols-[minmax(220px,0.8fr)_minmax(0,2.2fr)_auto] lg:items-start">
                     <div className="min-w-0">
                         {primary && <>
