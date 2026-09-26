@@ -8,7 +8,7 @@ Kirch Ivan Balite is the sole Technical Authority for this repository.
 
 All other contributors are Developers / Contributors unless an explicit repository-local handoff delegates a narrower operating responsibility.
 
-No contributor title, commit volume, branch ownership, QA role, reviewer role, DevOps role, frontend/backend specialization, or operator role independently grants product or promotion authority.
+No contributor title, commit volume, branch ownership, QA role, Reviewer role, DevOps role, frontend/backend specialization, or operator role independently grants product or promotion authority.
 
 ## Repository
 
@@ -20,47 +20,48 @@ No contributor title, commit volume, branch ownership, QA role, reviewer role, D
 
 Forge provides operating doctrine. It does not supersede Kirch Ivan Balite's Technical Authority over this repository.
 
-## Current product lineage
+## Current product authority
 
-CAL1 frozen candidate:
-
-`9dba054d34377ce76149d8474ddeb66b5c20130e`
-
-BH1 hardened closeout:
-
-`27824223d5169c8eadf16ab863d09aab9585db9c`
-
-Current program:
-
-`DA1 — PROTOTYPE-DAY BLOCKER AUDIT`
-
-Current audit branch:
-
-`KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT`
-
-## Main status
-
-`main` is currently a divergent historical/public-portal line and is **not yet** the hardened product authority.
-
-It must not be force-updated.
-
-Main promotion requires:
-
-1. completed blocker audit;
-2. bounded repair of confirmed blockers;
-3. explicit reconciliation of intentional main-only product work;
-4. exact-candidate full validation;
-5. Technical Authority promotion decision;
-6. non-force promotion;
-7. post-promotion verification.
-
-## Single-branch target
-
-The final branch topology target is:
+Sole continuing remote branch:
 
 `main`
 
-Historical evidence will be preserved through Git history and archival tags before temporary/historical branches are deleted.
+Exact RV1-validated/promoted product payload:
+
+`f6208cf082c4b1d189c70728adfdb9ddf3225990`
+
+Historical branches were archived and deleted after Technical Authority authorization. Their names remain in historical evidence only.
+
+## Current lifecycle state
+
+Completed:
+
+1. CAL1 feature freeze;
+2. BH1 backend/runtime hardening closeout;
+3. DA1 repair-wave closeout;
+4. RC1 main reconciliation;
+5. RV1 exact-candidate validation;
+6. non-force main promotion;
+7. archival preservation;
+8. remote non-main branch cleanup.
+
+Current transition:
+
+`MP3 — governance/documentation closeout`
+
+Next:
+
+`MP4 — final prototype-day rehearsal from main`
+
+Deployment remains separate and is not authorized by MP3.
+
+## Single-branch policy
+
+The continuing branch topology is:
+
+`main`
+
+Future temporary branches require new explicit bounded authority. Historical deleted branches must not be recreated merely to satisfy stale instructions.
 
 ## Authority precedence
 
@@ -75,12 +76,13 @@ Historical evidence will be preserved through Git history and archival tags befo
 
 - no reset/rebase/force-push of accepted history as a convenience;
 - no silent authority drift;
-- no deployment from stale historical branches;
-- no destructive branch cleanup before promotion and archival preservation;
-- product repairs during DA1 must correspond to confirmed prototype-day blockers/hindrances and require explicit Technical Authority authorization.
+- no deployment from stale historical refs;
+- no destructive archive-tag removal without explicit Technical Authority;
+- no product mutation during MP3;
+- future repairs require observed evidence and bounded authority.
 
 ## Release boundary
 
-Prototype-day readiness, deployment readiness, production readiness, and commercial completion are separate claims.
+Prototype-day rehearsal, deployment readiness, UAT, production readiness, and commercial completion are separate claims.
 
 Only observed evidence may support each claim.
