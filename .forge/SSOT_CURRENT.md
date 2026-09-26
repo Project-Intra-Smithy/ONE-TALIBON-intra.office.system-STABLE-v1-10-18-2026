@@ -203,3 +203,36 @@ The stakeholder image is a content / information-architecture reference. It does
 The Home dashboard should remain operational and not overloaded. The dense stakeholder Menu Overview belongs below priority Home content or in an equivalent comprehensive portal-directory surface.
 
 This planning record does not itself authorize implementation, promotion or deployment. After the active OW1-HF1 hotfix closes, Maintainer must re-resolve exact main and issue bounded STK1 implementation handoffs from the then-current accepted authority.
+
+
+### STK1 second-storyboard amendment
+
+A second stakeholder storyboard further clarified the intended portal shape across nine surfaces:
+
+1. Main Dashboard
+2. Universal Search
+3. Document Center
+4. Department Page
+5. Plans Library
+6. Projects & PPAs
+7. Calendar & Meetings
+8. Task Management
+9. Mobile View
+
+This is now incorporated into:
+
+`docs/ONE_TALIBON_STAKEHOLDER_PORTAL_REDIRECTION_PLAN.md`
+
+Architecture interpretation:
+
+- screenshot composition / discoverability is a target;
+- green municipal brand remains authority;
+- existing backend/domain authority is reused;
+- Universal Search, Document Center federation and generalized task creation are not presumed implemented merely because they appear in the storyboard;
+- visual / information-architecture parity should move quickly;
+- deeper functional parity is delivered only through separately bounded backend/read-model work;
+- STK1 implementation begins only after OW1-HF1 closes and Maintainer re-resolves the then-current accepted main.
+
+Current planning evidence commit after the second storyboard:
+
+`7446fa64a7c34f7891984b651d3a40394beb1b3e`
