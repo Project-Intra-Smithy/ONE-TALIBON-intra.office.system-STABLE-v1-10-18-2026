@@ -1,3 +1,9 @@
+> **HISTORICAL DECISION-SET NOTICE — 2026-09-26**
+>
+> These accepted UX decisions are preserved as provenance and may remain applicable where not superseded. PRE-NEST/writer-decomposition language below is historical program context, not the current repository phase.
+>
+> Current phase/authority is defined by `.forge/SSOT_CURRENT.md` and live `main`.
+
 # ONE TALIBON V1 — Accepted Maintainer Decisions
 
 These decisions close the PRE-NEST design questions required before writer decomposition. Reopening an accepted decision requires explicit Maintainer authority and evidence.
