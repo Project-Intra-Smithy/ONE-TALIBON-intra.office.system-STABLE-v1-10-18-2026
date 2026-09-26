@@ -1,3 +1,9 @@
+> **HISTORICAL STATUS NOTICE — 2026-09-26**
+>
+> This is an M6-era implementation snapshot, not current release or authentication truth. In particular, its historical statements about exposed demo credentials/login behavior are **not** current authority.
+>
+> Use `docs/CURRENT_STATE.md`, `docs/DEMO_FLOW.md`, live `main`, and current repository governance for present behavior.
+
 # M6 Build Status
 
 Branch: `KIRCH-PROTOTYPE-M6-EXECUTIVE-COMPLETE`
