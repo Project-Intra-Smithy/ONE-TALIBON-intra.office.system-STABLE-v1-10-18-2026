@@ -6,85 +6,61 @@
 
 ## Current integration state
 
-The prior UI/UX correction integration branch is historical context.
+There is no active reconciliation/integration branch.
 
-Current hardened product authority:
+The RC1 integration program is complete.
 
-`KIRCH-TALIBON-BH1-BACKEND-RUNTIME-HARDENING@27824223d5169c8eadf16ab863d09aab9585db9c`
+Sole continuing branch:
 
-Current DA1 reviewed repair integration:
+`main`
 
-`KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT@f48fb9381fee81490f43635ff289cce67ff7779b`
+Exact RV1-validated and promoted product payload:
 
-DA1 disposition:
+`f6208cf082c4b1d189c70728adfdb9ddf3225990`
 
-`CLOSED — SUITABLE WITH RECORDED LIMITATIONS`
+The promotion was non-force and ancestry-preserving.
 
-Current pre-promotion `main`:
+## Completed chain
 
-`9cc1b50b28762402c3b24a721cd5ba7ae961817c`
+- CAL1: completed / frozen;
+- BH1: reviewed / closed;
+- DA1 repair wave: closed with recorded limitations;
+- RC1 reconciliation: completed;
+- RV1 exact-candidate validation: completed;
+- main promotion: completed;
+- archival preservation: completed;
+- non-main remote branch cleanup: completed.
 
-## Next integration target
+## Current topology
 
-The next integration is a bounded reconciliation into a temporary RC1 candidate after the reviewed DA1 repair-wave closeout.
+```text
+refs/heads/main
+```
 
-Suggested temporary branch:
+Historical branch tips remain under verified `archive/*` tags.
 
-`KIRCH-TALIBON-RC1-MAIN-CONSOLIDATION`
+## New integration work
 
-RC1 must begin from the final DA1 closeout coordination authority containing the reviewed integration and closeout governance.
+Any future product wave must begin from live `main` unless the Technical Authority explicitly authorizes another exact source.
 
-## Main reconciliation rules
+Temporary branches are allowed only under a new bounded handoff.
 
-1. inventory `main`-only changes;
-2. classify them RETAIN / SUPERSEDED / REJECT;
-3. integrate only intentional retained work;
-4. preserve CAL1, BH1, and DA1 behavior;
-5. use normal ancestry-preserving Git;
-6. no force push;
-7. no squash/rebase reconstruction of accepted product history;
-8. validate the exact RC1 candidate before main promotion.
+Do not recreate historical RC1/DA1/UIUX branch names as implicit authority.
 
-The currently observed effective main-only product diff is bounded to public-portal files. That observation must be reverified immediately before RC1.
+## Current transition
 
-## Promotion prerequisites
+MP3 is documentation/governance closeout only.
 
-Before `main` may move:
+No application integration is authorized by MP3.
 
-- DA1 complete;
-- confirmed blockers repaired;
-- RC1 complete;
-- exact RC1 candidate passes full release/browser/mutation validation;
-- pre-promotion main tip preserved;
-- Technical Authority authorizes promotion.
+After MP3, MP4 performs a bounded final prototype-day rehearsal from `main`.
 
-## Main promotion
+## Deployment boundary
 
-Promotion must be non-force.
-
-The preferred topology makes current `main` an ancestor of the validated RC1 candidate before promotion.
-
-After promotion:
-
-- verify remote `main` exact SHA;
-- rerun smoke validation on exact `main`;
-- declare `main` the sole continuing branch only after that proof.
-
-## Branch cleanup
-
-Branch deletion is a post-promotion operation.
-
-Before deletion:
-
-- refresh remote branch inventory;
-- preserve required tips with archival tags;
-- verify tags;
-- verify final main authority;
-- delete every non-main branch;
-- re-enumerate refs and require only `refs/heads/main`.
+Deployment remains unauthorized until a separate Technical Authority decision after rehearsal.
 
 ## Developer boundary
 
-Developers / Contributors do not independently promote `main`, delete remote branches, rewrite history, or authorize deployment.
+Developers / Contributors do not independently promote `main`, rewrite history, delete archival refs, or authorize deployment.
 
 Those transitions require Kirch Ivan Balite as Technical Authority.
