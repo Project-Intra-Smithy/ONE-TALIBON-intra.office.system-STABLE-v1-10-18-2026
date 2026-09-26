@@ -2470,3 +2470,75 @@ The target is not pixel-copying.
 The target is:
 
 **stakeholder-recognizable structure implemented correctly on top of existing ONE TALIBON authority.**
+
+
+---
+
+# 54. LOCAL-ONLY ASTRA IMPLEMENTATION DIRECTIVE
+
+Technical Authority has authorized STK1 implementation to begin **locally only** while DAT and OW1-HF1 remain separate unfinished authority lanes.
+
+Local implementation target:
+
+`D:\KIRCH TALIBON\Talibon-Sales-Prototype`
+
+Protected live runtime:
+
+`C:\Talibon-MP5-VALIDATION-68607e3`
+
+The local STK1 implementation must not modify, reuse, reset, clean, switch, build inside, or deploy into the protected live runtime.
+
+Recommended local implementation branch:
+
+`KIRCH-TALIBON-STK1-ASTRA-LOCAL`
+
+Local work should begin from the current STK1 planning authority:
+
+`KIRCH-TALIBON-STK1-STAKEHOLDER-PORTAL-REDIRECTION@1d3803aa413d19fcb9e035de1db0a5d02653645c`
+
+which itself descends from application main:
+
+`4e2a4d0fc387d5692321e3cfcf76d415da1340dc`
+
+Current separate OW1-HF1 source candidate:
+
+`KIRCH-TALIBON-OW1-HF1-TOUR-CREDITS-BALANCE@762339817eef13a14581e3a800622562bc2a7769`
+
+HF1 must remain separate from STK1 until its own validation/review/acceptance/promotion authority is resolved.
+
+## Local-only rule
+
+During this temporary implementation period:
+
+- local commits are authorized;
+- local tests/build/browser validation are authorized;
+- local branch creation is authorized;
+- local architecture/read-model implementation within the STK1 plan is authorized;
+- remote push is **not authorized**;
+- pull request creation is **not authorized**;
+- merge to main is **not authorized**;
+- promotion is **not authorized**;
+- deployment is **not authorized**.
+
+Remote integration happens only after Technical Authority closes DAT and the separate HF1 lane, re-resolves exact current main, and issues the integration/rebase authority.
+
+## Local code-writer objective
+
+The local Astra implementation should deliver the maximum truthful stakeholder-visible parity without introducing duplicate domain engines.
+
+Priority:
+
+1. Portal catalog / module grid;
+2. main dashboard composition;
+3. mobile-responsive dashboard;
+4. Departments visual alignment;
+5. Plans visual alignment;
+6. Projects / PPAs visual alignment;
+7. Calendar / Meetings visual alignment;
+8. Work Queue / Tasks & Assignments visual alignment;
+9. truthful Document Center facade if it can reuse existing domain authority without schema or duplicate storage;
+10. truthful Portal Search; real federated Universal Search only if an audit proves it can be implemented safely without architecture drift.
+
+If a requested storyboard feature requires a new domain subsystem, schema/migration, or unclear authorization semantics, Astra must stop that sub-scope, record the blocker, and continue with other independent authorized presentation work.
+
+The goal is a strong local candidate, not remote churn.
