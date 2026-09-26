@@ -56,6 +56,7 @@ export default function AppLayout({ title, children }: Props) {
     const notificationsPanel = useRef<HTMLDivElement>(null);
     const notificationsButton = useRef<HTMLButtonElement>(null);
     const user = auth.user;
+    const userId = user?.id ?? null;
     const { pendingMemo, unreadMemoCount, notifications } = feed;
     const navigation = pageProps.permissions.navigation;
     const canViewReports = pageProps.permissions.reports && navigation.reports;
@@ -130,10 +131,10 @@ export default function AppLayout({ title, children }: Props) {
         setFeedOwnerId(null);
         setLiveAlert(null);
         setUnseenWorkflowCount(0);
-    }, [user?.id]);
+    }, [userId]);
 
     useVisiblePolling(async (signal) => {
-        const requestedUserId = user?.id ?? null;
+        const requestedUserId = userId;
         const response = await fetch('/notifications/feed', { credentials: 'same-origin', headers: { Accept: 'application/json' }, signal });
         if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) return;
         setFeed(await response.json() as NotificationFeed);
@@ -141,14 +142,14 @@ export default function AppLayout({ title, children }: Props) {
     }, 8000, true, true);
 
     useEffect(() => {
-        if (!user || feedOwnerId !== user.id) return;
+        if (userId === null || feedOwnerId !== userId) return;
 
-        const { alertableNotifications } = consumeTransactionNotificationFeed(user.id, notifications);
+        const { alertableNotifications } = consumeTransactionNotificationFeed(userId, notifications);
         if (alertableNotifications.length === 0) return;
 
         setLiveAlert(alertableNotifications[0]);
         setUnseenWorkflowCount((count) => count + alertableNotifications.length);
-    }, [feedOwnerId, notifications, user]);
+    }, [feedOwnerId, notifications, userId]);
 
     useEffect(() => {
         if (!liveAlert) return;
