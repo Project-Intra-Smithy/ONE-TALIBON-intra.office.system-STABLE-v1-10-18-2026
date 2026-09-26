@@ -381,3 +381,28 @@ State:
 Parallelism after branch issue:
 
 `3 / 3 CODE WRITER SLOTS ALLOCATED`
+
+
+## MP5 W05 issuance details
+
+Immutable W05 implementation base:
+
+`960df63f9e452f8846a0805cfc3d957e1c52725d`
+
+Handoff:
+
+`.forge/handoffs/active/MP5-W05-RECORDS-REPORTS-CLARITY.md`
+
+State:
+
+`ISSUED / ACTIVE`
+
+Current writer allocation:
+
+- W03 — ACTIVE
+- W04 — ACTIVE
+- W05 — ACTIVE
+
+`3 / 3 CODE WRITER SLOTS ALLOCATED`
+
+No fourth Code Writer is authorized without another explicit Technical Authority concurrency change.
