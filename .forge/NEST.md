@@ -30,48 +30,45 @@ The repository-local Nest was originally materialized during the UI/UX correctio
 
 `0913a37f96affd2c2a681697bdf6fdb6c381a99e`
 
-That remains historical provenance.
-
-It is not the current product authority.
+That remains historical provenance, not current authority.
 
 ## Current product authority
 
-CAL1 frozen candidate:
-
-`9dba054d34377ce76149d8474ddeb66b5c20130e`
-
-BH1 hardened closeout:
-
-`27824223d5169c8eadf16ab863d09aab9585db9c`
-
-Current active program:
-
-`DA1 — Prototype-Day Blocker Audit / Main Consolidation Preparation`
-
-Current temporary branch:
-
-`KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT`
-
-## Current target
-
-The repository is being consolidated toward one continuing branch:
+Sole continuing branch:
 
 `main`
 
-Temporary/historical branches will remain until:
+Exact validated/promoted product payload:
 
-- audit is complete;
-- confirmed blockers are repaired;
-- main-only intentional work is reconciled;
-- exact candidate validation passes;
-- main promotion completes;
-- historical tips are archived.
+`f6208cf082c4b1d189c70728adfdb9ddf3225990`
 
-After those gates, non-main remote branches may be deleted under Technical Authority.
+Completed provenance includes CAL1, BH1, DA1, RC1, and RV1.
+
+All former non-main remote heads were archived before deletion.
+
+## Current program
+
+`MP3 — MAIN GOVERNANCE / DOCUMENTATION CLOSEOUT`
+
+Next program:
+
+`MP4 — FINAL PROTOTYPE-DAY REHEARSAL FROM MAIN`
+
+## Branch topology
+
+Current target state has been achieved:
+
+```text
+main
+```
+
+Historical remote branch refs no longer exist. Their tips are preserved under `archive/*` tags.
+
+A new temporary branch requires new explicit authority; deleted historical branches are not implicitly revived.
 
 ## Governance installed
 
-The Nest currently governs:
+The Nest governs:
 
 - Technical Authority;
 - current SSOT;
@@ -80,15 +77,16 @@ The Nest currently governs:
 - review/evidence discipline;
 - integration policy;
 - recovery policy;
-- prototype-day audit;
+- release validation;
 - promotion rules;
-- branch cleanup rules.
+- archival/cleanup rules;
+- post-promotion rehearsal/deployment boundaries.
 
 ## Evidence law
 
 Observed Git/runtime evidence outranks stale branch references in historical records.
 
-Historical review/acceptance files remain immutable provenance and should not be rewritten to look current.
+Historical review/acceptance/evidence files remain provenance and should not be rewritten to look current.
 
 ## Role boundary
 
