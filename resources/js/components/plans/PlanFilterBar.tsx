@@ -22,8 +22,8 @@ export default function PlanFilterBar({ filters, leadOffices, resultCount, onCha
     const hasFilters = filters.query !== '' || filters.status !== 'All' || filters.horizon !== 'All' || filters.leadOffice !== 'All';
 
     return (
-        <section aria-label="Plan register filters" className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-[#142236] sm:p-4">
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4 xl:items-end">
+        <section aria-label="Plan register filters" className="municipal-panel p-3">
+            <div className="grid gap-x-3 gap-y-2 sm:grid-cols-2 xl:grid-cols-4 xl:items-end">
                 <label className="min-w-0 text-xs font-semibold text-slate-600 dark:text-slate-300">
                     Search plans
                     <span className="relative mt-1.5 block">
@@ -59,7 +59,7 @@ export default function PlanFilterBar({ filters, leadOffices, resultCount, onCha
                     </select>
                 </label>
 
-                <div className="flex items-center justify-between gap-3 xl:flex-col xl:items-end">
+                <div className="flex items-center justify-between gap-3 sm:col-span-2 xl:col-span-4">
                     <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">{resultCount} {resultCount === 1 ? 'record' : 'records'}</span>
                     {hasFilters && (
                         <button type="button" onClick={() => onChange({ query: '', status: 'All', horizon: 'All', leadOffice: 'All' })} className="inline-flex min-h-11 min-w-0 items-center gap-1.5 rounded-lg border border-slate-300 px-3 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-900/40">

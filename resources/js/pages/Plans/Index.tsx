@@ -49,35 +49,30 @@ export default function PlansIndex() {
 
     return (
         <AppLayout title="LGU Plans Library">
-            <PageFrame className="max-w-[1480px]">
+            <PageFrame width="standard" density="compact">
                 <PageHeader
-                    eyebrow="Municipal Planning and Development Office"
+                    eyebrow="Municipality of Talibon"
                     title="LGU Plans Library"
-                    description="Browse municipal plan reference records, coverage periods, responsible offices and next actions. Prototype reference data."
+                    description="Municipal development plans · Prototype reference data"
                     icon={ClipboardList}
-                    aside={
-                        <div className="rounded-lg border border-slate-200 bg-white px-3 py-2 dark:border-slate-700 dark:bg-[#142236]">
-                            <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400">Planning year</div>
-                            <div className="mt-0.5 flex items-baseline gap-2"><span className="text-base font-bold text-[#0b2852] dark:text-slate-100">2026</span><span className="text-[11px] text-slate-500 dark:text-slate-400">{municipalPlans.length} register records</span></div>
-                        </div>
-                    }
                 />
-
-                <PlanMetricGrid metrics={metrics} />
                 <PlanFilterBar filters={filters} leadOffices={leadOffices} resultCount={filteredPlans.length} onChange={setFilters} />
-
-                <details className="group rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]">
-                    <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-2.5 marker:hidden">
-                        <div><div className="text-xs font-bold text-slate-900 dark:text-slate-100">Coverage summary</div><div className="mt-0.5 text-[10px] text-slate-500 dark:text-slate-400">Plan horizons and coverage context</div></div>
-                        <span className="text-xs font-semibold text-blue-700 group-open:hidden dark:text-blue-300">Show</span><span className="hidden text-xs font-semibold text-blue-700 group-open:inline dark:text-blue-300">Hide</span>
+                <section aria-label="Plans library" className="municipal-panel grid min-w-0 items-start gap-3 p-3 sm:grid-cols-2 xl:grid-cols-3">
+                    {filteredPlans.map((plan) => <PlanCard key={plan.id} plan={plan} />)}
+                    {filteredPlans.length === 0 && <p role="status" className="py-3 text-sm text-[var(--municipal-muted)] sm:col-span-2 xl:col-span-3">No plans match the current filters.</p>}
+                </section>
+                <details className="municipal-panel group">
+                    <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-[13px] font-semibold marker:hidden">
+                        <span>Planning context</span>
+                        <span className="text-xs text-[var(--municipal-brand)] group-open:hidden">Show</span>
+                        <span className="hidden text-xs text-[var(--municipal-brand)] group-open:inline">Hide</span>
                     </summary>
-                    <div className="border-t border-slate-100 p-3 dark:border-slate-700"><PlanCoverageSummary plans={filteredPlans} /></div>
+                    <div className="space-y-3 border-t border-[var(--municipal-border)] p-3">
+                        <PlanMetricGrid metrics={metrics} />
+                        <PlanCoverageSummary plans={filteredPlans} />
+                        <PlanMilestoneQueue plans={filteredPlans} />
+                    </div>
                 </details>
-
-                <div className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1fr)_340px]">
-                    <section aria-label="Plans library" className="grid min-w-0 gap-3 sm:grid-cols-2 2xl:grid-cols-3">{filteredPlans.map((plan) => <PlanCard key={plan.id} plan={plan} />)}{filteredPlans.length === 0 && <p role="status" className="p-4 text-sm text-slate-500">No plans match the current filters.</p>}</section>
-                    <div className="min-w-0"><PlanMilestoneQueue plans={filteredPlans} /></div>
-                </div>
             </PageFrame>
         </AppLayout>
     );
