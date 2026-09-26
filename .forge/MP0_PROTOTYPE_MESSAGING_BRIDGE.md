@@ -1,3 +1,9 @@
+> **HISTORICAL MP0 AUTHORITY NOTICE — 2026-09-26**
+>
+> This record documents the MP0 prototype messaging bridge and its architectural limitations. MP0 is historical completed ancestry in the promoted product line; this file is not the current work program.
+>
+> Any replacement/migration of the bridge still requires explicit new Technical Authority.
+
 # MP0 — PROTOTYPE MESSAGING BRIDGE
 
 SOURCE:
