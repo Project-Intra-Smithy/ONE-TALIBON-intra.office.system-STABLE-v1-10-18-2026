@@ -353,3 +353,31 @@ Parallelism:
 Shared navigation is deliberately not writer-owned in Batch 2. Final sidebar vocabulary will be reconciled once during MP5 integration after W02/W03/W04 candidates are available.
 
 Do not issue another Code Writer until at least one Batch 2 slot returns.
+
+## MP5 concurrency amendment — third writer authorized
+
+Technical Authority explicitly authorizes a temporary MP5 concurrency ceiling of:
+
+`3 ACTIVE CODE WRITERS`
+
+This supersedes the earlier 2-writer ceiling for the current MP5 series only.
+
+The third lane must remain non-overlapping with W03/W04 and may not claim shared navigation, AppLayout, PageFrame/PageHeader, backend, schema, authorization, or deployment authority.
+
+### W05 — Records Register / Operational Reports Clarity & Density
+
+Purpose:
+
+Close the remaining DAT information-architecture question around Records versus Reports without introducing an Archive concept that would distort current domain semantics.
+
+Writer branch:
+
+`KIRCH-TALIBON-MP5-W05-RECORDS-REPORTS-CLARITY`
+
+State:
+
+`AUTHORIZED / HANDOFF ISSUED`
+
+Parallelism after branch issue:
+
+`3 / 3 CODE WRITER SLOTS ALLOCATED`
