@@ -84,15 +84,15 @@ class CurrentPortalNavigationTest extends TestCase
             'Meetings',
             'Messages',
             'Executive Departments',
-            'Employee Directory',
-            'Legislative',
-            'Local Special Bodies',
+            'Staff Directory',
+            'Ordinances & Issuances',
+            'Councils, Boards & Committees',
             'Development Plans',
             'PPAs',
             'Project Monitoring',
             'Users',
             'System Administration',
-            'Municipal Systems',
+            'Systems Directory',
         ] as $label) {
             $this->assertStringContainsString("label: '{$label}'", $destinations);
         }
