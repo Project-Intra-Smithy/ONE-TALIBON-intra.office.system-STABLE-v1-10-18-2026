@@ -1,3 +1,9 @@
+> **HISTORICAL PLAN NOTICE — 2026-09-26**
+>
+> This is the earlier Internal Build Wave A / Phase 1 execution plan. Its deleted branch and 2026-08 deadline are historical provenance, not current work authority.
+>
+> Current repository authority is live `main` and `.forge/SSOT_CURRENT.md`.
+
 # PHASE 1 EXECUTION PLAN — INTERNAL MUNICIPAL OPERATIONS + PACKAGED HRIS
 
 Authority: `SSOT_BY_KIRCH.md`  
