@@ -1,3 +1,9 @@
+> **HISTORICAL MILESTONE-PLAN NOTICE — 2026-09-26**
+>
+> This is the original prototype milestone plan, retained for provenance. It is not the current work ledger or release plan.
+>
+> Current work authority is `.forge/WORK_LEDGER.md` and live `main`.
+
 # Development Plan
 
 ## M0 - Foundation
