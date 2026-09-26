@@ -46,11 +46,11 @@ Completed provenance includes CAL1, BH1, DA1, RC1, and RV1.
 
 All former non-main remote heads were archived before deletion.
 
+## MP3 closeout
+
+`MP3 — MAIN GOVERNANCE / DOCUMENTATION CLOSEOUT: COMPLETE`
+
 ## Current program
-
-`MP3 — MAIN GOVERNANCE / DOCUMENTATION CLOSEOUT`
-
-Next program:
 
 `MP4 — FINAL PROTOTYPE-DAY REHEARSAL FROM MAIN`
 
