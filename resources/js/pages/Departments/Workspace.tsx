@@ -1,3 +1,5 @@
+import PageFrame from '../../components/PageFrame';
+import '../../../css/department-workspace.css';
 import DepartmentPortalSections from '../../components/departments/DepartmentPortalSections';
 import { resolveDepartmentProfile } from '../../data/municipal/departments';
 import {
@@ -7,7 +9,6 @@ import {
     Building2,
     CheckCircle2,
     Clock3,
-    FileText,
     Inbox,
     UserRoundCheck,
     Users,
@@ -138,88 +139,33 @@ export default function Workspace({ department, metrics, statusOverview, staffWo
 
     return (
         <AppLayout title="Department Workspace">
-            <div className="mx-auto w-full max-w-7xl min-w-0 space-y-3.5 sm:space-y-4">
-                <header className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-[#142236]">
-                    <div className="flex flex-col gap-3 px-4 py-4 sm:px-5 lg:flex-row lg:items-center lg:justify-between">
-                        <div className="min-w-0">
-                            <div className="flex flex-wrap items-center gap-2 text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">
-                                <span>Department workspace</span>
-                                <span className="text-slate-300 dark:text-slate-600">•</span>
-                                <span className="text-slate-500 dark:text-slate-400">{pretty(department.branch)} branch</span>
-                            </div>
-                            <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                                <h1 className="text-xl font-bold tracking-tight text-slate-950 dark:text-slate-100 sm:text-2xl">{department.name}</h1>
-                                <span className="rounded-md bg-emerald-50 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-800 dark:bg-emerald-950/35 dark:text-emerald-200">{department.code}</span>
-                            </div>
-                            <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400 sm:text-sm">
-                                {resolveDepartmentProfile(department.name, department.code).mandate}
-                            </p>
-                        </div>
-
-                        <div className="flex flex-wrap gap-2 lg:max-w-[48%] lg:justify-end" aria-label="Department workspace quick actions">
-                            {drilldowns.map((item) => (
-                                <a
-                                    key={item.href}
-                                    href={item.href}
-                                    className="inline-flex min-h-11 items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-200 dark:hover:bg-emerald-950/30 dark:hover:text-emerald-200"
-                                >
-                                    {quickActionIcon(item.label)}
-                                    {item.label}
-                                </a>
-                            ))}
-                        </div>
+            <PageFrame width="wide" density="compact" className="department-workspace">
+                <header className="department-identity">
+                    <Building2 size={28} aria-hidden="true" />
+                    <div>
+                        <p className="department-eyebrow">Department workspace / {pretty(department.branch)} branch</p>
+                        <h1>{department.code} <span>{department.name}</span></h1>
+                        <p className="department-mandate">{resolveDepartmentProfile(department.name, department.code).mandate}</p>
                     </div>
                 </header>
-
-                <DepartmentPortalSections department={department} pendingWork={metrics.active?.value} drilldowns={drilldowns} />
-                <nav aria-label="Department sections" className="flex flex-wrap gap-2 border-b border-slate-200 pb-2 dark:border-slate-700">
-                    {[["department-overview", "Overview"], ["department-workload", "Personnel & workload"], ["department-movement", "Activity & tasks"]].map(([id, label]) => <a key={id} href={`#${id}`} className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-brand-soft)]">{label}</a>)}
-                </nav>
-                <section id="department-overview" aria-label="Department operating metrics" className="grid gap-3 xl:grid-cols-[.85fr_1.15fr]">
-                    <div className="min-w-0 space-y-2">
-                        <div className="flex flex-wrap items-end justify-between gap-2 px-0.5">
-                            <div>
-                                <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-rose-700 dark:text-rose-300">Attention and outcome</div>
-                                <h2 className="mt-0.5 text-sm font-bold text-slate-950 dark:text-slate-100">Office-head awareness</h2>
-                            </div>
-                            <div className="text-[10px] text-slate-500 dark:text-slate-400">Current office workload and completed work.</div>
-                        </div>
+                <DepartmentPortalSections
+                    department={department}
+                    pendingWork={metrics.active?.value}
+                    drilldowns={drilldowns}
+                    recentActivity={recentActivity}
+                    personnel={<StaffWorkloadPanel rows={staffWorkload} />}
+                    tasks={<OldestUnresolvedPanel items={oldestUnresolved} />}
+                    reports={<StatusDistributionPanel rows={statusOverview} />}
+                    operationalContext={<div className="space-y-3">
+                        <h2 className="department-section-title">Attention and outcome</h2>
                         <MetricStrip metrics={attentionAndOutcomeMetrics} columns="four" />
-                    </div>
-                    <div className="min-w-0 space-y-2">
-                        <div className="px-0.5">
-                            <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">Office flow</div>
-                            <h2 className="mt-0.5 text-sm font-bold text-slate-950 dark:text-slate-100">Current routed-work movement</h2>
-                        </div>
+                        <h2 className="department-section-title">Office flow</h2>
                         <MetricStrip metrics={flowMetrics} columns="five" />
-                    </div>
-                </section>
-
-                <section id="department-workload" aria-labelledby="department-workload-heading" className="space-y-2">
-                    <div className="px-0.5">
-                        <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">Workload</div>
-                        <h2 id="department-workload-heading" className="mt-0.5 text-sm font-bold text-slate-950 dark:text-slate-100">Staff assignments and active status distribution</h2>
-                    </div>
-                    <div className="grid min-w-0 gap-3 xl:grid-cols-[1.15fr_.85fr]">
-                        <StaffWorkloadPanel rows={staffWorkload} />
-                        <StatusDistributionPanel rows={statusOverview} />
-                    </div>
-                </section>
-
-                <section id="department-movement" aria-labelledby="department-movement-heading" className="space-y-2">
-                    <div className="flex flex-wrap items-end justify-between gap-2 px-0.5">
-                        <div>
-                            <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">Movement and unresolved work</div>
-                            <h2 id="department-movement-heading" className="mt-0.5 text-sm font-bold text-slate-950 dark:text-slate-100">Recent workflow events and oldest open items</h2>
-                        </div>
-                        <div className="text-[11px] text-slate-500 dark:text-slate-400">Recent activity: latest {activityLimit} maximum</div>
-                    </div>
-                    <div className="grid min-w-0 gap-3 xl:grid-cols-[1.15fr_.85fr] xl:items-start">
+                        <p className="department-note">Latest {activityLimit} authorized workflow events.</p>
                         <RecentActivityPanel items={recentActivity} />
-                        <OldestUnresolvedPanel items={oldestUnresolved} />
-                    </div>
-                </section>
-            </div>
+                    </div>}
+                />
+            </PageFrame>
         </AppLayout>
     );
 }
@@ -404,10 +350,3 @@ function OldestUnresolvedPanel({ items }: { items: WorkItem[] }) {
     );
 }
 
-function quickActionIcon(label: string) {
-    const normalized = label.toLowerCase();
-    if (normalized.includes('correspondence')) return <Inbox size={13} aria-hidden="true" />;
-    if (normalized.includes('record')) return <FileText size={13} aria-hidden="true" />;
-    if (normalized.includes('report')) return <CheckCircle2 size={13} aria-hidden="true" />;
-    return <ArrowRight size={13} aria-hidden="true" />;
-}

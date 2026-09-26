@@ -1,36 +1,89 @@
 import { Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
-import { CalendarDays, FileText, FolderKanban, ListChecks } from 'lucide-react';
+import { useState, type ReactNode } from 'react';
+import { ArrowUpRight, CalendarDays, FileText, FolderKanban, ListChecks } from 'lucide-react';
 import { ppaRecords } from '../../data/municipal/ppas';
 import { municipalMeetings } from '../../data/municipal/meetings';
 import { buildPortalNavigation } from '../../navigation/portalNavigation';
 import type { SharedProps } from '../../types';
+import StatusBadge from '../portal/StatusBadge';
 
 const tabs = ['Overview', 'Documents', 'Projects', 'Reports', 'Calendar', 'Personnel', 'Tasks'] as const;
 type Tab = typeof tabs[number];
-export default function DepartmentPortalSections({ department, pendingWork, drilldowns }: { department: { code: string; name: string }; pendingWork: number | undefined; drilldowns: { label: string; href: string }[] }) {
+type RecentActivity = { id: number; title?: string | null; reference?: string | null; actionLabel: string; createdAt?: string | null; detailUrl?: string | null };
+type Props = {
+    department: { code: string; name: string };
+    pendingWork: number | undefined;
+    drilldowns: { label: string; href: string }[];
+    recentActivity: RecentActivity[];
+    personnel: ReactNode;
+    tasks: ReactNode;
+    reports: ReactNode;
+    operationalContext: ReactNode;
+};
+
+export default function DepartmentPortalSections({ department, pendingWork, drilldowns, recentActivity, personnel, tasks, reports, operationalContext }: Props) {
     const [tab, setTab] = useState<Tab>('Overview');
     const { workspaceExperience, permissions } = usePage<SharedProps>().props;
     const destinations = buildPortalNavigation(workspaceExperience, permissions.navigation).flatMap((group) => group.items);
-    const matchOffice = (value: string) => value.toLowerCase() === department.name.toLowerCase() || value.toLowerCase() === department.code.toLowerCase();
+    const canOpen = (path: string) => destinations.some((item) => item.href.split('?')[0] === path);
+    const matchOffice = (value: string) => [department.name, department.code].some((office) => office.trim().toLowerCase() === value.trim().toLowerCase());
     const projects = ppaRecords.filter((item) => matchOffice(item.responsibleOffice));
     const meetings = municipalMeetings.filter((item) => matchOffice(item.organizingOffice));
-    const documentLinks = drilldowns.filter((item) => /record|document|correspondence/i.test(item.label));
-    const activeProjects = projects.filter((item) => item.status === 'Ongoing');
     const scheduled = meetings.filter((item) => item.status === 'Scheduled');
-    const ProjectList = <div className="divide-y divide-[var(--municipal-border)]">{projects.map((item) => <article key={item.id} className="py-3"><div className="flex flex-wrap justify-between gap-2"><h3 className="text-sm font-semibold">{item.title}</h3><span className="text-xs font-semibold text-[var(--municipal-brand)]">{item.status}</span></div><p className="mt-1 text-xs text-[var(--municipal-muted)]">{item.year}  /  {item.fundingSource}</p><Link href={`/ppas?search=${encodeURIComponent(item.id)}`} className="inline-flex min-h-11 items-center text-sm font-semibold text-[var(--municipal-brand)]">Open PPA reference</Link></article>)}{!projects.length && <p className="py-4 text-sm text-[var(--municipal-muted)]">No PPA reference records are assigned to this office in the current library.</p>}</div>;
-    const MeetingList = <div className="divide-y divide-[var(--municipal-border)]">{meetings.map((item) => <article key={item.id} className="py-3"><h3 className="text-sm font-semibold">{item.title}</h3><p className="mt-1 text-xs text-[var(--municipal-muted)]">{item.date}  /  {item.time}  /  {item.status}</p><p className="mt-1 text-sm text-[var(--municipal-muted)]">{item.venue}</p></article>)}{!meetings.length && <p className="py-4 text-sm text-[var(--municipal-muted)]">No meeting references are assigned to this office in the current register.</p>}<Link href="/calendar" className="inline-flex min-h-11 items-center text-sm font-semibold text-[var(--municipal-brand)]">Open authorized calendar</Link></div>;
-    return <section className="min-w-0 space-y-3" aria-label="Department portal">
-        <div role="tablist" aria-label="Department views" className="flex flex-wrap gap-1 border-b border-[var(--municipal-border)] pb-2">{tabs.map((value) => <button key={value} id={`office-tab-${value}`} role="tab" type="button" aria-selected={tab === value} aria-controls="office-tab-panel" onClick={() => setTab(value)} onKeyDown={(event) => { const direction = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0; if (direction) { event.preventDefault(); const next = tabs[(tabs.indexOf(value) + direction + tabs.length) % tabs.length]; setTab(next); document.getElementById(`office-tab-${next}`)?.focus(); } }} className={`min-h-11 rounded-lg px-3 text-sm font-semibold ${tab === value ? 'bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand)]' : 'text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]'}`}>{value}</button>)}</div>
-        <div role="tabpanel" id="office-tab-panel" aria-labelledby={`office-tab-${tab}`} className="min-w-0">
-            {tab === 'Overview' && <div className="space-y-3"><div className="grid grid-cols-2 gap-2 xl:grid-cols-4">
-                {[{ label: 'Documents', value: 'Source registers', note: 'Office document totals are not supplied', icon: FileText }, { label: 'Active PPAs', value: String(activeProjects.length), note: 'Office prototype references', icon: FolderKanban }, { label: 'Pending work', value: pendingWork === undefined ? 'Not supplied' : String(pendingWork), note: 'Current authorized office queue', icon: ListChecks }, { label: 'Scheduled meetings', value: String(scheduled.length), note: 'Office prototype references', icon: CalendarDays }].map(({ label, value, note, icon: Icon }) => <div key={label} className="municipal-panel min-w-0 p-3"><div className="flex items-center gap-2 text-xs font-semibold text-[var(--municipal-muted)]"><Icon size={16} className="shrink-0 text-[var(--municipal-brand)]" />{label}</div><div className="mt-2 break-words text-lg font-bold">{value}</div><p className="mt-1 text-xs leading-5 text-[var(--municipal-muted)]">{note}</p></div>)}
-            </div><div className="grid min-w-0 gap-3 lg:grid-cols-2"><section className="municipal-panel p-4"><h2 className="text-sm font-bold">Office project references</h2>{ProjectList}</section><section className="municipal-panel p-4"><h2 className="text-sm font-bold">Office meeting references</h2>{MeetingList}</section></div></div>}
-            {tab === 'Projects' && <section className="municipal-panel p-4"><h2 className="text-base font-bold">Programs, Projects & Activities</h2><p className="mt-1 text-xs text-[var(--municipal-muted)]">Office-matched prototype reference records.</p>{ProjectList}{destinations.some((item) => item.key === 'projectMonitoring') && <Link href="/operations" className="inline-flex min-h-11 items-center text-sm font-semibold text-[var(--municipal-brand)]">Open authorized project monitoring</Link>}</section>}
-            {tab === 'Calendar' && <section className="municipal-panel p-4"><h2 className="text-base font-bold">Calendar & Meetings</h2><p className="mt-1 text-xs text-[var(--municipal-muted)]">Office meeting references; the calendar holds your authorized events.</p>{MeetingList}</section>}
-            {tab === 'Documents' && <section className="municipal-panel space-y-3 p-4"><h2 className="text-base font-bold">Office documents</h2><p className="text-sm text-[var(--municipal-muted)]">Open the available office registers to browse records and document attachments. This workspace does not supply a separate recent-document feed.</p><div className="flex flex-wrap gap-2">{documentLinks.map((item) => <Link key={item.href} href={item.href} className="inline-flex min-h-11 items-center rounded-lg border border-[var(--municipal-border)] px-3 text-sm font-semibold text-[var(--municipal-brand)]">{item.label}</Link>)}{destinations.some((item) => item.key === 'documentCenter') && <Link href="/documents" className="inline-flex min-h-11 items-center rounded-lg bg-[var(--municipal-brand-soft)] px-3 text-sm font-semibold text-[var(--municipal-brand)]">Document Center</Link>}</div></section>}
-            {tab === 'Reports' && <section className="municipal-panel p-4"><h2 className="text-base font-bold">Office reports</h2><p className="mt-2 text-sm leading-6 text-[var(--municipal-muted)]">Dedicated report collections are planned. Current office workload and status distribution are available below.</p><a href="#department-workload" className="inline-flex min-h-11 items-center text-sm font-semibold text-[var(--municipal-brand)]">View office workload</a></section>}
-            {(tab === 'Personnel' || tab === 'Tasks') && <section className="municipal-panel p-4"><h2 className="text-base font-bold">{tab === 'Personnel' ? 'Personnel & office workload' : 'Tasks & Assignments'}</h2><p className="mt-2 text-sm text-[var(--municipal-muted)]">Use the current office assignments and routed-work records below.</p><a href={tab === 'Personnel' ? '#department-workload' : '#department-movement'} className="inline-flex min-h-11 items-center text-sm font-semibold text-[var(--municipal-brand)]">{tab === 'Personnel' ? 'View staff assignments' : 'View activity and pending work'}</a></section>}
+    const documentLinks = drilldowns.filter((item) => /record|document|correspondence/i.test(item.label));
+    const reportLink = drilldowns.find((item) => /report/i.test(item.label));
+    const workLink = drilldowns.find((item) => /office work/i.test(item.label));
+    // Preserve server activity ordering; show each source record once in the preview.
+    const seen = new Set<string>();
+    const recentRecords = recentActivity.filter((item) => {
+        if (!item.detailUrl || seen.has(item.detailUrl)) return false;
+        seen.add(item.detailUrl);
+        return true;
+    }).slice(0, 5);
+    const records = <section className="department-panel">
+        <header><h2>Recent workflow records</h2>{documentLinks[0] && <Link href={documentLinks[0].href}>Open register <ArrowUpRight size={14} /></Link>}</header>
+        <p className="department-note department-panel-note">Latest office activity references; a separate document feed is not supplied.</p>
+        <div className="department-list">{recentRecords.map((item) => <Link className="department-record" key={item.detailUrl} href={item.detailUrl!}>
+            <FileText size={18} aria-hidden="true" /><div><strong>{item.title || item.reference || 'Workflow record'}</strong><small>{[item.reference, item.actionLabel].filter(Boolean).join(' / ')}</small></div>
+            {item.createdAt && <time dateTime={item.createdAt} title="Activity date">{new Date(item.createdAt).toLocaleDateString()}</time>}
+        </Link>)}{!recentRecords.length && <p className="department-empty">No workflow record references in the current activity view.</p>}</div>
+    </section>;
+    const projectList = (limit?: number) => <div className="department-list">{projects.slice(0, limit).map((item) => <article className="department-list-row" key={item.id}>
+        <div className="department-row-heading"><strong>{item.title}</strong><StatusBadge label={item.status} tone={item.status === 'Completed' ? 'success' : item.status === 'Ongoing' ? 'info' : item.status === 'On Hold' ? 'warning' : 'neutral'} /></div>
+        <small>{item.year} / {item.fundingSource}</small>
+        {canOpen('/ppas') && <Link className="department-inline-link" href={'/ppas?search=' + encodeURIComponent(item.id)}>Open PPA reference <ArrowUpRight size={14} /></Link>}
+    </article>)}{!projects.length && <p className="department-empty">No PPA references matched to this office.</p>}</div>;
+    const meetingList = (overview = false) => <div className="department-list">{(overview ? scheduled.slice(0, 3) : meetings).map((item) => <article className="department-record" key={item.id}>
+        <CalendarDays size={18} aria-hidden="true" /><div><strong>{item.title}</strong><small>{item.date} / {item.time}</small><small>{item.venue} / {item.status}</small></div>
+    </article>)}{!(overview ? scheduled : meetings).length && <p className="department-empty">No {overview ? 'scheduled ' : ''}meeting references matched to this office.</p>}</div>;
+    const sourceLinks = <div className="department-source-links">{documentLinks.map((item) => <Link key={item.href} href={item.href}>{item.label}<ArrowUpRight size={14} /></Link>)}{canOpen('/documents') && <Link href="/documents">Document Center<ArrowUpRight size={14} /></Link>}</div>;
+
+    return <section aria-label="Department portal" className="department-sections">
+        <div role="tablist" aria-label="Department views" className="department-tabs">{tabs.map((value) => <button key={value} id={'office-tab-' + value} role="tab" type="button" tabIndex={tab === value ? 0 : -1} aria-selected={tab === value} aria-controls="office-tab-panel" onClick={() => setTab(value)} onKeyDown={(event) => {
+            const direction = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
+            const next = event.key === 'Home' ? tabs[0] : event.key === 'End' ? tabs[tabs.length - 1] : direction ? tabs[(tabs.indexOf(value) + direction + tabs.length) % tabs.length] : null;
+            if (next) { event.preventDefault(); setTab(next); document.getElementById('office-tab-' + next)?.focus(); }
+        }}>{value}</button>)}</div>
+        <div role="tabpanel" tabIndex={0} id="office-tab-panel" aria-labelledby={'office-tab-' + tab} className="department-tab-content">
+            {tab === 'Overview' && <>
+                <div className="department-metrics">{[
+                    { label: 'Documents', value: 'Source registers', note: 'Document total not supplied', icon: FileText },
+                    { label: 'Active PPAs', value: projects.filter((item) => item.status === 'Ongoing').length, note: 'Prototype references', icon: FolderKanban },
+                    { label: 'Active office work', value: pendingWork ?? 'Not supplied', note: 'Authorized office queue', icon: ListChecks },
+                    { label: 'Scheduled meetings', value: scheduled.length, note: 'Prototype references', icon: CalendarDays },
+                ].map(({ label, value, note, icon: Icon }) => <div className="department-metric" key={label}><span><Icon size={16} aria-hidden="true" />{label}</span><strong>{value}</strong><small>{note}</small></div>)}</div>
+                <div className="department-overview-grid"><div className="department-column">{records}<section className="department-panel"><header><h2>Office project references</h2><button type="button" onClick={() => setTab('Projects')}>View all</button></header>{projectList(3)}</section></div>
+                    <div className="department-column"><section className="department-panel"><header><h2>Scheduled meeting references</h2><button type="button" onClick={() => setTab('Calendar')}>View all</button></header><p className="department-note department-panel-note">Prototype schedule, not a live calendar feed.</p>{meetingList(true)}</section>
+                    <section className="department-panel"><header><h2>Office workload</h2><button type="button" onClick={() => setTab('Personnel')}>Personnel</button></header><div className="department-panel-body"><p className="department-note">View staff assignment counts and the oldest unresolved work in this office.</p><div className="department-source-links"><button type="button" onClick={() => setTab('Tasks')}>View tasks</button>{workLink && <Link href={workLink.href}>Open office queue<ArrowUpRight size={14} /></Link>}</div></div></section></div>
+                </div>
+                <details className="department-operational"><summary>Operational context <span>Office metrics and activity</span></summary><div>{operationalContext}</div></details>
+            </>}
+            {tab === 'Documents' && <>{sourceLinks}{records}</>}
+            {tab === 'Projects' && <section className="department-panel"><header><h2>Programs, Projects & Activities</h2>{canOpen('/operations') && <Link href="/operations">Project monitoring<ArrowUpRight size={14} /></Link>}</header><p className="department-note department-panel-note">Office-matched prototype reference records.</p>{projectList()}</section>}
+            {tab === 'Calendar' && <section className="department-panel"><header><h2>Calendar & Meetings</h2>{canOpen('/calendar') && <Link href="/calendar">Open calendar<ArrowUpRight size={14} /></Link>}</header><p className="department-note department-panel-note">Office prototype references. Open the calendar for authorized events.</p>{meetingList()}</section>}
+            {tab === 'Reports' && <>{reportLink && <div className="department-source-links"><Link href={reportLink.href}>Open {reportLink.label}<ArrowUpRight size={14} /></Link></div>}{reports}</>}
+            {tab === 'Personnel' && <><p className="department-note">Bounded staff workload view, not a complete personnel directory.</p>{personnel}</>}
+            {tab === 'Tasks' && <>{workLink && <div className="department-source-links"><Link href={workLink.href}>Open {workLink.label}<ArrowUpRight size={14} /></Link></div>}{tasks}</>}
         </div>
     </section>;
 }
