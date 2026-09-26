@@ -349,4 +349,3 @@ function OldestUnresolvedPanel({ items }: { items: WorkItem[] }) {
         </section>
     );
 }
-
