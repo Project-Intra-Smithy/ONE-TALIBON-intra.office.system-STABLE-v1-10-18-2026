@@ -46,15 +46,21 @@ Deleted historical branch names in evidence records remain provenance and must n
 
 ## Current transition
 
-Current governance transition:
+MP3 governance closeout and MP4 final prototype-day rehearsal / Developer Acceptance Test are complete as bounded pre-deployment work.
 
-`MP3 — MAIN GOVERNANCE / DOCUMENTATION CLOSEOUT`
+Current authorized program:
 
-Next runtime transition after MP3:
+`MP5 — POST-DAT FRONTEND CORRECTION`
 
-`MP4 — FINAL PROTOTYPE-DAY REHEARSAL FROM MAIN`
+MP5 source baseline:
 
-Deployment remains separately authorized.
+`main@615529ce6663933dd3eeee4d504d14d1f21b626d`
+
+Coordination branch:
+
+`KIRCH-TALIBON-MP5-POST-DAT-FRONTEND-CORRECTION`
+
+MP5 is limited to DAT-backed frontend behavior, density, information architecture, and presentation corrections. Maximum active Code Writers: **2**. Deployment remains separately authorized.
 
 ## Evidence precedence
 
@@ -71,11 +77,13 @@ Do not silently reconcile a material conflict.
 
 ## Branch policy
 
-`main` is the sole continuing branch after MP2 cleanup.
+`main` remains the accepted product branch.
+
+MP5 explicitly authorizes temporary coordination and writer branches that descend from the exact MP5 baseline or a later exact accepted MP5 integration baseline. At most two writer branches may be active concurrently.
 
 Do not recreate historical branches merely because older evidence references them.
 
-A future temporary branch requires a new explicit bounded authority and must start from live `main` unless another exact source is explicitly authorized.
+Every temporary MP5 branch requires a repository-local bounded handoff.
 
 Do not force push or rewrite accepted history.
 
