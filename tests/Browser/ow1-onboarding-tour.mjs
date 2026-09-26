@@ -106,7 +106,25 @@ async function firstRunYes(browser) {
 
     await page.getByRole('button', { name: 'Continue', exact: true }).click();
     check('credits visible', await page.getByRole('heading', { name: 'Development credits', exact: true }).isVisible());
-    check('technical authority credit visible', await wizard.getByText('Kirch Ivan Balite', { exact: true }).isVisible());
+
+    const kirchCredit = wizard.getByText('Kirch Ivan Balite', { exact: true }).locator('..');
+    check('Kirch approved credit visible', await kirchCredit.getByText('Chief Technology Officer (CTO) / Technical Authority', { exact: true }).isVisible());
+    check('Kirch specialization visible', await kirchCredit.getByText('Backend Systems & Architecture', { exact: true }).isVisible());
+    check('Kirch organization visible', await kirchCredit.getByText('Kirjane Labs', { exact: true }).isVisible());
+
+    const osirisCredit = wizard.getByText('Osiris Kedigadash Palac', { exact: true }).locator('..');
+    check('Osiris approved credit visible', await osirisCredit.getByText('DevOps Lead · Kirjane Labs', { exact: true }).isVisible());
+
+    const kurtCredit = wizard.getByText('Kurt Shine Khasi Halasan', { exact: true }).locator('..');
+    check('Kurt approved credit visible', await kurtCredit.getByText('Developer / DevOps & Release Operations · Kirjane Labs', { exact: true }).isVisible());
+
+    const ajCredit = wizard.getByText('AJ RIENZE', { exact: true }).locator('..');
+    check('AJ approved credit visible', await ajCredit.getByText('Chief Executive Officer (CEO) · ALZA IT Solutions', { exact: true }).isVisible());
+
+    const kikiamCredit = wizard.getByText('Kikiam', { exact: true }).locator('..');
+    check('Kikiam approved credit visible', await kikiamCredit.getByText('Chief Operating Officer (COO) · ALZA IT Solutions', { exact: true }).isVisible());
+
+    check('approved collaboration visible', await wizard.getByText('Kirjane Labs × ALZA IT Solutions', { exact: true }).isVisible());
 
     await page.getByRole('button', { name: 'Continue', exact: true }).click();
     check('start-tour action visible', await page.getByRole('button', { name: 'Start guided tour', exact: true }).isVisible());

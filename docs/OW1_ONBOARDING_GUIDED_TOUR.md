@@ -85,7 +85,7 @@ Presentation credits are configured in:
 
 `resources/js/components/onboarding/tourCatalog.ts`
 
-The initial roster is taken from repository-backed authority at the immutable OW1 start state. Credits are deliberately data/config driven so Technical Authority can edit presentation names without rewriting onboarding mechanics.
+The stakeholder-facing roster and role titles are governed by the explicit Technical Authority approval recorded for OW1-CREDITS-R1. Credits remain data/config driven so approved names, roles, specialization, organization ownership, and collaboration copy can be maintained without rewriting onboarding mechanics.
 
 README repository-state metadata is not used as runtime onboarding state.
 
