@@ -1,3 +1,9 @@
+> **HISTORICAL RELEASE-STATUS NOTICE — 2026-09-26**
+>
+> This document describes the earlier Phase 1/commercial-gate state. It is not the current Git/repository release-status record.
+>
+> Current repository authority is live `main`, `.forge/SSOT_CURRENT.md`, and `.forge/VALIDATION.md`. Commercial completion remains a separate claim and is not inferred from the prototype-day promotion.
+
 # Phase 1 Release Status
 
 Authority: `SSOT_BY_KIRCH.md` + `SSOT_COMMERCIAL_PHASE_AMENDMENT.md`
