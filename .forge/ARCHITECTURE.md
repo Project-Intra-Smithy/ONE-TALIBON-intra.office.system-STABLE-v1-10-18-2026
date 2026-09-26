@@ -1,3 +1,7 @@
+> **ARCHITECTURE-SCOPE NOTICE — 2026-09-26**
+>
+> This file preserves the accepted UI/UX-correction architecture and remains useful for those design constraints. It is not the current program/status record and does not override live `main`, `.forge/SSOT_CURRENT.md`, or newer accepted product behavior.
+
 # ONE TALIBON V1 — UI/UX Correction Architecture
 
 ## Scope
