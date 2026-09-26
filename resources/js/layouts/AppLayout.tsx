@@ -227,7 +227,7 @@ export default function AppLayout({ title, children, presentation }: Props) {
                             <div id="portal-content" data-presentation={dashboardContent ? 'dashboard' : undefined} tabIndex={-1} className={`p-3 sm:p-4 ${hrisPresentation ? HRIS_DARK_PARITY_CLASSES : ''}`}><NotificationContext.Provider value={notifications}>{children}</NotificationContext.Provider></div>
                             <footer className="mx-3 flex flex-wrap justify-between gap-2 border-t border-[var(--municipal-border)] py-2.5 text-[11px] text-[var(--municipal-muted)] sm:mx-4"><span>Municipality of Talibon · Province of Bohol</span><span>One Talibon · Intra-Office Portal</span></footer>
                         </div>
-                        {!portalDashboard && desktopUtilitiesOpen && <MunicipalUtilityRail />}
+                        {desktopUtilitiesOpen && <MunicipalUtilityRail />}
                     </div>
                 </main>
             </div>
