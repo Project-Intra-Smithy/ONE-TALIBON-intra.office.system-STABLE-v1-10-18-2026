@@ -104,10 +104,10 @@ export default function CorrespondenceShow({ correspondence, timeline, capabilit
     const currentOffice = correspondence.accountability.currentOffice;
     const receivingOffice = correspondence.accountability.receivingOffice;
     const relatedWork = [
-        { label: 'Back to correspondence inbox', detail: 'Return to the list and filter context that opened this record.', href: returnTarget },
+        { label: 'Back to Inbox & Routing', detail: 'Return to the authorized Correspondence list and filter context that opened this record.', href: returnTarget },
         ...(workflow?.detailUrl ? [{ label: `Linked workflow ${workflow.reference}`, detail: `${humanize(workflow.status)} · ${officeLabel(workflow.currentOffice)}`, href: workflow.detailUrl }] : []),
         { label: 'Search this reference in Records', detail: 'Check other municipal records using this exact correspondence reference.', href: `/records?search=${encodeURIComponent(correspondence.reference)}` },
-        { label: 'Open My Work', detail: 'Move directly to work currently requiring your action.', href: '/transactions?view=needs_my_action' },
+        { label: 'Open Work Queue', detail: 'Move directly to work currently requiring your action.', href: '/transactions?view=needs_my_action' },
     ];
 
     return (
@@ -115,9 +115,9 @@ export default function CorrespondenceShow({ correspondence, timeline, capabilit
             <div className="mx-auto max-w-7xl space-y-3">
                 <div className="flex items-center justify-between gap-3">
                     <Link href={returnTarget} className="inline-flex items-center gap-2 text-xs font-semibold text-blue-700 hover:text-blue-900 dark:text-blue-300">
-                        <ArrowLeft size={15} /> Back to correspondence
+                        <ArrowLeft size={15} /> Back to Inbox & Routing
                     </Link>
-                    <div className="text-[11px] text-slate-500 dark:text-slate-400">Review workspace</div>
+                    <div className="text-[11px] text-slate-500 dark:text-slate-400">Correspondence review workspace</div>
                 </div>
 
                 <section className="rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-700 dark:bg-[#142236] sm:px-5">
