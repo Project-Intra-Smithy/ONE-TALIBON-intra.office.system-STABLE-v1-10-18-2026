@@ -129,11 +129,12 @@
         justify-content: space-between;
         gap: .75rem;
         border-bottom: 1px solid var(--municipal-border);
-        padding: .75rem 1rem;
+        padding: var(--municipal-panel-header-padding-y, .75rem) 1rem;
+        min-height: var(--municipal-panel-header-min-height, 0px);
     }
     .municipal-panel-body {
         min-width: 0;
-        padding: 1rem;
+        padding: var(--municipal-panel-padding, 1rem);
     }
     .municipal-panel-title,
     .municipal-section-title {
@@ -444,14 +445,39 @@
     .municipal-table tbody tr[aria-selected="true"] > td { background: var(--municipal-selected-bg); border-bottom-color: var(--municipal-selected-border); }
     .municipal-register { font-size: 13px; line-height: 19px; }
     .municipal-register-heading { min-height: 36px; padding: 8px 12px; background: var(--municipal-surface-subtle); color: var(--municipal-muted); font-size: 11px; font-weight: 650; }
-    .municipal-register-row { min-height: 44px; padding: 10px 12px; border-bottom: 1px solid var(--municipal-border); }
-    .municipal-register-row--detailed { min-height: 56px; }
+    .municipal-register-row { min-height: var(--municipal-row-min-height, 44px); padding: var(--municipal-row-padding-y, 10px) 12px; border-bottom: 1px solid var(--municipal-border); }
+    .municipal-register-row--detailed { min-height: var(--municipal-row-detailed-min-height, 56px); }
     .municipal-register-row:hover { background: var(--municipal-hover); }
     .municipal-register-row.municipal-selected { background: var(--municipal-selected-bg); }
     .municipal-status-badge { display: inline-flex; align-items: center; max-width: 100%; border-radius: 6px; padding: 3px 8px; font-size: 11px; line-height: 16px; font-weight: 650; overflow-wrap: anywhere; }
     .municipal-workspace-nav { display: flex; min-width: 0; flex-wrap: wrap; gap: 4px; padding-bottom: 8px; border-bottom: 1px solid var(--municipal-border); }
-    .municipal-workspace-link { display: inline-flex; min-height: 44px; align-items: center; gap: 8px; padding: 8px 12px; border-radius: var(--municipal-radius-surface); font-size: 14px; font-weight: 600; color: var(--municipal-muted); }
+    .municipal-workspace-link { display: inline-flex; min-height: var(--municipal-nav-min-height, 44px); align-items: center; gap: 8px; padding: 8px 12px; border-radius: var(--municipal-radius-surface); font-size: 14px; font-weight: 600; color: var(--municipal-muted); }
     .municipal-workspace-link:hover { background: var(--municipal-hover); }
     .municipal-workspace-link[aria-current="page"] { background: var(--municipal-selected-bg); color: var(--municipal-brand); }
     @media (min-width: 768px) { .municipal-page-title { font-size: 24px; line-height: 30px; } }
 }
+
+/* Inherited density is opt-in; default scopes also reset nested compact frames. */
+[data-density="default"] {
+    --municipal-section-gap: 16px; --municipal-item-gap: 12px;
+    --municipal-panel-padding: 16px; --municipal-panel-header-padding-y: 12px;
+    --municipal-panel-header-min-height: 0px;
+    --municipal-row-padding-y: 10px; --municipal-row-min-height: 44px;
+    --municipal-row-detailed-min-height: 56px; --municipal-nav-min-height: 44px;
+    --municipal-header-text-gap: 6px; --municipal-header-gap: 12px;
+    --municipal-header-desktop-gap: 16px; --municipal-panel-heading-size: 18px;
+}
+[data-density="compact"] {
+    --municipal-page-gap: 12px; --municipal-section-gap: 12px; --municipal-item-gap: 8px;
+    --municipal-panel-padding: 12px; --municipal-panel-header-padding-y: 6px;
+    --municipal-panel-header-min-height: 40px;
+    --municipal-row-padding-y: 7px; --municipal-row-min-height: 44px;
+    --municipal-row-detailed-min-height: 52px; --municipal-nav-min-height: 44px;
+    --municipal-header-text-gap: 4px; --municipal-header-gap: 8px;
+    --municipal-header-desktop-gap: 12px; --municipal-panel-heading-size: 15px;
+}
+.municipal-page-header-layout { gap: var(--municipal-header-gap, 12px); }
+.municipal-page-header-title, .municipal-page-header-description { margin-top: var(--municipal-header-text-gap, 6px); }
+.municipal-panel-title { font-size: var(--municipal-panel-heading-size, 18px); }
+@media (min-width: 1024px) { .municipal-page-header-layout { gap: var(--municipal-header-desktop-gap, 16px); } }
+@media (min-width: 768px) and (pointer: fine) { [data-density="compact"] { --municipal-nav-min-height: 40px; } }

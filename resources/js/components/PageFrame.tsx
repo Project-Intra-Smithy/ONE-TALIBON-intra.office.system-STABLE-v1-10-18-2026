@@ -6,5 +6,5 @@ export default function PageFrame({ children, width = 'wide', density = 'default
     // Existing explicit max-width utilities retain ownership until page-wave migration.
     const legacyWidth = /(?:^|\s)(?:[\w-]+:)*max-w-/.test(className);
     const style: CSSProperties = { ...(legacyWidth ? {} : { maxWidth: widths[width] }), '--municipal-page-gap': density === 'compact' ? '12px' : '16px' } as CSSProperties;
-    return <div className={`municipal-page-frame mx-auto w-full min-w-0 ${className}`} style={style}>{children}</div>;
+    return <div data-density={density} className={`municipal-page-frame mx-auto w-full min-w-0 ${className}`} style={style}>{children}</div>;
 }

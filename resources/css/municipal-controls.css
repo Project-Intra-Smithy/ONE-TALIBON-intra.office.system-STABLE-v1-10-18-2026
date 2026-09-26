@@ -137,3 +137,12 @@
 @media (min-width: 768px) { .municipal-filter-panel { max-height: none; border: 1px solid var(--municipal-border); border-radius: var(--municipal-radius-surface); background: var(--municipal-surface-subtle); box-shadow: none; } }
 @media (max-width: 767px), (pointer: coarse) { .municipal-action { min-height: 44px; } }
 @media (max-width: 639px) { .municipal-field { font-size: 16px; } }
+
+.municipal-progressive-filter { padding: 12px; }
+.municipal-filter-layout, .municipal-filter-fields { gap: var(--municipal-item-gap, 12px); }
+.municipal-filter-active { margin-top: var(--municipal-item-gap, 12px); }
+@media (min-width: 640px) { .municipal-progressive-filter { padding: var(--municipal-panel-padding, 16px); } }
+@media (min-width: 768px) {
+    .municipal-filter-expanded { margin-top: var(--municipal-section-gap, 12px); }
+    .municipal-progressive-filter .municipal-filter-panel { padding: var(--municipal-panel-padding, 16px); }
+}

@@ -55,8 +55,8 @@ export default function ProgressiveFilterBar({
     }, [expanded]);
 
     return (
-        <div className="municipal-panel p-3 sm:p-4">
-            <div className="flex flex-col gap-3 lg:flex-row lg:flex-wrap lg:items-end">
+        <div className="municipal-panel municipal-progressive-filter">
+            <div className="municipal-filter-layout flex flex-col lg:flex-row lg:flex-wrap lg:items-end">
                 <div className="min-w-0 flex-1 lg:min-w-60">{primary}</div>
 
                 {common && (
@@ -85,7 +85,7 @@ export default function ProgressiveFilterBar({
             </div>
 
             {activeFilters.length > 0 && (
-                <div className="mt-3 flex flex-wrap gap-1.5" aria-label="Active filters">
+                <div className="municipal-filter-active flex flex-wrap gap-1.5" aria-label="Active filters">
                     {activeFilters.map((filter) => (
                         <span key={filter} className="municipal-filter-chip">
                             {filter}
@@ -98,7 +98,7 @@ export default function ProgressiveFilterBar({
                 <div
                     id={panelId}
                     className={expanded
-                        ? 'fixed inset-0 z-50 flex items-end md:static md:z-auto md:mt-3 md:block'
+                        ? 'fixed inset-0 z-50 flex items-end md:static md:z-auto municipal-filter-expanded md:block'
                         : 'hidden'}
                 >
                     <button
@@ -128,7 +128,7 @@ export default function ProgressiveFilterBar({
                                 <X size={16} aria-hidden="true" />
                             </button>
                         </div>
-                        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{advanced}</div>
+                        <div className="municipal-filter-fields grid sm:grid-cols-2 lg:grid-cols-4">{advanced}</div>
                     </div>
                 </div>
             )}
