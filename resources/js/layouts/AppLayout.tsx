@@ -8,6 +8,7 @@ import PortalSidebar from '../components/shell/PortalSidebar';
 import { PortalIdentity, PortalLauncher, RecordsSearch } from '../components/shell/PortalTools';
 import { useVisiblePolling } from '../hooks/useVisiblePolling';
 import { buildPortalNavigation } from '../navigation/portalNavigation';
+import { consumeTransactionNotificationFeed } from '../notifications/notificationPresentationLedger';
 import type { LiveNotification, NotificationFeed, SharedProps } from '../types';
 
 type Props = PropsWithChildren<{ title: string }>;
@@ -43,6 +44,7 @@ export default function AppLayout({ title, children }: Props) {
     const pageProps = page.props;
     const { auth, flash } = pageProps;
     const [feed, setFeed] = useState<NotificationFeed>(() => EMPTY_NOTIFICATION_FEED);
+    const [feedOwnerId, setFeedOwnerId] = useState<number | null>(null);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [utilitiesOpen, setUtilitiesOpen] = useState(false);
     const [desktopUtilitiesOpen, setDesktopUtilitiesOpen] = useState(false);
@@ -51,8 +53,6 @@ export default function AppLayout({ title, children }: Props) {
     const [dismissedMemoId, setDismissedMemoId] = useState<number | null>(null);
     const [liveAlert, setLiveAlert] = useState<LiveNotification | null>(null);
     const [unseenWorkflowCount, setUnseenWorkflowCount] = useState(0);
-    const knownNotificationKeys = useRef<Set<string>>(new Set());
-    const notificationsInitialized = useRef(false);
     const notificationsPanel = useRef<HTMLDivElement>(null);
     const notificationsButton = useRef<HTMLButtonElement>(null);
     const user = auth.user;
@@ -125,31 +125,30 @@ export default function AppLayout({ title, children }: Props) {
         };
     }, [notificationsOpen]);
 
+    useEffect(() => {
+        setFeed(EMPTY_NOTIFICATION_FEED);
+        setFeedOwnerId(null);
+        setLiveAlert(null);
+        setUnseenWorkflowCount(0);
+    }, [user?.id]);
+
     useVisiblePolling(async (signal) => {
+        const requestedUserId = user?.id ?? null;
         const response = await fetch('/notifications/feed', { credentials: 'same-origin', headers: { Accept: 'application/json' }, signal });
         if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) return;
         setFeed(await response.json() as NotificationFeed);
+        setFeedOwnerId(requestedUserId);
     }, 8000, true, true);
 
     useEffect(() => {
-        const workflowNotifications = notifications.filter((notification) => notification.type === 'transaction');
-        if (!notificationsInitialized.current) {
-            workflowNotifications.forEach((notification) => knownNotificationKeys.current.add(notification.key));
-            notificationsInitialized.current = true;
-            const justArrived = workflowNotifications.find((notification) => {
-                if (!notification.created_at) return false;
-                const age = Date.now() - new Date(notification.created_at).getTime();
-                return age >= -5000 && age <= 15000;
-            });
-            if (justArrived) { setLiveAlert(justArrived); setUnseenWorkflowCount(1); }
-            return;
-        }
-        const newWorkflowNotifications = workflowNotifications.filter((notification) => !knownNotificationKeys.current.has(notification.key));
-        if (newWorkflowNotifications.length === 0) return;
-        newWorkflowNotifications.forEach((notification) => knownNotificationKeys.current.add(notification.key));
-        setLiveAlert(newWorkflowNotifications[0]);
-        setUnseenWorkflowCount((count) => count + newWorkflowNotifications.length);
-    }, [notifications]);
+        if (!user || feedOwnerId !== user.id) return;
+
+        const { alertableNotifications } = consumeTransactionNotificationFeed(user.id, notifications);
+        if (alertableNotifications.length === 0) return;
+
+        setLiveAlert(alertableNotifications[0]);
+        setUnseenWorkflowCount((count) => count + alertableNotifications.length);
+    }, [feedOwnerId, notifications, user]);
 
     useEffect(() => {
         if (!liveAlert) return;
