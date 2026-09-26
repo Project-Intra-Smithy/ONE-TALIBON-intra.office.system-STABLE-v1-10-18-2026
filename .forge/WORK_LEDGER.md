@@ -311,3 +311,45 @@ Planned lanes:
 - W04 — Correspondence / Announcements / Memoranda Clarity
 
 Shared navigation reconciliation is reserved for Maintainer/integration after W02/W03/W04 candidates coexist.
+
+## MP5 Batch 2 — issued writer authorities
+
+Immutable Batch 2 implementation base:
+
+`68e387a506dafc4a019252f8391b88b1a64c8df3`
+
+### W03 — Work Queue / Transaction Density & Terminology
+
+Branch:
+
+`KIRCH-TALIBON-MP5-W03-WORK-QUEUE-TRANSACTION-DENSITY`
+
+Handoff:
+
+`.forge/handoffs/active/MP5-W03-WORK-QUEUE-TRANSACTION-DENSITY.md`
+
+State:
+
+`ISSUED / ACTIVE`
+
+### W04 — Correspondence / Announcements / Memoranda Clarity
+
+Branch:
+
+`KIRCH-TALIBON-MP5-W04-COMMS-INFORMATION-CLARITY`
+
+Handoff:
+
+`.forge/handoffs/active/MP5-W04-COMMS-INFORMATION-CLARITY.md`
+
+State:
+
+`ISSUED / ACTIVE`
+
+Parallelism:
+
+`2 / 2 CODE WRITER SLOTS ALLOCATED`
+
+Shared navigation is deliberately not writer-owned in Batch 2. Final sidebar vocabulary will be reconciled once during MP5 integration after W02/W03/W04 candidates are available.
+
+Do not issue another Code Writer until at least one Batch 2 slot returns.
