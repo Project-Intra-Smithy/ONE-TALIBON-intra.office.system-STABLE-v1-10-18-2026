@@ -45,15 +45,15 @@ Completed:
 7. archival preservation;
 8. remote non-main branch cleanup.
 
+MP3 governance/documentation closeout:
+
+`COMPLETE`
+
 Current transition:
-
-`MP3 — governance/documentation closeout`
-
-Next:
 
 `MP4 — final prototype-day rehearsal from main`
 
-Deployment remains separate and is not authorized by MP3.
+Deployment remains separate and requires a new explicit Technical Authority decision after rehearsal.
 
 ## Single-branch policy
 
