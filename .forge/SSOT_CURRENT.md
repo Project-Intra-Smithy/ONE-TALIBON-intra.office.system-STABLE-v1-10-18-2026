@@ -32,9 +32,9 @@ Current coordination branch:
 
 `KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT`
 
-Current `main` before promotion:
+Current promoted main:
 
-`9cc1b50b28762402c3b24a721cd5ba7ae961817c`
+`f6208cf082c4b1d189c70728adfdb9ddf3225990`
 
 ## State
 
@@ -44,9 +44,10 @@ Current `main` before promotion:
 - DA1 repair wave: closed with recorded validation limitations;
 - aggregate `=== DA1 FULL AUDIT PASS ===` marker: not observed and must not be claimed;
 - next transition: RC1 main consolidation / reconciliation;
-- main promotion: not yet performed;
+- main promotion: complete at `f6208cf082c4b1d189c70728adfdb9ddf3225990`;
 - branch cleanup: not yet performed;
 - deployment from final consolidated main: not yet authorized.
+- branch cleanup: not yet authorized.
 
 ## Program objective
 
