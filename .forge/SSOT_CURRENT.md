@@ -12,15 +12,23 @@ All other contributors are Developers / Contributors unless explicitly delegated
 
 ## Current Git authority
 
-Sole continuing remote branch:
+Accepted product branch:
 
 `main`
 
-Exact RV1-validated/promoted product payload:
+Observed MP5 source baseline:
+
+`615529ce6663933dd3eeee4d504d14d1f21b626d`
+
+Exact RV1-validated/promoted application payload remains:
 
 `f6208cf082c4b1d189c70728adfdb9ddf3225990`
 
-MP3 governance/documentation commits may advance `main` beyond that SHA without changing the validated application payload. Resolve live `main` for the current governance tip.
+Active MP5 coordination branch:
+
+`KIRCH-TALIBON-MP5-POST-DAT-FRONTEND-CORRECTION`
+
+Temporary MP5 writer branches are permitted only by bounded handoff; maximum concurrent writers: **2**.
 
 Historical branch tips were preserved before deletion:
 
@@ -84,13 +92,29 @@ Status:
 
 Observed MP3 boundary: Markdown/governance only; no application/runtime file changed from the exact promoted payload baseline.
 
+## MP4 disposition
+
+`MP4 — FINAL PROTOTYPE-DAY REHEARSAL / DEVELOPER ACCEPTANCE TEST`
+
+Status:
+
+`COMPLETE AS FIELD REHEARSAL`
+
+MP4 generated frontend findings but did not authorize deployment, UAT, production readiness, or a backend-hardening restart.
+
 ## Current program
 
-`MP4 — FINAL PROTOTYPE-DAY REHEARSAL FROM MAIN`
+`MP5 — POST-DAT FRONTEND CORRECTION`
 
-MP4 is a bounded presentation-flow rehearsal, not another broad implementation/audit wave.
+Plan:
 
-Deployment is a separate explicit Technical Authority decision after rehearsal.
+`docs/MP5_POST_DAT_FRONTEND_CORRECTION_PLAN.md`
+
+Evidence basis:
+
+`.forge/evidence/maintainer/MP4-DAT-FRONTEND-FINDINGS.md`
+
+Batch 1 uses at most two non-overlapping Code Writer lanes. Deployment remains a separate explicit Technical Authority decision after MP5 acceptance/promotion.
 
 ## Product direction
 
@@ -129,8 +153,12 @@ Deleted historical branch names inside those records are not errors and must not
 The target topology was reached:
 
 ```text
-remote heads:
+accepted product:
 main
+
+active governed work:
+KIRCH-TALIBON-MP5-POST-DAT-FRONTEND-CORRECTION
+temporary bounded writer branches as issued
 ```
 
 Historical tips remain recoverable through `archive/*` tags.
