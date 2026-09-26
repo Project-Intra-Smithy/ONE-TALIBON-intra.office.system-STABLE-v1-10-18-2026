@@ -127,3 +127,44 @@ Only record what actually ran.
 Allowed states:
 
 `PASS`, `FAIL`, `NOT RUN`, `NOT OBSERVED`, `UNKNOWN`.
+
+
+## MP5 Batch 1 — issued writer authorities
+
+Immutable Batch 1 implementation base:
+
+`ee06d97e896e988527314ebbdacc5cf02625d52e`
+
+### W01 — Notification Delivery Lifecycle Repair
+
+Branch:
+
+`KIRCH-TALIBON-MP5-W01-NOTIFICATION-LIFECYCLE`
+
+Handoff:
+
+`.forge/handoffs/active/MP5-W01-NOTIFICATION-LIFECYCLE.md`
+
+State:
+
+`ISSUED / NOT YET REVIEWED`
+
+### W02 — Organization & Reference Density / Terminology
+
+Branch:
+
+`KIRCH-TALIBON-MP5-W02-ORG-REFERENCE-DENSITY`
+
+Handoff:
+
+`.forge/handoffs/active/MP5-W02-ORG-REFERENCE-DENSITY.md`
+
+State:
+
+`ISSUED / NOT YET REVIEWED`
+
+Parallelism:
+
+`2 / 2 WRITER SLOTS ALLOCATED`
+
+Do not issue W03/W04 until at least one Batch 1 slot has returned and Maintainer has reconciled the resulting state.
