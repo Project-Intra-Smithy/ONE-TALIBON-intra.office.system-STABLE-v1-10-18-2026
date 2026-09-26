@@ -18,6 +18,7 @@ export default function WorkspaceSwitcher({ compact = false }: Props) {
     return (
         <button
             type="button"
+            data-tour="shell:workspace-switcher"
             onClick={switchWorkspace}
             disabled={switching}
             aria-label={compact ? (switching ? 'Switching workspace' : 'Switch Workspace') : undefined}
