@@ -286,3 +286,28 @@ Handoff:
 No Batch 1 candidate may enter Acceptance or integration until its missing execution evidence is obtained.
 
 W03/W04 remain blocked.
+
+## MP5 cadence amendment — integrated validation
+
+Technical Authority has deferred expensive execution validation until the exact combined MP5 integration candidate.
+
+Durable decision:
+
+`.forge/evidence/maintainer/MP5-VALIDATION-CADENCE-DECISION.md`
+
+W01/W02 execution evidence remains honestly `NOT RUN / NOT OBSERVED`; no PASS is inferred.
+
+The earlier Batch 1 execution-validation handoff is no longer a blocker to Batch 2.
+
+### Batch 2 — AUTHORIZED
+
+Maximum active Code Writers:
+
+`2`
+
+Planned lanes:
+
+- W03 — Work Queue / Transaction Density & Terminology
+- W04 — Correspondence / Announcements / Memoranda Clarity
+
+Shared navigation reconciliation is reserved for Maintainer/integration after W02/W03/W04 candidates coexist.
