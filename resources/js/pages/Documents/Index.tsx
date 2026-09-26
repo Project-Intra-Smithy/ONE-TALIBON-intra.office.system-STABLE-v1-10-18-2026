@@ -1,9 +1,9 @@
+import '../../../css/document-center.css';
 import { Link, router, usePage } from '@inertiajs/react';
 import { FileText } from 'lucide-react';
 import { useEffect, useState, type FormEvent } from 'react';
 import PageFrame from '../../components/PageFrame';
 import PageHeader from '../../components/PageHeader';
-import ProgressiveFilterBar from '../../components/filters/ProgressiveFilterBar';
 import PortalSearchField from '../../components/portal/PortalSearchField';
 import DocumentCollectionNav from '../../components/documents/DocumentCollectionNav';
 import DocumentRegister from '../../components/documents/DocumentRegister';
@@ -16,7 +16,7 @@ import type { SharedProps } from '../../types';
 export default function DocumentCenter({ records, filters, filterOptions }: DocumentCenterProps) {
     const { workspaceExperience, permissions } = usePage<SharedProps>().props;
     const available = buildPortalNavigation(workspaceExperience, permissions.navigation).flatMap((group) => group.items);
-    const workspaces = relatedWorkspaceKeys.flatMap((key) => {
+    const workspaces = [...relatedWorkspaceKeys, 'correspondence' as const].flatMap((key) => {
         const destination = available.find((item) => item.key === key);
         return destination ? [destination] : [];
     });
@@ -42,25 +42,25 @@ export default function DocumentCenter({ records, filters, filterOptions }: Docu
     ].filter(Boolean);
 
     return <AppLayout title="Document Center"><PageFrame width="wide" density="compact">
-        <PageHeader eyebrow="ONE TALIBON / Records" title="Document Center" description="Find authorized records and open their source workspaces." icon={FileText} />
-        <div className="grid min-w-0 items-start gap-3 lg:grid-cols-[184px_minmax(0,1fr)]">
+        <PageHeader eyebrow="Organized municipal records" title="Document Center" icon={FileText} />
+        <div className="dc-workspace">
             <DocumentCollectionNav collections={filterOptions.recordTypes} current={filters.record_type} onSelect={changeCollection} workspaces={workspaces} />
-            <div className="min-w-0 space-y-3">
-                <form onSubmit={submit} aria-label="Document search and filters">
-                    <ProgressiveFilterBar title="Date range" activeFilters={activeFilters}
-                        primary={<PortalSearchField label="Search authorized records" placeholder="Search reference, title, office or person" maxLength={160} value={draft.search} onChange={(event) => setDraft({ ...draft, search: event.target.value })} onClear={draft.search ? () => setDraft({ ...draft, search: '' }) : undefined} />}
-                        common={<><label className="min-w-0 text-xs font-medium text-[var(--municipal-muted)]">Office<select className="municipal-field mt-1 block w-full lg:w-36" value={draft.office_id ?? ''} onChange={(event) => setDraft({ ...draft, office_id: event.target.value ? Number(event.target.value) : null })}><option value="">All authorized offices</option>{filterOptions.offices.map((office) => <option key={office.id ?? office.code} value={office.id}>{office.shortName || office.name}</option>)}</select></label><label className="min-w-0 text-xs font-medium text-[var(--municipal-muted)]">Status<select className="municipal-field mt-1 block w-full lg:w-32" value={draft.state} onChange={(event) => setDraft({ ...draft, state: event.target.value })}><option value="">All statuses</option>{filterOptions.states.map((state) => <option key={state.value} value={state.value}>{state.label}</option>)}</select></label></>}
-                        actions={<><button type="submit" className="municipal-action municipal-action--primary">Search</button><button type="button" onClick={reset} className="municipal-action municipal-action--quiet">Reset</button></>}
-                        advanced={<><label className="min-w-0 text-xs font-medium">From date<input type="date" className="municipal-field mt-1 block w-full" value={draft.date_from} onChange={(event) => setDraft({ ...draft, date_from: event.target.value })} /></label><label className="min-w-0 text-xs font-medium">To date<input type="date" className="municipal-field mt-1 block w-full" value={draft.date_to} onChange={(event) => setDraft({ ...draft, date_to: event.target.value })} /></label><p className="text-xs leading-5 text-[var(--municipal-muted)] sm:col-span-2">Correspondence uses received dates; transactions use received or creation dates. Travel orders match overlapping travel periods, while the register displays their issued dates.</p><button type="submit" className="municipal-action municipal-action--primary md:hidden">Apply date range</button></>}
-                    />
+            <div className="dc-main">
+                <form onSubmit={submit} className="dc-toolbar" aria-label="Document search and filters">
+                    <div className="dc-toolbar-row"><PortalSearchField label="Search authorized records" placeholder="Search reference, title, office or person" maxLength={160} value={draft.search} onChange={(event) => setDraft({ ...draft, search: event.target.value })} onClear={draft.search ? () => setDraft({ ...draft, search: '' }) : undefined} />
+                        <select aria-label="Office" className="municipal-field" value={draft.office_id ?? ''} onChange={(event) => setDraft({ ...draft, office_id: event.target.value ? Number(event.target.value) : null })}><option value="">All offices</option>{filterOptions.offices.map((office) => <option key={office.id ?? office.code} value={office.id}>{office.shortName || office.name}</option>)}</select>
+                        <select aria-label="Status" className="municipal-field" value={draft.state} onChange={(event) => setDraft({ ...draft, state: event.target.value })}><option value="">All statuses</option>{filterOptions.states.map((state) => <option key={state.value} value={state.value}>{state.label}</option>)}</select>
+                        <button type="submit" className="municipal-action municipal-action--primary">Search</button><button type="button" onClick={reset} className="municipal-action municipal-action--quiet">Reset</button>
+                    </div>
+                    <details className="dc-filters"><summary>Filters{activeFilters.length > 0 ? ' / ' + activeFilters.length + ' applied' : ''}</summary><div className="dc-date-filters"><label>From date<input type="date" className="municipal-field" value={draft.date_from} onChange={(event) => setDraft({ ...draft, date_from: event.target.value })} /></label><label>To date<input type="date" className="municipal-field" value={draft.date_to} onChange={(event) => setDraft({ ...draft, date_to: event.target.value })} /></label><button type="submit" className="municipal-action municipal-action--primary">Apply</button></div><p className="dc-filter-help">Date range: correspondence received dates; transaction received or creation dates; travel-order travel periods. Travel orders display issued dates.</p>{activeFilters.length > 0 && <p className="dc-filter-help">{activeFilters.join(' / ')}</p>}</details>
                 </form>
-                <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--municipal-muted)]"><span>{collectionLabels[filters.record_type] || 'Authorized records'}</span><span>Newest record dates first</span></div>
-                <div className="grid min-w-0 items-start gap-3 xl:grid-cols-[minmax(0,1fr)_280px]">
+                <div className="dc-context"><span>{collectionLabels[filters.record_type] || 'Authorized records'}</span><span>Newest record dates first</span></div>
+                <div className="dc-register-group">
                     <div className="min-w-0 space-y-3">
                         <DocumentRegister records={records.data} total={records.total} selectedUrl={selected?.detailUrl || null} onSelect={(record) => setSelectedUrl(record?.detailUrl || null)} />
                         {records.last_page > 1 && <nav aria-label="Document pages" className="flex flex-wrap items-center justify-between gap-2 text-xs"><span>Page {records.current_page} of {records.last_page}</span><div className="flex flex-wrap gap-2">{records.prev_page_url && <Link href={pageHref(records.prev_page_url)} onClick={() => setSelectedUrl(null)} className="municipal-action municipal-action--secondary">Previous</Link>}{records.next_page_url && <Link href={pageHref(records.next_page_url)} onClick={() => setSelectedUrl(null)} className="municipal-action municipal-action--secondary">Next</Link>}</div></nav>}
                     </div>
-                    <div className="hidden min-w-0 xl:block"><DocumentMetadataPanel record={selected} onClose={() => setSelectedUrl(null)} /></div>
+                    <div className="dc-below-metadata"><DocumentMetadataPanel record={selected} onClose={() => setSelectedUrl(null)} /></div>
                 </div>
             </div>
         </div>
