@@ -118,6 +118,7 @@ export default function WelcomeWizard({ persona, onSkip, onStartTour, onExplore 
                                 <p className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#12613f] dark:text-[#8fc9a7]">Technical authority & engineering direction</p>
                                 <div className="mt-2 font-bold">{presentationCredits.technicalAuthority.name}</div>
                                 <div className="mt-0.5 text-sm text-[#55665e] dark:text-[#c3d0c8]">{presentationCredits.technicalAuthority.role}</div>
+                                {presentationCredits.technicalAuthority.specialization && <div className="mt-0.5 text-sm text-[#64736c] dark:text-[#adbbb3]">{presentationCredits.technicalAuthority.specialization}</div>}
                                 <div className="mt-0.5 text-xs font-semibold text-[#64736c] dark:text-[#adbbb3]">{presentationCredits.technicalAuthority.organization}</div>
                             </section>
                             <section>
