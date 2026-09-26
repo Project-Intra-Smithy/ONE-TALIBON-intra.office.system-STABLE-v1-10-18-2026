@@ -29,7 +29,7 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
     const [priority, setPriority] = useState(filters.priority);
     const [officeId, setOfficeId] = useState(filters.office_id ? String(filters.office_id) : '');
     const currentQueue = scopeGroups.flatMap((group) => group.views).find((view) => view.key === currentView);
-    const currentTitle = currentQueue?.label || 'My Work';
+    const currentTitle = currentQueue?.label || 'All work';
 
     useEffect(() => {
         setSearch(filters.search);
@@ -69,18 +69,18 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
     const activeFilterCount = [search, status, priority, officeId].filter(Boolean).length;
 
     return (
-        <AppLayout title="My Work">
-            <div className="mx-auto max-w-7xl space-y-3">
+        <AppLayout title="Work Queue">
+            <div className="mx-auto max-w-7xl space-y-2.5">
                 <header className="rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-700 dark:bg-[var(--municipal-surface)] sm:px-5">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                         <div className="flex min-w-0 items-center gap-3">
                             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand)]"><BriefcaseBusiness size={18} /></div>
                             <div className="min-w-0">
-                                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1"><h1 className="text-lg font-bold text-slate-950 dark:text-slate-100">My Work</h1><span className="text-[10px] font-bold uppercase tracking-[0.13em] text-[var(--municipal-brand)]">{currentTitle}</span></div>
+                                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1"><h1 className="text-lg font-bold text-slate-950 dark:text-slate-100">Work Queue</h1><span className="text-[10px] font-bold uppercase tracking-[0.13em] text-[var(--municipal-brand)]">{currentTitle}</span></div>
                                 <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">{experience.department.name} · {experience.hasOfficeScope ? 'Personal and office queues' : 'Personal queues'} · {currentQueue?.count ?? records.total} item{(currentQueue?.count ?? records.total) === 1 ? '' : 's'}</p>
                             </div>
                         </div>
-                        <Link href="/transactions/create" className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--municipal-brand-deep)] px-3.5 py-2 text-xs font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]"><Plus size={15} /> New transaction</Link>
+                        <Link href="/transactions/create" className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--municipal-brand-deep)] px-3.5 py-2 text-xs font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]"><Plus size={15} /> New Request</Link>
                     </div>
                 </header>
 
@@ -89,7 +89,7 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
                 <form onSubmit={applyFilters} className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-700 dark:bg-[var(--municipal-surface)]">
                     <div className="grid gap-2 md:grid-cols-[minmax(220px,1fr)_160px_150px_190px_auto] md:items-end">
                         <label className="block">
-                            <span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-slate-400">Search work</span>
+                            <span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-slate-400">Search queue</span>
                             <div className="relative"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={15} /><input value={search} onChange={(event) => setSearch(event.target.value)} className="h-9 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-3 text-xs text-slate-900 outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-brand-soft-strong)] dark:border-slate-700 dark:bg-[var(--municipal-surface)] dark:text-slate-100" placeholder="Reference, title, office, assignee…" /></div>
                         </label>
                         <label className="block"><span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-slate-400">Status</span><select value={status} onChange={(event) => setStatus(event.target.value)} className="h-9 w-full rounded-lg border border-slate-300 bg-white px-2.5 text-xs text-slate-900 dark:border-slate-700 dark:bg-[var(--municipal-surface)] dark:text-slate-100"><option value="">All statuses</option>{filterOptions.statuses.map((value) => <option key={value} value={value}>{humanize(value)}</option>)}</select></label>
