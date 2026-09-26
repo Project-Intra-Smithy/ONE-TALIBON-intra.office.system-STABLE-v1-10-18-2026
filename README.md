@@ -2,96 +2,108 @@
 
 **Municipal Digital Workspace Prototype**
 
-**Engineering direction:** Kirch Ivan Balite  
+**Technical Authority / engineering direction:** Kirch Ivan Balite  
 **Development collaboration:** Kirjane Labs × ALZA IT Solutions
 
-ONE TALIBON is a working municipal operations prototype built around real internal workflows: office routing, records, correspondence, memoranda, calendars, messaging, HR actions, executive decisions, and role-based workspaces.
+ONE TALIBON is a municipal operations prototype built around real internal workflows: office routing, records, correspondence, memoranda, calendars, messaging, HR actions, executive decisions, and role-aware workspaces.
 
-This repository is being prepared for the Talibon prototype presentation under the technical direction of **Kirch Ivan Balite**.
+## Current repository state
 
-## Current state
+The consolidation program is closed.
 
 | Area | State |
 | --- | --- |
-| Internal municipal workspace | Operational prototype |
+| Sole continuing remote branch | `main` |
+| Validated/promoted product payload | `f6208cf082c4b1d189c70728adfdb9ddf3225990` |
 | Calendar workspace | Completed and feature-frozen |
 | Backend/runtime hardening | Completed and reviewed |
-| Messaging prototype | Integrated in current product line |
-| Prototype-day blocker audit | Active |
-| Main promotion | Pending final audit + reconciliation |
-| Branch consolidation | Planned after validated main promotion |
+| DA1 repair wave | Closed with recorded historical validation limitations |
+| RC1 consolidation | Completed |
+| RV1 exact-candidate runtime validation | Passed |
+| Main promotion | Completed |
+| Archived non-main branch tips | 65 / 65 |
+| Remote non-main branches | 0 |
+| Open PRs at MP3 opening | 0 |
+| Deployment | Not performed |
 
-The current engineering focus is simple: **find anything that can break or hinder the actual prototype presentation, fix only proven problems, then consolidate the validated product into `main`.**
+The repository now continues from **main only**. Historical branch tips remain recoverable under verified `archive/*` tags.
 
-## What is already in place
+The next engineering transition is:
 
-The prototype currently includes:
+```text
+MP3 governance/docs closeout
+        ↓
+MP4 final prototype-day rehearsal from main
+        ↓
+separate deployment decision
+```
+
+This is not another broad code-audit wave.
+
+## What is in the prototype
+
+The current product line includes:
 
 - role-aware municipal dashboards and navigation;
 - My Work queues and office-level task views;
-- transaction routing across municipal offices;
+- inter-office transaction routing;
 - Correspondence and Records;
-- Memoranda with delivery and acknowledgement flow;
+- Memoranda with delivery and acknowledgement;
 - Calendar with Month, Week, Day, and Schedule views;
 - internal Messages;
 - Mayor / executive decision surfaces;
 - Legislative records;
-- HR / leave workflows;
+- HR / leave workflow surfaces used by the presentation flow;
 - System Administration;
-- seeded showcase identities and demo data;
-- public-portal work that will be reconciled into the final product line before main promotion.
+- deterministic showcase identities and demo data;
+- a reconciled public municipal homepage.
 
-Recent engineering work also completed a backend/runtime hardening pass that reduced unnecessary request work and query fan-out across several high-use surfaces.
+Recent engineering work also completed backend/runtime hardening and exact-candidate browser validation before main promotion.
 
 ## Development approach
 
 The project is built **backend-first and workflow-first**.
 
-We do not build a polished screen first and invent behavior behind it later.
+The operating order is:
 
-The normal order is:
-
-1. define the real municipal workflow;
-2. implement the database, server-side rules, authorization, and write path;
-3. prove the behavior with tests and seeded data;
-4. build the UI on top of the real behavior;
-5. profile and harden the runtime;
-6. audit the exact presentation path before promotion.
-
-The current prototype-day audit is deliberately trying to break the application before the actual presentation does.
+1. define the municipal workflow;
+2. implement database/server rules and authorization;
+3. prove behavior with tests and deterministic data;
+4. build the UI on real behavior;
+5. harden the runtime;
+6. validate the exact release candidate;
+7. promote without rewriting accepted history;
+8. preserve historical tips before destructive branch cleanup.
 
 We prefer:
 
-- real database-backed actions over fake demo buttons;
+- real database-backed actions over fake demo controls;
 - server-side authorization over UI-only hiding;
 - deterministic seed data over manual setup;
 - measured performance work over speculative optimization;
-- exact Git evidence over memory;
+- exact Git/runtime evidence over memory;
 - narrow repairs over uncontrolled rewrites.
 
 ## Engineering team
 
-### Technical Direction
+### Technical Authority
 
 **Kirch Ivan Balite** — [@Kirch-Nairu](https://github.com/Kirch-Nairu)  
 Technical Authority / Backend Systems / Architecture  
 **Kirjane Labs**
 
-All architecture, product-direction, integration, promotion, and release decisions are under the direction of Kirch Ivan Balite.
+Architecture, product-direction, integration, promotion, release disposition, and deployment authorization remain under Kirch Ivan Balite.
 
 ### Developers / Contributors
 
 **Kurt Shine Khasi Halasan** — [@k3nchinxd](https://github.com/k3nchinxd)  
-Developer  
-**Kirjane Labs**
+Developer — **Kirjane Labs**
 
 **Kikiam** — [@kyumw3b](https://github.com/kyumw3b)  
-Developer  
-**ALZA IT Solutions**
+Developer — **ALZA IT Solutions**
 
 **AJ RIENZE** — [@rynzz22](https://github.com/rynzz22)  
-Developer  
-**ALZA IT Solutions**
+Developer — **ALZA IT Solutions**
 
 This is a joint development effort between contributors from **Kirjane Labs** and **ALZA IT Solutions**, under the technical direction of **Kirch Ivan Balite**.
 
@@ -106,65 +118,36 @@ This is a joint development effort between contributors from **Kirjane Labs** an
 - Vite
 - Playwright for browser-level validation
 
-## Current engineering phase
+## Validation honesty
 
-The current active line is the **DA1 Prototype-Day Blocker Audit**.
+The exact promoted product payload received current-contract RV1 runtime proof, including public desktop/mobile, Showcase gateway, Employee Dashboard, My Work, and Records with zero observed page errors/server 5xx during that narrow smoke.
 
-The audit covers:
+Historical limitations remain historical limitations:
 
-- clean application boot;
-- migrations and deterministic demo seeding;
-- all curated showcase personas;
-- full Feature suite;
-- TypeScript and production build;
-- Engineering → Budget → Mayor transaction flow;
-- Memorandum publish / receive / acknowledge;
-- Legislative lookup;
-- HR leave flow;
-- negative authorization behavior;
-- Calendar;
-- two-user Messages;
-- browser errors / server 5xx;
-- critical desktop and mobile presentation surfaces.
-
-Once that passes, the plan is:
-
-```text
-DA1 audit
-   ↓
-repair confirmed blockers only
-   ↓
-main reconciliation
-   ↓
-full validation
-   ↓
-promote validated product to main
-   ↓
-archive historical branch tips
-   ↓
-delete non-main branches
-   ↓
-continue from main only
-```
+- do not claim the old aggregate `=== DA1 FULL AUDIT PASS ===` marker;
+- do not claim the historical H0 exact marker;
+- do not equate prototype validation with deployment, UAT, or production acceptance.
 
 ## Repository direction
 
-The repository is being consolidated toward a single continuing branch:
+The branch-consolidation target has been reached:
 
 ```text
+remote heads:
 main
 ```
 
-Historical development branches will only be removed after the final product is validated, promoted, and their important tips are preserved.
-
-No force-push shortcut is part of the consolidation plan.
+Historical branch names in evidence/handoff records are provenance. Their deleted remote refs are preserved through verified archival tags.
 
 ## Engineering records
 
-Detailed authority, audit, and consolidation records live under:
+Current authority and evidence live under:
 
-- `.forge/`
-- `docs/PROTOTYPE_DAY_MAIN_CONSOLIDATION_PLAN.md`
+- `.forge/SSOT_CURRENT.md`
+- `.forge/AUTHORITY.md`
+- `.forge/VALIDATION.md`
+- `.forge/WORK_LEDGER.md`
+- `docs/CURRENT_STATE.md`
 - `docs/DEMO_FLOW.md`
 
-The README is intentionally kept as the **human-readable project front page**. Deep governance belongs in the Forge records, not here.
+Historical handoffs/evidence remain preserved under `.forge/evidence/` and `.forge/handoffs/`.
