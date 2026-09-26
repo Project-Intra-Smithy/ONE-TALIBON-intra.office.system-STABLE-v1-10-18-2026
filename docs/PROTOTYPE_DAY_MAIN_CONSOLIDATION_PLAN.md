@@ -8,6 +8,25 @@ Repository:
 
 `Kirch-Nairu/Talibon-Sales-Prototype`
 
+## Closeout status — 2026-09-26
+
+This document is retained as the historical execution plan for the consolidation program.
+
+Observed closeout state:
+
+- exact RV1-validated/promoted product payload: `f6208cf082c4b1d189c70728adfdb9ddf3225990`;
+- main promotion: **COMPLETE / non-force**;
+- branch-tip archival preservation: **COMPLETE — 65 non-main tips**;
+- archive refs at MP3 opening: **73**;
+- remote branch cleanup: **COMPLETE — 65 deleted**;
+- current remote heads: **main only**;
+- open PRs at MP3 opening: **0**;
+- deployment: **NOT PERFORMED**;
+- next transition: **MP4 final prototype-day rehearsal from current main**.
+
+Historical DA1 evidence limitations remain intact: the aggregate `=== DA1 FULL AUDIT PASS ===` marker and the historical H0 exact marker were not observed. RV1 supplied the exact-candidate current-contract runtime proof used for promotion.
+
+
 ## End state
 
 The program closes only when:
@@ -45,7 +64,7 @@ No force push is authorized.
 
 ## Phase 0 — Governance repair
 
-Status: ACTIVE / PARTIALLY EXECUTED.
+Status: **COMPLETE / historical phase.**
 
 Required:
 
@@ -244,6 +263,8 @@ If any delete fails, stop and report it. Do not compensate with force updates.
 
 ## Phase 8 — Final prototype-day rehearsal
 
+Status: **NEXT / MP4**
+
 Run the presentation from final `main`, not from RC1/DA1/BH1.
 
 Required rehearsal order:
@@ -277,11 +298,10 @@ Immediately stop promotion/cleanup if:
 ```text
 Technical Authority: Kirch Ivan Balite
 Product authority: main@<validated SHA>
-Prototype-day audit: PASS
-Core demo flows: PASS
-Build/type/full Feature suite: PASS
-Browser/mutation/messaging QA: PASS
+DA1 repair-wave closeout: SUITABLE WITH RECORDED LIMITATIONS
+RV1 exact current-contract runtime: PASS
 Historical tips: archived
 Remote branches: main only
-Deployment source: main only
+MP4 core demo rehearsal: PENDING
+Deployment source after rehearsal: main only
 ```
