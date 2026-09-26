@@ -1,3 +1,9 @@
+> **HISTORICAL ACCEPTANCE NOTICE — 2026-09-26**
+>
+> This checklist belongs to the earlier Phase 1/Internal Build Wave A authority. It is retained as historical engineering criteria and must not be read as the current prototype-day release checklist.
+>
+> Current validation authority is `.forge/VALIDATION.md`; current presentation rehearsal is `docs/DEMO_FLOW.md`.
+
 # Phase 1 Integrated Acceptance Checklist
 
 Authority: `SSOT_BY_KIRCH.md`
