@@ -168,3 +168,63 @@ Parallelism:
 `2 / 2 WRITER SLOTS ALLOCATED`
 
 Do not issue W03/W04 until at least one Batch 1 slot has returned and Maintainer has reconciled the resulting state.
+
+## MP5 Batch 1 — writer returns received
+
+### W01
+
+Candidate:
+
+`a31aacc620d8dae448f0fdd1239408c17f74aaf2`
+
+Writer return received.
+
+Maintainer pre-review verification:
+
+- exact remote HEAD: PASS;
+- lineage from immutable base: 5 ahead / 0 behind;
+- changed files: 3;
+- W02 intersection: 0;
+- GitHub combined statuses: none observed;
+- pull-request-triggered workflow runs: none observed;
+- writer-reported TypeScript/build/browser gates: NOT RUN / NOT OBSERVED.
+
+Current state:
+
+`REVIEW ISSUED`
+
+Reviewer handoff:
+
+`.forge/handoffs/review/MP5-W01-NOTIFICATION-LIFECYCLE-REVIEW.md`
+
+### W02
+
+Candidate:
+
+`f02fa502ba4ab61c79a0d2f622a359d691feea75`
+
+Writer return received.
+
+Maintainer pre-review verification:
+
+- exact remote HEAD: PASS;
+- lineage from immutable base: 10 ahead / 0 behind;
+- changed files: 9;
+- W01 intersection: 0;
+- GitHub combined statuses: none observed;
+- pull-request-triggered workflow runs: none observed;
+- writer-reported TypeScript/build/Feature/browser gates: NOT RUN / NOT OBSERVED.
+
+Current state:
+
+`REVIEW ISSUED`
+
+Reviewer handoff:
+
+`.forge/handoffs/review/MP5-W02-ORG-REFERENCE-DENSITY-REVIEW.md`
+
+Writer concurrency:
+
+`0 / 2 ACTIVE`
+
+Do not start W03/W04 yet. Batch 1 remains blocked on independent Review, any required rework, Acceptance/integration disposition, and combined validation.
