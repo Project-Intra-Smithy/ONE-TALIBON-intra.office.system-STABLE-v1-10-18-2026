@@ -22,6 +22,7 @@ export type TourStep = {
 export type PresentationCredit = {
     name: string;
     role: string;
+    specialization?: string;
     organization: string;
 };
 
