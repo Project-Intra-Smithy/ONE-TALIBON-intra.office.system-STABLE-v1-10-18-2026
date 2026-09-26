@@ -1,6 +1,7 @@
 import { router, usePage } from '@inertiajs/react';
-import { LogOut } from 'lucide-react';
+import { CircleHelp, LogOut } from 'lucide-react';
 import { useState } from 'react';
+import { ONBOARDING_GUIDE_EVENT } from '../onboarding/types';
 import type { AuthUser, SharedProps } from '../../types';
 import WorkspaceSwitcher from '../showcase/WorkspaceSwitcher';
 import SidebarAppearanceMenu from './SidebarAppearanceMenu';
@@ -22,12 +23,17 @@ export default function SidebarFooter({ compact, user }: Props) {
         router.post('/logout', {}, { onFinish: () => setSigningOut(false) });
     };
 
+    const openGuidedTour = () => {
+        window.dispatchEvent(new Event(ONBOARDING_GUIDE_EVENT));
+    };
+
     if (compact) {
         return (
             <div className="flex flex-col items-center gap-1" aria-busy={signingOut}>
                 <SidebarIdentity compact user={user} persona={showcasePersona} />
                 <div className="mt-1 flex flex-col gap-0.5">
                     {showcaseSession?.active && <WorkspaceSwitcher compact />}
+                    {showcaseSession?.active && <button type="button" onClick={openGuidedTour} className="flex h-11 w-11 items-center justify-center rounded-md text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80" aria-label="Guided tour" title="Guided tour"><CircleHelp size={16} aria-hidden="true" /></button>}
                     <SidebarAppearanceMenu compact />
                     <button
                         type="button"
@@ -51,6 +57,7 @@ export default function SidebarFooter({ compact, user }: Props) {
                 <span className="truncate text-[11px] font-semibold uppercase tracking-[0.06em] text-white/50">Account</span>
                 <div className="flex shrink-0 items-center gap-0.5">
                     {showcaseSession?.active && <WorkspaceSwitcher compact />}
+                    {showcaseSession?.active && <button type="button" onClick={openGuidedTour} className="flex h-11 w-11 items-center justify-center rounded-md text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80" aria-label="Guided tour" title="Guided tour"><CircleHelp size={16} aria-hidden="true" /></button>}
                     <SidebarAppearanceMenu compact align="end" />
                     <button
                         type="button"
