@@ -76,6 +76,7 @@ class CurrentPortalNavigationTest extends TestCase
         foreach ([
             'Home',
             'Work Queue',
+            'Inbox & Routing',
             'Records Register',
             'Official Memoranda',
             'Announcements',
@@ -100,7 +101,6 @@ class CurrentPortalNavigationTest extends TestCase
             'Office Overview',
             'Executive Overview',
             'System Overview',
-            'Inbox & Routing',
             'Accounts & Access',
             'For Decision',
             'Audit & Security',
