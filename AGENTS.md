@@ -8,7 +8,7 @@ Repository:
 
 **Technical Authority: Kirch Ivan Balite**
 
-Kirch Ivan Balite is the sole human Technical Authority for architecture, product scope, authority transitions, integration, promotion, release disposition, deployment authorization, and destructive branch cleanup.
+Kirch Ivan Balite is the sole human Technical Authority for architecture, product scope, authority transitions, integration, promotion, release disposition, deployment authorization, and destructive repository operations.
 
 All other contributors are **Developers / Contributors** unless Kirch explicitly issues a repository-local bounded delegation.
 
@@ -30,19 +30,31 @@ Writers do not self-promote. Review is not promotion. Build evidence is not runt
 
 ## Current authority
 
-Current hardened product authority entering DA1:
+The repository has completed DA1 → RC1 → RV1 → main promotion → archival preservation → remote branch cleanup.
 
-`KIRCH-TALIBON-BH1-BACKEND-RUNTIME-HARDENING@27824223d5169c8eadf16ab863d09aab9585db9c`
+Sole continuing remote branch:
 
-Current audit branch:
+`main`
 
-`KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT`
+Exact RV1-validated and promoted product payload:
 
-CAL1 is feature-frozen.
+`f6208cf082c4b1d189c70728adfdb9ddf3225990`
 
-BH1 is reviewed and closed.
+Historical non-main branch tips are preserved under verified `archive/branch/*` tags.
 
-`main` is not yet the current hardened product authority and must not be promoted by force.
+Deleted historical branch names in evidence records remain provenance and must not be treated as live refs.
+
+## Current transition
+
+Current governance transition:
+
+`MP3 — MAIN GOVERNANCE / DOCUMENTATION CLOSEOUT`
+
+Next runtime transition after MP3:
+
+`MP4 — FINAL PROTOTYPE-DAY REHEARSAL FROM MAIN`
+
+Deployment remains separately authorized.
 
 ## Evidence precedence
 
@@ -57,34 +69,19 @@ When information conflicts:
 
 Do not silently reconcile a material conflict.
 
-## Prototype-day program
-
-Until the prototype-day consolidation program closes:
-
-- no unrelated feature wave;
-- no speculative backend optimization;
-- no Calendar redesign;
-- no deployment from stale historical branches;
-- no branch deletion before validated main promotion and archival preservation;
-- only confirmed blockers/material hindrances may trigger product repair.
-
 ## Branch policy
 
-Temporary writer/audit/reconciliation branches are allowed only as necessary to reach the single-branch target.
+`main` is the sole continuing branch after MP2 cleanup.
 
-Target end state:
+Do not recreate historical branches merely because older evidence references them.
 
-```text
-main
-```
-
-Before deleting non-`main` branches, preserve required historical branch tips with archival tags and verify the promoted `main` lineage.
+A future temporary branch requires a new explicit bounded authority and must start from live `main` unless another exact source is explicitly authorized.
 
 Do not force push or rewrite accepted history.
 
 ## Product direction
 
-ONE TALIBON should present as a dense, credible municipal digital workspace already used for day-to-day coordination.
+ONE TALIBON should present as a dense, credible municipal digital workspace used for day-to-day coordination.
 
 Do not add fake actions, fake efficiency metrics, AI branding, startup marketing language, decorative product theater, or non-working controls.
 
@@ -104,4 +101,6 @@ Valid evidence states include:
 
 `PASS`, `FAIL`, `NOT RUN`, `NOT OBSERVED`, and `UNKNOWN`.
 
-Prototype-day readiness requires exact-SHA runtime proof, not source confidence.
+The historical aggregate DA1 pass marker and historical H0 exact marker were not observed and must not be invented.
+
+Prototype rehearsal, deployment, UAT, production readiness, and commercial completion remain separate claims.
