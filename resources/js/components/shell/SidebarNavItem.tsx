@@ -25,6 +25,7 @@ export default function SidebarNavItem({
     return (
         <Link
             href={item.href}
+            data-tour={`nav:${item.key}`}
             onClick={() => onNavigate?.()}
             aria-current={active ? 'page' : undefined}
             aria-label={compact ? label : undefined}
