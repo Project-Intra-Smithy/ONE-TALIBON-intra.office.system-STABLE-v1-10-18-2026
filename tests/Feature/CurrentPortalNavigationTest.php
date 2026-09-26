@@ -75,10 +75,9 @@ class CurrentPortalNavigationTest extends TestCase
 
         foreach ([
             'Home',
-            'My Work',
-            'Correspondence',
-            'Records',
-            'Memoranda',
+            'Work Queue',
+            'Records Register',
+            'Official Memoranda',
             'Announcements',
             'Calendar',
             'Meetings',

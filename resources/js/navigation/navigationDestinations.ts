@@ -23,10 +23,10 @@ import type { PortalDestination, PortalDestinationKey } from './navigationTypes'
 
 export const portalDestinations: Partial<Record<PortalDestinationKey, PortalDestination>> = {
     home: { key: 'home', label: 'Home', href: portalRoutePlan.home, icon: LayoutDashboard, group: 'home', readiness: 'wired', permission: 'dashboard' },
-    myWork: { key: 'myWork', label: 'My Work', href: portalRoutePlan.myWork, icon: FileText, group: 'work', readiness: 'wired', permission: 'transactions' },
-    correspondence: { key: 'correspondence', label: 'Correspondence', href: portalRoutePlan.correspondence, icon: Inbox, group: 'work', readiness: 'wired', permission: 'correspondence' },
-    records: { key: 'records', label: 'Records', href: portalRoutePlan.records, icon: FileSearch, group: 'work', readiness: 'wired', permission: 'records' },
-    memoranda: { key: 'memoranda', label: 'Memoranda', href: portalRoutePlan.memoranda, icon: FileText, group: 'work', readiness: 'wired', permission: 'memoranda' },
+    myWork: { key: 'myWork', label: 'Work Queue', href: portalRoutePlan.myWork, icon: FileText, group: 'work', readiness: 'wired', permission: 'transactions' },
+    correspondence: { key: 'correspondence', label: 'Inbox & Routing', href: portalRoutePlan.correspondence, icon: Inbox, group: 'work', readiness: 'wired', permission: 'correspondence' },
+    records: { key: 'records', label: 'Records Register', href: portalRoutePlan.records, icon: FileSearch, group: 'work', readiness: 'wired', permission: 'records' },
+    memoranda: { key: 'memoranda', label: 'Official Memoranda', href: portalRoutePlan.memoranda, icon: FileText, group: 'work', readiness: 'wired', permission: 'memoranda' },
     announcements: { key: 'announcements', label: 'Announcements', href: portalRoutePlan.announcements, icon: Megaphone, group: 'work', readiness: 'wired' },
     calendar: { key: 'calendar', label: 'Calendar', href: portalRoutePlan.calendar, icon: CalendarDays, group: 'work', readiness: 'wired' },
     meetings: { key: 'meetings', label: 'Meetings', href: portalRoutePlan.meetings, icon: CalendarClock, group: 'work', readiness: 'wired' },
