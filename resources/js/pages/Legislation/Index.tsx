@@ -53,14 +53,14 @@ export default function Index({ records, filters, canManage }: { records: Legisl
     );
 
     return (
-        <AppLayout title="Legislative Records">
+        <AppLayout title="Ordinances & Issuances">
             <PageFrame>
                 <div className="@container min-w-0 space-y-2.5">
                     <header className="flex min-w-0 flex-col gap-2 border-b border-slate-200 pb-2.5 dark:border-slate-700 @min-[680px]:flex-row @min-[680px]:items-end @min-[680px]:justify-between">
                         <div className="min-w-0">
-                            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-indigo-700 dark:text-indigo-300"><Gavel size={13} aria-hidden="true" /> Legislative records</div>
-                            <h1 className="mt-0.5 text-xl font-bold leading-tight tracking-tight text-slate-950 dark:text-slate-100 @min-[680px]:text-2xl">Legislative Records</h1>
-                            <p className="mt-0.5 max-w-3xl text-xs leading-5 text-slate-500 dark:text-slate-400">Find municipal ordinances, resolutions, executive issuances, and other controlled legislative records.</p>
+                            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-indigo-700 dark:text-indigo-300"><Gavel size={13} aria-hidden="true" /> Controlled municipal issuances</div>
+                            <h1 className="mt-0.5 text-xl font-bold leading-tight tracking-tight text-slate-950 dark:text-slate-100 @min-[680px]:text-2xl">Ordinances & Issuances</h1>
+                            <p className="mt-0.5 max-w-3xl text-xs leading-5 text-slate-500 dark:text-slate-400">Find municipal ordinances, resolutions, executive orders, office and administrative orders, circulars, and related controlled issuances.</p>
                         </div>
                         {canManage && (
                             <Link href="/legislation/create" className="inline-flex min-h-8 w-full items-center justify-center gap-1.5 rounded-md bg-[#0b2852] px-3 py-1.5 text-xs font-semibold text-white focus:outline-none focus:ring-2 focus:ring-blue-700/30 @min-[680px]:w-auto">
@@ -102,7 +102,7 @@ export default function Index({ records, filters, canManage }: { records: Legisl
 
                 <section className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]" aria-labelledby="legislative-register-heading">
                     <div className="flex flex-col gap-1 border-b border-slate-100 px-3 py-2 dark:border-slate-700 @min-[720px]:flex-row @min-[720px]:items-center @min-[720px]:justify-between @min-[720px]:gap-3">
-                        <h2 id="legislative-register-heading" className="shrink-0 text-xs font-bold text-slate-900 dark:text-slate-100">Legislative record register</h2>
+                        <h2 id="legislative-register-heading" className="shrink-0 text-xs font-bold text-slate-900 dark:text-slate-100">Ordinances & issuances register</h2>
                         <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] leading-4 text-slate-500 dark:text-slate-400" aria-label="Loaded legislative result context" aria-live="polite">
                             <span>Showing <strong className="font-semibold text-slate-700 dark:text-slate-300">{rangeStart}–{rangeEnd}</strong> of <strong className="font-semibold text-slate-700 dark:text-slate-300">{records.length}</strong> loaded</span>
                             {Object.entries(byType).map(([type, count]) => (

@@ -132,6 +132,7 @@ export default function Workspace({ department, metrics, statusOverview, staffWo
     const flowMetrics = metricEntries.filter((entry) => ['active', 'incoming', 'outgoing', 'inProgress', 'waitingExternally'].includes(entry.key));
     const attentionMetrics = metricEntries.filter((entry) => ['overdue', 'unassigned', 'escalations'].includes(entry.key));
     const completedMetric = metricEntries.find((entry) => entry.key === 'recentlyCompleted');
+    const attentionAndOutcomeMetrics = completedMetric ? [...attentionMetrics, completedMetric] : attentionMetrics;
 
     return (
         <AppLayout title="Department Workspace">
@@ -168,27 +169,23 @@ export default function Workspace({ department, metrics, statusOverview, staffWo
                     </div>
                 </header>
 
-                <section aria-labelledby="department-attention-heading" className="space-y-2">
-                    <div className="flex flex-wrap items-end justify-between gap-2 px-0.5">
-                        <div>
-                            <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-rose-700 dark:text-rose-300">Attention and outcome</div>
-                            <h2 id="department-attention-heading" className="mt-0.5 text-sm font-bold text-slate-950 dark:text-slate-100">Items requiring office-head awareness</h2>
+                <section aria-label="Department operating metrics" className="grid gap-3 xl:grid-cols-[.85fr_1.15fr]">
+                    <div className="min-w-0 space-y-2">
+                        <div className="flex flex-wrap items-end justify-between gap-2 px-0.5">
+                            <div>
+                                <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-rose-700 dark:text-rose-300">Attention and outcome</div>
+                                <h2 className="mt-0.5 text-sm font-bold text-slate-950 dark:text-slate-100">Office-head awareness</h2>
+                            </div>
+                            <div className="text-[10px] text-slate-500 dark:text-slate-400">Warnings strengthen only when attention counts are nonzero.</div>
                         </div>
-                        <div className="text-[11px] text-slate-500 dark:text-slate-400">Warning accents strengthen only when attention counts are nonzero.</div>
+                        <MetricStrip metrics={attentionAndOutcomeMetrics} columns="four" />
                     </div>
-                    <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-                        {attentionMetrics.map((metric) => <MetricCard key={metric.key} metric={metric} />)}
-                        {completedMetric && <MetricCard metric={completedMetric} />}
-                    </div>
-                </section>
-
-                <section aria-labelledby="department-flow-heading" className="space-y-2">
-                    <div className="px-0.5">
-                        <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-blue-700 dark:text-blue-300">Office flow</div>
-                        <h2 id="department-flow-heading" className="mt-0.5 text-sm font-bold text-slate-950 dark:text-slate-100">Current routed-work movement</h2>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-5">
-                        {flowMetrics.map((metric) => <MetricCard key={metric.key} metric={metric} compact />)}
+                    <div className="min-w-0 space-y-2">
+                        <div className="px-0.5">
+                            <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-blue-700 dark:text-blue-300">Office flow</div>
+                            <h2 className="mt-0.5 text-sm font-bold text-slate-950 dark:text-slate-100">Current routed-work movement</h2>
+                        </div>
+                        <MetricStrip metrics={flowMetrics} columns="five" />
                     </div>
                 </section>
 
@@ -221,24 +218,35 @@ export default function Workspace({ department, metrics, statusOverview, staffWo
     );
 }
 
-function MetricCard({ metric, compact = false }: { metric: MetricEntry; compact?: boolean }) {
-    const tone = metricTone(metric.key, metric.value);
-    const classes = toneClasses[tone];
-    const Icon = metricIcons[metric.key] ?? Building2;
-    const needsAttention = ['overdue', 'unassigned', 'escalations'].includes(metric.key) && metric.value > 0;
+function MetricStrip({ metrics, columns }: { metrics: MetricEntry[]; columns: 'four' | 'five' }) {
+    const grid = columns === 'five' ? 'sm:grid-cols-3 xl:grid-cols-5' : 'sm:grid-cols-4';
 
     return (
-        <a
-            href={metric.link}
-            className={`group min-w-0 rounded-xl border border-slate-200 border-l-4 ${classes.border} bg-white ${compact ? 'p-3' : 'p-3.5'} shadow-sm transition hover:border-r-blue-300 hover:border-t-blue-300 hover:border-b-blue-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 dark:border-y-slate-700 dark:border-r-slate-700 dark:bg-[#142236]`}
-        >
-            <div className="flex items-start justify-between gap-2">
-                <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${classes.icon}`}><Icon size={15} aria-hidden="true" /></div>
-                {needsAttention ? <span className={`text-[9px] font-bold uppercase tracking-wide ${classes.badge}`}>Needs attention</span> : null}
-            </div>
-            <div className={`${compact ? 'mt-2 text-xl' : 'mt-2.5 text-2xl'} font-bold tabular-nums ${classes.value}`}>{metric.value}</div>
-            <div className="mt-0.5 text-[11px] font-semibold leading-4 text-slate-600 group-hover:text-slate-900 dark:text-slate-300 dark:group-hover:text-slate-100">{metric.label}</div>
-        </a>
+        <div className={`grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-slate-200 bg-slate-200 dark:border-slate-700 dark:bg-slate-700 ${grid}`}>
+            {metrics.map((metric) => {
+                const tone = metricTone(metric.key, metric.value);
+                const classes = toneClasses[tone];
+                const Icon = metricIcons[metric.key] ?? Building2;
+                const needsAttention = ['overdue', 'unassigned', 'escalations'].includes(metric.key) && metric.value > 0;
+
+                return (
+                    <a
+                        key={metric.key}
+                        href={metric.link}
+                        className={`group min-w-0 border-l-2 ${classes.border} bg-white px-2.5 py-2.5 transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-600 dark:bg-[#142236] dark:hover:bg-slate-900/35`}
+                    >
+                        <div className="flex min-w-0 items-center justify-between gap-2">
+                            <div className="flex min-w-0 items-center gap-1.5">
+                                <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md ${classes.icon}`}><Icon size={12} aria-hidden="true" /></span>
+                                <span className="min-w-0 text-[10px] font-semibold leading-4 text-slate-600 dark:text-slate-300">{metric.label}</span>
+                            </div>
+                            <span className={`shrink-0 text-lg font-bold tabular-nums ${classes.value}`}>{metric.value}</span>
+                        </div>
+                        {needsAttention ? <div className={`mt-1 text-[8px] font-bold uppercase tracking-wide ${classes.badge}`}>Needs attention</div> : null}
+                    </a>
+                );
+            })}
+        </div>
     );
 }
 
