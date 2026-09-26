@@ -228,3 +228,61 @@ Writer concurrency:
 `0 / 2 ACTIVE`
 
 Do not start W03/W04 yet. Batch 1 remains blocked on independent Review, any required rework, Acceptance/integration disposition, and combined validation.
+
+## MP5 Batch 1 — review disposition
+
+### W01 review
+
+Candidate:
+
+`a31aacc620d8dae448f0fdd1239408c17f74aaf2`
+
+Reviewer verdict:
+
+`SUITABLE WITH RECORDED LIMITATIONS`
+
+Confirmed defects:
+
+`NONE CONFIRMED`
+
+Acceptance readiness:
+
+`HOLD — MISSING EXACT-CANDIDATE EXECUTION EVIDENCE`
+
+Durable review:
+
+`.forge/evidence/review/MP5-W01-NOTIFICATION-LIFECYCLE-REVIEW.md`
+
+### W02 review
+
+Candidate:
+
+`f02fa502ba4ab61c79a0d2f622a359d691feea75`
+
+Reviewer verdict:
+
+`SUITABLE WITH RECORDED LIMITATIONS`
+
+Confirmed defects:
+
+`NONE CONFIRMED`
+
+Acceptance readiness:
+
+`HOLD — MISSING EXACT-CANDIDATE EXECUTION EVIDENCE`
+
+Durable review:
+
+`.forge/evidence/review/MP5-W02-ORG-REFERENCE-DENSITY-REVIEW.md`
+
+### Current gate
+
+`MP5 BATCH 1 — EXACT-CANDIDATE EXECUTION VALIDATION`
+
+Handoff:
+
+`.forge/handoffs/active/MP5-BATCH1-EXECUTION-VALIDATION.md`
+
+No Batch 1 candidate may enter Acceptance or integration until its missing execution evidence is obtained.
+
+W03/W04 remain blocked.
