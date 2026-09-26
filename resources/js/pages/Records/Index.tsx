@@ -156,7 +156,7 @@ export default function Index({ records, filters, filterOptions }: Props) {
     const detailHref = (record: RecordRow) => withReturnContext(record.detailUrl, url, '/records');
 
     return (
-        <AppLayout title="Records">
+        <AppLayout title="Records Register">
             <div className="mx-auto max-w-7xl space-y-3">
                 <header className="rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-700 dark:bg-[#142236] sm:px-5">
                     <div className="flex flex-wrap items-center justify-between gap-3">
@@ -166,10 +166,10 @@ export default function Index({ records, filters, filterOptions }: Props) {
                             </div>
                             <div className="min-w-0">
                                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                                    <h1 className="text-lg font-bold text-slate-950 dark:text-slate-100">Records</h1>
+                                    <h1 className="text-lg font-bold text-slate-950 dark:text-slate-100">Records Register</h1>
                                     <span className="text-[10px] font-bold uppercase tracking-[0.13em] text-blue-700 dark:text-blue-300">Authorized register</span>
                                 </div>
-                                <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">Correspondence, inter-office transactions, and approved travel orders in one operational register.</p>
+                                <p className="mt-0.5 max-w-4xl text-xs text-slate-500 dark:text-slate-400">Authoritative individual records across correspondence, workflow transactions, and approved travel orders. Use Operational Reports for generated summaries and exports.</p>
                             </div>
                         </div>
                         <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs text-slate-600 dark:border-slate-700 dark:bg-slate-900/40 dark:text-slate-300">
@@ -230,9 +230,9 @@ export default function Index({ records, filters, filterOptions }: Props) {
                     </details>
                 </form>
 
-                <section aria-label="Records registry" className="overflow-hidden rounded-xl border border-slate-200 bg-white text-slate-900 shadow-sm dark:border-slate-700 dark:bg-[#142236] dark:text-slate-100">
+                <section aria-label="Records Register" className="overflow-hidden rounded-xl border border-slate-200 bg-white text-slate-900 shadow-sm dark:border-slate-700 dark:bg-[#142236] dark:text-slate-100">
                     <div className="flex flex-col gap-1 border-b border-slate-100 bg-slate-50 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between sm:px-4 dark:border-slate-700 dark:bg-slate-900/40">
-                        <div className="flex items-center gap-2 text-xs font-bold text-slate-800 dark:text-slate-100"><FileSearch size={14} aria-hidden="true" /> Records register</div>
+                        <div className="flex items-center gap-2 text-xs font-bold text-slate-800 dark:text-slate-100"><FileSearch size={14} aria-hidden="true" /> Records Register</div>
                         <div className="text-[11px] text-slate-500 dark:text-slate-400">{records.total === 0 ? 'No matching records' : `Showing ${records.from || 1}–${records.to || records.data.length} of ${records.total}`}</div>
                     </div>
 
