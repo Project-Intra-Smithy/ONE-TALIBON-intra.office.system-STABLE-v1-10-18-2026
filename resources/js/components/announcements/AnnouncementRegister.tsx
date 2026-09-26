@@ -16,7 +16,8 @@ const groups = [
 const dateContext = (value: string) => {
     const date = new Date(value + 'T00:00:00+08:00');
     const exact = date.toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'Asia/Manila' });
-    const days = Math.round((date.getTime() - Date.now()) / 86400000);
+    const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Manila' }).format(new Date());
+    const days = Math.round((Date.parse(value + 'T00:00:00Z') - Date.parse(today + 'T00:00:00Z')) / 86400000);
     if (days === 0) return { relative: 'Today', exact };
     if (days === 1) return { relative: 'Tomorrow', exact };
     if (days === -1) return { relative: 'Yesterday', exact };
