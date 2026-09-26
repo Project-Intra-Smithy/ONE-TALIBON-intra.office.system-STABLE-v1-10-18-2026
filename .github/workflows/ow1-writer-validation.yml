@@ -10,14 +10,44 @@ permissions:
   contents: read
 
 concurrency:
-  group: ow1-writer-${{ github.ref }}
+  group: ow1-writer-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  validate:
-    name: OW1 exact-head validation
+  frontend:
+    name: OW1 TypeScript and production build
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact writer head
+        uses: actions/checkout@v4
+
+      - name: Record exact authority
+        run: |
+          echo "OW1_HEAD=$(git rev-parse HEAD)"
+          git status --short
+          git log -1 --oneline
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install frontend dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: TypeScript
+        run: npm run types:check
+
+      - name: Production build
+        run: npm run build
+
+  browser:
+    name: OW1 isolated browser validation
+    needs: frontend
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     services:
       postgres:
@@ -88,17 +118,12 @@ jobs:
           php artisan optimize:clear
           php artisan migrate:fresh --seed --force
 
-      - name: TypeScript
-        run: npm run types:check
-
-      - name: Production build
-        run: npm run build
-
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
       - name: Start isolated production-asset runtime
         run: |
+          npm run build
           rm -f public/hot storage/framework/vite.hot
           php artisan serve --host=127.0.0.1 --port=8000 > storage/logs/ow1-laravel.log 2>&1 &
           for i in {1..60}; do
