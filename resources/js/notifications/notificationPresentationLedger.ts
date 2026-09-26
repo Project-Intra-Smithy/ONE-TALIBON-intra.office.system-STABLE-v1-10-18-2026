@@ -1,5 +1,8 @@
 import type { LiveNotification } from '../types';
 
+// Toast presentation is scoped to the current browser-tab session and authenticated user.
+ // sessionStorage survives Inertia remounts and direct reloads; the in-memory cache keeps
+ // ordinary SPA navigation safe when browser storage is unavailable.
 const STORAGE_PREFIX = 'talibon.notification-presentation.v1';
 const MAX_PRESENTED_KEYS = 512;
 const RECENT_NOTIFICATION_WINDOW_MS = 15_000;
