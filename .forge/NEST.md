@@ -52,19 +52,29 @@ All former non-main remote heads were archived before deletion.
 
 ## Current program
 
-`MP4 — FINAL PROTOTYPE-DAY REHEARSAL FROM MAIN`
+`MP5 — POST-DAT FRONTEND CORRECTION`
+
+Source baseline:
+
+`main@615529ce6663933dd3eeee4d504d14d1f21b626d`
+
+Coordination branch:
+
+`KIRCH-TALIBON-MP5-POST-DAT-FRONTEND-CORRECTION`
+
+Concurrency ceiling:
+
+`2 CODE WRITERS`
 
 ## Branch topology
 
-Current target state has been achieved:
+The accepted product branch remains:
 
 ```text
 main
 ```
 
-Historical remote branch refs no longer exist. Their tips are preserved under `archive/*` tags.
-
-A new temporary branch requires new explicit authority; deleted historical branches are not implicitly revived.
+MP5 explicitly authorizes temporary coordination/writer branches under bounded authority. Historical remote branch refs remain preserved under `archive/*` tags and are not implicitly revived.
 
 ## Governance installed
 
