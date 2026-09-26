@@ -20,9 +20,9 @@ DA1 disposition:
 
 `CLOSED — SUITABLE WITH RECORDED LIMITATIONS`
 
-Current pre-promotion `main`:
+Current promoted `main`:
 
-`9cc1b50b28762402c3b24a721cd5ba7ae961817c`
+`f6208cf082c4b1d189c70728adfdb9ddf3225990`
 
 ## Next integration target
 
@@ -88,3 +88,20 @@ Before deletion:
 Developers / Contributors do not independently promote `main`, delete remote branches, rewrite history, or authorize deployment.
 
 Those transitions require Kirch Ivan Balite as Technical Authority.
+
+
+## MP1 main promotion
+
+Technical Authority explicitly authorized main promotion.
+
+Observed post-promotion authority:
+
+`main@f6208cf082c4b1d189c70728adfdb9ddf3225990`
+
+Promotion was non-force and ancestry-preserving.
+
+Post-promotion comparison with the exact RC1 branch was identical: 0 ahead / 0 behind.
+
+Deployment remains unauthorized.
+
+Branch cleanup remains a separate post-promotion transition.
