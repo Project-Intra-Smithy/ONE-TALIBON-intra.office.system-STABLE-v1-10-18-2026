@@ -1,35 +1,109 @@
-# Current Repository State
+# ONE TALIBON — CURRENT REPOSITORY STATE
 
 ## Authority
 
-- Product: **Municipal Digital Operations Platform — Core Intra-Office Portal**
-- Controlling scope: `SSOT_CURRENT_INTRA_OFFICE_PORTAL_SCOPE.md`
-- Authoritative development branch: `main`
-- Accepted pre-R0 engineering baseline: `e781b08dcc6476c7b6ad3565a61afc41965fe33f`
-- Preserved hardening authority: `KIRCH-TALIBON-STABLE-BASELINE-HARDENING-V1` at the same SHA
+Technical Authority:
+
+**Kirch Ivan Balite**
+
+Repository:
+
+`Kirch-Nairu/Talibon-Sales-Prototype`
+
+Sole continuing remote branch:
+
+`main`
+
+Exact RV1-validated/promoted product payload:
+
+`f6208cf082c4b1d189c70728adfdb9ddf3225990`
+
+Live Git and current repository-local Forge governance outrank stale branch claims in historical documents.
+
+## Repository topology
+
+The consolidation program reached its intended topology:
+
+```text
+remote heads:
+main
+```
+
+At MP3 opening:
+
+- archived non-main branch tips: 65;
+- total verified `archive/*` refs: 73;
+- open PRs: 0;
+- deployment: not performed.
+
+Historical branch names remain visible inside evidence/handoffs because those files preserve the state that existed when they were written.
 
 ## Engineering state
 
-H0-H5 engineering hardening is **CLOSED / INTEGRATED / GREEN** at the accepted pre-R0 baseline. The current repository has passed the observed Platform, H0 runtime, H1 mutation and H5 memorandum-concurrency gates for that baseline.
+Completed:
 
-The repository is now in build-reproducibility/baseline-freeze work before Department Head prototype evaluation. This is not UAT, contractual acceptance or production deployment.
+- Calendar workspace freeze (CAL1);
+- backend/runtime hardening (BH1);
+- DA1 repair-wave review/closeout;
+- RC1 main reconciliation;
+- RV1 exact-candidate validation;
+- non-force main promotion;
+- archive preservation;
+- remote non-main branch cleanup.
 
-## Active Core Portal implementation
+Historical limitation:
 
-Current active implementation includes authenticated municipal access, office/department-aware authorization, inter-office transactions and My Work projections, correspondence lifecycle/workspace, records search, memoranda/notifications, current-scope dashboards/reports, LGU Calendar, Approved Travel Orders, organization data, authorized audit/security visibility, incoming-document traceability, and secure shared supporting documents/photo evidence.
+- the aggregate `=== DA1 FULL AUDIT PASS ===` marker was not observed;
+- the historical H0 exact marker was not observed.
 
-Secure document evidence is implemented through the shared private `documents` / `document_links` architecture and server-authorized download paths. The older statement that transaction/document uploads do not exist is obsolete.
+Those claims must not be retroactively upgraded.
 
-## Parked historical implementation
+The promoted exact candidate did receive current-contract browser runtime proof.
 
-Broader HRIS, payroll, DTR, attendance, leave, employee self-service, Property expansion, Legislative expansion, GAD, public-service engines, eBOSS, biometric integration, Project Monitoring expansion, Procurement/PR expansion, Budget expansion, GIS, CBMS and other future modules remain preserved but parked unless the controlling SSOT explicitly re-authorizes them. Their presence in code/history does not make them part of the current procurement presentation.
+## Current transition
 
-## Current product posture
+`MP3 — MAIN GOVERNANCE / DOCUMENTATION CLOSEOUT`
 
-- Department Head prototype evaluation: **PREPARATION**
-- Confirmed implementation baseline: **PENDING R0 / evaluation sequence**
-- UAT: **NOT STARTED**
-- Production deployment: **NO**
-- Orientation/turnover: **NOT STARTED**
+This is documentation/governance work only.
 
-Only observed verification may be represented as passing. Future client findings must be classified and implemented as bounded requirements/defects rather than used as authority for broad architecture expansion.
+Next:
+
+`MP4 — FINAL PROTOTYPE-DAY REHEARSAL FROM MAIN`
+
+Deployment remains a separate explicit decision.
+
+## Active prototype capabilities
+
+The current product line includes authenticated municipal access, role/office-aware authorization, inter-office transactions, My Work projections, correspondence, records, memoranda, Calendar, Messages, executive decision surfaces, legislative records, selected HR/leave presentation flows, system administration, deterministic showcase data, and the reconciled public municipal homepage.
+
+This statement describes prototype capability. It is not UAT, production, contractual-completion, or deployment acceptance.
+
+## Current presentation posture
+
+The repository is no longer waiting for RC1/main consolidation.
+
+The presentation should now use current `main`.
+
+Before stakeholder presentation, run the bounded MP4 rehearsal from current `main` and update `docs/DEMO_FLOW.md` if the exact UI differs.
+
+## Historical scope/SSOT records
+
+The following root documents retain important engineering, procurement, or commercial provenance but are not the live Git-authority record for this repository:
+
+- `SSOT_BY_KIRCH.md`;
+- `SSOT_COMMERCIAL_PHASE_AMENDMENT.md`;
+- `SSOT_CURRENT_INTRA_OFFICE_PORTAL_SCOPE.md`.
+
+Current repository authority is defined by:
+
+- `.forge/SSOT_CURRENT.md`;
+- `.forge/AUTHORITY.md`;
+- live `main`.
+
+Historical source/procurement documents may still constrain commercial/scope interpretation where explicitly applicable, but they do not revive deleted branches or override live repository authority.
+
+## Safety
+
+Do not represent this prototype as deployed/production-complete merely because validation passed.
+
+Deployment, UAT, production acceptance, and commercial completion require separate evidence.
