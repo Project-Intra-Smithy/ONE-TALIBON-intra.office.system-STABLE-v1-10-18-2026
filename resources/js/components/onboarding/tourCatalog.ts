@@ -6,14 +6,16 @@ export const presentationCredits: PresentationCredits = {
     municipality: 'Municipality of Talibon, Bohol',
     technicalAuthority: {
         name: 'Kirch Ivan Balite',
-        role: 'Technical Authority / Backend Systems / Architecture',
+        role: 'Chief Technology Officer (CTO) / Technical Authority',
+        specialization: 'Backend Systems & Architecture',
         organization: 'Kirjane Labs',
     },
     collaboration: 'Kirjane Labs × ALZA IT Solutions',
     contributors: [
-        { name: 'Kurt Shine Khasi Halasan', role: 'Developer', organization: 'Kirjane Labs' },
-        { name: 'Kikiam', role: 'Developer', organization: 'ALZA IT Solutions' },
-        { name: 'AJ RIENZE', role: 'Developer', organization: 'ALZA IT Solutions' },
+        { name: 'Osiris Kedigadash Palac', role: 'DevOps Lead', organization: 'Kirjane Labs' },
+        { name: 'Kurt Shine Khasi Halasan', role: 'Developer / DevOps & Release Operations', organization: 'Kirjane Labs' },
+        { name: 'AJ RIENZE', role: 'Chief Executive Officer (CEO)', organization: 'ALZA IT Solutions' },
+        { name: 'Kikiam', role: 'Chief Operating Officer (COO)', organization: 'ALZA IT Solutions' },
     ],
     footer: 'Built as a prototype for stakeholder evaluation and municipal workflow review.',
 };
