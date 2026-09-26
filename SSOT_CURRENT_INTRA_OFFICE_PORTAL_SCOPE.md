@@ -1,3 +1,9 @@
+> **REPOSITORY-SCOPE NOTICE — 2026-09-26**
+>
+> This document records procurement/scope authority originating from `Kirch-Nairu/Talibon-Intra-Office-Portal`. It is preserved here as source/procurement provenance.
+>
+> It is **not** the live Git-authority record for `Kirch-Nairu/Talibon-Sales-Prototype`. Current authority for this repository is live `main` plus `.forge/SSOT_CURRENT.md`. Where this historical scope record remains commercially applicable, use it as scope context without allowing it to override newer repository-local accepted work.
+
 # TALIBON INTRA-OFFICE PORTAL — CURRENT PROCUREMENT AUTHORITY
 
 Owner / technical authority: Kirch Ivan A. Balite  
