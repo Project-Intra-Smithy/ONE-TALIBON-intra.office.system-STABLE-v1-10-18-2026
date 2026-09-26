@@ -236,3 +236,28 @@ Architecture interpretation:
 Current planning evidence commit after the second storyboard:
 
 `7446fa64a7c34f7891984b651d3a40394beb1b3e`
+
+
+### Local-only STK1 implementation authority
+
+Technical Authority has authorized local STK1 implementation in:
+
+`D:\KIRCH TALIBON\Talibon-Sales-Prototype`
+
+Recommended local branch:
+
+`KIRCH-TALIBON-STK1-ASTRA-LOCAL`
+
+Protected live runtime remains:
+
+`C:\Talibon-MP5-VALIDATION-68607e3`
+
+No STK1 implementation push, PR, merge, promotion or deployment is authorized until DAT and OW1-HF1 are separately closed and Maintainer re-resolves exact current main.
+
+The full local execution boundary is recorded in:
+
+`docs/ONE_TALIBON_STAKEHOLDER_PORTAL_REDIRECTION_PLAN.md`
+
+planning commit:
+
+`f32914d1390f46bd1b00179fb181facbffd6ae38`
