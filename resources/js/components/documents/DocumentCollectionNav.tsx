@@ -1,0 +1,15 @@
+import { Link } from '@inertiajs/react';
+import { ArrowUpRight, Layers3 } from 'lucide-react';
+import type { PortalNavigationItem } from '../../navigation/navigationTypes';
+import { additionalCategories, collectionLabels } from './documentCenterPresentation';
+type Props = { collections: { value: string; label: string }[]; current: string; onSelect: (value: string) => void; workspaces: PortalNavigationItem[] };
+export default function DocumentCollectionNav({ collections, current, onSelect, workspaces }: Props) {
+    const links = <div className="space-y-1">{workspaces.map((item) => <Link key={item.key} href={item.href} className="flex min-h-11 min-w-0 items-center justify-between gap-2 rounded-lg px-2 py-2 text-xs text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]"><span className="break-words">{item.label}</span><ArrowUpRight size={14} className="shrink-0" aria-hidden="true" /><span className="sr-only">Open workspace</span></Link>)}</div>;
+    return <aside className="municipal-panel min-w-0 self-start p-2.5" aria-label="Document collections">
+        <h2 className="mb-2 flex items-center gap-2 text-xs font-bold text-[var(--municipal-text)]"><Layers3 size={15} aria-hidden="true" />Record collections</h2>
+        <label className="block lg:hidden"><span className="sr-only">Record collection</span><select className="municipal-field w-full" value={current} onChange={(event) => onSelect(event.target.value)}>{collections.map((item) => <option key={item.value} value={item.value}>{collectionLabels[item.value] || item.label}</option>)}</select></label>
+        <nav className="hidden space-y-1 lg:block" aria-label="Record collections">{collections.map((item) => <button key={item.value} type="button" onClick={() => onSelect(item.value)} aria-pressed={current === item.value} className={`flex min-h-11 w-full items-center rounded-lg border px-2 py-2 text-left text-xs leading-4 ${current === item.value ? 'municipal-selected font-semibold text-[var(--municipal-brand)]' : 'border-transparent text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]'}`}>{collectionLabels[item.value] || item.label}</button>)}</nav>
+        {workspaces.length > 0 && <><div className="mt-3 hidden border-t border-[var(--municipal-border)] pt-3 lg:block"><h3 className="mb-1 px-2 text-[11px] font-semibold uppercase tracking-wide text-[var(--municipal-muted)]">Related workspaces</h3>{links}</div><details className="mt-2 lg:hidden"><summary className="min-h-11 cursor-pointer py-3 text-xs font-semibold">Related workspaces</summary>{links}</details></>}
+        <details className="mt-2 border-t border-[var(--municipal-border)]"><summary className="min-h-11 cursor-pointer py-3 text-xs font-semibold text-[var(--municipal-muted)]">Additional categories</summary><p className="mb-2 text-xs leading-4 text-[var(--municipal-muted)]">Dedicated collections are not available here.</p><ul className="space-y-2 pb-2 text-xs text-[var(--municipal-muted)]">{additionalCategories.map((label) => <li key={label}>{label}</li>)}</ul></details>
+    </aside>;
+}
