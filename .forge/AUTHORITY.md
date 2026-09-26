@@ -22,15 +22,23 @@ Forge provides operating doctrine. It does not supersede Kirch Ivan Balite's Tec
 
 ## Current product authority
 
-Sole continuing remote branch:
+Accepted product branch:
 
 `main`
 
-Exact RV1-validated/promoted product payload:
+Observed MP5 source baseline:
+
+`615529ce6663933dd3eeee4d504d14d1f21b626d`
+
+Exact RV1-validated/promoted application payload remains in ancestry:
 
 `f6208cf082c4b1d189c70728adfdb9ddf3225990`
 
-Historical branches were archived and deleted after Technical Authority authorization. Their names remain in historical evidence only.
+Active MP5 coordination branch:
+
+`KIRCH-TALIBON-MP5-POST-DAT-FRONTEND-CORRECTION`
+
+MP5 candidates are not accepted product authority until separately reviewed, accepted, integrated, and promoted.
 
 ## Current lifecycle state
 
@@ -49,19 +57,25 @@ MP3 governance/documentation closeout:
 
 `COMPLETE`
 
+MP4 final prototype-day rehearsal / Developer Acceptance Test:
+
+`COMPLETE AS FIELD REHEARSAL / NOT DEPLOYMENT`
+
 Current transition:
 
-`MP4 — final prototype-day rehearsal from main`
+`MP5 — POST-DAT FRONTEND CORRECTION`
 
-Deployment remains separate and requires a new explicit Technical Authority decision after rehearsal.
+MP5 is bounded to DAT-backed frontend behavior, density, terminology, and presentation corrections. Maximum active Code Writers: **2**.
 
-## Single-branch policy
+Deployment remains separate and requires a new explicit Technical Authority decision after MP5 acceptance/promotion.
 
-The continuing branch topology is:
+## Temporary-branch policy
 
-`main`
+`main` remains the accepted product branch.
 
-Future temporary branches require new explicit bounded authority. Historical deleted branches must not be recreated merely to satisfy stale instructions.
+MP5 authorizes its named coordination branch plus at most two concurrently active writer branches under exact repository-local handoffs.
+
+Historical deleted branches must not be recreated merely to satisfy stale instructions.
 
 ## Authority precedence
 
