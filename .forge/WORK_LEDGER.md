@@ -73,15 +73,46 @@ Observed result:
 - historical evidence/handoffs preserved without rewriting;
 - diff from exact promoted payload proved Markdown-only.
 
+## MP4 disposition
+
+### MP4 — Final Prototype-Day Rehearsal / Developer Acceptance Test
+
+Status:
+
+`COMPLETE AS FIELD REHEARSAL`
+
+Frontend findings are preserved in:
+
+`.forge/evidence/maintainer/MP4-DAT-FRONTEND-FINDINGS.md`
+
 ## Current program
 
-### MP4 — Final Prototype-Day Rehearsal
+### MP5 — Post-DAT Frontend Correction
 
-Run the presentation sequence from current `main`.
+Source baseline:
 
-MP4 should prove the presentation flow, not rerun the entire DA1 program.
+`main@615529ce6663933dd3eeee4d504d14d1f21b626d`
 
-Deployment remains a separate decision after MP4.
+Coordination:
+
+`KIRCH-TALIBON-MP5-POST-DAT-FRONTEND-CORRECTION`
+
+Plan:
+
+`docs/MP5_POST_DAT_FRONTEND_CORRECTION_PLAN.md`
+
+Concurrency rule:
+
+`MAXIMUM 2 ACTIVE CODE WRITERS`
+
+Batch 1:
+
+- W01 — Notification Delivery Lifecycle Repair;
+- W02 — Organization & Reference Density / Terminology.
+
+Batch 2 is blocked until Batch 1 candidates are reviewed, accepted for integration, integrated, and combined-validated.
+
+Deployment remains a separate decision after MP5.
 
 ## Archive policy
 
