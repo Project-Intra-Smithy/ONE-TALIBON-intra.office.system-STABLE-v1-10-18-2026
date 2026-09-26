@@ -162,3 +162,18 @@ temporary bounded writer branches as issued
 ```
 
 Historical tips remain recoverable through `archive/*` tags.
+
+
+## MP5 validation cadence amendment
+
+Technical Authority decision:
+
+`EXECUTION VALIDATION DEFERRED TO EXACT INTEGRATED MP5 CANDIDATE`
+
+This changes evidence timing only. W01/W02 missing compiler/build/runtime evidence remains missing.
+
+Batch 2 may proceed with maximum two active Code Writers after source/ownership Review discipline is preserved.
+
+See:
+
+`.forge/evidence/maintainer/MP5-VALIDATION-CADENCE-DECISION.md`
