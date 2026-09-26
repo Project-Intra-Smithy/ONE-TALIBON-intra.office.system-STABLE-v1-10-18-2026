@@ -6,7 +6,15 @@ This repository is the active ONE TALIBON stakeholder/prototype workspace govern
 
 **Technical Authority: Kirch Ivan Balite**
 
-For the current prototype-day program, live Git state in this repository is authoritative for this repository's product line.
+Sole continuing remote branch:
+
+`main`
+
+Exact RV1-validated/promoted product payload:
+
+`f6208cf082c4b1d189c70728adfdb9ddf3225990`
+
+Current live Git state in this repository is authoritative for this repository's product line.
 
 ## Historical import provenance
 
@@ -31,12 +39,27 @@ This repository contains:
 - Calendar workspace work;
 - messaging prototype work;
 - backend/runtime hardening;
-- prototype-day audit, reconciliation, validation, and promotion evidence.
+- prototype-day audit, reconciliation, validation, promotion, archival, and cleanup evidence.
+
+## Consolidation result
+
+The repository has completed the consolidation target:
+
+```text
+remote heads:
+main
+```
+
+Former non-main branch tips remain recoverable through verified `archive/*` tags.
+
+Historical branch names inside evidence/handoff files are provenance and are not live authority.
 
 ## Current rule
 
 For decisions about this repository:
 
-`Git truth + explicit Technical Authority > stale cross-repository documentation > chat memory`
+`live Git/runtime + explicit Technical Authority + current repository-local governance > historical cross-repository documentation > chat memory`
 
-Cross-repository changes are not implicitly imported. Any future synchronization must be separately authorized and evidence-backed.
+Cross-repository changes are not implicitly imported.
+
+Any future synchronization must be separately authorized and evidence-backed.
