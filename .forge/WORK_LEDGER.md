@@ -6,7 +6,17 @@
 
 All other contributors are Developers / Contributors unless explicitly delegated a bounded operating role.
 
-## Current authority chain
+## Current authority
+
+Sole continuing remote branch:
+
+`main`
+
+Exact validated/promoted product payload:
+
+`f6208cf082c4b1d189c70728adfdb9ddf3225990`
+
+## Completed engineering chain
 
 CAL1 feature freeze:
 
@@ -16,118 +26,69 @@ BH1 hardened closeout:
 
 `27824223d5169c8eadf16ab863d09aab9585db9c`
 
-DA1 reviewed integration:
-
-`KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT@f48fb9381fee81490f43635ff289cce67ff7779b`
-
-DA1 closeout evidence:
-
-`.forge/evidence/maintainer/DA1-REPAIR-WAVE-CLOSEOUT.md`
-
-Pre-promotion main:
-
-`main@9cc1b50b28762402c3b24a721cd5ba7ae961817c`
-
-## Current program
-
-### DA1 — Prototype-Day Blocker Audit
-
-State:
-
-`CLOSED — SUITABLE WITH RECORDED LIMITATIONS`
-
-Purpose:
-
-Find and prove anything that can block or materially hinder the exact prototype presentation.
-
-Opening confirmed findings:
-
-- stale README/deployment authority — governance defect;
-- no current full audit carrier on hardened line — validation gap;
-- stale phase verification script pinned to historical branch — validation defect;
-- production-mode seed requires configured strong demo password — operational preflight blocker if omitted;
-- old demo script assumes ordinary Audit & Security navigation — presenter-script drift;
-- dev-start preflight proves only Engineering persona — insufficient demo preflight coverage.
-
-Explicit exclusion:
-
-The public-tunnel/showcase-exposure concern is not treated as a DA1 code defect by Technical Authority.
-
-### Governance repair already authorized
-
-- current README;
-- current Technical Authority docs;
-- repository provenance;
-- current SSOT;
-- current integration policy;
-- current work ledger;
-- current validation carrier;
-- main-consolidation plan;
-- branch inventory.
-
-### Branch inventory
-
-Pre-consolidation remote branch count:
-
-`62`
-
-Durable snapshot:
-
-`.forge/evidence/maintainer/DA1-PRE-CONSOLIDATION-BRANCH-INVENTORY.md`
-
-No branch cleanup has been authorized before main promotion and archival preservation.
-
-## DA1 closeout summary
-
-Reviewed candidate:
-
-`9fa1ec1a00be72984db651c5b251b36183444d64`
-
-Integrated through PR #11:
+DA1 reviewed repair integration:
 
 `f48fb9381fee81490f43635ff289cce67ff7779b`
 
-Disposition:
+DA1 closeout:
 
-- NAV-01 through NAV-04: reviewed PASS;
-- H1 full component evidence: PASS 20/20 at content-equivalent `5883d703...`;
-- V1: PASS / frozen;
-- MP0 targeted reproduction: PASS after one transient aggregate timeout;
-- Feature suite: PASS before later carrier-stage failure;
-- aggregate DA1 full-audit marker: NOT OBSERVED;
-- no further DA1 product implementation required by review.
+`2410bb739993366bdb0e214754343011cc0bed7a`
 
-## Next transitions
+RC1/RV1 promoted payload:
 
-1. start RC1 from the final DA1 closeout authority;
-2. re-inventory current main-only work;
-3. classify RETAIN / SUPERSEDED / REJECT;
-4. reconcile intentional retained public-portal work;
-5. RV1 validate exact RC1;
-6. Technical Authority decides main promotion;
-7. archive historical tips;
-8. delete non-main branches only after validated promotion plus archival proof;
-9. final prototype rehearsal from main.
+`f6208cf082c4b1d189c70728adfdb9ddf3225990`
 
-## Main-only reconciliation observation
+## Completed repository transitions
 
-At DA1 opening, current hardened authority versus pre-promotion main shows an effective diff bounded to nine public-portal files:
+- RC1 main-only reconciliation: COMPLETE;
+- RV1 exact current-contract runtime: PASS;
+- main promotion: COMPLETE;
+- archival preservation: COMPLETE;
+- archived non-main branch tips: 65;
+- remote non-main branch deletion: COMPLETE;
+- remote heads: main only;
+- open PRs at MP3 opening: 0;
+- deployment: NOT PERFORMED.
 
-- `config/public_portal.php`;
-- `resources/css/public-portal.css`;
-- `resources/js/components/public/PublicFooter.tsx`;
-- `resources/js/components/public/PublicHeader.tsx`;
-- `resources/js/components/public/PublicHero.tsx`;
-- `resources/js/components/public/PublicQuickAccess.tsx`;
-- `resources/js/components/public/PublicServices.tsx`;
-- `resources/js/components/public/types.ts`;
-- `resources/js/pages/Public/Home.tsx`.
+## Evidence limitations retained
 
-This must be reverified at RC1 start.
+- aggregate `=== DA1 FULL AUDIT PASS ===`: NOT OBSERVED;
+- historical H0 exact marker: NOT OBSERVED;
+- those historical markers must not be reconstructed after the fact.
+
+The exact promoted candidate did receive current-contract RV1 runtime proof.
+
+## Current program
+
+### MP3 — Main Governance / Documentation Closeout
+
+Scope:
+
+- audit current-facing documentation;
+- correct stale branch/status/authority wording;
+- preserve historical evidence as historical evidence;
+- make `main` the clear sole continuing authority;
+- prove the MP3 diff is documentation-only.
+
+No product implementation is authorized in MP3.
+
+## Next transition
+
+### MP4 — Final Prototype-Day Rehearsal
+
+Run the presentation sequence from current `main`.
+
+MP4 should prove the presentation flow, not rerun the entire DA1 program.
+
+Deployment remains a separate decision after MP4.
+
+## Archive policy
+
+Verified archive tags preserve deleted branch-tip provenance.
+
+Do not delete or rewrite `archive/*` refs without explicit Technical Authority.
 
 ## Evidence law
-
-Do not convert source inspection into runtime PASS.
 
 Only record what actually ran.
 
