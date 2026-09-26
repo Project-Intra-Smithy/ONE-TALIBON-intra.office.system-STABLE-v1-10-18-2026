@@ -27,6 +27,7 @@ export default function TourSpotlight({ rect }: { rect: SpotlightRect | null }) 
             <div aria-hidden="true" className="fixed inset-x-0 bottom-0 z-[90] bg-[#071b13]/70 backdrop-blur-[1px]" style={{ top: bottom }} />
             <div
                 aria-hidden="true"
+                data-onboarding="tour-spotlight"
                 className="pointer-events-none fixed z-[92] rounded-lg border-2 border-[#d3ad5b] shadow-[0_0_0_3px_rgba(211,173,91,0.24)] transition-[top,left,width,height] duration-150 motion-reduce:transition-none"
                 style={{ top, left, width: Math.max(rect.width + gap * 2, 1), height: Math.max(height, 1) }}
             />
