@@ -1,94 +1,26 @@
-# ONE TALIBON V1 — Validation & Evidence Policy
+# ONE TALIBON V1 — VALIDATION & EVIDENCE POLICY
 
 ## Evidence law
 
 Only claim what was actually observed.
 
-`SOURCE INSPECTED`, `NOT RUN`, `NOT OBSERVED`, and `UNKNOWN` are valid states.
+`SOURCE INSPECTED`, `PASS`, `FAIL`, `NOT RUN`, `NOT OBSERVED`, and `UNKNOWN` are valid states.
 
 Build success does not prove runtime usability. Runtime success does not prove accessibility. Browser success does not prove deployment. CI absence is not a failure or a pass.
 
-## Current baseline evidence state
+## Historical baseline evidence
 
-At Nest birth:
+Earlier Nest/UIUX/DA1 records retain their original evidence state.
 
-- `npm ci`: NOT RUN by Reviewer/Acceptance;
-- `npm run types:check`: NOT RUN by Reviewer/Acceptance;
-- `npm run build`: NOT RUN by Reviewer/Acceptance;
-- PHP tests: NOT RUN by Reviewer/Acceptance;
-- Playwright/browser harness: NOT RUN by Reviewer/Acceptance;
-- exact-SHA CI: NOT OBSERVED;
-- responsive acceptance: NOT PERFORMED;
-- accessibility acceptance: NOT PERFORMED.
+They must not be rewritten merely because the repository later advanced.
 
-## Writer candidate minimum
-
-Each handoff must define its own focused checks. Unless explicitly unavailable, frontend waves should normally include:
-
-- dependency install state established honestly;
-- TypeScript/type check;
-- production frontend build;
-- focused PHP tests if PHP-backed behavior changed;
-- focused browser/task checks for changed user journeys.
-
-## Final correction acceptance matrix
-
-Personas:
-
-- Municipal Executive;
-- Department Head — Engineering;
-- Department Head — Budget;
-- Employee;
-- Human Resources;
-- Legislative Office;
-- System Administration.
-
-Viewport targets:
-
-- 1440×900;
-- 1280-class laptop;
-- 768-class tablet where affected;
-- 430-class mobile;
-- 390×844;
-- 360-class narrow phone for high-risk layouts.
-
-Appearance:
-
-- light;
-- dark.
-
-Task checks include:
-
-- Planning: identify record → open detail → return without horizontal action hunting;
-- detail flows: open → inspect related context → return while preserving useful list/filter context;
-- sidebar: navigate → switch workspace → sign out without awkward nested scrolling;
-- dashboard: identify attention/overdue/next work in the first meaningful viewport;
-- utility access: Calendar/Messages/announcements remain usable without crushing the primary canvas.
-
-Accessibility checks include:
-
-- keyboard-only path;
-- visible focus;
-- dialog focus trap and focus restoration;
-- programmatic control names;
-- meaningful `h1`/landmark structure;
-- zoom/reflow;
-- contrast on changed surfaces;
-- status not communicated by color alone;
-- inner-scroll/task reachability.
-
-## Promotion rule
-
-Acceptance must name the exact promotion being evaluated. Source-baseline acceptance, candidate acceptance, release acceptance, UAT, deployment, and production are separate transitions and must not be conflated.
-
-
-## DA1 closeout evidence — 2026-09-26
+### DA1 closeout evidence
 
 DA1 repair-wave Reviewer disposition:
 
 `SUITABLE WITH RECORDED LIMITATIONS`
 
-Observed component evidence:
+Observed component evidence included:
 
 - Full H1: PASS, 20 scenarios at `5883d703924921bf5baed587eba01df9c57b6f54`;
 - exact review candidate `9fa1ec1a00be72984db651c5b251b36183444d64` has the identical Git tree as `5883d703...`;
@@ -100,8 +32,97 @@ Observed component evidence:
 Not observed:
 
 - aggregate `=== DA1 FULL AUDIT PASS ===` marker;
-- exact-SHA runtime rerun at `9fa1ec1...`.
+- historical H0 exact marker.
 
-Evidence rule:
+Those limitations remain historical truth.
 
-Do not rewrite content-equivalent runtime evidence as exact-SHA execution. Do not claim full DA1 aggregate PASS. These limitations carry into RC1 / RV1.
+## RC1 / RV1 exact candidate evidence
+
+Exact promoted product payload:
+
+`f6208cf082c4b1d189c70728adfdb9ddf3225990`
+
+Pre-promotion fail-fast execution reached the Playwright phase only after preceding npm install, TypeScript, production build, focused PHP tests, and database preparation did not return a non-zero exit in that bounded run.
+
+Do not invent assertion/test totals that were not preserved.
+
+Playwright Chromium direct launch:
+
+`PASS`
+
+Observed exact current-contract runtime marker:
+
+`RV1_NARROW_RUNTIME_PASS sha=f6208cf082c4b1d189c70728adfdb9ddf3225990 pageerrors=0 server5xx=0`
+
+Observed narrow runtime surfaces:
+
+- public desktop: PASS;
+- public mobile: PASS;
+- current Showcase gateway: PASS;
+- Employee dashboard: PASS;
+- Employee My Work route/render: PASS;
+- Employee Records route/render: PASS;
+- browser page errors: 0 observed;
+- server 5xx: 0 observed during that smoke.
+
+The historical H0 carrier was not used because its login contract was stale against the current Showcase gateway.
+
+## Promotion / repository-state evidence
+
+Main promotion:
+
+`PASS / COMPLETE`
+
+Promotion method:
+
+- non-force;
+- ancestry-preserving;
+- no rebase;
+- no squash;
+- no history rewrite.
+
+Archival preservation:
+
+`PASS`
+
+Remote branch cleanup:
+
+`PASS`
+
+Current remote branch topology:
+
+```text
+main
+```
+
+Deployment:
+
+`NOT PERFORMED`
+
+## MP3 validation rule
+
+MP3 is docs/governance only.
+
+Its closeout proof must compare final `main` to `f6208cf082c4b1d189c70728adfdb9ddf3225990` and require all MP3-changed paths to be Markdown documentation/governance files.
+
+No application-runtime revalidation is required solely because Markdown governance changed.
+
+## MP4 rehearsal rule
+
+MP4 is the next runtime transition.
+
+It should rehearse the exact stakeholder presentation from current `main`, including the selected transaction, memorandum, legislative, HR, authorization, Calendar, Messages, public-homepage/mobile, and restart/recovery presentation paths.
+
+MP4 is not authority for unrelated feature work.
+
+## Claim boundaries
+
+Do not conflate:
+
+- prototype rehearsal;
+- deployment;
+- UAT;
+- production acceptance;
+- commercial completion.
+
+Each requires its own observed evidence and authority.
