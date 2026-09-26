@@ -58,21 +58,22 @@ RC1/RV1 promoted payload:
 
 The exact promoted candidate did receive current-contract RV1 runtime proof.
 
-## Current program
+## MP3 closeout
 
 ### MP3 — Main Governance / Documentation Closeout
 
-Scope:
+Status:
 
-- audit current-facing documentation;
-- correct stale branch/status/authority wording;
-- preserve historical evidence as historical evidence;
-- make `main` the clear sole continuing authority;
-- prove the MP3 diff is documentation-only.
+`COMPLETE`
 
-No product implementation is authorized in MP3.
+Observed result:
 
-## Next transition
+- current-facing governance corrected;
+- legacy status/scope documents disambiguated as historical/provenance;
+- historical evidence/handoffs preserved without rewriting;
+- diff from exact promoted payload proved Markdown-only.
+
+## Current program
 
 ### MP4 — Final Prototype-Day Rehearsal
 
