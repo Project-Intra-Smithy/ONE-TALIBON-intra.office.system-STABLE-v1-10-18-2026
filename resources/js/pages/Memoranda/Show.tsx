@@ -8,7 +8,7 @@ type Recipient = { viewed_at?: string | null; acknowledged_at?: string | null } 
 
 const publicationContext = (value: string) => {
     const date = new Date(value);
-    const exact = date.toLocaleString('en-PH', { timeZone: 'Asia/Manila', dateStyle: 'medium', timeStyle: 'short' });
+    const exact = date.toLocaleString('en-PH', { timeZone: 'Asia/Manila', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
     const elapsedMinutes = Math.floor((Date.now() - date.getTime()) / 60000);
     if (elapsedMinutes >= 0 && elapsedMinutes < 1) return { relative: 'Just now', exact };
     if (elapsedMinutes >= 1 && elapsedMinutes < 60) return { relative: elapsedMinutes + ' min ago', exact };
