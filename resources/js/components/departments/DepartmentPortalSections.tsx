@@ -50,11 +50,11 @@ export default function DepartmentPortalSections({ department, pendingWork, dril
     </section>;
     const projectList = (limit?: number) => <div className="department-list">{projects.slice(0, limit).map((item) => <article className="department-list-row" key={item.id}>
         <div className="department-row-heading"><strong>{item.title}</strong><StatusBadge label={item.status} tone={item.status === 'Completed' ? 'success' : item.status === 'Ongoing' ? 'info' : item.status === 'On Hold' ? 'warning' : 'neutral'} /></div>
-        <small>{item.year} / {item.fundingSource}</small>
-        {canOpen('/ppas') && <Link className="department-inline-link" href={'/ppas?search=' + encodeURIComponent(item.id)}>Open PPA reference <ArrowUpRight size={14} /></Link>}
+        <div className="department-project-meta"><small>{item.year} / {item.fundingSource}</small>
+        {canOpen('/ppas') && <Link className="department-inline-link" href={'/ppas?search=' + encodeURIComponent(item.id)}>Open PPA reference <ArrowUpRight size={14} /></Link>}</div>
     </article>)}{!projects.length && <p className="department-empty">No PPA references matched to this office.</p>}</div>;
     const meetingList = (overview = false) => <div className="department-list">{(overview ? scheduled.slice(0, 3) : meetings).map((item) => <article className="department-record" key={item.id}>
-        <CalendarDays size={18} aria-hidden="true" /><div><strong>{item.title}</strong><small>{item.date} / {item.time}</small><small>{item.venue} / {item.status}</small></div>
+        <CalendarDays size={18} aria-hidden="true" /><div><strong>{item.title}</strong><small>{item.date} / {item.time} / {item.venue} / {item.status}</small></div>
     </article>)}{!(overview ? scheduled : meetings).length && <p className="department-empty">No {overview ? 'scheduled ' : ''}meeting references matched to this office.</p>}</div>;
     const sourceLinks = <div className="department-source-links">{documentLinks.map((item) => <Link key={item.href} href={item.href}>{item.label}<ArrowUpRight size={14} /></Link>)}{canOpen('/documents') && <Link href="/documents">Document Center<ArrowUpRight size={14} /></Link>}</div>;
 
