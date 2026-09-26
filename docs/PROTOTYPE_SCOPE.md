@@ -1,3 +1,9 @@
+> **HISTORICAL INITIAL-SCOPE NOTICE — 2026-09-26**
+>
+> This file describes an earlier prototype boundary. Some “not implemented” statements below were later superseded by accepted implementation, so this file must not be used as current implementation status.
+>
+> Use `docs/CURRENT_STATE.md` for current repository state and `docs/DEMO_FLOW.md` for the current presentation contract.
+
 # Prototype Scope
 
 ## Goal
