@@ -28,17 +28,17 @@ The consolidation program is closed.
 
 The repository now continues from **main only**. Historical branch tips remain recoverable under verified `archive/*` tags.
 
+MP3 governance/documentation closeout is complete.
+
 The next engineering transition is:
 
 ```text
-MP3 governance/docs closeout
-        ↓
 MP4 final prototype-day rehearsal from main
         ↓
 separate deployment decision
 ```
 
-This is not another broad code-audit wave.
+MP4 is not another broad code-audit wave.
 
 ## What is in the prototype
 
