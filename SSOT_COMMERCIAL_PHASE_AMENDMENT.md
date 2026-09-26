@@ -1,3 +1,9 @@
+> **CURRENT AUTHORITY NOTICE — 2026-09-26**
+>
+> This commercial-phase amendment remains historical/commercial provenance where applicable, but its `KIRCH-PHASE1-INTERNAL-OPS-HRIS` branch reference is historical.
+>
+> For current Git/product authority in `Kirch-Nairu/Talibon-Sales-Prototype`, use live `main` and `.forge/SSOT_CURRENT.md`. Do not interpret this amendment as reviving a deleted historical branch.
+
 # SSOT COMMERCIAL PHASE AMENDMENT — 2026-08-22
 
 Owner / approving authority: Kirch Ivan Balite  
