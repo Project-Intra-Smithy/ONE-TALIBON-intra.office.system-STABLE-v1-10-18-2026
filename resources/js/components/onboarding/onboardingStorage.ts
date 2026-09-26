@@ -10,9 +10,9 @@ const personaOffersSeenThisSession = new Set<PersonaTourKey>();
 function readValue(key: string): string | null {
     if (typeof window === 'undefined') return memoryFallback.get(key) ?? null;
 
-    for (const storage of [window.localStorage, window.sessionStorage]) {
+    for (const storageName of ['localStorage', 'sessionStorage'] as const) {
         try {
-            const value = storage.getItem(key);
+            const value = window[storageName].getItem(key);
             if (value !== null) return value;
         } catch {
             // Onboarding must never block the workspace when browser storage is unavailable.
