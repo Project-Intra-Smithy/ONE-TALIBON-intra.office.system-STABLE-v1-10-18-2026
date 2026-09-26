@@ -1,3 +1,9 @@
+> **HISTORICAL SPRINT-STATE NOTICE — 2026-09-26**
+>
+> This file preserves the W03–W08 correction-sprint state as it existed during that program. Its “active lanes”, correction-branch authority, and open-evidence wording are historical.
+>
+> Current repository authority is live `main`; see `.forge/SSOT_CURRENT.md` and `.forge/WORK_LEDGER.md`.
+
 # ONE TALIBON V1 — W03–W08 Production Sprint State
 
 Technical authority: Kirch Ivan Balite
