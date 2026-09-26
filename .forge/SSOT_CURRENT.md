@@ -177,3 +177,29 @@ Batch 2 may proceed with maximum two active Code Writers after source/ownership 
 See:
 
 `.forge/evidence/maintainer/MP5-VALIDATION-CADENCE-DECISION.md`
+
+## Pending stakeholder portal redirection — STK1
+
+Technical Authority has established a new stakeholder-facing portal direction based on the provided ONE TALIBON PORTAL guide plus the stakeholder Menu Overview image.
+
+Repository-memory plan:
+
+`docs/ONE_TALIBON_STAKEHOLDER_PORTAL_REDIRECTION_PLAN.md`
+
+Planning branch:
+
+`KIRCH-TALIBON-STK1-STAKEHOLDER-PORTAL-REDIRECTION`
+
+Planning base:
+
+`4e2a4d0fc387d5692321e3cfcf76d415da1340dc`
+
+Key decision:
+
+`STAKEHOLDER CONTENT MODEL + EXISTING GREEN MUNICIPAL DESIGN SYSTEM + CURRENT REAL ROUTES / AUTHORIZATION`
+
+The stakeholder image is a content / information-architecture reference. It does not replace the written dark-green / forest-green design direction.
+
+The Home dashboard should remain operational and not overloaded. The dense stakeholder Menu Overview belongs below priority Home content or in an equivalent comprehensive portal-directory surface.
+
+This planning record does not itself authorize implementation, promotion or deployment. After the active OW1-HF1 hotfix closes, Maintainer must re-resolve exact main and issue bounded STK1 implementation handoffs from the then-current accepted authority.
