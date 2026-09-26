@@ -50,7 +50,7 @@ export default function SidebarSection({
                         onClick={() => setExpanded((value) => !value)}
                         aria-expanded={expanded}
                         aria-controls={contentId}
-                        className={`flex min-h-11 w-full items-center justify-between gap-2 rounded-sm px-2 text-left text-[11px] font-bold uppercase tracking-[0.06em] transition-colors hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 ${
+                        className={`portal-sidebar-group-toggle flex min-h-11 w-full items-center justify-between gap-2 rounded-sm px-2 text-left text-[11px] font-bold uppercase tracking-[0.06em] transition-colors hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 ${
                             active ? 'text-white' : 'text-white/55 hover:text-white/85'
                         } ${expanded && !active ? 'bg-white/[0.04] text-white/80' : ''}`}
                     >

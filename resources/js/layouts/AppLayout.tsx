@@ -8,7 +8,7 @@ import { MunicipalUtilityDrawer, MunicipalUtilityRail, QuickMessagesPanel } from
 import { NotificationContext } from '../components/shell/NotificationContext';
 import MobileNavigation from '../components/shell/MobileNavigation';
 import PortalSidebar from '../components/shell/PortalSidebar';
-import { PortalIdentity, PortalLauncher, RecordsSearch } from '../components/shell/PortalTools';
+import { PortalLauncher, RecordsSearch } from '../components/shell/PortalTools';
 import { useVisiblePolling } from '../hooks/useVisiblePolling';
 import { buildPortalNavigation } from '../navigation/portalNavigation';
 import { consumeTransactionNotificationFeed } from '../notifications/notificationPresentationLedger';
@@ -43,7 +43,7 @@ function relativeTime(value?: string | null): string {
 }
 
 export default function AppLayout({ title, children, presentation }: Props) {
-    const portalDashboard = presentation === 'portal-dashboard';
+    const dashboardContent = presentation === 'portal-dashboard';
     const page = usePage<SharedProps>();
     const pageProps = page.props;
     const { auth, flash } = pageProps;
@@ -77,7 +77,7 @@ export default function AppLayout({ title, children, presentation }: Props) {
     useEffect(() => {
         const desktopQuery = window.matchMedia(UTILITY_DOCK_QUERY);
         const restoreDesktopUtilityPreference = () => {
-            if (portalDashboard || !desktopQuery.matches) {
+            if (!desktopQuery.matches) {
                 setDesktopUtilitiesOpen(false);
                 return;
             }
@@ -88,7 +88,7 @@ export default function AppLayout({ title, children, presentation }: Props) {
         restoreDesktopUtilityPreference();
         desktopQuery.addEventListener('change', restoreDesktopUtilityPreference);
         return () => desktopQuery.removeEventListener('change', restoreDesktopUtilityPreference);
-    }, [portalDashboard]);
+    }, []);
 
     const toggleDesktopSidebar = () => {
         setDesktopCollapsed((collapsed) => {
@@ -100,7 +100,7 @@ export default function AppLayout({ title, children, presentation }: Props) {
     };
 
     const toggleUtilities = () => {
-        if (!portalDashboard && window.matchMedia(UTILITY_DOCK_QUERY).matches) {
+        if (window.matchMedia(UTILITY_DOCK_QUERY).matches) {
             setUtilitiesOpen(false);
             setDesktopUtilitiesOpen((open) => {
                 const next = !open;
@@ -161,7 +161,7 @@ export default function AppLayout({ title, children, presentation }: Props) {
         return () => window.clearTimeout(timer);
     }, [liveAlert]);
 
-    const sidebarProps = { portal: portalDashboard, currentUrl: page.url, navigationGroups, unreadMemoCount, user };
+    const sidebarProps = { currentUrl: page.url, navigationGroups, unreadMemoCount, user };
     const desktopSidebar = <PortalSidebar {...sidebarProps} collapsed={desktopCollapsed} onToggleCollapsed={toggleDesktopSidebar} />;
     const mobileSidebar = <PortalSidebar {...sidebarProps} collapsed={false} mobile onNavigate={() => setMobileOpen(false)} />;
     const showMemo = pendingMemo && dismissedMemoId !== pendingMemo.id;
@@ -171,32 +171,32 @@ export default function AppLayout({ title, children, presentation }: Props) {
         <>
             <Head title={title} />
             <a href="#portal-content" className="sr-only z-[80] rounded bg-white p-3 text-[var(--municipal-brand-deep)] focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to content</a>
-            <div id="portal-shell" data-sidebar-collapsed={desktopCollapsed} className={`${portalDashboard ? 'portal-dashboard-shell' : ''} min-h-screen bg-[var(--municipal-canvas)] text-[var(--municipal-text)] transition-colors lg:grid lg:transition-[grid-template-columns] lg:duration-150 lg:ease-out motion-reduce:transition-none ${desktopCollapsed ? 'lg:grid-cols-[68px_minmax(0,1fr)]' : 'lg:grid-cols-[232px_minmax(0,1fr)]'}`}>
+            <div id="portal-shell" data-sidebar-collapsed={desktopCollapsed} className={`portal-shell min-h-screen bg-[var(--municipal-canvas)] text-[var(--municipal-text)] transition-colors lg:grid lg:transition-[grid-template-columns] lg:duration-150 lg:ease-out motion-reduce:transition-none `}>
                 <aside className="hidden h-screen lg:sticky lg:top-0 lg:block">{desktopSidebar}</aside>
                 {mobileOpen && <MobileNavigation onClose={() => setMobileOpen(false)}>{mobileSidebar}</MobileNavigation>}
                 {utilitiesOpen && <MunicipalUtilityDrawer onClose={() => setUtilitiesOpen(false)} />}
 
-                <main className="min-w-0 overflow-x-clip">
-                    <header className="sticky top-0 z-20 flex min-h-14 items-center justify-between gap-3 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 transition-colors sm:px-4">
-                        <div className={`flex min-w-0 items-center gap-2.5 ${portalDashboard ? 'portal-toolbar-leading' : ''}`}>
-                            <button type="button" onClick={() => setMobileOpen(true)} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] hover:text-[var(--municipal-text)] lg:hidden" aria-label="Open navigation"><Menu size={19} aria-hidden="true" /></button>
-                            <div className={portalDashboard ? "portal-mobile-title min-w-0" : "min-w-0"}>
+                <main className="min-w-0">
+                    <header className="portal-toolbar sticky top-0 z-20 flex min-h-14 items-center justify-between gap-3 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 transition-colors sm:px-4">
+                        <div className={`flex min-w-0 items-center gap-2.5 portal-toolbar-leading`}>
+                            <button type="button" onClick={() => setMobileOpen(true)} className="portal-toolbar-action flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] hover:text-[var(--municipal-text)] lg:hidden" aria-label="Open navigation"><Menu size={19} aria-hidden="true" /></button>
+                            <div className="portal-mobile-title min-w-0">
                                 <div className="whitespace-nowrap text-sm font-extrabold leading-5 tracking-tight text-[var(--municipal-brand-deep)] dark:text-[var(--municipal-text)] lg:hidden">One <span className="text-[var(--municipal-brand)]">Talibon</span></div>
                                 <div className="truncate text-xs font-semibold leading-4 text-[var(--municipal-text)] lg:text-sm">{title}</div>
                             </div>
-                            {portalDashboard && <PortalHeaderSearch />}
+                            <PortalHeaderSearch />
                         </div>
 
                         <div className="flex min-w-0 shrink-0 items-center">
                             <div className="flex items-center gap-0.5 border-r border-[var(--municipal-border)] pr-2">
-                                {!portalDashboard && canSearchRecords && <RecordsSearch />}
-                                {portalDashboard && <Link href="/portal-search" className="portal-mobile-search" aria-label="Search Portal"><Search size={18} /></Link>}
-                                {portalDashboard && navigationGroups.some((group) => group.items.some((item) => item.href === '/messages')) && <Link href="/messages" className="portal-toolbar-extra" aria-label="Messages"><MessageSquare size={18} /></Link>}
-                                {portalDashboard && navigationGroups.some((group) => group.items.some((item) => item.href === '/calendar')) && <Link href="/calendar" className="portal-toolbar-extra" aria-label="Calendar"><CalendarDays size={18} /></Link>}
+                                {canSearchRecords && <div className="portal-records-search"><RecordsSearch /></div>}
+                                {<Link href="/portal-search" className="portal-mobile-search" aria-label="Search Portal"><Search size={18} /></Link>}
+                                {navigationGroups.some((group) => group.items.some((item) => item.href === '/messages')) && <Link href="/messages" className="portal-toolbar-extra" aria-label="Messages"><MessageSquare size={18} /></Link>}
+                                {navigationGroups.some((group) => group.items.some((item) => item.href === '/calendar')) && <Link href="/calendar" className="portal-toolbar-extra" aria-label="Calendar"><CalendarDays size={18} /></Link>}
                                 <button
                                     type="button"
                                     onClick={toggleUtilities}
-                                    className={`flex h-11 w-11 items-center justify-center rounded-lg ${utilitiesActive ? 'bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand)]' : 'text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] hover:text-[var(--municipal-text)]'}`}
+                                    className={`portal-toolbar-action flex h-11 w-11 items-center justify-center rounded-lg ${utilitiesActive ? 'bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand)]' : 'text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] hover:text-[var(--municipal-text)]'}`}
                                     aria-label={utilitiesActive ? 'Close municipal utilities' : 'Open municipal utilities'}
                                     aria-expanded={utilitiesActive}
                                     title="Municipal utilities"
@@ -204,7 +204,7 @@ export default function AppLayout({ title, children, presentation }: Props) {
                                     <PanelRightOpen size={18} aria-hidden="true" />
                                 </button>
                                 <div ref={notificationsPanel} className="relative">
-                                    <button type="button" data-tour="shell:notifications" ref={notificationsButton} onClick={() => { setNotificationsOpen((open) => !open); setUnseenWorkflowCount(0); }} className="relative flex h-11 w-11 items-center justify-center rounded-lg text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] hover:text-[var(--municipal-text)]" aria-label={bellCount > 0 ? `Open notifications, ${bellCount} unread` : 'Open notifications'} aria-expanded={notificationsOpen} aria-controls="portal-notifications" title="Notifications">
+                                    <button type="button" data-tour="shell:notifications" ref={notificationsButton} onClick={() => { setNotificationsOpen((open) => !open); setUnseenWorkflowCount(0); }} className="portal-toolbar-action relative flex h-11 w-11 items-center justify-center rounded-lg text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] hover:text-[var(--municipal-text)]" aria-label={bellCount > 0 ? `Open notifications, ${bellCount} unread` : 'Open notifications'} aria-expanded={notificationsOpen} aria-controls="portal-notifications" title="Notifications">
                                         <Bell size={18} aria-hidden="true" />
                                     {bellCount > 0 && <span className="absolute -right-0.5 -top-0.5 min-w-4 rounded-full bg-rose-600 px-1 text-center text-xs font-bold text-white">{bellCount > 9 ? '9+' : bellCount}</span>}
                                 </button>
@@ -213,18 +213,18 @@ export default function AppLayout({ title, children, presentation }: Props) {
                                     <div className="max-h-[60vh] divide-y divide-[var(--municipal-border)] overflow-y-auto">{notifications.map((notification) => <Link key={notification.key} href={notification.url} onClick={() => setNotificationsOpen(false)} className="block px-4 py-3 transition hover:bg-[var(--municipal-hover)]"><div className="flex items-start justify-between gap-3"><div className="min-w-0"><div className="text-xs font-bold uppercase tracking-wide text-blue-700 dark:text-blue-300">{notification.title}</div><div className="mt-1 text-sm leading-4 text-[var(--municipal-text)]">{notification.message}</div>{notification.created_at && <div className="mt-1.5 text-xs text-[var(--municipal-muted)]">{relativeTime(notification.created_at)}</div>}</div>{notification.urgent && <span className="shrink-0 rounded-full bg-rose-50 px-2 py-1 text-xs font-bold uppercase text-rose-700 dark:bg-rose-950/40 dark:text-rose-300">Action</span>}</div></Link>)}{notifications.length === 0 && <div className="px-4 py-8 text-center text-sm text-[var(--municipal-muted)]">No recent notifications.</div>}</div>
                                 </div>}
                                 </div>
-                                {!portalDashboard && <PortalLauncher groups={navigationGroups} />}
+                                <span className="portal-header-launcher"><PortalLauncher groups={navigationGroups} /></span>
                             </div>
                             <div className="pl-2">
-                                {portalDashboard ? <PortalHeaderIdentity user={user} portal /> : <PortalIdentity user={user} />}
+                                <PortalHeaderIdentity user={user} />
                             </div>
                         </div>
                     </header>
 
-                    <div className={!portalDashboard && desktopUtilitiesOpen ? '2xl:grid 2xl:grid-cols-[minmax(0,1fr)_304px]' : ''}>
+                    <div className={desktopUtilitiesOpen ? '2xl:grid 2xl:grid-cols-[minmax(0,1fr)_304px]' : ''}>
                         <div className="min-w-0">
                             {(flash?.success || flash?.error) && <div className={`mx-3 mt-3 rounded-lg border px-3 py-2 text-sm font-semibold ${flash.success ? 'border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200' : 'border-rose-200 bg-rose-50 text-rose-800 dark:border-rose-900 dark:bg-rose-950/40 dark:text-rose-200'}`}>{flash.success || flash.error}</div>}
-                            <div id="portal-content" tabIndex={-1} className={`p-3 sm:p-4 ${hrisPresentation ? HRIS_DARK_PARITY_CLASSES : ''}`}><NotificationContext.Provider value={notifications}>{children}</NotificationContext.Provider></div>
+                            <div id="portal-content" data-presentation={dashboardContent ? 'dashboard' : undefined} tabIndex={-1} className={`p-3 sm:p-4 ${hrisPresentation ? HRIS_DARK_PARITY_CLASSES : ''}`}><NotificationContext.Provider value={notifications}>{children}</NotificationContext.Provider></div>
                             <footer className="mx-3 flex flex-wrap justify-between gap-2 border-t border-[var(--municipal-border)] py-2.5 text-[11px] text-[var(--municipal-muted)] sm:mx-4"><span>Municipality of Talibon · Province of Bohol</span><span>One Talibon · Intra-Office Portal</span></footer>
                         </div>
                         {!portalDashboard && desktopUtilitiesOpen && <MunicipalUtilityRail />}

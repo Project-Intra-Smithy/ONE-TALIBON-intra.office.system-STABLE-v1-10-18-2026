@@ -1,7 +1,8 @@
-@import './dashboard-portal.css';
 @import 'tailwindcss';
 @import './municipal.css';
 @import './municipal-controls.css';
+@import './portal-shell.css';
+@import './dashboard-portal.css';
 @import './public-portal.css';
 @custom-variant dark (&:where(.dark, .dark *));
 

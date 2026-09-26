@@ -8,6 +8,21 @@
         --municipal-brand-soft-strong: #dcebe1;
         --municipal-brand-contrast: #ffffff;
 
+        --municipal-action-bg: #12613f;
+        --municipal-action-hover: #0b442d;
+        --municipal-action-text: #ffffff;
+        --municipal-action-danger-bg: #ac3040;
+        --municipal-action-danger-hover: #8e2c39;
+        --municipal-navigation-bg: #003f32;
+        --municipal-navigation-active: #14852e;
+        --municipal-navigation-text: #ffffff;
+        --municipal-selected-bg: var(--municipal-brand-soft);
+        --municipal-selected-border: #5e9b76;
+        --municipal-radius-surface: 8px;
+        --municipal-radius-overlay: 12px;
+        --municipal-control-height: 44px;
+        --municipal-action-height: 40px;
+
         /* Neutral work canvas. */
         --municipal-canvas: #f5f7f4;
         --municipal-surface: #ffffff;
@@ -54,6 +69,9 @@
         --municipal-brand-soft-strong: #204432;
         --municipal-brand-contrast: #ffffff;
 
+        --municipal-action-bg: #216c45;
+        --municipal-action-hover: #287d50;
+        --municipal-selected-border: #619d78;
         --municipal-canvas: #0d1713;
         --municipal-surface: #13241c;
         --municipal-surface-subtle: #172b21;
@@ -94,10 +112,10 @@
     .municipal-panel {
         min-width: 0;
         border: 1px solid var(--municipal-border);
-        border-radius: .75rem;
+        border-radius: var(--municipal-radius-surface);
         background: var(--municipal-surface);
         color: var(--municipal-text);
-        box-shadow: 0 1px 2px rgb(15 23 42 / .04);
+        box-shadow: none;
     }
     .municipal-panel .municipal-panel {
         border-color: var(--municipal-border);
@@ -394,4 +412,46 @@
     --color-amber-600: #c98616;
     --color-rose-600: #c83d4e;
     --color-rose-700: #ac3040;
+}
+
+@layer base {
+    :root, :root.dark {
+        --municipal-status-success-bg: var(--municipal-status-green-bg);
+        --municipal-status-success-text: var(--municipal-status-green-text);
+        --municipal-status-info-bg: var(--municipal-status-blue-bg);
+        --municipal-status-info-text: var(--municipal-status-blue-text);
+        --municipal-status-warning-bg: var(--municipal-status-amber-bg);
+        --municipal-status-warning-text: var(--municipal-status-amber-text);
+        --municipal-status-danger-bg: var(--municipal-status-rose-bg);
+        --municipal-status-danger-text: var(--municipal-status-rose-text);
+        --municipal-status-neutral-bg: var(--municipal-status-slate-bg);
+        --municipal-status-neutral-text: var(--municipal-status-slate-text);
+    }
+}
+@layer components {
+    .municipal-inset { min-width: 0; padding: 12px; border: 1px solid var(--municipal-border); border-radius: var(--municipal-radius-surface); background: var(--municipal-surface-subtle); }
+    .municipal-overlay { border: 1px solid var(--municipal-border); border-radius: var(--municipal-radius-overlay); background: var(--municipal-surface); color: var(--municipal-text); box-shadow: 0 12px 32px rgb(0 0 0 / .16); }
+    .municipal-page-title { font-size: 22px; line-height: 28px; font-weight: 700; letter-spacing: -.02em; color: var(--municipal-text); overflow-wrap: anywhere; }
+    .municipal-page-description { font-size: 14px; line-height: 21px; color: var(--municipal-muted); }
+    .municipal-record-title { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--municipal-text); }
+    .municipal-body { font-size: 14px; line-height: 21px; }
+    .municipal-metadata { font-size: 12px; line-height: 17px; color: var(--municipal-muted); }
+    .municipal-micro { font-size: 11px; line-height: 15px; color: var(--municipal-muted); }
+    .municipal-selected { background: var(--municipal-selected-bg); border-color: var(--municipal-selected-border); }
+    #portal-content table tbody tr.municipal-selected > td,
+    #portal-content table tbody tr[aria-selected="true"] > td,
+    .municipal-table tbody tr.municipal-selected > td,
+    .municipal-table tbody tr[aria-selected="true"] > td { background: var(--municipal-selected-bg); border-bottom-color: var(--municipal-selected-border); }
+    .municipal-register { font-size: 13px; line-height: 19px; }
+    .municipal-register-heading { min-height: 36px; padding: 8px 12px; background: var(--municipal-surface-subtle); color: var(--municipal-muted); font-size: 11px; font-weight: 650; }
+    .municipal-register-row { min-height: 44px; padding: 10px 12px; border-bottom: 1px solid var(--municipal-border); }
+    .municipal-register-row--detailed { min-height: 56px; }
+    .municipal-register-row:hover { background: var(--municipal-hover); }
+    .municipal-register-row.municipal-selected { background: var(--municipal-selected-bg); }
+    .municipal-status-badge { display: inline-flex; align-items: center; max-width: 100%; border-radius: 6px; padding: 3px 8px; font-size: 11px; line-height: 16px; font-weight: 650; overflow-wrap: anywhere; }
+    .municipal-workspace-nav { display: flex; min-width: 0; flex-wrap: wrap; gap: 4px; padding-bottom: 8px; border-bottom: 1px solid var(--municipal-border); }
+    .municipal-workspace-link { display: inline-flex; min-height: 44px; align-items: center; gap: 8px; padding: 8px 12px; border-radius: var(--municipal-radius-surface); font-size: 14px; font-weight: 600; color: var(--municipal-muted); }
+    .municipal-workspace-link:hover { background: var(--municipal-hover); }
+    .municipal-workspace-link[aria-current="page"] { background: var(--municipal-selected-bg); color: var(--municipal-brand); }
+    @media (min-width: 768px) { .municipal-page-title { font-size: 24px; line-height: 30px; } }
 }

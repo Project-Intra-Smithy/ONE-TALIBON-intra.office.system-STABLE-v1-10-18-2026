@@ -1,6 +1,6 @@
-/* Dashboard presentation only; inner workspaces retain their existing shell. */
+/* Dashboard composition and preview density only. */
 .dashboard-portal { container-type: inline-size; display: grid; gap: 10px; min-width: 0; }
-.dashboard-portal *, .portal-toolbar-leading { min-width: 0; }
+.dashboard-portal * { min-width: 0; }
 .dashboard-hero { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 144px; padding: 16px 28px; border-radius: 8px; color: #fff; background-size: cover; background-position: 65% 50%; }
 .dashboard-hero-copy { max-width: 610px; }
 .dashboard-hero-copy > p:first-child { font-size: 15px; font-weight: 600; line-height: 20px; }
@@ -62,18 +62,6 @@ a.dashboard-compact-row:hover { background: var(--municipal-hover); }
 .dashboard-operational-context > summary { cursor: pointer; padding: 12px; font-size: 13px; font-weight: 650; }
 .dashboard-operational-context > summary span { margin-left: 12px; font-size: 11px; font-weight: 400; color: var(--municipal-muted); }
 .dashboard-operational-body { display: grid; gap: 12px; padding: 12px; border-top: 1px solid var(--municipal-border); }
-.portal-header-search { position: relative; display: flex; align-items: center; width: 100%; max-width: 580px; min-height: 44px; }
-.portal-header-search input { width: 100%; height: 40px; padding: 0 44px 0 12px; border: 1px solid var(--municipal-border); border-radius: 5px; background: var(--municipal-canvas); color: var(--municipal-text); font-size: 12px; }
-.portal-header-search button { position: absolute; right: 0; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--municipal-brand); }
-.portal-toolbar-leading { flex: 1; }
-.portal-toolbar-extra { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--municipal-muted); border-radius: 6px; }
-.portal-toolbar-extra:hover { background: var(--municipal-hover); }
-.portal-sidebar-brand { display: flex; align-items: center; gap: 8px; min-height: 56px; padding: 8px 12px; }
-.portal-sidebar-brand img { width: 36px; height: 36px; flex-shrink: 0; }
-.portal-sidebar-brand strong { display: block; font-size: 13px; line-height: 17px; letter-spacing: -.02em; }
-.portal-sidebar-brand span { display: block; font-size: 9px; line-height: 13px; color: #d4e9e0; }
-.portal-compact-sidebar { background: linear-gradient(165deg,#004d3b,#00392f); }
-.portal-account-tools summary { min-height: 36px; padding: 8px; cursor: pointer; font-size: 11px; font-weight: 600; }
 @container (min-width: 600px) { .dashboard-quick-grid { grid-template-columns: repeat(4,minmax(0,1fr)); } }
 @container (min-width: 1000px) {
     .dashboard-quick-grid { grid-template-columns: repeat(8,minmax(0,1fr)); }
@@ -87,29 +75,7 @@ a.dashboard-compact-row:hover { background: var(--municipal-hover); }
     .dashboard-recent-documents .dashboard-compact-row { min-height: 36px; padding-block: 3px; }
     .dashboard-row-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 }
-@media (min-width: 1024px) {
-    #portal-shell.portal-dashboard-shell { grid-template-columns: 208px minmax(0,1fr); }
-    #portal-shell.portal-dashboard-shell[data-sidebar-collapsed="true"] { grid-template-columns: 68px minmax(0,1fr); }
-    .portal-dashboard-shell #portal-content { padding: 12px 16px 16px; }
-    .portal-dashboard-shell main > header { min-height: 56px; }
-    .portal-dashboard-shell .portal-mobile-title { display: none; }
-    .portal-compact-sidebar nav a { min-height: 35px; padding-top: 6px; padding-bottom: 6px; font-size: 12px; }
-    .portal-compact-sidebar nav a svg { width: 16px; height: 16px; }
-    .portal-compact-sidebar nav a[aria-current="page"] { background: #14852e; color: white; }
-    .portal-compact-sidebar nav a[aria-current="page"] svg { color: #f4d859; }
-    .portal-compact-sidebar nav { padding-top: 2px; }
-    .portal-compact-sidebar nav section { margin-top: 4px; }
-    .portal-compact-sidebar nav section > div:first-child { padding-top: 3px; padding-bottom: 3px; }
-    .portal-compact-sidebar > div:nth-child(2) { padding-top: 0; padding-bottom: 0; }
-    .portal-compact-sidebar > div:nth-child(2) button { min-height: 28px; height: 28px; }
-}
 @media (max-width: 1023px) {
-    .portal-dashboard-shell main > header { flex-wrap: wrap; gap: 0; padding-block: 4px; background: var(--municipal-brand-deep); }
-    .portal-dashboard-shell main > header button, .portal-dashboard-shell main > header > div > div { color: inherit; }
-    .portal-dashboard-shell main > header { color: white; }
-    .portal-dashboard-shell .portal-mobile-title > div { color: white; }
-    .portal-header-search { display: none; }
-    .portal-toolbar-extra { display: none; }
     .dashboard-hero { padding: 16px; min-height: 132px; }
     .dashboard-hero h1 { font-size: 25px; line-height: 29px; }
     .dashboard-hero-slogan { display: none; }
@@ -117,6 +83,3 @@ a.dashboard-compact-row:hover { background: var(--municipal-hover); }
     .dashboard-widget-header > a, .dashboard-directory-link { min-height: 32px; display: inline-flex; align-items: center; }
 }
 @media (prefers-reduced-motion: reduce) { .dashboard-quick-tile { transition: none; } .dashboard-quick-tile:hover { transform: none; } }
-
-.portal-mobile-search { display: none; }
-@media (max-width: 1023px) { .portal-mobile-search { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; } }

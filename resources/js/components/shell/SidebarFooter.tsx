@@ -5,18 +5,15 @@ import { ONBOARDING_GUIDE_EVENT } from '../onboarding/types';
 import type { AuthUser, SharedProps } from '../../types';
 import WorkspaceSwitcher from '../showcase/WorkspaceSwitcher';
 import SidebarAppearanceMenu from './SidebarAppearanceMenu';
-import SidebarIdentity from './SidebarIdentity';
 
 type Props = {
     compact: boolean;
-    portal?: boolean;
     user: AuthUser | null;
 };
 
-export default function SidebarFooter({ compact, user, portal }: Props) {
+export default function SidebarFooter({ compact }: Props) {
     const [signingOut, setSigningOut] = useState(false);
     const { showcaseSession } = usePage<SharedProps>().props;
-    const showcasePersona = showcaseSession?.active ? showcaseSession.persona : null;
 
     const signOut = () => {
         if (signingOut) return;
@@ -28,52 +25,5 @@ export default function SidebarFooter({ compact, user, portal }: Props) {
         window.dispatchEvent(new Event(ONBOARDING_GUIDE_EVENT));
     };
 
-    if (portal) return <details className="portal-account-tools" aria-busy={signingOut}><summary aria-label="Account and tools">{compact ? 'Tools' : 'Account & tools'}</summary><div className="flex flex-wrap justify-center gap-1">{showcaseSession?.active && <WorkspaceSwitcher compact />}{showcaseSession?.active && <button type="button" onClick={openGuidedTour} className="flex h-11 w-11 items-center justify-center" aria-label="Guided tour" title="Guided tour"><CircleHelp size={16} /></button>}<SidebarAppearanceMenu compact align="end" /><button type="button" onClick={signOut} disabled={signingOut} className="flex h-11 w-11 items-center justify-center disabled:opacity-60" aria-label={signingOut ? 'Signing out' : 'Sign out'} title="Sign out"><LogOut size={16} /></button></div></details>;
-
-    if (compact) {
-        return (
-            <div className="flex flex-col items-center gap-1" aria-busy={signingOut}>
-                <SidebarIdentity compact user={user} persona={showcasePersona} />
-                <div className="mt-1 flex flex-col gap-0.5">
-                    {showcaseSession?.active && <WorkspaceSwitcher compact />}
-                    {showcaseSession?.active && <button type="button" onClick={openGuidedTour} className="flex h-11 w-11 items-center justify-center rounded-md text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80" aria-label="Guided tour" title="Guided tour"><CircleHelp size={16} aria-hidden="true" /></button>}
-                    <SidebarAppearanceMenu compact />
-                    <button
-                        type="button"
-                        onClick={signOut}
-                        disabled={signingOut}
-                        className="flex h-11 w-11 items-center justify-center rounded-md text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 disabled:cursor-wait disabled:opacity-60"
-                        aria-label={signingOut ? 'Signing out' : 'Sign out'}
-                        title={signingOut ? 'Signing out' : 'Sign out'}
-                    >
-                        <LogOut size={16} aria-hidden="true" />
-                    </button>
-                </div>
-            </div>
-        );
-    }
-
-    return (
-        <div className="min-w-0" aria-busy={signingOut}>
-            <SidebarIdentity compact={false} user={user} persona={showcasePersona} />
-            <div className="mt-2 flex min-w-0 items-center justify-between gap-2">
-                <span className="truncate text-[11px] font-semibold uppercase tracking-[0.06em] text-white/50">Account</span>
-                <div className="flex shrink-0 items-center gap-0.5">
-                    {showcaseSession?.active && <WorkspaceSwitcher compact />}
-                    {showcaseSession?.active && <button type="button" onClick={openGuidedTour} className="flex h-11 w-11 items-center justify-center rounded-md text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80" aria-label="Guided tour" title="Guided tour"><CircleHelp size={16} aria-hidden="true" /></button>}
-                    <SidebarAppearanceMenu compact align="end" />
-                    <button
-                        type="button"
-                        onClick={signOut}
-                        disabled={signingOut}
-                        className="flex h-11 w-11 items-center justify-center rounded-md text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 disabled:cursor-wait disabled:opacity-60"
-                        aria-label={signingOut ? 'Signing out' : 'Sign out'}
-                        title={signingOut ? 'Signing out' : 'Sign out'}
-                    >
-                        <LogOut size={16} aria-hidden="true" />
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
+    return <details className="portal-account-tools" aria-busy={signingOut}><summary aria-label="Account and tools">{compact ? 'Tools' : 'Account & tools'}</summary><div className="flex flex-wrap justify-center gap-1">{showcaseSession?.active && <WorkspaceSwitcher compact />}{showcaseSession?.active && <button type="button" onClick={openGuidedTour} className="flex h-11 w-11 items-center justify-center" aria-label="Guided tour" title="Guided tour"><CircleHelp size={16} /></button>}<SidebarAppearanceMenu compact align="end" /><button type="button" onClick={signOut} disabled={signingOut} className="flex h-11 w-11 items-center justify-center disabled:opacity-60" aria-label={signingOut ? 'Signing out' : 'Sign out'} title="Sign out"><LogOut size={16} /></button></div></details>;
 }

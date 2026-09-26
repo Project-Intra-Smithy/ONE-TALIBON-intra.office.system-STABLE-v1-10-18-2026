@@ -30,7 +30,7 @@ export default function SidebarNavItem({
             aria-current={active ? 'page' : undefined}
             aria-label={compact ? label : undefined}
             title={compact ? label : undefined}
-            className={`group relative flex items-center text-[12px] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-1 focus-visible:ring-offset-[var(--municipal-brand-deep)] ${
+            className={`portal-sidebar-link group relative flex items-center text-[12px] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-1 focus-visible:ring-offset-[var(--municipal-brand-deep)] ${
                 compact ? 'h-11 justify-center rounded-md px-2' : 'min-h-11 gap-2.5 rounded-sm px-2.5 py-1.5'
             } ${
                 active
@@ -38,7 +38,7 @@ export default function SidebarNavItem({
                     : 'font-medium text-white/75 hover:bg-white/[0.08] hover:text-white'
             }`}
         >
-            {active && !compact ? <span className="absolute inset-y-2 left-0 w-0.5 rounded-r bg-white" aria-hidden="true" /> : null}
+            {active && !compact ? <span className="absolute inset-y-2 left-0 w-0.5 rounded-r bg-[var(--municipal-gold)]" aria-hidden="true" /> : null}
             <Icon
                 size={compact ? 17 : 15}
                 strokeWidth={active ? 2 : 1.8}

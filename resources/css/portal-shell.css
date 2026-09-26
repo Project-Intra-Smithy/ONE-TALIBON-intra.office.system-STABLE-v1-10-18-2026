@@ -1,0 +1,53 @@
+/* Shared authenticated shell; domain pages own their content layouts. */
+.portal-shell { min-height: 100vh; background: var(--municipal-canvas); color: var(--municipal-text); }
+.portal-shell #portal-content { padding: 12px; }
+.portal-toolbar { min-height: 56px; }
+.portal-toolbar-leading { display: flex; flex: 1; min-width: 0; }
+.portal-header-search { position: relative; display: flex; align-items: center; width: 100%; max-width: 580px; min-height: 44px; }
+.portal-header-search > .municipal-search-field { flex: 1; }
+.portal-header-search .municipal-search-input { min-height: 40px; padding-right: 44px; font-size: 12px; }
+.portal-header-search-submit { position: absolute; right: 0; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--municipal-brand); }
+.portal-toolbar-extra { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--municipal-muted); border-radius: 8px; }
+.portal-toolbar-extra:hover { background: var(--municipal-hover); }
+.portal-sidebar-brand { display: flex; align-items: center; gap: 8px; min-height: 56px; padding: 8px 12px; }
+.portal-sidebar-brand img { width: 36px; height: 36px; flex-shrink: 0; }
+.portal-sidebar-brand strong { display: block; font-size: 13px; line-height: 17px; letter-spacing: -.02em; }
+.portal-sidebar-brand span { display: block; font-size: 9px; line-height: 13px; opacity: .8; }
+.portal-compact-sidebar { background: var(--municipal-navigation-bg); color: var(--municipal-navigation-text); }
+.portal-sidebar-link { min-height: 44px; }
+.portal-sidebar-link[aria-current="page"] { background: var(--municipal-navigation-active); color: var(--municipal-navigation-text); }
+.portal-sidebar-link[aria-current="page"] svg { color: var(--municipal-gold); }
+.portal-sidebar-link svg { width: 16px; height: 16px; }
+.portal-sidebar-toggle { display: flex; padding: 0 8px; }
+.portal-account-tools summary { min-height: 44px; padding: 12px 8px; cursor: pointer; font-size: 11px; font-weight: 600; }
+.portal-mobile-search { display: none; }
+.portal-header-identity-copy { display: none; }
+@media (min-width: 768px) { .portal-shell #portal-content { padding: 16px; } }
+@media (min-width: 1024px) {
+    #portal-shell.portal-shell { display: grid; grid-template-columns: 208px minmax(0,1fr); }
+    #portal-shell.portal-shell[data-sidebar-collapsed="true"] { grid-template-columns: 68px minmax(0,1fr); }
+    .portal-shell #portal-content { padding-top: 12px; }
+    .portal-mobile-title { display: none; }
+    .portal-sidebar-link { min-height: 36px; height: auto; padding-block: 6px; font-size: 12px; }
+    .portal-sidebar-group-toggle { min-height: 32px; font-size: 10px; }
+    .portal-sidebar-toggle button { min-height: 28px; height: 28px; }
+    .portal-account-tools summary { min-height: 36px; padding-block: 8px; }
+    .portal-compact-sidebar nav { padding-top: 2px; }
+}
+@media (min-width: 1280px) { .portal-header-identity-copy { display: block; } }
+@media (max-width: 1023px) {
+    .portal-toolbar { background: var(--municipal-navigation-bg); color: var(--municipal-navigation-text); gap: 0; }
+    .portal-mobile-title > div, .portal-mobile-title span { color: var(--municipal-navigation-text); }
+    .portal-toolbar-action { color: var(--municipal-navigation-text); }
+    .portal-header-search, .portal-toolbar-extra, .portal-records-search { display: none; }
+    .portal-mobile-search { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; }
+    .portal-mobile-title { font-size: 12px; }
+}
+@media (pointer: coarse) { .portal-sidebar-link, .portal-sidebar-group-toggle, .portal-account-tools summary { min-height: 44px; } }
+
+.portal-header-launcher { display: inline-flex; }
+@media (max-width: 639px) {
+    .portal-toolbar-leading { gap: 0; }
+    .portal-mobile-title { display: none; }
+}
+@media (min-width: 1024px) and (max-width: 1279px) { .portal-toolbar-extra { display: none; } }
