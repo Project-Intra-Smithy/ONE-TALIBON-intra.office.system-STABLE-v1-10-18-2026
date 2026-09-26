@@ -10,7 +10,8 @@
 .dc-category .dc-category-arrow { color:var(--municipal-muted); }
 .dc-category:hover { background:var(--municipal-hover); }
 .dc-category[aria-pressed="true"] { background:var(--municipal-selected-bg); color:var(--municipal-brand); font-weight:650; }
-.dc-category-unavailable { opacity:.5; cursor:default; }
+.dc-category-unavailable { color:var(--municipal-muted); opacity:.65; font-weight:400; cursor:default; }
+.dc-category-unavailable > svg { color:var(--municipal-muted); opacity:.7; }
 .dc-category-unavailable:hover { background:transparent; }
 .dc-collections { padding-bottom:6px; margin-bottom:6px; border-bottom:1px solid var(--municipal-border); }
 .dc-main { padding:10px; min-width:0; }

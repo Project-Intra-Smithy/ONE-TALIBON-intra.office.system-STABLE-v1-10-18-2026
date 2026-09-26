@@ -60,7 +60,7 @@ export default function DocumentCenter({ records, filters, filterOptions }: Docu
                         <DocumentRegister records={records.data} total={records.total} selectedUrl={selected?.detailUrl || null} onSelect={(record) => setSelectedUrl(record?.detailUrl || null)} />
                         {records.last_page > 1 && <nav aria-label="Document pages" className="flex flex-wrap items-center justify-between gap-2 text-xs"><span>Page {records.current_page} of {records.last_page}</span><div className="flex flex-wrap gap-2">{records.prev_page_url && <Link href={pageHref(records.prev_page_url)} onClick={() => setSelectedUrl(null)} className="municipal-action municipal-action--secondary">Previous</Link>}{records.next_page_url && <Link href={pageHref(records.next_page_url)} onClick={() => setSelectedUrl(null)} className="municipal-action municipal-action--secondary">Next</Link>}</div></nav>}
                     </div>
-                    <div className="dc-below-metadata"><DocumentMetadataPanel record={selected} onClose={() => setSelectedUrl(null)} /></div>
+                    {records.data.length > 0 && <div className="dc-below-metadata"><DocumentMetadataPanel record={selected} onClose={() => setSelectedUrl(null)} /></div>}
                 </div>
             </div>
         </div>
