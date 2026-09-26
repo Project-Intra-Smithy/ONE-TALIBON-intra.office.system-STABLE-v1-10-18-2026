@@ -32,6 +32,7 @@ const TourCoachCard = forwardRef<HTMLDivElement, Props>(function TourCoachCard({
             ref={ref}
             role="dialog"
             aria-modal="true"
+            data-onboarding="guided-tour"
             aria-labelledby="guided-tour-title"
             aria-describedby="guided-tour-description"
             className={mobile
