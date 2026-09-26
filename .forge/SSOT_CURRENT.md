@@ -26,11 +26,11 @@ DA1 closeout evidence:
 
 Active program:
 
-`RC1 — MAIN CONSOLIDATION / RECONCILIATION PREPARATION`
+`MP2 — POST-PROMOTION ARCHIVAL / REMOTE BRANCH CLEANUP PREPARATION`
 
-Current coordination branch:
+Current governance / cleanup planning branch:
 
-`KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT`
+`KIRCH-TALIBON-RV1-RELEASE-VALIDATION`
 
 Current promoted main:
 
@@ -43,11 +43,11 @@ Current promoted main:
 - BH1 backend/runtime hardening: reviewed and closed;
 - DA1 repair wave: closed with recorded validation limitations;
 - aggregate `=== DA1 FULL AUDIT PASS ===` marker: not observed and must not be claimed;
-- next transition: RC1 main consolidation / reconciliation;
+- next transition: MP2 archival preservation, then separately authorized remote branch deletion;
 - main promotion: complete at `f6208cf082c4b1d189c70728adfdb9ddf3225990`;
-- branch cleanup: not yet performed;
+- branch cleanup: planned under MP2 but not yet performed;
+- branch deletion: not yet authorized;
 - deployment from final consolidated main: not yet authorized.
-- branch cleanup: not yet authorized.
 
 ## Program objective
 
