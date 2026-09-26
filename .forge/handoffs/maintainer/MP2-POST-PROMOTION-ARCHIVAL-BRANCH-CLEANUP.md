@@ -62,9 +62,9 @@ Create explicit stable milestone tags for the authority chain:
 - `archive/milestone/da1-h1-final-9fa1ec1a00be` -> `9fa1ec1a00be72984db651c5b251b36183444d64`;
 - `archive/milestone/da1-closeout-2410bb739993` -> `2410bb739993366bdb0e214754343011cc0bed7a`;
 - `archive/milestone/rc1-promoted-f6208cf082c4` -> `f6208cf082c4b1d189c70728adfdb9ddf3225990`;
-- `archive/governance/rv1-post-promotion-7d1d568cb56f` -> `7d1d568cb56f0432c06eeecd7db55403e5dffbcd`.
+- `archive/governance/rv1-post-promotion-<short-sha>` -> the **live execution-time tip** of `KIRCH-TALIBON-RV1-RELEASE-VALIDATION`.
 
-The RV1 governance tag is mandatory because post-promotion evidence/governance commits are intentionally not part of the exact validated RC1 product commit on `main`.
+The RV1 governance tag is mandatory because post-promotion evidence/governance commits are intentionally not part of the exact validated RC1 product commit on `main`. The planning branch itself advances while this MP2 plan/SSOT are written, so its row in the snapshot below is historical planning input only. At execution, tag the freshly fetched live RV1 tip before deletion.
 
 ### Layer B — one archival tag for every non-main branch tip
 
@@ -72,7 +72,7 @@ For every current non-main remote branch, create an annotated tag:
 
 `archive/branch/<sanitized-branch-name>-<12-char-tip-sha>`
 
-A branch is not eligible for deletion until its generated archival tag resolves to the exact same commit as the branch tip snapshot below.
+A branch is not eligible for deletion until its generated archival tag resolves to the exact same commit as the **fresh execution-time branch inventory**. The table below is the planning snapshot; execution must regenerate it before any tag or delete operation.
 
 ## Current branch-tip inventory
 
@@ -164,12 +164,12 @@ Before creating tags:
 4. require `sales/main` to resolve exactly to `f6208cf082c4b1d189c70728adfdb9ddf3225990`;
 5. verify GitHub default branch is still `main`;
 6. refresh remote branch inventory;
-7. if any branch tip differs from this snapshot, STOP and regenerate the MP2 inventory.
+7. regenerate the execution inventory unconditionally before tagging; any unexpected movement outside the MP2 governance branch is a STOP condition until classified.
 
 ### Gate MP2-B — archive creation
 
 1. create all mandatory milestone tags;
-2. create one annotated `archive/branch/*` tag per non-main remote branch;
+2. create one annotated `archive/branch/*` tag per non-main remote branch from the freshly regenerated execution inventory;
 3. refuse to overwrite any existing tag;
 4. if a requested tag already exists, require it to resolve to the expected commit;
 5. push tags without force.
