@@ -31,7 +31,7 @@ export default function ProjectPortfolio({ projects }: { projects: DashboardProj
         <DashboardSectionHeader
             headingId="dashboard-projects"
             icon={<FolderKanban size={16} className="text-blue-700 dark:text-blue-300" aria-hidden="true" />}
-            title="Ongoing projects"
+            title="Project Status Snapshot"
             description="Active municipal workstreams relevant to this role, with delayed and follow-up items first."
         />
         <div className="divide-y divide-slate-100 dark:divide-slate-700">
@@ -52,7 +52,7 @@ export default function ProjectPortfolio({ projects }: { projects: DashboardProj
                         aria-valuemax={100}
                         aria-valuenow={Math.max(0, Math.min(100, project.progress))}
                     >
-                        <div className="h-full bg-[#1769aa] dark:bg-blue-400" style={{ width: `${Math.max(0, Math.min(100, project.progress))}%` }} />
+                        <div className="h-full bg-[var(--municipal-brand)]" style={{ width: `${Math.max(0, Math.min(100, project.progress))}%` }} />
                     </div>
                     <div className="employee-metadata w-10 text-right font-semibold tabular-nums text-slate-600 dark:text-slate-300">{Math.max(0, Math.min(100, project.progress))}%</div>
                 </div>

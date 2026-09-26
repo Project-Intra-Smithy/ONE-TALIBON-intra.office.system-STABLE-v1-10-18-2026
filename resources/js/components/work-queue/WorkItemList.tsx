@@ -30,8 +30,8 @@ export default function WorkItemList({ records, title }: { records: Paginator; t
                 </div>
             </div>
 
-            <div className="employee-table-heading employee-subsection-bar hidden grid-cols-[minmax(260px,1.55fr)_136px_145px_150px_minmax(165px,.9fr)_72px] gap-3 border-b border-slate-200 text-slate-500 xl:grid dark:border-slate-700 dark:text-slate-400">
-                <div>Request</div><div>Accountability</div><div>Assignment</div><div>Due / activity</div><div>Next action</div><div />
+            <div className="employee-table-heading employee-subsection-bar hidden grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.2fr)_64px] gap-3 border-b border-slate-200 text-slate-500 xl:grid dark:border-slate-700 dark:text-slate-400">
+                <div>Task / Work</div><div>Accountability</div><div>Assignment</div><div>Due / activity</div><div>Next action</div><div />
             </div>
 
             <div className="divide-y divide-slate-100 dark:divide-slate-700">
@@ -42,7 +42,7 @@ export default function WorkItemList({ records, title }: { records: Paginator; t
 
                     return (
                         <article key={item.id} className="employee-record-row py-2.5">
-                            <div className="grid min-w-0 gap-2.5 xl:grid-cols-[minmax(260px,1.55fr)_136px_145px_150px_minmax(165px,.9fr)_72px] xl:items-center">
+                            <div className="grid min-w-0 gap-2.5 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.2fr)_64px] xl:items-center">
                                 <div className="min-w-0">
                                     <div className="employee-metadata flex flex-wrap items-center gap-x-2 gap-y-0.5">
                                         <span className="employee-tone-info font-bold">{item.reference}</span>
@@ -91,7 +91,7 @@ export default function WorkItemList({ records, title }: { records: Paginator; t
                                     {item.expectedAction}
                                 </div>
 
-                                <Link href={withReturnContext(`/transactions/${item.id}`, url, '/transactions')} className="employee-metadata inline-flex min-h-10 items-center justify-center gap-1.5 font-bold text-blue-800 hover:underline dark:text-blue-300" aria-label={`Open work item ${item.reference}`}>
+                                <Link href={withReturnContext(`/transactions/${item.id}`, url, '/transactions')} className="employee-metadata inline-flex min-h-11 items-center justify-center gap-1.5 font-bold text-[var(--municipal-brand)] hover:underline " aria-label={`Open work item ${item.reference}`}>
                                     Open <ArrowRight size={13} aria-hidden="true" />
                                 </Link>
                             </div>

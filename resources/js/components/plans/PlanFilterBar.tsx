@@ -16,14 +16,14 @@ type Props = {
     onChange: (filters: PlanFilters) => void;
 };
 
-const fieldClass = 'h-10 rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-800 outline-none focus:border-blue-600 dark:border-slate-700 dark:bg-[#142236] dark:text-slate-100';
+const fieldClass = 'min-h-11 min-w-0 rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-800 outline-none focus:border-emerald-600 dark:border-slate-700 dark:bg-[#142236] dark:text-slate-100';
 
 export default function PlanFilterBar({ filters, leadOffices, resultCount, onChange }: Props) {
     const hasFilters = filters.query !== '' || filters.status !== 'All' || filters.horizon !== 'All' || filters.leadOffice !== 'All';
 
     return (
         <section aria-label="Plan register filters" className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-[#142236] sm:p-4">
-            <div className="grid gap-3 xl:grid-cols-[minmax(240px,1.5fr)_repeat(3,minmax(170px,0.75fr))_auto] xl:items-end">
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4 xl:items-end">
                 <label className="min-w-0 text-xs font-semibold text-slate-600 dark:text-slate-300">
                     Search plans
                     <span className="relative mt-1.5 block">
@@ -62,7 +62,7 @@ export default function PlanFilterBar({ filters, leadOffices, resultCount, onCha
                 <div className="flex items-center justify-between gap-3 xl:flex-col xl:items-end">
                     <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">{resultCount} {resultCount === 1 ? 'record' : 'records'}</span>
                     {hasFilters && (
-                        <button type="button" onClick={() => onChange({ query: '', status: 'All', horizon: 'All', leadOffice: 'All' })} className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-slate-300 px-3 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-900/40">
+                        <button type="button" onClick={() => onChange({ query: '', status: 'All', horizon: 'All', leadOffice: 'All' })} className="inline-flex min-h-11 min-w-0 items-center gap-1.5 rounded-lg border border-slate-300 px-3 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-900/40">
                             <X size={14} /> Clear
                         </button>
                     )}

@@ -4,16 +4,16 @@ import { formatDate } from './format';
 import type { DashboardDocument } from './types';
 
 export default function RecentDocuments({ documents }: { documents: DashboardDocument[] }) {
-    const visibleDocuments = documents.slice(0, 4);
+    const visibleDocuments = documents.slice(0, 5);
 
     return <section className="municipal-panel overflow-hidden" aria-labelledby="dashboard-recent-documents">
         <DashboardSectionHeader
             headingId="dashboard-recent-documents"
             icon={<FileText size={16} className="text-slate-500 dark:text-slate-400" aria-hidden="true" />}
-            title="Recent documents"
-            description="Recently updated municipal records retained for reference."
-            href="/records"
-            linkLabel="Open records"
+            title="My Recent Documents"
+            description="Recently updated reference records for this role."
+            href="/documents"
+            linkLabel="Document Center"
         />
         <div className="divide-y divide-slate-100 dark:divide-slate-700">
             {visibleDocuments.map((document) => <article key={document.id} className="employee-record-row grid min-w-0 gap-1 @min-[620px]:grid-cols-[minmax(0,1fr)_150px] @min-[620px]:gap-4">

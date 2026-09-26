@@ -33,7 +33,7 @@ export default function SchedulePanel({ meetings, deadlines }: { meetings: Dashb
         <DashboardSectionHeader
             headingId="dashboard-schedule"
             icon={<CalendarDays size={15} className="employee-tone-info" aria-hidden="true" />}
-            title="Schedule and deadlines"
+            title="Upcoming Activities"
             description="Near-term meetings and deadlines in this work scope."
             href="/calendar"
             linkLabel="Open calendar"

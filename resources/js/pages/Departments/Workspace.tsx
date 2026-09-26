@@ -1,3 +1,5 @@
+import DepartmentPortalSections from '../../components/departments/DepartmentPortalSections';
+import { resolveDepartmentProfile } from '../../data/municipal/departments';
 import {
     Activity,
     AlertTriangle,
@@ -88,15 +90,15 @@ const metricTone = (key: string, value: number): Tone => {
     if (key === 'unassigned') return value > 0 ? 'amber' : 'slate';
     if (key === 'overdue' || key === 'escalations') return value > 0 ? 'rose' : 'slate';
     if (key === 'waitingExternally') return 'slate';
-    return 'blue';
+    return 'emerald';
 };
 
 const toneClasses: Record<Tone, { border: string; icon: string; value: string; badge: string }> = {
     blue: {
-        border: 'border-l-blue-700',
-        icon: 'bg-blue-50 text-blue-800 dark:bg-blue-950/35 dark:text-blue-200',
-        value: 'text-blue-950 dark:text-blue-100',
-        badge: 'text-blue-700 dark:text-blue-300',
+        border: 'border-l-emerald-700',
+        icon: 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/35 dark:text-emerald-200',
+        value: 'text-emerald-950 dark:text-emerald-100',
+        badge: 'text-emerald-700 dark:text-emerald-300',
     },
     slate: {
         border: 'border-l-slate-400 dark:border-l-slate-500',
@@ -140,17 +142,17 @@ export default function Workspace({ department, metrics, statusOverview, staffWo
                 <header className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-[#142236]">
                     <div className="flex flex-col gap-3 px-4 py-4 sm:px-5 lg:flex-row lg:items-center lg:justify-between">
                         <div className="min-w-0">
-                            <div className="flex flex-wrap items-center gap-2 text-[10px] font-bold uppercase tracking-[0.14em] text-blue-700 dark:text-blue-300">
-                                <span>Office command</span>
+                            <div className="flex flex-wrap items-center gap-2 text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">
+                                <span>Department workspace</span>
                                 <span className="text-slate-300 dark:text-slate-600">•</span>
                                 <span className="text-slate-500 dark:text-slate-400">{pretty(department.branch)} branch</span>
                             </div>
                             <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
                                 <h1 className="text-xl font-bold tracking-tight text-slate-950 dark:text-slate-100 sm:text-2xl">{department.name}</h1>
-                                <span className="rounded-md bg-blue-50 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-blue-800 dark:bg-blue-950/35 dark:text-blue-200">{department.code}</span>
+                                <span className="rounded-md bg-emerald-50 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-800 dark:bg-emerald-950/35 dark:text-emerald-200">{department.code}</span>
                             </div>
                             <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400 sm:text-sm">
-                                {pretty(department.officeType)} · Review office workload, attention items, assignments, and recent municipal workflow movement.
+                                {resolveDepartmentProfile(department.name, department.code).mandate}
                             </p>
                         </div>
 
@@ -159,7 +161,7 @@ export default function Workspace({ department, metrics, statusOverview, staffWo
                                 <a
                                     key={item.href}
                                     href={item.href}
-                                    className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-200 dark:hover:bg-blue-950/30 dark:hover:text-blue-200"
+                                    className="inline-flex min-h-11 items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-200 dark:hover:bg-emerald-950/30 dark:hover:text-emerald-200"
                                 >
                                     {quickActionIcon(item.label)}
                                     {item.label}
@@ -169,29 +171,33 @@ export default function Workspace({ department, metrics, statusOverview, staffWo
                     </div>
                 </header>
 
-                <section aria-label="Department operating metrics" className="grid gap-3 xl:grid-cols-[.85fr_1.15fr]">
+                <DepartmentPortalSections department={department} pendingWork={metrics.active?.value} drilldowns={drilldowns} />
+                <nav aria-label="Department sections" className="flex flex-wrap gap-2 border-b border-slate-200 pb-2 dark:border-slate-700">
+                    {[["department-overview", "Overview"], ["department-workload", "Personnel & workload"], ["department-movement", "Activity & tasks"]].map(([id, label]) => <a key={id} href={`#${id}`} className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-brand-soft)]">{label}</a>)}
+                </nav>
+                <section id="department-overview" aria-label="Department operating metrics" className="grid gap-3 xl:grid-cols-[.85fr_1.15fr]">
                     <div className="min-w-0 space-y-2">
                         <div className="flex flex-wrap items-end justify-between gap-2 px-0.5">
                             <div>
                                 <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-rose-700 dark:text-rose-300">Attention and outcome</div>
                                 <h2 className="mt-0.5 text-sm font-bold text-slate-950 dark:text-slate-100">Office-head awareness</h2>
                             </div>
-                            <div className="text-[10px] text-slate-500 dark:text-slate-400">Warnings strengthen only when attention counts are nonzero.</div>
+                            <div className="text-[10px] text-slate-500 dark:text-slate-400">Current office workload and completed work.</div>
                         </div>
                         <MetricStrip metrics={attentionAndOutcomeMetrics} columns="four" />
                     </div>
                     <div className="min-w-0 space-y-2">
                         <div className="px-0.5">
-                            <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-blue-700 dark:text-blue-300">Office flow</div>
+                            <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">Office flow</div>
                             <h2 className="mt-0.5 text-sm font-bold text-slate-950 dark:text-slate-100">Current routed-work movement</h2>
                         </div>
                         <MetricStrip metrics={flowMetrics} columns="five" />
                     </div>
                 </section>
 
-                <section aria-labelledby="department-workload-heading" className="space-y-2">
+                <section id="department-workload" aria-labelledby="department-workload-heading" className="space-y-2">
                     <div className="px-0.5">
-                        <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-blue-700 dark:text-blue-300">Workload</div>
+                        <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">Workload</div>
                         <h2 id="department-workload-heading" className="mt-0.5 text-sm font-bold text-slate-950 dark:text-slate-100">Staff assignments and active status distribution</h2>
                     </div>
                     <div className="grid min-w-0 gap-3 xl:grid-cols-[1.15fr_.85fr]">
@@ -200,10 +206,10 @@ export default function Workspace({ department, metrics, statusOverview, staffWo
                     </div>
                 </section>
 
-                <section aria-labelledby="department-movement-heading" className="space-y-2">
+                <section id="department-movement" aria-labelledby="department-movement-heading" className="space-y-2">
                     <div className="flex flex-wrap items-end justify-between gap-2 px-0.5">
                         <div>
-                            <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-blue-700 dark:text-blue-300">Movement and unresolved work</div>
+                            <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">Movement and unresolved work</div>
                             <h2 id="department-movement-heading" className="mt-0.5 text-sm font-bold text-slate-950 dark:text-slate-100">Recent workflow events and oldest open items</h2>
                         </div>
                         <div className="text-[11px] text-slate-500 dark:text-slate-400">Recent activity: latest {activityLimit} maximum</div>
@@ -233,7 +239,7 @@ function MetricStrip({ metrics, columns }: { metrics: MetricEntry[]; columns: 'f
                     <a
                         key={metric.key}
                         href={metric.link}
-                        className={`group min-w-0 border-l-2 ${classes.border} bg-white px-2.5 py-2.5 transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-600 dark:bg-[#142236] dark:hover:bg-slate-900/35`}
+                        className={`group min-w-0 border-l-2 ${classes.border} bg-white px-2.5 py-2.5 transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-600 dark:bg-[#142236] dark:hover:bg-slate-900/35`}
                     >
                         <div className="flex min-w-0 items-center justify-between gap-2">
                             <div className="flex min-w-0 items-center gap-1.5">
@@ -254,7 +260,7 @@ function StaffWorkloadPanel({ rows }: { rows: StaffWorkload[] }) {
     return (
         <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-[#142236]" aria-labelledby="department-staff-workload">
             <div className="border-b border-slate-100 px-4 py-3 dark:border-slate-700 sm:px-5">
-                <div className="flex items-center gap-2 text-xs font-bold text-slate-950 dark:text-slate-100"><Users size={15} className="text-blue-700 dark:text-blue-300" aria-hidden="true" /><h3 id="department-staff-workload">Staff workload</h3></div>
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-950 dark:text-slate-100"><Users size={15} className="text-emerald-700 dark:text-emerald-300" aria-hidden="true" /><h3 id="department-staff-workload">Staff workload</h3></div>
                 <p className="mt-0.5 text-[11px] leading-4 text-slate-500 dark:text-slate-400">Authorized assignment summary. No private HR fields are included.</p>
             </div>
 
@@ -322,7 +328,7 @@ function StatusDistributionPanel({ rows }: { rows: Array<{ status: string; count
                             <span className="shrink-0 text-xs font-bold tabular-nums text-slate-950 dark:text-slate-100">{row.count}</span>
                         </div>
                         <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
-                            <div className="h-full rounded-full bg-blue-700 dark:bg-blue-500" style={{ width: `${Math.max(6, (row.count / max) * 100)}%` }} />
+                            <div className="h-full rounded-full bg-emerald-700 dark:bg-emerald-500" style={{ width: `${Math.max(6, (row.count / max) * 100)}%` }} />
                         </div>
                     </div>
                 ))}
@@ -336,7 +342,7 @@ function RecentActivityPanel({ items }: { items: ActivityItem[] }) {
     return (
         <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-[#142236]" aria-labelledby="department-recent-activity">
             <div className="border-b border-slate-100 px-4 py-3 dark:border-slate-700 sm:px-5">
-                <div className="flex items-center gap-2 text-xs font-bold text-slate-950 dark:text-slate-100"><Activity size={15} className="text-blue-700 dark:text-blue-300" aria-hidden="true" /><h3 id="department-recent-activity">Recent office activity</h3></div>
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-950 dark:text-slate-100"><Activity size={15} className="text-emerald-700 dark:text-emerald-300" aria-hidden="true" /><h3 id="department-recent-activity">Recent office activity</h3></div>
                 <p className="mt-0.5 text-[11px] leading-4 text-slate-500 dark:text-slate-400">Latest authoritative workflow events touching this office.</p>
             </div>
             <div className="divide-y divide-slate-100 dark:divide-slate-700 lg:max-h-[34rem] lg:overflow-y-auto lg:overscroll-contain lg:[scrollbar-gutter:stable]">
@@ -345,7 +351,7 @@ function RecentActivityPanel({ items }: { items: ActivityItem[] }) {
                         <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                             <div className="min-w-0">
                                 <div className="flex flex-wrap items-center gap-2">
-                                    <span className="text-[10px] font-bold uppercase tracking-wide text-blue-700 dark:text-blue-300">{item.actionLabel}</span>
+                                    <span className="text-[10px] font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-300">{item.actionLabel}</span>
                                     <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">{pretty(item.status)}</span>
                                 </div>
                                 <div className="mt-1 break-words text-xs font-bold leading-5 text-slate-950 dark:text-slate-100 sm:text-sm">{item.reference || 'Workflow'} · {item.title || 'Untitled work item'}</div>
@@ -353,7 +359,7 @@ function RecentActivityPanel({ items }: { items: ActivityItem[] }) {
                             </div>
                             <div className="flex shrink-0 items-center gap-3 sm:flex-col sm:items-end sm:gap-1">
                                 <time className="text-[10px] text-slate-400 dark:text-slate-500">{when(item.createdAt)}</time>
-                                {item.detailUrl && <a href={item.detailUrl} className="text-xs font-semibold text-blue-800 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 dark:text-blue-300">Open</a>}
+                                {item.detailUrl && <a href={item.detailUrl} className="text-xs font-semibold text-emerald-800 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 dark:text-emerald-300">Open</a>}
                             </div>
                         </div>
                     </article>
@@ -377,12 +383,12 @@ function OldestUnresolvedPanel({ items }: { items: WorkItem[] }) {
                     const attention = !urgent && (item.dueState === 'due_soon' || item.priority === 'high');
                     const accent = urgent ? 'border-l-rose-500' : attention ? 'border-l-amber-500' : 'border-l-slate-300 dark:border-l-slate-600';
                     return (
-                        <a key={item.detailUrl} href={item.detailUrl} className={`group block border-l-4 ${accent} px-4 py-3 transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-600 dark:hover:bg-slate-800/40 sm:px-5`}>
+                        <a key={item.detailUrl} href={item.detailUrl} className={`group block border-l-4 ${accent} px-4 py-3 transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-600 dark:hover:bg-slate-800/40 sm:px-5`}>
                             <div className="flex flex-wrap items-center justify-between gap-2">
-                                <span className="text-[10px] font-bold uppercase tracking-wide text-blue-700 dark:text-blue-300">{item.reference}</span>
+                                <span className="text-[10px] font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-300">{item.reference}</span>
                                 <span className={`text-[9px] font-bold uppercase tracking-wide ${urgent ? 'text-rose-700 dark:text-rose-300' : attention ? 'text-amber-700 dark:text-amber-300' : 'text-slate-400'}`}>{pretty(item.priority)}</span>
                             </div>
-                            <div className="mt-1 text-xs font-semibold leading-5 text-slate-950 group-hover:text-blue-800 dark:text-slate-100 dark:group-hover:text-blue-300 sm:text-sm">{item.title}</div>
+                            <div className="mt-1 text-xs font-semibold leading-5 text-slate-950 group-hover:text-emerald-800 dark:text-slate-100 dark:group-hover:text-emerald-300 sm:text-sm">{item.title}</div>
                             <div className="mt-1.5 flex flex-wrap gap-x-2 gap-y-1 text-[10px] text-slate-500 dark:text-slate-400">
                                 <span>{pretty(item.status)}</span>
                                 <span>·</span>

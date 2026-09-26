@@ -18,8 +18,8 @@ export default function DashboardHeader({ experience }: { experience: DashboardE
     return <header className="border-b border-slate-200 pb-3 dark:border-slate-700" aria-labelledby="dashboard-title">
         <div className="flex min-w-0 flex-col gap-3 lg:flex-row lg:items-start lg:justify-between lg:gap-8">
             <div className="min-w-0 max-w-3xl">
-                <div className="employee-functional-label [color:var(--municipal-brand)]">Employee workspace</div>
-                <h1 id="dashboard-title" className="employee-page-title mt-0.5 text-slate-950 dark:text-slate-100">Home</h1>
+                <div className="employee-functional-label [color:var(--municipal-brand)]">ONE TALIBON</div>
+                <h1 id="dashboard-title" className="employee-page-title mt-0.5 text-slate-950 dark:text-slate-100">Welcome to One Talibon Portal</h1>
                 <p className="employee-body-text mt-1 max-w-3xl text-slate-600 dark:text-slate-300">{dashboardRoleBrief(experience)}</p>
             </div>
 

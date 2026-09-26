@@ -6,7 +6,7 @@ import PlanCoverageSummary from '../../components/plans/PlanCoverageSummary';
 import PlanFilterBar, { type PlanFilters } from '../../components/plans/PlanFilterBar';
 import PlanMetricGrid from '../../components/plans/PlanMetricGrid';
 import PlanMilestoneQueue from '../../components/plans/PlanMilestoneQueue';
-import PlanRegisterTable from '../../components/plans/PlanRegisterTable';
+import PlanCard from '../../components/plans/PlanCard';
 import { getPlanMetrics, municipalPlans } from '../../data/municipal/plans';
 import AppLayout from '../../layouts/AppLayout';
 
@@ -18,7 +18,7 @@ const initialFilters: PlanFilters = {
 };
 
 export default function PlansIndex() {
-    const [filters, setFilters] = useState<PlanFilters>(initialFilters);
+    const [filters, setFilters] = useState<PlanFilters>(() => ({ ...initialFilters, query: typeof window === 'undefined' ? '' : new URLSearchParams(window.location.search).get('search') ?? '' }));
 
     const leadOffices = useMemo(
         () => [...new Set(municipalPlans.map((plan) => plan.leadOffice))].sort((a, b) => a.localeCompare(b)),
@@ -48,12 +48,12 @@ export default function PlansIndex() {
     const metrics = useMemo(() => getPlanMetrics(filteredPlans), [filteredPlans]);
 
     return (
-        <AppLayout title="Municipal Plans">
+        <AppLayout title="LGU Plans Library">
             <PageFrame className="max-w-[1480px]">
                 <PageHeader
                     eyebrow="Municipal Planning and Development Office"
-                    title="Municipal Plans"
-                    description="Register of adopted, active and updating municipal plans, their coverage periods, responsible offices and next required actions."
+                    title="LGU Plans Library"
+                    description="Browse municipal plan reference records, coverage periods, responsible offices and next actions. Prototype reference data."
                     icon={ClipboardList}
                     aside={
                         <div className="rounded-lg border border-slate-200 bg-white px-3 py-2 dark:border-slate-700 dark:bg-[#142236]">
@@ -75,7 +75,7 @@ export default function PlansIndex() {
                 </details>
 
                 <div className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1fr)_340px]">
-                    <div className="min-w-0"><PlanRegisterTable plans={filteredPlans} /></div>
+                    <section aria-label="Plans library" className="grid min-w-0 gap-3 sm:grid-cols-2 2xl:grid-cols-3">{filteredPlans.map((plan) => <PlanCard key={plan.id} plan={plan} />)}{filteredPlans.length === 0 && <p role="status" className="p-4 text-sm text-slate-500">No plans match the current filters.</p>}</section>
                     <div className="min-w-0"><PlanMilestoneQueue plans={filteredPlans} /></div>
                 </div>
             </PageFrame>

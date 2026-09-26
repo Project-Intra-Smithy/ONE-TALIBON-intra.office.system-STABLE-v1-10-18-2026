@@ -20,7 +20,7 @@ export default function AttentionQueue({
         <DashboardSectionHeader
             headingId="dashboard-attention-work"
             icon={<AlertCircle size={16} className="employee-tone-warning" aria-hidden="true" />}
-            title="Work requiring attention"
+            title="Work for My Action"
             description="Live transaction records are ordered by overdue and due-soon state first."
             href={href}
             linkLabel={linkLabel}

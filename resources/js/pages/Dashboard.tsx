@@ -3,19 +3,15 @@ import AdministrativeAttention from '../components/dashboard/AdministrativeAtten
 import AttentionQueue from '../components/dashboard/AttentionQueue';
 import AttentionSummary from '../components/dashboard/AttentionSummary';
 import DashboardHeader from '../components/dashboard/DashboardHeader';
-import {
-    dashboardAttentionWork,
-    dashboardDueToday,
-    dashboardOpenDeadlines,
-    dashboardProjectAttention,
-    dashboardUpcomingDeadlines,
-} from '../components/dashboard/dashboardSelectors';
+import { dashboardAttentionWork, dashboardDueToday, dashboardOpenDeadlines, dashboardProjectAttention, dashboardUpcomingDeadlines } from '../components/dashboard/dashboardSelectors';
 import ExecutiveHistory from '../components/dashboard/ExecutiveHistory';
 import ExecutiveOverview from '../components/dashboard/ExecutiveOverview';
 import MetricGroup from '../components/dashboard/MetricGroup';
 import MunicipalUpdates from '../components/dashboard/MunicipalUpdates';
 import OfficeActivityFeed from '../components/dashboard/OfficeActivityFeed';
 import OfficeOverview from '../components/dashboard/OfficeOverview';
+import PortalMenuOverview from '../components/dashboard/PortalMenuOverview';
+import PortalQuickAccess from '../components/dashboard/PortalQuickAccess';
 import ProjectPortfolio from '../components/dashboard/ProjectPortfolio';
 import QuickActions from '../components/dashboard/QuickActions';
 import RecentCorrespondence from '../components/dashboard/RecentCorrespondence';
@@ -27,15 +23,7 @@ import { getMunicipalDashboardData } from '../data/municipal/dashboard';
 import { getDashboardCorrespondenceUpdates } from '../data/municipal/dashboardCorrespondence';
 import AppLayout from '../layouts/AppLayout';
 
-export default function Dashboard({
-    experience,
-    metricGroups,
-    correspondenceOverview,
-    recentWork,
-    officeOverview,
-    executiveOverview,
-    systemOverview,
-}: DashboardProps) {
+export default function Dashboard({ experience, metricGroups, correspondenceOverview, recentWork, officeOverview, executiveOverview, systemOverview }: DashboardProps) {
     const municipal = getMunicipalDashboardData(experience);
     const supplementalCorrespondence = getDashboardCorrespondenceUpdates(experience);
     const attentionWork = dashboardAttentionWork(experience, recentWork, officeOverview, executiveOverview);
@@ -44,103 +32,47 @@ export default function Dashboard({
     const dueToday = dashboardDueToday(openDeadlines);
     const upcomingDeadlines = dashboardUpcomingDeadlines(openDeadlines);
     const isAdministrator = experience.key === 'system_administration';
-    const personalMetricGroup = metricGroups.find((group) => group.key === 'personal');
-    const contextMetricGroups = metricGroups.filter((group) => group.key !== 'system' && group.key !== 'personal');
-    const hasWorkspaceLinks = isAdministrator || experience.quickActions.length > 0;
     const isMpdo = experience.key === 'department_head' && experience.department.code.toUpperCase() === 'MPDO';
     const administrativeFollowUp = systemOverview?.operations.departmentWorkload.filter((office) => office.overdue > 0 || office.unassigned > 0).length ?? 0;
-    const workAttentionCount = isAdministrator ? administrativeFollowUp : attentionWork.length;
-    const correspondenceAttentionCount = correspondenceOverview?.attention.value
-        ?? supplementalCorrespondence.filter((item) => item.lifecycle === 'for_action').length;
-    const attentionQueueHref = experience.key === 'executive_oversight'
-        ? '/mayor-office'
-        : experience.key === 'department_head'
-            ? '/transactions?view=office_queue'
-            : '/transactions?view=needs_my_action';
-    const attentionQueueLabel = experience.key === 'executive_oversight'
-        ? 'Open executive work'
-        : experience.key === 'department_head'
-            ? 'Open office work'
-            : 'Open my work';
+    const attentionQueueHref = experience.key === 'executive_oversight' ? '/mayor-office' : experience.key === 'department_head' ? '/transactions?view=office_queue' : '/transactions?view=needs_my_action';
+    const attentionQueueLabel = experience.key === 'executive_oversight' ? 'Open executive work' : experience.key === 'department_head' ? 'Open office work' : 'Open my work';
 
-    const planningUpdates = <MunicipalUpdates announcements={municipal.announcements} planningUpdates={municipal.planningUpdates} mode="planning" />;
-    const announcements = <MunicipalUpdates announcements={municipal.announcements} planningUpdates={municipal.planningUpdates} mode="announcements" />;
-
-    return <AppLayout title="Home">
-        <div className="employee-section-stack mx-auto max-w-[1560px]">
+    return <AppLayout title="Dashboard">
+        <div className="@container employee-section-stack mx-auto min-w-0 max-w-[1560px]">
             <DashboardHeader experience={experience} />
-
-            <div className="@container employee-section-stack min-w-0">
-                <AttentionSummary
-                    workCount={workAttentionCount}
-                    overdueWorkCount={isAdministrator
-                        ? systemOverview?.operations.departmentWorkload.filter((office) => office.overdue > 0).length ?? 0
-                        : attentionWork.filter((item) => item.dueState === 'overdue').length}
-                    projectAttentionCount={projectAttention.length}
-                    dueTodayCount={dueToday.length}
-                    correspondenceAttentionCount={correspondenceAttentionCount}
-                    workLabel={isAdministrator ? 'Offices requiring follow-up' : undefined}
-                    overdueLabel={isAdministrator ? 'Offices with overdue work' : undefined}
-                />
-
-                <section aria-label="Priority work and schedule" className="grid min-w-0 gap-[0.875rem] @min-[1120px]:grid-cols-[minmax(0,1.2fr)_minmax(360px,.8fr)] @min-[1120px]:items-start">
-                    {!isAdministrator ? <AttentionQueue items={attentionWork} href={attentionQueueHref} linkLabel={attentionQueueLabel} /> : null}
-                    {isAdministrator && systemOverview ? <AdministrativeAttention workload={systemOverview.operations.departmentWorkload} /> : null}
-                    <SchedulePanel meetings={municipal.meetings} deadlines={upcomingDeadlines} />
-                </section>
-
-                {(personalMetricGroup || hasWorkspaceLinks) ? <section aria-label="My work and workspace" className={personalMetricGroup && hasWorkspaceLinks
-                    ? 'grid min-w-0 gap-[0.875rem] @min-[1120px]:grid-cols-[minmax(0,1.25fr)_minmax(320px,.75fr)] @min-[1120px]:items-start'
-                    : 'grid min-w-0 gap-4'
-                }>
-                    {personalMetricGroup ? <MetricGroup group={personalMetricGroup} /> : null}
-                    {hasWorkspaceLinks ? <QuickActions actions={experience.quickActions} /> : null}
-                </section> : null}
-
-                <section aria-labelledby="dashboard-operating-picture" className="space-y-[0.875rem]">
-                    <div className="flex flex-wrap items-end justify-between gap-2 border-b border-slate-200 pb-2 dark:border-slate-700">
-                        <div>
-                            <div className="employee-functional-label text-[var(--municipal-brand)]">Current work context</div>
-                            <h2 id="dashboard-operating-picture" className="employee-section-title mt-0.5 text-slate-950 dark:text-slate-100">Office state, municipal delivery, and active projects</h2>
-                        </div>
-                    </div>
-
-                    {(contextMetricGroups.length > 0 || officeOverview || executiveOverview || systemOverview || isMpdo) ? <div className="grid min-w-0 gap-[0.875rem] @min-[1120px]:grid-cols-2">
-                        {contextMetricGroups.map((group) => <MetricGroup key={group.key} group={group} />)}
-                        {experience.key === 'department_head' && officeOverview ? <OfficeOverview overview={officeOverview} /> : null}
-                        {experience.key === 'executive_oversight' && executiveOverview ? <ExecutiveOverview overview={executiveOverview} /> : null}
-                        {isAdministrator && systemOverview ? <SystemOverview overview={systemOverview} /> : null}
-                        {isMpdo ? planningUpdates : null}
-                    </div> : null}
-
-                    <ProjectPortfolio projects={municipal.projects} />
-                </section>
-
-                <details className="group municipal-panel overflow-hidden">
-                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-3 py-2.5 marker:hidden sm:px-4">
-                        <div>
-                            <div className="employee-functional-label text-slate-500 dark:text-slate-400">Reference and history</div>
-                            <div className="employee-record-title mt-0.5 text-slate-950 dark:text-slate-100">Recent records, correspondence, announcements, and activity</div>
-                        </div>
-                        <span className="employee-supporting-text shrink-0 font-semibold text-[var(--municipal-brand)] group-open:hidden">Show context</span>
-                        <span className="employee-supporting-text hidden shrink-0 font-semibold text-[var(--municipal-brand)] group-open:inline">Hide context</span>
-                    </summary>
-                    <div className="space-y-2.5 border-t border-slate-200 p-3 dark:border-slate-700">
-                        <div className="grid min-w-0 gap-2.5 @min-[1120px]:grid-cols-2">
-                            <RecentDocuments documents={municipal.documents} />
-                            <RecentCorrespondence overview={correspondenceOverview} supplemental={supplementalCorrespondence} />
-                        </div>
-
-                        {experience.key === 'executive_oversight' && executiveOverview ? <ExecutiveHistory overview={executiveOverview} /> : null}
-                        {announcements}
-
-                        <div className="grid min-w-0 gap-2.5 @min-[1120px]:grid-cols-[1.08fr_.92fr]">
-                            <OfficeActivityFeed activity={municipal.officeActivity} />
-                            <ActivityRail />
-                        </div>
-                    </div>
-                </details>
+            <PortalQuickAccess />
+            <AttentionSummary workCount={isAdministrator ? administrativeFollowUp : attentionWork.length}
+                overdueWorkCount={isAdministrator ? systemOverview?.operations.departmentWorkload.filter((office) => office.overdue > 0).length ?? 0 : attentionWork.filter((item) => item.dueState === 'overdue').length}
+                projectAttentionCount={projectAttention.length} dueTodayCount={dueToday.length}
+                correspondenceAttentionCount={correspondenceOverview?.attention.value ?? supplementalCorrespondence.filter((item) => item.lifecycle === 'for_action').length}
+                workLabel={isAdministrator ? 'Offices requiring follow-up' : undefined} overdueLabel={isAdministrator ? 'Offices with overdue work' : undefined} />
+            <section aria-label="Announcements, work and upcoming activities" className="grid min-w-0 gap-3 @min-[1000px]:grid-cols-3 @min-[1000px]:items-start">
+                <div className="@container order-2 min-w-0 @min-[1000px]:order-1"><MunicipalUpdates announcements={municipal.announcements} planningUpdates={municipal.planningUpdates} mode="announcements" /></div>
+                <div className="@container order-1 min-w-0 @min-[1000px]:order-2">{isAdministrator && systemOverview ? <AdministrativeAttention workload={systemOverview.operations.departmentWorkload} /> : <AttentionQueue items={attentionWork} href={attentionQueueHref} linkLabel={attentionQueueLabel} />}</div>
+                <div className="@container order-3 min-w-0"><SchedulePanel meetings={municipal.meetings} deadlines={upcomingDeadlines} /></div>
+            </section>
+            <div className="grid min-w-0 gap-3 @min-[900px]:grid-cols-2 @min-[900px]:items-start">
+                <div className="@container order-2 min-w-0 @min-[900px]:order-1"><ProjectPortfolio projects={municipal.projects} /></div>
+                <div className="@container order-1 min-w-0 @min-[900px]:order-2"><RecentDocuments documents={municipal.documents} /></div>
             </div>
+            <p className="text-xs text-[var(--municipal-muted)]">Municipal announcements, schedules, project snapshots and recent document summaries include prototype reference data.</p>
+            <section aria-label="Office and role context" className="grid min-w-0 gap-3 @min-[1000px]:grid-cols-2">
+                {metricGroups.filter((group) => group.key !== 'system').map((group) => <MetricGroup key={group.key} group={group} />)}
+                {experience.key === 'department_head' && officeOverview && <OfficeOverview overview={officeOverview} />}
+                {experience.key === 'executive_oversight' && executiveOverview && <ExecutiveOverview overview={executiveOverview} />}
+                {isAdministrator && systemOverview && <SystemOverview overview={systemOverview} />}
+                {isMpdo && <MunicipalUpdates announcements={municipal.announcements} planningUpdates={municipal.planningUpdates} mode="planning" />}
+            </section>
+            <details className="municipal-panel min-w-0 overflow-hidden">
+                <summary className="min-h-11 cursor-pointer px-4 py-3 text-sm font-semibold">Workspace shortcuts, correspondence & activity</summary>
+                <div className="space-y-3 border-t border-[var(--municipal-border)] p-3">
+                    <QuickActions actions={experience.quickActions} />
+                    <RecentCorrespondence overview={correspondenceOverview} supplemental={supplementalCorrespondence} />
+                    {experience.key === 'executive_oversight' && executiveOverview && <ExecutiveHistory overview={executiveOverview} />}
+                    <div className="grid min-w-0 gap-3 @min-[1000px]:grid-cols-2"><OfficeActivityFeed activity={municipal.officeActivity} /><ActivityRail /></div>
+                </div>
+            </details>
+            <PortalMenuOverview />
         </div>
     </AppLayout>;
 }

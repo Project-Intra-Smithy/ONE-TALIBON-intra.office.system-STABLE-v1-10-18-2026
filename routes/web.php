@@ -13,6 +13,7 @@ use App\Http\Controllers\CorrespondenceWorkspaceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\DocumentCenterController;
 use App\Http\Controllers\DtrController;
 use App\Http\Controllers\EmployeeDirectoryController;
 use App\Http\Controllers\EmployeeHealthVaultController;
@@ -76,6 +77,8 @@ Route::middleware(['auth', 'active', 'mfa.subject', 'mfa.assured'])->group(funct
 Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
     Route::get('/admin', AdminDashboardController::class)->name('admin.index');
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::get('/portal-search', fn () => Inertia::render('Search/Index'))->name('portal-search.index');
+    Route::get('/documents', DocumentCenterController::class)->name('document-center.index');
     Route::get('/departments', DepartmentController::class)->name('departments.index');
     Route::get('/employees', EmployeeDirectoryController::class)->name('employees.index');
     Route::get('/employees/{employee}', EmployeeProfileController::class)->name('employees.show');

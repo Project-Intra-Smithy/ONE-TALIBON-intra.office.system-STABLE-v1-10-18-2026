@@ -1,99 +1,40 @@
 import { Link } from '@inertiajs/react';
-import { AlertTriangle, Banknote, BriefcaseBusiness, CalendarDays, ClipboardCheck, FolderKanban } from 'lucide-react';
+import { useState } from 'react';
+import { FolderKanban, Search } from 'lucide-react';
+import PageFrame from '../../components/PageFrame';
+import PageHeader from '../../components/PageHeader';
+import PortalWorkspaceNav from '../../components/portal/PortalWorkspaceNav';
 import AppLayout from '../../layouts/AppLayout';
 
 type Department = { id: number; code: string; name: string; short_name?: string };
-type Employee = { id: number; employee_number: string; full_name?: string; position_title: string };
-type OperationalItem = {
-    id: number;
-    item_type: 'project' | 'procurement' | 'fund' | 'compliance';
-    reference_no: string;
-    title: string;
-    status: string;
-    priority: string;
-    target_date?: string | null;
-    progress_percent: number;
-    allocated_amount?: string | null;
-    utilized_amount?: string | null;
-    remarks?: string | null;
-    department: Department;
-    responsible_employee?: Employee | null;
-};
+type OperationalItem = { id: number; item_type: 'project' | 'procurement' | 'fund' | 'compliance'; reference_no: string; title: string; status: string; priority: string; target_date?: string | null; progress_percent: number; allocated_amount?: string | null; utilized_amount?: string | null; remarks?: string | null; department: Department; responsible_employee?: { full_name?: string; position_title: string } | null };
 type Summary = { projects: number; procurement: number; funds: number; compliance: number; overdue: number; allocated: number; utilized: number };
-
-const typeLabels = {
-    project: 'Projects',
-    procurement: 'Procurement',
-    fund: 'Fund Utilization',
-    compliance: 'Compliance',
-};
-
-const typeIcons = {
-    project: FolderKanban,
-    procurement: BriefcaseBusiness,
-    fund: Banknote,
-    compliance: ClipboardCheck,
-};
-
-const money = (value?: string | number | null) => value === null || value === undefined ? '—' : new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', maximumFractionDigits: 0 }).format(Number(value));
+const money = (value?: string | number | null) => value == null ? 'Not recorded' : new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', maximumFractionDigits: 0 }).format(Number(value));
+const pretty = (value: string) => value.replaceAll('_', ' ');
+const progress = (item: OperationalItem) => Math.max(0, Math.min(100, item.progress_percent));
+const field = 'min-h-11 min-w-0 w-full rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 text-sm';
 
 export default function OperationsIndex({ items, filter, summary }: { items: OperationalItem[]; filter?: string | null; summary: Summary }) {
-    const utilization = summary.allocated > 0 ? Math.round((summary.utilized / summary.allocated) * 100) : 0;
-    const filters = [
-        ['All', null],
-        ['Projects', 'project'],
-        ['Procurement', 'procurement'],
-        ['Funds', 'fund'],
-        ['Compliance', 'compliance'],
-    ];
-
-    return (
-        <AppLayout title="Operations Monitoring">
-            <div className="mx-auto max-w-7xl space-y-4 sm:space-y-6">
-                <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:rounded-3xl sm:p-6 md:p-8">
-                    <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-700 sm:text-xs">Executive operations monitoring</div>
-                    <h1 className="mt-2 text-2xl font-bold text-slate-950 sm:text-3xl">Projects, Procurement, Funds & Compliance</h1>
-                    <p className="mt-2 max-w-3xl text-[12px] leading-5 text-slate-600 sm:text-sm sm:leading-6">One municipal monitoring layer for the operational areas specifically identified in the Reverse Pitch problem statement.</p>
-                </section>
-
-                <section className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-4 xl:grid-cols-6">
-                    <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm sm:rounded-2xl sm:p-4"><FolderKanban size={17} className="text-blue-800" /><div className="mt-2 text-xl font-bold text-slate-950 sm:text-2xl">{summary.projects}</div><div className="text-[9px] uppercase text-slate-500 sm:text-[10px]">Projects</div></div>
-                    <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm sm:rounded-2xl sm:p-4"><BriefcaseBusiness size={17} className="text-blue-800" /><div className="mt-2 text-xl font-bold text-slate-950 sm:text-2xl">{summary.procurement}</div><div className="text-[9px] uppercase text-slate-500 sm:text-[10px]">Procurement</div></div>
-                    <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm sm:rounded-2xl sm:p-4"><Banknote size={17} className="text-blue-800" /><div className="mt-2 text-xl font-bold text-slate-950 sm:text-2xl">{summary.funds}</div><div className="text-[9px] uppercase text-slate-500 sm:text-[10px]">Funds</div></div>
-                    <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm sm:rounded-2xl sm:p-4"><ClipboardCheck size={17} className="text-blue-800" /><div className="mt-2 text-xl font-bold text-slate-950 sm:text-2xl">{summary.compliance}</div><div className="text-[9px] uppercase text-slate-500 sm:text-[10px]">Compliance</div></div>
-                    <div className="rounded-xl border border-rose-100 bg-rose-50 p-3 shadow-sm sm:rounded-2xl sm:p-4"><AlertTriangle size={17} className="text-rose-700" /><div className="mt-2 text-xl font-bold text-rose-900 sm:text-2xl">{summary.overdue}</div><div className="text-[9px] uppercase text-rose-700 sm:text-[10px]">Overdue</div></div>
-                    <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm sm:rounded-2xl sm:p-4"><Banknote size={17} className="text-emerald-700" /><div className="mt-2 text-xl font-bold text-slate-950 sm:text-2xl">{utilization}%</div><div className="text-[9px] uppercase text-slate-500 sm:text-[10px]">Fund utilized</div></div>
-                </section>
-
-                <section className="rounded-2xl border border-slate-200 bg-white shadow-sm sm:rounded-3xl">
-                    <div className="flex flex-wrap gap-2 border-b border-slate-100 p-3 sm:p-5">{filters.map(([label, value]) => <Link key={String(label)} href={value ? `/operations?type=${value}` : '/operations'} className={`rounded-full px-3 py-1.5 text-[10px] font-semibold sm:text-xs ${filter === value ? 'bg-blue-800 text-white' : 'border border-slate-200 bg-white text-slate-600'}`}>{label}</Link>)}</div>
-                    <div className="divide-y divide-slate-100">
-                        {items.map((item) => {
-                            const Icon = typeIcons[item.item_type];
-                            const target = item.target_date ? new Date(item.target_date) : null;
-                            const overdue = target ? target.getTime() < new Date(new Date().toDateString()).getTime() && !['completed', 'closed', 'cancelled'].includes(item.status) : false;
-                            return (
-                                <div key={item.id} className="p-4 sm:p-5">
-                                    <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                                        <div className="min-w-0 flex-1">
-                                            <div className="flex items-center gap-2"><div className="rounded-lg bg-blue-50 p-2 text-blue-800"><Icon size={16} /></div><div><div className="text-[9px] font-bold uppercase tracking-wide text-blue-700 sm:text-[10px]">{typeLabels[item.item_type]} · {item.reference_no}</div><h2 className="mt-0.5 text-sm font-bold text-slate-950 sm:text-base">{item.title}</h2></div></div>
-                                            <div className="mt-3 grid grid-cols-2 gap-3 text-[10px] sm:grid-cols-4 sm:text-xs"><div><div className="uppercase text-slate-400">Office</div><div className="mt-1 font-semibold text-slate-800">{item.department.short_name || item.department.name}</div></div><div><div className="uppercase text-slate-400">Responsible</div><div className="mt-1 font-semibold text-slate-800">{item.responsible_employee?.full_name || 'Unassigned'}</div></div><div><div className="uppercase text-slate-400">Target</div><div className={`mt-1 font-semibold ${overdue ? 'text-rose-700' : 'text-slate-800'}`}>{target ? target.toLocaleDateString() : 'Not set'}</div></div><div><div className="uppercase text-slate-400">Status</div><div className="mt-1 font-semibold uppercase text-slate-800">{item.status.replaceAll('_', ' ')}</div></div></div>
-                                            {item.remarks && <p className="mt-3 text-[11px] leading-5 text-slate-500 sm:text-sm">{item.remarks}</p>}
-                                        </div>
-                                        <div className="w-full rounded-xl bg-slate-50 p-3 lg:w-64">
-                                            <div className="flex items-center justify-between text-[10px] sm:text-xs"><span className="font-semibold text-slate-600">Progress</span><span className="font-bold text-slate-950">{item.progress_percent}%</span></div>
-                                            <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-200"><div className="h-full rounded-full bg-blue-700" style={{ width: `${Math.min(100, item.progress_percent)}%` }} /></div>
-                                            {(item.allocated_amount !== null && item.allocated_amount !== undefined) && <div className="mt-3 grid grid-cols-2 gap-2 text-[9px] sm:text-[10px]"><div><div className="uppercase text-slate-400">Allocated</div><div className="mt-0.5 font-semibold text-slate-800">{money(item.allocated_amount)}</div></div><div><div className="uppercase text-slate-400">Utilized</div><div className="mt-0.5 font-semibold text-slate-800">{money(item.utilized_amount)}</div></div></div>}
-                                            {overdue && <div className="mt-3 flex items-center gap-1.5 rounded-lg bg-rose-50 px-2.5 py-2 text-[9px] font-bold uppercase text-rose-700"><AlertTriangle size={13} /> Overdue</div>}
-                                        </div>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                        {items.length === 0 && <div className="p-8 text-center text-sm text-slate-500">No monitoring items match this filter.</div>}
-                    </div>
-                </section>
-            </div>
-        </AppLayout>
-    );
+    const [query, setQuery] = useState('');
+    const [office, setOffice] = useState('');
+    const [status, setStatus] = useState('');
+    const [year, setYear] = useState('');
+    const [selectedId, setSelectedId] = useState<number | null>(null);
+    const visible = items.filter((item) => (!query || [item.title, item.reference_no, item.department.name].join(' ').toLowerCase().includes(query.toLowerCase())) && (!office || String(item.department.id) === office) && (!status || item.status === status) && (!year || item.target_date?.startsWith(year)));
+    const selected = visible.find((item) => item.id === selectedId);
+    const offices = [...new Map(items.map((item) => [item.department.id, item.department])).values()];
+    const years = [...new Set(items.flatMap((item) => item.target_date ? [item.target_date.slice(0, 4)] : []))].sort();
+    return <AppLayout title="Project Monitoring"><PageFrame className="max-w-[1480px]">
+        <PageHeader eyebrow="ONE TALIBON implementation" title="Projects & Monitoring" description="Authorized project, procurement, fund and compliance records with responsible offices, progress and target dates." icon={FolderKanban} />
+        <PortalWorkspaceNav current="projectMonitoring" destinations={['ppas', 'projectMonitoring', 'developmentPlans']} />
+        <section className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-6" aria-label="Monitoring summary">{[['Projects', summary.projects], ['Procurement', summary.procurement], ['Funds', summary.funds], ['Compliance', summary.compliance], ['Overdue', summary.overdue], ['Fund utilized', `${summary.allocated > 0 ? Math.round(summary.utilized / summary.allocated * 100) : 0}%`]].map(([label, value]) => <div key={label} className="municipal-panel min-w-0 p-3"><div className="text-xs font-semibold text-[var(--municipal-muted)]">{label}</div><div className={`mt-1 text-xl font-bold ${label === 'Overdue' && summary.overdue > 0 ? 'text-rose-700' : 'text-[var(--municipal-brand)]'}`}>{value}</div></div>)}</section>
+        <section className="municipal-panel space-y-3 p-3" aria-label="Project filters">
+            <nav className="flex flex-wrap gap-2" aria-label="Monitoring type">{[['All', ''], ['Projects', 'project'], ['Procurement', 'procurement'], ['Funds', 'fund'], ['Compliance', 'compliance']].map(([label, value]) => <Link key={label} href={value ? `/operations?type=${value}` : '/operations'} className={`inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold ${(filter || '') === value ? 'bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand)]' : 'text-[var(--municipal-muted)]'}`}>{label}</Link>)}</nav>
+            <div className="grid min-w-0 gap-2 sm:grid-cols-2 xl:grid-cols-4"><label className="relative min-w-0"><span className="sr-only">Search projects</span><Search size={16} className="absolute left-3 top-3.5 text-[var(--municipal-muted)]" /><input className={`${field} pl-9`} placeholder="Search project or reference" value={query} onChange={(event) => setQuery(event.target.value)} /></label><select aria-label="Target year" className={field} value={year} onChange={(event) => setYear(event.target.value)}><option value="">All target years</option>{years.map((value) => <option key={value}>{value}</option>)}</select><select aria-label="Office" className={field} value={office} onChange={(event) => setOffice(event.target.value)}><option value="">All visible offices</option>{offices.map((item) => <option key={item.id} value={item.id}>{item.short_name || item.name}</option>)}</select><select aria-label="Status" className={field} value={status} onChange={(event) => setStatus(event.target.value)}><option value="">All statuses</option>{[...new Set(items.map((item) => item.status))].map((value) => <option key={value} value={value}>{pretty(value)}</option>)}</select></div>
+        </section>
+        <section className="municipal-panel min-w-0 overflow-hidden" aria-label="Project register">
+            <div className="hidden grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,.8fr)_minmax(0,1fr)_90px] gap-3 border-b border-[var(--municipal-border)] bg-[var(--municipal-brand-soft)] p-3 text-xs font-bold text-[var(--municipal-brand)] lg:grid"><span>Project / Workstream</span><span>Office</span><span>Status</span><span>Progress</span><span>Details</span></div>
+            <div className="divide-y divide-[var(--municipal-border)]">{visible.map((item) => <article key={item.id} className="min-w-0 p-3"><div className="grid min-w-0 gap-3 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,.8fr)_minmax(0,1fr)_90px] lg:items-center"><div className="min-w-0"><div className="text-xs font-semibold text-[var(--municipal-brand)]">{item.reference_no}</div><h2 className="mt-1 break-words text-sm font-semibold">{item.title}</h2><p className="mt-1 text-xs text-[var(--municipal-muted)]">Target: {item.target_date?.slice(0, 10) || 'Not set'}</p></div><div className="text-sm"><span className="text-xs text-[var(--municipal-muted)] lg:hidden">Office · </span>{item.department.short_name || item.department.name}</div><div className="text-sm font-semibold capitalize text-[var(--municipal-brand)]">{pretty(item.status)}</div><div><div className="mb-1 flex justify-between text-xs"><span>Progress</span><span className="font-bold">{progress(item)}%</span></div><div className="h-2 overflow-hidden rounded-full bg-[var(--municipal-brand-soft)]" role="progressbar" aria-label={`${item.title} progress`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress(item)}><div className="h-full bg-[var(--municipal-brand)]" style={{ width: `${progress(item)}%` }} /></div></div><button type="button" onClick={() => setSelectedId(selectedId === item.id ? null : item.id)} aria-expanded={selectedId === item.id} className="min-h-11 rounded-lg border border-[var(--municipal-border)] px-2 text-sm font-semibold text-[var(--municipal-brand)]">{selectedId === item.id ? 'Close' : 'Details'}</button></div>{selectedId === item.id && selected && <div className="mt-3 rounded-lg bg-[var(--municipal-brand-soft)] p-4"><dl className="grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">{[['Responsible person', selected.responsible_employee?.full_name || 'Unassigned'], ['Priority', pretty(selected.priority)], ['Allocated amount', money(selected.allocated_amount)], ['Utilized amount', money(selected.utilized_amount)]].map(([label, value]) => <div key={label}><dt className="text-xs font-semibold text-[var(--municipal-muted)]">{label}</dt><dd className="mt-1 break-words">{value}</dd></div>)}</dl>{selected.remarks && <p className="mt-3 text-sm leading-6">{selected.remarks}</p>}</div>}</article>)}{!visible.length && <p className="p-6 text-sm text-[var(--municipal-muted)]">No monitoring records match the selected filters.</p>}</div>
+        </section>
+    </PageFrame></AppLayout>;
 }

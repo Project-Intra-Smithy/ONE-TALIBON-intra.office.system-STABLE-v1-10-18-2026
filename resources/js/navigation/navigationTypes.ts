@@ -10,6 +10,8 @@ export type PortalGroupKey =
     | 'systems';
 
 export type PortalDestinationKey =
+    | 'portalSearch'
+    | 'documentCenter'
     | 'home'
     | 'myWork'
     | 'correspondence'

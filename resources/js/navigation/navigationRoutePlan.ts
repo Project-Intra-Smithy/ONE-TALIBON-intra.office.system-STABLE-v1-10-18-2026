@@ -2,6 +2,8 @@ import type { PortalDestinationKey } from './navigationTypes';
 
 export const portalRoutePlan = {
     home: '/dashboard',
+    portalSearch: '/portal-search',
+    documentCenter: '/documents',
     myWork: '/transactions',
     correspondence: '/correspondence',
     records: '/records',

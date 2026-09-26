@@ -2,7 +2,7 @@ import { Search, X } from 'lucide-react';
 import type { PPAFilters as FilterState } from '../../data/municipal/ppas.types';
 import { ppaOptions } from '../../data/municipal/ppas';
 
-const selectClass = 'min-h-10 min-w-0 rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-700 outline-none focus:border-blue-700 focus:ring-2 focus:ring-blue-700/20 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-200';
+const selectClass = 'min-h-11 min-w-0 rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-700 outline-none focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/20 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-200';
 
 type Props = { filters: FilterState; onChange: (next: FilterState) => void };
 
@@ -25,6 +25,6 @@ export default function PPAFilters({ filters, onChange }: Props) {
             <select aria-label="Funding source" value={filters.fundingSource} onChange={(event) => set('fundingSource', event.target.value)} className={selectClass}><option value="">All funding sources</option>{ppaOptions.fundingSources.map((value) => <option key={value}>{value}</option>)}</select>
             <select aria-label="Status" value={filters.status} onChange={(event) => set('status', event.target.value)} className={selectClass}><option value="">All statuses</option>{ppaOptions.statuses.map((value) => <option key={value}>{value}</option>)}</select>
         </div>
-        {hasFilters && <button type="button" onClick={reset} className="mt-3 inline-flex min-h-9 items-center gap-1.5 rounded-lg px-2 text-xs font-bold text-blue-800 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-700/30 dark:text-blue-300 dark:hover:bg-blue-950/30"><X size={14} aria-hidden="true" /> Clear filters</button>}
+        {hasFilters && <button type="button" onClick={reset} className="mt-3 inline-flex min-h-11 items-center gap-1.5 rounded-lg px-2 text-xs font-bold text-emerald-800 hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-700/30 dark:text-emerald-300 dark:hover:bg-emerald-950/30"><X size={14} aria-hidden="true" /> Clear filters</button>}
     </section>;
 }

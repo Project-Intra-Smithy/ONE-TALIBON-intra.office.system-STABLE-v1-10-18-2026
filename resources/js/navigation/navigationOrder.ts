@@ -2,6 +2,8 @@ import type { PortalDestinationKey } from './navigationTypes';
 
 export const portalDestinationOrder: PortalDestinationKey[] = [
     'home',
+    'portalSearch',
+    'documentCenter',
     'myWork',
     'correspondence',
     'records',

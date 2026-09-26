@@ -1,7 +1,7 @@
 import type { ScopeGroup } from './types';
 
 const queueEmphasis: Record<string, string> = {
-    needs_my_action: 'border-l-blue-700',
+    needs_my_action: 'border-l-emerald-700',
     due_soon: 'border-l-amber-500',
     overdue: 'border-l-rose-600',
     escalations: 'border-l-rose-600',
@@ -34,10 +34,10 @@ export default function WorkScopeTabs({ groups, currentView, onSelect }: {
                                     onClick={() => onSelect(view.key)}
                                     aria-pressed={active}
                                     aria-current={active ? 'page' : undefined}
-                                    className={`min-w-0 border border-l-[3px] px-3 py-2 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2 sm:min-w-[132px] sm:flex-1 sm:basis-[132px] sm:max-w-[190px] ${emphasis} ${active ? 'border-blue-800 bg-blue-50 text-blue-950 dark:bg-blue-950/40' : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50 dark:bg-[#142236] dark:text-slate-300 dark:border-slate-700'}`}
+                                    className={`min-h-11 min-w-0 border border-l-[3px] px-3 py-2 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2 sm:min-w-[132px] sm:flex-1 sm:basis-[132px] sm:max-w-[190px] ${emphasis} ${active ? 'border-emerald-800 bg-emerald-50 text-emerald-950 dark:bg-emerald-950/40' : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50 dark:bg-[#142236] dark:text-slate-300 dark:border-slate-700'}`}
                                 >
                                     <div className="text-xs font-bold leading-4 sm:text-xs">{view.label}</div>
-                                    <div className={`mt-0.5 text-xs sm:text-xs ${active ? 'text-blue-700' : 'text-slate-500 dark:text-slate-400'}`}>
+                                    <div className={`mt-0.5 text-xs sm:text-xs ${active ? 'text-emerald-700' : 'text-slate-500 dark:text-slate-400'}`}>
                                         {view.count} item{view.count === 1 ? '' : 's'}
                                     </div>
                                 </button>

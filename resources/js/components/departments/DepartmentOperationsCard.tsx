@@ -16,12 +16,9 @@ const pretty = (value: string) => value.replaceAll('_', ' ').replace(/\b\w/g, (l
 
 export default function DepartmentOperationsCard({ office }: { office: Office }) {
     const profile = resolveDepartmentProfile(office.name, office.short_name ?? '');
-    const legislative = office.branch === 'legislative';
-    const accentBorder = legislative ? 'border-l-indigo-600' : 'border-l-blue-800';
-    const headTone = legislative ? 'text-indigo-700 dark:text-indigo-300' : 'text-blue-800 dark:text-blue-300';
-    const iconTone = legislative
-        ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/35 dark:text-indigo-300'
-        : 'bg-blue-50 text-blue-800 dark:bg-blue-950/35 dark:text-blue-300';
+    const accentBorder = 'border-l-[var(--municipal-brand)]';
+    const headTone = 'text-[var(--municipal-brand)]';
+    const iconTone = 'bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand)]';
 
     return (
         <article className={`flex h-full min-w-0 flex-col rounded-xl border border-slate-200 border-l-[3px] ${accentBorder} bg-white dark:border-y-slate-700 dark:border-r-slate-700 dark:bg-[#142236]`}>
@@ -52,7 +49,7 @@ export default function DepartmentOperationsCard({ office }: { office: Office })
 
             <div className="mt-auto space-y-2 px-4 pb-4 pt-4 text-xs sm:px-5 sm:pb-5">
                 <div className="border-t border-slate-100 pt-3 dark:border-slate-700">
-                    <ReferenceRow icon={CalendarDays} label="Upcoming" value={profile.upcomingMeeting} />
+                    <ReferenceRow icon={CalendarDays} label="Meeting reference" value={profile.upcomingMeeting} />
                     <div className="mt-2"><ReferenceRow icon={FileText} label="Related" value={profile.relatedDocument} /></div>
                 </div>
             </div>

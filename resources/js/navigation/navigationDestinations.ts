@@ -22,8 +22,10 @@ import { portalRoutePlan } from './navigationRoutePlan';
 import type { PortalDestination, PortalDestinationKey } from './navigationTypes';
 
 export const portalDestinations: Partial<Record<PortalDestinationKey, PortalDestination>> = {
+    portalSearch: { key: 'portalSearch', label: 'Search Portal', href: portalRoutePlan.portalSearch, icon: FileSearch, group: 'home', readiness: 'wired' },
+    documentCenter: { key: 'documentCenter', label: 'Document Center', href: portalRoutePlan.documentCenter, icon: FileText, group: 'work', readiness: 'wired', permission: 'records' },
     home: { key: 'home', label: 'Home', href: portalRoutePlan.home, icon: LayoutDashboard, group: 'home', readiness: 'wired', permission: 'dashboard' },
-    myWork: { key: 'myWork', label: 'Work Queue', href: portalRoutePlan.myWork, icon: FileText, group: 'work', readiness: 'wired', permission: 'transactions' },
+    myWork: { key: 'myWork', label: 'Tasks & Assignments', href: portalRoutePlan.myWork, icon: FileText, group: 'work', readiness: 'wired', permission: 'transactions' },
     correspondence: { key: 'correspondence', label: 'Inbox & Routing', href: portalRoutePlan.correspondence, icon: Inbox, group: 'work', readiness: 'wired', permission: 'correspondence' },
     records: { key: 'records', label: 'Records Register', href: portalRoutePlan.records, icon: FileSearch, group: 'work', readiness: 'wired', permission: 'records' },
     memoranda: { key: 'memoranda', label: 'Official Memoranda', href: portalRoutePlan.memoranda, icon: FileText, group: 'work', readiness: 'wired', permission: 'memoranda' },
