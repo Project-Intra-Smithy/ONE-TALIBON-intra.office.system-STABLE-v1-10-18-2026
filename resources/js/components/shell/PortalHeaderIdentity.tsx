@@ -11,7 +11,7 @@ function initialsFor(name: string): string {
         .toUpperCase();
 }
 
-export default function PortalHeaderIdentity({ user }: { user: AuthUser | null }) {
+export default function PortalHeaderIdentity({ user, portal = false }: { user: AuthUser | null; portal?: boolean }) {
     if (!user) return null;
 
     const office = user.employee?.department?.short_name || user.employee?.department?.name;
@@ -28,7 +28,7 @@ export default function PortalHeaderIdentity({ user }: { user: AuthUser | null }
             >
                 {initialsFor(user.name) || 'OT'}
             </span>
-            <div className="hidden min-w-0 max-w-44 2xl:block">
+            <div className={portal ? "hidden min-w-0 max-w-44 lg:block" : "hidden min-w-0 max-w-44 2xl:block"}>
                 <div className="truncate text-xs font-bold leading-4 text-[var(--municipal-text)]" title={user.name}>{user.name}</div>
                 {context && <div className="truncate text-xs leading-4 text-[var(--municipal-muted)]" title={context}>{context}</div>}
             </div>

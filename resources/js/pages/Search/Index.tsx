@@ -1,6 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowUpRight, FileText, Search, SlidersHorizontal } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PageFrame from '../../components/PageFrame';
 import PageHeader from '../../components/PageHeader';
 import { municipalPlans } from '../../data/municipal/plans';
@@ -15,7 +15,10 @@ const field = 'min-h-11 min-w-0 w-full rounded-lg border border-[var(--municipal
 export default function PortalSearch() {
     const { workspaceExperience, permissions } = usePage<SharedProps>().props;
     const destinations = buildPortalNavigation(workspaceExperience, permissions.navigation).flatMap((group) => group.items);
-    const [query, setQuery] = useState('');
+    const { url } = usePage<SharedProps>();
+    const urlQuery = new URLSearchParams(url.split('?')[1] || '').get('q') || '';
+    const [query, setQuery] = useState(urlQuery);
+    useEffect(() => { setQuery(urlQuery); }, [urlQuery]);
     const [type, setType] = useState('');
     const [office, setOffice] = useState('');
     const [year, setYear] = useState('');

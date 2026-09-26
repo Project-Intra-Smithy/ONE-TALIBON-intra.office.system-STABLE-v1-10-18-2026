@@ -1,0 +1,122 @@
+/* Dashboard presentation only; inner workspaces retain their existing shell. */
+.dashboard-portal { container-type: inline-size; display: grid; gap: 10px; min-width: 0; }
+.dashboard-portal *, .portal-toolbar-leading { min-width: 0; }
+.dashboard-hero { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 144px; padding: 16px 28px; border-radius: 8px; color: #fff; background-size: cover; background-position: 65% 50%; }
+.dashboard-hero-copy { max-width: 610px; }
+.dashboard-hero-copy > p:first-child { font-size: 15px; font-weight: 600; line-height: 20px; }
+.dashboard-hero h1 { font-size: 28px; line-height: 32px; font-weight: 750; letter-spacing: -.025em; }
+.dashboard-hero-description { max-width: 540px; margin-top: 6px; font-size: 12px; line-height: 17px; }
+.dashboard-hero-context { margin-top: 7px; color: #d9eee6; font-size: 10px; line-height: 14px; }
+.dashboard-hero-slogan { flex-shrink: 0; padding: 0 14px 5px; border-bottom: 2px solid #d9b74e; font-family: Georgia, serif; font-style: italic; font-size: 22px; line-height: 1.15; transform: rotate(-5deg); }
+.dashboard-quick-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 26px; margin-bottom: 4px; }
+.dashboard-quick-title { font-size: 14px; font-weight: 700; }
+.dashboard-directory-link { color: var(--municipal-brand); font-size: 11px; font-weight: 600; padding-block: 5px; }
+.dashboard-quick-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+.dashboard-quick-tile { display: flex; min-height: 88px; flex-direction: column; align-items: center; justify-content: center; gap: 7px; padding: 10px 6px; border: 1px solid transparent; border-radius: 8px; background: var(--tile-background); color: var(--tile-color); text-align: center; transition: border-color .15s, transform .15s; }
+.dashboard-quick-tile span { max-width: 112px; font-size: 12px; line-height: 15px; font-weight: 650; }
+.dashboard-quick-tile svg { flex-shrink: 0; }
+.dashboard-quick-tile:hover { border-color: var(--tile-color); transform: translateY(-1px); }
+.dashboard-quick-tile:focus-visible { outline: 2px solid var(--tile-color); outline-offset: 2px; }
+.dashboard-primary-grid, .dashboard-secondary-grid { display: grid; gap: 10px; }
+.dashboard-announcements { order: 2; }
+.dashboard-action { order: 1; }
+.dashboard-primary-grid > :last-child { order: 3; }
+.dashboard-project-snapshot { order: 2; }
+.dashboard-recent-documents { order: 1; }
+.dashboard-widget { display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--municipal-border); border-radius: 8px; background: var(--municipal-surface); }
+.dashboard-widget-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px 8px; min-height: 40px; padding: 6px 10px; border-bottom: 1px solid var(--municipal-border); }
+.dashboard-widget-header > div { display: flex; align-items: center; gap: 5px; }
+.dashboard-widget-header svg { flex-shrink: 0; color: var(--municipal-brand); }
+.dashboard-widget-header h2 { font-size: 14px; line-height: 18px; font-weight: 700; }
+.dashboard-widget-header > a { flex-shrink: 0; font-size: 10px; font-weight: 600; color: var(--municipal-brand); padding-block: 5px; }
+.dashboard-count { border-radius: 10px; background: var(--municipal-brand-soft); color: var(--municipal-brand); font-size: 10px; font-weight: 700; padding: 0 5px; }
+.dashboard-widget-list { flex: 1; }
+.dashboard-compact-row { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 5px 10px; border-bottom: 1px solid var(--municipal-border); }
+.dashboard-compact-row:last-child { border-bottom: 0; }
+a.dashboard-compact-row:hover { background: var(--municipal-hover); }
+.dashboard-row-copy { flex: 1; }
+.dashboard-row-title { font-size: 12px; line-height: 16px; font-weight: 600; overflow-wrap: anywhere; }
+.dashboard-row-meta { font-size: 10px; line-height: 14px; color: var(--municipal-muted); overflow-wrap: anywhere; }
+.dashboard-row-icon { color: var(--municipal-brand); flex-shrink: 0; }
+.dashboard-tag { flex-shrink: 0; max-width: 76px; padding: 2px 5px; border-radius: 3px; color: var(--municipal-brand); background: var(--municipal-brand-soft); font-size: 9px; line-height: 13px; }
+.dashboard-overdue { color: #bd3037; font-size: 10px; line-height: 14px; font-weight: 600; }
+.dashboard-widget-foot { min-height: 24px; padding: 4px 10px; border-top: 1px solid var(--municipal-border); font-size: 10px; line-height: 15px; color: var(--municipal-brand); }
+.dashboard-date-block { width: 30px; flex-shrink: 0; overflow: hidden; border: 1px solid var(--municipal-border); border-radius: 3px; text-align: center; }
+.dashboard-date-block span { display: block; background: #287c78; color: white; text-transform: uppercase; font-size: 8px; line-height: 11px; }
+.dashboard-date-block strong { display: block; font-size: 13px; line-height: 19px; }
+.dashboard-date-block.is-deadline span { background: #bd5148; }
+.dashboard-empty { padding: 14px 10px; font-size: 12px; color: var(--municipal-muted); }
+.dashboard-snapshot-body { padding: 16px 14px; }
+.dashboard-snapshot-chart { display: flex; align-items: center; gap: 24px; }
+.dashboard-snapshot-chart > div:first-child { flex-shrink: 0; }
+.dashboard-snapshot-chart span { font-size: 11px; }
+.dashboard-snapshot-chart strong { display: block; font-size: 28px; line-height: 32px; font-weight: 750; }
+.dashboard-status-bar { display: flex; flex: 1; height: 15px; overflow: hidden; border-radius: 10px; background: var(--municipal-hover); }
+.dashboard-status-bar span + span { border-left: 1px solid var(--municipal-surface); }
+.dashboard-status-legend { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin-top: 20px; }
+.dashboard-status-legend > div { display: flex; gap: 6px; align-items: flex-start; }
+.dashboard-status-legend i { width: 9px; height: 9px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+.dashboard-status-legend strong { display: block; font-size: 16px; line-height: 20px; }
+.dashboard-status-legend span { display: block; font-size: 10px; line-height: 14px; color: var(--municipal-muted); }
+.dashboard-reference-note { font-size: 10px; line-height: 14px; color: var(--municipal-muted); }
+.dashboard-operational-context > summary { cursor: pointer; padding: 12px; font-size: 13px; font-weight: 650; }
+.dashboard-operational-context > summary span { margin-left: 12px; font-size: 11px; font-weight: 400; color: var(--municipal-muted); }
+.dashboard-operational-body { display: grid; gap: 12px; padding: 12px; border-top: 1px solid var(--municipal-border); }
+.portal-header-search { position: relative; display: flex; align-items: center; width: 100%; max-width: 580px; min-height: 44px; }
+.portal-header-search input { width: 100%; height: 40px; padding: 0 44px 0 12px; border: 1px solid var(--municipal-border); border-radius: 5px; background: var(--municipal-canvas); color: var(--municipal-text); font-size: 12px; }
+.portal-header-search button { position: absolute; right: 0; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--municipal-brand); }
+.portal-toolbar-leading { flex: 1; }
+.portal-toolbar-extra { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--municipal-muted); border-radius: 6px; }
+.portal-toolbar-extra:hover { background: var(--municipal-hover); }
+.portal-sidebar-brand { display: flex; align-items: center; gap: 8px; min-height: 56px; padding: 8px 12px; }
+.portal-sidebar-brand img { width: 36px; height: 36px; flex-shrink: 0; }
+.portal-sidebar-brand strong { display: block; font-size: 13px; line-height: 17px; letter-spacing: -.02em; }
+.portal-sidebar-brand span { display: block; font-size: 9px; line-height: 13px; color: #d4e9e0; }
+.portal-compact-sidebar { background: linear-gradient(165deg,#004d3b,#00392f); }
+.portal-account-tools summary { min-height: 36px; padding: 8px; cursor: pointer; font-size: 11px; font-weight: 600; }
+@container (min-width: 600px) { .dashboard-quick-grid { grid-template-columns: repeat(4,minmax(0,1fr)); } }
+@container (min-width: 1000px) {
+    .dashboard-quick-grid { grid-template-columns: repeat(8,minmax(0,1fr)); }
+    .dashboard-primary-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+    .dashboard-primary-grid .dashboard-widget { min-height: 224px; }
+    .dashboard-secondary-grid { grid-template-columns: minmax(0,1.5fr) minmax(320px,1fr); }
+    .dashboard-secondary-grid .dashboard-widget { min-height: 184px; }
+    .dashboard-announcements, .dashboard-project-snapshot { order: 1; }
+    .dashboard-action, .dashboard-recent-documents { order: 2; }
+    .dashboard-action-list .dashboard-compact-row { min-height: 40px; }
+    .dashboard-recent-documents .dashboard-compact-row { min-height: 36px; padding-block: 3px; }
+    .dashboard-row-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+@media (min-width: 1024px) {
+    #portal-shell.portal-dashboard-shell { grid-template-columns: 208px minmax(0,1fr); }
+    #portal-shell.portal-dashboard-shell[data-sidebar-collapsed="true"] { grid-template-columns: 68px minmax(0,1fr); }
+    .portal-dashboard-shell #portal-content { padding: 12px 16px 16px; }
+    .portal-dashboard-shell main > header { min-height: 56px; }
+    .portal-dashboard-shell .portal-mobile-title { display: none; }
+    .portal-compact-sidebar nav a { min-height: 35px; padding-top: 6px; padding-bottom: 6px; font-size: 12px; }
+    .portal-compact-sidebar nav a svg { width: 16px; height: 16px; }
+    .portal-compact-sidebar nav a[aria-current="page"] { background: #14852e; color: white; }
+    .portal-compact-sidebar nav a[aria-current="page"] svg { color: #f4d859; }
+    .portal-compact-sidebar nav { padding-top: 2px; }
+    .portal-compact-sidebar nav section { margin-top: 4px; }
+    .portal-compact-sidebar nav section > div:first-child { padding-top: 3px; padding-bottom: 3px; }
+    .portal-compact-sidebar > div:nth-child(2) { padding-top: 0; padding-bottom: 0; }
+    .portal-compact-sidebar > div:nth-child(2) button { min-height: 28px; height: 28px; }
+}
+@media (max-width: 1023px) {
+    .portal-dashboard-shell main > header { flex-wrap: wrap; gap: 0; padding-block: 4px; background: var(--municipal-brand-deep); }
+    .portal-dashboard-shell main > header button, .portal-dashboard-shell main > header > div > div { color: inherit; }
+    .portal-dashboard-shell main > header { color: white; }
+    .portal-dashboard-shell .portal-mobile-title > div { color: white; }
+    .portal-header-search { display: none; }
+    .portal-toolbar-extra { display: none; }
+    .dashboard-hero { padding: 16px; min-height: 132px; }
+    .dashboard-hero h1 { font-size: 25px; line-height: 29px; }
+    .dashboard-hero-slogan { display: none; }
+    .dashboard-hero-context { overflow-wrap: anywhere; }
+    .dashboard-widget-header > a, .dashboard-directory-link { min-height: 32px; display: inline-flex; align-items: center; }
+}
+@media (prefers-reduced-motion: reduce) { .dashboard-quick-tile { transition: none; } .dashboard-quick-tile:hover { transform: none; } }
+
+.portal-mobile-search { display: none; }
+@media (max-width: 1023px) { .portal-mobile-search { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; } }

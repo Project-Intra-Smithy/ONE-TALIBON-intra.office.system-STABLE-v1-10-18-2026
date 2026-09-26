@@ -9,6 +9,7 @@ import UnreadCountBadge from './UnreadCountBadge';
 
 type Props = {
     collapsed: boolean;
+    portal?: boolean;
     currentUrl: string;
     mobile?: boolean;
     navigationGroups: PortalNavigationGroup[];
@@ -20,6 +21,7 @@ type Props = {
 
 export default function PortalSidebar({
     collapsed,
+    portal = false,
     currentUrl,
     mobile = false,
     navigationGroups,
@@ -31,8 +33,8 @@ export default function PortalSidebar({
     const compact = !mobile && collapsed;
 
     return (
-        <div className="flex h-full flex-col bg-[var(--municipal-brand-deep)] text-white">
-            <SidebarBrand compact={compact} mobile={mobile} />
+        <div className={`flex h-full flex-col bg-[var(--municipal-brand-deep)] text-white ${portal ? 'portal-compact-sidebar' : ''}`} data-compact={compact}>
+            <SidebarBrand compact={compact} mobile={mobile} portal={portal} />
 
             {!mobile && (
                 <div className={`flex px-2 py-0.5 ${compact ? 'justify-center' : 'justify-end'}`}>
@@ -56,7 +58,7 @@ export default function PortalSidebar({
                                 label={group.label}
                                 primary={group.key === 'home' || group.key === 'work'}
                                 showLabel={group.key !== 'home'}
-                                collapsible={!compact && group.key !== 'home' && group.key !== 'work'}
+                                collapsible={!portal && !compact && group.key !== 'home' && group.key !== 'work'}
                             >
                                 {group.items.map((item) => {
                                     const active = isPortalPathActive(currentUrl, item.href);
@@ -89,7 +91,7 @@ export default function PortalSidebar({
                 className={`shrink-0 border-t border-white/10 ${compact ? 'p-1.5' : 'p-2'}`}
                 style={mobile ? { paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' } : undefined}
             >
-                <SidebarFooter compact={compact} user={user} />
+                <SidebarFooter compact={compact} user={user} portal={portal} />
             </div>
         </div>
     );
