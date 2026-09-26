@@ -6,19 +6,23 @@
 
 ## Current integration state
 
-There is no active reconciliation/integration branch.
+The historical RC1 integration program is complete.
 
-The RC1 integration program is complete.
-
-Sole continuing branch:
+Accepted product branch:
 
 `main`
 
-Exact RV1-validated and promoted product payload:
+Observed MP5 source baseline:
 
-`f6208cf082c4b1d189c70728adfdb9ddf3225990`
+`615529ce6663933dd3eeee4d504d14d1f21b626d`
 
-The promotion was non-force and ancestry-preserving.
+Active MP5 coordination branch:
+
+`KIRCH-TALIBON-MP5-POST-DAT-FRONTEND-CORRECTION`
+
+No MP5 product candidate is integrated yet. Writer branches remain candidates until independent Review/Acceptance and explicit integration authority.
+
+Maximum concurrent Code Writers: **2**.
 
 ## Completed chain
 
@@ -49,17 +53,19 @@ Do not recreate historical RC1/DA1/UIUX branch names as implicit authority.
 
 ## Current transition
 
-MP3 documentation/governance closeout is complete.
+MP3 closeout and MP4 field rehearsal are complete.
 
 Current transition:
 
-`MP4 — FINAL PROTOTYPE-DAY REHEARSAL FROM MAIN`
+`MP5 — POST-DAT FRONTEND CORRECTION`
 
-No application integration is implied by the MP3 documentation commits.
+Batch 1 W01/W02 are designed as non-overlapping candidates. Integration order will be chosen from reviewed evidence; writers must not merge each other or the coordination branch.
+
+Any shared-file or semantic collision stops parallel treatment and returns to Maintainer.
 
 ## Deployment boundary
 
-Deployment remains unauthorized until a separate Technical Authority decision after rehearsal.
+Deployment remains unauthorized until a separate Technical Authority decision after MP5 acceptance/promotion.
 
 ## Developer boundary
 
