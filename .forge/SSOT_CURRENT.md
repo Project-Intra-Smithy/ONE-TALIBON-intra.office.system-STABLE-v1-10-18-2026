@@ -10,111 +10,125 @@ All other contributors are Developers / Contributors unless explicitly delegated
 
 `Kirch-Nairu/Talibon-Sales-Prototype`
 
-## Current product authority
+## Current Git authority
 
-Hardened closeout:
+Sole continuing remote branch:
 
-`KIRCH-TALIBON-BH1-BACKEND-RUNTIME-HARDENING@27824223d5169c8eadf16ab863d09aab9585db9c`
+`main`
+
+Exact RV1-validated/promoted product payload:
+
+`f6208cf082c4b1d189c70728adfdb9ddf3225990`
+
+MP3 governance/documentation commits may advance `main` beyond that SHA without changing the validated application payload. Resolve live `main` for the current governance tip.
+
+Historical branch tips were preserved before deletion:
+
+- branch-tip archive tags: **65**;
+- milestone archive tags: **7**;
+- governance archive tags: **1**;
+- total `archive/*` refs at MP3 opening: **73**.
+
+Open PRs at MP3 opening:
+
+`0`
+
+Deployment:
+
+`NOT PERFORMED`
+
+## Completed authority chain
+
+CAL1 feature freeze:
+
+`9dba054d34377ce76149d8474ddeb66b5c20130e`
+
+BH1 hardened closeout:
+
+`27824223d5169c8eadf16ab863d09aab9585db9c`
 
 DA1 reviewed repair integration:
 
-`KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT@f48fb9381fee81490f43635ff289cce67ff7779b`
+`f48fb9381fee81490f43635ff289cce67ff7779b`
 
-DA1 closeout evidence:
+DA1 closeout coordination authority:
 
-`.forge/evidence/maintainer/DA1-REPAIR-WAVE-CLOSEOUT.md`
+`2410bb739993366bdb0e214754343011cc0bed7a`
 
-Active program:
+RC1 validated/promoted product candidate:
 
-`RC1 — MAIN CONSOLIDATION / RECONCILIATION PREPARATION`
-
-Current coordination branch:
-
-`KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT`
-
-Current `main` before promotion:
-
-`9cc1b50b28762402c3b24a721cd5ba7ae961817c`
+`f6208cf082c4b1d189c70728adfdb9ddf3225990`
 
 ## State
 
-- MP0 messaging/runtime cleanup: historical completed ancestry;
+- MP0 messaging/runtime work: historical completed ancestry;
 - CAL1 Calendar workspace: completed and feature-frozen;
 - BH1 backend/runtime hardening: reviewed and closed;
 - DA1 repair wave: closed with recorded validation limitations;
-- aggregate `=== DA1 FULL AUDIT PASS ===` marker: not observed and must not be claimed;
-- next transition: RC1 main consolidation / reconciliation;
-- main promotion: not yet performed;
-- branch cleanup: not yet performed;
-- deployment from final consolidated main: not yet authorized.
+- aggregate `=== DA1 FULL AUDIT PASS ===` marker: **NOT OBSERVED** and must not be claimed;
+- RC1 main consolidation/reconciliation: completed;
+- RV1 exact-candidate current-contract runtime: PASS;
+- main promotion: completed, non-force;
+- archival preservation: completed;
+- remote branch cleanup: completed;
+- remote branch topology: `main` only;
+- deployment: not performed.
 
-## Program objective
+## Current program
 
-Before prototype day:
+`MP3 — MAIN GOVERNANCE / DOCUMENTATION CLOSEOUT`
 
-1. preserve the closed CAL1 / BH1 / DA1 product state;
-2. reconcile intentional main-only public-portal work through RC1;
-3. validate the exact RC1 candidate through RV1;
-4. promote only the validated candidate to `main` without force/history rewrite;
-5. archive required historical tips;
-6. delete non-main remote branches only after promotion and archival proof;
-7. rehearse the exact prototype flow from final `main`.
+MP3 is documentation/governance only. It must not mutate application behavior.
+
+## Next transition
+
+After MP3:
+
+`MP4 — FINAL PROTOTYPE-DAY REHEARSAL FROM MAIN`
+
+MP4 is a bounded presentation-flow rehearsal, not another broad implementation/audit wave.
+
+Deployment is a separate explicit Technical Authority decision after rehearsal.
 
 ## Product direction
 
 ONE TALIBON is a dense, credible municipal digital workspace, not a marketing dashboard.
 
-Primary presentation surfaces must be functional and honest.
+Primary presentation surfaces must be functional and honestly represented.
 
-Do not introduce unrelated feature work during DA1.
+## Evidence law
 
-Do not reopen CAL1/BH1 without new evidence.
+Only observed evidence may be claimed.
 
-## Prototype-day critical proof
+Do not convert:
 
-Required evidence includes:
-
-- clean dependency install;
-- deterministic PostgreSQL migration/seed;
-- all seven showcase personas;
-- TypeScript;
-- production frontend build;
-- route/view/config cacheability where applicable;
-- full Feature suite;
-- Dashboard/My Work/Correspondence/Records;
-- Calendar Month/Week/Day/Schedule;
-- Messages and two-user send/polling;
-- Engineering -> Budget -> Mayor transaction lifecycle;
-- memorandum publish/acknowledge;
-- legislative read/search;
-- HR leave flow;
-- authorization-denial proof;
-- browser pageerror/server-5xx monitoring;
-- desktop/mobile presentation checks.
+- historical component evidence into an unobserved aggregate DA1 PASS;
+- source inspection into runtime PASS;
+- exact-candidate runtime validation into deployment validation;
+- prototype readiness into UAT/production/commercial acceptance.
 
 ## Authority precedence
 
-1. observed Git/runtime state;
+1. observed live Git/runtime state;
 2. explicit Technical Authority instruction from Kirch Ivan Balite;
-3. current repository-local governance;
+3. this current repository-local governance;
 4. durable review/acceptance evidence;
-5. historical documents;
+5. historical documentation;
 6. chat memory.
 
 ## Historical records
 
-Older UI/UX correction records, handoffs, and accepted baseline SHAs remain valid historical provenance.
+Older UI/UX, CAL1, BH1, DA1, RC1 and RV1 evidence/handoffs remain valid provenance.
 
-They do not define current branch authority merely because their documents still name historical branches.
+Deleted historical branch names inside those records are not errors and must not be rewritten to look current.
 
-## Consolidation plan
+## Consolidation result
 
-See:
-
-`docs/PROTOTYPE_DAY_MAIN_CONSOLIDATION_PLAN.md`
-
-Target branch topology after closeout:
+The target topology was reached:
 
 ```text
+remote heads:
 main
 ```
+
+Historical tips remain recoverable through `archive/*` tags.
