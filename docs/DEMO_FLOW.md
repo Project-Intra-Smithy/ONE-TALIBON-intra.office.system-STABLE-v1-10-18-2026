@@ -1,5 +1,15 @@
 # ONE TALIBON — PROTOTYPE-DAY DEMO FLOW
 
+Current presentation authority:
+
+`main`
+
+Exact RV1-validated/promoted product payload:
+
+`f6208cf082c4b1d189c70728adfdb9ddf3225990`
+
+This flow is now the **post-consolidation MP4 rehearsal script**. If current `main` differs in presentation behavior, update this script before stakeholder use.
+
 Technical Authority:
 
 **Kirch Ivan Balite**
@@ -20,7 +30,7 @@ Recommended controlled demo:
 - Device B: Budget / Mayor workspace;
 - Device C or phone: Employee / HR workspace.
 
-Before presenting, complete the prototype-day preflight and full DA1 validation from the exact promoted SHA.
+Before presenting, run the bounded MP4 prototype-day rehearsal from current `main`. Do not rerun the historical full DA1 program unless new evidence separately reopens that authority.
 
 ## Scenario 1 — Engineering -> Budget -> Mayor transaction
 
@@ -150,9 +160,7 @@ Do not claim realtime sockets/presence. The prototype messaging implementation u
 
 ## Public homepage
 
-If the public homepage is part of prototype day, use only the final reconciled/promoted `main` version.
-
-Do not present the current pre-consolidation public homepage as the final product until RC1/RV1 closes.
+If the public homepage is part of prototype day, use current `main`. RC1/RV1 reconciliation is closed and the promoted public homepage is the presentation authority.
 
 ## Do not claim
 
@@ -170,6 +178,6 @@ Do not represent these as production-complete merely because related prototype s
 
 ## Final presenter rule
 
-If the UI differs from this script on the exact final `main`, stop and update the script before prototype day.
+If the UI differs from this script on current `main`, stop and update the script before prototype day.
 
 The demo script follows the product; the product must not be distorted to satisfy stale demo wording.
