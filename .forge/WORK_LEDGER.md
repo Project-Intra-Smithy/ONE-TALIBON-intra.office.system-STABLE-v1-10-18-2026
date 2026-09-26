@@ -406,3 +406,83 @@ Current writer allocation:
 `3 / 3 CODE WRITER SLOTS ALLOCATED`
 
 No fourth Code Writer is authorized without another explicit Technical Authority concurrency change.
+
+## MP5 W03/W04/W05 writer returns received
+
+### W03 — Work Queue / Transaction Density
+
+Candidate:
+
+`8beea1c9f12e3a132bdb4632f3ea1a2ec138ae8c`
+
+Maintainer intake:
+
+- remote HEAD exact: PASS;
+- lineage: 6 ahead / 0 behind;
+- changed files: 6;
+- W04 intersection: 0;
+- W05 intersection: 0;
+- exact-SHA statuses/workflows: none observed;
+- executable evidence: intentionally deferred.
+
+State:
+
+`REVIEW ISSUED`
+
+Handoff:
+
+`.forge/handoffs/review/MP5-W03-WORK-QUEUE-TRANSACTION-DENSITY-REVIEW.md`
+
+### W04 — Communications / Information Clarity
+
+Candidate:
+
+`bc9853aed5dda6928f16f4bed68880788e22c3d2`
+
+Maintainer intake:
+
+- remote HEAD exact: PASS;
+- lineage: 10 ahead / 0 behind;
+- changed files: 7;
+- W03 intersection: 0;
+- W05 intersection: 0;
+- exact-SHA statuses/workflows: none observed;
+- executable evidence: intentionally deferred.
+
+State:
+
+`REVIEW ISSUED`
+
+Handoff:
+
+`.forge/handoffs/review/MP5-W04-COMMS-INFORMATION-CLARITY-REVIEW.md`
+
+### W05 — Records Register / Operational Reports
+
+Candidate:
+
+`62d985688eca331356b9340493cb7940fd4b7a52`
+
+Maintainer intake:
+
+- remote HEAD exact: PASS;
+- lineage: 2 ahead / 0 behind;
+- changed files: 2;
+- W03 intersection: 0;
+- W04 intersection: 0;
+- exact-SHA statuses/workflows: none observed;
+- executable evidence: intentionally deferred.
+
+State:
+
+`REVIEW ISSUED`
+
+Handoff:
+
+`.forge/handoffs/review/MP5-W05-RECORDS-REPORTS-CLARITY-REVIEW.md`
+
+Current active Code Writers:
+
+`0 / 3`
+
+Do not integrate these candidates until their independent source Reviews return. Final compiler/build/Feature/browser proof remains deferred to the exact integrated MP5 candidate.
