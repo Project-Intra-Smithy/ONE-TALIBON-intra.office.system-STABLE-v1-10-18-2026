@@ -16,13 +16,13 @@ export default function PlanCoverageSummary({ plans }: { plans: MunicipalPlan[] 
                 <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">{earliest && latest ? `${earliest}–${latest}` : 'No matching coverage'}</div>
             </div>
 
-            <dl className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
+            <dl className="mt-2 flex flex-wrap gap-x-5 gap-y-2">
                 {horizons.map((horizon) => {
                     const count = plans.filter((plan) => plan.horizon === horizon).length;
                     return (
-                        <div key={horizon} className="min-w-0 bg-[var(--municipal-surface-subtle)] px-3 py-2">
+                        <div key={horizon} className="flex min-w-0 items-baseline gap-2">
                             <dt className="text-xs font-semibold text-slate-500 dark:text-slate-400">{horizon}</dt>
-                            <dd className="mt-1 text-sm font-bold text-[#0b2852] dark:text-slate-100">{count}</dd>
+                            <dd className="text-xs font-semibold text-[#0b2852] dark:text-slate-100">{count}</dd>
                         </div>
                     );
                 })}

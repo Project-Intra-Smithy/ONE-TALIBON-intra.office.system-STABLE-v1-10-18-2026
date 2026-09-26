@@ -20,8 +20,8 @@ export default function PlanMilestoneQueue({ plans }: { plans: MunicipalPlan[] }
             <div className="grid gap-x-3 sm:grid-cols-2">
                 {recorded.length === 0 && <p className="py-3 text-xs text-[var(--municipal-muted)]">No recorded milestones match the current filters.</p>}
                 {recorded.map((plan) => (
-                    <article key={plan.id} className="grid grid-cols-[62px_minmax(0,1fr)] gap-2 border-t border-[var(--municipal-border)] py-3">
-                        <div className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-2 text-center dark:border-slate-700 dark:bg-slate-900/40">
+                    <article key={plan.id} className="grid grid-cols-[62px_minmax(0,1fr)] gap-2 border-t border-[var(--municipal-border)] py-2">
+                        <div className="text-left">
                             <div className="text-xs font-bold text-[var(--municipal-brand)] dark:text-slate-100">{dateLabel(plan.nextMilestoneDate)}</div>
                             <div className="mt-0.5 text-xs text-slate-400">{plan.nextMilestoneDate.slice(0, 4)}</div>
                         </div>
