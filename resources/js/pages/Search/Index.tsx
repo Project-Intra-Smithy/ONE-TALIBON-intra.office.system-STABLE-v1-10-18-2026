@@ -335,7 +335,7 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
                         <section aria-labelledby="archive-activity-heading">
                             <div className="mb-1.5 flex items-center justify-between gap-3">
                                 <h2 id="archive-activity-heading" className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">My archive activity</h2>
-                                <Link href="/documents?mode=files" className="text-[9px] font-semibold text-[var(--municipal-brand)]">Open Document Center →</Link>
+                                <Link href="/documents" className="text-[9px] font-semibold text-[var(--municipal-brand)]">Open Document Center →</Link>
                             </div>
 
                             <div className="grid gap-2 lg:grid-cols-2">

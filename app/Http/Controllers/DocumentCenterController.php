@@ -19,7 +19,7 @@ final class DocumentCenterController extends Controller
 
         return Inertia::render('Documents/Index', [
             ...$records->workspace($request->user(), $filters),
-            'mode' => (string) ($filters['mode'] ?? 'files'),
+            'mode' => (string) ($filters['mode'] ?? 'records'),
             'archive' => $archive->workspace($request->user(), $filters),
         ]);
     }

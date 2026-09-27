@@ -53,24 +53,24 @@ export default function DocumentCenter({ records, filters, filterOptions, mode, 
 
     return <AppLayout title="Document Center"><PageFrame width="wide" density="compact">
         <PageHeader
-            eyebrow="Municipal document archive"
+            eyebrow="Organized municipal records"
             title="Document Center"
-            description="Protected files, archive metadata and authorized municipal record references."
-            icon={FileArchive}
+            description="Browse authorized municipal records by category, office, status and date. Attached files remain available as a secondary archive."
+            icon={LibraryBig}
         />
 
         <nav className="municipal-panel flex w-fit items-center gap-1 p-1" aria-label="Document Center mode">
             <Link
-                href="/documents?mode=files"
-                className={`inline-flex min-h-9 items-center gap-1.5 rounded-md px-3 text-xs font-bold ${mode === 'files' ? 'bg-[var(--municipal-brand)] text-white' : 'text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
-            >
-                <FileArchive size={14} aria-hidden="true" /> Files
-            </Link>
-            <Link
                 href="/documents?mode=records"
                 className={`inline-flex min-h-9 items-center gap-1.5 rounded-md px-3 text-xs font-bold ${mode === 'records' ? 'bg-[var(--municipal-brand)] text-white' : 'text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
             >
-                <LibraryBig size={14} aria-hidden="true" /> Records
+                <LibraryBig size={14} aria-hidden="true" /> Archive Overview
+            </Link>
+            <Link
+                href="/documents?mode=files"
+                className={`inline-flex min-h-9 items-center gap-1.5 rounded-md px-3 text-xs font-bold ${mode === 'files' ? 'bg-[var(--municipal-brand)] text-white' : 'text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
+            >
+                <FileArchive size={14} aria-hidden="true" /> Attached Files
             </Link>
         </nav>
 
