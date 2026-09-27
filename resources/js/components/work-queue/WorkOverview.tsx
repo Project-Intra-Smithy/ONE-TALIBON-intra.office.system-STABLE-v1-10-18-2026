@@ -47,21 +47,21 @@ const personalCards: CardDefinition[] = [
     { key: 'due_soon', label: 'Due Soon', detail: 'Approaching deadline', icon: Clock3, tone: 'amber' },
     { key: 'overdue', label: 'Overdue', detail: 'Past deadline', icon: AlertTriangle, tone: 'red' },
     { key: 'my_requests', label: 'My Requests', detail: 'Work you initiated', icon: Send, tone: 'violet' },
-    { key: 'waiting_on_others', label: 'Waiting on Others', detail: 'Your requests outside your office', icon: TimerReset, tone: 'cyan' },
+    { key: 'waiting_on_others', label: 'Waiting on Others', detail: 'Requests outside your office', icon: TimerReset, tone: 'cyan' },
     { key: 'recently_completed', label: 'Completed', detail: 'Recently completed work', icon: CheckCircle2, tone: 'slate' },
 ];
 
 const officeCards: CardDefinition[] = [
-    { key: 'office_queue', label: 'Incoming Office Work', detail: 'Work currently routed here', icon: Inbox, tone: 'teal' },
-    { key: 'unassigned', label: 'Unassigned', detail: 'Office work without an owner', icon: UsersRound, tone: 'amber' },
+    { key: 'office_queue', label: 'Incoming Office Work', detail: 'Work routed here', icon: Inbox, tone: 'teal' },
+    { key: 'unassigned', label: 'Unassigned', detail: 'No office owner yet', icon: UsersRound, tone: 'amber' },
     { key: 'staff_workload', label: 'Staff Workload', detail: 'Distribution across staff', icon: UsersRound, tone: 'blue' },
-    { key: 'escalations', label: 'Escalations', detail: 'Urgent or overdue office work', icon: AlertTriangle, tone: 'red' },
+    { key: 'escalations', label: 'Escalations', detail: 'Urgent or overdue', icon: AlertTriangle, tone: 'red' },
 ];
 
 const executiveCards: CardDefinition[] = [
     { key: 'needs_my_action', label: 'For Approval', detail: 'Executive decisions required', icon: UserCheck, tone: 'green' },
-    { key: 'due_soon', label: 'Due Soon', detail: 'Municipal work nearing deadline', icon: Clock3, tone: 'amber' },
-    { key: 'overdue', label: 'Overdue', detail: 'Municipal work past deadline', icon: AlertTriangle, tone: 'red' },
+    { key: 'due_soon', label: 'Due Soon', detail: 'Work nearing deadline', icon: Clock3, tone: 'amber' },
+    { key: 'overdue', label: 'Overdue', detail: 'Work past deadline', icon: AlertTriangle, tone: 'red' },
     { key: 'recently_updated', label: 'Recently Updated', detail: 'Recent municipal movement', icon: TimerReset, tone: 'blue' },
     { key: 'recently_completed', label: 'Completed Decisions', detail: 'Recently completed work', icon: CheckCircle2, tone: 'slate' },
 ];
@@ -87,10 +87,10 @@ function PreviewPanel({ title, subtitle, view, items, onSelect, mode }: {
 }) {
     return (
         <section className="municipal-panel min-w-0 overflow-hidden">
-            <header className="flex min-h-10 items-center justify-between gap-3 border-b border-[var(--municipal-border)] px-3 py-2">
+            <header className="flex min-h-9 items-center justify-between gap-2 border-b border-[var(--municipal-border)] px-2.5 py-1.5">
                 <div className="min-w-0">
-                    <h2 className="text-[13px] font-bold text-[var(--municipal-text)]">{title}</h2>
-                    <p className="text-[10px] text-[var(--municipal-muted)]">{subtitle}</p>
+                    <h2 className="text-xs font-bold leading-4 text-[var(--municipal-text)]">{title}</h2>
+                    <p className="truncate text-[9px] leading-3.5 text-[var(--municipal-muted)]">{subtitle}</p>
                 </div>
                 <button type="button" onClick={() => onSelect(view)} className="shrink-0 text-[10px] font-bold text-[var(--municipal-brand)]">View all</button>
             </header>
@@ -98,21 +98,21 @@ function PreviewPanel({ title, subtitle, view, items, onSelect, mode }: {
                 {items.map((item) => {
                     const Icon = mode === 'action' ? UserCheck : mode === 'office' ? Inbox : Send;
                     return (
-                        <Link key={item.id} href={`/transactions/${item.id}`} className="flex min-h-12 items-center gap-2.5 px-3 py-2 hover:bg-[var(--municipal-hover)]">
-                            <Icon size={15} className="shrink-0 text-[var(--municipal-brand)]" aria-hidden="true" />
+                        <Link key={item.id} href={`/transactions/${item.id}`} className="flex min-h-10 items-center gap-2 px-2.5 py-1.5 hover:bg-[var(--municipal-hover)]">
+                            <Icon size={14} className="shrink-0 text-[var(--municipal-brand)]" aria-hidden="true" />
                             <div className="min-w-0 flex-1">
-                                <div className="truncate text-xs font-semibold text-[var(--municipal-text)]">{item.title}</div>
-                                <div className="mt-0.5 truncate text-[10px] text-[var(--municipal-muted)]">
+                                <div className="truncate text-[11px] font-semibold leading-4 text-[var(--municipal-text)]">{item.title}</div>
+                                <div className="truncate text-[9px] leading-3.5 text-[var(--municipal-muted)]">
                                     {item.reference} · {humanizeWorkValue(item.status)}
                                     {mode === 'tracking' && item.currentOffice ? ` · Waiting: ${item.currentOffice.shortName || item.currentOffice.name}` : ''}
                                     {mode === 'office' && item.assignedEmployee ? ` · ${item.assignedEmployee.name}` : ''}
                                 </div>
                             </div>
-                            <ArrowRight size={13} className="shrink-0 text-[var(--municipal-muted)]" aria-hidden="true" />
+                            <ArrowRight size={12} className="shrink-0 text-[var(--municipal-muted)]" aria-hidden="true" />
                         </Link>
                     );
                 })}
-                {!items.length && <p className="px-3 py-4 text-xs text-[var(--municipal-muted)]">Nothing in this view right now.</p>}
+                {!items.length && <p className="px-2.5 py-3 text-[10px] text-[var(--municipal-muted)]">Nothing in this view right now.</p>}
             </div>
         </section>
     );
@@ -158,13 +158,13 @@ export default function WorkOverview({ profile, groups, overview, onSelect }: Pr
                 ] as const;
 
     return (
-        <div className="space-y-3">
+        <div className="space-y-2.5">
             <section aria-labelledby="task-overview-cards">
-                <div className="mb-1.5 flex items-center justify-between gap-3">
-                    <h2 id="task-overview-cards" className="text-xs font-bold uppercase tracking-wide text-[var(--municipal-muted)]">At a glance</h2>
-                    <span className="text-[10px] text-[var(--municipal-muted)]">Select a card to open the full queue</span>
+                <div className="mb-1 flex items-center justify-between gap-3">
+                    <h2 id="task-overview-cards" className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">At a glance</h2>
+                    <span className="text-[9px] text-[var(--municipal-muted)]">Select a card to open the full queue</span>
                 </div>
-                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+                <div className="grid gap-1.5 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
                     {cards.map((card) => {
                         const Icon = card.icon;
                         return (
@@ -172,21 +172,21 @@ export default function WorkOverview({ profile, groups, overview, onSelect }: Pr
                                 key={card.key}
                                 type="button"
                                 onClick={() => onSelect(card.key)}
-                                className={`min-h-[92px] rounded-lg border p-3 text-left transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] ${toneClasses[card.tone]}`}
+                                className={`min-h-[74px] rounded-lg border p-2.5 text-left transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] ${toneClasses[card.tone]}`}
                             >
                                 <div className="flex items-start justify-between gap-2">
-                                    <Icon size={19} aria-hidden="true" />
-                                    <strong className="text-xl leading-none">{counts.get(card.key) ?? 0}</strong>
+                                    <Icon size={16} aria-hidden="true" />
+                                    <strong className="text-lg leading-none">{counts.get(card.key) ?? 0}</strong>
                                 </div>
-                                <div className="mt-2 text-xs font-bold leading-4">{card.label}</div>
-                                <div className="mt-0.5 text-[10px] leading-4 opacity-80">{card.detail}</div>
+                                <div className="mt-1.5 truncate text-[11px] font-bold leading-4">{card.label}</div>
+                                <div className="truncate text-[9px] leading-3.5 opacity-80">{card.detail}</div>
                             </button>
                         );
                     })}
                 </div>
             </section>
 
-            <section className="grid min-w-0 gap-3 lg:grid-cols-2" aria-label="Task overview">
+            <section className="grid min-w-0 gap-2 lg:grid-cols-2" aria-label="Task overview">
                 {panels.map(([title, subtitle, view, mode]) => (
                     <PreviewPanel
                         key={view}
