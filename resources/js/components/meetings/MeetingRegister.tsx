@@ -8,37 +8,32 @@ const statusClass: Record<MunicipalMeeting['status'], string> = {
 };
 
 export default function MeetingRegister({ meetings }: { meetings: MunicipalMeeting[] }) {
-    if (!meetings.length) return <div className="employee-empty-state employee-body-text border-y border-slate-200 text-slate-500 dark:border-slate-700 dark:text-slate-400">No meetings match the current filters.</div>;
+    if (!meetings.length) return <div className="municipal-panel border-dashed p-6 text-center text-sm text-[var(--municipal-muted)]">No meetings match the current filters.</div>;
 
-    return <div className="divide-y divide-slate-200 border-y border-slate-200 dark:divide-slate-700 dark:border-slate-700">
-        {meetings.map((meeting) => <article key={meeting.id} className="employee-record-row">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+    return <div className="municipal-panel divide-y divide-[var(--municipal-border)] overflow-hidden">
+        {meetings.map((meeting) => <details key={meeting.id} className="group">
+            <summary className="flex min-h-[52px] cursor-pointer list-none items-start justify-between gap-3 px-3 py-2 marker:hidden hover:bg-[var(--municipal-hover)]">
                 <div className="min-w-0">
-                    <div className="employee-metadata employee-tone-info font-bold">{meeting.id} · {meeting.organizingOffice}</div>
-                    <h2 className="employee-record-title mt-0.5 text-slate-950 dark:text-slate-100">{meeting.title}</h2>
+                    <div className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-brand)]">{meeting.id} · {meeting.organizingOffice}</div>
+                    <h2 className="mt-0.5 break-words text-[13px] font-semibold leading-5">{meeting.title}</h2>
+                    <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-[var(--municipal-muted)]"><span className="flex items-center gap-1"><CalendarDays size={12}/>{meeting.date} · {meeting.time}</span><span className="flex items-center gap-1"><MapPin size={12}/>{meeting.venue}</span></div>
                 </div>
-                <span className={`employee-metadata shrink-0 font-semibold ${statusClass[meeting.status]}`}>{meeting.status}</span>
-            </div>
-            <div className="employee-metadata mt-2 grid gap-2 text-slate-600 dark:text-slate-300 sm:grid-cols-2">
-                <div className="flex items-center gap-2"><CalendarDays size={14} className="shrink-0 text-slate-400" aria-hidden="true" />{meeting.date} · {meeting.time}</div>
-                <div className="flex items-center gap-2"><MapPin size={14} className="shrink-0 text-slate-400" aria-hidden="true" />{meeting.venue}</div>
-            </div>
-            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                <span className={`shrink-0 text-[11px] font-semibold ${statusClass[meeting.status]}`}>{meeting.status}</span>
+            </summary>
+            <div className="grid gap-3 border-t border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] p-3 sm:grid-cols-2">
                 <div>
-                    <div className="employee-functional-label flex items-center gap-1 text-slate-500 dark:text-slate-400"><UsersRound size={12} aria-hidden="true" /> Participants</div>
-                    <div className="employee-supporting-text mt-1 text-slate-600 dark:text-slate-300">{meeting.participants.join(' · ')}</div>
+                    <div className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]"><UsersRound size={12}/> Participants</div>
+                    <div className="mt-1 text-xs leading-5">{meeting.participants.join(' · ')}</div>
                 </div>
                 <div>
-                    <div className="employee-functional-label flex items-center gap-1 text-slate-500 dark:text-slate-400"><FileText size={12} aria-hidden="true" /> Related documents</div>
-                    <div className="employee-supporting-text mt-1 text-slate-600 dark:text-slate-300">{meeting.relatedDocuments.join(' · ')}</div>
+                    <div className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]"><FileText size={12}/> Related documents</div>
+                    <div className="mt-1 text-xs leading-5">{meeting.relatedDocuments.join(' · ')}</div>
+                </div>
+                <div className="sm:col-span-2">
+                    <div className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Agenda</div>
+                    <ol className="mt-1 grid gap-1 text-xs leading-5 sm:grid-cols-2">{meeting.agenda.map((item, index) => <li key={item}>{index + 1}. {item}</li>)}</ol>
                 </div>
             </div>
-            <div className="mt-3 border-t border-slate-100 pt-2.5 dark:border-slate-700">
-                <div className="employee-functional-label text-slate-500 dark:text-slate-400">Agenda</div>
-                <ol className="employee-supporting-text mt-1 space-y-1 text-slate-600 dark:text-slate-300">
-                    {meeting.agenda.map((item, index) => <li key={item}>{index + 1}. {item}</li>)}
-                </ol>
-            </div>
-        </article>)}
+        </details>)}
     </div>;
 }
