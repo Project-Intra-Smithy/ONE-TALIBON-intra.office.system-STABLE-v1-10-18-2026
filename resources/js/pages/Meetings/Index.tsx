@@ -120,7 +120,7 @@ export default function Index() {
                         <section aria-labelledby="meetings-glance">
                             <div className="mb-1 flex items-center justify-between gap-3">
                                 <h2 id="meetings-glance" className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">At a glance</h2>
-                                <span className="text-[9px] text-[var(--municipal-muted)]">{municipalMeetings.length} prototype meeting references</span>
+                                <span className="text-[9px] text-[var(--municipal-muted)]">{municipalMeetings.length} meeting records</span>
                             </div>
 
                             <div className="grid gap-1.5 sm:grid-cols-2 xl:grid-cols-5">
@@ -142,7 +142,7 @@ export default function Index() {
                                 <button type="button" onClick={() => openView('completed')} className="min-h-[76px] rounded-lg border border-[#cfe6d5] bg-[#eef8f1] p-2.5 text-left text-[#17633f] transition hover:-translate-y-px">
                                     <div className="flex items-start justify-between gap-2"><CheckCircle2 size={16} /><strong className="text-lg leading-none">{counts.completed}</strong></div>
                                     <div className="mt-1.5 text-[11px] font-bold">Completed</div>
-                                    <div className="text-[9px] opacity-80">Completed meeting references</div>
+                                    <div className="text-[9px] opacity-80">Completed meeting records</div>
                                 </button>
                                 <button type="button" onClick={() => openView('rescheduled')} className="min-h-[76px] rounded-lg border border-[#f0dfb4] bg-[#fff8e8] p-2.5 text-left text-[#9a6a08] transition hover:-translate-y-px">
                                     <div className="flex items-start justify-between gap-2"><RefreshCw size={16} /><strong className="text-lg leading-none">{counts.rescheduled}</strong></div>
@@ -152,16 +152,16 @@ export default function Index() {
                             </div>
                         </section>
 
-                        <section className="grid min-w-0 gap-2 lg:grid-cols-[1.15fr_.85fr]" aria-label="Meeting overview">
+                        <section className="grid min-w-0 items-start gap-2 lg:grid-cols-[1.15fr_.85fr]" aria-label="Meeting overview">
                             <div className="municipal-panel min-w-0 overflow-hidden">
                                 <header className="flex min-h-10 items-center justify-between gap-3 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-3 py-2">
                                     <div className="min-w-0">
                                         <h2 className="text-xs font-bold text-[var(--municipal-text)]">Next Meetings</h2>
-                                        <p className="truncate text-[9px] text-[var(--municipal-muted)]">Upcoming coordination references from today forward</p>
+                                        <p className="truncate text-[9px] text-[var(--municipal-muted)]">Upcoming coordination meetings from today forward</p>
                                     </div>
                                     <button type="button" onClick={() => openView('upcoming')} className="shrink-0 text-[10px] font-bold text-[var(--municipal-brand)]">Browse all</button>
                                 </header>
-                                <MeetingRegister meetings={nextMeetings} onOpen={setSelected} compact />
+                                <MeetingRegister meetings={nextMeetings} onOpen={setSelected} compact preview />
                             </div>
 
                             <div className="municipal-panel min-w-0 overflow-hidden">
@@ -172,7 +172,7 @@ export default function Index() {
                                     </div>
                                     <button type="button" onClick={() => openView('completed')} className="shrink-0 text-[10px] font-bold text-[var(--municipal-brand)]">View all</button>
                                 </header>
-                                <MeetingRegister meetings={recentlyCompleted} onOpen={setSelected} compact />
+                                <MeetingRegister meetings={recentlyCompleted} onOpen={setSelected} compact preview />
                             </div>
                         </section>
                     </div>

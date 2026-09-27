@@ -18,10 +18,12 @@ export default function MeetingRegister({
     meetings,
     onOpen,
     compact = false,
+    preview = false,
 }: {
     meetings: MunicipalMeeting[];
     onOpen: (meeting: MunicipalMeeting) => void;
     compact?: boolean;
+    preview?: boolean;
 }) {
     if (!meetings.length) {
         return <div className={compact ? 'px-3 py-4 text-[10px] text-[var(--municipal-muted)]' : 'municipal-panel border-dashed p-6 text-center text-sm text-[var(--municipal-muted)]'}>No meetings match this view.</div>;
@@ -33,7 +35,7 @@ export default function MeetingRegister({
                 key={meeting.id}
                 type="button"
                 onClick={() => onOpen(meeting)}
-                className={`grid w-full min-w-0 gap-2 text-left transition hover:bg-[var(--municipal-hover)] ${compact ? 'px-3 py-2' : 'px-3 py-2.5'} lg:grid-cols-[110px_minmax(0,1.4fr)_minmax(150px,.7fr)_minmax(150px,.8fr)_110px_28px] lg:items-center`}
+                className={`grid w-full min-w-0 gap-2 text-left transition hover:bg-[var(--municipal-hover)] ${compact ? 'px-3 py-2' : 'px-3 py-2.5'} ${preview ? 'lg:grid-cols-[82px_minmax(0,1fr)_110px_minmax(150px,.8fr)_28px]' : 'lg:grid-cols-[110px_minmax(0,1.4fr)_minmax(150px,.7fr)_minmax(150px,.8fr)_110px_28px]'} lg:items-center`}
             >
                 <div className="min-w-0">
                     <div className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-brand)]">{meeting.id}</div>
@@ -53,9 +55,11 @@ export default function MeetingRegister({
                     <div className="flex items-center gap-1"><MapPin size={11} className="shrink-0" /><span className="truncate">{meeting.venue}</span></div>
                 </div>
 
-                <div>
-                    <span className={'inline-flex whitespace-nowrap rounded-full border px-2 py-1 text-[9px] font-bold uppercase leading-none ' + statusTone[meeting.status]}>{meeting.status}</span>
-                </div>
+                {!preview ? (
+                    <div>
+                        <span className={'inline-flex whitespace-nowrap rounded-full border px-2 py-1 text-[9px] font-bold uppercase leading-none ' + statusTone[meeting.status]}>{meeting.status}</span>
+                    </div>
+                ) : null}
 
                 <ArrowRight size={13} className="justify-self-end text-[var(--municipal-brand)]" aria-hidden="true" />
             </button>
