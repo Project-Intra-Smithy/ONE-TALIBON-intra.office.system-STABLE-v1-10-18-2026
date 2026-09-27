@@ -1,10 +1,10 @@
 import type { ScopeGroup } from './types';
 
 const queueEmphasis: Record<string, string> = {
-    needs_my_action: 'border-l-emerald-700',
-    due_soon: 'border-l-amber-500',
-    overdue: 'border-l-rose-600',
-    escalations: 'border-l-rose-600',
+    needs_my_action: 'border-l-[var(--municipal-success)]',
+    due_soon: 'border-l-[var(--municipal-warning)]',
+    overdue: 'border-l-[var(--municipal-danger)]',
+    escalations: 'border-l-[var(--municipal-danger)]',
 };
 
 export default function WorkScopeTabs({ groups, currentView, onSelect }: {
@@ -13,20 +13,14 @@ export default function WorkScopeTabs({ groups, currentView, onSelect }: {
     onSelect: (view: string) => void;
 }) {
     return (
-        <section
-            className="space-y-2.5 rounded-xl border border-slate-200 bg-white p-2.5 text-slate-900 sm:p-3 dark:bg-[#142236] dark:text-slate-100 dark:border-slate-700"
-            aria-label="Work queues"
-        >
+        <section className="municipal-panel space-y-2 p-2.5" aria-label="Work queues">
             {groups.map((group) => (
                 <div key={group.key}>
-                    <div className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                        {group.label}
-                    </div>
-                    <div className="grid grid-cols-2 gap-1.5 sm:flex sm:flex-wrap" role="group" aria-label={`${group.label} queues`}>
+                    <div className="mb-1 text-[10px] font-bold uppercase tracking-wider text-[var(--municipal-muted)]">{group.label}</div>
+                    <div className="flex flex-wrap gap-1.5" role="group" aria-label={`${group.label} queues`}>
                         {group.views.map((view) => {
                             const active = view.key === currentView;
-                            const emphasis = queueEmphasis[view.key] || 'border-l-slate-300';
-
+                            const emphasis = queueEmphasis[view.key] || 'border-l-[var(--municipal-border-strong)]';
                             return (
                                 <button
                                     key={view.key}
@@ -34,12 +28,10 @@ export default function WorkScopeTabs({ groups, currentView, onSelect }: {
                                     onClick={() => onSelect(view.key)}
                                     aria-pressed={active}
                                     aria-current={active ? 'page' : undefined}
-                                    className={`min-h-11 min-w-0 border border-l-[3px] px-3 py-2 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2 sm:min-w-[132px] sm:flex-1 sm:basis-[132px] sm:max-w-[190px] ${emphasis} ${active ? 'border-emerald-800 bg-emerald-50 text-emerald-950 dark:bg-emerald-950/40' : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50 dark:bg-[#142236] dark:text-slate-300 dark:border-slate-700'}`}
+                                    className={`min-h-11 min-w-[128px] flex-1 basis-[128px] rounded-md border border-l-[3px] px-2.5 py-1.5 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] ${emphasis} ${active ? 'border-[var(--municipal-selected-border)] bg-[var(--municipal-selected-bg)] text-[var(--municipal-text)]' : 'border-[var(--municipal-border)] bg-[var(--municipal-surface)] text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
                                 >
-                                    <div className="text-xs font-bold leading-4 sm:text-xs">{view.label}</div>
-                                    <div className={`mt-0.5 text-xs sm:text-xs ${active ? 'text-emerald-700' : 'text-slate-500 dark:text-slate-400'}`}>
-                                        {view.count} item{view.count === 1 ? '' : 's'}
-                                    </div>
+                                    <div className="text-xs font-bold leading-4">{view.label}</div>
+                                    <div className="mt-0.5 text-[11px] text-[var(--municipal-muted)]">{view.count} item{view.count === 1 ? '' : 's'}</div>
                                 </button>
                             );
                         })}
