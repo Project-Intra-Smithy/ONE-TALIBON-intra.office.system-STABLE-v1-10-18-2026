@@ -35,7 +35,7 @@ export default function MeetingRegister({
                 key={meeting.id}
                 type="button"
                 onClick={() => onOpen(meeting)}
-                className={`grid w-full min-w-0 gap-2 text-left transition hover:bg-[var(--municipal-hover)] ${compact ? 'px-3 py-2' : 'px-3 py-2.5'} ${preview ? 'lg:grid-cols-[82px_minmax(0,1fr)_110px_minmax(150px,.8fr)_28px]' : 'lg:grid-cols-[110px_minmax(0,1.4fr)_minmax(150px,.7fr)_minmax(150px,.8fr)_110px_28px]'} lg:items-center`}
+                className={`grid w-full min-w-0 gap-2 text-left transition hover:bg-[var(--municipal-hover)] ${compact ? 'px-3 py-1.5' : 'px-3 py-2'} ${preview ? 'lg:grid-cols-[82px_minmax(0,1fr)_96px_minmax(150px,.8fr)_24px]' : 'lg:grid-cols-[92px_minmax(260px,1.6fr)_84px_minmax(180px,.9fr)_96px_24px]'} lg:items-center`}
             >
                 <div className="min-w-0">
                     <div className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-brand)]">{meeting.id}</div>
@@ -43,8 +43,8 @@ export default function MeetingRegister({
                 </div>
 
                 <div className="min-w-0">
-                    <div className="truncate text-[11px] font-semibold leading-4 text-[var(--municipal-text)]">{meeting.title}</div>
-                    <div className="mt-0.5 truncate text-[9px] text-[var(--municipal-muted)]">{meeting.organizingOffice}</div>
+                    <div className={`${preview ? 'truncate' : 'whitespace-normal'} text-[11px] font-semibold leading-4 text-[var(--municipal-text)]`}>{meeting.title}</div>
+                    <div className={`mt-0.5 ${preview ? 'truncate' : 'whitespace-normal'} text-[9px] leading-3.5 text-[var(--municipal-muted)]`}>{meeting.organizingOffice}</div>
                 </div>
 
                 <div className="min-w-0 text-[10px] text-[var(--municipal-text)]">
@@ -52,7 +52,7 @@ export default function MeetingRegister({
                 </div>
 
                 <div className="min-w-0 text-[10px] text-[var(--municipal-muted)]">
-                    <div className="flex items-center gap-1"><MapPin size={11} className="shrink-0" /><span className="truncate">{meeting.venue}</span></div>
+                    <div className="flex items-start gap-1"><MapPin size={11} className="mt-0.5 shrink-0" /><span className={preview ? 'truncate' : 'whitespace-normal leading-4'}>{meeting.venue}</span></div>
                 </div>
 
                 {!preview ? (
