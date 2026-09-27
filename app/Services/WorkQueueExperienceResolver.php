@@ -6,14 +6,17 @@ use App\Models\User;
 
 final class WorkQueueExperienceResolver
 {
-    private const PERSONAL_VIEWS = [
+    private const TASK_VIEWS = [
         'needs_my_action' => 'Needs My Action',
         'assigned_to_me' => 'Assigned to Me',
         'due_soon' => 'Due Soon',
         'overdue' => 'Overdue',
+        'recently_completed' => 'Completed',
+    ];
+
+    private const REQUEST_VIEWS = [
         'my_requests' => 'My Requests',
         'waiting_on_others' => 'Waiting on Others',
-        'recently_completed' => 'Completed',
     ];
 
     private const OFFICE_VIEWS = [
@@ -50,31 +53,43 @@ final class WorkQueueExperienceResolver
         $groups = match ($dashboard['key']) {
             'department_head' => [
                 [
-                    'key' => 'personal',
-                    'label' => 'Personal',
-                    'views' => $this->definitions(self::PERSONAL_VIEWS, 'personal'),
+                    'key' => 'tasks',
+                    'label' => 'My Tasks',
+                    'views' => $this->definitions(self::TASK_VIEWS, 'personal'),
+                ],
+                [
+                    'key' => 'requests',
+                    'label' => 'My Requests',
+                    'views' => $this->definitions(self::REQUEST_VIEWS, 'personal'),
                 ],
                 [
                     'key' => 'office',
-                    'label' => 'Office',
+                    'label' => 'Office Work',
                     'views' => $this->definitions(self::OFFICE_VIEWS, 'office'),
                 ],
             ],
             'executive_oversight' => [[
                 'key' => 'executive',
-                'label' => 'Executive',
+                'label' => 'Executive Work',
                 'views' => $this->definitions(self::EXECUTIVE_VIEWS, 'municipal'),
             ]],
             'system_administration' => [[
                 'key' => 'system',
-                'label' => 'Administration',
+                'label' => 'Administrative Work',
                 'views' => $this->definitions(self::SYSTEM_VIEWS, 'municipal'),
             ]],
-            default => [[
-                'key' => 'personal',
-                'label' => 'Personal',
-                'views' => $this->definitions(self::PERSONAL_VIEWS, 'personal'),
-            ]],
+            default => [
+                [
+                    'key' => 'tasks',
+                    'label' => 'My Tasks',
+                    'views' => $this->definitions(self::TASK_VIEWS, 'personal'),
+                ],
+                [
+                    'key' => 'requests',
+                    'label' => 'My Requests',
+                    'views' => $this->definitions(self::REQUEST_VIEWS, 'personal'),
+                ],
+            ],
         };
 
         $visibleViews = collect($groups)->pluck('views')->flatten(1)->pluck('key')->all();

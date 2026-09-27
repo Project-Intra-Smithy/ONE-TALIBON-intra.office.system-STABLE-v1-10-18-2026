@@ -131,7 +131,9 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
                     aside={<Link href="/transactions/create" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-[var(--municipal-brand-deep)] px-3.5 text-xs font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]"><Plus size={15} /> New Request</Link>}
                 />
 
-                <WorkScopeTabs groups={scopeGroups} currentView={currentView} onSelect={selectView} />
+                {currentView !== 'overview' ? (
+                    <WorkScopeTabs groups={scopeGroups} currentView={currentView} onSelect={selectView} />
+                ) : null}
 
                 {currentView === 'overview' ? (
                     <WorkOverview profile={experience.profile} groups={scopeGroups} overview={overview} onSelect={openOverviewQueue} />

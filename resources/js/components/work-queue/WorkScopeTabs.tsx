@@ -1,4 +1,4 @@
-import { LayoutDashboard } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 import type { ScopeGroup } from './types';
 
 export default function WorkScopeTabs({ groups, currentView, onSelect }: {
@@ -6,38 +6,56 @@ export default function WorkScopeTabs({ groups, currentView, onSelect }: {
     currentView: string;
     onSelect: (view: string) => void;
 }) {
+    if (currentView === 'overview') return null;
+
+    const currentGroup = groups.find((group) => group.views.some((view) => view.key === currentView));
+    const current = currentGroup?.views.find((view) => view.key === currentView);
+
     return (
-        <nav className="municipal-panel flex min-w-0 items-center gap-1.5 overflow-x-auto p-1.5" aria-label="Task workspace views">
+        <nav
+            className="municipal-panel flex min-w-0 flex-wrap items-center gap-2 px-2.5 py-1.5"
+            aria-label="Task workspace navigation"
+        >
             <button
                 type="button"
                 onClick={() => onSelect('overview')}
-                aria-current={currentView === 'overview' ? 'page' : undefined}
-                className={`inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-md px-2.5 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] ${currentView === 'overview' ? 'bg-[var(--municipal-brand)] text-white' : 'text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]'}`}
+                className="inline-flex min-h-9 shrink-0 items-center gap-1 rounded-md px-2 text-[11px] font-bold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]"
             >
-                <LayoutDashboard size={13} aria-hidden="true" />
+                <ChevronLeft size={13} aria-hidden="true" />
                 Overview
             </button>
 
-            {groups.map((group) => (
-                <div key={group.key} className="flex shrink-0 items-center gap-1 border-l border-[var(--municipal-border)] pl-1.5">
-                    <span className="px-1 text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">{group.label}</span>
-                    {group.views.map((view) => {
-                        const active = view.key === currentView;
-                        return (
-                            <button
-                                key={view.key}
-                                type="button"
-                                onClick={() => onSelect(view.key)}
-                                aria-current={active ? 'page' : undefined}
-                                className={`inline-flex min-h-9 shrink-0 items-center gap-1 rounded-md px-2 text-[11px] font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] ${active ? 'bg-[var(--municipal-selected-bg)] text-[var(--municipal-brand)] ring-1 ring-inset ring-[var(--municipal-selected-border)]' : 'text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
-                            >
-                                <span>{view.label}</span>
-                                <span className={`rounded-full px-1.5 py-0.5 text-[9px] leading-none ${active ? 'bg-white/70' : 'bg-[var(--municipal-surface-subtle)] text-[var(--municipal-muted)]'}`}>{view.count}</span>
-                            </button>
-                        );
-                    })}
-                </div>
-            ))}
+            <span className="text-[10px] text-[var(--municipal-border-strong)]" aria-hidden="true">/</span>
+            <span className="shrink-0 text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">
+                {currentGroup?.label || 'Work'}
+            </span>
+            <span className="text-[10px] text-[var(--municipal-border-strong)]" aria-hidden="true">/</span>
+
+            <label className="min-w-[180px] flex-1 sm:max-w-[320px]">
+                <span className="sr-only">Switch task view</span>
+                <select
+                    value={currentView}
+                    onChange={(event) => onSelect(event.target.value)}
+                    className="min-h-9 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2.5 text-[11px] font-semibold text-[var(--municipal-text)] outline-none focus:border-[var(--municipal-focus)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20"
+                    aria-label="Switch task view"
+                >
+                    {groups.map((group) => (
+                        <optgroup key={group.key} label={group.label}>
+                            {group.views.map((view) => (
+                                <option key={view.key} value={view.key}>
+                                    {view.label} ({view.count})
+                                </option>
+                            ))}
+                        </optgroup>
+                    ))}
+                </select>
+            </label>
+
+            {current ? (
+                <span className="ml-auto text-[10px] text-[var(--municipal-muted)]">
+                    <strong className="text-[var(--municipal-text)]">{current.count}</strong> item{current.count === 1 ? '' : 's'}
+                </span>
+            ) : null}
         </nav>
     );
 }
