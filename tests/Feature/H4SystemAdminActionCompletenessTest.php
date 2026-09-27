@@ -219,7 +219,7 @@ class H4SystemAdminActionCompletenessTest extends TestCase
 
         $this->actingAs($admin)
             ->post('/memoranda', $deniedPayload)
-            ->assertSessionHasErrors('issuer');
+            ->assertForbidden();
 
         $this->assertDatabaseMissing('memoranda', [
             'title' => 'Denied system administration publication',
@@ -265,7 +265,7 @@ class H4SystemAdminActionCompletenessTest extends TestCase
                 'memo_number' => 'H4-EMP-DENIED-'.Str::upper(Str::random(10)),
                 'title' => 'Denied ordinary employee publication',
             ])
-            ->assertSessionHasErrors('issuer');
+            ->assertForbidden();
     }
 
     public function test_h4_preserves_restricted_confidential_health_and_mfa_boundaries(): void
