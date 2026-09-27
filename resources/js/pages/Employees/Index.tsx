@@ -108,14 +108,14 @@ export default function EmployeeDirectory({ employees, departments, filters, sum
                     {summaryItems.map(({ label, key, icon: Icon, surface, iconSurface }) => (
                         <div
                             key={label}
-                            className={`flex min-h-[52px] min-w-0 items-center gap-2.5 rounded-xl border border-white/70 px-3 py-2 shadow-sm shadow-slate-900/[0.025] ${surface}`}
+                            className={`flex min-h-[48px] min-w-0 items-center gap-2.5 rounded-lg border border-current/10 px-3 py-2 ${surface}`}
                         >
-                            <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${iconSurface}`}>
+                            <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md ${iconSurface}`}>
                                 <Icon size={16} aria-hidden="true" />
                             </span>
                             <div className="min-w-0">
-                                <div className="text-lg font-extrabold leading-none tabular-nums">{summary[key]}</div>
-                                <div className="mt-1 truncate text-[10px] font-bold uppercase tracking-[0.06em] opacity-70">{label}</div>
+                                <div className="text-[17px] font-extrabold leading-none tabular-nums">{summary[key]}</div>
+                                <div className="mt-1 truncate text-[11px] font-semibold leading-none opacity-75">{label}</div>
                             </div>
                         </div>
                     ))}
@@ -227,7 +227,7 @@ export default function EmployeeDirectory({ employees, departments, filters, sum
                                 <col className="w-[11%]" />
                                 <col className="w-[3%]" />
                             </colgroup>
-                            <thead className="sticky top-14 z-10 bg-slate-50/95 text-[10px] uppercase tracking-[0.07em] text-slate-500 backdrop-blur dark:bg-slate-900/95 dark:text-slate-400">
+                            <thead className="bg-slate-50 text-[10px] uppercase tracking-[0.07em] text-slate-500 dark:bg-slate-900/40 dark:text-slate-400">
                                 <tr>
                                     <th className="px-3 py-2.5">Employee</th>
                                     <th className="px-3 py-2.5">Office</th>
