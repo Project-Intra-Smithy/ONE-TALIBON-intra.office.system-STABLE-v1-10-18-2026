@@ -21,11 +21,18 @@ export default function CalendarWorkspace({ events, calendar }: { events: Calend
     };
     const toggle = (bucket: CalendarBucket) => setFilters((current) => ({ ...current, [bucket]: !current[bucket] }));
 
-    return <div className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1fr)_280px]"><div className="h-[640px] sm:h-[720px] min-h-0 overflow-hidden border-y border-[var(--municipal-border)] bg-[var(--municipal-surface)] text-[var(--municipal-text)] sm:mx-auto sm:max-w-[1700px] sm:rounded-xl sm:border sm:shadow-sm">
-        <div className="flex h-full min-h-0 flex-col"><CalendarToolbar calendar={calendar} onNavigate={(date) => navigate(date)} onView={(view) => navigate(calendar.anchor_date, view, true)} onOpenSidebar={() => setSidebarOpen(true)} />
-            <div className="relative flex min-h-0 flex-1"><div className="hidden h-full border-r border-[var(--municipal-border)] 2xl:block"><CalendarSidebar calendar={calendar} events={events} filters={filters} onToggle={toggle} onSelectDate={(date) => navigate(date)} /></div><main className="min-h-0 min-w-0 flex-1 overflow-hidden bg-[var(--municipal-surface)]"><CalendarCanvas events={visibleEvents} calendar={calendar} onDateSelect={(date) => navigate(date)} onEventOpen={(event, origin) => setSelection({ event, origin })} /></main>
-                {sidebarOpen && <div className="absolute inset-0 z-30 flex 2xl:hidden"><button type="button" className="absolute inset-0 bg-slate-950/35" onClick={() => setSidebarOpen(false)} aria-label="Close calendars"/><div className="relative z-10 h-full border-r border-[var(--municipal-border)] shadow-xl"><CalendarSidebar calendar={calendar} events={events} filters={filters} onToggle={toggle} onSelectDate={(date) => navigate(date)} /></div></div>}
+    return <div className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1fr)_260px]">
+        <div className="h-[calc(100vh-230px)] min-h-[520px] max-h-[720px] min-w-0 overflow-hidden rounded-[var(--municipal-radius-surface)] border border-[var(--municipal-border)] bg-[var(--municipal-surface)] text-[var(--municipal-text)]">
+            <div className="flex h-full min-h-0 flex-col">
+                <CalendarToolbar calendar={calendar} onNavigate={(date) => navigate(date)} onView={(view) => navigate(calendar.anchor_date, view, true)} onOpenSidebar={() => setSidebarOpen(true)} />
+                <div className="relative flex min-h-0 flex-1">
+                    <div className="hidden h-full border-r border-[var(--municipal-border)] 2xl:block"><CalendarSidebar calendar={calendar} events={events} filters={filters} onToggle={toggle} onSelectDate={(date) => navigate(date)} /></div>
+                    <main className="min-h-0 min-w-0 flex-1 overflow-hidden bg-[var(--municipal-surface)]"><CalendarCanvas events={visibleEvents} calendar={calendar} onDateSelect={(date) => navigate(date)} onEventOpen={(event, origin) => setSelection({ event, origin })} /></main>
+                    {sidebarOpen && <div className="absolute inset-0 z-30 flex 2xl:hidden"><button type="button" className="absolute inset-0 bg-slate-950/35" onClick={() => setSidebarOpen(false)} aria-label="Close calendars"/><div className="relative z-10 h-full border-r border-[var(--municipal-border)] shadow-xl"><CalendarSidebar calendar={calendar} events={events} filters={filters} onToggle={toggle} onSelectDate={(date) => navigate(date)} /></div></div>}
+                </div>
             </div>
-        </div></div><CalendarAgendaRail events={visibleEvents} calendar={calendar} onEventOpen={(event, origin) => setSelection({ event, origin })} /><CalendarEventPopover event={selection?.event ?? null} origin={selection?.origin ?? null} onClose={() => setSelection(null)} />
+        </div>
+        <CalendarAgendaRail events={visibleEvents} calendar={calendar} onEventOpen={(event, origin) => setSelection({ event, origin })} />
+        <CalendarEventPopover event={selection?.event ?? null} origin={selection?.origin ?? null} onClose={() => setSelection(null)} />
     </div>;
 }
