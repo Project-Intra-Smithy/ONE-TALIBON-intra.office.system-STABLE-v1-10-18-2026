@@ -26,6 +26,7 @@ final class RecordsSearchQuery
     public function workspace(User $actor, array $filters): array
     {
         $actor->loadMissing('employee.department');
+        $view = (string) ($filters['view'] ?? 'overview');
         $recordType = (string) ($filters['record_type'] ?? 'all');
 
         $correspondenceBase = $this->authorizedCorrespondence($actor);
@@ -39,9 +40,30 @@ final class RecordsSearchQuery
         $this->applyTransactionFilters($transactions, $filters);
         $this->applyTravelOrderFilters($travelOrders, $filters);
 
+        $overviewRecent = $this->paginate(
+            'all',
+            clone $correspondenceBase,
+            clone $transactionBase,
+            clone $travelOrderBase,
+            6,
+            1,
+        );
+
         return [
             'records' => $this->paginate($recordType, $correspondence, $transactions, $travelOrders),
+            'overview' => [
+                'counts' => [
+                    'all' => (clone $correspondenceBase)->count()
+                        + (clone $transactionBase)->count()
+                        + (clone $travelOrderBase)->count(),
+                    'correspondence' => (clone $correspondenceBase)->count(),
+                    'transaction' => (clone $transactionBase)->count(),
+                    'travel_order' => (clone $travelOrderBase)->count(),
+                ],
+                'recent' => $overviewRecent->items(),
+            ],
             'filters' => [
+                'view' => $view,
                 'search' => (string) ($filters['search'] ?? ''),
                 'record_type' => $recordType,
                 'state' => (string) ($filters['state'] ?? ''),
@@ -253,6 +275,8 @@ final class RecordsSearchQuery
         Builder $correspondence,
         Builder $transactions,
         Builder $travelOrders,
+        int $perPage = 25,
+        ?int $page = null,
     ): LengthAwarePaginator {
         $sources = [];
 
@@ -283,7 +307,7 @@ final class RecordsSearchQuery
             ->fromSub($union->toBase(), 'records_registry')
             ->orderByDesc('record_date')
             ->orderByDesc('sort_id')
-            ->paginate(25)
+            ->paginate($perPage, ['*'], 'page', $page)
             ->withQueryString();
 
         return $this->presenter->hydratePage($paginator);

@@ -27,7 +27,7 @@ export const portalDestinations: Partial<Record<PortalDestinationKey, PortalDest
     home: { key: 'home', label: 'Home', href: portalRoutePlan.home, icon: LayoutDashboard, group: 'home', readiness: 'wired', permission: 'dashboard' },
     myWork: { key: 'myWork', label: 'Tasks & Assignments', href: portalRoutePlan.myWork, icon: FileText, group: 'work', readiness: 'wired', permission: 'transactions' },
     correspondence: { key: 'correspondence', label: 'Correspondence', href: portalRoutePlan.correspondence, icon: Inbox, group: 'work', readiness: 'wired', permission: 'correspondence' },
-    records: { key: 'records', label: 'Records Register', href: portalRoutePlan.records, icon: FileSearch, group: 'work', readiness: 'wired', permission: 'records' },
+    records: { key: 'records', label: 'Municipal Records', href: portalRoutePlan.records, icon: FileSearch, group: 'work', readiness: 'wired', permission: 'records' },
     memoranda: { key: 'memoranda', label: 'Official Memoranda', href: portalRoutePlan.memoranda, icon: FileText, group: 'work', readiness: 'wired', permission: 'memoranda' },
     announcements: { key: 'announcements', label: 'Announcements', href: portalRoutePlan.announcements, icon: Megaphone, group: 'work', readiness: 'wired' },
     calendar: { key: 'calendar', label: 'Calendar', href: portalRoutePlan.calendar, icon: CalendarDays, group: 'work', readiness: 'wired' },

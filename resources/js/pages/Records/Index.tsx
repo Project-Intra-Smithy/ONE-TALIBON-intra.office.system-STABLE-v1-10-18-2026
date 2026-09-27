@@ -1,6 +1,20 @@
 import { Link, router, usePage } from '@inertiajs/react';
-import { ArrowRight, Building2, CalendarDays, FileSearch, Search, SlidersHorizontal, UserRound, X } from 'lucide-react';
+import {
+    ArrowRight,
+    Building2,
+    CalendarDays,
+    ChevronLeft,
+    FileSearch,
+    Inbox,
+    Landmark,
+    Search,
+    SlidersHorizontal,
+    UserRound,
+    X,
+} from 'lucide-react';
 import { type FormEvent, useEffect, useState } from 'react';
+import PageFrame from '../../components/PageFrame';
+import PageHeader from '../../components/PageHeader';
 import AppLayout from '../../layouts/AppLayout';
 import { withReturnContext } from '../../navigation/returnContext';
 
@@ -16,8 +30,10 @@ type Employee = {
     position?: string | null;
 };
 
+type RecordType = 'correspondence' | 'transaction' | 'travel_order';
+
 type RecordRow = {
-    recordType: 'correspondence' | 'transaction' | 'travel_order';
+    recordType: RecordType;
     reference?: string | null;
     title: string;
     source: string;
@@ -49,6 +65,7 @@ type Option = {
 };
 
 type Filters = {
+    view: 'overview' | 'register';
     search: string;
     record_type: string;
     state: string;
@@ -57,8 +74,19 @@ type Filters = {
     date_to: string;
 };
 
+type Overview = {
+    counts: {
+        all: number;
+        correspondence: number;
+        transaction: number;
+        travel_order: number;
+    };
+    recent: RecordRow[];
+};
+
 type Props = {
     records: Paginator;
+    overview: Overview;
     filters: Filters;
     filterOptions: {
         recordTypes: Option[];
@@ -75,10 +103,10 @@ const formatDate = (value?: string | null) => {
     const date = new Date(value);
     return Number.isNaN(date.getTime())
         ? 'Not recorded'
-        : date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        : date.toLocaleDateString('en-PH', { year: 'numeric', month: 'short', day: 'numeric' });
 };
 
-const recordTypeLabel = (recordType: RecordRow['recordType']) => {
+const recordTypeLabel = (recordType: RecordType) => {
     if (recordType === 'correspondence') return 'Correspondence';
     if (recordType === 'travel_order') return 'Travel Order';
     return 'Transaction';
@@ -86,20 +114,118 @@ const recordTypeLabel = (recordType: RecordRow['recordType']) => {
 
 const officeLabel = (office?: Office | null) => office?.shortName || office?.name || 'Not assigned';
 
-const typeTone: Record<RecordRow['recordType'], string> = {
-    correspondence: 'bg-violet-50 text-violet-800 dark:bg-violet-950/35 dark:text-violet-200',
-    transaction: 'bg-blue-50 text-blue-800 dark:bg-blue-950/35 dark:text-blue-200',
-    travel_order: 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/35 dark:text-emerald-200',
+const typeTone: Record<RecordType, string> = {
+    correspondence: 'bg-[#f5f0ff] text-[#7150a8]',
+    transaction: 'bg-[#eef5ff] text-[#265fa8]',
+    travel_order: 'bg-[#eef8f1] text-[#17633f]',
 };
 
-export default function Index({ records, filters, filterOptions }: Props) {
+const cards = [
+    {
+        key: 'all',
+        label: 'All Records',
+        detail: 'Authorized municipal records',
+        icon: Landmark,
+        tone: 'border-[#cae2d8] bg-[#edf7f3] text-[#1f6b50]',
+    },
+    {
+        key: 'transaction',
+        label: 'Transactions',
+        detail: 'Inter-office workflow records',
+        icon: FileSearch,
+        tone: 'border-[#cfe0f6] bg-[#eef5ff] text-[#265fa8]',
+    },
+    {
+        key: 'correspondence',
+        label: 'Correspondence',
+        detail: 'Official communication records',
+        icon: Inbox,
+        tone: 'border-[#ddd2f3] bg-[#f5f0ff] text-[#7150a8]',
+    },
+    {
+        key: 'travel_order',
+        label: 'Travel Orders',
+        detail: 'Approved travel records',
+        icon: CalendarDays,
+        tone: 'border-[#cfe6d5] bg-[#eef8f1] text-[#17633f]',
+    },
+] as const;
+
+function RecordList({ rows, detailHref }: {
+    rows: RecordRow[];
+    detailHref: (record: RecordRow) => string;
+}) {
+    return (
+        <div className="divide-y divide-[var(--municipal-border)]">
+            {rows.map((record) => (
+                <article key={`${record.recordType}:${record.detailUrl}`} className="px-3 py-2.5 hover:bg-[var(--municipal-hover)]">
+                    <div className="grid min-w-0 gap-2.5 xl:grid-cols-[minmax(260px,1.6fr)_140px_minmax(190px,1fr)_115px_64px] xl:items-center">
+                        <div className="min-w-0">
+                            <Link href={detailHref(record)} className="block truncate text-[10px] font-bold text-[var(--municipal-brand)] hover:underline">
+                                {record.reference || 'Reference pending'}
+                            </Link>
+                            <h3 className="mt-0.5 line-clamp-2 text-[11px] font-semibold leading-4 text-[var(--municipal-text)]">{record.title}</h3>
+                            <div className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5 text-[9px] leading-4 text-[var(--municipal-muted)]">
+                                <span className="truncate">{record.source}</span>
+                                {record.originOffice ? <span className="shrink-0">Origin: {officeLabel(record.originOffice)}</span> : null}
+                            </div>
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-1.5 xl:block">
+                            <span className={`inline-flex rounded-full px-2 py-1 text-[9px] font-bold uppercase tracking-wide ${typeTone[record.recordType]}`}>
+                                {recordTypeLabel(record.recordType)}
+                            </span>
+                            <div className="inline-flex rounded-full border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2 py-1 text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-text)] xl:mt-1.5 xl:flex xl:w-fit">
+                                {humanize(record.state)}
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2 xl:grid-cols-1 xl:gap-1">
+                            <div className="min-w-0">
+                                <div className="text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)] xl:hidden">Current office</div>
+                                <div className="mt-0.5 flex min-w-0 items-start gap-1.5 text-[10px] font-semibold text-[var(--municipal-text)]">
+                                    <Building2 size={11} className="mt-0.5 shrink-0 text-[var(--municipal-muted)]" aria-hidden="true" />
+                                    <span className="truncate">{officeLabel(record.currentOffice)}</span>
+                                </div>
+                            </div>
+                            <div className="min-w-0">
+                                <div className="text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)] xl:hidden">Responsible</div>
+                                <div className="mt-0.5 flex min-w-0 items-start gap-1.5 text-[10px] text-[var(--municipal-muted)]">
+                                    <UserRound size={11} className="mt-0.5 shrink-0" aria-hidden="true" />
+                                    <span className="truncate">{record.recordType === 'travel_order' ? 'Issued personnel on detail' : (record.assignedEmployee?.name || 'Unassigned')}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-1.5 text-[10px] text-[var(--municipal-text)]">
+                            <CalendarDays size={11} className="shrink-0 text-[var(--municipal-muted)]" aria-hidden="true" />
+                            {formatDate(record.recordDate)}
+                        </div>
+
+                        <Link
+                            href={detailHref(record)}
+                            aria-label={`Open record ${record.reference || record.title}`}
+                            className="inline-flex min-h-9 items-center justify-center gap-1 text-[10px] font-bold text-[var(--municipal-brand)] hover:underline xl:justify-self-end"
+                        >
+                            Open <ArrowRight size={12} aria-hidden="true" />
+                        </Link>
+                    </div>
+                </article>
+            ))}
+        </div>
+    );
+}
+
+export default function Index({ records, overview, filters, filterOptions }: Props) {
     const { url } = usePage();
+    const currentView = filters.view || 'overview';
     const [search, setSearch] = useState(filters.search);
     const [recordType, setRecordType] = useState(filters.record_type || 'all');
     const [state, setState] = useState(filters.state);
     const [officeId, setOfficeId] = useState(filters.office_id ? String(filters.office_id) : '');
     const [dateFrom, setDateFrom] = useState(filters.date_from);
     const [dateTo, setDateTo] = useState(filters.date_to);
+    const [moreFilters, setMoreFilters] = useState(Boolean(filters.date_from || filters.date_to));
 
     useEffect(() => {
         setSearch(filters.search);
@@ -108,22 +234,48 @@ export default function Index({ records, filters, filterOptions }: Props) {
         setOfficeId(filters.office_id ? String(filters.office_id) : '');
         setDateFrom(filters.date_from);
         setDateTo(filters.date_to);
+        setMoreFilters(Boolean(filters.date_from || filters.date_to));
     }, [filters.search, filters.record_type, filters.state, filters.office_id, filters.date_from, filters.date_to]);
 
-    const queryData = () => Object.fromEntries(
+    const detailHref = (record: RecordRow) => withReturnContext(record.detailUrl, url, '/records');
+
+    const queryData = (overrides: Record<string, unknown> = {}) => Object.fromEntries(
         Object.entries({
-            search,
+            view: 'register',
+            search: search || undefined,
             record_type: recordType || 'all',
-            state,
-            office_id: officeId ? Number(officeId) : null,
-            date_from: dateFrom,
-            date_to: dateTo,
+            state: state || undefined,
+            office_id: officeId ? Number(officeId) : undefined,
+            date_from: dateFrom || undefined,
+            date_to: dateTo || undefined,
+            ...overrides,
         }).filter(([, value]) => value !== '' && value !== null && value !== undefined),
     );
+
+    const openRegister = (type = 'all') => {
+        router.get('/records', { view: 'register', record_type: type }, {
+            preserveState: true,
+            preserveScroll: true,
+            replace: true,
+        });
+    };
 
     const submit = (event: FormEvent) => {
         event.preventDefault();
         router.get('/records', queryData(), {
+            preserveState: true,
+            preserveScroll: true,
+            replace: true,
+        });
+    };
+
+    const submitOverviewSearch = (event: FormEvent) => {
+        event.preventDefault();
+        router.get('/records', {
+            view: 'register',
+            record_type: 'all',
+            search: search || undefined,
+        }, {
             preserveState: true,
             preserveScroll: true,
             replace: true,
@@ -137,7 +289,8 @@ export default function Index({ records, filters, filterOptions }: Props) {
         setOfficeId('');
         setDateFrom('');
         setDateTo('');
-        router.get('/records', {}, {
+        setMoreFilters(false);
+        router.get('/records', { view: 'register' }, {
             preserveState: true,
             preserveScroll: true,
             replace: true,
@@ -152,154 +305,196 @@ export default function Index({ records, filters, filterOptions }: Props) {
         dateFrom,
         dateTo,
     ].filter(Boolean).length;
-    const hasDateFilter = Boolean(dateFrom || dateTo);
-    const detailHref = (record: RecordRow) => withReturnContext(record.detailUrl, url, '/records');
 
     return (
-        <AppLayout title="Records Register">
-            <div className="mx-auto max-w-7xl space-y-3">
-                <header className="rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-700 dark:bg-[#142236] sm:px-5">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                        <div className="flex min-w-0 items-center gap-3">
-                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-800 dark:bg-blue-950/40 dark:text-blue-300">
-                                <FileSearch size={18} aria-hidden="true" />
+        <AppLayout title="Municipal Records">
+            <PageFrame width="standard" density="compact">
+                <PageHeader
+                    eyebrow="Authorized municipal records"
+                    title="Municipal Records"
+                    description="Find authoritative records across correspondence, inter-office workflows and approved travel orders."
+                    icon={FileSearch}
+                />
+
+                {currentView === 'overview' ? (
+                    <div className="space-y-2.5">
+                        <section aria-labelledby="records-glance">
+                            <div className="mb-1 flex items-center justify-between gap-3">
+                                <h2 id="records-glance" className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">At a glance</h2>
+                                <span className="text-[9px] text-[var(--municipal-muted)]">{overview.counts.all} authorized record{overview.counts.all === 1 ? '' : 's'}</span>
                             </div>
-                            <div className="min-w-0">
-                                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                                    <h1 className="text-lg font-bold text-slate-950 dark:text-slate-100">Records Register</h1>
-                                    <span className="text-[10px] font-bold uppercase tracking-[0.13em] text-blue-700 dark:text-blue-300">Authorized register</span>
+
+                            <div className="grid gap-1.5 sm:grid-cols-2 xl:grid-cols-4">
+                                {cards.map((card) => {
+                                    const Icon = card.icon;
+                                    const count = overview.counts[card.key];
+
+                                    return (
+                                        <button
+                                            key={card.key}
+                                            type="button"
+                                            onClick={() => openRegister(card.key)}
+                                            className={`min-h-[76px] rounded-lg border p-2.5 text-left transition hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] ${card.tone}`}
+                                        >
+                                            <div className="flex items-start justify-between gap-2">
+                                                <Icon size={16} aria-hidden="true" />
+                                                <strong className="text-lg leading-none">{count}</strong>
+                                            </div>
+                                            <div className="mt-1.5 text-[11px] font-bold leading-4">{card.label}</div>
+                                            <div className="text-[9px] leading-3.5 opacity-80">{card.detail}</div>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </section>
+
+                        <section className="municipal-panel overflow-hidden" aria-label="Recent municipal records">
+                            <header className="flex min-h-10 items-center justify-between gap-3 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-3 py-2">
+                                <div>
+                                    <h2 className="text-xs font-bold text-[var(--municipal-text)]">Recent Records</h2>
+                                    <p className="text-[9px] text-[var(--municipal-muted)]">Newest authoritative records visible to your account</p>
                                 </div>
-                                <p className="mt-0.5 max-w-4xl text-xs text-slate-500 dark:text-slate-400">Authoritative individual records across correspondence, workflow transactions, and approved travel orders. Use Operational Reports for generated summaries and exports.</p>
+                                <button type="button" onClick={() => openRegister('all')} className="text-[10px] font-bold text-[var(--municipal-brand)]">Browse all</button>
+                            </header>
+
+                            <div className="hidden grid-cols-[minmax(260px,1.6fr)_140px_minmax(190px,1fr)_115px_64px] gap-3 border-b border-[var(--municipal-border)] px-3 py-2 text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)] xl:grid">
+                                <div>Record</div><div>Type / State</div><div>Responsibility</div><div>Date</div><div />
                             </div>
-                        </div>
-                        <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs text-slate-600 dark:border-slate-700 dark:bg-slate-900/40 dark:text-slate-300">
-                            <span className="font-bold text-slate-950 dark:text-slate-100">{records.total}</span> record{records.total === 1 ? '' : 's'}
-                        </div>
-                    </div>
-                </header>
 
-                <form onSubmit={submit} className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-700 dark:bg-[#142236]">
-                    <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-[minmax(250px,1.35fr)_160px_170px_190px_auto] xl:items-end">
-                        <label className="block md:col-span-2 xl:col-span-1">
-                            <span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-slate-400">Search records</span>
-                            <div className="relative">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={15} aria-hidden="true" />
-                                <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Reference, title, sender, destination, office, employee…" className="h-9 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-3 text-xs text-slate-900 outline-none focus:border-blue-700 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-[#142236] dark:text-slate-100" />
-                            </div>
-                        </label>
+                            <RecordList rows={overview.recent} detailHref={detailHref} />
 
-                        <label className="block">
-                            <span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-slate-400">Type</span>
-                            <select value={recordType} onChange={(event) => { setRecordType(event.target.value); setState(''); }} className="h-9 w-full rounded-lg border border-slate-300 bg-white px-2.5 text-xs text-slate-900 dark:border-slate-700 dark:bg-[#142236] dark:text-slate-100">
-                                {filterOptions.recordTypes.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-                            </select>
-                        </label>
-
-                        <label className="block">
-                            <span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-slate-400">Status / Lifecycle</span>
-                            <select value={state} onChange={(event) => setState(event.target.value)} className="h-9 w-full rounded-lg border border-slate-300 bg-white px-2.5 text-xs text-slate-900 dark:border-slate-700 dark:bg-[#142236] dark:text-slate-100">
-                                <option value="">All states</option>
-                                {filterOptions.states.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-                            </select>
-                        </label>
-
-                        <label className="block">
-                            <span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-slate-400">Current office</span>
-                            <select value={officeId} onChange={(event) => setOfficeId(event.target.value)} className="h-9 w-full rounded-lg border border-slate-300 bg-white px-2.5 text-xs text-slate-900 dark:border-slate-700 dark:bg-[#142236] dark:text-slate-100">
-                                <option value="">All authorized offices</option>
-                                {filterOptions.offices.map((office) => <option key={office.id} value={office.id}>{office.shortName || office.name}</option>)}
-                            </select>
-                        </label>
-
-                        <div className="flex items-end gap-2 md:col-span-2 xl:col-span-1">
-                            <button className="h-9 flex-1 rounded-lg bg-[#0b2852] px-3.5 text-xs font-bold text-white xl:flex-none">Search{activeFilterCount > 0 ? ` · ${activeFilterCount}` : ''}</button>
-                            <button type="button" onClick={clearFilters} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:bg-[#142236] dark:text-slate-400" aria-label="Clear records filters"><X size={15} /></button>
-                        </div>
-                    </div>
-
-                    <details className="group mt-2 border-t border-slate-100 pt-2 dark:border-slate-700" open={hasDateFilter || undefined}>
-                        <summary className="flex w-fit cursor-pointer list-none items-center gap-1.5 rounded-md px-1 py-1 text-[11px] font-semibold text-slate-600 hover:text-blue-800 dark:text-slate-300 dark:hover:text-blue-300">
-                            <SlidersHorizontal size={13} aria-hidden="true" /> Date range
-                            {hasDateFilter ? <span className="rounded-full bg-blue-50 px-1.5 py-0.5 text-[9px] font-bold uppercase text-blue-800 dark:bg-blue-950/40 dark:text-blue-200">active</span> : null}
-                            <span className="text-slate-400 group-open:hidden">+</span><span className="hidden text-slate-400 group-open:inline">−</span>
-                        </summary>
-                        <div className="mt-2 grid gap-2 sm:max-w-xl sm:grid-cols-2">
-                            <label><span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-slate-400">From</span><input type="date" value={dateFrom} onChange={(event) => setDateFrom(event.target.value)} className="h-9 w-full rounded-lg border border-slate-300 bg-white px-2.5 text-xs text-slate-900 dark:border-slate-700 dark:bg-[#142236] dark:text-slate-100" /></label>
-                            <label><span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-slate-400">To</span><input type="date" value={dateTo} onChange={(event) => setDateTo(event.target.value)} className="h-9 w-full rounded-lg border border-slate-300 bg-white px-2.5 text-xs text-slate-900 dark:border-slate-700 dark:bg-[#142236] dark:text-slate-100" /></label>
-                        </div>
-                    </details>
-                </form>
-
-                <section aria-label="Records Register" className="overflow-hidden rounded-xl border border-slate-200 bg-white text-slate-900 shadow-sm dark:border-slate-700 dark:bg-[#142236] dark:text-slate-100">
-                    <div className="flex flex-col gap-1 border-b border-slate-100 bg-slate-50 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between sm:px-4 dark:border-slate-700 dark:bg-slate-900/40">
-                        <div className="flex items-center gap-2 text-xs font-bold text-slate-800 dark:text-slate-100"><FileSearch size={14} aria-hidden="true" /> Records Register</div>
-                        <div className="text-[11px] text-slate-500 dark:text-slate-400">{records.total === 0 ? 'No matching records' : `Showing ${records.from || 1}–${records.to || records.data.length} of ${records.total}`}</div>
-                    </div>
-
-                    <div className="hidden grid-cols-[minmax(260px,1.6fr)_150px_minmax(200px,1fr)_125px_76px] gap-3 border-b border-slate-100 px-4 py-2 text-[9px] font-bold uppercase tracking-[0.12em] text-slate-400 lg:grid dark:border-slate-700">
-                        <div>Record</div><div>Type / State</div><div>Responsibility</div><div>Date</div><div />
-                    </div>
-
-                    <div className="divide-y divide-slate-100 dark:divide-slate-700">
-                        {records.data.map((record) => (
-                            <article key={`${record.recordType}:${record.detailUrl}`} className="px-3 py-3 sm:px-4">
-                                <div className="grid min-w-0 gap-3 lg:grid-cols-[minmax(260px,1.6fr)_150px_minmax(200px,1fr)_125px_76px] lg:items-center">
-                                    <div className="min-w-0">
-                                        <Link href={detailHref(record)} className="block truncate text-xs font-bold text-blue-700 hover:underline dark:text-blue-300">{record.reference || 'Reference pending'}</Link>
-                                        <h2 className="mt-0.5 line-clamp-2 text-xs font-semibold leading-4 text-slate-950 dark:text-slate-100 sm:text-[13px]">{record.title}</h2>
-                                        <div className="mt-1 flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] leading-4 text-slate-500 dark:text-slate-400">
-                                            <span className="truncate">{record.source}</span>
-                                            {record.originOffice ? <span className="shrink-0">Origin: {officeLabel(record.originOffice)}</span> : null}
-                                        </div>
-                                    </div>
-
-                                    <div className="flex flex-wrap items-center gap-1.5 lg:block">
-                                        <span className={`inline-flex rounded-full px-2 py-1 text-[9px] font-bold uppercase tracking-wide ${typeTone[record.recordType]}`}>{recordTypeLabel(record.recordType)}</span>
-                                        <div className="inline-flex rounded-full border border-slate-200 bg-white px-2 py-1 text-[9px] font-bold uppercase tracking-wide text-slate-600 lg:mt-1.5 lg:flex lg:w-fit dark:border-slate-700 dark:bg-[#142236] dark:text-slate-300">{humanize(record.state)}</div>
-                                        {record.classification ? <div className="text-[9px] font-semibold uppercase tracking-wide text-slate-400 lg:mt-1">{humanize(record.classification)}</div> : null}
-                                    </div>
-
-                                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:grid-cols-1 lg:gap-1.5">
-                                        <div className="min-w-0">
-                                            <div className="text-[9px] font-bold uppercase tracking-wide text-slate-400 lg:hidden">Current office</div>
-                                            <div className="mt-0.5 flex min-w-0 items-start gap-1.5 text-[11px] font-semibold text-slate-700 dark:text-slate-300"><Building2 size={12} className="mt-0.5 shrink-0 text-slate-400" aria-hidden="true" /><span className="truncate">{officeLabel(record.currentOffice)}</span></div>
-                                        </div>
-                                        <div className="min-w-0">
-                                            <div className="text-[9px] font-bold uppercase tracking-wide text-slate-400 lg:hidden">Responsible</div>
-                                            <div className="mt-0.5 flex min-w-0 items-start gap-1.5 text-[11px] text-slate-600 dark:text-slate-300"><UserRound size={12} className="mt-0.5 shrink-0 text-slate-400" aria-hidden="true" /><span className="truncate">{record.recordType === 'travel_order' ? 'Issued personnel on detail' : (record.assignedEmployee?.name || 'Unassigned')}</span></div>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-600 dark:text-slate-300 lg:block">
-                                        <div className="text-[9px] font-bold uppercase tracking-wide text-slate-400 lg:hidden">Record date</div>
-                                        <div className="flex items-center gap-1.5"><CalendarDays size={12} className="shrink-0 text-slate-400" aria-hidden="true" />{formatDate(record.recordDate)}</div>
-                                    </div>
-
-                                    <Link href={detailHref(record)} aria-label={`Open record ${record.reference || record.title}`} className="inline-flex min-h-9 w-full items-center justify-center gap-1.5 rounded-lg border border-slate-300 bg-white px-2.5 py-2 text-xs font-bold text-blue-800 hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 sm:w-fit lg:justify-self-end dark:border-slate-700 dark:bg-[#142236] dark:text-blue-300">
-                                        Open <ArrowRight size={13} aria-hidden="true" />
-                                    </Link>
+                            {!overview.recent.length ? (
+                                <div className="px-5 py-8 text-center">
+                                    <FileSearch className="mx-auto text-[var(--municipal-muted)]" size={24} aria-hidden="true" />
+                                    <div className="mt-2 text-xs font-bold text-[var(--municipal-text)]">No authorized records are available yet.</div>
                                 </div>
-                            </article>
-                        ))}
+                            ) : null}
+                        </section>
 
-                        {records.data.length === 0 ? (
-                            <div className="px-5 py-10 text-center">
-                                <FileSearch className="mx-auto text-slate-300" size={26} aria-hidden="true" />
-                                <div className="mt-2 text-sm font-semibold text-slate-700 dark:text-slate-300">No authorized records match this search.</div>
-                                <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">Change the filters or clear the search criteria.</div>
+                        <form onSubmit={submitOverviewSearch} className="municipal-panel p-2.5">
+                            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                                <div className="relative min-w-0 flex-1">
+                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--municipal-muted)]" size={14} aria-hidden="true" />
+                                    <input
+                                        value={search}
+                                        onChange={(event) => setSearch(event.target.value)}
+                                        placeholder="Search reference, title, sender, office or employee..."
+                                        className="min-h-10 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] pl-9 pr-3 text-xs text-[var(--municipal-text)] outline-none focus:border-[var(--municipal-focus)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20"
+                                    />
+                                </div>
+                                <button className="min-h-10 rounded-md bg-[var(--municipal-brand-deep)] px-4 text-xs font-bold text-white">Search Municipal Records</button>
                             </div>
-                        ) : null}
+                        </form>
                     </div>
+                ) : (
+                    <>
+                        <nav className="municipal-panel flex min-w-0 flex-wrap items-center gap-2 px-2.5 py-1.5" aria-label="Municipal records navigation">
+                            <button
+                                type="button"
+                                onClick={() => router.get('/records', { view: 'overview' }, { preserveState: true, preserveScroll: true, replace: true })}
+                                className="inline-flex min-h-9 items-center gap-1 rounded-md px-2 text-[11px] font-bold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]"
+                            >
+                                <ChevronLeft size={13} aria-hidden="true" /> Overview
+                            </button>
+                            <span className="text-[10px] text-[var(--municipal-border-strong)]" aria-hidden="true">/</span>
+                            <span className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Municipal Records</span>
+                            <span className="text-[10px] text-[var(--municipal-border-strong)]" aria-hidden="true">/</span>
+                            <span className="text-[11px] font-semibold text-[var(--municipal-text)]">
+                                {filterOptions.recordTypes.find((option) => option.value === recordType)?.label || 'All Records'}
+                            </span>
+                            <span className="ml-auto text-[10px] text-[var(--municipal-muted)]"><strong className="text-[var(--municipal-text)]">{records.total}</strong> record{records.total === 1 ? '' : 's'}</span>
+                        </nav>
 
-                    {records.last_page > 1 ? (
-                        <div className="flex items-center justify-between gap-3 border-t border-slate-100 px-3 py-2.5 sm:px-4 dark:border-slate-700">
-                            <Link href={records.prev_page_url || '#'} preserveScroll className={`rounded-lg border px-3 py-1.5 text-xs font-semibold ${records.prev_page_url ? 'border-slate-300 text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300' : 'pointer-events-none border-slate-100 text-slate-300 dark:border-slate-700'}`}>Previous</Link>
-                            <div className="text-[11px] text-slate-500 dark:text-slate-400">Page {records.current_page} of {records.last_page}</div>
-                            <Link href={records.next_page_url || '#'} preserveScroll className={`rounded-lg border px-3 py-1.5 text-xs font-semibold ${records.next_page_url ? 'border-slate-300 text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300' : 'pointer-events-none border-slate-100 text-slate-300 dark:border-slate-700'}`}>Next</Link>
-                        </div>
-                    ) : null}
-                </section>
-            </div>
+                        <form onSubmit={submit} className="municipal-panel p-2.5">
+                            <div className="grid gap-2 lg:grid-cols-[minmax(260px,1.6fr)_150px_170px_190px_auto] lg:items-end">
+                                <label className="block min-w-0">
+                                    <span className="mb-1 block text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Search records</span>
+                                    <div className="relative">
+                                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--municipal-muted)]" size={14} aria-hidden="true" />
+                                        <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Reference, title, sender, office..." className="min-h-10 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] pl-9 pr-3 text-xs text-[var(--municipal-text)] outline-none focus:border-[var(--municipal-focus)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20" />
+                                    </div>
+                                </label>
+
+                                <label className="block min-w-0">
+                                    <span className="mb-1 block text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Type</span>
+                                    <select value={recordType} onChange={(event) => { setRecordType(event.target.value); setState(''); }} className="min-h-10 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2 text-xs">
+                                        {filterOptions.recordTypes.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+                                    </select>
+                                </label>
+
+                                <label className="block min-w-0">
+                                    <span className="mb-1 block text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Status / lifecycle</span>
+                                    <select value={state} onChange={(event) => setState(event.target.value)} className="min-h-10 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2 text-xs">
+                                        <option value="">All states</option>
+                                        {filterOptions.states.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+                                    </select>
+                                </label>
+
+                                <label className="block min-w-0">
+                                    <span className="mb-1 block text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Current office</span>
+                                    <select value={officeId} onChange={(event) => setOfficeId(event.target.value)} className="min-h-10 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2 text-xs">
+                                        <option value="">All authorized offices</option>
+                                        {filterOptions.offices.map((office) => <option key={office.id} value={office.id}>{office.shortName || office.name}</option>)}
+                                    </select>
+                                </label>
+
+                                <div className="flex items-end gap-1.5">
+                                    <button className="min-h-10 rounded-md bg-[var(--municipal-brand-deep)] px-3 text-xs font-bold text-white">Search{activeFilterCount ? ` · ${activeFilterCount}` : ''}</button>
+                                    <button type="button" onClick={() => setMoreFilters((value) => !value)} className={`min-h-10 rounded-md border px-2.5 text-[10px] font-semibold ${moreFilters ? 'border-[var(--municipal-selected-border)] bg-[var(--municipal-selected-bg)] text-[var(--municipal-brand)]' : 'border-[var(--municipal-border)] text-[var(--municipal-text)]'}`}>
+                                        <SlidersHorizontal size={13} className="inline" /> Dates
+                                    </button>
+                                    <button type="button" onClick={clearFilters} aria-label="Clear records filters" className="flex min-h-10 min-w-10 items-center justify-center rounded-md border border-[var(--municipal-border)] text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]"><X size={14} /></button>
+                                </div>
+                            </div>
+
+                            {moreFilters ? (
+                                <div className="mt-2 grid gap-2 border-t border-[var(--municipal-border)] pt-2 sm:max-w-xl sm:grid-cols-2">
+                                    <label className="block">
+                                        <span className="mb-1 block text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">From</span>
+                                        <input type="date" value={dateFrom} onChange={(event) => setDateFrom(event.target.value)} className="min-h-10 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2 text-xs" />
+                                    </label>
+                                    <label className="block">
+                                        <span className="mb-1 block text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">To</span>
+                                        <input type="date" value={dateTo} onChange={(event) => setDateTo(event.target.value)} className="min-h-10 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2 text-xs" />
+                                    </label>
+                                </div>
+                            ) : null}
+                        </form>
+
+                        <section className="municipal-panel overflow-hidden" aria-label="Municipal records register">
+                            <header className="flex min-h-10 items-center justify-between gap-3 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-3 py-2">
+                                <div>
+                                    <h2 className="text-xs font-bold text-[var(--municipal-text)]">Records</h2>
+                                    <p className="text-[9px] text-[var(--municipal-muted)]">Authoritative records matching the current register view</p>
+                                </div>
+                                <span className="text-[10px] text-[var(--municipal-muted)]">{records.total === 0 ? 'No matching records' : `Showing ${records.from || 1}–${records.to || records.data.length} of ${records.total}`}</span>
+                            </header>
+
+                            <div className="hidden grid-cols-[minmax(260px,1.6fr)_140px_minmax(190px,1fr)_115px_64px] gap-3 border-b border-[var(--municipal-border)] px-3 py-2 text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)] xl:grid">
+                                <div>Record</div><div>Type / State</div><div>Responsibility</div><div>Date</div><div />
+                            </div>
+
+                            <RecordList rows={records.data} detailHref={detailHref} />
+
+                            {!records.data.length ? (
+                                <div className="px-5 py-8 text-center">
+                                    <FileSearch className="mx-auto text-[var(--municipal-muted)]" size={24} aria-hidden="true" />
+                                    <div className="mt-2 text-xs font-bold text-[var(--municipal-text)]">No authorized records match this search.</div>
+                                    <div className="mt-1 text-[10px] text-[var(--municipal-muted)]">Change the filters or return to the overview.</div>
+                                </div>
+                            ) : null}
+
+                            {records.last_page > 1 ? (
+                                <nav className="flex items-center justify-between gap-3 border-t border-[var(--municipal-border)] px-3 py-2 text-[10px]" aria-label="Municipal records pagination">
+                                    <Link href={records.prev_page_url || '#'} preserveScroll className={`min-h-9 px-2 font-semibold text-[var(--municipal-brand)] ${records.prev_page_url ? '' : 'pointer-events-none opacity-40'}`}>Previous</Link>
+                                    <span className="text-[var(--municipal-muted)]">Page {records.current_page} of {records.last_page}</span>
+                                    <Link href={records.next_page_url || '#'} preserveScroll className={`min-h-9 px-2 font-semibold text-[var(--municipal-brand)] ${records.next_page_url ? '' : 'pointer-events-none opacity-40'}`}>Next</Link>
+                                </nav>
+                            ) : null}
+                        </section>
+                    </>
+                )}
+            </PageFrame>
         </AppLayout>
     );
 }
