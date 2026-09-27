@@ -1,0 +1,213 @@
+name: BH2 Fast Render Hardening
+
+on:
+  push:
+    branches:
+      - KIRCH-TALIBON-BH2-FAST-RENDER-HARDENING
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bh2-fast-render-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  APP_ENV: testing
+  APP_DEBUG: false
+  APP_URL: http://127.0.0.1:8000
+  DB_CONNECTION: pgsql
+  DB_HOST: 127.0.0.1
+  DB_PORT: 5432
+  DB_DATABASE: talibon_portal_test
+  DB_USERNAME: postgres
+  DB_PASSWORD: ''
+  SESSION_DRIVER: file
+  CACHE_STORE: file
+  QUEUE_CONNECTION: sync
+  SHOWCASE_MODE: true
+  PROTOTYPE_DEMO_PASSWORD: BH2-Disposable-Runner-Password-2026
+
+jobs:
+  backend:
+    name: Backend feature + BH2 runtime tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d talibon_portal_test"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Checkout exact BH2 head
+        uses: actions/checkout@v4
+
+      - name: Record authority
+        run: |
+          echo "BH2_HEAD=$(git rev-parse HEAD)"
+          git status --short
+          git log -1 --oneline
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+          extensions: pdo_pgsql, pgsql
+          tools: composer:v2
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+
+      - name: Prepare Laravel
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          php artisan optimize:clear
+          php artisan migrate:fresh --seed --force
+
+      - name: Route and config cache smoke
+        run: |
+          php artisan route:cache
+          php artisan config:cache
+          php artisan view:cache
+          php artisan optimize:clear
+
+      - name: BH2 fast-render targeted tests
+        run: php artisan test tests/Feature/Bh2FastRenderHardeningTest.php
+
+      - name: Full feature suite
+        run: php artisan test --testsuite=Feature
+
+  frontend:
+    name: Frontend typecheck + production build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout exact BH2 head
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install frontend dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: TypeScript
+        run: npm run types:check
+
+      - name: Production build
+        run: npm run build
+
+  smoke:
+    name: Compiled-asset browser smoke
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d talibon_portal_test"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      QA_BASE_URL: http://127.0.0.1:8000
+      QA_MODE: production
+
+    steps:
+      - name: Checkout exact BH2 head
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+          extensions: pdo_pgsql, pgsql
+          tools: composer:v2
+
+      - name: Install locked dependencies
+        run: |
+          composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+          npm ci --no-audit --no-fund
+
+      - name: Prepare disposable runtime
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          php artisan optimize:clear
+          php artisan migrate:fresh --seed --force
+          npm run build
+          rm -f public/hot storage/framework/vite.hot
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Start compiled-asset Laravel runtime
+        run: |
+          php artisan serve --host=127.0.0.1 --port=8000 > storage/logs/bh2-laravel.log 2>&1 &
+          echo $! > /tmp/bh2-laravel.pid
+          for i in {1..60}; do
+            if curl -fsS http://127.0.0.1:8000/login >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat storage/logs/bh2-laravel.log
+          exit 1
+
+      - name: Showcase browser smoke
+        run: node tests/Browser/v1-showcase-readiness.mjs
+
+      - name: Runtime diagnostics
+        if: always()
+        run: |
+          echo "=== BH2 HEAD ==="
+          git rev-parse HEAD
+          echo "=== LARAVEL LOG TAIL ==="
+          tail -n 200 storage/logs/bh2-laravel.log || true
+          echo "=== QA OUTPUTS ==="
+          find storage/app/qa -maxdepth 3 -type f -print 2>/dev/null || true
+
+      - name: Upload smoke evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bh2-fast-render-smoke-${{ github.sha }}
+          path: |
+            storage/app/qa/
+            storage/logs/bh2-laravel.log
+          if-no-files-found: ignore
+          retention-days: 14
