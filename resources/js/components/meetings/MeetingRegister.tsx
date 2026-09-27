@@ -1,39 +1,64 @@
-import { CalendarDays, FileText, MapPin, UsersRound } from 'lucide-react';
+import { ArrowRight, CalendarDays, MapPin } from 'lucide-react';
 import type { MunicipalMeeting } from '../../data/municipal/meetings';
 
-const statusClass: Record<MunicipalMeeting['status'], string> = {
-    Scheduled: 'employee-tone-info',
-    Completed: 'employee-tone-success',
-    Rescheduled: 'employee-tone-warning',
+const statusTone: Record<MunicipalMeeting['status'], string> = {
+    Scheduled: 'border-[#cfe0f6] bg-[#eef5ff] text-[#265fa8]',
+    Completed: 'border-[#cfe6d5] bg-[#eef8f1] text-[#17633f]',
+    Rescheduled: 'border-[#f0dfb4] bg-[#fff8e8] text-[#9a6a08]',
 };
 
-export default function MeetingRegister({ meetings }: { meetings: MunicipalMeeting[] }) {
-    if (!meetings.length) return <div className="municipal-panel border-dashed p-6 text-center text-sm text-[var(--municipal-muted)]">No meetings match the current filters.</div>;
+const formatDate = (value: string) => new Date(value + 'T00:00:00+08:00').toLocaleDateString('en-PH', {
+    timeZone: 'Asia/Manila',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+});
 
-    return <div className="municipal-panel divide-y divide-[var(--municipal-border)] overflow-hidden">
-        {meetings.map((meeting) => <details key={meeting.id} className="group">
-            <summary className="flex min-h-[52px] cursor-pointer list-none items-start justify-between gap-3 px-3 py-2 marker:hidden hover:bg-[var(--municipal-hover)]">
+export default function MeetingRegister({
+    meetings,
+    onOpen,
+    compact = false,
+}: {
+    meetings: MunicipalMeeting[];
+    onOpen: (meeting: MunicipalMeeting) => void;
+    compact?: boolean;
+}) {
+    if (!meetings.length) {
+        return <div className={compact ? 'px-3 py-4 text-[10px] text-[var(--municipal-muted)]' : 'municipal-panel border-dashed p-6 text-center text-sm text-[var(--municipal-muted)]'}>No meetings match this view.</div>;
+    }
+
+    return <div className={compact ? 'divide-y divide-[var(--municipal-border)]' : 'municipal-panel divide-y divide-[var(--municipal-border)] overflow-hidden'}>
+        {meetings.map((meeting) => (
+            <button
+                key={meeting.id}
+                type="button"
+                onClick={() => onOpen(meeting)}
+                className={`grid w-full min-w-0 gap-2 text-left transition hover:bg-[var(--municipal-hover)] ${compact ? 'px-3 py-2' : 'px-3 py-2.5'} lg:grid-cols-[110px_minmax(0,1.4fr)_minmax(150px,.7fr)_minmax(150px,.8fr)_110px_28px] lg:items-center`}
+            >
                 <div className="min-w-0">
-                    <div className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-brand)]">{meeting.id} · {meeting.organizingOffice}</div>
-                    <h2 className="mt-0.5 break-words text-[13px] font-semibold leading-5">{meeting.title}</h2>
-                    <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-[var(--municipal-muted)]"><span className="flex items-center gap-1"><CalendarDays size={12}/>{meeting.date} · {meeting.time}</span><span className="flex items-center gap-1"><MapPin size={12}/>{meeting.venue}</span></div>
+                    <div className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-brand)]">{meeting.id}</div>
+                    <div className="mt-0.5 text-[9px] text-[var(--municipal-muted)]">{formatDate(meeting.date)}</div>
                 </div>
-                <span className={`shrink-0 text-[11px] font-semibold ${statusClass[meeting.status]}`}>{meeting.status}</span>
-            </summary>
-            <div className="grid gap-3 border-t border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] p-3 sm:grid-cols-2">
+
+                <div className="min-w-0">
+                    <div className="truncate text-[11px] font-semibold leading-4 text-[var(--municipal-text)]">{meeting.title}</div>
+                    <div className="mt-0.5 truncate text-[9px] text-[var(--municipal-muted)]">{meeting.organizingOffice}</div>
+                </div>
+
+                <div className="min-w-0 text-[10px] text-[var(--municipal-text)]">
+                    <div className="flex items-center gap-1"><CalendarDays size={11} className="shrink-0 text-[var(--municipal-muted)]" />{meeting.time}</div>
+                </div>
+
+                <div className="min-w-0 text-[10px] text-[var(--municipal-muted)]">
+                    <div className="flex items-center gap-1"><MapPin size={11} className="shrink-0" /><span className="truncate">{meeting.venue}</span></div>
+                </div>
+
                 <div>
-                    <div className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]"><UsersRound size={12}/> Participants</div>
-                    <div className="mt-1 text-xs leading-5">{meeting.participants.join(' · ')}</div>
+                    <span className={'inline-flex whitespace-nowrap rounded-full border px-2 py-1 text-[9px] font-bold uppercase leading-none ' + statusTone[meeting.status]}>{meeting.status}</span>
                 </div>
-                <div>
-                    <div className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]"><FileText size={12}/> Related documents</div>
-                    <div className="mt-1 text-xs leading-5">{meeting.relatedDocuments.join(' · ')}</div>
-                </div>
-                <div className="sm:col-span-2">
-                    <div className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Agenda</div>
-                    <ol className="mt-1 grid gap-1 text-xs leading-5 sm:grid-cols-2">{meeting.agenda.map((item, index) => <li key={item}>{index + 1}. {item}</li>)}</ol>
-                </div>
-            </div>
-        </details>)}
+
+                <ArrowRight size={13} className="justify-self-end text-[var(--municipal-brand)]" aria-hidden="true" />
+            </button>
+        ))}
     </div>;
 }
