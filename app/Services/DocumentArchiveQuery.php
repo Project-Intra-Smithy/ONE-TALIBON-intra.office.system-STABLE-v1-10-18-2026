@@ -257,53 +257,15 @@ final class DocumentArchiveQuery
             $ids[$family] = array_values(array_unique(array_filter($values)));
         }
 
-        $authorized = [
-            'correspondence' => [],
-            'transaction' => [],
-            'travel_order' => [],
-        ];
-
-        if ($ids['correspondence'] !== []) {
-            $query = CorrespondenceRecord::query()->whereIn('id', $ids['correspondence']);
-            $this->correspondenceAccess->scopeVisibleTo($query, $actor);
-            $authorized['correspondence'] = array_fill_keys(
-                $query->pluck('id')->map(fn ($id): int => (int) $id)->all(),
-                true,
-            );
-        }
-
-        if ($ids['transaction'] !== []) {
-            $authorized['transaction'] = array_fill_keys(
-                $this->transactionVisibility
-                    ->scope($actor)
-                    ->whereIn('id', $ids['transaction'])
-                    ->pluck('id')
-                    ->map(fn ($id): int => (int) $id)
-                    ->all(),
-                true,
-            );
-        }
-
-        if ($ids['travel_order'] !== []) {
-            $authorized['travel_order'] = array_fill_keys(
-                $this->travelOrderAccess
-                    ->scopeVisibleTo(TravelOrder::query(), $actor)
-                    ->whereIn('id', $ids['travel_order'])
-                    ->pluck('id')
-                    ->map(fn ($id): int => (int) $id)
-                    ->all(),
-                true,
-            );
-        }
-
         $contexts = [
             'correspondence' => [],
             'transaction' => [],
             'travel_order' => [],
         ];
 
+        $correspondenceRecords = collect();
         if ($ids['correspondence'] !== []) {
-            $records = CorrespondenceRecord::query()
+            $correspondenceRecords = CorrespondenceRecord::query()
                 ->with([
                     'receivingDepartment:id,code,name,short_name',
                     'workflowTransaction:id,reference_no,title,origin_department_id,current_department_id,assigned_employee_id',
@@ -313,11 +275,12 @@ final class DocumentArchiveQuery
                 ->whereIn('id', $ids['correspondence'])
                 ->get();
 
-            foreach ($records as $record) {
+            foreach ($correspondenceRecords as $record) {
                 $contexts['correspondence'][(int) $record->id] = $this->correspondenceContext($record);
             }
         }
 
+        $transactions = collect();
         if ($ids['transaction'] !== []) {
             $transactions = WorkflowTransaction::query()
                 ->with([
@@ -332,6 +295,7 @@ final class DocumentArchiveQuery
             }
         }
 
+        $travelOrders = collect();
         if ($ids['travel_order'] !== []) {
             $travelOrders = TravelOrder::query()
                 ->with('department:id,code,name,short_name')
@@ -341,6 +305,36 @@ final class DocumentArchiveQuery
             foreach ($travelOrders as $travelOrder) {
                 $contexts['travel_order'][(int) $travelOrder->id] = $this->travelOrderContext($travelOrder);
             }
+        }
+
+        $authorized = [
+            'correspondence' => [],
+            'transaction' => [],
+            'travel_order' => [],
+        ];
+
+        foreach ($correspondenceRecords as $record) {
+            if ($this->correspondenceAccess->canViewInWorkspace($actor, $record)) {
+                $authorized['correspondence'][(int) $record->id] = true;
+            }
+        }
+
+        foreach ($transactions as $transaction) {
+            if ($actor->can('view', $transaction)) {
+                $authorized['transaction'][(int) $transaction->id] = true;
+            }
+        }
+
+        if ($ids['travel_order'] !== []) {
+            $authorized['travel_order'] = array_fill_keys(
+                $this->travelOrderAccess
+                    ->scopeVisibleTo(TravelOrder::query(), $actor)
+                    ->whereIn('id', $ids['travel_order'])
+                    ->pluck('id')
+                    ->map(fn ($id): int => (int) $id)
+                    ->all(),
+                true,
+            );
         }
 
         foreach ($index as $key => $entry) {
