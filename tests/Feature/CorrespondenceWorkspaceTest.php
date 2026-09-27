@@ -25,7 +25,7 @@ class CorrespondenceWorkspaceTest extends TestCase
         $this->record('Fresh external intake', CorrespondenceLifecycleState::Received);
         $this->record('Registered office item', CorrespondenceLifecycleState::Registered, $department);
 
-        $this->actingAs($staff)->get('/correspondence')
+        $this->actingAs($staff)->get('/correspondence?view=all')
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->component('Correspondence/Index')
@@ -64,14 +64,14 @@ class CorrespondenceWorkspaceTest extends TestCase
         $this->record('Visible internal matter', CorrespondenceLifecycleState::Classified, $own, CorrespondenceClassification::Internal);
         $hidden = $this->record('Hidden restricted matter', CorrespondenceLifecycleState::Classified, $other, CorrespondenceClassification::Restricted);
 
-        $restricted = $this->actingAs($viewer)->get('/correspondence?classification=restricted')
+        $restricted = $this->actingAs($viewer)->get('/correspondence?view=all&classification=restricted')
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->where('records.total', 0)
                 ->has('records.data', 0));
         $this->assertStringNotContainsString($hidden->subject, $restricted->getContent());
 
-        $this->actingAs($viewer)->get('/correspondence?classification=internal')
+        $this->actingAs($viewer)->get('/correspondence?view=all&classification=internal')
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->where('records.total', 1)
@@ -86,7 +86,7 @@ class CorrespondenceWorkspaceTest extends TestCase
         $this->record('Engineering endorsement beta', CorrespondenceLifecycleState::Registered, $department);
         $this->record('Budget classified item', CorrespondenceLifecycleState::Classified, $department, CorrespondenceClassification::Internal);
 
-        $this->actingAs($head)->get('/correspondence?search=budget&lifecycle=registered')
+        $this->actingAs($head)->get('/correspondence?view=all&search=budget&lifecycle=registered')
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->where('records.total', 1)
@@ -106,13 +106,13 @@ class CorrespondenceWorkspaceTest extends TestCase
         $this->record('My overdue routed item', CorrespondenceLifecycleState::Routed, $department, CorrespondenceClassification::Internal, $mine);
         $this->record('Other assigned routed item', CorrespondenceLifecycleState::Routed, $department, CorrespondenceClassification::Internal, $theirs);
 
-        $this->actingAs($head)->get('/correspondence?assigned_to_me=1')
+        $this->actingAs($head)->get('/correspondence?view=all&assigned_to_me=1')
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->where('records.total', 1)
                 ->where('records.data.0.subject', 'My overdue routed item'));
 
-        $this->actingAs($head)->get('/correspondence?aging=overdue')
+        $this->actingAs($head)->get('/correspondence?view=all&aging=overdue')
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->where('records.total', 1)
@@ -127,7 +127,7 @@ class CorrespondenceWorkspaceTest extends TestCase
         $workflow = $this->workflow($head, $department, $head->employee, now()->addDay());
         $this->record('Already in action', CorrespondenceLifecycleState::InAction, $department, CorrespondenceClassification::Internal, $workflow);
 
-        $this->actingAs($head)->get('/correspondence?action_required=1')
+        $this->actingAs($head)->get('/correspondence?view=all&action_required=1')
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->where('records.total', 1)
@@ -145,7 +145,7 @@ class CorrespondenceWorkspaceTest extends TestCase
         }
         $this->record('Different lifecycle', CorrespondenceLifecycleState::Classified, $department, CorrespondenceClassification::Internal);
 
-        $this->actingAs($head)->get('/correspondence?search=queue&lifecycle=registered&page=2')
+        $this->actingAs($head)->get('/correspondence?view=all&search=queue&lifecycle=registered&page=2')
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->where('records.total', 21)

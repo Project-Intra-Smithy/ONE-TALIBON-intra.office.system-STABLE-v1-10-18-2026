@@ -13,6 +13,7 @@ use RuntimeException;
 class WorkforceDemoSeeder extends Seeder
 {
     private const TARGET_EMPLOYEE_COUNT = 350;
+    private const TEST_TARGET_EMPLOYEE_COUNT = 7;
 
     public function run(): void
     {
@@ -83,7 +84,10 @@ class WorkforceDemoSeeder extends Seeder
             ->orderBy('name')
             ->get();
 
-        $remaining = self::TARGET_EMPLOYEE_COUNT - count($accounts);
+        $targetEmployeeCount = app()->environment('testing')
+            ? self::TEST_TARGET_EMPLOYEE_COUNT
+            : self::TARGET_EMPLOYEE_COUNT;
+        $remaining = $targetEmployeeCount - count($accounts);
         $sealedPrototypePassword = Hash::make(Str::random(64));
 
         for ($i = 1; $i <= $remaining; $i++) {

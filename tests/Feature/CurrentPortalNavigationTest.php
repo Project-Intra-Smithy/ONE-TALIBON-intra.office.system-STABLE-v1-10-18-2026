@@ -33,7 +33,7 @@ class CurrentPortalNavigationTest extends TestCase
         $this->assertStringContainsString('isPortalDestinationVisible(destination, experience, permissions)', $navigation);
         $this->assertStringContainsString('permissions[destination.permission]', $access);
         $this->assertStringContainsString('workspaceExperience', $layout);
-        $this->assertSame(18, substr_count($destinations, "readiness: 'wired'"));
+        $this->assertSame(20, substr_count($destinations, "readiness: 'wired'"));
         $this->assertSame(2, substr_count($destinations, "readiness: 'integration_pending'"));
 
         foreach ([
@@ -74,10 +74,12 @@ class CurrentPortalNavigationTest extends TestCase
         $this->assertIsString($destinations);
 
         foreach ([
+            'Search Portal',
+            'Document Center',
             'Home',
-            'Work Queue',
-            'Inbox & Routing',
-            'Records Register',
+            'Tasks & Assignments',
+            'Correspondence',
+            'Municipal Records',
             'Official Memoranda',
             'Announcements',
             'Calendar',
@@ -91,6 +93,7 @@ class CurrentPortalNavigationTest extends TestCase
             'PPAs',
             'Project Monitoring',
             'Users',
+            'Departments',
             'System Administration',
             'Systems Directory',
         ] as $label) {

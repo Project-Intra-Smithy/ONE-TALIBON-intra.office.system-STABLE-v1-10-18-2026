@@ -195,61 +195,77 @@ class H4SystemAdminActionCompletenessTest extends TestCase
         $this->actingAs($engineering)->get('/mayor-office')->assertForbidden();
     }
 
-    public function test_system_admin_can_publish_and_view_memoranda_without_granting_municipal_authority_to_department_actors(): void
+    public function test_system_admin_can_inspect_memoranda_without_bypassing_current_issuing_authority(): void
     {
         $this->seed();
 
         $admin = $this->user('admin@talibon.demo');
         $engineering = $this->user('engineering@talibon.demo');
         $employee = $this->user('employee@talibon.demo');
-        $budget = $this->department('BUDGET');
-        $recipientEmployee = Employee::query()
-            ->where('department_id', $budget->id)
-            ->whereNotNull('user_id')
-            ->where('employment_status', 'active')
-            ->firstOrFail();
+        $engineeringEmployee = $engineering->employee;
 
         $this->withoutMiddleware(RequireMfaAssurance::class);
-        $this->actingAs($admin)->post('/memoranda', [
-            'memo_number' => 'H4-MEMO-'.Str::upper(Str::random(10)),
-            'title' => 'H4 System Administration Memorandum Authority',
-            'body' => 'Synthetic memorandum used only for H4 authority regression coverage.',
-            'audience_type' => 'employees',
-            'audience_ids' => [$recipientEmployee->id],
-            'requires_acknowledgement' => true,
-            'classification' => 'confidential',
-            'expires_at' => null,
-        ])->assertRedirect();
 
-        $memo = Memorandum::query()->where('title', 'H4 System Administration Memorandum Authority')->firstOrFail();
-        $this->assertSame('published', $memo->status);
+        $deniedPayload = [
+            'memo_number' => 'H4-ADMIN-DENIED-'.Str::upper(Str::random(10)),
+            'title' => 'Denied system administration publication',
+            'body' => 'System administration may inspect issuances but is not an issuing authority.',
+            'audience_type' => 'employees',
+            'audience_ids' => [$engineeringEmployee->id],
+            'requires_acknowledgement' => false,
+            'classification' => 'internal',
+            'expires_at' => null,
+        ];
+
+        $this->actingAs($admin)
+            ->post('/memoranda', $deniedPayload)
+            ->assertSessionHasErrors('issuer');
+
+        $this->assertDatabaseMissing('memoranda', [
+            'title' => 'Denied system administration publication',
+        ]);
+
+        $departmentPayload = [
+            'memo_number' => 'H4-ENG-'.Str::upper(Str::random(10)),
+            'title' => 'Engineering Office Memorandum Authority',
+            'body' => 'Synthetic department memorandum used only for H4 authority regression coverage.',
+            'audience_type' => 'employees',
+            'audience_ids' => [$engineeringEmployee->id],
+            'requires_acknowledgement' => true,
+            'classification' => 'internal',
+            'expires_at' => null,
+        ];
+
+        $this->actingAs($engineering)
+            ->post('/memoranda', $departmentPayload)
+            ->assertRedirect();
+
+        $memo = Memorandum::query()
+            ->where('title', 'Engineering Office Memorandum Authority')
+            ->firstOrFail();
+
+        $this->assertSame((int) $engineering->employee->department_id, (int) $memo->issued_by_department_id);
         $this->assertDatabaseHas('memo_recipients', [
             'memorandum_id' => $memo->id,
-            'user_id' => $recipientEmployee->user_id,
+            'user_id' => $engineering->id,
         ]);
-        $this->assertSame(1, MemoRecipient::query()->where('memorandum_id', $memo->id)->count());
         $this->assertDatabaseHas('audit_logs', [
-            'actor_user_id' => $admin->id,
+            'actor_user_id' => $engineering->id,
             'action' => 'memorandum.published',
             'outcome' => 'allowed',
         ]);
 
         $this->actingAs($admin)->get("/memoranda/{$memo->id}")->assertOk();
-        $this->actingAs($engineering)->get("/memoranda/{$memo->id}")->assertForbidden();
+        $this->actingAs($engineering)->get("/memoranda/{$memo->id}")->assertOk();
         $this->actingAs($employee)->get("/memoranda/{$memo->id}")->assertForbidden();
 
-        $payload = [
-            'memo_number' => 'H4-DENIED-'.Str::upper(Str::random(10)),
-            'title' => 'Denied municipal publication',
-            'body' => 'Must not be published by an ordinary department actor.',
-            'audience_type' => 'employees',
-            'audience_ids' => [$recipientEmployee->id],
-            'requires_acknowledgement' => false,
-            'classification' => 'internal',
-            'expires_at' => null,
-        ];
-        $this->actingAs($engineering)->post('/memoranda', $payload)->assertForbidden();
-        $this->actingAs($employee)->post('/memoranda', $payload)->assertForbidden();
+        $this->actingAs($employee)
+            ->post('/memoranda', [
+                ...$departmentPayload,
+                'memo_number' => 'H4-EMP-DENIED-'.Str::upper(Str::random(10)),
+                'title' => 'Denied ordinary employee publication',
+            ])
+            ->assertSessionHasErrors('issuer');
     }
 
     public function test_h4_preserves_restricted_confidential_health_and_mfa_boundaries(): void

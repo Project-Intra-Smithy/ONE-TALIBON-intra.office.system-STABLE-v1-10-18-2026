@@ -80,19 +80,20 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host 'PostgreSQL + migrations: ready' -ForegroundColor Green
 
 Write-Host 'Checking prototype-day showcase seed readiness...' -ForegroundColor Cyan
-$showcaseOutput = & php artisan tinker --execute="
-    $emails = array_column(config('showcase.personas'), 'email');
-    $active = \App\Models\User::query()->whereIn('email', $emails)->where('is_active', true)->count();
-    $transaction = \App\Models\WorkflowTransaction::query()->where('title', 'Road Rehabilitation Funding Request')->exists();
-    $memorandum = \App\Models\Memorandum::query()->where('status', 'published')->exists();
-    $legislative = \App\Models\LegislativeRecord::query()->exists();
-    $employee = \App\Models\User::query()->where('email', 'employee@talibon.demo')->with('employee.leaveCreditAccounts')->first();
-    $leaveReady = $employee?->employee?->leaveCreditAccounts?->isNotEmpty() === true;
-    if ($active !== 7 || !$transaction || !$memorandum || !$legislative || !$leaveReady) {
-        throw new RuntimeException('Prototype-day seed preflight failed: personas='.$active.', transaction='.(int)$transaction.', memorandum='.(int)$memorandum.', legislative='.(int)$legislative.', leave='.(int)$leaveReady);
-    }
-    echo 'PROTOTYPE_DAY_SEED_READY personas='.$active.PHP_EOL;
-" 2>&1
+$SeedCheck = @'
+$emails = array_column(config('showcase.personas'), 'email');
+$active = \App\Models\User::query()->whereIn('email', $emails)->where('is_active', true)->count();
+$transaction = \App\Models\WorkflowTransaction::query()->where('title', 'Road Rehabilitation Funding Request')->exists();
+$memorandum = \App\Models\Memorandum::query()->where('status', 'published')->exists();
+$legislative = \App\Models\LegislativeRecord::query()->exists();
+$employee = \App\Models\User::query()->where('email', 'employee@talibon.demo')->with('employee.leaveCreditAccounts')->first();
+$leaveReady = $employee?->employee?->leaveCreditAccounts?->isNotEmpty() === true;
+if ($active !== 7 || !$transaction || !$memorandum || !$legislative || !$leaveReady) {
+    throw new RuntimeException('Prototype-day seed preflight failed: personas='.$active.', transaction='.(int)$transaction.', memorandum='.(int)$memorandum.', legislative='.(int)$legislative.', leave='.(int)$leaveReady);
+}
+echo 'PROTOTYPE_DAY_SEED_READY personas='.$active.PHP_EOL;
+'@
+$showcaseOutput = & php artisan tinker --execute="$SeedCheck" 2>&1
 $showcaseExit = $LASTEXITCODE
 $showcaseOutput | Write-Host
 if ($showcaseExit -ne 0) {
@@ -106,7 +107,7 @@ if ($Fast) {
 Set-Location '$Root'
 `$Host.UI.RawUI.WindowTitle = 'TALIBON — FAST RENDER'
 `$env:APP_ENV = 'local'
-`$env:APP_DEBUG = 'true'
+`$env:APP_DEBUG = 'false'
 `$env:APP_URL = '$AppUrl'
 php artisan serve --host=0.0.0.0 --port=8000
 "@ | Set-Content -Path $LaravelLauncher -Encoding UTF8
