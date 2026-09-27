@@ -9,6 +9,17 @@ use Illuminate\Validation\Rule;
 
 class CorrespondenceIndexRequest extends FormRequest
 {
+    public const VIEWS = [
+        'overview',
+        'all',
+        'received',
+        'needs_action',
+        'assigned_to_me',
+        'routed',
+        'archived',
+        'overdue',
+    ];
+
     public function authorize(): bool
     {
         return $this->user() !== null;
@@ -17,6 +28,7 @@ class CorrespondenceIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'view' => ['nullable', Rule::in(self::VIEWS)],
             'search' => ['nullable', 'string', 'max:120'],
             'lifecycle' => ['nullable', Rule::in($this->lifecycleValues())],
             'classification' => ['nullable', Rule::in($this->classificationValues())],

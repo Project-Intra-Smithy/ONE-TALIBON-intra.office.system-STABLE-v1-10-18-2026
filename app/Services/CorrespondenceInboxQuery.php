@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Domain\Correspondence\CorrespondenceLifecycleState;
 use App\Models\CorrespondenceRecord;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,6 +19,61 @@ class CorrespondenceInboxQuery
 
     public function paginate(User $actor, array $filters): LengthAwarePaginator
     {
+        $query = $this->baseQuery($actor);
+        $this->applyView($query, $actor, (string) ($filters['view'] ?? 'overview'));
+        $this->applyFilters($query, $actor, $filters);
+
+        return $query
+            ->orderByDesc('received_at')
+            ->orderByDesc('id')
+            ->paginate(20)
+            ->withQueryString()
+            ->through(fn (CorrespondenceRecord $record): array => $this->serialize($actor, $record));
+    }
+
+    /** @return array<string, mixed> */
+    public function overview(User $actor): array
+    {
+        $base = $this->baseQuery($actor);
+        $employeeId = $actor->employee?->id;
+
+        $needsAction = clone $base;
+        $this->access->scopeActionRequired($needsAction, $actor);
+
+        $assigned = clone $base;
+        $employeeId
+            ? $assigned->whereHas('workflowTransaction', fn (Builder $workflow) => $workflow->where('assigned_employee_id', $employeeId))
+            : $assigned->whereRaw('1 = 0');
+
+        $received = (clone $base)->where('lifecycle_state', CorrespondenceLifecycleState::Received->value);
+        $routed = (clone $base)
+            ->whereNotNull('routed_at')
+            ->where('lifecycle_state', '!=', CorrespondenceLifecycleState::Archived->value);
+        $archived = (clone $base)->where('lifecycle_state', CorrespondenceLifecycleState::Archived->value);
+        $overdue = clone $base;
+        $this->applyOverdue($overdue);
+
+        return [
+            'counts' => [
+                'all' => (clone $base)->count(),
+                'received' => $received->count(),
+                'needs_action' => $needsAction->count(),
+                'assigned_to_me' => $assigned->count(),
+                'routed' => $routed->count(),
+                'archived' => $archived->count(),
+                'overdue' => $overdue->count(),
+            ],
+            'previews' => [
+                'needs_action' => $this->preview($needsAction, $actor, 'received_at'),
+                'received' => $this->preview($received, $actor, 'received_at'),
+                'routed' => $this->preview($routed, $actor, 'routed_at'),
+                'archived' => $this->preview($archived, $actor, 'updated_at'),
+            ],
+        ];
+    }
+
+    private function baseQuery(User $actor): Builder
+    {
         $query = CorrespondenceRecord::query()
             ->with([
                 'receivingDepartment:id,code,name,short_name',
@@ -27,14 +83,40 @@ class CorrespondenceInboxQuery
             ]);
 
         $this->access->scopeVisibleTo($query, $actor);
-        $this->applyFilters($query, $actor, $filters);
 
+        return $query;
+    }
+
+    /** @return array<int, array<string, mixed>> */
+    private function preview(Builder $query, User $actor, string $orderColumn): array
+    {
         return $query
-            ->orderByDesc('received_at')
+            ->orderByDesc($orderColumn)
             ->orderByDesc('id')
-            ->paginate(20)
-            ->withQueryString()
-            ->through(fn (CorrespondenceRecord $record): array => $this->serialize($actor, $record));
+            ->limit(3)
+            ->get()
+            ->map(fn (CorrespondenceRecord $record): array => $this->serialize($actor, $record))
+            ->all();
+    }
+
+    private function applyView(Builder $query, User $actor, string $view): void
+    {
+        $employeeId = $actor->employee?->id;
+
+        match ($view) {
+            'overview' => $query->whereRaw('1 = 0'),
+            'received' => $query->where('lifecycle_state', CorrespondenceLifecycleState::Received->value),
+            'needs_action' => $this->access->scopeActionRequired($query, $actor),
+            'assigned_to_me' => $employeeId
+                ? $query->whereHas('workflowTransaction', fn (Builder $workflow) => $workflow->where('assigned_employee_id', $employeeId))
+                : $query->whereRaw('1 = 0'),
+            'routed' => $query
+                ->whereNotNull('routed_at')
+                ->where('lifecycle_state', '!=', CorrespondenceLifecycleState::Archived->value),
+            'archived' => $query->where('lifecycle_state', CorrespondenceLifecycleState::Archived->value),
+            'overdue' => $this->applyOverdue($query),
+            default => null,
+        };
     }
 
     private function applyFilters(Builder $query, User $actor, array $filters): void
@@ -80,12 +162,17 @@ class CorrespondenceInboxQuery
         }
 
         if (($filters['aging'] ?? null) === 'overdue') {
-            $query->whereHas('workflowTransaction', function (Builder $workflow): void {
-                $workflow->whereNotNull('due_at')
-                    ->where('due_at', '<', now())
-                    ->whereNotIn('status', self::TERMINAL_WORKFLOW_STATUSES);
-            });
+            $this->applyOverdue($query);
         }
+    }
+
+    private function applyOverdue(Builder $query): Builder
+    {
+        return $query->whereHas('workflowTransaction', function (Builder $workflow): void {
+            $workflow->whereNotNull('due_at')
+                ->where('due_at', '<', now())
+                ->whereNotIn('status', self::TERMINAL_WORKFLOW_STATUSES);
+        });
     }
 
     private function applyOfficeFilter(Builder $query, int $officeId): void
@@ -135,6 +222,7 @@ class CorrespondenceInboxQuery
             ] : null,
             'workflowReference' => $workflow?->reference_no,
             'receivedAt' => $record->received_at?->toIso8601String(),
+            'routedAt' => $record->routed_at?->toIso8601String(),
             'age' => $record->received_at?->diffForHumans(now(), true) ?? 'Not recorded',
             'actionRequired' => $this->access->requiresAction($actor, $record),
             'overdue' => $overdue,

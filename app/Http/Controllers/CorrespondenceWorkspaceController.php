@@ -26,6 +26,7 @@ class CorrespondenceWorkspaceController extends Controller
         abort_unless($user->employee?->department, 403);
 
         $filters = $request->safe()->only([
+            'view',
             'search',
             'lifecycle',
             'classification',
@@ -34,9 +35,11 @@ class CorrespondenceWorkspaceController extends Controller
             'action_required',
             'aging',
         ]);
+        $filters['view'] = (string) ($filters['view'] ?? 'overview');
 
         return Inertia::render('Correspondence/Index', [
             'records' => $inbox->paginate($user, $filters),
+            'overview' => $inbox->overview($user),
             'filters' => $filters,
             'filterOptions' => [
                 'lifecycles' => $this->prototypeLifecycleOptions(),
