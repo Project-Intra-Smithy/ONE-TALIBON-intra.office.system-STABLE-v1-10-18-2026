@@ -23,7 +23,7 @@ final class WorkQueueQuery
     {
         $actor->loadMissing('employee.department');
         $experience = $this->experiences->resolve($actor);
-        $view = (string) ($filters['view'] ?? ($experience['allowedViews'][0] ?? 'all'));
+        $view = (string) ($filters['view'] ?? 'overview');
         abort_unless(in_array($view, $experience['allowedViews'], true), 403);
 
         $authorized = $this->visibility->scope($actor);
@@ -35,7 +35,7 @@ final class WorkQueueQuery
             : $personal;
 
         return [
-            'records' => $view === 'staff_workload'
+            'records' => in_array($view, ['overview', 'staff_workload'], true)
                 ? $this->emptyRecords()
                 : $this->records($filtered, $actor, $view, $experience['profile']),
             'filters' => [
@@ -62,6 +62,9 @@ final class WorkQueueQuery
                 'hasOfficeScope' => $experience['profile'] === 'department_head',
                 'hasMunicipalScope' => $municipalScope,
             ],
+            'overview' => $view === 'overview'
+                ? $this->overview($authorized, $actor, $experience['profile'])
+                : ['previews' => []],
             'staffWorkload' => $view === 'staff_workload'
                 ? $this->officeDashboard->staffWorkloadFor($actor, clone $filtered)
                 : [],
@@ -160,6 +163,10 @@ final class WorkQueueQuery
                 "{$personal} AND {$active} AND assigned_employee_id = ?",
                 [$actorId, $employeeId, ...$terminal, $employeeId],
             ],
+            'my_requests' => [
+                "{$active} AND created_by_user_id = ?",
+                [...$terminal, $actorId],
+            ],
             'due_soon' => $municipalScope
                 ? ["{$active} AND due_at BETWEEN ? AND ?", [...$terminal, $now, $dueSoonEnd]]
                 : ["{$personal} AND {$active} AND assigned_employee_id = ? AND due_at BETWEEN ? AND ?", [$actorId, $employeeId, ...$terminal, $employeeId, $now, $dueSoonEnd]],
@@ -170,15 +177,15 @@ final class WorkQueueQuery
                 ? ["{$active} AND updated_at >= ?", [...$terminal, $recentlyUpdatedStart]]
                 : ["{$personal} AND {$active} AND updated_at >= ?", [$actorId, $employeeId, ...$terminal, $recentlyUpdatedStart]],
             'waiting_on_others' => [
-                "{$personal} AND {$active} AND created_by_user_id = ? AND origin_department_id = ? AND current_department_id != ?",
-                [$actorId, $employeeId, ...$terminal, $actorId, $departmentId, $departmentId],
+                "{$active} AND created_by_user_id = ? AND origin_department_id = ? AND current_department_id != ?",
+                [...$terminal, $actorId, $departmentId, $departmentId],
             ],
             'recently_completed' => $municipalScope
                 ? ["status IN ({$terminalPlaceholders}) AND completed_at IS NOT NULL AND completed_at >= ?", [...$terminal, $recentlyCompletedStart]]
                 : ["{$personal} AND status IN ({$terminalPlaceholders}) AND completed_at IS NOT NULL AND completed_at >= ?", [$actorId, $employeeId, ...$terminal, $recentlyCompletedStart]],
             'office_queue' => [
-                $active,
-                $terminal,
+                "{$active} AND current_department_id = ?",
+                [...$terminal, $departmentId],
             ],
             'staff_workload' => [
                 "{$active} AND current_department_id = ?",
@@ -217,7 +224,47 @@ final class WorkQueueQuery
         string $view,
         string $profile,
     ): LengthAwarePaginator {
-        $query = $this->applyView(clone $filtered, $actor, $view, $profile)
+        $query = $this->recordQuery(
+            $this->applyView(clone $filtered, $actor, $view, $profile),
+        );
+
+        $this->orderForQueue($query, $view);
+
+        return $query->paginate(25)
+            ->withQueryString()
+            ->through(fn (WorkflowTransaction $transaction): array => $this->presenter->present($transaction, $actor));
+    }
+
+    /** @return array{previews:array<string,array<int,array<string,mixed>>>} */
+    private function overview(Builder $authorized, User $actor, string $profile): array
+    {
+        $views = match ($profile) {
+            'executive_oversight' => ['needs_my_action', 'overdue', 'due_soon', 'recently_updated'],
+            'system_administration' => ['all', 'overdue', 'recently_updated', 'recently_completed'],
+            'department_head' => ['needs_my_action', 'office_queue', 'my_requests', 'waiting_on_others'],
+            default => ['needs_my_action', 'assigned_to_me', 'my_requests', 'waiting_on_others'],
+        };
+
+        $previews = [];
+        foreach ($views as $view) {
+            $query = $this->recordQuery(
+                $this->applyView(clone $authorized, $actor, $view, $profile),
+            );
+            $this->orderForQueue($query, $view);
+
+            $previews[$view] = $query
+                ->limit(4)
+                ->get()
+                ->map(fn (WorkflowTransaction $transaction): array => $this->presenter->present($transaction, $actor))
+                ->all();
+        }
+
+        return ['previews' => $previews];
+    }
+
+    private function recordQuery(Builder $query): Builder
+    {
+        return $query
             ->select([
                 'id', 'reference_no', 'transaction_type', 'title', 'priority',
                 'origin_department_id', 'current_department_id',
@@ -229,12 +276,6 @@ final class WorkQueueQuery
                 'currentDepartment:id,code,name,short_name',
                 'assignedEmployee:id,employee_number,full_name,department_id,position_title',
             ]);
-
-        $this->orderForQueue($query, $view);
-
-        return $query->paginate(25)
-            ->withQueryString()
-            ->through(fn (WorkflowTransaction $transaction): array => $this->presenter->present($transaction, $actor));
     }
 
     private function applyView(
@@ -256,12 +297,15 @@ final class WorkQueueQuery
         }
 
         return match ($view) {
+            'overview' => $query->whereRaw('1 = 0'),
             'all' => $this->active($query, $terminal),
             'needs_my_action' => $profile === 'executive_oversight'
                 ? $this->active($query, $terminal)->where('status', 'for_approval')
                 : $this->active($query, $terminal)->where('assigned_employee_id', $employeeId),
             'assigned_to_me' => $this->active($query, $terminal)
                 ->where('assigned_employee_id', $employeeId),
+            'my_requests' => $this->active($query, $terminal)
+                ->where('created_by_user_id', $actor->id),
             'due_soon' => $this->active($query, $terminal)
                 ->when(! $municipalScope, fn (Builder $scope) => $scope->where('assigned_employee_id', $employeeId))
                 ->whereBetween('due_at', [now(), now()->addDay()]),
@@ -276,7 +320,8 @@ final class WorkQueueQuery
                 ->where('origin_department_id', $departmentId)
                 ->where('current_department_id', '!=', $departmentId),
             'recently_completed' => $this->recentlyCompleted($query, $terminal),
-            'office_queue' => $this->active($query, $terminal),
+            'office_queue' => $this->active($query, $terminal)
+                ->where('current_department_id', $departmentId),
             'staff_workload' => $this->active($query, $terminal)
                 ->where('current_department_id', $departmentId),
             'unassigned' => $this->active($query, $terminal)

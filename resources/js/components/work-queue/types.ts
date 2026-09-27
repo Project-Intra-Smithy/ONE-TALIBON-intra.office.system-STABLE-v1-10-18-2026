@@ -51,3 +51,7 @@ export type StaffWorkload = {
     overdue: number;
     requiresAction: number;
 };
+
+export type WorkOverview = {
+    previews: Record<string, WorkItem[]>;
+};

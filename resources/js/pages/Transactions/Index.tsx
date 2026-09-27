@@ -5,8 +5,9 @@ import PageFrame from '../../components/PageFrame';
 import PageHeader from '../../components/PageHeader';
 import StaffWorkloadTable from '../../components/work-queue/StaffWorkloadTable';
 import WorkItemList from '../../components/work-queue/WorkItemList';
+import WorkOverview from '../../components/work-queue/WorkOverview';
 import WorkScopeTabs from '../../components/work-queue/WorkScopeTabs';
-import type { Filters, Office, Paginator, ScopeGroup, StaffWorkload } from '../../components/work-queue/types';
+import type { Filters, Office, Paginator, ScopeGroup, StaffWorkload, WorkOverview as OverviewData } from '../../components/work-queue/types';
 import AppLayout from '../../layouts/AppLayout';
 
 type Props = {
@@ -20,6 +21,7 @@ type Props = {
         hasOfficeScope: boolean;
         hasMunicipalScope: boolean;
     };
+    overview: OverviewData;
     staffWorkload: StaffWorkload[];
 };
 
@@ -49,18 +51,24 @@ const experienceCopy = (profile: string) => {
 
     return {
         eyebrow: 'Personal workflow',
-        description: 'Assigned tasks and daily workflow',
+        description: 'Assigned tasks, requests and daily workflow',
     };
 };
 
-export default function Index({ records, filters, scopeGroups, filterOptions, experience, staffWorkload }: Props) {
-    const currentView = filters.view || scopeGroups[0]?.views[0]?.key || 'all';
+const listMode = (view: string): 'action' | 'tracking' | 'office' => {
+    if (['my_requests', 'waiting_on_others', 'recently_updated'].includes(view)) return 'tracking';
+    if (['office_queue', 'unassigned', 'escalations'].includes(view)) return 'office';
+    return 'action';
+};
+
+export default function Index({ records, filters, scopeGroups, filterOptions, experience, overview, staffWorkload }: Props) {
+    const currentView = filters.view || 'overview';
     const [search, setSearch] = useState(filters.search);
     const [status, setStatus] = useState(filters.status);
     const [priority, setPriority] = useState(filters.priority);
     const [officeId, setOfficeId] = useState(filters.office_id ? String(filters.office_id) : '');
     const currentQueue = scopeGroups.flatMap((group) => group.views).find((view) => view.key === currentView);
-    const currentTitle = currentQueue?.label || 'Work';
+    const currentTitle = currentView === 'overview' ? 'Overview' : currentQueue?.label || 'Work';
     const copy = experienceCopy(experience.profile);
 
     useEffect(() => {
@@ -87,7 +95,16 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
     };
 
     const selectView = (view: string) => {
+        if (view === 'overview') {
+            router.get('/transactions', { view: 'overview' }, { preserveState: true, preserveScroll: true, replace: true });
+            return;
+        }
+
         router.get('/transactions', queryData({ view }), { preserveState: true, preserveScroll: true, replace: true });
+    };
+
+    const openOverviewQueue = (view: string) => {
+        router.get('/transactions', { view }, { preserveState: true, preserveScroll: true, replace: true });
     };
 
     const clearFilters = () => {
@@ -99,6 +116,9 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
     };
 
     const activeFilterCount = [search, status, priority, officeId].filter(Boolean).length;
+    const description = currentView === 'overview'
+        ? `${copy.description} · ${experience.department.name}`
+        : `${experience.department.name} · ${currentTitle} · ${currentQueue?.count ?? records.total} item${(currentQueue?.count ?? records.total) === 1 ? '' : 's'}`;
 
     return (
         <AppLayout title="Tasks & Assignments">
@@ -106,27 +126,35 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
                 <PageHeader
                     eyebrow={copy.eyebrow}
                     title="Tasks & Assignments"
-                    description={`${copy.description} · ${experience.department.name} · ${currentTitle} · ${currentQueue?.count ?? records.total} item${(currentQueue?.count ?? records.total) === 1 ? '' : 's'}`}
+                    description={description}
                     icon={BriefcaseBusiness}
                     aside={<Link href="/transactions/create" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-[var(--municipal-brand-deep)] px-3.5 text-xs font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]"><Plus size={15} /> New Request</Link>}
                 />
 
                 <WorkScopeTabs groups={scopeGroups} currentView={currentView} onSelect={selectView} />
 
-                <form onSubmit={applyFilters} className="municipal-panel p-3">
-                    <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-[minmax(0,2fr)_repeat(3,minmax(0,1fr))_auto] md:items-end">
-                        <label className="block min-w-0">
-                            <span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Search tasks</span>
-                            <div className="relative"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--municipal-muted)]" size={15} /><input value={search} onChange={(event) => setSearch(event.target.value)} className="min-h-11 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] pl-9 pr-3 text-xs text-[var(--municipal-text)] outline-none focus:border-[var(--municipal-focus)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20" placeholder="Reference, title, office, assignee..." /></div>
-                        </label>
-                        <label className="block min-w-0"><span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Status</span><select value={status} onChange={(event) => setStatus(event.target.value)} className="min-h-11 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"><option value="">All statuses</option>{filterOptions.statuses.map((value) => <option key={value} value={value}>{humanize(value)}</option>)}</select></label>
-                        <label className="block min-w-0"><span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Priority</span><select value={priority} onChange={(event) => setPriority(event.target.value)} className="min-h-11 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"><option value="">All priorities</option>{filterOptions.priorities.map((value) => <option key={value} value={value}>{humanize(value)}</option>)}</select></label>
-                        <label className="block min-w-0"><span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Current office</span><select value={officeId} onChange={(event) => setOfficeId(event.target.value)} className="min-h-11 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"><option value="">All authorized offices</option>{filterOptions.offices.map((office) => <option key={office.id} value={office.id}>{office.shortName || office.name}</option>)}</select></label>
-                        <div className="flex gap-2"><button className="min-h-11 rounded-md bg-[var(--municipal-brand-deep)] px-3.5 text-xs font-bold text-white">Apply{activeFilterCount > 0 ? ` / ${activeFilterCount}` : ''}</button><button type="button" onClick={clearFilters} className="flex min-h-11 min-w-11 items-center justify-center rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]" aria-label="Clear filters"><X size={15} /></button></div>
-                    </div>
-                </form>
+                {currentView === 'overview' ? (
+                    <WorkOverview profile={experience.profile} groups={scopeGroups} overview={overview} onSelect={openOverviewQueue} />
+                ) : (
+                    <>
+                        <form onSubmit={applyFilters} className="municipal-panel p-3">
+                            <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-[minmax(0,2fr)_repeat(3,minmax(0,1fr))_auto] md:items-end">
+                                <label className="block min-w-0">
+                                    <span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Search {listMode(currentView) === 'tracking' ? 'requests' : 'tasks'}</span>
+                                    <div className="relative"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--municipal-muted)]" size={15} /><input value={search} onChange={(event) => setSearch(event.target.value)} className="min-h-11 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] pl-9 pr-3 text-xs text-[var(--municipal-text)] outline-none focus:border-[var(--municipal-focus)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20" placeholder="Reference, title, office, assignee..." /></div>
+                                </label>
+                                <label className="block min-w-0"><span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Status</span><select value={status} onChange={(event) => setStatus(event.target.value)} className="min-h-11 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"><option value="">All statuses</option>{filterOptions.statuses.map((value) => <option key={value} value={value}>{humanize(value)}</option>)}</select></label>
+                                <label className="block min-w-0"><span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Priority</span><select value={priority} onChange={(event) => setPriority(event.target.value)} className="min-h-11 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"><option value="">All priorities</option>{filterOptions.priorities.map((value) => <option key={value} value={value}>{humanize(value)}</option>)}</select></label>
+                                <label className="block min-w-0"><span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Current office</span><select value={officeId} onChange={(event) => setOfficeId(event.target.value)} className="min-h-11 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"><option value="">All authorized offices</option>{filterOptions.offices.map((office) => <option key={office.id} value={office.id}>{office.shortName || office.name}</option>)}</select></label>
+                                <div className="flex gap-2"><button className="min-h-11 rounded-md bg-[var(--municipal-brand-deep)] px-3.5 text-xs font-bold text-white">Apply{activeFilterCount > 0 ? ` / ${activeFilterCount}` : ''}</button><button type="button" onClick={clearFilters} className="flex min-h-11 min-w-11 items-center justify-center rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]" aria-label="Clear filters"><X size={15} /></button></div>
+                            </div>
+                        </form>
 
-                {currentView === 'staff_workload' ? <StaffWorkloadTable rows={staffWorkload} /> : <WorkItemList records={records} title={currentTitle} />}
+                        {currentView === 'staff_workload'
+                            ? <StaffWorkloadTable rows={staffWorkload} />
+                            : <WorkItemList records={records} title={currentTitle} mode={listMode(currentView)} />}
+                    </>
+                )}
             </PageFrame>
         </AppLayout>
     );

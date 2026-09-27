@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { ArrowRight, Building2, CheckSquare2, Clock3, Square } from 'lucide-react';
+import { ArrowRight, Building2, CheckSquare2, Clock3, Inbox, Send, Square } from 'lucide-react';
 import { withReturnContext } from '../../navigation/returnContext';
 import {
     formatWorkDate,
@@ -18,14 +18,19 @@ const priorityTone: Record<string, string> = {
     urgent: 'employee-tone-danger',
 };
 
-export default function WorkItemList({ records, title }: { records: Paginator; title: string }) {
+export default function WorkItemList({ records, title, mode = 'action' }: {
+    records: Paginator;
+    title: string;
+    mode?: 'action' | 'tracking' | 'office';
+}) {
     const { url } = usePage();
+    const eyebrow = mode === 'tracking' ? 'Request tracking' : mode === 'office' ? 'Office queue' : 'Task checklist';
 
     return (
         <section className="municipal-panel overflow-hidden" aria-labelledby="work-item-list-title">
             <div className="employee-panel-header flex flex-col gap-1 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <div className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-brand)]">Task checklist</div>
+                    <div className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-brand)]">{eyebrow}</div>
                     <h2 id="work-item-list-title" className="employee-section-title text-[var(--municipal-text)]">{title}</h2>
                 </div>
                 <div className="employee-metadata text-[var(--municipal-muted)]">
@@ -34,7 +39,7 @@ export default function WorkItemList({ records, title }: { records: Paginator; t
             </div>
 
             <div className="employee-table-heading employee-subsection-bar hidden grid-cols-[32px_minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.2fr)_64px] gap-3 border-b border-[var(--municipal-border)] text-[var(--municipal-muted)] xl:grid">
-                <div><span className="sr-only">Completion state</span></div><div>Task / Work</div><div>Accountability</div><div>Assignment</div><div>Due / activity</div><div>Next action</div><div />
+                <div><span className="sr-only">Workflow state</span></div><div>{mode === 'tracking' ? 'Request / Work' : 'Task / Work'}</div><div>Accountability</div><div>Assignment</div><div>Due / activity</div><div>Next action</div><div />
             </div>
 
             <div className="divide-y divide-[var(--municipal-border)]">
@@ -43,14 +48,21 @@ export default function WorkItemList({ records, title }: { records: Paginator; t
                     const updatedExact = formatWorkDateTime(item.updatedAt);
                     const statusLabel = humanizeWorkValue(item.status);
                     const completed = item.dueState === 'completed';
-                    const ChecklistIcon = completed ? CheckSquare2 : Square;
+                    const StateIcon = mode === 'tracking' ? Send : mode === 'office' ? Inbox : completed ? CheckSquare2 : Square;
+                    const stateTitle = mode === 'tracking'
+                        ? 'Tracking item'
+                        : mode === 'office'
+                            ? 'Office work item'
+                            : completed
+                                ? 'Workflow completed'
+                                : 'Completion is controlled by the workflow record';
 
                     return (
                         <article key={item.id} className={`employee-record-row py-2.5 ${completed ? 'bg-[var(--municipal-surface-subtle)]' : 'hover:bg-[var(--municipal-hover)]'}`}>
                             <div className="grid min-w-0 gap-2.5 xl:grid-cols-[32px_minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.2fr)_64px] xl:items-center">
-                                <div className="flex min-h-8 items-start pt-0.5 text-[var(--municipal-brand)]" title={completed ? 'Workflow completed' : 'Completion is controlled by the workflow record'}>
-                                    <ChecklistIcon size={20} strokeWidth={1.8} aria-hidden="true" />
-                                    <span className="sr-only">{completed ? 'Completed workflow item' : 'Active workflow item'}</span>
+                                <div className="flex min-h-8 items-start pt-0.5 text-[var(--municipal-brand)]" title={stateTitle}>
+                                    <StateIcon size={20} strokeWidth={1.8} aria-hidden="true" />
+                                    <span className="sr-only">{stateTitle}</span>
                                 </div>
 
                                 <div className="min-w-0">
@@ -58,7 +70,7 @@ export default function WorkItemList({ records, title }: { records: Paginator; t
                                         <span className="employee-tone-info font-bold">{item.reference}</span>
                                         <span className="text-[var(--municipal-muted)]">{humanizeWorkValue(item.transactionType)}</span>
                                     </div>
-                                    <h3 className={`employee-record-title mt-0.5 line-clamp-2 text-[var(--municipal-text)] ${completed ? 'line-through decoration-[var(--municipal-border-strong)]' : ''}`}>{item.title}</h3>
+                                    <h3 className={`employee-record-title mt-0.5 line-clamp-2 text-[var(--municipal-text)] ${completed && mode === 'action' ? 'line-through decoration-[var(--municipal-border-strong)]' : ''}`}>{item.title}</h3>
                                     <div className="employee-metadata mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
                                         <span className={`${workStatusTone(item.status)} font-semibold`}>{statusLabel}</span>
                                         <span className="text-[var(--municipal-border-strong)]" aria-hidden="true"> / </span>
@@ -109,7 +121,7 @@ export default function WorkItemList({ records, title }: { records: Paginator; t
                     );
                 })}
 
-                {records.data.length === 0 ? <div className="employee-empty-state"><div className="employee-record-title text-[var(--municipal-text)]">No tasks match this view.</div><div className="employee-supporting-text mt-1 text-[var(--municipal-muted)]">Change the queue category or clear one of the active filters.</div></div> : null}
+                {records.data.length === 0 ? <div className="employee-empty-state"><div className="employee-record-title text-[var(--municipal-text)]">No items match this view.</div><div className="employee-supporting-text mt-1 text-[var(--municipal-muted)]">Change the queue category or clear one of the active filters.</div></div> : null}
             </div>
 
             {records.last_page > 1 ? <nav className="employee-panel-header flex items-center justify-between gap-3 border-t border-[var(--municipal-border)]" aria-label="Work queue pagination">
