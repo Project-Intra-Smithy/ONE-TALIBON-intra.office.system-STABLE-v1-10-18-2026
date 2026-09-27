@@ -22,6 +22,14 @@ final class RecordsIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'mode' => ['nullable', Rule::in(['files', 'records'])],
+            'archive_scope' => ['nullable', Rule::in(['all', 'my_sent', 'my_received', 'my_uploads'])],
+            'archive_search' => ['nullable', 'string', 'max:160'],
+            'document_type' => ['nullable', 'string', 'max:80'],
+            'classification' => ['nullable', 'string', 'max:80'],
+            'archive_office_id' => ['nullable', 'integer', 'exists:departments,id'],
+            'archive_year' => ['nullable', 'digits:4'],
+            'document' => ['nullable', 'uuid'],
             'search' => ['nullable', 'string', 'max:160'],
             'record_type' => ['nullable', Rule::in(self::RECORD_TYPES)],
             'state' => ['nullable', 'string', 'max:80'],

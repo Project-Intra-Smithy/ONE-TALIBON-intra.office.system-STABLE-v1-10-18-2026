@@ -3,8 +3,11 @@ import {
     ArrowUpRight,
     BookOpen,
     Compass,
+    FileText,
     FolderSearch,
+    Inbox,
     ListChecks,
+    Send,
     Search,
     SlidersHorizontal,
     X,
@@ -20,6 +23,24 @@ import type { SharedProps } from '../../types';
 
 type SearchKind = 'portal' | 'plan' | 'ppa';
 type SearchScope = 'all' | SearchKind;
+
+type ArchiveActivityItem = {
+    publicId: string;
+    name: string;
+    documentType: string;
+    classification: string;
+    uploadedAt?: string | null;
+    relatedReference?: string | null;
+    relatedTitle?: string | null;
+    currentOffice?: { name: string; shortName?: string | null } | null;
+};
+
+type ArchiveActivity = {
+    sentCount: number;
+    receivedCount: number;
+    recentSent: ArchiveActivityItem[];
+    recentReceived: ArchiveActivityItem[];
+};
 
 type Result = {
     id: string;
@@ -76,7 +97,15 @@ function relevanceScore(item: Result, query: string) {
     return matches * 100;
 }
 
-export default function PortalSearch() {
+const formatArchiveDate = (value?: string | null) => {
+    if (!value) return '';
+    const date = new Date(value);
+    return Number.isNaN(date.getTime())
+        ? value
+        : date.toLocaleDateString('en-PH', { month: 'short', day: 'numeric' });
+};
+
+export default function PortalSearch({ archiveActivity }: { archiveActivity: ArchiveActivity }) {
     const { workspaceExperience, permissions } = usePage<SharedProps>().props;
     const { url } = usePage<SharedProps>();
     const destinations = buildPortalNavigation(workspaceExperience, permissions.navigation).flatMap((group) => group.items);
@@ -299,6 +328,54 @@ export default function PortalSearch() {
                                         <div className="mt-2 text-xs font-bold">{label}</div>
                                         <div className="mt-0.5 text-[10px] opacity-75">Browse this search family</div>
                                     </button>
+                                ))}
+                            </div>
+                        </section>
+
+                        <section aria-labelledby="archive-activity-heading">
+                            <div className="mb-1.5 flex items-center justify-between gap-3">
+                                <h2 id="archive-activity-heading" className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">My archive activity</h2>
+                                <Link href="/documents?mode=files" className="text-[9px] font-semibold text-[var(--municipal-brand)]">Open Document Center →</Link>
+                            </div>
+
+                            <div className="grid gap-2 lg:grid-cols-2">
+                                {([
+                                    ['my_sent', 'My Sent Files', archiveActivity.sentCount, archiveActivity.recentSent, Send, 'bg-[#f5f0ff] text-[#7150a8]'],
+                                    ['my_received', 'My Received Files', archiveActivity.receivedCount, archiveActivity.recentReceived, Inbox, 'bg-[#eef9f8] text-[#247874]'],
+                                ] as const).map(([scopeKey, label, count, items, Icon, tone]) => (
+                                    <div key={scopeKey} className="municipal-panel overflow-hidden">
+                                        <header className="flex min-h-10 items-center justify-between gap-3 border-b border-[var(--municipal-border)] px-3 py-2">
+                                            <div className="flex min-w-0 items-center gap-2">
+                                                <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md ${tone}`}><Icon size={14} aria-hidden="true" /></div>
+                                                <div>
+                                                    <h3 className="text-[11px] font-bold text-[var(--municipal-text)]">{label}</h3>
+                                                    <p className="text-[9px] text-[var(--municipal-muted)]">{count} archived file{count === 1 ? '' : 's'}</p>
+                                                </div>
+                                            </div>
+                                            <Link href={`/documents?mode=files&archive_scope=${scopeKey}`} className="shrink-0 text-[9px] font-bold text-[var(--municipal-brand)]">View archive</Link>
+                                        </header>
+                                        <div className="divide-y divide-[var(--municipal-border)]">
+                                            {items.map((item) => (
+                                                <Link
+                                                    key={item.publicId}
+                                                    href={`/documents?mode=files&archive_scope=${scopeKey}&document=${encodeURIComponent(item.publicId)}`}
+                                                    className="flex min-h-11 items-center gap-2.5 px-3 py-1.5 hover:bg-[var(--municipal-hover)]"
+                                                >
+                                                    <FileText size={14} className="shrink-0 text-[var(--municipal-brand)]" aria-hidden="true" />
+                                                    <div className="min-w-0 flex-1">
+                                                        <div className="truncate text-[10px] font-semibold text-[var(--municipal-text)]">{item.name}</div>
+                                                        <div className="truncate text-[9px] text-[var(--municipal-muted)]">
+                                                            {item.relatedReference || item.relatedTitle || item.documentType}
+                                                            {item.currentOffice ? ` · ${item.currentOffice.shortName || item.currentOffice.name}` : ''}
+                                                            {item.uploadedAt ? ` · ${formatArchiveDate(item.uploadedAt)}` : ''}
+                                                        </div>
+                                                    </div>
+                                                    <ArrowUpRight size={12} className="shrink-0 text-[var(--municipal-muted)]" aria-hidden="true" />
+                                                </Link>
+                                            ))}
+                                            {!items.length ? <p className="px-3 py-3 text-[10px] text-[var(--municipal-muted)]">No {scopeKey === 'my_sent' ? 'sent' : 'received'} files in your authorized archive yet.</p> : null}
+                                        </div>
+                                    </div>
                                 ))}
                             </div>
                         </section>

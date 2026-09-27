@@ -1,6 +1,6 @@
 import '../../../css/document-center.css';
 import { Link, router, usePage } from '@inertiajs/react';
-import { FileText } from 'lucide-react';
+import { FileArchive, LibraryBig } from 'lucide-react';
 import { useEffect, useState, type FormEvent } from 'react';
 import PageFrame from '../../components/PageFrame';
 import PageHeader from '../../components/PageHeader';
@@ -8,12 +8,18 @@ import PortalSearchField from '../../components/portal/PortalSearchField';
 import DocumentCollectionNav from '../../components/documents/DocumentCollectionNav';
 import DocumentRegister from '../../components/documents/DocumentRegister';
 import DocumentMetadataPanel from '../../components/documents/DocumentMetadataPanel';
+import DocumentArchive, { type ArchiveWorkspace } from '../../components/documents/DocumentArchive';
 import { collectionLabels, relatedWorkspaceKeys, type DocumentCenterProps, type DocumentFilters } from '../../components/documents/documentCenterPresentation';
 import AppLayout from '../../layouts/AppLayout';
 import { buildPortalNavigation } from '../../navigation/portalNavigation';
 import type { SharedProps } from '../../types';
 
-export default function DocumentCenter({ records, filters, filterOptions }: DocumentCenterProps) {
+type Props = DocumentCenterProps & {
+    mode: 'files' | 'records';
+    archive: ArchiveWorkspace;
+};
+
+export default function DocumentCenter({ records, filters, filterOptions, mode, archive }: Props) {
     const { workspaceExperience, permissions } = usePage<SharedProps>().props;
     const available = buildPortalNavigation(workspaceExperience, permissions.navigation).flatMap((group) => group.items);
     const workspaces = [...relatedWorkspaceKeys, 'correspondence' as const].flatMap((key) => {
@@ -27,12 +33,16 @@ export default function DocumentCenter({ records, filters, filterOptions }: Docu
     const navigate = (next: DocumentFilters) => {
         setDraft(next);
         setSelectedUrl(null);
-        router.get('/documents', { ...next }, { preserveState: true, preserveScroll: true });
+        router.get('/documents', { mode: 'records', ...next }, { preserveState: true, preserveScroll: true });
     };
     const submit = (event: FormEvent) => { event.preventDefault(); navigate(draft); };
     const reset = () => navigate({ search: '', record_type: 'all', state: '', office_id: null, date_from: '', date_to: '' });
     const changeCollection = (record_type: string) => navigate({ ...draft, record_type, state: '' });
-    const pageHref = (href: string) => '/documents' + new URL(href, 'http://portal.local').search;
+    const pageHref = (href: string) => {
+        const params = new URL(href, 'http://portal.local').searchParams;
+        params.set('mode', 'records');
+        return '/documents?' + params.toString();
+    };
     const activeFilters = [
         filters.search ? 'Search: ' + filters.search : '',
         filters.office_id ? 'Office: ' + (filterOptions.offices.find((office) => office.id === filters.office_id)?.shortName || filterOptions.offices.find((office) => office.id === filters.office_id)?.name || 'Selected office') : '',
@@ -42,8 +52,29 @@ export default function DocumentCenter({ records, filters, filterOptions }: Docu
     ].filter(Boolean);
 
     return <AppLayout title="Document Center"><PageFrame width="wide" density="compact">
-        <PageHeader eyebrow="Organized municipal records" title="Document Center" icon={FileText} />
-        <div className="dc-workspace">
+        <PageHeader
+            eyebrow="Municipal document archive"
+            title="Document Center"
+            description="Protected files, archive metadata and authorized municipal record references."
+            icon={FileArchive}
+        />
+
+        <nav className="municipal-panel flex w-fit items-center gap-1 p-1" aria-label="Document Center mode">
+            <Link
+                href="/documents?mode=files"
+                className={`inline-flex min-h-9 items-center gap-1.5 rounded-md px-3 text-xs font-bold ${mode === 'files' ? 'bg-[var(--municipal-brand)] text-white' : 'text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
+            >
+                <FileArchive size={14} aria-hidden="true" /> Files
+            </Link>
+            <Link
+                href="/documents?mode=records"
+                className={`inline-flex min-h-9 items-center gap-1.5 rounded-md px-3 text-xs font-bold ${mode === 'records' ? 'bg-[var(--municipal-brand)] text-white' : 'text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
+            >
+                <LibraryBig size={14} aria-hidden="true" /> Records
+            </Link>
+        </nav>
+
+        {mode === 'files' ? <DocumentArchive archive={archive} /> : <div className="dc-workspace">
             <DocumentCollectionNav collections={filterOptions.recordTypes} current={filters.record_type} onSelect={changeCollection} workspaces={workspaces} />
             <div className="dc-main">
                 <form onSubmit={submit} className="dc-toolbar" aria-label="Document search and filters">
@@ -63,6 +94,6 @@ export default function DocumentCenter({ records, filters, filterOptions }: Docu
                     {records.data.length > 0 && <div className="dc-below-metadata"><DocumentMetadataPanel record={selected} onClose={() => setSelectedUrl(null)} /></div>}
                 </div>
             </div>
-        </div>
+        </div>}
     </PageFrame></AppLayout>;
 }

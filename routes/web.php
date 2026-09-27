@@ -34,6 +34,7 @@ use App\Http\Controllers\NotificationFeedController;
 use App\Http\Controllers\OperationsMonitoringController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PlatformNotificationController;
+use App\Http\Controllers\PortalSearchController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\PropertyLifecycleController;
 use App\Http\Controllers\PrototypeMessaging\ListPrototypeMessagesController;
@@ -77,7 +78,7 @@ Route::middleware(['auth', 'active', 'mfa.subject', 'mfa.assured'])->group(funct
 Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
     Route::get('/admin', AdminDashboardController::class)->name('admin.index');
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
-    Route::get('/portal-search', fn () => Inertia::render('Search/Index'))->name('portal-search.index');
+    Route::get('/portal-search', PortalSearchController::class)->name('portal-search.index');
     Route::get('/documents', DocumentCenterController::class)->name('document-center.index');
     Route::get('/departments', DepartmentController::class)->name('departments.index');
     Route::get('/employees', EmployeeDirectoryController::class)->name('employees.index');
