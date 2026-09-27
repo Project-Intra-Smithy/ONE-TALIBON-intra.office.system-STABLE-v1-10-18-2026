@@ -7,7 +7,7 @@ use App\Models\User;
 final class WorkQueueExperienceResolver
 {
     private const PERSONAL_VIEWS = [
-        'all' => 'My Work',
+        'all' => 'My Tasks',
         'needs_my_action' => 'Needs Action',
         'assigned_to_me' => 'Assigned to Me',
         'due_soon' => 'Due Soon',
@@ -24,6 +24,22 @@ final class WorkQueueExperienceResolver
         'escalations' => 'Escalations',
     ];
 
+    private const EXECUTIVE_VIEWS = [
+        'all' => 'Municipal Work',
+        'needs_my_action' => 'For Approval',
+        'due_soon' => 'Due Soon',
+        'overdue' => 'Overdue',
+        'recently_updated' => 'Recently Updated',
+        'recently_completed' => 'Completed Recently',
+    ];
+
+    private const SYSTEM_VIEWS = [
+        'all' => 'Active Work',
+        'overdue' => 'Overdue',
+        'recently_updated' => 'Recently Updated',
+        'recently_completed' => 'Completed Recently',
+    ];
+
     public function __construct(
         private readonly DashboardExperienceResolver $dashboardExperiences,
     ) {}
@@ -32,19 +48,36 @@ final class WorkQueueExperienceResolver
     public function resolve(User $actor): array
     {
         $dashboard = $this->dashboardExperiences->resolve($actor);
-        $groups = [[
-            'key' => 'personal',
-            'label' => 'My Work',
-            'views' => $this->definitions(self::PERSONAL_VIEWS, 'personal'),
-        ]];
 
-        if ($dashboard['key'] === 'department_head') {
-            $groups[] = [
-                'key' => 'office',
-                'label' => 'Office Work',
-                'views' => $this->definitions(self::OFFICE_VIEWS, 'office'),
-            ];
-        }
+        $groups = match ($dashboard['key']) {
+            'department_head' => [
+                [
+                    'key' => 'personal',
+                    'label' => 'My Tasks',
+                    'views' => $this->definitions(self::PERSONAL_VIEWS, 'personal'),
+                ],
+                [
+                    'key' => 'office',
+                    'label' => 'Office Work',
+                    'views' => $this->definitions(self::OFFICE_VIEWS, 'office'),
+                ],
+            ],
+            'executive_oversight' => [[
+                'key' => 'executive',
+                'label' => 'Executive Work',
+                'views' => $this->definitions(self::EXECUTIVE_VIEWS, 'municipal'),
+            ]],
+            'system_administration' => [[
+                'key' => 'system',
+                'label' => 'Administrative Work',
+                'views' => $this->definitions(self::SYSTEM_VIEWS, 'municipal'),
+            ]],
+            default => [[
+                'key' => 'personal',
+                'label' => 'My Tasks',
+                'views' => $this->definitions(self::PERSONAL_VIEWS, 'personal'),
+            ]],
+        };
 
         return [
             'profile' => $dashboard['key'],

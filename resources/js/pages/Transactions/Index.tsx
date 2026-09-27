@@ -18,20 +18,50 @@ type Props = {
         profile: string;
         department: { id: number; code: string; name: string; shortName?: string | null };
         hasOfficeScope: boolean;
+        hasMunicipalScope: boolean;
     };
     staffWorkload: StaffWorkload[];
 };
 
 const humanize = (value: string) => value.replaceAll('_', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
 
+const experienceCopy = (profile: string) => {
+    if (profile === 'executive_oversight') {
+        return {
+            eyebrow: 'Executive workflow',
+            description: 'Municipality-wide authorized work, approvals and decisions',
+        };
+    }
+
+    if (profile === 'system_administration') {
+        return {
+            eyebrow: 'Administrative workflow',
+            description: 'Authorized municipal workflow visibility',
+        };
+    }
+
+    if (profile === 'department_head') {
+        return {
+            eyebrow: 'Personal and office workflow',
+            description: 'Personal tasks and office accountability',
+        };
+    }
+
+    return {
+        eyebrow: 'Personal workflow',
+        description: 'Assigned tasks and daily workflow',
+    };
+};
+
 export default function Index({ records, filters, scopeGroups, filterOptions, experience, staffWorkload }: Props) {
-    const currentView = filters.view || 'all';
+    const currentView = filters.view || scopeGroups[0]?.views[0]?.key || 'all';
     const [search, setSearch] = useState(filters.search);
     const [status, setStatus] = useState(filters.status);
     const [priority, setPriority] = useState(filters.priority);
     const [officeId, setOfficeId] = useState(filters.office_id ? String(filters.office_id) : '');
     const currentQueue = scopeGroups.flatMap((group) => group.views).find((view) => view.key === currentView);
-    const currentTitle = currentQueue?.label || 'All work';
+    const currentTitle = currentQueue?.label || 'Work';
+    const copy = experienceCopy(experience.profile);
 
     useEffect(() => {
         setSearch(filters.search);
@@ -74,9 +104,9 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
         <AppLayout title="Tasks & Assignments">
             <PageFrame width="standard" density="compact">
                 <PageHeader
-                    eyebrow={experience.hasOfficeScope ? 'Personal and office workflow' : 'Personal workflow'}
+                    eyebrow={copy.eyebrow}
                     title="Tasks & Assignments"
-                    description={`${experience.department.name} · ${currentTitle} · ${currentQueue?.count ?? records.total} item${(currentQueue?.count ?? records.total) === 1 ? '' : 's'}`}
+                    description={`${copy.description} · ${experience.department.name} · ${currentTitle} · ${currentQueue?.count ?? records.total} item${(currentQueue?.count ?? records.total) === 1 ? '' : 's'}`}
                     icon={BriefcaseBusiness}
                     aside={<Link href="/transactions/create" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-[var(--municipal-brand-deep)] px-3.5 text-xs font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]"><Plus size={15} /> New Request</Link>}
                 />
@@ -86,7 +116,7 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
                 <form onSubmit={applyFilters} className="municipal-panel p-3">
                     <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-[minmax(0,2fr)_repeat(3,minmax(0,1fr))_auto] md:items-end">
                         <label className="block min-w-0">
-                            <span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Search queue</span>
+                            <span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Search tasks</span>
                             <div className="relative"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--municipal-muted)]" size={15} /><input value={search} onChange={(event) => setSearch(event.target.value)} className="min-h-11 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] pl-9 pr-3 text-xs text-[var(--municipal-text)] outline-none focus:border-[var(--municipal-focus)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20" placeholder="Reference, title, office, assignee..." /></div>
                         </label>
                         <label className="block min-w-0"><span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Status</span><select value={status} onChange={(event) => setStatus(event.target.value)} className="min-h-11 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"><option value="">All statuses</option>{filterOptions.statuses.map((value) => <option key={value} value={value}>{humanize(value)}</option>)}</select></label>

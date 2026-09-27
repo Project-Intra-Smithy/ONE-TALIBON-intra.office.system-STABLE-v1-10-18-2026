@@ -23,18 +23,21 @@ final class WorkQueueQuery
     {
         $actor->loadMissing('employee.department');
         $experience = $this->experiences->resolve($actor);
-        $view = (string) ($filters['view'] ?? 'all');
+        $view = (string) ($filters['view'] ?? ($experience['allowedViews'][0] ?? 'all'));
         abort_unless(in_array($view, $experience['allowedViews'], true), 403);
 
         $authorized = $this->visibility->scope($actor);
         $filtered = $this->applyCommonFilters(clone $authorized, $filters);
         $personal = $this->personalScope(clone $authorized, $actor);
-        $optionsBase = $experience['profile'] === 'department_head' ? $authorized : $personal;
+        $municipalScope = in_array($experience['profile'], ['executive_oversight', 'system_administration'], true);
+        $optionsBase = $experience['profile'] === 'department_head' || $municipalScope
+            ? $authorized
+            : $personal;
 
         return [
             'records' => $view === 'staff_workload'
                 ? $this->emptyRecords()
-                : $this->records($filtered, $actor, $view),
+                : $this->records($filtered, $actor, $view, $experience['profile']),
             'filters' => [
                 'view' => $view,
                 'search' => (string) ($filters['search'] ?? ''),
@@ -42,7 +45,12 @@ final class WorkQueueQuery
                 'priority' => (string) ($filters['priority'] ?? ''),
                 'office_id' => isset($filters['office_id']) ? (int) $filters['office_id'] : null,
             ],
-            'scopeGroups' => $this->scopeGroups($filtered, $actor, $experience['scopeGroups']),
+            'scopeGroups' => $this->scopeGroups(
+                $filtered,
+                $actor,
+                $experience['scopeGroups'],
+                $experience['profile'],
+            ),
             'filterOptions' => [
                 'statuses' => $this->statusOptions($optionsBase),
                 'priorities' => ['normal', 'high', 'urgent'],
@@ -52,6 +60,7 @@ final class WorkQueueQuery
                 'profile' => $experience['profile'],
                 'department' => $experience['department'],
                 'hasOfficeScope' => $experience['profile'] === 'department_head',
+                'hasMunicipalScope' => $municipalScope,
             ],
             'staffWorkload' => $view === 'staff_workload'
                 ? $this->officeDashboard->staffWorkloadFor($actor, clone $filtered)
@@ -105,9 +114,13 @@ final class WorkQueueQuery
      * @param  array<int, array<string, mixed>>  $groups
      * @return array<int, array<string, mixed>>
      */
-    private function scopeGroups(Builder $filtered, User $actor, array $groups): array
-    {
-        $counts = $this->scopeCounts($filtered, $actor);
+    private function scopeGroups(
+        Builder $filtered,
+        User $actor,
+        array $groups,
+        string $profile,
+    ): array {
+        $counts = $this->scopeCounts($filtered, $actor, $profile);
 
         return collect($groups)->map(function (array $group) use ($counts): array {
             $group['views'] = collect($group['views'])->map(function (array $view) use ($counts): array {
@@ -121,7 +134,7 @@ final class WorkQueueQuery
     }
 
     /** @return array<string, int> */
-    private function scopeCounts(Builder $filtered, User $actor): array
+    private function scopeCounts(Builder $filtered, User $actor, string $profile): array
     {
         $terminal = $this->terminalStatuses();
         $terminalPlaceholders = implode(', ', array_fill(0, count($terminal), '?'));
@@ -134,40 +147,35 @@ final class WorkQueueQuery
         $dueSoonEnd = $now->copy()->addDay();
         $recentlyUpdatedStart = $now->copy()->subDays(7);
         $recentlyCompletedStart = $now->copy()->subDays(30);
+        $municipalScope = in_array($profile, ['executive_oversight', 'system_administration'], true);
 
         $definitions = [
-            'all' => [
-                "{$personal} AND {$active}",
-                [$actorId, $employeeId, ...$terminal],
-            ],
-            'needs_my_action' => [
-                "{$personal} AND {$active} AND assigned_employee_id = ?",
-                [$actorId, $employeeId, ...$terminal, $employeeId],
-            ],
+            'all' => $municipalScope
+                ? [$active, $terminal]
+                : ["{$personal} AND {$active}", [$actorId, $employeeId, ...$terminal]],
+            'needs_my_action' => $profile === 'executive_oversight'
+                ? ["{$active} AND status = ?", [...$terminal, 'for_approval']]
+                : ["{$personal} AND {$active} AND assigned_employee_id = ?", [$actorId, $employeeId, ...$terminal, $employeeId]],
             'assigned_to_me' => [
                 "{$personal} AND {$active} AND assigned_employee_id = ?",
                 [$actorId, $employeeId, ...$terminal, $employeeId],
             ],
-            'due_soon' => [
-                "{$personal} AND {$active} AND assigned_employee_id = ? AND due_at BETWEEN ? AND ?",
-                [$actorId, $employeeId, ...$terminal, $employeeId, $now, $dueSoonEnd],
-            ],
-            'overdue' => [
-                "{$personal} AND {$active} AND assigned_employee_id = ? AND due_at IS NOT NULL AND due_at < ?",
-                [$actorId, $employeeId, ...$terminal, $employeeId, $now],
-            ],
-            'recently_updated' => [
-                "{$personal} AND {$active} AND updated_at >= ?",
-                [$actorId, $employeeId, ...$terminal, $recentlyUpdatedStart],
-            ],
+            'due_soon' => $municipalScope
+                ? ["{$active} AND due_at BETWEEN ? AND ?", [...$terminal, $now, $dueSoonEnd]]
+                : ["{$personal} AND {$active} AND assigned_employee_id = ? AND due_at BETWEEN ? AND ?", [$actorId, $employeeId, ...$terminal, $employeeId, $now, $dueSoonEnd]],
+            'overdue' => $municipalScope
+                ? ["{$active} AND due_at IS NOT NULL AND due_at < ?", [...$terminal, $now]]
+                : ["{$personal} AND {$active} AND assigned_employee_id = ? AND due_at IS NOT NULL AND due_at < ?", [$actorId, $employeeId, ...$terminal, $employeeId, $now]],
+            'recently_updated' => $municipalScope
+                ? ["{$active} AND updated_at >= ?", [...$terminal, $recentlyUpdatedStart]]
+                : ["{$personal} AND {$active} AND updated_at >= ?", [$actorId, $employeeId, ...$terminal, $recentlyUpdatedStart]],
             'waiting_on_others' => [
                 "{$personal} AND {$active} AND created_by_user_id = ? AND origin_department_id = ? AND current_department_id != ?",
                 [$actorId, $employeeId, ...$terminal, $actorId, $departmentId, $departmentId],
             ],
-            'recently_completed' => [
-                "{$personal} AND status IN ({$terminalPlaceholders}) AND completed_at IS NOT NULL AND completed_at >= ?",
-                [$actorId, $employeeId, ...$terminal, $recentlyCompletedStart],
-            ],
+            'recently_completed' => $municipalScope
+                ? ["status IN ({$terminalPlaceholders}) AND completed_at IS NOT NULL AND completed_at >= ?", [...$terminal, $recentlyCompletedStart]]
+                : ["{$personal} AND status IN ({$terminalPlaceholders}) AND completed_at IS NOT NULL AND completed_at >= ?", [$actorId, $employeeId, ...$terminal, $recentlyCompletedStart]],
             'office_queue' => [
                 $active,
                 $terminal,
@@ -203,9 +211,13 @@ final class WorkQueueQuery
             ->all();
     }
 
-    private function records(Builder $filtered, User $actor, string $view): LengthAwarePaginator
-    {
-        $query = $this->applyView(clone $filtered, $actor, $view)
+    private function records(
+        Builder $filtered,
+        User $actor,
+        string $view,
+        string $profile,
+    ): LengthAwarePaginator {
+        $query = $this->applyView(clone $filtered, $actor, $view, $profile)
             ->select([
                 'id', 'reference_no', 'transaction_type', 'title', 'priority',
                 'origin_department_id', 'current_department_id',
@@ -225,13 +237,18 @@ final class WorkQueueQuery
             ->through(fn (WorkflowTransaction $transaction): array => $this->presenter->present($transaction, $actor));
     }
 
-    private function applyView(Builder $query, User $actor, string $view): Builder
-    {
+    private function applyView(
+        Builder $query,
+        User $actor,
+        string $view,
+        string $profile,
+    ): Builder {
         $terminal = $this->terminalStatuses();
         $departmentId = $actor->employee?->department_id;
         $employeeId = $actor->employee?->id;
+        $municipalScope = in_array($profile, ['executive_oversight', 'system_administration'], true);
 
-        if (in_array($view, [
+        if (! $municipalScope && in_array($view, [
             'all', 'needs_my_action', 'assigned_to_me', 'due_soon', 'overdue',
             'recently_updated', 'waiting_on_others', 'recently_completed',
         ], true)) {
@@ -240,13 +257,16 @@ final class WorkQueueQuery
 
         return match ($view) {
             'all' => $this->active($query, $terminal),
-            'needs_my_action', 'assigned_to_me' => $this->active($query, $terminal)
+            'needs_my_action' => $profile === 'executive_oversight'
+                ? $this->active($query, $terminal)->where('status', 'for_approval')
+                : $this->active($query, $terminal)->where('assigned_employee_id', $employeeId),
+            'assigned_to_me' => $this->active($query, $terminal)
                 ->where('assigned_employee_id', $employeeId),
             'due_soon' => $this->active($query, $terminal)
-                ->where('assigned_employee_id', $employeeId)
+                ->when(! $municipalScope, fn (Builder $scope) => $scope->where('assigned_employee_id', $employeeId))
                 ->whereBetween('due_at', [now(), now()->addDay()]),
             'overdue' => $this->active($query, $terminal)
-                ->where('assigned_employee_id', $employeeId)
+                ->when(! $municipalScope, fn (Builder $scope) => $scope->where('assigned_employee_id', $employeeId))
                 ->whereNotNull('due_at')
                 ->where('due_at', '<', now()),
             'recently_updated' => $this->active($query, $terminal)

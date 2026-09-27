@@ -13,9 +13,13 @@ final class WorkQueueItemPresenter
     {
         $active = ! in_array($transaction->status, $this->terminalStatuses(), true);
         $employeeId = $actor->employee?->id;
-        $requiresAction = $active
-            && $employeeId
-            && (int) $transaction->assigned_employee_id === (int) $employeeId;
+        $executiveDecision = $active
+            && $actor->isRole('mayor_approver')
+            && $transaction->status === 'for_approval';
+        $requiresAction = $executiveDecision
+            || ($active
+                && $employeeId
+                && (int) $transaction->assigned_employee_id === (int) $employeeId);
 
         return [
             'id' => $transaction->id,
