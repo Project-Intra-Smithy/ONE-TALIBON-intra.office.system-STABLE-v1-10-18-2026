@@ -55,10 +55,12 @@ type Overview = {
         office_issuances: number;
         municipality_wide: number;
     };
+    recent_for_me: Memo[];
+    recent_office_issuances: Memo[];
 };
 
 type Card = {
-    key: string;
+    key: keyof Overview['counts'];
     label: string;
     detail: string;
     icon: LucideIcon;
@@ -68,52 +70,77 @@ type Card = {
 };
 
 const cards: Card[] = [
-    { key: 'for_me', label: 'For Me', detail: 'Memoranda delivered to you', icon: Inbox, tone: 'border-[#cfe6d5] bg-[#eef8f1] text-[#17633f]' },
-    { key: 'needs_acknowledgement', label: 'Needs Acknowledgement', detail: 'Awaiting your acknowledgement', icon: MailCheck, tone: 'border-[#f0dfb4] bg-[#fff8e8] text-[#9a6a08]' },
-    { key: 'unread', label: 'Unread', detail: 'Not yet opened', icon: Eye, tone: 'border-[#cfe0f6] bg-[#eef5ff] text-[#265fa8]' },
-    { key: 'acknowledged', label: 'Acknowledged', detail: 'Acknowledgement recorded', icon: CheckCircle2, tone: 'border-[#d9dfdc] bg-[#f5f7f6] text-[#53635b]' },
-    { key: 'office_issuances', label: 'Office Issuances', detail: 'Published by your issuing office', icon: Send, tone: 'border-[#ddd2f3] bg-[#f5f0ff] text-[#7150a8]', publisherOnly: true },
+    { key: 'unread', label: 'New to Me', detail: 'Delivered but not yet opened', icon: Eye, tone: 'border-[#cfe0f6] bg-[#eef5ff] text-[#265fa8]' },
+    { key: 'needs_acknowledgement', label: 'Needs Acknowledgement', detail: 'Waiting for your acknowledgement', icon: MailCheck, tone: 'border-[#f0dfb4] bg-[#fff8e8] text-[#9a6a08]' },
+    { key: 'for_me', label: 'For Me', detail: 'All memoranda delivered to you', icon: Inbox, tone: 'border-[#cfe6d5] bg-[#eef8f1] text-[#17633f]' },
+    { key: 'office_issuances', label: 'Office Issuances', detail: 'Published under your office authority', icon: Send, tone: 'border-[#ddd2f3] bg-[#f5f0ff] text-[#7150a8]', publisherOnly: true },
+    { key: 'acknowledged', label: 'Acknowledged', detail: 'Acknowledgement already recorded', icon: CheckCircle2, tone: 'border-[#d9dfdc] bg-[#f5f7f6] text-[#53635b]' },
     { key: 'municipality_wide', label: 'Municipality-wide', detail: "Mayor's Office issuances to all", icon: Landmark, tone: 'border-[#cae2d8] bg-[#edf7f3] text-[#1f6b50]', municipalOnly: true },
 ];
 
 const publicationContext = (value: string) => {
     const date = new Date(value);
-    const exact = date.toLocaleString('en-PH', { timeZone: 'Asia/Manila', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+    const exact = date.toLocaleString('en-PH', {
+        timeZone: 'Asia/Manila',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+    });
     const elapsedMinutes = Math.floor((Date.now() - date.getTime()) / 60000);
     if (elapsedMinutes >= 0 && elapsedMinutes < 1) return { relative: 'Just now', exact };
     if (elapsedMinutes >= 1 && elapsedMinutes < 60) return { relative: elapsedMinutes + ' min ago', exact };
     if (elapsedMinutes >= 60 && elapsedMinutes < 24 * 60) return { relative: Math.floor(elapsedMinutes / 60) + ' hr ago', exact };
     if (elapsedMinutes >= 24 * 60 && elapsedMinutes < 48 * 60) return { relative: 'Yesterday', exact };
-    return { relative: date.toLocaleDateString('en-PH', { timeZone: 'Asia/Manila', month: 'short', day: 'numeric', year: 'numeric' }), exact };
+    return {
+        relative: date.toLocaleDateString('en-PH', {
+            timeZone: 'Asia/Manila',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+        }),
+        exact,
+    };
 };
 
 const viewLabels: Record<string, string> = {
     for_me: 'For Me',
     needs_acknowledgement: 'Needs Acknowledgement',
-    unread: 'Unread',
+    unread: 'New to Me',
     acknowledged: 'Acknowledged',
     office_issuances: 'Office Issuances',
     municipality_wide: 'Municipality-wide',
 };
 
-function MemoRows({ memoranda, authority }: { memoranda: Memo[]; authority: Authority }) {
+function MemoRows({
+    memoranda,
+    authority,
+    compact = false,
+}: {
+    memoranda: Memo[];
+    authority: Authority;
+    compact?: boolean;
+}) {
     return (
         <div className="divide-y divide-[var(--municipal-border)]">
             {memoranda.map((memo) => {
                 const publication = publicationContext(memo.published_at);
                 const recipient = memo.recipients?.[0] ?? null;
-                const needsAck = memo.requires_acknowledgement && recipient && !recipient.acknowledged_at;
+                const isNew = Boolean(recipient && !recipient.viewed_at);
+                const needsAck = Boolean(memo.requires_acknowledgement && recipient && !recipient.acknowledged_at);
 
                 return (
                     <Link
                         key={memo.id}
                         href={'/memoranda/' + memo.id}
-                        className="grid min-w-0 gap-2 px-3 py-2.5 transition hover:bg-[var(--municipal-hover)] lg:grid-cols-[minmax(0,1.6fr)_minmax(150px,.7fr)_minmax(160px,.8fr)_80px] lg:items-center"
+                        className={`grid min-w-0 gap-2 transition hover:bg-[var(--municipal-hover)] ${compact ? 'px-2.5 py-2' : 'px-3 py-2.5'} lg:grid-cols-[minmax(0,1.6fr)_minmax(140px,.7fr)_minmax(150px,.8fr)_70px] lg:items-center`}
                     >
                         <div className="min-w-0">
                             <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
                                 <span className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-brand)]">{memo.memo_number}</span>
                                 <span className="text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">{memo.classification}</span>
+                                {isNew ? <span className="rounded-full bg-[#eef5ff] px-1.5 py-0.5 text-[8px] font-bold uppercase text-[#265fa8]">New</span> : null}
                             </div>
                             <div className="mt-0.5 truncate text-[11px] font-semibold leading-4 text-[var(--municipal-text)]">{memo.title}</div>
                             <div className="mt-0.5 truncate text-[9px] text-[var(--municipal-muted)]">
@@ -128,13 +155,13 @@ function MemoRows({ memoranda, authority }: { memoranda: Memo[]; authority: Auth
                         </div>
 
                         <div className="flex flex-wrap items-center gap-1">
-                            {needsAck ? <span className="rounded-full bg-[#fff8e8] px-2 py-1 text-[9px] font-bold uppercase text-[#9a6a08]">Acknowledgement required</span> : null}
+                            {needsAck ? <span className="rounded-full bg-[#fff8e8] px-2 py-1 text-[9px] font-bold uppercase text-[#9a6a08]">Acknowledge</span> : null}
                             {recipient?.acknowledged_at ? <span className="rounded-full bg-[#eef8f1] px-2 py-1 text-[9px] font-bold uppercase text-[#17633f]">Acknowledged</span> : null}
                             {!recipient && authority.canPublish ? <span className="rounded-full bg-[#f5f0ff] px-2 py-1 text-[9px] font-bold uppercase text-[#7150a8]">{memo.recipients_count} recipients</span> : null}
                             {!needsAck && !recipient?.acknowledged_at && recipient ? <span className="rounded-full bg-[var(--municipal-surface-subtle)] px-2 py-1 text-[9px] font-bold uppercase text-[var(--municipal-muted)]">Delivered</span> : null}
                         </div>
 
-                        <div className="inline-flex min-h-9 items-center justify-end gap-1 text-[10px] font-bold text-[var(--municipal-brand)]">
+                        <div className="inline-flex min-h-8 items-center justify-end gap-1 text-[10px] font-bold text-[var(--municipal-brand)]">
                             Open <ArrowRight size={12} aria-hidden="true" />
                         </div>
                     </Link>
@@ -142,17 +169,28 @@ function MemoRows({ memoranda, authority }: { memoranda: Memo[]; authority: Auth
             })}
 
             {!memoranda.length ? (
-                <div className="px-5 py-8 text-center">
-                    <FileText className="mx-auto text-[var(--municipal-muted)]" size={24} aria-hidden="true" />
-                    <div className="mt-2 text-xs font-bold text-[var(--municipal-text)]">No memoranda in this view.</div>
-                    <div className="mt-1 text-[10px] text-[var(--municipal-muted)]">Published memoranda appear here when they are delivered or issued within your authority.</div>
+                <div className={compact ? 'px-3 py-4' : 'px-5 py-8'}>
+                    <div className="flex items-center gap-2 text-[10px] text-[var(--municipal-muted)]">
+                        <FileText size={15} aria-hidden="true" />
+                        <span>Nothing in this view right now.</span>
+                    </div>
                 </div>
             ) : null}
         </div>
     );
 }
 
-export default function Index({ memoranda, authority, overview, view }: { memoranda: Memo[]; authority: Authority; overview: Overview; view: string }) {
+export default function Index({
+    memoranda,
+    authority,
+    overview,
+    view,
+}: {
+    memoranda: Memo[];
+    authority: Authority;
+    overview: Overview;
+    view: string;
+}) {
     const visibleCards = cards.filter((card) => {
         if (card.publisherOnly && !authority.canPublish) return false;
         if (card.municipalOnly && !authority.municipalityWide) return false;
@@ -165,6 +203,8 @@ export default function Index({ memoranda, authority, overview, view }: { memora
         replace: true,
     });
 
+    const officeLabel = authority.issuingOffice?.shortName || authority.issuingOffice?.name;
+
     return (
         <AppLayout title="Official Memoranda">
             <PageFrame width="standard" density="compact">
@@ -172,7 +212,9 @@ export default function Index({ memoranda, authority, overview, view }: { memora
                     eyebrow="Formal internal issuance"
                     title="Official Memoranda"
                     icon={FileText}
-                    description="Formal numbered internal issuances with defined recipients and acknowledgement tracking."
+                    description={authority.canPublish && officeLabel
+                        ? `Formal issuances · ${officeLabel} · ${authority.authorityLabel}`
+                        : 'Formal numbered internal issuances delivered to your account.'}
                     aside={authority.canPublish ? (
                         <Link href="/memoranda/create" className="inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-[var(--municipal-brand-deep)] px-3 text-xs font-bold text-white">
                             <Plus size={15} aria-hidden="true" /> New Memorandum
@@ -185,15 +227,13 @@ export default function Index({ memoranda, authority, overview, view }: { memora
                         <section aria-labelledby="memoranda-glance">
                             <div className="mb-1 flex items-center justify-between gap-3">
                                 <h2 id="memoranda-glance" className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">At a glance</h2>
-                                {authority.canPublish && authority.issuingOffice ? (
-                                    <span className="text-[9px] text-[var(--municipal-muted)]">{authority.authorityLabel} · {authority.issuingOffice.shortName || authority.issuingOffice.name}</span>
-                                ) : null}
+                                <span className="text-[9px] text-[var(--municipal-muted)]">Incoming and issuing authority are kept distinct</span>
                             </div>
 
                             <div className={`grid gap-1.5 sm:grid-cols-2 ${visibleCards.length >= 5 ? 'xl:grid-cols-5' : 'xl:grid-cols-4'}`}>
                                 {visibleCards.map((card) => {
                                     const Icon = card.icon;
-                                    const count = overview.counts[card.key as keyof Overview['counts']] ?? 0;
+                                    const count = overview.counts[card.key] ?? 0;
                                     return (
                                         <button
                                             key={card.key}
@@ -213,15 +253,30 @@ export default function Index({ memoranda, authority, overview, view }: { memora
                             </div>
                         </section>
 
-                        <section className="municipal-panel overflow-hidden" aria-label="Recent memoranda">
-                            <header className="flex min-h-10 items-center justify-between gap-3 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-3 py-2">
-                                <div>
-                                    <h2 className="text-xs font-bold text-[var(--municipal-text)]">Recent Memoranda</h2>
-                                    <p className="text-[9px] text-[var(--municipal-muted)]">Latest formal issuances visible to your account</p>
+                        <section className={`grid min-w-0 gap-2 ${authority.canPublish ? 'lg:grid-cols-2' : ''}`} aria-label="Memorandum activity">
+                            <div className="municipal-panel min-w-0 overflow-hidden">
+                                <header className="flex min-h-10 items-center justify-between gap-3 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-3 py-2">
+                                    <div className="min-w-0">
+                                        <h2 className="text-xs font-bold text-[var(--municipal-text)]">Recently Delivered</h2>
+                                        <p className="truncate text-[9px] text-[var(--municipal-muted)]">Newest memoranda delivered to you</p>
+                                    </div>
+                                    <button type="button" onClick={() => openView('for_me')} className="shrink-0 text-[10px] font-bold text-[var(--municipal-brand)]">View all</button>
+                                </header>
+                                <MemoRows memoranda={overview.recent_for_me} authority={authority} compact />
+                            </div>
+
+                            {authority.canPublish ? (
+                                <div className="municipal-panel min-w-0 overflow-hidden">
+                                    <header className="flex min-h-10 items-center justify-between gap-3 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-3 py-2">
+                                        <div className="min-w-0">
+                                            <h2 className="text-xs font-bold text-[var(--municipal-text)]">Recent Office Issuances</h2>
+                                            <p className="truncate text-[9px] text-[var(--municipal-muted)]">Latest memoranda published under {officeLabel || 'your office'} authority</p>
+                                        </div>
+                                        <button type="button" onClick={() => openView('office_issuances')} className="shrink-0 text-[10px] font-bold text-[var(--municipal-brand)]">View all</button>
+                                    </header>
+                                    <MemoRows memoranda={overview.recent_office_issuances} authority={authority} compact />
                                 </div>
-                                <button type="button" onClick={() => openView('for_me')} className="text-[10px] font-bold text-[var(--municipal-brand)]">View mine</button>
-                            </header>
-                            <MemoRows memoranda={memoranda} authority={authority} />
+                            ) : null}
                         </section>
                     </div>
                 ) : (

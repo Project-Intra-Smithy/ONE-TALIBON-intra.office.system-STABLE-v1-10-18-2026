@@ -69,6 +69,21 @@ class MemorandumController extends Controller
             $overview['counts'][$key] = $scope(clone $base)->count();
         }
 
+        $recentForMe = $scopes['for_me'](clone $base)
+            ->latest('published_at')
+            ->limit(4)
+            ->get();
+
+        $recentOfficeIssuances = $authority['canPublish'] && $departmentId > 0
+            ? $scopes['office_issuances'](clone $base)
+                ->latest('published_at')
+                ->limit(4)
+                ->get()
+            : collect();
+
+        $overview['recent_for_me'] = $recentForMe;
+        $overview['recent_office_issuances'] = $recentOfficeIssuances;
+
         $query = clone $base;
         if ($view !== 'overview' && isset($scopes[$view])) {
             $scopes[$view]($query);
