@@ -13,6 +13,15 @@ final class Bh2FastRenderHardeningTest extends TestCase
 {
     use RefreshDatabase;
 
+    private const ASSET_VERSION_SEED = 'bh2-test-assets';
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config()->set('app.asset_url', self::ASSET_VERSION_SEED);
+    }
+
     public function test_document_center_records_mode_does_not_resolve_attached_file_archive(): void
     {
         $this->engineeringUser();
@@ -105,6 +114,7 @@ final class Bh2FastRenderHardeningTest extends TestCase
     {
         return $this->withHeaders([
             'X-Inertia' => 'true',
+            'X-Inertia-Version' => hash('xxh128', self::ASSET_VERSION_SEED),
             'X-Requested-With' => 'XMLHttpRequest',
             'Accept' => 'text/html, application/xhtml+xml',
         ])->get($url);
