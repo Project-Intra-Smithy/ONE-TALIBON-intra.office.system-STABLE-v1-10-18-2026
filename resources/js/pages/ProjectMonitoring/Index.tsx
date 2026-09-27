@@ -35,15 +35,26 @@ export default function Index({ items = [], filter = null, summary }: Props) {
     }, [filters]);
 
     return <AppLayout title="Project Monitoring">
-        <PageFrame className="max-w-[1480px]">
-            <PageHeader eyebrow="Planning and implementation" title="Project Monitoring" description="Municipal project register with physical and financial progress, implementation milestones, current concerns, funding context, and plan relationships." icon={FolderKanban} aside={<div className="rounded-lg border border-slate-200 bg-white px-3 py-2 dark:border-slate-700 dark:bg-[#142236]"><div className="text-[10px] font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">Current result</div><div className="mt-0.5 text-xs font-bold text-slate-950 dark:text-slate-100">{projects.length} of {municipalProjects.length} projects</div></div>} />
-            <ProjectSummary projects={projects} />
+        <PageFrame className="max-w-[1480px]" density="compact">
+            <PageHeader
+                eyebrow="Planning and implementation"
+                title="Projects & PPAs"
+                description="Reference project monitoring with physical and financial progress. Values shown here are prototype reference data, not live implementation measurements."
+                icon={FolderKanban}
+                aside={<div className="text-right text-xs text-[var(--municipal-muted)]"><strong className="text-[var(--municipal-text)]">{projects.length}</strong> of {municipalProjects.length} projects</div>}
+            />
             <ProjectFilters filters={filters} onChange={(value) => { setFilters(value); setSelected(null); }} />
-            <div className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1fr)_340px]">
-                <ProjectRegister projects={projects} selectedId={selected?.id} onSelect={setSelected} />
-                <div className="hidden min-w-0 xl:block"><ProjectDetailPanel project={selected} onClose={() => setSelected(null)} /></div>
-            </div>
-            {summary ? <details className="group rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]"><summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-2.5 marker:hidden"><div><div className="text-xs font-bold text-slate-900 dark:text-slate-100">Operational monitoring register</div><div className="mt-0.5 text-[10px] text-slate-500 dark:text-slate-400">Additional operational monitoring context</div></div><span className="text-xs font-semibold text-blue-700 group-open:hidden dark:text-blue-300">Show</span><span className="hidden text-xs font-semibold text-blue-700 group-open:inline dark:text-blue-300">Hide</span></summary><div className="border-t border-slate-100 p-3 dark:border-slate-700"><OperationalRegister items={items} filter={filter} summary={summary} /></div></details> : null}
+            <ProjectRegister projects={projects} selectedId={selected?.id} onSelect={setSelected} />
+            {selected ? <ProjectDetailPanel project={selected} onClose={() => setSelected(null)} /> : null}
+            <details className="group municipal-panel">
+                <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-xs font-semibold marker:hidden">
+                    <span>Project summary</span>
+                    <span className="text-[var(--municipal-brand)] group-open:hidden">Show</span>
+                    <span className="hidden text-[var(--municipal-brand)] group-open:inline">Hide</span>
+                </summary>
+                <div className="border-t border-[var(--municipal-border)] p-3"><ProjectSummary projects={projects} /></div>
+            </details>
+            {summary ? <details className="group municipal-panel"><summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 marker:hidden"><div><div className="text-xs font-bold">Operational monitoring register</div><div className="mt-0.5 text-[10px] text-[var(--municipal-muted)]">Backend operational records · separate source and access scope</div></div><span className="text-xs font-semibold text-[var(--municipal-brand)] group-open:hidden">Show</span><span className="hidden text-xs font-semibold text-[var(--municipal-brand)] group-open:inline">Hide</span></summary><div className="border-t border-[var(--municipal-border)] p-3"><OperationalRegister items={items} filter={filter} summary={summary} /></div></details> : null}
         </PageFrame>
     </AppLayout>;
 }
