@@ -13,7 +13,7 @@ use RuntimeException;
 class WorkforceDemoSeeder extends Seeder
 {
     private const TARGET_EMPLOYEE_COUNT = 350;
-    private const TEST_TARGET_EMPLOYEE_COUNT = 7;
+    private const TEST_TARGET_EMPLOYEE_COUNT = 40;
 
     public function run(): void
     {
