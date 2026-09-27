@@ -94,6 +94,13 @@ export default function EmployeeDirectory({ employees, departments, filters, sum
         });
     };
 
+    const firstResult = employees.data.length === 0
+        ? 0
+        : ((employees.current_page - 1) * employees.per_page) + 1;
+    const lastResult = employees.data.length === 0
+        ? 0
+        : firstResult + employees.data.length - 1;
+
     return (
         <AppLayout title="Staff Directory">
             <PageFrame density="compact">
@@ -168,6 +175,13 @@ export default function EmployeeDirectory({ employees, departments, filters, sum
                             Reset
                         </button>
                     </form>
+
+                    <div className="flex min-h-9 items-center justify-between gap-3 border-b border-slate-100 px-3 py-2 text-[11px] dark:border-slate-700">
+                        <div className="font-bold text-slate-900 dark:text-slate-100">Staff directory register</div>
+                        <div className="text-right text-slate-500 dark:text-slate-400">
+                            Showing <span className="font-semibold text-slate-700 dark:text-slate-200">{firstResult}–{lastResult}</span> of <span className="font-semibold text-slate-700 dark:text-slate-200">{employees.total}</span> employees
+                        </div>
+                    </div>
 
                     <div className="divide-y divide-slate-100 dark:divide-slate-700 md:hidden" aria-label="Employee directory results">
                         {employees.data.map((employee) => (
