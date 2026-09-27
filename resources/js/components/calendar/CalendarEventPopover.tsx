@@ -29,10 +29,10 @@ export default function CalendarEventPopover({ event, origin, onClose }: { event
         ref={dialog}
         onCancel={(cancel) => { cancel.preventDefault(); close(); }}
         onClick={(click) => { if (click.target === dialog.current) close(); }}
-        className="w-[min(92vw,660px)] rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-0 text-[var(--municipal-text)] shadow-2xl backdrop:bg-slate-950/35"
+        className="fixed left-1/2 top-1/2 m-0 w-[min(92vw,640px)] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-0 text-[var(--municipal-text)] shadow-2xl backdrop:bg-slate-950/35"
     >
         {event && <>
-            <header className="flex items-start justify-between gap-3 border-b border-[var(--municipal-border)] px-3.5 py-3">
+            <header className="flex items-start justify-between gap-3 border-b border-[var(--municipal-border)] px-3 py-2.5">
                 <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-1.5 text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-brand)]">
                         <span>{event.event_type.replaceAll('_', ' ')}</span>
@@ -46,7 +46,7 @@ export default function CalendarEventPopover({ event, origin, onClose }: { event
                 </button>
             </header>
 
-            <div className="space-y-2.5 px-3.5 py-3">
+            <div className="space-y-2 px-3 py-2.5">
                 <dl className="grid gap-2 sm:grid-cols-2">
                     <Detail icon={<CalendarDays size={13} />} label="Schedule" value={schedule} />
                     {event.location && <Detail icon={<MapPin size={13} />} label="Venue" value={event.location} />}
@@ -76,7 +76,7 @@ function timedSchedule(event: CalendarEvent): string {
 }
 
 function Detail({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
-    return <div className="rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-2.5 py-2">
+    return <div className="rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-2.5 py-1.5">
         <dt className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">{icon}{label}</dt>
         <dd className="mt-1 text-[11px] leading-4 text-[var(--municipal-text)]">{value}</dd>
     </div>;
