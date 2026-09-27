@@ -31,14 +31,7 @@ export default function PlansIndex() {
     const filteredPlans = useMemo(() => {
         const query = filters.query.trim().toLowerCase();
         return municipalPlans.filter((plan) => {
-            const searchText = [
-                plan.code,
-                plan.title,
-                plan.leadOffice,
-                plan.documentRef,
-                ...plan.coordinatingOffices,
-            ].join(' ').toLowerCase();
-
+            const searchText = [plan.code, plan.title, plan.leadOffice, plan.documentRef, ...plan.coordinatingOffices].join(' ').toLowerCase();
             return (
                 (!query || searchText.includes(query)) &&
                 (filters.status === 'All' || plan.status === filters.status) &&
@@ -61,7 +54,6 @@ export default function PlansIndex() {
 
     useEffect(() => {
         if (!selectedPlanId || typeof document === 'undefined') return;
-
         const previousOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
         closeButtonRef.current?.focus();
@@ -74,24 +66,15 @@ export default function PlansIndex() {
                 window.requestAnimationFrame(() => document.getElementById(`plan-trigger-${planId}`)?.focus());
                 return;
             }
-
             if (event.key !== 'Tab' || !dialogRef.current) return;
-
-            const focusable = Array.from(
-                dialogRef.current.querySelectorAll<HTMLElement>(
-                    'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
-                ),
-            );
-
+            const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'));
             if (focusable.length === 0) {
                 event.preventDefault();
                 dialogRef.current.focus();
                 return;
             }
-
             const first = focusable[0];
             const last = focusable[focusable.length - 1];
-
             if (event.shiftKey && document.activeElement === first) {
                 event.preventDefault();
                 last.focus();
@@ -102,7 +85,6 @@ export default function PlansIndex() {
         };
 
         document.addEventListener('keydown', onKeyDown);
-
         return () => {
             document.body.style.overflow = previousOverflow;
             document.removeEventListener('keydown', onKeyDown);
@@ -112,18 +94,12 @@ export default function PlansIndex() {
     return (
         <AppLayout title="LGU Plans Library">
             <PageFrame width="standard" density="compact">
-                <PageHeader
-                    eyebrow="Municipality of Talibon"
-                    title="LGU Plans Library"
-                    description="Municipal development plans · Prototype reference data"
-                    icon={ClipboardList}
-                />
+                <PageHeader eyebrow="Municipality of Talibon" title="LGU Plans Library" description="Municipal development plans · Prototype reference data" icon={ClipboardList} />
                 <PlanFilterBar filters={filters} leadOffices={leadOffices} resultCount={filteredPlans.length} onChange={(nextFilters) => { setFilters(nextFilters); setSelectedPlanId(null); }} />
                 <section aria-label="Plans library" className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                     {filteredPlans.map((plan) => <PlanCard key={plan.id} plan={plan} selected={selectedPlanId === plan.id} onSelect={() => setSelectedPlanId(plan.id)} />)}
                     {filteredPlans.length === 0 && <p role="status" className="py-3 text-sm text-[var(--municipal-muted)] sm:col-span-2 xl:col-span-3">No plans match the current filters.</p>}
                 </section>
-
                 <details className="group min-w-0 border-t border-[var(--municipal-border)] text-[var(--municipal-muted)]">
                     <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-[13px] font-semibold marker:hidden">
                         <span>Planning context</span>
@@ -139,12 +115,7 @@ export default function PlansIndex() {
             </PageFrame>
 
             {selectedPlan && (
-                <div
-                    className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/45 p-3 sm:p-6"
-                    onMouseDown={(event) => {
-                        if (event.currentTarget === event.target) closePlanDetails();
-                    }}
-                >
+                <div className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/45 p-3 sm:p-5" onMouseDown={(event) => { if (event.currentTarget === event.target) closePlanDetails(); }}>
                     <div
                         id="selected-plan-details"
                         ref={dialogRef}
@@ -153,32 +124,18 @@ export default function PlansIndex() {
                         aria-labelledby="selected-plan-title"
                         aria-describedby="selected-plan-description"
                         tabIndex={-1}
-                        className="municipal-panel max-h-[calc(100vh-1.5rem)] w-full max-w-4xl overflow-y-auto rounded-[var(--municipal-radius-overlay)] border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] shadow-2xl sm:max-h-[calc(100vh-3rem)]"
+                        className="municipal-panel max-h-[calc(100vh-1.5rem)] w-full max-w-3xl overflow-y-auto rounded-[var(--municipal-radius-overlay)] border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] shadow-2xl sm:max-h-[calc(100vh-2.5rem)]"
                     >
-                        <header className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-4 py-3 sm:px-5">
+                        <header className="sticky top-0 z-10 flex items-start justify-between gap-3 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 py-2.5 sm:px-4">
                             <div className="min-w-0">
-                                <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--municipal-brand)]">
-                                    {selectedPlan.code} {selectedPlan.coverageStart === selectedPlan.coverageEnd ? selectedPlan.coverageStart : `${selectedPlan.coverageStart}–${selectedPlan.coverageEnd}`}
-                                </p>
-                                <h2 id="selected-plan-title" className="mt-1 break-words text-lg font-bold leading-6 text-[var(--municipal-text)]">
-                                    {selectedPlan.title}
-                                </h2>
-                                <p id="selected-plan-description" className="mt-1 text-xs text-[var(--municipal-muted)]">
-                                    Plan reference details
-                                </p>
+                                <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--municipal-brand)]">{selectedPlan.code}</p>
+                                <h2 id="selected-plan-title" className="mt-0.5 break-words text-base font-bold leading-6 text-[var(--municipal-text)]">{selectedPlan.title}</h2>
+                                <p id="selected-plan-description" className="mt-0.5 text-[11px] text-[var(--municipal-muted)]">Plan reference details</p>
                             </div>
-                            <button
-                                ref={closeButtonRef}
-                                type="button"
-                                onClick={closePlanDetails}
-                                className="min-h-11 shrink-0 rounded-md px-3 text-xs font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                                aria-label={`Close details for ${selectedPlan.code}`}
-                            >
-                                Close
-                            </button>
+                            <button ref={closeButtonRef} type="button" onClick={closePlanDetails} className="min-h-11 shrink-0 rounded-md px-3 text-xs font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" aria-label={`Close details for ${selectedPlan.code}`}>Close</button>
                         </header>
 
-                        <dl className="grid gap-x-6 gap-y-4 p-4 text-sm leading-6 sm:grid-cols-2 sm:p-5">
+                        <dl className="grid gap-x-5 gap-y-2.5 p-3 text-[13px] leading-5 sm:grid-cols-2 sm:p-4">
                             {[
                                 ['Planning horizon', selectedPlan.horizon],
                                 ['Lead office', selectedPlan.leadOffice],
@@ -193,7 +150,7 @@ export default function PlansIndex() {
                                 ['Record completion', `${selectedPlan.sectionsComplete} of ${selectedPlan.sectionsTotal} sections`],
                             ].map(([label, value]) => (
                                 <div key={label} className="min-w-0">
-                                    <dt className="text-xs font-semibold text-[var(--municipal-text)]">{label}</dt>
+                                    <dt className="text-[11px] font-semibold text-[var(--municipal-text)]">{label}</dt>
                                     <dd className="break-words text-[var(--municipal-muted)]">{value}</dd>
                                 </div>
                             ))}
