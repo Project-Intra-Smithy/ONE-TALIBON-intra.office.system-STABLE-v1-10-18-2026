@@ -11,33 +11,47 @@ use Illuminate\Validation\ValidationException;
 
 class MemorandumService
 {
-    public function __construct(private readonly AuditLogger $audit)
-    {
+    public function __construct(
+        private readonly AuditLogger $audit,
+        private readonly MemorandumAuthority $authority,
+    ) {
     }
 
     public function publish(User $actor, array $data): Memorandum
     {
-        $actor->loadMissing('employee.department');
-        $departmentId = $actor->employee?->department_id;
+        $authority = $this->authority->requirePublisher($actor);
+        $departmentId = (int) ($authority['issuingOffice']['id'] ?? 0);
 
-        if (! $departmentId) {
-            throw ValidationException::withMessages(['issuer' => 'The issuing account must have an employee department.']);
+        if ($departmentId <= 0) {
+            throw ValidationException::withMessages([
+                'issuer' => 'The issuing account must have an active employee department.',
+            ]);
         }
 
-        $recipients = $this->resolveRecipients($data['audience_type'], $data['audience_ids'] ?? []);
+        $audienceType = (string) ($data['audience_type'] ?? '');
+        if (! in_array($audienceType, $authority['allowedAudienceTypes'], true)) {
+            throw ValidationException::withMessages([
+                'audience_type' => 'The selected audience is outside this issuing authority.',
+            ]);
+        }
+
+        $audienceIds = array_values(array_unique(array_map('intval', $data['audience_ids'] ?? [])));
+        $recipients = $this->resolveRecipients($actor, $authority, $audienceType, $audienceIds);
 
         if ($recipients->isEmpty()) {
-            throw ValidationException::withMessages(['audience_ids' => 'The selected audience has no active employee accounts.']);
+            throw ValidationException::withMessages([
+                'audience_ids' => 'The selected audience has no active employee accounts.',
+            ]);
         }
 
-        return DB::transaction(function () use ($actor, $data, $departmentId, $recipients): Memorandum {
+        return DB::transaction(function () use ($actor, $data, $departmentId, $recipients, $audienceType): Memorandum {
             $memo = Memorandum::query()->create([
                 'memo_number' => $data['memo_number'],
                 'title' => $data['title'],
                 'body' => $data['body'],
                 'issued_by_user_id' => $actor->id,
                 'issued_by_department_id' => $departmentId,
-                'audience_type' => $data['audience_type'],
+                'audience_type' => $audienceType,
                 'requires_acknowledgement' => (bool) ($data['requires_acknowledgement'] ?? false),
                 'classification' => $data['classification'] ?? 'internal',
                 'status' => 'published',
@@ -105,13 +119,71 @@ class MemorandumService
         });
     }
 
-    private function resolveRecipients(string $audienceType, array $audienceIds): Collection
-    {
-        $query = User::query()->where('is_active', true)->whereHas('employee', fn ($q) => $q->where('employment_status', 'active'));
+    /** @param array<string, mixed> $authority */
+    private function resolveRecipients(
+        User $actor,
+        array $authority,
+        string $audienceType,
+        array $audienceIds,
+    ): Collection {
+        $query = User::query()
+            ->where('is_active', true)
+            ->whereHas('employee', fn ($q) => $q->where('employment_status', 'active'));
+
+        if ($authority['scope'] === 'department') {
+            $departmentId = (int) $authority['issuingOffice']['id'];
+
+            if ($audienceType === 'departments') {
+                if ($audienceIds !== [$departmentId]) {
+                    throw ValidationException::withMessages([
+                        'audience_ids' => 'Department memoranda may only target the issuing office.',
+                    ]);
+                }
+
+                $query->whereHas('employee', fn ($q) => $q->where('department_id', $departmentId));
+            } elseif ($audienceType === 'employees') {
+                if ($audienceIds === []) {
+                    throw ValidationException::withMessages([
+                        'audience_ids' => 'Select at least one employee from the issuing office.',
+                    ]);
+                }
+
+                $outOfScope = User::query()
+                    ->where('is_active', true)
+                    ->whereHas('employee', fn ($q) => $q
+                        ->whereIn('id', $audienceIds)
+                        ->where('department_id', '!=', $departmentId))
+                    ->exists();
+
+                if ($outOfScope) {
+                    throw ValidationException::withMessages([
+                        'audience_ids' => 'Department memoranda cannot target employees outside the issuing office.',
+                    ]);
+                }
+
+                $query->whereHas('employee', fn ($q) => $q
+                    ->whereIn('id', $audienceIds)
+                    ->where('department_id', $departmentId));
+            }
+
+            return $query->get();
+        }
 
         if ($audienceType === 'departments') {
+            if ($audienceIds === []) {
+                throw ValidationException::withMessages([
+                    'audience_ids' => 'Select at least one department.',
+                ]);
+            }
+
             $query->whereHas('employee', fn ($q) => $q->whereIn('department_id', $audienceIds));
         } elseif ($audienceType === 'employees') {
+            if ($audienceIds === []) {
+                throw ValidationException::withMessages([
+                    'audience_ids' => 'Select at least one employee.',
+                ]);
+            }
+
             $query->whereHas('employee', fn ($q) => $q->whereIn('id', $audienceIds));
         }
 
