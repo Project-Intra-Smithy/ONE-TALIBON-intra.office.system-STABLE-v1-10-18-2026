@@ -11,15 +11,17 @@ use App\Models\TravelOrder;
 use App\Models\TravelOrderEvent;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Relations\Relation;
 
 final class DocumentArchiveQuery
 {
     public function __construct(
-        private readonly DocumentAccessService $access,
+        private readonly CorrespondenceAccessDecider $correspondenceAccess,
+        private readonly TravelOrderAccess $travelOrderAccess,
+        private readonly TransactionVisibilityQuery $transactionVisibility,
     ) {}
 
     /** @param array<string, mixed> $filters */
@@ -138,7 +140,7 @@ final class DocumentArchiveQuery
     {
         $actor->loadMissing('employee.department');
 
-        return Document::query()
+        $documents = Document::query()
             ->with([
                 'ownerDepartment:id,code,name,short_name',
                 'uploader:id,name',
@@ -146,17 +148,261 @@ final class DocumentArchiveQuery
             ])
             ->orderByDesc('created_at')
             ->orderByDesc('id')
-            ->get()
-            ->filter(fn (Document $document): bool => $this->access->canDownload($actor, $document))
-            ->map(fn (Document $document): array => $this->present($actor, $document))
+            ->get();
+
+        if ($documents->isEmpty()) {
+            return collect();
+        }
+
+        $links = $documents
+            ->pluck('links')
+            ->flatten(1)
+            ->filter(fn ($link): bool => $link instanceof DocumentLink)
+            ->values();
+
+        $linkIndex = $this->buildLinkIndex($actor, $links);
+
+        return $documents
+            ->filter(fn (Document $document): bool => $this->documentIsVisible($document, $linkIndex))
+            ->map(fn (Document $document): array => $this->present($actor, $document, $linkIndex))
             ->values();
     }
 
-    /** @return array<string, mixed> */
-    private function present(User $actor, Document $document): array
+    /**
+     * Build authorization and presentation context in bounded batches instead of
+     * resolving every document link and parent record independently.
+     *
+     * @param Collection<int, DocumentLink> $links
+     * @return array<string, array{family:string,parentId:int,authorized:bool,context:array<string,mixed>}>
+     */
+    private function buildLinkIndex(User $actor, Collection $links): array
+    {
+        $index = [];
+        $eventLinkIds = [
+            'correspondence' => [],
+            'transaction' => [],
+            'travel_order' => [],
+        ];
+
+        foreach ($links as $link) {
+            $key = $this->linkKey($link);
+            $type = Relation::getMorphedModel($link->linkable_type) ?? $link->linkable_type;
+            $id = (int) $link->linkable_id;
+
+            if ($type === CorrespondenceRecord::class) {
+                $index[$key] = ['family' => 'correspondence', 'parentId' => $id];
+            } elseif ($type === WorkflowTransaction::class) {
+                $index[$key] = ['family' => 'transaction', 'parentId' => $id];
+            } elseif ($type === TravelOrder::class) {
+                $index[$key] = ['family' => 'travel_order', 'parentId' => $id];
+            } elseif ($type === CorrespondenceEvent::class) {
+                $eventLinkIds['correspondence'][$key] = $id;
+            } elseif ($type === TransactionEvent::class) {
+                $eventLinkIds['transaction'][$key] = $id;
+            } elseif ($type === TravelOrderEvent::class) {
+                $eventLinkIds['travel_order'][$key] = $id;
+            }
+        }
+
+        if ($eventLinkIds['correspondence'] !== []) {
+            $parents = CorrespondenceEvent::query()
+                ->whereIn('id', array_values($eventLinkIds['correspondence']))
+                ->pluck('correspondence_record_id', 'id');
+
+            foreach ($eventLinkIds['correspondence'] as $key => $eventId) {
+                $parentId = (int) ($parents[$eventId] ?? 0);
+                if ($parentId > 0) {
+                    $index[$key] = ['family' => 'correspondence', 'parentId' => $parentId];
+                }
+            }
+        }
+
+        if ($eventLinkIds['transaction'] !== []) {
+            $parents = TransactionEvent::query()
+                ->whereIn('id', array_values($eventLinkIds['transaction']))
+                ->pluck('transaction_id', 'id');
+
+            foreach ($eventLinkIds['transaction'] as $key => $eventId) {
+                $parentId = (int) ($parents[$eventId] ?? 0);
+                if ($parentId > 0) {
+                    $index[$key] = ['family' => 'transaction', 'parentId' => $parentId];
+                }
+            }
+        }
+
+        if ($eventLinkIds['travel_order'] !== []) {
+            $parents = TravelOrderEvent::query()
+                ->whereIn('id', array_values($eventLinkIds['travel_order']))
+                ->pluck('travel_order_id', 'id');
+
+            foreach ($eventLinkIds['travel_order'] as $key => $eventId) {
+                $parentId = (int) ($parents[$eventId] ?? 0);
+                if ($parentId > 0) {
+                    $index[$key] = ['family' => 'travel_order', 'parentId' => $parentId];
+                }
+            }
+        }
+
+        $ids = [
+            'correspondence' => [],
+            'transaction' => [],
+            'travel_order' => [],
+        ];
+
+        foreach ($index as $entry) {
+            $ids[$entry['family']][] = (int) $entry['parentId'];
+        }
+
+        foreach ($ids as $family => $values) {
+            $ids[$family] = array_values(array_unique(array_filter($values)));
+        }
+
+        $authorized = [
+            'correspondence' => [],
+            'transaction' => [],
+            'travel_order' => [],
+        ];
+
+        if ($ids['correspondence'] !== []) {
+            $query = CorrespondenceRecord::query()->whereIn('id', $ids['correspondence']);
+            $this->correspondenceAccess->scopeVisibleTo($query, $actor);
+            $authorized['correspondence'] = array_fill_keys(
+                $query->pluck('id')->map(fn ($id): int => (int) $id)->all(),
+                true,
+            );
+        }
+
+        if ($ids['transaction'] !== []) {
+            $authorized['transaction'] = array_fill_keys(
+                $this->transactionVisibility
+                    ->scope($actor)
+                    ->whereIn('id', $ids['transaction'])
+                    ->pluck('id')
+                    ->map(fn ($id): int => (int) $id)
+                    ->all(),
+                true,
+            );
+        }
+
+        if ($ids['travel_order'] !== []) {
+            $authorized['travel_order'] = array_fill_keys(
+                $this->travelOrderAccess
+                    ->scopeVisibleTo(TravelOrder::query(), $actor)
+                    ->whereIn('id', $ids['travel_order'])
+                    ->pluck('id')
+                    ->map(fn ($id): int => (int) $id)
+                    ->all(),
+                true,
+            );
+        }
+
+        $contexts = [
+            'correspondence' => [],
+            'transaction' => [],
+            'travel_order' => [],
+        ];
+
+        if ($ids['correspondence'] !== []) {
+            $records = CorrespondenceRecord::query()
+                ->with([
+                    'receivingDepartment:id,code,name,short_name',
+                    'workflowTransaction:id,reference_no,title,origin_department_id,current_department_id,assigned_employee_id',
+                    'workflowTransaction.originDepartment:id,code,name,short_name',
+                    'workflowTransaction.currentDepartment:id,code,name,short_name',
+                ])
+                ->whereIn('id', $ids['correspondence'])
+                ->get();
+
+            foreach ($records as $record) {
+                $contexts['correspondence'][(int) $record->id] = $this->correspondenceContext($record);
+            }
+        }
+
+        if ($ids['transaction'] !== []) {
+            $transactions = WorkflowTransaction::query()
+                ->with([
+                    'originDepartment:id,code,name,short_name',
+                    'currentDepartment:id,code,name,short_name',
+                ])
+                ->whereIn('id', $ids['transaction'])
+                ->get();
+
+            foreach ($transactions as $transaction) {
+                $contexts['transaction'][(int) $transaction->id] = $this->transactionContext($transaction);
+            }
+        }
+
+        if ($ids['travel_order'] !== []) {
+            $travelOrders = TravelOrder::query()
+                ->with('department:id,code,name,short_name')
+                ->whereIn('id', $ids['travel_order'])
+                ->get();
+
+            foreach ($travelOrders as $travelOrder) {
+                $contexts['travel_order'][(int) $travelOrder->id] = $this->travelOrderContext($travelOrder);
+            }
+        }
+
+        foreach ($index as $key => $entry) {
+            $family = $entry['family'];
+            $parentId = (int) $entry['parentId'];
+            $index[$key]['authorized'] = isset($authorized[$family][$parentId]);
+            $index[$key]['context'] = $contexts[$family][$parentId] ?? [];
+        }
+
+        return $index;
+    }
+
+    /**
+     * Preserve the original access precedence:
+     * correspondence links dominate travel-order links, which dominate transaction links.
+     *
+     * @param array<string, array{family:string,parentId:int,authorized:bool,context:array<string,mixed>}> $linkIndex
+     */
+    private function documentIsVisible(Document $document, array $linkIndex): bool
+    {
+        $families = [
+            'correspondence' => [],
+            'travel_order' => [],
+            'transaction' => [],
+        ];
+
+        foreach ($document->links as $link) {
+            $entry = $linkIndex[$this->linkKey($link)] ?? null;
+            if (! $entry || ! array_key_exists($entry['family'], $families)) {
+                continue;
+            }
+
+            $families[$entry['family']][] = $entry;
+        }
+
+        foreach (['correspondence', 'travel_order', 'transaction'] as $family) {
+            if ($families[$family] === []) {
+                continue;
+            }
+
+            foreach ($families[$family] as $entry) {
+                if ($entry['authorized']) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param array<string, array{family:string,parentId:int,authorized:bool,context:array<string,mixed>}> $linkIndex
+     * @return array<string, mixed>
+     */
+    private function present(User $actor, Document $document, array $linkIndex): array
     {
         $link = $document->links->first();
-        $context = $link ? $this->contextFor($link) : [];
+        $context = $link
+            ? ($linkIndex[$this->linkKey($link)]['context'] ?? [])
+            : [];
         $uploadedByMe = (int) $document->uploaded_by_user_id === (int) $actor->id;
         $departmentId = (int) ($actor->employee?->department_id ?? 0);
         $employeeId = (int) ($actor->employee?->id ?? 0);
@@ -209,64 +455,6 @@ final class DocumentArchiveQuery
             'my_uploads' => $item['uploadedByMe'] === true,
             default => true,
         };
-    }
-
-    /** @return array<string, mixed> */
-    private function contextFor(DocumentLink $link): array
-    {
-        $type = Relation::getMorphedModel($link->linkable_type) ?? $link->linkable_type;
-
-        if ($type === WorkflowTransaction::class) {
-            return $this->transactionContext(WorkflowTransaction::query()
-                ->with(['originDepartment:id,code,name,short_name', 'currentDepartment:id,code,name,short_name'])
-                ->find($link->linkable_id));
-        }
-
-        if ($type === TransactionEvent::class) {
-            $event = TransactionEvent::query()
-                ->with(['transaction.originDepartment:id,code,name,short_name', 'transaction.currentDepartment:id,code,name,short_name'])
-                ->find($link->linkable_id);
-
-            return $this->transactionContext($event?->transaction);
-        }
-
-        if ($type === CorrespondenceRecord::class) {
-            return $this->correspondenceContext(CorrespondenceRecord::query()
-                ->with([
-                    'receivingDepartment:id,code,name,short_name',
-                    'workflowTransaction.originDepartment:id,code,name,short_name',
-                    'workflowTransaction.currentDepartment:id,code,name,short_name',
-                ])
-                ->find($link->linkable_id));
-        }
-
-        if ($type === CorrespondenceEvent::class) {
-            $event = CorrespondenceEvent::query()
-                ->with([
-                    'correspondence.receivingDepartment:id,code,name,short_name',
-                    'correspondence.workflowTransaction.originDepartment:id,code,name,short_name',
-                    'correspondence.workflowTransaction.currentDepartment:id,code,name,short_name',
-                ])
-                ->find($link->linkable_id);
-
-            return $this->correspondenceContext($event?->correspondence);
-        }
-
-        if ($type === TravelOrder::class) {
-            return $this->travelOrderContext(TravelOrder::query()
-                ->with('department:id,code,name,short_name')
-                ->find($link->linkable_id));
-        }
-
-        if ($type === TravelOrderEvent::class) {
-            $event = TravelOrderEvent::query()
-                ->with('travelOrder.department:id,code,name,short_name')
-                ->find($link->linkable_id);
-
-            return $this->travelOrderContext($event?->travelOrder);
-        }
-
-        return [];
     }
 
     /** @return array<string, mixed> */
@@ -324,6 +512,11 @@ final class DocumentArchiveQuery
             'currentOffice' => $this->office($travelOrder->department),
             'assignedEmployeeId' => null,
         ];
+    }
+
+    private function linkKey(DocumentLink $link): string
+    {
+        return $link->linkable_type.':'.(int) $link->linkable_id;
     }
 
     private function office($department): ?array
