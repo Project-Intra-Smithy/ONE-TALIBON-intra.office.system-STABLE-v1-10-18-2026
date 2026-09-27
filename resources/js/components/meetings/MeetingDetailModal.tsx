@@ -16,15 +16,16 @@ const formatDate = (value: string) => new Date(value + 'T00:00:00+08:00').toLoca
 
 export default function MeetingDetailModal({ meeting, onClose }: { meeting: MunicipalMeeting; onClose: () => void }) {
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 p-4" role="presentation" onMouseDown={onClose}>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 p-3" role="presentation" onMouseDown={onClose}>
             <section
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="meeting-detail-title"
-                className="w-full max-w-2xl overflow-hidden rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] shadow-2xl"
+                className="overflow-hidden rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] shadow-2xl"
+                style={{ width: 'min(760px, calc(100vw - 24px))', maxWidth: '760px' }}
                 onMouseDown={(event) => event.stopPropagation()}
             >
-                <header className="flex items-start justify-between gap-4 border-b border-[var(--municipal-border)] px-3.5 py-2.5">
+                <header className="flex items-start justify-between gap-3 border-b border-[var(--municipal-border)] px-3 py-2.5">
                     <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2">
                             <span className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-brand)]">{meeting.id}</span>
@@ -33,12 +34,12 @@ export default function MeetingDetailModal({ meeting, onClose }: { meeting: Muni
                         <h2 id="meeting-detail-title" className="mt-1 text-base font-bold text-[var(--municipal-text)]">{meeting.title}</h2>
                         <p className="mt-0.5 text-[10px] text-[var(--municipal-muted)]">{meeting.organizingOffice}</p>
                     </div>
-                    <button type="button" onClick={onClose} aria-label="Close meeting" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-[var(--municipal-border)] text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]">
+                    <button type="button" onClick={onClose} aria-label="Close meeting" className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-[var(--municipal-border)] text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]">
                         <X size={15} />
                     </button>
                 </header>
 
-                <div className="space-y-2.5 px-3.5 py-3">
+                <div className="space-y-2 px-3 py-2.5">
                     <div className="grid gap-2 sm:grid-cols-2">
                         <div className="rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-2.5 py-1.5">
                             <div className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]"><CalendarDays size={11} /> Schedule</div>
@@ -50,7 +51,7 @@ export default function MeetingDetailModal({ meeting, onClose }: { meeting: Muni
                         </div>
                     </div>
 
-                    <div className="grid gap-2.5 sm:grid-cols-2">
+                    <div className="grid gap-2 sm:grid-cols-2">
                         <section>
                             <div className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]"><UsersRound size={11} /> Participants</div>
                             <div className="mt-1 text-[11px] leading-5 text-[var(--municipal-text)]">{meeting.participants.join(' · ')}</div>
@@ -61,9 +62,9 @@ export default function MeetingDetailModal({ meeting, onClose }: { meeting: Muni
                         </section>
                     </div>
 
-                    <section className="border-t border-[var(--municipal-border)] pt-2.5">
+                    <section className="border-t border-[var(--municipal-border)] pt-2">
                         <div className="text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Agenda</div>
-                        <ol className="mt-1 grid gap-1 text-[11px] leading-5 sm:grid-cols-2">
+                        <ol className="mt-1 grid gap-x-4 gap-y-0.5 text-[11px] leading-5 sm:grid-cols-2">
                             {meeting.agenda.map((item, index) => <li key={item}>{index + 1}. {item}</li>)}
                         </ol>
                     </section>
