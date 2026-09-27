@@ -1,5 +1,7 @@
 param(
     [switch] $Pull,
+    [switch] $Fast,
+    [switch] $ResetFrontendCache,
     [string] $LanHost = ''
 )
 
@@ -33,7 +35,10 @@ Stop-Listener 8000
 Stop-Listener 5173
 Remove-Item (Join-Path $Root 'public\hot') -Force -ErrorAction SilentlyContinue
 Remove-Item $HotFile -Force -ErrorAction SilentlyContinue
-Remove-Item (Join-Path $Root 'node_modules\.vite') -Recurse -Force -ErrorAction SilentlyContinue
+if ($ResetFrontendCache) {
+    Write-Host 'Resetting Vite dependency cache by explicit request...' -ForegroundColor Yellow
+    Remove-Item (Join-Path $Root 'node_modules\.vite') -Recurse -Force -ErrorAction SilentlyContinue
+}
 Remove-Item (Join-Path $Root '.phpunit.result.cache') -Force -ErrorAction SilentlyContinue
 
 if ($Pull) {
@@ -47,7 +52,11 @@ if ($Pull) {
 
 if (-not (Test-Path (Join-Path $Root 'node_modules'))) { throw 'node_modules is missing. Run npm.cmd ci once.' }
 if (-not (Test-Path (Join-Path $Root 'vendor\autoload.php'))) { throw 'vendor is missing. Run composer install once.' }
-if (-not (Test-Path (Join-Path $Root 'public\build\manifest.json'))) {
+if ($Fast) {
+    Write-Host 'FAST RENDER MODE — compiling current frontend assets and skipping Vite/HMR...' -ForegroundColor Cyan
+    npm.cmd run build
+    if ($LASTEXITCODE -ne 0) { throw 'npm build failed.' }
+} elseif (-not (Test-Path (Join-Path $Root 'public\build\manifest.json'))) {
     Write-Host 'Production fallback missing; building once...' -ForegroundColor Yellow
     npm.cmd run build
     if ($LASTEXITCODE -ne 0) { throw 'npm build failed.' }
@@ -90,6 +99,56 @@ if ($showcaseExit -ne 0) {
     throw 'Prototype-day showcase data is incomplete. Seed the configured demo database before starting the stack.'
 }
 Write-Host 'Prototype-day showcase data: ready' -ForegroundColor Green
+
+if ($Fast) {
+    $LaravelLauncher = Join-Path $env:TEMP 'talibon-laravel-fast.ps1'
+    @"
+Set-Location '$Root'
+`$Host.UI.RawUI.WindowTitle = 'TALIBON — FAST RENDER'
+`$env:APP_ENV = 'local'
+`$env:APP_DEBUG = 'true'
+`$env:APP_URL = '$AppUrl'
+php artisan serve --host=0.0.0.0 --port=8000
+"@ | Set-Content -Path $LaravelLauncher -Encoding UTF8
+
+    Start-Process powershell.exe -ArgumentList @('-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $LaravelLauncher)
+
+    $laravelReady = $false
+    for ($i = 0; $i -lt 60; $i++) {
+        try {
+            $response = Invoke-WebRequest -Uri "$AppUrl/login" -UseBasicParsing -TimeoutSec 2
+            if ($response.StatusCode -eq 200 -and $response.Content -notmatch '/@vite/client') {
+                $laravelReady = $true
+                break
+            }
+        } catch {}
+        Start-Sleep -Milliseconds 500
+    }
+    if (-not $laravelReady) { throw 'Laravel production-asset health check failed. Browser was not opened.' }
+
+    Write-Host 'FAST RENDER STACK READY' -ForegroundColor Green
+    Write-Host "Laravel: $AppUrl"
+    Write-Host 'Assets:  compiled Vite production bundle'
+    Write-Host 'HMR:     disabled for this run'
+
+    Add-Type -AssemblyName System.Windows.Forms
+    $screens = [System.Windows.Forms.Screen]::AllScreens
+    $screen = if ($screens.Count -gt 1) { $screens[1] } else { $screens[0] }
+    $chrome = @(
+        "$env:ProgramFiles\Google\Chrome\Application\chrome.exe",
+        "${env:ProgramFiles(x86)}\Google\Chrome\Application\chrome.exe",
+        "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe"
+    ) | Where-Object { $_ -and (Test-Path $_) } | Select-Object -First 1
+
+    if ($chrome) {
+        $profile = Join-Path $env:LOCALAPPDATA 'TalibonDevChrome'
+        Start-Process $chrome -ArgumentList @('--new-window', "--user-data-dir=$profile", "--window-position=$($screen.WorkingArea.X),$($screen.WorkingArea.Y)", "--window-size=$($screen.WorkingArea.Width),$($screen.WorkingArea.Height)", "$AppUrl/login")
+    } else {
+        Start-Process "$AppUrl/login"
+    }
+
+    exit 0
+}
 
 $ViteLauncher = Join-Path $env:TEMP 'talibon-vite.ps1'
 @"
