@@ -7,7 +7,6 @@ use App\Services\AuthenticationAssurance;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\TestResponse;
-use Inertia\Inertia;
 use Tests\TestCase;
 
 final class Bh2FastRenderHardeningTest extends TestCase
@@ -106,7 +105,6 @@ final class Bh2FastRenderHardeningTest extends TestCase
     {
         return $this->withHeaders([
             'X-Inertia' => 'true',
-            'X-Inertia-Version' => (string) Inertia::getVersion(),
             'X-Requested-With' => 'XMLHttpRequest',
             'Accept' => 'text/html, application/xhtml+xml',
         ])->get($url);
