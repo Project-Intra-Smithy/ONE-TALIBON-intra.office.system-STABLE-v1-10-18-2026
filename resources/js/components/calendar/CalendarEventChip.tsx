@@ -18,7 +18,7 @@ export default function CalendarEventChip({ event, date, onOpen, compact = false
         <button
             type="button"
             onClick={(eventClick) => onOpen(event, eventClick.currentTarget)}
-            className={`group flex w-full min-w-0 items-center gap-1 border px-1.5 text-left font-medium outline-none transition hover:brightness-95 focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] ${bucketClass[event.calendar_bucket]} ${continuesBefore ? 'rounded-l-none border-l-0' : 'rounded-l-md'} ${continuesAfter ? 'rounded-r-none border-r-0' : 'rounded-r-md'} ${compact ? 'h-5 text-[10px]' : 'min-h-6 py-0.5 text-[11px]'}`}
+            className={`group flex w-full min-w-0 items-center gap-1 border px-1.5 leading-none text-left font-medium outline-none transition hover:brightness-95 focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] ${bucketClass[event.calendar_bucket]} ${continuesBefore ? 'rounded-l-none border-l-0' : 'rounded-l-md'} ${continuesAfter ? 'rounded-r-none border-r-0' : 'rounded-r-md'} ${compact ? 'h-[18px] text-[9px]' : 'min-h-6 py-0.5 text-[10px]'}`}
             aria-label={`${event.title}${time ? `, ${time}` : ''}`}
         >
             {priority && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--municipal-danger)]" aria-hidden="true" />}
