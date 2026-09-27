@@ -67,9 +67,11 @@ const labelForView = (view: string) => {
 function NoticeRow({
     item,
     onOpen,
+    preview = false,
 }: {
     item: MunicipalAnnouncement;
     onOpen: (item: MunicipalAnnouncement) => void;
+    preview?: boolean;
 }) {
     const date = dateContext(item.date);
 
@@ -77,7 +79,7 @@ function NoticeRow({
         <button
             type="button"
             onClick={() => onOpen(item)}
-            className="grid w-full min-w-0 gap-2 px-3 py-2.5 text-left transition hover:bg-[var(--municipal-hover)] lg:grid-cols-[minmax(0,1.6fr)_minmax(160px,.8fr)_120px_72px] lg:items-center"
+            className={`grid w-full min-w-0 gap-2 px-3 text-left transition hover:bg-[var(--municipal-hover)] ${preview ? 'py-2 lg:grid-cols-[minmax(0,1fr)_88px_104px]' : 'py-2.5 lg:grid-cols-[minmax(0,1.6fr)_minmax(180px,.9fr)_130px_110px]'} lg:items-center`}
         >
             <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
@@ -88,13 +90,15 @@ function NoticeRow({
                 <div className="mt-0.5 truncate text-[9px] text-[var(--municipal-muted)]">Audience: {item.audience}</div>
             </div>
 
-            <div className="min-w-0">
-                <div className="truncate text-[10px] text-[var(--municipal-text)]">{item.summary}</div>
-                <div className="mt-0.5 flex items-center gap-1 text-[9px] text-[var(--municipal-muted)]">
-                    <FileText size={10} aria-hidden="true" />
-                    <span className="truncate">{item.relatedDocument}</span>
+            {!preview ? (
+                <div className="min-w-0">
+                    <div className="truncate text-[10px] text-[var(--municipal-text)]">{item.summary}</div>
+                    <div className="mt-0.5 flex items-center gap-1 text-[9px] text-[var(--municipal-muted)]">
+                        <FileText size={10} aria-hidden="true" />
+                        <span className="truncate">{item.relatedDocument}</span>
+                    </div>
                 </div>
-            </div>
+            ) : null}
 
             <div className="min-w-0">
                 <div className="text-[10px] font-semibold text-[var(--municipal-text)]">{date.relative}</div>
@@ -102,7 +106,7 @@ function NoticeRow({
             </div>
 
             <div className="flex items-center justify-between gap-2 lg:justify-end">
-                <span className={'rounded-full border px-2 py-1 text-[9px] font-bold uppercase ' + priorityTone[item.priority]}>{item.priority}</span>
+                <span className={'whitespace-nowrap rounded-full border px-2 py-1 text-[9px] font-bold uppercase leading-none ' + priorityTone[item.priority]}>{item.priority}</span>
                 <ArrowRight size={12} className="shrink-0 text-[var(--municipal-brand)]" aria-hidden="true" />
             </div>
         </button>
@@ -239,7 +243,7 @@ export default function Index() {
                 <PageHeader
                     eyebrow="General municipal notices"
                     title="Announcements"
-                    description="Operational notices for municipal awareness. Formal numbered issuances and acknowledgement remain under Official Memoranda."
+                    description="Municipal and office notices for operational awareness. Formal issuances remain under Official Memoranda."
                     icon={Bell}
                 />
 
@@ -285,7 +289,7 @@ export default function Index() {
                                     <button type="button" onClick={() => openView('urgent')} className="text-[10px] font-bold text-[var(--municipal-brand)]">View all</button>
                                 </header>
                                 <div className="divide-y divide-[var(--municipal-border)]">
-                                    {urgent.map((item) => <NoticeRow key={item.id} item={item} onOpen={setSelected} />)}
+                                    {urgent.map((item) => <NoticeRow key={item.id} item={item} onOpen={setSelected} preview />)}
                                     {!urgent.length ? <div className="px-3 py-4 text-[10px] text-[var(--municipal-muted)]">No urgent notices.</div> : null}
                                 </div>
                             </div>
@@ -299,7 +303,7 @@ export default function Index() {
                                     <button type="button" onClick={() => openView('all')} className="text-[10px] font-bold text-[var(--municipal-brand)]">Browse all</button>
                                 </header>
                                 <div className="divide-y divide-[var(--municipal-border)]">
-                                    {recent.map((item) => <NoticeRow key={item.id} item={item} onOpen={setSelected} />)}
+                                    {recent.map((item) => <NoticeRow key={item.id} item={item} onOpen={setSelected} preview />)}
                                 </div>
                             </div>
                         </section>
@@ -365,7 +369,7 @@ export default function Index() {
                                 <span className="text-[10px] text-[var(--municipal-muted)]">{filtered.length} shown</span>
                             </header>
 
-                            <div className="hidden grid-cols-[minmax(0,1.6fr)_minmax(160px,.8fr)_120px_72px] gap-2 border-b border-[var(--municipal-border)] px-3 py-2 text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)] lg:grid">
+                            <div className="hidden grid-cols-[minmax(0,1.6fr)_minmax(180px,.9fr)_130px_110px] gap-2 border-b border-[var(--municipal-border)] px-3 py-2 text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)] lg:grid">
                                 <div>Notice</div><div>Summary / reference</div><div>Date</div><div>Priority</div>
                             </div>
 
