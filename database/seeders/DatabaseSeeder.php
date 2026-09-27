@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             MunicipalityStructureSeeder::class,
             WorkforceDemoSeeder::class,
+            PrototypeMessagingDemoSeeder::class,
             MunicipalMeetingCalendarSeeder::class,
             WorkflowDemoSeeder::class,
             MemorandumDemoSeeder::class,

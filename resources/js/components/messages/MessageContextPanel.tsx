@@ -15,7 +15,8 @@ function ContextDetails({ conversation, idPrefix }: ContextDetailsProps) {
             <section className="px-4 py-5 text-center" aria-labelledby={`${idPrefix}-group`}>
                 <div className="flex justify-center"><GroupIdentity offices={conversation.offices} /></div>
                 <h3 id={`${idPrefix}-group`} className="mt-3 text-base font-bold text-[var(--municipal-text)]">{conversation.channel}</h3>
-                <p className="mt-1 text-xs text-[var(--municipal-muted)]">{officeCount} participating {officeCount === 1 ? 'office' : 'offices'}</p>
+                <p className="mt-1 text-xs leading-5 text-[var(--municipal-muted)]">{conversation.description}</p>
+                <p className="mt-1 text-[11px] text-[var(--municipal-muted)]">{officeCount} participating {officeCount === 1 ? 'office' : 'offices'}</p>
             </section>
 
             <section className="border-t border-[var(--municipal-border)] px-4 py-4" aria-labelledby={`${idPrefix}-offices`}>

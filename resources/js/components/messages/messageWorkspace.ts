@@ -2,11 +2,12 @@ import { prototypeChannels } from './prototypeChannels';
 
 export type MessageConversation = {
     channel: string;
+    description: string;
     offices: string[];
 };
 
 export function buildMessageConversations(): MessageConversation[] {
-    return prototypeChannels.map(({ channel, offices }) => ({ channel, offices: [...offices] }));
+    return prototypeChannels.map(({ channel, description, offices }) => ({ channel, description, offices: [...offices] }));
 }
 
 export function filterMessageConversations(conversations: MessageConversation[], query: string): MessageConversation[] {
@@ -15,6 +16,7 @@ export function filterMessageConversations(conversations: MessageConversation[],
 
     return conversations.filter((conversation) => [
         conversation.channel,
+        conversation.description,
         ...conversation.offices,
     ].some((value) => value.toLowerCase().includes(normalized)));
 }

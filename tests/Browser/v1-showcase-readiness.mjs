@@ -76,6 +76,21 @@ async function openSelector(page) {
     await page.getByRole('button', { name: 'Open Municipal Workspace', exact: true }).click();
     await page.getByRole('dialog').waitFor({ state: 'visible' });
 }
+async function dismissWorkspaceOnboarding(page) {
+    const dialog = page.locator('[data-onboarding]').first();
+    const visible = await dialog.isVisible({ timeout: 2000 }).catch(() => false);
+    if (!visible) return;
+
+    for (const label of ['No, enter workspace', 'Not now']) {
+        const button = dialog.getByRole('button', { name: label, exact: true });
+        if (await button.isVisible().catch(() => false)) {
+            await button.click();
+            await dialog.waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
+            return;
+        }
+    }
+}
+
 async function enterWorkspace(page, role, office = null) {
     checkpoint(`enter ${role}`, page);
     await openSelector(page);
@@ -85,6 +100,7 @@ async function enterWorkspace(page, role, office = null) {
         await page.getByRole('button', { name: new RegExp(`^${office}`) }).click();
     }
     await page.waitForURL((url) => url.pathname === '/dashboard');
+    await dismissWorkspaceOnboarding(page);
     check(`${role}: enters dashboard without credential challenge`, safePath(page.url()) === '/dashboard', safePath(page.url()));
 }
 async function switchWorkspace(page) {
@@ -170,7 +186,7 @@ async function executiveMatrix(browser) {
     monitor(page);
     await enterWorkspace(page, 'Municipal Executive');
     await assertNavigation(page, 'Executive', [
-        'Home', 'Executive Departments', 'Employee Directory', 'Legislative', 'Local Special Bodies',
+        'Home', 'Executive Departments', 'Staff Directory', 'Ordinances & Issuances', 'Councils, Boards & Committees',
         'Development Plans', 'PPAs', 'Project Monitoring', 'Calendar', 'Meetings', 'Messages', 'Announcements',
     ], ['Audit & Security']);
     for (const [route, label] of [
@@ -192,8 +208,8 @@ async function departmentHeadMatrix(browser) {
     monitor(page);
     await enterWorkspace(page, 'Department Head', 'Municipal Engineering Office');
     await assertNavigation(page, 'Department Head', [
-        'Home', 'My Work', 'Correspondence', 'Records', 'Memoranda', 'Calendar', 'Meetings', 'Messages',
-        'Executive Departments', 'Employee Directory', 'Development Plans', 'PPAs', 'Project Monitoring',
+        'Home', 'Tasks & Assignments', 'Correspondence', 'Municipal Records', 'Official Memoranda', 'Calendar', 'Meetings', 'Messages',
+        'Executive Departments', 'Staff Directory', 'Development Plans', 'PPAs', 'Project Monitoring',
     ], ['Audit & Security', 'System Administration']);
     for (const [route, label] of [
         ['/dashboard', 'Department Head Home'], ['/transactions', 'My Work'], ['/correspondence', 'Correspondence'],
@@ -212,7 +228,7 @@ async function employeeMatrix(browser) {
     pageRef = page;
     monitor(page);
     await enterWorkspace(page, 'Employee');
-    await assertNavigation(page, 'Employee', ['Home', 'My Work', 'Records', 'Announcements', 'Calendar', 'Messages'], ['System Administration', 'Audit & Security']);
+    await assertNavigation(page, 'Employee', ['Home', 'Tasks & Assignments', 'Municipal Records', 'Announcements', 'Calendar', 'Messages'], ['System Administration', 'Audit & Security']);
     for (const [route, label] of [['/dashboard', 'Employee Home'], ['/transactions', 'Employee My Work'], ['/records', 'Employee Records'], ['/announcements', 'Employee Announcements'], ['/calendar', 'Employee Calendar'], ['/messages', 'Employee Messages']]) {
         await openRoute(page, route, label);
     }

@@ -51,7 +51,8 @@ export default function ConversationList({ conversations, selectedChannel, query
                                         </div>
                                         <div className="min-w-0 flex-1">
                                             <div className={`truncate text-sm ${selected ? 'font-bold' : 'font-semibold'} text-[var(--municipal-text)]`}>{conversation.channel}</div>
-                                            <div className="mt-0.5 text-[11px] text-[var(--municipal-muted)]">
+                                            <div className="mt-0.5 truncate text-[11px] text-[var(--municipal-muted)]">{conversation.description}</div>
+                                            <div className="mt-0.5 text-[10px] text-[var(--municipal-muted)]">
                                                 {officeCount} participating {officeCount === 1 ? 'office' : 'offices'}
                                             </div>
                                         </div>
