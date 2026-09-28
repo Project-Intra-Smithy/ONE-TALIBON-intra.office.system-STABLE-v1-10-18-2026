@@ -52,14 +52,11 @@ final class RecordsSearchQuery
         return [
             'records' => $this->paginate($recordType, $correspondence, $transactions, $travelOrders),
             'overview' => [
-                'counts' => [
-                    'all' => (clone $correspondenceBase)->count()
-                        + (clone $transactionBase)->count()
-                        + (clone $travelOrderBase)->count(),
-                    'correspondence' => (clone $correspondenceBase)->count(),
-                    'transaction' => (clone $transactionBase)->count(),
-                    'travel_order' => (clone $travelOrderBase)->count(),
-                ],
+                'counts' => $this->overviewCounts(
+                    $correspondenceBase,
+                    $transactionBase,
+                    $travelOrderBase,
+                ),
                 'recent' => $overviewRecent->items(),
             ],
             'filters' => [
@@ -311,6 +308,44 @@ final class RecordsSearchQuery
             ->withQueryString();
 
         return $this->presenter->hydratePage($paginator);
+    }
+
+    /**
+     * Resolve all unfiltered overview totals in one database round-trip while
+     * preserving the exact authorization scope of each record family.
+     *
+     * @return array{all:int,correspondence:int,transaction:int,travel_order:int}
+     */
+    private function overviewCounts(
+        Builder $correspondence,
+        Builder $transactions,
+        Builder $travelOrders,
+    ): array {
+        $sources = [
+            (clone $correspondence)->selectRaw("'correspondence' AS record_type, COUNT(*) AS aggregate"),
+            (clone $transactions)->selectRaw("'transaction' AS record_type, COUNT(*) AS aggregate"),
+            (clone $travelOrders)->selectRaw("'travel_order' AS record_type, COUNT(*) AS aggregate"),
+        ];
+
+        $union = array_shift($sources);
+        foreach ($sources as $source) {
+            $union->unionAll($source);
+        }
+
+        $counts = DB::query()
+            ->fromSub($union->toBase(), 'record_counts')
+            ->pluck('aggregate', 'record_type');
+
+        $correspondenceCount = (int) ($counts['correspondence'] ?? 0);
+        $transactionCount = (int) ($counts['transaction'] ?? 0);
+        $travelOrderCount = (int) ($counts['travel_order'] ?? 0);
+
+        return [
+            'all' => $correspondenceCount + $transactionCount + $travelOrderCount,
+            'correspondence' => $correspondenceCount,
+            'transaction' => $transactionCount,
+            'travel_order' => $travelOrderCount,
+        ];
     }
 
     private function stateOptions(
