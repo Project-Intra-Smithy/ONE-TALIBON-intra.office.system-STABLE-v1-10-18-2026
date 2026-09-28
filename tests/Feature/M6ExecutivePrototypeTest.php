@@ -15,15 +15,15 @@ class M6ExecutivePrototypeTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_seed_represents_350_portal_identities_with_seven_featured_demo_credentials(): void
+    public function test_testing_seed_represents_compact_portal_identities_with_seven_featured_demo_credentials(): void
     {
         $demoPassword = Str::random(32);
         config()->set('prototype.demo_password', $demoPassword);
         $this->seed();
 
-        $this->assertSame(350, Employee::query()->where('employment_status', 'active')->count());
-        $this->assertSame(350, Employee::query()->whereNotNull('user_id')->count());
-        $this->assertSame(350, User::query()->where('is_active', true)->count());
+        $this->assertSame(40, Employee::query()->where('employment_status', 'active')->count());
+        $this->assertSame(40, Employee::query()->whereNotNull('user_id')->count());
+        $this->assertSame(40, User::query()->where('is_active', true)->count());
         $this->assertGreaterThanOrEqual(28, Department::query()->where('is_active', true)->count());
 
         foreach ([
