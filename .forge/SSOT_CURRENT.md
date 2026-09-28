@@ -4,123 +4,270 @@
 
 **Kirch Ivan Balite**
 
-All other contributors are Developers / Contributors unless explicitly delegated a bounded operating role.
-
 ## Repository
 
 `Kirch-Nairu/Talibon-Sales-Prototype`
 
-## Current Git authority
+## Forge
 
-Accepted product branch:
+`Kirch-Nairu/KIRION-FORGE@44eb57e5b45b343be0033bf22a7a5e74d543c01a`
+
+## Current accepted product
+
+Branch:
 
 `main`
 
-Observed MP5 source baseline:
+Exact SHA:
 
-`615529ce6663933dd3eeee4d504d14d1f21b626d`
+`0e57508cab1a86bf4eabc1637e39b2dae6d32716`
 
-Exact RV1-validated/promoted application payload remains:
+Current main is the exact accepted RC2 repair candidate.
 
-`f6208cf082c4b1d189c70728adfdb9ddf3225990`
-
-Active MP5 coordination branch:
-
-`KIRCH-TALIBON-MP5-POST-DAT-FRONTEND-CORRECTION`
-
-Temporary MP5 writer branches are permitted only by bounded handoff; maximum concurrent writers: **2**.
-
-Historical branch tips were preserved before deletion:
-
-- branch-tip archive tags: **65**;
-- milestone archive tags: **7**;
-- governance archive tags: **1**;
-- total `archive/*` refs at MP3 opening: **73**.
-
-Open PRs at MP3 opening:
+Open PRs observed at FB0 opening:
 
 `0`
 
-Deployment:
+Remote branches observed at FB0 opening:
 
-`NOT PERFORMED`
+`31 including main`
 
-## Completed authority chain
+Branch cleanup is not part of FB0.
 
-CAL1 feature freeze:
+## Completed release chain
 
-`9dba054d34377ce76149d8474ddeb66b5c20130e`
+Frozen RC2:
 
-BH1 hardened closeout:
+`826d0bf735c848fdc21f8484d70491b056337da6`
 
-`27824223d5169c8eadf16ab863d09aab9585db9c`
+Final repair:
 
-DA1 reviewed repair integration:
+`0e57508cab1a86bf4eabc1637e39b2dae6d32716`
 
-`f48fb9381fee81490f43635ff289cce67ff7779b`
+Independent Reviewer:
 
-DA1 closeout coordination authority:
+`SUITABLE FOR ACCEPTANCE`
 
-`2410bb739993366bdb0e214754343011cc0bed7a`
+Acceptance:
 
-RC1 validated/promoted product candidate:
+`ACCEPT FOR EXACT MAIN PROMOTION WITH RECORDED LIMITATION`
 
-`f6208cf082c4b1d189c70728adfdb9ddf3225990`
+Promotion:
 
-## State
+`PASS / COMPLETE`
 
-- MP0 messaging/runtime work: historical completed ancestry;
-- CAL1 Calendar workspace: completed and feature-frozen;
-- BH1 backend/runtime hardening: reviewed and closed;
-- DA1 repair wave: closed with recorded validation limitations;
-- aggregate `=== DA1 FULL AUDIT PASS ===` marker: **NOT OBSERVED** and must not be claimed;
-- RC1 main consolidation/reconciliation: completed;
-- RV1 exact-candidate current-contract runtime: PASS;
-- main promotion: completed, non-force;
-- archival preservation: completed;
-- remote branch cleanup: completed;
-- remote branch topology: `main` only;
-- deployment: not performed.
+Method:
 
-## MP3 closeout
+- direct ancestry-preserving ref-forward;
+- force=false;
+- no rebase;
+- no squash;
+- no reconstruction.
 
-`MP3 — MAIN GOVERNANCE / DOCUMENTATION CLOSEOUT`
+Current main and final repair candidate are identical.
 
-Status:
+## Carried validation evidence
 
-`COMPLETE`
+Backend-green:
 
-Observed MP3 boundary: Markdown/governance only; no application/runtime file changed from the exact promoted payload baseline.
+`d6a350a5cbc536b23827172216b64f80082cbba8`
 
-## MP4 disposition
+Observed:
 
-`MP4 — FINAL PROTOTYPE-DAY REHEARSAL / DEVELOPER ACCEPTANCE TEST`
+- 400 Feature tests passed;
+- 5,277 assertions;
+- 0 failures.
 
-Status:
+Production frontend:
 
-`COMPLETE AS FIELD REHEARSAL`
+- TypeScript PASS;
+- production Vite build PASS;
+- compiled runtime PASS.
 
-MP4 generated frontend findings but did not authorize deployment, UAT, production readiness, or a backend-hardening restart.
+V1 showcase:
 
-## Current program
+`V1_SHOWCASE_BROWSER_PASS checks=270 matrices=6 screenshots=8`
 
-`MP5 — POST-DAT FRONTEND CORRECTION`
+V1-green SHA:
 
-Plan:
+`0d9b849bf5e71971e42f446bda9d2ebf76bae9ec`
 
-`docs/MP5_POST_DAT_FRONTEND_CORRECTION_PLAN.md`
+OW1 exact-final:
 
-Evidence basis:
+`OW1_ONBOARDING_BROWSER_PASS checks=63`
 
-`.forge/evidence/maintainer/MP4-DAT-FRONTEND-FINDINGS.md`
+at:
 
-Batch 1 uses at most two non-overlapping Code Writer lanes. Deployment remains a separate explicit Technical Authority decision after MP5 acceptance/promotion.
+`0e57508cab1a86bf4eabc1637e39b2dae6d32716`
 
-## Product direction
+## Local UAT disposition
 
-ONE TALIBON is a dense, credible municipal digital workspace, not a marketing dashboard.
+Current UI/UX-oriented local UAT pass is considered PASS by the Technical Authority for transition purposes.
 
-Primary presentation surfaces must be functional and honestly represented.
+This UAT established that the promoted workspace is sufficiently usable to move engineering focus from frontend/UIUX correction into backend/runtime hardening.
+
+It does **not** establish:
+
+- backend architecture closure;
+- production acceptance;
+- commercial completion;
+- self-hosted CI readiness.
+
+Representative UAT observations included:
+
+- Mayor / executive role-aware dashboard and executive task composition;
+- Department Head personal task/request/office scope separation;
+- broad navigation and major municipal workspace surfaces rendering;
+- correspondence, records, memoranda, calendar, meetings, messages, staff directory, ordinances, local bodies and search presentation.
+
+## Role-composition decisions carried forward
+
+### Department Head
+
+Current intended composition is:
+
+- My Tasks;
+- My Requests;
+- Office Work.
+
+Personal requests waiting in another office are not current-office work.
+
+### Executive / Mayor
+
+Current implementation exposes Executive Work rather than normal personal task groups.
+
+This is a current product behavior, not a confirmed defect.
+
+Whether executive authority should become additive to personal accountability remains a Technical Authority/product decision.
+
+### System Administration
+
+Current RC2 Work Queue behavior is personal-scoped.
+
+The broader generic transaction authorization layer still grants historical municipality-wide transaction capabilities.
+
+This is an unresolved authority-policy question and must not be silently normalized by a Code Writer.
+
+## Confirmed backend findings entering the new phase
+
+### SEM-01 — Dashboard scope composition
+
+Department Head UAT showed:
+
+- Dashboard `Office Work for Action = 1`;
+- Work Queue `Incoming Office Work = 0`;
+- Department Workspace `Active office work = 0`.
+
+Current source shows the dashboard mixes personal recent attention with current-office unresolved work and then presents the merged result under an office-scoped label/link.
+
+Repair must target the semantic composition/label/link contract, not widen `office_queue`.
+
+### PERF-01 — Document archive materialization
+
+`DocumentArchiveQuery` currently retrieves the full document corpus and performs visibility/filter/pagination after materialization.
+
+This is a confirmed scaling/performance defect.
+
+### AUTH-01 — System Administration Work Queue metadata
+
+System Administration definitions retain `scope="municipal"` metadata while the current RC2 Work Queue query does not grant municipal scope to that profile.
+
+Current behavior is safe under the present consumer path, but the metadata is authority-like and should be reconciled deliberately.
+
+### AUTH-02 — System Administration generic transaction authority
+
+The transaction capability/access layer still grants System Administration broad transaction view/action authority, including transition, assignment and Mayor-decision behavior.
+
+This is established historical behavior and requires a Technical Authority decision before redesign.
+
+### MSG-01 — Prototype messaging audience
+
+Prototype messaging uses fixed named channels but does not enforce per-channel participant membership.
+
+Whether that remains acceptable prototype behavior or becomes protected audience semantics is a Technical Authority decision.
+
+## Current performance/runtime program
+
+Program transition:
+
+`FB0 — FRONTEND / UIUX CLOSEOUT → BACKEND / RUNTIME HARDENING`
+
+Primary backend goals:
+
+- make server behavior make sense across surfaces;
+- audit routes and direct authorization;
+- reduce unnecessary query/materialization cost;
+- improve initial page load and server response;
+- preserve bounded pagination;
+- reduce N+1 and duplicate aggregate work;
+- improve runtime stability;
+- measure PostgreSQL query plans before index changes;
+- make local/self-hosted validation reproducible;
+- preserve current UI/UX unless backend truth requires a bounded presentation correction.
+
+## Self-hosted validation state
+
+Registered runner:
+
+`DEVKRTZ`
+
+Labels:
+
+`self-hosted, Windows, X64`
+
+Status/toolchain readiness:
+
+`NOT YET ACCEPTED AS VALIDATION AUTHORITY`
+
+Current workflows remain Ubuntu/Linux/container oriented.
+
+Do not merely change `runs-on`.
+
+First required infrastructure step:
+
+`E0 — EXACT-MACHINE / SELF-HOSTED / TEST-DATABASE EVIDENCE CLOSURE`
+
+E0 must prove:
+
+- runner online in the intended execution context;
+- Git;
+- PowerShell;
+- PHP 8.4;
+- pdo_pgsql / pgsql;
+- Composer;
+- Node/npm from the runner process;
+- PostgreSQL connectivity;
+- Playwright/Chromium;
+- exact test database guard;
+- isolated Laravel runtime on port 18000;
+- no UAT checkout/database interference.
+
+## Database boundary
+
+Real local UAT database:
+
+`talibon_portal`
+
+Disposable engineering database:
+
+`talibon_portal_test`
+
+Never run destructive test preparation against `talibon_portal`.
+
+## Current next action
+
+No Code Writer is authorized by FB0.
+
+Maintainer sequence:
+
+1. reconcile current authority/docs;
+2. close exact-machine evidence gaps;
+3. perform/finish backend route/query/authorization/performance audit;
+4. obtain Technical Authority decisions for unresolved product/authority semantics;
+5. issue bounded Forge Code Writer waves;
+6. Reviewer;
+7. Acceptance;
+8. exact promotion where applicable.
 
 ## Evidence law
 
@@ -128,136 +275,17 @@ Only observed evidence may be claimed.
 
 Do not convert:
 
-- historical component evidence into an unobserved aggregate DA1 PASS;
+- UI/UX UAT PASS into backend closure;
 - source inspection into runtime PASS;
-- exact-candidate runtime validation into deployment validation;
-- prototype readiness into UAT/production/commercial acceptance.
+- runner registration into runner readiness;
+- test-db evidence into UAT-db evidence;
+- current role composition into a defect without product authority;
+- historical evidence into current exact-SHA evidence unless ancestry/source inheritance is proven.
 
-## Authority precedence
+## Historical provenance
 
-1. observed live Git/runtime state;
-2. explicit Technical Authority instruction from Kirch Ivan Balite;
-3. this current repository-local governance;
-4. durable review/acceptance evidence;
-5. historical documentation;
-6. chat memory.
+Older MP5, STK1, OW1, CAL1, BH1, DA1, RC1 and RV1 documents remain historical evidence.
 
-## Historical records
+They are not current authority merely because they exist under `.forge` or `docs`.
 
-Older UI/UX, CAL1, BH1, DA1, RC1 and RV1 evidence/handoffs remain valid provenance.
-
-Deleted historical branch names inside those records are not errors and must not be rewritten to look current.
-
-## Consolidation result
-
-The target topology was reached:
-
-```text
-accepted product:
-main
-
-active governed work:
-KIRCH-TALIBON-MP5-POST-DAT-FRONTEND-CORRECTION
-temporary bounded writer branches as issued
-```
-
-Historical tips remain recoverable through `archive/*` tags.
-
-
-## MP5 validation cadence amendment
-
-Technical Authority decision:
-
-`EXECUTION VALIDATION DEFERRED TO EXACT INTEGRATED MP5 CANDIDATE`
-
-This changes evidence timing only. W01/W02 missing compiler/build/runtime evidence remains missing.
-
-Batch 2 may proceed with maximum two active Code Writers after source/ownership Review discipline is preserved.
-
-See:
-
-`.forge/evidence/maintainer/MP5-VALIDATION-CADENCE-DECISION.md`
-
-## Pending stakeholder portal redirection — STK1
-
-Technical Authority has established a new stakeholder-facing portal direction based on the provided ONE TALIBON PORTAL guide plus the stakeholder Menu Overview image.
-
-Repository-memory plan:
-
-`docs/ONE_TALIBON_STAKEHOLDER_PORTAL_REDIRECTION_PLAN.md`
-
-Planning branch:
-
-`KIRCH-TALIBON-STK1-STAKEHOLDER-PORTAL-REDIRECTION`
-
-Planning base:
-
-`4e2a4d0fc387d5692321e3cfcf76d415da1340dc`
-
-Key decision:
-
-`STAKEHOLDER CONTENT MODEL + EXISTING GREEN MUNICIPAL DESIGN SYSTEM + CURRENT REAL ROUTES / AUTHORIZATION`
-
-The stakeholder image is a content / information-architecture reference. It does not replace the written dark-green / forest-green design direction.
-
-The Home dashboard should remain operational and not overloaded. The dense stakeholder Menu Overview belongs below priority Home content or in an equivalent comprehensive portal-directory surface.
-
-This planning record does not itself authorize implementation, promotion or deployment. After the active OW1-HF1 hotfix closes, Maintainer must re-resolve exact main and issue bounded STK1 implementation handoffs from the then-current accepted authority.
-
-
-### STK1 second-storyboard amendment
-
-A second stakeholder storyboard further clarified the intended portal shape across nine surfaces:
-
-1. Main Dashboard
-2. Universal Search
-3. Document Center
-4. Department Page
-5. Plans Library
-6. Projects & PPAs
-7. Calendar & Meetings
-8. Task Management
-9. Mobile View
-
-This is now incorporated into:
-
-`docs/ONE_TALIBON_STAKEHOLDER_PORTAL_REDIRECTION_PLAN.md`
-
-Architecture interpretation:
-
-- screenshot composition / discoverability is a target;
-- green municipal brand remains authority;
-- existing backend/domain authority is reused;
-- Universal Search, Document Center federation and generalized task creation are not presumed implemented merely because they appear in the storyboard;
-- visual / information-architecture parity should move quickly;
-- deeper functional parity is delivered only through separately bounded backend/read-model work;
-- STK1 implementation begins only after OW1-HF1 closes and Maintainer re-resolves the then-current accepted main.
-
-Current planning evidence commit after the second storyboard:
-
-`7446fa64a7c34f7891984b651d3a40394beb1b3e`
-
-
-### Local-only STK1 implementation authority
-
-Technical Authority has authorized local STK1 implementation in:
-
-`D:\KIRCH TALIBON\Talibon-Sales-Prototype`
-
-Recommended local branch:
-
-`KIRCH-TALIBON-STK1-ASTRA-LOCAL`
-
-Protected live runtime remains:
-
-`C:\Talibon-MP5-VALIDATION-68607e3`
-
-No STK1 implementation push, PR, merge, promotion or deployment is authorized until DAT and OW1-HF1 are separately closed and Maintainer re-resolves exact current main.
-
-The full local execution boundary is recorded in:
-
-`docs/ONE_TALIBON_STAKEHOLDER_PORTAL_REDIRECTION_PLAN.md`
-
-planning commit:
-
-`f32914d1390f46bd1b00179fb181facbffd6ae38`
+Live Git and this current SSOT take precedence.
