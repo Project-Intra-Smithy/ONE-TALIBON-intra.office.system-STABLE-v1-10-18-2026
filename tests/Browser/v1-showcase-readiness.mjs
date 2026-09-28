@@ -111,10 +111,29 @@ async function enterWorkspace(page, role, office = null) {
     check(`${role}: enters dashboard without credential challenge`, safePath(page.url()) === '/dashboard', safePath(page.url()));
 }
 async function switchWorkspace(page) {
-    await Promise.all([
-        page.waitForURL((url) => url.pathname === '/login'),
-        page.getByRole('button', { name: 'Switch Workspace', exact: true }).click(),
-    ]);
+    checkpoint('switch workspace', page);
+
+    const accountTools = page.locator('details.portal-account-tools').first();
+    await accountTools.waitFor({ state: 'visible' });
+    if (!(await accountTools.evaluate((node) => node.open))) {
+        await accountTools.locator('summary[aria-label="Account and tools"]').click();
+    }
+
+    const switcher = accountTools.getByRole('button', { name: 'Switch Workspace', exact: true });
+    await switcher.waitFor({ state: 'visible' });
+
+    const switchResponse = page.waitForResponse((response) => {
+        const url = new URL(response.url());
+        return url.pathname === '/showcase/switch'
+            && response.request().method() === 'POST';
+    });
+
+    await switcher.click();
+    const response = await switchResponse;
+    check('Switch Workspace request succeeds', response.status() < 400, `status=${response.status()}`);
+
+    await page.waitForFunction(() => window.location.pathname === '/login');
+    await page.getByRole('button', { name: 'Open Municipal Workspace', exact: true }).waitFor({ state: 'visible' });
     check('Switch Workspace returns to gateway', safePath(page.url()) === '/login', safePath(page.url()));
 }
 async function assertNavigation(page, label, expected, forbidden = []) {
