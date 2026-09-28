@@ -1,0 +1,260 @@
+name: RC2 Exact Release Validation
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rc2-exact-validation-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  RC2_SHA: 826d0bf735c848fdc21f8484d70491b056337da6
+  APP_ENV: testing
+  APP_DEBUG: false
+  APP_URL: http://127.0.0.1:8000
+  DB_CONNECTION: pgsql
+  DB_HOST: 127.0.0.1
+  DB_PORT: 5432
+  DB_DATABASE: talibon_portal_test
+  DB_USERNAME: postgres
+  DB_PASSWORD: ''
+  SESSION_DRIVER: file
+  CACHE_STORE: file
+  QUEUE_CONNECTION: sync
+  SHOWCASE_MODE: true
+  PROTOTYPE_DEMO_PASSWORD: RC2-Disposable-Validation-Password-2026
+
+jobs:
+  backend:
+    name: Exact RC2 backend release gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d talibon_portal_test"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Checkout exact frozen RC2
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RC2_SHA }}
+          fetch-depth: 1
+
+      - name: Assert exact authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          ACTUAL="$(git rev-parse HEAD)"
+          echo "EXPECTED_RC2=${RC2_SHA}"
+          echo "ACTUAL_RC2=${ACTUAL}"
+          test "${ACTUAL}" = "${RC2_SHA}"
+          test -z "$(git status --porcelain)"
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+          extensions: pdo_pgsql, pgsql
+          tools: composer:v2
+
+      - name: Install locked PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+
+      - name: Prepare disposable Laravel database
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp .env.example .env
+          php artisan key:generate
+          php artisan optimize:clear
+          php artisan migrate:fresh --seed --force
+
+      - name: Route config and view cache smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          php artisan route:cache
+          php artisan config:cache
+          php artisan view:cache
+          php artisan optimize:clear
+
+      - name: Full PHP test suite
+        run: php artisan test
+
+      - name: Explicit BH2 regression
+        run: php artisan test tests/Feature/Bh2FastRenderHardeningTest.php
+
+  frontend:
+    name: Exact RC2 frontend release gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout exact frozen RC2
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RC2_SHA }}
+          fetch-depth: 1
+
+      - name: Assert exact authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          ACTUAL="$(git rev-parse HEAD)"
+          echo "EXPECTED_RC2=${RC2_SHA}"
+          echo "ACTUAL_RC2=${ACTUAL}"
+          test "${ACTUAL}" = "${RC2_SHA}"
+          test -z "$(git status --porcelain)"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install locked frontend dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: TypeScript
+        run: npm run types:check
+
+      - name: Production build
+        run: npm run build
+
+  browser:
+    name: Exact RC2 compiled-runtime browser smoke
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d talibon_portal_test"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      QA_BASE_URL: http://127.0.0.1:8000
+      QA_MODE: production
+
+    steps:
+      - name: Checkout exact frozen RC2
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RC2_SHA }}
+          fetch-depth: 1
+
+      - name: Assert exact authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          ACTUAL="$(git rev-parse HEAD)"
+          echo "EXPECTED_RC2=${RC2_SHA}"
+          echo "ACTUAL_RC2=${ACTUAL}"
+          test "${ACTUAL}" = "${RC2_SHA}"
+          test -z "$(git status --porcelain)"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+          extensions: pdo_pgsql, pgsql
+          tools: composer:v2
+
+      - name: Install locked dependencies
+        run: |
+          composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+          npm ci --no-audit --no-fund
+
+      - name: Prepare compiled-asset runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp .env.example .env
+          php artisan key:generate
+          php artisan optimize:clear
+          php artisan migrate:fresh --seed --force
+          npm run build
+          rm -f public/hot storage/framework/vite.hot
+          test ! -e public/hot
+          test ! -e storage/framework/vite.hot
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Start isolated Laravel runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          php artisan serve --host=127.0.0.1 --port=8000 > storage/logs/rc2-validation-laravel.log 2>&1 &
+          echo $! > /tmp/rc2-laravel.pid
+          for i in {1..60}; do
+            if curl -fsS http://127.0.0.1:8000/login >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat storage/logs/rc2-validation-laravel.log
+          exit 1
+
+      - name: Showcase readiness browser smoke
+        run: node tests/Browser/v1-showcase-readiness.mjs
+
+      - name: Runtime diagnostics
+        if: always()
+        shell: bash
+        run: |
+          echo "=== EXACT RC2 ==="
+          git rev-parse HEAD
+          echo "=== WORKTREE ==="
+          git status --short
+          echo "=== LARAVEL LOG TAIL ==="
+          tail -n 250 storage/logs/rc2-validation-laravel.log || true
+          echo "=== QA OUTPUTS ==="
+          find storage/app/qa -maxdepth 3 -type f -print 2>/dev/null || true
+
+      - name: Upload exact-RC2 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rc2-exact-validation-826d0bf
+          path: |
+            storage/app/qa/
+            storage/logs/rc2-validation-laravel.log
+          if-no-files-found: ignore
+          retention-days: 14
