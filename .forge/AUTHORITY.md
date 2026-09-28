@@ -43,7 +43,11 @@ Program:
 
 Current phase:
 
-`S1 — LIGHT UI CORRECTIONS & PRESENTATION FLOW LOCK`
+`S1-M0 — FINAL UI ARCHITECTURE LOCKED`
+
+Next implementation transition:
+
+`S1-W01 — SHELL HIERARCHY & NAVIGATION BEHAVIOR`
 
 Showcase:
 
@@ -56,6 +60,10 @@ Expected attendance:
 Governing directive:
 
 `.forge/directives/PROTOTYPE-SHOWCASE-COMMAND-2026-09-30.md`
+
+S1 implementation authority:
+
+`.forge/directives/S1-M0-FINAL-UI-ARCHITECTURE-IMPLEMENTATION-LOCK.md`
 
 ## Allowed current mutation
 
