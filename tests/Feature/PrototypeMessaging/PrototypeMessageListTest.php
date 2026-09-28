@@ -17,8 +17,9 @@ final class PrototypeMessageListTest extends TestCase
     public function test_initial_list_is_bounded_chronological_and_channel_isolated(): void
     {
         $user = $this->makeUser('List User', 'list@example.test', 'MPDO');
+        $generalCursors = [];
         for ($index = 1; $index <= 55; $index++) {
-            $this->makeMessage($user, 'General', "General {$index}");
+            $generalCursors[] = $this->makeMessage($user, 'General', "General {$index}")->id;
         }
         $this->makeMessage($user, 'MPDO Planning', 'Other channel');
 
@@ -30,7 +31,7 @@ final class PrototypeMessageListTest extends TestCase
         $data = $response->json('data');
         $this->assertSame('General 6', $data[0]['body']);
         $this->assertSame('General 55', $data[49]['body']);
-        $this->assertSame(range(6, 55), array_column($data, 'cursor'));
+        $this->assertSame(array_slice($generalCursors, 5), array_column($data, 'cursor'));
         $this->assertNotContains('Other channel', array_column($data, 'body'));
     }
 
