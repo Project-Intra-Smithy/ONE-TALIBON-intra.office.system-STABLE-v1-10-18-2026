@@ -4,215 +4,128 @@
 
 **Kirch Ivan Balite**
 
-Kirch Ivan Balite is the sole Technical Authority for this repository.
+Kirch Ivan Balite remains the sole human Technical Authority for product scope, architecture, promotion, release and deployment decisions.
 
-No contributor title, commit volume, Code Writer role, Reviewer role, Acceptance role, DevOps role, frontend/backend specialization, operator role, branch ownership, or CI execution independently grants product or promotion authority.
+## Forge
 
-## Repository
-
-`Kirch-Nairu/Talibon-Sales-Prototype`
-
-## Forge authority
+Authority:
 
 `Kirch-Nairu/KIRION-FORGE@44eb57e5b45b343be0033bf22a7a5e74d543c01a`
 
-Forge provides operating doctrine. Repository-local exact Git state and explicit Technical Authority instruction remain binding for this product.
+Forge operating roles remain bounded:
 
-## Live repository authority
+- Maintainer controls state transitions and evidence;
+- Code Writer implements bounded handoffs;
+- Reviewer independently inspects candidate evidence;
+- Acceptance determines whether exact candidates satisfy a promotion contract.
 
-Accepted repository branch:
+## Repository authority
+
+Accepted branch:
 
 `main`
 
-The exact current `main` SHA is not embedded as a permanent constant in this file.
+Resolve live `main` from Git before every phase transition.
 
-Every phase transition, Reviewer, Acceptance, Writer bootstrap, integration, promotion, deployment, or evidence-carry decision must re-resolve the live `main` SHA from Git.
+Current accepted application/runtime payload:
 
-Governance-only descendants may advance `main` without changing the accepted application/runtime payload.
+`314b6661b34d4a70272d2a079f7cdda238b522ae`
 
-Therefore these are separate concepts:
+This is the accepted B1 Records query consolidation and the current:
 
-- **live repository authority** → current Git `main` HEAD, resolved live;
-- **accepted application/runtime payload anchor** → exact latest accepted commit that changed application/runtime source.
+`PROTOTYPE BACKEND BASELINE`
 
-## Accepted application/runtime payload anchor
+## Current operational authority
 
-Current accepted application/runtime payload anchor:
+Program:
 
-`0e57508cab1a86bf4eabc1637e39b2dae6d32716`
+`SEPTEMBER 30 PROTOTYPE SHOWCASE PREPARATION`
 
-Commit:
+Current phase:
 
-`test(rc2): open account tools before guided tour replay`
+`S1 — LIGHT UI CORRECTIONS & PRESENTATION FLOW LOCK`
 
-Frozen RC2 pre-repair authority:
+Showcase:
 
-`826d0bf735c848fdc21f8484d70491b056337da6`
+`2026-09-30 15:00 +08`
 
-At FB0 opening, live `main` pointed exactly to `0e57508cab1a86bf4eabc1637e39b2dae6d32716`.
+Expected attendance:
 
-A later governance-only FB0 promotion may advance `main` while this application/runtime payload anchor remains unchanged.
+`16-20`
 
-Do not infer application-source mutation merely because repository `main` advances through governance-only commits.
+Governing directive:
 
-## Current transition authority
+`.forge/directives/PROTOTYPE-SHOWCASE-COMMAND-2026-09-30.md`
 
-Current transition:
+## Allowed current mutation
 
-`FB0 — FRONTEND / UIUX CLOSEOUT → BACKEND / RUNTIME HARDENING`
+- bounded light UI corrections explicitly identified for the showcase;
+- presentation-critical wording, density, spacing and responsive fixes;
+- presentation-flow documentation;
+- deterministic demo-data preparation;
+- validation and rehearsal artifacts.
 
-Original FB0 coordination branch:
+## Forbidden current mutation without direct blocker evidence
 
-`KIRCH-TALIBON-FB0-FRONTEND-BACKEND-TRANSITION`
+- broad backend hardening;
+- architecture redesign;
+- schema redesign;
+- speculative indexes;
+- cache/Redis architecture;
+- new modules;
+- System Administration authority redesign;
+- Messaging membership redesign;
+- broad CI redesign;
+- unrelated cleanup/refactoring;
+- destructive UAT database work.
 
-Acceptance rework branch:
+## Backend freeze
 
-`KIRCH-TALIBON-FB0-FRONTEND-BACKEND-TRANSITION-REWORK-01`
+B1 closed with:
 
-FB0 is governance/documentation/maintainer authority only.
+- Reviewer: `SUITABLE FOR ACCEPTANCE`;
+- Acceptance: `ACCEPT`;
+- targeted Records: `21 passed / 630 assertions`;
+- BH1/BH2: `3 passed / 25 assertions`;
+- full Feature: `400 passed / 5291 assertions`;
+- Records query count: `22 -> 17`;
+- Documents/Records query count: `22 -> 17`.
 
-FB0 does **not** authorize application implementation, backend repair, branch deletion, schema mutation, deployment promotion, UAT database mutation, or production acceptance.
-
-## Frontend / UIUX disposition
-
-The Technical Authority has completed the current UI/UX-focused local UAT pass and considers the presentation phase sufficient to transition into backend/runtime hardening.
-
-This means:
-
-- frontend presentation is no longer the primary engineering program;
-- current UI/UX behavior remains subject to targeted regression fixes when backend semantics require it;
-- UI/UX UAT PASS does not imply backend architecture closure, production acceptance, or commercial completion.
-
-Current product direction remains:
-
-> ONE TALIBON is a dense, coherent, credible municipal digital workspace used for real day-to-day coordination, not a marketing dashboard.
-
-Current visual direction remains the established green municipal workspace.
-
-## Backend program direction
-
-The next engineering program is backend-focused.
-
-Primary goals:
-
-1. route/controller/service/policy authority consistency;
-2. truthful role/scope semantics across Dashboard, Work Queue, Records, Correspondence, Documents and department/executive surfaces;
-3. faster initial load and server response;
-4. lower query cost and bounded pagination/materialization;
-5. stable PostgreSQL behavior and test/runtime reproducibility;
-6. render/runtime stability;
-7. measurable performance hardening rather than speculative optimization;
-8. Windows-native self-hosted validation without touching UAT state;
-9. governance/current-state reconciliation before new implementation waves.
-
-## Current known audit findings
-
-Known confirmed or evidence-backed findings entering the backend program:
-
-- Dashboard attention composition can mix personal attention into office/executive-labeled cards, creating cross-surface semantic mismatch.
-- `DocumentArchiveQuery` materializes the full document corpus before authorization/filtering/pagination and requires backend performance redesign.
-- System Administration Work Queue metadata still describes `scope="municipal"` while the repaired Work Queue query is personal-scoped.
-- System Administration still has historical municipality-wide transaction capabilities in the generic transaction authorization layer; policy intent requires Technical Authority decision before redesign.
-- Executive Work Queue currently uses executive-only composition; additive personal accountability is a product decision, not an automatic defect.
-- Prototype Messaging channel names do not currently enforce per-channel participant membership.
-- Current CI workflows are Linux/GitHub-hosted oriented and are not directly portable to the new Windows self-hosted runner.
-
-These findings do not authorize repair by themselves.
-
-## Self-hosted runner
-
-Registered repository runner:
-
-`DEVKRTZ`
-
-Labels:
-
-`self-hosted, Windows, X64`
-
-Installation observed during setup:
-
-`C:\WINDOWS\system32\actions-runner`
-
-The runner was registered interactively and was not installed as a Windows service.
-
-Registration is not equivalent to runner readiness.
-
-Before this runner can become validation authority, an exact-machine preflight must prove the runner process can access the required toolchain and the disposable test database.
-
-The previously exposed registration token must never be reused.
+Backend reopens only for a directly observed presentation blocker.
 
 ## Database authority
 
-Local UAT database:
+Protected UAT:
 
 `talibon_portal`
 
-Engineering/test database:
+Disposable validation DB:
 
 `talibon_portal_test`
 
-Absolute rule:
+Destructive test operations are forbidden against UAT.
 
-`talibon_portal` is never a destructive test target.
+## Authority precedence
 
-Destructive verification commands such as `migrate:fresh`, reset, wipe, truncate, reseed, or database recreation are authorized only against an explicitly verified disposable test database.
-
-## Promotion-stability rule
-
-Current-state governance must remain truthful after a governance-only promotion.
-
-Do not write statements of the form:
-
-`current main == <application payload SHA>`
-
-unless that relationship is explicitly historical or is re-resolved live at the time of use.
-
-Use:
-
-- live Git HEAD for repository authority;
-- exact accepted application/runtime payload anchor for product-source inheritance;
-- exact reviewed candidate SHA for a specific Review/Acceptance/promotion event.
-
-This prevents a governance commit from making its own current-state documentation false immediately after promotion.
+1. directly observed live Git/runtime state;
+2. explicit instruction from Kirch Ivan Balite;
+3. current repository-local governance;
+4. durable Reviewer / Acceptance / Maintainer evidence;
+5. historical documentation;
+6. conversation memory.
 
 ## Anti-drift gate
 
 Before every phase transition:
 
-1. re-read live Git authority;
+1. re-resolve live Git;
 2. state exact SHA;
 3. state current Forge role;
 4. state allowed mutations;
 5. state forbidden mutations;
-6. state inherited evidence and why it remains applicable;
-7. stop if repository truth contradicts the handoff.
-
-Do not infer missing authority from chat memory.
-
-Do not use historical branch names as current authority unless live Git and current governance agree.
-
-## Authority precedence
-
-1. observed live Git/runtime truth;
-2. explicit Technical Authority instruction from Kirch Ivan Balite;
-3. current repository-local governance at the exact working SHA;
-4. durable Reviewer / Acceptance / Maintainer evidence;
-5. historical documentation;
-6. conversation memory.
-
-## Mutation policy
-
-- no reset/rebase/force-push of accepted history for convenience;
-- no silent scope expansion;
-- no implementation from conversation prose alone;
-- no writer self-acceptance or self-promotion;
-- no destructive UAT database mutation;
-- no branch cleanup until ancestry/evidence classification is complete;
-- no self-hosted workflow trusted as a release gate until exact-machine evidence exists;
-- no unrelated cleanup inside bounded repair waves.
+6. state inherited evidence;
+7. stop on contradiction.
 
 ## Claim boundaries
 
-UI/UX UAT, backend validation, deployment, production acceptance, and commercial completion remain separate claims.
-
-Only observed evidence may support each claim.
+Prototype rehearsal, tunnel transport, deployment, UAT, production acceptance and contractual completion remain separate claims.
