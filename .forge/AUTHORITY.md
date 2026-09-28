@@ -18,13 +18,26 @@ No contributor title, commit volume, Code Writer role, Reviewer role, Acceptance
 
 Forge provides operating doctrine. Repository-local exact Git state and explicit Technical Authority instruction remain binding for this product.
 
-## Accepted product authority
+## Live repository authority
 
-Accepted branch:
+Accepted repository branch:
 
 `main`
 
-Exact accepted/promoted application SHA:
+The exact current `main` SHA is not embedded as a permanent constant in this file.
+
+Every phase transition, Reviewer, Acceptance, Writer bootstrap, integration, promotion, deployment, or evidence-carry decision must re-resolve the live `main` SHA from Git.
+
+Governance-only descendants may advance `main` without changing the accepted application/runtime payload.
+
+Therefore these are separate concepts:
+
+- **live repository authority** → current Git `main` HEAD, resolved live;
+- **accepted application/runtime payload anchor** → exact latest accepted commit that changed application/runtime source.
+
+## Accepted application/runtime payload anchor
+
+Current accepted application/runtime payload anchor:
 
 `0e57508cab1a86bf4eabc1637e39b2dae6d32716`
 
@@ -36,7 +49,11 @@ Frozen RC2 pre-repair authority:
 
 `826d0bf735c848fdc21f8484d70491b056337da6`
 
-Final RC2 repair candidate and current main are identical.
+At FB0 opening, live `main` pointed exactly to `0e57508cab1a86bf4eabc1637e39b2dae6d32716`.
+
+A later governance-only FB0 promotion may advance `main` while this application/runtime payload anchor remains unchanged.
+
+Do not infer application-source mutation merely because repository `main` advances through governance-only commits.
 
 ## Current transition authority
 
@@ -44,9 +61,13 @@ Current transition:
 
 `FB0 — FRONTEND / UIUX CLOSEOUT → BACKEND / RUNTIME HARDENING`
 
-Transition coordination branch:
+Original FB0 coordination branch:
 
 `KIRCH-TALIBON-FB0-FRONTEND-BACKEND-TRANSITION`
+
+Acceptance rework branch:
+
+`KIRCH-TALIBON-FB0-FRONTEND-BACKEND-TRANSITION-REWORK-01`
 
 FB0 is governance/documentation/maintainer authority only.
 
@@ -135,6 +156,24 @@ Absolute rule:
 `talibon_portal` is never a destructive test target.
 
 Destructive verification commands such as `migrate:fresh`, reset, wipe, truncate, reseed, or database recreation are authorized only against an explicitly verified disposable test database.
+
+## Promotion-stability rule
+
+Current-state governance must remain truthful after a governance-only promotion.
+
+Do not write statements of the form:
+
+`current main == <application payload SHA>`
+
+unless that relationship is explicitly historical or is re-resolved live at the time of use.
+
+Use:
+
+- live Git HEAD for repository authority;
+- exact accepted application/runtime payload anchor for product-source inheritance;
+- exact reviewed candidate SHA for a specific Review/Acceptance/promotion event.
+
+This prevents a governance commit from making its own current-state documentation false immediately after promotion.
 
 ## Anti-drift gate
 
