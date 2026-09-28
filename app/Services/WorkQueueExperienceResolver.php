@@ -11,6 +11,7 @@ final class WorkQueueExperienceResolver
         'assigned_to_me' => 'Assigned to Me',
         'due_soon' => 'Due Soon',
         'overdue' => 'Overdue',
+        'recently_updated' => 'Recently Updated',
         'recently_completed' => 'Completed',
     ];
 
