@@ -10,183 +10,143 @@ Repository:
 
 `Kirch-Nairu/Talibon-Sales-Prototype`
 
-Forge:
+Forge authority:
 
 `Kirch-Nairu/KIRION-FORGE@44eb57e5b45b343be0033bf22a7a5e74d543c01a`
 
-## Repository authority
+## Live repository authority
 
 Accepted repository branch:
 
 `main`
 
-Exact current repository HEAD:
+Resolve the exact live `main` SHA from Git before every state transition.
 
-`RESOLVE LIVE FROM GIT`
+At this governance reconciliation, the accepted application/runtime payload is:
 
-Do not treat an older SHA in governance as a permanent alias for `main`.
+`314b6661b34d4a70272d2a079f7cdda238b522ae`
 
-Governance-only commits may advance `main` without changing application/runtime source.
+Commit:
 
-## Accepted application/runtime payload anchor
+`test(b1): prove records aggregate parity`
 
-`0e57508cab1a86bf4eabc1637e39b2dae6d32716`
+This exact B1 payload was promoted to `main` by a direct non-force fast-forward.
 
-This is the accepted RC2 application/runtime payload anchor.
+## Completed backend evidence
 
-At FB0 opening, live `main` pointed exactly to this SHA.
+### E0 — exact-machine baseline
 
-After a governance-only promotion, repository `main` may advance while this payload anchor remains unchanged.
+`COMPLETE`
 
-When application/runtime source is later accepted, this payload anchor must be updated through a governed transition.
+Proved:
 
-## FB0 transition
+- isolated Windows checkout;
+- disposable `talibon_portal_test`;
+- Laravel PostgreSQL session timezone `Asia/Manila`;
+- protected `talibon_portal` untouched;
+- isolated runtime;
+- browser smoke;
+- tracked product source unchanged.
 
-Program:
+### B1 — Records Registry Query Consolidation
 
-`FB0 — FRONTEND / UIUX CLOSEOUT → BACKEND / RUNTIME HARDENING`
+`ACCEPTED / PROMOTED`
 
-Original FB0 candidate:
+Exact payload:
 
-`9bb41e812acfce24c421f312ee3b940faaf47e9f`
+`314b6661b34d4a70272d2a079f7cdda238b522ae`
 
-First Acceptance result:
+Observed candidate evidence:
 
-`REJECT / RETURN FOR REWORK`
+- targeted Records: `21 passed / 630 assertions`;
+- BH1/BH2: `3 passed / 25 assertions`;
+- full Feature suite: `400 passed / 5291 assertions`;
+- `records.inertia: 22 -> 17 queries`;
+- `documents.records: 22 -> 17 queries`;
+- exact candidate preserved;
+- UAT database untouched.
 
-Reason:
+B1 is the current:
 
-promotion-stability wording conflated live repository HEAD with the application/runtime payload anchor.
+`PROTOTYPE BACKEND BASELINE`
 
-First promotion-stability rework:
+## Current program
 
-`KIRCH-TALIBON-FB0-FRONTEND-BACKEND-TRANSITION-REWORK-01`
+`SEPTEMBER 30 PROTOTYPE SHOWCASE PREPARATION`
 
-REWORK-01 Reviewer result:
+Showcase:
 
-`REWORK REQUIRED`
+`2026-09-30 15:00 +08`
 
-Reason:
+Expected attendance:
 
-the persistent CURRENT SSOT still encoded a pre-promotion review cycle as its unconditional next action.
+`16-20`
 
-Further FB0 rework/review/acceptance state must be resolved from live Git and durable handoff/evidence rather than inferred from this CURRENT summary.
+Current sequence:
 
-## Carried validation
+`BACKEND FREEZE -> LIGHT UI -> INTEGRATED VALIDATION -> CLOUDFLARE QUICK TUNNEL REHEARSAL -> FULL DRESS REHEARSAL -> FREEZE -> SHOWCASE`
 
-Backend-green:
+The governing objective is showcase success, not broad engineering completeness.
 
-`d6a350a5cbc536b23827172216b64f80082cbba8`
+## Current phase
 
-Observed:
+`S1 — LIGHT UI CORRECTIONS & PRESENTATION FLOW LOCK`
 
-`400 passed / 5,277 assertions / 0 failures`
+Backend product behavior is frozen for showcase purposes.
 
-V1:
+Backend implementation may reopen only when direct rehearsal evidence proves a material presentation blocker involving responsiveness, stability, persistence, authorization, delivery, or recovery.
 
-`V1_SHOWCASE_BROWSER_PASS checks=270 matrices=6 screenshots=8`
+## Showcase directive
 
-OW1 at application payload anchor:
+Authoritative repository directive:
 
-`OW1_ONBOARDING_BROWSER_PASS checks=63`
-
-These are carried evidence, not new FB0 executions.
-
-## UI/UX UAT
-
-Technical Authority disposition:
-
-`PASS FOR FRONTEND → BACKEND TRANSITION PURPOSES`
-
-This does not establish backend acceptance, production readiness, commercial completion, or runner readiness.
-
-## Backend direction
-
-Primary program after FB0:
-
-`BACKEND / AUTHORIZATION / PERFORMANCE / RUNTIME HARDENING`
-
-Priority findings already established:
-
-- SEM-01 — Dashboard attention scope/presentation mismatch.
-- PERF-01 — DocumentArchiveQuery full-corpus materialization.
-- AUTH-01 — System Administration Work Queue scope metadata mismatch.
-- AUTH-02 — broader System Administration transaction authority requires Technical Authority decision.
-- PROD-01 — executive-only Work Queue is current behavior, not a proven defect.
-- MSG-01 — prototype channels do not enforce participant membership.
-- CI-01 — current workflows are Linux/container-oriented.
-
-## Self-hosted validation
-
-Runner:
-
-`DEVKRTZ`
-
-Labels:
-
-`self-hosted, Windows, X64`
-
-State:
-
-`REGISTERED / NOT YET ACCEPTED AS VALIDATION AUTHORITY`
-
-First backend infrastructure evidence phase after FB0 promotion:
-
-`E0 — EXACT-MACHINE / SELF-HOSTED / TEST-DATABASE EVIDENCE CLOSURE`
+`.forge/directives/PROTOTYPE-SHOWCASE-COMMAND-2026-09-30.md`
 
 ## Database boundary
 
-UAT:
+Protected UAT database:
 
 `talibon_portal`
 
-Disposable engineering/test DB:
+Disposable engineering/test database:
 
 `talibon_portal_test`
 
-Never perform destructive engineering preparation against `talibon_portal`.
+Never run destructive engineering preparation against `talibon_portal`.
 
-## Promotion-stability rule
+## Deferred findings
 
-Always distinguish:
+These remain known but are not pre-showcase work unless direct rehearsal evidence promotes them into blockers:
 
-1. live repository HEAD;
-2. accepted application/runtime payload anchor;
-3. exact candidate SHA under Review/Acceptance.
-
-Current-state governance must remain true after a governance-only promotion.
-
-## FB0 promotion gate
-
-Before any FB0 governance candidate may be promoted:
-
-1. re-resolve live `main`;
-2. verify exact candidate lineage and governance-only scope;
-3. obtain a fresh Reviewer disposition for that exact candidate;
-4. obtain Acceptance for that exact candidate;
-5. promote only through an accepted ancestry-preserving non-force operation.
-
-These are promotion prerequisites, not the persistent post-promotion next action.
-
-## Persistent post-FB0 next phase
-
-Once an FB0 governance candidate has been accepted and promoted, the next engineering phase is:
-
-`E0 — EXACT-MACHINE / SELF-HOSTED / TEST-DATABASE EVIDENCE CLOSURE`
-
-E0 sequence:
-
-1. re-resolve live repository `main`;
-2. verify the application/runtime payload anchor and its diff from live `main`;
-3. prove DEVKRTZ/toolchain/test-database isolation;
-4. finish backend route/query/authorization/performance audit with exact-machine evidence;
-5. obtain Technical Authority decisions where required;
-6. issue bounded Forge writer waves.
-
-No Code Writer is authorized merely by this SSOT.
+- PERF-01 — `DocumentArchiveQuery` full-corpus materialization;
+- SEM-01 — Dashboard attention semantics;
+- AUTH-01 — System Administration Work Queue metadata mismatch;
+- AUTH-02 — generic System Administration transaction authority decision;
+- PROD-01 — executive Work Queue composition;
+- MSG-01 — prototype Messaging membership authority;
+- CI-01 — generalized Windows/self-hosted workflow redesign.
 
 ## Evidence law
 
 Live Git/runtime truth outranks this file if they disagree.
 
-Historical MP5/STK1/OW1/CAL1/BH1/DA1/RC1/RV1 records remain provenance, not current authority.
+Passing tests do not prove deployment.
+
+Runtime proof does not prove production acceptance.
+
+Cloudflare Quick Tunnel is presentation transport for the showcase and is not a claim of final contractual production hosting.
+
+## Freeze law
+
+After the final integrated showcase rehearsal passes, pin:
+
+1. exact Git SHA;
+2. exact deterministic demo-data state;
+3. exact runtime configuration;
+4. exact production-build basis;
+5. exact tunnel launch procedure;
+6. exact presentation flow;
+7. exact recovery procedure;
+8. known non-blocking limitations.
+
+Do not reopen a completed phase without direct evidence that the showcase cannot safely proceed.
