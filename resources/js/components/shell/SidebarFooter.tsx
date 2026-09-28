@@ -25,5 +25,36 @@ export default function SidebarFooter({ compact }: Props) {
         window.dispatchEvent(new Event(ONBOARDING_GUIDE_EVENT));
     };
 
-    return <details className="portal-account-tools" aria-busy={signingOut}><summary aria-label="Account and tools">{compact ? 'Tools' : 'Account & tools'}</summary><div className="flex flex-wrap justify-center gap-1">{showcaseSession?.active && <WorkspaceSwitcher compact />}{showcaseSession?.active && <button type="button" onClick={openGuidedTour} className="flex h-11 w-11 items-center justify-center" aria-label="Guided tour" title="Guided tour"><CircleHelp size={16} /></button>}<SidebarAppearanceMenu compact align="end" /><button type="button" onClick={signOut} disabled={signingOut} className="flex h-11 w-11 items-center justify-center disabled:opacity-60" aria-label={signingOut ? 'Signing out' : 'Sign out'} title="Sign out"><LogOut size={16} /></button></div></details>;
+    return (
+        <div className="space-y-1.5" aria-busy={signingOut}>
+            {showcaseSession?.active && <WorkspaceSwitcher compact={compact} />}
+            <details className="portal-account-tools">
+                <summary aria-label="Account and tools">{compact ? 'Tools' : 'Account & tools'}</summary>
+                <div className="flex flex-wrap justify-center gap-1">
+                    {showcaseSession?.active && (
+                        <button
+                            type="button"
+                            onClick={openGuidedTour}
+                            className="flex h-11 w-11 items-center justify-center"
+                            aria-label="Guided tour"
+                            title="Guided tour"
+                        >
+                            <CircleHelp size={16} />
+                        </button>
+                    )}
+                    <SidebarAppearanceMenu compact align="end" />
+                    <button
+                        type="button"
+                        onClick={signOut}
+                        disabled={signingOut}
+                        className="flex h-11 w-11 items-center justify-center disabled:opacity-60"
+                        aria-label={signingOut ? 'Signing out' : 'Sign out'}
+                        title="Sign out"
+                    >
+                        <LogOut size={16} />
+                    </button>
+                </div>
+            </details>
+        </div>
+    );
 }
