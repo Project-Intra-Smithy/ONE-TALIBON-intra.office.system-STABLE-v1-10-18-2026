@@ -101,6 +101,14 @@ final class Bh1RuntimePerformanceTest extends TestCase
 
         $response->assertOk();
 
+        if ($label === 'records.inertia') {
+            $this->assertLessThanOrEqual(
+                18,
+                count($queries),
+                'B1 requires records.inertia to execute 18 queries or fewer.',
+            );
+        }
+
         $queryTimeMs = array_reduce(
             $queries,
             fn (float $total, array $query): float => $total + (float) ($query['time'] ?? 0),
