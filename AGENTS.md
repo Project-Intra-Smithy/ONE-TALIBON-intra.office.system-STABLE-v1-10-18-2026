@@ -6,109 +6,110 @@ Repository:
 
 `Kirch-Nairu/Talibon-Sales-Prototype`
 
-**Technical Authority: Kirch Ivan Balite**
+Technical Authority:
 
-Kirch Ivan Balite is the sole human Technical Authority for architecture, product scope, authority transitions, integration, promotion, release disposition, deployment authorization, and destructive repository operations.
+**Kirch Ivan Balite**
 
-All other contributors are **Developers / Contributors** unless Kirch explicitly issues a repository-local bounded delegation.
+No contributor, automated agent, branch owner, Reviewer, Writer, Acceptance role or commit volume independently grants product or promotion authority.
 
-A contributor may perform implementation, frontend, backend, DevOps, QA, review, documentation, or operator work. Those functions do not independently grant Technical Authority.
+## Forge role model
 
-## Forge operating roles
+- **Maintainer** — controls repository truth, sequencing, handoffs, evidence, acceptance/promotion coordination and anti-drift.
+- **Code Writer** — implements only an exact bounded handoff.
+- **Reviewer** — inspects; does not repair or promote.
+- **Acceptance** — evaluates an exact promotion contract.
+- **Integration Writer** — integrates only when explicitly authorized.
 
-Forge roles are bounded working roles, not ownership titles.
+Writers do not self-accept or self-promote.
 
-- Maintainer coordinates under Technical Authority.
-- Code Writer implements a bounded handoff.
-- Reviewer inspects evidence and reports defects/disposition.
-- Acceptance evaluates a stated promotion contract when explicitly authorized.
-- Integration Writer performs an explicitly authorized integration.
+## Current product authority
 
-No operating role may silently override the Technical Authority.
+Accepted application/runtime payload:
 
-Writers do not self-promote. Review is not promotion. Build evidence is not runtime evidence. Runtime evidence is not deployment evidence.
+`314b6661b34d4a70272d2a079f7cdda238b522ae`
 
-## Current authority
+State:
 
-The repository has completed DA1 → RC1 → RV1 → main promotion → archival preservation → remote branch cleanup.
+`B1 ACCEPTED / PROMOTED`
 
-Sole continuing remote branch:
+Designation:
 
-`main`
+`PROTOTYPE BACKEND BASELINE`
 
-Exact RV1-validated and promoted product payload:
+Always resolve live `main` from Git because governance-only commits may advance the repository without changing the accepted product payload.
 
-`f6208cf082c4b1d189c70728adfdb9ddf3225990`
+## Current mission
 
-Historical non-main branch tips are preserved under verified `archive/branch/*` tags.
+`SEPTEMBER 30, 2026 — 3:00 PM PROTOTYPE SHOWCASE`
 
-Deleted historical branch names in evidence records remain provenance and must not be treated as live refs.
+Expected audience:
 
-## Current transition
+`16-20`
 
-MP3 governance closeout and MP4 final prototype-day rehearsal / Developer Acceptance Test are complete as bounded pre-deployment work.
+Current phase:
 
-Current authorized program:
+`S1 — LIGHT UI CORRECTIONS & PRESENTATION FLOW LOCK`
 
-`MP5 — POST-DAT FRONTEND CORRECTION`
+Mandatory sequence:
 
-MP5 source baseline:
-
-`main@615529ce6663933dd3eeee4d504d14d1f21b626d`
-
-Coordination branch:
-
-`KIRCH-TALIBON-MP5-POST-DAT-FRONTEND-CORRECTION`
-
-MP5 is limited to DAT-backed frontend behavior, density, information architecture, and presentation corrections. Maximum active Code Writers: **2**. Deployment remains separately authorized.
-
-## Evidence precedence
-
-When information conflicts:
-
-1. directly observed live Git/runtime state;
-2. explicit instruction from Kirch Ivan Balite as Technical Authority;
-3. current repository-local governance;
-4. accepted/review evidence;
-5. historical documentation;
-6. chat memory.
-
-Do not silently reconcile a material conflict.
-
-## Branch policy
-
-`main` remains the accepted product branch.
-
-MP5 explicitly authorizes temporary coordination and writer branches that descend from the exact MP5 baseline or a later exact accepted MP5 integration baseline. At most two writer branches may be active concurrently.
-
-Do not recreate historical branches merely because older evidence references them.
-
-Every temporary MP5 branch requires a repository-local bounded handoff.
-
-Do not force push or rewrite accepted history.
+`BACKEND FREEZE -> LIGHT UI -> INTEGRATED VALIDATION -> TUNNEL REHEARSAL -> FULL DRESS REHEARSAL -> FREEZE -> SHOWCASE`
 
 ## Product direction
 
-ONE TALIBON should present as a dense, credible municipal digital workspace used for day-to-day coordination.
-
-Do not add fake actions, fake efficiency metrics, AI branding, startup marketing language, decorative product theater, or non-working controls.
+ONE TALIBON must present as a dense, credible municipal digital workspace used for real coordination.
 
 Primary actions shown to stakeholders must work.
 
+Do not add fake actions, fake efficiency metrics, AI branding, startup marketing language or decorative product theater.
+
+## Showcase scope rule
+
+Every remaining task must answer:
+
+`Does this materially increase the probability that the showcase succeeds?`
+
+If not, defer it.
+
+Current authorized work is presentation-critical UI refinement, exact integrated validation, deterministic demo preparation, Cloudflare Quick Tunnel delivery rehearsal, recovery rehearsal and final presentation operations.
+
+Broad backend work is frozen unless direct rehearsal evidence proves a blocker.
+
 ## Security boundary
 
-Preserve authentication, authorization, sessions, CSRF, MFA, audit logging, private-file controls, and role/office visibility boundaries.
+Preserve authentication, authorization, sessions, CSRF, MFA, audit behavior, private-file controls and role/office visibility.
 
-Security implementation remains functional even when security is not an ordinary presentation surface.
+Presentation convenience does not authorize weakening security boundaries.
 
-## Validation discipline
+## Database boundary
 
-Only claim what actually ran.
+Protected UAT:
 
-Valid evidence states include:
+`talibon_portal`
 
-`PASS`, `FAIL`, `NOT RUN`, `NOT OBSERVED`, and `UNKNOWN`.
+Disposable engineering/test:
 
-The historical aggregate DA1 pass marker and historical H0 exact marker were not observed and must not be invented.
+`talibon_portal_test`
 
-Prototype rehearsal, deployment, UAT, production readiness, and commercial completion remain separate claims.
+Never destructively test against UAT.
+
+## Evidence discipline
+
+Only claim what ran.
+
+Valid states include:
+
+`PASS`, `FAIL`, `NOT RUN`, `NOT OBSERVED`, `UNKNOWN`.
+
+Build evidence is not runtime evidence.
+
+Runtime evidence is not tunnel/deployment evidence.
+
+Quick Tunnel presentation transport is not final production-hosting acceptance.
+
+## Freeze discipline
+
+After the final dress rehearsal passes, the exact known-good state is protected.
+
+Do not perform last-minute refactors, dependency updates, schema changes, architecture work or aesthetic experiments after freeze.
+
+Only a reproducible showstopper may break freeze.
