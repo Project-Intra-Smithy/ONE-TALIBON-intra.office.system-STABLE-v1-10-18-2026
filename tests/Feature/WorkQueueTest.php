@@ -17,7 +17,7 @@ class WorkQueueTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_department_head_default_is_personal_active_work_with_separate_office_scope(): void
+    public function test_department_head_default_is_overview_with_separate_task_request_and_office_scopes(): void
     {
         $office = $this->department('ALL-OWN');
         $other = $this->department('ALL-OTHER');
@@ -44,31 +44,31 @@ class WorkQueueTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->component('Transactions/Index')
-                ->where('filters.view', 'all')
-                ->where('records.total', 3)
-                ->has('records.data', 3)
+                ->where('filters.view', 'overview')
+                ->where('records.total', 0)
+                ->has('records.data', 0)
                 ->where('experience.profile', 'department_head')
                 ->where('experience.hasOfficeScope', true)
                 ->where('experience.department.id', $office->id)
-                ->has('scopeGroups', 2)
-                ->where('scopeGroups.0.key', 'personal')
-                ->has('scopeGroups.0.views', 8)
-                ->where('scopeGroups.0.views.0.key', 'all')
-                ->where('scopeGroups.0.views.0.label', 'My Work')
-                ->where('scopeGroups.0.views.0.count', 3)
-                ->where('scopeGroups.0.views.1.key', 'needs_my_action')
-                ->where('scopeGroups.0.views.2.key', 'assigned_to_me')
-                ->where('scopeGroups.0.views.3.key', 'due_soon')
-                ->where('scopeGroups.0.views.4.key', 'overdue')
-                ->where('scopeGroups.0.views.5.key', 'recently_updated')
-                ->where('scopeGroups.0.views.6.key', 'waiting_on_others')
-                ->where('scopeGroups.0.views.7.key', 'recently_completed')
-                ->where('scopeGroups.1.key', 'office')
-                ->has('scopeGroups.1.views', 4)
-                ->where('scopeGroups.1.views.0.key', 'office_queue')
-                ->where('scopeGroups.1.views.1.key', 'unassigned')
-                ->where('scopeGroups.1.views.2.key', 'staff_workload')
-                ->where('scopeGroups.1.views.3.key', 'escalations'));
+                ->has('scopeGroups', 3)
+                ->where('scopeGroups.0.key', 'tasks')
+                ->has('scopeGroups.0.views', 6)
+                ->where('scopeGroups.0.views.0.key', 'needs_my_action')
+                ->where('scopeGroups.0.views.1.key', 'assigned_to_me')
+                ->where('scopeGroups.0.views.2.key', 'due_soon')
+                ->where('scopeGroups.0.views.3.key', 'overdue')
+                ->where('scopeGroups.0.views.4.key', 'recently_updated')
+                ->where('scopeGroups.0.views.5.key', 'recently_completed')
+                ->where('scopeGroups.1.key', 'requests')
+                ->has('scopeGroups.1.views', 2)
+                ->where('scopeGroups.1.views.0.key', 'my_requests')
+                ->where('scopeGroups.1.views.1.key', 'waiting_on_others')
+                ->where('scopeGroups.2.key', 'office')
+                ->has('scopeGroups.2.views', 4)
+                ->where('scopeGroups.2.views.0.key', 'office_queue')
+                ->where('scopeGroups.2.views.1.key', 'unassigned')
+                ->where('scopeGroups.2.views.2.key', 'staff_workload')
+                ->where('scopeGroups.2.views.3.key', 'escalations'));
 
         $this->assertStringNotContainsString($hidden->title, $response->getContent());
         $this->assertStringNotContainsString((string) $hidden->reference_no, $response->getContent());
@@ -108,7 +108,7 @@ class WorkQueueTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->where('records.total', 1)
-                ->where('scopeGroups.0.views.2.count', 1));
+                ->where('scopeGroups.0.views.1.count', 1));
 
         $this->actingAs($actor)->get('/transactions?view=assigned_to_me&status=approved')
             ->assertOk()
@@ -148,7 +148,7 @@ class WorkQueueTest extends TestCase
                 ->where('records.total', 2)
                 ->has('records.data', 2)
                 ->where('records.data.1.id', $assigned->id)
-                ->where('scopeGroups.1.views.0.count', 2));
+                ->where('scopeGroups.2.views.0.count', 2));
     }
 
     public function test_employee_receives_only_personal_categories_and_cannot_select_office_head_views(): void
@@ -167,10 +167,13 @@ class WorkQueueTest extends TestCase
             ->assertInertia(fn (Assert $page) => $page
                 ->where('experience.profile', 'employee')
                 ->where('experience.hasOfficeScope', false)
-                ->has('scopeGroups', 1)
-                ->has('scopeGroups.0.views', 8)
-                ->where('records.total', 2)
-                ->has('records.data', 2));
+                ->has('scopeGroups', 2)
+                ->where('scopeGroups.0.key', 'tasks')
+                ->has('scopeGroups.0.views', 6)
+                ->where('scopeGroups.1.key', 'requests')
+                ->has('scopeGroups.1.views', 2)
+                ->where('records.total', 0)
+                ->has('records.data', 0));
 
         $this->assertStringContainsString($mine->title, $response->getContent());
         $this->assertStringContainsString($outgoing->title, $response->getContent());
@@ -225,7 +228,7 @@ class WorkQueueTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->where('records.total', 3)
-                ->where('scopeGroups.1.views.3.count', 3));
+                ->where('scopeGroups.2.views.3.count', 3));
 
         foreach ([$overdue, $urgent, $unassigned] as $visible) {
             $this->assertStringContainsString($visible->title, $escalationResponse->getContent());
