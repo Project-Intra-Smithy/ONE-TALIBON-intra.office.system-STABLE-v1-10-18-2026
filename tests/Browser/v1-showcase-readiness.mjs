@@ -132,13 +132,32 @@ async function switchWorkspace(page) {
     check('Switch Workspace returns to gateway', safePath(page.url()) === '/login', safePath(page.url()));
 }
 async function assertNavigation(page, label, expected, forbidden = []) {
-    const collapsedGroups = page.locator('nav[aria-label="Primary navigation"] button[aria-expanded="false"]');
-    while (await collapsedGroups.count() > 0) {
-        await collapsedGroups.first().click();
-    }
+    const secondaryGroupByDestination = new Map([
+        ['Executive Departments', 'Municipal Organization'],
+        ['Staff Directory', 'Municipal Organization'],
+        ['Ordinances & Issuances', 'Municipal Organization'],
+        ['Councils, Boards & Committees', 'Municipal Organization'],
+        ['Development Plans', 'Planning'],
+        ['PPAs', 'Planning'],
+        ['Project Monitoring', 'Planning'],
+        ['System Administration', 'Administration'],
+        ['Systems Directory', 'Municipal Systems'],
+    ]);
 
     for (const item of expected) {
-        check(`${label}: ${item} visible`, await page.getByRole('link', { name: item, exact: true }).first().isVisible().catch(() => false));
+        const destination = page.getByRole('link', { name: item, exact: true }).first();
+        if (!(await destination.isVisible().catch(() => false))) {
+            const owningGroup = secondaryGroupByDestination.get(item);
+            check(`${label}: ${item} has an owning secondary group`, Boolean(owningGroup), owningGroup || 'none');
+
+            const disclosure = page.getByRole('button', { name: owningGroup, exact: true }).first();
+            check(`${label}: ${owningGroup} disclosure available`, await disclosure.isVisible().catch(() => false));
+            if (await disclosure.getAttribute('aria-expanded') !== 'true') {
+                await disclosure.click();
+            }
+        }
+
+        check(`${label}: ${item} visible`, await destination.isVisible().catch(() => false));
     }
     for (const item of forbidden) {
         check(`${label}: ${item} absent`, await page.getByText(item, { exact: true }).count() === 0);
