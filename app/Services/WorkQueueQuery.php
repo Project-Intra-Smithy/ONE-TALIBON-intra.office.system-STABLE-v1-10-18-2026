@@ -29,7 +29,7 @@ final class WorkQueueQuery
         $authorized = $this->visibility->scope($actor);
         $filtered = $this->applyCommonFilters(clone $authorized, $filters);
         $personal = $this->personalScope(clone $authorized, $actor);
-        $municipalScope = in_array($experience['profile'], ['executive_oversight', 'system_administration'], true);
+        $municipalScope = $experience['profile'] === 'executive_oversight';
         $optionsBase = $experience['profile'] === 'department_head' || $municipalScope
             ? $authorized
             : $personal;
@@ -150,7 +150,7 @@ final class WorkQueueQuery
         $dueSoonEnd = $now->copy()->addDay();
         $recentlyUpdatedStart = $now->copy()->subDays(7);
         $recentlyCompletedStart = $now->copy()->subDays(30);
-        $municipalScope = in_array($profile, ['executive_oversight', 'system_administration'], true);
+        $municipalScope = $profile === 'executive_oversight';
 
         $definitions = [
             'all' => $municipalScope
@@ -287,7 +287,7 @@ final class WorkQueueQuery
         $terminal = $this->terminalStatuses();
         $departmentId = $actor->employee?->department_id;
         $employeeId = $actor->employee?->id;
-        $municipalScope = in_array($profile, ['executive_oversight', 'system_administration'], true);
+        $municipalScope = $profile === 'executive_oversight';
 
         if (! $municipalScope && in_array($view, [
             'all', 'needs_my_action', 'assigned_to_me', 'due_soon', 'overdue',
