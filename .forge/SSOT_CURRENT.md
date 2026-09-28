@@ -58,9 +58,19 @@ Reason:
 
 promotion-stability wording conflated live repository HEAD with the application/runtime payload anchor.
 
-Rework branch:
+First promotion-stability rework:
 
 `KIRCH-TALIBON-FB0-FRONTEND-BACKEND-TRANSITION-REWORK-01`
+
+REWORK-01 Reviewer result:
+
+`REWORK REQUIRED`
+
+Reason:
+
+the persistent CURRENT SSOT still encoded a pre-promotion review cycle as its unconditional next action.
+
+Further FB0 rework/review/acceptance state must be resolved from live Git and durable handoff/evidence rather than inferred from this CURRENT summary.
 
 ## Carried validation
 
@@ -120,7 +130,7 @@ State:
 
 `REGISTERED / NOT YET ACCEPTED AS VALIDATION AUTHORITY`
 
-Next infrastructure evidence phase:
+First backend infrastructure evidence phase after FB0 promotion:
 
 `E0 — EXACT-MACHINE / SELF-HOSTED / TEST-DATABASE EVIDENCE CLOSURE`
 
@@ -146,19 +156,34 @@ Always distinguish:
 
 Current-state governance must remain true after a governance-only promotion.
 
-## Next action
+## FB0 promotion gate
 
-No Code Writer is authorized by FB0.
-
-Complete FB0 re-review and re-Acceptance first.
-
-After accepted governance promotion:
+Before any FB0 governance candidate may be promoted:
 
 1. re-resolve live `main`;
-2. run E0;
-3. finish backend route/query/authorization/performance audit;
-4. obtain Technical Authority decisions where required;
-5. issue bounded Forge writer waves.
+2. verify exact candidate lineage and governance-only scope;
+3. obtain a fresh Reviewer disposition for that exact candidate;
+4. obtain Acceptance for that exact candidate;
+5. promote only through an accepted ancestry-preserving non-force operation.
+
+These are promotion prerequisites, not the persistent post-promotion next action.
+
+## Persistent post-FB0 next phase
+
+Once an FB0 governance candidate has been accepted and promoted, the next engineering phase is:
+
+`E0 — EXACT-MACHINE / SELF-HOSTED / TEST-DATABASE EVIDENCE CLOSURE`
+
+E0 sequence:
+
+1. re-resolve live repository `main`;
+2. verify the application/runtime payload anchor and its diff from live `main`;
+3. prove DEVKRTZ/toolchain/test-database isolation;
+4. finish backend route/query/authorization/performance audit with exact-machine evidence;
+5. obtain Technical Authority decisions where required;
+6. issue bounded Forge writer waves.
+
+No Code Writer is authorized merely by this SSOT.
 
 ## Evidence law
 
