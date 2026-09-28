@@ -307,6 +307,17 @@ class TravelOrderRecordsFederationTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->where('records.total', 3)
+                ->where('overview.counts.all', 3)
+                ->where('overview.counts.correspondence', 1)
+                ->where('overview.counts.transaction', 1)
+                ->where('overview.counts.travel_order', 1)
+                ->where('filterOptions.states', function ($states): bool {
+                    $values = collect($states)->pluck('value');
+
+                    return $values->contains('approved')
+                        && $values->contains('classified')
+                        && $values->contains('submitted');
+                })
                 ->where('records.data', function ($rows) use ($order, $correspondence, $transaction): bool {
                     $items = collect($rows);
 
