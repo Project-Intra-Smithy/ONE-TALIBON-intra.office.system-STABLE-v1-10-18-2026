@@ -77,18 +77,27 @@ async function openSelector(page) {
     await page.getByRole('dialog').waitFor({ state: 'visible' });
 }
 async function dismissWorkspaceOnboarding(page) {
-    const dialog = page.locator('[data-onboarding]').first();
-    const visible = await dialog.isVisible({ timeout: 2000 }).catch(() => false);
-    if (!visible) return;
+    const dialog = page.locator(
+        '[data-onboarding="first-run"], [data-onboarding="persona-offer"]',
+    ).first();
+
+    const appeared = await dialog
+        .waitFor({ state: 'visible', timeout: 3000 })
+        .then(() => true)
+        .catch(() => false);
+
+    if (!appeared) return;
 
     for (const label of ['No, enter workspace', 'Not now']) {
         const button = dialog.getByRole('button', { name: label, exact: true });
         if (await button.isVisible().catch(() => false)) {
             await button.click();
-            await dialog.waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
+            await dialog.waitFor({ state: 'hidden', timeout: 5000 });
             return;
         }
     }
+
+    throw new Error('Visible onboarding gate could not be dismissed by the readiness harness');
 }
 
 async function enterWorkspace(page, role, office = null) {
