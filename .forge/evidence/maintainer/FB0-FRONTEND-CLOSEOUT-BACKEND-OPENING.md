@@ -2,143 +2,126 @@
 
 ## Purpose
 
-This record reconstructs the current transition from the recently completed UI/UX-focused delivery/UAT period into a backend/runtime hardening program.
+FB0 records the transition from the UI/UX-focused RC2/UAT period into backend/runtime hardening.
 
-The preceding frontend session moved quickly and many decisions were made through live implementation, UAT screenshots, direct Git changes, and chat coordination without continuously reconciling the repository's current governance pointers.
+The preceding frontend session advanced product source, UAT and decisions faster than the repository's current governance pointers were reconciled. That created authority lag and made chat context temporarily more current than Git governance.
 
-That created an authority lag:
+FB0 exists to end that condition before backend implementation begins.
 
-- product source advanced;
-- accepted main advanced;
-- UAT advanced;
-- current `.forge/AUTHORITY.md`, `.forge/SSOT_CURRENT.md`, and `.forge/VALIDATION.md` remained anchored to older MP5-era state.
+## Opening authority
 
-FB0 exists to end that lag before backend implementation begins.
+At FB0 opening:
 
-## Exact opening authority
+- repository `main = 0e57508cab1a86bf4eabc1637e39b2dae6d32716`;
+- accepted application/runtime payload anchor = `0e57508cab1a86bf4eabc1637e39b2dae6d32716`;
+- Forge = `44eb57e5b45b343be0033bf22a7a5e74d543c01a`;
+- open PRs observed = `0`;
+- remote branches observed = `31 including main`.
 
-Product:
+These are historical opening observations.
 
-`main@0e57508cab1a86bf4eabc1637e39b2dae6d32716`
+A governance-only promotion may later advance repository `main` while leaving the accepted application/runtime payload unchanged.
 
-Forge:
+## Acceptance rework
 
-`Kirch-Nairu/KIRION-FORGE@44eb57e5b45b343be0033bf22a7a5e74d543c01a`
+The first FB0 candidate:
 
-Open PRs observed:
+`9bb41e812acfce24c421f312ee3b940faaf47e9f`
 
-`0`
+received Reviewer disposition:
 
-Remote branches observed:
+`SUITABLE FOR ACCEPTANCE WITH RECORDED LIMITATIONS`
 
-`31 including main`
+but Acceptance returned:
 
-## What the frontend/UIUX phase established
+`REJECT / RETURN FOR REWORK`
 
-The current UI/UX-focused UAT pass is accepted by the Technical Authority for transition purposes.
+The blocker was governance promotion stability.
 
-The application now presents as a role-aware municipal workspace rather than a generic dashboard.
+The rejected candidate treated `main@0e57508...` and the accepted application/runtime payload anchor as though they were permanently the same authority.
 
-Important current behavior:
+That would become false immediately after promoting governance-only FB0 commits.
 
-- Employee, Department Head, Executive and System Administration experiences are distinct.
-- Department Head Tasks separate My Tasks, My Requests and Office Work.
-- Executive Tasks currently present executive decision/municipal work rather than normal personal groups.
-- broad municipal reference/workspace surfaces are visible under role-aware access.
-- the green municipal presentation remains the accepted visual direction.
-- current main is the promoted RC2 repair state.
+REWORK-01 corrects this by separating:
 
-## What the frontend/UIUX phase did NOT establish
+1. live repository authority — resolve current `main` HEAD from Git;
+2. accepted application/runtime payload anchor — `0e57508cab1a86bf4eabc1637e39b2dae6d32716`.
 
-It did not close:
+No application/runtime behavior is changed by this correction.
 
-- route completeness;
-- backend authorization architecture;
-- cross-surface query semantics;
-- query performance;
-- PostgreSQL plan/index quality;
-- Document Center scaling;
-- messaging participant authority;
-- System Administration authority doctrine;
-- Windows self-hosted CI readiness;
-- production acceptance.
+## Frontend/UIUX disposition
 
-## Why backend is now the primary program
+The Technical Authority accepts the current UI/UX-focused local UAT pass for frontend→backend transition purposes.
+
+Current presentation is sufficiently usable to stop broad UI polish as the primary engineering program.
+
+The current role-aware workspace behavior remains the presentation baseline.
+
+This UAT does not establish backend acceptance, production readiness, or commercial completion.
+
+## Backend program
 
 Time is limited.
 
-The highest-value remaining engineering work is no longer broad visual refinement.
+Primary engineering focus becomes:
 
-The priority is now:
+`BACKEND / AUTHORIZATION / PERFORMANCE / RUNTIME HARDENING`
+
+Priority:
 
 1. make backend semantics consistent and understandable;
-2. make routes/actions enforce server-side authority correctly;
-3. make pages load faster by reducing server/query cost;
-4. eliminate whole-corpus materialization and avoidable repeated work;
-5. preserve bounded pagination;
-6. measure and improve PostgreSQL query behavior;
+2. enforce server-side route/action authority correctly;
+3. reduce server/query cost and load time;
+4. replace unbounded materialization with bounded database work;
+5. preserve pagination and authorization truth;
+6. measure PostgreSQL behavior before index changes;
 7. harden runtime startup/recovery;
-8. make validation reproducible on the actual Windows development host;
-9. keep current UI/UX stable unless a backend truth requires a targeted presentation correction.
+8. validate safely on the Windows development host;
+9. preserve current UI/UX unless backend truth requires a targeted presentation correction.
 
-## Anti-drift conclusion
+## Known opening findings
 
-The undocumented frontend session was not the only source of drift, but it was a major contributor because chat memory temporarily became more current than repository governance.
+### SEM-01
+
+Dashboard attention composition can mix personal attention with office/executive-scoped presentation.
+
+### PERF-01
+
+`DocumentArchiveQuery` loads the full document corpus before authorization/filtering/pagination.
+
+### AUTH-01
+
+System Administration Work Queue metadata says municipal while the current repaired Work Queue path is personal-scoped.
+
+### AUTH-02
+
+System Administration retains broader historical generic transaction authority. Policy intent requires Technical Authority.
+
+### PROD-01
+
+Executive Work Queue remains executive-only. This is current product behavior, not a proven defect.
+
+### MSG-01
+
+Prototype named channels do not enforce channel membership.
+
+### CI-01
+
+Current workflows are Linux/container oriented. `DEVKRTZ` is not yet validation authority.
+
+## Anti-drift result
 
 From FB0 forward:
 
-- Git authority must be updated at each phase transition;
-- every new program receives a repository-local Maintainer handoff;
-- every writer wave names an exact base and bounded ownership;
-- Reviewer/Acceptance results become durable evidence;
-- current governance pointers are reconciled before the next program begins;
-- chat context may explain intent but does not replace Git authority.
-
-## Backend opening findings
-
-Source audit has already established several concrete targets:
-
-### Dashboard semantics
-
-The Department Head dashboard can merge personal recent-attention work into a card labeled as office work.
-
-This creates a truthful-data / misleading-scope problem.
-
-Do not widen `office_queue` to make counts match.
-
-### Document Center performance
-
-Current archive code loads the entire document corpus, then performs authorization/filtering/pagination in memory.
-
-This is a confirmed backend scaling target.
-
-### System Administration
-
-Two distinct facts must remain separate:
-
-1. RC2 personal-scoped System Administration Work Queue;
-2. historical generic transaction capabilities granting broader municipal transaction authority.
-
-Do not infer one from the other.
-
-### Messaging
-
-Current fixed channels are prototype presentation groups, not enforced participant groups.
-
-Policy intent must be decided before adding channel restrictions.
-
-### Self-hosted runner
-
-The new `DEVKRTZ` runner is registered but not yet validated as a release gate.
-
-Existing workflows are Linux-oriented.
-
-A Windows-native lane requires its own preflight and bounded infrastructure wave.
+- exact live Git is re-resolved at every phase transition;
+- repository HEAD and product payload anchor are kept separate;
+- every new program receives repository-local authority;
+- writer waves name exact bases and bounded ownership;
+- Reviewer/Acceptance returns become durable evidence;
+- chat context does not replace Git authority.
 
 ## Transition result
 
-FB0 closes the frontend-dominant program as the primary engineering focus.
-
-It opens backend/runtime hardening as the primary engineering focus.
+FB0 closes broad frontend/UIUX work as the primary engineering focus and opens backend/runtime hardening.
 
 No product implementation is authorized by this record.
