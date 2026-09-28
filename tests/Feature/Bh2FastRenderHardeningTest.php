@@ -135,6 +135,14 @@ final class Bh2FastRenderHardeningTest extends TestCase
 
         $response->assertOk();
 
+        if ($label === 'documents.records') {
+            $this->assertLessThanOrEqual(
+                18,
+                count($queries),
+                'B1 requires documents.records to execute 18 queries or fewer.',
+            );
+        }
+
         $queryTimeMs = array_reduce(
             $queries,
             fn (float $total, array $query): float => $total + (float) ($query['time'] ?? 0),
