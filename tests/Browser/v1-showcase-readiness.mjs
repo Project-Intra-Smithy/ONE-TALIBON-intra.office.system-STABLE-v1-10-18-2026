@@ -113,14 +113,9 @@ async function enterWorkspace(page, role, office = null) {
 async function switchWorkspace(page) {
     checkpoint('switch workspace', page);
 
-    const accountTools = page.locator('details.portal-account-tools').first();
-    await accountTools.waitFor({ state: 'visible' });
-    if (!(await accountTools.evaluate((node) => node.open))) {
-        await accountTools.locator('summary[aria-label="Account and tools"]').click();
-    }
-
-    const switcher = accountTools.getByRole('button', { name: 'Switch Workspace', exact: true });
+    const switcher = page.locator('#portal-shell [data-tour="shell:workspace-switcher"]').first();
     await switcher.waitFor({ state: 'visible' });
+    check('Switch Workspace is persistently discoverable', await switcher.isVisible());
 
     const switchResponse = page.waitForResponse((response) => {
         const url = new URL(response.url());

@@ -167,14 +167,9 @@ async function personaCompletionSwitchAndReplay(browser) {
     await page.locator('#portal-content').waitFor({ state: 'visible' });
     check('completed persona tour does not auto-run', await page.locator('[data-onboarding="guided-tour"], [data-onboarding="persona-offer"]').count() === 0);
 
-    const accountTools = page.locator('details.portal-account-tools').first();
-    await accountTools.waitFor({ state: 'visible' });
-    if (!(await accountTools.evaluate((node) => node.open))) {
-        await accountTools.locator('summary[aria-label="Account and tools"]').click();
-    }
-
-    const switcher = accountTools.getByRole('button', { name: 'Switch Workspace', exact: true });
+    const switcher = page.locator('#portal-shell [data-tour="shell:workspace-switcher"]').first();
     await switcher.waitFor({ state: 'visible' });
+    check('persistent Switch Workspace is discoverable outside Account & tools', await switcher.getAttribute('aria-label') === null || await switcher.getAttribute('aria-label') === 'Switch Workspace');
     await switcher.click();
     await page.waitForFunction(() => window.location.pathname === '/login');
 
