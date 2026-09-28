@@ -76,40 +76,38 @@ async function openSelector(page) {
     await page.getByRole('button', { name: 'Open Municipal Workspace', exact: true }).click();
     await page.getByRole('dialog').waitFor({ state: 'visible' });
 }
-async function dismissWorkspaceOnboarding(page) {
-    const dialog = page.locator(
-        '[data-onboarding="first-run"], [data-onboarding="persona-offer"]',
-    ).first();
-
-    const appeared = await dialog
-        .waitFor({ state: 'visible', timeout: 3000 })
-        .then(() => true)
-        .catch(() => false);
-
-    if (!appeared) return;
-
-    for (const label of ['No, enter workspace', 'Not now']) {
-        const button = dialog.getByRole('button', { name: label, exact: true });
-        if (await button.isVisible().catch(() => false)) {
-            await button.click();
-            await dialog.waitFor({ state: 'hidden', timeout: 5000 });
-            return;
+async function primeReadinessOnboardingState(page) {
+    await page.evaluate(() => {
+        window.localStorage.setItem('talibon.onboarding.intro.v1', 'completed');
+        for (const persona of [
+            'executive',
+            'engineering_head',
+            'budget_head',
+            'employee',
+            'hr',
+            'legislative',
+            'system_admin',
+        ]) {
+            window.localStorage.setItem(`talibon.onboarding.tour.v1.${persona}`, 'completed');
         }
-    }
-
-    throw new Error('Visible onboarding gate could not be dismissed by the readiness harness');
+    });
 }
 
 async function enterWorkspace(page, role, office = null) {
     checkpoint(`enter ${role}`, page);
     await openSelector(page);
+    await primeReadinessOnboardingState(page);
     await page.getByRole('button', { name: new RegExp(`^${role}`) }).click();
     if (office) {
         await page.getByRole('heading', { name: 'Choose office context', exact: true }).waitFor();
         await page.getByRole('button', { name: new RegExp(`^${office}`) }).click();
     }
     await page.waitForURL((url) => url.pathname === '/dashboard');
-    await dismissWorkspaceOnboarding(page);
+    await page.waitForTimeout(50);
+    check(
+        `${role}: readiness run has no onboarding blocker`,
+        await page.locator('[data-onboarding="first-run"], [data-onboarding="persona-offer"], [data-onboarding="welcome-wizard"], [data-onboarding="guided-tour"]').count() === 0,
+    );
     check(`${role}: enters dashboard without credential challenge`, safePath(page.url()) === '/dashboard', safePath(page.url()));
 }
 async function switchWorkspace(page) {
