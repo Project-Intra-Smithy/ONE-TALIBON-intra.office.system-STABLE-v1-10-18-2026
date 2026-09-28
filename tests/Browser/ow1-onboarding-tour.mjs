@@ -167,10 +167,17 @@ async function personaCompletionSwitchAndReplay(browser) {
     await page.locator('#portal-content').waitFor({ state: 'visible' });
     check('completed persona tour does not auto-run', await page.locator('[data-onboarding="guided-tour"], [data-onboarding="persona-offer"]').count() === 0);
 
-    await Promise.all([
-        page.waitForURL((url) => url.pathname === '/login'),
-        page.getByRole('button', { name: 'Switch Workspace', exact: true }).click(),
-    ]);
+    const accountTools = page.locator('details.portal-account-tools').first();
+    await accountTools.waitFor({ state: 'visible' });
+    if (!(await accountTools.evaluate((node) => node.open))) {
+        await accountTools.locator('summary[aria-label="Account and tools"]').click();
+    }
+
+    const switcher = accountTools.getByRole('button', { name: 'Switch Workspace', exact: true });
+    await switcher.waitFor({ state: 'visible' });
+    await switcher.click();
+    await page.waitForFunction(() => window.location.pathname === '/login');
+
     await page.getByRole('button', { name: 'Open Municipal Workspace', exact: true }).click();
     await page.getByRole('button', { name: /^Employee/ }).click();
     await page.waitForURL((url) => url.pathname === '/dashboard');
