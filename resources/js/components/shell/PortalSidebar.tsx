@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { isPortalPathActive, type PortalNavigationGroup } from '../../navigation/portalNavigation';
 import type { AuthUser } from '../../types';
 import SidebarBrand from './SidebarBrand';
@@ -18,6 +19,8 @@ type Props = {
     user: AuthUser | null;
 };
 
+const isSecondaryGroup = (groupKey: PortalNavigationGroup['key']) => groupKey !== 'home' && groupKey !== 'work';
+
 export default function PortalSidebar({
     collapsed,
     currentUrl,
@@ -29,6 +32,17 @@ export default function PortalSidebar({
     user,
 }: Props) {
     const compact = !mobile && collapsed;
+    const activeSecondaryGroupKey = navigationGroups.find(
+        (group) => isSecondaryGroup(group.key)
+            && group.items.some((item) => isPortalPathActive(currentUrl, item.href)),
+    )?.key ?? null;
+    const [openSecondaryGroup, setOpenSecondaryGroup] = useState<PortalNavigationGroup['key'] | null>(
+        () => activeSecondaryGroupKey,
+    );
+
+    useEffect(() => {
+        setOpenSecondaryGroup(activeSecondaryGroupKey);
+    }, [currentUrl, activeSecondaryGroupKey]);
 
     return (
         <div className={`flex h-full flex-col bg-[var(--municipal-brand-deep)] text-white portal-compact-sidebar`} data-compact={compact}>
@@ -47,6 +61,8 @@ export default function PortalSidebar({
                 <div className={compact ? 'space-y-1.5' : 'space-y-2'}>
                     {navigationGroups.map((group) => {
                         const groupActive = group.items.some((item) => isPortalPathActive(currentUrl, item.href));
+                        const primary = !isSecondaryGroup(group.key);
+                        const collapsible = !compact && !primary;
 
                         return (
                             <SidebarSection
@@ -54,9 +70,13 @@ export default function PortalSidebar({
                                 active={groupActive}
                                 compact={compact}
                                 label={group.label}
-                                primary={group.key === 'home' || group.key === 'work'}
+                                primary={primary}
                                 showLabel={group.key !== 'home'}
-                                collapsible={!compact && group.key !== 'home' && group.key !== 'work'}
+                                collapsible={collapsible}
+                                expanded={collapsible ? openSecondaryGroup === group.key : undefined}
+                                onToggle={collapsible
+                                    ? () => setOpenSecondaryGroup((current) => current === group.key ? null : group.key)
+                                    : undefined}
                             >
                                 {group.items.map((item) => {
                                     const active = isPortalPathActive(currentUrl, item.href);

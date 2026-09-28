@@ -1,5 +1,5 @@
 import { ChevronDown, ChevronRight } from 'lucide-react';
-import { useEffect, useId, useState, type PropsWithChildren } from 'react';
+import { useId, type PropsWithChildren } from 'react';
 
 type Props = PropsWithChildren<{
     active: boolean;
@@ -8,6 +8,8 @@ type Props = PropsWithChildren<{
     primary?: boolean;
     showLabel?: boolean;
     collapsible?: boolean;
+    expanded?: boolean;
+    onToggle?: () => void;
 }>;
 
 export default function SidebarSection({
@@ -18,15 +20,12 @@ export default function SidebarSection({
     primary = false,
     showLabel = true,
     collapsible = false,
+    expanded = false,
+    onToggle,
 }: Props) {
     const generatedId = useId();
     const headingId = `portal-nav-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
     const contentId = `${headingId}-${generatedId.replace(/:/g, '')}`;
-    const [expanded, setExpanded] = useState(active);
-
-    useEffect(() => {
-        if (active) setExpanded(true);
-    }, [active]);
 
     const spacing = compact
         ? 'space-y-0.5'
@@ -47,7 +46,7 @@ export default function SidebarSection({
                     <button
                         type="button"
                         id={headingId}
-                        onClick={() => setExpanded((value) => !value)}
+                        onClick={onToggle}
                         aria-expanded={expanded}
                         aria-controls={contentId}
                         className={`portal-sidebar-group-toggle flex min-h-11 w-full items-center justify-between gap-2 rounded-sm px-2 text-left text-[11px] font-bold uppercase tracking-[0.06em] transition-colors hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 ${
