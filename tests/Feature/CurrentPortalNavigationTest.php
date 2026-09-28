@@ -112,6 +112,35 @@ class CurrentPortalNavigationTest extends TestCase
         }
     }
 
+    public function test_shell_secondary_groups_use_controlled_disclosure_and_showcase_switcher_is_persistent(): void
+    {
+        $sidebar = file_get_contents(resource_path('js/components/shell/PortalSidebar.tsx'));
+        $section = file_get_contents(resource_path('js/components/shell/SidebarSection.tsx'));
+        $footer = file_get_contents(resource_path('js/components/shell/SidebarFooter.tsx'));
+        $switcher = file_get_contents(resource_path('js/components/showcase/WorkspaceSwitcher.tsx'));
+
+        $this->assertIsString($sidebar);
+        $this->assertIsString($section);
+        $this->assertIsString($footer);
+        $this->assertIsString($switcher);
+
+        $this->assertStringContainsString('const [openSecondaryGroup, setOpenSecondaryGroup] = useState', $sidebar);
+        $this->assertStringContainsString('setOpenSecondaryGroup(activeSecondaryGroupKey);', $sidebar);
+        $this->assertStringContainsString('expanded={collapsible ? openSecondaryGroup === group.key : undefined}', $sidebar);
+        $this->assertStringContainsString('current === group.key ? null : group.key', $sidebar);
+
+        $this->assertStringNotContainsString('useState(active)', $section);
+        $this->assertStringContainsString('expanded?: boolean;', $section);
+        $this->assertStringContainsString('onToggle?: () => void;', $section);
+        $this->assertStringContainsString('onClick={onToggle}', $section);
+
+        $this->assertStringContainsString('<WorkspaceSwitcher compact={compact} />', $footer);
+        $this->assertStringContainsString('<details className="portal-account-tools">', $footer);
+        $this->assertStringContainsString('data-tour="shell:workspace-switcher"', $switcher);
+        $this->assertStringContainsString("router.post('/showcase/switch'", $switcher);
+        $this->assertStringContainsString('Switch Workspace', $switcher);
+    }
+
     public function test_current_and_hidden_backend_routes_remain_registered(): void
     {
         foreach ([
