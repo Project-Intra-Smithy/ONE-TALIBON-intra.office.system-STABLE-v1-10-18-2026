@@ -1,72 +1,68 @@
 # ONE TALIBON V1 — CURRENT SSOT
 
-## Technical Authority
+## Authority
+
+Technical Authority:
 
 **Kirch Ivan Balite**
 
-## Repository
+Repository:
 
 `Kirch-Nairu/Talibon-Sales-Prototype`
 
-## Forge
+Forge:
 
 `Kirch-Nairu/KIRION-FORGE@44eb57e5b45b343be0033bf22a7a5e74d543c01a`
 
-## Current accepted product
+## Repository authority
 
-Branch:
+Accepted repository branch:
 
 `main`
 
-Exact SHA:
+Exact current repository HEAD:
+
+`RESOLVE LIVE FROM GIT`
+
+Do not treat an older SHA in governance as a permanent alias for `main`.
+
+Governance-only commits may advance `main` without changing application/runtime source.
+
+## Accepted application/runtime payload anchor
 
 `0e57508cab1a86bf4eabc1637e39b2dae6d32716`
 
-Current main is the exact accepted RC2 repair candidate.
+This is the accepted RC2 application/runtime payload anchor.
 
-Open PRs observed at FB0 opening:
+At FB0 opening, live `main` pointed exactly to this SHA.
 
-`0`
+After a governance-only promotion, repository `main` may advance while this payload anchor remains unchanged.
 
-Remote branches observed at FB0 opening:
+When application/runtime source is later accepted, this payload anchor must be updated through a governed transition.
 
-`31 including main`
+## FB0 transition
 
-Branch cleanup is not part of FB0.
+Program:
 
-## Completed release chain
+`FB0 — FRONTEND / UIUX CLOSEOUT → BACKEND / RUNTIME HARDENING`
 
-Frozen RC2:
+Original FB0 candidate:
 
-`826d0bf735c848fdc21f8484d70491b056337da6`
+`9bb41e812acfce24c421f312ee3b940faaf47e9f`
 
-Final repair:
+First Acceptance result:
 
-`0e57508cab1a86bf4eabc1637e39b2dae6d32716`
+`REJECT / RETURN FOR REWORK`
 
-Independent Reviewer:
+Reason:
 
-`SUITABLE FOR ACCEPTANCE`
+promotion-stability wording conflated live repository HEAD with the application/runtime payload anchor.
 
-Acceptance:
+Rework branch:
 
-`ACCEPT FOR EXACT MAIN PROMOTION WITH RECORDED LIMITATION`
+`KIRCH-TALIBON-FB0-FRONTEND-BACKEND-TRANSITION-REWORK-01`
 
-Promotion:
-
-`PASS / COMPLETE`
-
-Method:
-
-- direct ancestry-preserving ref-forward;
-- force=false;
-- no rebase;
-- no squash;
-- no reconstruction.
-
-Current main and final repair candidate are identical.
-
-## Carried validation evidence
+## Carried validation
 
 Backend-green:
 
@@ -74,140 +70,45 @@ Backend-green:
 
 Observed:
 
-- 400 Feature tests passed;
-- 5,277 assertions;
-- 0 failures.
+`400 passed / 5,277 assertions / 0 failures`
 
-Production frontend:
-
-- TypeScript PASS;
-- production Vite build PASS;
-- compiled runtime PASS.
-
-V1 showcase:
+V1:
 
 `V1_SHOWCASE_BROWSER_PASS checks=270 matrices=6 screenshots=8`
 
-V1-green SHA:
-
-`0d9b849bf5e71971e42f446bda9d2ebf76bae9ec`
-
-OW1 exact-final:
+OW1 at application payload anchor:
 
 `OW1_ONBOARDING_BROWSER_PASS checks=63`
 
-at:
+These are carried evidence, not new FB0 executions.
 
-`0e57508cab1a86bf4eabc1637e39b2dae6d32716`
+## UI/UX UAT
 
-## Local UAT disposition
+Technical Authority disposition:
 
-Current UI/UX-oriented local UAT pass is considered PASS by the Technical Authority for transition purposes.
+`PASS FOR FRONTEND → BACKEND TRANSITION PURPOSES`
 
-This UAT established that the promoted workspace is sufficiently usable to move engineering focus from frontend/UIUX correction into backend/runtime hardening.
+This does not establish backend acceptance, production readiness, commercial completion, or runner readiness.
 
-It does **not** establish:
+## Backend direction
 
-- backend architecture closure;
-- production acceptance;
-- commercial completion;
-- self-hosted CI readiness.
+Primary program after FB0:
 
-Representative UAT observations included:
+`BACKEND / AUTHORIZATION / PERFORMANCE / RUNTIME HARDENING`
 
-- Mayor / executive role-aware dashboard and executive task composition;
-- Department Head personal task/request/office scope separation;
-- broad navigation and major municipal workspace surfaces rendering;
-- correspondence, records, memoranda, calendar, meetings, messages, staff directory, ordinances, local bodies and search presentation.
+Priority findings already established:
 
-## Role-composition decisions carried forward
+- SEM-01 — Dashboard attention scope/presentation mismatch.
+- PERF-01 — DocumentArchiveQuery full-corpus materialization.
+- AUTH-01 — System Administration Work Queue scope metadata mismatch.
+- AUTH-02 — broader System Administration transaction authority requires Technical Authority decision.
+- PROD-01 — executive-only Work Queue is current behavior, not a proven defect.
+- MSG-01 — prototype channels do not enforce participant membership.
+- CI-01 — current workflows are Linux/container-oriented.
 
-### Department Head
+## Self-hosted validation
 
-Current intended composition is:
-
-- My Tasks;
-- My Requests;
-- Office Work.
-
-Personal requests waiting in another office are not current-office work.
-
-### Executive / Mayor
-
-Current implementation exposes Executive Work rather than normal personal task groups.
-
-This is a current product behavior, not a confirmed defect.
-
-Whether executive authority should become additive to personal accountability remains a Technical Authority/product decision.
-
-### System Administration
-
-Current RC2 Work Queue behavior is personal-scoped.
-
-The broader generic transaction authorization layer still grants historical municipality-wide transaction capabilities.
-
-This is an unresolved authority-policy question and must not be silently normalized by a Code Writer.
-
-## Confirmed backend findings entering the new phase
-
-### SEM-01 — Dashboard scope composition
-
-Department Head UAT showed:
-
-- Dashboard `Office Work for Action = 1`;
-- Work Queue `Incoming Office Work = 0`;
-- Department Workspace `Active office work = 0`.
-
-Current source shows the dashboard mixes personal recent attention with current-office unresolved work and then presents the merged result under an office-scoped label/link.
-
-Repair must target the semantic composition/label/link contract, not widen `office_queue`.
-
-### PERF-01 — Document archive materialization
-
-`DocumentArchiveQuery` currently retrieves the full document corpus and performs visibility/filter/pagination after materialization.
-
-This is a confirmed scaling/performance defect.
-
-### AUTH-01 — System Administration Work Queue metadata
-
-System Administration definitions retain `scope="municipal"` metadata while the current RC2 Work Queue query does not grant municipal scope to that profile.
-
-Current behavior is safe under the present consumer path, but the metadata is authority-like and should be reconciled deliberately.
-
-### AUTH-02 — System Administration generic transaction authority
-
-The transaction capability/access layer still grants System Administration broad transaction view/action authority, including transition, assignment and Mayor-decision behavior.
-
-This is established historical behavior and requires a Technical Authority decision before redesign.
-
-### MSG-01 — Prototype messaging audience
-
-Prototype messaging uses fixed named channels but does not enforce per-channel participant membership.
-
-Whether that remains acceptable prototype behavior or becomes protected audience semantics is a Technical Authority decision.
-
-## Current performance/runtime program
-
-Program transition:
-
-`FB0 — FRONTEND / UIUX CLOSEOUT → BACKEND / RUNTIME HARDENING`
-
-Primary backend goals:
-
-- make server behavior make sense across surfaces;
-- audit routes and direct authorization;
-- reduce unnecessary query/materialization cost;
-- improve initial page load and server response;
-- preserve bounded pagination;
-- reduce N+1 and duplicate aggregate work;
-- improve runtime stability;
-- measure PostgreSQL query plans before index changes;
-- make local/self-hosted validation reproducible;
-- preserve current UI/UX unless backend truth requires a bounded presentation correction.
-
-## Self-hosted validation state
-
-Registered runner:
+Runner:
 
 `DEVKRTZ`
 
@@ -215,77 +116,52 @@ Labels:
 
 `self-hosted, Windows, X64`
 
-Status/toolchain readiness:
+State:
 
-`NOT YET ACCEPTED AS VALIDATION AUTHORITY`
+`REGISTERED / NOT YET ACCEPTED AS VALIDATION AUTHORITY`
 
-Current workflows remain Ubuntu/Linux/container oriented.
-
-Do not merely change `runs-on`.
-
-First required infrastructure step:
+Next infrastructure evidence phase:
 
 `E0 — EXACT-MACHINE / SELF-HOSTED / TEST-DATABASE EVIDENCE CLOSURE`
 
-E0 must prove:
-
-- runner online in the intended execution context;
-- Git;
-- PowerShell;
-- PHP 8.4;
-- pdo_pgsql / pgsql;
-- Composer;
-- Node/npm from the runner process;
-- PostgreSQL connectivity;
-- Playwright/Chromium;
-- exact test database guard;
-- isolated Laravel runtime on port 18000;
-- no UAT checkout/database interference.
-
 ## Database boundary
 
-Real local UAT database:
+UAT:
 
 `talibon_portal`
 
-Disposable engineering database:
+Disposable engineering/test DB:
 
 `talibon_portal_test`
 
-Never run destructive test preparation against `talibon_portal`.
+Never perform destructive engineering preparation against `talibon_portal`.
 
-## Current next action
+## Promotion-stability rule
+
+Always distinguish:
+
+1. live repository HEAD;
+2. accepted application/runtime payload anchor;
+3. exact candidate SHA under Review/Acceptance.
+
+Current-state governance must remain true after a governance-only promotion.
+
+## Next action
 
 No Code Writer is authorized by FB0.
 
-Maintainer sequence:
+Complete FB0 re-review and re-Acceptance first.
 
-1. reconcile current authority/docs;
-2. close exact-machine evidence gaps;
-3. perform/finish backend route/query/authorization/performance audit;
-4. obtain Technical Authority decisions for unresolved product/authority semantics;
-5. issue bounded Forge Code Writer waves;
-6. Reviewer;
-7. Acceptance;
-8. exact promotion where applicable.
+After accepted governance promotion:
+
+1. re-resolve live `main`;
+2. run E0;
+3. finish backend route/query/authorization/performance audit;
+4. obtain Technical Authority decisions where required;
+5. issue bounded Forge writer waves.
 
 ## Evidence law
 
-Only observed evidence may be claimed.
+Live Git/runtime truth outranks this file if they disagree.
 
-Do not convert:
-
-- UI/UX UAT PASS into backend closure;
-- source inspection into runtime PASS;
-- runner registration into runner readiness;
-- test-db evidence into UAT-db evidence;
-- current role composition into a defect without product authority;
-- historical evidence into current exact-SHA evidence unless ancestry/source inheritance is proven.
-
-## Historical provenance
-
-Older MP5, STK1, OW1, CAL1, BH1, DA1, RC1 and RV1 documents remain historical evidence.
-
-They are not current authority merely because they exist under `.forge` or `docs`.
-
-Live Git and this current SSOT take precedence.
+Historical MP5/STK1/OW1/CAL1/BH1/DA1/RC1/RV1 records remain provenance, not current authority.
