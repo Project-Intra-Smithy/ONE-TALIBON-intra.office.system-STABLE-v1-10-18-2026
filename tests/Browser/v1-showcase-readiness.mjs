@@ -269,7 +269,7 @@ async function administrationMatrix(browser) {
     pageRef = page;
     monitor(page);
     await enterWorkspace(page, 'System Administration');
-    await assertNavigation(page, 'System Administration', ['Home', 'System Administration', 'Municipal Systems'], ['Audit & Security']);
+    await assertNavigation(page, 'System Administration', ['Home', 'System Administration', 'Systems Directory'], ['Audit & Security']);
     await openRoute(page, '/admin', 'System Administration');
     await switchWorkspace(page);
     report.matrices.push({ key: 'system-administration', result: 'pass' });
