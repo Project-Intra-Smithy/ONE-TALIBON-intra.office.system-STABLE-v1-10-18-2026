@@ -8,9 +8,7 @@ ROLE CALL:
 
 **KIRION FORGE: MAINTAINER**
 
----
-
-## 1. AUTHORITY
+## 1. Authority
 
 Repository:
 
@@ -24,300 +22,186 @@ Forge:
 
 `Kirch-Nairu/KIRION-FORGE@44eb57e5b45b343be0033bf22a7a5e74d543c01a`
 
-Accepted product:
+FB0 opening repository main:
 
 `main@0e57508cab1a86bf4eabc1637e39b2dae6d32716`
 
-Transition coordination branch:
+Accepted application/runtime payload anchor:
 
-`KIRCH-TALIBON-FB0-FRONTEND-BACKEND-TRANSITION`
+`0e57508cab1a86bf4eabc1637e39b2dae6d32716`
 
----
+For every later execution:
 
-## 2. ROLE
+`RESOLVE CURRENT MAIN LIVE FROM GIT`
 
-This is Maintainer authority.
+Do not assume repository HEAD remains equal to the application/runtime payload anchor after governance-only promotion.
 
-The Maintainer owns:
+## 2. Role
 
-- authority reconciliation;
-- current-state documentation;
-- backend reconnaissance;
-- runtime/query/route/authorization audit;
-- evidence classification;
-- wave planning;
-- handoff issuance.
+Maintainer owns authority reconciliation, audit, evidence classification, planning and handoff issuance.
 
-The Maintainer does **not** silently become Code Writer.
+Maintainer does not silently become Code Writer.
 
----
+## 3. Program transition
 
-## 3. CURRENT PROGRAM TRANSITION
+UI/UX-focused UAT is accepted for transition purposes.
 
-Frontend/UIUX-focused UAT is accepted for transition purposes.
+Primary engineering program becomes:
 
-The engineering program now shifts to:
+`BACKEND / AUTHORIZATION / PERFORMANCE / RUNTIME HARDENING`
 
-**BACKEND / AUTHORIZATION / PERFORMANCE / RUNTIME HARDENING**
-
-Primary goal:
+Goal:
 
 > make the application faster, more stable, faster to load/render, semantically coherent, and easier to trust.
 
-UI/UX is now a preservation constraint, not the main development program.
+Broad visual polish is no longer the primary program.
 
-Targeted frontend changes remain allowed only when required to make backend semantics truthful.
+## 4. Time-bounded priorities
 
----
+### P0 — correctness / authority
 
-## 4. TIME-BOUNDED PRIORITIES
-
-Time is limited.
-
-Prioritize work in this order:
-
-### P0 — correctness / authority / semantic truth
-
-- route/controller/service/policy authority;
+- routes/controllers/services/policies;
 - direct URL authorization;
-- cross-surface scope consistency;
+- cross-surface scope truth;
 - System Administration authority decision;
-- Dashboard/Work Queue semantic mismatch;
-- data leakage risks.
+- Dashboard/Work Queue semantics;
+- leakage risks.
 
-### P1 — load speed / backend performance
+### P1 — performance
 
 - whole-corpus materialization;
 - N+1;
 - duplicate aggregates;
 - pagination;
-- Work Queue query cost;
+- Work Queue cost;
 - Records/Documents search;
-- Dashboard query cost;
-- indexes only after evidence;
+- Dashboard cost;
+- measured indexes;
 - server response latency.
 
-### P2 — runtime stability / reproducibility
+### P2 — runtime / reproducibility
 
-- PostgreSQL/test isolation;
+- PostgreSQL isolation;
 - startup/recovery;
 - Node/PHP/Composer availability;
-- self-hosted Windows validation;
+- Windows self-hosted validation;
 - browser/runtime smoke.
 
 ### P3 — governance hygiene
 
 - stale current docs;
 - branch classification;
-- archival/cleanup only after explicit authority.
+- cleanup only with explicit authority.
 
-Do not spend the remaining time on broad cosmetic polish unless a blocking usability defect appears.
+## 5. E0 — exact-machine evidence closure
 
----
+Before Code Writer implementation, re-resolve:
 
-## 5. FIRST REQUIRED PHASE — E0
+- exact live repository `main`;
+- exact application/runtime payload anchor;
+- exact diff between them.
 
-Before Code Writer implementation, close exact-machine evidence gaps.
+If that delta is governance-only, inherited application evidence may remain eligible.
 
-E0 must be read-only to product source unless a separately authorized infrastructure evidence branch is required.
+Then verify:
 
-Verify:
-
-- exact main SHA;
-- clean audit checkout/worktree;
+- clean audit checkout;
 - UAT checkout untouched;
-- UAT database untouched;
-- DEVKRTZ runner execution context;
-- PowerShell;
-- Git;
-- PHP 8.4;
-- pdo_pgsql;
-- pgsql;
+- UAT DB untouched;
+- DEVKRTZ execution context;
+- PowerShell/Git;
+- PHP 8.4 + pdo_pgsql/pgsql;
 - Composer;
-- Node;
-- npm;
+- Node/npm;
 - PostgreSQL test connectivity;
 - Playwright/Chromium;
-- test-db migration state;
-- read-only UAT-db migration/schema state;
-- PostgreSQL timezone;
-- exact-machine representative backend tests;
-- representative query plans;
+- test DB migration state;
+- read-only UAT DB migration/schema state;
+- timezone;
+- representative backend tests/query plans;
 - isolated runtime port 18000.
 
-Absolute database rule:
-
-No destructive command until the process proves:
+No destructive operation until the process proves:
 
 `DB_DATABASE == talibon_portal_test`
 
----
+## 6. Known priority findings
 
-## 6. BACKEND AUDIT TARGETS
+- `SEM-01` — Dashboard attention scope/presentation mismatch.
+- `PERF-01` — DocumentArchiveQuery full-corpus materialization.
+- `AUTH-01` — System Administration Work Queue metadata mismatch.
+- `AUTH-02` — broader System Administration transaction authority requires Technical Authority decision.
+- `PROD-01` — executive-only Work Queue is current behavior, not automatic defect.
+- `MSG-01` — prototype channels do not enforce participant membership.
+- `CI-01` — current workflows are Linux/container oriented.
 
-Audit:
-
-- all protected route families;
-- controller mutation boundaries;
-- FormRequests;
-- Policies/Gates/access deciders;
-- transaction capability composition;
-- Dashboard projections;
-- Work Queue projections;
-- Correspondence;
-- Records;
-- Documents;
-- Memoranda;
-- Messaging;
-- Department Workspace;
-- Mayor Office;
-- System Administration;
-- HRIS;
-- Property;
-- Legislative;
-- Travel;
-- Notifications;
-- search;
-- database schema/indexes;
-- query counts;
-- pagination/materialization;
-- runtime error/recovery behavior.
-
----
-
-## 7. KNOWN PRIORITY FINDINGS
-
-### SEM-01
-
-Department Head dashboard attention composition can present personal work under an office-scoped card/link.
-
-Audit/repair semantic composition, not office queue authority.
-
-### PERF-01
-
-`DocumentArchiveQuery` full-corpus materialization before filtering/pagination.
-
-Confirmed backend performance target.
-
-### AUTH-01
-
-System Administration Work Queue metadata says municipal while actual RC2 Work Queue behavior is personal-scoped.
-
-### AUTH-02
-
-System Administration generic transaction authority remains municipality-wide and mutation-capable under historical authorization.
-
-Technical Authority decision required before redesign.
-
-### PROD-01
-
-Executive Work Queue is executive-only.
-
-No automatic repair.
-
-Technical Authority decides whether to preserve or add personal accountability.
-
-### MSG-01
-
-Prototype message channels do not currently enforce participant membership.
-
-Technical Authority decides whether channels remain open prototype groups or become protected audiences.
-
-### CI-01
-
-Current workflows are Ubuntu/Linux/container oriented.
-
-Do not directly point them at the Windows runner.
-
----
-
-## 8. PERFORMANCE RULE
+## 7. Performance rule
 
 Do not optimize by intuition.
 
-For every performance change, identify:
+For every performance change identify current query shape, bounded/unbounded behavior, representative volume, baseline evidence, proposed change, before/after evidence, and regression gate.
 
-- current query/materialization shape;
-- current bounded/unbounded behavior;
-- representative data volume;
-- baseline evidence;
-- proposed change;
-- before/after evidence;
-- regression gate.
+Prefer removing unnecessary work before caching.
 
-Prefer removing unnecessary work before adding caching.
+Prefer database pagination before in-memory pagination.
 
-Prefer correct database pagination before in-memory pagination.
+Prefer measured index changes before speculative indexes.
 
-Prefer measured index changes before speculative index accumulation.
+## 8. Promotion-stability / anti-drift gate
 
----
+Before each Writer/Reviewer/Acceptance transition:
 
-## 9. ANTI-DRIFT GATE
-
-Before every writer/reviewer/acceptance transition:
-
-1. fetch/re-read live main;
-2. record exact base SHA;
-3. record current role;
-4. state allowed paths/systems;
-5. state forbidden mutations;
-6. state evidence inherited and why;
-7. stop on mismatch.
+1. fetch live `main`;
+2. record exact repository HEAD;
+3. record exact application/runtime payload anchor;
+4. prove whether the delta is governance-only or product-affecting;
+5. state role;
+6. state allowed paths/systems;
+7. state forbidden mutations;
+8. state inherited evidence and inheritance basis;
+9. stop on mismatch.
 
 No code wave from chat prose alone.
 
----
+## 9. Required Maintainer return after E0 + audit
 
-## 10. REQUIRED MAINTAINER RETURN
+Return:
 
-After E0 + backend audit, return:
+1. repository authority snapshot;
+2. application/runtime payload anchor;
+3. route/authorization matrix;
+4. backend architecture map;
+5. data/scope semantic map;
+6. query/performance findings;
+7. database/index findings;
+8. runtime/reproducibility findings;
+9. self-hosted runner evidence;
+10. UAT/backend reconciliation;
+11. findings register;
+12. bounded implementation plan;
+13. exact writer branches/bases;
+14. test gates;
+15. Reviewer/Acceptance requirements;
+16. Maintainer disposition.
 
-1. exact authority snapshot;
-2. route/authorization matrix;
-3. backend architecture map;
-4. data/scope semantic map;
-5. query/performance findings;
-6. database/index findings;
-7. runtime/reproducibility findings;
-8. self-hosted runner evidence;
-9. UAT/backend reconciliation;
-10. findings register;
-11. bounded implementation plan;
-12. exact proposed writer branches/bases;
-13. test gates;
-14. Reviewer/Acceptance requirements;
-15. Maintainer disposition.
-
-Allowed dispositions:
+Allowed disposition:
 
 - `AUDIT CLEAN — NO BACKEND WAVE REQUIRED`
 - `AUDIT COMPLETE — BOUNDED REPAIR WAVES REQUIRED`
 - `AUDIT COMPLETE — ARCHITECTURE CORRECTION PROGRAM REQUIRED`
 - `ADDITIONAL EVIDENCE REQUIRED`
 
----
-
-## 11. FORBIDDEN DURING FB0/E0
+## 10. Forbidden during FB0/E0
 
 - no product-source repair;
-- no main mutation;
 - no UAT DB mutation;
 - no destructive command against `talibon_portal`;
 - no branch deletion;
 - no force push;
 - no rebase/squash reconstruction;
-- no governance rewrite of historical evidence;
-- no release/production claims from runner registration alone.
+- no rewriting historical evidence;
+- no release/production claim from runner registration alone.
 
----
+## 11. End state
 
-## 12. END STATE
-
-The transition is complete only when:
-
-- repository current authority matches live Git;
-- UI/UX closeout is durably recorded;
-- backend program goals are durably recorded;
-- exact-machine evidence gaps are classified;
-- backend writer work is issued through bounded Forge handoffs rather than chat memory.
+The transition is complete only when current governance remains truthful after promotion, live repository HEAD is resolved from Git rather than assumed from a historical payload SHA, and backend writer work begins only through bounded Forge handoffs.
