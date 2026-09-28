@@ -188,7 +188,14 @@ async function personaCompletionSwitchAndReplay(browser) {
     check('global introduction does not repeat on persona change', await page.locator('[data-onboarding="welcome-wizard"]').count() === 0);
     await page.getByRole('button', { name: 'Not now', exact: true }).click();
 
-    await page.getByRole('button', { name: 'Guided tour', exact: true }).click();
+    const replayAccountTools = page.locator('details.portal-account-tools').first();
+    await replayAccountTools.waitFor({ state: 'visible' });
+    if (!(await replayAccountTools.evaluate((node) => node.open))) {
+        await replayAccountTools.locator('summary[aria-label="Account and tools"]').click();
+    }
+    const guidedTour = replayAccountTools.getByRole('button', { name: 'Guided tour', exact: true });
+    await guidedTour.waitFor({ state: 'visible' });
+    await guidedTour.click();
     await page.locator('[data-onboarding="guide"]').waitFor({ state: 'visible' });
     await page.getByRole('button', { name: /Replay this workspace tour/ }).click();
     check('manual replay starts completed/incomplete persona tour', await page.locator('[data-onboarding="guided-tour"]').isVisible());
