@@ -1,128 +1,233 @@
-# ONE TALIBON V1 — VALIDATION & EVIDENCE POLICY
+# ONE TALIBON V1 — CURRENT VALIDATION & EVIDENCE POLICY
 
 ## Evidence law
 
 Only claim what was actually observed.
 
-`SOURCE INSPECTED`, `PASS`, `FAIL`, `NOT RUN`, `NOT OBSERVED`, and `UNKNOWN` are valid states.
+Valid evidence states include:
 
-Build success does not prove runtime usability. Runtime success does not prove accessibility. Browser success does not prove deployment. CI absence is not a failure or a pass.
+- PASS
+- FAIL
+- SOURCE INSPECTED
+- NOT RUN
+- NOT OBSERVED
+- UNKNOWN
+- CARRIED / INHERITED WITH PROVEN SOURCE BOUNDARY
 
-## Historical baseline evidence
+Build success does not prove runtime usability.
 
-Earlier Nest/UIUX/DA1 records retain their original evidence state.
+Runtime success does not prove authorization completeness.
 
-They must not be rewritten merely because the repository later advanced.
+Browser success does not prove production acceptance.
 
-### DA1 closeout evidence
+Runner registration does not prove runner readiness.
 
-DA1 repair-wave Reviewer disposition:
+## Exact accepted product
 
-`SUITABLE WITH RECORDED LIMITATIONS`
+`main@0e57508cab1a86bf4eabc1637e39b2dae6d32716`
 
-Observed component evidence included:
+## RC2 carried validation
 
-- Full H1: PASS, 20 scenarios at `5883d703924921bf5baed587eba01df9c57b6f54`;
-- exact review candidate `9fa1ec1a00be72984db651c5b251b36183444d64` has the identical Git tree as `5883d703...`;
-- V1 showcase: PASS / frozen evidence;
-- MP0 targeted reproduction: PASS after one transient aggregate timeout;
-- full Feature suite: PASS before later carrier-stage failure;
-- NAV-01 through NAV-04: Reviewer source/regression disposition PASS.
+### Backend
 
-Not observed:
+Backend-green SHA:
 
-- aggregate `=== DA1 FULL AUDIT PASS ===` marker;
-- historical H0 exact marker.
+`d6a350a5cbc536b23827172216b64f80082cbba8`
 
-Those limitations remain historical truth.
+Observed:
 
-## RC1 / RV1 exact candidate evidence
+- 400 passed;
+- 5,277 assertions;
+- 0 failures.
 
-Exact promoted product payload:
+No production PHP changed after backend-green before final RC2 promotion, so this result was validly inherited into the accepted candidate.
 
-`f6208cf082c4b1d189c70728adfdb9ddf3225990`
+### Frontend
 
-Pre-promotion fail-fast execution reached the Playwright phase only after preceding npm install, TypeScript, production build, focused PHP tests, and database preparation did not return a non-zero exit in that bounded run.
+After the Calendar semantic heading repair:
 
-Do not invent assertion/test totals that were not preserved.
+- TypeScript PASS;
+- production build PASS;
+- compiled runtime PASS.
 
-Playwright Chromium direct launch:
+Later final changes were browser carriers only.
 
-`PASS`
+### V1 browser readiness
 
-Observed exact current-contract runtime marker:
+V1-green SHA:
 
-`RV1_NARROW_RUNTIME_PASS sha=f6208cf082c4b1d189c70728adfdb9ddf3225990 pageerrors=0 server5xx=0`
+`0d9b849bf5e71971e42f446bda9d2ebf76bae9ec`
 
-Observed narrow runtime surfaces:
+Observed:
 
-- public desktop: PASS;
-- public mobile: PASS;
-- current Showcase gateway: PASS;
-- Employee dashboard: PASS;
-- Employee My Work route/render: PASS;
-- Employee Records route/render: PASS;
-- browser page errors: 0 observed;
-- server 5xx: 0 observed during that smoke.
+`V1_SHOWCASE_BROWSER_PASS checks=270 matrices=6 screenshots=8`
 
-The historical H0 carrier was not used because its login contract was stale against the current Showcase gateway.
+Final candidate differs from this SHA only by the OW1 browser carrier.
 
-## Promotion / repository-state evidence
+### OW1
 
-Main promotion:
+Exact final candidate:
 
-`PASS / COMPLETE`
+`0e57508cab1a86bf4eabc1637e39b2dae6d32716`
 
-Promotion method:
+Observed:
 
-- non-force;
-- ancestry-preserving;
-- no rebase;
-- no squash;
-- no history rewrite.
+`OW1_ONBOARDING_BROWSER_PASS checks=63`
 
-Archival preservation:
+## UI/UX local UAT
 
-`PASS`
+Technical Authority disposition:
 
-Remote branch cleanup:
+`UI/UX UAT PASS FOR FRONTEND→BACKEND TRANSITION`
 
-`PASS`
+This claim is bounded to the current local presentation/usability pass.
 
-Current remote branch topology:
+It does not mean:
 
-```text
-main
-```
+- backend architecture complete;
+- all routes audited;
+- all authorization semantics accepted;
+- all performance goals achieved;
+- deployment/production acceptance established.
 
-Deployment:
+## Local environment incidents
 
-`NOT PERFORMED`
+The following previously observed local-start issues are environment/orchestration failures, not product failures:
 
-## MP3 validation rule
+- assumed checkout path did not exist;
+- PostgreSQL password was absent from the process environment;
+- `npm.cmd` was not resolvable in one PowerShell session.
 
-MP3 is docs/governance only.
+Do not convert these into backend defects.
 
-Its closeout proof must compare final `main` to `f6208cf082c4b1d189c70728adfdb9ddf3225990` and require all MP3-changed paths to be Markdown documentation/governance files.
+They do justify reproducibility/preflight work.
 
-No application-runtime revalidation is required solely because Markdown governance changed.
+## Database safety
 
-## MP4 rehearsal rule
+Real UAT database:
 
-MP4 is the next runtime transition.
+`talibon_portal`
 
-It should rehearse the exact stakeholder presentation from current `main`, including the selected transaction, memorandum, legislative, HR, authorization, Calendar, Messages, public-homepage/mobile, and restart/recovery presentation paths.
+Disposable test database:
 
-MP4 is not authority for unrelated feature work.
+`talibon_portal_test`
+
+Before any destructive database command, the executing process must positively prove:
+
+`DB_DATABASE == talibon_portal_test`
+
+If the observed database is `talibon_portal`, abort.
+
+### UAT database evidence
+
+Read-only inspection of `talibon_portal` is allowed when explicitly authorized for evidence collection.
+
+No migration, seed, wipe, truncate, reset, or mutation is permitted during such inspection.
+
+## Backend hardening validation model
+
+The next backend program should validate in layers.
+
+### E0 — exact-machine evidence
+
+Required before trusting DEVKRTZ as a validation gate:
+
+- exact repository SHA;
+- clean runner checkout;
+- runner online;
+- PowerShell;
+- Git;
+- PHP 8.4;
+- pdo_pgsql;
+- pgsql;
+- Composer;
+- Node;
+- npm;
+- PostgreSQL connectivity to `talibon_portal_test`;
+- database timezone/session evidence;
+- Playwright Chromium;
+- isolated runtime port 18000;
+- deterministic process cleanup.
+
+### Source/backend waves
+
+Each bounded backend Code Writer wave must define the smallest relevant gate.
+
+Examples:
+
+- authorization wave → positive/negative direct-route tests + affected Feature regressions;
+- query/pagination wave → visibility/count parity + query/materialization evidence;
+- index wave → before/after PostgreSQL EXPLAIN evidence + regressions;
+- dashboard semantic wave → role matrix + exact card/link/count regression;
+- messaging authority wave → two-user/channel positive-negative tests;
+- CI workflow wave → exact-SHA Windows-native execution proof.
+
+Do not rerun the entire universe by default when a smaller exact gate is sufficient.
+
+Run the complete Feature suite at integration/release boundaries or when cross-domain risk justifies it.
+
+## Performance evidence
+
+Performance changes require evidence.
+
+Acceptable evidence includes:
+
+- query counts;
+- bounded result size;
+- EXPLAIN / EXPLAIN ANALYZE where safe and appropriate on disposable data;
+- request timing;
+- before/after server response measurements;
+- materialization count/memory evidence;
+- browser/runtime smoke where user-visible latency is affected.
+
+Do not add indexes or caching solely from intuition.
+
+## Self-hosted runner
+
+Runner:
+
+`DEVKRTZ`
+
+Labels:
+
+`self-hosted, Windows, X64`
+
+Current status:
+
+`REGISTERED / NOT YET ACCEPTED AS RELEASE VALIDATION AUTHORITY`
+
+Current repository workflows are Linux/GitHub-hosted oriented.
+
+Windows self-hosted workflows must be separately designed and reviewed.
+
+The runner must never execute untrusted external/fork PR code on the developer workstation.
+
+The previously exposed registration token must never be reused.
+
+## UAT isolation
+
+Do not reuse the live UAT checkout as a destructive test workspace.
+
+Do not bind CI validation to port 8000.
+
+Preferred validation runtime port:
+
+`18000`
+
+Preferred validation database:
+
+`talibon_portal_test`
 
 ## Claim boundaries
 
-Do not conflate:
+Keep separate:
 
-- prototype rehearsal;
+- source audit;
+- exact-machine validation;
+- backend integration validation;
+- UI/UX UAT;
 - deployment;
-- UAT;
 - production acceptance;
 - commercial completion.
 
-Each requires its own observed evidence and authority.
+Each requires its own evidence and authority.
