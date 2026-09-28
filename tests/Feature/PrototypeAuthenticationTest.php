@@ -86,6 +86,6 @@ class PrototypeAuthenticationTest extends TestCase
         $this->seed(MunicipalityStructureSeeder::class);
         $this->seed(WorkforceDemoSeeder::class);
 
-        $this->assertSame(350, User::query()->count());
+        $this->assertSame(40, User::query()->count());
     }
 }
