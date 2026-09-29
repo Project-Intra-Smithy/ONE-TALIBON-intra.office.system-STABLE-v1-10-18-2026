@@ -29,7 +29,7 @@ export default function MunicipalBrand({
             <div className={publicPortal
                 ? 'mt-1 text-[10px] font-semibold uppercase leading-snug tracking-[.08em]'
                 : 'mt-1 text-[10px] font-semibold uppercase leading-snug tracking-wider'
-            }>{publicPortal ? 'Municipal Public Portal' : 'LGU Intra-Office Portal'}</div>
+            }>{publicPortal ? 'Municipal Digital Portal' : 'LGU Intra-Office Portal'}</div>
         </div>}
     </div>;
 }

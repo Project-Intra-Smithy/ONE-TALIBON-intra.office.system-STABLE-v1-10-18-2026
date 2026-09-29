@@ -5,5 +5,5 @@ export const talibonAssets = {
     publicHero: 'https://talibon.gov.ph/wp-content/themes/yootheme/cache/b7/talibon-b77ce339.jpeg',
     publicLandmark: 'https://talibon.gov.ph/wp-content/themes/yootheme/cache/b7/talibon-b77ce339.jpeg',
     sidebarIllustration: '/images/talibon/landmark-placeholder.svg',
-    publicPromoImage: 'https://talibon.gov.ph/wp-content/uploads/2026/02/640681802_2477021739407752_4018206881265201768_n-1024x768.jpg',
+    publicPromoImage: 'https://talibon.gov.ph/wp-content/themes/yootheme/cache/b7/talibon-b77ce339.jpeg',
 } as const;
