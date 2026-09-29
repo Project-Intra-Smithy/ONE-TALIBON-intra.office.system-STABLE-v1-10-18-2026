@@ -89,12 +89,14 @@ export default function Index({ showcase }: Props) {
     return (
         <AppLayout title="Future Integrations">
             <PageFrame density="compact">
-                <PageHeader
-                    eyebrow="ONE TALIBON digital operations platform"
-                    title="Future Integrations"
-                    description="Five rollout priorities, the shared platform backbone, and fourteen planned municipal systems presented through interactive workspace previews."
-                    icon={Network}
-                />
+                {!selectedSystem && (
+                    <PageHeader
+                        eyebrow="ONE TALIBON digital operations platform"
+                        title="Future Integrations"
+                        description="Five rollout priorities, the shared platform backbone, and fourteen planned municipal systems presented through interactive workspace previews."
+                        icon={Network}
+                    />
+                )}
 
                 {!selectedSystem && (
                     <div role="tablist" aria-label="Municipal systems presentation views" className="grid gap-1 rounded-xl border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-[#142236] md:grid-cols-3">

@@ -1,5 +1,7 @@
 import type { MunicipalSystem } from '../../data/municipal/systems';
 import { getFutureSystemPrototype } from '../../data/municipal/futureSystemPrototypeData';
+import BudgetMonitoringWorkspace from './BudgetMonitoringWorkspace';
+import CitizenActionWorkspace from './CitizenActionWorkspace';
 import FutureSystemPrototype from './FutureSystemPrototype';
 import GISWorkspace from './GISWorkspace';
 
@@ -11,8 +13,21 @@ type Props = {
 export default function FutureIntegrationDetail({ system, onBack }: Props) {
     const prototype = getFutureSystemPrototype(system.id);
 
+    if (system.id === 'FUT-02') {
+        return <BudgetMonitoringWorkspace onBack={onBack} />;
+    }
+
     if (system.id === 'FUT-03') {
         return <GISWorkspace prototype={prototype} onBack={onBack} />;
+    }
+
+    if (system.id === 'FUT-07') {
+        return (
+            <CitizenActionWorkspace
+                prototype={prototype}
+                onBack={onBack}
+            />
+        );
     }
 
     return (
