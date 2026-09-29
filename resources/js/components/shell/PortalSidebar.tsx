@@ -19,7 +19,11 @@ type Props = {
     user: AuthUser | null;
 };
 
-const isSecondaryGroup = (groupKey: PortalNavigationGroup['key']) => groupKey !== 'home' && groupKey !== 'work';
+const isSecondaryGroup = (groupKey: PortalNavigationGroup['key']) =>
+    groupKey === 'organization'
+    || groupKey === 'planning'
+    || groupKey === 'administration'
+    || groupKey === 'systems';
 
 export default function PortalSidebar({
     collapsed,
