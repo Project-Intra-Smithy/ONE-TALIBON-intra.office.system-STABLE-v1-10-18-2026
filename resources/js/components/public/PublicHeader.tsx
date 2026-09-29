@@ -8,12 +8,8 @@ type Props = { authenticated: boolean };
 
 export const publicLinks = [
     ['Home', '#home'],
-    ['Services', '#services'],
-    ['Transparency', '#transparency'],
-    ['Projects', '#projects'],
-    ['News & Events', '#news'],
-    ['About Talibon', '#about'],
-    ['Contact Us', '#contact'],
+    ['About the Portal', '#about-portal'],
+    ['Help / Support', '#support'],
 ] as const;
 
 export default function PublicHeader({ authenticated }: Props) {
@@ -43,18 +39,18 @@ export default function PublicHeader({ authenticated }: Props) {
 
     return <header className="public-header public-reference-header">
         <div className="public-reference-masthead">
-            <a href="#home" aria-label="ONE TALIBON Municipal Digital Portal home" className="public-reference-brand">
+            <a href="#home" aria-label="ONE TALIBON Intra-Office Portal home" className="public-reference-brand">
                 <MunicipalBrand publicPortal />
                 <span className="public-reference-brand-meta">
                     <strong>Municipality of Talibon, Bohol</strong>
-                    <span>Official municipal digital gateway</span>
+                    <span>Secure municipal operations gateway</span>
                 </span>
             </a>
 
             <div className="public-reference-masthead-actions">
                 <div className="public-reference-tagline">
-                    <span>Municipal services · public information</span>
-                    <strong>One Talibon.</strong>
+                    <span>Authorized municipal personnel</span>
+                    <strong>Internal operations portal</strong>
                 </div>
 
                 <details ref={appearanceMenu} className="public-appearance-menu public-reference-appearance">
@@ -78,7 +74,7 @@ export default function PublicHeader({ authenticated }: Props) {
                     type="button"
                     onClick={() => setOpen(!open)}
                     className="public-menu-button public-reference-menu"
-                    aria-label={open ? 'Close public navigation' : 'Open public navigation'}
+                    aria-label={open ? 'Close portal navigation' : 'Open portal navigation'}
                     aria-expanded={open}
                     aria-controls="public-mobile-navigation"
                 >
@@ -87,7 +83,7 @@ export default function PublicHeader({ authenticated }: Props) {
             </div>
         </div>
 
-        <nav className="public-reference-nav" aria-label="Municipal Public Portal navigation">
+        <nav className="public-reference-nav" aria-label="Intra-Office Portal navigation">
             <div className="public-reference-nav-inner">
                 {publicLinks.map(([label, href], index) => <a key={href} href={href} className={`public-reference-nav-link ${index === 0 ? 'is-home' : ''}`}>
                     {index === 0 && <Home size={14} aria-hidden="true" />}
@@ -98,7 +94,7 @@ export default function PublicHeader({ authenticated }: Props) {
 
         <nav
             id="public-mobile-navigation"
-            aria-label="Mobile Municipal Public Portal navigation"
+            aria-label="Mobile Intra-Office Portal navigation"
             className={`${open ? 'block' : 'hidden'} public-navigation public-reference-mobile-nav xl:hidden`}
         >
             <div className="public-reference-mobile-links">

@@ -13,9 +13,11 @@ export default function MunicipalBrand({
     publicPortal = false,
     iconOnly = false,
 }: Props) {
+    const portalLabel = publicPortal ? 'Talibon Intra-Office Portal' : 'LGU Intra-Office Portal';
+
     return <div
         className={`municipal-brand flex min-w-0 items-center gap-3 ${inverse ? 'text-white' : 'text-[#163027] dark:text-slate-100'}`}
-        aria-label={iconOnly ? `One Talibon · ${publicPortal ? 'Municipal Digital Portal' : 'LGU Intra-Office Portal'}` : undefined}
+        aria-label={iconOnly ? `One Talibon · ${portalLabel}` : undefined}
     >
         <img
             src={talibonAssets.municipalSeal}
@@ -27,9 +29,9 @@ export default function MunicipalBrand({
                 <span className={inverse ? 'text-white' : 'text-[#19754b] dark:text-[#8ec9a0]'}>ONE</span> TALIBON
             </div>
             <div className={publicPortal
-                ? 'mt-1 text-[10px] font-semibold uppercase leading-snug tracking-[.08em]'
+                ? 'mt-1 text-[9px] font-semibold uppercase leading-snug tracking-[.07em] sm:text-[10px]'
                 : 'mt-1 text-[10px] font-semibold uppercase leading-snug tracking-wider'
-            }>{publicPortal ? 'Municipal Digital Portal' : 'LGU Intra-Office Portal'}</div>
+            }>{portalLabel}</div>
         </div>}
     </div>;
 }

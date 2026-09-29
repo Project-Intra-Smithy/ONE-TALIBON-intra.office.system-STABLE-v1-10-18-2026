@@ -11,7 +11,7 @@ type Props = { appName: string; authenticated: boolean; content: PublicContent }
 
 export default function Home({ authenticated, content }: Props) {
     return <>
-        <Head title="ONE TALIBON — Municipal Digital Portal" />
+        <Head title="ONE TALIBON — Intra-Office Portal" />
         <div className="public-portal min-h-screen">
             <a href="#public-content" className="public-skip-link sr-only z-[80] rounded bg-white p-3 [color:var(--public-link)] focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to main content</a>
             <PublicHeader authenticated={authenticated} />
@@ -22,7 +22,7 @@ export default function Home({ authenticated, content }: Props) {
                         <Info size={13} className="mt-0.5 shrink-0" aria-hidden="true" />
                         <p>
                             <strong className="mr-2 font-extrabold uppercase tracking-[0.08em] [color:var(--public-text)]">{content.sampleLabel}</strong>
-                            <span>Prototype preview — sample public information only; no protected employee records are shown.</span>
+                            <span>Prototype preview — sample portal information only; no protected employee records are exposed.</span>
                         </p>
                     </div>
 
