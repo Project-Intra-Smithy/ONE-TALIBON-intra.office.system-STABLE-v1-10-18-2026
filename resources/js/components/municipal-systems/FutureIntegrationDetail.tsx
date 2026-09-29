@@ -6,6 +6,8 @@ import BuildingPermitWorkspace from './BuildingPermitWorkspace';
 import CitizenActionWorkspace from './CitizenActionWorkspace';
 import FutureSystemPrototype from './FutureSystemPrototype';
 import GISWorkspace from './GISWorkspace';
+import MotorpoolFleetWorkspace from './MotorpoolFleetWorkspace';
+import TrainingKnowledgeWorkspace from './TrainingKnowledgeWorkspace';
 
 type Props = {
     system: MunicipalSystem;
@@ -43,6 +45,19 @@ export default function FutureIntegrationDetail({ system, onBack }: Props) {
 
     if (system.id === 'FUT-10') {
         return <AssetPropertyWorkspace onBack={onBack} />;
+    }
+
+    if (system.id === 'FUT-12') {
+        return <MotorpoolFleetWorkspace onBack={onBack} />;
+    }
+
+    if (system.id === 'FUT-15') {
+        return (
+            <TrainingKnowledgeWorkspace
+                prototype={prototype}
+                onBack={onBack}
+            />
+        );
     }
 
     return (
