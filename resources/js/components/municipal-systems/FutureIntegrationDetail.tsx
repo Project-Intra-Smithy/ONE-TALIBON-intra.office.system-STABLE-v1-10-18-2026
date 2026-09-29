@@ -13,6 +13,7 @@ import GISWorkspace from './GISWorkspace';
 import InventorySuppliesWorkspace from './InventorySuppliesWorkspace';
 import MotorpoolFleetWorkspace from './MotorpoolFleetWorkspace';
 import TrainingKnowledgeWorkspace from './TrainingKnowledgeWorkspace';
+import TreasuryRevenueWorkspace from './TreasuryRevenueWorkspace';
 import ZoningClearanceWorkspace from './ZoningClearanceWorkspace';
 
 type Props = {
@@ -79,6 +80,10 @@ export default function FutureIntegrationDetail({ system, onBack }: Props) {
 
     if (system.id === 'FUT-13') {
         return <AccountingIntegrationWorkspace onBack={onBack} />;
+    }
+
+    if (system.id === 'FUT-14') {
+        return <TreasuryRevenueWorkspace onBack={onBack} />;
     }
 
     if (system.id === 'FUT-15') {
