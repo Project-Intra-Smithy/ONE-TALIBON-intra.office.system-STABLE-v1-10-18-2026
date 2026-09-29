@@ -62,6 +62,7 @@ function loadGoogleMaps(apiKey: string): Promise<MapsNamespace> {
 
         const previousAuthFailure = host.gm_authFailure;
         let settled = false;
+        let timeout = 0;
         const finish = (callback: () => void) => {
             if (settled) return;
             settled = true;
@@ -84,7 +85,7 @@ function loadGoogleMaps(apiKey: string): Promise<MapsNamespace> {
         script.onerror = () => finish(() => reject(new Error('network-failure')));
         document.head.appendChild(script);
 
-        const timeout = window.setTimeout(() => finish(() => reject(new Error('timeout'))), 12000);
+        timeout = window.setTimeout(() => finish(() => reject(new Error('timeout'))), 12000);
     });
 }
 
