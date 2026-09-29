@@ -1,221 +1,29 @@
 import { Link } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
-import { Network, Search } from 'lucide-react';
+import { ArrowUpRight, CheckCircle2, Network, Search, ShieldCheck } from 'lucide-react';
 import FutureIntegrationDetail from '../../components/municipal-systems/FutureIntegrationDetail';
 import ProcurementWorkspace from '../../components/municipal-systems/ProcurementWorkspace';
 import SystemDirectory from '../../components/municipal-systems/SystemDirectory';
 import PageFrame from '../../components/PageFrame';
-import PageHeader from '../../components/PageHeader';
-import {
-    procurementPrototype,
-} from '../../data/municipal/futureSystemPrototypeData';
-import {
-    corePlatform,
-    initialRollout,
-    municipalSystems,
-    supportingFoundations,
-    systemGroups,
-    type MunicipalSystem,
-} from '../../data/municipal/systems';
+import { procurementPrototype } from '../../data/municipal/futureSystemPrototypeData';
+import { corePlatform, initialRollout, municipalSystems, supportingFoundations, systemGroups, type MunicipalSystem } from '../../data/municipal/systems';
 import AppLayout from '../../layouts/AppLayout';
 
-type View = 'rollout' | 'future' | 'core';
-
-type Props = {
-    showcase?: 'procurement';
-};
-
-const views: Array<{ id: View; label: string; description: string }> = [
-    { id: 'rollout', label: 'Initial Rollout', description: 'Five client-aligned priorities with their current presentation state.' },
-    { id: 'future', label: 'Future Integrations', description: 'Fourteen planned municipal systems with interactive workspace previews.' },
-    { id: 'core', label: 'Core Platform', description: 'ONE TALIBON backbone and current supporting foundations.' },
-];
-
-const rolloutTone = {
-    'Current / Working': 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200',
-    'Main Showcase / Interactive Static Prototype': 'bg-amber-50 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200',
-    'Current Personnel Reference': 'bg-blue-50 text-blue-800 dark:bg-blue-950/40 dark:text-blue-200',
-} as const;
-
-const coreTone = {
-    Current: 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200',
-    'Current Foundation': 'bg-teal-50 text-teal-800 dark:bg-teal-950/40 dark:text-teal-200',
-    'Platform Foundation': 'bg-blue-50 text-blue-800 dark:bg-blue-950/40 dark:text-blue-200',
-    'Integration Direction': 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200',
-} as const;
-
-function rolloutStateLabel(state: keyof typeof rolloutTone): string {
-    return state === 'Main Showcase / Interactive Static Prototype'
-        ? 'Main Showcase / Presentation Workspace'
-        : state;
-}
+type Props = { showcase?: 'procurement' };
+const panel = 'rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-[#142236]';
+const rolloutTone: Record<string,string> = { 'Current / Working':'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-200', 'Main Showcase / Interactive Static Prototype':'bg-amber-50 text-amber-800 dark:bg-amber-950/30 dark:text-amber-200', 'Current Personnel Reference':'bg-blue-50 text-blue-800 dark:bg-blue-950/30 dark:text-blue-200' };
+const coreTone: Record<string,string> = { Current:'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-200', 'Current Foundation':'bg-teal-50 text-teal-800 dark:bg-teal-950/30 dark:text-teal-200', 'Platform Foundation':'bg-blue-50 text-blue-800 dark:bg-blue-950/30 dark:text-blue-200', 'Integration Direction':'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200' };
+const stateLabel = (state:string) => state.startsWith('Main Showcase') ? 'Presentation workspace' : state;
 
 export default function Index({ showcase }: Props) {
-    const [view, setView] = useState<View>('rollout');
-    const [q, setQ] = useState('');
-    const [group, setGroup] = useState('');
-    const [status, setStatus] = useState('');
-    const [selectedSystem, setSelectedSystem] = useState<MunicipalSystem | null>(null);
+    const [q,setQ]=useState(''); const [group,setGroup]=useState(''); const [status,setStatus]=useState(''); const [selected,setSelected]=useState<MunicipalSystem|null>(null);
+    const systems=useMemo(()=>{const n=q.trim().toLowerCase(); return municipalSystems.filter(s=>(!group||s.group===group)&&(!status||s.status===status)&&(!n||[s.name,s.group,s.owningOffice,s.purpose,s.recordScope,...s.conceptItems].join(' ').toLowerCase().includes(n)));},[q,group,status]);
+    if(showcase==='procurement') return <AppLayout title="Procurement / PR Tracking"><PageFrame density="compact"><ProcurementWorkspace prototype={procurementPrototype}/></PageFrame></AppLayout>;
+    return <AppLayout title="Municipal Systems"><PageFrame density="compact">{selected?<FutureIntegrationDetail system={selected} onBack={()=>setSelected(null)}/>:<div className="space-y-4">
+        <section className="overflow-hidden rounded-2xl border border-emerald-200 bg-gradient-to-br from-white via-emerald-50/50 to-amber-50/40 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10">
+            <div className="grid gap-4 p-4 lg:grid-cols-[1fr_480px] lg:items-center"><div><div className="flex items-center gap-2 text-[9px] font-extrabold uppercase tracking-[.14em] text-emerald-700 dark:text-emerald-300"><span className="grid h-7 w-7 place-items-center rounded-lg bg-emerald-700 text-white"><Network size={14}/></span>ONE TALIBON Digital Operations Platform</div><h1 className="mt-2 text-[24px] font-black leading-tight text-slate-950 dark:text-white sm:text-[28px]">Municipal systems working through one shared digital backbone.</h1><p className="mt-2 max-w-2xl text-[11px] leading-5 text-slate-600 dark:text-slate-300">Current rollout, future municipal workspaces, and shared platform foundations in one presentation hub.</p></div>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3"><div className={panel+' p-3'}><b className="text-[24px] text-emerald-700">{initialRollout.length}</b><p className="text-[8px] font-bold uppercase text--slate-500">Initial rollout priorities</p></div><div className={panel+' p-3'}><b className="text-[24px] text-amber-700">{municipalSystems.length}</b><p className="text-[8px] font-bold uppercase text-slate-500">Future systems</p></div><div className={panel+' col-span-2 p-3 sm:col-span-1'}><div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300"><ShieldCheck size={18}/><b className="text-[11px] uppercase">Shared backbone</b></div><p className="mt-2 text-[8px] font-bold uppercase text-slate-500">Core platform</p></div></div></div>
+            <nav className="grid border-t border-emerald-100 dark:border-emerald-900/40 sm:grid-cols-3">{[['Initial Rollout','#initial-rollout'],['Future Integrations','#future-integrations'],['Core Platform','#core-platform']].map(([label,href])=><a key={label} href={href} className="flex items-center justify-between border-b border-emerald-100 px-4 py-2.5 text-[10px] font-extrabold text-slate-800 hover:bg-white/60 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0 dark:border-emerald-900/30 dark:text-slate-100">{label}<ArrowUpRight size={12}/></a>)}</nav>
+        </section>
 
-    const systems = useMemo(() => {
-        const needle = q.trim().toLowerCase();
-        return municipalSystems.filter((system) =>
-            (!group || system.group === group)
-            && (!status || system.status === status)
-            && (!needle || [system.name, system.group, system.owningOffice, system.purpose, system.recordScope, system.integrationNote, ...system.conceptItems].join(' ').toLowerCase().includes(needle))
-        );
-    }, [q, group, status]);
-
-    if (showcase === 'procurement') {
-        return (
-            <AppLayout title="Procurement / PR Tracking">
-                <PageFrame density="compact">
-                    <ProcurementWorkspace prototype={procurementPrototype} />
-                </PageFrame>
-            </AppLayout>
-        );
-    }
-
-    const selectView = (nextView: View) => {
-        setSelectedSystem(null);
-        setView(nextView);
-    };
-
-    const openSystem = (system: MunicipalSystem) => {
-        setView('future');
-        setSelectedSystem(system);
-    };
-
-    return (
-        <AppLayout title="Future Integrations">
-            <PageFrame density="compact">
-                {!selectedSystem && (
-                    <PageHeader
-                        eyebrow="ONE TALIBON digital operations platform"
-                        title="Future Integrations"
-                        description="Five rollout priorities, the shared platform backbone, and fourteen planned municipal systems presented through interactive workspace previews."
-                        icon={Network}
-                    />
-                )}
-
-                {!selectedSystem && (
-                    <div role="tablist" aria-label="Municipal systems presentation views" className="grid gap-1 rounded-xl border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-[#142236] md:grid-cols-3">
-                        {views.map((item) => (
-                            <button
-                                key={item.id}
-                                type="button"
-                                role="tab"
-                                aria-selected={view === item.id}
-                                onClick={() => selectView(item.id)}
-                                className={'min-h-12 rounded-lg px-3 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30 '
-                                    + (view === item.id
-                                        ? 'bg-emerald-50 text-emerald-950 dark:bg-emerald-950/35 dark:text-emerald-100'
-                                        : 'text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-900/40')}
-                            >
-                                <div className="text-[12px] font-bold">{item.label}</div>
-                                <div className="mt-0.5 text-[10px] leading-4 opacity-75">{item.description}</div>
-                            </button>
-                        ))}
-                    </div>
-                )}
-
-                {selectedSystem ? (
-                    <FutureIntegrationDetail system={selectedSystem} onBack={() => setSelectedSystem(null)} />
-                ) : (
-                    <>
-                        {view === 'rollout' && (
-                            <section aria-labelledby="initial-rollout-title" className="space-y-2">
-                                <div className="rounded-xl border border-emerald-100 bg-emerald-50/50 px-3 py-2 dark:border-emerald-900/50 dark:bg-emerald-950/20">
-                                    <h2 id="initial-rollout-title" className="text-[13px] font-bold text-slate-950 dark:text-slate-100">Initial Rollout</h2>
-                                    <p className="mt-0.5 text-[11px] leading-4 text-slate-600 dark:text-slate-300">Five client-aligned priorities. Procurement is the main presentation workspace; HR remains the current personnel-reference foundation.</p>
-                                </div>
-                                <div className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]">
-                                    <div className="divide-y divide-slate-100 dark:divide-slate-700">
-                                        {initialRollout.map((item, index) => {
-                                            const description = item.id === 'ROL-04'
-                                                ? 'Procurement request lifecycle, sourcing, delivery and inspection presented as an interactive review workspace.'
-                                                : item.description;
-                                            const actionLabel = item.id === 'ROL-04' ? 'Open Procurement Workspace' : item.actionLabel;
-                                            return (
-                                                <article key={item.id} className="grid gap-2 px-3 py-2.5 md:grid-cols-[36px_minmax(0,1fr)_minmax(190px,280px)] md:items-center">
-                                                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-[11px] font-extrabold text-slate-600 dark:bg-slate-800 dark:text-slate-200">{index + 1}</div>
-                                                    <div className="min-w-0">
-                                                        <h3 className="text-[13px] font-bold text-slate-950 dark:text-slate-100">{item.name}</h3>
-                                                        <p className="mt-0.5 text-[10px] leading-4 text-slate-500 dark:text-slate-400">{description}</p>
-                                                    </div>
-                                                    <div className="flex flex-wrap items-center gap-1.5 md:justify-end">
-                                                        <span className={'inline-flex rounded-full px-2 py-1 text-[9px] font-bold ' + rolloutTone[item.state]}>{rolloutStateLabel(item.state)}</span>
-                                                        {item.href && actionLabel && (
-                                                            <Link href={item.href} className="inline-flex min-h-8 items-center rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 text-[9px] font-bold text-emerald-900 transition hover:bg-emerald-100 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-200">
-                                                                {actionLabel}
-                                                            </Link>
-                                                        )}
-                                                    </div>
-                                                </article>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-                            </section>
-                        )}
-
-                        {view === 'future' && (
-                            <section aria-labelledby="future-integrations-title" className="space-y-2">
-                                <div className="rounded-xl border border-amber-100 bg-amber-50/60 px-3 py-2 dark:border-amber-900/50 dark:bg-amber-950/20">
-                                    <div className="flex flex-wrap items-center justify-between gap-2">
-                                        <div>
-                                            <h2 id="future-integrations-title" className="text-[13px] font-bold text-slate-950 dark:text-slate-100">Future Integrations</h2>
-                                            <p className="mt-0.5 text-[11px] leading-4 text-slate-600 dark:text-slate-300">Planned municipal systems presented through interactive workspace previews.</p>
-                                        </div>
-                                        <span className="rounded-full bg-white px-2.5 py-1 text-[10px] font-extrabold text-amber-900 dark:bg-slate-900 dark:text-amber-200">14 systems · FUT-02–FUT-15</span>
-                                    </div>
-                                </div>
-
-                                <div className="grid gap-1.5 rounded-xl border border-slate-200 bg-white p-2 dark:border-slate-700 dark:bg-[#142236] md:grid-cols-[minmax(0,1fr)_230px_190px]">
-                                    <label className="relative min-w-0">
-                                        <span className="sr-only">Search Future Integrations</span>
-                                        <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true" />
-                                        <input value={q} onChange={(event) => setQ(event.target.value)} placeholder="Filter future system, office, or intended scope" className="min-h-9 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-3 text-sm outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100" />
-                                    </label>
-                                    <select aria-label="Future Integration group" value={group} onChange={(event) => setGroup(event.target.value)} className="min-h-9 rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100">
-                                        <option value="">All future groups</option>
-                                        {systemGroups.map((item) => <option key={item}>{item}</option>)}
-                                    </select>
-                                    <select aria-label="Future Integration status" value={status} onChange={(event) => setStatus(event.target.value)} className="min-h-9 rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100">
-                                        <option value="">All future statuses</option><option>Planned</option><option>Not Enabled</option>
-                                    </select>
-                                </div>
-                                <SystemDirectory systems={systems} onSelect={openSystem} />
-                            </section>
-                        )}
-
-                        {view === 'core' && (
-                            <section aria-labelledby="core-platform-title" className="space-y-2">
-                                <div className="rounded-xl border border-emerald-100 bg-emerald-50/50 px-3 py-2 dark:border-emerald-900/50 dark:bg-emerald-950/20">
-                                    <h2 id="core-platform-title" className="text-[13px] font-bold text-slate-950 dark:text-slate-100">Core Platform Backbone</h2>
-                                    <p className="mt-0.5 text-[11px] leading-4 text-slate-600 dark:text-slate-300">ONE TALIBON provides the common authenticated, routing, workflow, file, audit and integration foundation. Encode once, use many times.</p>
-                                </div>
-                                <div className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]">
-                                    <div className="divide-y divide-slate-100 dark:divide-slate-700">
-                                        {corePlatform.map((item) => (
-                                            <article key={item.name} className="grid gap-2 px-3 py-2 md:grid-cols-[minmax(0,1fr)_180px] md:items-center">
-                                                <div className="min-w-0"><h3 className="text-[12px] font-bold text-slate-950 dark:text-slate-100">{item.name}</h3><p className="mt-0.5 text-[10px] leading-4 text-slate-500 dark:text-slate-400">{item.description}</p></div>
-                                                <div className="md:text-right"><span className={'inline-flex rounded-full px-2 py-1 text-[9px] font-bold ' + coreTone[item.state]}>{item.state}</span></div>
-                                            </article>
-                                        ))}
-                                    </div>
-                                </div>
-                                <div className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-[#142236]">
-                                    <h2 className="text-[12px] font-bold text-slate-950 dark:text-slate-100">Current supporting foundations</h2>
-                                    <div className="mt-2 grid gap-1.5 md:grid-cols-2">
-                                        {supportingFoundations.map((item) => <div key={item} className="rounded-lg bg-slate-50 px-2.5 py-2 text-[10px] leading-4 text-slate-600 dark:bg-slate-900/40 dark:text-slate-300">{item}</div>)}
-                                    </div>
-                                </div>
-                            </section>
-                        )}
-                    </>
-                )}
-            </PageFrame>
-        </AppLayout>
-    );
-}
+        <section id="initial-rollout" className="scroll-mt-4 space-y-2"><header><div className="text-[9px] font-extrabold uppercase tracking-widest text-emerald-700">Initial Rollout</div><h2 className="text-[18px] font-extrabold text-slate-950 dark:text-slate-100">Five priorities already shaping the platform</h2><p className="text-[10px] text-slate-500 dark:text-slate-400">Procurement is the main presentation workspace; HR remains personnel-reference only.</p></header><div className="grid gap-2 md:grid-cols-2 xl:grid-cols-5">{initialRollout.map(item=><article key={item.id} className={panel+' flex min-h-[150px] flex-col p-3'}><div className="text-[8px] font-extrabold text-emerald-700">{item.id}</div><h3 className="mt-1 text-[12px] font-extrabold leading-4 text-slate-950 dark:text-slate-100">{item.name}</h3><p className="mt-1 flex-1 text-[9px] leading-4 text-slate-500 dark:text-slate-400">{item.id==='ROL-04'?'Procurement request lifecycle, sourcing, delivery and inspection in an interactive review workspace.':item.description}</p><span className={'mt-2 w-fit rounded-full px-2 py-1 text-[8px] font-bold '+
