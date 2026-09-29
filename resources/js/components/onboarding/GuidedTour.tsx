@@ -19,6 +19,11 @@ function tourTarget(target: string, visibleOnly = true): HTMLElement | null {
         : candidates[0]) ?? null;
 }
 
+function visibleNavigationToggle(): HTMLButtonElement | null {
+    return Array.from(document.querySelectorAll<HTMLButtonElement>('button[aria-label="Open navigation"]'))
+        .find((button) => button.offsetParent !== null) ?? null;
+}
+
 function settleLayout(): Promise<void> {
     return new Promise((resolve) => {
         window.requestAnimationFrame(() => {
@@ -30,6 +35,16 @@ function settleLayout(): Promise<void> {
 async function revealTourTarget(target: string): Promise<HTMLElement | null> {
     const visible = tourTarget(target);
     if (visible) return visible;
+
+    if (target.startsWith('nav:')) {
+        const navigationToggle = visibleNavigationToggle();
+        if (navigationToggle) {
+            navigationToggle.click();
+            await settleLayout();
+            const mobileTarget = tourTarget(target);
+            if (mobileTarget) return mobileTarget;
+        }
+    }
 
     const hidden = tourTarget(target, false);
     if (!hidden) return null;
@@ -51,12 +66,13 @@ export default function GuidedTour({ steps, onExit, onFinish }: Props) {
     const [index, setIndex] = useState(0);
     const [rect, setRect] = useState<SpotlightRect | null>(null);
     const [targetAvailable, setTargetAvailable] = useState(false);
+    const [resolvingTarget, setResolvingTarget] = useState(true);
     const [mobile, setMobile] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches);
     const coachRef = useRef<HTMLDivElement>(null);
     const step = steps[Math.min(index, Math.max(steps.length - 1, 0))];
 
     const exit = useCallback(() => onExit(), [onExit]);
-    useDialogFocusTrap(coachRef, steps.length > 0, exit);
+    useDialogFocusTrap(coachRef, steps.length > 0 && !resolvingTarget, exit);
 
     useEffect(() => {
         const query = window.matchMedia('(max-width: 767px)');
@@ -72,17 +88,24 @@ export default function GuidedTour({ steps, onExit, onFinish }: Props) {
         let cancelled = false;
         let frame = 0;
         let followup = 0;
+        setResolvingTarget(true);
+        setTargetAvailable(false);
+        setRect(null);
 
         const positionTarget = async () => {
             const target = await revealTourTarget(step.target);
             if (cancelled) return;
 
-            setTargetAvailable(Boolean(target));
             if (!target) {
-                setRect(null);
+                if (index >= steps.length - 1) {
+                    onFinish();
+                    return;
+                }
+                setIndex((current) => current === index ? current + 1 : current);
                 return;
             }
 
+            setTargetAvailable(true);
             const box = target.getBoundingClientRect();
             const outsideViewport = box.top < 8 || box.bottom > window.innerHeight - 8;
             if (outsideViewport) {
@@ -104,6 +127,7 @@ export default function GuidedTour({ steps, onExit, onFinish }: Props) {
                         width: next.width,
                         height: next.height,
                     });
+                    setResolvingTarget(false);
                 });
             });
         };
@@ -122,7 +146,7 @@ export default function GuidedTour({ steps, onExit, onFinish }: Props) {
             window.cancelAnimationFrame(frame);
             window.cancelAnimationFrame(followup);
         };
-    }, [step]);
+    }, [index, onFinish, step, steps.length]);
 
     const placementStyle = useMemo(() => {
         if (mobile || !rect || typeof window === 'undefined') return undefined;
@@ -133,7 +157,7 @@ export default function GuidedTour({ steps, onExit, onFinish }: Props) {
         return { left, top };
     }, [mobile, rect]);
 
-    if (!step || steps.length === 0) return null;
+    if (!step || steps.length === 0 || resolvingTarget) return null;
 
     const next = () => {
         if (index === steps.length - 1) {
