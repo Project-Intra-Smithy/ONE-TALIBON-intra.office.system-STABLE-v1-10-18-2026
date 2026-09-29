@@ -82,14 +82,10 @@ const rolloutTone: Record<string, string> = {
 };
 
 const coreTone: Record<string, string> = {
-    Current:
-        'bg-emerald-500',
-    'Current Foundation':
-        'bg-teal-500',
-    'Platform Foundation':
-        'bg-blue-500',
-    'Integration Direction':
-        'bg-slate-400',
+    Current: 'bg-emerald-500',
+    'Current Foundation': 'bg-teal-500',
+    'Platform Foundation': 'bg-blue-500',
+    'Integration Direction': 'bg-slate-400',
 };
 
 function rolloutStateLabel(state: string) {
@@ -159,46 +155,46 @@ export default function Index({ showcase }: Props) {
                         onBack={() => setSelectedSystem(null)}
                     />
                 ) : (
-                    <div className="space-y-2.5">
-                        <section className="rounded-xl border border-emerald-200 bg-gradient-to-r from-white via-emerald-50/55 to-amber-50/35 px-3 py-2.5 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10">
-                            <div className="grid gap-2.5 lg:grid-cols-[minmax(0,1fr)_390px] lg:items-center">
+                    <div className="space-y-2.5 xl:grid xl:min-h-[calc(100vh-11.5rem)] xl:grid-rows-[auto_auto_minmax(0,1fr)] xl:gap-3 xl:space-y-0 2xl:min-h-[calc(100vh-10.5rem)]">
+                        <section className="rounded-xl border border-emerald-200 bg-gradient-to-r from-white via-emerald-50/55 to-amber-50/35 px-3 py-2.5 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10 xl:px-4 xl:py-3">
+                            <div className="grid gap-2.5 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-center 2xl:grid-cols-[minmax(0,1fr)_450px]">
                                 <div className="min-w-0">
-                                    <div className="flex items-center gap-2 text-[8px] font-black uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">
-                                        <span className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-emerald-700 text-white dark:bg-emerald-600">
-                                            <Network size={12} aria-hidden="true" />
+                                    <div className="flex items-center gap-2 text-[8px] font-black uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300 xl:text-[9px]">
+                                        <span className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-emerald-700 text-white dark:bg-emerald-600 xl:h-7 xl:w-7">
+                                            <Network size={13} aria-hidden="true" />
                                         </span>
                                         ONE TALIBON Digital Operations Platform
                                     </div>
-                                    <h1 className="mt-1 text-[17px] font-black leading-tight tracking-tight text-slate-950 dark:text-white sm:text-[19px]">
+                                    <h1 className="mt-1 text-[17px] font-black leading-tight tracking-tight text-slate-950 dark:text-white sm:text-[19px] xl:text-[22px] 2xl:text-[24px]">
                                         Municipal systems connected through one shared digital backbone.
                                     </h1>
-                                    <p className="mt-0.5 text-[9px] text-slate-500 dark:text-slate-400">
+                                    <p className="mt-0.5 text-[9px] text-slate-500 dark:text-slate-400 xl:text-[10px]">
                                         Current rollout, future municipal workspaces and reusable platform foundations.
                                     </p>
                                 </div>
 
                                 <div className="grid grid-cols-3 overflow-hidden rounded-lg border border-slate-200 bg-white/85 dark:border-slate-700 dark:bg-slate-900/45">
-                                    <div className="px-2.5 py-2 text-center">
-                                        <div className="text-[17px] font-black tabular-nums text-emerald-700 dark:text-emerald-300">
+                                    <div className="px-2.5 py-2 text-center xl:py-2.5">
+                                        <div className="text-[17px] font-black tabular-nums text-emerald-700 dark:text-emerald-300 xl:text-[21px]">
                                             {initialRollout.length}
                                         </div>
-                                        <div className="text-[7px] font-extrabold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400">
+                                        <div className="text-[7px] font-extrabold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400 xl:text-[8px]">
                                             Rollout Priorities
                                         </div>
                                     </div>
-                                    <div className="border-x border-slate-200 px-2.5 py-2 text-center dark:border-slate-700">
-                                        <div className="text-[17px] font-black tabular-nums text-amber-700 dark:text-amber-300">
+                                    <div className="border-x border-slate-200 px-2.5 py-2 text-center dark:border-slate-700 xl:py-2.5">
+                                        <div className="text-[17px] font-black tabular-nums text-amber-700 dark:text-amber-300 xl:text-[21px]">
                                             {municipalSystems.length}
                                         </div>
-                                        <div className="text-[7px] font-extrabold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400">
+                                        <div className="text-[7px] font-extrabold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400 xl:text-[8px]">
                                             Future Systems
                                         </div>
                                     </div>
-                                    <div className="px-2.5 py-2 text-center">
-                                        <div className="flex h-[21px] items-center justify-center text-emerald-700 dark:text-emerald-300">
-                                            <Network size={14} aria-hidden="true" />
+                                    <div className="px-2.5 py-2 text-center xl:py-2.5">
+                                        <div className="flex h-[21px] items-center justify-center text-emerald-700 dark:text-emerald-300 xl:h-[26px]">
+                                            <Network size={16} aria-hidden="true" />
                                         </div>
-                                        <div className="text-[7px] font-extrabold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400">
+                                        <div className="text-[7px] font-extrabold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400 xl:text-[8px]">
                                             Shared Backbone
                                         </div>
                                     </div>
@@ -206,22 +202,22 @@ export default function Index({ showcase }: Props) {
                             </div>
                         </section>
 
-                        <section aria-labelledby="rollout-heading" className="space-y-1.5">
+                        <section aria-labelledby="rollout-heading" className="space-y-1.5 xl:flex xl:min-h-0 xl:flex-col xl:space-y-2">
                             <div className="flex items-end justify-between gap-3">
                                 <div>
-                                    <div className="text-[8px] font-black uppercase tracking-[0.11em] text-emerald-700 dark:text-emerald-300">
+                                    <div className="text-[8px] font-black uppercase tracking-[0.11em] text-emerald-700 dark:text-emerald-300 xl:text-[9px]">
                                         Initial Rollout
                                     </div>
-                                    <h2 id="rollout-heading" className="text-[12px] font-extrabold text-slate-950 dark:text-slate-100">
+                                    <h2 id="rollout-heading" className="text-[12px] font-extrabold text-slate-950 dark:text-slate-100 xl:text-[14px]">
                                         Five working ONE TALIBON entry points
                                     </h2>
                                 </div>
-                                <span className="hidden text-[8px] font-semibold text-slate-400 sm:block">
+                                <span className="hidden text-[8px] font-semibold text-slate-400 sm:block xl:text-[9px]">
                                     Existing portal destinations
                                 </span>
                             </div>
 
-                            <div className="grid gap-1.5 sm:grid-cols-2 xl:grid-cols-5">
+                            <div className="grid gap-1.5 sm:grid-cols-2 xl:flex-1 xl:grid-cols-5 xl:gap-2">
                                 {initialRollout.map((item) => {
                                     const entry = rolloutEntries[item.id];
                                     const Icon = entry.icon;
@@ -231,41 +227,41 @@ export default function Index({ showcase }: Props) {
                                             key={item.id}
                                             href={entry.href}
                                             aria-label={`${entry.action}: ${item.name}`}
-                                            className="group flex min-h-[108px] min-w-0 flex-col rounded-xl border border-slate-200 bg-white p-2.5 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30 dark:border-slate-700 dark:bg-[#142236] dark:hover:border-emerald-900/70"
+                                            className="group flex min-h-[108px] min-w-0 flex-col rounded-xl border border-slate-200 bg-white p-2.5 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30 dark:border-slate-700 dark:bg-[#142236] dark:hover:border-emerald-900/70 xl:min-h-[128px] xl:p-3 2xl:min-h-[136px]"
                                         >
                                             <div className="flex items-start justify-between gap-2">
                                                 <div className="flex min-w-0 items-center gap-2">
-                                                    <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300">
-                                                        <Icon size={13} aria-hidden="true" />
+                                                    <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300 xl:h-8 xl:w-8">
+                                                        <Icon size={14} aria-hidden="true" />
                                                     </span>
-                                                    <span className="text-[7px] font-black uppercase tracking-[0.08em] text-slate-400">
+                                                    <span className="text-[7px] font-black uppercase tracking-[0.08em] text-slate-400 xl:text-[8px]">
                                                         {item.id}
                                                     </span>
                                                 </div>
                                                 <ChevronRight
-                                                    size={12}
+                                                    size={13}
                                                     className="shrink-0 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-emerald-600"
                                                     aria-hidden="true"
                                                 />
                                             </div>
 
-                                            <h3 className="mt-1.5 line-clamp-2 text-[10px] font-extrabold leading-3.5 text-slate-950 dark:text-slate-100">
+                                            <h3 className="mt-1.5 line-clamp-2 text-[10px] font-extrabold leading-3.5 text-slate-950 dark:text-slate-100 xl:mt-2 xl:text-[11px] xl:leading-4">
                                                 {item.name}
                                             </h3>
-                                            <p className="mt-1 line-clamp-2 text-[8px] leading-3 text-slate-500 dark:text-slate-400">
+                                            <p className="mt-1 line-clamp-2 text-[8px] leading-3 text-slate-500 dark:text-slate-400 xl:text-[9px] xl:leading-3.5">
                                                 {entry.value}
                                             </p>
 
-                                            <div className="mt-auto flex items-end justify-between gap-2 pt-1.5">
+                                            <div className="mt-auto flex items-end justify-between gap-2 pt-1.5 xl:pt-2">
                                                 <span
                                                     className={
-                                                        'rounded-full border px-1.5 py-0.5 text-[7px] font-bold ' +
+                                                        'rounded-full border px-1.5 py-0.5 text-[7px] font-bold xl:text-[7.5px] ' +
                                                         rolloutTone[item.state]
                                                     }
                                                 >
                                                     {rolloutStateLabel(item.state)}
                                                 </span>
-                                                <span className="truncate text-right text-[7px] font-extrabold text-emerald-700 dark:text-emerald-300">
+                                                <span className="truncate text-right text-[7px] font-extrabold text-emerald-700 dark:text-emerald-300 xl:text-[8px]">
                                                     {entry.action}
                                                 </span>
                                             </div>
@@ -275,27 +271,27 @@ export default function Index({ showcase }: Props) {
                             </div>
                         </section>
 
-                        <div className="grid items-start gap-2.5 xl:grid-cols-[minmax(0,2.25fr)_minmax(270px,.9fr)]">
+                        <div className="grid items-stretch gap-2.5 xl:min-h-0 xl:grid-cols-[minmax(0,2.25fr)_minmax(270px,.9fr)] xl:gap-3">
                             <section
                                 aria-labelledby="future-heading"
-                                className="min-w-0 rounded-xl border border-slate-200 bg-slate-50/55 p-2.5 dark:border-slate-700 dark:bg-slate-900/20"
+                                className="flex min-h-0 min-w-0 flex-col rounded-xl border border-slate-200 bg-slate-50/55 p-2.5 dark:border-slate-700 dark:bg-slate-900/20 xl:h-full xl:p-3"
                             >
                                 <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
                                     <div className="min-w-0">
-                                        <div className="text-[8px] font-black uppercase tracking-[0.11em] text-amber-700 dark:text-amber-300">
+                                        <div className="text-[8px] font-black uppercase tracking-[0.11em] text-amber-700 dark:text-amber-300 xl:text-[9px]">
                                             Future Integrations
                                         </div>
                                         <div className="flex items-baseline gap-2">
-                                            <h2 id="future-heading" className="text-[12px] font-extrabold text-slate-950 dark:text-slate-100">
+                                            <h2 id="future-heading" className="text-[12px] font-extrabold text-slate-950 dark:text-slate-100 xl:text-[14px]">
                                                 Municipal system matrix
                                             </h2>
-                                            <span className="text-[8px] font-bold tabular-nums text-slate-400">
+                                            <span className="text-[8px] font-bold tabular-nums text-slate-400 xl:text-[9px]">
                                                 {systems.length}/{municipalSystems.length}
                                             </span>
                                         </div>
                                     </div>
 
-                                    <div className="grid gap-1.5 sm:grid-cols-[minmax(180px,1fr)_150px]">
+                                    <div className="grid gap-1.5 sm:grid-cols-[minmax(170px,1fr)_142px] xl:grid-cols-[minmax(180px,220px)_140px]">
                                         <label className="relative min-w-0">
                                             <span className="sr-only">Search future systems</span>
                                             <Search
@@ -307,7 +303,7 @@ export default function Index({ showcase }: Props) {
                                                 value={q}
                                                 onChange={(event) => setQ(event.target.value)}
                                                 placeholder="Search systems"
-                                                className="h-8 w-full rounded-lg border border-slate-300 bg-white pl-8 pr-2 text-[9px] text-slate-900 outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
+                                                className="h-8 w-full rounded-lg border border-slate-300 bg-white pl-8 pr-2 text-[9px] text-slate-900 outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 xl:text-[9.5px]"
                                             />
                                         </label>
 
@@ -321,7 +317,7 @@ export default function Index({ showcase }: Props) {
                                             <select
                                                 value={filter}
                                                 onChange={(event) => setFilter(event.target.value)}
-                                                className="h-8 w-full appearance-none rounded-lg border border-slate-300 bg-white pl-7 pr-6 text-[8px] font-semibold text-slate-700 outline-none focus:border-[var(--municipal-brand)] dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200"
+                                                className="h-8 w-full appearance-none rounded-lg border border-slate-300 bg-white pl-7 pr-6 text-[8px] font-semibold text-slate-700 outline-none focus:border-[var(--municipal-brand)] dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200 xl:text-[8.5px]"
                                                 aria-label="Filter future systems by group or status"
                                             >
                                                 <option value="">All systems</option>
@@ -337,55 +333,55 @@ export default function Index({ showcase }: Props) {
                                     </div>
                                 </div>
 
-                                <div className="mt-2">
+                                <div className="mt-2 min-h-0 flex-1 xl:mt-2.5">
                                     <SystemDirectory systems={systems} onSelect={setSelectedSystem} />
                                 </div>
                             </section>
 
                             <aside
                                 aria-labelledby="core-heading"
-                                className="rounded-xl border border-emerald-200 bg-white p-2.5 shadow-sm dark:border-emerald-900/60 dark:bg-[#142236]"
+                                className="flex min-h-0 flex-col rounded-xl border border-emerald-200 bg-white p-2.5 shadow-sm dark:border-emerald-900/60 dark:bg-[#142236] xl:h-full xl:p-3"
                             >
                                 <div className="flex items-center justify-between gap-2">
                                     <div>
-                                        <div className="text-[8px] font-black uppercase tracking-[0.11em] text-emerald-700 dark:text-emerald-300">
+                                        <div className="text-[8px] font-black uppercase tracking-[0.11em] text-emerald-700 dark:text-emerald-300 xl:text-[9px]">
                                             Core Platform
                                         </div>
-                                        <h2 id="core-heading" className="text-[12px] font-extrabold text-slate-950 dark:text-slate-100">
+                                        <h2 id="core-heading" className="text-[12px] font-extrabold text-slate-950 dark:text-slate-100 xl:text-[14px]">
                                             Shared architecture
                                         </h2>
                                     </div>
-                                    <Network size={15} className="text-emerald-700 dark:text-emerald-300" aria-hidden="true" />
+                                    <Network size={17} className="text-emerald-700 dark:text-emerald-300" aria-hidden="true" />
                                 </div>
 
-                                <div className="mt-2 divide-y divide-slate-100 border-y border-slate-100 dark:divide-slate-700 dark:border-slate-700">
+                                <div className="mt-2 divide-y divide-slate-100 border-y border-slate-100 dark:divide-slate-700 dark:border-slate-700 xl:mt-2.5 xl:flex-1">
                                     {corePlatform.map((item) => (
-                                        <div key={item.name} className="flex min-h-7 items-center gap-2 py-1">
+                                        <div key={item.name} className="flex min-h-7 items-center gap-2 py-1 xl:min-h-8 xl:gap-2.5 xl:py-1.5">
                                             <span
                                                 className={
-                                                    'h-1.5 w-1.5 shrink-0 rounded-full ' +
+                                                    'h-1.5 w-1.5 shrink-0 rounded-full xl:h-2 xl:w-2 ' +
                                                     coreTone[item.state]
                                                 }
                                                 aria-hidden="true"
                                             />
-                                            <span className="min-w-0 flex-1 truncate text-[8px] font-bold text-slate-700 dark:text-slate-200">
+                                            <span className="min-w-0 flex-1 truncate text-[8px] font-bold text-slate-700 dark:text-slate-200 xl:text-[9.5px]">
                                                 {coreLabel(item.name)}
                                             </span>
-                                            <span className="shrink-0 text-[6.5px] font-semibold uppercase tracking-[0.04em] text-slate-400">
+                                            <span className="shrink-0 text-[6.5px] font-semibold uppercase tracking-[0.04em] text-slate-400 xl:text-[7px]">
                                                 {item.state}
                                             </span>
                                         </div>
                                     ))}
                                 </div>
 
-                                <div className="mt-2">
-                                    <div className="text-[7px] font-black uppercase tracking-[0.09em] text-slate-400">
+                                <div className="mt-2 xl:mt-2.5">
+                                    <div className="text-[7px] font-black uppercase tracking-[0.09em] text-slate-400 xl:text-[8px]">
                                         Supporting foundations
                                     </div>
-                                    <div className="mt-1 grid gap-x-2 gap-y-1 sm:grid-cols-2 xl:grid-cols-1">
+                                    <div className="mt-1 grid gap-x-2 gap-y-1 sm:grid-cols-2 xl:grid-cols-1 xl:gap-y-1.5">
                                         {supportingFoundations.map((item) => (
-                                            <div key={item} className="flex min-w-0 items-start gap-1.5 text-[7px] leading-3 text-slate-500 dark:text-slate-400">
-                                                <span className="mt-1 h-1 w-1 shrink-0 rounded-full bg-emerald-500" aria-hidden="true" />
+                                            <div key={item} className="flex min-w-0 items-start gap-1.5 text-[7px] leading-3 text-slate-500 dark:text-slate-400 xl:text-[8px] xl:leading-3.5">
+                                                <span className="mt-1 h-1 w-1 shrink-0 rounded-full bg-emerald-500 xl:h-1.5 xl:w-1.5" aria-hidden="true" />
                                                 <span className="line-clamp-1">{item}</span>
                                             </div>
                                         ))}
