@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
     Activity,
+    ChevronLeft,
+    ChevronRight,
     ClipboardList,
     FileText,
     GitBranch,
@@ -22,6 +24,13 @@ type Props = {
 };
 
 type Tab = 'Overview' | 'Purchase Requests' | 'Procurement Flow' | 'Delivery & Inspection';
+type DetailStep = 'summary' | 'activity' | 'documents';
+
+const detailSteps: Array<{ id: DetailStep; label: string }> = [
+    { id: 'summary', label: 'Summary' },
+    { id: 'activity', label: 'Activity' },
+    { id: 'documents', label: 'Documents' },
+];
 
 const metricTone = {
     emerald: 'border-emerald-200 bg-emerald-50/80 text-emerald-950 dark:border-emerald-900/60 dark:bg-emerald-950/25 dark:text-emerald-100',
@@ -122,39 +131,117 @@ function Filters({ query, onQuery, status, onStatus, statuses }: {
 }
 
 function RequestDrawer({ record, open, onClose }: { record?: PrototypeRecord; open: boolean; onClose: () => void }) {
+    const [step, setStep] = useState<DetailStep>('summary');
+
+    useEffect(() => {
+        if (open) setStep('summary');
+    }, [open, record?.id]);
+
+    const stepIndex = detailSteps.findIndex((item) => item.id === step);
+    const moveStep = (offset: number) => {
+        const next = detailSteps[stepIndex + offset];
+        if (next) setStep(next.id);
+    };
+
     return (
-        <DetailDrawer open={open && Boolean(record)} onClose={onClose} title={record?.title ?? 'Request details'} eyebrow="Request details">
+        <DetailDrawer
+            open={open && Boolean(record)}
+            onClose={onClose}
+            title={record ? `${record.id} · ${record.title}` : 'Request details'}
+            eyebrow="Request details"
+            footer={record ? (
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="text-[9px] font-semibold text-slate-400">Step {stepIndex + 1} of {detailSteps.length}</div>
+                    <div className="flex flex-wrap justify-end gap-2">
+                        {stepIndex > 0 && (
+                            <button type="button" onClick={() => moveStep(-1)} className="inline-flex min-h-9 items-center gap-1 rounded-lg border border-slate-300 bg-white px-3 text-[10px] font-bold text-slate-600 transition hover:bg-slate-50 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-200">
+                                <ChevronLeft size={13} aria-hidden="true" /> Back
+                            </button>
+                        )}
+                        <button type="button" onClick={onClose} className="min-h-9 rounded-lg border border-slate-300 bg-white px-3 text-[10px] font-bold text-slate-600 transition hover:bg-slate-50 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-200">Close</button>
+                        {stepIndex < detailSteps.length - 1 && (
+                            <button type="button" onClick={() => moveStep(1)} className="inline-flex min-h-9 items-center gap-1 rounded-lg bg-[#0b2852] px-3 text-[10px] font-bold text-white transition hover:bg-[#123764]">
+                                Next <ChevronRight size={13} aria-hidden="true" />
+                            </button>
+                        )}
+                    </div>
+                </div>
+            ) : undefined}
+        >
             {record && (
                 <div className="space-y-4">
-                    <div>
-                        <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-slate-400">{record.id}</div>
-                        <div className="mt-1 text-[16px] font-extrabold text-slate-950 dark:text-slate-100">{record.title}</div>
-                        <div className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{record.subtitle}</div>
+                    <div className="flex flex-col gap-3 border-b border-slate-100 pb-4 dark:border-slate-700 sm:flex-row sm:items-start sm:justify-between">
+                        <div className="min-w-0">
+                            <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-slate-400">{record.id}</div>
+                            <div className="mt-1 text-[18px] font-extrabold text-slate-950 dark:text-slate-100">{record.title}</div>
+                            <div className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{record.subtitle}</div>
+                        </div>
+                        <div className="flex shrink-0 items-center gap-2 sm:flex-col sm:items-end">
+                            <span className={`inline-flex rounded-full px-2.5 py-1 text-[9px] font-bold ${statusTone(record.status)}`}>{record.status}</span>
+                            <span className="text-[16px] font-extrabold tabular-nums text-slate-800 dark:text-slate-200">{record.amount ?? record.meta}</span>
+                        </div>
                     </div>
-                    <dl className="grid gap-3 text-[11px] sm:grid-cols-2">
-                        <div><dt className="text-slate-400">Requesting office</dt><dd className="mt-0.5 font-semibold text-slate-800 dark:text-slate-200">{record.owner}</dd></div>
-                        <div><dt className="text-slate-400">Estimated amount</dt><dd className="mt-0.5 font-semibold text-slate-800 dark:text-slate-200">{record.amount ?? record.meta}</dd></div>
-                        <div><dt className="text-slate-400">Status</dt><dd className="mt-1"><span className={`inline-flex rounded-full px-2 py-1 text-[9px] font-bold ${statusTone(record.status)}`}>{record.status}</span></dd></div>
-                        <div><dt className="text-slate-400">Current stage</dt><dd className="mt-0.5 font-bold text-[var(--municipal-brand)]">{record.stage}</dd></div>
-                        <div className="sm:col-span-2"><dt className="text-slate-400">Last activity</dt><dd className="mt-0.5 font-semibold text-slate-700 dark:text-slate-300">{record.history?.at(-1) ?? record.updated ?? 'Reference updated'}</dd></div>
-                        <div className="sm:col-span-2"><dt className="text-slate-400">Next handoff</dt><dd className="mt-0.5 font-semibold text-slate-700 dark:text-slate-300">{record.nextAction ?? record.note}</dd></div>
-                    </dl>
-                    <section>
-                        <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-slate-500"><Activity size={13} aria-hidden="true" /> Recent activity</div>
-                        <div className="mt-2 space-y-1.5">
-                            {(record.history ?? []).map((item, index) => (
-                                <div key={`${record.id}-history-${index}`} className="flex gap-2 rounded-lg bg-slate-50 px-2.5 py-2 text-[10px] text-slate-600 dark:bg-slate-900/45 dark:text-slate-300">
-                                    <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--municipal-brand)]" />{item}
-                                </div>
-                            ))}
-                        </div>
-                    </section>
-                    <section>
-                        <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-slate-500"><FileText size={13} aria-hidden="true" /> Supporting documents</div>
-                        <div className="mt-2 grid gap-1.5">
-                            {(record.documents ?? []).map((item) => <div key={item} className="rounded-lg border border-slate-200 px-2.5 py-2 text-[10px] font-semibold text-slate-600 dark:border-slate-700 dark:text-slate-300">{item}</div>)}
-                        </div>
-                    </section>
+
+                    <div role="tablist" aria-label="Request detail sections" className="grid grid-cols-3 gap-1 rounded-xl bg-slate-100 p-1 dark:bg-slate-900/55">
+                        {detailSteps.map((item, index) => (
+                            <button
+                                key={item.id}
+                                type="button"
+                                role="tab"
+                                aria-selected={step === item.id}
+                                onClick={() => setStep(item.id)}
+                                className={'min-h-9 rounded-lg px-2 text-[10px] font-bold transition '
+                                    + (step === item.id
+                                        ? 'bg-white text-[var(--municipal-brand)] shadow-sm dark:bg-[#142236] dark:text-emerald-300'
+                                        : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200')}
+                            >
+                                <span className="mr-1 text-[9px] opacity-55">{index + 1}</span>{item.label}
+                            </button>
+                        ))}
+                    </div>
+
+                    {step === 'summary' && (
+                        <section aria-label="Request summary">
+                            <dl className="grid gap-3 text-[11px] sm:grid-cols-2">
+                                <div className="rounded-lg bg-slate-50 px-3 py-2.5 dark:bg-slate-900/40"><dt className="text-slate-400">Requesting office</dt><dd className="mt-1 font-semibold text-slate-800 dark:text-slate-200">{record.owner}</dd></div>
+                                <div className="rounded-lg bg-slate-50 px-3 py-2.5 dark:bg-slate-900/40"><dt className="text-slate-400">Estimated amount</dt><dd className="mt-1 font-semibold text-slate-800 dark:text-slate-200">{record.amount ?? record.meta}</dd></div>
+                                <div className="rounded-lg bg-slate-50 px-3 py-2.5 dark:bg-slate-900/40"><dt className="text-slate-400">Status</dt><dd className="mt-1"><span className={`inline-flex rounded-full px-2 py-1 text-[9px] font-bold ${statusTone(record.status)}`}>{record.status}</span></dd></div>
+                                <div className="rounded-lg bg-slate-50 px-3 py-2.5 dark:bg-slate-900/40"><dt className="text-slate-400">Current stage</dt><dd className="mt-1 font-bold text-[var(--municipal-brand)]">{record.stage}</dd></div>
+                                <div className="rounded-lg border border-slate-200 px-3 py-2.5 dark:border-slate-700 sm:col-span-2"><dt className="text-slate-400">Last activity</dt><dd className="mt-1 font-semibold text-slate-700 dark:text-slate-300">{record.history?.at(-1) ?? record.updated ?? 'Reference updated'}</dd></div>
+                                <div className="rounded-lg border border-slate-200 px-3 py-2.5 dark:border-slate-700 sm:col-span-2"><dt className="text-slate-400">Next handoff</dt><dd className="mt-1 font-semibold leading-5 text-slate-700 dark:text-slate-300">{record.nextAction ?? record.note}</dd></div>
+                            </dl>
+                        </section>
+                    )}
+
+                    {step === 'activity' && (
+                        <section aria-label="Request activity">
+                            <div className="mb-3 flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-slate-500"><Activity size={13} aria-hidden="true" /> Recent activity</div>
+                            <div className="relative ml-2 border-l border-slate-200 pl-5 dark:border-slate-700">
+                                {(record.history ?? []).map((item, index) => (
+                                    <div key={`${record.id}-history-${index}`} className="relative pb-4 last:pb-0">
+                                        <span className="absolute -left-[25px] top-1.5 h-2 w-2 rounded-full border-2 border-white bg-[var(--municipal-brand)] ring-1 ring-emerald-200 dark:border-[#142236] dark:ring-emerald-900" />
+                                        <div className="text-[10px] font-semibold leading-5 text-slate-700 dark:text-slate-300">{item}</div>
+                                    </div>
+                                ))}
+                                {(record.history ?? []).length === 0 && <div className="text-[10px] text-slate-500">No request history is available in the reference record.</div>}
+                            </div>
+                        </section>
+                    )}
+
+                    {step === 'documents' && (
+                        <section aria-label="Supporting document references">
+                            <div className="mb-3 flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-slate-500"><FileText size={13} aria-hidden="true" /> Supporting references</div>
+                            <div className="grid gap-2 sm:grid-cols-2">
+                                {(record.documents ?? []).map((item) => (
+                                    <div key={item} className="flex items-center gap-2.5 rounded-lg border border-slate-200 px-3 py-2.5 dark:border-slate-700">
+                                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-300"><FileText size={14} aria-hidden="true" /></span>
+                                        <div><div className="text-[10px] font-bold text-slate-700 dark:text-slate-200">{item}</div><div className="mt-0.5 text-[8px] text-slate-400">Reference only</div></div>
+                                    </div>
+                                ))}
+                                {(record.documents ?? []).length === 0 && <div className="text-[10px] text-slate-500">No supporting references are available for this record.</div>}
+                            </div>
+                        </section>
+                    )}
                 </div>
             )}
         </DetailDrawer>
@@ -170,8 +257,8 @@ function Overview({ records, lifecycle, onOpen, onStage }: { records: PrototypeR
 
     return (
         <div className="space-y-3">
-            <div className="grid gap-3 xl:grid-cols-[minmax(0,1.85fr)_minmax(260px,.9fr)]">
-                <section className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]">
+            <div className="grid items-start gap-3 xl:grid-cols-[minmax(0,1.85fr)_minmax(260px,.9fr)]">
+                <section className="self-start overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]">
                     <div className="border-b border-slate-200 px-3 py-2 dark:border-slate-700">
                         <h2 className="text-[11px] font-extrabold text-slate-950 dark:text-slate-100">Active procurement</h2>
                         <p className="mt-0.5 text-[9px] text-slate-500 dark:text-slate-400">Open requests moving through sourcing, delivery and inspection.</p>
@@ -190,7 +277,7 @@ function Overview({ records, lifecycle, onOpen, onStage }: { records: PrototypeR
                     </div>
                 </section>
 
-                <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-1">
+                <div className="grid self-start gap-3 md:grid-cols-2 xl:grid-cols-1">
                     <section className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-[#142236]">
                         <h2 className="text-[11px] font-extrabold text-slate-950 dark:text-slate-100">Process attention</h2>
                         <div className="mt-2 grid gap-1.5">

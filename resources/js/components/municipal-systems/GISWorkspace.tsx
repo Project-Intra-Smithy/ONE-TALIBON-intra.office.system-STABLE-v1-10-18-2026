@@ -117,6 +117,7 @@ export default function GISWorkspace({ prototype, onBack }: Props) {
         [activeLayerConfig, prototype.records],
     );
     const selectedRecord = prototype.records.find((record) => record.id === selectedId) ?? activeRecords[0];
+    const hasConfiguredMapKey = Boolean(import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
 
     useEffect(() => {
         const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY ?? '';
@@ -241,12 +242,17 @@ export default function GISWorkspace({ prototype, onBack }: Props) {
                         </div>
                     )}
                     {mapState === 'error' && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-slate-50 dark:bg-slate-900">
+                        <div className="absolute inset-0 flex items-center justify-center bg-slate-100/95 dark:bg-slate-900/95">
                             <div className="max-w-sm px-5 text-center">
-                                <MapPin size={26} className="mx-auto text-slate-400" aria-hidden="true" />
-                                <div className="mt-3 text-[12px] font-extrabold uppercase tracking-[0.08em] text-slate-700 dark:text-slate-200">Map temporarily unavailable</div>
-                                <p className="mt-2 text-[10px] leading-4 text-slate-500 dark:text-slate-400">Google Maps could not initialize in this environment. Layer controls, location references and the selected-location inspector remain available.</p>
-                                <button type="button" onClick={() => setAttempt((value) => value + 1)} className="mt-3 min-h-9 rounded-lg border border-slate-300 bg-white px-3 text-[10px] font-bold text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-200">Retry map</button>
+                                <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white/85 text-slate-400 shadow-sm dark:border-slate-700 dark:bg-slate-800/70">
+                                    <MapPin size={20} aria-hidden="true" />
+                                </span>
+                                <div className="mt-3 text-[13px] font-bold text-slate-700 dark:text-slate-200">Map preview unavailable</div>
+                                <p className="mt-1.5 text-[10px] leading-4 text-slate-500 dark:text-slate-400">Map services are not enabled in this presentation environment.</p>
+                                <p className="mt-1 text-[9px] leading-4 text-slate-400 dark:text-slate-500">Layer controls and location references remain available for review.</p>
+                                {hasConfiguredMapKey && (
+                                    <button type="button" onClick={() => setAttempt((value) => value + 1)} className="mt-3 min-h-8 rounded-lg border border-slate-300 bg-white px-3 text-[9px] font-semibold text-slate-600 transition hover:bg-slate-50 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-300">Retry map</button>
+                                )}
                             </div>
                         </div>
                     )}
