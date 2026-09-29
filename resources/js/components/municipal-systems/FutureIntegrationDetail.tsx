@@ -6,6 +6,7 @@ import BuildingPermitWorkspace from './BuildingPermitWorkspace';
 import BusinessPermitWorkspace from './BusinessPermitWorkspace';
 import CitizenActionWorkspace from './CitizenActionWorkspace';
 import FutureSystemPrototype from './FutureSystemPrototype';
+import GADAnalyticsWorkspace from './GADAnalyticsWorkspace';
 import GISWorkspace from './GISWorkspace';
 import InventorySuppliesWorkspace from './InventorySuppliesWorkspace';
 import MotorpoolFleetWorkspace from './MotorpoolFleetWorkspace';
@@ -52,6 +53,10 @@ export default function FutureIntegrationDetail({ system, onBack }: Props) {
                 onBack={onBack}
             />
         );
+    }
+
+    if (system.id === 'FUT-08') {
+        return <GADAnalyticsWorkspace onBack={onBack} />;
     }
 
     if (system.id === 'FUT-10') {
