@@ -1,5 +1,7 @@
 export type FutureIntegrationStatus = 'Planned' | 'Not Enabled';
 
+export type ConceptPresentationMode = 'workflow' | 'scope';
+
 export type MunicipalSystem = {
     id: string;
     name: string;
@@ -10,6 +12,11 @@ export type MunicipalSystem = {
     purpose: string;
     recordScope: string;
     integrationNote: string;
+    conceptMode: ConceptPresentationMode;
+    conceptItems: string[];
+    conceptRecords: string[];
+    integrationContext: string;
+    currentBoundary: string;
 };
 
 export type InitialRolloutState =
@@ -35,6 +42,12 @@ export type CorePlatformItem = {
     state: CorePlatformState;
     description: string;
 };
+
+const sharedIntegrationContext =
+    'Designed to plug into the shared ONE TALIBON platform foundation as implementation decisions and provider integrations are approved. Shared authenticated access, directory, routing, notification, workflow, approval, audit, file, and API foundations may be reused where later authorized.';
+
+const conceptOnlyBoundary =
+    'Concept presentation only. This module is not operational, exposes no live records or transactions, and does not provide functional create, submit, approve, issue, pay, or processing actions.';
 
 export const initialRollout: InitialRolloutItem[] = [
     {
@@ -77,9 +90,14 @@ export const municipalSystems: MunicipalSystem[] = [
         owningOffice: 'BAC / General Services',
         status: 'Planned',
         presentationState: 'Future Integration',
-        purpose: 'PR → PPMP/APP → RFQ → PO → delivery → inspection → payment.',
+        purpose: 'Future procurement tracking from purchase request through payment handoff.',
         recordScope: 'Procurement requests, sourcing, awards, delivery, inspection, and payment handoff.',
-        integrationNote: 'Static presentation only; no procurement route, records, CRUD, or workflow is enabled.',
+        integrationNote: 'No procurement route, records, CRUD, or workflow is enabled.',
+        conceptMode: 'workflow',
+        conceptItems: ['PR', 'PPMP / APP', 'RFQ', 'PO', 'Delivery', 'Inspection', 'Payment'],
+        conceptRecords: ['Purchase requests', 'PPMP / APP references', 'RFQ references', 'Purchase orders', 'Delivery references', 'Inspection references', 'Payment handoff references'],
+        integrationContext: sharedIntegrationContext,
+        currentBoundary: conceptOnlyBoundary,
     },
     {
         id: 'FUT-02',
@@ -88,9 +106,14 @@ export const municipalSystems: MunicipalSystem[] = [
         owningOffice: 'Municipal Budget Office',
         status: 'Not Enabled',
         presentationState: 'Future Integration',
-        purpose: 'Appropriations, allotments, obligations, balances, and office utilization.',
-        recordScope: 'Budget authority, utilization, obligation, and balance references.',
-        integrationNote: 'Static presentation only; no budget ledger or obligation workflow is enabled.',
+        purpose: 'Future visibility over municipal budget authority, utilization, and obligation context.',
+        recordScope: 'Appropriation, allotment, obligation, balance, and office-utilization references.',
+        integrationNote: 'No budget ledger or obligation workflow is enabled.',
+        conceptMode: 'scope',
+        conceptItems: ['Appropriations', 'Allotments', 'Obligations', 'Balances', 'Office utilization'],
+        conceptRecords: ['Appropriation references', 'Allotment references', 'Obligation references', 'Balance references', 'Office utilization references'],
+        integrationContext: sharedIntegrationContext,
+        currentBoundary: conceptOnlyBoundary,
     },
     {
         id: 'FUT-03',
@@ -99,9 +122,14 @@ export const municipalSystems: MunicipalSystem[] = [
         owningOffice: 'Planning / Engineering',
         status: 'Planned',
         presentationState: 'Future Integration',
-        purpose: 'Map-based municipal planning, facilities, projects, and location reference.',
-        recordScope: 'Spatial layers, locations, municipal assets, projects, and planning references.',
-        integrationNote: 'Static presentation only; no GIS dataset or interactive mapping backend is exposed.',
+        purpose: 'Future map-based municipal reference surface for location-aware planning and operations.',
+        recordScope: 'Spatial and location references for projects, roads, zoning, properties, facilities, hazards, and businesses.',
+        integrationNote: 'No GIS dataset or interactive mapping backend is exposed.',
+        conceptMode: 'scope',
+        conceptItems: ['Projects', 'Roads', 'Zoning', 'Government properties', 'Facilities', 'Hazards', 'Businesses'],
+        conceptRecords: ['Project locations', 'Road references', 'Zoning layers', 'Government property references', 'Facility locations', 'Hazard references', 'Business locations'],
+        integrationContext: sharedIntegrationContext,
+        currentBoundary: conceptOnlyBoundary,
     },
     {
         id: 'FUT-04',
@@ -110,9 +138,14 @@ export const municipalSystems: MunicipalSystem[] = [
         owningOffice: 'Zoning / MPDO',
         status: 'Planned',
         presentationState: 'Future Integration',
-        purpose: 'Zoning review and locational-clearance processing direction.',
-        recordScope: 'Applications, zoning references, review status, and clearance decisions.',
-        integrationNote: 'Static presentation only; no clearance application or approval workflow is enabled.',
+        purpose: 'Future locational-clearance coordination from application through evaluation and certification.',
+        recordScope: 'Applications, zoning evaluations, GIS validation, inspections, clearances, and certificate references.',
+        integrationNote: 'No clearance application or approval workflow is enabled.',
+        conceptMode: 'workflow',
+        conceptItems: ['Applications', 'Evaluation', 'GIS validation', 'Inspections', 'Clearances', 'Certificates'],
+        conceptRecords: ['Application references', 'Evaluation references', 'GIS validation references', 'Inspection references', 'Clearance references', 'Certificate references'],
+        integrationContext: sharedIntegrationContext,
+        currentBoundary: conceptOnlyBoundary,
     },
     {
         id: 'FUT-05',
@@ -121,9 +154,14 @@ export const municipalSystems: MunicipalSystem[] = [
         owningOffice: 'Municipal Engineering Office',
         status: 'Planned',
         presentationState: 'Future Integration',
-        purpose: 'Permit intake, technical review, inspection coordination, and issuance direction.',
-        recordScope: 'Permit applications, technical requirements, inspections, and issuance references.',
-        integrationNote: 'Static presentation only; no building-permit workflow or records are enabled.',
+        purpose: 'Future cross-office clearance presentation for building-permit processing.',
+        recordScope: 'Engineering, zoning, fire, departmental-clearance, and permit-processing references.',
+        integrationNote: 'No building-permit workflow or records are enabled.',
+        conceptMode: 'workflow',
+        conceptItems: ['Engineering clearance', 'Zoning clearance', 'Fire clearance', 'Other departmental clearances', 'Permit processing'],
+        conceptRecords: ['Engineering clearance references', 'Zoning clearance references', 'Fire clearance references', 'Other departmental clearance references', 'Permit processing references'],
+        integrationContext: sharedIntegrationContext,
+        currentBoundary: conceptOnlyBoundary,
     },
     {
         id: 'FUT-06',
@@ -132,9 +170,14 @@ export const municipalSystems: MunicipalSystem[] = [
         owningOffice: 'BPLO / Treasury',
         status: 'Not Enabled',
         presentationState: 'Future Integration',
-        purpose: 'Business permitting and eBOSS integration direction across licensing and payment touchpoints.',
-        recordScope: 'Business applications, clearances, permit status, and integration references.',
-        integrationNote: 'Static presentation only; no eBOSS or business-permit processing integration is enabled.',
+        purpose: 'Future business-permitting and eBOSS integration direction across municipal processing touchpoints.',
+        recordScope: 'Business application, assessment, clearance, inspection, and renewal references.',
+        integrationNote: 'No eBOSS or business-permit processing integration is enabled.',
+        conceptMode: 'workflow',
+        conceptItems: ['Business applications', 'Assessment', 'Clearances', 'Inspection', 'Renewal'],
+        conceptRecords: ['Business application references', 'Assessment references', 'Clearance references', 'Inspection references', 'Renewal references'],
+        integrationContext: sharedIntegrationContext,
+        currentBoundary: conceptOnlyBoundary,
     },
     {
         id: 'FUT-07',
@@ -143,9 +186,14 @@ export const municipalSystems: MunicipalSystem[] = [
         owningOffice: 'Mayor’s Office / Service Offices',
         status: 'Planned',
         presentationState: 'Future Integration',
-        purpose: 'Coordinated intake, routing, follow-up, and resolution references for citizen requests.',
-        recordScope: 'Citizen requests, office routing, action status, and resolution references.',
-        integrationNote: 'Static presentation only; no public intake, ticketing, or citizen records are enabled.',
+        purpose: 'Future coordinated reference surface for citizen concerns and inter-office action.',
+        recordScope: 'Complaint, request, referral, status, and response-time references.',
+        integrationNote: 'No public intake, ticketing, or citizen records are enabled.',
+        conceptMode: 'scope',
+        conceptItems: ['Complaints', 'Requests', 'Referrals', 'Status tracking', 'Response time'],
+        conceptRecords: ['Complaint references', 'Request references', 'Referral references', 'Status references', 'Response-time references'],
+        integrationContext: sharedIntegrationContext,
+        currentBoundary: conceptOnlyBoundary,
     },
     {
         id: 'FUT-08',
@@ -154,9 +202,14 @@ export const municipalSystems: MunicipalSystem[] = [
         owningOffice: 'GAD Focal Point System',
         status: 'Planned',
         presentationState: 'Future Integration',
-        purpose: 'GAD planning, activity, budget, indicator, and accomplishment analysis direction.',
-        recordScope: 'GAD plans, activities, budgets, indicators, and accomplishment references.',
-        integrationNote: 'Static presentation only; no GAD analytics dataset or generated analytics is presented.',
+        purpose: 'Future GAD information and analysis presentation for authorized planning use.',
+        recordScope: 'Sex-disaggregated data, GPB / GAR monitoring, and sectoral-statistics references.',
+        integrationNote: 'No GAD analytics dataset or generated analytics is presented.',
+        conceptMode: 'scope',
+        conceptItems: ['Sex-disaggregated data', 'GPB / GAR monitoring', 'Sectoral statistics'],
+        conceptRecords: ['Sex-disaggregated data references', 'GPB references', 'GAR references', 'Sectoral statistics references'],
+        integrationContext: sharedIntegrationContext,
+        currentBoundary: conceptOnlyBoundary,
     },
     {
         id: 'FUT-09',
@@ -165,9 +218,14 @@ export const municipalSystems: MunicipalSystem[] = [
         owningOffice: 'Municipal Planning and Development Office',
         status: 'Not Enabled',
         presentationState: 'Future Integration',
-        purpose: 'Authorized socioeconomic and community indicator dashboard direction.',
-        recordScope: 'CBMS and socioeconomic datasets subject to authorization and governance.',
-        integrationNote: 'Static presentation only; no CBMS dataset, household record, or live dashboard is exposed.',
+        purpose: 'Future planning-oriented socioeconomic reference and dashboard direction.',
+        recordScope: 'Barangay demographics, poverty indicators, and planning-analytics references.',
+        integrationNote: 'No CBMS dataset, household record, or live dashboard is exposed.',
+        conceptMode: 'scope',
+        conceptItems: ['Barangay demographics', 'Poverty indicators', 'Planning analytics'],
+        conceptRecords: ['Barangay demographic references', 'Poverty-indicator references', 'Planning-analysis references'],
+        integrationContext: sharedIntegrationContext,
+        currentBoundary: conceptOnlyBoundary,
     },
     {
         id: 'FUT-10',
@@ -176,9 +234,14 @@ export const municipalSystems: MunicipalSystem[] = [
         owningOffice: 'General Services Office',
         status: 'Planned',
         presentationState: 'Future Integration',
-        purpose: 'Property accountability, asset lifecycle, custody, transfer, and disposal direction.',
-        recordScope: 'Assets, property cards, accountability, transfers, inspection, and disposal references.',
-        integrationNote: 'Static presentation only; no asset ledger, custody transaction, or property records are enabled.',
+        purpose: 'Future property and accountability reference surface for municipal assets.',
+        recordScope: 'Vehicles, computers, furniture, buildings, equipment, and accountability references.',
+        integrationNote: 'No asset ledger, custody transaction, or property records are enabled.',
+        conceptMode: 'scope',
+        conceptItems: ['Vehicles', 'Computers', 'Furniture', 'Buildings', 'Equipment', 'Accountability'],
+        conceptRecords: ['Vehicle references', 'Computer references', 'Furniture references', 'Building references', 'Equipment references', 'Accountability references'],
+        integrationContext: sharedIntegrationContext,
+        currentBoundary: conceptOnlyBoundary,
     },
     {
         id: 'FUT-11',
@@ -187,9 +250,14 @@ export const municipalSystems: MunicipalSystem[] = [
         owningOffice: 'General Services Office',
         status: 'Planned',
         presentationState: 'Future Integration',
-        purpose: 'Stock receipt, issuance, balance, reorder, and office supply accountability direction.',
-        recordScope: 'Inventory items, receipts, issuances, balances, and office supply references.',
-        integrationNote: 'Static presentation only; no stock ledger, issuance transaction, or inventory records are enabled.',
+        purpose: 'Future supplies and stock-control reference surface for municipal offices.',
+        recordScope: 'Stock request, issuance, inventory-level, and reorder-alert references.',
+        integrationNote: 'No stock ledger, issuance transaction, or inventory records are enabled.',
+        conceptMode: 'scope',
+        conceptItems: ['Stock requests', 'Issuance', 'Inventory levels', 'Reorder alerts'],
+        conceptRecords: ['Stock-request references', 'Issuance references', 'Inventory-level references', 'Reorder-alert references'],
+        integrationContext: sharedIntegrationContext,
+        currentBoundary: conceptOnlyBoundary,
     },
     {
         id: 'FUT-12',
@@ -198,9 +266,14 @@ export const municipalSystems: MunicipalSystem[] = [
         owningOffice: 'General Services / Motorpool',
         status: 'Planned',
         presentationState: 'Future Integration',
-        purpose: 'Vehicle assignment, trip, maintenance, fuel, and serviceability tracking direction.',
-        recordScope: 'Vehicles, trips, maintenance, fuel, assignment, and serviceability references.',
-        integrationNote: 'Static presentation only; no fleet dispatch, trip ticket, fuel, or maintenance workflow is enabled.',
+        purpose: 'Future fleet coordination and vehicle-operations reference surface.',
+        recordScope: 'Vehicle scheduling, fuel, maintenance, trip-ticket, and GPS references.',
+        integrationNote: 'No fleet dispatch, trip ticket, fuel, maintenance, or GPS workflow is enabled.',
+        conceptMode: 'scope',
+        conceptItems: ['Vehicle scheduling', 'Fuel', 'Maintenance', 'Trip tickets', 'GPS'],
+        conceptRecords: ['Vehicle scheduling references', 'Fuel references', 'Maintenance references', 'Trip-ticket references', 'GPS references'],
+        integrationContext: sharedIntegrationContext,
+        currentBoundary: conceptOnlyBoundary,
     },
     {
         id: 'FUT-13',
@@ -209,9 +282,14 @@ export const municipalSystems: MunicipalSystem[] = [
         owningOffice: 'Municipal Accounting Office',
         status: 'Not Enabled',
         presentationState: 'Future Integration',
-        purpose: 'Accounting handoff and integration direction for claims, entries, and financial reporting.',
-        recordScope: 'Accounting references and future integration contracts.',
-        integrationNote: 'Static presentation only; no accounting integration, journal, or financial record is enabled.',
+        purpose: 'Future accounting integration direction without asserting a detailed accounting workflow.',
+        recordScope: 'Financial and accounting reference handoff where later approved.',
+        integrationNote: 'The supplied authority names Accounting as a future plug-in but does not define a full workflow.',
+        conceptMode: 'scope',
+        conceptItems: ['Accounting integration direction', 'Financial / accounting reference handoff', 'Shared ONE TALIBON records where later approved'],
+        conceptRecords: ['Financial or accounting references only where later approved', 'Shared record references needed by an approved provider or implementation'],
+        integrationContext: sharedIntegrationContext,
+        currentBoundary: conceptOnlyBoundary,
     },
     {
         id: 'FUT-14',
@@ -220,9 +298,14 @@ export const municipalSystems: MunicipalSystem[] = [
         owningOffice: 'Municipal Treasurer’s Office',
         status: 'Not Enabled',
         presentationState: 'Future Integration',
-        purpose: 'Treasury, collection, payment, and local-revenue integration direction.',
-        recordScope: 'Collection, payment, treasury, and revenue integration references.',
-        integrationNote: 'Static presentation only; no treasury collection, payment, or revenue integration is enabled.',
+        purpose: 'Future treasury and revenue integration direction without asserting a detailed treasury workflow.',
+        recordScope: 'Collection and payment reference integration where later approved.',
+        integrationNote: 'The supplied authority names Treasury as a future plug-in but does not define a full workflow.',
+        conceptMode: 'scope',
+        conceptItems: ['Treasury / revenue integration direction', 'Collection / payment reference integration where later approved'],
+        conceptRecords: ['Collection references only where later approved', 'Payment references only where later approved'],
+        integrationContext: sharedIntegrationContext,
+        currentBoundary: conceptOnlyBoundary,
     },
     {
         id: 'FUT-15',
@@ -231,9 +314,14 @@ export const municipalSystems: MunicipalSystem[] = [
         owningOffice: 'HRMO / Municipal Offices',
         status: 'Planned',
         presentationState: 'Future Integration',
-        purpose: 'Shared training, reference material, institutional knowledge, and learning-resource direction.',
-        recordScope: 'Training references, learning resources, guidance, and institutional knowledge.',
-        integrationNote: 'Static presentation only; no general Knowledge Management portal is claimed as current.',
+        purpose: 'Future shared knowledge and learning reference surface for municipal continuity.',
+        recordScope: 'Manual, SOP, template, video, onboarding, and institutional-knowledge references.',
+        integrationNote: 'No general Knowledge Management portal is claimed as current.',
+        conceptMode: 'scope',
+        conceptItems: ['Manuals', 'SOPs', 'Templates', 'Videos', 'Onboarding', 'Institutional knowledge'],
+        conceptRecords: ['Manual references', 'SOP references', 'Template references', 'Video references', 'Onboarding references', 'Institutional knowledge references'],
+        integrationContext: sharedIntegrationContext,
+        currentBoundary: conceptOnlyBoundary,
     },
 ];
 
