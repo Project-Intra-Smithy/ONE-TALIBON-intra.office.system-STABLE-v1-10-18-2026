@@ -1,49 +1,49 @@
 import { Link } from '@inertiajs/react';
-import { ArrowRight, Landmark, MapPin } from 'lucide-react';
+import { ArrowRight, Landmark, Mail, MapPin, Phone } from 'lucide-react';
 import MunicipalBrand from '../MunicipalBrand';
 import type { PublicContent } from './types';
 
 export default function PublicFooter({ content, authenticated }: { content: PublicContent; authenticated: boolean }) {
-    return <footer className="public-footer">
-        <div
-            className="public-footer-grid"
-            style={{ maxWidth: '1360px', gap: '28px', paddingTop: '30px', paddingBottom: '24px' }}
-        >
-            <div className="public-footer-identity">
+    return <footer id="contact" className="public-footer public-reference-footer">
+        <div className="public-reference-footer-grid">
+            <section className="public-reference-footer-identity" aria-label="Municipality contact">
                 <MunicipalBrand inverse publicPortal />
-                <p className="public-footer-municipality"><Landmark size={15} aria-hidden="true" />{content.municipality}</p>
-                <p className="public-footer-location"><MapPin size={14} aria-hidden="true" />{content.contact.location}</p>
-                <p className="public-footer-note">Municipal public information and secure employee access in one ONE TALIBON gateway. Prototype/sample content remains labeled.</p>
-            </div>
+                <p><Landmark size={14} aria-hidden="true" /> {content.municipality}</p>
+                <p><MapPin size={14} aria-hidden="true" /> {content.contact.location}</p>
+                <p><Mail size={14} aria-hidden="true" /> talibonofficial@gmail.com</p>
+                <p><Phone size={14} aria-hidden="true" /> Office of Mayor: (038) 422-2895</p>
+            </section>
 
-            <nav aria-label="Footer public links" className="public-footer-links">
-                <h2>Public portal</h2>
-                <a href="#services">Services</a>
-                <a href="#news">Updates</a>
+            <nav className="public-reference-footer-links" aria-label="Public portal quick links">
+                <h2>Quick Links</h2>
+                <a href="#services">Municipal Services</a>
+                <a href="#news">News & Events</a>
+                <a href="#projects">Projects</a>
                 <a href="#transparency">Transparency</a>
-                <a href="#about">About</a>
-                <a href="#contact">Contact</a>
+                <a href="#about">About Talibon</a>
             </nav>
 
-            <div className="public-footer-access">
-                <h2>Employee access</h2>
-                <p>Protected municipal work continues only inside the authenticated LGU workspace.</p>
-                <Link
-                    href={authenticated ? '/dashboard' : '/login'}
-                    className="public-footer-login"
-                    style={{ marginTop: '12px' }}
-                >
+            <section className="public-reference-footer-access">
+                <h2>Employee Access</h2>
+                <p>Protected municipal workflows remain inside the authenticated LGU workspace.</p>
+                <Link href={authenticated ? '/dashboard' : '/login'} className="public-reference-footer-login">
                     {authenticated ? 'Open Employee Portal' : 'Employee Login'}
                     <ArrowRight size={15} aria-hidden="true" />
                 </Link>
-            </div>
+            </section>
+
+            <section className="public-reference-footer-mark" aria-label="ONE TALIBON identity">
+                <Landmark size={30} aria-hidden="true" />
+                <div>
+                    <strong><span>ONE</span> TALIBON</strong>
+                    <small>Municipal Digital Portal</small>
+                </div>
+            </section>
         </div>
-        <div
-            className="public-footer-bottom"
-            style={{ maxWidth: '1360px', paddingTop: '10px', paddingBottom: '12px' }}
-        >
+
+        <div className="public-reference-footer-bottom">
             <span>ONE TALIBON · Municipality of Talibon, Bohol</span>
-            <span>Municipal Public Portal</span>
+            <span>Prototype public portal · No protected operational records displayed</span>
         </div>
     </footer>;
 }
