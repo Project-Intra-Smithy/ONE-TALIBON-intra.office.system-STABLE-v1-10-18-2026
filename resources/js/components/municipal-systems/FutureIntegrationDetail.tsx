@@ -8,6 +8,7 @@ import FutureSystemPrototype from './FutureSystemPrototype';
 import GISWorkspace from './GISWorkspace';
 import MotorpoolFleetWorkspace from './MotorpoolFleetWorkspace';
 import TrainingKnowledgeWorkspace from './TrainingKnowledgeWorkspace';
+import ZoningClearanceWorkspace from './ZoningClearanceWorkspace';
 
 type Props = {
     system: MunicipalSystem;
@@ -23,6 +24,10 @@ export default function FutureIntegrationDetail({ system, onBack }: Props) {
 
     if (system.id === 'FUT-03') {
         return <GISWorkspace prototype={prototype} onBack={onBack} />;
+    }
+
+    if (system.id === 'FUT-04') {
+        return <ZoningClearanceWorkspace onBack={onBack} />;
     }
 
     if (system.id === 'FUT-05') {
