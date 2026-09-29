@@ -99,7 +99,7 @@ Architecture, product-direction, integration, promotion, release disposition, an
 **Kurt Shine Khasi Halasan** — [@k3nchinxd](https://github.com/k3nchinxd)  
 Developer — **Kirjane Labs**
 
-**Kikiam** — [@kyumw3b](https://github.com/kyumw3b)  
+**Jhayr Caturza** — [@kyumw3b](https://github.com/kyumw3b)  
 Developer — **ALZA IT Solutions**
 
 **AJ RIENZE** — [@rynzz22](https://github.com/rynzz22)  
