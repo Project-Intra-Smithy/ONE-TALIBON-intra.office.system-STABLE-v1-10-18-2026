@@ -22,7 +22,7 @@ export default function Home({ authenticated, content }: Props) {
                         <Info size={13} className="mt-0.5 shrink-0" aria-hidden="true" />
                         <p>
                             <strong className="mr-2 font-extrabold uppercase tracking-[0.08em] [color:var(--public-text)]">{content.sampleLabel}</strong>
-                            <span>This evaluation homepage keeps prototype-only information clearly labeled and exposes no protected employee records.</span>
+                            <span>Prototype preview — sample public information only; no protected employee records are shown.</span>
                         </p>
                     </div>
 

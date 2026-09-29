@@ -147,7 +147,7 @@
 .public-reference-nav-inner,
 .public-reference-footer-grid,
 .public-reference-footer-bottom {
-    width: min(100%, 1680px);
+    width: min(100%, 1840px);
     margin-inline: auto;
 }
 
@@ -997,6 +997,16 @@
     padding: 9px var(--public-page-gutter) 11px;
     color: rgba(255,255,255,.5);
     font-size: 9px;
+}
+
+@media (min-width: 1200px) and (max-width: 1450px) {
+    .public-reference-layout {
+        grid-template-columns: minmax(0, 1fr) 285px;
+    }
+
+    .public-reference-dashboard-top {
+        grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+    }
 }
 
 @media (max-width: 1199px) {
