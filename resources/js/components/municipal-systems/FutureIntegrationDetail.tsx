@@ -3,6 +3,7 @@ import { getFutureSystemPrototype } from '../../data/municipal/futureSystemProto
 import AssetPropertyWorkspace from './AssetPropertyWorkspace';
 import BudgetMonitoringWorkspace from './BudgetMonitoringWorkspace';
 import BuildingPermitWorkspace from './BuildingPermitWorkspace';
+import BusinessPermitWorkspace from './BusinessPermitWorkspace';
 import CitizenActionWorkspace from './CitizenActionWorkspace';
 import FutureSystemPrototype from './FutureSystemPrototype';
 import GISWorkspace from './GISWorkspace';
@@ -37,6 +38,10 @@ export default function FutureIntegrationDetail({ system, onBack }: Props) {
                 onBack={onBack}
             />
         );
+    }
+
+    if (system.id === 'FUT-06') {
+        return <BusinessPermitWorkspace onBack={onBack} />;
     }
 
     if (system.id === 'FUT-07') {
