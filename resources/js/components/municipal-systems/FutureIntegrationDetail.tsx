@@ -7,6 +7,7 @@ import BusinessPermitWorkspace from './BusinessPermitWorkspace';
 import CitizenActionWorkspace from './CitizenActionWorkspace';
 import FutureSystemPrototype from './FutureSystemPrototype';
 import GISWorkspace from './GISWorkspace';
+import InventorySuppliesWorkspace from './InventorySuppliesWorkspace';
 import MotorpoolFleetWorkspace from './MotorpoolFleetWorkspace';
 import TrainingKnowledgeWorkspace from './TrainingKnowledgeWorkspace';
 import ZoningClearanceWorkspace from './ZoningClearanceWorkspace';
@@ -55,6 +56,10 @@ export default function FutureIntegrationDetail({ system, onBack }: Props) {
 
     if (system.id === 'FUT-10') {
         return <AssetPropertyWorkspace onBack={onBack} />;
+    }
+
+    if (system.id === 'FUT-11') {
+        return <InventorySuppliesWorkspace onBack={onBack} />;
     }
 
     if (system.id === 'FUT-12') {
