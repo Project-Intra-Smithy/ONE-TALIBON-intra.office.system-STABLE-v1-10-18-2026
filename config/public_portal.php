@@ -13,7 +13,7 @@ return [
     'about' => [
         'eyebrow' => 'About the Portal',
         'title' => 'One municipality. Connected internal work.',
-        'description' => 'The Talibon Intra-Office Portal is the Municipality of Talibon’s secure internal workspace for coordinating official work between authorized offices and personnel.'
+        'description' => 'The Talibon Intra-Office Portal is the Municipality of Talibon’s secure internal workspace for coordinating official work between authorized offices and personnel.',
         'pillars' => [
             [
                 'title' => 'Coordinate',
@@ -171,11 +171,11 @@ return [
                 'title' => 'Approvals & Workflow',
                 'description' => 'Review internal workflows and actions that require authorized municipal approval or follow-through.',
                 'detail' => [
-                    'summary' => 'Keep municipal programs, projects, assignments, and related activity organized in one workspace.',
+                    'summary' => 'Support authorized review and approval of internal municipal workflows and actions.',
                     'highlights' => [
-                        'Coordinate programs and projects',
-                        'Keep assignments visible',
-                        'Support office follow-through',
+                        'Review items requiring approval',
+                        'Keep decision responsibility clear',
+                        'Support documented workflow follow-through',
                     ],
                     'note' => 'Available inside the authenticated portal.',
                 ],
@@ -185,11 +185,11 @@ return [
                 'title' => 'HRIS / Employee Services',
                 'description' => 'Access employee information, leave requests, leave credits, attendance-related services, and authorized HR workflows.',
                 'detail' => [
-                    'summary' => 'Access municipal office and personnel information from the shared authenticated workspace.',
+                    'summary' => 'Support authorized employee self-service and HR workflows inside the protected municipal workspace.',
                     'highlights' => [
-                        'Find responsible offices',
-                        'Reference personnel information',
-                        'Support inter-office coordination',
+                        'Review employee information as permitted',
+                        'Support leave and leave-credit workflows',
+                        'Keep HR actions within authorized access',
                     ],
                     'note' => 'Available inside the authenticated portal.',
                 ],
@@ -199,11 +199,11 @@ return [
                 'title' => 'Department Workspace',
                 'description' => 'Work with department-specific operational information, responsibilities, schedules, and internal activity.',
                 'detail' => [
-                    'summary' => 'Coordinate meetings, deadlines, municipal activities, and office schedules from one shared calendar context.',
+                    'summary' => 'Give each department a focused internal workspace for its permitted operational information and activity.',
                     'highlights' => [
-                        'See office schedules',
-                        'Track deadlines and meetings',
-                        'Coordinate municipal activities',
+                        'Keep department responsibilities visible',
+                        'Coordinate internal schedules and activity',
+                        'Work within department-specific permissions',
                     ],
                     'note' => 'Available inside the authenticated portal.',
                 ],
