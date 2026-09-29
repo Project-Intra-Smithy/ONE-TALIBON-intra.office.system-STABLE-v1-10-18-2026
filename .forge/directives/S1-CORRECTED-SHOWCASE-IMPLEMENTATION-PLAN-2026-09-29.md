@@ -410,6 +410,31 @@ Scope:
 - reposition employee directory as HR Employee Portal / personnel-reference foundation;
 - no broad HRIS claim.
 
+### W04B — Future Integration Detail Surfaces
+
+`REQUIRED / CURRENT FOLLOW-UP`
+
+W04 catalog presentation is not sufficient by itself. Every `FUT-01` through `FUT-15` Future Integration entry must be enterable as a **static concept detail surface** inside the existing `/municipal-systems` route.
+
+Required interaction:
+
+- click / enter a future-system catalog item;
+- open a dedicated concept-preview subview;
+- show module name, status, lead office, what it could cover, supplied illustrative workflow/scope, information/records it could manage, ONE TALIBON integration context, and current concept-only boundary;
+- provide `Back to Future Integrations`;
+- no new backend route;
+- no fake CRUD, fake analytics, fake counts, fake transactions, or fake operational actions.
+
+Presentation badge:
+
+`Future Integration — Concept Preview`
+
+Detailed scope must remain anchored to the supplied client/PDF authority. Where the PDF only names a plug-in domain (for example Accounting or Treasury) and does not define a detailed workflow, keep the concept conservative rather than inventing one.
+
+W04B repository-local implementation handoff:
+
+`.forge/handoffs/code-writer/S1-W04B-FUTURE-INTEGRATION-DETAIL-SURFACES.md`
+
 ### W03
 
 `CANCELLED / NO IMPLEMENTATION`
