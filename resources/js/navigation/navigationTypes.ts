@@ -15,6 +15,7 @@ export type PortalDestinationKey =
     | 'home'
     | 'myWork'
     | 'correspondence'
+    | 'procurementTracking'
     | 'records'
     | 'memoranda'
     | 'announcements'

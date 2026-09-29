@@ -96,6 +96,7 @@ Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
     Route::get('/local-special-bodies', fn () => Inertia::render('LocalBodies/Index'))->name('local-special-bodies.index');
     Route::get('/development-plans', fn () => Inertia::render('Plans/Index'))->name('development-plans.index');
     Route::get('/ppas', fn () => Inertia::render('PPAs/Index'))->name('ppas.index');
+    Route::get('/procurement', fn () => Inertia::render('MunicipalSystems/Index', ['showcase' => 'procurement']))->name('procurement.showcase');
     Route::get('/municipal-systems', fn () => Inertia::render('MunicipalSystems/Index'))->name('municipal-systems.index');
 
     Route::get('/correspondence', CorrespondenceWorkspaceController::class)->name('correspondence.index');
