@@ -9,9 +9,10 @@ type Props = {
     eyebrow?: string;
     children: ReactNode;
     footer?: ReactNode;
+    size?: 'compact' | 'standard';
 };
 
-export default function DetailDrawer({ open, onClose, title, eyebrow, children, footer }: Props) {
+export default function DetailDrawer({ open, onClose, title, eyebrow, children, footer, size = 'standard' }: Props) {
     const closeButtonRef = useRef<HTMLButtonElement | null>(null);
     const previousFocusRef = useRef<HTMLElement | null>(null);
     const onCloseRef = useRef(onClose);
@@ -44,6 +45,10 @@ export default function DetailDrawer({ open, onClose, title, eyebrow, children, 
 
     if (!open) return null;
 
+    const desktopWidth = size === 'compact'
+        ? 'sm:w-[min(660px,calc(100vw-48px))]'
+        : 'sm:w-[min(880px,calc(100vw-48px))]';
+
     return (
         <div className="fixed inset-0 z-[70] flex items-center justify-center p-2 sm:p-6" role="presentation">
             <button
@@ -56,7 +61,7 @@ export default function DetailDrawer({ open, onClose, title, eyebrow, children, 
                 role="dialog"
                 aria-modal="true"
                 aria-label={title}
-                className="relative flex max-h-[92vh] w-[calc(100vw-16px)] flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl sm:max-h-[84vh] sm:w-[min(880px,calc(100vw-48px))] sm:rounded-2xl dark:border-slate-700 dark:bg-[#142236]"
+                className={`relative flex max-h-[92vh] w-[calc(100vw-16px)] flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl sm:max-h-[84vh] ${desktopWidth} sm:rounded-2xl dark:border-slate-700 dark:bg-[#142236]`}
             >
                 <header className="flex shrink-0 items-start justify-between gap-4 border-b border-slate-200 px-4 py-3 sm:px-5 dark:border-slate-700">
                     <div className="min-w-0">
