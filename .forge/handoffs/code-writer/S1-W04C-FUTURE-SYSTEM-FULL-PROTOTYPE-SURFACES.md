@@ -1,6 +1,6 @@
 # KIRION FORGE — ONE TALIBON V1
 
-## S1-W04C — FUTURE SYSTEM FULL-PROTOTYPE SURFACES
+## S1-W04C — MAIN SHOWCASE + 14 FUTURE SYSTEM FULL-PROTOTYPE SURFACES
 
 ### CODE WRITER HANDOFF
 
@@ -20,7 +20,7 @@ Forge authority:
 
 `Kirch-Nairu/KIRION-FORGE@44eb57e5b45b343be0033bf22a7a5e74d543c01a`
 
-Immutable base:
+Immutable product base:
 
 `main@93a73faa23bb2c8e3b982b2b90f87eefdc617438`
 
@@ -32,673 +32,817 @@ Current implementation authority:
 
 `.forge/directives/S1-CORRECTED-SHOWCASE-IMPLEMENTATION-PLAN-2026-09-29.md`
 
-## Maintainer correction
+## FINAL CLIENT-ALIGNED CORRECTION
 
-W04B made each future system enterable, but the result is still a **brochure/detail sheet**.
+Sir Gerry's source document prioritizes exactly five initial-rollout modules:
 
-That is not sufficient for the stakeholder showcase.
+1. Document Routing & Correspondence
+2. Task / Executive Dashboard
+3. Project Monitoring
+4. Procurement / PR Tracking
+5. HR Employee Portal
 
-The new requirement is:
+Procurement and HR must therefore **not be buried inside Future Integrations**.
 
-> **When the presenter enters a Future Integration, it must look and feel like a credible preview of the whole future system — not a paragraph explaining what it could do.**
+### Main Showcase direct access
 
-This is still presentation-only.
+Add two first-class direct sidebar destinations under the primary `WORK` area:
 
-Do not implement backend functionality.
+- **Procurement / PR Tracking**
+- **HR Employee Portal**
 
-Do not create new Laravel routes.
+Required Work order:
 
-Do not persist anything.
+1. Document Center
+2. Tasks & Assignments
+3. Correspondence
+4. Procurement / PR Tracking
+5. HR Employee Portal
+6. Municipal Records
+7. Official Memoranda
+8. Announcements
+9. Calendar
+10. Meetings
+11. Messages
+
+This keeps the frequency-first work hierarchy while making the two explicitly requested rollout modules immediately visible.
+
+### HR sidebar behavior
+
+Reuse the existing real route:
+
+`/employees`
+
+Change the navigation presentation from:
+
+`Staff Directory`
+
+to:
+
+`HR Employee Portal`
+
+Move it from Municipal Organization into the primary Work group.
+
+Do not duplicate it in Municipal Organization.
+
+The page remains the current personnel-reference foundation.
+
+Do not activate broad HRIS.
+
+### Procurement sidebar behavior
+
+Add a dedicated authenticated presentation route:
+
+`/procurement`
+
+Sidebar label:
+
+`Procurement / PR Tracking`
+
+This route is explicitly authorized as **presentation-only**.
+
+It must render the full static interactive Procurement showcase prototype.
+
+It must not query procurement data, persist anything, or expose operational create/approve/pay actions.
+
+A clean implementation is to reuse the same W04C prototype engine and enter directly into Procurement mode from the dedicated route.
+
+## The count is now 14 Future Integrations
+
+Procurement is promoted into the Main Showcase and is no longer counted in the Future Integrations catalog.
+
+The Future Integrations catalog must therefore contain exactly:
+
+`FUT-02` through `FUT-15`
+
+= **14 future systems**
+
+Do not renumber the existing FUT IDs.
 
 ## Product goal
 
-A department head should be able to click:
+The current W04B concept sheets are too brochure-like.
 
-`Future Integrations -> Procurement / PR Tracking -> View concept`
+Every showcase surface must visually answer:
 
-and immediately see something that resembles a real procurement system:
+> "What would this system actually look like and how would people work inside it?"
 
-- module header;
-- module navigation;
-- summary/status cards;
-- workflow/lifecycle;
-- a believable static queue/register;
-- a detail / status panel;
-- integration context;
-- clear `Concept Preview` / `Illustrative data` treatment.
+The client should see a believable application surface, not explanatory paragraphs.
 
-The same principle applies to every FUT-01 through FUT-15.
+## Truth model
 
-The stakeholder should be able to understand:
+There are now three states:
 
-> "Ah, mao diay ni mahimong itsura / trabaho sa module once integrated."
+### A. Current real modules
 
-without us falsely claiming it is live.
+Examples:
 
-## Truth boundary
+- Document Routing / Correspondence
+- Dashboard / Tasks
+- Project Monitoring
+- HR Employee Portal personnel reference
 
-The current screenshots over-emphasize warnings such as:
+These use their real current routes.
 
-`Concept presentation only`
+### B. Main Showcase static prototype
 
-and under-deliver the actual system preview.
+- Procurement / PR Tracking
 
-W04C must invert that hierarchy:
+It gets first-class sidebar access and a full interactive static prototype.
 
-1. **show the system first**;
-2. keep truth/boundary visible but compact;
-3. never imply sample information is real LGU data.
+It is **not operational**.
 
-Use a clear persistent label:
+### C. Future Integrations
 
-`Future Integration — Interactive Concept Preview`
+Exactly 14 modules:
+
+- FUT-02 through FUT-15
+
+Each gets a full static interactive future-system prototype inside Future Integrations.
+
+## Shared presentation truth
+
+Every static prototype must show:
+
+`Interactive Concept Preview`
 
 and:
 
 `Illustrative prototype data — not live municipal records`
 
-Client-side presentation interactions are allowed:
+The warning must be visible but secondary.
 
-- switching concept tabs;
-- selecting a sample row;
-- changing a static local filter;
-- selecting a static workflow stage;
-- opening a static preview detail.
+**Show the product first. Explain the boundary second.**
 
-These interactions must be React state only.
+Allowed interactions:
+
+- switch internal module tabs;
+- select illustrative records;
+- change client-side filters;
+- inspect a workflow stage;
+- switch category/layer;
+- open a local detail panel.
+
+React state only.
 
 No network request.
-
-No form submission.
-
 No persistence.
+No form submission.
+No backend workflow.
 
-## Repo-backed visual grammar
+## ONE TALIBON native visual grammar
 
-Reuse patterns already present in the application.
+Reuse patterns already in the repository:
 
-Relevant existing patterns include:
+- `PageFrame`
+- `PageHeader`
+- `municipal-panel`
+- compact summary cards
+- status badges
+- filters
+- registers/tables
+- progress bars
+- tabs/workspace navigation
+- selected-item detail panels
+- compact responsive layouts
 
-- `PageFrame` compact / wide content;
-- `PageHeader`;
-- `municipal-panel`;
-- summary cards from Project Monitoring / Tasks / Records;
-- compact filters;
-- dense table/register rows;
-- progress/status badges;
-- expandable/detail panels;
-- tab/workspace navigation;
-- responsive desktop-to-narrow behavior.
+The prototypes must look like native ONE TALIBON modules.
 
-Do not build an unrelated design system.
+Do not create a separate design system.
 
-Do not copy Sir Gerry's storyboard pixel-for-pixel.
+Do not recreate Sir Gerry's AI storyboard literally.
 
-The result must look like a **native ONE TALIBON module**.
+## Shared prototype architecture
 
-## Architecture — one shared prototype engine, module-specific data
+Do not hand-code fourteen unrelated future pages plus Procurement.
 
-Do NOT hand-code 15 unrelated giant pages.
-
-Build one reusable future-module prototype system.
+Build one reusable prototype engine with module-specific configuration.
 
 Preferred bounded architecture:
 
 - `FutureSystemPrototype.tsx`
-- optional `FutureSystemPrototypeSection.tsx`
-- data/config additions under `resources/js/data/municipal/**`
+- optional small archetype components
+- `futureSystemPrototypeData.ts`
 
-Use module configuration to drive:
+The shared engine should support:
 
-- header;
-- tabs;
+- masthead;
+- internal tabs;
 - summary metrics;
-- lifecycle/workflow;
-- filters;
-- static sample register;
-- selected-row/detail panel;
-- secondary panels;
-- integration notes.
+- lifecycle/status strip;
+- local filters;
+- main register/workspace;
+- selected record/detail;
+- secondary module panel;
+- integration context;
+- compact concept-only boundary.
 
-The visual structure may vary by **archetype**, but it must remain data-driven.
+## MAIN SHOWCASE — PROCUREMENT / PR TRACKING
 
-## Required concept archetypes
+Procurement is the **reference-quality prototype** for this wave.
 
-Use approximately five reusable archetypes.
+Direct route:
 
-### A. WORKFLOW / CASE MANAGEMENT
+`/procurement`
 
-Use for:
+It must look like a credible procurement tracking system.
 
-- FUT-01 Procurement / PR Tracking
-- FUT-04 Zoning & Locational Clearance
-- FUT-05 Building Permit Workflow
-- FUT-06 Business Permit / eBOSS
-- FUT-07 Citizen Request / Action Center
+### Procurement internal navigation
 
-Expected preview grammar:
-
-- summary cards;
-- lifecycle stages;
-- work queue / request register;
-- office / owner / status;
-- selected-item progress or routing detail;
-- concept tabs such as Overview / Queue / Workflow.
-
-### B. MONITORING / ANALYTICS
-
-Use for:
-
-- FUT-02 Budget & Obligation Monitoring
-- FUT-08 GAD Data Analytics
-- FUT-09 CBMS / Socioeconomic Dashboard
-
-Expected preview grammar:
-
-- summary/KPI cards;
-- progress/utilization bars;
-- category/sector breakdown;
-- monitoring register;
-- simple static visual indicators;
-- concept tabs such as Overview / Monitoring / Reports.
-
-Do not use fake municipal claims without labeling them illustrative.
-
-### C. MAP / SPATIAL
-
-Use for:
-
-- FUT-03 GIS / Mapping Portal
-
-Expected preview grammar:
-
-- map-style canvas / schematic spatial preview using CSS/layout, not external maps;
-- visible layer list/toggles;
-- sample location pins/markers;
-- right-side selected-location detail;
-- layer categories matching supplied authority:
-  Projects / Roads / Zoning / Government Properties / Facilities / Hazards / Businesses.
-
-No external map API.
-
-No real geospatial data.
-
-### D. ASSET / LOGISTICS REGISTER
-
-Use for:
-
-- FUT-10 Asset & Property Management
-- FUT-11 Inventory & Supplies
-- FUT-12 Motorpool / Fleet Management
-
-Expected preview grammar:
-
-- summary/status cards;
-- register/table;
-- status / stock / serviceability signals;
-- selected record details;
-- module-specific secondary view:
-  - asset accountability;
-  - stock/reorder;
-  - vehicle schedule/fuel/maintenance/trip tickets.
-
-### E. INTEGRATION / KNOWLEDGE
-
-Use for:
-
-- FUT-13 Accounting integration
-- FUT-14 Treasury / Revenue integration
-- FUT-15 Training / Knowledge Management
-
-Accounting/Treasury:
-
-- integration-status style preview;
-- handoff/reference queue;
-- shared-record connection points;
-- no invented accounting/treasury workflow beyond supplied authority.
-
-Training/Knowledge:
-
-- knowledge categories;
-- manuals/SOPs/templates/videos/onboarding;
-- recent/reference library;
-- search/filter concept;
-- learning-resource cards.
-
-## Module-level design requirements
-
-Every future module detail must contain:
-
-### 1. Module masthead
-
-Show:
-
-- module name;
-- lead office;
-- Future Integration badge;
-- Planned / Not Enabled;
-- short one-line purpose;
-- compact `Illustrative prototype data` notice.
-
-### 2. Internal module navigation
-
-Use 3–4 static client-side tabs appropriate to the archetype.
-
-Examples:
+Use 3–4 tabs such as:
 
 - Overview
-- Queue / Register
-- Workflow / Monitoring
-- Reports / Integration
+- Purchase Requests
+- Procurement Flow
+- Delivery & Inspection
 
-The tabs must switch visible preview content locally.
+### Procurement overview
 
-This is a key requirement.
+Immediately show:
 
-The screen must feel like **a system**, not one static information card.
+- compact status cards;
+- lifecycle:
+  `PR -> PPMP/APP -> RFQ -> PO -> Delivery -> Inspection -> Payment`
+- current illustrative queue;
+- selected request detail;
+- current stage;
+- requesting office;
+- amount/reference if used;
+- related-document/reference area;
+- next handoff.
 
-### 3. Summary row
+### Illustrative Procurement records
 
-Use 3–5 compact metrics or state cards.
-
-These may use illustrative values only if clearly covered by the global:
-
-`Illustrative prototype data — not live municipal records`
-
-Examples are allowed.
-
-Do not use specific real-person names.
-
-Do not imply these numbers came from Talibon records.
-
-### 4. Main work surface
-
-Must occupy most of the screen.
-
-Use believable module-specific content such as:
-
-- register;
-- queue;
-- monitoring table;
-- map schematic;
-- utilization matrix;
-- vehicle/asset cards;
-- knowledge library.
-
-### 5. Selected-item / context panel
-
-Where appropriate, selecting a static sample row should update a detail panel using React state.
-
-No modal is required unless it fits the current product grammar.
-
-### 6. Integration footer/panel
-
-Keep ONE TALIBON integration context compact.
-
-Do not let explanatory architecture text dominate the page.
-
-### 7. Current boundary
-
-Keep the boundary compact and visible, ideally as a footer/banner:
-
-`Concept preview only — no live municipal records or operational transactions.`
-
-Do not repeat a giant warning panel on every section.
-
-## Required illustrative sample data direction
-
-Sample data is explicitly allowed for this W04C showcase wave if:
-
-- clearly labeled illustrative;
-- generic;
-- not represented as real municipal records;
-- no real citizen data;
-- no private employee data;
-- no fake client claim that it is currently operational.
-
-Use municipality-relevant but generic examples.
-
-Examples:
-
-### Procurement
+Use generic examples only:
 
 - `PR-2026-014 — Office network equipment`
 - `PR-2026-021 — Road maintenance materials`
 - `PR-2026-027 — Health office supplies`
 
-Statuses may correspond to lifecycle stages.
+Clearly label them illustrative.
 
-### Budget
+No real Talibon procurement claim.
 
-Generic office/utilization examples.
+### Procurement boundary
 
-### GIS
+No:
 
-Generic locations such as:
+- real PR creation;
+- RFQ generation;
+- PO issuance;
+- delivery acceptance;
+- inspection approval;
+- payment processing;
+- persistence.
 
-- Road rehabilitation project
-- Municipal facility
-- Flood-prone area
-- Government property
+## MAIN SHOWCASE — HR EMPLOYEE PORTAL
 
-No exact coordinates required.
+Direct sidebar destination:
 
-### Building Permit
+`HR Employee Portal`
 
-Generic references such as:
+Existing route:
 
-- `BP-2026-0041 — Residential building application`
+`/employees`
 
-### Citizen Requests
+Keep the current real employee/personnel-reference UI.
 
-Generic examples:
+Do not broaden it.
 
-- drainage concern;
-- streetlight request;
-- road obstruction referral.
+Do not advertise:
 
-### Assets
+- payroll;
+- DTR;
+- attendance;
+- leave;
+- performance;
+- broad HRIS administration
 
-Generic computers, vehicles, furniture, buildings/equipment.
+as current capability.
 
-### Inventory
+Do not invent Regular / Job Order / Casual counts without a real read contract.
 
-Generic office supplies.
+## FUTURE INTEGRATIONS — EXACTLY 14
 
-### Fleet
+### FUT-02 — Budget & Obligation Monitoring
 
-Generic vehicle identifiers such as `Service Vehicle 01`.
+Archetype:
 
-### CBMS / GAD
+`MONITORING / ANALYTICS`
 
-Use clearly illustrative category values, not claims about real municipal demographics.
+Must visibly resemble a budget-monitoring application.
 
-## Exact client/PDF scope per module
+Include:
 
-Preserve the same W04B authority:
+- Appropriations
+- Allotments
+- Obligations
+- Balances
+- Office utilization
 
-### FUT-01 Procurement / PR Tracking
+Design:
 
-- PR
-- PPMP / APP
-- RFQ
-- PO
-- delivery
-- inspection
-- payment
+- KPI cards;
+- utilization bars;
+- office utilization register;
+- selected office/program detail;
+- tabs such as Overview / Obligations / Utilization / Reports.
 
-### FUT-02 Budget & Obligation Monitoring
+### FUT-03 — GIS / Mapping Portal
 
-- appropriations
-- allotments
-- obligations
-- balances
-- office utilization
+Archetype:
 
-### FUT-03 GIS / Mapping Portal
+`MAP / SPATIAL`
 
-- projects
-- roads
-- zoning
-- government properties
-- facilities
-- hazards
-- businesses
+Scope:
 
-### FUT-04 Zoning & Locational Clearance
+- Projects
+- Roads
+- Zoning
+- Government properties
+- Facilities
+- Hazards
+- Businesses
 
-- applications
-- evaluation
+Design:
+
+- map-style CSS canvas;
+- layer panel/toggles;
+- illustrative pins/markers;
+- selected-location panel;
+- layers/status legend;
+- tabs such as Map / Layers / Locations.
+
+No external map API.
+No real coordinates required.
+
+### FUT-04 — Zoning & Locational Clearance System
+
+Archetype:
+
+`WORKFLOW / CASE MANAGEMENT`
+
+Scope:
+
+- Applications
+- Evaluation
 - GIS validation
-- inspections
-- clearances
-- certificates
+- Inspections
+- Clearances
+- Certificates
 
-### FUT-05 Building Permit Workflow
+Design:
 
-- engineering clearance
-- zoning clearance
-- fire clearance
-- other departmental clearances
-- permit processing
+- application queue;
+- lifecycle stages;
+- selected application detail;
+- clearance status;
+- local tab navigation.
 
-### FUT-06 Business Permit / eBOSS
+### FUT-05 — Building Permit Workflow
 
-- business applications
-- assessment
-- clearances
-- inspection
-- renewal
+Archetype:
 
-### FUT-07 Citizen Request / Action Center
+`WORKFLOW / CASE MANAGEMENT`
 
-- complaints
-- requests
-- referrals
-- status tracking
-- response time
+Scope:
 
-### FUT-08 GAD Data Analytics
+- Engineering clearance
+- Zoning clearance
+- Fire clearance
+- Other departmental clearances
+- Permit processing
 
-- sex-disaggregated data
+Design:
+
+- permit application queue;
+- cross-office clearance matrix;
+- current stage/progress;
+- selected application;
+- required clearances/status.
+
+### FUT-06 — Business Permit / eBOSS Integration
+
+Archetype:
+
+`WORKFLOW / CASE MANAGEMENT`
+
+Scope:
+
+- Business applications
+- Assessment
+- Clearances
+- Inspection
+- Renewal
+
+Design:
+
+- application/renewal queue;
+- lifecycle strip;
+- clearance matrix;
+- assessment/status panel;
+- selected business/application detail.
+
+### FUT-07 — Citizen Request / Action Center
+
+Archetype:
+
+`WORKFLOW / CASE MANAGEMENT`
+
+Scope:
+
+- Complaints
+- Requests
+- Referrals
+- Status tracking
+- Response time
+
+Design:
+
+- citizen concern queue;
+- category/status cards;
+- routing/office assignment;
+- SLA/response-time indicator;
+- selected request history.
+
+Do not use real citizen identities.
+
+### FUT-08 — GAD Data Analytics
+
+Archetype:
+
+`MONITORING / ANALYTICS`
+
+Scope:
+
+- Sex-disaggregated data
 - GPB / GAR monitoring
-- sectoral statistics
+- Sectoral statistics
 
-### FUT-09 CBMS / Socioeconomic Dashboard
+Design:
 
-- barangay demographics
-- poverty indicators
-- planning analytics
+- illustrative KPI cards;
+- sector/category filters;
+- monitoring tables;
+- GPB/GAR progress;
+- simple CSS bars/indicators.
 
-### FUT-10 Asset & Property Management
+No chart dependency.
 
-- vehicles
-- computers
-- furniture
-- buildings
-- equipment
-- accountability
+### FUT-09 — CBMS / Socioeconomic Dashboard
 
-### FUT-11 Inventory & Supplies
+Archetype:
 
-- stock requests
-- issuance
-- inventory levels
-- reorder alerts
+`MONITORING / ANALYTICS`
 
-### FUT-12 Motorpool / Fleet
+Scope:
 
-- vehicle scheduling
-- fuel
-- maintenance
-- trip tickets
+- Barangay demographics
+- Poverty indicators
+- Planning analytics
+
+Design:
+
+- illustrative planning KPIs;
+- barangay/indicator selector;
+- comparison table;
+- status/trend indicators;
+- selected indicator detail.
+
+Do not imply real CBMS household data.
+
+### FUT-10 — Asset & Property Management
+
+Archetype:
+
+`ASSET / LOGISTICS REGISTER`
+
+Scope:
+
+- Vehicles
+- Computers
+- Furniture
+- Buildings
+- Equipment
+- Accountability
+
+Design:
+
+- asset summary;
+- asset register;
+- category/condition/custody status;
+- selected asset;
+- accountability/history preview.
+
+### FUT-11 — Inventory & Supplies System
+
+Archetype:
+
+`ASSET / LOGISTICS REGISTER`
+
+Scope:
+
+- Stock requests
+- Issuance
+- Inventory levels
+- Reorder alerts
+
+Design:
+
+- stock summary;
+- inventory register;
+- stock-level/reorder indicators;
+- request/issuance status;
+- selected item detail.
+
+### FUT-12 — Motorpool / Fleet Management
+
+Archetype:
+
+`ASSET / LOGISTICS REGISTER`
+
+Scope:
+
+- Vehicle scheduling
+- Fuel
+- Maintenance
+- Trip tickets
 - GPS
 
-### FUT-13 Accounting integration
+Design:
+
+- fleet status strip;
+- vehicle register;
+- schedule/trip-ticket list;
+- maintenance/fuel indicators;
+- selected vehicle detail;
+- static map/location placeholder if useful.
+
+No real GPS integration.
+
+### FUT-13 — Accounting Integration
+
+Archetype:
+
+`INTEGRATION`
+
+The source authority only names Accounting as a future plug-in.
 
 Keep conservative.
 
-The authority names Accounting as an integration domain but does not define a full detailed workflow.
+Design may show:
 
-Do not invent journals, disbursement procedures, financial statements, or approval rules beyond a generic future handoff/reference integration preview.
+- shared-record handoff queue;
+- reference/integration status;
+- source module;
+- reference number;
+- integration checkpoints;
+- ONE TALIBON connection points.
 
-### FUT-14 Treasury / Revenue integration
+Do not invent:
+
+- journal rules;
+- ledger behavior;
+- disbursement workflow;
+- financial statements;
+- accounting approval rules.
+
+### FUT-14 — Treasury / Revenue Integration
+
+Archetype:
+
+`INTEGRATION`
 
 Keep conservative.
 
-The authority names Treasury as an integration domain but does not define a full detailed workflow.
+Design may show:
 
-Do not invent collection rules, tax schedules, official receipt behavior, or treasury approval workflows.
+- future collection/payment reference handoff;
+- source module;
+- reference status;
+- integration checkpoints;
+- revenue/treasury connection direction.
 
-### FUT-15 Training / Knowledge Management
+Do not invent:
 
-- manuals
+- tax schedules;
+- receipt behavior;
+- collection policy;
+- treasury approval workflow.
+
+### FUT-15 — Training / Knowledge Management
+
+Archetype:
+
+`KNOWLEDGE`
+
+Scope:
+
+- Manuals
 - SOPs
-- templates
-- videos
-- onboarding
-- institutional knowledge
+- Templates
+- Videos
+- Onboarding
+- Institutional knowledge
 
-## Procurement is the showcase reference implementation
+Design:
 
-FUT-01 must receive the strongest complete treatment because it is one of the five initial-rollout priorities.
+- search;
+- category tabs;
+- resource cards/library;
+- recent/featured references;
+- onboarding collection;
+- selected resource preview.
 
-Its default Overview should immediately show:
+## Future Integrations catalog behavior
 
-- summary/status strip;
-- procurement lifecycle;
-- current sample work queue;
-- selected request detail;
-- office/status/amount placeholder if used;
-- integration context.
+The `Future Integrations` catalog must show exactly the 14 modules above.
 
-Its internal tabs should provide a credible visual story of:
+Remove Procurement from the Future Integrations list.
 
-`PR -> PPMP/APP -> RFQ -> PO -> Delivery -> Inspection -> Payment`
+Procurement instead appears in:
 
-without implementing any actual procurement behavior.
+- Main Showcase / Initial Rollout;
+- direct Work sidebar;
+- direct `/procurement` presentation route.
 
-The other modules should use the same quality level with their correct archetype.
+Change future CTA from:
 
-## Initial Rollout tab
+`View concept`
 
-Keep the five-item Initial Rollout tab.
-
-For Procurement:
-
-- `Preview future system` should enter FUT-01 full prototype.
-
-For current modules:
-
-- do not create fake previews where the real module already exists.
-
-If safe and already-authorized routing is available, existing current modules may retain links to their real pages; otherwise leave current state presentation unchanged.
-
-## Catalog behavior
-
-Keep Future Integrations catalog and filters.
-
-Change CTA from generic `View concept` to something stronger such as:
+to:
 
 `Preview system`
 
-or:
+Every FUT-02 through FUT-15 item must open its full prototype.
 
-`Open prototype`
+## Initial Rollout presentation
 
-Preferred:
+Keep exactly five priorities:
 
-`Preview system`
+1. Document Routing & Correspondence — Current / Working
+2. Task / Executive Dashboard — Current / Working
+3. Project Monitoring — Current / Working
+4. Procurement / PR Tracking — Main Showcase / Interactive Static Prototype
+5. HR Employee Portal — Current Personnel Reference
 
-Every FUT-01 through FUT-15 must work.
+Procurement CTA:
 
-## Responsive behavior
+`Open Procurement Prototype`
 
-The screenshots show the current sidebar correctly compacts at narrower widths.
+HR CTA may use the real `/employees` route.
 
-The future-system prototype itself must:
+Do not rebuild Dashboard.
 
-- remain usable around 1366x768;
-- degrade to stacked panels at narrow desktop/tablet widths;
-- not require browser resizing to access its primary content;
-- avoid horizontal page overflow.
+## Navigation implementation
 
-Tables may internally overflow only when necessary and should prefer responsive card fallbacks if the pattern is already simple.
+### Add destination key
 
-## Performance
+Add a bounded destination for Procurement, e.g.:
 
-This entire Future Integrations experience should remain **frontend-static**.
+`procurementTracking`
 
-Do not add server queries.
+### Route
 
-Do not add heavy libraries.
+Add:
 
-Do not add map/chart packages.
+`/procurement`
 
-Use existing CSS/Tailwind and lucide-react.
+Authenticated presentation route only.
 
-The concept should feel instant once `/municipal-systems` is loaded.
+It may render the existing MunicipalSystems page in dedicated Procurement mode or a thin dedicated presentation page that reuses the shared prototype component.
+
+No controller/database query is required.
+
+### Work group ordering
+
+Update navigation definitions/order so Work presents:
+
+- Document Center
+- Tasks & Assignments
+- Correspondence
+- Procurement / PR Tracking
+- HR Employee Portal
+- Municipal Records
+- Official Memoranda
+- Announcements
+- Calendar
+- Meetings
+- Messages
+
+### HR movement
+
+Keep destination key `employeeDirectory` if practical.
+
+Change:
+
+- label: `HR Employee Portal`
+- group: `work`
+
+Remove it from Municipal Organization through the group move; do not duplicate.
+
+### Future Integrations
+
+Keep one Municipal Systems child:
+
+`Future Integrations`
+
+Do not add FUT-02..FUT-15 individually to sidebar.
 
 ## Authorized paths
 
-Primary:
+### Future-system presentation
 
 - `resources/js/pages/MunicipalSystems/Index.tsx`
 - `resources/js/components/municipal-systems/SystemDirectory.tsx`
 - `resources/js/components/municipal-systems/FutureIntegrationDetail.tsx`
 - `resources/js/data/municipal/systems.ts`
+- bounded new files under:
+  - `resources/js/components/municipal-systems/**`
+  - `resources/js/data/municipal/**`
 
-May add bounded presentation files under:
+### Main Showcase navigation
 
-- `resources/js/components/municipal-systems/**`
-- `resources/js/data/municipal/**`
+- `resources/js/navigation/navigationTypes.ts`
+- `resources/js/navigation/navigationRoutePlan.ts`
+- `resources/js/navigation/navigationDestinations.ts`
+- `resources/js/navigation/navigationOrder.ts`
 
-Suggested:
+### Static Procurement presentation route
 
-- `FutureSystemPrototype.tsx`
-- `FutureSystemMapPreview.tsx`
-- `futureSystemPrototypeData.ts`
+- `routes/web.php`
 
-Only add files that materially help keep the 15 previews data-driven.
+This route change is explicitly authorized by Technical Authority for showcase presentation.
+
+### Focused contract proof if wording/order contract requires it
+
+- `tests/Feature/CurrentPortalNavigationTest.php`
+
+Do not run the full suite.
 
 ## Forbidden
 
 No:
 
-- PHP/backend;
-- Laravel routes;
-- schema/migrations;
+- Procurement backend/controller/query;
+- Procurement persistence;
+- Procurement operational forms;
+- migrations/schema;
 - seeders;
-- auth/MFA;
-- permission changes;
-- Dashboard;
-- Quick Access;
-- sidebar hierarchy;
-- HR Employee Portal;
-- dependency/lockfile changes;
-- external map/chart packages;
-- CI;
-- real data fetches;
-- fake functional forms;
-- persistence.
+- auth/MFA redesign;
+- permission widening for real modules;
+- Dashboard change;
+- Quick Access change;
+- broad HRIS activation;
+- dependency/lockfile change;
+- external maps/charts;
+- 14 future-system sidebar entries;
+- CI work.
 
 ## Validation
 
 Time-boxed.
 
-Do not run full Feature.
+Maximum total validation effort:
 
-Do not run broad browser matrices.
+`5 minutes`
 
-Writer may run:
+If available:
 
 - `npm run types:check`
 - `npm run build`
 
-only if available and within **5 minutes total**.
+Do not run full Feature.
 
-Maintainer will visually inspect:
+Do not run broad browser suites.
 
-1. Procurement;
-2. GIS;
-3. Budget;
-4. Building Permit;
-5. Asset/Fleet;
-6. Accounting conservative preview.
+Maintainer will manually inspect:
+
+1. Procurement direct sidebar + full prototype;
+2. HR Employee Portal direct sidebar;
+3. Future Integrations count = 14;
+4. Budget;
+5. GIS;
+6. Building Permit;
+7. Asset / Inventory / Fleet;
+8. Accounting/Treasury conservative previews.
 
 ## Done definition
 
 W04C is complete only when:
 
-- the Future Integrations detail no longer reads like a brochure;
-- each FUT-01 through FUT-15 opens a credible whole-system static prototype;
+- Procurement / PR Tracking has first-class direct sidebar access;
+- Procurement opens a full static interactive system prototype;
+- HR Employee Portal has first-class direct sidebar access;
+- the Future Integrations catalog contains exactly 14 systems — FUT-02 through FUT-15;
+- all 14 future systems open full module-like prototypes, not brochure sheets;
 - every prototype has internal local navigation;
-- every prototype has module-specific main content;
-- illustrative data is visibly labeled as illustrative;
-- Procurement looks presentation-ready as a future initial-rollout system;
-- all previews remain consistent with ONE TALIBON design;
-- there is no backend behavior;
-- there are no fake claims of current operational capability.
+- every prototype has module-specific work surfaces;
+- all sample data is explicitly illustrative;
+- procurement remains non-operational;
+- HR remains personnel-reference focused;
+- Dashboard is untouched;
+- no real backend workflows are added.
 
 ## Return
 
@@ -709,19 +853,20 @@ Return only:
 3. immutable base;
 4. final HEAD;
 5. exact changed paths;
-6. shared prototype architecture;
-7. prototype archetypes implemented;
-8. internal local navigation behavior;
-9. FUT-01 through FUT-15 completeness;
-10. Procurement full-system preview summary;
-11. GIS preview summary;
-12. Budget / monitoring preview summary;
-13. Asset/logistics preview summary;
-14. Accounting/Treasury conservative treatment;
-15. illustrative-data truth statement;
-16. typecheck/build result or NOT RUN;
-17. limitations;
-18. explicit no backend/route/schema/auth/permission/dependency/Dashboard/HR/merge/promotion/deployment statement.
+6. Procurement direct-sidebar implementation;
+7. HR Employee Portal direct-sidebar implementation;
+8. Procurement route implementation;
+9. Future Integrations exact count / list;
+10. shared prototype architecture;
+11. archetypes implemented;
+12. FUT-02 through FUT-15 completeness;
+13. Procurement prototype summary;
+14. Budget/GIS/regulatory/logistics/knowledge preview summary;
+15. Accounting/Treasury conservative treatment;
+16. illustrative-data truth statement;
+17. typecheck/build result or NOT RUN;
+18. limitations;
+19. explicit no procurement backend/schema/auth/Dashboard/dependency/merge/promotion/deployment statement.
 
 Do not self-accept.
 Do not self-promote.
