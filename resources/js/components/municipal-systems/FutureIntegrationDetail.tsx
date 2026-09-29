@@ -4,6 +4,7 @@ import AssetPropertyWorkspace from './AssetPropertyWorkspace';
 import BudgetMonitoringWorkspace from './BudgetMonitoringWorkspace';
 import BuildingPermitWorkspace from './BuildingPermitWorkspace';
 import BusinessPermitWorkspace from './BusinessPermitWorkspace';
+import CBMSDashboardWorkspace from './CBMSDashboardWorkspace';
 import CitizenActionWorkspace from './CitizenActionWorkspace';
 import FutureSystemPrototype from './FutureSystemPrototype';
 import GADAnalyticsWorkspace from './GADAnalyticsWorkspace';
@@ -57,6 +58,10 @@ export default function FutureIntegrationDetail({ system, onBack }: Props) {
 
     if (system.id === 'FUT-08') {
         return <GADAnalyticsWorkspace onBack={onBack} />;
+    }
+
+    if (system.id === 'FUT-09') {
+        return <CBMSDashboardWorkspace onBack={onBack} />;
     }
 
     if (system.id === 'FUT-10') {
