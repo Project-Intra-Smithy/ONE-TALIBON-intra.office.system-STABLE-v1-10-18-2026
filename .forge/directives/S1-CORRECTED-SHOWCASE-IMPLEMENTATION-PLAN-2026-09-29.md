@@ -435,6 +435,31 @@ W04B repository-local implementation handoff:
 
 `.forge/handoffs/code-writer/S1-W04B-FUTURE-INTEGRATION-DETAIL-SURFACES.md`
 
+### W04C — Future System Full-Prototype Surfaces
+
+`CURRENT / REQUIRED FOLLOW-UP`
+
+Visual inspection of W04B proved that enterable concept-detail sheets are still too brochure-like for the stakeholder showcase.
+
+Every `FUT-01` through `FUT-15` Future Integration must therefore open a **credible whole-system static prototype surface** inside the existing `/municipal-systems` route.
+
+Required characteristics:
+
+- internal client-side module navigation;
+- summary/status cards;
+- module-specific primary work surface;
+- lifecycle/monitoring/register/map/logistics/knowledge content appropriate to the module;
+- optional static row selection/detail using React state only;
+- clearly marked `Future Integration — Interactive Concept Preview`;
+- clearly marked `Illustrative prototype data — not live municipal records`;
+- no backend request, persistence, fake operational form, or new Laravel route.
+
+Implementation must remain data-driven and reuse the existing ONE TALIBON page/register/card grammar rather than hand-building fifteen unrelated pages.
+
+W04C repository-local handoff:
+
+`.forge/handoffs/code-writer/S1-W04C-FUTURE-SYSTEM-FULL-PROTOTYPE-SURFACES.md`
+
 ### W03
 
 `CANCELLED / NO IMPLEMENTATION`
