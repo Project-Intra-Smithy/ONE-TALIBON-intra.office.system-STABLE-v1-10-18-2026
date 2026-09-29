@@ -1,3 +1,23 @@
+# SUPERSEDED FOR CURRENT IMPLEMENTATION
+
+The current implementation authority is:
+
+`.forge/directives/S1-CORRECTED-SHOWCASE-IMPLEMENTATION-PLAN-2026-09-29.md`
+
+This M0 document remains as historical planning evidence only.
+
+The following parts are specifically superseded:
+
+- dedicated S1-W03 Dashboard implementation wave;
+- automatic broad W05 page-polish program;
+- automatic W06 redesign program;
+- any interpretation that storyboard/reference screenshots authorize product scope;
+- any presentation of parked/broad HRIS, Payroll or Attendance capability as current initial-rollout functionality.
+
+W01 historical shell decisions remain valid where already integrated.
+
+---
+
 # ONE TALIBON V1 — S1-M0 FINAL UI ARCHITECTURE & IMPLEMENTATION LOCK
 
 Role:
