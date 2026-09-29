@@ -15,7 +15,7 @@ export default function Login({ showcase }: Props) {
 
     return (
         <>
-            <Head title="ONE TALIBON — Municipal Workspace" />
+            <Head title="Talibon Intra-Office Portal — Secure Access" />
             <main className="min-h-screen bg-[#f7f5ed] text-[#163027] dark:bg-[#0f1a15] dark:text-[#edf5f0]">
                 <div className="grid min-h-screen lg:grid-cols-[minmax(0,1.08fr)_minmax(460px,0.92fr)]">
                     <section className="relative overflow-hidden bg-[#0b442d] px-6 py-7 text-white sm:px-10 sm:py-9 lg:flex lg:min-h-screen lg:flex-col lg:justify-between lg:px-14 lg:py-12 xl:px-20">
@@ -31,7 +31,7 @@ export default function Login({ showcase }: Props) {
                                 Municipal work starts here.
                             </h1>
                             <p className="mt-5 max-w-xl text-sm leading-6 text-white/78 sm:text-base sm:leading-7">
-                                Enter the LGU Intra-Office Portal to continue official work, coordination, records, schedules, projects, and office operations.
+                                Enter the Talibon Intra-Office Portal to continue official work, coordination, records, schedules, projects, and office operations.
                             </p>
 
                             <div className="mt-7 grid gap-3 text-sm text-white/80 sm:grid-cols-2">
@@ -47,7 +47,7 @@ export default function Login({ showcase }: Props) {
                         </div>
 
                         <div className="relative border-t border-white/15 pt-5 text-xs text-white/58">
-                            Municipality of Talibon, Bohol · LGU Intra-Office Portal
+                            Municipality of Talibon, Bohol · Talibon Intra-Office Portal
                         </div>
                     </section>
 
@@ -61,7 +61,7 @@ export default function Login({ showcase }: Props) {
                         <div className="flex flex-1 items-center justify-center py-10 lg:py-12">
                             <div className="w-full max-w-[520px] rounded-2xl border border-[#d6e1da] bg-white p-6 shadow-[0_18px_48px_rgba(11,68,45,0.08)] sm:p-7 dark:border-[#30473a] dark:bg-[#15251d] dark:shadow-[0_18px_48px_rgba(0,0,0,0.24)]">
                                 <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#12613f] dark:text-[#8fc9a7]">Secure access</p>
-                                <h2 className="mt-2 text-2xl font-extrabold tracking-[-0.025em] text-[#163027] dark:text-[#edf5f0]">Enter ONE TALIBON</h2>
+                                <h2 className="mt-2 text-2xl font-extrabold tracking-[-0.025em] text-[#163027] dark:text-[#edf5f0]">Enter the Talibon Intra-Office Portal</h2>
                                 <p className="mt-3 text-sm leading-6 text-[#64736c] dark:text-[#adbbb3]">
                                     Choose the authorized municipal role and office context needed for this session.
                                 </p>
@@ -83,7 +83,7 @@ export default function Login({ showcase }: Props) {
                         </div>
 
                         <footer className="border-t border-[#d6e1da] py-4 text-xs text-[#64736c] dark:border-[#30473a] dark:text-[#adbbb3]">
-                            ONE TALIBON · Municipality of Talibon municipal operations workspace
+                            Talibon Intra-Office Portal · Municipality of Talibon, Bohol
                         </footer>
                     </section>
                 </div>

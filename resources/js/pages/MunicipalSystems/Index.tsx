@@ -163,7 +163,7 @@ export default function Index({ showcase }: Props) {
                                         <span className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-emerald-700 text-white dark:bg-emerald-600 xl:h-7 xl:w-7">
                                             <Network size={13} aria-hidden="true" />
                                         </span>
-                                        ONE TALIBON Digital Operations Platform
+                                        TALIBON INTRA-OFFICE PORTAL
                                     </div>
                                     <h1 className="mt-1 text-[17px] font-black leading-tight tracking-tight text-slate-950 dark:text-white sm:text-[19px] xl:text-[22px] 2xl:text-[24px]">
                                         Municipal systems connected through one shared digital backbone.
