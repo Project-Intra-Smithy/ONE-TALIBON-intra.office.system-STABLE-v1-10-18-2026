@@ -10,9 +10,41 @@ type Props = {
     onFinish: () => void;
 };
 
-function visibleTourTarget(target: string): HTMLElement | null {
-    return Array.from(document.querySelectorAll<HTMLElement>('[data-tour]'))
-        .find((element) => element.dataset.tour === target && element.offsetParent !== null) ?? null;
+function tourTarget(target: string, visibleOnly = true): HTMLElement | null {
+    const candidates = Array.from(document.querySelectorAll<HTMLElement>('[data-tour]'))
+        .filter((element) => element.dataset.tour === target);
+
+    return (visibleOnly
+        ? candidates.find((element) => element.offsetParent !== null)
+        : candidates[0]) ?? null;
+}
+
+function settleLayout(): Promise<void> {
+    return new Promise((resolve) => {
+        window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => resolve());
+        });
+    });
+}
+
+async function revealTourTarget(target: string): Promise<HTMLElement | null> {
+    const visible = tourTarget(target);
+    if (visible) return visible;
+
+    const hidden = tourTarget(target, false);
+    if (!hidden) return null;
+
+    const owningSection = hidden.closest('section');
+    const collapsedToggle = owningSection?.querySelector<HTMLButtonElement>(
+        'button.portal-sidebar-group-toggle[aria-expanded="false"]',
+    );
+
+    if (!collapsedToggle) return null;
+
+    collapsedToggle.click();
+    await settleLayout();
+
+    return tourTarget(target);
 }
 
 export default function GuidedTour({ steps, onExit, onFinish }: Props) {
@@ -37,10 +69,14 @@ export default function GuidedTour({ steps, onExit, onFinish }: Props) {
     useEffect(() => {
         if (!step) return;
 
+        let cancelled = false;
         let frame = 0;
         let followup = 0;
-        const update = () => {
-            const target = visibleTourTarget(step.target);
+
+        const positionTarget = async () => {
+            const target = await revealTourTarget(step.target);
+            if (cancelled) return;
+
             setTargetAvailable(Boolean(target));
             if (!target) {
                 setRect(null);
@@ -58,6 +94,7 @@ export default function GuidedTour({ steps, onExit, onFinish }: Props) {
 
             frame = window.requestAnimationFrame(() => {
                 followup = window.requestAnimationFrame(() => {
+                    if (cancelled) return;
                     const next = target.getBoundingClientRect();
                     setRect({
                         top: next.top,
@@ -71,10 +108,15 @@ export default function GuidedTour({ steps, onExit, onFinish }: Props) {
             });
         };
 
+        const update = () => {
+            void positionTarget();
+        };
+
         update();
         window.addEventListener('resize', update);
         window.addEventListener('scroll', update, true);
         return () => {
+            cancelled = true;
             window.removeEventListener('resize', update);
             window.removeEventListener('scroll', update, true);
             window.cancelAnimationFrame(frame);
