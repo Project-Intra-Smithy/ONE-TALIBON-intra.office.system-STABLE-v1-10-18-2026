@@ -123,3 +123,36 @@
         opacity: 1;
     }
 }
+
+
+/* Public homepage green refinement: compact civic information density without SaaS-style card inflation. */
+.public-civic-dashboard {
+    box-shadow: 0 8px 26px rgba(11, 68, 45, .045);
+}
+
+.public-civic-row {
+    color: inherit;
+    transition: background-color 140ms ease;
+}
+
+.public-civic-row:hover {
+    background: var(--public-hover);
+}
+
+.public-civic-row:focus-visible {
+    position: relative;
+    z-index: 1;
+    outline: 3px solid var(--public-focus-ring);
+    outline-offset: -3px;
+}
+
+.public-hero .public-secondary-action {
+    border-color: rgba(255,255,255,.28);
+}
+
+@media (max-width: 767px) {
+    .public-civic-dashboard {
+        border-right: 0;
+        border-left: 0;
+    }
+}

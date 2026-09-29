@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { ArrowRight, Landmark } from 'lucide-react';
+import { ArrowRight, Landmark, MapPin } from 'lucide-react';
 import MunicipalBrand from '../MunicipalBrand';
 import type { PublicContent } from './types';
 
@@ -10,28 +10,30 @@ export default function PublicFooter({ content, authenticated }: { content: Publ
             style={{ maxWidth: '1360px', gap: '28px', paddingTop: '30px', paddingBottom: '24px' }}
         >
             <div className="public-footer-identity">
-                <MunicipalBrand inverse />
+                <MunicipalBrand inverse publicPortal />
                 <p className="public-footer-municipality"><Landmark size={15} aria-hidden="true" />{content.municipality}</p>
-                <p className="public-footer-note">LGU Intra-Office Portal · Authorized municipal personnel.</p>
+                <p className="public-footer-location"><MapPin size={14} aria-hidden="true" />{content.contact.location}</p>
+                <p className="public-footer-note">Municipal public information and secure employee access in one ONE TALIBON gateway. Prototype/sample content remains labeled.</p>
             </div>
 
-            <nav aria-label="Footer portal links" className="public-footer-links">
-                <h2>Portal</h2>
-                <a href="#home">Overview</a>
+            <nav aria-label="Footer public links" className="public-footer-links">
+                <h2>Public portal</h2>
+                <a href="#services">Services</a>
+                <a href="#news">Updates</a>
+                <a href="#transparency">Transparency</a>
                 <a href="#about">About</a>
-                <a href="#capabilities">Capabilities</a>
-                <a href="#workflow">Workflow</a>
+                <a href="#contact">Contact</a>
             </nav>
 
             <div className="public-footer-access">
-                <h2>Access</h2>
-                <p>Continue official work inside the authenticated portal.</p>
+                <h2>Employee access</h2>
+                <p>Protected municipal work continues only inside the authenticated LGU workspace.</p>
                 <Link
                     href={authenticated ? '/dashboard' : '/login'}
                     className="public-footer-login"
                     style={{ marginTop: '12px' }}
                 >
-                    {authenticated ? 'Open Portal' : 'Login to Portal'}
+                    {authenticated ? 'Open Employee Portal' : 'Employee Login'}
                     <ArrowRight size={15} aria-hidden="true" />
                 </Link>
             </div>
@@ -41,7 +43,7 @@ export default function PublicFooter({ content, authenticated }: { content: Publ
             style={{ maxWidth: '1360px', paddingTop: '10px', paddingBottom: '12px' }}
         >
             <span>ONE TALIBON · Municipality of Talibon, Bohol</span>
-            <span>LGU Intra-Office Portal</span>
+            <span>Municipal Public Portal</span>
         </div>
     </footer>;
 }

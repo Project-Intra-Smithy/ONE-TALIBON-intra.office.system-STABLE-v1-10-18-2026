@@ -5,10 +5,10 @@ return [
     'sampleLabel' => 'PROTOTYPE SAMPLE DATA',
     'municipality' => 'Municipality of Talibon, Bohol',
     'hero' => [
-        'eyebrow' => 'LGU INTRA-OFFICE PORTAL',
-        'title' => 'ONE TALIBON. ONE WORKSPACE.',
-        'lead' => 'MUNICIPAL WORK, CONNECTED ACROSS OFFICES.',
-        'description' => 'Manage documents, memoranda, schedules, projects, requests, and office coordination in one secure workspace.',
+        'eyebrow' => 'MUNICIPALITY OF TALIBON · BOHOL',
+        'title' => 'ONE TALIBON',
+        'lead' => 'PUBLIC INFORMATION. MUNICIPAL SERVICES. ONE DIGITAL FRONT DOOR.',
+        'description' => 'A municipal portal preview for public information, service guidance, announcements, projects, transparency resources, and secure employee access.',
     ],
     'about' => [
         'eyebrow' => 'About the Portal',
