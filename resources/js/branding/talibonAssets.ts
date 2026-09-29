@@ -1,6 +1,7 @@
-/** Central Talibon municipal branding and imagery. Public-facing assets currently reference official talibon.gov.ph media. */
+/** Central Talibon municipal branding and imagery. User-supplied municipal identity assets are stored locally. */
 export const talibonAssets = {
-    municipalSeal: 'https://talibon.gov.ph/wp-content/uploads/2025/09/Talibon-Official-Seal-v4-2003-to-2023-.png',
+    municipalSeal: '/images/municipality/talibon-official-seal.webp',
+    municipalHallEmblem: '/images/municipality/talibon-municipal-hall-emblem.webp',
     internalHero: '/images/talibon/coastal-placeholder.svg',
     publicHero: 'https://talibon.gov.ph/wp-content/themes/yootheme/cache/b7/talibon-b77ce339.jpeg',
     publicLandmark: 'https://talibon.gov.ph/wp-content/themes/yootheme/cache/b7/talibon-b77ce339.jpeg',

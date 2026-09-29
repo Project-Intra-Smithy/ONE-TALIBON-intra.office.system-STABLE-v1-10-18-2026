@@ -14,6 +14,7 @@ import {
     UsersRound,
     Waves,
 } from 'lucide-react';
+import { talibonAssets } from '../../branding/talibonAssets';
 import { PUBLIC_SECTION_ANCHOR_STYLE } from './publicLayout';
 import type { DashboardItem, ProjectItem, PublicContent, ServiceItem, TransparencyItem } from './types';
 
@@ -97,6 +98,13 @@ export default function PublicCivicDashboard({ content }: { content: PublicConte
                     </div>
                     <span>Prototype-safe information</span>
                 </header>
+                <div className="public-reference-glance-identity">
+                    <img src={talibonAssets.municipalHallEmblem} alt="Talibon Municipal Hall emblem" />
+                    <div>
+                        <strong>Talibon Municipal Hall</strong>
+                        <span>Institutional civic identity · Talibon, Bohol</span>
+                    </div>
+                </div>
                 <div className="public-reference-metric-grid">
                     {content.dashboard.slice(0, 6).map((item, index) => <Metric key={item.label} item={item} index={index} />)}
                 </div>

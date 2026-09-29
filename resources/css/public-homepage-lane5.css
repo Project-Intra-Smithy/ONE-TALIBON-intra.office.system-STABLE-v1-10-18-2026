@@ -563,6 +563,43 @@
     font-weight: 800;
 }
 
+.public-reference-glance-identity {
+    display: flex;
+    min-height: 54px;
+    align-items: center;
+    gap: 11px;
+    border-bottom: 1px solid var(--public-divider);
+    padding: 6px 12px;
+    background: var(--public-surface-soft);
+}
+
+.public-reference-glance-identity img {
+    width: 74px;
+    height: 44px;
+    flex: 0 0 auto;
+    object-fit: contain;
+}
+
+.public-reference-glance-identity > div {
+    display: grid;
+    min-width: 0;
+    gap: 2px;
+}
+
+.public-reference-glance-identity strong {
+    color: var(--public-text);
+    font-size: 10px;
+    font-weight: 900;
+    line-height: 1.2;
+}
+
+.public-reference-glance-identity span {
+    color: var(--public-muted);
+    font-size: 8.5px;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
 .public-reference-metric-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1133,6 +1170,16 @@
 
     .public-reference-action {
         min-height: 68px;
+    }
+
+    .public-reference-glance-identity {
+        min-height: 50px;
+        padding-block: 5px;
+    }
+
+    .public-reference-glance-identity img {
+        width: 64px;
+        height: 40px;
     }
 
     .public-reference-service-grid {
