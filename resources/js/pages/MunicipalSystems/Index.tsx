@@ -24,8 +24,8 @@ type Props = {
 };
 
 const views: Array<{ id: View; label: string; description: string }> = [
-    { id: 'rollout', label: 'Initial Rollout', description: 'Exactly five showcase priorities with their real current state.' },
-    { id: 'future', label: 'Future Integrations', description: 'Exactly 14 interactive static system previews — FUT-02 through FUT-15.' },
+    { id: 'rollout', label: 'Initial Rollout', description: 'Five client-aligned priorities with their current presentation state.' },
+    { id: 'future', label: 'Future Integrations', description: 'Fourteen planned municipal systems with interactive workspace previews.' },
     { id: 'core', label: 'Core Platform', description: 'ONE TALIBON backbone and current supporting foundations.' },
 ];
 
@@ -41,6 +41,12 @@ const coreTone = {
     'Platform Foundation': 'bg-blue-50 text-blue-800 dark:bg-blue-950/40 dark:text-blue-200',
     'Integration Direction': 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200',
 } as const;
+
+function rolloutStateLabel(state: keyof typeof rolloutTone): string {
+    return state === 'Main Showcase / Interactive Static Prototype'
+        ? 'Main Showcase / Presentation Workspace'
+        : state;
+}
 
 export default function Index({ showcase }: Props) {
     const [view, setView] = useState<View>('rollout');
@@ -84,7 +90,7 @@ export default function Index({ showcase }: Props) {
                 <PageHeader
                     eyebrow="ONE TALIBON digital operations platform"
                     title="Future Integrations"
-                    description="Five rollout priorities, the shared platform backbone, and exactly 14 future systems presented as believable interactive static workspaces without claiming live municipal operation."
+                    description="Five rollout priorities, the shared platform backbone, and fourteen planned municipal systems presented through interactive workspace previews."
                     icon={Network}
                 />
 
@@ -110,27 +116,33 @@ export default function Index({ showcase }: Props) {
                             <section aria-labelledby="initial-rollout-title" className="space-y-2">
                                 <div className="flex flex-col gap-1 rounded-xl border border-emerald-100 bg-emerald-50/50 px-3 py-2 dark:border-emerald-900/50 dark:bg-emerald-950/20">
                                     <h2 id="initial-rollout-title" className="text-[13px] font-bold text-slate-950 dark:text-slate-100">Initial Rollout</h2>
-                                    <p className="text-[11px] leading-4 text-slate-600 dark:text-slate-300">Five client-aligned priorities. Procurement is the main interactive static showcase; HR remains the current personnel-reference foundation.</p>
+                                    <p className="text-[11px] leading-4 text-slate-600 dark:text-slate-300">Five client-aligned priorities. Procurement is the main presentation workspace; HR remains the current personnel-reference foundation.</p>
                                 </div>
                                 <div className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]">
                                     <div className="divide-y divide-slate-100 dark:divide-slate-700">
-                                        {initialRollout.map((item, index) => (
-                                            <article key={item.id} className="grid gap-2 px-3 py-2.5 md:grid-cols-[36px_minmax(0,1fr)_minmax(190px,260px)] md:items-center">
-                                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-[11px] font-extrabold text-slate-600 dark:bg-slate-800 dark:text-slate-200">{index + 1}</div>
-                                                <div className="min-w-0">
-                                                    <h3 className="text-[13px] font-bold text-slate-950 dark:text-slate-100">{item.name}</h3>
-                                                    <p className="mt-0.5 text-[10px] leading-4 text-slate-500 dark:text-slate-400">{item.description}</p>
-                                                </div>
-                                                <div className="flex flex-wrap items-center gap-1.5 md:justify-end">
-                                                    <span className={'inline-flex rounded-full px-2 py-1 text-[9px] font-bold ' + rolloutTone[item.state]}>{item.state}</span>
-                                                    {item.href && item.actionLabel && (
-                                                        <Link href={item.href} className="inline-flex min-h-8 items-center rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 text-[9px] font-bold text-emerald-900 transition hover:bg-emerald-100 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-200">
-                                                            {item.actionLabel}
-                                                        </Link>
-                                                    )}
-                                                </div>
-                                            </article>
-                                        ))}
+                                        {initialRollout.map((item, index) => {
+                                            const description = item.id === 'ROL-04'
+                                                ? 'Procurement request lifecycle, sourcing, delivery and inspection presented as an interactive review workspace.'
+                                                : item.description;
+                                            const actionLabel = item.id === 'ROL-04' ? 'Open Procurement Workspace' : item.actionLabel;
+                                            return (
+                                                <article key={item.id} className="grid gap-2 px-3 py-2.5 md:grid-cols-[36px_minmax(0,1fr)_minmax(190px,280px)] md:items-center">
+                                                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-[11px] font-extrabold text-slate-600 dark:bg-slate-800 dark:text-slate-200">{index + 1}</div>
+                                                    <div className="min-w-0">
+                                                        <h3 className="text-[13px] font-bold text-slate-950 dark:text-slate-100">{item.name}</h3>
+                                                        <p className="mt-0.5 text-[10px] leading-4 text-slate-500 dark:text-slate-400">{description}</p>
+                                                    </div>
+                                                    <div className="flex flex-wrap items-center gap-1.5 md:justify-end">
+                                                        <span className={'inline-flex rounded-full px-2 py-1 text-[9px] font-bold ' + rolloutTone[item.state]}>{rolloutStateLabel(item.state)}</span>
+                                                        {item.href && actionLabel && (
+                                                            <Link href={item.href} className="inline-flex min-h-8 items-center rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 text-[9px] font-bold text-emerald-900 transition hover:bg-emerald-100 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-200">
+                                                                {actionLabel}
+                                                            </Link>
+                                                        )}
+                                                    </div>
+                                                </article>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             </section>
@@ -142,9 +154,9 @@ export default function Index({ showcase }: Props) {
                                     <div className="flex flex-wrap items-center justify-between gap-2">
                                         <div>
                                             <h2 id="future-integrations-title" className="text-[13px] font-bold text-slate-950 dark:text-slate-100">Future Integrations</h2>
-                                            <p className="mt-0.5 text-[11px] leading-4 text-slate-600 dark:text-slate-300">Exactly 14 systems — FUT-02 through FUT-15. Each opens a whole-system interactive concept preview powered by one shared prototype architecture.</p>
+                                            <p className="mt-0.5 text-[11px] leading-4 text-slate-600 dark:text-slate-300">Planned municipal systems presented through interactive workspace previews.</p>
                                         </div>
-                                        <span className="rounded-full bg-white px-2.5 py-1 text-[10px] font-extrabold text-amber-900 dark:bg-slate-900 dark:text-amber-200">14 systems</span>
+                                        <span className="rounded-full bg-white px-2.5 py-1 text-[10px] font-extrabold text-amber-900 dark:bg-slate-900 dark:text-amber-200">14 systems · FUT-02–FUT-15</span>
                                     </div>
                                 </div>
 
@@ -169,7 +181,7 @@ export default function Index({ showcase }: Props) {
                             <section aria-labelledby="core-platform-title" className="space-y-2">
                                 <div className="rounded-xl border border-emerald-100 bg-emerald-50/50 px-3 py-2 dark:border-emerald-900/50 dark:bg-emerald-950/20">
                                     <h2 id="core-platform-title" className="text-[13px] font-bold text-slate-950 dark:text-slate-100">Core Platform Backbone</h2>
-                                    <p className="mt-0.5 text-[11px] leading-4 text-slate-600 dark:text-slate-300">ONE TALIBON provides the common authenticated, routing, workflow, file, audit, and integration foundation. Encode once, use many times.</p>
+                                    <p className="mt-0.5 text-[11px] leading-4 text-slate-600 dark:text-slate-300">ONE TALIBON provides the common authenticated, routing, workflow, file, audit and integration foundation. Encode once, use many times.</p>
                                 </div>
                                 <div className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]">
                                     <div className="divide-y divide-slate-100 dark:divide-slate-700">

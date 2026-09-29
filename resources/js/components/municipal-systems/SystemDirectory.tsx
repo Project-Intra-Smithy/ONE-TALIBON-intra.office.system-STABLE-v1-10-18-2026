@@ -24,12 +24,12 @@ export default function SystemDirectory({ systems, onSelect }: Props) {
                     <section key={group} aria-labelledby={groupId}>
                         <div className="mb-1 flex items-center justify-between gap-3 px-0.5">
                             <h2 id={groupId} className="text-[13px] font-bold text-slate-950 dark:text-slate-100">{group}</h2>
-                            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Interactive concept previews</span>
+                            <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Interactive system previews</span>
                         </div>
 
                         <div className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]">
                             <div className="hidden grid-cols-[minmax(12rem,1fr)_minmax(9rem,.7fr)_minmax(10rem,.7fr)_minmax(12rem,1fr)_minmax(9rem,.55fr)] gap-3 border-b border-slate-100 bg-slate-50 px-3 py-1.5 text-[9px] font-bold uppercase tracking-wide text-slate-500 dark:border-slate-700 dark:bg-slate-900/40 dark:text-slate-400 xl:grid">
-                                <span>Future system</span><span>Lead office</span><span>Presentation state</span><span>Intended scope</span><span>Preview</span>
+                                <span>Future system</span><span>Lead office</span><span>Planning status</span><span>Intended scope</span><span>Workspace</span>
                             </div>
                             <div className="divide-y divide-slate-100 dark:divide-slate-700">
                                 {groupSystems.map((system) => (
@@ -63,7 +63,7 @@ export default function SystemDirectory({ systems, onSelect }: Props) {
             })}
 
             {systems.length === 0 && (
-                <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500 dark:border-slate-700 dark:text-slate-400">No Future Integration entries match the current presentation filters.</div>
+                <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500 dark:border-slate-700 dark:text-slate-400">No Future Integration entries match the current filters.</div>
             )}
         </div>
     );
