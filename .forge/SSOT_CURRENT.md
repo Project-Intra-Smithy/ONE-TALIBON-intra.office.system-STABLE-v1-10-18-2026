@@ -90,11 +90,13 @@ The governing objective is showcase success, not broad engineering completeness.
 
 ## Current phase
 
-`S1-M0 — FINAL UI ARCHITECTURE LOCKED`
+`S1-W01 — SHELL HIERARCHY & NAVIGATION BEHAVIOR — INTEGRATED`
 
 Next implementation transition:
 
-`S1-W01 — SHELL HIERARCHY & NAVIGATION BEHAVIOR`
+`S1-W03 — DASHBOARD PRIORITY & QUICK ACCESS PRESENTATION`
+
+W02 FRE / Guided Tour correction remains required but is intentionally deferred behind the higher-value dashboard/module presentation work under the time-bounded showcase plan.
 
 Backend product behavior is frozen for showcase purposes.
 
