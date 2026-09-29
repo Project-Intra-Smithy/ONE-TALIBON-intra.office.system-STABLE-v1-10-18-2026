@@ -102,16 +102,16 @@ export default function EmployeeDirectory({ employees, departments, filters, sum
         : firstResult + employees.data.length - 1;
 
     return (
-        <AppLayout title="Staff Directory">
+        <AppLayout title="HR Employee Portal">
             <PageFrame density="compact">
                 <PageHeader
-                    eyebrow="Municipal organization"
-                    title="Staff Directory"
-                    description="Search municipal personnel by name, employee number, office, work email, or position. The directory exposes work context only and does not include private personal contact information."
+                    eyebrow="Personnel reference foundation"
+                    title="HR Employee Portal"
+                    description="Personnel directory and employee reference records for municipal work context. This is a reference foundation only and does not present payroll, DTR, attendance, leave, performance, or broad HRIS administration."
                     icon={UsersRound}
                 />
 
-                <section className="grid gap-2 sm:grid-cols-3" aria-label="Staff directory summary">
+                <section className="grid gap-2 sm:grid-cols-3" aria-label="HR Employee Portal summary">
                     {summaryItems.map(({ label, key, icon: Icon, surface, iconSurface }) => (
                         <div
                             key={label}
@@ -177,7 +177,7 @@ export default function EmployeeDirectory({ employees, departments, filters, sum
                     </form>
 
                     <div className="flex min-h-9 items-center justify-between gap-3 border-b border-slate-100 px-3 py-2 text-[11px] dark:border-slate-700">
-                        <div className="font-bold text-slate-900 dark:text-slate-100">Staff directory register</div>
+                        <div className="font-bold text-slate-900 dark:text-slate-100">Personnel reference register</div>
                         <div className="text-right text-slate-500 dark:text-slate-400">
                             Showing <span className="font-semibold text-slate-700 dark:text-slate-200">{firstResult}–{lastResult}</span> of <span className="font-semibold text-slate-700 dark:text-slate-200">{employees.total}</span> employees
                         </div>
