@@ -2,23 +2,28 @@ import { X } from 'lucide-react';
 import { useEffect, useId, useRef, type MouseEvent, type PropsWithChildren } from 'react';
 
 export default function MobileNavigation({ children, onClose }: PropsWithChildren<{ onClose: () => void }>) {
-    const dialog = useRef<HTMLDialogElement>(null);
     const closeButton = useRef<HTMLButtonElement>(null);
     const titleId = useId();
 
     useEffect(() => {
-        const element = dialog.current;
         const previousOverflow = document.body.style.overflow;
         const previousFocus = document.activeElement as HTMLElement | null;
-        element?.showModal();
-        closeButton.current?.focus();
-        document.body.style.overflow = 'hidden';
-        return () => {
-            element?.close();
-            document.body.style.overflow = previousOverflow;
-            previousFocus?.focus();
+        const closeOnEscape = (event: KeyboardEvent) => {
+            if (event.key !== 'Escape') return;
+            event.preventDefault();
+            onClose();
         };
-    }, []);
+
+        document.body.style.overflow = 'hidden';
+        window.addEventListener('keydown', closeOnEscape);
+        closeButton.current?.focus();
+
+        return () => {
+            window.removeEventListener('keydown', closeOnEscape);
+            document.body.style.overflow = previousOverflow;
+            if (previousFocus?.isConnected) previousFocus.focus();
+        };
+    }, [onClose]);
 
     useEffect(() => {
         const desktop = window.matchMedia('(min-width: 1024px)');
@@ -27,18 +32,17 @@ export default function MobileNavigation({ children, onClose }: PropsWithChildre
         return () => desktop.removeEventListener('change', closeOnDesktop);
     }, [onClose]);
 
-    const closeFromBackdrop = (event: MouseEvent<HTMLDialogElement>) => {
+    const closeFromBackdrop = (event: MouseEvent<HTMLDivElement>) => {
         if (event.target === event.currentTarget) onClose();
     };
 
     return (
-        <dialog
-            ref={dialog}
-            onCancel={(event) => { event.preventDefault(); onClose(); }}
-            onClick={closeFromBackdrop}
+        <div
+            role="dialog"
             aria-labelledby={titleId}
             aria-modal="true"
-            className="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none overscroll-none border-0 bg-transparent p-0 text-white backdrop:bg-slate-950/55 lg:hidden"
+            onClick={closeFromBackdrop}
+            className="fixed inset-0 z-[80] h-dvh w-full overflow-hidden bg-slate-950/55 text-white lg:hidden"
         >
             <span id={titleId} className="sr-only">Municipal navigation</span>
             <aside className="relative h-full w-[88%] max-w-[320px] overflow-hidden overscroll-contain shadow-2xl">{children}</aside>
@@ -55,6 +59,6 @@ export default function MobileNavigation({ children, onClose }: PropsWithChildre
             >
                 <X size={18} aria-hidden="true" />
             </button>
-        </dialog>
+        </div>
     );
 }
