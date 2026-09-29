@@ -1,5 +1,6 @@
 import type { MunicipalSystem } from '../../data/municipal/systems';
 import { getFutureSystemPrototype } from '../../data/municipal/futureSystemPrototypeData';
+import AccountingIntegrationWorkspace from './AccountingIntegrationWorkspace';
 import AssetPropertyWorkspace from './AssetPropertyWorkspace';
 import BudgetMonitoringWorkspace from './BudgetMonitoringWorkspace';
 import BuildingPermitWorkspace from './BuildingPermitWorkspace';
@@ -74,6 +75,10 @@ export default function FutureIntegrationDetail({ system, onBack }: Props) {
 
     if (system.id === 'FUT-12') {
         return <MotorpoolFleetWorkspace onBack={onBack} />;
+    }
+
+    if (system.id === 'FUT-13') {
+        return <AccountingIntegrationWorkspace onBack={onBack} />;
     }
 
     if (system.id === 'FUT-15') {
