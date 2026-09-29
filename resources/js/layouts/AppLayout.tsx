@@ -3,14 +3,16 @@ import PortalHeaderIdentity from '../components/shell/PortalHeaderIdentity';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { Bell, CalendarDays, MessageSquare, Menu, PanelRightOpen, Search, X } from 'lucide-react';
 import { type PropsWithChildren, useEffect, useRef, useState } from 'react';
+import DestinationOverviewDialog from '../components/help/DestinationOverviewDialog';
 import FirstRunGate from '../components/onboarding/FirstRunGate';
 import { MunicipalUtilityDrawer, MunicipalUtilityRail, QuickMessagesPanel } from '../components/shell/MunicipalUtilities';
 import { NotificationContext } from '../components/shell/NotificationContext';
 import MobileNavigation from '../components/shell/MobileNavigation';
 import PortalSidebar from '../components/shell/PortalSidebar';
 import { PortalLauncher, RecordsSearch } from '../components/shell/PortalTools';
+import { destinationOverviewCatalog } from '../data/municipal/destinationOverviewCatalog';
 import { useVisiblePolling } from '../hooks/useVisiblePolling';
-import { buildPortalNavigation } from '../navigation/portalNavigation';
+import { buildPortalNavigation, isPortalPathActive } from '../navigation/portalNavigation';
 import { consumeTransactionNotificationFeed } from '../notifications/notificationPresentationLedger';
 import type { LiveNotification, NotificationFeed, SharedProps } from '../types';
 
@@ -65,6 +67,10 @@ export default function AppLayout({ title, children, presentation }: Props) {
     const navigation = pageProps.permissions.navigation;
     const canViewReports = pageProps.permissions.reports && navigation.reports;
     const navigationGroups = buildPortalNavigation(pageProps.workspaceExperience, navigation, canViewReports);
+    const currentDestination = navigationGroups
+        .flatMap((group) => group.items)
+        .find((item) => isPortalPathActive(page.url, item.href));
+    const currentOverview = currentDestination ? destinationOverviewCatalog[currentDestination.key] : null;
     const hrisPresentation = page.url === '/hris' || page.url.startsWith('/hris/');
     const canSearchRecords = navigationGroups.some((group) => group.items.some((item) => item.key === 'records'));
     const utilitiesActive = desktopUtilitiesOpen || utilitiesOpen;
@@ -184,6 +190,7 @@ export default function AppLayout({ title, children, presentation }: Props) {
                                 <div className="whitespace-nowrap text-sm font-extrabold leading-5 tracking-tight text-[var(--municipal-brand-deep)] dark:text-[var(--municipal-text)] lg:hidden">One <span className="text-[var(--municipal-brand)]">Talibon</span></div>
                                 <div className="truncate text-xs font-semibold leading-4 text-[var(--municipal-text)] lg:text-sm">{title}</div>
                             </div>
+                            {currentOverview && <DestinationOverviewDialog overview={currentOverview} />}
                             <PortalHeaderSearch />
                         </div>
 
