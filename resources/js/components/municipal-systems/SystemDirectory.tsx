@@ -1,4 +1,4 @@
-import { Clock3, Database, ShieldOff } from 'lucide-react';
+import { ChevronRight, Clock3, Database, ShieldOff } from 'lucide-react';
 import type { MunicipalSystem } from '../../data/municipal/systems';
 
 const statusTone: Record<MunicipalSystem['status'], string> = {
@@ -6,7 +6,12 @@ const statusTone: Record<MunicipalSystem['status'], string> = {
     'Not Enabled': 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200',
 };
 
-export default function SystemDirectory({ systems }: { systems: MunicipalSystem[] }) {
+type Props = {
+    systems: MunicipalSystem[];
+    onSelect: (system: MunicipalSystem) => void;
+};
+
+export default function SystemDirectory({ systems, onSelect }: Props) {
     const groups = [...new Set(systems.map((system) => system.group))];
 
     return (
@@ -27,19 +32,19 @@ export default function SystemDirectory({ systems }: { systems: MunicipalSystem[
                         </div>
 
                         <div className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]">
-                            <div className="hidden grid-cols-[minmax(12rem,1fr)_minmax(9rem,.7fr)_minmax(10rem,.7fr)_minmax(12rem,1fr)_minmax(14rem,1.2fr)] gap-3 border-b border-slate-100 bg-slate-50 px-3 py-1.5 text-[9px] font-bold uppercase tracking-wide text-slate-500 dark:border-slate-700 dark:bg-slate-900/40 dark:text-slate-400 xl:grid">
+                            <div className="hidden grid-cols-[minmax(12rem,1fr)_minmax(9rem,.7fr)_minmax(10rem,.7fr)_minmax(12rem,1fr)_minmax(9rem,.55fr)] gap-3 border-b border-slate-100 bg-slate-50 px-3 py-1.5 text-[9px] font-bold uppercase tracking-wide text-slate-500 dark:border-slate-700 dark:bg-slate-900/40 dark:text-slate-400 xl:grid">
                                 <span>Future system</span>
                                 <span>Lead office</span>
                                 <span>Presentation state</span>
                                 <span>Intended scope</span>
-                                <span>Boundary</span>
+                                <span>Concept</span>
                             </div>
 
                             <div className="divide-y divide-slate-100 dark:divide-slate-700">
                                 {groupSystems.map((system) => (
                                     <article
                                         key={system.id}
-                                        className="grid min-w-0 gap-2 px-3 py-2 xl:grid-cols-[minmax(12rem,1fr)_minmax(9rem,.7fr)_minmax(10rem,.7fr)_minmax(12rem,1fr)_minmax(14rem,1.2fr)] xl:items-center xl:gap-3"
+                                        className="grid min-w-0 gap-2 px-3 py-2 transition-colors hover:bg-emerald-50/25 dark:hover:bg-slate-900/30 xl:grid-cols-[minmax(12rem,1fr)_minmax(9rem,.7fr)_minmax(10rem,.7fr)_minmax(12rem,1fr)_minmax(9rem,.55fr)] xl:items-center xl:gap-3"
                                     >
                                         <div className="min-w-0">
                                             <div className="text-[9px] font-bold uppercase tracking-[0.05em] text-slate-400">{system.id}</div>
@@ -62,15 +67,27 @@ export default function SystemDirectory({ systems }: { systems: MunicipalSystem[
                                         </div>
 
                                         <div className="flex min-w-0 gap-1.5 text-[10px] leading-4 text-slate-600 dark:text-slate-300">
-                                            <Database size={11} className="mt-0.5 shrink-0 text-slate-400" aria-hidden="true" />
-                                            <span>{system.recordScope}</span>
-                                        </div>
-
-                                        <div className="flex min-w-0 gap-1.5 text-[10px] leading-4 text-slate-600 dark:text-slate-300">
                                             {system.status === 'Not Enabled'
                                                 ? <ShieldOff size={11} className="mt-0.5 shrink-0 text-slate-400" aria-hidden="true" />
                                                 : <Clock3 size={11} className="mt-0.5 shrink-0 text-slate-400" aria-hidden="true" />}
-                                            <span>{system.integrationNote}</span>
+                                            <span className="line-clamp-3">{system.recordScope}</span>
+                                        </div>
+
+                                        <div className="flex items-center xl:justify-end">
+                                            <button
+                                                type="button"
+                                                onClick={() => onSelect(system)}
+                                                className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-emerald-200 bg-emerald-50 px-3 text-[10px] font-bold text-emerald-900 transition hover:bg-emerald-100 focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-200 dark:hover:bg-emerald-950/50"
+                                                aria-label={'View concept for ' + system.name}
+                                            >
+                                                View concept
+                                                <ChevronRight size={13} aria-hidden="true" />
+                                            </button>
+                                        </div>
+
+                                        <div className="sr-only">
+                                            <Database aria-hidden="true" />
+                                            {system.integrationNote}
                                         </div>
                                     </article>
                                 ))}
