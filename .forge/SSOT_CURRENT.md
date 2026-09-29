@@ -111,7 +111,13 @@ Current required work:
 
 - `S1-W04C — FUTURE SYSTEM FULL-PROTOTYPE SURFACES`
 
-W04C must turn every FUT-01 through FUT-15 entry into a credible whole-system static prototype using local React state only, illustrative prototype data, module-specific internal navigation, and native ONE TALIBON visual grammar. No backend routes or operational behavior are authorized.
+W04C must deliver:
+
+- a first-class Main Showcase Procurement / PR Tracking static interactive prototype with its own direct Work-sidebar destination;
+- a first-class HR Employee Portal sidebar destination using the existing real personnel-reference route;
+- exactly 14 Future Integrations — FUT-02 through FUT-15 — each as a credible whole-system static prototype using local React state, illustrative prototype data, module-specific internal navigation, and native ONE TALIBON visual grammar.
+
+One authenticated presentation route for Procurement is explicitly authorized. The 14 Future Integration modules must remain inside the shared Future Integrations surface with no dedicated backend routes or operational behavior.
 
 These may proceed in parallel only while file ownership remains disjoint.
 
