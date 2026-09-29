@@ -103,9 +103,9 @@ Completed current S1 corrections:
 
 Current required follow-up:
 
-- `S1-W04B — FUTURE INTEGRATION DETAIL SURFACES`
+- `S1-W04B — FUTURE INTEGRATION DETAIL SURFACES — INTEGRATED / VISUAL CHECK PENDING`
 
-W04B makes every FUT-01 through FUT-15 Future Integration entry enterable as a static concept preview inside the existing `/municipal-systems` route. No backend routes or fake functionality are authorized.
+Every FUT-01 through FUT-15 Future Integration entry is now enterable as a static concept preview inside the existing `/municipal-systems` route. No backend routes or fake functionality were added. Remaining S1 work is evidence-driven visual correction only before S1-M1 freeze.
 
 These may proceed in parallel only while file ownership remains disjoint.
 
