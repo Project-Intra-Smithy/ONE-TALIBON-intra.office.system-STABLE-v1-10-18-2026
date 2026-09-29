@@ -96,10 +96,16 @@ Corrected current implementation authority:
 
 `.forge/directives/S1-CORRECTED-SHOWCASE-IMPLEMENTATION-PLAN-2026-09-29.md`
 
-Next required work:
+Completed current S1 corrections:
 
-- `S1-W02 — FRE / GUIDED TOUR TARGETED CORRECTION`
-- `S1-W04 — FUTURE INTEGRATIONS + HR EMPLOYEE PORTAL PRESENTATION`
+- `S1-W02 — FRE / GUIDED TOUR TARGETED CORRECTION — INTEGRATED`
+- `S1-W04 — FUTURE INTEGRATIONS + HR EMPLOYEE PORTAL PRESENTATION — INTEGRATED`
+
+Current required follow-up:
+
+- `S1-W04B — FUTURE INTEGRATION DETAIL SURFACES`
+
+W04B makes every FUT-01 through FUT-15 Future Integration entry enterable as a static concept preview inside the existing `/municipal-systems` route. No backend routes or fake functionality are authorized.
 
 These may proceed in parallel only while file ownership remains disjoint.
 
