@@ -103,9 +103,15 @@ Completed current S1 corrections:
 
 Current required follow-up:
 
-- `S1-W04B — FUTURE INTEGRATION DETAIL SURFACES — INTEGRATED / VISUAL CHECK PENDING`
+- `S1-W04B — FUTURE INTEGRATION DETAIL SURFACES — INTEGRATED / VISUALLY INSUFFICIENT`
 
-Every FUT-01 through FUT-15 Future Integration entry is now enterable as a static concept preview inside the existing `/municipal-systems` route. No backend routes or fake functionality were added. Remaining S1 work is evidence-driven visual correction only before S1-M1 freeze.
+Visual inspection confirmed that W04B is too brochure-like for the stakeholder presentation.
+
+Current required work:
+
+- `S1-W04C — FUTURE SYSTEM FULL-PROTOTYPE SURFACES`
+
+W04C must turn every FUT-01 through FUT-15 entry into a credible whole-system static prototype using local React state only, illustrative prototype data, module-specific internal navigation, and native ONE TALIBON visual grammar. No backend routes or operational behavior are authorized.
 
 These may proceed in parallel only while file ownership remains disjoint.
 
