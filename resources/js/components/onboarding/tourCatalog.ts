@@ -22,22 +22,22 @@ export const presentationCredits: PresentationCredits = {
 
 const executive: TourStep[] = [
     { id: 'home', target: 'nav:home', title: 'Municipal operating picture', body: 'This workspace brings together municipality-level work, schedules, projects, and items requiring executive attention.' },
-    { id: 'notifications', target: 'shell:notifications', title: 'Items requiring attention', body: 'Use notifications to notice new office arrivals and memoranda available to this workspace without treating prototype activity as production reporting.' },
+    { id: 'notifications', target: 'shell:notifications', title: 'Items requiring attention', body: 'Use notifications to review new office arrivals and memoranda available to this workspace.' },
     { id: 'work-queue', target: 'nav:myWork', title: 'Work Queue', body: 'Track routed municipal work, current responsibility, and items that need action.' },
     { id: 'memoranda', target: 'nav:memoranda', title: 'Official Memoranda', body: 'Review formal internal memoranda available to this workspace. Publishing actions remain limited by actual authorization.' },
     { id: 'calendar', target: 'nav:calendar', title: 'Calendar & Meetings', body: 'Keep municipal schedules, meetings, deadlines, and coordinated activities visible.' },
     { id: 'records', target: 'nav:records', title: 'Records Register', body: 'Reference records available to the current authorized workspace.' },
-    { id: 'messages', target: 'nav:messages', title: 'Internal coordination', body: 'Use Messages for prototype internal communication across available municipal channels.' },
+    { id: 'messages', target: 'nav:messages', title: 'Internal coordination', body: 'Use Messages for internal communication across available municipal channels.' },
 ];
 
 const departmentHead: TourStep[] = [
     { id: 'home', target: 'nav:home', title: 'Your office context', body: 'Your office context determines which work, information, and actions are available in this workspace.' },
     { id: 'work-queue', target: 'nav:myWork', title: 'Work Queue', body: 'Track routed office work, current ownership, and items requiring action.' },
     { id: 'correspondence', target: 'nav:correspondence', title: 'Inbox & Routing', body: 'Receive, review, and follow official correspondence available to this office context.' },
-    { id: 'projects', target: 'nav:projectMonitoring', title: 'Project Monitoring', body: 'Review project information available to this department-head workspace without implying municipality-wide authority.' },
+    { id: 'projects', target: 'nav:projectMonitoring', title: 'Project Monitoring', body: 'Review project status, progress, milestones, and implementation information available to this workspace.' },
     { id: 'calendar', target: 'nav:calendar', title: 'Calendar', body: 'Keep office schedules, deadlines, and coordinated municipal activities visible.' },
-    { id: 'messages', target: 'nav:messages', title: 'Messages', body: 'Coordinate with available municipal channels using the current prototype messaging workspace.' },
-    { id: 'switcher', target: 'shell:workspace-switcher', title: 'Switch workspace', body: 'Return to the Showcase workspace selector when you need to evaluate another municipal role.' },
+    { id: 'messages', target: 'nav:messages', title: 'Messages', body: 'Coordinate with available municipal channels for day-to-day internal communication.' },
+    { id: 'switcher', target: 'shell:workspace-switcher', title: 'Switch workspace', body: 'Use Switch Workspace to return to the workspace selector and continue in another role or office context.' },
 ];
 
 const employee: TourStep[] = [
@@ -46,7 +46,7 @@ const employee: TourStep[] = [
     { id: 'memoranda', target: 'nav:memoranda', title: 'Official Memoranda', body: 'Review formal internal memoranda delivered to this workspace and acknowledge them when required.' },
     { id: 'calendar', target: 'nav:calendar', title: 'Calendar', body: 'Keep upcoming schedules, deadlines, meetings, and municipal activities visible.' },
     { id: 'records', target: 'nav:records', title: 'Records Register', body: 'Reference records available to your current authorized workspace.' },
-    { id: 'messages', target: 'nav:messages', title: 'Messages', body: 'Use Messages for day-to-day prototype internal coordination.' },
+    { id: 'messages', target: 'nav:messages', title: 'Messages', body: 'Use Messages for day-to-day internal coordination.' },
 ];
 
 const humanResources: TourStep[] = [
@@ -64,15 +64,15 @@ const legislative: TourStep[] = [
     { id: 'records', target: 'nav:records', title: 'Records Register', body: 'Reference records available to the current authorized workspace.' },
     { id: 'calendar', target: 'nav:calendar', title: 'Calendar', body: 'Keep session schedules, deadlines, and coordinated municipal activities visible.' },
     { id: 'meetings', target: 'nav:meetings', title: 'Meetings', body: 'Review the meeting information available to this workspace.' },
-    { id: 'messages', target: 'nav:messages', title: 'Messages', body: 'Use Messages for prototype internal coordination across available municipal channels.' },
+    { id: 'messages', target: 'nav:messages', title: 'Messages', body: 'Use Messages for internal coordination across available municipal channels.' },
 ];
 
 const systemAdministration: TourStep[] = [
     { id: 'home', target: 'nav:home', title: 'Administration workspace', body: 'Home summarizes the current system-administration operating context.' },
-    { id: 'admin', target: 'nav:systemAdministration', title: 'System Administration', body: 'Open the administration surface for the functions currently authorized and wired in this prototype.' },
+    { id: 'admin', target: 'nav:systemAdministration', title: 'System Administration', body: 'Open the administration surface for the functions currently available to this workspace.' },
     { id: 'systems', target: 'nav:municipalSystems', title: 'Systems Directory', body: 'Review the internal directory of municipal systems, ownership, status, record scope, and integration context.' },
     { id: 'staff', target: 'nav:employeeDirectory', title: 'Staff Directory', body: 'Use the staff reference surface for work context available to this workspace.' },
-    { id: 'switcher', target: 'shell:workspace-switcher', title: 'Switch workspace', body: 'Return to the Showcase workspace selector to evaluate another municipal role. Audit & Security is intentionally not treated as an ordinary tour destination.' },
+    { id: 'switcher', target: 'shell:workspace-switcher', title: 'Switch workspace', body: 'Use Switch Workspace to return to the workspace selector and continue in another role or office context.' },
 ];
 
 export const personaTours: Record<PersonaTourKey, TourStep[]> = {
