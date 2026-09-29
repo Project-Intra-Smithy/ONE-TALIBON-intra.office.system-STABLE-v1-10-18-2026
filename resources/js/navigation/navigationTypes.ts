@@ -4,6 +4,10 @@ import type { NavigationPermissions, WorkspaceExperience } from '../types';
 export type PortalGroupKey =
     | 'home'
     | 'work'
+    | 'files'
+    | 'communication'
+    | 'schedule'
+    | 'people'
     | 'organization'
     | 'planning'
     | 'administration'
