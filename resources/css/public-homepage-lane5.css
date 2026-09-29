@@ -269,9 +269,6 @@
     color: white;
 }
 
-.public-reference-mobile-nav {
-    display: none;
-}
 
 .public-reference-shell {
     padding-bottom: 0;
@@ -1011,10 +1008,6 @@
 
     .public-reference-menu {
         display: inline-flex;
-    }
-
-    .public-reference-mobile-nav {
-        display: block;
     }
 
     .public-reference-layout {

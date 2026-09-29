@@ -15,7 +15,7 @@ export default function MunicipalBrand({
 }: Props) {
     return <div
         className={`municipal-brand flex min-w-0 items-center gap-3 ${inverse ? 'text-white' : 'text-[#163027] dark:text-slate-100'}`}
-        aria-label={iconOnly ? `One Talibon · ${publicPortal ? 'Municipal Public Portal' : 'LGU Intra-Office Portal'}` : undefined}
+        aria-label={iconOnly ? `One Talibon · ${publicPortal ? 'Municipal Digital Portal' : 'LGU Intra-Office Portal'}` : undefined}
     >
         <img
             src={talibonAssets.municipalSeal}

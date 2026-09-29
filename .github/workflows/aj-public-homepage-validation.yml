@@ -1,9 +1,6 @@
 name: AJ Public Homepage Validation
 
 on:
-  push:
-    branches:
-      - AJ-TALIBON-PUBLIC-HOMEPAGE-GREEN-REFINEMENT
   workflow_dispatch:
 
 permissions:

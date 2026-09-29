@@ -99,7 +99,7 @@ export default function PublicHeader({ authenticated }: Props) {
         <nav
             id="public-mobile-navigation"
             aria-label="Mobile Municipal Public Portal navigation"
-            className={`${open ? 'block' : 'hidden'} public-navigation public-reference-mobile-nav`}
+            className={`${open ? 'block' : 'hidden'} public-navigation public-reference-mobile-nav xl:hidden`}
         >
             <div className="public-reference-mobile-links">
                 {publicLinks.map(([label, href]) => <a
