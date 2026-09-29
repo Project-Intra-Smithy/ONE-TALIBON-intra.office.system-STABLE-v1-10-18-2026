@@ -1,13 +1,14 @@
 import { Link } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
 import { Network, Search } from 'lucide-react';
-import AppLayout from '../../layouts/AppLayout';
+import FutureIntegrationDetail from '../../components/municipal-systems/FutureIntegrationDetail';
+import ProcurementWorkspace from '../../components/municipal-systems/ProcurementWorkspace';
+import SystemDirectory from '../../components/municipal-systems/SystemDirectory';
 import PageFrame from '../../components/PageFrame';
 import PageHeader from '../../components/PageHeader';
-import FutureIntegrationDetail from '../../components/municipal-systems/FutureIntegrationDetail';
-import FutureSystemPrototype from '../../components/municipal-systems/FutureSystemPrototype';
-import SystemDirectory from '../../components/municipal-systems/SystemDirectory';
-import { procurementPrototype } from '../../data/municipal/futureSystemPrototypeData';
+import {
+    procurementPrototype,
+} from '../../data/municipal/futureSystemPrototypeData';
 import {
     corePlatform,
     initialRollout,
@@ -16,6 +17,7 @@ import {
     systemGroups,
     type MunicipalSystem,
 } from '../../data/municipal/systems';
+import AppLayout from '../../layouts/AppLayout';
 
 type View = 'rollout' | 'future' | 'core';
 
@@ -68,7 +70,7 @@ export default function Index({ showcase }: Props) {
         return (
             <AppLayout title="Procurement / PR Tracking">
                 <PageFrame density="compact">
-                    <FutureSystemPrototype prototype={procurementPrototype} />
+                    <ProcurementWorkspace prototype={procurementPrototype} />
                 </PageFrame>
             </AppLayout>
         );
@@ -79,7 +81,7 @@ export default function Index({ showcase }: Props) {
         setView(nextView);
     };
 
-    const openConcept = (system: MunicipalSystem) => {
+    const openSystem = (system: MunicipalSystem) => {
         setView('future');
         setSelectedSystem(system);
     };
@@ -96,15 +98,22 @@ export default function Index({ showcase }: Props) {
 
                 {!selectedSystem && (
                     <div role="tablist" aria-label="Municipal systems presentation views" className="grid gap-1 rounded-xl border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-[#142236] md:grid-cols-3">
-                        {views.map((item) => {
-                            const selected = view === item.id;
-                            return (
-                                <button key={item.id} type="button" role="tab" aria-selected={selected} onClick={() => selectView(item.id)} className={'min-h-12 rounded-lg px-3 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30 ' + (selected ? 'bg-emerald-50 text-emerald-950 dark:bg-emerald-950/35 dark:text-emerald-100' : 'text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-900/40')}>
-                                    <div className="text-[12px] font-bold">{item.label}</div>
-                                    <div className="mt-0.5 text-[10px] leading-4 opacity-75">{item.description}</div>
-                                </button>
-                            );
-                        })}
+                        {views.map((item) => (
+                            <button
+                                key={item.id}
+                                type="button"
+                                role="tab"
+                                aria-selected={view === item.id}
+                                onClick={() => selectView(item.id)}
+                                className={'min-h-12 rounded-lg px-3 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30 '
+                                    + (view === item.id
+                                        ? 'bg-emerald-50 text-emerald-950 dark:bg-emerald-950/35 dark:text-emerald-100'
+                                        : 'text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-900/40')}
+                            >
+                                <div className="text-[12px] font-bold">{item.label}</div>
+                                <div className="mt-0.5 text-[10px] leading-4 opacity-75">{item.description}</div>
+                            </button>
+                        ))}
                     </div>
                 )}
 
@@ -114,9 +123,9 @@ export default function Index({ showcase }: Props) {
                     <>
                         {view === 'rollout' && (
                             <section aria-labelledby="initial-rollout-title" className="space-y-2">
-                                <div className="flex flex-col gap-1 rounded-xl border border-emerald-100 bg-emerald-50/50 px-3 py-2 dark:border-emerald-900/50 dark:bg-emerald-950/20">
+                                <div className="rounded-xl border border-emerald-100 bg-emerald-50/50 px-3 py-2 dark:border-emerald-900/50 dark:bg-emerald-950/20">
                                     <h2 id="initial-rollout-title" className="text-[13px] font-bold text-slate-950 dark:text-slate-100">Initial Rollout</h2>
-                                    <p className="text-[11px] leading-4 text-slate-600 dark:text-slate-300">Five client-aligned priorities. Procurement is the main presentation workspace; HR remains the current personnel-reference foundation.</p>
+                                    <p className="mt-0.5 text-[11px] leading-4 text-slate-600 dark:text-slate-300">Five client-aligned priorities. Procurement is the main presentation workspace; HR remains the current personnel-reference foundation.</p>
                                 </div>
                                 <div className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]">
                                     <div className="divide-y divide-slate-100 dark:divide-slate-700">
@@ -167,13 +176,14 @@ export default function Index({ showcase }: Props) {
                                         <input value={q} onChange={(event) => setQ(event.target.value)} placeholder="Filter future system, office, or intended scope" className="min-h-9 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-3 text-sm outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100" />
                                     </label>
                                     <select aria-label="Future Integration group" value={group} onChange={(event) => setGroup(event.target.value)} className="min-h-9 rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100">
-                                        <option value="">All future groups</option>{systemGroups.map((item) => <option key={item}>{item}</option>)}
+                                        <option value="">All future groups</option>
+                                        {systemGroups.map((item) => <option key={item}>{item}</option>)}
                                     </select>
                                     <select aria-label="Future Integration status" value={status} onChange={(event) => setStatus(event.target.value)} className="min-h-9 rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100">
                                         <option value="">All future statuses</option><option>Planned</option><option>Not Enabled</option>
                                     </select>
                                 </div>
-                                <SystemDirectory systems={systems} onSelect={openConcept} />
+                                <SystemDirectory systems={systems} onSelect={openSystem} />
                             </section>
                         )}
 
