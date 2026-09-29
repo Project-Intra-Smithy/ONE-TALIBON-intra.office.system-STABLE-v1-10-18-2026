@@ -10,13 +10,23 @@ type Props = {
     onFinish: () => void;
 };
 
-function tourTarget(target: string, visibleOnly = true): HTMLElement | null {
-    const candidates = Array.from(document.querySelectorAll<HTMLElement>('[data-tour]'))
+function tourCandidates(target: string): HTMLElement[] {
+    return Array.from(document.querySelectorAll<HTMLElement>('[data-tour]'))
         .filter((element) => element.dataset.tour === target);
+}
 
+function tourTarget(target: string, visibleOnly = true): HTMLElement | null {
+    const candidates = tourCandidates(target);
     return (visibleOnly
         ? candidates.find((element) => element.offsetParent !== null)
         : candidates[0]) ?? null;
+}
+
+function hiddenNavigationTarget(target: string): HTMLElement | null {
+    const candidates = tourCandidates(target);
+    return candidates.find((element) => element.closest('section')?.offsetParent !== null)
+        ?? candidates[0]
+        ?? null;
 }
 
 function visibleNavigationToggle(): HTMLButtonElement | null {
@@ -46,7 +56,9 @@ async function revealTourTarget(target: string): Promise<HTMLElement | null> {
         }
     }
 
-    const hidden = tourTarget(target, false);
+    const hidden = target.startsWith('nav:')
+        ? hiddenNavigationTarget(target)
+        : tourTarget(target, false);
     if (!hidden) return null;
 
     const owningSection = hidden.closest('section');

@@ -74,7 +74,7 @@ export default function DestinationOverviewDialog({ overview }: Props) {
                 ref={triggerRef}
                 type="button"
                 onClick={() => setOpen(true)}
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-[var(--municipal-muted)] transition hover:bg-[var(--municipal-hover)] hover:text-[var(--municipal-brand)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--municipal-muted)] transition hover:bg-[var(--municipal-hover)] hover:text-[var(--municipal-brand)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]"
                 aria-label={`About ${overview.title}`}
                 title={`About ${overview.title}`}
             >
@@ -121,7 +121,7 @@ export default function DestinationOverviewDialog({ overview }: Props) {
 
                             <section>
                                 <h3 className="text-sm font-extrabold text-[var(--municipal-text)]">What this area is for</h3>
-                                <ul className="mt-2 space-y-2 pl-5 text-sm leading-6 text-[var(--municipal-muted)] [list-style:disc]">
+                                <ul className="mt-2 list-disc space-y-2 pl-5 text-sm leading-6 text-[var(--municipal-muted)]">
                                     {overview.purpose.map((item) => <li key={item}>{item}</li>)}
                                 </ul>
                             </section>
