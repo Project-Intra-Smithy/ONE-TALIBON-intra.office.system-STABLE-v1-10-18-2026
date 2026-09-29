@@ -43,5 +43,5 @@ export const portalDestinations: Partial<Record<PortalDestinationKey, PortalDest
     users: { key: 'users', label: 'Users', href: portalRoutePlan.users, icon: UserCog, group: 'administration', readiness: 'integration_pending', permission: 'systemAdministration' },
     adminDepartments: { key: 'adminDepartments', label: 'Departments', href: portalRoutePlan.adminDepartments, icon: Building2, group: 'administration', readiness: 'integration_pending', permission: 'systemAdministration' },
     systemAdministration: { key: 'systemAdministration', label: 'System Administration', href: portalRoutePlan.systemAdministration, icon: Settings, group: 'administration', readiness: 'wired', permission: 'systemAdministration' },
-    municipalSystems: { key: 'municipalSystems', label: 'Systems Directory', href: portalRoutePlan.municipalSystems, icon: AppWindow, group: 'systems', readiness: 'wired' },
+    municipalSystems: { key: 'municipalSystems', label: 'Future Integrations', href: portalRoutePlan.municipalSystems, icon: AppWindow, group: 'systems', readiness: 'wired' },
 };
