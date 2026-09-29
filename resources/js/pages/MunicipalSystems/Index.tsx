@@ -1,119 +1,224 @@
 import { useMemo, useState } from 'react';
-import { Activity, Clock3, Link2, Network, Search, ShieldOff } from 'lucide-react';
+import { Network, Search } from 'lucide-react';
 import AppLayout from '../../layouts/AppLayout';
 import PageFrame from '../../components/PageFrame';
 import PageHeader from '../../components/PageHeader';
 import SystemDirectory from '../../components/municipal-systems/SystemDirectory';
-import { municipalSystems, systemGroups } from '../../data/municipal/systems';
+import {
+    corePlatform,
+    initialRollout,
+    municipalSystems,
+    supportingFoundations,
+    systemGroups,
+} from '../../data/municipal/systems';
 
-const summaryTone = {
-    Active: {
-        shell: 'border-emerald-100 bg-emerald-50/80 text-emerald-950 dark:border-emerald-900/50 dark:bg-emerald-950/35 dark:text-emerald-200',
-        icon: 'bg-white/80 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300',
-        Icon: Activity,
-    },
-    Integrated: {
-        shell: 'border-teal-100 bg-teal-50/80 text-teal-950 dark:border-teal-900/50 dark:bg-teal-950/35 dark:text-teal-200',
-        icon: 'bg-white/80 text-teal-700 dark:bg-teal-950/50 dark:text-teal-300',
-        Icon: Link2,
-    },
-    'Not Enabled': {
-        shell: 'border-slate-200 bg-slate-50/90 text-slate-800 dark:border-slate-700 dark:bg-slate-900/45 dark:text-slate-200',
-        icon: 'bg-white/80 text-slate-600 dark:bg-slate-800 dark:text-slate-300',
-        Icon: ShieldOff,
-    },
-    Planned: {
-        shell: 'border-amber-100 bg-amber-50/80 text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200',
-        icon: 'bg-white/80 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300',
-        Icon: Clock3,
-    },
+type View = 'rollout' | 'future' | 'core';
+
+const views: Array<{ id: View; label: string; description: string }> = [
+    { id: 'rollout', label: 'Initial Rollout', description: 'Exactly five showcase priorities with their real current state.' },
+    { id: 'future', label: 'Future Integrations', description: 'Static presentation of missing or not-currently-enabled municipal pipeline systems.' },
+    { id: 'core', label: 'Core Platform', description: 'ONE TALIBON backbone and current supporting foundations.' },
+];
+
+const rolloutTone = {
+    'Current / Working': 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200',
+    'Future Integration': 'bg-amber-50 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200',
+    'Current Personnel Reference': 'bg-blue-50 text-blue-800 dark:bg-blue-950/40 dark:text-blue-200',
+} as const;
+
+const coreTone = {
+    Current: 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200',
+    'Current Foundation': 'bg-teal-50 text-teal-800 dark:bg-teal-950/40 dark:text-teal-200',
+    'Platform Foundation': 'bg-blue-50 text-blue-800 dark:bg-blue-950/40 dark:text-blue-200',
+    'Integration Direction': 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200',
 } as const;
 
 export default function Index() {
+    const [view, setView] = useState<View>('rollout');
     const [q, setQ] = useState('');
     const [group, setGroup] = useState('');
     const [status, setStatus] = useState('');
 
     const systems = useMemo(() => {
         const needle = q.trim().toLowerCase();
+
         return municipalSystems.filter((system) =>
             (!group || system.group === group)
             && (!status || system.status === status)
-            && (!needle || [system.name, system.group, system.owningOffice, system.purpose, system.recordScope, system.integrationNote].join(' ').toLowerCase().includes(needle))
+            && (!needle || [
+                system.name,
+                system.group,
+                system.owningOffice,
+                system.purpose,
+                system.recordScope,
+                system.integrationNote,
+            ].join(' ').toLowerCase().includes(needle))
         );
     }, [q, group, status]);
 
-    const counts = {
-        Active: systems.filter((system) => system.status === 'Active').length,
-        Integrated: systems.filter((system) => system.status === 'Integrated').length,
-        'Not Enabled': systems.filter((system) => system.status === 'Not Enabled').length,
-        Planned: systems.filter((system) => system.status === 'Planned').length,
-    } as const;
-
     return (
-        <AppLayout title="Systems Directory">
+        <AppLayout title="Future Integrations">
             <PageFrame density="compact">
                 <PageHeader
-                    eyebrow="Municipal systems map"
-                    title="Systems Directory"
-                    description="Internal directory and map of municipal systems, their owning offices, operating status, record scope, and current integration context."
+                    eyebrow="ONE TALIBON digital operations platform"
+                    title="Future Integrations"
+                    description="Core platform backbone, exactly five initial-rollout priorities, and planned municipal pipeline systems presented without implying operational capability."
                     icon={Network}
                 />
 
-                <section className="grid gap-1.5 sm:grid-cols-2 xl:grid-cols-4" aria-label="Systems directory status summary">
-                    {(Object.keys(summaryTone) as Array<keyof typeof summaryTone>).map((label) => {
-                        const { shell, icon, Icon } = summaryTone[label];
+                <div
+                    role="tablist"
+                    aria-label="Municipal systems presentation views"
+                    className="grid gap-1 rounded-xl border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-[#142236] md:grid-cols-3"
+                >
+                    {views.map((item) => {
+                        const selected = view === item.id;
+
                         return (
-                            <div key={label} className={`flex min-h-[46px] min-w-0 items-center gap-2.5 rounded-lg border px-3 py-2 ${shell}`}>
-                                <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md ${icon}`}>
-                                    <Icon size={14} aria-hidden="true" />
-                                </span>
-                                <div className="min-w-0">
-                                    <div className="text-[16px] font-extrabold leading-none tabular-nums">{counts[label]}</div>
-                                    <div className="mt-1 truncate text-[10px] font-semibold leading-none opacity-75">{label}</div>
-                                </div>
-                            </div>
+                            <button
+                                key={item.id}
+                                type="button"
+                                role="tab"
+                                aria-selected={selected}
+                                onClick={() => setView(item.id)}
+                                className={
+                                    'min-h-12 rounded-lg px-3 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30 '
+                                    + (selected
+                                        ? 'bg-emerald-50 text-emerald-950 dark:bg-emerald-950/35 dark:text-emerald-100'
+                                        : 'text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-900/40')
+                                }
+                            >
+                                <div className="text-[12px] font-bold">{item.label}</div>
+                                <div className="mt-0.5 text-[10px] leading-4 opacity-75">{item.description}</div>
+                            </button>
                         );
                     })}
-                </section>
-
-                <div className="grid gap-1.5 rounded-xl border border-slate-200 bg-white p-2 dark:border-slate-700 dark:bg-[#142236] md:grid-cols-[minmax(0,1fr)_230px_190px]">
-                    <label className="relative min-w-0">
-                        <span className="sr-only">Search systems directory</span>
-                        <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true" />
-                        <input
-                            value={q}
-                            onChange={(event) => setQ(event.target.value)}
-                            placeholder="Search system, office, scope, or context"
-                            className="min-h-9 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-3 text-sm outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
-                        />
-                    </label>
-
-                    <select
-                        aria-label="System group"
-                        value={group}
-                        onChange={(event) => setGroup(event.target.value)}
-                        className="min-h-9 rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
-                    >
-                        <option value="">All groups</option>
-                        {systemGroups.map((item) => <option key={item}>{item}</option>)}
-                    </select>
-
-                    <select
-                        aria-label="System status"
-                        value={status}
-                        onChange={(event) => setStatus(event.target.value)}
-                        className="min-h-9 rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
-                    >
-                        <option value="">All statuses</option>
-                        <option>Active</option>
-                        <option>Integrated</option>
-                        <option>Not Enabled</option>
-                        <option>Planned</option>
-                    </select>
                 </div>
 
-                <SystemDirectory systems={systems} />
+                {view === 'rollout' && (
+                    <section aria-labelledby="initial-rollout-title" className="space-y-2">
+                        <div className="flex flex-col gap-1 rounded-xl border border-emerald-100 bg-emerald-50/50 px-3 py-2 dark:border-emerald-900/50 dark:bg-emerald-950/20">
+                            <h2 id="initial-rollout-title" className="text-[13px] font-bold text-slate-950 dark:text-slate-100">
+                                Initial Rollout
+                            </h2>
+                            <p className="text-[11px] leading-4 text-slate-600 dark:text-slate-300">
+                                Five priorities only. Current foundations stay current; Procurement remains visibly future; HR remains personnel-reference only.
+                            </p>
+                        </div>
+
+                        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]">
+                            <div className="divide-y divide-slate-100 dark:divide-slate-700">
+                                {initialRollout.map((item, index) => (
+                                    <article key={item.id} className="grid gap-2 px-3 py-2.5 md:grid-cols-[36px_minmax(0,1fr)_220px] md:items-center">
+                                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-[11px] font-extrabold text-slate-600 dark:bg-slate-800 dark:text-slate-200">
+                                            {index + 1}
+                                        </div>
+                                        <div className="min-w-0">
+                                            <h3 className="text-[13px] font-bold text-slate-950 dark:text-slate-100">{item.name}</h3>
+                                            <p className="mt-0.5 text-[10px] leading-4 text-slate-500 dark:text-slate-400">{item.description}</p>
+                                        </div>
+                                        <div className="md:text-right">
+                                            <span className={'inline-flex rounded-full px-2 py-1 text-[9px] font-bold ' + rolloutTone[item.state]}>
+                                                {item.state}
+                                            </span>
+                                        </div>
+                                    </article>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                )}
+
+                {view === 'future' && (
+                    <section aria-labelledby="future-integrations-title" className="space-y-2">
+                        <div className="rounded-xl border border-amber-100 bg-amber-50/60 px-3 py-2 dark:border-amber-900/50 dark:bg-amber-950/20">
+                            <h2 id="future-integrations-title" className="text-[13px] font-bold text-slate-950 dark:text-slate-100">
+                                Future Integrations
+                            </h2>
+                            <p className="mt-0.5 text-[11px] leading-4 text-slate-600 dark:text-slate-300">
+                                Static presentation catalog only. No module below exposes an operational route, working action, CRUD surface, live record set, or analytics.
+                            </p>
+                        </div>
+
+                        <div className="grid gap-1.5 rounded-xl border border-slate-200 bg-white p-2 dark:border-slate-700 dark:bg-[#142236] md:grid-cols-[minmax(0,1fr)_230px_190px]">
+                            <label className="relative min-w-0">
+                                <span className="sr-only">Search Future Integrations</span>
+                                <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+                                <input
+                                    value={q}
+                                    onChange={(event) => setQ(event.target.value)}
+                                    placeholder="Filter future system, office, or intended scope"
+                                    className="min-h-9 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-3 text-sm outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
+                                />
+                            </label>
+
+                            <select
+                                aria-label="Future Integration group"
+                                value={group}
+                                onChange={(event) => setGroup(event.target.value)}
+                                className="min-h-9 rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
+                            >
+                                <option value="">All future groups</option>
+                                {systemGroups.map((item) => <option key={item}>{item}</option>)}
+                            </select>
+
+                            <select
+                                aria-label="Future Integration status"
+                                value={status}
+                                onChange={(event) => setStatus(event.target.value)}
+                                className="min-h-9 rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
+                            >
+                                <option value="">All future statuses</option>
+                                <option>Planned</option>
+                                <option>Not Enabled</option>
+                            </select>
+                        </div>
+
+                        <SystemDirectory systems={systems} />
+                    </section>
+                )}
+
+                {view === 'core' && (
+                    <section aria-labelledby="core-platform-title" className="space-y-2">
+                        <div className="rounded-xl border border-emerald-100 bg-emerald-50/50 px-3 py-2 dark:border-emerald-900/50 dark:bg-emerald-950/20">
+                            <h2 id="core-platform-title" className="text-[13px] font-bold text-slate-950 dark:text-slate-100">
+                                Core Platform Backbone
+                            </h2>
+                            <p className="mt-0.5 text-[11px] leading-4 text-slate-600 dark:text-slate-300">
+                                ONE TALIBON provides the common authenticated, routing, workflow, file, audit, and integration foundation. Encode once, use many times.
+                            </p>
+                        </div>
+
+                        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]">
+                            <div className="divide-y divide-slate-100 dark:divide-slate-700">
+                                {corePlatform.map((item) => (
+                                    <article key={item.name} className="grid gap-2 px-3 py-2 md:grid-cols-[minmax(0,1fr)_180px] md:items-center">
+                                        <div className="min-w-0">
+                                            <h3 className="text-[12px] font-bold text-slate-950 dark:text-slate-100">{item.name}</h3>
+                                            <p className="mt-0.5 text-[10px] leading-4 text-slate-500 dark:text-slate-400">{item.description}</p>
+                                        </div>
+                                        <div className="md:text-right">
+                                            <span className={'inline-flex rounded-full px-2 py-1 text-[9px] font-bold ' + coreTone[item.state]}>
+                                                {item.state}
+                                            </span>
+                                        </div>
+                                    </article>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-[#142236]">
+                            <h2 className="text-[12px] font-bold text-slate-950 dark:text-slate-100">Current supporting foundations</h2>
+                            <div className="mt-2 grid gap-1.5 md:grid-cols-2">
+                                {supportingFoundations.map((item) => (
+                                    <div key={item} className="rounded-lg bg-slate-50 px-2.5 py-2 text-[10px] leading-4 text-slate-600 dark:bg-slate-900/40 dark:text-slate-300">
+                                        {item}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                )}
             </PageFrame>
         </AppLayout>
     );
