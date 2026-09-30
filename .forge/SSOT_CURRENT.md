@@ -20,17 +20,71 @@ Accepted repository branch:
 
 `main`
 
-Resolve the exact live `main` SHA from Git before every state transition.
+Successful S1 showcase promotion merge:
 
-At this governance reconciliation, the accepted application/runtime payload is:
+`3086a66042b81dc6c8e00230ecfa98f9607b8395`
 
-`314b6661b34d4a70272d2a079f7cdda238b522ae`
+Promotion method:
 
-Commit:
+- non-force fast-forward of `main` to a reconciliation merge commit;
+- first parent preserved the prior `main` lineage at `9b5193e3502afded5f967f412b2a1d452e433bc0`;
+- second parent preserved the successful integrated S1 lineage at `908bbe915b0110dcf8d2bf8122039a99f7257d23`;
+- promoted tree equals the validated integrated showcase tree.
 
-`test(b1): prove records aggregate parity`
+Resolve the exact live `main` SHA from Git before every future state transition because documentation commits may advance `main` beyond the promotion merge.
 
-This exact B1 payload was promoted to `main` by a direct non-force fast-forward.
+## September 30, 2026 showcase outcome
+
+`SUCCESSFUL SHOWCASE DAY`
+
+The live S1 showcase completed successfully on **2026-09-30**.
+
+Historical showcase evidence:
+
+`.forge/evidence/showcase/S1-SUCCESSFUL-SHOWCASE-2026-09-30.md`
+
+Preserved rollback tag:
+
+`S1-SHOWCASE-ACED-2026-09-30`
+
+The rollback tag marks the exact pre-AJ version that successfully completed the live showcase and must not be rewritten or deleted.
+
+## Validated showcase evidence
+
+The final integrated candidate demonstrated:
+
+- public ONE TALIBON homepage;
+- Employee Login entry point;
+- authenticated dashboard;
+- inter-office Work Request creation;
+- routing and approval behavior;
+- completion workflow;
+- municipal workspace navigation;
+- post-showcase AJ municipal homepage integration with repo-backed Talibon imagery.
+
+Validation observed on the integrated candidate:
+
+- TypeScript `tsc --noEmit`: **PASS**;
+- production Vite build: **PASS**;
+- Laravel application boot inspection: **PASS**;
+- showcase environment with debug disabled;
+- PostgreSQL database driver;
+- file cache and session drivers;
+- synchronous queue;
+- `/up`: **HTTP 200**;
+- local homepage visual check: **PASS**.
+
+## Runtime record
+
+The custom multi-worker showcase proxy was not used for the successful final presentation path.
+
+The successful fallback was:
+
+`php artisan serve --host=127.0.0.1 --port=8000`
+
+External showcase transport used a Cloudflare Quick Tunnel pointed at the local Laravel server.
+
+This was a successful **showcase transport strategy**, not an assertion of final production hosting architecture.
 
 ## Completed backend evidence
 
@@ -38,98 +92,53 @@ This exact B1 payload was promoted to `main` by a direct non-force fast-forward.
 
 `COMPLETE`
 
-Proved:
-
-- isolated Windows checkout;
-- disposable `talibon_portal_test`;
-- Laravel PostgreSQL session timezone `Asia/Manila`;
-- protected `talibon_portal` untouched;
-- isolated runtime;
-- browser smoke;
-- tracked product source unchanged.
-
 ### B1 — Records Registry Query Consolidation
 
 `ACCEPTED / PROMOTED`
 
-Exact payload:
+Exact B1 payload:
 
 `314b6661b34d4a70272d2a079f7cdda238b522ae`
 
-Observed candidate evidence:
+Observed B1 evidence:
 
 - targeted Records: `21 passed / 630 assertions`;
 - BH1/BH2: `3 passed / 25 assertions`;
 - full Feature suite: `400 passed / 5291 assertions`;
 - `records.inertia: 22 -> 17 queries`;
 - `documents.records: 22 -> 17 queries`;
-- exact candidate preserved;
-- UAT database untouched.
+- protected UAT database untouched.
 
-B1 is the current:
+B1 remains the accepted prototype backend baseline carried forward into the showcased product line.
 
-`PROTOTYPE BACKEND BASELINE`
+## Current program state
 
-## Current program
+`S1 SHOWCASE — COMPLETE / PROMOTED`
 
-`SEPTEMBER 30 PROTOTYPE SHOWCASE PREPARATION`
+Pre-showcase preparation is closed.
 
-Showcase:
+The next engineering phase is **post-showcase hardening and deployment planning**. It is not an automatic broad redesign or feature expansion.
 
-`2026-09-30 15:00 +08`
+Future work must begin from live `main` and should be driven by:
 
-Expected attendance:
+1. stakeholder feedback from the successful showcase;
+2. production-readiness gaps;
+3. deployment architecture decisions;
+4. known deferred engineering findings;
+5. explicitly authorized product expansion.
 
-`16-20`
+## Current product presentation
 
-Current sequence:
+The promoted product line includes:
 
-`BACKEND FREEZE -> LIGHT UI -> INTEGRATED VALIDATION -> CLOUDFLARE QUICK TUNNEL REHEARSAL -> FULL DRESS REHEARSAL -> FREEZE -> SHOWCASE`
-
-The governing objective is showcase success, not broad engineering completeness.
-
-## Current phase
-
-`S1-W01 — SHELL HIERARCHY & NAVIGATION BEHAVIOR — INTEGRATED`
-
-Corrected current implementation authority:
-
-`.forge/directives/S1-CORRECTED-SHOWCASE-IMPLEMENTATION-PLAN-2026-09-29.md`
-
-Completed current S1 corrections:
-
-- `S1-W02 — FRE / GUIDED TOUR TARGETED CORRECTION — INTEGRATED`
-- `S1-W04 — FUTURE INTEGRATIONS + HR EMPLOYEE PORTAL PRESENTATION — INTEGRATED`
-
-Current required follow-up:
-
-- `S1-W04B — FUTURE INTEGRATION DETAIL SURFACES — INTEGRATED / VISUAL CHECK PENDING`
-
-Every FUT-01 through FUT-15 Future Integration entry is now enterable as a static concept preview inside the existing `/municipal-systems` route. No backend routes or fake functionality were added. Remaining S1 work is evidence-driven visual correction only before S1-M1 freeze.
-
-These may proceed in parallel only while file ownership remains disjoint.
-
-`S1-W03 — DASHBOARD PRIORITY & QUICK ACCESS PRESENTATION` is CANCELLED. The current Dashboard structure is preserved unless Kirch explicitly identifies a concrete Dashboard defect.
-
-W05 and W06 are evidence-driven only; there is no automatic broad polish or redesign program.
-
-Backend product behavior is frozen for showcase purposes.
-
-Backend implementation may reopen only when direct rehearsal evidence proves a material presentation blocker involving responsiveness, stability, persistence, authorization, delivery, or recovery.
-
-## Showcase directive
-
-Authoritative repository directive:
-
-`.forge/directives/PROTOTYPE-SHOWCASE-COMMAND-2026-09-30.md`
-
-S1 implementation authority:
-
-`.forge/directives/S1-CORRECTED-SHOWCASE-IMPLEMENTATION-PLAN-2026-09-29.md`
-
-Historical/superseded planning record:
-
-`.forge/directives/S1-M0-FINAL-UI-ARCHITECTURE-IMPLEMENTATION-LOCK.md`
+- ONE TALIBON identity;
+- Talibon Intra-Office Portal public entry surface;
+- Employee Login;
+- AJ-derived municipal homepage composition selectively integrated into the validated S1 candidate;
+- repo-backed Talibon municipal imagery;
+- role-aware authenticated workspace;
+- inter-office transaction / Work Request workflow;
+- Records, Correspondence, Memoranda, Calendar, Messages, employee/office surfaces, executive and municipal-system prototype surfaces already present in the S1 line.
 
 ## Database boundary
 
@@ -141,11 +150,15 @@ Disposable engineering/test database:
 
 `talibon_portal_test`
 
-Never run destructive engineering preparation against `talibon_portal`.
+Showcase database used during S1 final preparation:
+
+`talibon_showcase_s1`
+
+Never run destructive engineering preparation against protected UAT data.
 
 ## Deferred findings
 
-These remain known but are not pre-showcase work unless direct rehearsal evidence promotes them into blockers:
+Known deferred findings remain non-automatic work until explicitly prioritized:
 
 - PERF-01 — `DocumentArchiveQuery` full-corpus materialization;
 - SEM-01 — Dashboard attention semantics;
@@ -161,21 +174,18 @@ Live Git/runtime truth outranks this file if they disagree.
 
 Passing tests do not prove deployment.
 
-Runtime proof does not prove production acceptance.
+Showcase success does not by itself equal production deployment approval.
 
-Cloudflare Quick Tunnel is presentation transport for the showcase and is not a claim of final contractual production hosting.
+Cloudflare Quick Tunnel is presentation transport, not final contractual hosting.
 
-## Freeze law
+## Preservation law
 
-After the final integrated showcase rehearsal passes, pin:
+Preserve:
 
-1. exact Git SHA;
-2. exact deterministic demo-data state;
-3. exact runtime configuration;
-4. exact production-build basis;
-5. exact tunnel launch procedure;
-6. exact presentation flow;
-7. exact recovery procedure;
-8. known non-blocking limitations.
+- live `main` history;
+- `S1-SHOWCASE-ACED-2026-09-30`;
+- showcase evidence record;
+- accepted B1 evidence;
+- the successful S1 promotion lineage.
 
-Do not reopen a completed phase without direct evidence that the showcase cannot safely proceed.
+Branch cleanup may remove obsolete remote working branches only after their required history is reachable from `main` or intentionally preserved by tags/evidence.
