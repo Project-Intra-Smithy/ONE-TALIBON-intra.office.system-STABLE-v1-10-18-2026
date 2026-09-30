@@ -12,11 +12,11 @@ type Props = {
 };
 
 const screens = [
-    { eyebrow: 'MUNICIPAL DIGITAL WORKSPACE', title: 'Welcome to ONE TALIBON' },
+    { eyebrow: 'ONE TALIBON', title: 'Talibon Intra-Office Portal' },
     { eyebrow: 'CONNECTED MUNICIPAL WORK', title: 'One municipality. Connected work.' },
-    { eyebrow: 'PROTOTYPE STATUS', title: 'Prototype & Interface Notice' },
-    { eyebrow: 'DEVELOPMENT', title: 'Development credits' },
-    { eyebrow: 'YOUR WORKSPACE', title: 'Ready to explore?' },
+    { eyebrow: 'SHOWCASE + DEVICE GUIDANCE', title: 'Prototype & presentation guidance' },
+    { eyebrow: 'DEVELOPMENT CREDITS', title: 'Development credits' },
+    { eyebrow: 'READY', title: 'Ready to explore?' },
 ] as const;
 
 export default function WelcomeWizard({ persona, onSkip, onStartTour, onExplore }: Props) {
@@ -39,7 +39,10 @@ export default function WelcomeWizard({ persona, onSkip, onStartTour, onExplore 
                 data-onboarding="welcome-wizard"
                 className="flex h-[100dvh] w-full flex-col overflow-hidden bg-[#f7f5ed] text-[#163027] shadow-2xl sm:h-auto sm:max-h-[92dvh] sm:max-w-2xl sm:rounded-2xl sm:border sm:border-[#d6e1da] dark:border-[#30473a] dark:bg-[#0f1a15] dark:text-[#edf5f0]"
             >
-                <header className="flex shrink-0 items-start justify-between gap-4 border-b border-[#d6e1da] px-5 py-4 sm:px-6 dark:border-[#30473a]">
+                <header
+                    className="flex shrink-0 items-start justify-between gap-4 border-b border-[#d6e1da] px-5 pb-4 pt-4 sm:px-6 dark:border-[#30473a]"
+                    style={{ paddingTop: 'max(1rem, env(safe-area-inset-top))' }}
+                >
                     <div className="min-w-0">
                         <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#12613f] dark:text-[#8fc9a7]">{current.eyebrow}</p>
                         <h2 id="ow1-wizard-title" className="mt-1 text-2xl font-extrabold tracking-[-0.03em]">{current.title}</h2>
@@ -50,17 +53,20 @@ export default function WelcomeWizard({ persona, onSkip, onStartTour, onExplore 
                     </button>
                 </header>
 
-                <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-6 sm:py-6" data-onboarding-step={step + 1}>
+                <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4 sm:px-6 sm:py-6" data-onboarding-step={step + 1}>
                     {step === 0 && (
-                        <div id="ow1-wizard-description" className="space-y-5">
-                            <p className="text-sm leading-6 text-[#55665e] dark:text-[#c3d0c8]">
-                                ONE TALIBON is the Municipality of Talibon’s prototype intra-office workspace for coordinating official work, records, correspondence, memoranda, schedules, projects, meetings, and internal communication across municipal offices.
-                            </p>
+                        <div id="ow1-wizard-description" className="space-y-4">
+                            <div>
+                                <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#12613f] dark:text-[#8fc9a7]">ONE TALIBON</p>
+                                <p className="mt-2 text-sm leading-6 text-[#55665e] dark:text-[#c3d0c8]">
+                                    The <strong>Talibon Intra-Office Portal</strong> is a shared intra-office workspace for the Municipality of Talibon, connecting official work, records, coordination, schedules, projects, and municipal operations.
+                                </p>
+                            </div>
                             <section className="rounded-xl border border-[#c8d9ce] bg-white/70 p-4 dark:border-[#30473a] dark:bg-[#16261d]" aria-label="Current workspace">
                                 <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#12613f] dark:text-[#8fc9a7]">Current workspace</p>
                                 <div className="mt-3 flex items-start gap-3">
                                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#e6f0e9] text-[#164f36] dark:bg-[#20382b] dark:text-[#9bd0af]"><Building2 size={19} aria-hidden="true" /></div>
-                                    <div>
+                                    <div className="min-w-0">
                                         <div className="font-bold">{persona.label}</div>
                                         <div className="mt-0.5 text-sm text-[#55665e] dark:text-[#c3d0c8]">{persona.office}</div>
                                         <div className="mt-0.5 text-xs font-semibold text-[#64736c] dark:text-[#adbbb3]">{persona.position}</div>
@@ -73,9 +79,9 @@ export default function WelcomeWizard({ persona, onSkip, onStartTour, onExplore 
                     {step === 1 && (
                         <div id="ow1-wizard-description">
                             <p className="text-sm leading-6 text-[#55665e] dark:text-[#c3d0c8]">
-                                This prototype demonstrates how municipal offices can work inside one shared environment while preserving office responsibility, role-based access, routing history, and municipal context.
+                                ONE TALIBON connects municipal work through one shared portal while each office, workspace, and municipal system keeps its own function, responsibility, and access boundary. Future integrations shown in the showcase remain roadmap or preview areas unless identified as current.
                             </p>
-                            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                            <div className="mt-4 grid gap-3 sm:grid-cols-2">
                                 {[
                                     [Route, 'Route Work', 'Move requests and official actions between responsible offices.'],
                                     [Files, 'Keep Records Visible', 'Reference correspondence, records, memoranda, and supporting information.'],
@@ -90,29 +96,33 @@ export default function WelcomeWizard({ persona, onSkip, onStartTour, onExplore 
                     )}
 
                     {step === 2 && (
-                        <div id="ow1-wizard-description" className="space-y-4">
+                        <div id="ow1-wizard-description" className="space-y-3">
                             <div className="rounded-xl border border-[#d3ad5b]/60 bg-[#fff9e8] p-4 dark:border-[#7f6631] dark:bg-[#292313]">
                                 <p className="text-sm leading-6 text-[#554b32] dark:text-[#e6d9b2]">
-                                    ONE TALIBON is currently presented as an <strong>evaluation prototype</strong> for the Municipality of Talibon.
+                                    The Talibon Intra-Office Portal is currently presented as an <strong>evaluation prototype</strong> for the Municipality of Talibon.
                                 </p>
                             </div>
                             <p className="text-sm leading-6 text-[#55665e] dark:text-[#c3d0c8]">
-                                The user interface is in its <strong>initial design and validation phase</strong>. Layouts, navigation, terminology, visual hierarchy, interactions, and individual screens may be refined or changed based on stakeholder feedback, usability review, operational requirements, and subsequent implementation decisions.
+                                The interface is in its <strong>initial design and validation phase</strong>. Layouts, terminology, interactions, and individual screens may be refined through stakeholder feedback, usability review, and subsequent implementation decisions.
                             </p>
                             <p className="text-sm leading-6 text-[#55665e] dark:text-[#c3d0c8]">
                                 Sample and demonstration content is provided for evaluation and does not represent final official municipal reporting or production operational data.
                             </p>
-                            <p className="text-sm leading-6 text-[#55665e] dark:text-[#c3d0c8]">
-                                This prototype is intended to demonstrate the proposed municipal workspace, workflows, information structure, and overall user experience.
-                            </p>
+                            <div className="rounded-xl border border-[#c8d9ce] bg-white/70 p-4 dark:border-[#30473a] dark:bg-[#16261d]">
+                                <p className="text-sm font-bold">Best presentation experience</p>
+                                <p className="mt-1 text-sm leading-5 text-[#64736c] dark:text-[#adbbb3]">
+                                    For the best presentation experience, a desktop or laptop is recommended. Mobile access is fully supported.
+                                </p>
+                            </div>
                         </div>
                     )}
 
                     {step === 3 && (
                         <div id="ow1-wizard-description" className="space-y-4">
                             <div>
-                                <div className="text-xl font-extrabold">{presentationCredits.project}</div>
-                                <div className="mt-1 text-sm text-[#64736c] dark:text-[#adbbb3]">{presentationCredits.subtitle} · {presentationCredits.municipality}</div>
+                                <p className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#12613f] dark:text-[#8fc9a7]">{presentationCredits.subtitle}</p>
+                                <div className="mt-1 text-xl font-extrabold">{presentationCredits.project}</div>
+                                <div className="mt-1 text-sm font-semibold text-[#64736c] dark:text-[#adbbb3]">{presentationCredits.municipality}</div>
                             </div>
                             <section className="rounded-xl border border-[#d6e1da] bg-white/65 p-4 dark:border-[#30473a] dark:bg-[#16261d]">
                                 <p className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#12613f] dark:text-[#8fc9a7]">Technical authority & engineering direction</p>
@@ -124,18 +134,18 @@ export default function WelcomeWizard({ persona, onSkip, onStartTour, onExplore 
                             <section>
                                 <p className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#64736c] dark:text-[#adbbb3]">Development collaboration</p>
                                 <p className="mt-1 text-sm font-bold">{presentationCredits.collaboration}</p>
-                                <div className="mt-3 grid gap-2 sm:grid-cols-3">
-                                    {presentationCredits.contributors.map((credit) => <div key={credit.name} className="rounded-lg border border-[#d6e1da] px-3 py-2 dark:border-[#30473a]"><div className="text-sm font-bold">{credit.name}</div><div className="text-xs text-[#64736c] dark:text-[#adbbb3]">{credit.role} · {credit.organization}</div></div>)}
+                                <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                                    {presentationCredits.contributors.map((credit) => <div key={credit.name} className="rounded-lg border border-[#d6e1da] px-3 py-2 dark:border-[#30473a]"><div className="text-sm font-bold">{credit.name}</div><div className="text-xs leading-5 text-[#64736c] dark:text-[#adbbb3]">{credit.role} · {credit.organization}</div></div>)}
                                 </div>
                             </section>
-                            <p className="text-xs leading-5 text-[#64736c] dark:text-[#adbbb3]">{presentationCredits.footer}</p>
+                            <p className="border-t border-[#d6e1da] pt-3 text-xs leading-5 text-[#64736c] dark:border-[#30473a] dark:text-[#adbbb3]">{presentationCredits.footer}</p>
                         </div>
                     )}
 
                     {step === 4 && (
-                        <div id="ow1-wizard-description" className="flex min-h-52 flex-col justify-center">
+                        <div id="ow1-wizard-description" className="flex min-h-44 flex-col justify-center sm:min-h-52">
                             <p className="max-w-xl text-base leading-7 text-[#55665e] dark:text-[#c3d0c8]">
-                                Take a short guided tour of this workspace, or continue directly to the system.
+                                Start the guided tour for a short walkthrough of the key showcase modules, or explore the Talibon Intra-Office Portal on your own.
                             </p>
                             <div className="mt-5 rounded-xl border border-[#d6e1da] bg-white/65 p-4 dark:border-[#30473a] dark:bg-[#16261d]">
                                 <div className="text-sm font-bold">{persona.label}</div>

@@ -1,8 +1,8 @@
 import type { PersonaTourKey, PresentationCredits, TourStep } from './types';
 
 export const presentationCredits: PresentationCredits = {
-    project: 'ONE TALIBON',
-    subtitle: 'Municipal Digital Workspace Prototype',
+    project: 'Talibon Intra-Office Portal',
+    subtitle: 'ONE TALIBON',
     municipality: 'Municipality of Talibon, Bohol',
     technicalAuthority: {
         name: 'Kirch Ivan Balite',
@@ -17,7 +17,7 @@ export const presentationCredits: PresentationCredits = {
         { name: 'AJ RIENZE', role: 'Chief Executive Officer (CEO)', organization: 'ALZA IT Solutions' },
         { name: 'Kikiam', role: 'Chief Operating Officer (COO)', organization: 'ALZA IT Solutions' },
     ],
-    footer: 'Built as a prototype for stakeholder evaluation and municipal workflow review.',
+    footer: 'Showcase prototype for stakeholder evaluation and municipal workflow review.',
 };
 
 const showcaseTour: TourStep[] = [
