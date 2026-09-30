@@ -363,8 +363,6 @@ class TransactionWorkflowService
         User $actor,
         int $fromDepartmentId,
         int $toDepartmentId,
-        ?int $fromAssignedEmployeeId,
-        ?int $toAssignedEmployeeId,
         ?string $remarks,
     ): TransactionEvent {
         return $this->recordEvent(
@@ -409,6 +407,8 @@ class TransactionWorkflowService
         string $newStatus,
         int $fromDepartmentId,
         int $toDepartmentId,
+        ?int $fromAssignedEmployeeId,
+        ?int $toAssignedEmployeeId,
         ?string $remarks,
     ): TransactionEvent {
         return TransactionEvent::query()->create([
