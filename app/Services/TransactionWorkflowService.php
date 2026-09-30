@@ -258,6 +258,7 @@ class TransactionWorkflowService
             newStatus: $rule->status ?? $transaction->status,
             fromDepartmentId: $fromDepartmentId,
             toDepartmentId: $this->destinations->resolve($rule, $transaction, $targetDepartmentId),
+            previousAssignmentEmployeeId: $transaction->assigned_employee_id,
             assignmentEmployeeId: $assignment,
             remarks: $this->eventRemarks($rule, $assignment, $remarks),
         );
@@ -362,6 +363,8 @@ class TransactionWorkflowService
         User $actor,
         int $fromDepartmentId,
         int $toDepartmentId,
+        ?int $fromAssignedEmployeeId,
+        ?int $toAssignedEmployeeId,
         ?string $remarks,
     ): TransactionEvent {
         return $this->recordEvent(
@@ -372,6 +375,8 @@ class TransactionWorkflowService
             $transaction->status,
             $fromDepartmentId,
             $toDepartmentId,
+            null,
+            $transaction->assigned_employee_id,
             $remarks,
         );
     }
@@ -390,6 +395,8 @@ class TransactionWorkflowService
             $resolved->newStatus,
             $resolved->fromDepartmentId,
             $resolved->toDepartmentId,
+            $resolved->previousAssignmentEmployeeId,
+            $resolved->assignmentEmployeeId,
             $resolved->remarks,
         );
     }
@@ -409,6 +416,8 @@ class TransactionWorkflowService
             'actor_user_id' => $actor->id,
             'from_department_id' => $fromDepartmentId,
             'to_department_id' => $toDepartmentId,
+            'from_assigned_employee_id' => $fromAssignedEmployeeId,
+            'to_assigned_employee_id' => $toAssignedEmployeeId,
             'action' => $action,
             'previous_status' => $previousStatus,
             'new_status' => $newStatus,

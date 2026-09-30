@@ -14,6 +14,8 @@ class TransactionEvent extends Model
         'actor_user_id',
         'from_department_id',
         'to_department_id',
+        'from_assigned_employee_id',
+        'to_assigned_employee_id',
         'action',
         'previous_status',
         'new_status',
@@ -29,6 +31,16 @@ class TransactionEvent extends Model
     public function transaction(): BelongsTo
     {
         return $this->belongsTo(WorkflowTransaction::class, 'transaction_id');
+    }
+
+    public function fromAssignedEmployee(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'from_assigned_employee_id');
+    }
+
+    public function toAssignedEmployee(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'to_assigned_employee_id');
     }
 
     public function actor(): BelongsTo

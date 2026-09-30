@@ -9,6 +9,7 @@ final readonly class ResolvedWorkflowTransition
         public string $newStatus,
         public int $fromDepartmentId,
         public int $toDepartmentId,
+        public ?int $previousAssignmentEmployeeId,
         public ?int $assignmentEmployeeId,
         public ?string $remarks,
     ) {
