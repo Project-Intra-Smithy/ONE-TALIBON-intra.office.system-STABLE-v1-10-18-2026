@@ -21,6 +21,7 @@ final readonly class WorkflowTransitionRule
         public bool $clearAssignment = false,
         public bool $refreshReceivedAt = false,
         public bool $completes = false,
+        public array $allowedFromStatuses = [],
     ) {
     }
 
@@ -35,6 +36,13 @@ final readonly class WorkflowTransitionRule
             clearAssignment: (bool) ($rule['clear_assignment'] ?? false),
             refreshReceivedAt: (bool) ($rule['refresh_received_at'] ?? false),
             completes: (bool) ($rule['completes'] ?? false),
+            allowedFromStatuses: array_values($rule['allowed_from'] ?? []),
         );
+    }
+
+    public function allowsFrom(string $status): bool
+    {
+        return $this->allowedFromStatuses === []
+            || in_array($status, $this->allowedFromStatuses, true);
     }
 }

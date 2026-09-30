@@ -28,6 +28,7 @@ return [
             ],
             'mark_review' => [
                 'status' => 'for_review',
+                'allowed_from' => ['submitted', 'returned', 'information_requested'],
                 'destination' => 'current',
             ],
             'forward' => [
@@ -38,6 +39,7 @@ return [
             ],
             'send_to_mayor' => [
                 'status' => 'for_approval',
+                'allowed_from' => ['for_review'],
                 'destination' => 'office',
                 'office_code' => 'MAYOR',
                 'clear_assignment' => true,
@@ -57,11 +59,13 @@ return [
             ],
             'approve' => [
                 'status' => 'approved',
+                'allowed_from' => ['for_approval'],
                 'destination' => 'current',
                 'completes' => true,
             ],
             'disapprove' => [
                 'status' => 'disapproved',
+                'allowed_from' => ['for_approval'],
                 'destination' => 'current',
                 'completes' => true,
             ],

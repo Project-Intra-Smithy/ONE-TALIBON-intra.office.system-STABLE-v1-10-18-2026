@@ -153,6 +153,12 @@ class TransactionWorkflowService
         $this->assertMutable($locked, $definition);
 
         $rule = $definition->transition($action);
+        if (! $rule->allowsFrom($locked->status)) {
+            throw ValidationException::withMessages([
+                'action' => "The [{$action}] action is not valid from status [{$locked->status}].",
+            ]);
+        }
+
         $resolved = $this->resolveTransition(
             $locked,
             $rule,
