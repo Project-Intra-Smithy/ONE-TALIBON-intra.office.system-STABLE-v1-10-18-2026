@@ -16,12 +16,15 @@ $prepared = Read-JsonFile $Script:PreparedStatePath
 if (-not $prepared) { throw 'Showcase is not prepared. Run scripts/showcase-prepare.ps1 once for this SHA.' }
 if ([string] $prepared.sha -ne $Head) { throw "Prepared SHA $($prepared.sha) does not match current HEAD $Head. Run showcase-prepare.ps1." }
 if ([string] $prepared.database -ne $Script:ShowcaseDatabase) { throw 'Prepared marker targets the wrong database.' }
+if ([int] $prepared.proxyPort -ne $Port) { throw "Prepared proxy port $($prepared.proxyPort) does not match requested port $Port. Re-run showcase-prepare.ps1 -Port $Port." }
+if ([string]::IsNullOrWhiteSpace([string] $prepared.publicOrigin)) { throw 'Prepared marker does not contain a public origin. Re-run showcase-prepare.ps1.' }
 if (-not (Test-Path (Join-Path $Root 'public\build\manifest.json'))) { throw 'Compiled assets are missing. Run showcase-prepare.ps1.' }
 if (Test-Path (Join-Path $Root 'public\hot')) { throw 'public/hot exists. Showcase start refuses Vite hot mode.' }
 if (Test-Path (Join-Path $Root 'storage\framework\vite.hot')) { throw 'storage/framework/vite.hot exists. Showcase start refuses Vite hot mode.' }
 if (Test-Path $Script:RuntimeStatePath) { throw "Runtime state already exists at $Script:RuntimeStatePath. Run showcase-status.ps1 or showcase-stop.ps1 first." }
 
-Set-ShowcaseEnvironment
+$publicOrigin = Resolve-ShowcasePublicOrigin ([string] $prepared.publicOrigin) $Port
+Set-ShowcaseEnvironment $publicOrigin
 New-Item -ItemType Directory -Path (Join-Path $Root 'storage\logs') -Force | Out-Null
 
 $ports = @()
@@ -68,6 +71,7 @@ try {
     $runtime = [ordered]@{
         sha = $Head
         startedAt = (Get-Date).ToUniversalTime().ToString('o')
+        publicOrigin = $publicOrigin
         proxyPid = [int] $proxyProcess.Id
         proxyPort = $Port
         workers = @($startedWorkers | ForEach-Object { [ordered]@{ pid = [int] $_.Process.Id; port = [int] $_.Port } })
@@ -77,6 +81,7 @@ try {
     $lan = Get-LanIPv4 $LanHost
     Write-Host 'SHOWCASE RUNTIME READY' -ForegroundColor Green
     Write-Host "SHA: $Head"
+    Write-Host "Public origin: $publicOrigin"
     Write-Host "Local: http://127.0.0.1:$Port"
     if ($lan) { Write-Host "LAN:   http://$lan`:$Port" } else { Write-Host 'LAN:   not resolved' -ForegroundColor Yellow }
     Write-Host "Workers: $Workers"

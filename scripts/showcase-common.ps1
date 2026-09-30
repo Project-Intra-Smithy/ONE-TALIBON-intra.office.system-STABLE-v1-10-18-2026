@@ -4,9 +4,41 @@ $Script:ShowcaseDbPort = '5432'
 $Script:PreparedStatePath = Join-Path $Root 'storage\framework\showcase-prepared.json'
 $Script:RuntimeStatePath = Join-Path $Root 'storage\framework\showcase-runtime.json'
 
-function Set-ShowcaseEnvironment {
+function Resolve-ShowcasePublicOrigin([string] $Explicit = '', [int] $Port = 18000) {
+    $candidate = $Explicit
+    if ([string]::IsNullOrWhiteSpace($candidate)) { $candidate = $env:SHOWCASE_PUBLIC_ORIGIN }
+    if ([string]::IsNullOrWhiteSpace($candidate)) {
+        $lan = Get-LanIPv4
+        $candidate = if ($lan) { "http://$lan`:$Port" } else { "http://127.0.0.1:$Port" }
+    }
+
+    try { $uri = [Uri] $candidate }
+    catch { throw "Invalid showcase public origin '$candidate'. Use an absolute http(s) origin such as https://portal.example.test." }
+
+    if (-not $uri.IsAbsoluteUri -or $uri.Scheme -notin @('http', 'https')) {
+        throw "Invalid showcase public origin '$candidate'. Only absolute http(s) origins are supported."
+    }
+    if (-not [string]::IsNullOrWhiteSpace($uri.UserInfo) -or -not [string]::IsNullOrWhiteSpace($uri.Query) -or -not [string]::IsNullOrWhiteSpace($uri.Fragment)) {
+        throw "Invalid showcase public origin '$candidate'. Credentials, query strings, and fragments are not allowed."
+    }
+    if ($uri.AbsolutePath -and $uri.AbsolutePath -ne '/') {
+        throw "Invalid showcase public origin '$candidate'. Use the origin only, without a path."
+    }
+
+    return $uri.GetLeftPart([System.UriPartial]::Authority).TrimEnd('/')
+}
+
+function Set-ShowcaseEnvironment([string] $PublicOrigin = '') {
+    if ([string]::IsNullOrWhiteSpace($PublicOrigin)) {
+        $PublicOrigin = Resolve-ShowcasePublicOrigin
+    } else {
+        $PublicOrigin = Resolve-ShowcasePublicOrigin $PublicOrigin
+    }
+
     $env:APP_ENV = 'showcase'
     $env:APP_DEBUG = 'false'
+    $env:APP_URL = $PublicOrigin
+    $env:SHOWCASE_PUBLIC_ORIGIN = $PublicOrigin
     $env:SHOWCASE_MODE = 'true'
     $env:SESSION_DRIVER = 'file'
     $env:CACHE_STORE = 'file'

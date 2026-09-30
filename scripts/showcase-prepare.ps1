@@ -1,3 +1,8 @@
+param(
+    [string] $PublicOrigin = '',
+    [ValidateRange(1, 65535)] [int] $Port = 18000
+)
+
 $ErrorActionPreference = 'Stop'
 $Root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 Set-Location $Root
@@ -11,7 +16,9 @@ Assert-CleanTrackedWorktree
 if (-not (Test-Path (Join-Path $Root 'node_modules'))) { throw 'node_modules is missing. Run npm.cmd ci before showcase preparation.' }
 if (-not (Test-Path (Join-Path $Root 'vendor\autoload.php'))) { throw 'vendor/autoload.php is missing. Run composer install before showcase preparation.' }
 Assert-AppKeyExists
-Set-ShowcaseEnvironment
+$resolvedPublicOrigin = Resolve-ShowcasePublicOrigin $PublicOrigin $Port
+Set-ShowcaseEnvironment $resolvedPublicOrigin
+Write-Host "Public origin: $resolvedPublicOrigin"
 
 $DbConfigCheck = @'
 echo config('database.default').'|'.config('database.connections.pgsql.host').'|'.config('database.connections.pgsql.port').'|'.config('database.connections.pgsql.database').PHP_EOL;
@@ -47,11 +54,21 @@ if (-not (Test-Path $ManifestPath)) { throw 'public/build/manifest.json was not 
 
 Invoke-Checked 'Non-destructive migration readiness' { php artisan migrate --force --no-interaction }
 
-# Keep showcase runtime variables in the process before Laravel optimization so cached config is showcase-safe.
-Set-ShowcaseEnvironment
+# Establish the presentation origin before optimization so config:cache cannot freeze a stale localhost APP_URL.
+Set-ShowcaseEnvironment $resolvedPublicOrigin
 Invoke-Checked 'Laravel optimize:clear' { php artisan optimize:clear }
 Invoke-Checked 'Laravel optimize' { php artisan optimize }
 Invoke-Checked 'Laravel boot verification' { php artisan about }
+
+$CachedOriginCheck = @'
+echo config('app.url').PHP_EOL;
+'@
+$cachedOriginOutput = & php artisan tinker --execute="$CachedOriginCheck" 2>&1
+$cachedOriginExit = $LASTEXITCODE
+$cachedOriginOutput | Write-Host
+if ($cachedOriginExit -ne 0 -or ($cachedOriginOutput -join "`n") -notmatch [regex]::Escape($resolvedPublicOrigin)) {
+    throw "Cached APP_URL verification failed. Expected $resolvedPublicOrigin."
+}
 
 $marker = [ordered]@{
     sha = $Head
@@ -63,6 +80,8 @@ $marker = [ordered]@{
     appEnv = 'showcase'
     appDebug = $false
     showcaseMode = $true
+    publicOrigin = $resolvedPublicOrigin
+    proxyPort = $Port
 }
 Write-AtomicJson $Script:PreparedStatePath $marker
 
@@ -70,4 +89,5 @@ Write-Host 'SHOWCASE PREPARED' -ForegroundColor Green
 Write-Host "Prepared marker: $Script:PreparedStatePath"
 Write-Host "SHA: $Head"
 Write-Host "Database: $Script:ShowcaseDatabase"
+Write-Host "Public origin: $resolvedPublicOrigin"
 Write-Host 'Build manifest: present'

@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import http from 'node:http';
 import https from 'node:https';
 import { performance } from 'node:perf_hooks';
@@ -15,12 +16,31 @@ if (!Number.isInteger(clients) || clients < 1 || clients > 500) throw new Error(
 
 const transport = baseUrl.protocol === 'https:' ? https : http;
 const metrics = [];
+const runtimeStatePath = new URL('../storage/framework/showcase-runtime.json', import.meta.url);
 
 function percentile(values, fraction) {
   if (values.length === 0) return 0;
   const sorted = [...values].sort((a, b) => a - b);
   const index = Math.min(sorted.length - 1, Math.max(0, Math.ceil(sorted.length * fraction) - 1));
   return sorted[index];
+}
+
+function readRuntimeState() {
+  try {
+    return JSON.parse(fs.readFileSync(runtimeStatePath, 'utf8'));
+  } catch (error) {
+    throw new Error(`Showcase runtime state is required before load testing: ${error.message}`);
+  }
+}
+
+function processAlive(pid) {
+  if (!Number.isInteger(pid) || pid <= 0) return false;
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch (error) {
+    return error?.code === 'EPERM';
+  }
 }
 
 function issue(agent, path, clientId) {
@@ -58,18 +78,53 @@ function issue(agent, path, clientId) {
   });
 }
 
+function probeLocalPort(port, timeout = 2000) {
+  return new Promise((resolve) => {
+    let settled = false;
+    const finish = (value) => {
+      if (settled) return;
+      settled = true;
+      resolve(value);
+    };
+    const request = http.request({ host: '127.0.0.1', port, method: 'GET', path: '/up', headers: { connection: 'close' } }, (response) => {
+      response.resume();
+      response.on('end', () => finish(response.statusCode >= 200 && response.statusCode < 400));
+    });
+    request.setTimeout(timeout, () => request.destroy(new Error('probe timeout')));
+    request.on('error', () => finish(false));
+    request.end();
+  });
+}
+
+const runtime = readRuntimeState();
+const proxyPid = Number(runtime.proxyPid);
+const workerRecords = Array.isArray(runtime.workers) ? runtime.workers.map((worker) => ({ pid: Number(worker.pid), port: Number(worker.port) })) : [];
+if (!processAlive(proxyPid) || workerRecords.length === 0 || workerRecords.some((worker) => !processAlive(worker.pid))) {
+  throw new Error('Recorded showcase proxy/workers are not all alive before load testing.');
+}
+
 const agents = Array.from({ length: clients }, () => new transport.Agent({ keepAlive: true, maxSockets: 2 }));
 
-// Synchronized burst: every virtual client hits /up and /login concurrently.
+// Synchronized burst: every virtual client hits health and login concurrently.
 await Promise.all(agents.flatMap((agent, index) => [issue(agent, '/up', index + 1), issue(agent, '/login', index + 1)]));
 
-// Independent read-heavy flows. Auth-protected routes are intentionally allowed to redirect to /login.
-const followOnPaths = ['/', '/dashboard', '/municipal-systems'];
+// Independent light-user flows. Auth-protected routes may redirect to /login.
+const followOnPaths = ['/', '/dashboard', '/transactions/create'];
 await Promise.all(agents.map(async (agent, index) => {
   for (const path of followOnPaths) await issue(agent, path, index + 1);
 }));
 
 for (const agent of agents) agent.destroy();
+
+const workerHealth = await Promise.all(workerRecords.map(async (worker) => ({
+  ...worker,
+  alive: processAlive(worker.pid),
+  healthy: await probeLocalPort(worker.port),
+})));
+const proxyAlive = processAlive(proxyPid);
+const proxyHealthy = await probeLocalPort(Number(runtime.proxyPort));
+const workerCrashes = workerHealth.filter((worker) => !worker.alive || !worker.healthy).length;
+const proxyCrashes = !proxyAlive || !proxyHealthy ? 1 : 0;
 
 const latencies = metrics.filter((item) => !item.timeout && !item.networkError).map((item) => item.latency);
 const total = metrics.length;
@@ -87,12 +142,15 @@ const result = {
   '5xx': fivexx,
   timeouts,
   networkErrors,
+  workerCrashes,
+  proxyCrashes,
   p50Ms: Number(percentile(latencies, 0.50).toFixed(1)),
   p95Ms: Number(percentile(latencies, 0.95).toFixed(1)),
   maxMs: Number((latencies.length ? Math.max(...latencies) : 0).toFixed(1)),
 };
+result.preferredP95Pass = result.p95Ms < 1500;
+result.hardP95Pass = result.p95Ms < 3000;
 
 console.log(JSON.stringify(result, null, 2));
-const hardFailure = fivexx > 0 || timeouts > 0 || networkErrors > 0;
-const latencyFailure = result.p95Ms >= 3000;
-if (hardFailure || latencyFailure) process.exitCode = 1;
+const hardFailure = fivexx > 0 || timeouts > 0 || networkErrors > 0 || workerCrashes > 0 || proxyCrashes > 0;
+if (hardFailure || !result.hardP95Pass) process.exitCode = 1;

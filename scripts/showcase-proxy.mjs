@@ -43,6 +43,18 @@ function stripHopByHopHeaders(headers) {
   return result;
 }
 
+function firstHeaderValue(value) {
+  if (Array.isArray(value)) value = value[0];
+  if (typeof value !== 'string') return '';
+  return value.split(',', 1)[0].trim();
+}
+
+function forwardedProtocol(request) {
+  const supplied = firstHeaderValue(request.headers['x-forwarded-proto']).toLowerCase();
+  if (supplied === 'http' || supplied === 'https') return supplied;
+  return request.socket.encrypted ? 'https' : 'http';
+}
+
 function healthyWorkers() {
   return workers.filter((worker) => worker.healthy);
 }
@@ -104,11 +116,16 @@ const server = http.createServer((request, response) => {
 
   const headers = stripHopByHopHeaders(request.headers);
   const remoteAddress = request.socket.remoteAddress || '';
-  const priorForwardedFor = typeof request.headers['x-forwarded-for'] === 'string' ? request.headers['x-forwarded-for'] : '';
+  const rawForwardedFor = request.headers['x-forwarded-for'];
+  const priorForwardedFor = Array.isArray(rawForwardedFor) ? rawForwardedFor.join(', ') : (typeof rawForwardedFor === 'string' ? rawForwardedFor.trim() : '');
+  const protocol = forwardedProtocol(request);
+  const priorForwardedHost = firstHeaderValue(request.headers['x-forwarded-host']);
+  const requestHost = firstHeaderValue(request.headers.host) || `${host}:${port}`;
   headers['x-forwarded-for'] = priorForwardedFor ? `${priorForwardedFor}, ${remoteAddress}` : remoteAddress;
-  headers['x-forwarded-proto'] = 'http';
-  headers['x-forwarded-host'] = typeof request.headers.host === 'string' ? request.headers.host : `${host}:${port}`;
-  if (typeof request.headers.host === 'string') headers.host = request.headers.host;
+  headers['x-forwarded-proto'] = protocol;
+  headers['x-forwarded-host'] = priorForwardedHost || requestHost;
+  if (!headers['x-forwarded-port']) headers['x-forwarded-port'] = protocol === 'https' ? '443' : String(port);
+  headers.host = requestHost;
 
   let timedOut = false;
   const upstream = http.request({
