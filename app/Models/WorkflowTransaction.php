@@ -16,6 +16,9 @@ class WorkflowTransaction extends Model
     protected $fillable = [
         'reference_no',
         'transaction_type',
+        'request_category',
+        'request_type',
+        'action_required',
         'title',
         'description',
         'priority',

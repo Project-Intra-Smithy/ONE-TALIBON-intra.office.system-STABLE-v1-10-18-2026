@@ -159,14 +159,23 @@ class TransactionWorkflowService
         int $originDepartmentId,
         Department $targetDepartment,
     ): WorkflowTransaction {
+        $assignedEmployeeId = $this->initialAssignmentId(
+            isset($data['assigned_employee_id']) ? (int) $data['assigned_employee_id'] : null,
+            (int) $targetDepartment->id,
+        );
+
         $transaction = WorkflowTransaction::query()->create([
             'transaction_type' => $data['transaction_type'],
+            'request_category' => $data['request_category'] ?? null,
+            'request_type' => $data['request_type'] ?? null,
+            'action_required' => $data['action_required'] ?? null,
             'title' => $data['title'],
             'description' => $data['description'] ?? null,
             'priority' => $data['priority'],
             'origin_department_id' => $originDepartmentId,
             'current_department_id' => $targetDepartment->id,
             'created_by_user_id' => $actor->id,
+            'assigned_employee_id' => $assignedEmployeeId,
             'status' => $definition->initialStatus(),
             'received_at' => now(),
             'due_at' => $this->sla->resolve($data['priority'], $data['due_at'] ?? null),
@@ -177,6 +186,27 @@ class TransactionWorkflowService
         ]);
 
         return $transaction;
+    }
+
+    private function initialAssignmentId(?int $assignedEmployeeId, int $departmentId): ?int
+    {
+        if (! $assignedEmployeeId) {
+            return null;
+        }
+
+        $employee = Employee::query()
+            ->whereKey($assignedEmployeeId)
+            ->where('department_id', $departmentId)
+            ->where('employment_status', 'active')
+            ->first();
+
+        if (! $employee) {
+            throw ValidationException::withMessages([
+                'assigned_employee_id' => 'Select an active employee from the receiving office.',
+            ]);
+        }
+
+        return (int) $employee->id;
     }
 
     private function resolveTransition(

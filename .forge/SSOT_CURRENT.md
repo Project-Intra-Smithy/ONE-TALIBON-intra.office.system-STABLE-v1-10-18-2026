@@ -103,21 +103,9 @@ Completed current S1 corrections:
 
 Current required follow-up:
 
-- `S1-W04B — FUTURE INTEGRATION DETAIL SURFACES — INTEGRATED / VISUALLY INSUFFICIENT`
+- `S1-W04B — FUTURE INTEGRATION DETAIL SURFACES — INTEGRATED / VISUAL CHECK PENDING`
 
-Visual inspection confirmed that W04B is too brochure-like for the stakeholder presentation.
-
-Current required work:
-
-- `S1-W04C — FUTURE SYSTEM FULL-PROTOTYPE SURFACES`
-
-W04C must deliver:
-
-- a first-class Main Showcase Procurement / PR Tracking static interactive prototype with its own direct Work-sidebar destination;
-- a first-class HR Employee Portal sidebar destination using the existing real personnel-reference route;
-- exactly 14 Future Integrations — FUT-02 through FUT-15 — each as a credible whole-system static prototype using local React state, illustrative prototype data, module-specific internal navigation, and native ONE TALIBON visual grammar.
-
-One authenticated presentation route for Procurement is explicitly authorized. The 14 Future Integration modules must remain inside the shared Future Integrations surface with no dedicated backend routes or operational behavior.
+Every FUT-01 through FUT-15 Future Integration entry is now enterable as a static concept preview inside the existing `/municipal-systems` route. No backend routes or fake functionality were added. Remaining S1 work is evidence-driven visual correction only before S1-M1 freeze.
 
 These may proceed in parallel only while file ownership remains disjoint.
 

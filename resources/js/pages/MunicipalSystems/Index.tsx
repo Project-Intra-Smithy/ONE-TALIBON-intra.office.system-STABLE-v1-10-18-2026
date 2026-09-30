@@ -1,10 +1,23 @@
+import { Link } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
-import { Network, Search } from 'lucide-react';
-import AppLayout from '../../layouts/AppLayout';
-import PageFrame from '../../components/PageFrame';
-import PageHeader from '../../components/PageHeader';
+import {
+    ArrowUpRight,
+    ChevronRight,
+    FileText,
+    FolderKanban,
+    ListChecks,
+    Network,
+    Search,
+    ShoppingCart,
+    SlidersHorizontal,
+    Users,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import FutureIntegrationDetail from '../../components/municipal-systems/FutureIntegrationDetail';
+import ProcurementWorkspace from '../../components/municipal-systems/ProcurementWorkspace';
 import SystemDirectory from '../../components/municipal-systems/SystemDirectory';
+import PageFrame from '../../components/PageFrame';
+import { procurementPrototype } from '../../data/municipal/futureSystemPrototypeData';
 import {
     corePlatform,
     initialRollout,
@@ -13,236 +26,370 @@ import {
     systemGroups,
     type MunicipalSystem,
 } from '../../data/municipal/systems';
+import AppLayout from '../../layouts/AppLayout';
 
-type View = 'rollout' | 'future' | 'core';
+type Props = {
+    showcase?: 'procurement';
+};
 
-const views: Array<{ id: View; label: string; description: string }> = [
-    { id: 'rollout', label: 'Initial Rollout', description: 'Exactly five showcase priorities with their real current state.' },
-    { id: 'future', label: 'Future Integrations', description: 'Static presentation of missing or not-currently-enabled municipal pipeline systems.' },
-    { id: 'core', label: 'Core Platform', description: 'ONE TALIBON backbone and current supporting foundations.' },
-];
+type RolloutEntry = {
+    href: string;
+    action: string;
+    value: string;
+    icon: LucideIcon;
+};
 
-const rolloutTone = {
-    'Current / Working': 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200',
-    'Future Integration': 'bg-amber-50 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200',
-    'Current Personnel Reference': 'bg-blue-50 text-blue-800 dark:bg-blue-950/40 dark:text-blue-200',
-} as const;
+const rolloutEntries: Record<string, RolloutEntry> = {
+    'ROL-01': {
+        href: '/correspondence',
+        action: 'Open Correspondence',
+        value: 'Correspondence, memoranda and routed document work.',
+        icon: FileText,
+    },
+    'ROL-02': {
+        href: '/transactions',
+        action: 'Open Tasks & Assignments',
+        value: 'Task ownership, assignments and executive work visibility.',
+        icon: ListChecks,
+    },
+    'ROL-03': {
+        href: '/operations',
+        action: 'Open Project Monitoring',
+        value: 'PPAs, milestones and implementation progress context.',
+        icon: FolderKanban,
+    },
+    'ROL-04': {
+        href: '/procurement',
+        action: 'Open Procurement',
+        value: 'PR lifecycle, sourcing, delivery and inspection reference.',
+        icon: ShoppingCart,
+    },
+    'ROL-05': {
+        href: '/employees',
+        action: 'Open HR Employee Portal',
+        value: 'Personnel-reference and employee portal foundation.',
+        icon: Users,
+    },
+};
 
-const coreTone = {
-    Current: 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200',
-    'Current Foundation': 'bg-teal-50 text-teal-800 dark:bg-teal-950/40 dark:text-teal-200',
-    'Platform Foundation': 'bg-blue-50 text-blue-800 dark:bg-blue-950/40 dark:text-blue-200',
-    'Integration Direction': 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200',
-} as const;
+const rolloutTone: Record<string, string> = {
+    'Current / Working':
+        'border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900/60 dark:bg-emerald-950/25 dark:text-emerald-200',
+    'Main Showcase / Interactive Static Prototype':
+        'border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900/60 dark:bg-amber-950/25 dark:text-amber-200',
+    'Current Personnel Reference':
+        'border-blue-200 bg-blue-50 text-blue-800 dark:border-blue-900/60 dark:bg-blue-950/25 dark:text-blue-200',
+};
 
-export default function Index() {
-    const [view, setView] = useState<View>('rollout');
+const coreTone: Record<string, string> = {
+    Current: 'bg-emerald-500',
+    'Current Foundation': 'bg-teal-500',
+    'Platform Foundation': 'bg-blue-500',
+    'Integration Direction': 'bg-slate-400',
+};
+
+function rolloutStateLabel(state: string) {
+    return state.startsWith('Main Showcase') ? 'Presentation workspace' : state;
+}
+
+function coreLabel(name: string) {
+    return name
+        .replace('Unified authenticated access / SSO direction', 'Authenticated Access')
+        .replace('Employee/User Directory', 'User Directory')
+        .replace('Task/Workflow Engine', 'Workflow Engine')
+        .replace('Digital Approval foundation', 'Digital Approval')
+        .replace('Central File Repository', 'File Repository')
+        .replace('API / Integration Layer direction', 'API / Integration');
+}
+
+export default function Index({ showcase }: Props) {
     const [q, setQ] = useState('');
-    const [group, setGroup] = useState('');
-    const [status, setStatus] = useState('');
+    const [filter, setFilter] = useState('');
     const [selectedSystem, setSelectedSystem] = useState<MunicipalSystem | null>(null);
 
     const systems = useMemo(() => {
         const needle = q.trim().toLowerCase();
+        const [filterType, filterValue] = filter ? filter.split(':', 2) : ['', ''];
 
-        return municipalSystems.filter((system) =>
-            (!group || system.group === group)
-            && (!status || system.status === status)
-            && (!needle || [
-                system.name,
-                system.group,
-                system.owningOffice,
-                system.purpose,
-                system.recordScope,
-                system.integrationNote,
-                ...system.conceptItems,
-            ].join(' ').toLowerCase().includes(needle))
+        return municipalSystems.filter((system) => {
+            const matchesFilter =
+                !filter ||
+                (filterType === 'group' && system.group === filterValue) ||
+                (filterType === 'status' && system.status === filterValue);
+
+            const matchesSearch =
+                !needle ||
+                [
+                    system.id,
+                    system.name,
+                    system.group,
+                    system.owningOffice,
+                    system.purpose,
+                    system.recordScope,
+                    ...system.conceptItems,
+                ]
+                    .join(' ')
+                    .toLowerCase()
+                    .includes(needle);
+
+            return matchesFilter && matchesSearch;
+        });
+    }, [q, filter]);
+
+    if (showcase === 'procurement') {
+        return (
+            <AppLayout title="Procurement / PR Tracking">
+                <PageFrame density="compact">
+                    <ProcurementWorkspace prototype={procurementPrototype} />
+                </PageFrame>
+            </AppLayout>
         );
-    }, [q, group, status]);
-
-    const selectView = (nextView: View) => {
-        setSelectedSystem(null);
-        setView(nextView);
-    };
-
-    const openConcept = (system: MunicipalSystem) => {
-        setView('future');
-        setSelectedSystem(system);
-    };
+    }
 
     return (
-        <AppLayout title="Future Integrations">
+        <AppLayout title="Municipal Systems">
             <PageFrame density="compact">
-                <PageHeader
-                    eyebrow="ONE TALIBON digital operations platform"
-                    title="Future Integrations"
-                    description="Core platform backbone, exactly five initial-rollout priorities, and planned municipal pipeline systems presented without implying operational capability."
-                    icon={Network}
-                />
-
-                {!selectedSystem && (
-                    <div
-                        role="tablist"
-                        aria-label="Municipal systems presentation views"
-                        className="grid gap-1 rounded-xl border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-[#142236] md:grid-cols-3"
-                    >
-                        {views.map((item) => {
-                            const selected = view === item.id;
-
-                            return (
-                                <button
-                                    key={item.id}
-                                    type="button"
-                                    role="tab"
-                                    aria-selected={selected}
-                                    onClick={() => selectView(item.id)}
-                                    className={
-                                        'min-h-12 rounded-lg px-3 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30 '
-                                        + (selected
-                                            ? 'bg-emerald-50 text-emerald-950 dark:bg-emerald-950/35 dark:text-emerald-100'
-                                            : 'text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-900/40')
-                                    }
-                                >
-                                    <div className="text-[12px] font-bold">{item.label}</div>
-                                    <div className="mt-0.5 text-[10px] leading-4 opacity-75">{item.description}</div>
-                                </button>
-                            );
-                        })}
-                    </div>
-                )}
-
                 {selectedSystem ? (
                     <FutureIntegrationDetail
                         system={selectedSystem}
                         onBack={() => setSelectedSystem(null)}
                     />
                 ) : (
-                    <>
-                        {view === 'rollout' && (
-                            <section aria-labelledby="initial-rollout-title" className="space-y-2">
-                                <div className="flex flex-col gap-1 rounded-xl border border-emerald-100 bg-emerald-50/50 px-3 py-2 dark:border-emerald-900/50 dark:bg-emerald-950/20">
-                                    <h2 id="initial-rollout-title" className="text-[13px] font-bold text-slate-950 dark:text-slate-100">
+                    <div className="space-y-2.5 xl:grid xl:min-h-[calc(100vh-11.5rem)] xl:grid-rows-[auto_auto_minmax(0,1fr)] xl:gap-3 xl:space-y-0 2xl:min-h-[calc(100vh-10.5rem)]">
+                        <section className="rounded-xl border border-emerald-200 bg-gradient-to-r from-white via-emerald-50/55 to-amber-50/35 px-3 py-2.5 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10 xl:px-4 xl:py-3">
+                            <div className="grid gap-2.5 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-center 2xl:grid-cols-[minmax(0,1fr)_450px]">
+                                <div className="min-w-0">
+                                    <div className="flex items-center gap-2 text-[8px] font-black uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300 xl:text-[9px]">
+                                        <span className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-emerald-700 text-white dark:bg-emerald-600 xl:h-7 xl:w-7">
+                                            <Network size={13} aria-hidden="true" />
+                                        </span>
+                                        TALIBON INTRA-OFFICE PORTAL
+                                    </div>
+                                    <h1 className="mt-1 text-[17px] font-black leading-tight tracking-tight text-slate-950 dark:text-white sm:text-[19px] xl:text-[22px] 2xl:text-[24px]">
+                                        Municipal systems connected through one shared digital backbone.
+                                    </h1>
+                                    <p className="mt-0.5 text-[9px] text-slate-500 dark:text-slate-400 xl:text-[10px]">
+                                        Current rollout, future municipal workspaces and reusable platform foundations.
+                                    </p>
+                                </div>
+
+                                <div className="grid grid-cols-3 overflow-hidden rounded-lg border border-slate-200 bg-white/85 dark:border-slate-700 dark:bg-slate-900/45">
+                                    <div className="px-2.5 py-2 text-center xl:py-2.5">
+                                        <div className="text-[17px] font-black tabular-nums text-emerald-700 dark:text-emerald-300 xl:text-[21px]">
+                                            {initialRollout.length}
+                                        </div>
+                                        <div className="text-[7px] font-extrabold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400 xl:text-[8px]">
+                                            Rollout Priorities
+                                        </div>
+                                    </div>
+                                    <div className="border-x border-slate-200 px-2.5 py-2 text-center dark:border-slate-700 xl:py-2.5">
+                                        <div className="text-[17px] font-black tabular-nums text-amber-700 dark:text-amber-300 xl:text-[21px]">
+                                            {municipalSystems.length}
+                                        </div>
+                                        <div className="text-[7px] font-extrabold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400 xl:text-[8px]">
+                                            Future Systems
+                                        </div>
+                                    </div>
+                                    <div className="px-2.5 py-2 text-center xl:py-2.5">
+                                        <div className="flex h-[21px] items-center justify-center text-emerald-700 dark:text-emerald-300 xl:h-[26px]">
+                                            <Network size={16} aria-hidden="true" />
+                                        </div>
+                                        <div className="text-[7px] font-extrabold uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400 xl:text-[8px]">
+                                            Shared Backbone
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section aria-labelledby="rollout-heading" className="space-y-1.5 xl:flex xl:min-h-0 xl:flex-col xl:space-y-2">
+                            <div className="flex items-end justify-between gap-3">
+                                <div>
+                                    <div className="text-[8px] font-black uppercase tracking-[0.11em] text-emerald-700 dark:text-emerald-300 xl:text-[9px]">
                                         Initial Rollout
+                                    </div>
+                                    <h2 id="rollout-heading" className="text-[12px] font-extrabold text-slate-950 dark:text-slate-100 xl:text-[14px]">
+                                        Five working ONE TALIBON entry points
                                     </h2>
-                                    <p className="text-[11px] leading-4 text-slate-600 dark:text-slate-300">
-                                        Five priorities only. Current foundations stay current; Procurement remains visibly future; HR remains personnel-reference only.
-                                    </p>
                                 </div>
+                                <span className="hidden text-[8px] font-semibold text-slate-400 sm:block xl:text-[9px]">
+                                    Existing portal destinations
+                                </span>
+                            </div>
 
-                                <div className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]">
-                                    <div className="divide-y divide-slate-100 dark:divide-slate-700">
-                                        {initialRollout.map((item, index) => (
-                                            <article key={item.id} className="grid gap-2 px-3 py-2.5 md:grid-cols-[36px_minmax(0,1fr)_220px] md:items-center">
-                                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-[11px] font-extrabold text-slate-600 dark:bg-slate-800 dark:text-slate-200">
-                                                    {index + 1}
-                                                </div>
-                                                <div className="min-w-0">
-                                                    <h3 className="text-[13px] font-bold text-slate-950 dark:text-slate-100">{item.name}</h3>
-                                                    <p className="mt-0.5 text-[10px] leading-4 text-slate-500 dark:text-slate-400">{item.description}</p>
-                                                </div>
-                                                <div className="md:text-right">
-                                                    <span className={'inline-flex rounded-full px-2 py-1 text-[9px] font-bold ' + rolloutTone[item.state]}>
-                                                        {item.state}
+                            <div className="grid gap-1.5 sm:grid-cols-2 xl:flex-1 xl:grid-cols-5 xl:gap-2">
+                                {initialRollout.map((item) => {
+                                    const entry = rolloutEntries[item.id];
+                                    const Icon = entry.icon;
+
+                                    return (
+                                        <Link
+                                            key={item.id}
+                                            href={entry.href}
+                                            aria-label={`${entry.action}: ${item.name}`}
+                                            className="group flex min-h-[108px] min-w-0 flex-col rounded-xl border border-slate-200 bg-white p-2.5 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30 dark:border-slate-700 dark:bg-[#142236] dark:hover:border-emerald-900/70 xl:min-h-[128px] xl:p-3 2xl:min-h-[136px]"
+                                        >
+                                            <div className="flex items-start justify-between gap-2">
+                                                <div className="flex min-w-0 items-center gap-2">
+                                                    <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300 xl:h-8 xl:w-8">
+                                                        <Icon size={14} aria-hidden="true" />
+                                                    </span>
+                                                    <span className="text-[7px] font-black uppercase tracking-[0.08em] text-slate-400 xl:text-[8px]">
+                                                        {item.id}
                                                     </span>
                                                 </div>
-                                            </article>
-                                        ))}
+                                                <ChevronRight
+                                                    size={13}
+                                                    className="shrink-0 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-emerald-600"
+                                                    aria-hidden="true"
+                                                />
+                                            </div>
+
+                                            <h3 className="mt-1.5 line-clamp-2 text-[10px] font-extrabold leading-3.5 text-slate-950 dark:text-slate-100 xl:mt-2 xl:text-[11px] xl:leading-4">
+                                                {item.name}
+                                            </h3>
+                                            <p className="mt-1 line-clamp-2 text-[8px] leading-3 text-slate-500 dark:text-slate-400 xl:text-[9px] xl:leading-3.5">
+                                                {entry.value}
+                                            </p>
+
+                                            <div className="mt-auto flex items-end justify-between gap-2 pt-1.5 xl:pt-2">
+                                                <span
+                                                    className={
+                                                        'rounded-full border px-1.5 py-0.5 text-[7px] font-bold xl:text-[7.5px] ' +
+                                                        rolloutTone[item.state]
+                                                    }
+                                                >
+                                                    {rolloutStateLabel(item.state)}
+                                                </span>
+                                                <span className="truncate text-right text-[7px] font-extrabold text-emerald-700 dark:text-emerald-300 xl:text-[8px]">
+                                                    {entry.action}
+                                                </span>
+                                            </div>
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+                        </section>
+
+                        <div className="grid items-stretch gap-2.5 xl:min-h-0 xl:grid-cols-[minmax(0,2.25fr)_minmax(270px,.9fr)] xl:gap-3">
+                            <section
+                                aria-labelledby="future-heading"
+                                className="flex min-h-0 min-w-0 flex-col rounded-xl border border-slate-200 bg-slate-50/55 p-2.5 dark:border-slate-700 dark:bg-slate-900/20 xl:h-full xl:p-3"
+                            >
+                                <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                    <div className="min-w-0">
+                                        <div className="text-[8px] font-black uppercase tracking-[0.11em] text-amber-700 dark:text-amber-300 xl:text-[9px]">
+                                            Future Integrations
+                                        </div>
+                                        <div className="flex items-baseline gap-2">
+                                            <h2 id="future-heading" className="text-[12px] font-extrabold text-slate-950 dark:text-slate-100 xl:text-[14px]">
+                                                Municipal system matrix
+                                            </h2>
+                                            <span className="text-[8px] font-bold tabular-nums text-slate-400 xl:text-[9px]">
+                                                {systems.length}/{municipalSystems.length}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid gap-1.5 sm:grid-cols-[minmax(170px,1fr)_142px] xl:grid-cols-[minmax(180px,220px)_140px]">
+                                        <label className="relative min-w-0">
+                                            <span className="sr-only">Search future systems</span>
+                                            <Search
+                                                size={12}
+                                                className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"
+                                                aria-hidden="true"
+                                            />
+                                            <input
+                                                value={q}
+                                                onChange={(event) => setQ(event.target.value)}
+                                                placeholder="Search systems"
+                                                className="h-8 w-full rounded-lg border border-slate-300 bg-white pl-8 pr-2 text-[9px] text-slate-900 outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 xl:text-[9.5px]"
+                                            />
+                                        </label>
+
+                                        <label className="relative min-w-0">
+                                            <span className="sr-only">Filter future systems</span>
+                                            <SlidersHorizontal
+                                                size={11}
+                                                className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"
+                                                aria-hidden="true"
+                                            />
+                                            <select
+                                                value={filter}
+                                                onChange={(event) => setFilter(event.target.value)}
+                                                className="h-8 w-full appearance-none rounded-lg border border-slate-300 bg-white pl-7 pr-6 text-[8px] font-semibold text-slate-700 outline-none focus:border-[var(--municipal-brand)] dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200 xl:text-[8.5px]"
+                                                aria-label="Filter future systems by group or status"
+                                            >
+                                                <option value="">All systems</option>
+                                                {systemGroups.map((item) => (
+                                                    <option key={item} value={`group:${item}`}>
+                                                        {item}
+                                                    </option>
+                                                ))}
+                                                <option value="status:Planned">Status: Planned</option>
+                                                <option value="status:Not Enabled">Status: Not Enabled</option>
+                                            </select>
+                                        </label>
                                     </div>
                                 </div>
+
+                                <div className="mt-2 min-h-0 flex-1 xl:mt-2.5">
+                                    <SystemDirectory systems={systems} onSelect={setSelectedSystem} />
+                                </div>
                             </section>
-                        )}
 
-                        {view === 'future' && (
-                            <section aria-labelledby="future-integrations-title" className="space-y-2">
-                                <div className="rounded-xl border border-amber-100 bg-amber-50/60 px-3 py-2 dark:border-amber-900/50 dark:bg-amber-950/20">
-                                    <h2 id="future-integrations-title" className="text-[13px] font-bold text-slate-950 dark:text-slate-100">
-                                        Future Integrations
-                                    </h2>
-                                    <p className="mt-0.5 text-[11px] leading-4 text-slate-600 dark:text-slate-300">
-                                        Static concept catalog. Enter any module to preview what it could become without leaving this route or implying operational capability.
-                                    </p>
-                                </div>
-
-                                <div className="grid gap-1.5 rounded-xl border border-slate-200 bg-white p-2 dark:border-slate-700 dark:bg-[#142236] md:grid-cols-[minmax(0,1fr)_230px_190px]">
-                                    <label className="relative min-w-0">
-                                        <span className="sr-only">Search Future Integrations</span>
-                                        <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true" />
-                                        <input
-                                            value={q}
-                                            onChange={(event) => setQ(event.target.value)}
-                                            placeholder="Filter future system, office, or intended scope"
-                                            className="min-h-9 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-3 text-sm outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
-                                        />
-                                    </label>
-
-                                    <select
-                                        aria-label="Future Integration group"
-                                        value={group}
-                                        onChange={(event) => setGroup(event.target.value)}
-                                        className="min-h-9 rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
-                                    >
-                                        <option value="">All future groups</option>
-                                        {systemGroups.map((item) => <option key={item}>{item}</option>)}
-                                    </select>
-
-                                    <select
-                                        aria-label="Future Integration status"
-                                        value={status}
-                                        onChange={(event) => setStatus(event.target.value)}
-                                        className="min-h-9 rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
-                                    >
-                                        <option value="">All future statuses</option>
-                                        <option>Planned</option>
-                                        <option>Not Enabled</option>
-                                    </select>
-                                </div>
-
-                                <SystemDirectory systems={systems} onSelect={openConcept} />
-                            </section>
-                        )}
-
-                        {view === 'core' && (
-                            <section aria-labelledby="core-platform-title" className="space-y-2">
-                                <div className="rounded-xl border border-emerald-100 bg-emerald-50/50 px-3 py-2 dark:border-emerald-900/50 dark:bg-emerald-950/20">
-                                    <h2 id="core-platform-title" className="text-[13px] font-bold text-slate-950 dark:text-slate-100">
-                                        Core Platform Backbone
-                                    </h2>
-                                    <p className="mt-0.5 text-[11px] leading-4 text-slate-600 dark:text-slate-300">
-                                        ONE TALIBON provides the common authenticated, routing, workflow, file, audit, and integration foundation. Encode once, use many times.
-                                    </p>
-                                </div>
-
-                                <div className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]">
-                                    <div className="divide-y divide-slate-100 dark:divide-slate-700">
-                                        {corePlatform.map((item) => (
-                                            <article key={item.name} className="grid gap-2 px-3 py-2 md:grid-cols-[minmax(0,1fr)_180px] md:items-center">
-                                                <div className="min-w-0">
-                                                    <h3 className="text-[12px] font-bold text-slate-950 dark:text-slate-100">{item.name}</h3>
-                                                    <p className="mt-0.5 text-[10px] leading-4 text-slate-500 dark:text-slate-400">{item.description}</p>
-                                                </div>
-                                                <div className="md:text-right">
-                                                    <span className={'inline-flex rounded-full px-2 py-1 text-[9px] font-bold ' + coreTone[item.state]}>
-                                                        {item.state}
-                                                    </span>
-                                                </div>
-                                            </article>
-                                        ))}
+                            <aside
+                                aria-labelledby="core-heading"
+                                className="flex min-h-0 flex-col rounded-xl border border-emerald-200 bg-white p-2.5 shadow-sm dark:border-emerald-900/60 dark:bg-[#142236] xl:h-full xl:p-3"
+                            >
+                                <div className="flex items-center justify-between gap-2">
+                                    <div>
+                                        <div className="text-[8px] font-black uppercase tracking-[0.11em] text-emerald-700 dark:text-emerald-300 xl:text-[9px]">
+                                            Core Platform
+                                        </div>
+                                        <h2 id="core-heading" className="text-[12px] font-extrabold text-slate-950 dark:text-slate-100 xl:text-[14px]">
+                                            Shared architecture
+                                        </h2>
                                     </div>
+                                    <Network size={17} className="text-emerald-700 dark:text-emerald-300" aria-hidden="true" />
                                 </div>
 
-                                <div className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-[#142236]">
-                                    <h2 className="text-[12px] font-bold text-slate-950 dark:text-slate-100">Current supporting foundations</h2>
-                                    <div className="mt-2 grid gap-1.5 md:grid-cols-2">
+                                <div className="mt-2 divide-y divide-slate-100 border-y border-slate-100 dark:divide-slate-700 dark:border-slate-700 xl:mt-2.5 xl:flex-1">
+                                    {corePlatform.map((item) => (
+                                        <div key={item.name} className="flex min-h-7 items-center gap-2 py-1 xl:min-h-8 xl:gap-2.5 xl:py-1.5">
+                                            <span
+                                                className={
+                                                    'h-1.5 w-1.5 shrink-0 rounded-full xl:h-2 xl:w-2 ' +
+                                                    coreTone[item.state]
+                                                }
+                                                aria-hidden="true"
+                                            />
+                                            <span className="min-w-0 flex-1 truncate text-[8px] font-bold text-slate-700 dark:text-slate-200 xl:text-[9.5px]">
+                                                {coreLabel(item.name)}
+                                            </span>
+                                            <span className="shrink-0 text-[6.5px] font-semibold uppercase tracking-[0.04em] text-slate-400 xl:text-[7px]">
+                                                {item.state}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="mt-2 xl:mt-2.5">
+                                    <div className="text-[7px] font-black uppercase tracking-[0.09em] text-slate-400 xl:text-[8px]">
+                                        Supporting foundations
+                                    </div>
+                                    <div className="mt-1 grid gap-x-2 gap-y-1 sm:grid-cols-2 xl:grid-cols-1 xl:gap-y-1.5">
                                         {supportingFoundations.map((item) => (
-                                            <div key={item} className="rounded-lg bg-slate-50 px-2.5 py-2 text-[10px] leading-4 text-slate-600 dark:bg-slate-900/40 dark:text-slate-300">
-                                                {item}
+                                            <div key={item} className="flex min-w-0 items-start gap-1.5 text-[7px] leading-3 text-slate-500 dark:text-slate-400 xl:text-[8px] xl:leading-3.5">
+                                                <span className="mt-1 h-1 w-1 shrink-0 rounded-full bg-emerald-500 xl:h-1.5 xl:w-1.5" aria-hidden="true" />
+                                                <span className="line-clamp-1">{item}</span>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
-                            </section>
-                        )}
-                    </>
+                            </aside>
+                        </div>
+                    </div>
                 )}
             </PageFrame>
         </AppLayout>

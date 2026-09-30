@@ -1,10 +1,10 @@
 import { router, usePage } from '@inertiajs/react';
 import { CircleHelp, LogOut } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ONBOARDING_GUIDE_EVENT } from '../onboarding/types';
 import type { AuthUser, SharedProps } from '../../types';
+import { saveAppearance } from '../../theme/appearance';
 import WorkspaceSwitcher from '../showcase/WorkspaceSwitcher';
-import SidebarAppearanceMenu from './SidebarAppearanceMenu';
 
 type Props = {
     compact: boolean;
@@ -14,6 +14,10 @@ type Props = {
 export default function SidebarFooter({ compact }: Props) {
     const [signingOut, setSigningOut] = useState(false);
     const { showcaseSession } = usePage<SharedProps>().props;
+
+    useEffect(() => {
+        if (showcaseSession?.active) saveAppearance('light');
+    }, [showcaseSession?.active]);
 
     const signOut = () => {
         if (signingOut) return;
@@ -42,7 +46,6 @@ export default function SidebarFooter({ compact }: Props) {
                             <CircleHelp size={16} />
                         </button>
                     )}
-                    <SidebarAppearanceMenu compact align="end" />
                     <button
                         type="button"
                         onClick={signOut}

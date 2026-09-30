@@ -2,18 +2,18 @@
 
 return [
     'dataMode' => 'prototype',
-    'sampleLabel' => 'PROTOTYPE REVIEW ENVIRONMENT',
+    'sampleLabel' => 'PROTOTYPE SAMPLE DATA',
     'municipality' => 'Municipality of Talibon, Bohol',
     'hero' => [
-        'eyebrow' => 'MUNICIPALITY OF TALIBON · AUTHORIZED ACCESS',
-        'title' => 'TALIBON INTRA-OFFICE PORTAL',
-        'lead' => 'SECURE DIGITAL WORKSPACE FOR MUNICIPAL PERSONNEL',
-        'description' => 'Access internal municipal workflows, inter-office transactions, memoranda, employee services, records, approvals, and authorized operational tools.',
+        'eyebrow' => 'LGU INTRA-OFFICE PORTAL',
+        'title' => 'ONE TALIBON. ONE WORKSPACE.',
+        'lead' => 'MUNICIPAL WORK, CONNECTED ACROSS OFFICES.',
+        'description' => 'Manage documents, memoranda, schedules, projects, requests, and office coordination in one secure workspace.',
     ],
     'about' => [
         'eyebrow' => 'About the Portal',
-        'title' => 'One municipality. Connected internal work.',
-        'description' => 'The Talibon Intra-Office Portal is the Municipality of Talibon’s secure internal workspace for coordinating official work between authorized offices and personnel.',
+        'title' => 'Built for municipal coordination.',
+        'description' => 'ONE TALIBON is the LGU’s shared intra-office workspace for coordinating official work, information, documents, schedules, and processes across municipal offices.',
         'pillars' => [
             [
                 'title' => 'Coordinate',
@@ -135,8 +135,8 @@ return [
         ],
     ],
     'capabilities' => [
-        'title' => 'Tools for authorized municipal work',
-        'description' => 'The portal brings core internal workflows into one protected municipal workspace. Capability descriptions below reflect the prototype scope and do not imply that every module is production-complete.',
+        'title' => 'Portal Capabilities',
+        'description' => 'Core tools for moving municipal work between offices.',
         'items' => [
             [
                 'id' => 'transactions',
@@ -154,8 +154,8 @@ return [
             ],
             [
                 'id' => 'documents',
-                'title' => 'Memoranda & Records',
-                'description' => 'Receive, review, publish, acknowledge, and access permitted internal memoranda and municipal records.',
+                'title' => 'Documents & Memoranda',
+                'description' => 'Manage official documents, memoranda, records, and correspondence.',
                 'detail' => [
                     'summary' => 'Coordinate official documents, memoranda, records, and correspondence within one municipal workspace.',
                     'highlights' => [
@@ -168,50 +168,50 @@ return [
             ],
             [
                 'id' => 'projects',
-                'title' => 'Approvals & Workflow',
-                'description' => 'Review internal workflows and actions that require authorized municipal approval or follow-through.',
+                'title' => 'Programs & Projects',
+                'description' => 'Coordinate programs, projects, assignments, and activity.',
                 'detail' => [
-                    'summary' => 'Support authorized review and approval of internal municipal workflows and actions.',
+                    'summary' => 'Keep municipal programs, projects, assignments, and related activity organized in one workspace.',
                     'highlights' => [
-                        'Review items requiring approval',
-                        'Keep decision responsibility clear',
-                        'Support documented workflow follow-through',
+                        'Coordinate programs and projects',
+                        'Keep assignments visible',
+                        'Support office follow-through',
                     ],
                     'note' => 'Available inside the authenticated portal.',
                 ],
             ],
             [
                 'id' => 'people',
-                'title' => 'HRIS / Employee Services',
-                'description' => 'Access employee information, leave requests, leave credits, attendance-related services, and authorized HR workflows.',
+                'title' => 'Employees & Offices',
+                'description' => 'Find office and personnel information in one workspace.',
                 'detail' => [
-                    'summary' => 'Support authorized employee self-service and HR workflows inside the protected municipal workspace.',
+                    'summary' => 'Access municipal office and personnel information from the shared authenticated workspace.',
                     'highlights' => [
-                        'Review employee information as permitted',
-                        'Support leave and leave-credit workflows',
-                        'Keep HR actions within authorized access',
+                        'Find responsible offices',
+                        'Reference personnel information',
+                        'Support inter-office coordination',
                     ],
                     'note' => 'Available inside the authenticated portal.',
                 ],
             ],
             [
                 'id' => 'calendar',
-                'title' => 'Department Workspace',
-                'description' => 'Work with department-specific operational information, responsibilities, schedules, and internal activity.',
+                'title' => 'Calendar & Coordination',
+                'description' => 'Coordinate meetings, deadlines, activities, and schedules.',
                 'detail' => [
-                    'summary' => 'Give each department a focused internal workspace for its permitted operational information and activity.',
+                    'summary' => 'Coordinate meetings, deadlines, municipal activities, and office schedules from one shared calendar context.',
                     'highlights' => [
-                        'Keep department responsibilities visible',
-                        'Coordinate internal schedules and activity',
-                        'Work within department-specific permissions',
+                        'See office schedules',
+                        'Track deadlines and meetings',
+                        'Coordinate municipal activities',
                     ],
                     'note' => 'Available inside the authenticated portal.',
                 ],
             ],
             [
                 'id' => 'follow-up',
-                'title' => 'Internal Notifications',
-                'description' => 'Keep authorized reviews, acknowledgments, pending actions, and follow-up responsibilities visible.',
+                'title' => 'Notifications & Follow-Up',
+                'description' => 'Track work that needs review, action, or follow-up.',
                 'detail' => [
                     'summary' => 'Keep work requiring review, action, acknowledgment, or follow-up visible to authorized personnel.',
                     'highlights' => [
@@ -258,8 +258,8 @@ return [
     ],
     'secureAccess' => [
         'eyebrow' => 'Secure Access',
-        'title' => 'AUTHORIZED EMPLOYEE ACCESS',
-        'description' => 'Sign in to continue to the protected Talibon Intra-Office Portal and access the internal tools permitted for your account.',
+        'title' => 'SECURE MUNICIPAL WORKSPACE',
+        'description' => 'Official work continues inside the authenticated LGU Intra-Office Portal.',
         'note' => 'No live operational records are shown on this page.',
         'trustPoints' => [
             'Authorized personnel only',
@@ -267,14 +267,80 @@ return [
             'No live operational records on this page',
         ],
     ],
-    'services' => [],
-    'transparency' => [],
-    'projects' => [],
-    'dashboard' => [],
-    'news' => [],
+    'services' => [
+        [
+            'title' => 'Business permits & licensing',
+            'description' => 'Find guidance about local business and permit services available through the municipality.',
+            'group' => 'services',
+            'meta' => 'Information only',
+            'action' => 'See contact information',
+            'href' => '#contact',
+        ],
+        [
+            'title' => 'Civil & community services',
+            'description' => 'Find guidance about civil and community services available through the municipality.',
+            'group' => 'services',
+            'meta' => 'Information only',
+            'action' => 'See contact information',
+            'href' => '#contact',
+        ],
+        [
+            'title' => 'Municipal offices',
+            'description' => 'Find general guidance for identifying the municipal office responsible for a public concern.',
+            'group' => 'services',
+            'meta' => 'Directory preview',
+            'action' => 'About Talibon',
+            'href' => '#about',
+        ],
+        [
+            'title' => 'News & public information',
+            'description' => 'Read sample municipal announcements, notices, and public updates prepared for this prototype.',
+            'group' => 'information',
+            'meta' => 'Prototype content',
+            'action' => 'Read news & notices',
+            'href' => '#news',
+        ],
+        [
+            'title' => 'Emergency advisories',
+            'description' => 'See how public advisories are presented in this evaluation prototype. No active warning is issued here.',
+            'group' => 'information',
+            'meta' => 'Prototype content',
+            'action' => 'View advisory preview',
+            'href' => '#news',
+        ],
+        [
+            'title' => 'Public documents & transparency',
+            'description' => 'Review the prototype area for public documents, reports, and transparency resources.',
+            'group' => 'information',
+            'meta' => 'Prototype content',
+            'action' => 'See public documents',
+            'href' => '#transparency',
+        ],
+    ],
+    'transparency' => [
+        ['label' => 'Public document library preview', 'value' => 'Document preview', 'note' => 'No official documents are published in this prototype.'],
+        ['label' => 'Municipal report preview', 'value' => 'Report preview', 'note' => 'Sample report information for layout evaluation; not an official municipal report.'],
+        ['label' => 'Public notice preview', 'value' => 'Notice preview', 'note' => 'Sample notice information for evaluation; not an official municipal notice.'],
+    ],
+    'projects' => [
+        ['title' => 'Community infrastructure update preview', 'summary' => 'Sample project-update structure for evaluation; no official project record is published here.', 'tag' => 'Project preview'],
+        ['title' => 'Service modernization update preview', 'summary' => 'Sample municipal digital-service update for evaluation.', 'tag' => 'Program preview'],
+        ['title' => 'Public information access update preview', 'summary' => 'Sample public-information initiative update for evaluation.', 'tag' => 'Initiative preview'],
+    ],
+    'dashboard' => [
+        ['label' => 'Public projects', 'value' => 'Sample view', 'detail' => 'Future public project summaries'],
+        ['label' => 'Service availability', 'value' => 'Prototype', 'detail' => 'Public service-information status'],
+        ['label' => 'Published information', 'value' => 'Sample view', 'detail' => 'Approved public documents and notices'],
+        ['label' => 'Announcements', 'value' => 'Prototype', 'detail' => 'Public news and advisories'],
+    ],
+    'news' => [
+        ['type' => 'Advisory', 'title' => 'Municipal advisory preview', 'summary' => 'Sample advisory for evaluation. No active warning is issued here.', 'date' => ''],
+        ['type' => 'Event', 'title' => 'Community event preview', 'summary' => 'Sample event for evaluation. An official schedule has not been published.', 'date' => ''],
+        ['type' => 'News', 'title' => 'Municipal update preview', 'summary' => 'Sample municipal update for evaluation.', 'date' => ''],
+    ],
     'contact' => [
-        'heading' => 'Portal Help & Support',
-        'description' => 'For account, access, or portal assistance, coordinate with your authorized municipal administrator or designated internal support contact.',
-        'location' => 'Talibon Municipal Hall · Talibon, Bohol, Philippines',
+        'heading' => 'Municipality of Talibon',
+        'description' => 'Public contact details await municipal confirmation.',
+        'location' => 'Talibon, Bohol, Philippines',
     ],
 ];

@@ -112,6 +112,7 @@ export default function WorkspaceDialog({ open, personas, onClose }: Props) {
     const hr = byKey.get('hr');
     const legislative = byKey.get('legislative');
     const systemAdmin = byKey.get('system_admin');
+    const planning = byKey.get('planning_head');
     const engineering = byKey.get('engineering_head');
     const budget = byKey.get('budget_head');
 
@@ -184,10 +185,10 @@ export default function WorkspaceDialog({ open, personas, onClose }: Props) {
                             <PersonaCard
                                 label="Department Head"
                                 description="Department work, programs and office coordination"
-                                context="Choose Engineering or Budget"
+                                context="Choose Planning, Engineering or Budget"
                                 icon={Building2}
                                 onClick={() => setStep('departments')}
-                                disabled={processing || (!engineering && !budget)}
+                                disabled={processing || (!planning && !engineering && !budget)}
                             />
                             <PersonaCard
                                 label="Employee"
@@ -224,6 +225,15 @@ export default function WorkspaceDialog({ open, personas, onClose }: Props) {
                         </>
                     ) : (
                         <>
+                            {planning && (
+                                <PersonaCard
+                                    label={planning.office}
+                                    description={planning.position}
+                                    icon={Building2}
+                                    onClick={() => enter(planning)}
+                                    disabled={processing}
+                                />
+                            )}
                             {engineering && (
                                 <PersonaCard
                                     label={engineering.office}

@@ -23,6 +23,7 @@ class WorkforceDemoSeeder extends Seeder
         $accounts = [
             ['email' => 'admin@talibon.demo', 'name' => 'System Administrator', 'role' => 'system_admin', 'department' => 'MAYOR', 'position' => 'System Administrator'],
             ['email' => 'mayor@talibon.demo', 'name' => 'Mayor Office Approver', 'role' => 'mayor_approver', 'department' => 'MAYOR', 'position' => 'Approving Authority'],
+            ['email' => 'planning@talibon.demo', 'name' => 'Planning Office Head', 'role' => 'department_head', 'department' => 'MPDO', 'position' => 'Municipal Planning and Development Coordinator'],
             ['email' => 'engineering@talibon.demo', 'name' => 'Maria Santos', 'role' => 'department_head', 'department' => 'ENG', 'position' => 'Municipal Engineer'],
             ['email' => 'budget@talibon.demo', 'name' => 'Juan Cruz', 'role' => 'department_head', 'department' => 'BUDGET', 'position' => 'Municipal Budget Officer'],
             ['email' => 'hr@talibon.demo', 'name' => 'Elena Reyes', 'role' => 'hr_officer', 'department' => 'HRMO', 'position' => 'HR Management Officer'],

@@ -33,6 +33,9 @@ type Tx = {
     title: string;
     description?: string;
     transaction_type: string;
+    request_category?: string | null;
+    request_type?: string | null;
+    action_required?: string | null;
     priority: string;
     status: string;
     created_at: string;
@@ -218,10 +221,17 @@ export default function Show({
                             <div className="flex flex-wrap items-center gap-2 text-[10px] font-bold uppercase tracking-[0.13em] text-blue-700 dark:text-blue-300">
                                 <span>{tx.reference_no}</span>
                                 <span className="text-slate-300 dark:text-slate-600" aria-hidden="true">·</span>
-                                <span className="text-slate-500 dark:text-slate-400">{humanizeWorkValue(tx.transaction_type)}</span>
+                                <span className="text-slate-500 dark:text-slate-400">{tx.request_type || humanizeWorkValue(tx.transaction_type)}</span>
                             </div>
                             <h1 className="mt-1 text-xl font-bold leading-tight text-slate-950 dark:text-slate-100 sm:text-2xl">{tx.title}</h1>
                             <p className="mt-1 max-w-4xl text-xs leading-5 text-slate-600 dark:text-slate-300">{tx.description || 'No additional description.'}</p>
+                            {(tx.request_category || tx.request_type || tx.action_required) && (
+                                <div className="mt-2 grid gap-1.5 text-[10px] text-slate-500 sm:grid-cols-3 dark:text-slate-400">
+                                    <div><span className="font-semibold text-slate-700 dark:text-slate-300">Category:</span> {tx.request_category || '—'}</div>
+                                    <div><span className="font-semibold text-slate-700 dark:text-slate-300">Request type:</span> {tx.request_type || '—'}</div>
+                                    <div><span className="font-semibold text-slate-700 dark:text-slate-300">Action required:</span> {tx.action_required || '—'}</div>
+                                </div>
+                            )}
                         </div>
                         <div className="flex flex-wrap gap-1.5">
                             <span className={`rounded-full px-2.5 py-1 text-[9px] font-bold uppercase ${statusTone(tx.status)}`}>{humanizeWorkValue(tx.status)}</span>

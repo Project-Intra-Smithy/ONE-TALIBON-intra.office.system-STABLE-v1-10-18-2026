@@ -6,6 +6,7 @@ export const portalRoutePlan = {
     documentCenter: '/documents',
     myWork: '/transactions',
     correspondence: '/correspondence',
+    procurementTracking: '/procurement',
     records: '/records',
     memoranda: '/memoranda',
     announcements: '/announcements',

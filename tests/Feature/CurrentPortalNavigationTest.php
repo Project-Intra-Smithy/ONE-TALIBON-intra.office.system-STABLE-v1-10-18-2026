@@ -19,12 +19,14 @@ class CurrentPortalNavigationTest extends TestCase
         $access = file_get_contents(resource_path('js/navigation/navigationAccess.ts'));
         $destinations = file_get_contents(resource_path('js/navigation/navigationDestinations.ts'));
         $routePlan = file_get_contents(resource_path('js/navigation/navigationRoutePlan.ts'));
+        $order = file_get_contents(resource_path('js/navigation/navigationOrder.ts'));
 
         $this->assertIsString($layout);
         $this->assertIsString($navigation);
         $this->assertIsString($access);
         $this->assertIsString($destinations);
         $this->assertIsString($routePlan);
+        $this->assertIsString($order);
 
         $activeNavigation = implode("\n", [$layout, $navigation, $access, $destinations, $routePlan]);
 
@@ -33,13 +35,14 @@ class CurrentPortalNavigationTest extends TestCase
         $this->assertStringContainsString('isPortalDestinationVisible(destination, experience, permissions)', $navigation);
         $this->assertStringContainsString('permissions[destination.permission]', $access);
         $this->assertStringContainsString('workspaceExperience', $layout);
-        $this->assertSame(20, substr_count($destinations, "readiness: 'wired'"));
+        $this->assertSame(21, substr_count($destinations, "readiness: 'wired'"));
         $this->assertSame(2, substr_count($destinations, "readiness: 'integration_pending'"));
 
         foreach ([
             "home: '/dashboard'",
             "myWork: '/transactions'",
             "correspondence: '/correspondence'",
+            "procurementTracking: '/procurement'",
             "records: '/records'",
             "memoranda: '/memoranda'",
             "announcements: '/announcements'",
@@ -57,6 +60,31 @@ class CurrentPortalNavigationTest extends TestCase
             "municipalSystems: '/municipal-systems'",
         ] as $routeContract) {
             $this->assertStringContainsString($routeContract, $routePlan);
+        }
+
+        $this->assertStringContainsString("procurementTracking: { key: 'procurementTracking', label: 'Procurement / PR Tracking'", $destinations);
+        $this->assertStringContainsString("employeeDirectory: { key: 'employeeDirectory', label: 'HR Employee Portal'", $destinations);
+        $this->assertStringContainsString("icon: Users, group: 'work', readiness: 'wired'", $destinations);
+
+        $workOrder = [
+            "'documentCenter'",
+            "'myWork'",
+            "'correspondence'",
+            "'procurementTracking'",
+            "'employeeDirectory'",
+            "'records'",
+            "'memoranda'",
+            "'announcements'",
+            "'calendar'",
+            "'meetings'",
+            "'messages'",
+        ];
+        $cursor = -1;
+        foreach ($workOrder as $destinationKey) {
+            $position = strpos($order, $destinationKey);
+            $this->assertNotFalse($position, "Expected {$destinationKey} in navigation order.");
+            $this->assertGreaterThan($cursor, $position, "Expected {$destinationKey} to preserve Work ordering.");
+            $cursor = $position;
         }
 
         $this->assertStringContainsString("users: { key: 'users', label: 'Users'", $destinations);
@@ -79,6 +107,8 @@ class CurrentPortalNavigationTest extends TestCase
             'Home',
             'Tasks & Assignments',
             'Correspondence',
+            'Procurement / PR Tracking',
+            'HR Employee Portal',
             'Municipal Records',
             'Official Memoranda',
             'Announcements',
@@ -86,7 +116,6 @@ class CurrentPortalNavigationTest extends TestCase
             'Meetings',
             'Messages',
             'Executive Departments',
-            'Staff Directory',
             'Ordinances & Issuances',
             'Councils, Boards & Committees',
             'Development Plans',
@@ -95,12 +124,13 @@ class CurrentPortalNavigationTest extends TestCase
             'Users',
             'Departments',
             'System Administration',
-            'Systems Directory',
+            'Future Integrations',
         ] as $label) {
             $this->assertStringContainsString("label: '{$label}'", $destinations);
         }
 
         foreach ([
+            'Staff Directory',
             'Office Overview',
             'Executive Overview',
             'System Overview',
@@ -160,6 +190,7 @@ class CurrentPortalNavigationTest extends TestCase
             'local-special-bodies.index',
             'development-plans.index',
             'ppas.index',
+            'procurement.showcase',
             'municipal-systems.index',
         ] as $routeName) {
             $this->assertTrue(Route::has($routeName), "Expected current route {$routeName} to remain registered.");
@@ -188,7 +219,7 @@ class CurrentPortalNavigationTest extends TestCase
         $this->assertTrue(Route::has('public.home'));
         $this->assertTrue(Route::has('public.activate-account'));
 
-        foreach (['admin.index', 'dashboard', 'transactions.index', 'correspondence.index', 'records.index', 'reports.index'] as $routeName) {
+        foreach (['admin.index', 'dashboard', 'transactions.index', 'correspondence.index', 'records.index', 'reports.index', 'procurement.showcase'] as $routeName) {
             $route = Route::getRoutes()->getByName($routeName);
             $this->assertNotNull($route);
             $middleware = $route->gatherMiddleware();

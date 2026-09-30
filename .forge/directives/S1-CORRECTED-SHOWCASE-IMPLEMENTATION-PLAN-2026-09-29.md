@@ -145,23 +145,19 @@ Current issue is discoverability in the shell / guided tour, not fundamental abs
 
 Current prototype classification:
 
-`MAIN SHOWCASE / INTERACTIVE STATIC PROTOTYPE`
+`STATIC / FUTURE INTEGRATION PRESENTATION`
 
-Procurement / PR Tracking is one of Sir Gerry's five initial-rollout priorities and must therefore have first-class showcase access.
+The page may describe the intended pipeline:
 
-Required:
+`PR -> PPMP/APP -> RFQ -> PO -> delivery -> inspection -> payment`
 
-- its own direct sidebar destination under the primary Work area;
-- its own authenticated presentation route;
-- a credible whole-system static prototype;
-- the visible lifecycle:
-  `PR -> PPMP/APP -> RFQ -> PO -> delivery -> inspection -> payment`;
-- illustrative prototype data only;
-- no live procurement records;
-- no persistence;
-- no real approval/payment/issuance action.
+It must not imply that the complete workflow is currently implemented.
 
-The direct route is a presentation surface, not a claim that the procurement workflow is operational.
+No fake route.
+
+No fake records.
+
+No fake buttons that look operational.
 
 ### 4.5 HR Employee Portal
 
@@ -219,9 +215,9 @@ The current `/municipal-systems` surface must be reframed as the presentation ho
 
 Every missing / not-currently-enabled module below must be visible as a **static presentation tab/card/row**, with truthful status and no fake operational behavior.
 
-Procurement / PR Tracking is **not counted in the Future Integrations catalog** because it is promoted into the five-module Main Showcase as its own static interactive prototype.
+### Five-star / initial rollout future item
 
-The Future Integrations catalog therefore contains exactly **14** systems: `FUT-02` through `FUT-15`.
+- **Procurement / PR Tracking** — Future Integration / Planned.
 
 ### Five-star pipeline item not in the five initial-rollout list
 
@@ -311,12 +307,12 @@ Show the five rollout priorities with their actual state:
 - Document Routing & Correspondence — Current / Working;
 - Task / Executive Dashboard — Current / Working;
 - Project Monitoring — Current / Working;
-- Procurement / PR Tracking — Main Showcase / Interactive Static Prototype;
-- HR Employee Portal — Current personnel-reference foundation with direct sidebar access.
+- Procurement / PR Tracking — Future Integration;
+- HR Employee Portal — Current personnel-reference foundation.
 
 ### C. Future Integrations
 
-Show **all 14 required future modules from section 6 — FUT-02 through FUT-15**.
+Show **all required static future modules from section 6**.
 
 The page may use grouped static tabs / category filters / cards / rows.
 
@@ -334,22 +330,15 @@ Keep:
 - single open secondary group behavior;
 - persistent Switch Workspace utility.
 
-Do not add the 14 future pipeline systems as permanent sidebar items.
+Do not add the future pipeline systems as 20 permanent sidebar items.
 
-Keep one destination under Municipal Systems:
+One destination under Municipal Systems is sufficient:
 
 `Future Integrations`
 
-Add two first-class Main Showcase destinations in the primary Work area:
+The existing server-derived permission / experience filtering remains authority.
 
-- `Procurement / PR Tracking` — direct presentation route into the static interactive procurement prototype;
-- `HR Employee Portal` — existing `/employees` route, moved/reframed from Staff Directory into direct primary Work navigation.
-
-These two direct destinations are explicit Technical Authority exceptions because they are part of Sir Gerry's five-module initial-rollout showcase.
-
-Do not duplicate `HR Employee Portal` under Municipal Organization after moving it into Work.
-
-The existing server-derived permission / experience filtering remains authority for real operational surfaces. The Procurement presentation route contains illustrative/static data only and does not widen operational permissions.
+Do not assume everything is universally visible.
 
 ## 9. FRE / Guided Tour correction
 
@@ -416,17 +405,16 @@ Scope:
 - reframe `/municipal-systems` as Future Integrations;
 - show Core Platform Backbone;
 - show five initial-rollout priorities with truthful state;
-- show **all 14 static missing pipeline modules — FUT-02 through FUT-15**;
-- promote Procurement / PR Tracking into the Main Showcase as a separate static interactive prototype;
+- show **all static missing pipeline modules** listed in section 6;
 - correct misleading current systems statuses;
-- reposition employee directory as HR Employee Portal / personnel-reference foundation with direct Work sidebar access;
+- reposition employee directory as HR Employee Portal / personnel-reference foundation;
 - no broad HRIS claim.
 
 ### W04B — Future Integration Detail Surfaces
 
 `REQUIRED / CURRENT FOLLOW-UP`
 
-W04 catalog presentation is not sufficient by itself. Every `FUT-02` through `FUT-15` Future Integration entry must be enterable as a **static concept detail surface** inside the existing `/municipal-systems` route.
+W04 catalog presentation is not sufficient by itself. Every `FUT-01` through `FUT-15` Future Integration entry must be enterable as a **static concept detail surface** inside the existing `/municipal-systems` route.
 
 Required interaction:
 
@@ -446,42 +434,6 @@ Detailed scope must remain anchored to the supplied client/PDF authority. Where 
 W04B repository-local implementation handoff:
 
 `.forge/handoffs/code-writer/S1-W04B-FUTURE-INTEGRATION-DETAIL-SURFACES.md`
-
-### W04C — Future System Full-Prototype Surfaces
-
-`CURRENT / REQUIRED FOLLOW-UP`
-
-Visual inspection of W04B proved that enterable concept-detail sheets are still too brochure-like for the stakeholder showcase.
-
-The **14 Future Integrations — FUT-02 through FUT-15** must each open a credible whole-system static prototype surface inside the existing `/municipal-systems` route.
-
-Procurement / PR Tracking is handled separately as a **Main Showcase static prototype** with direct sidebar access and is no longer counted as a Future Integration catalog item.
-
-HR Employee Portal is handled as the existing real personnel-reference surface with direct sidebar access.
-
-Required characteristics:
-
-- internal client-side module navigation;
-- summary/status cards;
-- module-specific primary work surface;
-- lifecycle/monitoring/register/map/logistics/knowledge content appropriate to the module;
-- optional static row selection/detail using React state only;
-- clearly marked `Future Integration — Interactive Concept Preview`;
-- clearly marked `Illustrative prototype data — not live municipal records`;
-- no backend request, persistence, fake operational form, or new Laravel route.
-
-Implementation must remain data-driven and reuse the existing ONE TALIBON page/register/card grammar rather than hand-building fourteen unrelated future-system pages.
-
-W04C also owns the bounded Main Showcase navigation correction:
-
-- add direct `Procurement / PR Tracking` to Work;
-- move/rename `Staff Directory` into direct `HR Employee Portal` under Work;
-- keep `Future Integrations` as the single Municipal Systems child;
-- do not add any of the 14 future systems individually to the sidebar.
-
-W04C repository-local handoff:
-
-`.forge/handoffs/code-writer/S1-W04C-FUTURE-SYSTEM-FULL-PROTOTYPE-SURFACES.md`
 
 ### W03
 
@@ -530,9 +482,8 @@ During corrected S1:
 - no new dependencies;
 - no dashboard rewrite;
 - no new architecture program;
-- no real Procurement workflow or persistence;
-- one authenticated static Procurement showcase route is explicitly authorized;
-- no dedicated routes for the 14 Future Integration modules;
+- no fake Procurement workflow;
+- no fake future-module routes;
 - no broad HRIS activation;
 - no invented employee-type counts;
 - no authorization broadening;
@@ -549,10 +500,9 @@ Corrected S1 is ready to freeze when:
 - Project Monitoring tour target works without resizing;
 - Switch Workspace tour target is visible;
 - Future Integrations page clearly communicates ONE TALIBON as a core platform with plug-in pipeline;
-- all 14 missing PDF pipeline modules — FUT-02 through FUT-15 — are visibly represented and enterable as static future prototypes;
-- the five rollout priorities are obvious and truthfully classified;
-- Procurement / PR Tracking has its own first-class Main Showcase sidebar destination and static interactive prototype;
-- HR Employee Portal has its own first-class sidebar destination and remains personnel-reference focused, not broad HRIS;
+- all missing PDF pipeline modules required by section 6 are visibly represented as static/future where appropriate;
+- five rollout priorities are obvious and truthfully classified;
+- HR Employee Portal is personnel-reference focused and not broad HRIS;
 - existing current modules keep their working behavior;
 - Dashboard remains intact;
 - no backend/auth/schema/dependency drift occurred.

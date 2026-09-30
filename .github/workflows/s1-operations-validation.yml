@@ -1,0 +1,86 @@
+name: S1 Operations Stabilization Validation
+
+on:
+  push:
+    branches:
+      - KIRCH-TALIBON-S1-FINAL-SHOWCASE-OPERATIONS
+
+permissions:
+  contents: read
+
+concurrency:
+  group: s1-operations-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  APP_ENV: testing
+  APP_DEBUG: false
+  APP_URL: http://127.0.0.1:8000
+  DB_CONNECTION: pgsql
+  DB_HOST: 127.0.0.1
+  DB_PORT: 5432
+  DB_DATABASE: talibon_portal_test
+  DB_USERNAME: postgres
+  DB_PASSWORD: ''
+  SESSION_DRIVER: file
+  CACHE_STORE: file
+  QUEUE_CONNECTION: sync
+  SHOWCASE_MODE: true
+  PROTOTYPE_DEMO_PASSWORD: S1-Operations-Disposable-Runner-Password-2026!
+  QA_BASE_URL: http://127.0.0.1:8000
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d talibon_portal_test"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+          extensions: pdo_pgsql, pgsql
+          tools: composer:v2
+      - run: |
+          npm ci --no-audit --no-fund
+          composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+      - run: |
+          cp .env.example .env
+          php artisan key:generate
+          php artisan optimize:clear
+          php artisan migrate:fresh --seed --force
+      - run: |
+          php artisan test tests/Feature/WorkRequestPresentationTest.php
+          php artisan test tests/Feature/WorkforceShowcasePersonaTest.php
+          php artisan test tests/Feature/ShowcaseSessionGatewayTest.php
+          php artisan test tests/Feature/MunicipalWorkflowTest.php
+      - run: npm run types:check
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: |
+          php artisan serve --host=127.0.0.1 --port=8000 >/tmp/s1-operations-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          for i in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:8000/login >/dev/null; then break; fi
+            sleep 1
+          done
+          node tests/Browser/s1-operations-work-request.mjs
