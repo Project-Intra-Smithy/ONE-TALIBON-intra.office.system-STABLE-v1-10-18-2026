@@ -149,6 +149,7 @@ class TransactionWorkflowService
         ?string $remarks,
     ): WorkflowTransaction {
         $locked = WorkflowTransaction::query()->lockForUpdate()->findOrFail($transaction->id);
+        $this->authorizeTransition($actor, $locked, $action);
         $definition = $this->definitions->resolve($locked);
         $this->assertMutable($locked, $definition);
 
