@@ -19,7 +19,7 @@ export default function PublicHero({ content, authenticated, onOpenInfo }: Props
     >
         <div className="grid grid-cols-1 lg:min-h-[410px] lg:grid-cols-[minmax(0,5.2fr)_minmax(0,6.8fr)]">
             <div className="public-hero-copy-final flex min-w-0 flex-col justify-center px-6 py-8 sm:px-8 sm:py-9 lg:px-10 lg:py-10 xl:px-11">
-                <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] [color:var(--municipal-gold)] sm:text-[11px]">{content.hero.eyebrow}</p>
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] [color:var(--municipal-gold)] sm:text-[11px]">Talibon Intra-Office Portal</p>
                 <h1 id="public-hero-title" className="mt-2.5 max-w-[520px] text-[clamp(2rem,3.2vw,3.25rem)] font-extrabold leading-[1.02] tracking-[-0.04em] text-white">
                     {content.hero.title}
                 </h1>

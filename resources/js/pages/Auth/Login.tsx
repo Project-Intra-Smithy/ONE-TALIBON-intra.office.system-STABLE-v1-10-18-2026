@@ -1,7 +1,6 @@
 import { Head } from '@inertiajs/react';
 import { ArrowRight, LockKeyhole, ShieldCheck } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import AppearanceControl from '../../components/AppearanceControl';
 import MunicipalBrand from '../../components/MunicipalBrand';
 import WorkspaceDialog from '../../components/showcase/WorkspaceDialog';
 import type { ShowcaseEntryData } from '../../components/showcase/types';
@@ -15,8 +14,8 @@ export default function Login({ showcase }: Props) {
     const [selectorOpen, setSelectorOpen] = useState(false);
 
     useEffect(() => {
-        if (showcase.enabled) saveAppearance('light');
-    }, [showcase.enabled]);
+        saveAppearance('light');
+    }, []);
 
     return (
         <>
@@ -57,14 +56,6 @@ export default function Login({ showcase }: Props) {
                     </section>
 
                     <section className="flex min-h-[560px] flex-col px-5 py-5 sm:px-8 sm:py-7 lg:min-h-screen lg:px-12 lg:py-10 xl:px-16">
-                        {!showcase.enabled && (
-                            <div className="flex justify-end">
-                                <div className="w-[210px] max-w-full">
-                                    <AppearanceControl publicSurface />
-                                </div>
-                            </div>
-                        )}
-
                         <div className="flex flex-1 items-center justify-center py-10 lg:py-12">
                             <div className="w-full max-w-[520px] rounded-2xl border border-[#d6e1da] bg-white p-6 shadow-[0_18px_48px_rgba(11,68,45,0.08)] sm:p-7 dark:border-[#30473a] dark:bg-[#15251d] dark:shadow-[0_18px_48px_rgba(0,0,0,0.24)]">
                                 <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#12613f] dark:text-[#8fc9a7]">Secure access</p>

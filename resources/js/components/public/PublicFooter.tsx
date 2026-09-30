@@ -12,7 +12,7 @@ export default function PublicFooter({ content, authenticated }: { content: Publ
             <div className="public-footer-identity">
                 <MunicipalBrand inverse />
                 <p className="public-footer-municipality"><Landmark size={15} aria-hidden="true" />{content.municipality}</p>
-                <p className="public-footer-note">LGU Intra-Office Portal · Authorized municipal personnel.</p>
+                <p className="public-footer-note">Talibon Intra-Office Portal · Authorized municipal personnel.</p>
             </div>
 
             <nav aria-label="Footer portal links" className="public-footer-links">
@@ -41,7 +41,7 @@ export default function PublicFooter({ content, authenticated }: { content: Publ
             style={{ maxWidth: '1360px', paddingTop: '10px', paddingBottom: '12px' }}
         >
             <span>ONE TALIBON · Municipality of Talibon, Bohol</span>
-            <span>LGU Intra-Office Portal</span>
+            <span>Talibon Intra-Office Portal</span>
         </div>
     </footer>;
 }

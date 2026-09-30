@@ -5,7 +5,6 @@ import { ONBOARDING_GUIDE_EVENT } from '../onboarding/types';
 import type { AuthUser, SharedProps } from '../../types';
 import { saveAppearance } from '../../theme/appearance';
 import WorkspaceSwitcher from '../showcase/WorkspaceSwitcher';
-import SidebarAppearanceMenu from './SidebarAppearanceMenu';
 
 type Props = {
     compact: boolean;
@@ -47,7 +46,6 @@ export default function SidebarFooter({ compact }: Props) {
                             <CircleHelp size={16} />
                         </button>
                     )}
-                    {!showcaseSession?.active && <SidebarAppearanceMenu compact align="end" />}
                     <button
                         type="button"
                         onClick={signOut}

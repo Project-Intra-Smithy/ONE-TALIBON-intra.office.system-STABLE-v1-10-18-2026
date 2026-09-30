@@ -24,7 +24,7 @@ export default function PublicSecureAccess({ content, authenticated }: Props) {
                     </div>
                 </div>
 
-                <p className="mt-3 max-w-2xl text-[13px] leading-5 [color:var(--public-muted)]">{content.secureAccess.description}</p>
+                <p className="mt-3 max-w-2xl text-[13px] leading-5 [color:var(--public-muted)]">Official work continues inside the authenticated Talibon Intra-Office Portal.</p>
                 <ul className="mt-3 grid gap-1.5 sm:grid-cols-3">
                     {content.secureAccess.trustPoints.map(point => <li key={point} className="flex items-start gap-1.5 text-[11px] leading-[1.4] [color:var(--public-text)]">
                         <CheckCircle2 size={14} className="mt-0.5 shrink-0 [color:var(--public-link)]" aria-hidden="true" />

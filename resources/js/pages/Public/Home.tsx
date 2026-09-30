@@ -28,7 +28,7 @@ export default function Home({ authenticated, content }: Props) {
     };
 
     return <>
-        <Head title="ONE TALIBON — LGU Intra-Office Portal" />
+        <Head title="ONE TALIBON — Talibon Intra-Office Portal" />
         <div className="public-portal min-h-screen">
             <a href="#public-content" className="public-skip-link sr-only z-[80] rounded bg-white p-3 text-blue-900 focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to main content</a>
             <PublicHeader authenticated={authenticated} />

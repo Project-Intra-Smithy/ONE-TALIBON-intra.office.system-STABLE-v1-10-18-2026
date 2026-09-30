@@ -8,25 +8,16 @@
     <script>
         (() => {
             const root = document.documentElement;
-            let preference = 'system';
+
+            root.classList.remove('dark');
+            root.dataset.appearance = 'light';
+            root.style.colorScheme = 'light';
 
             try {
-                const stored = window.localStorage.getItem('talibon.appearance');
-                if (stored === 'light' || stored === 'dark' || stored === 'system') {
-                    preference = stored;
-                }
+                window.localStorage.setItem('talibon.appearance', 'light');
             } catch {
-                // Storage may be unavailable; System remains the safe public default.
+                // The showcase remains light even when storage is unavailable.
             }
-
-            const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
-            const resolved = preference === 'system'
-                ? (prefersDark ? 'dark' : 'light')
-                : preference;
-
-            root.classList.toggle('dark', resolved === 'dark');
-            root.dataset.appearance = preference;
-            root.style.colorScheme = resolved;
         })();
     </script>
     @viteReactRefresh

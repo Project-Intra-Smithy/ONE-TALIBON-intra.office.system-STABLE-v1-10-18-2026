@@ -1,7 +1,6 @@
 import { Link } from '@inertiajs/react';
-import { LogIn, Menu, Sun, X } from 'lucide-react';
+import { LogIn, Menu, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import AppearanceControl from '../AppearanceControl';
 import MunicipalBrand from '../MunicipalBrand';
 
 type Props = { authenticated: boolean };
@@ -16,22 +15,13 @@ export const publicLinks = [
 export default function PublicHeader({ authenticated }: Props) {
     const [open, setOpen] = useState(false);
     const trigger = useRef<HTMLButtonElement>(null);
-    const appearanceMenu = useRef<HTMLDetailsElement>(null);
 
     useEffect(() => {
         const escape = (event: KeyboardEvent) => {
-            if (event.key !== 'Escape') return;
+            if (event.key !== 'Escape' || !open) return;
 
-            if (open) {
-                setOpen(false);
-                trigger.current?.focus();
-            }
-
-            if (appearanceMenu.current?.open) {
-                appearanceMenu.current.open = false;
-                const summary = appearanceMenu.current.querySelector('summary');
-                if (summary instanceof HTMLElement) summary.focus();
-            }
+            setOpen(false);
+            trigger.current?.focus();
         };
 
         window.addEventListener('keydown', escape);
@@ -42,7 +32,7 @@ export default function PublicHeader({ authenticated }: Props) {
         <div className="mx-auto flex min-h-[64px] w-full max-w-[1360px] items-center gap-2 px-[var(--public-page-gutter)] py-1.5 2xl:gap-4">
             <a
                 href="#home"
-                aria-label="ONE TALIBON · LGU Intra-Office Portal home"
+                aria-label="ONE TALIBON · Talibon Intra-Office Portal home"
                 className="public-brand min-w-0 flex-1 2xl:flex-none"
                 style={{ gap: '12px' }}
             >
@@ -53,24 +43,13 @@ export default function PublicHeader({ authenticated }: Props) {
                 </span>
             </a>
 
-            <nav aria-label="LGU Intra-Office Portal navigation" className="ml-auto hidden items-center gap-5 2xl:flex">
+            <nav aria-label="Talibon Intra-Office Portal navigation" className="ml-auto hidden items-center gap-5 2xl:flex">
                 {publicLinks.map(([label, href]) => <a key={href} href={href} className="public-nav-link">
                     {label}
                 </a>)}
             </nav>
 
             <div className="public-header-actions">
-                <details ref={appearanceMenu} className="public-appearance-menu hidden 2xl:block">
-                    <summary className="public-appearance-trigger" title="Appearance settings">
-                        <Sun size={16} aria-hidden="true" />
-                        <span className="sr-only">Appearance settings</span>
-                    </summary>
-                    <div className="public-appearance-panel">
-                        <p className="public-appearance-label">Appearance</p>
-                        <AppearanceControl publicSurface />
-                    </div>
-                </details>
-
                 <Link
                     href={authenticated ? '/dashboard' : '/login'}
                     className="public-login-link"
@@ -97,7 +76,7 @@ export default function PublicHeader({ authenticated }: Props) {
 
         <nav
             id="public-mobile-navigation"
-            aria-label="Mobile LGU Intra-Office Portal navigation"
+            aria-label="Mobile Talibon Intra-Office Portal navigation"
             className={`${open ? 'block' : 'hidden'} public-navigation 2xl:hidden`}
         >
             <div className="mx-auto flex w-full max-w-[1360px] flex-col px-[var(--public-page-gutter)] py-1.5">
@@ -109,10 +88,6 @@ export default function PublicHeader({ authenticated }: Props) {
                 >
                     {label}
                 </a>)}
-            </div>
-            <div className="public-mobile-appearance">
-                <p className="public-mobile-appearance-label">Appearance</p>
-                <AppearanceControl publicSurface />
             </div>
         </nav>
     </header>;

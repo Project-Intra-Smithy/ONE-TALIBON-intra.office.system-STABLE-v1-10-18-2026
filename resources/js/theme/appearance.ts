@@ -2,53 +2,45 @@ export type AppearancePreference = 'system' | 'light' | 'dark';
 export type ResolvedAppearance = 'light' | 'dark';
 
 const STORAGE_KEY = 'talibon.appearance';
-const validPreferences: AppearancePreference[] = ['system', 'light', 'dark'];
-let memoryPreference: AppearancePreference = 'system';
+
+function persistLightPreference(): void {
+    if (typeof window === 'undefined') return;
+
+    try {
+        window.localStorage.setItem(STORAGE_KEY, 'light');
+    } catch {
+        // The showcase remains light even when storage is unavailable.
+    }
+}
 
 export function readAppearance(): AppearancePreference {
-    if (typeof window === 'undefined') return 'system';
-
-    let stored: string | null = null;
-    try { stored = window.localStorage.getItem(STORAGE_KEY); } catch { return memoryPreference; }
-    return validPreferences.includes(stored as AppearancePreference)
-        ? stored as AppearancePreference
-        : 'system';
+    return 'light';
 }
 
-export function resolveAppearance(preference: AppearancePreference): ResolvedAppearance {
-    if (preference !== 'system') return preference;
-    if (typeof window === 'undefined') return 'light';
-
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+export function resolveAppearance(_preference: AppearancePreference): ResolvedAppearance {
+    return 'light';
 }
 
-export function applyAppearance(preference: AppearancePreference): void {
+export function applyAppearance(_preference: AppearancePreference): void {
     if (typeof document === 'undefined') return;
 
-    const resolved = resolveAppearance(preference);
     const root = document.documentElement;
-    root.classList.toggle('dark', resolved === 'dark');
-    root.dataset.appearance = preference;
-    root.style.colorScheme = resolved;
+    root.classList.remove('dark');
+    root.dataset.appearance = 'light';
+    root.style.colorScheme = 'light';
 }
 
-export function saveAppearance(preference: AppearancePreference): void {
-    memoryPreference = preference;
-    if (typeof window !== 'undefined') {
-        try { window.localStorage.setItem(STORAGE_KEY, preference); } catch { /* Appearance still applies when storage is unavailable. */ }
-    }
-    applyAppearance(preference);
+export function saveAppearance(_preference: AppearancePreference): void {
+    persistLightPreference();
+    applyAppearance('light');
     if (typeof window !== 'undefined') window.dispatchEvent(new Event('talibon:appearance'));
 }
 
 export function initializeAppearance(): void {
-    applyAppearance(readAppearance());
+    persistLightPreference();
+    applyAppearance('light');
 }
 
-export function subscribeToSystemAppearance(callback: () => void): () => void {
-    if (typeof window === 'undefined') return () => undefined;
-
-    const media = window.matchMedia('(prefers-color-scheme: dark)');
-    media.addEventListener('change', callback);
-    return () => media.removeEventListener('change', callback);
+export function subscribeToSystemAppearance(_callback: () => void): () => void {
+    return () => undefined;
 }
