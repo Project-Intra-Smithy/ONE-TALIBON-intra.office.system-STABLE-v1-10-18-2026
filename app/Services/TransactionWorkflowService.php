@@ -16,6 +16,7 @@ use App\Models\TransactionEvent;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use LogicException;
 
@@ -30,6 +31,7 @@ class TransactionWorkflowService
 
     public function create(User $actor, array $data): WorkflowTransaction
     {
+        Gate::forUser($actor)->authorize('create', WorkflowTransaction::class);
         $originDepartmentId = $this->originDepartmentId($actor);
         $targetDepartment = $this->receivingDepartment(
             (int) $data['target_department_id'],
@@ -48,6 +50,8 @@ class TransactionWorkflowService
 
     public function createWithinExistingTransaction(User $actor, array $data): WorkflowTransaction
     {
+        Gate::forUser($actor)->authorize('create', WorkflowTransaction::class);
+
         if (DB::connection()->transactionLevel() < 1) {
             throw new LogicException('Workflow creation through this boundary requires an existing database transaction.');
         }
@@ -74,6 +78,8 @@ class TransactionWorkflowService
         ?int $assignedEmployeeId = null,
         ?string $remarks = null,
     ): WorkflowTransaction {
+        $this->authorizeTransition($actor, $transaction, $action);
+
         return DB::transaction(
             fn (): WorkflowTransaction => $this->transitionWithinTransaction(
                 $actor,
@@ -84,6 +90,23 @@ class TransactionWorkflowService
                 $remarks,
             ),
         );
+    }
+
+    private function authorizeTransition(
+        User $actor,
+        WorkflowTransaction $transaction,
+        string $action,
+    ): void {
+        $ability = match ($action) {
+            'assign' => 'assign',
+            'approve', 'disapprove' => 'mayorDecision',
+            'request_information' => Gate::forUser($actor)->allows('mayorDecision', $transaction)
+                ? 'mayorDecision'
+                : 'transition',
+            default => 'transition',
+        };
+
+        Gate::forUser($actor)->authorize($ability, $transaction);
     }
 
     private function createWithinTransaction(
