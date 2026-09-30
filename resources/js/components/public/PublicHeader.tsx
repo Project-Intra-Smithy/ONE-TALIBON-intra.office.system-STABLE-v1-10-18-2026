@@ -6,10 +6,10 @@ import MunicipalBrand from '../MunicipalBrand';
 type Props = { authenticated: boolean };
 
 export const publicLinks = [
-    ['Overview', '#home'],
-    ['About', '#about'],
+    ['Home', '#home'],
     ['Capabilities', '#capabilities'],
-    ['Workflow', '#workflow'],
+    ['About the Portal', '#about-portal'],
+    ['Help / Support', '#support'],
 ] as const;
 
 export default function PublicHeader({ authenticated }: Props) {
