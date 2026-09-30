@@ -31,6 +31,19 @@ class WorkflowDefinitionNormalizationTest extends TestCase
         $this->assertFalse($definition->isTerminal('for_review'));
     }
 
+    public function test_state_matrix_restricts_review_and_executive_decisions(): void
+    {
+        $definition = app(WorkflowDefinitionResolver::class)->resolve('funding_request');
+
+        $this->assertTrue($definition->transition('mark_review')->allowsFrom('submitted'));
+        $this->assertFalse($definition->transition('mark_review')->allowsFrom('for_review'));
+        $this->assertTrue($definition->transition('send_to_mayor')->allowsFrom('for_review'));
+        $this->assertFalse($definition->transition('send_to_mayor')->allowsFrom('submitted'));
+        $this->assertTrue($definition->transition('approve')->allowsFrom('for_approval'));
+        $this->assertFalse($definition->transition('approve')->allowsFrom('submitted'));
+        $this->assertTrue($definition->transition('disapprove')->allowsFrom('for_approval'));
+    }
+
     public function test_transaction_type_can_override_routing_rule_without_service_code_change(): void
     {
         config()->set('workflow.types.funding_request.transitions.send_to_mayor.office_code', 'BUDGET');
