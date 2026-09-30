@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Domain\Workflow\WorkflowDefinitionResolver;
+use App\Http\Requests\StoreWorkRequestRequest;
 use App\Http\Requests\TransactionIndexRequest;
+use App\Http\Requests\TransitionWorkRequestRequest;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\WorkflowTransaction;
-use App\Services\CoreEvidenceRules;
 use App\Services\DocumentEvidenceQuery;
 use App\Services\TransactionEvidenceService;
 use App\Services\TransactionLiveQuery;
@@ -17,8 +17,6 @@ use App\Support\ValidatedListReturn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -62,61 +60,11 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function store(Request $request, TransactionEvidenceService $evidence): RedirectResponse
+    public function store(StoreWorkRequestRequest $request, TransactionEvidenceService $evidence): RedirectResponse
     {
-        $this->authorize('create', WorkflowTransaction::class);
-
-        $categories = config('work_requests.categories', []);
-        $actions = config('work_requests.actions', []);
-
-        $data = $request->validate([
-            'transaction_type' => ['nullable', Rule::in(['internal_request', 'project_endorsement', 'document_review', 'funding_request', 'other'])],
-            'request_category' => ['nullable', 'string', Rule::in(array_keys($categories))],
-            'request_type' => ['nullable', 'string', 'max:120', 'required_with:request_category'],
-            'action_required' => ['nullable', 'string', 'max:80', 'required_with:request_category', Rule::in($actions)],
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string', 'max:5000'],
-            'priority' => ['required', Rule::in(['normal', 'high', 'urgent'])],
-            'target_department_id' => [
-                'required',
-                'integer',
-                Rule::exists('departments', 'id')->where(
-                    fn ($query) => $query->where('is_active', true)->where('is_routable', true),
-                ),
-            ],
-            'assigned_employee_id' => ['nullable', 'integer', 'exists:employees,id'],
-            'due_at' => ['nullable', 'date', 'after_or_equal:today'],
-            'remarks' => ['nullable', 'string', 'max:2000'],
-            ...CoreEvidenceRules::rules(),
-        ]);
-
-        if (! empty($data['request_category'])) {
-            $allowedTypes = $categories[$data['request_category']] ?? [];
-
-            if (! in_array($data['request_type'] ?? null, $allowedTypes, true)) {
-                throw ValidationException::withMessages([
-                    'request_type' => 'Select a request type available for the chosen category.',
-                ]);
-            }
-        }
-
-        if (! empty($data['assigned_employee_id'])) {
-            $validAssignment = Employee::query()
-                ->whereKey((int) $data['assigned_employee_id'])
-                ->where('department_id', (int) $data['target_department_id'])
-                ->where('employment_status', 'active')
-                ->exists();
-
-            if (! $validAssignment) {
-                throw ValidationException::withMessages([
-                    'assigned_employee_id' => 'Select an active employee from the receiving office.',
-                ]);
-            }
-        }
-
-        $data['transaction_type'] = $data['transaction_type'] ?? 'internal_request';
-
+        $data = $request->validated();
         unset($data['evidence']);
+
         $transaction = $evidence->create($request->user(), $data, $this->evidenceFiles($request));
 
         return redirect()->route('transactions.show', $transaction)->with('success', "{$transaction->reference_no} was routed successfully.");
@@ -164,37 +112,12 @@ class TransactionController extends Controller
     }
 
     public function transition(
-        Request $request,
+        TransitionWorkRequestRequest $request,
         WorkflowTransaction $transaction,
         TransactionEvidenceService $evidence,
-        WorkflowDefinitionResolver $definitions,
     ): RedirectResponse {
         $returnContext = ValidatedListReturn::fromRequest($request, '/transactions', ['/records', '/correspondence']);
-        $definition = $definitions->resolve($transaction);
-
-        $data = $request->validate([
-            'action' => ['required', Rule::in($definition->actions())],
-            'target_department_id' => [
-                'nullable',
-                'integer',
-                Rule::exists('departments', 'id')->where(
-                    fn ($query) => $query->where('is_active', true)->where('is_routable', true),
-                ),
-            ],
-            'assigned_employee_id' => ['nullable', 'integer', 'exists:employees,id'],
-            'remarks' => ['nullable', 'string', 'max:2000'],
-            ...CoreEvidenceRules::rules(),
-        ]);
-
-        if ($data['action'] === 'assign') {
-            $this->authorize('assign', $transaction);
-        } elseif (in_array($data['action'], ['approve', 'disapprove'], true)) {
-            $this->authorize('mayorDecision', $transaction);
-        } elseif ($data['action'] === 'request_information' && $request->user()->can('mayorDecision', $transaction)) {
-            $this->authorize('mayorDecision', $transaction);
-        } else {
-            $this->authorize('transition', $transaction);
-        }
+        $data = $request->validated();
 
         unset($data['evidence']);
         $updated = $evidence->transition(
