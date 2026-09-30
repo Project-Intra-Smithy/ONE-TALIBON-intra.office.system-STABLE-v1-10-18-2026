@@ -13,23 +13,25 @@ export default function MunicipalBrand({
     publicPortal = false,
     iconOnly = false,
 }: Props) {
+    const portalLabel = publicPortal ? 'Talibon Intra-Office Portal' : 'LGU Intra-Office Portal';
+
     return <div
-        className={`municipal-brand flex min-w-0 items-center gap-3 ${inverse ? 'text-white' : 'text-[#0b2852] dark:text-slate-100'}`}
-        aria-label={iconOnly ? `One Talibon · ${publicPortal ? 'Municipal Public Portal' : 'LGU Intra-Office Portal'}` : undefined}
+        className={`municipal-brand flex min-w-0 items-center gap-3 ${inverse ? 'text-white' : 'text-[#163027] dark:text-slate-100'}`}
+        aria-label={iconOnly ? `One Talibon · ${portalLabel}` : undefined}
     >
         <img
             src={talibonAssets.municipalSeal}
-            alt={iconOnly ? '' : 'Municipal identity placeholder'}
-            className="h-11 w-11 shrink-0 sm:h-12 sm:w-12"
+            alt={iconOnly ? '' : 'Official seal of the Municipality of Talibon, Bohol'}
+            className="h-11 w-11 shrink-0 rounded-full bg-white object-contain sm:h-12 sm:w-12"
         />
         {!iconOnly && <div className="min-w-0">
             <div className={`whitespace-nowrap font-extrabold leading-tight tracking-tight ${compact ? 'text-xl' : 'text-xl sm:text-2xl'}`}>
-                <span className={inverse ? 'text-white' : 'text-[#2f7d45] dark:text-[#8ec9a0]'}>ONE</span> TALIBON
+                <span className={inverse ? 'text-white' : 'text-[#19754b] dark:text-[#8ec9a0]'}>ONE</span> TALIBON
             </div>
             <div className={publicPortal
-                ? 'mt-1 text-xs font-semibold leading-snug tracking-[.02em]'
+                ? 'mt-1 text-[9px] font-semibold uppercase leading-snug tracking-[.07em] sm:text-[10px]'
                 : 'mt-1 text-[10px] font-semibold uppercase leading-snug tracking-wider'
-            }>{publicPortal ? 'Municipal Public Portal' : 'LGU Intra-Office Portal'}</div>
+            }>{portalLabel}</div>
         </div>}
     </div>;
 }

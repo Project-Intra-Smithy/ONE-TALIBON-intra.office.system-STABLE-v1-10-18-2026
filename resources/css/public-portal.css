@@ -7,7 +7,7 @@
     --public-type-body: .875rem;
     --public-type-supporting: .8125rem;
     --public-type-meta: .75rem;
-    --public-frame-max: 1680px;
+    --public-frame-max: 1840px;
     --public-page-gutter: clamp(1.375rem, 2.5vw, 2.5rem);
 
     /* Lane 1 identity roles: green authority with white/off-white information surfaces. */

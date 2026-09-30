@@ -1,47 +1,45 @@
 import { Link } from '@inertiajs/react';
-import { ArrowRight, Landmark } from 'lucide-react';
+import { ArrowRight, Landmark, MapPin } from 'lucide-react';
 import MunicipalBrand from '../MunicipalBrand';
 import type { PublicContent } from './types';
 
 export default function PublicFooter({ content, authenticated }: { content: PublicContent; authenticated: boolean }) {
-    return <footer className="public-footer">
-        <div
-            className="public-footer-grid"
-            style={{ maxWidth: '1360px', gap: '28px', paddingTop: '30px', paddingBottom: '24px' }}
-        >
-            <div className="public-footer-identity">
-                <MunicipalBrand inverse />
-                <p className="public-footer-municipality"><Landmark size={15} aria-hidden="true" />{content.municipality}</p>
-                <p className="public-footer-note">LGU Intra-Office Portal · Authorized municipal personnel.</p>
-            </div>
+    return <footer id="contact" className="public-footer public-reference-footer">
+        <div className="public-reference-footer-grid public-gateway-footer-grid">
+            <section className="public-reference-footer-identity" aria-label="Municipality identity">
+                <MunicipalBrand inverse publicPortal />
+                <p><Landmark size={14} aria-hidden="true" /> {content.municipality}</p>
+                <p><MapPin size={14} aria-hidden="true" /> {content.contact.location}</p>
+            </section>
 
-            <nav aria-label="Footer portal links" className="public-footer-links">
+            <nav className="public-reference-footer-links" aria-label="Portal quick links">
                 <h2>Portal</h2>
-                <a href="#home">Overview</a>
-                <a href="#about">About</a>
-                <a href="#capabilities">Capabilities</a>
-                <a href="#workflow">Workflow</a>
+                <a href="#about-portal">About the Portal</a>
+                <a href="#capabilities">Internal Capabilities</a>
+                <a href="#support">Help / Support</a>
             </nav>
 
-            <div className="public-footer-access">
-                <h2>Access</h2>
-                <p>Continue official work inside the authenticated portal.</p>
-                <Link
-                    href={authenticated ? '/dashboard' : '/login'}
-                    className="public-footer-login"
-                    style={{ marginTop: '12px' }}
-                >
-                    {authenticated ? 'Open Portal' : 'Login to Portal'}
+            <section className="public-reference-footer-access">
+                <h2>Authorized Access</h2>
+                <p>Protected municipal operations continue only inside the authenticated Talibon Intra-Office Portal.</p>
+                <Link href={authenticated ? '/dashboard' : '/login'} className="public-reference-footer-login">
+                    {authenticated ? 'Open Employee Portal' : 'Employee Login'}
                     <ArrowRight size={15} aria-hidden="true" />
                 </Link>
-            </div>
+            </section>
+
+            <section className="public-reference-footer-mark" aria-label="ONE TALIBON Intra-Office Portal identity">
+                <Landmark size={30} aria-hidden="true" />
+                <div>
+                    <strong><span>ONE</span> TALIBON</strong>
+                    <small>Intra-Office Portal</small>
+                </div>
+            </section>
         </div>
-        <div
-            className="public-footer-bottom"
-            style={{ maxWidth: '1360px', paddingTop: '10px', paddingBottom: '12px' }}
-        >
+
+        <div className="public-reference-footer-bottom">
             <span>ONE TALIBON · Municipality of Talibon, Bohol</span>
-            <span>LGU Intra-Office Portal</span>
+            <span>Secure municipal operations gateway · Prototype environment</span>
         </div>
     </footer>;
 }
