@@ -28,7 +28,7 @@ export default function PublicHero({ content, authenticated, onOpenInfo }: Props
 
                 <div className="mt-5">
                     <Link href={authenticated ? '/dashboard' : '/login'} className="public-primary-action">
-                        {authenticated ? 'Open Portal' : 'Login to Portal'}
+                        {authenticated ? 'Open Portal' : 'Employee Login'}
                         <ArrowRight size={16} aria-hidden="true" />
                     </Link>
                     <p className="mt-3 flex max-w-[480px] items-center gap-2 text-[10px] font-semibold leading-4 text-white/60">

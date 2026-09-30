@@ -34,7 +34,7 @@ export default function PublicSecureAccess({ content, authenticated }: Props) {
             </div>
 
             <Link href={authenticated ? '/dashboard' : '/login'} className="public-primary-action w-full md:min-w-[150px] md:w-auto">
-                {authenticated ? 'Open Portal' : 'Login to Portal'}
+                {authenticated ? 'Open Portal' : 'Employee Login'}
                 <ArrowRight size={16} aria-hidden="true" />
             </Link>
         </div>

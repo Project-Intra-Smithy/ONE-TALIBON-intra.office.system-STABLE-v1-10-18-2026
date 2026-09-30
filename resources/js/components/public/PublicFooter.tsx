@@ -31,7 +31,7 @@ export default function PublicFooter({ content, authenticated }: { content: Publ
                     className="public-footer-login"
                     style={{ marginTop: '12px' }}
                 >
-                    {authenticated ? 'Open Portal' : 'Login to Portal'}
+                    {authenticated ? 'Open Portal' : 'Employee Login'}
                     <ArrowRight size={15} aria-hidden="true" />
                 </Link>
             </div>

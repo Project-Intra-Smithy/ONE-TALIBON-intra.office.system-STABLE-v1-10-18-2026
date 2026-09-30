@@ -56,7 +56,7 @@ export default function PublicHeader({ authenticated }: Props) {
                     style={{ minHeight: '44px', paddingInline: '12px' }}
                 >
                     <LogIn size={15} aria-hidden="true" />
-                    <span>{authenticated ? 'Portal' : 'Login'}</span>
+                    <span>{authenticated ? 'Portal' : 'Employee Login'}</span>
                 </Link>
 
                 <button
