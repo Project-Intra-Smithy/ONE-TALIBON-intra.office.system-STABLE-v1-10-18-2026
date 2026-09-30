@@ -25,7 +25,7 @@ class ShowcaseSessionGatewayTest extends TestCase
             ->assertInertia(fn (Assert $page) => $page
                 ->component('Auth/Login')
                 ->where('showcase.enabled', true)
-                ->has('showcase.personas', 7)
+                ->has('showcase.personas', count(config('showcase.personas')))
                 ->where('showcase.personas.0.label', 'Municipal Executive')
                 ->missing('showcase.personas.0.email'));
     }
@@ -207,7 +207,7 @@ class ShowcaseSessionGatewayTest extends TestCase
     {
         return match ($key) {
             'executive' => 'mayor_approver',
-            'engineering_head', 'budget_head' => 'department_head',
+            'planning_head', 'engineering_head', 'budget_head' => 'department_head',
             'hr' => 'hr_officer',
             'legislative' => 'legislative_staff',
             'system_admin' => 'system_admin',

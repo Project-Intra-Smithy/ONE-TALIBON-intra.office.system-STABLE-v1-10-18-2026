@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Domain\Workflow\WorkflowDefinitionResolver;
 use App\Http\Requests\TransactionIndexRequest;
 use App\Models\Department;
+use App\Models\Employee;
 use App\Models\WorkflowTransaction;
 use App\Services\CoreEvidenceRules;
 use App\Services\DocumentEvidenceQuery;
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -39,14 +41,24 @@ class TransactionController extends Controller
         $this->authorize('create', WorkflowTransaction::class);
         $departmentId = $request->user()->employee?->department_id;
 
+        $departments = Department::query()
+            ->activeRoutable()
+            ->when($departmentId, fn ($query) => $query->where('id', '!=', $departmentId))
+            ->orderBy('branch')
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get(['id', 'code', 'name', 'short_name', 'branch', 'office_type']);
+
         return Inertia::render('Transactions/Create', [
-            'departments' => Department::query()
-                ->activeRoutable()
-                ->when($departmentId, fn ($query) => $query->where('id', '!=', $departmentId))
-                ->orderBy('branch')
-                ->orderBy('sort_order')
-                ->orderBy('name')
-                ->get(['id', 'code', 'name', 'short_name', 'branch', 'office_type']),
+            'departments' => $departments,
+            'assignableEmployees' => Employee::query()
+                ->whereIn('department_id', $departments->pluck('id'))
+                ->where('employment_status', 'active')
+                ->orderBy('department_id')
+                ->orderBy('full_name')
+                ->get(['id', 'employee_number', 'full_name', 'department_id', 'position_title']),
+            'requestCategories' => config('work_requests.categories', []),
+            'actionOptions' => config('work_requests.actions', []),
         ]);
     }
 
@@ -54,8 +66,14 @@ class TransactionController extends Controller
     {
         $this->authorize('create', WorkflowTransaction::class);
 
+        $categories = config('work_requests.categories', []);
+        $actions = config('work_requests.actions', []);
+
         $data = $request->validate([
-            'transaction_type' => ['required', Rule::in(['internal_request', 'project_endorsement', 'document_review', 'funding_request', 'other'])],
+            'transaction_type' => ['nullable', Rule::in(['internal_request', 'project_endorsement', 'document_review', 'funding_request', 'other'])],
+            'request_category' => ['nullable', 'string', Rule::in(array_keys($categories))],
+            'request_type' => ['nullable', 'string', 'max:120', 'required_with:request_category'],
+            'action_required' => ['nullable', 'string', 'max:80', 'required_with:request_category', Rule::in($actions)],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:5000'],
             'priority' => ['required', Rule::in(['normal', 'high', 'urgent'])],
@@ -66,10 +84,37 @@ class TransactionController extends Controller
                     fn ($query) => $query->where('is_active', true)->where('is_routable', true),
                 ),
             ],
+            'assigned_employee_id' => ['nullable', 'integer', 'exists:employees,id'],
             'due_at' => ['nullable', 'date', 'after_or_equal:today'],
             'remarks' => ['nullable', 'string', 'max:2000'],
             ...CoreEvidenceRules::rules(),
         ]);
+
+        if (! empty($data['request_category'])) {
+            $allowedTypes = $categories[$data['request_category']] ?? [];
+
+            if (! in_array($data['request_type'] ?? null, $allowedTypes, true)) {
+                throw ValidationException::withMessages([
+                    'request_type' => 'Select a request type available for the chosen category.',
+                ]);
+            }
+        }
+
+        if (! empty($data['assigned_employee_id'])) {
+            $validAssignment = Employee::query()
+                ->whereKey((int) $data['assigned_employee_id'])
+                ->where('department_id', (int) $data['target_department_id'])
+                ->where('employment_status', 'active')
+                ->exists();
+
+            if (! $validAssignment) {
+                throw ValidationException::withMessages([
+                    'assigned_employee_id' => 'Select an active employee from the receiving office.',
+                ]);
+            }
+        }
+
+        $data['transaction_type'] = $data['transaction_type'] ?? 'internal_request';
 
         unset($data['evidence']);
         $transaction = $evidence->create($request->user(), $data, $this->evidenceFiles($request));

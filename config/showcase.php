@@ -13,6 +13,15 @@ return [
             'category' => 'executive',
             'experience' => 'executive_oversight',
         ],
+        'planning_head' => [
+            'email' => 'planning@talibon.demo',
+            'label' => 'Department Head',
+            'position' => 'Municipal Planning and Development Coordinator',
+            'office' => 'Municipal Planning and Development Office',
+            'description' => 'Planning, land use, development programs and office coordination',
+            'category' => 'department_head',
+            'experience' => 'department_head',
+        ],
         'engineering_head' => [
             'email' => 'engineering@talibon.demo',
             'label' => 'Department Head',
