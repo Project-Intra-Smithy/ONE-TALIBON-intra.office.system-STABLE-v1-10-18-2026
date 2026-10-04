@@ -40,7 +40,7 @@ jobs:
 
     defaults:
       run:
-        shell: pwsh
+        shell: powershell
 
     steps:
       - name: Checkout exact workflow head
@@ -93,6 +93,10 @@ jobs:
           npm --version
           php --version
           composer --version
+
+          if ([string]::IsNullOrWhiteSpace($env:DB_PASSWORD)) {
+            throw 'P0_POSTGRES_PASSWORD repository secret is missing or empty. Set it before running validation.'
+          }
 
           $psql = Get-Command psql -ErrorAction SilentlyContinue
           if (-not $psql) {
