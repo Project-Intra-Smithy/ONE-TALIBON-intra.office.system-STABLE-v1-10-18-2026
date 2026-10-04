@@ -8,9 +8,11 @@ All other contributors are Developers / Contributors unless explicitly delegated
 
 ## Current authority
 
-Sole continuing remote branch:
+Canonical/default product source:
 
 `main`
+
+Non-main working branches may exist under bounded authority, but are not canonical product authority unless separately accepted.
 
 Exact validated/promoted product payload:
 
@@ -46,7 +48,7 @@ RC1/RV1 promoted payload:
 - archival preservation: COMPLETE;
 - archived non-main branch tips: 65;
 - remote non-main branch deletion: COMPLETE;
-- remote heads: main only;
+- remote heads at MP3 closeout: main only;
 - open PRs at MP3 opening: 0;
 - deployment: NOT PERFORMED.
 

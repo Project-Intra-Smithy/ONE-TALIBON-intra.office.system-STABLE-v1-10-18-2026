@@ -6,9 +6,11 @@ This repository is the active ONE TALIBON stakeholder/prototype workspace govern
 
 **Technical Authority: Kirch Ivan Balite**
 
-Sole continuing remote branch:
+Canonical/default product source:
 
 `main`
+
+Non-main working branches may exist, but are not canonical product authority unless separately accepted.
 
 Exact RV1-validated/promoted product payload:
 
@@ -43,12 +45,7 @@ This repository contains:
 
 ## Consolidation result
 
-The repository has completed the consolidation target:
-
-```text
-remote heads:
-main
-```
+The repository historically completed the consolidation target with only `main` as a remote head at that point. Later bounded working branches may exist without becoming canonical product authority.
 
 Former non-main branch tips remain recoverable through verified `archive/*` tags.
 

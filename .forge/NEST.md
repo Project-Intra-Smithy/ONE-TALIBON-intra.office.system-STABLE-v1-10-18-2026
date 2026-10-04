@@ -34,9 +34,11 @@ That remains historical provenance, not current authority.
 
 ## Current product authority
 
-Sole continuing branch:
+Canonical/default product source:
 
 `main`
+
+Non-main working branches may exist under bounded authority, but are not canonical product authority unless separately accepted.
 
 Exact validated/promoted product payload:
 
@@ -44,7 +46,7 @@ Exact validated/promoted product payload:
 
 Completed provenance includes CAL1, BH1, DA1, RC1, and RV1.
 
-All former non-main remote heads were archived before deletion.
+All former non-main remote heads from the historical consolidation were archived before deletion.
 
 ## MP3 closeout
 
@@ -68,7 +70,7 @@ Concurrency ceiling:
 
 ## Branch topology
 
-The accepted product branch remains:
+The canonical/default product branch remains:
 
 ```text
 main

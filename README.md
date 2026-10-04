@@ -13,7 +13,8 @@ The consolidation program is closed.
 
 | Area | State |
 | --- | --- |
-| Sole continuing remote branch | `main` |
+| Canonical/default product source | `main` |
+| Non-main working branches | May exist; non-canonical unless separately accepted |
 | Validated/promoted product payload | `f6208cf082c4b1d189c70728adfdb9ddf3225990` |
 | Calendar workspace | Completed and feature-frozen |
 | Backend/runtime hardening | Completed and reviewed |
@@ -22,11 +23,11 @@ The consolidation program is closed.
 | RV1 exact-candidate runtime validation | Passed |
 | Main promotion | Completed |
 | Archived non-main branch tips | 65 / 65 |
-| Remote non-main branches | 0 |
+| MP3 remote non-main branches after cleanup | 0 |
 | Open PRs at MP3 opening | 0 |
 | Deployment | Not performed |
 
-The repository now continues from **main only**. Historical branch tips remain recoverable under verified `archive/*` tags.
+`main` is the canonical/default product source. Non-main working branches may exist under bounded authority, but they are not canonical product authority unless separately accepted. Historical branch tips remain recoverable under verified `archive/*` tags.
 
 MP3 governance/documentation closeout is complete.
 
@@ -130,14 +131,14 @@ Historical limitations remain historical limitations:
 
 ## Repository direction
 
-The branch-consolidation target has been reached:
+The branch-consolidation target was reached historically. Current product authority is:
 
 ```text
-remote heads:
+canonical/default product source:
 main
 ```
 
-Historical branch names in evidence/handoff records are provenance. Their deleted remote refs are preserved through verified archival tags.
+Non-main working branches may exist, but are non-canonical unless separately accepted. Historical branch names in evidence/handoff records are provenance. Deleted historical remote refs remain preserved through verified archival tags.
 
 ## Engineering records
 

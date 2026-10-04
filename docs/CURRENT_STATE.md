@@ -10,9 +10,11 @@ Repository:
 
 `Kirch-Nairu/Talibon-Sales-Prototype`
 
-Sole continuing remote branch:
+Canonical/default product source:
 
 `main`
+
+Non-main working branches may exist, but are not canonical product authority unless separately accepted.
 
 Exact RV1-validated/promoted product payload:
 
@@ -22,10 +24,11 @@ Live Git and current repository-local Forge governance outrank stale branch clai
 
 ## Repository topology
 
-The consolidation program reached its intended topology:
+The consolidation program historically reached its intended main-only topology at MP3. That historical result does not prevent later bounded working branches from existing.
+
+Current canonical/default product source:
 
 ```text
-remote heads:
 main
 ```
 
