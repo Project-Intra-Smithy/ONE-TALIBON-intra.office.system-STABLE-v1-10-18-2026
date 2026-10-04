@@ -1,0 +1,287 @@
+name: P0 Windows Self-Hosted Validation
+
+on:
+  push:
+    branches:
+      - KIRCH-TALIBON-P0-CANONICAL-BASELINE-STABILIZATION
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: p0-windows-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Exact-head P0 validation on temporary Windows runner
+    runs-on: [self-hosted, Windows, X64, talibon-p0-temp]
+    timeout-minutes: 60
+
+    env:
+      APP_ENV: testing
+      APP_DEBUG: false
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: postgres
+      DB_PASSWORD: ${{ secrets.P0_POSTGRES_PASSWORD }}
+      PGPASSWORD: ${{ secrets.P0_POSTGRES_PASSWORD }}
+      SESSION_DRIVER: file
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
+      SHOWCASE_MODE: false
+      PROTOTYPE_DEMO_PASSWORD: P0-Disposable-Runner-Password-2026
+      QA_BASE_URL: http://127.0.0.1:8000
+      QA_MODE: production
+
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+      - name: Checkout exact workflow head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Record and guard Git authority
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $head = (git rev-parse HEAD).Trim()
+          $main = (git rev-parse origin/main).Trim()
+          $mergeBase = (git merge-base HEAD origin/main).Trim()
+          $relationship = (git rev-list --left-right --count origin/main...HEAD).Trim()
+
+          Write-Host "P0_HEAD=$head"
+          Write-Host "MAIN_HEAD=$main"
+          Write-Host "MERGE_BASE=$mergeBase"
+          Write-Host "MAIN...HEAD=$relationship"
+          git status --short
+          git log -1 --oneline
+
+          if ($main -ne '269975e1c1e61bcde78490530e5cc8e90f35ae47') {
+            throw "main drifted from authorized P0 source: $main"
+          }
+          if ($mergeBase -ne '269975e1c1e61bcde78490530e5cc8e90f35ae47') {
+            throw "candidate no longer descends directly from authorized P0 source: merge-base=$mergeBase"
+          }
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+          extensions: pdo_pgsql, pgsql
+          tools: composer:v2
+
+      - name: Verify temporary runner prerequisites
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Write-Host "Runner: $env:RUNNER_NAME"
+          Write-Host "OS: $env:RUNNER_OS"
+          node --version
+          npm --version
+          php --version
+          composer --version
+
+          $psql = Get-Command psql -ErrorAction SilentlyContinue
+          if (-not $psql) {
+            throw 'psql is not on PATH. Install PostgreSQL client/server locally and add its bin directory to PATH before using this runner.'
+          }
+          psql --version
+
+          if ($env:DB_DATABASE -ne 'talibon_portal_test') {
+            throw "Refusing destructive validation against unexpected database: $env:DB_DATABASE"
+          }
+
+      - name: Ensure disposable PostgreSQL database exists
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $exists = (& psql -h $env:DB_HOST -p $env:DB_PORT -U $env:DB_USERNAME -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname = 'talibon_portal_test';").Trim()
+          if ($LASTEXITCODE -ne 0) {
+            throw 'Could not connect to local PostgreSQL. Verify the Windows PostgreSQL service, postgres user, and P0_POSTGRES_PASSWORD repository secret.'
+          }
+          if ($exists -ne '1') {
+            & psql -h $env:DB_HOST -p $env:DB_PORT -U $env:DB_USERNAME -d postgres -v ON_ERROR_STOP=1 -c 'CREATE DATABASE talibon_portal_test;'
+            if ($LASTEXITCODE -ne 0) { throw 'Failed to create disposable talibon_portal_test database.' }
+          }
+          & psql -h $env:DB_HOST -p $env:DB_PORT -U $env:DB_USERNAME -d talibon_portal_test -v ON_ERROR_STOP=1 -c 'SELECT current_database();'
+          if ($LASTEXITCODE -ne 0) { throw 'Disposable test database connectivity check failed.' }
+
+      - name: Install locked dependencies
+        run: |
+          $ErrorActionPreference = 'Stop'
+          composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+          npm ci --no-audit --no-fund
+
+      - name: Prepare Laravel environment
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Copy-Item .env.example .env -Force
+          php artisan key:generate
+          php artisan optimize:clear
+          php artisan about
+
+      - name: TypeScript
+        run: npm run types:check
+
+      - name: Production build
+        run: npm run build
+
+      - name: Showcase and MFA security tests
+        run: |
+          $ErrorActionPreference = 'Stop'
+          php artisan test --filter=Showcase
+          php artisan test --filter=Mfa
+
+      - name: Focused regression tests
+        run: |
+          $ErrorActionPreference = 'Stop'
+          php artisan test --filter=CurrentPortalNavigation
+          php artisan test --filter=PublicPortal
+          php artisan test --filter=PrototypeMessaging
+
+      - name: Route authority evidence
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force storage/app/qa | Out-Null
+          php artisan route:list -v | Tee-Object -FilePath storage/app/qa/p0-route-list.txt
+          if ($LASTEXITCODE -ne 0) { throw 'php artisan route:list failed.' }
+
+      - name: Fresh disposable database and seed
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ($env:DB_DATABASE -ne 'talibon_portal_test') {
+            throw "Refusing migrate:fresh against unexpected database: $env:DB_DATABASE"
+          }
+          php artisan migrate:fresh --seed --force
+
+      - name: Re-run security tests after clean schema
+        run: |
+          $ErrorActionPreference = 'Stop'
+          php artisan test --filter=Showcase
+          php artisan test --filter=Mfa
+          php artisan test --filter=PrototypeMessaging
+
+      - name: Full Feature suite
+        run: php artisan test --testsuite=Feature
+
+      - name: Laravel cacheability
+        run: |
+          $ErrorActionPreference = 'Stop'
+          php artisan route:cache
+          php artisan view:cache
+          php artisan config:cache
+          php artisan optimize:clear
+
+      - name: Install Chromium for browser validation
+        run: npx playwright install chromium
+
+      - name: Start Laravel production-asset runtime with showcase explicitly enabled
+        env:
+          SHOWCASE_MODE: true
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force storage/logs | Out-Null
+          Remove-Item public/hot -ErrorAction SilentlyContinue
+          Remove-Item storage/framework/vite.hot -ErrorAction SilentlyContinue
+
+          $stdout = Join-Path $PWD 'storage/logs/p0-laravel.out.log'
+          $stderr = Join-Path $PWD 'storage/logs/p0-laravel.err.log'
+          $proc = Start-Process -FilePath 'php' -ArgumentList @('artisan','serve','--host=127.0.0.1','--port=8000') -PassThru -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+          Set-Content -Path storage/logs/p0-laravel.pid -Value $proc.Id
+
+          $ready = $false
+          for ($i = 0; $i -lt 60; $i++) {
+            try {
+              $response = Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:8000/login' -TimeoutSec 2
+              if ($response.StatusCode -eq 200) {
+                $ready = $true
+                break
+              }
+            } catch {}
+            Start-Sleep -Seconds 1
+          }
+
+          if (-not $ready) {
+            Get-Content $stdout -ErrorAction SilentlyContinue
+            Get-Content $stderr -ErrorAction SilentlyContinue
+            throw 'Laravel runtime did not become ready on port 8000.'
+          }
+
+      - name: Runtime route smoke
+        run: |
+          $ErrorActionPreference = 'Stop'
+          foreach ($path in @('/', '/login')) {
+            $response = Invoke-WebRequest -UseBasicParsing -Uri "http://127.0.0.1:8000$path" -MaximumRedirection 5 -TimeoutSec 10
+            if ($response.StatusCode -ge 500) { throw "$path returned $($response.StatusCode)" }
+            Write-Host "$path => $($response.StatusCode)"
+          }
+
+      - name: V1 showcase browser and responsive audit
+        env:
+          SHOWCASE_MODE: true
+        run: node tests/Browser/v1-showcase-readiness.mjs
+
+      - name: Two-user Messages browser audit
+        env:
+          SHOWCASE_MODE: true
+        run: node tests/Browser/mp0-messaging-closure.mjs
+
+      - name: Repository hygiene
+        run: |
+          $ErrorActionPreference = 'Stop'
+          git diff --check
+          Write-Host '=== WORKTREE ==='
+          git status --short
+          Write-Host '=== EXACT HEAD ==='
+          git rev-parse HEAD
+          Write-Host '=== SOURCE RELATIONSHIP ==='
+          git rev-list --left-right --count origin/main...HEAD
+
+      - name: Runtime diagnostics
+        if: always()
+        run: |
+          Write-Host '=== EXACT HEAD ==='
+          git rev-parse HEAD
+          Write-Host '=== WORKTREE ==='
+          git status --short
+          Write-Host '=== LARAVEL STDOUT ==='
+          Get-Content storage/logs/p0-laravel.out.log -Tail 200 -ErrorAction SilentlyContinue
+          Write-Host '=== LARAVEL STDERR ==='
+          Get-Content storage/logs/p0-laravel.err.log -Tail 200 -ErrorAction SilentlyContinue
+          Write-Host '=== QA FILES ==='
+          Get-ChildItem storage/app/qa -Recurse -File -ErrorAction SilentlyContinue | ForEach-Object { $_.FullName }
+
+      - name: Stop Laravel runtime
+        if: always()
+        run: |
+          $pidFile = 'storage/logs/p0-laravel.pid'
+          if (Test-Path $pidFile) {
+            $serverPid = (Get-Content $pidFile | Select-Object -First 1).Trim()
+            if ($serverPid) {
+              Stop-Process -Id ([int]$serverPid) -Force -ErrorAction SilentlyContinue
+            }
+          }
+
+      - name: Upload P0 validation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p0-windows-validation-${{ github.sha }}
+          path: |
+            storage/app/qa/
+            storage/logs/p0-laravel.out.log
+            storage/logs/p0-laravel.err.log
+          if-no-files-found: ignore
+          retention-days: 14
