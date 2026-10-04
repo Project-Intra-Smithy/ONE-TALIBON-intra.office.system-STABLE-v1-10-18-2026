@@ -107,6 +107,11 @@ export default function Index() {
     return (
         <AppLayout title="Meetings">
             <PageFrame density="compact">
+                <section role="note" aria-label="Meetings reference data notice" className="rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-3 py-2">
+                    <div className="text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-brand)]">Reference data</div>
+                    <p className="mt-0.5 text-[10px] leading-4 text-[var(--municipal-muted)]">Prototype meeting records for workflow evaluation. Not live municipal meeting records.</p>
+                </section>
+
                 {view === 'overview' ? (
                     <>
                         <PageHeader
