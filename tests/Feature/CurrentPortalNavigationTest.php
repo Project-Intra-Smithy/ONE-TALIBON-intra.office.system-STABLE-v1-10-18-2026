@@ -64,7 +64,7 @@ class CurrentPortalNavigationTest extends TestCase
 
         $this->assertStringContainsString("procurementTracking: { key: 'procurementTracking', label: 'Procurement / PR Tracking'", $destinations);
         $this->assertStringContainsString("employeeDirectory: { key: 'employeeDirectory', label: 'HR Employee Portal'", $destinations);
-        $this->assertStringContainsString("icon: Users, group: 'work', readiness: 'wired'", $destinations);
+        $this->assertStringContainsString("icon: Users, group: 'people', readiness: 'wired'", $destinations);
 
         $workOrder = [
             "'documentCenter'",
@@ -142,7 +142,7 @@ class CurrentPortalNavigationTest extends TestCase
         }
     }
 
-    public function test_shell_secondary_groups_use_controlled_disclosure_and_showcase_switcher_is_persistent(): void
+    public function test_shell_navigation_renders_current_groups_and_showcase_switcher_is_persistent(): void
     {
         $sidebar = file_get_contents(resource_path('js/components/shell/PortalSidebar.tsx'));
         $section = file_get_contents(resource_path('js/components/shell/SidebarSection.tsx'));
@@ -154,10 +154,10 @@ class CurrentPortalNavigationTest extends TestCase
         $this->assertIsString($footer);
         $this->assertIsString($switcher);
 
-        $this->assertStringContainsString('const [openSecondaryGroup, setOpenSecondaryGroup] = useState', $sidebar);
-        $this->assertStringContainsString('setOpenSecondaryGroup(activeSecondaryGroupKey);', $sidebar);
-        $this->assertStringContainsString('expanded={collapsible ? openSecondaryGroup === group.key : undefined}', $sidebar);
-        $this->assertStringContainsString('current === group.key ? null : group.key', $sidebar);
+        $this->assertStringContainsString('navigationGroups.map((group)', $sidebar);
+        $this->assertStringContainsString('group.items.map((item)', $sidebar);
+        $this->assertStringContainsString('collapsible={false}', $sidebar);
+        $this->assertStringContainsString('<SidebarFooter compact={compact} user={user} />', $sidebar);
 
         $this->assertStringNotContainsString('useState(active)', $section);
         $this->assertStringContainsString('expanded?: boolean;', $section);

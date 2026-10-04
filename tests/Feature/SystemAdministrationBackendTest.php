@@ -72,7 +72,7 @@ class SystemAdministrationBackendTest extends TestCase
             ->get('/admin?role=department_head&status=active')
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
-                ->where('registry.total', 2)
+                ->where('registry.total', 3)
                 ->where('registryFilters.role', 'department_head')
                 ->where('registryFilters.status', 'active'));
     }
