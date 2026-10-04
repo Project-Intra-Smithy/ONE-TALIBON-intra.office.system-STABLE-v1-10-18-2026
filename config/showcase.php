@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'enabled' => env('SHOWCASE_MODE', true),
+    'enabled' => env('SHOWCASE_MODE', false),
 
     'personas' => [
         'executive' => [
