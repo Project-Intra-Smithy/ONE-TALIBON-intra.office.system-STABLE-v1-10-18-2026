@@ -180,6 +180,14 @@ jobs:
       - name: Full Feature suite
         run: php artisan test --testsuite=Feature
 
+      - name: Restore seeded browser fixture state
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ($env:DB_DATABASE -ne 'talibon_portal_test') {
+            throw "Refusing browser-fixture migrate:fresh against unexpected database: $env:DB_DATABASE"
+          }
+          php artisan migrate:fresh --seed --force
+
       - name: Laravel cacheability
         run: |
           $ErrorActionPreference = 'Stop'
