@@ -1,21 +1,74 @@
 import { chromium } from 'playwright';
+import crypto from 'node:crypto';
 
 const BASE = process.env.QA_BASE_URL || 'http://127.0.0.1:8000';
 const MODE = process.env.QA_MODE || 'production';
+const PASSWORD = process.env.QA_DEMO_PASSWORD;
 const stamp = `${MODE}-${Date.now()}`;
+
+if (!PASSWORD) throw new Error('QA_DEMO_PASSWORD is required');
 
 function check(name, ok, details = '') {
     if (!ok) throw new Error(`${name}: ${details}`);
     console.log(`PASS ${name}${details ? ` — ${details}` : ''}`);
 }
 
-async function enterDepartmentHead(page, office) {
-    await page.goto(`${BASE}/login`);
-    await page.getByRole('button', { name: 'Open Municipal Workspace', exact: true }).click();
-    await page.getByRole('button', { name: /^Department Head/ }).click();
-    await page.getByRole('heading', { name: 'Choose office context', exact: true }).waitFor();
-    await page.getByRole('button', { name: new RegExp(`^${office}`) }).click();
-    await page.waitForURL((url) => url.pathname === '/dashboard');
+function base32(input) {
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+    let bits = '';
+    for (const c of input.replace(/=+$/g, '').replace(/\s+/g, '').toUpperCase()) {
+        const i = alphabet.indexOf(c);
+        if (i < 0) throw new Error('Invalid MFA secret');
+        bits += i.toString(2).padStart(5, '0');
+    }
+    const bytes = [];
+    for (let i = 0; i + 8 <= bits.length; i += 8) bytes.push(parseInt(bits.slice(i, i + 8), 2));
+    return Buffer.from(bytes);
+}
+
+function totp(secret) {
+    const counter = Buffer.alloc(8);
+    counter.writeBigUInt64BE(BigInt(Math.floor(Date.now() / 30000)));
+    const digest = crypto.createHmac('sha1', base32(secret)).update(counter).digest();
+    const offset = digest.at(-1) & 15;
+    const value = ((digest[offset] & 127) << 24)
+        | (digest[offset + 1] << 16)
+        | (digest[offset + 2] << 8)
+        | digest[offset + 3];
+    return String(value % 1_000_000).padStart(6, '0');
+}
+
+async function enterDepartmentHead(page, email) {
+    const response = await page.goto(`${BASE}/login`, { waitUntil: 'domcontentloaded', timeout: 20000 });
+    check(`${email} login page`, response?.status() === 200, `status=${response?.status()}`);
+
+    await page.getByLabel('Email').fill(email);
+    await page.getByLabel('Password').fill(PASSWORD);
+    await Promise.all([
+        page.waitForURL((url) => ['/dashboard', '/security/mfa/enroll', '/security/mfa/challenge'].includes(url.pathname), { timeout: 15000 }),
+        page.getByRole('button', { name: 'Sign In' }).click(),
+    ]);
+
+    let path = new URL(page.url()).pathname;
+    if (path === '/security/mfa/challenge') {
+        throw new Error(`${email} unexpectedly had an existing MFA enrollment in the fresh P08 fixture`);
+    }
+
+    if (path === '/security/mfa/enroll') {
+        const secret = (await page.locator('code').first().innerText()).trim();
+        await page.getByLabel('Six-digit verification code').fill(totp(secret));
+        await Promise.all([
+            page.waitForURL((url) => url.pathname === '/security/mfa/recovery-codes', { timeout: 15000 }),
+            page.getByRole('button', { name: /Confirm MFA enrollment/i }).click(),
+        ]);
+        await Promise.all([
+            page.waitForURL((url) => url.pathname === '/dashboard', { timeout: 15000 }),
+            page.getByRole('link', { name: /Continue to portal/i }).click(),
+        ]);
+        path = new URL(page.url()).pathname;
+    }
+
+    check(`${email} authenticated with MFA`, path === '/dashboard', `path=${path}`);
 }
 
 function messageGet(page, channel, timeout = 5000) {
@@ -92,8 +145,8 @@ async function run() {
         const b = await contextB.newPage();
 
         await assertAssetMode(a);
-        await enterDepartmentHead(a, 'Municipal Engineering Office');
-        await enterDepartmentHead(b, 'Municipal Budget Office');
+        await enterDepartmentHead(a, 'engineering@talibon.demo');
+        await enterDepartmentHead(b, 'budget@talibon.demo');
 
         await openChat(a, 'Department Heads');
         const aMessage = `Closure A ${stamp}`;
