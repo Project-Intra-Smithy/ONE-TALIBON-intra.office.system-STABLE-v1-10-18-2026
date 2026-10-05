@@ -159,9 +159,9 @@ export default function WorkOverview({ profile, groups, overview, onSelect }: Pr
 
     return (
         <div className="space-y-2.5">
-            <section aria-labelledby="task-overview-cards">
+            <section aria-labelledby="work-request-overview-cards">
                 <div className="mb-1 flex items-center justify-between gap-3">
-                    <h2 id="task-overview-cards" className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">At a glance</h2>
+                    <h2 id="work-request-overview-cards" className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">At a glance</h2>
                     <span className="text-[9px] text-[var(--municipal-muted)]">Select a card to open the full queue</span>
                 </div>
                 <div className="grid gap-1.5 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
@@ -186,7 +186,7 @@ export default function WorkOverview({ profile, groups, overview, onSelect }: Pr
                 </div>
             </section>
 
-            <section className="grid min-w-0 gap-2 lg:grid-cols-2" aria-label="Task overview">
+            <section className="grid min-w-0 gap-2 lg:grid-cols-2" aria-label="Work request overview">
                 {panels.map(([title, subtitle, view, mode]) => (
                     <PreviewPanel
                         key={view}
