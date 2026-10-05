@@ -1,10 +1,10 @@
 import { ArrowLeft, Info } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import usePrototypeMessaging from '../../hooks/messaging/usePrototypeMessaging';
+import useMessaging from '../../hooks/messaging/useMessaging';
 import GroupIdentity from './GroupIdentity';
 import LiveMessageTimeline from './LiveMessageTimeline';
 import type { MessageConversation } from './messageWorkspace';
-import PrototypeMessageComposer from './PrototypeMessageComposer';
+import MessageComposer from './MessageComposer';
 
 const NEAR_BOTTOM_THRESHOLD = 120;
 
@@ -35,9 +35,9 @@ export default function MessageThread({ conversation, onBack, onOpenContext, reg
     const followInitialLoad = useRef(false);
     const lastLiveCursor = useRef(0);
     const [ownSendVersion, setOwnSendVersion] = useState(0);
-    const prototype = usePrototypeMessaging(conversation?.channel ?? null);
+    const messaging = useMessaging(conversation?.channel ?? null);
     const liveMessages = conversation
-        ? prototype.messages.filter((message) => message.channel === conversation.channel)
+        ? messaging.messages.filter((message) => message.channel === conversation.channel)
         : [];
     const latestLiveCursor = liveMessages.at(-1)?.cursor ?? 0;
 
@@ -103,7 +103,7 @@ export default function MessageThread({ conversation, onBack, onOpenContext, reg
     }, [ownSendVersion]);
 
     const sendAndFollow = async (body: string): Promise<boolean> => {
-        const sent = await prototype.send(body);
+        const sent = await messaging.send(body);
         if (sent) setOwnSendVersion((version) => version + 1);
         return sent;
     };
@@ -140,10 +140,10 @@ export default function MessageThread({ conversation, onBack, onOpenContext, reg
                 className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-[var(--municipal-surface-subtle)]"
                 aria-label={`${conversation.channel} messages`}
             >
-                <LiveMessageTimeline messages={liveMessages} pollError={prototype.pollError} registerEnd={(node) => { liveEnd.current = node; }} />
+                <LiveMessageTimeline messages={liveMessages} pollError={messaging.pollError} registerEnd={(node) => { liveEnd.current = node; }} />
             </div>
 
-            <PrototypeMessageComposer channel={conversation.channel} sending={prototype.sending} error={prototype.sendError} onSend={sendAndFollow} />
+            <MessageComposer channel={conversation.channel} sending={messaging.sending} error={messaging.sendError} onSend={sendAndFollow} />
         </section>
     );
 }

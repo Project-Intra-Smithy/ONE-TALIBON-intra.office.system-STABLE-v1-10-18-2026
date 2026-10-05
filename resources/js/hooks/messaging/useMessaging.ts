@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-    mergePrototypeMessages,
-    prototypeMessagesEndpoint,
-    type PrototypeMessage,
+    mergeMessages,
+    messagesEndpoint,
+    type Message,
     xsrfToken,
-} from '../../components/messages/prototypeMessaging';
+} from '../../components/messages/messaging';
 
-type Payload = { data: PrototypeMessage[] };
-type SinglePayload = { data: PrototypeMessage };
+type Payload = { data: Message[] };
+type SinglePayload = { data: Message };
 type SendFailureCategory = 'session-csrf' | 'validation' | 'throttle' | 'server' | 'route' | 'http' | 'network';
 
 function classifySendFailure(status: number): SendFailureCategory {
@@ -24,8 +24,8 @@ function reportSendFailure(status: number, contentType: string | null, category:
     console.warn('[MP0 messaging] send failed', { status, contentType: contentType ?? 'unknown', category });
 }
 
-export default function usePrototypeMessaging(channel: string | null) {
-    const [messages, setMessages] = useState<PrototypeMessage[]>([]);
+export default function useMessaging(channel: string | null) {
+    const [messages, setMessages] = useState<Message[]>([]);
     const [sending, setSending] = useState(false);
     const [sendError, setSendError] = useState<string | null>(null);
     const [pollError, setPollError] = useState<string | null>(null);
@@ -51,14 +51,14 @@ export default function usePrototypeMessaging(channel: string | null) {
             if (!initial) params.set('after', String(cursor));
 
             try {
-                const response = await fetch(`${prototypeMessagesEndpoint}?${params}`, {
+                const response = await fetch(`${messagesEndpoint}?${params}`, {
                     headers: { Accept: 'application/json' },
                     signal: request.signal,
                 });
-                if (!response.ok) throw new Error('Prototype messages could not be loaded.');
+                if (!response.ok) throw new Error('Messages could not be loaded.');
                 const payload = await response.json() as Payload;
                 if (!active || pollController !== request) return;
-                setMessages((current) => mergePrototypeMessages(current, payload.data));
+                setMessages((current) => mergeMessages(current, payload.data));
                 cursor = Math.max(cursor, ...payload.data.map((message) => message.cursor), 0);
                 setPollError(null);
             } catch (error) {
@@ -97,7 +97,7 @@ export default function usePrototypeMessaging(channel: string | null) {
         setSendError(null);
 
         try {
-            const response = await fetch(prototypeMessagesEndpoint, {
+            const response = await fetch(messagesEndpoint, {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -110,11 +110,11 @@ export default function usePrototypeMessaging(channel: string | null) {
             const contentType = response.headers.get('content-type');
             if (!response.ok) {
                 reportSendFailure(response.status, contentType, classifySendFailure(response.status));
-                throw new Error('Prototype message could not be sent.');
+                throw new Error('Message could not be sent.');
             }
             if (!contentType?.includes('application/json')) reportSendFailure(response.status, contentType, 'http');
             const payload = await response.json() as SinglePayload;
-            setMessages((current) => mergePrototypeMessages(current, [payload.data]));
+            setMessages((current) => mergeMessages(current, [payload.data]));
             return true;
         } catch (error) {
             if (!(error instanceof DOMException && error.name === 'AbortError')) {

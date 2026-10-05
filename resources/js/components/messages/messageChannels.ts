@@ -1,10 +1,10 @@
-export type PrototypeChannel = {
+export type MessageChannel = {
     channel: string;
     description: string;
     offices: string[];
 };
 
-export const prototypeChannels: PrototypeChannel[] = [
+export const messageChannels: MessageChannel[] = [
     {
         channel: 'General',
         description: 'Municipality-wide coordination',

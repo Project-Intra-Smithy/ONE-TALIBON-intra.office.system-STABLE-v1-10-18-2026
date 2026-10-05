@@ -1,4 +1,4 @@
-import { prototypeChannels } from './prototypeChannels';
+import { messageChannels } from './messageChannels';
 
 export type MessageConversation = {
     channel: string;
@@ -7,7 +7,7 @@ export type MessageConversation = {
 };
 
 export function buildMessageConversations(): MessageConversation[] {
-    return prototypeChannels.map(({ channel, description, offices }) => ({ channel, description, offices: [...offices] }));
+    return messageChannels.map(({ channel, description, offices }) => ({ channel, description, offices: [...offices] }));
 }
 
 export function filterMessageConversations(conversations: MessageConversation[], query: string): MessageConversation[] {

@@ -9,7 +9,7 @@ type Props = {
     onSend: (body: string) => Promise<boolean>;
 };
 
-export default function PrototypeMessageComposer({ channel, sending, error, onSend }: Props) {
+export default function MessageComposer({ channel, sending, error, onSend }: Props) {
     const [body, setBody] = useState('');
     const textarea = useRef<HTMLTextAreaElement | null>(null);
     const canSend = body.trim().length > 0 && !sending;
@@ -43,10 +43,10 @@ export default function PrototypeMessageComposer({ channel, sending, error, onSe
             style={{ paddingBottom: 'max(0.625rem, env(safe-area-inset-bottom))' }}
         >
             <div className="flex items-end gap-2">
-                <label htmlFor="prototype-message-body" className="sr-only">Message {channel}</label>
+                <label htmlFor="message-body" className="sr-only">Message {channel}</label>
                 <textarea
                     ref={textarea}
-                    id="prototype-message-body"
+                    id="message-body"
                     value={body}
                     onChange={(event) => setBody(event.target.value)}
                     onInput={(event) => {
@@ -59,7 +59,7 @@ export default function PrototypeMessageComposer({ channel, sending, error, onSe
                     readOnly={sending}
                     aria-label={`Message ${channel}`}
                     aria-invalid={Boolean(error)}
-                    aria-describedby={error ? 'prototype-message-error' : 'prototype-message-help'}
+                    aria-describedby={error ? 'message-error' : 'message-help'}
                     placeholder={`Message ${channel}...`}
                     className="max-h-32 min-h-11 min-w-0 flex-1 resize-none overflow-y-auto rounded-2xl border border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-4 py-2.5 text-sm leading-5 text-[var(--municipal-text)] outline-none placeholder:text-[var(--municipal-muted)] focus-visible:border-[var(--municipal-focus)] focus-visible:ring-2 focus-visible:ring-[var(--municipal-brand-soft-strong)]"
                 />
@@ -73,8 +73,8 @@ export default function PrototypeMessageComposer({ channel, sending, error, onSe
                     <span className="sr-only sm:hidden">Send message</span>
                 </button>
             </div>
-            <div id="prototype-message-help" className="sr-only">Enter sends. Shift+Enter starts a new line.</div>
-            {error && <div id="prototype-message-error" aria-live="polite" className="mt-1.5 text-xs font-medium text-rose-700 dark:text-rose-300">{error}</div>}
+            <div id="message-help" className="sr-only">Enter sends. Shift+Enter starts a new line.</div>
+            {error && <div id="message-error" aria-live="polite" className="mt-1.5 text-xs font-medium text-rose-700 dark:text-rose-300">{error}</div>}
         </form>
     );
 }

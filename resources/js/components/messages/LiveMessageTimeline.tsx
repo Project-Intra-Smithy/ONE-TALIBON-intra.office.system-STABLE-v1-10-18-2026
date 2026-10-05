@@ -1,15 +1,15 @@
-import type { PrototypeMessage } from './prototypeMessaging';
-import PrototypeMessageBubble from './PrototypeMessageBubble';
+import type { Message } from './messaging';
+import MessageBubble from './MessageBubble';
 
 type Props = {
-    messages: PrototypeMessage[];
+    messages: Message[];
     pollError: string | null;
     registerEnd: (node: HTMLDivElement | null) => void;
 };
 
 const GROUP_WINDOW_MS = 5 * 60 * 1000;
 
-function continuesSender(messages: PrototypeMessage[], index: number): boolean {
+function continuesSender(messages: Message[], index: number): boolean {
     if (index === 0) return false;
     const current = messages[index];
     const previous = messages[index - 1];
@@ -33,7 +33,7 @@ export default function LiveMessageTimeline({ messages, pollError, registerEnd }
             {messages.length > 0 ? (
                 <div className="space-y-1.5">
                     {messages.map((message, index) => (
-                        <PrototypeMessageBubble key={message.publicId} message={message} showSender={!continuesSender(messages, index)} />
+                        <MessageBubble key={message.publicId} message={message} showSender={!continuesSender(messages, index)} />
                     ))}
                 </div>
             ) : (

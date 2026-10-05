@@ -1,4 +1,4 @@
-export type PrototypeMessage = {
+export type Message = {
     publicId: string;
     cursor: number;
     channel: string;
@@ -11,12 +11,12 @@ export type PrototypeMessage = {
     isMine: boolean;
 };
 
-export const prototypeMessagesEndpoint = '/messages/prototype/messages';
+export const messagesEndpoint = '/messages/feed';
 
-export function mergePrototypeMessages(
-    current: PrototypeMessage[],
-    incoming: PrototypeMessage[],
-): PrototypeMessage[] {
+export function mergeMessages(
+    current: Message[],
+    incoming: Message[],
+): Message[] {
     const byPublicId = new Map(current.map((message) => [message.publicId, message]));
     incoming.forEach((message) => byPublicId.set(message.publicId, message));
 

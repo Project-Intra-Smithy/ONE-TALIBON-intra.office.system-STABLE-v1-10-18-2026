@@ -22,7 +22,7 @@ function messageGet(page, channel, timeout = 5000) {
     return page.waitForResponse((response) => {
         const url = new URL(response.url());
         return response.request().method() === 'GET'
-            && url.pathname === '/messages/prototype/messages'
+            && url.pathname === '/messages/feed'
             && url.searchParams.get('channel') === channel;
     }, { timeout });
 }
@@ -46,7 +46,7 @@ async function sendMessage(page, channel, body) {
     await field.fill(body);
     const responsePromise = page.waitForResponse((response) => (
         response.request().method() === 'POST'
-        && new URL(response.url()).pathname === '/messages/prototype/messages'
+        && new URL(response.url()).pathname === '/messages/feed'
     ));
     await field.press('Enter');
     const response = await responsePromise;
@@ -65,7 +65,7 @@ async function assertAssetMode(page) {
 async function assertChannelErrorIsolation(page) {
     await selectChat(page, 'General');
     let failed = false;
-    await page.route('**/messages/prototype/messages', async (route) => {
+    await page.route('**/messages/feed', async (route) => {
         if (!failed && route.request().method() === 'POST') {
             failed = true;
             await route.fulfill({ status: 500, contentType: 'application/json', body: '{}' });
@@ -78,7 +78,7 @@ async function assertChannelErrorIsolation(page) {
     await field.press('Enter');
     await page.getByText('Message was not sent. Keep the text and try again.', { exact: true }).waitFor();
     check('failed send retains text', await field.inputValue() === `Retain ${stamp}`);
-    await page.unroute('**/messages/prototype/messages');
+    await page.unroute('**/messages/feed');
     await selectChat(page, 'MPDO Planning');
     check('channel error isolation', await page.getByText('Message was not sent. Keep the text and try again.', { exact: true }).count() === 0);
 }

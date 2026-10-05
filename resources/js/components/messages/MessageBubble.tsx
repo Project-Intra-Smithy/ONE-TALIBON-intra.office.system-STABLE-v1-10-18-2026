@@ -1,7 +1,7 @@
-import type { PrototypeMessage } from './prototypeMessaging';
+import type { Message } from './messaging';
 
 type Props = {
-    message: PrototypeMessage;
+    message: Message;
     showSender: boolean;
 };
 
@@ -11,7 +11,7 @@ function readableTime(value: string): string {
     return new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: '2-digit' }).format(date);
 }
 
-export default function PrototypeMessageBubble({ message, showSender }: Props) {
+export default function MessageBubble({ message, showSender }: Props) {
     const sender = message.sender.name ?? 'Employee';
     const office = message.sender.office;
     const time = readableTime(message.createdAt);
