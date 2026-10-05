@@ -49,7 +49,7 @@ export default function EmployeeDirectory({ employees, departments, filters, sum
         { label: 'Employees', value: summary.employees, icon: UsersRound, surface: 'bg-emerald-50/80 text-emerald-900 dark:bg-emerald-950/35 dark:text-emerald-200', iconSurface: 'bg-white/80 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300' },
         { label: 'Municipal Offices', value: summary.offices, icon: Building2, surface: 'bg-amber-50/80 text-amber-950 dark:bg-amber-950/30 dark:text-amber-200', iconSurface: 'bg-white/80 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300' },
         { label: 'Portal Accounts', value: summary.portalAccounts, icon: UserRoundCheck, surface: 'bg-blue-50/80 text-blue-950 dark:bg-blue-950/35 dark:text-blue-200', iconSurface: 'bg-white/80 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300' },
-        { label: 'Portal Coverage', value: `${portalCoverage}%`, icon: UserRoundCheck, surface: 'bg-violet-50/80 text-violet-950 dark:bg-violet-950/30 dark:text-violet-200', iconSurface: 'bg-white/80 text-violet-700 dark:bg-violet-950/50 dark:text-violet-300' },
+        { label: 'Accounts Linked', value: `${portalCoverage}%`, icon: UserRoundCheck, surface: 'bg-violet-50/80 text-violet-950 dark:bg-violet-950/30 dark:text-violet-200', iconSurface: 'bg-white/80 text-violet-700 dark:bg-violet-950/50 dark:text-violet-300' },
     ];
 
     const submit = (event: FormEvent) => {
@@ -65,11 +65,11 @@ export default function EmployeeDirectory({ employees, departments, filters, sum
     const lastResult = employees.data.length === 0 ? 0 : firstResult + employees.data.length - 1;
 
     return (
-        <AppLayout title="HR Employee Portal">
+        <AppLayout title="Employee & Office Directory">
             <PageFrame density="compact">
-                <PageHeader eyebrow="PERSONNEL DIRECTORY" title="HR Employee Portal" description="Municipal personnel directory, office assignments and portal access reference." icon={UsersRound} />
+                <PageHeader eyebrow="ORGANIZATION DIRECTORY" title="Employee & Office Directory" description="Municipal employees, office assignments and portal-account linkage in one directory." icon={UsersRound} />
 
-                <section className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4" aria-label="HR Employee Portal summary">
+                <section className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4" aria-label="Employee and office directory summary">
                     {summaryItems.map(({ label, value, icon: Icon, surface, iconSurface }) => (
                         <div key={label} className={`flex min-h-[56px] min-w-0 items-center gap-2.5 rounded-lg border border-current/10 px-3 py-2 ${surface}`}>
                             <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md ${iconSurface}`}><Icon size={16} aria-hidden="true" /></span>
@@ -86,7 +86,7 @@ export default function EmployeeDirectory({ employees, departments, filters, sum
                         <button type="button" onClick={reset} className="min-h-9 rounded-lg px-3 text-sm font-semibold text-slate-500 transition hover:bg-slate-50 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-700/20 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">Reset</button>
                     </form>
 
-                    <div className="flex min-h-9 items-center justify-between gap-3 border-b border-slate-100 px-3 py-2 text-[11px] dark:border-slate-700"><div className="font-bold text-slate-900 dark:text-slate-100">Personnel reference register</div><div className="text-right text-slate-500 dark:text-slate-400">Showing <span className="font-semibold text-slate-700 dark:text-slate-200">{firstResult}–{lastResult}</span> of <span className="font-semibold text-slate-700 dark:text-slate-200">{employees.total}</span> employees</div></div>
+                    <div className="flex min-h-9 items-center justify-between gap-3 border-b border-slate-100 px-3 py-2 text-[11px] dark:border-slate-700"><div className="font-bold text-slate-900 dark:text-slate-100">Employee directory register</div><div className="text-right text-slate-500 dark:text-slate-400">Showing <span className="font-semibold text-slate-700 dark:text-slate-200">{firstResult}–{lastResult}</span> of <span className="font-semibold text-slate-700 dark:text-slate-200">{employees.total}</span> employees</div></div>
 
                     <div className="divide-y divide-slate-100 dark:divide-slate-700 md:hidden" aria-label="Employee directory results">
                         {employees.data.map((employee) => (
