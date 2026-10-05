@@ -35,8 +35,24 @@ class CurrentPortalNavigationTest extends TestCase
         $this->assertStringContainsString('isPortalDestinationVisible(destination, experience, permissions)', $navigation);
         $this->assertStringContainsString('permissions[destination.permission]', $access);
         $this->assertStringContainsString('workspaceExperience', $layout);
-        $this->assertSame(21, substr_count($destinations, "readiness: 'wired'"));
-        $this->assertSame(2, substr_count($destinations, "readiness: 'integration_pending'"));
+
+        foreach ([
+            'documentCenter' => 'wired',
+            'myWork' => 'wired',
+            'employeeDirectory' => 'wired',
+            'messages' => 'wired',
+            'systemAdministration' => 'wired',
+            'procurementTracking' => 'integration_pending',
+            'announcements' => 'integration_pending',
+            'meetings' => 'integration_pending',
+            'projectMonitoring' => 'integration_pending',
+            'users' => 'integration_pending',
+            'adminDepartments' => 'integration_pending',
+            'municipalSystems' => 'integration_pending',
+        ] as $destinationKey => $readiness) {
+            $pattern = '/'.preg_quote($destinationKey, '/').": \\{ key: '".preg_quote($destinationKey, '/')."'[^\\n]*readiness: '".preg_quote($readiness, '/')."'/";
+            $this->assertSame(1, preg_match($pattern, $destinations), "Expected {$destinationKey} readiness to remain {$readiness}.");
+        }
 
         foreach ([
             "home: '/dashboard'", "myWork: '/transactions'", "correspondence: '/correspondence'", "procurementTracking: '/procurement'", "records: '/records'", "memoranda: '/memoranda'", "announcements: '/announcements'", "calendar: '/calendar'", "meetings: '/meetings'", "messages: '/messages'", "executiveDepartments: '/departments'", "employeeDirectory: '/employees'", "legislative: '/legislation'", "localSpecialBodies: '/local-special-bodies'", "developmentPlans: '/development-plans'", "ppas: '/ppas'", "projectMonitoring: '/operations'", "systemAdministration: '/admin'", "municipalSystems: '/municipal-systems'",
@@ -45,7 +61,7 @@ class CurrentPortalNavigationTest extends TestCase
         }
 
         $this->assertStringContainsString("procurementTracking: { key: 'procurementTracking', label: 'Procurement / PR Tracking'", $destinations);
-        $this->assertStringContainsString("employeeDirectory: { key: 'employeeDirectory', label: 'HR Employee Portal'", $destinations);
+        $this->assertStringContainsString("employeeDirectory: { key: 'employeeDirectory', label: 'Employee & Office Directory'", $destinations);
         $this->assertStringContainsString("icon: Users, group: 'people', readiness: 'wired'", $destinations);
 
         $workOrder = ["'documentCenter'", "'myWork'", "'correspondence'", "'procurementTracking'", "'employeeDirectory'", "'records'", "'memoranda'", "'announcements'", "'calendar'", "'meetings'", "'messages'"];
@@ -71,11 +87,11 @@ class CurrentPortalNavigationTest extends TestCase
         $destinations = file_get_contents(resource_path('js/navigation/navigationDestinations.ts'));
         $this->assertIsString($destinations);
 
-        foreach (['Search Portal', 'Document Center', 'Home', 'Tasks & Assignments', 'Correspondence', 'Procurement / PR Tracking', 'HR Employee Portal', 'Municipal Records', 'Official Memoranda', 'Announcements', 'Calendar', 'Meetings', 'Messages', 'Executive Departments', 'Ordinances & Issuances', 'Councils, Boards & Committees', 'Development Plans', 'PPAs', 'Project Monitoring', 'Users', 'Departments', 'System Administration', 'Future Integrations'] as $label) {
+        foreach (['Search Portal', 'Document Center', 'Home', 'Work Requests', 'Correspondence', 'Procurement / PR Tracking', 'Employee & Office Directory', 'Municipal Records', 'Official Memoranda', 'Announcements', 'Calendar', 'Meetings', 'Messages', 'Executive Departments', 'Ordinances & Issuances', 'Councils, Boards & Committees', 'Development Plans', 'PPAs', 'Project Monitoring', 'Users', 'Departments', 'System Administration', 'Future Integrations'] as $label) {
             $this->assertStringContainsString("label: '{$label}'", $destinations);
         }
 
-        foreach (['Staff Directory', 'Office Overview', 'Executive Overview', 'System Overview', 'Accounts & Access', 'For Decision', 'Audit & Security'] as $legacyLabel) {
+        foreach (['Staff Directory', 'Office Overview', 'Executive Overview', 'System Overview', 'Accounts & Access', 'For Decision', 'Audit & Security', 'Tasks & Assignments', 'HR Employee Portal'] as $legacyLabel) {
             $this->assertStringNotContainsString($legacyLabel, $destinations);
         }
     }

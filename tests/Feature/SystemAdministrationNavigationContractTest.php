@@ -32,7 +32,16 @@ class SystemAdministrationNavigationContractTest extends TestCase
         $this->assertStringContainsString("permission: 'systemAdministration'", $destinations);
         $this->assertStringContainsString("users: { key: 'users', label: 'Users'", $destinations);
         $this->assertStringContainsString("adminDepartments: { key: 'adminDepartments', label: 'Departments'", $destinations);
-        $this->assertSame(2, substr_count($destinations, "readiness: 'integration_pending'"));
+
+        foreach ([
+            'systemAdministration' => 'wired',
+            'users' => 'integration_pending',
+            'adminDepartments' => 'integration_pending',
+        ] as $destinationKey => $readiness) {
+            $pattern = '/'.preg_quote($destinationKey, '/').": \\{ key: '".preg_quote($destinationKey, '/')."'[^\\n]*readiness: '".preg_quote($readiness, '/')."'/";
+            $this->assertSame(1, preg_match($pattern, $destinations), "Expected {$destinationKey} readiness to remain {$readiness}.");
+        }
+
         $this->assertStringNotContainsString('includes(user?.role', $activeNavigation);
         $this->assertStringNotContainsString("user?.role ===", $activeNavigation);
         $this->assertStringNotContainsString('Audit & Security', $destinations);
