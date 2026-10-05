@@ -55,7 +55,6 @@ class EmployeeDirectoryController extends Controller
             'summary' => [
                 'employees' => $activeEmployeeCount,
                 'portalAccounts' => $portalAccountCount,
-                'featuredLogins' => $portalAccountCount,
                 'offices' => Department::query()->activeRoutable()->count(),
             ],
         ]);

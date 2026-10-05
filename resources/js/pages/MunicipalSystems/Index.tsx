@@ -29,7 +29,7 @@ import {
 import AppLayout from '../../layouts/AppLayout';
 
 type Props = {
-    showcase?: 'procurement';
+    referenceSurface?: 'procurement';
 };
 
 type RolloutEntry = {
@@ -78,7 +78,7 @@ const rolloutTone: Record<string, string> = {
     'Main Showcase / Interactive Static Prototype':
         'border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900/60 dark:bg-amber-950/25 dark:text-amber-200',
     'Current Personnel Reference':
-        'border-blue-200 bg-blue-50 text-blue-800 dark:border-blue-900/60 dark:bg-blue-950/25 dark:text-blue-200',
+        'border-blue-200 bg-blue-50 text-blue-800 dark:border-blue-900/60 dark:bg-blue-950/35 dark:text-blue-200',
 };
 
 const coreTone: Record<string, string> = {
@@ -102,7 +102,7 @@ function coreLabel(name: string) {
         .replace('API / Integration Layer direction', 'API / Integration');
 }
 
-export default function Index({ showcase }: Props) {
+export default function Index({ referenceSurface }: Props) {
     const [q, setQ] = useState('');
     const [filter, setFilter] = useState('');
     const [selectedSystem, setSelectedSystem] = useState<MunicipalSystem | null>(null);
@@ -136,7 +136,7 @@ export default function Index({ showcase }: Props) {
         });
     }, [q, filter]);
 
-    if (showcase === 'procurement') {
+    if (referenceSurface === 'procurement') {
         return (
             <AppLayout title="Procurement / PR Tracking">
                 <PageFrame density="compact">

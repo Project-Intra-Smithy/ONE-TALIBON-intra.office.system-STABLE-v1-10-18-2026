@@ -31,7 +31,7 @@ type Props = {
     employees: PaginatedEmployees;
     departments: Department[];
     filters: { q: string; department: string };
-    summary: { employees: number; portalAccounts: number; featuredLogins: number; offices: number };
+    summary: { employees: number; portalAccounts: number; offices: number };
 };
 
 function initials(name?: string): string {
