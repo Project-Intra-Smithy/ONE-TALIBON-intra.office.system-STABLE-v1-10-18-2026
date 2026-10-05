@@ -196,21 +196,28 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+          if ($LASTEXITCODE -ne 0) { throw "composer install failed with exit code $LASTEXITCODE." }
           npm ci --no-audit --no-fund
+          if ($LASTEXITCODE -ne 0) { throw "npm ci failed with exit code $LASTEXITCODE." }
 
       - name: Prepare Laravel test environment
         run: |
           $ErrorActionPreference = 'Stop'
           Copy-Item .env.example .env -Force
           php artisan key:generate
+          if ($LASTEXITCODE -ne 0) { throw 'php artisan key:generate failed.' }
           php artisan optimize:clear
+          if ($LASTEXITCODE -ne 0) { throw 'php artisan optimize:clear failed.' }
           php artisan about
+          if ($LASTEXITCODE -ne 0) { throw 'php artisan about failed.' }
 
       - name: TypeScript and production build
         run: |
           $ErrorActionPreference = 'Stop'
           npm run types:check
+          if ($LASTEXITCODE -ne 0) { throw "TypeScript validation failed with exit code $LASTEXITCODE." }
           npm run build
+          if ($LASTEXITCODE -ne 0) { throw "Production build failed with exit code $LASTEXITCODE." }
 
       - name: Fresh disposable database and seed
         run: |
@@ -219,6 +226,7 @@ jobs:
             throw "Refusing migrate:fresh against unexpected database: $env:DB_DATABASE"
           }
           php artisan migrate:fresh --seed --force
+          if ($LASTEXITCODE -ne 0) { throw "migrate:fresh --seed failed with exit code $LASTEXITCODE." }
 
       - name: Route authority evidence
         run: |
@@ -227,13 +235,16 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'php artisan route:list failed.' }
 
           $routes = Get-Content storage/app/qa/p08-route-list.txt -Raw
-          if ($routes -notmatch '/messages/feed') { throw 'Canonical /messages/feed route is missing.' }
-          if ($routes -match '/showcase/session|/showcase/switch|/messages/prototype/messages') {
+          if ($routes -notmatch '(?m)\bmessages/feed\b') { throw 'Canonical messages/feed route is missing.' }
+          if ($routes -match '(?m)\b(showcase/session|showcase/switch|messages/prototype/messages)\b') {
             throw 'Retired route contract remains in the executable route table.'
           }
 
       - name: Full Feature suite once
-        run: php artisan test --testsuite=Feature
+        run: |
+          $ErrorActionPreference = 'Stop'
+          php artisan test --testsuite=Feature
+          if ($LASTEXITCODE -ne 0) { throw "Feature suite failed with exit code $LASTEXITCODE." }
 
       - name: Restore deterministic browser fixture state
         run: |
@@ -242,17 +253,25 @@ jobs:
             throw "Refusing browser-fixture migrate:fresh against unexpected database: $env:DB_DATABASE"
           }
           php artisan migrate:fresh --seed --force
+          if ($LASTEXITCODE -ne 0) { throw "Browser fixture reset failed with exit code $LASTEXITCODE." }
 
       - name: Laravel cacheability
         run: |
           $ErrorActionPreference = 'Stop'
           php artisan route:cache
+          if ($LASTEXITCODE -ne 0) { throw 'php artisan route:cache failed.' }
           php artisan view:cache
+          if ($LASTEXITCODE -ne 0) { throw 'php artisan view:cache failed.' }
           php artisan config:cache
+          if ($LASTEXITCODE -ne 0) { throw 'php artisan config:cache failed.' }
           php artisan optimize:clear
+          if ($LASTEXITCODE -ne 0) { throw 'php artisan optimize:clear failed.' }
 
       - name: Ensure Chromium for browser validation
-        run: npx playwright install chromium
+        run: |
+          $ErrorActionPreference = 'Stop'
+          npx playwright install chromium
+          if ($LASTEXITCODE -ne 0) { throw "Playwright Chromium install failed with exit code $LASTEXITCODE." }
 
       - name: Runtime and browser acceptance in one owned lifecycle
         run: |
@@ -330,8 +349,6 @@ jobs:
             & node tests/Browser/h0-runtime-readiness.mjs
             if ($LASTEXITCODE -ne 0) { throw "H0 runtime audit failed with exit code $LASTEXITCODE." }
 
-            # H0 enrolls privileged fixture accounts. Restore a clean fixture before
-            # the independent two-user Messaging audit so MFA state cannot leak between audits.
             if ($env:DB_DATABASE -ne 'talibon_portal_test') {
               throw "Refusing browser audit reset against unexpected database: $env:DB_DATABASE"
             }
@@ -374,6 +391,7 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           git diff --check
+          if ($LASTEXITCODE -ne 0) { throw 'git diff --check failed.' }
           Write-Host '=== WORKTREE ==='
           git status --short
           Write-Host '=== EXACT HEAD ==='
