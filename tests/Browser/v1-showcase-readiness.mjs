@@ -132,31 +132,8 @@ async function switchWorkspace(page) {
     check('Switch Workspace returns to gateway', safePath(page.url()) === '/login', safePath(page.url()));
 }
 async function assertNavigation(page, label, expected, forbidden = []) {
-    const secondaryGroupByDestination = new Map([
-        ['Executive Departments', 'Municipal Organization'],
-        ['Staff Directory', 'Municipal Organization'],
-        ['Ordinances & Issuances', 'Municipal Organization'],
-        ['Councils, Boards & Committees', 'Municipal Organization'],
-        ['Development Plans', 'Planning'],
-        ['PPAs', 'Planning'],
-        ['Project Monitoring', 'Planning'],
-        ['System Administration', 'Administration'],
-        ['Systems Directory', 'Municipal Systems'],
-    ]);
-
     for (const item of expected) {
         const destination = page.getByRole('link', { name: item, exact: true }).first();
-        if (!(await destination.isVisible().catch(() => false))) {
-            const owningGroup = secondaryGroupByDestination.get(item);
-            check(`${label}: ${item} has an owning secondary group`, Boolean(owningGroup), owningGroup || 'none');
-
-            const disclosure = page.getByRole('button', { name: owningGroup, exact: true }).first();
-            check(`${label}: ${owningGroup} disclosure available`, await disclosure.isVisible().catch(() => false));
-            if (await disclosure.getAttribute('aria-expanded') !== 'true') {
-                await disclosure.click();
-            }
-        }
-
         check(`${label}: ${item} visible`, await destination.isVisible().catch(() => false));
     }
     for (const item of forbidden) {
@@ -226,11 +203,11 @@ async function executiveMatrix(browser) {
     monitor(page);
     await enterWorkspace(page, 'Municipal Executive');
     await assertNavigation(page, 'Executive', [
-        'Home', 'Executive Departments', 'Staff Directory', 'Ordinances & Issuances', 'Councils, Boards & Committees',
+        'Home', 'Executive Departments', 'HR Employee Portal', 'Ordinances & Issuances', 'Councils, Boards & Committees',
         'Development Plans', 'PPAs', 'Project Monitoring', 'Calendar', 'Meetings', 'Messages', 'Announcements',
     ], ['Audit & Security']);
     for (const [route, label] of [
-        ['/dashboard', 'Executive Home'], ['/departments', 'Executive Departments'], ['/employees', 'Employee Directory'],
+        ['/dashboard', 'Executive Home'], ['/departments', 'Executive Departments'], ['/employees', 'HR Employee Portal'],
         ['/legislation', 'Legislative'], ['/local-special-bodies', 'Local Special Bodies'], ['/development-plans', 'Development Plans'],
         ['/ppas', 'PPAs'], ['/operations', 'Project Monitoring'], ['/calendar', 'Calendar'], ['/meetings', 'Meetings'],
         ['/messages', 'Messages'], ['/announcements', 'Announcements'],
@@ -249,12 +226,12 @@ async function departmentHeadMatrix(browser) {
     await enterWorkspace(page, 'Department Head', 'Municipal Engineering Office');
     await assertNavigation(page, 'Department Head', [
         'Home', 'Tasks & Assignments', 'Correspondence', 'Municipal Records', 'Official Memoranda', 'Calendar', 'Meetings', 'Messages',
-        'Executive Departments', 'Staff Directory', 'Development Plans', 'PPAs', 'Project Monitoring',
+        'Executive Departments', 'HR Employee Portal', 'Development Plans', 'PPAs', 'Project Monitoring',
     ], ['Audit & Security', 'System Administration']);
     for (const [route, label] of [
         ['/dashboard', 'Department Head Home'], ['/transactions', 'My Work'], ['/correspondence', 'Correspondence'],
         ['/records', 'Records'], ['/memoranda', 'Memoranda'], ['/calendar', 'Calendar'], ['/meetings', 'Meetings'],
-        ['/messages', 'Messages'], ['/departments', 'Departments'], ['/employees', 'Directory'],
+        ['/messages', 'Messages'], ['/departments', 'Departments'], ['/employees', 'HR Employee Portal'],
         ['/development-plans', 'Plans'], ['/ppas', 'PPAs'], ['/operations', 'Project Monitoring'],
     ]) await openRoute(page, route, label);
     report.matrices.push({ key: 'department-head', result: 'pass' });
@@ -283,7 +260,7 @@ async function administrationMatrix(browser) {
     pageRef = page;
     monitor(page);
     await enterWorkspace(page, 'System Administration');
-    await assertNavigation(page, 'System Administration', ['Home', 'System Administration', 'Systems Directory'], ['Audit & Security']);
+    await assertNavigation(page, 'System Administration', ['Home', 'System Administration', 'Future Integrations'], ['Audit & Security']);
     await openRoute(page, '/admin', 'System Administration');
     await switchWorkspace(page);
     report.matrices.push({ key: 'system-administration', result: 'pass' });
