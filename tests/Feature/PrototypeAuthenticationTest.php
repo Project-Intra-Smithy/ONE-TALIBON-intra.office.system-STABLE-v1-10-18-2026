@@ -14,19 +14,16 @@ class PrototypeAuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_login_presentation_uses_workspace_gateway_without_credential_ceremony(): void
+    public function test_login_presentation_uses_normal_password_authentication_contract(): void
     {
         $source = file_get_contents(resource_path('js/pages/Auth/Login.tsx'));
         $this->assertIsString($source);
-        $this->assertStringContainsString('Municipal Workspace', $source);
-        $this->assertStringContainsString('Open Municipal Workspace', $source);
-        $this->assertStringContainsString('WorkspaceDialog', $source);
+        $this->assertStringContainsString('type="email"', $source);
+        $this->assertStringContainsString('type="password"', $source);
+        $this->assertStringContainsString('Remember me', $source);
+        $this->assertStringContainsString("post('/login'", $source);
 
-        foreach (['type="email"', 'type="password"', 'Remember me', 'Continue with Google', 'Activate Employee Account', 'prototype environment', 'Secure municipal employee access'] as $forbidden) {
-            $this->assertStringNotContainsString($forbidden, $source);
-        }
-
-        foreach (['engineering@talibon.demo', 'budget@talibon.demo', 'admin@talibon.demo', 'mayor_approver', 'system_admin'] as $forbidden) {
+        foreach (['WorkspaceDialog', 'Open Municipal Workspace', '/showcase/session', 'showcase.personas', 'engineering@talibon.demo', 'budget@talibon.demo', 'admin@talibon.demo', 'mayor_approver', 'system_admin'] as $forbidden) {
             $this->assertStringNotContainsString($forbidden, $source);
         }
     }

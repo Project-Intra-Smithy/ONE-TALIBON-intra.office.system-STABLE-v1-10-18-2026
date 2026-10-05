@@ -1,5 +1,3 @@
-import type { ShowcaseSessionState } from './components/showcase/types';
-
 export type Department = {
     id: number;
     code: string;
@@ -77,7 +75,6 @@ export type SharedProps = {
     [key: string]: unknown;
     appName: string;
     workspaceExperience: WorkspaceExperience | null;
-    showcaseSession: ShowcaseSessionState;
     auth: { user: AuthUser | null };
     permissions: { reports: boolean; navigation: NavigationPermissions };
     flash: { success?: string; error?: string };

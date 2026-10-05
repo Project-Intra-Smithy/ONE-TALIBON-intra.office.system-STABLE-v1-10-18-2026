@@ -39,25 +39,7 @@ class CurrentPortalNavigationTest extends TestCase
         $this->assertSame(2, substr_count($destinations, "readiness: 'integration_pending'"));
 
         foreach ([
-            "home: '/dashboard'",
-            "myWork: '/transactions'",
-            "correspondence: '/correspondence'",
-            "procurementTracking: '/procurement'",
-            "records: '/records'",
-            "memoranda: '/memoranda'",
-            "announcements: '/announcements'",
-            "calendar: '/calendar'",
-            "meetings: '/meetings'",
-            "messages: '/messages'",
-            "executiveDepartments: '/departments'",
-            "employeeDirectory: '/employees'",
-            "legislative: '/legislation'",
-            "localSpecialBodies: '/local-special-bodies'",
-            "developmentPlans: '/development-plans'",
-            "ppas: '/ppas'",
-            "projectMonitoring: '/operations'",
-            "systemAdministration: '/admin'",
-            "municipalSystems: '/municipal-systems'",
+            "home: '/dashboard'", "myWork: '/transactions'", "correspondence: '/correspondence'", "procurementTracking: '/procurement'", "records: '/records'", "memoranda: '/memoranda'", "announcements: '/announcements'", "calendar: '/calendar'", "meetings: '/meetings'", "messages: '/messages'", "executiveDepartments: '/departments'", "employeeDirectory: '/employees'", "legislative: '/legislation'", "localSpecialBodies: '/local-special-bodies'", "developmentPlans: '/development-plans'", "ppas: '/ppas'", "projectMonitoring: '/operations'", "systemAdministration: '/admin'", "municipalSystems: '/municipal-systems'",
         ] as $routeContract) {
             $this->assertStringContainsString($routeContract, $routePlan);
         }
@@ -66,19 +48,7 @@ class CurrentPortalNavigationTest extends TestCase
         $this->assertStringContainsString("employeeDirectory: { key: 'employeeDirectory', label: 'HR Employee Portal'", $destinations);
         $this->assertStringContainsString("icon: Users, group: 'people', readiness: 'wired'", $destinations);
 
-        $workOrder = [
-            "'documentCenter'",
-            "'myWork'",
-            "'correspondence'",
-            "'procurementTracking'",
-            "'employeeDirectory'",
-            "'records'",
-            "'memoranda'",
-            "'announcements'",
-            "'calendar'",
-            "'meetings'",
-            "'messages'",
-        ];
+        $workOrder = ["'documentCenter'", "'myWork'", "'correspondence'", "'procurementTracking'", "'employeeDirectory'", "'records'", "'memoranda'", "'announcements'", "'calendar'", "'meetings'", "'messages'"];
         $cursor = -1;
         foreach ($workOrder as $destinationKey) {
             $position = strpos($order, $destinationKey);
@@ -101,116 +71,53 @@ class CurrentPortalNavigationTest extends TestCase
         $destinations = file_get_contents(resource_path('js/navigation/navigationDestinations.ts'));
         $this->assertIsString($destinations);
 
-        foreach ([
-            'Search Portal',
-            'Document Center',
-            'Home',
-            'Tasks & Assignments',
-            'Correspondence',
-            'Procurement / PR Tracking',
-            'HR Employee Portal',
-            'Municipal Records',
-            'Official Memoranda',
-            'Announcements',
-            'Calendar',
-            'Meetings',
-            'Messages',
-            'Executive Departments',
-            'Ordinances & Issuances',
-            'Councils, Boards & Committees',
-            'Development Plans',
-            'PPAs',
-            'Project Monitoring',
-            'Users',
-            'Departments',
-            'System Administration',
-            'Future Integrations',
-        ] as $label) {
+        foreach (['Search Portal', 'Document Center', 'Home', 'Tasks & Assignments', 'Correspondence', 'Procurement / PR Tracking', 'HR Employee Portal', 'Municipal Records', 'Official Memoranda', 'Announcements', 'Calendar', 'Meetings', 'Messages', 'Executive Departments', 'Ordinances & Issuances', 'Councils, Boards & Committees', 'Development Plans', 'PPAs', 'Project Monitoring', 'Users', 'Departments', 'System Administration', 'Future Integrations'] as $label) {
             $this->assertStringContainsString("label: '{$label}'", $destinations);
         }
 
-        foreach ([
-            'Staff Directory',
-            'Office Overview',
-            'Executive Overview',
-            'System Overview',
-            'Accounts & Access',
-            'For Decision',
-            'Audit & Security',
-        ] as $legacyLabel) {
+        foreach (['Staff Directory', 'Office Overview', 'Executive Overview', 'System Overview', 'Accounts & Access', 'For Decision', 'Audit & Security'] as $legacyLabel) {
             $this->assertStringNotContainsString($legacyLabel, $destinations);
         }
     }
 
-    public function test_shell_navigation_renders_current_groups_and_showcase_switcher_is_persistent(): void
+    public function test_shell_navigation_renders_current_groups_without_runtime_showcase_controls(): void
     {
         $sidebar = file_get_contents(resource_path('js/components/shell/PortalSidebar.tsx'));
         $section = file_get_contents(resource_path('js/components/shell/SidebarSection.tsx'));
         $footer = file_get_contents(resource_path('js/components/shell/SidebarFooter.tsx'));
-        $switcher = file_get_contents(resource_path('js/components/showcase/WorkspaceSwitcher.tsx'));
+        $layout = file_get_contents(resource_path('js/layouts/AppLayout.tsx'));
 
         $this->assertIsString($sidebar);
         $this->assertIsString($section);
         $this->assertIsString($footer);
-        $this->assertIsString($switcher);
+        $this->assertIsString($layout);
 
         $this->assertStringContainsString('navigationGroups.map((group)', $sidebar);
         $this->assertStringContainsString('group.items.map((item)', $sidebar);
         $this->assertStringContainsString('collapsible={false}', $sidebar);
         $this->assertStringContainsString('<SidebarFooter compact={compact} user={user} />', $sidebar);
-
         $this->assertStringNotContainsString('useState(active)', $section);
         $this->assertStringContainsString('expanded?: boolean;', $section);
         $this->assertStringContainsString('onToggle?: () => void;', $section);
         $this->assertStringContainsString('onClick={onToggle}', $section);
-
-        $this->assertStringContainsString('<WorkspaceSwitcher compact={compact} />', $footer);
         $this->assertStringContainsString('<details className="portal-account-tools">', $footer);
-        $this->assertStringContainsString('data-tour="shell:workspace-switcher"', $switcher);
-        $this->assertStringContainsString("router.post('/showcase/switch'", $switcher);
-        $this->assertStringContainsString('Switch Workspace', $switcher);
+
+        foreach (['WorkspaceSwitcher', 'showcaseSession', '/showcase/switch', 'FirstRunGate'] as $retired) {
+            $this->assertStringNotContainsString($retired, $footer."\n".$layout);
+        }
     }
 
     public function test_current_and_hidden_backend_routes_remain_registered(): void
     {
-        foreach ([
-            'admin.index',
-            'dashboard',
-            'transactions.index',
-            'correspondence.index',
-            'records.index',
-            'memoranda.index',
-            'calendar.index',
-            'operations.index',
-            'legislation.index',
-            'employees.index',
-            'announcements.index',
-            'meetings.index',
-            'messages.index',
-            'local-special-bodies.index',
-            'development-plans.index',
-            'ppas.index',
-            'procurement.reference',
-            'municipal-systems.index',
-        ] as $routeName) {
+        foreach (['admin.index', 'dashboard', 'transactions.index', 'correspondence.index', 'records.index', 'memoranda.index', 'calendar.index', 'operations.index', 'legislation.index', 'employees.index', 'announcements.index', 'meetings.index', 'messages.index', 'local-special-bodies.index', 'development-plans.index', 'ppas.index', 'procurement.reference', 'municipal-systems.index'] as $routeName) {
             $this->assertTrue(Route::has($routeName), "Expected current route {$routeName} to remain registered.");
         }
 
-        foreach ([
-            'audit',
-            'mfa.settings',
-            'mfa.recovery.show',
-            'mfa.recovery.regenerate',
-            'mfa.reset',
-            'mfa.disable',
-            'property.index',
-            'property.lifecycle.index',
-            'reports.index',
-        ] as $routeName) {
+        foreach (['audit', 'mfa.settings', 'mfa.recovery.show', 'mfa.recovery.regenerate', 'mfa.reset', 'mfa.disable', 'property.index', 'property.lifecycle.index', 'reports.index'] as $routeName) {
             $this->assertTrue(Route::has($routeName), "Expected hidden backend route {$routeName} to remain registered.");
         }
 
-        foreach (['procurement.showcase', 'hris', 'hris.dtr', 'hris.payroll', 'hris.admin'] as $routeName) {
+        foreach (['procurement.showcase', 'hris', 'hris.dtr', 'hris.payroll', 'hris.admin', 'showcase.session.store', 'showcase.session.switch'] as $routeName) {
             $this->assertFalse(Route::has($routeName), "Expected excluded/transitional route {$routeName} to be absent.");
         }
     }
