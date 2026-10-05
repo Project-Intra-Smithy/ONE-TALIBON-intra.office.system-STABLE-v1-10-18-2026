@@ -4,7 +4,6 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import { Bell, CalendarDays, MessageSquare, Menu, PanelRightOpen, Search, X } from 'lucide-react';
 import { type PropsWithChildren, useEffect, useRef, useState } from 'react';
 import DestinationOverviewDialog from '../components/help/DestinationOverviewDialog';
-import FirstRunGate from '../components/onboarding/FirstRunGate';
 import { MunicipalUtilityDrawer, MunicipalUtilityRail, QuickMessagesPanel } from '../components/shell/MunicipalUtilities';
 import { NotificationContext } from '../components/shell/NotificationContext';
 import MobileNavigation from '../components/shell/MobileNavigation';
@@ -67,9 +66,7 @@ export default function AppLayout({ title, children, presentation }: Props) {
     const navigation = pageProps.permissions.navigation;
     const canViewReports = pageProps.permissions.reports && navigation.reports;
     const navigationGroups = buildPortalNavigation(pageProps.workspaceExperience, navigation, canViewReports);
-    const currentDestination = navigationGroups
-        .flatMap((group) => group.items)
-        .find((item) => isPortalPathActive(page.url, item.href));
+    const currentDestination = navigationGroups.flatMap((group) => group.items).find((item) => isPortalPathActive(page.url, item.href));
     const currentOverview = currentDestination ? destinationOverviewCatalog[currentDestination.key] : null;
     const hrisPresentation = page.url === '/hris' || page.url.startsWith('/hris/');
     const canSearchRecords = navigationGroups.some((group) => group.items.some((item) => item.key === 'records'));
@@ -83,14 +80,10 @@ export default function AppLayout({ title, children, presentation }: Props) {
     useEffect(() => {
         const desktopQuery = window.matchMedia(UTILITY_DOCK_QUERY);
         const restoreDesktopUtilityPreference = () => {
-            if (!desktopQuery.matches) {
-                setDesktopUtilitiesOpen(false);
-                return;
-            }
+            if (!desktopQuery.matches) { setDesktopUtilitiesOpen(false); return; }
             try { setDesktopUtilitiesOpen(window.localStorage.getItem(UTILITY_RAIL_STORAGE_KEY) === 'true'); }
             catch { setDesktopUtilitiesOpen(false); }
         };
-
         restoreDesktopUtilityPreference();
         desktopQuery.addEventListener('change', restoreDesktopUtilityPreference);
         return () => desktopQuery.removeEventListener('change', restoreDesktopUtilityPreference);
@@ -122,18 +115,11 @@ export default function AppLayout({ title, children, presentation }: Props) {
 
     useEffect(() => {
         if (!notificationsOpen) return;
-        const escape = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') { setNotificationsOpen(false); notificationsButton.current?.focus(); }
-        };
-        const outside = (event: PointerEvent) => {
-            if (!notificationsPanel.current?.contains(event.target as Node)) setNotificationsOpen(false);
-        };
+        const escape = (event: KeyboardEvent) => { if (event.key === 'Escape') { setNotificationsOpen(false); notificationsButton.current?.focus(); } };
+        const outside = (event: PointerEvent) => { if (!notificationsPanel.current?.contains(event.target as Node)) setNotificationsOpen(false); };
         document.addEventListener('keydown', escape);
         document.addEventListener('pointerdown', outside);
-        return () => {
-            document.removeEventListener('keydown', escape);
-            document.removeEventListener('pointerdown', outside);
-        };
+        return () => { document.removeEventListener('keydown', escape); document.removeEventListener('pointerdown', outside); };
     }, [notificationsOpen]);
 
     useEffect(() => {
@@ -153,10 +139,8 @@ export default function AppLayout({ title, children, presentation }: Props) {
 
     useEffect(() => {
         if (userId === null || feedOwnerId !== userId) return;
-
         const { alertableNotifications } = consumeTransactionNotificationFeed(userId, notifications);
         if (alertableNotifications.length === 0) return;
-
         setLiveAlert(alertableNotifications[0]);
         setUnseenWorkflowCount((count) => count + alertableNotifications.length);
     }, [feedOwnerId, notifications, userId]);
@@ -181,53 +165,30 @@ export default function AppLayout({ title, children, presentation }: Props) {
                 <aside className="hidden h-screen lg:sticky lg:top-0 lg:block">{desktopSidebar}</aside>
                 {mobileOpen && <MobileNavigation onClose={() => setMobileOpen(false)}>{mobileSidebar}</MobileNavigation>}
                 {utilitiesOpen && <MunicipalUtilityDrawer onClose={() => setUtilitiesOpen(false)} />}
-
                 <main className="min-w-0">
                     <header className="portal-toolbar sticky top-0 z-20 flex min-h-14 items-center justify-between gap-3 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 transition-colors sm:px-4">
-                        <div className={`flex min-w-0 items-center gap-2.5 portal-toolbar-leading`}>
+                        <div className="portal-toolbar-leading flex min-w-0 items-center gap-2.5">
                             <button type="button" onClick={() => setMobileOpen(true)} className="portal-toolbar-action flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] hover:text-[var(--municipal-text)] lg:hidden" aria-label="Open navigation"><Menu size={19} aria-hidden="true" /></button>
-                            <div className="portal-mobile-title min-w-0">
-                                <div className="whitespace-nowrap text-sm font-extrabold leading-5 tracking-tight text-[var(--municipal-brand-deep)] dark:text-[var(--municipal-text)] lg:hidden">One <span className="text-[var(--municipal-brand)]">Talibon</span></div>
-                                <div className="truncate text-xs font-semibold leading-4 text-[var(--municipal-text)] lg:text-sm">{title}</div>
-                            </div>
+                            <div className="portal-mobile-title min-w-0"><div className="whitespace-nowrap text-sm font-extrabold leading-5 tracking-tight text-[var(--municipal-brand-deep)] dark:text-[var(--municipal-text)] lg:hidden">One <span className="text-[var(--municipal-brand)]">Talibon</span></div><div className="truncate text-xs font-semibold leading-4 text-[var(--municipal-text)] lg:text-sm">{title}</div></div>
                             {currentOverview && <DestinationOverviewDialog overview={currentOverview} />}
                             <PortalHeaderSearch />
                         </div>
-
                         <div className="flex min-w-0 shrink-0 items-center">
                             <div className="flex items-center gap-0.5 border-r border-[var(--municipal-border)] pr-2">
                                 {canSearchRecords && <div className="portal-records-search"><RecordsSearch /></div>}
-                                {<Link href="/portal-search" className="portal-mobile-search" aria-label="Search Portal"><Search size={18} /></Link>}
+                                <Link href="/portal-search" className="portal-mobile-search" aria-label="Search Portal"><Search size={18} /></Link>
                                 {navigationGroups.some((group) => group.items.some((item) => item.href === '/messages')) && <Link href="/messages" className="portal-toolbar-extra" aria-label="Messages"><MessageSquare size={18} /></Link>}
                                 {navigationGroups.some((group) => group.items.some((item) => item.href === '/calendar')) && <Link href="/calendar" className="portal-toolbar-extra" aria-label="Calendar"><CalendarDays size={18} /></Link>}
-                                <button
-                                    type="button"
-                                    onClick={toggleUtilities}
-                                    className={`portal-toolbar-action flex h-11 w-11 items-center justify-center rounded-lg ${utilitiesActive ? 'bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand)]' : 'text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] hover:text-[var(--municipal-text)]'}`}
-                                    aria-label={utilitiesActive ? 'Close municipal utilities' : 'Open municipal utilities'}
-                                    aria-expanded={utilitiesActive}
-                                    title="Municipal utilities"
-                                >
-                                    <PanelRightOpen size={18} aria-hidden="true" />
-                                </button>
+                                <button type="button" onClick={toggleUtilities} className={`portal-toolbar-action flex h-11 w-11 items-center justify-center rounded-lg ${utilitiesActive ? 'bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand)]' : 'text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] hover:text-[var(--municipal-text)]'}`} aria-label={utilitiesActive ? 'Close municipal utilities' : 'Open municipal utilities'} aria-expanded={utilitiesActive} title="Municipal utilities"><PanelRightOpen size={18} aria-hidden="true" /></button>
                                 <div ref={notificationsPanel} className="relative">
-                                    <button type="button" data-tour="shell:notifications" ref={notificationsButton} onClick={() => { setNotificationsOpen((open) => !open); setUnseenWorkflowCount(0); }} className="portal-toolbar-action relative flex h-11 w-11 items-center justify-center rounded-lg text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] hover:text-[var(--municipal-text)]" aria-label={bellCount > 0 ? `Open notifications, ${bellCount} unread` : 'Open notifications'} aria-expanded={notificationsOpen} aria-controls="portal-notifications" title="Notifications">
-                                        <Bell size={18} aria-hidden="true" />
-                                    {bellCount > 0 && <span className="absolute -right-0.5 -top-0.5 min-w-4 rounded-full bg-rose-600 px-1 text-center text-xs font-bold text-white">{bellCount > 9 ? '9+' : bellCount}</span>}
-                                </button>
-                                {notificationsOpen && <div id="portal-notifications" className="fixed left-3 right-3 top-16 z-50 overflow-hidden rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] shadow-2xl sm:absolute sm:left-auto sm:right-0 sm:top-10 sm:w-[350px]">
-                                    <div className="flex items-center justify-between border-b border-[var(--municipal-border)] px-4 py-3"><div><div className="text-sm font-bold text-[var(--municipal-text)]">Recent activity</div><div className="text-xs text-[var(--municipal-muted)]">New office arrivals and unread memoranda</div></div><button type="button" onClick={() => setNotificationsOpen(false)} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]" aria-label="Close notifications"><X size={16} /></button></div>
-                                    <div className="max-h-[60vh] divide-y divide-[var(--municipal-border)] overflow-y-auto">{notifications.map((notification) => <Link key={notification.key} href={notification.url} onClick={() => setNotificationsOpen(false)} className="block px-4 py-3 transition hover:bg-[var(--municipal-hover)]"><div className="flex items-start justify-between gap-3"><div className="min-w-0"><div className="text-xs font-bold uppercase tracking-wide text-blue-700 dark:text-blue-300">{notification.title}</div><div className="mt-1 text-sm leading-4 text-[var(--municipal-text)]">{notification.message}</div>{notification.created_at && <div className="mt-1.5 text-xs text-[var(--municipal-muted)]">{relativeTime(notification.created_at)}</div>}</div>{notification.urgent && <span className="shrink-0 rounded-full bg-rose-50 px-2 py-1 text-xs font-bold uppercase text-rose-700 dark:bg-rose-950/40 dark:text-rose-300">Action</span>}</div></Link>)}{notifications.length === 0 && <div className="px-4 py-8 text-center text-sm text-[var(--municipal-muted)]">No recent notifications.</div>}</div>
-                                </div>}
+                                    <button type="button" data-tour="shell:notifications" ref={notificationsButton} onClick={() => { setNotificationsOpen((open) => !open); setUnseenWorkflowCount(0); }} className="portal-toolbar-action relative flex h-11 w-11 items-center justify-center rounded-lg text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] hover:text-[var(--municipal-text)]" aria-label={bellCount > 0 ? `Open notifications, ${bellCount} unread` : 'Open notifications'} aria-expanded={notificationsOpen} aria-controls="portal-notifications" title="Notifications"><Bell size={18} aria-hidden="true" />{bellCount > 0 && <span className="absolute -right-0.5 -top-0.5 min-w-4 rounded-full bg-rose-600 px-1 text-center text-xs font-bold text-white">{bellCount > 9 ? '9+' : bellCount}</span>}</button>
+                                    {notificationsOpen && <div id="portal-notifications" className="fixed left-3 right-3 top-16 z-50 overflow-hidden rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] shadow-2xl sm:absolute sm:left-auto sm:right-0 sm:top-10 sm:w-[350px]"><div className="flex items-center justify-between border-b border-[var(--municipal-border)] px-4 py-3"><div><div className="text-sm font-bold text-[var(--municipal-text)]">Recent activity</div><div className="text-xs text-[var(--municipal-muted)]">New office arrivals and unread memoranda</div></div><button type="button" onClick={() => setNotificationsOpen(false)} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]" aria-label="Close notifications"><X size={16} /></button></div><div className="max-h-[60vh] divide-y divide-[var(--municipal-border)] overflow-y-auto">{notifications.map((notification) => <Link key={notification.key} href={notification.url} onClick={() => setNotificationsOpen(false)} className="block px-4 py-3 transition hover:bg-[var(--municipal-hover)]"><div className="flex items-start justify-between gap-3"><div className="min-w-0"><div className="text-xs font-bold uppercase tracking-wide text-blue-700 dark:text-blue-300">{notification.title}</div><div className="mt-1 text-sm leading-4 text-[var(--municipal-text)]">{notification.message}</div>{notification.created_at && <div className="mt-1.5 text-xs text-[var(--municipal-muted)]">{relativeTime(notification.created_at)}</div>}</div>{notification.urgent && <span className="shrink-0 rounded-full bg-rose-50 px-2 py-1 text-xs font-bold uppercase text-rose-700 dark:bg-rose-950/40 dark:text-rose-300">Action</span>}</div></Link>)}{notifications.length === 0 && <div className="px-4 py-8 text-center text-sm text-[var(--municipal-muted)]">No recent notifications.</div>}</div></div>}
                                 </div>
                                 <span className="portal-header-launcher"><PortalLauncher groups={navigationGroups} /></span>
                             </div>
-                            <div className="pl-2">
-                                <PortalHeaderIdentity user={user} />
-                            </div>
+                            <div className="pl-2"><PortalHeaderIdentity user={user} /></div>
                         </div>
                     </header>
-
                     <div className={desktopUtilitiesOpen ? '2xl:grid 2xl:grid-cols-[minmax(0,1fr)_304px]' : ''}>
                         <div className="min-w-0">
                             {(flash?.success || flash?.error) && <div className={`mx-3 mt-3 rounded-lg border px-3 py-2 text-sm font-semibold ${flash.success ? 'border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200' : 'border-rose-200 bg-rose-50 text-rose-800 dark:border-rose-900 dark:bg-rose-950/40 dark:text-rose-200'}`}>{flash.success || flash.error}</div>}
@@ -238,13 +199,9 @@ export default function AppLayout({ title, children, presentation }: Props) {
                     </div>
                 </main>
             </div>
-
             <QuickMessagesPanel />
-
             {liveAlert && <div className="fixed left-3 right-3 top-16 z-[60] sm:left-auto sm:right-4 sm:w-[390px]" role="status" aria-live="polite"><div className="overflow-hidden rounded-xl border border-blue-200 bg-[var(--municipal-surface)] shadow-2xl shadow-slate-900/15 dark:border-blue-900"><div className="h-1 bg-blue-700" /><div className="p-4"><div className="flex items-start justify-between gap-3"><div className="min-w-0"><div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-700 dark:text-blue-300"><span className="h-2 w-2 rounded-full bg-emerald-500" /> {liveAlert.title}</div><div className="mt-2 text-sm font-semibold leading-5 text-[var(--municipal-text)]">{liveAlert.message}</div><div className="mt-1 text-xs text-[var(--municipal-muted)]">{relativeTime(liveAlert.created_at)}</div></div><button type="button" onClick={() => setLiveAlert(null)} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]" aria-label="Dismiss notification"><X size={16} /></button></div><div className="mt-3 flex justify-end"><Link href={liveAlert.url} onClick={() => { setLiveAlert(null); setUnseenWorkflowCount(0); }} className="rounded-lg bg-[var(--municipal-brand-deep)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--municipal-brand-active)]">Open request</Link></div></div></div></div>}
-
             {showMemo && <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/55 p-3 backdrop-blur-sm sm:p-4"><div className="w-full max-w-lg rounded-xl bg-[var(--municipal-surface)] p-4 text-[var(--municipal-text)] shadow-2xl sm:p-6" role="dialog" aria-modal="true" aria-labelledby="pending-memo-title"><div className="flex items-start justify-between gap-4"><div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-800 dark:bg-blue-950/50 dark:text-blue-200"><Bell size={19} /></div><button type="button" onClick={() => setDismissedMemoId(pendingMemo.id)} className="flex h-11 w-11 items-center justify-center rounded-full text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]" aria-label="Dismiss memorandum"><X size={18} /></button></div><div className="mt-4 text-xs font-bold uppercase tracking-wider text-blue-700 dark:text-blue-300">New Memorandum · {pendingMemo.memo_number}</div><h2 id="pending-memo-title" className="mt-2 text-xl font-bold text-[var(--municipal-text)] sm:text-2xl">{pendingMemo.title}</h2><p className="mt-2 text-sm text-[var(--municipal-muted)]">Issued by {pendingMemo.department || pendingMemo.issuer || "Mayor's Office"}. {pendingMemo.requires_acknowledgement ? 'Acknowledgement is required.' : 'Please review this issuance.'}</p><div className="mt-5 flex justify-end gap-2"><button type="button" onClick={() => setDismissedMemoId(pendingMemo.id)} className="inline-flex min-h-11 items-center rounded-lg border border-[var(--municipal-border-strong)] px-3 py-2 text-sm font-semibold text-[var(--municipal-text)]">Later</button><Link href={`/memoranda/${pendingMemo.id}`} className="inline-flex min-h-11 items-center rounded-lg bg-[var(--municipal-brand-deep)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--municipal-brand-active)]">Open memorandum</Link></div></div></div>}
-            <FirstRunGate showcaseSession={pageProps.showcaseSession} />
         </>
     );
 }
