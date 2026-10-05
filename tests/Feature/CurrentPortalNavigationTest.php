@@ -190,7 +190,7 @@ class CurrentPortalNavigationTest extends TestCase
             'local-special-bodies.index',
             'development-plans.index',
             'ppas.index',
-            'procurement.showcase',
+            'procurement.reference',
             'municipal-systems.index',
         ] as $routeName) {
             $this->assertTrue(Route::has($routeName), "Expected current route {$routeName} to remain registered.");
@@ -203,14 +203,15 @@ class CurrentPortalNavigationTest extends TestCase
             'mfa.recovery.regenerate',
             'mfa.reset',
             'mfa.disable',
-            'hris',
-            'hris.dtr',
-            'hris.payroll',
             'property.index',
             'property.lifecycle.index',
             'reports.index',
         ] as $routeName) {
             $this->assertTrue(Route::has($routeName), "Expected hidden backend route {$routeName} to remain registered.");
+        }
+
+        foreach (['procurement.showcase', 'hris', 'hris.dtr', 'hris.payroll', 'hris.admin'] as $routeName) {
+            $this->assertFalse(Route::has($routeName), "Expected excluded/transitional route {$routeName} to be absent.");
         }
     }
 
@@ -219,7 +220,7 @@ class CurrentPortalNavigationTest extends TestCase
         $this->assertTrue(Route::has('public.home'));
         $this->assertTrue(Route::has('public.activate-account'));
 
-        foreach (['admin.index', 'dashboard', 'transactions.index', 'correspondence.index', 'records.index', 'reports.index', 'procurement.showcase'] as $routeName) {
+        foreach (['admin.index', 'dashboard', 'transactions.index', 'correspondence.index', 'records.index', 'reports.index', 'procurement.reference'] as $routeName) {
             $route = Route::getRoutes()->getByName($routeName);
             $this->assertNotNull($route);
             $middleware = $route->gatherMiddleware();

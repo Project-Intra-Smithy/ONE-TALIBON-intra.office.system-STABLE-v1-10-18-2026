@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Employee;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -37,15 +36,11 @@ class EmployeeDirectoryController extends Controller
             ->paginate(40)
             ->withQueryString();
 
-        $featuredEmails = [
-            'admin@talibon.demo',
-            'mayor@talibon.demo',
-            'engineering@talibon.demo',
-            'budget@talibon.demo',
-            'hr@talibon.demo',
-            'legislative@talibon.demo',
-            'employee@talibon.demo',
-        ];
+        $activeEmployeeCount = Employee::query()->where('employment_status', 'active')->count();
+        $portalAccountCount = Employee::query()
+            ->where('employment_status', 'active')
+            ->whereNotNull('user_id')
+            ->count();
 
         return Inertia::render('Employees/Index', [
             'employees' => $employees,
@@ -58,9 +53,9 @@ class EmployeeDirectoryController extends Controller
                 ->orderBy('name')
                 ->get(['code', 'name', 'short_name']),
             'summary' => [
-                'employees' => Employee::query()->where('employment_status', 'active')->count(),
-                'portalAccounts' => Employee::query()->where('employment_status', 'active')->whereNotNull('user_id')->count(),
-                'featuredLogins' => User::query()->whereIn('email', $featuredEmails)->where('is_active', true)->count(),
+                'employees' => $activeEmployeeCount,
+                'portalAccounts' => $portalAccountCount,
+                'featuredLogins' => $portalAccountCount,
                 'offices' => Department::query()->activeRoutable()->count(),
             ],
         ]);

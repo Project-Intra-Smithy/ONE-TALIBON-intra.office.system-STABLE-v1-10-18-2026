@@ -42,7 +42,7 @@ class CorrespondenceWorkspaceController extends Controller
             'overview' => $inbox->overview($user),
             'filters' => $filters,
             'filterOptions' => [
-                'lifecycles' => $this->prototypeLifecycleOptions(),
+                'lifecycles' => $this->lifecycleOptions(),
                 'classifications' => $access->visibleClassificationValues($user),
                 'offices' => Department::query()
                     ->where('is_active', true)
@@ -81,7 +81,7 @@ class CorrespondenceWorkspaceController extends Controller
     }
 
     /** @return array<int, string> */
-    private function prototypeLifecycleOptions(): array
+    private function lifecycleOptions(): array
     {
         return [
             CorrespondenceLifecycleState::Received->value,
