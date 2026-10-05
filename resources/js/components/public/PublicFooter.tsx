@@ -39,7 +39,7 @@ export default function PublicFooter({ content, authenticated }: { content: Publ
 
         <div className="public-reference-footer-bottom">
             <span>ONE TALIBON · Municipality of Talibon, Bohol</span>
-            <span>Secure municipal operations gateway · Prototype environment</span>
+            <span>Intra-Office Portal · Authorized municipal personnel</span>
         </div>
     </footer>;
 }

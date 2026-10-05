@@ -27,7 +27,7 @@ export default function PublicHero({ content, authenticated }: Props) {
             <p className="public-reference-hero-eyebrow">{content.hero.eyebrow}</p>
             <h1 id="public-hero-title">{content.hero.title}</h1>
             <p className="public-reference-hero-lead">{content.hero.lead}</p>
-            <p className="public-reference-hero-description">{content.hero.description}</p>
+            <p className="public-reference-hero-description">Manage documents, memoranda, schedules, requests, and office coordination in one secure workspace.</p>
 
             <div className="public-gateway-hero-actions">
                 <Link href={authenticated ? '/dashboard' : '/login'} className="public-primary-action public-gateway-login">

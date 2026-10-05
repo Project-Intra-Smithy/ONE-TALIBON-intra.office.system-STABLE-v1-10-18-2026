@@ -24,7 +24,7 @@ export default function WorkItemList({ records, title, mode = 'action' }: {
     mode?: 'action' | 'tracking' | 'office';
 }) {
     const { url } = usePage();
-    const eyebrow = mode === 'tracking' ? 'Request tracking' : mode === 'office' ? 'Office queue' : 'Task checklist';
+    const eyebrow = mode === 'tracking' ? 'Request tracking' : mode === 'office' ? 'Office queue' : 'Work request queue';
 
     return (
         <section className="municipal-panel overflow-hidden" aria-labelledby="work-item-list-title">
@@ -39,7 +39,7 @@ export default function WorkItemList({ records, title, mode = 'action' }: {
             </div>
 
             <div className="employee-table-heading employee-subsection-bar hidden grid-cols-[32px_minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.2fr)_64px] gap-3 border-b border-[var(--municipal-border)] text-[var(--municipal-muted)] xl:grid">
-                <div><span className="sr-only">Workflow state</span></div><div>{mode === 'tracking' ? 'Request / Work' : 'Task / Work'}</div><div>Accountability</div><div>Assignment</div><div>Due / activity</div><div>Next action</div><div />
+                <div><span className="sr-only">Workflow state</span></div><div>Work Request</div><div>Accountability</div><div>Assignment</div><div>Due / activity</div><div>Next action</div><div />
             </div>
 
             <div className="divide-y divide-[var(--municipal-border)]">
@@ -121,10 +121,10 @@ export default function WorkItemList({ records, title, mode = 'action' }: {
                     );
                 })}
 
-                {records.data.length === 0 ? <div className="employee-empty-state"><div className="employee-record-title text-[var(--municipal-text)]">No items match this view.</div><div className="employee-supporting-text mt-1 text-[var(--municipal-muted)]">Change the queue category or clear one of the active filters.</div></div> : null}
+                {records.data.length === 0 ? <div className="employee-empty-state"><div className="employee-record-title text-[var(--municipal-text)]">No work requests match this view.</div><div className="employee-supporting-text mt-1 text-[var(--municipal-muted)]">Change the queue category or clear one of the active filters.</div></div> : null}
             </div>
 
-            {records.last_page > 1 ? <nav className="employee-panel-header flex items-center justify-between gap-3 border-t border-[var(--municipal-border)]" aria-label="Work queue pagination">
+            {records.last_page > 1 ? <nav className="employee-panel-header flex items-center justify-between gap-3 border-t border-[var(--municipal-border)]" aria-label="Work request queue pagination">
                 {records.prev_page_url
                     ? <Link href={records.prev_page_url} preserveScroll className="employee-metadata inline-flex min-h-11 items-center rounded-md px-3 font-semibold text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]">Previous</Link>
                     : <span aria-disabled="true" className="employee-metadata inline-flex min-h-11 items-center px-3 font-semibold text-[var(--municipal-muted)]">Previous</span>}

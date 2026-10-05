@@ -21,8 +21,8 @@ export default function Home({ authenticated, content }: Props) {
                     <div className={`${PUBLIC_CONTENT_FRAME_CLASS} public-disclosure public-reference-disclosure`}>
                         <Info size={13} className="mt-0.5 shrink-0" aria-hidden="true" />
                         <p>
-                            <strong className="mr-2 font-extrabold uppercase tracking-[0.08em] [color:var(--public-text)]">{content.sampleLabel}</strong>
-                            <span>Prototype preview — sample portal information only; no protected employee records are exposed.</span>
+                            <strong className="mr-2 font-extrabold uppercase tracking-[0.08em] [color:var(--public-text)]">Reference information</strong>
+                            <span>Non-live portal information only; no protected employee records are exposed.</span>
                         </p>
                     </div>
 

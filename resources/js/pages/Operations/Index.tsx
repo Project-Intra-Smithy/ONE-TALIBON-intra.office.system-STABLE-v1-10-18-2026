@@ -1,40 +1,16 @@
-import { Link } from '@inertiajs/react';
-import { useState } from 'react';
-import { FolderKanban, Search } from 'lucide-react';
-import PageFrame from '../../components/PageFrame';
-import PageHeader from '../../components/PageHeader';
-import PortalWorkspaceNav from '../../components/portal/PortalWorkspaceNav';
+import AuthorityPendingSurface from '../../components/product/AuthorityPendingSurface';
 import AppLayout from '../../layouts/AppLayout';
 
-type Department = { id: number; code: string; name: string; short_name?: string };
-type OperationalItem = { id: number; item_type: 'project' | 'procurement' | 'fund' | 'compliance'; reference_no: string; title: string; status: string; priority: string; target_date?: string | null; progress_percent: number; allocated_amount?: string | null; utilized_amount?: string | null; remarks?: string | null; department: Department; responsible_employee?: { full_name?: string; position_title: string } | null };
-type Summary = { projects: number; procurement: number; funds: number; compliance: number; overdue: number; allocated: number; utilized: number };
-const money = (value?: string | number | null) => value == null ? 'Not recorded' : new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', maximumFractionDigits: 0 }).format(Number(value));
-const pretty = (value: string) => value.replaceAll('_', ' ');
-const progress = (item: OperationalItem) => Math.max(0, Math.min(100, item.progress_percent));
-const field = 'min-h-11 min-w-0 w-full rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 text-sm';
-
-export default function OperationsIndex({ items, filter, summary }: { items: OperationalItem[]; filter?: string | null; summary: Summary }) {
-    const [query, setQuery] = useState('');
-    const [office, setOffice] = useState('');
-    const [status, setStatus] = useState('');
-    const [year, setYear] = useState('');
-    const [selectedId, setSelectedId] = useState<number | null>(null);
-    const visible = items.filter((item) => (!query || [item.title, item.reference_no, item.department.name].join(' ').toLowerCase().includes(query.toLowerCase())) && (!office || String(item.department.id) === office) && (!status || item.status === status) && (!year || item.target_date?.startsWith(year)));
-    const selected = visible.find((item) => item.id === selectedId);
-    const offices = [...new Map(items.map((item) => [item.department.id, item.department])).values()];
-    const years = [...new Set(items.flatMap((item) => item.target_date ? [item.target_date.slice(0, 4)] : []))].sort();
-    return <AppLayout title="Project Monitoring"><PageFrame className="max-w-[1480px]">
-        <PageHeader eyebrow="ONE TALIBON implementation" title="Projects & Monitoring" description="Authorized project, procurement, fund and compliance records with responsible offices, progress and target dates." icon={FolderKanban} />
-        <PortalWorkspaceNav current="projectMonitoring" destinations={['ppas', 'projectMonitoring', 'developmentPlans']} />
-        <section className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-6" aria-label="Monitoring summary">{[['Projects', summary.projects], ['Procurement', summary.procurement], ['Funds', summary.funds], ['Compliance', summary.compliance], ['Overdue', summary.overdue], ['Fund utilized', `${summary.allocated > 0 ? Math.round(summary.utilized / summary.allocated * 100) : 0}%`]].map(([label, value]) => <div key={label} className="municipal-panel min-w-0 p-3"><div className="text-xs font-semibold text-[var(--municipal-muted)]">{label}</div><div className={`mt-1 text-xl font-bold ${label === 'Overdue' && summary.overdue > 0 ? 'text-rose-700' : 'text-[var(--municipal-brand)]'}`}>{value}</div></div>)}</section>
-        <section className="municipal-panel space-y-3 p-3" aria-label="Project filters">
-            <nav className="flex flex-wrap gap-2" aria-label="Monitoring type">{[['All', ''], ['Projects', 'project'], ['Procurement', 'procurement'], ['Funds', 'fund'], ['Compliance', 'compliance']].map(([label, value]) => <Link key={label} href={value ? `/operations?type=${value}` : '/operations'} className={`inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold ${(filter || '') === value ? 'bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand)]' : 'text-[var(--municipal-muted)]'}`}>{label}</Link>)}</nav>
-            <div className="grid min-w-0 gap-2 sm:grid-cols-2 xl:grid-cols-4"><label className="relative min-w-0"><span className="sr-only">Search projects</span><Search size={16} className="absolute left-3 top-3.5 text-[var(--municipal-muted)]" /><input className={`${field} pl-9`} placeholder="Search project or reference" value={query} onChange={(event) => setQuery(event.target.value)} /></label><select aria-label="Target year" className={field} value={year} onChange={(event) => setYear(event.target.value)}><option value="">All target years</option>{years.map((value) => <option key={value}>{value}</option>)}</select><select aria-label="Office" className={field} value={office} onChange={(event) => setOffice(event.target.value)}><option value="">All visible offices</option>{offices.map((item) => <option key={item.id} value={item.id}>{item.short_name || item.name}</option>)}</select><select aria-label="Status" className={field} value={status} onChange={(event) => setStatus(event.target.value)}><option value="">All statuses</option>{[...new Set(items.map((item) => item.status))].map((value) => <option key={value} value={value}>{pretty(value)}</option>)}</select></div>
-        </section>
-        <section className="municipal-panel min-w-0 overflow-hidden" aria-label="Project register">
-            <div className="hidden grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,.8fr)_minmax(0,1fr)_90px] gap-3 border-b border-[var(--municipal-border)] bg-[var(--municipal-brand-soft)] p-3 text-xs font-bold text-[var(--municipal-brand)] lg:grid"><span>Project / Workstream</span><span>Office</span><span>Status</span><span>Progress</span><span>Details</span></div>
-            <div className="divide-y divide-[var(--municipal-border)]">{visible.map((item) => <article key={item.id} className="min-w-0 p-3"><div className="grid min-w-0 gap-3 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,.8fr)_minmax(0,1fr)_90px] lg:items-center"><div className="min-w-0"><div className="text-xs font-semibold text-[var(--municipal-brand)]">{item.reference_no}</div><h2 className="mt-1 break-words text-sm font-semibold">{item.title}</h2><p className="mt-1 text-xs text-[var(--municipal-muted)]">Target: {item.target_date?.slice(0, 10) || 'Not set'}</p></div><div className="text-sm"><span className="text-xs text-[var(--municipal-muted)] lg:hidden">Office  /  </span>{item.department.short_name || item.department.name}</div><div className="text-sm font-semibold capitalize text-[var(--municipal-brand)]">{pretty(item.status)}</div><div><div className="mb-1 flex justify-between text-xs"><span>Progress</span><span className="font-bold">{progress(item)}%</span></div><div className="h-2 overflow-hidden rounded-full bg-[var(--municipal-brand-soft)]" role="progressbar" aria-label={`${item.title} progress`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress(item)}><div className="h-full bg-[var(--municipal-brand)]" style={{ width: `${progress(item)}%` }} /></div></div><button type="button" onClick={() => setSelectedId(selectedId === item.id ? null : item.id)} aria-expanded={selectedId === item.id} className="min-h-11 rounded-lg border border-[var(--municipal-border)] px-2 text-sm font-semibold text-[var(--municipal-brand)]">{selectedId === item.id ? 'Close' : 'Details'}</button></div>{selectedId === item.id && selected && <div className="mt-3 rounded-lg bg-[var(--municipal-brand-soft)] p-4"><dl className="grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">{[['Responsible person', selected.responsible_employee?.full_name || 'Unassigned'], ['Priority', pretty(selected.priority)], ['Allocated amount', money(selected.allocated_amount)], ['Utilized amount', money(selected.utilized_amount)]].map(([label, value]) => <div key={label}><dt className="text-xs font-semibold text-[var(--municipal-muted)]">{label}</dt><dd className="mt-1 break-words">{value}</dd></div>)}</dl>{selected.remarks && <p className="mt-3 text-sm leading-6">{selected.remarks}</p>}</div>}</article>)}{!visible.length && <p className="p-6 text-sm text-[var(--municipal-muted)]">No monitoring records match the selected filters.</p>}</div>
-        </section>
-    </PageFrame></AppLayout>;
+export default function OperationsIndex() {
+    return (
+        <AppLayout title="Operational Tracking">
+            <AuthorityPendingSurface
+                title="Project & Procurement Tracking"
+                description="Project Monitoring and Procurement lifecycle presentation is withheld from the canonical product until LGU process authority is established."
+                missing="Validated procurement and project lifecycles, process owners, routing, approvals/signatures, SLA timing, confidentiality rules and official KPI definitions."
+                treatment="Existing backend records are retained for technical continuity but are not projected as an approved municipal lifecycle, dashboard or KPI surface."
+                dependency="PROC-001, PROJ-001, WF-001, WF-002 and KPI-001; any required backend/API changes belong to P06."
+            />
+        </AppLayout>
+    );
 }
