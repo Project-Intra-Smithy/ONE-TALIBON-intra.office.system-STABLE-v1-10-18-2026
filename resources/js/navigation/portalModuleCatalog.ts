@@ -20,7 +20,7 @@ const modules: ModuleDefinition[] = [
 ];
 
 export const quickAccessDestinations: { key: PortalDestinationKey; label: string }[] = [
-    { key: 'myWork', label: 'Tasks & Assignments' },
+    { key: 'myWork', label: 'Work Requests' },
     { key: 'documentCenter', label: 'Document Center' },
     { key: 'correspondence', label: 'Correspondence' },
     { key: 'memoranda', label: 'Official Memoranda' },
