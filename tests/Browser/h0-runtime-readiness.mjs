@@ -204,7 +204,7 @@ async function main() {
     await role(browser, { role: 'department-head', email: 'engineering@talibon.demo', privileged: true, targets: [
       { key: 'dashboard', route: '/dashboard' }, { key: 'office-work', route: '/transactions?view=office_queue', expectedPath: '/transactions', marker: 'Office Work' },
       { key: 'correspondence', route: '/correspondence' }, { key: 'reports', route: '/reports?report=transaction-aging', expectedPath: '/reports' },
-      { key: 'departments', route: '/departments', marker: 'Departments & Offices' },
+      { key: 'departments', route: '/departments', marker: 'Department Workspace' },
     ] });
     await role(browser, { role: 'executive', email: 'mayor@talibon.demo', privileged: true, targets: [
       { key: 'dashboard', route: '/dashboard' }, { key: 'mayor-workspace', route: '/mayor-office', marker: 'Items requiring executive attention' }, { key: 'records', route: '/records', marker: 'Records' },
