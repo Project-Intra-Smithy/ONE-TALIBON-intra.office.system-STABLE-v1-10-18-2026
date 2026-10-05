@@ -19,6 +19,8 @@ const capabilityIcons: Record<CapabilityItem['id'], typeof FileText> = {
 };
 
 export default function PublicCivicDashboard({ content }: { content: PublicContent }) {
+    const canonicalCapabilities = content.capabilities.items.filter((capability) => capability.id !== 'projects');
+
     return <section
         id="capabilities"
         style={PUBLIC_SECTION_ANCHOR_STYLE}
@@ -30,13 +32,13 @@ export default function PublicCivicDashboard({ content }: { content: PublicConte
                 <p>Internal Portal Capabilities</p>
                 <h2 id="public-capabilities-title">{content.capabilities.title}</h2>
             </div>
-            <span>Prototype scope · authenticated workspace</span>
+            <span>Authenticated workspace · authority-bounded</span>
         </header>
 
         <p className="public-gateway-section-intro">{content.capabilities.description}</p>
 
         <div className="public-gateway-capability-grid">
-            {content.capabilities.items.map(capability => {
+            {canonicalCapabilities.map(capability => {
                 const Icon = capabilityIcons[capability.id];
 
                 return <article key={capability.id} className="public-gateway-capability">
