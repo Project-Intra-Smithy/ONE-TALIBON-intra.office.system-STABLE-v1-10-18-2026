@@ -1,10 +1,14 @@
-# KIRION FORGE — P0 ACTIVE WORK LEDGER
+# KIRION FORGE — P SERIES ACTIVE WORK LEDGER
 
 ## Technical Authority
 
 **Kirch Ivan Balite**
 
 ## Program
+
+`P SERIES — CANONICAL BASELINE HARDENING`
+
+Historical coordination label:
 
 `P0 — CANONICAL BASELINE STABILIZATION`
 
@@ -16,6 +20,22 @@ Governing plan:
 
 `.forge/memory/P0-CANONICAL-BASELINE-AND-REPOSITORY-SEPARATION-PLAN.md`
 
+Detailed slice/cadence authority:
+
+`.forge/memory/P0-CODE-FIRST-EXECUTION-CADENCE.md`
+
+## Slice state
+
+- `P01 — SOURCE TRUTH & AUTHORITY LOCK`: SUBSTANTIALLY COMPLETE
+- `P02 — SECURITY, SHOWCASE & ENVIRONMENT BOUNDARY`: MATERIALLY PROGRESSED
+- `P03 — BACKEND CANONICALIZATION`: ACTIVE
+- `P04 — FRONTEND CANONICALIZATION`: ACTIVE
+- `P05 — PRODUCT SURFACE DISPOSITION`: BLOCKED ON P03/P04 RETURNS
+- `P06 — CROSS-LAYER CONTRACT RECONCILIATION`: BLOCKED ON P05
+- `P07 — SOURCE RECONCILIATION & INTEGRATED CANDIDATE`: BLOCKED
+- `P08 — TARGETED CI/CD & RUNTIME ACCEPTANCE`: BLOCKED ON P07 EXACT SHA
+- `P09 — BASELINE FREEZE & KNOWN-STATE PUBLICATION`: BLOCKED ON P08
+
 ## Current two-writer batch
 
 Immutable shared implementation base:
@@ -26,53 +46,72 @@ Maximum active Code Writers:
 
 `2`
 
-### P0-W01 — Backend Canonicalization
+### P03 / W01 — Backend Canonicalization
 
 Branch:
 
 `KIRCH-TALIBON-P0-W01-BACKEND-CANONICALIZATION`
 
-Handoff:
+Primary handoff:
 
 `.forge/handoffs/active/P0-W01-BACKEND-CANONICALIZATION.md`
 
-Handoff issuance commit:
+Target-map addendum:
 
-`eba7c33f9104a3ceb02c435cdfe8bca39789a62e`
+`.forge/handoffs/active/P03-W01-BACKEND-TARGET-MAP.md`
+
+Latest issued planning commit at time of this ledger update:
+
+`06c0b3be463bb1b889408cce261ca7cc20a5af67`
 
 State:
 
 `ISSUED / ACTIVE`
 
-Primary ownership:
+Sub-slices:
 
-`app/**`, `routes/**`, bounded backend `config/**`, `database/**` under non-destructive rules, backend tests.
+- P03-A Route & Surface Authority
+- P03-B Identity/Auth/Authorization
+- P03-C Workflow/Correspondence/Records
+- P03-D Coordination/Eventing/Integration
+- P03-E Schema/Seed/Runtime Authority
+- P03-F Backend Extraction Manifest
 
-### P0-W02 — Frontend Canonicalization
+### P04 / W02 — Frontend Canonicalization
 
 Branch:
 
 `KIRCH-TALIBON-P0-W02-FRONTEND-CANONICALIZATION`
 
-Handoff:
+Primary handoff:
 
 `.forge/handoffs/active/P0-W02-FRONTEND-CANONICALIZATION.md`
 
-Handoff issuance commit:
+Target-map addendum:
 
-`be2d5998e45d5efab490a16b246f02b0706ebe37`
+`.forge/handoffs/active/P04-W02-FRONTEND-TARGET-MAP.md`
+
+Latest issued planning commit at time of this ledger update:
+
+`cc13ea0bc4faabbf2d0c1888eee086c7f47f26fe`
 
 State:
 
 `ISSUED / ACTIVE`
 
-Primary ownership:
+Sub-slices:
 
-`resources/js/**`, `resources/css/**`, frontend-only assets, `tests/Browser/**`.
+- P04-A Shell/Navigation/Destination Authority
+- P04-B Work & Accountability Surfaces
+- P04-C Documents/Correspondence/Records/Search
+- P04-D Coordination Surfaces
+- P04-E Organization/Admin/Specialized Reference Surfaces
+- P04-F Shared States/Responsive Stability
+- P04-G Frontend Extraction Manifest
 
-## Integration rule
+## Integration law
 
-W01 and W02 are intentionally non-overlapping. Neither writer may merge the other writer branch or change the coordination branch.
+W01 and W02 remain intentionally non-overlapping. Neither writer may merge the other writer branch or modify the coordination branch.
 
 The Maintainer/Technical Authority will:
 
@@ -80,37 +119,54 @@ The Maintainer/Technical Authority will:
 2. verify lineage from `a10dca34db0509d7139ebeb4080e85dde2c0e544`;
 3. inspect changed files for ownership violations;
 4. review source changes independently;
-5. reconcile cross-layer findings;
-6. select an integration order;
-7. build one exact integrated P0 candidate;
-8. run full exact-candidate validation;
-9. publish the P0 known-state baseline only after acceptance.
+5. execute P05 product-surface disposition;
+6. execute P06 cross-layer contract reconciliation;
+7. issue bounded writer rework if required;
+8. construct one exact P07 integrated candidate;
+9. run P08 targeted CI/CD and runtime acceptance;
+10. publish P09 known-state baseline only after exact-candidate acceptance.
 
-## Current validation-lab note
+## Validation cadence
 
-The Windows self-hosted validation lane is supporting evidence, not the Phase 0 program itself.
+The Windows self-hosted runner is supporting validation infrastructure, not the delivery program.
 
-The most recent validation attempt at source `3a2576eb49b809ee1f9e8211bd3ac35b2ce21db8` failed during PHP setup because the runner resolved `pwsh` through an inaccessible WindowsApps alias. This is classified as a runner-host/tooling defect, not a product-source defect.
+Do not run the expensive broad pipeline for every intermediate writer commit.
 
-A real portable PowerShell 7.6.6 executable has since been installed and verified at:
+P03/P04 use narrow local/static proof where necessary. The principal CI/CD acceptance event is P08 against the exact P07 integrated candidate.
+
+The most recent earlier validation failure at source `3a2576eb49b809ee1f9e8211bd3ac35b2ce21db8` was a runner-host PowerShell resolution defect. A real portable PowerShell 7.6.6 executable has since been verified at:
 
 `C:\Tools\PowerShell\7.6.6\pwsh.exe`
 
-Future validation should run only after a fresh runner listener inherits the corrected PATH. No application-code change is justified by that host failure.
+That host defect does not justify product-source mutation.
 
-## Forward architecture decision
+## Forward architecture
 
-After the accepted Phase 0 baseline, the current combined repository will be used as the traceable extraction source for separate frontend and backend repositories.
+After P09, the accepted baseline becomes the traceable source for:
 
-Repository separation is not authorized inside W01/W02.
+### R SERIES — Repository Separation
 
-Docker/container platform work is also deferred to a bounded post-P0 lane after baseline freeze and extraction-contract definition.
+- R01 separation-contract freeze
+- R02 backend extraction
+- R03 frontend extraction
+- R04 auth/API/file/integration parity
+- R05 split-repository CI/cutover acceptance
+
+### D SERIES — Container & Runtime Foundation
+
+- D01 reproducible build images
+- D02 local Compose topology
+- D03 containerized CI/integration
+- D04 production-style runtime/reverse proxy/workers/scheduler
+- D05 health/secrets/persistence/logging/backup/restore proof
+
+Repository separation and Dockerization remain prohibited inside P03/P04.
 
 ## Current writer allocation
 
-- W01 — ACTIVE
-- W02 — ACTIVE
+- P03/W01 — ACTIVE
+- P04/W02 — ACTIVE
 
 `2 / 2 CODE WRITER SLOTS ALLOCATED`
 
-Do not issue a third Code Writer without explicit Technical Authority concurrency amendment.
+No third Code Writer without explicit Technical Authority concurrency amendment.
