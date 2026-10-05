@@ -25,7 +25,7 @@ export const portalDestinations: Partial<Record<PortalDestinationKey, PortalDest
     portalSearch: { key: 'portalSearch', label: 'Search Portal', href: portalRoutePlan.portalSearch, icon: FileSearch, group: 'home', readiness: 'wired' },
     documentCenter: { key: 'documentCenter', label: 'Document Center', href: portalRoutePlan.documentCenter, icon: FileText, group: 'files', readiness: 'wired', permission: 'records' },
     home: { key: 'home', label: 'Home', href: portalRoutePlan.home, icon: LayoutDashboard, group: 'home', readiness: 'wired', permission: 'dashboard' },
-    myWork: { key: 'myWork', label: 'Tasks & Assignments', href: portalRoutePlan.myWork, icon: FileText, group: 'work', readiness: 'wired', permission: 'transactions' },
+    myWork: { key: 'myWork', label: 'Work Requests', href: portalRoutePlan.myWork, icon: FileText, group: 'work', readiness: 'wired', permission: 'transactions' },
     correspondence: { key: 'correspondence', label: 'Correspondence', href: portalRoutePlan.correspondence, icon: Inbox, group: 'work', readiness: 'wired', permission: 'correspondence' },
     procurementTracking: { key: 'procurementTracking', label: 'Procurement / PR Tracking', href: portalRoutePlan.procurementTracking, icon: ListChecks, group: 'work', readiness: 'integration_pending' },
     employeeDirectory: { key: 'employeeDirectory', label: 'Employee & Office Directory', href: portalRoutePlan.employeeDirectory, icon: Users, group: 'people', readiness: 'wired' },
