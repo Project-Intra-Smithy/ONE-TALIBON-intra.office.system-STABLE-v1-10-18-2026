@@ -1,6 +1,5 @@
 import { Link } from '@inertiajs/react';
 import { Inbox } from 'lucide-react';
-import type { DashboardCorrespondenceUpdate } from '../../data/municipal/dashboardCorrespondence';
 import DashboardSectionHeader from './DashboardSectionHeader';
 import { formatDate, humanize } from './format';
 import type { CorrespondenceOverviewData } from './types';
@@ -36,43 +35,28 @@ function CorrespondenceRow({ row }: { row: Row }) {
         : <article className="employee-record-row">{content}</article>;
 }
 
-export default function RecentCorrespondence({
-    overview,
-    supplemental,
-}: {
-    overview?: CorrespondenceOverviewData;
-    supplemental: DashboardCorrespondenceUpdate[];
-}) {
-    const liveRows: Row[] = overview
-        ? [...overview.recentlyReceived, ...overview.recentlyRouted].map((item) => ({
-            key: item.detailUrl,
-            reference: item.reference || 'Reference pending',
-            subject: item.subject,
-            sender: item.sender || 'Sender not recorded',
-            office: item.currentOffice?.shortName || item.currentOffice?.name || 'Office pending',
-            lifecycle: item.lifecycle,
-            occurredAt: item.receivedAt || item.routedAt,
-            url: item.detailUrl,
-        }))
+export default function RecentCorrespondence({ overview }: { overview?: CorrespondenceOverviewData }) {
+    const rows: Row[] = overview
+        ? [...overview.recentlyReceived, ...overview.recentlyRouted]
+            .map((item) => ({
+                key: item.detailUrl,
+                reference: item.reference || 'Reference pending',
+                subject: item.subject,
+                sender: item.sender || 'Sender not recorded',
+                office: item.currentOffice?.shortName || item.currentOffice?.name || 'Office pending',
+                lifecycle: item.lifecycle,
+                occurredAt: item.receivedAt || item.routedAt,
+                url: item.detailUrl,
+            }))
+            .sort((a, b) => Date.parse(b.occurredAt || '') - Date.parse(a.occurredAt || ''))
+            .slice(0, 4)
         : [];
-    const fallbackRows: Row[] = supplemental.map((item) => ({
-        key: item.id,
-        reference: item.reference,
-        subject: item.subject,
-        sender: item.sender,
-        office: item.currentOffice,
-        lifecycle: item.lifecycle,
-        occurredAt: item.receivedAt,
-    }));
-    const rows = (liveRows.length > 0 ? liveRows : fallbackRows)
-        .sort((a, b) => Date.parse(b.occurredAt || '') - Date.parse(a.occurredAt || ''))
-        .slice(0, 4);
 
     return <section className="municipal-panel overflow-hidden" aria-label="Recent correspondence history">
         <DashboardSectionHeader
             icon={<Inbox size={16} className="text-slate-500 dark:text-slate-400" aria-hidden="true" />}
             title="Recent correspondence"
-            description={overview ? 'Recent correspondence records supplied by the municipal workspace.' : 'Recent municipal correspondence retained for reference.'}
+            description="Recent correspondence records available in the current authorized scope."
             href="/correspondence"
             linkLabel="Open correspondence"
         />
