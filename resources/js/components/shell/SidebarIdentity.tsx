@@ -1,5 +1,4 @@
 import type { AuthUser } from '../../types';
-import type { ShowcasePersona } from '../showcase/types';
 
 function userInitials(name?: string | null): string {
     const parts = name?.trim().split(/\s+/).filter(Boolean) ?? [];
@@ -20,14 +19,13 @@ function roleLabel(role?: string | null): string {
 type Props = {
     compact: boolean;
     user: AuthUser | null;
-    persona?: ShowcasePersona | null;
 };
 
-export default function SidebarIdentity({ compact, user, persona = null }: Props) {
-    const name = persona?.label ?? user?.name;
-    const role = persona?.position ?? roleLabel(user?.role);
-    const office = persona?.office ?? user?.employee?.department?.short_name ?? user?.employee?.department?.name;
-    const position = persona ? null : user?.employee?.position;
+export default function SidebarIdentity({ compact, user }: Props) {
+    const name = user?.name;
+    const role = roleLabel(user?.role);
+    const office = user?.employee?.department?.short_name ?? user?.employee?.department?.name;
+    const position = user?.employee?.position;
     const title = [name, position, role, office].filter(Boolean).join(' · ');
     const context = [role, office].filter(Boolean).join(' · ');
 
