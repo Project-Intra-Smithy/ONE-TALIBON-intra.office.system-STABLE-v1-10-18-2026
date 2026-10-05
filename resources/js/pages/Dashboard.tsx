@@ -26,7 +26,13 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
     const administrativeFollowUp = systemOverview?.operations.departmentWorkload.filter((office) => office.overdue > 0 || office.unassigned > 0).length ?? 0;
     const administrativeOverdue = systemOverview?.operations.departmentWorkload.filter((office) => office.overdue > 0).length ?? 0;
     const correspondenceAttentionCount = correspondenceOverview?.attention.value ?? 0;
-    const attentionQueueHref = experience.key === 'executive_oversight' ? '/mayor-office' : experience.key === 'department_head' ? '/transactions?view=office_queue' : '/transactions?view=needs_my_action';
+    const attentionQueueHref = experience.key === 'system_administration'
+        ? '/transactions'
+        : experience.key === 'executive_oversight'
+            ? '/mayor-office'
+            : experience.key === 'department_head'
+                ? '/transactions?view=office_queue'
+                : '/transactions?view=needs_my_action';
 
     return <AppLayout title="Dashboard" presentation="portal-dashboard">
         <div className="dashboard-portal">
