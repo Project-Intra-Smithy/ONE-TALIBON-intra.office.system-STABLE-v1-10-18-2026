@@ -24,6 +24,14 @@ Detailed slice/cadence authority:
 
 `.forge/memory/P0-CODE-FIRST-EXECUTION-CADENCE.md`
 
+## Governing execution rule
+
+Shared municipality-wide capabilities are finished and stabilized first wherever engineering authority is sufficient. Client/LGU-specific workflows, routing, approval/signature authority, service levels, confidentiality, KPIs and specialized-domain semantics are mapped and blocked rather than guessed.
+
+Active product/runtime source must stop presenting obsolete `prototype` / `showcase` semantics as current product authority. Remove, rename, de-expose or truth-label transitional logic based on evidence. Historical provenance is preserved.
+
+Full HRIS remains outside immediate scope. Employee & Office Directory remains the immediate organizational capability. Procurement and Project Monitoring remain specialized/client-data-dependent until sufficient process truth exists. Accepted Messaging behavior remains protected.
+
 ## Slice state
 
 - `P01 — SOURCE TRUTH & AUTHORITY LOCK`: SUBSTANTIALLY COMPLETE
@@ -60,9 +68,9 @@ Target-map addendum:
 
 `.forge/handoffs/active/P03-W01-BACKEND-TARGET-MAP.md`
 
-Latest issued planning commit at time of this ledger update:
+Current targeted handoff commit:
 
-`06c0b3be463bb1b889408cce261ca7cc20a5af67`
+`be1cf2b7c23534bedf9dd4c5413ad7f452670f53`
 
 State:
 
@@ -70,12 +78,20 @@ State:
 
 Sub-slices:
 
-- P03-A Route & Surface Authority
-- P03-B Identity/Auth/Authorization
-- P03-C Workflow/Correspondence/Records
-- P03-D Coordination/Eventing/Integration
-- P03-E Schema/Seed/Runtime Authority
-- P03-F Backend Extraction Manifest
+- P03-A Runtime Surface & Route Authority
+- P03-B Organization / Identity / Access / Audit
+- P03-C Work / Accountability / Official Records
+- P03-D Coordination / Accepted Messaging
+- P03-E Schema / Seeds / Config / Dead Runtime Logic
+- P03-F Backend Extraction + Client/LGU Input Register
+
+Priority outcomes:
+
+- remove/de-expose excluded or non-authoritative runtime surfaces;
+- remove/canonicalize prototype/showcase/demo backend semantics where no longer needed;
+- preserve accepted Messaging behavior;
+- retain shared general mechanics that are valid municipality-wide;
+- map all client-owned data/authority dependencies instead of hard-coding them.
 
 ### P04 / W02 — Frontend Canonicalization
 
@@ -91,9 +107,9 @@ Target-map addendum:
 
 `.forge/handoffs/active/P04-W02-FRONTEND-TARGET-MAP.md`
 
-Latest issued planning commit at time of this ledger update:
+Current targeted handoff commit:
 
-`cc13ea0bc4faabbf2d0c1888eee086c7f47f26fe`
+`9058d08d35682cadc7b3cc61a0d6170c20caeb3e`
 
 State:
 
@@ -101,13 +117,38 @@ State:
 
 Sub-slices:
 
-- P04-A Shell/Navigation/Destination Authority
-- P04-B Work & Accountability Surfaces
-- P04-C Documents/Correspondence/Records/Search
-- P04-D Coordination Surfaces
-- P04-E Organization/Admin/Specialized Reference Surfaces
-- P04-F Shared States/Responsive Stability
-- P04-G Frontend Extraction Manifest
+- P04-A Shell / Navigation / Product Surface Truth
+- P04-B Work & Accountability UI
+- P04-C Documents / Correspondence / Records / Search UI
+- P04-D Coordination UI
+- P04-E Organization / Administration / Specialized/Deferred Surfaces
+- P04-F Shared UI Quality / Responsive Baseline
+- P04-G Frontend Extraction + Client/LGU Input Register
+
+Priority outcomes:
+
+- remove prototype/showcase wording from active canonical product UI;
+- truth-label remaining non-live/reference data without pretending it is production authority;
+- de-expose excluded/client-blocked domains from production-ready navigation;
+- preserve accepted Messaging behavior;
+- finish client-independent shared UI mechanics first;
+- map client/LGU data/content/authority dependencies explicitly.
+
+## Client/LGU input register — minimum required map
+
+Both P03 and P04 must return affected code surfaces for:
+
+- `ORG-001` authoritative office list, Department Heads/acting officers and employee roster;
+- `WF-001` departmental workflows/forms/templates/routing/approval/signature/service levels/reports/confidentiality/exceptions;
+- `WF-002` process-owner validation/correction;
+- `KPI-001` official management indicators/reports by role;
+- `VICE-001` Vice Mayor dashboard requirements;
+- `MEET-001` authoritative Meeting lifecycle/ownership/action-item/minutes requirements;
+- `ANN-001` Announcement publishing/audience/authority requirements;
+- `PROC-001` Procurement lifecycle/process truth;
+- `PROJ-001` Project Monitoring authoritative data/lifecycle/KPIs.
+
+Engineering must not wait for all client inputs to complete shared primitives, but client-specific business rules must not be hard-coded before validated input exists.
 
 ## Integration law
 
