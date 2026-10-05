@@ -1,21 +1,21 @@
-name: P0 Windows Self-Hosted Validation
+name: P08 Targeted Baseline Acceptance
 
 on:
   push:
     branches:
-      - KIRCH-TALIBON-P0-CANONICAL-BASELINE-STABILIZATION
+      - KIRCH-TALIBON-P08-TARGETED-VALIDATION
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: p0-windows-validation-${{ github.ref }}
+  group: p08-baseline-acceptance-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   validate:
-    name: Exact-head P0 validation on temporary Windows runner
+    name: Exact-head P08 acceptance on Windows runner
     runs-on: [self-hosted, Windows, X64, talibon-p0-temp]
     timeout-minutes: 60
 
@@ -33,50 +33,113 @@ jobs:
       SESSION_DRIVER: file
       CACHE_STORE: file
       QUEUE_CONNECTION: sync
-      SHOWCASE_MODE: false
       PROTOTYPE_DEMO_PASSWORD: P0-Disposable-Runner-Password-2026
+      QA_DEMO_PASSWORD: P0-Disposable-Runner-Password-2026
       QA_BASE_URL: http://127.0.0.1:8000
       QA_MODE: production
+      QA_ENVIRONMENT: p08-windows-self-hosted
+      QA_EXPECTED_SHA: ${{ github.sha }}
 
     defaults:
       run:
         shell: powershell
 
     steps:
-      - name: Checkout exact workflow head
+      - name: Checkout exact P08 head
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Record and guard Git authority
+      - name: Guard Git authority and P07 ancestry
         run: |
           $ErrorActionPreference = 'Stop'
+          $authorizedMain = '269975e1c1e61bcde78490530e5cc8e90f35ae47'
+          $p07 = '6b01368e7f03e6ba7dd7b93327623bc1f98d543f'
           $head = (git rev-parse HEAD).Trim()
           $main = (git rev-parse origin/main).Trim()
           $mergeBase = (git merge-base HEAD origin/main).Trim()
           $relationship = (git rev-list --left-right --count origin/main...HEAD).Trim()
 
-          Write-Host "P0_HEAD=$head"
+          Write-Host "P08_HEAD=$head"
           Write-Host "MAIN_HEAD=$main"
           Write-Host "MERGE_BASE=$mergeBase"
           Write-Host "MAIN...HEAD=$relationship"
           git status --short
           git log -1 --oneline
 
-          if ($main -ne '269975e1c1e61bcde78490530e5cc8e90f35ae47') {
+          if ($main -ne $authorizedMain) {
             throw "main drifted from authorized P0 source: $main"
           }
-          if ($mergeBase -ne '269975e1c1e61bcde78490530e5cc8e90f35ae47') {
-            throw "candidate no longer descends directly from authorized P0 source: merge-base=$mergeBase"
+          if ($mergeBase -ne $authorizedMain) {
+            throw "candidate no longer descends from authorized P0 source: merge-base=$mergeBase"
           }
 
-      - name: Setup Node
+          git merge-base --is-ancestor $p07 HEAD
+          if ($LASTEXITCODE -ne 0) {
+            throw "P08 candidate does not descend from the accepted P07 integration SHA $p07"
+          }
+
+          if ($head -ne $env:QA_EXPECTED_SHA) {
+            throw "Checked-out head does not equal github.sha: head=$head expected=$env:QA_EXPECTED_SHA"
+          }
+
+      - name: Fast source-contract guard before dependencies
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force storage/app/qa | Out-Null
+
+          $retiredFiles = @(
+            'config/showcase.php',
+            'app/Services/ShowcaseSession.php',
+            'app/Http/Controllers/ShowcaseSessionController.php',
+            'app/Providers/ShowcaseServiceProvider.php',
+            'resources/js/components/showcase/WorkspaceSwitcher.tsx'
+          )
+          foreach ($file in $retiredFiles) {
+            if (Test-Path $file) { throw "Retired Showcase runtime file is active again: $file" }
+          }
+
+          $activeRoots = @('app', 'resources/js', 'routes', 'bootstrap', 'config')
+          $files = Get-ChildItem $activeRoots -Recurse -File -ErrorAction SilentlyContinue
+          $forbidden = @(
+            '/showcase/session',
+            '/showcase/switch',
+            '/messages/prototype/messages',
+            'messages.prototype.',
+            'usePrototypeMessaging'
+          )
+
+          $failures = @()
+          foreach ($token in $forbidden) {
+            $hits = @($files | Select-String -SimpleMatch $token)
+            foreach ($hit in $hits) {
+              $failures += "$($hit.Path):$($hit.LineNumber): $($hit.Line.Trim())"
+            }
+          }
+
+          $residue = @($files | Select-String -Pattern 'Prototype|Showcase')
+          $residue | ForEach-Object { "$($_.Path):$($_.LineNumber): $($_.Line.Trim())" } |
+            Set-Content storage/app/qa/p08-active-legacy-terminology.txt
+
+          if (-not (Test-Path 'app/Models/Message.php')) {
+            throw 'Canonical Messaging model app/Models/Message.php is missing.'
+          }
+          if (-not (Test-Path 'resources/js/hooks/messaging/useMessaging.ts')) {
+            throw 'Canonical Messaging hook resources/js/hooks/messaging/useMessaging.ts is missing.'
+          }
+
+          if ($failures.Count -gt 0) {
+            $failures | Set-Content storage/app/qa/p08-forbidden-contract-residue.txt
+            throw "Retired active contract residue remains:`n$($failures -join "`n")"
+          }
+
+      - name: Setup Node toolchain
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: npm
 
-      - name: Setup PHP
+      - name: Setup PHP toolchain
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
@@ -84,7 +147,7 @@ jobs:
           extensions: pdo_pgsql, pgsql, fileinfo, zip
           tools: composer:v2
 
-      - name: Verify temporary runner prerequisites
+      - name: Verify runner and database safety
         run: |
           $ErrorActionPreference = 'Stop'
           Write-Host "Runner: $env:RUNNER_NAME"
@@ -94,13 +157,20 @@ jobs:
           php --version
           composer --version
 
+          $pwsh = (Get-Command pwsh -ErrorAction Stop).Source
+          Write-Host "pwsh: $pwsh"
+          if ($pwsh -like '*WindowsApps*') {
+            throw "pwsh resolved through the WindowsApps alias instead of the real executable: $pwsh"
+          }
+          pwsh --version
+
           if ([string]::IsNullOrWhiteSpace($env:DB_PASSWORD)) {
-            throw 'P0_POSTGRES_PASSWORD repository secret is missing or empty. Set it before running validation.'
+            throw 'P0_POSTGRES_PASSWORD repository secret is missing or empty.'
           }
 
           $psql = Get-Command psql -ErrorAction SilentlyContinue
           if (-not $psql) {
-            throw 'psql is not on PATH. Install PostgreSQL client/server locally and add its bin directory to PATH before using this runner.'
+            throw 'psql is not on PATH.'
           }
           psql --version
 
@@ -113,7 +183,7 @@ jobs:
           $ErrorActionPreference = 'Stop'
           $exists = (& psql -h $env:DB_HOST -p $env:DB_PORT -U $env:DB_USERNAME -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname = 'talibon_portal_test';").Trim()
           if ($LASTEXITCODE -ne 0) {
-            throw 'Could not connect to local PostgreSQL. Verify the Windows PostgreSQL service, postgres user, and P0_POSTGRES_PASSWORD repository secret.'
+            throw 'Could not connect to local PostgreSQL.'
           }
           if ($exists -ne '1') {
             & psql -h $env:DB_HOST -p $env:DB_PORT -U $env:DB_USERNAME -d postgres -v ON_ERROR_STOP=1 -c 'CREATE DATABASE talibon_portal_test;'
@@ -122,13 +192,13 @@ jobs:
           & psql -h $env:DB_HOST -p $env:DB_PORT -U $env:DB_USERNAME -d talibon_portal_test -v ON_ERROR_STOP=1 -c 'SELECT current_database();'
           if ($LASTEXITCODE -ne 0) { throw 'Disposable test database connectivity check failed.' }
 
-      - name: Install locked dependencies
+      - name: Restore locked dependencies once
         run: |
           $ErrorActionPreference = 'Stop'
           composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
           npm ci --no-audit --no-fund
 
-      - name: Prepare Laravel environment
+      - name: Prepare Laravel test environment
         run: |
           $ErrorActionPreference = 'Stop'
           Copy-Item .env.example .env -Force
@@ -136,31 +206,11 @@ jobs:
           php artisan optimize:clear
           php artisan about
 
-      - name: TypeScript
-        run: npm run types:check
-
-      - name: Production build
-        run: npm run build
-
-      - name: Showcase and MFA security tests
+      - name: TypeScript and production build
         run: |
           $ErrorActionPreference = 'Stop'
-          php artisan test --filter=Showcase
-          php artisan test --filter=Mfa
-
-      - name: Focused regression tests
-        run: |
-          $ErrorActionPreference = 'Stop'
-          php artisan test --filter=CurrentPortalNavigation
-          php artisan test --filter=PublicPortal
-          php artisan test --filter=PrototypeMessaging
-
-      - name: Route authority evidence
-        run: |
-          $ErrorActionPreference = 'Stop'
-          New-Item -ItemType Directory -Force storage/app/qa | Out-Null
-          php artisan route:list -v | Tee-Object -FilePath storage/app/qa/p0-route-list.txt
-          if ($LASTEXITCODE -ne 0) { throw 'php artisan route:list failed.' }
+          npm run types:check
+          npm run build
 
       - name: Fresh disposable database and seed
         run: |
@@ -170,17 +220,22 @@ jobs:
           }
           php artisan migrate:fresh --seed --force
 
-      - name: Re-run security tests after clean schema
+      - name: Route authority evidence
         run: |
           $ErrorActionPreference = 'Stop'
-          php artisan test --filter=Showcase
-          php artisan test --filter=Mfa
-          php artisan test --filter=PrototypeMessaging
+          php artisan route:list -v | Tee-Object -FilePath storage/app/qa/p08-route-list.txt
+          if ($LASTEXITCODE -ne 0) { throw 'php artisan route:list failed.' }
 
-      - name: Full Feature suite
+          $routes = Get-Content storage/app/qa/p08-route-list.txt -Raw
+          if ($routes -notmatch '/messages/feed') { throw 'Canonical /messages/feed route is missing.' }
+          if ($routes -match '/showcase/session|/showcase/switch|/messages/prototype/messages') {
+            throw 'Retired route contract remains in the executable route table.'
+          }
+
+      - name: Full Feature suite once
         run: php artisan test --testsuite=Feature
 
-      - name: Restore seeded browser fixture state
+      - name: Restore deterministic browser fixture state
         run: |
           $ErrorActionPreference = 'Stop'
           if ($env:DB_DATABASE -ne 'talibon_portal_test') {
@@ -196,26 +251,24 @@ jobs:
           php artisan config:cache
           php artisan optimize:clear
 
-      - name: Install Chromium for browser validation
+      - name: Ensure Chromium for browser validation
         run: npx playwright install chromium
 
-      - name: Runtime smoke and browser audits in one owned lifecycle
-        env:
-          SHOWCASE_MODE: true
+      - name: Runtime and browser acceptance in one owned lifecycle
         run: |
           $ErrorActionPreference = 'Stop'
           New-Item -ItemType Directory -Force storage/logs | Out-Null
           Remove-Item public/hot -ErrorAction SilentlyContinue
           Remove-Item storage/framework/vite.hot -ErrorAction SilentlyContinue
 
-          $stdout = Join-Path $PWD 'storage/logs/p0-laravel.out.log'
-          $stderr = Join-Path $PWD 'storage/logs/p0-laravel.err.log'
+          $stdout = Join-Path $PWD 'storage/logs/p08-laravel.out.log'
+          $stderr = Join-Path $PWD 'storage/logs/p08-laravel.err.log'
           Remove-Item $stdout, $stderr -Force -ErrorAction SilentlyContinue
 
           $existing = @(Get-NetTCPConnection -LocalPort 8000 -State Listen -ErrorAction SilentlyContinue)
           if ($existing.Count -gt 0) {
             $owners = ($existing | Select-Object -ExpandProperty OwningProcess -Unique) -join ', '
-            throw "Port 8000 is already occupied before P0 runtime validation. Refusing to kill an unowned process. Owning PID(s): $owners"
+            throw "Port 8000 is already occupied. Refusing to kill an unowned process. Owning PID(s): $owners"
           }
 
           $php = (Get-Command php -ErrorAction Stop).Source
@@ -249,11 +302,8 @@ jobs:
                   break
                 }
               } catch {
-                if ($i -eq 60) {
-                  Write-Warning $_.Exception.Message
-                }
+                if ($i -eq 60) { Write-Warning $_.Exception.Message }
               }
-
               Start-Sleep -Seconds 1
             }
 
@@ -272,33 +322,29 @@ jobs:
 
             foreach ($path in @('/', '/login')) {
               $response = Invoke-WebRequest -UseBasicParsing -Uri "http://127.0.0.1:8000$path" -MaximumRedirection 5 -TimeoutSec 15
-              if ($response.StatusCode -ge 500) {
-                throw "$path returned $($response.StatusCode)"
-              }
+              if ($response.StatusCode -ge 500) { throw "$path returned $($response.StatusCode)" }
               Write-Host "$path => $($response.StatusCode)"
             }
 
-            $proc.Refresh()
-            if ($proc.HasExited) {
-              throw "Laravel runtime exited after route smoke. PID=$($proc.Id) exit=$($proc.ExitCode)"
-            }
+            Write-Host '=== REAL AUTH + MFA RUNTIME MATRIX ==='
+            & node tests/Browser/h0-runtime-readiness.mjs
+            if ($LASTEXITCODE -ne 0) { throw "H0 runtime audit failed with exit code $LASTEXITCODE." }
 
-            Write-Host '=== V1 SHOWCASE BROWSER + RESPONSIVE AUDIT ==='
-            & node tests/Browser/v1-showcase-readiness.mjs
-            if ($LASTEXITCODE -ne 0) {
-              throw "V1 showcase browser audit failed with exit code $LASTEXITCODE."
+            # H0 enrolls privileged fixture accounts. Restore a clean fixture before
+            # the independent two-user Messaging audit so MFA state cannot leak between audits.
+            if ($env:DB_DATABASE -ne 'talibon_portal_test') {
+              throw "Refusing browser audit reset against unexpected database: $env:DB_DATABASE"
             }
+            & $php artisan migrate:fresh --seed --force
+            if ($LASTEXITCODE -ne 0) { throw 'Failed to restore browser fixture state between independent runtime audits.' }
 
-            $proc.Refresh()
-            if ($proc.HasExited) {
-              throw "Laravel runtime exited after V1 browser audit. PID=$($proc.Id) exit=$($proc.ExitCode)"
-            }
+            Write-Host '=== 1440 / 390 RESPONSIVE BASELINE ==='
+            & node tests/Browser/p08-responsive-smoke.mjs
+            if ($LASTEXITCODE -ne 0) { throw "P08 responsive smoke failed with exit code $LASTEXITCODE." }
 
-            Write-Host '=== TWO-USER MESSAGES BROWSER AUDIT ==='
+            Write-Host '=== REAL-AUTH TWO-USER MESSAGING ==='
             & node tests/Browser/mp0-messaging-closure.mjs
-            if ($LASTEXITCODE -ne 0) {
-              throw "Two-user Messages browser audit failed with exit code $LASTEXITCODE."
-            }
+            if ($LASTEXITCODE -ne 0) { throw "Two-user Messaging audit failed with exit code $LASTEXITCODE." }
           }
           finally {
             if ($listenerPid) {
@@ -320,11 +366,11 @@ jobs:
             $remaining = @(Get-NetTCPConnection -LocalAddress 127.0.0.1 -LocalPort 8000 -State Listen -ErrorAction SilentlyContinue)
             if ($remaining.Count -gt 0) {
               $owners = ($remaining | Select-Object -ExpandProperty OwningProcess -Unique) -join ', '
-              Write-Warning "Port 8000 still has listener PID(s) after owned-runtime cleanup: $owners"
+              Write-Warning "Port 8000 still has listener PID(s) after cleanup: $owners"
             }
           }
 
-      - name: Repository hygiene
+      - name: Repository hygiene and exact-tree evidence
         run: |
           $ErrorActionPreference = 'Stop'
           git diff --check
@@ -345,20 +391,20 @@ jobs:
           Write-Host '=== PORT 8000 ==='
           Get-NetTCPConnection -LocalPort 8000 -State Listen -ErrorAction SilentlyContinue | Format-Table -AutoSize
           Write-Host '=== LARAVEL STDOUT ==='
-          Get-Content storage/logs/p0-laravel.out.log -Tail 200 -ErrorAction SilentlyContinue
+          Get-Content storage/logs/p08-laravel.out.log -Tail 200 -ErrorAction SilentlyContinue
           Write-Host '=== LARAVEL STDERR ==='
-          Get-Content storage/logs/p0-laravel.err.log -Tail 200 -ErrorAction SilentlyContinue
+          Get-Content storage/logs/p08-laravel.err.log -Tail 200 -ErrorAction SilentlyContinue
           Write-Host '=== QA FILES ==='
           Get-ChildItem storage/app/qa -Recurse -File -ErrorAction SilentlyContinue | ForEach-Object { $_.FullName }
 
-      - name: Upload P0 validation evidence
+      - name: Upload P08 acceptance evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: p0-windows-validation-${{ github.sha }}
+          name: p08-baseline-acceptance-${{ github.sha }}
           path: |
             storage/app/qa/
-            storage/logs/p0-laravel.out.log
-            storage/logs/p0-laravel.err.log
+            storage/logs/p08-laravel.out.log
+            storage/logs/p08-laravel.err.log
           if-no-files-found: ignore
           retention-days: 14
