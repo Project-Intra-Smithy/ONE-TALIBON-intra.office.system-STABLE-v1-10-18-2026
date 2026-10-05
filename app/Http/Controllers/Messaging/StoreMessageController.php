@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\PrototypeMessaging;
+namespace App\Http\Controllers\Messaging;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PrototypeMessaging\StorePrototypeMessageRequest;
 use App\Http\Resources\PrototypeMessaging\PrototypeMessageResource;
-use App\Models\PrototypeMessage;
+use App\Models\Message;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
 
-final class StorePrototypeMessageController extends Controller
+final class StoreMessageController extends Controller
 {
     public function __invoke(StorePrototypeMessageRequest $request): JsonResponse
     {
         $validated = $request->validated();
-        $message = PrototypeMessage::query()->create([
+        $message = Message::query()->create([
             'public_id' => Str::uuid()->toString(),
             'channel' => $validated['channel'],
             'sender_user_id' => $request->user()->id,

@@ -17,7 +17,7 @@ final class PrototypeMessageStoreTest extends TestCase
     {
         $user = $this->makeUser('Sender User', 'sender@example.test', 'MPDO');
 
-        $response = $this->actingAs($user)->postJson(route('messages.prototype.store'), [
+        $response = $this->actingAs($user)->postJson(route('messages.feed.store'), [
             'channel' => 'Department Heads',
             'body' => '  Budget files are ready for review.  ',
         ]);
@@ -45,12 +45,12 @@ final class PrototypeMessageStoreTest extends TestCase
         $sender = $this->makeUser('Actual Sender', 'actual@example.test', 'MBO');
         $other = $this->makeUser('Spoof Target', 'spoof@example.test', 'MEO');
 
-        $first = $this->actingAs($sender)->postJson(route('messages.prototype.store'), [
+        $first = $this->actingAs($sender)->postJson(route('messages.feed.store'), [
             'channel' => 'General',
             'body' => 'First prototype message',
             'sender_user_id' => $other->id,
         ])->assertCreated();
-        $second = $this->actingAs($sender)->postJson(route('messages.prototype.store'), [
+        $second = $this->actingAs($sender)->postJson(route('messages.feed.store'), [
             'channel' => 'General',
             'body' => 'Second prototype message',
         ])->assertCreated();
@@ -67,19 +67,19 @@ final class PrototypeMessageStoreTest extends TestCase
         $user = $this->makeUser('Validation User', 'validation@example.test', 'MPDO');
         $this->actingAs($user);
 
-        $this->postJson(route('messages.prototype.store'), [
+        $this->postJson(route('messages.feed.store'), [
             'channel' => 'Unknown Channel',
             'body' => 'Hello',
         ])->assertUnprocessable()->assertJsonValidationErrors('channel');
 
         foreach (['', '   ', "\u{00A0}\u{2003}"] as $body) {
-            $this->postJson(route('messages.prototype.store'), [
+            $this->postJson(route('messages.feed.store'), [
                 'channel' => 'General',
                 'body' => $body,
             ])->assertUnprocessable()->assertJsonValidationErrors('body');
         }
 
-        $this->postJson(route('messages.prototype.store'), [
+        $this->postJson(route('messages.feed.store'), [
             'channel' => 'General',
             'body' => str_repeat('a', 2001),
         ])->assertUnprocessable()->assertJsonValidationErrors('body');
@@ -90,7 +90,7 @@ final class PrototypeMessageStoreTest extends TestCase
         $user = $this->makeUser('Text User', 'text@example.test', 'MPDO');
         $body = '<script>alert("prototype")</script>';
 
-        $this->actingAs($user)->postJson(route('messages.prototype.store'), [
+        $this->actingAs($user)->postJson(route('messages.feed.store'), [
             'channel' => 'General',
             'body' => $body,
         ])->assertCreated()->assertJsonPath('data.body', $body);

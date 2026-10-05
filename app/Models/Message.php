@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-final class PrototypeMessage extends Model
+final class Message extends Model
 {
+    protected $table = 'prototype_messages';
+
     protected $fillable = [
         'public_id',
         'channel',

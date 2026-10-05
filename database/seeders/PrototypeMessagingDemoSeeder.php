@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\PrototypeMessage;
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -11,7 +11,7 @@ final class PrototypeMessagingDemoSeeder extends Seeder
 {
     public function run(): void
     {
-        if (PrototypeMessage::query()->exists()) {
+        if (Message::query()->exists()) {
             return;
         }
 
@@ -53,7 +53,7 @@ final class PrototypeMessagingDemoSeeder extends Seeder
             }
 
             $createdAt = now()->subMinutes($minutesAgo);
-            PrototypeMessage::query()->create([
+            Message::query()->create([
                 'public_id' => Str::uuid()->toString(),
                 'channel' => $channel,
                 'sender_user_id' => $sender->id,

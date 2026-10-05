@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\PrototypeMessaging;
+namespace App\Http\Controllers\Messaging;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PrototypeMessaging\PrototypeMessageResource;
-use App\Models\PrototypeMessage;
+use App\Models\Message;
 use App\Prototype\Messaging\PrototypeMessagingChannels;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Validation\Rule;
 
-final class ListPrototypeMessagesController extends Controller
+final class ListMessagesController extends Controller
 {
     public function __invoke(Request $request): AnonymousResourceCollection
     {
@@ -19,7 +19,7 @@ final class ListPrototypeMessagesController extends Controller
             'after' => ['nullable', 'integer', 'min:0'],
         ]);
 
-        $query = PrototypeMessage::query()
+        $query = Message::query()
             ->with(['sender.employee.department'])
             ->where('channel', $validated['channel']);
         $after = array_key_exists('after', $validated) ? (int) $validated['after'] : null;

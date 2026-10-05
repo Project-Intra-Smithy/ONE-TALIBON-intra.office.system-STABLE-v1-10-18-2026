@@ -21,14 +21,14 @@ use App\Http\Controllers\LegislativeWorkspaceController;
 use App\Http\Controllers\MayorOfficeController;
 use App\Http\Controllers\MayorOfficeLiveController;
 use App\Http\Controllers\MemorandumController;
+use App\Http\Controllers\Messaging\ListMessagesController;
+use App\Http\Controllers\Messaging\StoreMessageController;
 use App\Http\Controllers\NotificationFeedController;
 use App\Http\Controllers\OperationsMonitoringController;
 use App\Http\Controllers\PlatformNotificationController;
 use App\Http\Controllers\PortalSearchController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\PropertyLifecycleController;
-use App\Http\Controllers\PrototypeMessaging\ListPrototypeMessagesController;
-use App\Http\Controllers\PrototypeMessaging\StorePrototypeMessageController;
 use App\Http\Controllers\PublicPortalController;
 use App\Http\Controllers\RecordsController;
 use App\Http\Controllers\ReportsController;
@@ -79,10 +79,10 @@ Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
     Route::get('/announcements', fn () => Inertia::render('Announcements/Index'))->name('announcements.index');
     Route::get('/meetings', fn () => Inertia::render('Meetings/Index'))->name('meetings.index');
     Route::get('/messages', fn () => Inertia::render('Messages/Index'))->name('messages.index');
-    Route::get('/messages/prototype/messages', ListPrototypeMessagesController::class)->name('messages.prototype.index');
-    Route::post('/messages/prototype/messages', StorePrototypeMessageController::class)
+    Route::get('/messages/feed', ListMessagesController::class)->name('messages.feed.index');
+    Route::post('/messages/feed', StoreMessageController::class)
         ->middleware('throttle:60,1')
-        ->name('messages.prototype.store');
+        ->name('messages.feed.store');
     Route::get('/local-special-bodies', fn () => Inertia::render('LocalBodies/Index'))->name('local-special-bodies.index');
     Route::get('/development-plans', fn () => Inertia::render('Plans/Index'))->name('development-plans.index');
     Route::get('/ppas', fn () => Inertia::render('PPAs/Index'))->name('ppas.index');

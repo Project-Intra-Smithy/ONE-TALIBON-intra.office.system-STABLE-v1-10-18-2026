@@ -4,7 +4,7 @@ namespace Tests\Feature\PrototypeMessaging;
 
 use App\Models\Department;
 use App\Models\Employee;
-use App\Models\PrototypeMessage;
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
@@ -23,7 +23,7 @@ final class PrototypeMessageListTest extends TestCase
         }
         $this->makeMessage($user, 'MPDO Planning', 'Other channel');
 
-        $response = $this->actingAs($user)->getJson(route('messages.prototype.index', [
+        $response = $this->actingAs($user)->getJson(route('messages.feed.index', [
             'channel' => 'General',
         ]));
 
@@ -42,7 +42,7 @@ final class PrototypeMessageListTest extends TestCase
         $second = $this->makeMessage($user, 'Department Heads', 'Second');
         $third = $this->makeMessage($user, 'Department Heads', 'Third');
 
-        $response = $this->actingAs($user)->getJson(route('messages.prototype.index', [
+        $response = $this->actingAs($user)->getJson(route('messages.feed.index', [
             'channel' => 'Department Heads',
             'after' => $first->id,
         ]));
@@ -57,7 +57,7 @@ final class PrototypeMessageListTest extends TestCase
         $other = $this->makeUser('Other Employee', 'other@example.test', 'MEO');
         $this->makeMessage($other, 'General', 'Incoming message');
 
-        $response = $this->actingAs($viewer)->getJson(route('messages.prototype.index', [
+        $response = $this->actingAs($viewer)->getJson(route('messages.feed.index', [
             'channel' => 'General',
         ]));
 
@@ -68,9 +68,9 @@ final class PrototypeMessageListTest extends TestCase
             ->assertJsonMissingPath('data.0.sender_user_id');
     }
 
-    private function makeMessage(User $sender, string $channel, string $body): PrototypeMessage
+    private function makeMessage(User $sender, string $channel, string $body): Message
     {
-        return PrototypeMessage::query()->create([
+        return Message::query()->create([
             'public_id' => Str::uuid()->toString(),
             'channel' => $channel,
             'sender_user_id' => $sender->id,

@@ -12,9 +12,9 @@ final class PrototypeMessagingAccessTest extends TestCase
 
     public function test_unauthenticated_user_cannot_list_or_send(): void
     {
-        $this->getJson(route('messages.prototype.index', ['channel' => 'General']))
+        $this->getJson(route('messages.feed.index', ['channel' => 'General']))
             ->assertUnauthorized();
-        $this->postJson(route('messages.prototype.store'), [
+        $this->postJson(route('messages.feed.store'), [
             'channel' => 'General',
             'body' => 'Should not persist',
         ])->assertUnauthorized();
@@ -27,7 +27,7 @@ final class PrototypeMessagingAccessTest extends TestCase
         $user = $this->makeUser(false);
 
         $this->be($user)
-            ->get(route('messages.prototype.index', ['channel' => 'General']))
+            ->get(route('messages.feed.index', ['channel' => 'General']))
             ->assertRedirect(route('login'));
     }
 
@@ -36,7 +36,7 @@ final class PrototypeMessagingAccessTest extends TestCase
         $user = $this->makeUser(true);
 
         $this->be($user)
-            ->get(route('messages.prototype.index', ['channel' => 'General']))
+            ->get(route('messages.feed.index', ['channel' => 'General']))
             ->assertRedirect(route('mfa.enroll'));
     }
 
