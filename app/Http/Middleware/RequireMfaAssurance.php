@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use App\Services\AuditLogger;
 use App\Services\AuthenticationAssurance;
-use App\Services\ShowcaseSession;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +13,6 @@ final class RequireMfaAssurance
     public function __construct(
         private readonly AuthenticationAssurance $assurance,
         private readonly AuditLogger $audit,
-        private readonly ShowcaseSession $showcase,
     ) {
     }
 
@@ -24,10 +22,6 @@ final class RequireMfaAssurance
 
         if (! $user) {
             return redirect()->guest(route('login'));
-        }
-
-        if ($this->showcase->isActive($request, $user)) {
-            return $next($request);
         }
 
         if ($this->assurance->isSatisfied($request, $user)) {

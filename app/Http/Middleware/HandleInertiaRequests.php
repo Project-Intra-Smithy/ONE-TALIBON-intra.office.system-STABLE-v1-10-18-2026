@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use App\Services\AuthenticationAssurance;
 use App\Services\DashboardExperienceResolver;
 use App\Services\PortalNavigationAccess;
-use App\Services\ShowcaseSession;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -28,10 +27,8 @@ class HandleInertiaRequests extends Middleware
         }
 
         $user = $request->user();
-        $showcase = app(ShowcaseSession::class);
-        $showcaseActive = $user ? $showcase->isActive($request, $user) : false;
         $applicationAssured = $user
-            ? $showcaseActive || app(AuthenticationAssurance::class)->isSatisfied($request, $user)
+            ? app(AuthenticationAssurance::class)->isSatisfied($request, $user)
             : false;
 
         if ($applicationAssured) {
@@ -54,10 +51,6 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'appName' => config('app.name'),
             'workspaceExperience' => $workspaceExperience,
-            'showcaseSession' => [
-                'active' => $showcaseActive,
-                'persona' => $showcaseActive ? $showcase->currentPresentationPersona($request) : null,
-            ],
             'auth' => [
                 'user' => $user ? [
                     'id' => $user->id,
