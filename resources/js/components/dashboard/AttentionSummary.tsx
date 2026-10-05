@@ -1,9 +1,8 @@
-import { AlertTriangle, BriefcaseBusiness, CalendarClock, FolderKanban, Inbox } from 'lucide-react';
+import { AlertTriangle, BriefcaseBusiness, CalendarClock, Inbox } from 'lucide-react';
 
 type Props = {
     workCount: number;
     overdueWorkCount: number;
-    projectAttentionCount: number;
     dueTodayCount: number;
     correspondenceAttentionCount: number;
     workLabel?: string;
@@ -13,7 +12,6 @@ type Props = {
 export default function AttentionSummary({
     workCount,
     overdueWorkCount,
-    projectAttentionCount,
     dueTodayCount,
     correspondenceAttentionCount,
     workLabel = 'Work requiring attention',
@@ -24,7 +22,6 @@ export default function AttentionSummary({
         { label: 'Deadlines today', value: dueTodayCount, Icon: CalendarClock, activeTone: 'employee-tone-warning' },
         { label: workLabel, value: workCount, Icon: BriefcaseBusiness, activeTone: 'employee-tone-info' },
         { label: 'Correspondence attention', value: correspondenceAttentionCount, Icon: Inbox, activeTone: 'employee-tone-info' },
-        { label: 'Projects needing follow-up', value: projectAttentionCount, Icon: FolderKanban, activeTone: 'employee-tone-warning' },
     ];
 
     const activeCount = items.filter((item) => item.value > 0).length;
@@ -41,7 +38,7 @@ export default function AttentionSummary({
                 </div>
             </header>
 
-            <div className="grid grid-cols-2 @min-[700px]:grid-cols-5">
+            <div className="grid grid-cols-2 @min-[700px]:grid-cols-4">
                 {items.map(({ label, value, Icon, activeTone }) => {
                     const active = value > 0;
                     const cellClass = 'min-w-0 border-b border-r border-slate-200 px-3 py-3 dark:border-slate-700 ' + (active ? 'bg-white/70 dark:bg-slate-900/15' : '');
