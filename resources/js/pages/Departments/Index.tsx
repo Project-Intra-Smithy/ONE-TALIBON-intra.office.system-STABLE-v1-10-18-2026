@@ -2,7 +2,6 @@ import { Building2, Search, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import DepartmentOperationsCard from '../../components/departments/DepartmentOperationsCard';
 import PageFrame from '../../components/PageFrame';
-import { resolveDepartmentProfile } from '../../data/municipal/departments';
 import AppLayout from '../../layouts/AppLayout';
 
 type Office = {
@@ -35,25 +34,14 @@ const branchOptions: Array<{ key: BranchFilter; label: string }> = [
     { key: 'legislative', label: 'Legislative' },
 ];
 
-const searchableOffice = (office: Office) => {
-    const profile = resolveDepartmentProfile(office.name, office.short_name ?? '');
-    return [
-        office.name,
-        office.code,
-        office.short_name,
-        office.office_type,
-        profile.headRole,
-        profile.mandate,
-    ]
-        .filter(Boolean)
-        .join(' ')
-        .toLowerCase();
-};
+const searchableOffice = (office: Office) => [office.name, office.code, office.short_name, office.office_type]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
 
 export default function Index({ departments, summary }: { departments: Office[]; summary: Summary }) {
     const [query, setQuery] = useState('');
     const [branch, setBranch] = useState<BranchFilter>('all');
-
     const normalizedQuery = query.trim().toLowerCase();
     const filtered = useMemo(
         () => departments.filter((office) => {
@@ -63,7 +51,6 @@ export default function Index({ departments, summary }: { departments: Office[];
         }),
         [branch, departments, normalizedQuery],
     );
-
     const executive = filtered.filter((office) => office.branch === 'executive');
     const legislative = filtered.filter((office) => office.branch === 'legislative');
     const hasResults = filtered.length > 0;
@@ -77,7 +64,10 @@ export default function Index({ departments, summary }: { departments: Office[];
                     </div>
                     <h1 className="mt-1 text-xl font-bold tracking-tight text-[var(--municipal-brand)] dark:text-slate-100 sm:text-2xl">Departments & Offices</h1>
                     <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-600 dark:text-slate-300 sm:text-sm">
-                        Find municipal offices, office-head context, staffing, active routed work, and supporting operational references.
+                        Find offices and current application-directory staffing and routed-work context.
+                    </p>
+                    <p className="mt-2 max-w-3xl text-[11px] leading-4 text-slate-500 dark:text-slate-400">
+                        Pending authoritative data: office leadership, acting officers and the final LGU office roster require ORG-001 confirmation before they are presented here.
                     </p>
                 </header>
 
@@ -90,16 +80,11 @@ export default function Index({ departments, summary }: { departments: Office[];
                                 <input
                                     value={query}
                                     onChange={(event) => setQuery(event.target.value)}
-                                    placeholder="Search name, code, office type, head role, or mandate"
+                                    placeholder="Search office name, code, or type"
                                     className="h-10 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-10 text-sm text-slate-900 outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/15 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
                                 />
                                 {query && (
-                                    <button
-                                        type="button"
-                                        onClick={() => setQuery('')}
-                                        className="absolute right-1.5 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md text-slate-400 hover:bg-slate-100 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 dark:hover:bg-slate-800 dark:hover:text-slate-200"
-                                        aria-label="Clear office search"
-                                    >
+                                    <button type="button" onClick={() => setQuery('')} className="absolute right-1.5 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md text-slate-400 hover:bg-slate-100 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 dark:hover:bg-slate-800 dark:hover:text-slate-200" aria-label="Clear office search">
                                         <X size={14} aria-hidden="true" />
                                     </button>
                                 )}
@@ -111,22 +96,7 @@ export default function Index({ departments, summary }: { departments: Office[];
                             <div className="flex max-w-full flex-wrap gap-1 pb-0.5" role="group" aria-label="Filter offices by branch">
                                 {branchOptions.map((option) => {
                                     const active = branch === option.key;
-                                    return (
-                                        <button
-                                            key={option.key}
-                                            type="button"
-                                            onClick={() => setBranch(option.key)}
-                                            className={`min-h-11 rounded-lg px-3 py-2 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#142236] ${active
-                                                ? option.key === 'legislative'
-                                                    ? 'bg-emerald-700 text-white dark:bg-emerald-600'
-                                                    : 'bg-[var(--municipal-brand-deep)] text-white dark:bg-emerald-700'
-                                                : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
-                                            }`}
-                                            aria-pressed={active}
-                                        >
-                                            {option.label}
-                                        </button>
-                                    );
+                                    return <button key={option.key} type="button" onClick={() => setBranch(option.key)} className={`min-h-11 rounded-lg px-3 py-2 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#142236] ${active ? 'bg-[var(--municipal-brand-deep)] text-white dark:bg-emerald-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'}`} aria-pressed={active}>{option.label}</button>;
                                 })}
                             </div>
                         </div>
@@ -154,34 +124,12 @@ export default function Index({ departments, summary }: { departments: Office[];
                         <Building2 className="mx-auto text-slate-300 dark:text-slate-600" size={28} aria-hidden="true" />
                         <h2 className="mt-3 text-sm font-bold text-slate-800 dark:text-slate-200">No municipal offices match this search.</h2>
                         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Change the branch scope or clear the current search terms.</p>
-                        <button
-                            type="button"
-                            onClick={() => { setQuery(''); setBranch('all'); }}
-                            className="mt-4 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 dark:border-slate-600 dark:bg-[#142236] dark:text-emerald-300"
-                        >
-                            Clear search and filters
-                        </button>
+                        <button type="button" onClick={() => { setQuery(''); setBranch('all'); }} className="mt-4 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 dark:border-slate-600 dark:bg-[#142236] dark:text-emerald-300">Clear search and filters</button>
                     </section>
                 ) : (
                     <>
-                        {executive.length > 0 && (
-                            <OfficeSection
-                                id="executive-offices-heading"
-                                title="Executive / Administrative"
-                                description="Municipal operating offices"
-                                offices={executive}
-                                branch="executive"
-                            />
-                        )}
-                        {legislative.length > 0 && (
-                            <OfficeSection
-                                id="legislative-offices-heading"
-                                title="Legislative"
-                                description="Legislative offices and support"
-                                offices={legislative}
-                                branch="legislative"
-                            />
-                        )}
+                        {executive.length > 0 && <OfficeSection id="executive-offices-heading" title="Executive / Administrative" description="Municipal operating offices" offices={executive} />}
+                        {legislative.length > 0 && <OfficeSection id="legislative-offices-heading" title="Legislative" description="Legislative offices" offices={legislative} />}
                     </>
                 )}
             </PageFrame>
@@ -190,31 +138,21 @@ export default function Index({ departments, summary }: { departments: Office[];
 }
 
 function SummaryItem({ value, label, quiet = false }: { value: number; label: string; quiet?: boolean }) {
-    return (
-        <span className={quiet ? 'text-slate-500 dark:text-slate-400' : undefined}>
-            <strong className="font-bold tabular-nums text-slate-800 dark:text-slate-200">{value}</strong> {label}
-        </span>
-    );
+    return <span className={quiet ? 'text-slate-500 dark:text-slate-400' : undefined}><strong className="font-bold tabular-nums text-slate-800 dark:text-slate-200">{value}</strong> {label}</span>;
 }
 
 function Separator({ className = '' }: { className?: string }) {
     return <span className={`text-slate-300 dark:text-slate-600 ${className}`} aria-hidden="true"> / </span>;
 }
 
-function OfficeSection({ id, title, description, offices, branch }: { id: string; title: string; description: string; offices: Office[]; branch: 'executive' | 'legislative' }) {
-    const legislative = branch === 'legislative';
+function OfficeSection({ id, title, description, offices }: { id: string; title: string; description: string; offices: Office[] }) {
     return (
         <section className="space-y-2.5" aria-labelledby={id}>
             <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-1">
-                <div className="min-w-0">
-                    <h2 id={id} className={`text-base font-bold sm:text-lg ${legislative ? 'text-emerald-800 dark:text-emerald-200' : 'text-slate-950 dark:text-slate-100'}`}>{title}</h2>
-                    <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">{description}</p>
-                </div>
+                <div className="min-w-0"><h2 id={id} className="text-base font-bold text-slate-950 dark:text-slate-100 sm:text-lg">{title}</h2><p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">{description}</p></div>
                 <div className="text-[11px] font-medium text-slate-500 dark:text-slate-400">{offices.length} office{offices.length === 1 ? '' : 's'}</div>
             </div>
-            <div className="grid items-stretch gap-3 md:grid-cols-2 xl:grid-cols-3">
-                {offices.map((office) => <DepartmentOperationsCard key={office.id} office={office} />)}
-            </div>
+            <div className="grid items-stretch gap-3 md:grid-cols-2 xl:grid-cols-3">{offices.map((office) => <DepartmentOperationsCard key={office.id} office={office} />)}</div>
         </section>
     );
 }
