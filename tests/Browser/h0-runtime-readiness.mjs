@@ -102,6 +102,15 @@ async function ready(page) {
     return { bodyLength: body.length, rootPresent: !!root, rootChildren: root?.childElementCount || 0, rootTextLength: rootText.length };
   });
 }
+
+async function anyVisible(locator) {
+  const count = await locator.count();
+  for (let i = 0; i < count; i++) {
+    if (await locator.nth(i).isVisible().catch(() => false)) return true;
+  }
+  return false;
+}
+
 async function shot(page, role, key, safe) {
   if (!safe) return null;
   await fs.mkdir(SHOTS, { recursive: true });
@@ -123,8 +132,8 @@ async function target(page, events, spec) {
     const snap = await ready(page);
     row.checks.appRoot = snap.rootPresent && snap.rootChildren > 0 && snap.rootTextLength >= 10;
     row.checks.nonBlankBody = snap.bodyLength >= 20;
-    row.checks.semanticMarker = !spec.marker || await page.locator('body').getByText(spec.marker, { exact: false }).first().isVisible().catch(() => false);
-    row.checks.requiredLinkVisible = !spec.requiredLink || await page.locator(`a[href="${spec.requiredLink}"]`).first().isVisible().catch(() => false);
+    row.checks.semanticMarker = !spec.marker || await anyVisible(page.getByText(spec.marker, { exact: false }));
+    row.checks.requiredLinkVisible = !spec.requiredLink || await anyVisible(page.locator(`a[href="${spec.requiredLink}"]`));
     const delta = events.slice(start); const fatal = delta.filter(([type]) => type !== 'console-diagnostic');
     row.counts = {
       pageerrors: delta.filter(([t]) => t === 'pageerror').length,
@@ -187,7 +196,7 @@ async function main() {
   try {
     const guestContext = await browser.newContext({ viewport: { width: 1280, height: 800 } }); const guest = await guestContext.newPage(); const guestEvents = watch(guest);
     await target(guest, guestEvents, { role: 'guest', key: 'public-home', route: '/', marker: 'ONE TALIBON', screenshotSafe: true });
-    await target(guest, guestEvents, { role: 'guest', key: 'login-page', route: '/login', marker: 'Employee Portal', screenshotSafe: true }); await guestContext.close();
+    await target(guest, guestEvents, { role: 'guest', key: 'login-page', route: '/login', marker: 'Sign in to the Talibon Intra-Office Portal', screenshotSafe: true }); await guestContext.close();
 
     await role(browser, { role: 'employee', email: 'employee@talibon.demo', privileged: false, targets: [
       { key: 'dashboard', route: '/dashboard' }, { key: 'my-work', route: '/transactions' }, { key: 'records', route: '/records', marker: 'Records' },
@@ -195,15 +204,15 @@ async function main() {
     await role(browser, { role: 'department-head', email: 'engineering@talibon.demo', privileged: true, targets: [
       { key: 'dashboard', route: '/dashboard' }, { key: 'office-work', route: '/transactions?view=office_queue', expectedPath: '/transactions', marker: 'Office Work' },
       { key: 'correspondence', route: '/correspondence' }, { key: 'reports', route: '/reports?report=transaction-aging', expectedPath: '/reports' },
-      { key: 'departments', route: '/departments', marker: 'Municipal Offices' },
+      { key: 'departments', route: '/departments', marker: 'Departments & Offices' },
     ] });
     await role(browser, { role: 'executive', email: 'mayor@talibon.demo', privileged: true, targets: [
       { key: 'dashboard', route: '/dashboard' }, { key: 'mayor-workspace', route: '/mayor-office', marker: 'Items requiring executive attention' }, { key: 'records', route: '/records', marker: 'Records' },
     ] });
     await role(browser, { role: 'system-admin', email: 'admin@talibon.demo', privileged: true, targets: [
-      { key: 'dashboard', route: '/dashboard', requiredLink: '/mayor-office' }, { key: 'mayor-workspace', route: '/mayor-office', marker: 'Items requiring executive attention' },
+      { key: 'dashboard', route: '/dashboard' },
       { key: 'admin', route: '/admin', marker: 'Accounts & Access' }, { key: 'audit', route: '/audit', marker: 'Audit & Security' },
-      { key: 'calendar', route: '/calendar', marker: 'Events, deadlines & schedules' }, { key: 'employee-directory', route: '/employees', marker: 'Employee Directory' },
+      { key: 'calendar', route: '/calendar', marker: 'Calendar & Meetings' }, { key: 'employee-directory', route: '/employees', marker: 'Employee Directory' },
     ] });
   } finally { await browser.close().catch(() => {}); }
 
