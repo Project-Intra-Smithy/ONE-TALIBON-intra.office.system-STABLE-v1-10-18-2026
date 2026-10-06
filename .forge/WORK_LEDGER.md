@@ -34,7 +34,7 @@ Do not reopen automatically.
 
 State:
 
-`ACCEPTED / READY FOR GOVERNANCE PROMOTION`
+`ACCEPTED / PROMOTED`
 
 Final pre-lock audit:
 
@@ -78,7 +78,7 @@ No A01 implementation branch has been authorized by this ledger yet.
 - [x] SSOT reset to current program
 - [x] active ledger reset to current program
 - [x] Technical Authority accepts lock package
-- [ ] lock package promoted to canonical `main`
+- [x] lock package promoted to canonical `main`
 - [ ] FRONTEND-REG-001 reconciliation completed before frontend A01 issuance
 - [ ] A01 exact work-package decomposition
 - [ ] first A01 backend handoff issued
@@ -212,12 +212,11 @@ Stop before product mutation if:
 
 After lock acceptance:
 
-1. fast-forward canonical `main` to the accepted governance lineage;
-2. open P1/A01 from the exact promoted `main`;
-3. perform FRONTEND-REG-001 reconciliation in parallel;
-4. decompose A01 backend work;
-5. issue the first exact-source A01 backend handoff;
-6. track A01-C1 as the frontend/A02 unlock boundary.
+1. open P1/A01 from the exact promoted `main`;
+2. perform FRONTEND-REG-001 reconciliation in parallel;
+3. decompose A01 backend work;
+4. issue the first exact-source A01 backend handoff;
+5. track A01-C1 as the frontend/A02 unlock boundary.
 
 Acceptance record:
 
