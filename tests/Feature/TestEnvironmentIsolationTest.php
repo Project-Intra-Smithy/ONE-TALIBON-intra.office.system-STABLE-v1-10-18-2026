@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\PrototypeMessaging;
+namespace Tests\Feature;
 
 use RuntimeException;
 use Tests\TestCase;

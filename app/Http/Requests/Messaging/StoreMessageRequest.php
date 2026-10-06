@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\PrototypeMessaging;
+namespace App\Http\Requests\Messaging;
 
-use App\Prototype\Messaging\PrototypeMessagingChannels;
+use App\Messaging\MessagingChannels;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-final class StorePrototypeMessageRequest extends FormRequest
+final class StoreMessageRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -27,7 +27,7 @@ final class StorePrototypeMessageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'channel' => ['required', 'string', Rule::in(PrototypeMessagingChannels::all())],
+            'channel' => ['required', 'string', Rule::in(MessagingChannels::all())],
             'body' => ['required', 'string', 'max:2000'],
         ];
     }
