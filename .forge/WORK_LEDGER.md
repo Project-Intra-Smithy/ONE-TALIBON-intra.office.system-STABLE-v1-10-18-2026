@@ -217,9 +217,13 @@ A PASS belongs to the exact validated candidate.
 
 # Current next actions
 
-1. execute Project W1-W6 exactly from the current Hub handoff;
-2. review W6 final conformance result;
-3. close control-plane hold only if W6 passes;
+1. complete W7 Project Status reconciliation from the current Hub handoff;
+2. review the W7 result;
+3. close the control-plane hold only if W7 passes;
 4. explicitly unpause A01-W01;
-5. keep W02 blocked until W01 accepted;
+5. keep W02 blocked until W01 is accepted;
 6. keep A01 frontend blocked until A01-C1 + FRONTEND-REG-001.
+
+Current Project control result: `W6 REWORK / W7 AUTHORIZED`.
+
+A01-W01 remains PAUSED.
