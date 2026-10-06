@@ -117,9 +117,13 @@ Live backend establishes:
 
 # 5. A01 current execution state
 
-Coordination branch:
+Coordination issuance snapshot:
 
 `KIRCH-TALIBON-P1-A01-FIRST-CLASS-TASK@6e926c84bc1095446d90034633f7f722552aaafb`
+
+Current coordination branch after governance-only control-state reconciliation:
+
+`KIRCH-TALIBON-P1-A01-FIRST-CLASS-TASK@fc8cc3258696ce0ff518427a23e518e920345605`
 
 Series plan:
 
@@ -158,7 +162,7 @@ Observed frontend source:
 
 Classification:
 
-`EXISTING FRONTEND ASSET — CONTRACT ONBOARDING / RECONCILIATION REQUIRED`
+`EXISTING FRONTEND ASSET + HISTORICAL FULL-STACK COPY — CONTRACT ONBOARDING / RECONCILIATION REQUIRED`
 
 Critical authority rule:
 
