@@ -30,7 +30,7 @@ This file supersedes the prior showcase/MP-series current-state narrative. Histo
 
 `P0 — CANONICAL BASELINE: COMPLETE / FROZEN`
 
-`COMMON SYSTEM PROGRAM: LOCK PACKAGE PREPARED`
+`COMMON SYSTEM PROGRAM: ACCEPTED / READY FOR GOVERNANCE PROMOTION`
 
 `P1 / A01 — NEXT ENGINEERING TARGET AFTER PROGRAM-LOCK ACCEPTANCE`
 
@@ -230,10 +230,18 @@ Do not inherit PASS across changed executable source.
 
 Before product mutation:
 
-1. review/accept the program-lock memory package;
-2. publish/update lock state as accepted;
+1. promote the accepted governance lock to canonical `main`;
+2. open P1/A01 from that exact promoted `main`;
 3. reconcile FRONTEND-REG-001 before A01 frontend release;
 4. decompose P1/A01 into exact work packages;
-5. issue the first A01 backend handoff from the accepted main source.
+5. issue the first A01 backend handoff from the promoted canonical source.
+
+Program-lock acceptance record:
+
+`.forge/evidence/acceptance/COMMON-SYSTEM-PROGRAM-LOCK-ACCEPTANCE.md`
+
+Acceptance commit:
+
+`63143514c50d35aba6ce2f2eaebbeff15d46af33`
 
 No department-specific implementation is implicitly authorized by this transition.
