@@ -244,25 +244,23 @@ Governance-only changes do not create a new executable product candidate, but th
 
 # 10. Immediate next action
 
-GitHub Project W0 full read-only inventory is complete and Technical Authority reviewed it.
+GitHub Project W1-W5 completed.
 
-Current control-plane state:
+W6 final conformance audit returned:
 
-`PROJECT V1 RECONCILIATION W1-W6 AUTHORIZED / NOT YET COMPLETE`
+`REWORK`
 
-Current reconciliation sequence:
+Exact defect:
 
-1. W1 — safety/access neutralization;
-2. W2 — schema reconciliation;
-3. W3 — initial Hub issues #1-#5 mapping;
-4. W4 — four V1 views;
-5. W5 — only three safe status workflows;
-6. W6 — final read-only Project conformance audit;
-7. Technical Authority review of W6;
-8. close the control-plane hold;
-9. explicitly unpause A01-W01.
+- Project table/Board Status values are correct;
+- issue-side Project Status shows `No status` for Hub issues #1-#5;
+- all other W6 controls passed.
 
-A01-W01 remains PAUSED until W6 passes Technical Authority review.
+Current control-plane gate:
+
+`W7 — STATUS-SURFACE REWORK`
+
+A01-W01 remains PAUSED until W7 passes Technical Authority review.
 
 A01-W02 remains blocked until W01 acceptance.
 
