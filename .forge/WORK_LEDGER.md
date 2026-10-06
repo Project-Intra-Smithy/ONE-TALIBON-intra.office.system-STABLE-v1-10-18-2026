@@ -54,7 +54,7 @@ No executable product source is owned by the current governance branch.
 
 State:
 
-`NEXT / NOT YET ISSUED`
+`ACTIVE / W01 ISSUED`
 
 A01 purpose:
 
@@ -80,8 +80,8 @@ No A01 implementation branch has been authorized by this ledger yet.
 - [x] Technical Authority accepts lock package
 - [x] lock package promoted to canonical `main`
 - [ ] FRONTEND-REG-001 reconciliation completed before frontend A01 issuance
-- [ ] A01 exact work-package decomposition
-- [ ] first A01 backend handoff issued
+- [x] A01 exact work-package decomposition
+- [x] first A01 backend handoff issued
 
 ---
 
@@ -225,3 +225,55 @@ Acceptance record:
 Acceptance commit:
 
 `63143514c50d35aba6ce2f2eaebbeff15d46af33`
+
+
+---
+
+# P1 / A01 active execution ledger
+
+## Series
+
+`A01 — FIRST-CLASS TASK DOMAIN`
+
+Coordination branch:
+
+`KIRCH-TALIBON-P1-A01-FIRST-CLASS-TASK`
+
+Series plan:
+
+`.forge/plans/P1-A01-FIRST-CLASS-TASK-SERIES-PLAN.md`
+
+## A01-W01 — Task Domain Foundation
+
+State:
+
+`ISSUED / ACTIVE`
+
+Writer branch:
+
+`KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION`
+
+Immutable writer source:
+
+`ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4`
+
+Handoff:
+
+`.forge/handoffs/code-writer/A01-W01-TASK-DOMAIN-FOUNDATION.md`
+
+Owned source:
+
+- `app/Models/Task.php`
+- one additive `create_tasks_table` migration
+- `tests/Feature/Tasks/TaskDomainFoundationTest.php`
+- optional TaskFactory only if required for the focused test
+
+Blocked:
+
+- A01-W02 — waits for W01 return/review/acceptance
+- A01-W03 — waits for W02
+- A01-C1 — waits for stable W03 backend contract
+- A01 frontend — waits for A01-C1 + FRONTEND-REG-001
+- A02 implementation — may not consume Task until A01-C1
+
+Do not issue a second A01 backend writer against overlapping Task-domain source while W01 is active.
