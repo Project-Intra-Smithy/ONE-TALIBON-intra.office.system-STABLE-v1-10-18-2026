@@ -85,10 +85,17 @@ Required before W01 resumes:
 - product SSOT/ledger synchronized;
 - Hub W01 state records PAUSED truthfully;
 - FRONTEND-REG-001 hardened against stale backend authority;
-- GitHub Project V1 schema simplified;
-- GitHub Project V1 views simplified;
-- stale Hub bootstrap/control records updated;
-- read-only W0 inventory completed and reviewed.
+- GitHub Project V1 simplified;
+- W0 full read-only inventory completed;
+- W0 discrepancy matrix reviewed by Technical Authority;
+- W1-W5 Project reconciliation completed;
+- W6 final Project conformance audit completed;
+- W6 reviewed by Technical Authority;
+- control-plane hold explicitly closed.
+
+Current Project reconciliation:
+
+`W1-W6 AUTHORIZED / INCOMPLETE`
 
 ---
 
@@ -210,9 +217,9 @@ A PASS belongs to the exact validated candidate.
 
 # Current next actions
 
-1. complete control-plane reconciliation;
-2. run GitHub Project W0 as read-only full inventory only;
-3. review W0 discrepancy matrix;
-4. authorize Project reconciliation only after review;
-5. unpause A01-W01;
-6. keep W02 blocked until W01 accepted.
+1. execute Project W1-W6 exactly from the current Hub handoff;
+2. review W6 final conformance result;
+3. close control-plane hold only if W6 passes;
+4. explicitly unpause A01-W01;
+5. keep W02 blocked until W01 accepted;
+6. keep A01 frontend blocked until A01-C1 + FRONTEND-REG-001.

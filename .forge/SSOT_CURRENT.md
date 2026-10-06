@@ -244,11 +244,28 @@ Governance-only changes do not create a new executable product candidate, but th
 
 # 10. Immediate next action
 
-1. finish the control-plane reconciliation;
-2. complete a read-only GitHub Project inventory against the simplified bootstrap specification;
-3. review that inventory before Project mutation;
-4. then unpause A01-W01;
-5. keep A01-W02 blocked until W01 acceptance;
-6. complete FRONTEND-REG-001 before any A01 frontend issuance.
+GitHub Project W0 full read-only inventory is complete and Technical Authority reviewed it.
+
+Current control-plane state:
+
+`PROJECT V1 RECONCILIATION W1-W6 AUTHORIZED / NOT YET COMPLETE`
+
+Current reconciliation sequence:
+
+1. W1 — safety/access neutralization;
+2. W2 — schema reconciliation;
+3. W3 — initial Hub issues #1-#5 mapping;
+4. W4 — four V1 views;
+5. W5 — only three safe status workflows;
+6. W6 — final read-only Project conformance audit;
+7. Technical Authority review of W6;
+8. close the control-plane hold;
+9. explicitly unpause A01-W01.
+
+A01-W01 remains PAUSED until W6 passes Technical Authority review.
+
+A01-W02 remains blocked until W01 acceptance.
+
+FRONTEND-REG-001 remains required before any A01 frontend issuance.
 
 No department-specific implementation is authorized by this state.
