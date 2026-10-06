@@ -226,9 +226,9 @@ Original deliverable state:
 
 Template/incomplete.
 
-### Later evidence that supersedes part of the purpose
+### Later evidence
 
-P08/P09 now provide strong automated and browser/runtime evidence across:
+P08/P09 now provide materially stronger exact-candidate functional/runtime/browser evidence than the original manual-template plan:
 
 - authentication/MFA;
 - authority/route boundaries;
@@ -248,46 +248,40 @@ P08/P09 now provide strong automated and browser/runtime evidence across:
 - real-auth/two-user Messaging;
 - negative validation/authorization cases in the blocking Feature suite.
 
-The P08 blocking-vs-deferred test boundary also prevents specialized/historical failures from being misrepresented as current shared-core acceptance.
-
-### Residual purpose NOT superseded
-
-The original Siris lane was not merely automated regression. It was an **independent exploratory QA/familiarization lane**.
-
-The Technical Audit / delivery lifecycle still separates:
-
-- CI/CD technical validation; and
-- independent QA validation.
-
-Current KIRION Forge exact-head runs are strong engineering evidence, but they do not by themselves prove that an independent QA owner exercised the current frozen candidate and recorded a human QA disposition.
-
-### Disposition
-
-`PARTIALLY SUPERSEDED`
-
-### Residual requirement
-
-Do NOT require Siris to fill the obsolete entire October-3 template against an obsolete snapshot.
-
-Instead require one bounded current-candidate QA closeout against:
+Run #28 attempt 3 validates exact candidate:
 
 `395438674b4d2f00659eba616db760b339bb390a`
 
-Minimum residual QA scope:
+The exact artifact contains H0 runtime, responsive, route-list and runtime-log evidence.
 
-1. launch the exact current candidate or the approved validation environment;
-2. verify login / logout / invalid login / inactive-account behavior;
-3. verify main navigation and direct-route access for at least representative allowed and denied roles;
-4. verify Work Requests, Correspondence, Records/Search/Documents, Memoranda, Calendar and accepted Messaging at representative user level;
-5. verify one responsive/mobile pass;
-6. verify obvious loading/empty/error/permission-denied behavior where reachable;
-7. record PASS / FAIL / PARTIAL / BLOCKED / NOT RUN only;
-8. attach concise evidence;
-9. explicitly state that this is Phase-0 engineering QA, not LGU UAT.
+### Engineering correction
 
-This residual should be small because later exact-candidate CI/browser evidence already covers the regression-heavy portion.
+A separate manual QA runtime/bootstrap is **not required** and should not be created merely to duplicate the already-proven CI/CD environment.
 
-P0-H remains blocked until this residual independent QA disposition is recorded OR the Technical Authority explicitly waives separation-of-duties for Phase 0 with a written rationale. Waiver is not recommended.
+Doing so adds a second environment, second dependency/bootstrap path and additional failure modes without materially increasing certainty for this Phase-0 baseline.
+
+The independent QA gate remains distinct, but its residual responsibility is now **independent evidence review**, not redundant re-execution.
+
+### Disposition
+
+`PARTIALLY SUPERSEDED — INDEPENDENT EVIDENCE REVIEW REQUIRED`
+
+### Residual requirement
+
+Siris / assigned QA independently reviews the exact Run #28 attempt-3 evidence and verifies:
+
+- exact SHA identity;
+- all required gates actually ran and passed;
+- H0 report = 22/22 PASS, zero page errors/server 5xx/console diagnostics/navigation failures;
+- responsive report passes 1440x900 and 390x844 for Dashboard, Work Requests, Records and Messaging;
+- real-auth/two-user Messaging runtime step passed;
+- route-list and runtime-log evidence exist;
+- no evidence contradicts the claimed Phase-0 engineering state;
+- no CI result is being overstated as LGU UAT, production acceptance or final contractual acceptance.
+
+This preserves separation of duties because QA independently accepts or rejects the evidence; it does not require QA to rebuild the system a second time.
+
+P0-H remains blocked until that independent QA evidence-review disposition is recorded.
 
 ---
 
@@ -351,7 +345,7 @@ After the independent QA residual closes, publish P0-H with:
 | AJ frontend audit + mockups/evidence | FULLY SUPERSEDED |
 | Jhayr coordination/responsive audit + mockups/evidence | FULLY SUPERSEDED |
 | Kurt self-hosted CI/CD lab + pass/fail evidence | FULLY SUPERSEDED |
-| Siris independent exploratory QA + evidence | PARTIALLY SUPERSEDED — bounded current-candidate QA still required |
+| Siris independent exploratory QA + evidence | PARTIALLY SUPERSEDED — independent exact-candidate evidence review required |
 | Kirch canonical baseline/known-state publication | PARTIALLY SUPERSEDED — P0-H publication still required |
 
 ---
@@ -362,11 +356,11 @@ The project should NOT force contributors to fabricate retroactive completion of
 
 The later KIRION Forge hardening and validation program is stronger evidence for AJ, Jhayr and Kurt than the originally planned artifacts.
 
-Independent QA remains materially distinct from CI/CD and should not be silently waived.
+Independent QA remains materially distinct from CI/CD, but it need not duplicate the validated CI environment. The remaining QA control is independent review of the exact-candidate evidence.
 
 Therefore the honest remaining Phase-0 closure path is:
 
-`SIRIS BOUNDED CURRENT-CANDIDATE QA -> TECH LEAD REVIEW -> P0-H KNOWN-STATE PUBLICATION -> MAIN PROMOTION DECISION -> A01 FIRST-CLASS TASK / UNIFIED MY WORK AUTHORIZATION`
+`SIRIS INDEPENDENT RUN-28 EVIDENCE REVIEW -> TECH LEAD REVIEW -> P0-H KNOWN-STATE PUBLICATION -> MAIN PROMOTION DECISION -> A01 FIRST-CLASS TASK / UNIFIED MY WORK AUTHORIZATION`
 
 No P09-W03 cleanup is authorized.
 
