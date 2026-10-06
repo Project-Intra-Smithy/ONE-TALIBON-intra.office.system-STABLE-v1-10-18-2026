@@ -4,7 +4,7 @@
 
 Series: `P0 — CANONICAL BASELINE STABILIZATION`
 
-Work package: `P0-QA02 — BOUNDED CURRENT-CANDIDATE EXPLORATORY QA`
+Work package: `P0-QA02 — INDEPENDENT EXACT-CANDIDATE EVIDENCE REVIEW`
 
 QA owner: **Siris / assigned QA lane**
 
@@ -18,148 +18,159 @@ Exact product/runtime candidate under QA:
 
 `395438674b4d2f00659eba616db760b339bb390a`
 
-That exact candidate has already passed KIRION Forge technical acceptance:
+The candidate already passed the project's authoritative exact-head CI/runtime/browser baseline:
 
-- P08 Targeted Baseline Acceptance Run #28
-- successful attempt: 3
-- conclusion: SUCCESS
+- workflow: `P08 Targeted Baseline Acceptance`
+- Run #28
+- successful attempt: `3`
 - exact SHA: `395438674b4d2f00659eba616db760b339bb390a`
+- conclusion: `SUCCESS`
 
-The purpose of this QA lane is NOT to repeat CI/CD. It is to provide the remaining independent human exploratory QA evidence required before P0-H Phase-0 freeze.
+Artifact:
 
-Do not modify product source.
-Do not create fixes.
-Do not merge.
-Do not promote.
-Do not deploy.
+`p08-baseline-acceptance-395438674b4d2f00659eba616db760b339bb390a`
 
-If a defect is found, record it and return it to Maintainer.
+Artifact ID:
 
----
+`11418268674`
 
-## Mission
+Digest:
 
-Perform one bounded independent exploratory QA pass against the exact current candidate.
-
-This is **Phase-0 engineering QA**, not LGU UAT and not final contractual acceptance.
-
-The QA pass should answer:
-
-- Can representative users enter the system correctly?
-- Are the main shared-core surfaces understandable and reachable?
-- Do representative allowed/denied paths behave correctly?
-- Are the accepted core work, records and coordination surfaces usable?
-- Does the system remain usable at one representative mobile viewport?
-- Are obvious empty/error/permission states truthful rather than misleading?
-
-Do not test every historical/deferred/specialized domain.
+`sha256:f386d18a844c314dbeecfe3ab188195dcd0a9158bd06fd69fae4848a4282ac49`
 
 ---
 
-## Required scope
+## Governing correction
 
-### 1. Authentication / account-state smoke
+P0-QA02 MUST NOT create a second QA runtime/bootstrap path merely to repeat the CI/CD environment.
 
-Verify representative:
+The canonical baseline is the repository-controlled exact-candidate validation workflow already proven on the SHA above.
 
-- valid login;
-- invalid credentials;
-- logout;
-- inactive-account denial if a fixture/account exists for it;
-- MFA-assured flow where applicable to the provided QA identities.
+The independent QA obligation is therefore satisfied by an **independent review of the exact-candidate CI/runtime/browser evidence**, not by rebuilding the application again on a second manual environment.
 
-### 2. Main navigation / direct-route authority
+This preserves separation of duties without introducing a second source of environmental failure.
 
-Verify:
-
-- normal authenticated navigation;
-- one representative allowed route;
-- one representative denied/unauthorized route;
-- direct-route entry does not bypass server authority.
-
-### 3. Work & accountability
-
-Verify representative Work Request behavior:
-
-- list/queue visible;
-- open one item;
-- state/office/assignee information is understandable;
-- no current screen falsely presents Work Requests as first-class Tasks.
-
-Do not invent or test a Task lifecycle; first-class Task is post-Phase-0 work.
-
-### 4. Official information / evidence
-
-Exercise representative:
-
-- Correspondence;
-- Documents / attachments;
-- Records / Search;
-- Memoranda.
-
-Check that the user can understand what is available, what is empty, and what is permission-bounded.
-
-### 5. Coordination
-
-Exercise:
-
-- Calendar;
-- accepted Messaging.
-
-For Messaging, confirm at minimum:
-
-- feed loads;
-- current user can send where authorized;
-- message appears after send;
-- channel switching does not visibly cross-contaminate messages.
-
-Do not redesign or expand Messaging.
-
-### 6. Responsive/mobile check
-
-Use one representative mobile viewport.
-
-Verify:
-
-- navigation remains usable;
-- primary shared-core page shell does not become unusable;
-- at least one work surface and Messaging remain operable.
-
-This is not a full device certification matrix.
-
-### 7. Shared states
-
-Where naturally reachable, observe at least representative:
-
-- loading;
-- empty;
-- validation error;
-- unauthorized / permission denied;
-- unavailable/blocked/reference surface.
-
-Do not manufacture destructive error conditions.
+Do not modify source.
+Do not rerun dependencies.
+Do not reseed another database.
+Do not create a new test stack.
+Do not merge, promote or deploy.
 
 ---
 
-## Explicitly out of scope
+## Required evidence review
 
-Do NOT reopen:
+Review the Run #28 attempt-3 evidence and confirm each item below.
 
-- Full HRIS;
-- Property;
-- Legislative;
-- Travel Order;
-- Procurement final lifecycle;
-- Project Monitoring final lifecycle/KPIs;
-- deferred `DeferredAndSpecialized` suite;
-- prototype/showcase historical artifacts;
-- production deployment;
-- backup/restore;
-- infrastructure;
-- formal LGU UAT;
-- final contractual acceptance.
+### A. Candidate identity
 
-Do not treat a reference/deferred surface as a defect merely because it is intentionally non-authoritative.
+Confirm:
+
+- workflow head SHA equals `395438674b4d2f00659eba616db760b339bb390a`;
+- run conclusion is SUCCESS;
+- no later executable product mutation is being inherited into the claim.
+
+### B. CI/CD technical gates
+
+Confirm the run shows SUCCESS for:
+
+- exact-head checkout;
+- Git authority / ancestry guard;
+- source-contract guard;
+- Node/PHP toolchains;
+- runner/database safety;
+- disposable PostgreSQL test database;
+- locked dependency restore;
+- Laravel test environment;
+- TypeScript validation;
+- production build;
+- fresh migrate/seed;
+- route authority evidence;
+- blocking Feature suite;
+- Laravel cacheability;
+- Chromium readiness;
+- runtime/browser acceptance;
+- repository hygiene / exact-tree evidence;
+- artifact upload.
+
+### C. H0 runtime report
+
+Artifact file:
+
+`app/qa/h0-runtime-readiness-report.json`
+
+Expected exact summary:
+
+- targets: `22`
+- passed: `22`
+- failed: `0`
+- pageerrorCount: `0`
+- server5xxCount: `0`
+- consoleDiagnosticCount: `0`
+- navigationFailureCount: `0`
+
+This report covers representative guest, employee, department-head, executive and system-admin runtime targets including dashboard, Work Requests, Records, Correspondence, Departments, Reports, Administration, Audit, Calendar and Employee Directory.
+
+### D. Responsive report
+
+Artifact file:
+
+`app/qa/p08-responsive-smoke-report.json`
+
+Confirm:
+
+- expected SHA equals actual SHA;
+- completed = true;
+- `1440x900` PASS;
+- `390x844` PASS;
+- routes PASS at both viewports:
+  - Dashboard
+  - Work Requests
+  - Records
+  - Messaging
+- no horizontal overflow failure is reported.
+
+### E. Messaging runtime acceptance
+
+Confirm the runtime/browser acceptance step completed SUCCESS for:
+
+`tests/Browser/mp0-messaging-closure.mjs`
+
+That script validates real-auth two-user Messaging behavior including:
+
+- authenticated/MFA entry;
+- initial channel sync;
+- send response 201;
+- channel switching;
+- channel isolation;
+- rapid switch immediate sync;
+- failed-send text retention/error isolation.
+
+### F. Runtime diagnostics
+
+Confirm artifact evidence includes:
+
+- `logs/p08-laravel.out.log`;
+- `logs/p08-laravel.err.log`;
+- Laravel stderr artifact is empty;
+- route-list evidence exists;
+- exact candidate evidence exists.
+
+---
+
+## Independent QA role
+
+Siris does not need to rerun the system.
+
+The QA responsibility is to independently answer:
+
+1. Does the evidence actually belong to the exact candidate?
+2. Did the required technical/browser gates run rather than being skipped?
+3. Do the H0 and responsive reports show the expected PASS state?
+4. Is there any contradiction, missing evidence or suspicious gap that prevents a QA sign-off?
+5. Is any evidence being overstated as LGU UAT, production acceptance or final contractual acceptance?
+
+This remains an independent QA gate because the QA owner independently reviews and accepts/rejects the evidence rather than inheriting the Maintainer conclusion.
 
 ---
 
@@ -171,39 +182,29 @@ Use only:
 - `FAIL`
 - `PARTIAL`
 - `BLOCKED`
-- `NOT RUN`
 
-Every FAIL/PARTIAL/BLOCKED item must include concise evidence and whether it appears to be:
-
-- product defect;
-- test/QA procedure issue;
-- environment/runner issue;
-- authority/input dependency.
-
-Do not guess.
+If any item is not supported by actual evidence, do not guess.
 
 ---
 
 ## Required return
 
-Return one concise QA closeout containing:
+Return:
 
-1. exact product SHA tested;
-2. environment/browser/device viewport;
-3. persona/account roles used;
-4. checklist with PASS/FAIL/PARTIAL/BLOCKED/NOT RUN;
-5. screenshots or concise evidence references for any non-PASS item;
-6. highest-priority defects, if any;
-7. explicit statement whether any finding blocks P0-H;
-8. explicit statement:
-   `THIS IS PHASE-0 ENGINEERING QA, NOT LGU UAT OR FINAL ACCEPTANCE`.
-
-If every tested item is PASS and no blocker is observed, return:
+1. exact SHA reviewed;
+2. Run #28 / attempt 3 identity;
+3. artifact identity/digest;
+4. checklist of sections A-F with PASS/FAIL/PARTIAL/BLOCKED;
+5. any contradiction or missing evidence;
+6. whether any finding blocks P0-H;
+7. one final disposition:
 
 `QA DISPOSITION: PASS FOR PHASE-0 CLOSEOUT`
 
-If any material current shared-core defect is found, return:
+or
 
 `QA DISPOSITION: REWORK`
 
-Do not mutate source.
+Mandatory claim boundary:
+
+`THIS IS PHASE-0 ENGINEERING QA EVIDENCE REVIEW, NOT LGU UAT OR FINAL ACCEPTANCE.`
