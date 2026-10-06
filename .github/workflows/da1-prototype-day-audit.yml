@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - KIRCH-TALIBON-DA1-PROTOTYPE-DAY-BLOCKER-AUDIT
-  workflow_dispatch:
 
 permissions:
   contents: read

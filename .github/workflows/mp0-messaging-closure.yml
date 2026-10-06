@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - KIRCH-TALIBON-MP0-MESSAGING-RUNTIME-UI-REWORK
-  workflow_dispatch:
 
 permissions:
   contents: read

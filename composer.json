@@ -2,7 +2,7 @@
   "$schema": "https://getcomposer.org/schema.json",
   "name": "kirjane/talibon-intra-office-portal",
   "type": "project",
-  "description": "Secure municipal intra-office portal prototype for LGU Talibon.",
+  "description": "Secure municipal intra-office portal for LGU Talibon.",
   "license": "proprietary",
   "require": {
     "php": "^8.3",

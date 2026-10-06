@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - KIRCH-TALIBON-BH2-FAST-RENDER-HARDENING
-  workflow_dispatch:
 
 permissions:
   contents: read
