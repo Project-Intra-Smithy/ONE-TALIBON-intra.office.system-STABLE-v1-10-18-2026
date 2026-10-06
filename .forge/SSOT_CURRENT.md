@@ -244,23 +244,23 @@ Governance-only changes do not create a new executable product candidate, but th
 
 # 10. Immediate next action
 
-GitHub Project W1-W5 completed.
+GitHub Project V1 is technically accepted.
 
-W6 final conformance audit returned:
-
-`REWORK`
-
-Exact defect:
-
-- Project table/Board Status values are correct;
-- issue-side Project Status shows `No status` for Hub issues #1-#5;
-- all other W6 controls passed.
+W7 status-surface verification passed with no Project mutation required.
 
 Current control-plane gate:
 
-`W7 — STATUS-SURFACE REWORK`
+`W8 — A01-W01 RESUME / PROJECT STATUS SYNCHRONIZATION`
 
-A01-W01 remains PAUSED until W7 passes Technical Authority review.
+W8 must synchronize Hub issue #2 Project Status:
+
+`Blocked -> Active`
+
+After W8 PASS and Maintainer review:
+
+- close the control-plane hold;
+- explicitly unpause A01-W01;
+- permit execution from immutable writer source `ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4`.
 
 A01-W02 remains blocked until W01 acceptance.
 
