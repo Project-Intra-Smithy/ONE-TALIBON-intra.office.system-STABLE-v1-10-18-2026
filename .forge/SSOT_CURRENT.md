@@ -32,9 +32,9 @@ This file supersedes the prior showcase/MP-series current-state narrative. Histo
 
 `COMMON SYSTEM PROGRAM: ACCEPTED / PROMOTED`
 
-`P1 / A01 — NEXT ENGINEERING TARGET AFTER PROGRAM-LOCK ACCEPTANCE`
+`P1 / A01 — ACTIVE / W01 ISSUED`
 
-No A01 implementation branch had begun at the final pre-lock audit.
+A01 implementation has now begun through one bounded backend writer lane.
 
 Main has not been modified by the lock-preparation branch.
 
@@ -244,3 +244,39 @@ Acceptance commit:
 `63143514c50d35aba6ce2f2eaebbeff15d46af33`
 
 No department-specific implementation is implicitly authorized by this transition.
+
+
+---
+
+# A01 current execution state
+
+Coordination branch:
+
+`KIRCH-TALIBON-P1-A01-FIRST-CLASS-TASK`
+
+Series plan:
+
+`.forge/plans/P1-A01-FIRST-CLASS-TASK-SERIES-PLAN.md`
+
+Active writer package:
+
+`A01-W01 — TASK DOMAIN FOUNDATION`
+
+Writer branch:
+
+`KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION`
+
+Immutable writer source:
+
+`ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4`
+
+Handoff:
+
+`.forge/handoffs/code-writer/A01-W01-TASK-DOMAIN-FOUNDATION.md`
+
+A01-W02 is blocked until W01 returns and is reviewed/accepted.
+
+A01 frontend remains blocked until:
+
+- A01-C1 contract release;
+- FRONTEND-REG-001 completion.
