@@ -30,7 +30,7 @@ This file supersedes the prior showcase/MP-series current-state narrative. Histo
 
 `P0 — CANONICAL BASELINE: COMPLETE / FROZEN`
 
-`COMMON SYSTEM PROGRAM: ACCEPTED / READY FOR GOVERNANCE PROMOTION`
+`COMMON SYSTEM PROGRAM: ACCEPTED / PROMOTED`
 
 `P1 / A01 — NEXT ENGINEERING TARGET AFTER PROGRAM-LOCK ACCEPTANCE`
 
@@ -230,11 +230,10 @@ Do not inherit PASS across changed executable source.
 
 Before product mutation:
 
-1. promote the accepted governance lock to canonical `main`;
-2. open P1/A01 from that exact promoted `main`;
-3. reconcile FRONTEND-REG-001 before A01 frontend release;
-4. decompose P1/A01 into exact work packages;
-5. issue the first A01 backend handoff from the promoted canonical source.
+1. open P1/A01 from the exact promoted `main`;
+2. reconcile FRONTEND-REG-001 before A01 frontend release;
+3. decompose P1/A01 into exact work packages;
+4. issue the first A01 backend handoff from the promoted canonical source.
 
 Program-lock acceptance record:
 
