@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Prototype\Messaging;
+namespace App\Messaging;
 
-final class PrototypeMessagingChannels
+final class MessagingChannels
 {
     private const CHANNELS = [
         'General',

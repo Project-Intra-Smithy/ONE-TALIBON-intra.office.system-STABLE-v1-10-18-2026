@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\PrototypeMessaging;
+namespace App\Http\Resources\Messaging;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-final class PrototypeMessageResource extends JsonResource
+final class MessageResource extends JsonResource
 {
     public function toArray(Request $request): array
     {

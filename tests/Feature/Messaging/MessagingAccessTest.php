@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature\PrototypeMessaging;
+namespace Tests\Feature\Messaging;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-final class PrototypeMessagingAccessTest extends TestCase
+final class MessagingAccessTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -22,7 +22,7 @@ final class PrototypeMessagingAccessTest extends TestCase
         $this->assertDatabaseCount('prototype_messages', 0);
     }
 
-    public function test_inactive_authenticated_user_is_forced_out_before_prototype_access(): void
+    public function test_inactive_authenticated_user_is_forced_out_before_messaging_access(): void
     {
         $user = $this->makeUser(false);
 
@@ -31,7 +31,7 @@ final class PrototypeMessagingAccessTest extends TestCase
             ->assertRedirect(route('login'));
     }
 
-    public function test_privileged_user_without_mfa_assurance_cannot_access_prototype_messages(): void
+    public function test_privileged_user_without_mfa_assurance_cannot_access_messages(): void
     {
         $user = $this->makeUser(true);
 

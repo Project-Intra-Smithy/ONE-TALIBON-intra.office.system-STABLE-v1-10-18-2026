@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Messaging;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PrototypeMessaging\StorePrototypeMessageRequest;
-use App\Http\Resources\PrototypeMessaging\PrototypeMessageResource;
+use App\Http\Requests\Messaging\StoreMessageRequest;
+use App\Http\Resources\Messaging\MessageResource;
 use App\Models\Message;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
 
 final class StoreMessageController extends Controller
 {
-    public function __invoke(StorePrototypeMessageRequest $request): JsonResponse
+    public function __invoke(StoreMessageRequest $request): JsonResponse
     {
         $validated = $request->validated();
         $message = Message::query()->create([
@@ -22,7 +22,7 @@ final class StoreMessageController extends Controller
         ]);
         $message->load(['sender.employee.department']);
 
-        return (new PrototypeMessageResource($message))
+        return (new MessageResource($message))
             ->response()
             ->setStatusCode(201);
     }

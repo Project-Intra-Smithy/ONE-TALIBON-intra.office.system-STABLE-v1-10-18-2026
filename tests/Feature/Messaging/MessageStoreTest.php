@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\PrototypeMessaging;
+namespace Tests\Feature\Messaging;
 
 use App\Models\Department;
 use App\Models\Employee;
@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
-final class PrototypeMessageStoreTest extends TestCase
+final class MessageStoreTest extends TestCase
 {
     use RefreshDatabase;
 
