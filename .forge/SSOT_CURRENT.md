@@ -10,19 +10,19 @@ Product repository:
 
 `Kirch-Nairu/Talibon-Sales-Prototype`
 
-Current canonical product authority:
-
-`main@4bac88d22e1fb3f808c024888845503922c41683`
-
-Current accepted executable/runtime anchor:
+Accepted executable/runtime anchor:
 
 `395438674b4d2f00659eba616db760b339bb390a`
 
-Current governance work:
+Common-program promotion / A01 Series-opening source:
 
-`KIRCH-TALIBON-COMMON-SYSTEM-PROGRAM-LOCK`
+`main@f2ff373113f89173016634505eb3c3943edfb35c`
 
-This file supersedes the prior showcase/MP-series current-state narrative. Historical evidence remains preserved as provenance.
+Important:
+
+`f2ff373...` remains the exact source that opened A01. Later `.forge/**` governance-only commits on `main` do not rewrite that issued source and do not inherit executable acceptance to changed product source.
+
+Current exact `main` must always be re-verified before a new work package is issued.
 
 ---
 
@@ -32,105 +32,65 @@ This file supersedes the prior showcase/MP-series current-state narrative. Histo
 
 `COMMON SYSTEM PROGRAM: ACCEPTED / PROMOTED`
 
-`P1 / A01 — NEXT ENGINEERING TARGET AFTER PROGRAM-LOCK ACCEPTANCE`
+`P1 / A01 — OPENED`
 
-No A01 implementation branch had begun at the final pre-lock audit.
+`A01-W01 — ISSUED / PAUSED FOR CONTROL-PLANE RECONCILIATION`
 
-Main has not been modified by the lock-preparation branch.
+No A01-W01 implementation candidate has been returned.
+
+The writer branch remains at its immutable issued source:
+
+`KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION@ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4`
+
+A01-W02 remains blocked until W01 returns, is reviewed, validated as required, and accepted.
 
 ---
 
 # 2. P0 accepted baseline
 
-P0-H freeze commit:
-
-`4bac88d22e1fb3f808c024888845503922c41683`
-
-Record:
-
-`.forge/evidence/acceptance/P0-H-CANONICAL-PHASE0-BASELINE-FREEZE.md`
-
-Exact runtime candidate:
+P0 accepted executable/runtime anchor:
 
 `395438674b4d2f00659eba616db760b339bb390a`
 
 Validation:
 
-- P08 Targeted Baseline Acceptance;
-- Run #28;
-- attempt 3;
-- SUCCESS;
-- artifact ID `11418268674`;
-- digest `sha256:f386d18a844c314dbeecfe3ab188195dcd0a9158bd06fd69fae4848a4282ac49`.
+- workflow: `P08 Targeted Baseline Acceptance`
+- run: `#28`
+- attempt: `3`
+- conclusion: `SUCCESS`
+- artifact ID: `11418268674`
+- digest: `sha256:f386d18a844c314dbeecfe3ab188195dcd0a9158bd06fd69fae4848a4282ac49`
 
-All executable changes after the runtime anchor were absent; P0-H descendants to main were governance/evidence only.
+Governance descendants from the accepted runtime anchor through the common-program promotion contain only `.forge/**` evidence/memory/governance changes.
 
-P0 does not reopen without concrete defect, invalidated evidence, changed acceptance requirement or explicit Technical Authority decision.
+P0 does not reopen without:
 
----
-
-# 3. Common-system governing memory
-
-Entry point:
-
-`.forge/memory/COMMON-SYSTEM-MEMORY-INDEX.md`
-
-Canonical program lock:
-
-`.forge/memory/COMMON-SYSTEM-PROGRAM-LOCK.md`
-
-Supporting current memory:
-
-- `.forge/memory/SOURCE-AUTHORITY-REGISTER.md`
-- `.forge/memory/COMMON-CAPABILITY-BASELINE-REGISTER.md`
-- `.forge/memory/COMMON-PROGRAM-DEPENDENCY-GRAPH.md`
-- `.forge/memory/WORKFLOW-DISCOVERY-AUTHORITY-TRACK.md`
-- `.forge/memory/FRONTEND-INTEGRATION-REGISTRY.md`
-- `.forge/memory/ENGINEERING-HUB-OPERATING-MODEL.md`
-- `.forge/memory/P1-A01-OPENING-CONTEXT.md`
-
-Final assurance:
-
-`.forge/evidence/maintainer/COMMON-SYSTEM-PRELOCK-FINAL-AUDIT.md`
+- concrete defect;
+- invalidated evidence;
+- changed acceptance requirement; or
+- explicit Technical Authority decision.
 
 ---
 
-# 4. Locked program architecture
+# 3. Locked common-system architecture
 
-Once the program-lock package is accepted, the common program is:
-
-- `P0 — Canonical Baseline` — COMPLETE
-- `P1 — Common Work & Accountability`
-- `P2 — Common Coordination Integration`
-- `P3 — Official Information & Evidence Maturation`
-- `P4 — Common Search`
-- `P5 — Visibility & Control`
-- `P6 — Cross-Domain Authorization Reconciliation & Security Regression`
-- `P7 — Common-Core Acceptance`
+- P1 — Common Work & Accountability
+- P2 — Common Coordination Integration
+- P3 — Official Information & Evidence Maturation
+- P4 — Common Search
+- P5 — Visibility & Control
+- P6 — Cross-Domain Authorization Reconciliation & Security Regression
+- P7 — Common-Core Acceptance
 
 P1 Series:
 
-- `A01 — First-Class Task Domain`
-- `A02 — Unified My Work Projection`
-- `A03 — Non-Destructive Task / Work Request Integration`
-- `A04 — P1 Integration & Contract Acceptance`
-- `P1-H`
+- A01 — First-Class Task Domain
+- A02 — Unified My Work Projection
+- A03 — Non-Destructive Task / Work Request Integration
+- A04 — P1 Integration & Contract Acceptance
+- P1-H
 
-Detailed P2-P7 work packages are not pre-authorized. They are generated just-in-time from accepted upstream contracts/evidence.
-
----
-
-# 5. Current architecture facts
-
-Live backend establishes:
-
-- Work Request / WorkflowTransaction is a strong existing engine;
-- current My Work exists but is transaction-backed;
-- no generic canonical Task domain exists;
-- true Task + Work Request Unified My Work therefore remains missing;
-- Correspondence, Documents, Records, Notifications, Calendar, Messaging, Dashboards, Reports, Audit, Auth/MFA and authorization are established foundations at varying maturity.
-
-Invariants:
+Locked invariants:
 
 - `Task != Work Request`
 - `Work Request != Correspondence`
@@ -138,83 +98,135 @@ Invariants:
 - `Meeting != Task`
 - `Executive oversight != universal routing`
 
-Do not build a giant generic workflow engine from abstract similarity alone.
+Do not create a universal mutable WorkItem/domain merely to simplify integration.
 
 ---
 
-# 6. Frontend state
+# 4. Current source-backed architecture facts
+
+Live backend establishes:
+
+- Work Request / `WorkflowTransaction` is an established common engine;
+- current My Work is real but transaction-backed;
+- no generic canonical common `Task` model/controller/route exists;
+- therefore A01 remains a real missing common domain;
+- A02 must extend existing My Work rather than replace it;
+- Correspondence, Documents, Records, Notifications, Calendar, Messaging, Dashboards, Reports, Audit, Auth/MFA and authorization are established foundations at varying maturity.
+
+---
+
+# 5. A01 current execution state
+
+Coordination branch:
+
+`KIRCH-TALIBON-P1-A01-FIRST-CLASS-TASK@6e926c84bc1095446d90034633f7f722552aaafb`
+
+Series plan:
+
+`.forge/plans/P1-A01-FIRST-CLASS-TASK-SERIES-PLAN.md`
+
+A01-W01 writer branch:
+
+`KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION`
+
+Immutable issued source:
+
+`ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4`
+
+W01 scope remains bounded to:
+
+- `app/Models/Task.php`
+- one additive `create_tasks_table` migration
+- `tests/Feature/Tasks/TaskDomainFoundationTest.php`
+- optional TaskFactory only if the focused test genuinely requires it
+
+W01 is currently PAUSED while Engineering Hub / GitHub Project control-plane bootstrap is reconciled.
+
+The pause is operational only. It does not revoke A01 authority or alter the immutable issued source.
+
+---
+
+# 6. Frontend authority boundary
 
 Existing frontend/team repository:
 
 `Kirch-Nairu/Talibon-Intra-Office-Portal`
 
-Observed main:
+Observed frontend source:
 
-`a7d7be17feb435b50c52cacd063e11d92ad047e1`
+`main@a7d7be17feb435b50c52cacd063e11d92ad047e1`
 
-State:
+Classification:
 
 `EXISTING FRONTEND ASSET — CONTRACT ONBOARDING / RECONCILIATION REQUIRED`
 
-Existing Login/Dashboard/AppLayout/shell and related surfaces should be reused.
+Critical authority rule:
 
-Frontend is not yet proven synchronized to the P0-H backend.
+The repository contains both frontend assets and an older full-stack/backend copy.
 
-Before A01 frontend work:
+Its server/backend source is **NOT** canonical product authority.
 
-`FRONTEND-REG-001`
+Canonical backend/domain authority remains:
 
-must publish the exact frontend integration base and consumed backend contract.
+`Kirch-Nairu/Talibon-Sales-Prototype`
 
-This does not block A01 backend/domain work.
+FRONTEND-REG-001 must explicitly identify which frontend files/contracts are consumable and must prevent historical backend/routes/controllers/models from being reintroduced as authority.
+
+A01 frontend remains blocked until:
+
+`A01-C1 + FRONTEND-REG-001`
+
+A01 backend/domain work is not logically blocked by frontend reconciliation, although W01 is temporarily paused for the control-plane reconciliation recorded here.
 
 ---
 
-# 7. LGU workflow / business authority state
+# 7. Engineering Hub authority
 
-Citizens' Charter classification:
+Operational control repository:
+
+`Project-Intra-Smithy/engineering-hub`
+
+The Hub is the current operational coordination surface for:
+
+- work-package state;
+- dependencies;
+- frontend reconciliation;
+- Track W;
+- Track R;
+- Project-control bootstrap.
+
+Detailed executable truth remains in this product repository and exact Git evidence.
+
+If Hub and product `.forge` current-state records conflict, the conflict must be reconciled before issuing new work.
+
+---
+
+# 8. LGU workflow / business authority
+
+Citizens' Charter:
 
 `SUPPORTING MUNICIPAL PROCESS REFERENCE — VALIDATION REQUIRED`
 
-Process-owner validated workflow remains the authority for current department business behavior.
+Process-owner validated workflow remains authoritative for municipal business truth.
 
-Department-specific implementation must not be inferred solely from:
+Department-specific rules must not be inferred solely from:
 
 - Charter rows;
 - historical code;
 - prototype/reference pages;
 - menu/route existence.
 
-Key input records remain tracked, including:
+Track W handles LGU/process authority in parallel.
 
-- ORG-001;
-- ROLE-001;
-- MEET-001;
-- ANN-001;
-- KPI-001;
-- VICE-001;
-- PROC-001;
-- PROJ-001;
-- WF-001;
-- WF-002.
+Track R handles production readiness in parallel.
 
----
-
-# 8. Parallel program tracks
-
-## Track W — LGU Workflow Intake / Authority
-Runs in parallel with common development.
-
-## Track R — Production Readiness
-Runs in parallel under separate evidence.
-
-Neither may silently redefine common-domain architecture.
+Neither track silently redefines common-domain architecture.
 
 ---
 
 # 9. Acceptance law
 
-For executable product work:
+For executable work:
 
 `IMPLEMENTED + COMMITTED + SELF-VALIDATED + REVIEWED + CI PASSED + QA PASSED WHERE REQUIRED + TECHNICAL AUTHORITY ACCEPTED + INTEGRATED + RECORDED`
 
@@ -222,25 +234,17 @@ A PASS belongs to an exact candidate.
 
 Executable source change after PASS creates a new candidate.
 
-Do not inherit PASS across changed executable source.
+Governance-only changes do not create a new executable product candidate, but their exact Git lineage must still be recorded.
 
 ---
 
 # 10. Immediate next action
 
-Before product mutation:
+1. finish the control-plane reconciliation;
+2. complete a read-only GitHub Project inventory against the simplified bootstrap specification;
+3. review that inventory before Project mutation;
+4. then unpause A01-W01;
+5. keep A01-W02 blocked until W01 acceptance;
+6. complete FRONTEND-REG-001 before any A01 frontend issuance.
 
-1. open P1/A01 from the exact promoted `main`;
-2. reconcile FRONTEND-REG-001 before A01 frontend release;
-3. decompose P1/A01 into exact work packages;
-4. issue the first A01 backend handoff from the promoted canonical source.
-
-Program-lock acceptance record:
-
-`.forge/evidence/acceptance/COMMON-SYSTEM-PROGRAM-LOCK-ACCEPTANCE.md`
-
-Acceptance commit:
-
-`63143514c50d35aba6ce2f2eaebbeff15d46af33`
-
-No department-specific implementation is implicitly authorized by this transition.
+No department-specific implementation is authorized by this state.

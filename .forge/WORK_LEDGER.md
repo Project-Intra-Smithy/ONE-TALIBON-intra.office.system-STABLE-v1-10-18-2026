@@ -4,17 +4,15 @@
 
 **Kirch Ivan Balite**
 
-Canonical product source:
-
-`main@4bac88d22e1fb3f808c024888845503922c41683`
-
 Accepted executable/runtime anchor:
 
 `395438674b4d2f00659eba616db760b339bb390a`
 
-Current governance branch:
+Common-program promotion / A01 Series-opening source:
 
-`KIRCH-TALIBON-COMMON-SYSTEM-PROGRAM-LOCK`
+`main@f2ff373113f89173016634505eb3c3943edfb35c`
+
+Current exact `main` must be verified before issuing new work.
 
 ---
 
@@ -24,115 +22,73 @@ Current governance branch:
 
 `COMPLETE / FROZEN`
 
-P0-H:
+Accepted runtime:
 
-`4bac88d22e1fb3f808c024888845503922c41683`
-
-Do not reopen automatically.
+`395438674b4d2f00659eba616db760b339bb390a`
 
 ## Common-System Program Lock
 
-State:
-
 `ACCEPTED / PROMOTED`
 
-Final pre-lock audit:
-
-`PASS`
-
-Record:
-
-`.forge/evidence/maintainer/COMMON-SYSTEM-PRELOCK-FINAL-AUDIT.md`
-
-Memory package:
+Governing memory:
 
 `.forge/memory/COMMON-SYSTEM-MEMORY-INDEX.md`
 
-No executable product source is owned by the current governance branch.
-
 ## P1 / A01
 
-State:
+`OPENED`
 
-`NEXT / NOT YET ISSUED`
-
-A01 purpose:
+Purpose:
 
 `FIRST-CLASS TASK DOMAIN`
 
-No A01 implementation branch has been authorized by this ledger yet.
+## A01-W01
+
+`ISSUED / PAUSED FOR CONTROL-PLANE RECONCILIATION`
+
+Writer branch:
+
+`KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION`
+
+Immutable issued source:
+
+`ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4`
+
+No implementation candidate returned.
+
+No writer-owned source changes have been accepted.
+
+Blocked:
+
+- A01-W02 — waits for W01 return/review/acceptance
+- A01-W03 — waits for W02
+- A01-C1 — waits for stable W03 contract
+- A01 frontend — waits for A01-C1 + FRONTEND-REG-001
+- A02 implementation — may not consume Task until A01-C1
 
 ---
 
-# Current lock package checklist
+# Control-plane reconciliation
 
-- [x] final repo-backed pre-lock audit
-- [x] common-system program lock memory
-- [x] source-authority register
-- [x] common-capability baseline register
-- [x] hard/soft dependency graph
-- [x] workflow-discovery/authority track
-- [x] frontend integration registry
-- [x] Engineering Hub operating model
-- [x] P1/A01 opening context
-- [x] SSOT reset to current program
-- [x] active ledger reset to current program
-- [x] Technical Authority accepts lock package
-- [x] lock package promoted to canonical `main`
-- [ ] FRONTEND-REG-001 reconciliation completed before frontend A01 issuance
-- [ ] A01 exact work-package decomposition
-- [ ] first A01 backend handoff issued
+State:
 
----
+`ACTIVE / TEMPORARY EXECUTION HOLD`
 
-# Program architecture after acceptance
+Purpose:
 
-## P1 — Common Work & Accountability
-- A01 First-Class Task
-- A02 Unified My Work
-- A03 Non-Destructive Task/Work Request Integration
-- A04 P1 Integration & Contract Acceptance
-- P1-H
+Reconcile the Engineering Hub, Project bootstrap specification, frontend authority classification and current-state records before resuming product implementation.
 
-## P2 — Common Coordination Integration
-Series purposes locked; detailed work packages deferred.
+This hold does not reopen P0 and does not alter A01 architecture.
 
-## P3 — Official Information & Evidence
-Series purposes locked; detailed work packages deferred.
+Required before W01 resumes:
 
-## P4 — Common Search
-Series purposes locked; detailed work packages deferred.
-
-## P5 — Visibility & Control
-Series purposes locked; detailed work packages deferred.
-
-## P6 — Cross-Domain Authorization Reconciliation & Security Regression
-Series purposes locked; detailed work packages deferred.
-
-## P7 — Common-Core Acceptance
-Series purposes locked; detailed work packages deferred.
-
----
-
-# Parallel tracks
-
-## Track W — LGU Workflow Intake / Authority
-
-Current rule:
-
-`DOCUMENTARY EVIDENCE != IMPLEMENTATION AUTHORITY`
-
-Citizens' Charter:
-
-`SUPPORTING MUNICIPAL PROCESS REFERENCE — VALIDATION REQUIRED`
-
-## Track R — Production Readiness
-
-Separate from common product acceptance.
-
-Deployment:
-
-`NOT AUTHORIZED BY THIS LEDGER`
+- product SSOT/ledger synchronized;
+- Hub W01 state records PAUSED truthfully;
+- FRONTEND-REG-001 hardened against stale backend authority;
+- GitHub Project V1 schema simplified;
+- GitHub Project V1 views simplified;
+- stale Hub bootstrap/control records updated;
+- read-only W0 inventory completed and reviewed.
 
 ---
 
@@ -146,82 +102,117 @@ Observed main:
 
 `a7d7be17feb435b50c52cacd063e11d92ad047e1`
 
-State:
+Classification:
 
-`EXISTING ASSET / RECONCILIATION REQUIRED`
+`EXISTING FRONTEND ASSET / HISTORICAL FULL-STACK COPY / RECONCILIATION REQUIRED`
 
-A01 frontend work:
+Canonical backend authority:
 
-`BLOCKED UNTIL A01-C1 + FRONTEND-REG-001`
+`Kirch-Nairu/Talibon-Sales-Prototype`
 
-A01 backend work:
+The frontend repository's historical PHP/server/routes/controllers/models are not allowed to become backend authority.
 
-`NOT BLOCKED BY FRONTEND RECONCILIATION AFTER PROGRAM LOCK`
+FRONTEND-REG-001 must publish the allowed frontend integration base before frontend issuance.
 
 ---
 
-# Concurrency rule
+# Team flow
 
-No arbitrary global writer count is locked for the whole common program.
+`TECHNICAL AUTHORITY -> ENGINEERING HUB MAINTAINER -> BOUNDED IMPLEMENTATION LANES -> REVIEW / QA -> MAINTAINER INTEGRATION -> TECHNICAL AUTHORITY ACCEPTANCE`
 
-Concurrency is decided per Series based on:
+## Technical Authority
 
-- exact dependency gates;
-- non-overlapping ownership;
-- stable contracts;
-- Maintainer integration capacity;
-- validation cost.
+Kirch owns:
 
-Parallelism must be dependency-safe, not merely available.
+- architecture;
+- domain truth;
+- technical scope;
+- contract release;
+- integration decisions;
+- final technical acceptance.
+
+## Maintainer
+
+Owns:
+
+- current-state reconciliation;
+- exact source/branch verification;
+- work issuance;
+- dependency control;
+- candidate/evidence tracking;
+- integration preparation.
+
+## Backend
+
+Implements only exact bounded backend handoffs.
+
+## Frontend
+
+Consumes released backend contracts only.
+
+Frontend does not invent:
+
+- lifecycle;
+- permissions;
+- municipal routing;
+- municipal roles;
+- SLA;
+- approvals/signatures.
+
+## Review / QA
+
+Validates exact candidates and evidence independently where required.
+
+## Platform / Operations
+
+Runs Track R separately:
+
+- infrastructure;
+- DNS/TLS;
+- backup/restore;
+- monitoring/logging;
+- staging;
+- runbooks.
+
+Track R does not redefine product/domain architecture.
+
+---
+
+# Parallel tracks
+
+## Track W — LGU Workflow Intake / Authority
+
+`ACTIVE PARALLEL TRACK`
+
+Rule:
+
+`DOCUMENTARY EVIDENCE != IMPLEMENTATION AUTHORITY`
+
+## Track R — Production Readiness
+
+`ACTIVE PARALLEL TRACK / SEPARATE ACCEPTANCE`
+
+Deployment remains separately authorized.
 
 ---
 
 # Evidence law
 
-Allowed evidence states:
+Allowed states:
 
 `PASS / FAIL / PARTIAL / BLOCKED / NOT RUN / NOT OBSERVED / UNKNOWN`
 
-Never translate:
+Never translate `NOT RUN` into `PASS`.
 
-`NOT RUN`
-
-into:
-
-`PASS`
-
-because another layer passed.
+A PASS belongs to the exact validated candidate.
 
 ---
 
-# Stop conditions
+# Current next actions
 
-Stop before product mutation if:
-
-- program lock is not accepted;
-- exact source SHA moved unexpectedly;
-- a proposed change collapses domain boundaries;
-- frontend base/contract is ambiguous;
-- municipal business truth is required but unvalidated;
-- work would promote a specialized/deferred domain without authority;
-- validation requirements cannot be tied to an exact candidate.
-
----
-
-# Next Maintainer action
-
-After lock acceptance:
-
-1. open P1/A01 from the exact promoted `main`;
-2. perform FRONTEND-REG-001 reconciliation in parallel;
-3. decompose A01 backend work;
-4. issue the first exact-source A01 backend handoff;
-5. track A01-C1 as the frontend/A02 unlock boundary.
-
-Acceptance record:
-
-`.forge/evidence/acceptance/COMMON-SYSTEM-PROGRAM-LOCK-ACCEPTANCE.md`
-
-Acceptance commit:
-
-`63143514c50d35aba6ce2f2eaebbeff15d46af33`
+1. complete control-plane reconciliation;
+2. run GitHub Project W0 as read-only full inventory only;
+3. review W0 discrepancy matrix;
+4. authorize Project reconciliation only after review;
+5. unpause A01-W01;
+6. keep W02 blocked until W01 accepted.
