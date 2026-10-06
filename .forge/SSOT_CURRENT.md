@@ -1,4 +1,4 @@
-# ONE TALIBON V1 — CURRENT SSOT
+# ONE TALIBON — CURRENT SSOT
 
 ## Authority
 
@@ -6,186 +6,234 @@ Technical Authority:
 
 **Kirch Ivan Balite**
 
-Repository:
+Product repository:
 
 `Kirch-Nairu/Talibon-Sales-Prototype`
 
-Forge authority:
+Current canonical product authority:
 
-`Kirch-Nairu/KIRION-FORGE@44eb57e5b45b343be0033bf22a7a5e74d543c01a`
+`main@4bac88d22e1fb3f808c024888845503922c41683`
 
-## Live repository authority
+Current accepted executable/runtime anchor:
 
-Accepted repository branch:
+`395438674b4d2f00659eba616db760b339bb390a`
 
-`main`
+Current governance work:
 
-Successful S1 showcase promotion merge:
+`KIRCH-TALIBON-COMMON-SYSTEM-PROGRAM-LOCK`
 
-`3086a66042b81dc6c8e00230ecfa98f9607b8395`
+This file supersedes the prior showcase/MP-series current-state narrative. Historical evidence remains preserved as provenance.
 
-Promotion method:
+---
 
-- non-force fast-forward of `main` to a reconciliation merge commit;
-- first parent preserved the prior `main` lineage at `9b5193e3502afded5f967f412b2a1d452e433bc0`;
-- second parent preserved the successful integrated S1 lineage at `908bbe915b0110dcf8d2bf8122039a99f7257d23`;
-- promoted tree equals the validated integrated showcase tree.
+# 1. Current program state
 
-Resolve the exact live `main` SHA from Git before every future state transition because documentation commits may advance `main` beyond the promotion merge.
+`P0 — CANONICAL BASELINE: COMPLETE / FROZEN`
 
-## September 30, 2026 showcase outcome
+`COMMON SYSTEM PROGRAM: LOCK PACKAGE PREPARED`
 
-`SUCCESSFUL SHOWCASE DAY`
+`P1 / A01 — NEXT ENGINEERING TARGET AFTER PROGRAM-LOCK ACCEPTANCE`
 
-The live S1 showcase completed successfully on **2026-09-30**.
+No A01 implementation branch had begun at the final pre-lock audit.
 
-Historical showcase evidence:
+Main has not been modified by the lock-preparation branch.
 
-`.forge/evidence/showcase/S1-SUCCESSFUL-SHOWCASE-2026-09-30.md`
+---
 
-Preserved rollback tag:
+# 2. P0 accepted baseline
 
-`S1-SHOWCASE-ACED-2026-09-30`
+P0-H freeze commit:
 
-The rollback tag marks the exact pre-AJ version that successfully completed the live showcase and must not be rewritten or deleted.
+`4bac88d22e1fb3f808c024888845503922c41683`
 
-## Validated showcase evidence
+Record:
 
-The final integrated candidate demonstrated:
+`.forge/evidence/acceptance/P0-H-CANONICAL-PHASE0-BASELINE-FREEZE.md`
 
-- public ONE TALIBON homepage;
-- Employee Login entry point;
-- authenticated dashboard;
-- inter-office Work Request creation;
-- routing and approval behavior;
-- completion workflow;
-- municipal workspace navigation;
-- post-showcase AJ municipal homepage integration with repo-backed Talibon imagery.
+Exact runtime candidate:
 
-Validation observed on the integrated candidate:
+`395438674b4d2f00659eba616db760b339bb390a`
 
-- TypeScript `tsc --noEmit`: **PASS**;
-- production Vite build: **PASS**;
-- Laravel application boot inspection: **PASS**;
-- showcase environment with debug disabled;
-- PostgreSQL database driver;
-- file cache and session drivers;
-- synchronous queue;
-- `/up`: **HTTP 200**;
-- local homepage visual check: **PASS**.
+Validation:
 
-## Runtime record
+- P08 Targeted Baseline Acceptance;
+- Run #28;
+- attempt 3;
+- SUCCESS;
+- artifact ID `11418268674`;
+- digest `sha256:f386d18a844c314dbeecfe3ab188195dcd0a9158bd06fd69fae4848a4282ac49`.
 
-The custom multi-worker showcase proxy was not used for the successful final presentation path.
+All executable changes after the runtime anchor were absent; P0-H descendants to main were governance/evidence only.
 
-The successful fallback was:
+P0 does not reopen without concrete defect, invalidated evidence, changed acceptance requirement or explicit Technical Authority decision.
 
-`php artisan serve --host=127.0.0.1 --port=8000`
+---
 
-External showcase transport used a Cloudflare Quick Tunnel pointed at the local Laravel server.
+# 3. Common-system governing memory
 
-This was a successful **showcase transport strategy**, not an assertion of final production hosting architecture.
+Entry point:
 
-## Completed backend evidence
+`.forge/memory/COMMON-SYSTEM-MEMORY-INDEX.md`
 
-### E0 — exact-machine baseline
+Canonical program lock:
 
-`COMPLETE`
+`.forge/memory/COMMON-SYSTEM-PROGRAM-LOCK.md`
 
-### B1 — Records Registry Query Consolidation
+Supporting current memory:
 
-`ACCEPTED / PROMOTED`
+- `.forge/memory/SOURCE-AUTHORITY-REGISTER.md`
+- `.forge/memory/COMMON-CAPABILITY-BASELINE-REGISTER.md`
+- `.forge/memory/COMMON-PROGRAM-DEPENDENCY-GRAPH.md`
+- `.forge/memory/WORKFLOW-DISCOVERY-AUTHORITY-TRACK.md`
+- `.forge/memory/FRONTEND-INTEGRATION-REGISTRY.md`
+- `.forge/memory/ENGINEERING-HUB-OPERATING-MODEL.md`
+- `.forge/memory/P1-A01-OPENING-CONTEXT.md`
 
-Exact B1 payload:
+Final assurance:
 
-`314b6661b34d4a70272d2a079f7cdda238b522ae`
+`.forge/evidence/maintainer/COMMON-SYSTEM-PRELOCK-FINAL-AUDIT.md`
 
-Observed B1 evidence:
+---
 
-- targeted Records: `21 passed / 630 assertions`;
-- BH1/BH2: `3 passed / 25 assertions`;
-- full Feature suite: `400 passed / 5291 assertions`;
-- `records.inertia: 22 -> 17 queries`;
-- `documents.records: 22 -> 17 queries`;
-- protected UAT database untouched.
+# 4. Locked program architecture
 
-B1 remains the accepted prototype backend baseline carried forward into the showcased product line.
+Once the program-lock package is accepted, the common program is:
 
-## Current program state
+- `P0 — Canonical Baseline` — COMPLETE
+- `P1 — Common Work & Accountability`
+- `P2 — Common Coordination Integration`
+- `P3 — Official Information & Evidence Maturation`
+- `P4 — Common Search`
+- `P5 — Visibility & Control`
+- `P6 — Cross-Domain Authorization Reconciliation & Security Regression`
+- `P7 — Common-Core Acceptance`
 
-`S1 SHOWCASE — COMPLETE / PROMOTED`
+P1 Series:
 
-Pre-showcase preparation is closed.
+- `A01 — First-Class Task Domain`
+- `A02 — Unified My Work Projection`
+- `A03 — Non-Destructive Task / Work Request Integration`
+- `A04 — P1 Integration & Contract Acceptance`
+- `P1-H`
 
-The next engineering phase is **post-showcase hardening and deployment planning**. It is not an automatic broad redesign or feature expansion.
+Detailed P2-P7 work packages are not pre-authorized. They are generated just-in-time from accepted upstream contracts/evidence.
 
-Future work must begin from live `main` and should be driven by:
+---
 
-1. stakeholder feedback from the successful showcase;
-2. production-readiness gaps;
-3. deployment architecture decisions;
-4. known deferred engineering findings;
-5. explicitly authorized product expansion.
+# 5. Current architecture facts
 
-## Current product presentation
+Live backend establishes:
 
-The promoted product line includes:
+- Work Request / WorkflowTransaction is a strong existing engine;
+- current My Work exists but is transaction-backed;
+- no generic canonical Task domain exists;
+- true Task + Work Request Unified My Work therefore remains missing;
+- Correspondence, Documents, Records, Notifications, Calendar, Messaging, Dashboards, Reports, Audit, Auth/MFA and authorization are established foundations at varying maturity.
 
-- ONE TALIBON identity;
-- Talibon Intra-Office Portal public entry surface;
-- Employee Login;
-- AJ-derived municipal homepage composition selectively integrated into the validated S1 candidate;
-- repo-backed Talibon municipal imagery;
-- role-aware authenticated workspace;
-- inter-office transaction / Work Request workflow;
-- Records, Correspondence, Memoranda, Calendar, Messages, employee/office surfaces, executive and municipal-system prototype surfaces already present in the S1 line.
+Invariants:
 
-## Database boundary
+- `Task != Work Request`
+- `Work Request != Correspondence`
+- `Document != Transaction`
+- `Meeting != Task`
+- `Executive oversight != universal routing`
 
-Protected UAT database:
+Do not build a giant generic workflow engine from abstract similarity alone.
 
-`talibon_portal`
+---
 
-Disposable engineering/test database:
+# 6. Frontend state
 
-`talibon_portal_test`
+Existing frontend/team repository:
 
-Showcase database used during S1 final preparation:
+`Kirch-Nairu/Talibon-Intra-Office-Portal`
 
-`talibon_showcase_s1`
+Observed main:
 
-Never run destructive engineering preparation against protected UAT data.
+`a7d7be17feb435b50c52cacd063e11d92ad047e1`
 
-## Deferred findings
+State:
 
-Known deferred findings remain non-automatic work until explicitly prioritized:
+`EXISTING FRONTEND ASSET — CONTRACT ONBOARDING / RECONCILIATION REQUIRED`
 
-- PERF-01 — `DocumentArchiveQuery` full-corpus materialization;
-- SEM-01 — Dashboard attention semantics;
-- AUTH-01 — System Administration Work Queue metadata mismatch;
-- AUTH-02 — generic System Administration transaction authority decision;
-- PROD-01 — executive Work Queue composition;
-- MSG-01 — prototype Messaging membership authority;
-- CI-01 — generalized Windows/self-hosted workflow redesign.
+Existing Login/Dashboard/AppLayout/shell and related surfaces should be reused.
 
-## Evidence law
+Frontend is not yet proven synchronized to the P0-H backend.
 
-Live Git/runtime truth outranks this file if they disagree.
+Before A01 frontend work:
 
-Passing tests do not prove deployment.
+`FRONTEND-REG-001`
 
-Showcase success does not by itself equal production deployment approval.
+must publish the exact frontend integration base and consumed backend contract.
 
-Cloudflare Quick Tunnel is presentation transport, not final contractual hosting.
+This does not block A01 backend/domain work.
 
-## Preservation law
+---
 
-Preserve:
+# 7. LGU workflow / business authority state
 
-- live `main` history;
-- `S1-SHOWCASE-ACED-2026-09-30`;
-- showcase evidence record;
-- accepted B1 evidence;
-- the successful S1 promotion lineage.
+Citizens' Charter classification:
 
-Branch cleanup may remove obsolete remote working branches only after their required history is reachable from `main` or intentionally preserved by tags/evidence.
+`SUPPORTING MUNICIPAL PROCESS REFERENCE — VALIDATION REQUIRED`
+
+Process-owner validated workflow remains the authority for current department business behavior.
+
+Department-specific implementation must not be inferred solely from:
+
+- Charter rows;
+- historical code;
+- prototype/reference pages;
+- menu/route existence.
+
+Key input records remain tracked, including:
+
+- ORG-001;
+- ROLE-001;
+- MEET-001;
+- ANN-001;
+- KPI-001;
+- VICE-001;
+- PROC-001;
+- PROJ-001;
+- WF-001;
+- WF-002.
+
+---
+
+# 8. Parallel program tracks
+
+## Track W — LGU Workflow Intake / Authority
+Runs in parallel with common development.
+
+## Track R — Production Readiness
+Runs in parallel under separate evidence.
+
+Neither may silently redefine common-domain architecture.
+
+---
+
+# 9. Acceptance law
+
+For executable product work:
+
+`IMPLEMENTED + COMMITTED + SELF-VALIDATED + REVIEWED + CI PASSED + QA PASSED WHERE REQUIRED + TECHNICAL AUTHORITY ACCEPTED + INTEGRATED + RECORDED`
+
+A PASS belongs to an exact candidate.
+
+Executable source change after PASS creates a new candidate.
+
+Do not inherit PASS across changed executable source.
+
+---
+
+# 10. Immediate next action
+
+Before product mutation:
+
+1. review/accept the program-lock memory package;
+2. publish/update lock state as accepted;
+3. reconcile FRONTEND-REG-001 before A01 frontend release;
+4. decompose P1/A01 into exact work packages;
+5. issue the first A01 backend handoff from the accepted main source.
+
+No department-specific implementation is implicitly authorized by this transition.
