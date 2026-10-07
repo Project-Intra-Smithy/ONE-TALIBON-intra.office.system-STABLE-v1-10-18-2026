@@ -3,61 +3,49 @@
 ## Status
 
 A01 OPENED / EXECUTION HOLD
-A01-W01 ISSUED / SUSPENDED
 
-The original opening context has been reconciled to the five-human Series delivery model.
+Project V1.1:
+`PASS / CLOSED`
+
+A01 human execution plan:
+`PUBLISHED FOR TECHNICAL AUTHORITY REVIEW`
+
+A01-W01:
+`BLOCKED / SUSPENDED`
 
 No A01 implementation candidate exists.
 
 ## Source authority
 
 Backend repository:
-Kirch-Nairu/Talibon-Sales-Prototype
+`Kirch-Nairu/Talibon-Sales-Prototype`
 
 A01 opening source:
-main@f2ff373113f89173016634505eb3c3943edfb35c
+`f2ff373113f89173016634505eb3c3943edfb35c`
 
 Accepted P0 executable/runtime anchor:
-395438674b4d2f00659eba616db760b339bb390a
+`395438674b4d2f00659eba616db760b339bb390a`
 
-A01 coordination issuance snapshot:
-6e926c84bc1095446d90034633f7f722552aaafb
+Plan-publication base:
+`ffdf1dec10a0417d4982887a19f49ba771dd953f`
 
-Current reconciled coordination head:
-fc8cc3258696ce0ff518427a23e518e920345605
+## Governing A01 plan
 
-W01 immutable issued source:
-ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4
+`.forge/plans/P1-A01-FIVE-HUMAN-EXECUTION-PLAN.md`
 
-## Why A01 is first
+A01 is the entire capability lifecycle, not W01.
 
-Repository evidence establishes:
-- Work Request / WorkflowTransaction is an existing formal inter-office domain;
-- current My Work is transaction-backed;
-- no generic canonical common Task domain exists.
+## Five-human lanes
 
-Therefore A01 builds First-Class Task without replacing Work Request.
+### Kirch / backend + Tech Lead
 
-## A01 is the Series
-
-A01 is the entire capability lifecycle, not just W01.
-
-### Kirch / backend
-
-Internal packages may include:
-- W01 — persistence/model foundation;
-- W02 — lifecycle/authorization;
-- W03 — application/backend contract;
-- later backend events/audit/acceptance packages.
-
-### Contract release
-
-Frontend begins only after stable backend contract release and FRONTEND-REG-001.
+Owns W01-W05 backend packages, contract release, integration review and final technical acceptance.
 
 ### AJ / Jhayr / frontend
 
-One or both frontend developers receive explicit bounded packages.
-They do not invent lifecycle, permissions or municipal rules.
+Receive explicit non-overlapping frontend packages only after:
+
+`A01-C1 + FRONTEND-REG-001`
 
 ### Kurt / CI/CD
 
@@ -67,48 +55,58 @@ Validates the exact candidate/release tuple.
 
 Runs independent functional, negative and regression QA.
 
-### Kirch / Tech Lead
+### Maintainer
 
-Reviews architecture, evidence and integration; accepts or returns bounded rework.
+Coordinates state/evidence/handoffs only and does not substitute for a human gate.
 
-## W01 state clarification
+## Historical W01 branch
 
-If W01 is reissued/resumed:
-- state may be opaque bounded persistence only;
-- W01 defines no lifecycle enum;
-- W01 defines no canonical lifecycle vocabulary/default;
-- W02 owns lifecycle semantics and transition authority.
+`KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION@ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4`
+
+State:
+
+`HISTORICAL / IMMUTABLE / DO NOT RESUME`
+
+It diverged from corrected current product main during governance reconciliation.
+
+When Technical Authority releases W01, Maintainer creates a fresh replacement branch from current main.
+
+## W01 technical boundary
+
+The accepted W01 technical contract remains:
+
+- minimal Task model;
+- additive tasks migration;
+- focused Task domain-foundation tests;
+- optional TaskFactory only if narrowly required.
+
+W01 does not own:
+
+- lifecycle vocabulary/default;
+- authorization;
+- routes/controllers;
+- events;
+- notifications/calendar;
+- My Work integration;
+- frontend;
+- department-specific workflow truth.
 
 ## Frontend state
 
 Frontend asset:
-Kirch-Nairu/Talibon-Intra-Office-Portal@a7d7be17feb435b50c52cacd063e11d92ad047e1
+
+`Kirch-Nairu/Talibon-Intra-Office-Portal@a7d7be17feb435b50c52cacd063e11d92ad047e1`
 
 Frontend implementation remains blocked until:
-A01-C1 / contract release + FRONTEND-REG-001
+
+`A01-C1 + FRONTEND-REG-001`
 
 ## A02 rule
 
-A02 may consume Task only after A01 releases a sufficiently stable Task identity/contract.
-
-Safe parallel preparation is allowed; premature implementation against guessed Task semantics is not.
-
-## Stop conditions
-
-Return to Technical Authority if A01 appears to require:
-- replacing WorkflowTransaction;
-- department-specific routing;
-- unsupported LGU role truth;
-- universal WorkItem abstraction;
-- generic workflow DSL;
-- Procurement/Project Monitoring expansion;
-- Full HRIS expansion;
-- production/deployment mutation;
-- schema-history rewrite;
-- unsupported SLA/approval/signature assumptions.
+A02 may consume Task only after A01 releases a stable Task identity/contract.
 
 ## Current next action
 
-Do not execute W01 yet.
+Technical Authority reviews the published A01 five-human execution plan.
 
-First accept the team/Series control-model reconciliation and publish the corrected A01 human-lane execution plan.
+If accepted, Maintainer creates the fresh W01 replacement branch and issues the backend handoff.
