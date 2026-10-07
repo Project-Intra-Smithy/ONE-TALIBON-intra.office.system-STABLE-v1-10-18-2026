@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The Engineering Hub is the durable program-control layer for a five-human ONE TALIBON engineering team.
+The Engineering Hub is the durable program-control layer for a ONE TALIBON engineering team.
 
 It coordinates repositories, Phases, Series, human-owned work packages, candidates, dependencies, evidence and integration state.
 
