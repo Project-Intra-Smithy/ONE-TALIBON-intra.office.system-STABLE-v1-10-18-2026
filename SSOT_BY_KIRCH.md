@@ -1,8 +1,8 @@
-> **CURRENT AUTHORITY NOTICE — 2026-09-26**
+> **CURRENT AUTHORITY NOTICE — 2026-10-07**
 >
-> This file is retained as historical engineering/product authority from the earlier internal build wave. Its old branch/status header is **not** the live Git authority for `Kirch-Nairu/Talibon-Sales-Prototype`.
+> This file is retained as historical engineering/product authority from an earlier internal build wave. Its old branch/status/body language is not the live Git or program authority for Kirch-Nairu/Talibon-Sales-Prototype.
 >
-> Current repository authority is live `main` plus `.forge/SSOT_CURRENT.md`. Exact RV1-validated/promoted product payload: `f6208cf082c4b1d189c70728adfdb9ddf3225990`. Preserve the body below for engineering/commercial provenance; do not use the deleted `KIRCH-PHASE1-INTERNAL-OPS-HRIS` branch as current authority.
+> Current authority is live main plus .forge/SSOT_CURRENT.md, .forge/AUTHORITY.md, and the accepted common-system program memory. Accepted P0 executable/runtime anchor: 395438674b4d2f00659eba616db760b339bb390a. Current program: P1/A01, presently on team/Series control-model execution hold. Preserve the historical body below for engineering/commercial provenance only.
 
 # TALIBON INTERNAL MUNICIPAL PLATFORM — SINGLE SOURCE OF TRUTH
 
