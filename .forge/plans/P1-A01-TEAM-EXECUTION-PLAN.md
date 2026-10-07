@@ -1,4 +1,4 @@
-# KIRION FORGE — P1 / A01 FIVE-HUMAN EXECUTION PLAN
+# KIRION FORGE — P1 / A01 TEAM EXECUTION PLAN
 
 ## Authority
 
@@ -74,7 +74,7 @@ Therefore A01 adds a common Task domain without replacing or rewriting Work Requ
 
 ---
 
-# 4. Five-human execution model
+# 4. Team execution model
 
 ## Kirch Ivan Balite
 
@@ -185,7 +185,7 @@ State:
 
 Evidence:
 
-- five-human control model merged;
+- team control model merged;
 - Project V1.1 PASS;
 - human-friendly Project views active;
 - A01-W01 remains Blocked;

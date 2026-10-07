@@ -40,7 +40,7 @@ AI/Forge is assistive only.
 
 ## A01 governing plan
 
-`.forge/plans/P1-A01-FIVE-HUMAN-EXECUTION-PLAN.md`
+`.forge/plans/P1-A01-TEAM-EXECUTION-PLAN.md`
 
 Series:
 
@@ -101,6 +101,6 @@ Track R — Production Readiness: ACTIVE PARALLEL / SEPARATE ACCEPTANCE
 
 ## Current next action
 
-`TECHNICAL AUTHORITY REVIEW — A01 FIVE-HUMAN EXECUTION PLAN`
+`TECHNICAL AUTHORITY REVIEW — A01 TEAM EXECUTION PLAN`
 
 No executable product work is released until that decision is recorded.

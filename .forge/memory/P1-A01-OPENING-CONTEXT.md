@@ -31,11 +31,11 @@ Plan-publication base:
 
 ## Governing A01 plan
 
-`.forge/plans/P1-A01-FIVE-HUMAN-EXECUTION-PLAN.md`
+`.forge/plans/P1-A01-TEAM-EXECUTION-PLAN.md`
 
 A01 is the entire capability lifecycle, not W01.
 
-## Five-human lanes
+## Team lanes
 
 ### Kirch / backend + Tech Lead
 
@@ -107,6 +107,6 @@ A02 may consume Task only after A01 releases a stable Task identity/contract.
 
 ## Current next action
 
-Technical Authority reviews the published A01 five-human execution plan.
+Technical Authority reviews the published A01 team execution plan.
 
 If accepted, Maintainer creates the fresh W01 replacement branch and issues the backend handoff.

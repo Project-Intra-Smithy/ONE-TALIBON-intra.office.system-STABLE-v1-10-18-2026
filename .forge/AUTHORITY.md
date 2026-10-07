@@ -6,7 +6,7 @@ Kirch Ivan Balite
 
 Kirch remains the sole human Technical Authority for product scope, architecture, Series/Phase authorization, integration, release disposition and final technical acceptance.
 
-## Five-human delivery team
+## Engineering delivery team
 
 - Kirch Ivan Balite — Tech Lead / Systems Architecture / Backend / integration / final technical acceptance
 - AJ Rienze Josol — Frontend

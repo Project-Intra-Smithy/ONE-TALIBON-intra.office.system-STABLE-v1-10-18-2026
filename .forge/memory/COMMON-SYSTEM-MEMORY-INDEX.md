@@ -18,7 +18,7 @@ Read in this order:
 8. `ENGINEERING-HUB-OPERATING-MODEL.md`
 9. relevant Track W / Track R memory
 10. `.forge/WORK_LEDGER.md`
-11. `../plans/P1-A01-FIVE-HUMAN-EXECUTION-PLAN.md` when A01 is current
+11. `../plans/P1-A01-TEAM-EXECUTION-PLAN.md` when A01 is current
 12. current bounded work-package handoff
 
 Do not reconstruct current program state from historical showcase/MP-series evidence.
@@ -31,7 +31,7 @@ Do not reconstruct current program state from historical showcase/MP-series evid
 
 `TEAM-SERIES-DELIVERY-MODEL.md` controls:
 
-- five-human team identity;
+- named team identity;
 - Series as capability-level delivery unit;
 - human implementation ownership;
 - AJ/Jhayr frontend roles;
@@ -63,7 +63,7 @@ Do not reconstruct current program state from historical showcase/MP-series evid
 
 Current A01 plan:
 
-`../plans/P1-A01-FIVE-HUMAN-EXECUTION-PLAN.md`
+`../plans/P1-A01-TEAM-EXECUTION-PLAN.md`
 
 Current A01 execution context:
 

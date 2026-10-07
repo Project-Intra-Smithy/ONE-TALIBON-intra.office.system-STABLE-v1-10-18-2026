@@ -47,7 +47,7 @@ Evidence:
 Old W8:
 `SUPERSEDED`
 
-## Five-human engineering team
+## Engineering team
 
 - Kirch Ivan Balite — Tech Lead / Systems Architecture / Backend authority / integration / final technical acceptance
 - AJ Rienze Josol — Frontend Developer
@@ -85,7 +85,7 @@ Locked invariants:
 
 Canonical current plan:
 
-`.forge/plans/P1-A01-FIVE-HUMAN-EXECUTION-PLAN.md`
+`.forge/plans/P1-A01-TEAM-EXECUTION-PLAN.md`
 
 A01 is the whole Series.
 
@@ -139,7 +139,7 @@ Do not execute W01 yet.
 
 Current gate:
 
-`TECHNICAL AUTHORITY REVIEW — A01 FIVE-HUMAN EXECUTION PLAN`
+`TECHNICAL AUTHORITY REVIEW — A01 TEAM EXECUTION PLAN`
 
 If accepted:
 

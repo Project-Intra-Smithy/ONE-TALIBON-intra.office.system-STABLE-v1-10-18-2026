@@ -5,7 +5,7 @@
 Technical Authority:
 Kirch Ivan Balite
 
-Current five-human engineering team:
+Current engineering team:
 - Kirch — Tech Lead / Systems Architecture / Backend / integration / final technical acceptance
 - AJ — Frontend
 - Jhayr — Frontend
