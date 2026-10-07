@@ -15,7 +15,7 @@ Cross-repository control evidence:
 
 A Maintainer takeover audit found that current product architecture remained coherent, but current-facing governance had drifted in two serious ways:
 
-1. the intended five-human delivery team had been abstracted into generic lanes;
+1. the intended engineering delivery team had been abstracted into generic lanes;
 2. the Series delivery model had been flattened into backend Wxx package sequencing and an AI/Project-centric control flow.
 
 The audit also found stale current-facing files still describing September prototype/showcase or MP-series state.
@@ -49,7 +49,7 @@ ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4
 
 No W01 implementation candidate returned.
 
-## Canonical five-human team
+## Canonical engineering team
 
 - Kirch Ivan Balite — Tech Lead / Systems Architecture / Backend authority / integration / final technical acceptance
 - AJ Rienze Josol — Frontend Developer
