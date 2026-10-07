@@ -6,45 +6,46 @@ Technical Authority: Kirch Ivan Balite
 
 Product repository: Kirch-Nairu/Talibon-Sales-Prototype
 
-Live main at the 2026-10-07 control-model audit:
-fdc8af4d2a3fbea6f9b12b7825f278cf8c06e735
+Resolve live `main` from Git before any executable work is issued.
+
+Plan-publication base:
+`ffdf1dec10a0417d4982887a19f49ba771dd953f`
 
 Accepted executable/runtime anchor:
-395438674b4d2f00659eba616db760b339bb390a
+`395438674b4d2f00659eba616db760b339bb390a`
 
 Common-program promotion / A01 Series-opening source:
-main@f2ff373113f89173016634505eb3c3943edfb35c
+`f2ff373113f89173016634505eb3c3943edfb35c`
 
-Governance-only descendants do not inherit executable acceptance. Exact source must be reverified before implementation is issued.
+Governance-only descendants do not inherit executable acceptance.
 
 ## Current program state
 
 P0 — COMPLETE / FROZEN
+
 COMMON SYSTEM PROGRAM — ACCEPTED / PROMOTED
+
 P1 — ACTIVE PROGRAM PHASE
+
 A01 — OPENED / EXECUTION HOLD
-A01-W01 — ISSUED / SUSPENDED — DO NOT EXECUTE
 
-No A01-W01 implementation candidate exists.
+A01-W01 — BLOCKED / SUSPENDED — DO NOT EXECUTE
 
-## Control-model reconciliation
+A01 implementation candidate — NONE
 
+## Control / Project state
+
+Team/Series reconciliation:
 `ACCEPTED / MERGED`
 
-Product governance merge:
-`5b9f7ad08dbd9db953d3d28a875ceb752d09c704`
+Project V1.1 human-friendly control surface:
+`PASS / CLOSED`
 
-The repo-wide audit found control-model drift:
-- five named human owners disappeared from active control;
-- Series delivery was flattened into generic/AI-centered work packages;
-- old W8 treated a Project Status update as sufficient to resume engineering;
-- several current-facing governance files still described historical September/MP-series state.
+Evidence:
+`engineering-hub#10 comment 6028829426`
 
-Disposition:
-CONTROL-MODEL REWORK REQUIRED / PRODUCT ARCHITECTURE PRESERVED
-
-Governing record:
-.forge/evidence/maintainer/TEAM-SERIES-CONTROL-MODEL-RECONCILIATION-2026-10-07.md
+Old W8:
+`SUPERSEDED`
 
 ## Five-human engineering team
 
@@ -55,9 +56,6 @@ Governing record:
 - Siris — Quality Assurance
 
 KIRION Forge / ChatGPT assists the team. It is not a sixth human owner.
-
-Governing delivery memory:
-.forge/memory/TEAM-SERIES-DELIVERY-MODEL.md
 
 ## Locked architecture
 
@@ -83,79 +81,70 @@ Locked invariants:
 - Meeting != Task
 - Executive oversight != universal routing
 
-## Series execution law
+## A01 governing plan
 
-A Series is a product-capability delivery unit.
+Canonical current plan:
 
-Standard human gate chain where applicable:
-KIRCH AUTHORIZATION / BACKEND
--> BACKEND CONTRACT RELEASE
--> AJ / JHAYR FRONTEND
--> DEVELOPER SELF-VALIDATION
--> EXACT CANDIDATE / RELEASE TUPLE
--> KURT CI/CD
--> SIRIS QA
--> KIRCH ACCEPTANCE / INTEGRATION
--> SERIES FREEZE
+`.forge/plans/P1-A01-FIVE-HUMAN-EXECUTION-PLAN.md`
 
-Internal Wxx packages are subordinate work packages, not replacements for the Series lifecycle.
+A01 is the whole Series.
 
-## A01 exact state
+Backend Wxx packages are subordinate Kirch/backend packages.
 
-A01 coordination issuance snapshot:
-KIRCH-TALIBON-P1-A01-FIRST-CLASS-TASK@6e926c84bc1095446d90034633f7f722552aaafb
+Frontend releases only after:
 
-Current coordination head after governance-only reconciliation:
-KIRCH-TALIBON-P1-A01-FIRST-CLASS-TASK@fc8cc3258696ce0ff518427a23e518e920345605
+`A01-C1 + FRONTEND-REG-001`
 
-A01-W01 writer source:
-KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION@ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4
+Kurt owns CI/CD evidence.
 
-The issued handoff is suspended. Its bounded technical content may be reused only after the corrected A01 human-Series plan is accepted and explicitly reissued/resumed.
+Siris owns independent QA evidence.
+
+Kirch owns final technical acceptance/integration.
+
+## Historical W01 issuance
+
+Historical branch:
+
+`KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION@ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4`
+
+State:
+
+`HISTORICAL / IMMUTABLE / DO NOT RESUME`
+
+The branch diverged from current product main during governance reconciliation.
+
+When W01 is released, Maintainer must create a fresh replacement branch from current main and issue a new exact writer source.
 
 ## Frontend authority
 
 Frontend asset:
-Kirch-Nairu/Talibon-Intra-Office-Portal@a7d7be17feb435b50c52cacd063e11d92ad047e1
+
+`Kirch-Nairu/Talibon-Intra-Office-Portal@a7d7be17feb435b50c52cacd063e11d92ad047e1`
 
 Classification:
-EXISTING FRONTEND ASSET + HISTORICAL FULL-STACK COPY — RECONCILIATION REQUIRED
 
-Historical server/backend code there is non-authoritative.
+`EXISTING FRONTEND ASSET + HISTORICAL FULL-STACK COPY — RECONCILIATION REQUIRED`
 
-Frontend implementation requires:
-A01 CONTRACT RELEASE + FRONTEND-REG-001
-
-## Team-workspace provenance
-
-Kirch-Nairu/ONE-TALIBON-TEAM-WORKSPACE@3f1c0a33cbaeda8eeafcecb7d9422718b13a4796
-
-is historical/reference, not product authority. It remains required provenance for the five-human collaboration model and post-P0 Series workflow.
-
-## Business authority
-
-Validated process-owner/LGU workflow governs municipal business truth.
-
-Citizens' Charter and historical code are supporting discovery evidence and do not independently authorize department routing, approvals, SLA, signatures, roles or implementation acceptance.
+Historical backend/server code there is non-authoritative.
 
 ## Acceptance law
 
 For executable Series work:
-IMPLEMENTED + COMMITTED + SELF-VALIDATED + EXACT CANDIDATE + CI/CD PASSED + QA PASSED WHERE REQUIRED + KIRCH TECHNICAL ACCEPTANCE + INTEGRATED + RECORDED
 
-Any executable change after PASS creates a new candidate.
+`IMPLEMENTED + COMMITTED + SELF-VALIDATED + EXACT CANDIDATE + KURT CI/CD + SIRIS QA WHERE REQUIRED + KIRCH TECHNICAL ACCEPTANCE + INTEGRATED + RECORDED`
 
 ## Immediate next action
 
-Do not execute old W8.
 Do not execute W01 yet.
 
 Current gate:
-`PROJECT V1.1 HUMAN / SERIES REPRESENTATION + A01 HUMAN EXECUTION PLAN`
 
-Next:
-1. apply the bounded Project V1.1 Lane/view correction while keeping A01-W01 Blocked;
-2. publish the corrected A01 human-lane execution plan;
-3. explicitly reissue/resume Kirch's backend lane;
-4. preserve AJ/Jhayr frontend, Kurt CI/CD, Siris QA and Kirch acceptance gates;
-5. stop governance work and build A01.
+`TECHNICAL AUTHORITY REVIEW — A01 FIVE-HUMAN EXECUTION PLAN`
+
+If accepted:
+
+1. resolve current product main;
+2. create fresh replacement W01 branch;
+3. issue corrected W01 handoff under Kirch human ownership;
+4. update Hub issue #2 from Blocked to Active;
+5. begin actual A01 backend implementation.
