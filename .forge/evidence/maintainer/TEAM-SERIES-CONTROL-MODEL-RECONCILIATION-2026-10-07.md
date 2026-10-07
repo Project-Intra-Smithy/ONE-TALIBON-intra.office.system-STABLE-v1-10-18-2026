@@ -105,7 +105,7 @@ No product code is authorized until the team/Series control-model correction is 
 
 After Technical Authority accepts the control-model reconciliation:
 
-1. publish/reissue A01 as a five-human Series execution plan;
+1. publish/reissue A01 as a team Series execution plan;
 2. explicitly identify Kirch's backend sub-packages;
 3. release frontend only after contract + frontend registry;
 4. route exact candidate to Kurt;
