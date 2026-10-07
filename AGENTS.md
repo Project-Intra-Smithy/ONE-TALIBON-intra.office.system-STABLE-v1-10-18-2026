@@ -42,7 +42,7 @@ Current Series:
 A01 — FIRST-CLASS TASK DOMAIN
 
 Current state:
-EXECUTION HOLD — TEAM/SERIES CONTROL-MODEL RECONCILIATION
+EXECUTION HOLD — PROJECT V1.1 REPRESENTATION + A01 HUMAN EXECUTION PLAN
 
 A01-W01 is issued/suspended. No implementation candidate exists.
 
@@ -81,4 +81,4 @@ Do not self-promote or self-accept.
 ## Current stop
 
 Do not execute old W8.
-Do not start A01-W01 until Technical Authority accepts the control-model correction and Maintainer explicitly reissues/resumes the human-owned backend lane.
+Do not start A01-W01 until the bounded Project V1.1 representation is reconciled, the corrected A01 human execution plan is published, and Maintainer explicitly reissues/resumes the human-owned backend lane.

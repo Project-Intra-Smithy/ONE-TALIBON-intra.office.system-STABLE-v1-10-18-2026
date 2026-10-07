@@ -27,9 +27,14 @@ A01-W01 — ISSUED / SUSPENDED — DO NOT EXECUTE
 
 No A01-W01 implementation candidate exists.
 
-## Current hold
+## Control-model reconciliation
 
-A repo-wide audit found control-model drift:
+`ACCEPTED / MERGED`
+
+Product governance merge:
+`5b9f7ad08dbd9db953d3d28a875ceb752d09c704`
+
+The repo-wide audit found control-model drift:
 - five named human owners disappeared from active control;
 - Series delivery was flattened into generic/AI-centered work packages;
 - old W8 treated a Project Status update as sufficient to resume engineering;
@@ -145,11 +150,12 @@ Any executable change after PASS creates a new candidate.
 Do not execute old W8.
 Do not execute W01 yet.
 
-First:
-1. accept the team/Series control-model reconciliation;
-2. reconcile Hub/Project representation;
-3. publish a corrected A01 human-lane execution plan;
-4. explicitly reissue/resume Kirch's backend lane;
-5. preserve frontend, Kurt CI/CD, Siris QA and Kirch acceptance gates.
+Current gate:
+`PROJECT V1.1 HUMAN / SERIES REPRESENTATION + A01 HUMAN EXECUTION PLAN`
 
-Then stop governance work and build the product.
+Next:
+1. apply the bounded Project V1.1 Lane/view correction while keeping A01-W01 Blocked;
+2. publish the corrected A01 human-lane execution plan;
+3. explicitly reissue/resume Kirch's backend lane;
+4. preserve AJ/Jhayr frontend, Kurt CI/CD, Siris QA and Kirch acceptance gates;
+5. stop governance work and build A01.

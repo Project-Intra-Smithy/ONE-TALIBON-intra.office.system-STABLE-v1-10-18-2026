@@ -25,7 +25,7 @@ Old W8 Project resume path: SUPERSEDED
 
 ## Control-model reconciliation
 
-State: ACTIVE / GOVERNANCE ONLY
+State: ACCEPTED / MERGED
 
 Purpose: restore the intended five-human Series delivery model before post-P0 implementation begins.
 
@@ -90,8 +90,7 @@ No AI or Project status may upgrade unobserved human gates to PASS.
 
 ## Current next actions
 
-1. review/accept team-Series control-model reconciliation;
-2. reconcile Hub/Project current representation;
-3. publish corrected A01 human execution plan;
-4. reissue/resume backend work only then;
-5. stop governance expansion once A01 is safely executable.
+1. apply the bounded Project V1.1 human/Series representation correction while #2 remains Blocked;
+2. publish the corrected A01 human execution plan;
+3. explicitly reissue/resume Kirch's backend package;
+4. stop governance expansion once A01 is safely executable.
