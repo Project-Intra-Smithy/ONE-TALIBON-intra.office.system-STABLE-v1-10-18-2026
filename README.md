@@ -23,7 +23,7 @@ Current authority:
 - .forge/AUTHORITY.md
 - .forge/WORK_LEDGER.md
 
-## Five-human engineering team
+## Engineering team
 
 - Kirch Ivan Balite — Tech Lead / Systems Architecture / Backend authority / integration / final technical acceptance
 - AJ Rienze Josol — Frontend Developer
