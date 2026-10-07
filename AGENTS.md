@@ -1,115 +1,84 @@
-# AGENTS.md — ONE TALIBON V1 GOVERNANCE
+# AGENTS.md — ONE TALIBON CURRENT GOVERNANCE
 
 ## Human authority
 
-Repository:
-
-`Kirch-Nairu/Talibon-Sales-Prototype`
-
 Technical Authority:
+Kirch Ivan Balite
 
-**Kirch Ivan Balite**
+Current five-human engineering team:
+- Kirch — Tech Lead / Systems Architecture / Backend / integration / final technical acceptance
+- AJ — Frontend
+- Jhayr — Frontend
+- Kurt — CI/CD / DevOps
+- Siris — QA
 
-No contributor, automated agent, branch owner, Reviewer, Writer, Acceptance role or commit volume independently grants product or promotion authority.
+## AI / Forge role
 
-## Forge role model
+AI-assisted engineering is allowed.
 
-- **Maintainer** — controls repository truth, sequencing, handoffs, evidence, acceptance/promotion coordination and anti-drift.
-- **Code Writer** — implements only an exact bounded handoff.
-- **Reviewer** — inspects; does not repair or promote.
-- **Acceptance** — evaluates an exact promotion contract.
-- **Integration Writer** — integrates only when explicitly authorized.
+AI may map repositories, trace code, draft bounded code, draft tests, analyze logs/diffs, prepare handoffs/evidence and surface drift.
 
-Writers do not self-accept or self-promote.
+AI does not replace:
+- human ownership of committed implementation;
+- LGU/process-owner business truth;
+- Kurt's CI/CD PASS;
+- Siris's QA PASS;
+- Kirch's scope/architecture/integration/final acceptance.
 
-## Current product authority
+Forge persona names do not create additional human team members.
 
-Accepted application/runtime payload:
+## Current authority
 
-`314b6661b34d4a70272d2a079f7cdda238b522ae`
+Canonical branch: main
+Resolve live SHA from Git before acting.
 
-State:
+Accepted executable/runtime anchor:
+395438674b4d2f00659eba616db760b339bb390a
 
-`B1 ACCEPTED / PROMOTED`
+Current program:
+COMMON SYSTEM / P1
 
-Designation:
+Current Series:
+A01 — FIRST-CLASS TASK DOMAIN
 
-`PROTOTYPE BACKEND BASELINE`
+Current state:
+EXECUTION HOLD — TEAM/SERIES CONTROL-MODEL RECONCILIATION
 
-Always resolve live `main` from Git because governance-only commits may advance the repository without changing the accepted product payload.
+A01-W01 is issued/suspended. No implementation candidate exists.
 
-## Current mission
+## Work hierarchy
 
-`SEPTEMBER 30, 2026 — 3:00 PM PROTOTYPE SHOWCASE`
+PROGRAM -> PHASE -> SERIES -> HUMAN LANE WORK PACKAGE -> EXACT CANDIDATE / RELEASE TUPLE -> CI/CD -> QA -> KIRCH ACCEPTANCE -> INTEGRATION
 
-Expected audience:
+A backend Wxx handoff is not the whole Series.
 
-`16-20`
+## Work issuance requirements
 
-Current phase:
+Before executable mutation:
+1. identify Series;
+2. identify human owner/lane;
+3. identify exact repository/branch/SHA;
+4. state owned/prohibited scope;
+5. state consumed contracts;
+6. state validation;
+7. state downstream human gates;
+8. stop on contradiction.
 
-`S1 — LIGHT UI CORRECTIONS & PRESENTATION FLOW LOCK`
+## Evidence
 
-Mandatory sequence:
+Use only observed states:
+PASS / FAIL / PARTIAL / BLOCKED / NOT RUN / NOT OBSERVED / UNKNOWN
 
-`BACKEND FREEZE -> LIGHT UI -> INTEGRATED VALIDATION -> TUNNEL REHEARSAL -> FULL DRESS REHEARSAL -> FREEZE -> SHOWCASE`
+Changed executable source does not inherit an older PASS.
 
-## Product direction
+## Safety
 
-ONE TALIBON must present as a dense, credible municipal digital workspace used for real coordination.
+Do not invent department-specific municipal rules.
+Do not weaken auth/security for convenience.
+Do not destructively test against protected databases.
+Do not self-promote or self-accept.
 
-Primary actions shown to stakeholders must work.
+## Current stop
 
-Do not add fake actions, fake efficiency metrics, AI branding, startup marketing language or decorative product theater.
-
-## Showcase scope rule
-
-Every remaining task must answer:
-
-`Does this materially increase the probability that the showcase succeeds?`
-
-If not, defer it.
-
-Current authorized work is presentation-critical UI refinement, exact integrated validation, deterministic demo preparation, Cloudflare Quick Tunnel delivery rehearsal, recovery rehearsal and final presentation operations.
-
-Broad backend work is frozen unless direct rehearsal evidence proves a blocker.
-
-## Security boundary
-
-Preserve authentication, authorization, sessions, CSRF, MFA, audit behavior, private-file controls and role/office visibility.
-
-Presentation convenience does not authorize weakening security boundaries.
-
-## Database boundary
-
-Protected UAT:
-
-`talibon_portal`
-
-Disposable engineering/test:
-
-`talibon_portal_test`
-
-Never destructively test against UAT.
-
-## Evidence discipline
-
-Only claim what ran.
-
-Valid states include:
-
-`PASS`, `FAIL`, `NOT RUN`, `NOT OBSERVED`, `UNKNOWN`.
-
-Build evidence is not runtime evidence.
-
-Runtime evidence is not tunnel/deployment evidence.
-
-Quick Tunnel presentation transport is not final production-hosting acceptance.
-
-## Freeze discipline
-
-After the final dress rehearsal passes, the exact known-good state is protected.
-
-Do not perform last-minute refactors, dependency updates, schema changes, architecture work or aesthetic experiments after freeze.
-
-Only a reproducible showstopper may break freeze.
+Do not execute old W8.
+Do not start A01-W01 until Technical Authority accepts the control-model correction and Maintainer explicitly reissues/resumes the human-owned backend lane.

@@ -4,97 +4,72 @@
 
 This index is the entry point for the post-P0 common-system engineering program.
 
-### Governing lock
+## Read order for a new Maintainer / AI session
 
-1. `COMMON-SYSTEM-PROGRAM-LOCK.md`
-   - P0-P7;
-   - Series IDs/purposes;
-   - invariants;
-   - frontend release law;
-   - cross-cutting acceptance;
-   - Track W / Track R;
-   - definition of COMMON MUNICIPAL ENGINE COMPLETE.
+Read in this order:
 
-### Evidence / authority
+1. .forge/SSOT_CURRENT.md
+2. this index
+3. COMMON-SYSTEM-PROGRAM-LOCK.md
+4. TEAM-SERIES-DELIVERY-MODEL.md
+5. SOURCE-AUTHORITY-REGISTER.md
+6. COMMON-CAPABILITY-BASELINE-REGISTER.md
+7. COMMON-PROGRAM-DEPENDENCY-GRAPH.md
+8. ENGINEERING-HUB-OPERATING-MODEL.md
+9. relevant Track W / Track R memory
+10. .forge/WORK_LEDGER.md
+11. current Series context/handoff
 
-2. `SOURCE-AUTHORITY-REGISTER.md`
-   - software truth;
-   - Technical Audit;
-   - independent review;
-   - process-owner authority;
-   - Citizens' Charter;
-   - frontend asset truth;
-   - inference/conflict rules.
+Do not reconstruct current program state from historical showcase/MP-series evidence.
 
-3. `COMMON-CAPABILITY-BASELINE-REGISTER.md`
-   - what exists;
-   - maturity;
-   - action;
-   - target Phase/Series;
-   - what must not be rebuilt/promoted.
+## Governing architecture
 
-4. `COMMON-PROGRAM-DEPENDENCY-GRAPH.md`
-   - Mermaid program graph;
-   - hard dependencies;
-   - soft/program-order dependencies;
-   - contract-release model.
+COMMON-SYSTEM-PROGRAM-LOCK.md controls:
+- P0-P7;
+- Series identifiers/purposes;
+- architecture invariants;
+- frontend release law;
+- cross-cutting acceptance;
+- Track W / Track R;
+- COMMON MUNICIPAL ENGINE COMPLETE.
 
-### Parallel tracks
+## Governing delivery model
 
-5. `WORKFLOW-DISCOVERY-AUTHORITY-TRACK.md`
-   - Citizens' Charter classification;
-   - workflow intake states;
-   - discovery matrix;
-   - configure/extend/specialize law;
-   - current authority blockers.
+TEAM-SERIES-DELIVERY-MODEL.md controls:
+- five-human team identity;
+- Series as capability-level delivery unit;
+- human implementation ownership;
+- AJ/Jhayr frontend roles;
+- Kurt CI/CD role;
+- Siris QA role;
+- Kirch Tech Lead/backend/integration/final acceptance;
+- AI/Forge assistive boundary;
+- parallelism.
 
-6. `FRONTEND-INTEGRATION-REGISTRY.md`
-   - existing frontend repo;
-   - exact observed main;
-   - synchronization caveat;
-   - FRONTEND-REG-001 requirements;
-   - ownership boundaries.
+This delivery memory corrects the operational interpretation without reopening the accepted program architecture.
 
-### Operating model
+## Evidence / authority
 
-7. `ENGINEERING-HUB-OPERATING-MODEL.md`
-   - Kirch authority;
-   - Maintainer role;
-   - work hierarchy;
-   - handoff/update/candidate states;
-   - backlog classes;
-   - anti-drift law.
+SOURCE-AUTHORITY-REGISTER.md defines software/business evidence precedence.
 
-### Next execution context
+COMMON-CAPABILITY-BASELINE-REGISTER.md defines capability maturity and required treatment.
 
-8. `P1-A01-OPENING-CONTEXT.md`
-   - why A01 is first;
-   - current exact source;
-   - A01 invariants;
-   - proposed internal staging;
-   - frontend/A02 unlock rules;
-   - stop conditions.
+COMMON-PROGRAM-DEPENDENCY-GRAPH.md defines hard/soft dependencies and contract-release relationships.
 
-### Supporting final audit
+## Parallel tracks
 
-9. `../evidence/maintainer/COMMON-SYSTEM-PRELOCK-FINAL-AUDIT.md`
-   - final repo-backed assurance;
-   - PASS / ready-to-lock verdict.
+WORKFLOW-DISCOVERY-AUTHORITY-TRACK.md controls LGU/process authority and no-assumption workflow intake.
 
----
+FRONTEND-INTEGRATION-REGISTRY.md controls frontend asset authority/reconciliation.
 
-## Read order for a new Maintainer/ChatGPT
+## Operating model
 
-Read exactly in this order:
+ENGINEERING-HUB-OPERATING-MODEL.md controls Hub/Maintainer state, handoffs, human ownership, candidate/evidence tracking and anti-drift.
 
-1. `.forge/SSOT_CURRENT.md`
-2. this index;
-3. `COMMON-SYSTEM-PROGRAM-LOCK.md`
-4. `SOURCE-AUTHORITY-REGISTER.md`
-5. `COMMON-CAPABILITY-BASELINE-REGISTER.md`
-6. `COMMON-PROGRAM-DEPENDENCY-GRAPH.md`
-7. relevant parallel-track memory;
-8. `.forge/WORK_LEDGER.md`
-9. current Series opening context/handoff.
+## A01
 
-Do not reconstruct current program state from historical showcase/MP-series evidence unless needed for provenance.
+P1-A01-OPENING-CONTEXT.md contains the current A01 execution context.
+
+Supporting evidence:
+- ../evidence/maintainer/COMMON-SYSTEM-PRELOCK-FINAL-AUDIT.md
+- ../evidence/maintainer/TEAM-SERIES-CONTROL-MODEL-RECONCILIATION-2026-10-07.md

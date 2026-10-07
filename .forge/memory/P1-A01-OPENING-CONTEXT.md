@@ -1,194 +1,114 @@
-# KIRION FORGE MEMORY — P1 / A01 OPENING CONTEXT
+# KIRION FORGE MEMORY — P1 / A01 EXECUTION CONTEXT
 
 ## Status
 
-`PRE-EXECUTION CONTEXT — NO CODE WRITER ISSUED YET`
+A01 OPENED / EXECUTION HOLD
+A01-W01 ISSUED / SUSPENDED
 
-This record exists so A01 implementation begins from the locked program rather than reconstructing context from chat/history.
+The original opening context has been reconciled to the five-human Series delivery model.
 
----
+No A01 implementation candidate exists.
 
-# 1. Source authority
+## Source authority
 
 Backend repository:
+Kirch-Nairu/Talibon-Sales-Prototype
 
-`Kirch-Nairu/Talibon-Sales-Prototype`
+A01 opening source:
+main@f2ff373113f89173016634505eb3c3943edfb35c
 
-Current accepted baseline:
+Accepted P0 executable/runtime anchor:
+395438674b4d2f00659eba616db760b339bb390a
 
-`main@4bac88d22e1fb3f808c024888845503922c41683`
+A01 coordination issuance snapshot:
+6e926c84bc1095446d90034633f7f722552aaafb
 
-Validated executable anchor carried by P0-H:
+Current reconciled coordination head:
+fc8cc3258696ce0ff518427a23e518e920345605
 
-`395438674b4d2f00659eba616db760b339bb390a`
+W01 immutable issued source:
+ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4
 
-Program lock branch:
+## Why A01 is first
 
-`KIRCH-TALIBON-COMMON-SYSTEM-PROGRAM-LOCK`
+Repository evidence establishes:
+- Work Request / WorkflowTransaction is an existing formal inter-office domain;
+- current My Work is transaction-backed;
+- no generic canonical common Task domain exists.
 
-A01 implementation branch must not be created until this program-lock package is reviewed/accepted.
+Therefore A01 builds First-Class Task without replacing Work Request.
 
----
+## A01 is the Series
 
-# 2. Why A01 is first
+A01 is the entire capability lifecycle, not just W01.
 
-The governing Technical Audit identifies:
+### Kirch / backend
 
-- First-Class Task as immediate engineering;
-- Unified My Work as following the Task foundation.
+Internal packages may include:
+- W01 — persistence/model foundation;
+- W02 — lifecycle/authorization;
+- W03 — application/backend contract;
+- later backend events/audit/acceptance packages.
 
-Live source confirms:
+### Contract release
 
-- strong Work Request / WorkflowTransaction domain exists;
-- current My Work is real but transaction-backed;
-- no generic canonical Task model/controller/route exists;
-- specialized HR task artifacts do not satisfy the common Task requirement.
+Frontend begins only after stable backend contract release and FRONTEND-REG-001.
 
-Therefore A01 is a source-backed missing common domain, not a speculative new feature.
+### AJ / Jhayr / frontend
 
----
+One or both frontend developers receive explicit bounded packages.
+They do not invent lifecycle, permissions or municipal rules.
 
-# 3. A01 purpose
+### Kurt / CI/CD
 
-Create a generic internal/person-level Task domain for ONE TALIBON.
+Validates the exact candidate/release tuple.
 
-A Task represents personal/internal responsibility.
+### Siris / QA
 
-It does not replace:
+Runs independent functional, negative and regression QA.
 
-- Work Request / WorkflowTransaction;
-- Correspondence;
-- Document;
-- Meeting.
+### Kirch / Tech Lead
 
----
+Reviews architecture, evidence and integration; accepts or returns bounded rework.
 
-# 4. Required A01 invariants
+## W01 state clarification
 
-At minimum:
+If W01 is reissued/resumed:
+- state may be opaque bounded persistence only;
+- W01 defines no lifecycle enum;
+- W01 defines no canonical lifecycle vocabulary/default;
+- W02 owns lifecycle semantics and transition authority.
 
-- Task has an independent canonical identity;
-- Task lifecycle is explicit and not borrowed blindly from WorkflowTransaction;
-- server-side authorization defines create/view/assign/reassign/act/complete/cancel/return semantics as actually approved;
-- assignee/responsibility is explicit;
-- due/priority semantics are bounded and testable;
-- Task can reference related work without owning that source domain;
-- audit/event evidence exists;
-- migration is forward-safe from P0;
-- existing Work Request behavior remains unchanged unless a separately authorized integration change requires otherwise.
+## Frontend state
 
-Do not invent department-specific approval or routing logic.
+Frontend asset:
+Kirch-Nairu/Talibon-Intra-Office-Portal@a7d7be17feb435b50c52cacd063e11d92ad047e1
 
----
+Frontend implementation remains blocked until:
+A01-C1 / contract release + FRONTEND-REG-001
 
-# 5. A01 staged execution model
+## A02 rule
 
-Recommended internal staging:
+A02 may consume Task only after A01 releases a sufficiently stable Task identity/contract.
 
-## A01-W01 — Domain / persistence / invariants
-Backend authority.
+Safe parallel preparation is allowed; premature implementation against guessed Task semantics is not.
 
-## A01-W02 — Authorization / lifecycle / negative cases
-Backend + security authority.
+## Stop conditions
 
-## A01-W03 — Application service / route / request-response contract
-Backend authority.
-
-## A01-C1 — FRONTEND CONTRACT RELEASE
-Unlock point.
-
-Must publish:
-
-- route/API contract;
-- DTO/response shape;
-- validation/error semantics;
-- lifecycle/status values;
-- allowed actions presentation contract;
-- pagination/filter contract where relevant;
-- source-reference contract;
-- exact backend candidate SHA/version.
-
-## A01-W04 — events / audit / notification/link hooks
-Backend continuation.
-
-## A01-W05 — Feature/security/migration/query acceptance
-Backend validation.
-
-## A01-F01/F02 — frontend implementation
-Only after A01-C1 and FRONTEND-REG-001.
-
-## A01-I01 — integration candidate
-
-## A01-V01 — exact-candidate CI/runtime/responsive validation
-
-## A01-H — technical acceptance / known-state publication
-
-This internal decomposition is a planning recommendation until the Maintainer issues the exact work-package handoffs.
-
----
-
-# 6. Frontend state
-
-Existing frontend repo:
-
-`Kirch-Nairu/Talibon-Intra-Office-Portal`
-
-Observed main:
-
-`a7d7be17feb435b50c52cacd063e11d92ad047e1`
-
-Frontend implementation is blocked only on:
-
-- A01-C1 contract release;
-- FRONTEND-REG-001 exact integration-base reconciliation.
-
-A01 backend work does not wait for frontend synchronization.
-
----
-
-# 7. A02 parallelization rule
-
-Kirch may begin bounded A02 backend architecture after A01-C1 releases a stable Task identity/contract.
-
-Frontend may implement A01 at the same time.
-
-Allowed parallelism:
-
-`A01 FRONTEND || A01 BACKEND CONTINUATION || A02 BACKEND ARCHITECTURE`
-
-provided contracts and ownership do not overlap unsafely.
-
-A02 frontend remains blocked until its own contract release.
-
----
-
-# 8. A01 stop conditions
-
-Stop and return to Technical Authority if A01 appears to require:
-
+Return to Technical Authority if A01 appears to require:
 - replacing WorkflowTransaction;
-- changing department-specific routing;
-- inventing final LGU role truth;
+- department-specific routing;
+- unsupported LGU role truth;
 - universal WorkItem abstraction;
 - generic workflow DSL;
-- Procurement/Project Monitoring logic;
+- Procurement/Project Monitoring expansion;
 - Full HRIS expansion;
-- production deployment changes;
-- frontend redesign outside the Task integration scope;
+- production/deployment mutation;
 - schema-history rewrite;
-- destructive migration against protected data;
-- assumption of unsupported SLA/approval/signature behavior.
+- unsupported SLA/approval/signature assumptions.
 
----
+## Current next action
 
-# 9. A01 acceptance posture
+Do not execute W01 yet.
 
-A01 is not complete because Task pages render.
-
-A01 must prove:
-
-`IMPLEMENTED + COMMITTED + SELF-VALIDATED + REVIEWED + CI PASSED + QA/ACCEPTANCE AS REQUIRED + TECHNICAL AUTHORITY ACCEPTED + INTEGRATED + RECORDED`
-
-Exact gates are issued with the work package.
-
-A01 acceptance does not mean P1 is complete; A02/A03/A04 remain.
+First accept the team/Series control-model reconciliation and publish the corrected A01 human-lane execution plan.

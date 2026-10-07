@@ -1,231 +1,97 @@
 # ONE TALIBON — ACTIVE WORK LEDGER
 
-## Technical Authority
+## Authority
 
-**Kirch Ivan Balite**
+Technical Authority: Kirch Ivan Balite
 
 Accepted executable/runtime anchor:
+395438674b4d2f00659eba616db760b339bb390a
 
-`395438674b4d2f00659eba616db760b339bb390a`
+Common-program promotion / A01 opening source:
+f2ff373113f89173016634505eb3c3943edfb35c
 
-Common-program promotion / A01 Series-opening source:
+Live main at audit:
+fdc8af4d2a3fbea6f9b12b7825f278cf8c06e735
 
-`main@f2ff373113f89173016634505eb3c3943edfb35c`
+## Current state
 
-Current exact `main` must be verified before issuing new work.
+P0: COMPLETE / FROZEN
+Common System Program: ACCEPTED / PROMOTED
+P1: ACTIVE
+A01: OPENED / EXECUTION HOLD
+A01-W01: ISSUED / SUSPENDED
+Implementation candidate: NONE
+Old W8 Project resume path: SUPERSEDED
 
----
+## Control-model reconciliation
 
-# Current state
+State: ACTIVE / GOVERNANCE ONLY
 
-## P0 — Canonical Baseline
+Purpose: restore the intended five-human Series delivery model before post-P0 implementation begins.
 
-`COMPLETE / FROZEN`
+Governing evidence:
+.forge/evidence/maintainer/TEAM-SERIES-CONTROL-MODEL-RECONCILIATION-2026-10-07.md
 
-Accepted runtime:
+No executable product source is changed by this work.
 
-`395438674b4d2f00659eba616db760b339bb390a`
+## Human team
 
-## Common-System Program Lock
+- Kirch — Tech Lead / Architecture / Backend / integration / final acceptance
+- AJ — Frontend
+- Jhayr — Frontend
+- Kurt — CI/CD / DevOps
+- Siris — QA
 
-`ACCEPTED / PROMOTED`
+AI/Forge is assistive only.
 
-Governing memory:
+## A01
 
-`.forge/memory/COMMON-SYSTEM-MEMORY-INDEX.md`
+Series: A01 — FIRST-CLASS TASK DOMAIN
 
-## P1 / A01
+Current backend internal package:
+A01-W01 — TASK DOMAIN FOUNDATION
 
-`OPENED`
+Writer source:
+ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4
 
-Purpose:
+The W01 handoff is not authorized to execute while the control-model hold remains.
 
-`FIRST-CLASS TASK DOMAIN`
+Downstream:
+- A01-W02 — blocked on W01 acceptance
+- A01-W03 — blocked on W02
+- A01-C1 — blocked on stable backend contract
+- A01 frontend — blocked on C1 + FRONTEND-REG-001
+- A02 implementation — blocked on A01 contract release
 
-## A01-W01
+## A01 Series gate model
 
-`ISSUED / PAUSED FOR CONTROL-PLANE RECONCILIATION`
+When reissued:
+1. Kirch backend/technical foundation;
+2. contract release;
+3. AJ/Jhayr frontend packages as assigned;
+4. developer self-validation;
+5. exact candidate/release tuple;
+6. Kurt CI/CD;
+7. Siris QA;
+8. Kirch review/acceptance/integration;
+9. A01 freeze / A02 authorization.
 
-Writer branch:
+## Parallel tracks
 
-`KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION`
+Track W — LGU Workflow Intake: ACTIVE PARALLEL
+Track R — Production Readiness: ACTIVE PARALLEL / SEPARATE ACCEPTANCE
 
-Immutable issued source:
+## Evidence law
 
-`ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4`
+Use only observed states:
+PASS / FAIL / PARTIAL / BLOCKED / NOT RUN / NOT OBSERVED / UNKNOWN
 
-No implementation candidate returned.
+No AI or Project status may upgrade unobserved human gates to PASS.
 
-No writer-owned source changes have been accepted.
+## Current next actions
 
-Blocked:
-
-- A01-W02 — waits for W01 return/review/acceptance
-- A01-W03 — waits for W02
-- A01-C1 — waits for stable W03 contract
-- A01 frontend — waits for A01-C1 + FRONTEND-REG-001
-- A02 implementation — may not consume Task until A01-C1
-
----
-
-# Control-plane reconciliation
-
-State:
-
-`ACTIVE / TEMPORARY EXECUTION HOLD`
-
-Purpose:
-
-Reconcile the Engineering Hub, Project bootstrap specification, frontend authority classification and current-state records before resuming product implementation.
-
-This hold does not reopen P0 and does not alter A01 architecture.
-
-Required before W01 resumes:
-
-- product SSOT/ledger synchronized;
-- Hub W01 state records PAUSED truthfully;
-- FRONTEND-REG-001 hardened against stale backend authority;
-- GitHub Project V1 simplified;
-- W0 full read-only inventory completed;
-- W0 discrepancy matrix reviewed by Technical Authority;
-- W1-W5 Project reconciliation completed;
-- W6 final Project conformance audit completed;
-- W6 reviewed by Technical Authority;
-- control-plane hold explicitly closed.
-
-Current Project reconciliation:
-
-`W1-W6 AUTHORIZED / INCOMPLETE`
-
----
-
-# Frontend status
-
-Repository:
-
-`Kirch-Nairu/Talibon-Intra-Office-Portal`
-
-Observed main:
-
-`a7d7be17feb435b50c52cacd063e11d92ad047e1`
-
-Classification:
-
-`EXISTING FRONTEND ASSET / HISTORICAL FULL-STACK COPY / RECONCILIATION REQUIRED`
-
-Canonical backend authority:
-
-`Kirch-Nairu/Talibon-Sales-Prototype`
-
-The frontend repository's historical PHP/server/routes/controllers/models are not allowed to become backend authority.
-
-FRONTEND-REG-001 must publish the allowed frontend integration base before frontend issuance.
-
----
-
-# Team flow
-
-`TECHNICAL AUTHORITY -> ENGINEERING HUB MAINTAINER -> BOUNDED IMPLEMENTATION LANES -> REVIEW / QA -> MAINTAINER INTEGRATION -> TECHNICAL AUTHORITY ACCEPTANCE`
-
-## Technical Authority
-
-Kirch owns:
-
-- architecture;
-- domain truth;
-- technical scope;
-- contract release;
-- integration decisions;
-- final technical acceptance.
-
-## Maintainer
-
-Owns:
-
-- current-state reconciliation;
-- exact source/branch verification;
-- work issuance;
-- dependency control;
-- candidate/evidence tracking;
-- integration preparation.
-
-## Backend
-
-Implements only exact bounded backend handoffs.
-
-## Frontend
-
-Consumes released backend contracts only.
-
-Frontend does not invent:
-
-- lifecycle;
-- permissions;
-- municipal routing;
-- municipal roles;
-- SLA;
-- approvals/signatures.
-
-## Review / QA
-
-Validates exact candidates and evidence independently where required.
-
-## Platform / Operations
-
-Runs Track R separately:
-
-- infrastructure;
-- DNS/TLS;
-- backup/restore;
-- monitoring/logging;
-- staging;
-- runbooks.
-
-Track R does not redefine product/domain architecture.
-
----
-
-# Parallel tracks
-
-## Track W — LGU Workflow Intake / Authority
-
-`ACTIVE PARALLEL TRACK`
-
-Rule:
-
-`DOCUMENTARY EVIDENCE != IMPLEMENTATION AUTHORITY`
-
-## Track R — Production Readiness
-
-`ACTIVE PARALLEL TRACK / SEPARATE ACCEPTANCE`
-
-Deployment remains separately authorized.
-
----
-
-# Evidence law
-
-Allowed states:
-
-`PASS / FAIL / PARTIAL / BLOCKED / NOT RUN / NOT OBSERVED / UNKNOWN`
-
-Never translate `NOT RUN` into `PASS`.
-
-A PASS belongs to the exact validated candidate.
-
----
-
-# Current next actions
-
-1. execute W8 Project Status synchronization for Hub issue #2;
-2. review W8;
-3. explicitly release the A01-W01 pause;
-4. resume W01 writer execution from immutable source `ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4`;
-5. keep W02 blocked until W01 is accepted;
-6. keep A01 frontend blocked until A01-C1 + FRONTEND-REG-001.
-
-Current Project control result:
-
-`PROJECT V1 ACCEPTED / W8 PENDING`
-
-A01-W01 remains PAUSED until W8 closeout.
+1. review/accept team-Series control-model reconciliation;
+2. reconcile Hub/Project current representation;
+3. publish corrected A01 human execution plan;
+4. reissue/resume backend work only then;
+5. stop governance expansion once A01 is safely executable.

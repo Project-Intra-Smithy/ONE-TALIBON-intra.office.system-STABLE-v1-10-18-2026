@@ -2,88 +2,69 @@
 
 ## Authority
 
-Technical Authority:
+Technical Authority: Kirch Ivan Balite
 
-**Kirch Ivan Balite**
+Product repository: Kirch-Nairu/Talibon-Sales-Prototype
 
-Product repository:
-
-`Kirch-Nairu/Talibon-Sales-Prototype`
+Live main at the 2026-10-07 control-model audit:
+fdc8af4d2a3fbea6f9b12b7825f278cf8c06e735
 
 Accepted executable/runtime anchor:
-
-`395438674b4d2f00659eba616db760b339bb390a`
+395438674b4d2f00659eba616db760b339bb390a
 
 Common-program promotion / A01 Series-opening source:
+main@f2ff373113f89173016634505eb3c3943edfb35c
 
-`main@f2ff373113f89173016634505eb3c3943edfb35c`
+Governance-only descendants do not inherit executable acceptance. Exact source must be reverified before implementation is issued.
 
-Important:
+## Current program state
 
-`f2ff373...` remains the exact source that opened A01. Later `.forge/**` governance-only commits on `main` do not rewrite that issued source and do not inherit executable acceptance to changed product source.
+P0 — COMPLETE / FROZEN
+COMMON SYSTEM PROGRAM — ACCEPTED / PROMOTED
+P1 — ACTIVE PROGRAM PHASE
+A01 — OPENED / EXECUTION HOLD
+A01-W01 — ISSUED / SUSPENDED — DO NOT EXECUTE
 
-Current exact `main` must always be re-verified before a new work package is issued.
+No A01-W01 implementation candidate exists.
 
----
+## Current hold
 
-# 1. Current program state
+A repo-wide audit found control-model drift:
+- five named human owners disappeared from active control;
+- Series delivery was flattened into generic/AI-centered work packages;
+- old W8 treated a Project Status update as sufficient to resume engineering;
+- several current-facing governance files still described historical September/MP-series state.
 
-`P0 — CANONICAL BASELINE: COMPLETE / FROZEN`
+Disposition:
+CONTROL-MODEL REWORK REQUIRED / PRODUCT ARCHITECTURE PRESERVED
 
-`COMMON SYSTEM PROGRAM: ACCEPTED / PROMOTED`
+Governing record:
+.forge/evidence/maintainer/TEAM-SERIES-CONTROL-MODEL-RECONCILIATION-2026-10-07.md
 
-`P1 / A01 — OPENED`
+## Five-human engineering team
 
-`A01-W01 — ISSUED / PAUSED FOR CONTROL-PLANE RECONCILIATION`
+- Kirch Ivan Balite — Tech Lead / Systems Architecture / Backend authority / integration / final technical acceptance
+- AJ Rienze Josol — Frontend Developer
+- Jhayr — Frontend Developer
+- Kurt Shine Khase Halasan — CI/CD / Development Operations
+- Siris — Quality Assurance
 
-No A01-W01 implementation candidate has been returned.
+KIRION Forge / ChatGPT assists the team. It is not a sixth human owner.
 
-The writer branch remains at its immutable issued source:
+Governing delivery memory:
+.forge/memory/TEAM-SERIES-DELIVERY-MODEL.md
 
-`KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION@ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4`
+## Locked architecture
 
-A01-W02 remains blocked until W01 returns, is reviewed, validated as required, and accepted.
-
----
-
-# 2. P0 accepted baseline
-
-P0 accepted executable/runtime anchor:
-
-`395438674b4d2f00659eba616db760b339bb390a`
-
-Validation:
-
-- workflow: `P08 Targeted Baseline Acceptance`
-- run: `#28`
-- attempt: `3`
-- conclusion: `SUCCESS`
-- artifact ID: `11418268674`
-- digest: `sha256:f386d18a844c314dbeecfe3ab188195dcd0a9158bd06fd69fae4848a4282ac49`
-
-Governance descendants from the accepted runtime anchor through the common-program promotion contain only `.forge/**` evidence/memory/governance changes.
-
-P0 does not reopen without:
-
-- concrete defect;
-- invalidated evidence;
-- changed acceptance requirement; or
-- explicit Technical Authority decision.
-
----
-
-# 3. Locked common-system architecture
-
-- P1 — Common Work & Accountability
-- P2 — Common Coordination Integration
-- P3 — Official Information & Evidence Maturation
-- P4 — Common Search
-- P5 — Visibility & Control
-- P6 — Cross-Domain Authorization Reconciliation & Security Regression
-- P7 — Common-Core Acceptance
+P1 — Common Work & Accountability
+P2 — Common Coordination Integration
+P3 — Official Information & Evidence Maturation
+P4 — Common Search
+P5 — Visibility & Control
+P6 — Cross-Domain Authorization Reconciliation & Security Regression
+P7 — Common-Core Acceptance
 
 P1 Series:
-
 - A01 — First-Class Task Domain
 - A02 — Unified My Work Projection
 - A03 — Non-Destructive Task / Work Request Integration
@@ -91,179 +72,84 @@ P1 Series:
 - P1-H
 
 Locked invariants:
+- Task != Work Request
+- Work Request != Correspondence
+- Document != Transaction
+- Meeting != Task
+- Executive oversight != universal routing
 
-- `Task != Work Request`
-- `Work Request != Correspondence`
-- `Document != Transaction`
-- `Meeting != Task`
-- `Executive oversight != universal routing`
+## Series execution law
 
-Do not create a universal mutable WorkItem/domain merely to simplify integration.
+A Series is a product-capability delivery unit.
 
----
+Standard human gate chain where applicable:
+KIRCH AUTHORIZATION / BACKEND
+-> BACKEND CONTRACT RELEASE
+-> AJ / JHAYR FRONTEND
+-> DEVELOPER SELF-VALIDATION
+-> EXACT CANDIDATE / RELEASE TUPLE
+-> KURT CI/CD
+-> SIRIS QA
+-> KIRCH ACCEPTANCE / INTEGRATION
+-> SERIES FREEZE
 
-# 4. Current source-backed architecture facts
+Internal Wxx packages are subordinate work packages, not replacements for the Series lifecycle.
 
-Live backend establishes:
+## A01 exact state
 
-- Work Request / `WorkflowTransaction` is an established common engine;
-- current My Work is real but transaction-backed;
-- no generic canonical common `Task` model/controller/route exists;
-- therefore A01 remains a real missing common domain;
-- A02 must extend existing My Work rather than replace it;
-- Correspondence, Documents, Records, Notifications, Calendar, Messaging, Dashboards, Reports, Audit, Auth/MFA and authorization are established foundations at varying maturity.
+A01 coordination issuance snapshot:
+KIRCH-TALIBON-P1-A01-FIRST-CLASS-TASK@6e926c84bc1095446d90034633f7f722552aaafb
 
----
+Current coordination head after governance-only reconciliation:
+KIRCH-TALIBON-P1-A01-FIRST-CLASS-TASK@fc8cc3258696ce0ff518427a23e518e920345605
 
-# 5. A01 current execution state
+A01-W01 writer source:
+KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION@ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4
 
-Coordination issuance snapshot:
+The issued handoff is suspended. Its bounded technical content may be reused only after the corrected A01 human-Series plan is accepted and explicitly reissued/resumed.
 
-`KIRCH-TALIBON-P1-A01-FIRST-CLASS-TASK@6e926c84bc1095446d90034633f7f722552aaafb`
+## Frontend authority
 
-Current coordination branch after governance-only control-state reconciliation:
-
-`KIRCH-TALIBON-P1-A01-FIRST-CLASS-TASK@fc8cc3258696ce0ff518427a23e518e920345605`
-
-Series plan:
-
-`.forge/plans/P1-A01-FIRST-CLASS-TASK-SERIES-PLAN.md`
-
-A01-W01 writer branch:
-
-`KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION`
-
-Immutable issued source:
-
-`ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4`
-
-W01 scope remains bounded to:
-
-- `app/Models/Task.php`
-- one additive `create_tasks_table` migration
-- `tests/Feature/Tasks/TaskDomainFoundationTest.php`
-- optional TaskFactory only if the focused test genuinely requires it
-
-W01 is currently PAUSED while Engineering Hub / GitHub Project control-plane bootstrap is reconciled.
-
-The pause is operational only. It does not revoke A01 authority or alter the immutable issued source.
-
----
-
-# 6. Frontend authority boundary
-
-Existing frontend/team repository:
-
-`Kirch-Nairu/Talibon-Intra-Office-Portal`
-
-Observed frontend source:
-
-`main@a7d7be17feb435b50c52cacd063e11d92ad047e1`
+Frontend asset:
+Kirch-Nairu/Talibon-Intra-Office-Portal@a7d7be17feb435b50c52cacd063e11d92ad047e1
 
 Classification:
+EXISTING FRONTEND ASSET + HISTORICAL FULL-STACK COPY — RECONCILIATION REQUIRED
 
-`EXISTING FRONTEND ASSET + HISTORICAL FULL-STACK COPY — CONTRACT ONBOARDING / RECONCILIATION REQUIRED`
+Historical server/backend code there is non-authoritative.
 
-Critical authority rule:
+Frontend implementation requires:
+A01 CONTRACT RELEASE + FRONTEND-REG-001
 
-The repository contains both frontend assets and an older full-stack/backend copy.
+## Team-workspace provenance
 
-Its server/backend source is **NOT** canonical product authority.
+Kirch-Nairu/ONE-TALIBON-TEAM-WORKSPACE@3f1c0a33cbaeda8eeafcecb7d9422718b13a4796
 
-Canonical backend/domain authority remains:
+is historical/reference, not product authority. It remains required provenance for the five-human collaboration model and post-P0 Series workflow.
 
-`Kirch-Nairu/Talibon-Sales-Prototype`
+## Business authority
 
-FRONTEND-REG-001 must explicitly identify which frontend files/contracts are consumable and must prevent historical backend/routes/controllers/models from being reintroduced as authority.
+Validated process-owner/LGU workflow governs municipal business truth.
 
-A01 frontend remains blocked until:
+Citizens' Charter and historical code are supporting discovery evidence and do not independently authorize department routing, approvals, SLA, signatures, roles or implementation acceptance.
 
-`A01-C1 + FRONTEND-REG-001`
+## Acceptance law
 
-A01 backend/domain work is not logically blocked by frontend reconciliation, although W01 is temporarily paused for the control-plane reconciliation recorded here.
+For executable Series work:
+IMPLEMENTED + COMMITTED + SELF-VALIDATED + EXACT CANDIDATE + CI/CD PASSED + QA PASSED WHERE REQUIRED + KIRCH TECHNICAL ACCEPTANCE + INTEGRATED + RECORDED
 
----
+Any executable change after PASS creates a new candidate.
 
-# 7. Engineering Hub authority
+## Immediate next action
 
-Operational control repository:
+Do not execute old W8.
+Do not execute W01 yet.
 
-`Project-Intra-Smithy/engineering-hub`
+First:
+1. accept the team/Series control-model reconciliation;
+2. reconcile Hub/Project representation;
+3. publish a corrected A01 human-lane execution plan;
+4. explicitly reissue/resume Kirch's backend lane;
+5. preserve frontend, Kurt CI/CD, Siris QA and Kirch acceptance gates.
 
-The Hub is the current operational coordination surface for:
-
-- work-package state;
-- dependencies;
-- frontend reconciliation;
-- Track W;
-- Track R;
-- Project-control bootstrap.
-
-Detailed executable truth remains in this product repository and exact Git evidence.
-
-If Hub and product `.forge` current-state records conflict, the conflict must be reconciled before issuing new work.
-
----
-
-# 8. LGU workflow / business authority
-
-Citizens' Charter:
-
-`SUPPORTING MUNICIPAL PROCESS REFERENCE — VALIDATION REQUIRED`
-
-Process-owner validated workflow remains authoritative for municipal business truth.
-
-Department-specific rules must not be inferred solely from:
-
-- Charter rows;
-- historical code;
-- prototype/reference pages;
-- menu/route existence.
-
-Track W handles LGU/process authority in parallel.
-
-Track R handles production readiness in parallel.
-
-Neither track silently redefines common-domain architecture.
-
----
-
-# 9. Acceptance law
-
-For executable work:
-
-`IMPLEMENTED + COMMITTED + SELF-VALIDATED + REVIEWED + CI PASSED + QA PASSED WHERE REQUIRED + TECHNICAL AUTHORITY ACCEPTED + INTEGRATED + RECORDED`
-
-A PASS belongs to an exact candidate.
-
-Executable source change after PASS creates a new candidate.
-
-Governance-only changes do not create a new executable product candidate, but their exact Git lineage must still be recorded.
-
----
-
-# 10. Immediate next action
-
-GitHub Project V1 is technically accepted.
-
-W7 status-surface verification passed with no Project mutation required.
-
-Current control-plane gate:
-
-`W8 — A01-W01 RESUME / PROJECT STATUS SYNCHRONIZATION`
-
-W8 must synchronize Hub issue #2 Project Status:
-
-`Blocked -> Active`
-
-After W8 PASS and Maintainer review:
-
-- close the control-plane hold;
-- explicitly unpause A01-W01;
-- permit execution from immutable writer source `ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4`.
-
-A01-W02 remains blocked until W01 acceptance.
-
-FRONTEND-REG-001 remains required before any A01 frontend issuance.
-
-No department-specific implementation is authorized by this state.
+Then stop governance work and build the product.

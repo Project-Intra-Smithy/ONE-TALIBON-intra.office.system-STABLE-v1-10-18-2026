@@ -1,74 +1,71 @@
-# ONE TALIBON V1 — CURRENT INTEGRATION POLICY
+# ONE TALIBON — CURRENT INTEGRATION POLICY
 
-## Technical Authority
+## Authority
 
-**Kirch Ivan Balite**
+Technical Authority: Kirch Ivan Balite
 
 ## Current integration state
 
-The historical RC1 integration program is complete.
+P0 executable/runtime anchor:
+395438674b4d2f00659eba616db760b339bb390a
 
-Accepted product branch:
+Common-program / A01 opening source:
+f2ff373113f89173016634505eb3c3943edfb35c
 
-`main`
+Current main at audit:
+fdc8af4d2a3fbea6f9b12b7825f278cf8c06e735
 
-Observed MP5 source baseline:
+A01 implementation candidate:
+NONE
 
-`615529ce6663933dd3eeee4d504d14d1f21b626d`
+No A01 integration is pending.
 
-Active MP5 coordination branch:
+## Series integration law
 
-`KIRCH-TALIBON-MP5-POST-DAT-FRONTEND-CORRECTION`
+A Series is integrated only after its required human lanes and evidence are satisfied.
 
-No MP5 product candidate is integrated yet. Writer branches remain candidates until independent Review/Acceptance and explicit integration authority.
+Standard path where applicable:
+HUMAN IMPLEMENTATION
+-> DEVELOPER SELF-VALIDATION
+-> EXACT CANDIDATE / RELEASE TUPLE
+-> KURT CI/CD
+-> SIRIS QA
+-> KIRCH TECH LEAD ACCEPTANCE
+-> CONTROLLED INTEGRATION
+-> RECORDED KNOWN STATE
 
-Maximum concurrent Code Writers: **2**.
+CI or QA alone does not authorize integration.
+Maintainer/AI does not self-promote a candidate.
 
-## Completed chain
+## Cross-repository integration
 
-- CAL1: completed / frozen;
-- BH1: reviewed / closed;
-- DA1 repair wave: closed with recorded limitations;
-- RC1 reconciliation: completed;
-- RV1 exact-candidate validation: completed;
-- main promotion: completed;
-- archival preservation: completed;
-- non-main remote branch cleanup: completed.
+When backend and frontend live in separate repositories, integration evidence must identify:
+- backend repository + exact SHA;
+- frontend repository + exact SHA;
+- backend contract/version consumed;
+- relevant schema/config state;
+- CI/CD evidence;
+- QA evidence;
+- Kirch disposition.
 
-## Current topology
+## Current A01 rule
 
-```text
-refs/heads/main
-```
+A01-W01 is one backend sub-package.
+It is suspended.
 
-Historical branch tips remain under verified `archive/*` tags.
+When the corrected A01 Series plan is accepted, backend work may resume from an explicitly reissued source.
 
-## New integration work
+Frontend integration remains blocked until:
+A01-C1 / BACKEND CONTRACT RELEASE + FRONTEND-REG-001
 
-Any future product wave must begin from live `main` unless the Technical Authority explicitly authorizes another exact source.
+## Collision rule
 
-Temporary branches are allowed only under a new bounded handoff.
+If two active packages require the same owned source or conflicting contract changes:
+- stop;
+- do not merge competing interpretations opportunistically;
+- return to Maintainer/Technical Authority;
+- re-sequence or reissue ownership.
 
-Do not recreate historical RC1/DA1/UIUX branch names as implicit authority.
+## Historical integration evidence
 
-## Current transition
-
-MP3 closeout and MP4 field rehearsal are complete.
-
-Current transition:
-
-`MP5 — POST-DAT FRONTEND CORRECTION`
-
-Batch 1 W01/W02 are designed as non-overlapping candidates. Integration order will be chosen from reviewed evidence; writers must not merge each other or the coordination branch.
-
-Any shared-file or semantic collision stops parallel treatment and returns to Maintainer.
-
-## Deployment boundary
-
-Deployment remains unauthorized until a separate Technical Authority decision after MP5 acceptance/promotion.
-
-## Developer boundary
-
-Developers / Contributors do not independently promote `main`, rewrite history, delete archival refs, or authorize deployment.
-
-Those transitions require Kirch Ivan Balite as Technical Authority.
+Historical RC1/MP-series integration records remain provenance only and do not define the current A01 integration state.

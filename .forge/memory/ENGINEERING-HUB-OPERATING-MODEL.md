@@ -2,237 +2,93 @@
 
 ## Purpose
 
-ONE TALIBON now requires a dedicated Engineering Hub / Maintainer function for program control.
+The Engineering Hub is the durable program-control layer for a five-human ONE TALIBON engineering team.
 
-The Hub is not a replacement for Technical Authority.
+It coordinates repositories, Phases, Series, human-owned work packages, candidates, dependencies, evidence and integration state.
 
-It is the durable coordination layer for:
+It is not a replacement for Technical Authority, product repositories, or human ownership.
 
-- repositories;
-- phases;
-- Series;
-- work packages;
-- backlog;
-- owners;
-- handoffs;
-- returns;
-- exact candidate SHAs;
-- reviews;
-- CI/QA evidence;
-- dependencies;
-- risks;
-- decisions;
-- progress;
-- integration queue;
-- known state.
+## Human authority
 
----
+### Kirch Ivan Balite
+Technical Lead / Systems Architecture / Backend authority / integration / final technical acceptance.
 
-# 1. Authority hierarchy
+### AJ Rienze Josol
+Frontend Developer.
 
-## Technical Authority
+### Jhayr
+Frontend Developer.
 
-**Kirch Ivan Balite**
+### Kurt Shine Khase Halasan
+CI/CD / Development Operations.
 
-Owns:
+### Siris
+Quality Assurance.
 
-- architecture;
-- backend/domain truth;
-- technical scope;
-- cross-repository contracts;
-- integration decisions;
-- final technical acceptance;
-- Series/Phase authorization;
-- change to locked program architecture.
+## Maintainer function
 
-## Engineering Hub Maintainer
+The Maintainer may be AI-assisted.
 
-May:
+It may reconcile current state, register work, structure backlog, prepare/issue already-authorized handoffs, verify exact source/branch/ownership, reconcile human returns, track candidate SHAs/release tuples, track dependencies/risks/decisions, track Kurt CI evidence and Siris QA evidence, prepare integration state and surface blockers.
 
-- register work;
-- structure backlog;
-- issue approved handoffs;
-- verify source SHA/branch/ownership;
-- reconcile contributor returns;
-- maintain dependency/risk/decision registers;
-- track evidence;
-- prepare integration candidates;
-- surface blockers;
-- enforce stop conditions.
+It may not invent municipal business rules, redefine architecture, broaden scope, substitute for a human work owner, award CI PASS for Kurt, award QA PASS for Siris, accept/promote over Kirch, or turn Project Status into implementation authority.
 
-May NOT independently:
+## Work hierarchy
 
-- invent business requirements;
-- redefine architecture;
-- broaden scope;
-- accept product source on behalf of Kirch unless explicitly delegated;
-- promote a candidate merely because CI is green;
-- convert input-gated work into engineering assumptions.
-
----
-
-# 2. Work hierarchy
-
-`PROGRAM -> PHASE -> SERIES -> WORK PACKAGE -> CANDIDATE -> REVIEW -> VALIDATION -> ACCEPTANCE -> INTEGRATION -> KNOWN STATE`
+PROGRAM -> PHASE -> SERIES -> HUMAN LANE WORK PACKAGE -> CANDIDATE / RELEASE TUPLE -> CI/CD -> QA -> KIRCH ACCEPTANCE -> INTEGRATION -> KNOWN STATE
 
 Example:
+COMMON SYSTEM -> P1 -> A01 -> A01-W01 (Kirch backend) -> contract -> A01-Fxx (AJ/Jhayr) -> Kurt CI -> Siris QA -> Kirch acceptance
 
-`COMMON SYSTEM -> P1 -> A01 -> A01-W01 -> candidate SHA -> review -> CI -> acceptance -> A01 contract release`
+## Series record
 
-Do not use the same identifier for every contributor.
-
----
-
-# 3. Standard Series record
-
-Every Series must state:
-
-- ID/name;
-- why it exists;
-- evidence basis;
+Every Series states:
+- capability ID/name;
+- TOR/requirement/evidence basis;
+- source maturity classification;
 - exact source authority;
 - dependencies;
-- consumed contracts;
-- owned domains/files/surfaces;
+- human lane ownership;
+- consumed/released contracts;
 - prohibited scope;
 - authority/input blockers;
 - frontend release point;
-- migration/compatibility obligations;
-- query/performance obligations;
-- test/CI/QA gates;
-- definition of done;
-- return contract;
-- integration rule;
-- acceptance authority;
+- migration/compatibility;
+- validation;
+- Kurt CI gate where required;
+- Siris QA gate where required;
+- Kirch acceptance;
+- integration/freeze;
 - next unlock.
 
----
+## Work-package handoff
 
-# 4. Standard work-package handoff
-
-Every work package must include:
-
-- exact source repository;
-- exact source SHA;
-- branch strategy;
-- owner;
-- owned files/scope;
-- required implementation;
-- architecture invariants;
-- consumed contracts;
-- input assumptions explicitly prohibited;
-- negative tests;
-- validation commands/gates;
+Every executable package states:
+- Series;
+- human lane;
+- human owner;
+- exact repository/branch/SHA;
+- owned scope;
+- required work;
+- prohibited scope;
+- architecture/security rules;
+- tests;
 - stop conditions;
-- return format;
-- no-merge/no-promotion boundaries where applicable.
+- return contract.
 
----
+AI assistance may be noted separately from human ownership.
 
-# 5. Contributor update contract
+## Candidate/evidence rules
 
-Contributor updates should report:
+PASS belongs to the exact candidate.
+Changed executable source creates a new candidate.
+A cross-repo feature may use a release tuple.
+Do not accept vague progress without source/evidence.
 
-- work package ID;
-- branch;
-- current SHA;
-- completed items;
-- changed files;
-- tests run;
-- PASS/FAIL/NOT RUN;
-- blocker/dependency;
-- contract questions;
-- next action;
-- estimated status only if requested.
+## Parallelism
 
-Do not accept vague status such as:
+Safe non-conflicting lanes/Series may run in parallel when explicitly authorized. Canonical integration remains gated.
 
-`almost done`
+## Anti-drift
 
-without evidence.
-
----
-
-# 6. Candidate state machine
-
-Allowed candidate states:
-
-- `ISSUED`
-- `ACTIVE`
-- `RETURNED`
-- `SOURCE REVIEW`
-- `REWORK`
-- `VALIDATION HOLD`
-- `CI PASSED`
-- `QA PASSED`
-- `TECHNICAL ACCEPTANCE`
-- `INTEGRATED`
-- `RECORDED`
-- `CLOSED`
-
-Do not skip evidence gates by renaming a candidate.
-
----
-
-# 7. Exact-candidate rule
-
-A PASS belongs to:
-
-- exact repository;
-- exact SHA;
-- exact validation contract;
-- exact relevant configuration.
-
-Executable change after PASS => new candidate.
-
-Governance-only descendants may refer back to a validated runtime anchor only when the executable-tree relationship is explicitly proven.
-
----
-
-# 8. Backlog classes
-
-Use at least:
-
-- `COMMON-BUILD`
-- `COMMON-MATURATION`
-- `COMMON-INTEGRATION`
-- `SECURITY/REGRESSION`
-- `LGU-INPUT`
-- `SPECIALIZED-DOMAIN`
-- `PRODUCTION-READINESS`
-- `DEFECT`
-- `TECH-DEBT`
-- `DOCUMENTATION/TURNOVER`
-
-Every backlog item must have an authority class and blocking relationship.
-
----
-
-# 9. Current top-level program state
-
-`P0 — COMPLETE`
-
-`COMMON SYSTEM PROGRAM — LOCK PREPARATION`
-
-`P1/A01 — NEXT AUTHORIZED ENGINEERING TARGET AFTER LOCK REVIEW`
-
-`DEPARTMENT IMPLEMENTATION — NOT GENERALLY AUTHORIZED`
-
-`PRODUCTION READINESS — PARALLEL SEPARATE TRACK`
-
----
-
-# 10. Hub anti-drift rule
-
-Forge exists to finish ONE TALIBON, not to endlessly optimize Forge.
-
-Create governance only when it:
-
-- removes ambiguity;
-- unlocks safe parallel work;
-- preserves provenance;
-- classifies a real risk/dependency;
-- defines acceptance;
-- prevents scope/business-truth drift.
-
-Do not create new governance layers merely because more documentation is possible.
+Forge exists to finish ONE TALIBON. Do not build more governance after ambiguity is removed and engineering can safely proceed.

@@ -1,154 +1,105 @@
-# ONE TALIBON V1
+# ONE TALIBON
 
-**Municipal Digital Workspace Prototype**
+Municipal Intra Office System — canonical engineering repository
 
-**Technical Authority / engineering direction:** Kirch Ivan Balite  
-**Development collaboration:** Kirjane Labs × ALZA IT Solutions
+Technical Authority: Kirch Ivan Balite
 
-ONE TALIBON is a municipal operations prototype built around real internal workflows: office routing, records, correspondence, memoranda, calendars, messaging, HR actions, executive decisions, and role-aware workspaces.
+## Current engineering state
 
-## Current repository state
+- Canonical product repository: Kirch-Nairu/Talibon-Sales-Prototype
+- Canonical branch: main
+- Live main at 2026-10-07 control audit: fdc8af4d2a3fbea6f9b12b7825f278cf8c06e735
+- Accepted executable/runtime anchor: 395438674b4d2f00659eba616db760b339bb390a
+- P0: COMPLETE / FROZEN
+- Common System Program: ACCEPTED / PROMOTED
+- Current Phase: P1 — Common Work & Accountability
+- Current Series: A01 — First-Class Task Domain
+- A01 execution: HOLD — team/Series control reconciliation
+- A01 implementation candidate: NONE
+- Deployment / UAT / final acceptance: NOT IMPLIED
 
-The consolidation program is closed.
+Current authority:
+- .forge/SSOT_CURRENT.md
+- .forge/AUTHORITY.md
+- .forge/WORK_LEDGER.md
 
-| Area | State |
-| --- | --- |
-| Canonical/default product source | `main` |
-| Non-main working branches | May exist; non-canonical unless separately accepted |
-| Validated/promoted product payload | `f6208cf082c4b1d189c70728adfdb9ddf3225990` |
-| Calendar workspace | Completed and feature-frozen |
-| Backend/runtime hardening | Completed and reviewed |
-| DA1 repair wave | Closed with recorded historical validation limitations |
-| RC1 consolidation | Completed |
-| RV1 exact-candidate runtime validation | Passed |
-| Main promotion | Completed |
-| Archived non-main branch tips | 65 / 65 |
-| MP3 remote non-main branches after cleanup | 0 |
-| Open PRs at MP3 opening | 0 |
-| Deployment | Not performed |
+## Five-human engineering team
 
-`main` is the canonical/default product source. Non-main working branches may exist under bounded authority, but they are not canonical product authority unless separately accepted. Historical branch tips remain recoverable under verified `archive/*` tags.
+- Kirch Ivan Balite — Tech Lead / Systems Architecture / Backend authority / integration / final technical acceptance
+- AJ Rienze Josol — Frontend Developer
+- Jhayr — Frontend Developer
+- Kurt Shine Khase Halasan — CI/CD / Development Operations
+- Siris — Quality Assurance
 
-MP3 governance/documentation closeout is complete.
+KIRION Forge / ChatGPT assists the team. It is not a sixth human member.
 
-The next engineering transition is:
+## Delivery model
 
-```text
-MP4 final prototype-day rehearsal from main
-        ↓
-separate deployment decision
-```
+ONE TALIBON is delivered through capability Series.
 
-MP4 is not another broad code-audit wave.
+SERIES AUTHORIZED
+-> BACKEND / TECHNICAL FOUNDATION
+-> BACKEND CONTRACT RELEASE
+-> FRONTEND
+-> DEVELOPER SELF-VALIDATION
+-> EXACT CANDIDATE / RELEASE TUPLE
+-> CI/CD — KURT
+-> QA — SIRIS
+-> TECH LEAD REVIEW — KIRCH
+-> ACCEPT / INTEGRATE / RECORD
+-> FREEZE SERIES / NEXT AUTHORIZATION
 
-## What is in the prototype
+Safe non-conflicting work may run in parallel.
 
-The current product line includes:
+## Current program
 
-- role-aware municipal dashboards and navigation;
-- My Work queues and office-level task views;
-- inter-office transaction routing;
-- Correspondence and Records;
-- Memoranda with delivery and acknowledgement;
-- Calendar with Month, Week, Day, and Schedule views;
-- internal Messages;
-- Mayor / executive decision surfaces;
-- Legislative records;
-- HR / leave workflow surfaces used by the presentation flow;
-- System Administration;
-- deterministic showcase identities and demo data;
-- a reconciled public municipal homepage.
+P1:
+- A01 — First-Class Task Domain
+- A02 — Unified My Work Projection
+- A03 — Non-Destructive Task / Work Request Integration
+- A04 — P1 Integration & Contract Acceptance
 
-Recent engineering work also completed backend/runtime hardening and exact-candidate browser validation before main promotion.
+The accepted common program continues through P2 Coordination, P3 Information/Evidence, P4 Search, P5 Visibility/Control, P6 Security Reconciliation and P7 Common-Core Acceptance.
 
-## Development approach
+See .forge/memory/COMMON-SYSTEM-PROGRAM-LOCK.md.
 
-The project is built **backend-first and workflow-first**.
+## Architecture invariants
 
-The operating order is:
+- Task != Work Request
+- Work Request != Correspondence
+- Document != Transaction
+- Meeting != Task
+- Executive oversight != universal routing
 
-1. define the municipal workflow;
-2. implement database/server rules and authorization;
-3. prove behavior with tests and deterministic data;
-4. build the UI on real behavior;
-5. harden the runtime;
-6. validate the exact release candidate;
-7. promote without rewriting accepted history;
-8. preserve historical tips before destructive branch cleanup.
+## Source maturity rule
 
-We prefer:
+Existing code is not automatically implementation authority.
 
-- real database-backed actions over fake demo controls;
-- server-side authorization over UI-only hiding;
-- deterministic seed data over manual setup;
-- measured performance work over speculative optimization;
-- exact Git/runtime evidence over memory;
-- narrow repairs over uncontrolled rewrites.
+Capabilities are treated according to repository evidence and authority classification: preserve accepted foundations, build genuine engineering gaps, mature partial foundations, and keep authority-pending/specialized domains gated.
 
-## Engineering team
+## Business-truth rule
 
-### Technical Authority
+Validated LGU/process-owner workflow governs municipal business truth.
 
-**Kirch Ivan Balite** — [@Kirch-Nairu](https://github.com/Kirch-Nairu)  
-Technical Authority / Backend Systems / Architecture  
-**Kirjane Labs**
+Citizens' Charter, prototypes and historical code may support discovery but may not silently authorize department routing, approvals, SLA, signatures, role truth or final implementation.
 
-Architecture, product-direction, integration, promotion, release disposition, and deployment authorization remain under Kirch Ivan Balite.
+## Historical records
 
-### Developers / Contributors
+Older showcase, MP-series, commercial and prototype files remain provenance.
 
-**Kurt Shine Khasi Halasan** — [@k3nchinxd](https://github.com/k3nchinxd)  
-Developer — **Kirjane Labs**
-
-**Kikiam** — [@kyumw3b](https://github.com/kyumw3b)  
-Developer — **ALZA IT Solutions**
-
-**AJ RIENZE** — [@rynzz22](https://github.com/rynzz22)  
-Developer — **ALZA IT Solutions**
-
-This is a joint development effort between contributors from **Kirjane Labs** and **ALZA IT Solutions**, under the technical direction of **Kirch Ivan Balite**.
+Where they describe a historical branch/status, they do not override current .forge/SSOT_CURRENT.md.
 
 ## Stack
 
-- PHP 8.4
-- Laravel 13
+- PHP / Laravel
 - PostgreSQL
 - Inertia
-- React 19
-- TypeScript
+- React / TypeScript
 - Vite
-- Playwright for browser-level validation
+- browser-level validation infrastructure
 
-## Validation honesty
+## Current hold
 
-The exact promoted product payload received current-contract RV1 runtime proof, including public desktop/mobile, Showcase gateway, Employee Dashboard, My Work, and Records with zero observed page errors/server 5xx during that narrow smoke.
+No post-P0 A01 product code has been implemented.
 
-Historical limitations remain historical limitations:
-
-- do not claim the old aggregate `=== DA1 FULL AUDIT PASS ===` marker;
-- do not claim the historical H0 exact marker;
-- do not equate prototype validation with deployment, UAT, or production acceptance.
-
-## Repository direction
-
-The branch-consolidation target was reached historically. Current product authority is:
-
-```text
-canonical/default product source:
-main
-```
-
-Non-main working branches may exist, but are non-canonical unless separately accepted. Historical branch names in evidence/handoff records are provenance. Deleted historical remote refs remain preserved through verified archival tags.
-
-## Engineering records
-
-Current authority and evidence live under:
-
-- `.forge/SSOT_CURRENT.md`
-- `.forge/AUTHORITY.md`
-- `.forge/VALIDATION.md`
-- `.forge/WORK_LEDGER.md`
-- `docs/CURRENT_STATE.md`
-- `docs/DEMO_FLOW.md`
-
-Historical handoffs/evidence remain preserved under `.forge/evidence/` and `.forge/handoffs/`.
+The immediate task is to finish the bounded team/Series control-model correction, then stop governance work and resume A01 under named human ownership.
