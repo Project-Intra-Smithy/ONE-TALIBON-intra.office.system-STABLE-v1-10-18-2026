@@ -29,13 +29,13 @@ A01 implementation candidate: NONE
 
 ## Current hold
 
-A repo-wide audit found that the accepted architecture remained valid but the active delivery-control model drifted away from the intended five-human Series workflow.
+A repo-wide audit found that the accepted architecture remained valid but the active delivery-control model drifted away from the intended team-based Series workflow.
 
 Old W8 Project-status resume instructions are superseded.
 
 No product implementation resumes until the control-model reconciliation is accepted and A01 is reissued as a human-owned Series execution plan.
 
-## Five-human team
+## Engineering team
 
 - Kirch — Tech Lead / Systems Architecture / Backend / integration / final acceptance
 - AJ — Frontend
@@ -69,7 +69,7 @@ Kirch-Nairu/ONE-TALIBON-TEAM-WORKSPACE@3f1c0a33cbaeda8eeafcecb7d9422718b13a4796
 
 is historical/reference, not canonical product source.
 
-It preserves the five-human Phase-0 roles and post-P0 Series workflow.
+It preserves the named Phase-0 team roles and post-P0 Series workflow.
 
 ## Claim boundaries
 
