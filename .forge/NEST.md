@@ -24,6 +24,20 @@ Nest maturity:
 
 Forge provides operating doctrine. Technical Authority remains Kirch Ivan Balite.
 
+## Current authority routing
+
+This Nest is a governed provenance and operating-doctrine record. It is **not** the current program ledger.
+
+Before any executable work:
+
+1. resolve live `main` directly from Git;
+2. read `.forge/SSOT_CURRENT.md` for current product/program state;
+3. read `.forge/AUTHORITY.md` for authority precedence;
+4. read `.forge/WORK_LEDGER.md` for currently released or blocked work;
+5. use the current Series plan and an explicitly current issued handoff for bounded execution.
+
+A historical branch, plan, handoff, or section below does not become current authority because it is preserved in this file.
+
 ## Historical materialization
 
 The repository-local Nest was originally materialized during the UI/UX correction program from accepted baseline:
@@ -32,7 +46,7 @@ The repository-local Nest was originally materialized during the UI/UX correctio
 
 That remains historical provenance, not current authority.
 
-## Current product authority
+## Current product authority routing
 
 Canonical/default product source:
 
@@ -48,7 +62,11 @@ Completed provenance includes CAL1, BH1, DA1, RC1, RV1 and later bounded program
 
 Historical non-main remote heads from prior consolidation programs were archived before deletion where recorded.
 
-## Current program
+## Historical Phase 0 program record
+
+The following Phase 0 material is preserved as provenance. **P0 is not declared current by this section.** Current program state is owned by `.forge/SSOT_CURRENT.md` after live Git resolution.
+
+Historical program:
 
 `P0 — CANONICAL BASELINE STABILIZATION`
 
@@ -76,22 +94,22 @@ Program purpose:
 
 Phase 0 is not a CI-only exercise. CI/CD is one validation gate inside the baseline program.
 
-Concurrency ceiling for the current cleanup batch:
+Historical concurrency ceiling for that cleanup batch:
 
 `2 ACTIVE CODE WRITERS`
 
-Writer lanes must be non-overlapping and issued from one exact immutable base.
+During that Phase 0 cleanup batch, writer lanes were required to be non-overlapping and issued from one exact immutable base.
 
-## Forward repository architecture direction
+## Historical post-P0 repository architecture direction
 
-After the Phase 0 baseline is accepted, ONE TALIBON is intended to move toward separate frontend and backend repositories.
+The Phase 0 record stated that, after baseline acceptance, ONE TALIBON was intended to move toward separate frontend and backend repositories. This is preserved as historical direction, not a current split authorization.
 
 Working target names are not yet frozen, but the architectural split is:
 
 - backend repository — Laravel/domain/data/auth/API/jobs/audit/backend tests;
 - frontend repository — React/TypeScript UI/state/API consumption/browser-responsive tests.
 
-Repository separation is **post-P0**. Do not split the current source before the baseline and extraction contract are accepted.
+Historical Phase 0 rule: repository separation was post-P0 and was not authorized during baseline cleanup. This preserved statement does not itself authorize a current repository split.
 
 Docker/container platform work is also a later bounded platform lane. Do not combine baseline cleanup, repository separation, Dockerization and production deployment into one unbounded change.
 
@@ -103,9 +121,9 @@ The canonical/default product branch remains:
 main
 ```
 
-P0 explicitly authorizes temporary coordination/writer branches under bounded authority.
+During P0, temporary coordination/writer branches were authorized under bounded authority.
 
-No P0 branch is canonical product authority until Technical Authority accepts the exact candidate and separately authorizes integration/promotion.
+No historical P0 branch becomes current canonical product authority merely because it remains in repository history.
 
 Historical archive refs remain provenance and are not implicitly revived.
 

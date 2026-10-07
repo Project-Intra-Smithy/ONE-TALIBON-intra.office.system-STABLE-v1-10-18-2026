@@ -2,9 +2,9 @@
 
 ## Technical Authority
 
-Kirch Ivan Balite
+**Kirch Ivan Balite**
 
-Kirch remains the sole human Technical Authority for product scope, architecture, Series/Phase authorization, integration, release disposition and final technical acceptance.
+Kirch remains the sole human Technical Authority for product scope, architecture, Phase/Series authorization, integration, release disposition and final technical acceptance.
 
 ## Engineering delivery team
 
@@ -20,62 +20,65 @@ KIRION Forge / ChatGPT may assist as Maintainer, Code Writer, Reviewer, auditor 
 
 Those are assistant/control personas, not human team members.
 
-AI does not independently own committed human implementation, CI/CD PASS, QA PASS, LGU business-process truth, or final technical acceptance.
+AI does not independently own committed human implementation, CI/CD PASS, QA PASS, LGU business-process truth, integration authority, or final technical acceptance.
 
 ## Repository authority
 
-Canonical/default product branch: main
+Canonical/default product branch: `main`.
 
-Resolve live main from Git before any executable work package is issued.
+**Resolve live `main` directly from Git before any executable work package is issued or integrated.**
 
-Live main at the 2026-10-07 control-model audit:
-fdc8af4d2a3fbea6f9b12b7825f278cf8c06e735
+This file deliberately does not preserve a dated audit SHA as "current main".
+
+Stable evidence anchors may be recorded when they describe an accepted historical/executable state, including:
 
 Accepted executable/runtime anchor:
-395438674b4d2f00659eba616db760b339bb390a
+
+`395438674b4d2f00659eba616db760b339bb390a`
 
 Common-program promotion / A01 opening source:
-f2ff373113f89173016634505eb3c3943edfb35c
 
-## Current program authority
+`f2ff373113f89173016634505eb3c3943edfb35c`
 
-P0 — COMPLETE / FROZEN
-COMMON SYSTEM PROGRAM — ACCEPTED / PROMOTED
-P1 / A01 — OPENED / EXECUTION HOLD
-A01-W01 — ISSUED / SUSPENDED
+Those anchors do not replace live source resolution and do not grant current execution authority by themselves.
 
-No A01 implementation candidate exists.
+## Current-state routing
 
-## Current allowed mutation
+Do not duplicate the full work ledger here.
 
-Team/Series control-model reconciliation is accepted and merged.
+Use:
 
-Until Project V1.1 representation and the corrected A01 human execution plan are closed:
-- bounded governance/current-state correction;
-- Project/Hub representation correction;
-- A01 execution remains held;
-- no executable A01 product implementation.
+- `.forge/SSOT_CURRENT.md` for current product/program state;
+- `.forge/WORK_LEDGER.md` for current released/blocked work;
+- the accepted Program Lock for architecture;
+- the current Series plan for Series execution design;
+- the explicitly current bounded handoff for an issued work package.
+
+This authority file does not independently release A01-W01 or any other executable work.
 
 ## Authority precedence
 
 1. explicit Technical Authority decision from Kirch;
-2. live Git/exact repository evidence;
-3. .forge/SSOT_CURRENT.md;
+2. live Git / exact repository evidence;
+3. `.forge/SSOT_CURRENT.md`;
 4. accepted program architecture/memory;
 5. validated LGU/process-owner business truth for municipal rules;
-6. current Hub operational records;
+6. current Engineering Hub operational records;
 7. historical evidence/provenance;
 8. conversation memory.
 
-Where business truth is material, repository implementation cannot invent missing LGU authority.
+Where municipal business truth is material, repository implementation cannot invent missing LGU authority.
 
 ## Anti-drift
 
 Before work issuance:
+
 - re-resolve live Git;
 - identify Phase + Series;
 - identify human lane owner;
 - identify exact source;
-- state allowed/prohibited scope;
+- state owned and prohibited scope;
+- state consumed/released contracts;
+- state required validation;
 - state downstream Kurt/Siris/Kirch gates where applicable;
 - stop on contradiction.
