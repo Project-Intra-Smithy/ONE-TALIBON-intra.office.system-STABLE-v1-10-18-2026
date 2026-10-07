@@ -1,4 +1,4 @@
-# KIRION FORGE MEMORY — FIVE-HUMAN TEAM / SERIES DELIVERY MODEL
+# KIRION FORGE MEMORY — TEAM / SERIES DELIVERY MODEL
 
 ## Authority
 
@@ -8,7 +8,7 @@ This memory corrects the operational interpretation of the accepted common-syste
 
 ## Human team
 
-ONE TALIBON's current engineering delivery team is five humans:
+ONE TALIBON's current engineering delivery team is:
 
 - Kirch Ivan Balite — Tech Lead / Systems Architecture / Backend / integration / final technical acceptance
 - AJ Rienze Josol — Frontend Developer
@@ -111,4 +111,4 @@ They may not silently replace:
 
 ## Anti-drift
 
-When chat memory, a Project board, an AI handoff, or a generic lane conflicts with the five-human Series model, stop and reconcile from repository-backed authority before issuing executable work.
+When chat memory, a Project board, an AI handoff, or a generic lane conflicts with the team-based Series model, stop and reconcile from repository-backed authority before issuing executable work.
