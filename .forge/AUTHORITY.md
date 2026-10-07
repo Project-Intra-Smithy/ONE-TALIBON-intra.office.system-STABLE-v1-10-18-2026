@@ -48,9 +48,12 @@ No A01 implementation candidate exists.
 
 ## Current allowed mutation
 
-Until team/Series control-model reconciliation is accepted:
-- governance/current-state correction;
-- evidence reconciliation;
+Team/Series control-model reconciliation is accepted and merged.
+
+Until Project V1.1 representation and the corrected A01 human execution plan are closed:
+- bounded governance/current-state correction;
+- Project/Hub representation correction;
+- A01 execution remains held;
 - no executable A01 product implementation.
 
 ## Authority precedence
