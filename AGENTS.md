@@ -2,83 +2,84 @@
 
 ## Human authority
 
-Technical Authority:
-Kirch Ivan Balite
+Technical Authority: **Kirch Ivan Balite**
 
-Current engineering team:
+Engineering team:
 - Kirch — Tech Lead / Systems Architecture / Backend / integration / final technical acceptance
 - AJ — Frontend
 - Jhayr — Frontend
-- Kurt — CI/CD / DevOps
-- Siris — QA
+- Kurt — CI/CD / Development Operations
+- Siris — Quality Assurance
 
-## AI / Forge role
+KIRION Forge / ChatGPT may assist, but does not replace human ownership or any human acceptance gate.
 
-AI-assisted engineering is allowed.
+## Current execution gate
 
-AI may map repositories, trace code, draft bounded code, draft tests, analyze logs/diffs, prepare handoffs/evidence and surface drift.
+Before acting, resolve live `main` directly from Git and then read:
 
-AI does not replace:
-- human ownership of committed implementation;
-- LGU/process-owner business truth;
-- Kurt's CI/CD PASS;
-- Siris's QA PASS;
-- Kirch's scope/architecture/integration/final acceptance.
+1. `.forge/SSOT_CURRENT.md`
+2. `.forge/AUTHORITY.md`
+3. `.forge/WORK_LEDGER.md`
+4. `.forge/VALIDATION.md`
+5. the current Series plan
+6. the explicitly current bounded handoff, if one has been issued
 
-Forge persona names do not create additional human team members.
+Current program: **P1 — Common Work & Accountability**
 
-## Current authority
+Current Series: **A01 — First-Class Task Domain**
 
-Canonical branch: main
-Resolve live SHA from Git before acting.
+Current Technical Authority decision: **A01 team execution plan review**
 
-Accepted executable/runtime anchor:
-395438674b4d2f00659eba616db760b339bb390a
+A01-W01: **BLOCKED / SUSPENDED — DO NOT EXECUTE**
 
-Current program:
-COMMON SYSTEM / P1
+A01 implementation candidate: **NONE**
 
-Current Series:
-A01 — FIRST-CLASS TASK DOMAIN
+Historical W01 branch:
 
-Current state:
-EXECUTION HOLD — PROJECT V1.1 REPRESENTATION + A01 HUMAN EXECUTION PLAN
+`KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION@ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4`
 
-A01-W01 is issued/suspended. No implementation candidate exists.
+State: **HISTORICAL / IMMUTABLE / DO NOT RESUME**
+
+If W01 is later released, it requires a fresh replacement branch from then-current product `main` and a new exact issued source.
 
 ## Work hierarchy
 
-PROGRAM -> PHASE -> SERIES -> HUMAN LANE WORK PACKAGE -> EXACT CANDIDATE / RELEASE TUPLE -> CI/CD -> QA -> KIRCH ACCEPTANCE -> INTEGRATION
+`PROGRAM -> PHASE -> SERIES -> HUMAN LANE WORK PACKAGE -> EXACT CANDIDATE / RELEASE TUPLE -> CI/CD -> QA -> KIRCH ACCEPTANCE -> INTEGRATION`
 
-A backend Wxx handoff is not the whole Series.
+A backend Wxx package is subordinate to the Series and is not itself Series acceptance.
 
-## Work issuance requirements
+## Human ownership rule
 
-Before executable mutation:
-1. identify Series;
-2. identify human owner/lane;
-3. identify exact repository/branch/SHA;
-4. state owned/prohibited scope;
-5. state consumed contracts;
-6. state validation;
-7. state downstream human gates;
-8. stop on contradiction.
+Every executable work package must name a human owner.
 
-## Evidence
+- implementation is owned by the assigned human developer;
+- Kurt owns CI/CD evidence unless a different human CI owner is explicitly authorized;
+- Siris owns independent QA evidence unless a different human QA owner is explicitly authorized;
+- Kirch owns scope, architecture, integration and final technical acceptance.
 
-Use only observed states:
-PASS / FAIL / PARTIAL / BLOCKED / NOT RUN / NOT OBSERVED / UNKNOWN
+AI may assist these lanes but may not self-award their decisions.
 
-Changed executable source does not inherit an older PASS.
+## Exact-candidate rule
 
-## Safety
+A PASS belongs to the exact candidate SHA or exact cross-repository release tuple that was actually validated.
 
-Do not invent department-specific municipal rules.
-Do not weaken auth/security for convenience.
-Do not destructively test against protected databases.
-Do not self-promote or self-accept.
+Executable source changes after a PASS create a new candidate and require affected downstream revalidation.
 
-## Current stop
+CI PASS != QA PASS.
 
-Do not execute old W8.
-Do not start A01-W01 until the bounded Project V1.1 representation is reconciled, the corrected A01 human execution plan is published, and Maintainer explicitly reissues/resumes the human-owned backend lane.
+QA PASS != Kirch acceptance.
+
+## LGU / process-authority rule
+
+Do not invent municipal routing, approval, signatory, SLA, escalation, confidentiality, KPI, role, department or workflow rules.
+
+Documents, screenshots, historical code, Citizens' Charter material and prototypes may support discovery. They do not replace validated LGU/process-owner business truth when that truth is material.
+
+## Safety / stop rules
+
+- Do not weaken authentication, authorization or audit controls for convenience.
+- Do not run destructive tests against protected databases.
+- Do not treat frontend state as server authority.
+- Do not infer current authority from a historical handoff or a directory named `active`.
+- Stop on source, contract, authority or ownership contradiction.
+- Do not start A01-W01 until Kirch explicitly releases it and a fresh exact writer source is issued.
