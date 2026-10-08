@@ -22,21 +22,23 @@ A01: ACTIVE / PLAN ACCEPTED BY KIRCH
 
 Project #1 V1.2 roadmap staging: PASS / ACCEPTED / CLOSED (Hub #10)
 
-A01-W01: RELEASE AUTHORIZED / IMPLEMENTATION NOT YET STARTED
+A01-W01: **PACKAGE ACCEPTED / INTEGRATION PENDING**
 
-Implementation candidate: NONE
+Accepted W01 implementation candidate: `7ddff25caef8fc1a0a4bc400a2d6e1f627fae435` (R2; not merged)
 
 Old W8: SUPERSEDED
 
 ## Human team
 
-- Kirch — Tech Lead / Architecture / Backend / integration / final acceptance
-- AJ — Frontend
-- Jhayr — Frontend
-- Kurt — CI/CD / DevOps
-- Siris — QA
+- Kirch (`Kirch-Nairu`) — human Tech Lead / Architecture / Backend / integration / final acceptance
+- AJ (`rynzz22`) — human Frontend
+- Jhayr (`kyumw3b`) — human Frontend
+- Kurt (`k3nchinxd`) — human CI/CD / DevOps
+- Siris (`Syris-EkzD`) — human independent QA
 
-AI/Forge is assistive only.
+AI-assisted execution identities: Kirion-Jane (W01 Code Writer); Kirion-Lucien (frontend); Kirion-Nox (architecture/data). These are not additional human owners. GitHub profile display names do not on their own amend the canonical human roster.
+
+AI/Forge is assistive only. A Kirion commit must preserve the actual Git author/committer, while Kirch retains acceptance/integration authority.
 
 ## A01 governing plan
 
@@ -75,7 +77,7 @@ Branch diverged from corrected current product main.
 
 State:
 
-`PROVISIONAL BRANCH PREPARED / NO IMPLEMENTATION COMMITS`
+`EXACT CANDIDATE COMMITTED / SOURCE + BOUNDED RUNTIME PASS / KIRCH PACKAGE ACCEPTED`
 
 Branch:
 
@@ -83,16 +85,16 @@ Branch:
 
 Release rule:
 
-Kirch decided `ACCEPT A01 PLAN — RELEASE W01` on 08 October 2026. Maintainer must merge the documentation-only release-control PR first, then fast-forward R2 to the newly accepted `main` (never force-update or overwrite divergence). The exact writer-source SHA is established only after that fast-forward. Human owner: Kirch; Kirion-Jane is an assistive implementation identity, not a human owner.
+Historical release gate completed via documentation PR #27, after which Jane implemented W01 from base `9f1859945ba07b4d5318352d85c41e96ab3ca4d4`. Two additive commits produced accepted candidate `7ddff25caef8fc1a0a4bc400a2d6e1f627fae435`. Kirch recognized W01 package acceptance on 08 October 2026 (Hub #2 comment `6055696417`). Human owner remains Kirch; Kirion-Jane is the credited AI-assisted writer, not a human owner. Draft integration PR #28 remains **UNMERGED**.
 
 ## Downstream
 
-- A01-W02 — staged / blocked on W01 acceptance
+- A01-W02 — staged; W01 package accepted, integration and explicit W02 release still pending
 - A01-W03 — blocked on W02
 - A01-C1 — blocked on stable backend contract
 - A01 frontend — blocked on C1 + FRONTEND-REG-001
-- Kurt CI/CD — blocked on exact candidate/release tuple
-- Siris QA — blocked on exact validated candidate/release tuple
+- Kurt bounded W01 self-hosted PostgreSQL runtime validation — PASS / 20 tests, 131 assertions; formal A01-CI01 still staged for integrated release tuple
+- Siris A01-QA01 — staged for integrated candidate, not executed or awarded
 - A02 implementation — blocked on A01 Task contract release
 
 ## Parallel tracks
@@ -101,10 +103,12 @@ Track W — LGU Workflow Intake: ACTIVE PARALLEL
 
 Track R — Production Readiness: ACTIVE PARALLEL / SEPARATE ACCEPTANCE
 
-## Current next action
+## Current next action — accepted W01
 
-`A01-W01 RELEASE CONTROL → EXACT R2 WRITER SOURCE → HUB #2 ACTIVE → JANE HANDOFF`
+`REVIEW DRAFT W01 INTEGRATION PR #28 → REVERIFY EXACT SOURCE / CONTROLS → SEPARATE KIRCH INTEGRATION DECISION → RECORD INTEGRATED SHA → PREPARE W02 HANDOFF`
 
-Plan decision: `ACCEPTED`; A01: `ACTIVE`; W01: `RELEASE AUTHORIZED`.
-
-A01 implementation candidate: `NONE`. A01 CI/CD and QA: `NOT RUN`. The Phase-0 executable anchor does not validate new W01 code. Repository promotion: `DEFERRED` pending Kirch's explicit reauthorization. No W02 implementation or frontend Task implementation is released by this decision.
+- Exact W01 candidate: `7ddff25caef8fc1a0a4bc400a2d6e1f627fae435`, R2 branch, main remains `9f1859945ba07b4d5318352d85c41e96ab3ca4d4`.
+- Package acceptance: Hub #2 comment `6055696417` (Kirch).
+- Kurt exact-candidate CI evidence: Actions run `37745487992`, artifact `11536130892`. 12 Task + 8 Work Request tests passed; **bounded W01 runtime PASS**, not integrated CI01.
+- [Draft integration PR #28](https://github.com/Kirch-Nairu/Talibon-Sales-Prototype/pull/28): review-only, merge **NOT AUTHORIZED**.
+- This document reconciliation is independent of executable candidate; **no main merge, W02 code execution, frontend Task coding, formal QA, Series acceptance, or deployment**.
