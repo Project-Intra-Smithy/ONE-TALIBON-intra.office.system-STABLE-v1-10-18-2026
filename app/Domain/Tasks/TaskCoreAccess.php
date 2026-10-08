@@ -5,6 +5,7 @@ namespace App\Domain\Tasks;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -15,6 +16,17 @@ final class TaskCoreAccess
 {
     public function verifiedActor(User $claimedActor): User
     {
+        // No caller may choose another acting user; W03 must use the same
+        // authenticated session identity. Never accept actor IDs from input.
+        $authenticated = Auth::user();
+        if (
+            ! $authenticated instanceof User ||
+            $claimedActor->getKey() === null ||
+            (int) $authenticated->getAuthIdentifier() !== (int) $claimedActor->getKey()
+        ) {
+            throw new AuthorizationException('Task access denied.');
+        }
+
         // Re-query: stale in-memory user/employee data cannot authorize a write.
         $actor = User::query()
             ->with('employee.department')
