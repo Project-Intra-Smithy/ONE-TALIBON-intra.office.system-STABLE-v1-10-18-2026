@@ -22,9 +22,13 @@ Accepted executable/runtime anchor:
 
 `395438674b4d2f00659eba616db760b339bb390a`
 
-Project V1.1 acceptance evidence:
+Project V1.1 acceptance evidence (historical):
 
 `Project-Intra-Smithy/engineering-hub#10 comment 6028829426 — PASS`
+
+Project V1.2 roadmap staging / usability rework: `PASS / ACCEPTED / CLOSED` — Hub #10 final acceptance comment `6036463032`.
+
+Kirch's current decision (08 October 2026): `ACCEPT A01 PLAN — RELEASE W01`.
 
 ---
 
@@ -188,8 +192,8 @@ Evidence:
 - team control model merged;
 - Project V1.1 PASS;
 - human-friendly Project views active;
-- A01-W01 remains Blocked;
-- no implementation candidate exists.
+- A01-W01 is released by Kirch's separate explicit acceptance decision;
+- no implementation candidate exists and no W01 validation is claimed.
 
 ## A01-W01 — Task Domain Foundation
 
@@ -226,16 +230,23 @@ It diverged from current product main after the governance/control-model reconci
 
 It remains provenance only.
 
-### Replacement branch strategy
+### Replacement branch strategy — accepted W01 release
 
-When Technical Authority releases W01:
+The prepared replacement branch is:
 
-1. resolve current product `main` exactly;
-2. verify no executable A01 candidate exists;
-3. create a **fresh replacement W01 branch from current main**;
-4. issue a new bounded W01 handoff carrying forward only the accepted technical W01 contract;
-5. record the new exact writer-source SHA in Hub issue #2 and product SSOT;
-6. only then change #2 Project Status from Blocked to Active.
+`KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION-R2`
+
+The release-control branch is:
+
+`KIRCH-TALIBON-A01-W01-RELEASE-CONTROL`
+
+M2: merge a reviewed, documentation-only release-control PR into `main`.
+
+M3: re-resolve product `main`, verify R2 has no implementation commits and safely fast-forward R2 to accepted `main` without force. Record its final exact writer-source SHA in Hub issue #2; resolve exact Git state rather than guessing a SHA in advance.
+
+M4: publish Kirch's decision in Hub #1, release Hub #2 as Active, and synchronize Project #1/#2 fields through an authorized Projects-v2-capable surface. Do not claim a Project field update if that surface is unavailable.
+
+M5: issue a bounded Kirion-Jane Code Writer handoff under Kirch's human ownership and stop; no W01 code is written during Maintainer bootstrap.
 
 No mutation of the historical W01 branch is authorized.
 
@@ -427,42 +438,42 @@ Project V1.1:
 
 A01 plan:
 
-`PUBLISHED FOR TECHNICAL AUTHORITY REVIEW`
+`ACCEPTED — KIRCH TECHNICAL AUTHORITY`
+
+A01 Series:
+
+`ACTIVE`
 
 A01-W01:
 
-`BLOCKED / SUSPENDED`
+`RELEASE AUTHORIZED — CODE WRITER HANDOFF PENDING`
+
+Human owner: `KIRCH`
 
 Historical W01 branch:
 
-`IMMUTABLE PROVENANCE`
+`IMMUTABLE PROVENANCE / DO NOT RESUME`
 
 Replacement W01 branch:
 
-`NOT YET CREATED`
+`KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION-R2` — writer-source SHA resolved only after M2 merge and M3 fast-forward.
 
 A01 implementation candidate:
 
 `NONE`
 
-No product implementation is released by this plan alone.
+Project staging: `PASS / ACCEPTED / CLOSED` (Hub #10).
+
+Repository promotion: `DEFERRED` until Kirch explicitly reauthorizes it.
+
+This release authorizes bounded W01 preparation/implementation after exact-source issuance. It does not create a candidate, inherit P0 validation, authorize W02, or release frontend Task work.
 
 ---
 
-# 9. Next authority action
+# 9. Next execution action
 
-Technical Authority must decide:
+Technical Authority decision is complete: `ACCEPT A01 PLAN — RELEASE W01`.
 
-`ACCEPT A01 HUMAN EXECUTION PLAN + RELEASE W01`
+Maintainer must first synchronize the release-control PR and safely fast-forward the existing R2 replacement branch. After recording the exact writer-source SHA, update Hub issue #1/#2, publish the current team bulletin, and issue the bounded Code Writer handoff to Kirion-Jane. Project #1/#2 custom fields require independent Project API/UI confirmation.
 
-or:
-
-`RETURN BOUNDED REWORK`
-
-If accepted, Maintainer will:
-
-1. resolve current product main;
-2. create a fresh replacement W01 branch from current main;
-3. issue the corrected W01 handoff under Kirch human ownership;
-4. update Hub issue #2 and Project status to Active;
-5. stop governance work and begin actual A01 implementation.
+Stop Maintainer execution after handoff. Do not implement W01 in this turn, do not start W02, and do not merge the future W01 candidate to `main` without its own validation/acceptance evidence.
