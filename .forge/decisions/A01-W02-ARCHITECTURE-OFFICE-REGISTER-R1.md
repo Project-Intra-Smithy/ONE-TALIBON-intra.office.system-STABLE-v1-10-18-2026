@@ -1,7 +1,7 @@
 # A01-W02 — Task architecture and office reference (R1)
 
-**Status:** Design preparation approved by Kirch, 09 October 2026. Code and migration implementation not released.
-**Source:** Backend `main@509ce231ca2370b40e2699f1e004b3c587b3133f`; W02 branch. Siris's returned governance guidelines remain proposed until LGU process-owner confirmation. Three office-folder screenshots supplied by Kirch are directory evidence, not permission grants.
+**Status:** W02 CORE EXECUTION CANDIDATE DEFINED / KIRCH RELEASE REQUIRED. Design preparation approved 09 October 2026; executable code and migrations not yet released.
+**Source:** Backend `main@509ce231ca2370b40e2699f1e004b3c587b3133f`; W02 branch. LGU consultation was completed through Siris; returned guidelines are the development baseline. Actual office/head/delegate account activation and formal adoption evidence remain separately verifiable. Three office-folder screenshots supplied by Kirch are directory evidence, not permission grants.
 
 ## Existing foundation
 
@@ -77,6 +77,20 @@ Do not seed these seven as seven departments or grant cross-branch access. The s
 
 Reconcile `Drive label → official office name/code → departments.id → branch/office_type → approved parent → responsible User/Employee → delegation limits` with LGU process owners. The Drive owner `talibonofficial` is not the Task authorizer for each folder.
 
-Kirch has approved **preparation of this design**, not an executable W02 code release. Before implementation, freeze the exact additive columns/migrations, Task history strategy, actor capabilities, migration compatibility and negative tests. Confirm LGU office identities, delegated roles, confidentiality, return and acceptance rules before granting those privileges. W03/C1 remain gated.
+### Bounded W02 core candidate — one implementation branch, no new issue
+
+**Source:** Recheck this existing W02 branch head before writes; `main` remains accepted baseline. **Owner/executor:** `Kirch-Nairu`; no Kirion delegation. **State:** NOT RELEASED until Kirch explicitly approves the final candidate.
+
+| Core component | Proposed release boundary |
+| --- | --- |
+| Task classification | Additive nullable `task_kind` (`individual`/`official`) and nullable `owning_department_id` FK. Legacy rows remain distinguishable and readable; no inferred migration/backfill to official office authority. New individual Tasks require validated active-user/linked employee identity; official issuance remains unavailable. |
+| Lifecycle | Enforce `open → in_progress → completed` for **new individual Tasks only**, under an explicit Task service. `completed_at` set by server; no Task action HTTP endpoints. `return`, `cancel`, `reopen`, supervisor acceptance and official assignment remain unavailable until frozen. Existing W01 `state` persistence fixtures are not silently reinterpreted as approved transitions. |
+| Authorization | Task-specific default-deny policy and visibility query: only verified current Task actor/owner may act in approved core paths. Never import Work Request permissions, or confer manager/Mayor, delegated or cross-office access from a role string or a folder label. |
+| Audit consistency | Prefer a Task event record written **atomically** with each permitted Task mutation (actor, action, state before/after, timestamp, context), after reviewing whether the existing `AuditLogger` can supply the required domain history. Schema/immutability and deletion/retention contract to be frozen before code. |
+| Tests | New individual Task lifecycle happy-path plus inactive/unbound actor, forged creator, unauthorized assignee/office, stale/concurrent transition, terminal mutation, audit rollback, unknown/legacy state, source-link nonmutation and existing W01/Work Request regressions. Run PostgreSQL against a verified disposable test DB; report exact commit and evidence. |
+
+**Expected owned paths (finalize exact names on release):** additive Task migration(s); `app/Domain/Tasks/*` for state/policy/service; optional `app/Models/TaskEvent.php` and Task model extensions; `tests/Feature/Tasks/*`. **Prohibited:** editing W01's accepted create-tasks migration, Work Request/Correspondence, shared roles/auth, frontend, live Task routes, real department seeding or production DB.
+
+**Next control:** Kirch approves or adjusts this *single* bounded subset and issues the exact-SHA write release. No need to repeat completed LGU consultation. W03 begins only after W02 acceptance; a partial frontend API requires actual implemented and tested W03 endpoints, not a promise.
 
 [Proposed policy intake and outstanding LGU confirmations](A01-W02-TRACK-W-PROPOSED-POLICY.md).
