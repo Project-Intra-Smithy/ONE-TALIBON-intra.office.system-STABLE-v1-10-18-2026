@@ -27,9 +27,9 @@ COMMON SYSTEM PROGRAM — ACCEPTED / PROMOTED
 
 P1 — ACTIVE PROGRAM PHASE
 
-A01 — OPENED / EXECUTION HOLD
+A01 — ACTIVE / EXECUTION PLAN ACCEPTED BY KIRCH
 
-A01-W01 — BLOCKED / SUSPENDED — DO NOT EXECUTE
+A01-W01 — RELEASE AUTHORIZED / WRITER NOT YET EXECUTED
 
 A01 implementation candidate — NONE
 
@@ -38,11 +38,11 @@ A01 implementation candidate — NONE
 Team/Series reconciliation:
 `ACCEPTED / MERGED`
 
-Project V1.1 human-friendly control surface:
-`PASS / CLOSED`
+Project #1 roadmap staging and V1.2 usability rework:
+`PASS / ACCEPTED / CLOSED`
 
 Evidence:
-`engineering-hub#10 comment 6028829426`
+`engineering-hub#10 comment 6036463032` (final Maintainer acceptance); Hub issue #10 closed.
 
 Old W8:
 `SUPERSEDED`
@@ -89,6 +89,8 @@ Canonical current plan:
 
 A01 is the whole Series.
 
+Kirch decision: `ACCEPT A01 PLAN — RELEASE W01` (08 October 2026). W01 is released under Kirch's human ownership; there is no W01 implementation candidate or W01 validation yet.
+
 Backend Wxx packages are subordinate Kirch/backend packages.
 
 Frontend releases only after:
@@ -113,7 +115,15 @@ State:
 
 The branch diverged from current product main during governance reconciliation.
 
-When W01 is released, Maintainer must create a fresh replacement branch from current main and issue a new exact writer source.
+Replacement W01 branch (prepared, no executable changes):
+
+`KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION-R2`
+
+Release-control branch:
+
+`KIRCH-TALIBON-A01-W01-RELEASE-CONTROL`
+
+Fast-forward R2 only after the documentation-only release-control PR is accepted and merged. Resolve the final exact writer SHA from Git after that fast-forward. The historical W01 branch stays immutable.
 
 ## Frontend authority
 
@@ -133,18 +143,12 @@ For executable Series work:
 
 `IMPLEMENTED + COMMITTED + SELF-VALIDATED + EXACT CANDIDATE + KURT CI/CD + SIRIS QA WHERE REQUIRED + KIRCH TECHNICAL ACCEPTANCE + INTEGRATED + RECORDED`
 
-## Immediate next action
+## Current W01 release / execution boundary
 
-Do not execute W01 yet.
+Kirch has accepted the plan and authorized the first backend work package. The Maintainer synchronizes the release-control PR, fast-forwards the existing R2 replacement branch without force, records the final exact writer source in Engineering Hub issue #2, and issues a bounded Kirion-Jane Code Writer handoff. The Maintainer does not implement W01 or start W02.
 
-Current gate:
+A01 implementation candidate: `NONE` until an actual bounded Task implementation is committed and returned for review.
 
-`TECHNICAL AUTHORITY REVIEW — A01 TEAM EXECUTION PLAN`
+Repository transfer/promotion: `DEFERRED` until Kirch explicitly reauthorizes it. Existing Phase-0 executable acceptance is an anchor only, not W01 validation.
 
-If accepted:
-
-1. resolve current product main;
-2. create fresh replacement W01 branch;
-3. issue corrected W01 handoff under Kirch human ownership;
-4. update Hub issue #2 from Blocked to Active;
-5. begin actual A01 backend implementation.
+Frontend Task implementation remains gated by `A01-C1 + FRONTEND-REG-001`; Kurt and Siris validate only the future exact released candidate.
