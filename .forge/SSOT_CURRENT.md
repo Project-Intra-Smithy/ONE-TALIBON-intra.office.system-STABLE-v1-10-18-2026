@@ -29,9 +29,9 @@ P1 — ACTIVE PROGRAM PHASE
 
 A01 — ACTIVE / EXECUTION PLAN ACCEPTED BY KIRCH
 
-A01-W01 — RELEASE AUTHORIZED / WRITER NOT YET EXECUTED
+A01-W01 — **PACKAGE ACCEPTED / CONTROLLED INTEGRATION PENDING**
 
-A01 implementation candidate — NONE
+A01-W01 accepted candidate — `7ddff25caef8fc1a0a4bc400a2d6e1f627fae435` (R2 branch; not merged into main)
 
 ## Control / Project state
 
@@ -50,10 +50,15 @@ Old W8:
 ## Engineering team
 
 - Kirch Ivan Balite — Tech Lead / Systems Architecture / Backend authority / integration / final technical acceptance
-- AJ Rienze Josol — Frontend Developer
-- Jhayr — Frontend Developer
-- Kurt Shine Khase Halasan — CI/CD / Development Operations
-- Siris — Quality Assurance
+- AJ (GitHub `rynzz22`, display AJ RIENZE) — Frontend Developer; canonical plan additionally records the name AJ Rienze Josol, not independently reconciled to profile
+- Jhayr (`kyumw3b`) — Frontend Developer
+- Kurt Shine Khase Halasan (`k3nchinxd`) — CI/CD / Development Operations
+- Osiris Kedigadash Palac / Siris (`Syris-EkzD`) — Independent Quality Assurance
+
+AI-assisted Kirion execution identities (not additional human owners):
+- Kirion-Jane — backend Code Writer / accepted W01 implementation
+- Kirion-Lucien — interface/frontend assistance, gated by frontend contract
+- Kirion-Nox — systems architecture, engineering and data-system assistance
 
 KIRION Forge / ChatGPT assists the team. It is not a sixth human owner.
 
@@ -89,7 +94,7 @@ Canonical current plan:
 
 A01 is the whole Series.
 
-Kirch decision: `ACCEPT A01 PLAN — RELEASE W01` (08 October 2026). W01 is released under Kirch's human ownership; there is no W01 implementation candidate or W01 validation yet.
+Kirch decisions (08 October 2026): `ACCEPT A01 PLAN — RELEASE W01` followed by **`ACCEPT W01 TASK FOUNDATION AT PACKAGE LEVEL`** for exact candidate `7ddff25caef8fc1a0a4bc400a2d6e1f627fae435`. Maintainer independent source review PASS and Kurt's bounded exact-candidate self-hosted PostgreSQL runtime verification PASS (12 Task + 8 Work Request tests, 131 assertions). **No main integration / full-Series CI/QA / deployment approval.** Acceptance: `engineering-hub#2` comment `6055696417`; CI evidence: GitHub Actions run `37745487992`, artifact `11536130892`.
 
 Backend Wxx packages are subordinate Kirch/backend packages.
 
@@ -115,7 +120,7 @@ State:
 
 The branch diverged from current product main during governance reconciliation.
 
-Replacement W01 branch (prepared, no executable changes):
+Accepted W01 implementation branch (originally prepared from released main; now contains two committed W01 implementation/rework commits):
 
 `KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION-R2`
 
@@ -123,7 +128,7 @@ Release-control branch:
 
 `KIRCH-TALIBON-A01-W01-RELEASE-CONTROL`
 
-Fast-forward R2 only after the documentation-only release-control PR is accepted and merged. Resolve the final exact writer SHA from Git after that fast-forward. The historical W01 branch stays immutable.
+Historical release control PR #27 has been merged and R2 was fast-forwarded before Jane implemented. Accepted W01 HEAD: `7ddff25caef8fc1a0a4bc400a2d6e1f627fae435`. Historical W01 branch remains immutable. **R2 is NOT merged into main**; controlled integration is review-only at draft PR #28.
 
 ## Frontend authority
 
@@ -143,12 +148,17 @@ For executable Series work:
 
 `IMPLEMENTED + COMMITTED + SELF-VALIDATED + EXACT CANDIDATE + KURT CI/CD + SIRIS QA WHERE REQUIRED + KIRCH TECHNICAL ACCEPTANCE + INTEGRATED + RECORDED`
 
-## Current W01 release / execution boundary
+## Current W01 package acceptance / integration boundary — 08 October 2026
 
-Kirch has accepted the plan and authorized the first backend work package. The Maintainer synchronizes the release-control PR, fast-forwards the existing R2 replacement branch without force, records the final exact writer source in Engineering Hub issue #2, and issues a bounded Kirion-Jane Code Writer handoff. The Maintainer does not implement W01 or start W02.
+**Kirch Ivan Balite — A01-W01 package ACCEPTED. Integration remains separately gated.**
 
-A01 implementation candidate: `NONE` until an actual bounded Task implementation is committed and returned for review.
-
-Repository transfer/promotion: `DEFERRED` until Kirch explicitly reauthorizes it. Existing Phase-0 executable acceptance is an anchor only, not W01 validation.
-
-Frontend Task implementation remains gated by `A01-C1 + FRONTEND-REG-001`; Kurt and Siris validate only the future exact released candidate.
+- Accepted base / currently verified main: `9f1859945ba07b4d5318352d85c41e96ab3ca4d4`.
+- Exact W01 R2 candidate: `7ddff25caef8fc1a0a4bc400a2d6e1f627fae435` (two commits ahead / zero behind; model, one additive migration, one focused test file).
+- [Kirch package acceptance](https://github.com/Project-Intra-Smithy/engineering-hub/issues/2#issuecomment-6055696417).
+- [Independent Maintainer source re-review](https://github.com/Project-Intra-Smithy/engineering-hub/issues/2#issuecomment-6054028157).
+- [Maintainer's Kurt exact-candidate evidence review](https://github.com/Project-Intra-Smithy/engineering-hub/issues/2#issuecomment-6055479987).
+- [Kurt's W01 validation run](https://github.com/Kirch-Nairu/Talibon-Sales-Prototype/actions/runs/37745487992): **20 passed / 131 assertions**, PostgreSQL Task migration / rollback / FK and index checks.
+- [Controlled integration PR #28 — DRAFT, UNMERGED](https://github.com/Kirch-Nairu/Talibon-Sales-Prototype/pull/28).
+- This reconciliation is documentation-only; historical acceptance anchors are not overwritten or retroactively generalized.
+- Pending separate decisions: **Kirch W01 integration approval**, post-integration exact SHA review, W02 bounded execution handoff, formal integrated A01-CI01, Siris independent A01-QA01, final A01 Series acceptance.
+- `Task != Work Request != Correspondence`; no invented LGU workflows or promotion.
