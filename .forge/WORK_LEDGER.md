@@ -18,11 +18,11 @@ Common System Program: ACCEPTED / PROMOTED
 
 P1: ACTIVE
 
-A01: OPENED / EXECUTION HOLD
+A01: ACTIVE / PLAN ACCEPTED BY KIRCH
 
-Project V1.1: PASS / CLOSED
+Project #1 V1.2 roadmap staging: PASS / ACCEPTED / CLOSED (Hub #10)
 
-A01-W01: BLOCKED / SUSPENDED
+A01-W01: RELEASE AUTHORIZED / IMPLEMENTATION NOT YET STARTED
 
 Implementation candidate: NONE
 
@@ -75,17 +75,19 @@ Branch diverged from corrected current product main.
 
 State:
 
-`NOT YET CREATED`
+`PROVISIONAL BRANCH PREPARED / NO IMPLEMENTATION COMMITS`
+
+Branch:
+
+`KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION-R2`
 
 Release rule:
 
-Technical Authority accepts the A01 execution plan first.
-
-Then Maintainer creates a fresh W01 replacement branch from current product main and issues the corrected handoff.
+Kirch decided `ACCEPT A01 PLAN — RELEASE W01` on 08 October 2026. Maintainer must merge the documentation-only release-control PR first, then fast-forward R2 to the newly accepted `main` (never force-update or overwrite divergence). The exact writer-source SHA is established only after that fast-forward. Human owner: Kirch; Kirion-Jane is an assistive implementation identity, not a human owner.
 
 ## Downstream
 
-- A01-W02 — blocked on W01 acceptance
+- A01-W02 — staged / blocked on W01 acceptance
 - A01-W03 — blocked on W02
 - A01-C1 — blocked on stable backend contract
 - A01 frontend — blocked on C1 + FRONTEND-REG-001
@@ -101,6 +103,8 @@ Track R — Production Readiness: ACTIVE PARALLEL / SEPARATE ACCEPTANCE
 
 ## Current next action
 
-`TECHNICAL AUTHORITY REVIEW — A01 TEAM EXECUTION PLAN`
+`A01-W01 RELEASE CONTROL → EXACT R2 WRITER SOURCE → HUB #2 ACTIVE → JANE HANDOFF`
 
-No executable product work is released until that decision is recorded.
+Plan decision: `ACCEPTED`; A01: `ACTIVE`; W01: `RELEASE AUTHORIZED`.
+
+A01 implementation candidate: `NONE`. A01 CI/CD and QA: `NOT RUN`. The Phase-0 executable anchor does not validate new W01 code. Repository promotion: `DEFERRED` pending Kirch's explicit reauthorization. No W02 implementation or frontend Task implementation is released by this decision.
