@@ -227,7 +227,12 @@ class TaskDomainFoundationTest extends TestCase
 
     public function test_migration_rollback_and_recreation_only_toggle_tasks_table(): void
     {
-        $allTablesBefore = Schema::getTableListing();
+        $listCurrentSchemaTables = static fn (): array => Schema::getTableListing(
+            schema: Schema::getCurrentSchemaName(),
+            schemaQualified: false,
+        );
+
+        $allTablesBefore = $listCurrentSchemaTables();
         $transactionColumnsBefore = Schema::getColumnListing('transactions');
         $this->assertContains('tasks', $allTablesBefore);
         $migration = require database_path('migrations/2026_10_08_000000_create_tasks_table.php');
@@ -236,13 +241,13 @@ class TaskDomainFoundationTest extends TestCase
         $this->assertFalse(Schema::hasTable('tasks'));
         $this->assertEqualsCanonicalizing(
             array_values(array_diff($allTablesBefore, ['tasks'])),
-            Schema::getTableListing(),
+            $listCurrentSchemaTables(),
         );
         $this->assertSame($transactionColumnsBefore, Schema::getColumnListing('transactions'));
 
         $migration->up();
         $this->assertTrue(Schema::hasTable('tasks'));
-        $this->assertEqualsCanonicalizing($allTablesBefore, Schema::getTableListing());
+        $this->assertEqualsCanonicalizing($allTablesBefore, $listCurrentSchemaTables());
         $this->assertSame($transactionColumnsBefore, Schema::getColumnListing('transactions'));
     }
 
