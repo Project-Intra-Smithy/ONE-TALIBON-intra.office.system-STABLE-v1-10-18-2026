@@ -136,7 +136,7 @@ jobs:
           try {
             $ownsMutex = $mutex.WaitOne(0)
             if (-not $ownsMutex) { throw 'BLOCKED: Another local validation owns the disposable DB mutex.' }
-            $identity = (& psql -X -A -t -v ON_ERROR_STOP=1 -h $env:DB_HOST -p $env:DB_PORT -U $env:DB_USERNAME -d $env:DB_DATABASE -c "SELECT current_database() || '|' || inet_server_addr()::text || '|' || current_user;").Trim()
+            $identity = (& psql -X -A -t -v ON_ERROR_STOP=1 -h $env:DB_HOST -p $env:DB_PORT -U $env:DB_USERNAME -d $env:DB_DATABASE -c "SELECT current_database() || '|' || host(inet_server_addr()) || '|' || current_user;").Trim()
             if ($LASTEXITCODE -ne 0 -or $identity -ne 'talibon_portal_test|127.0.0.1|postgres') {
               throw "BLOCKED: PostgreSQL test database or loopback connection unverified: $identity"
             }
