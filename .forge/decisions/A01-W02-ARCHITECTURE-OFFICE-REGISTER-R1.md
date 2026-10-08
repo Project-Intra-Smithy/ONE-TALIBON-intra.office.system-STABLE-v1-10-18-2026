@@ -1,6 +1,6 @@
 # A01-W02 — Task architecture and office reference (R1)
 
-**Status:** W02 CORE EXECUTION CANDIDATE DEFINED / KIRCH RELEASE REQUIRED. Design preparation approved 09 October 2026; executable code and migrations not yet released.
+**Status:** W02 CORE CODE CANDIDATE WRITTEN / REVIEW AND CI PENDING. Kirch issued an explicit W02 CORE coding release. No merge, executable acceptance or production activation has occurred.
 **Source:** Backend `main@509ce231ca2370b40e2699f1e004b3c587b3133f`; W02 branch. LGU consultation was completed through Siris; returned guidelines are the development baseline. Actual office/head/delegate account activation and formal adoption evidence remain separately verifiable. Three office-folder screenshots supplied by Kirch are directory evidence, not permission grants.
 
 ## Existing foundation
@@ -91,6 +91,6 @@ Reconcile `Drive label → official office name/code → departments.id → bran
 
 **Expected owned paths (finalize exact names on release):** additive Task migration(s); `app/Domain/Tasks/*` for state/policy/service; optional `app/Models/TaskEvent.php` and Task model extensions; `tests/Feature/Tasks/*`. **Prohibited:** editing W01's accepted create-tasks migration, Work Request/Correspondence, shared roles/auth, frontend, live Task routes, real department seeding or production DB.
 
-**Next control:** Kirch approves or adjusts this *single* bounded subset and issues the exact-SHA write release. No need to repeat completed LGU consultation. W03 begins only after W02 acceptance; a partial frontend API requires actual implemented and tested W03 endpoints, not a promise.
+**Implementation status:** Kirch's released branch now has additive Task kind/office and event migrations, session-bound individual-Task authorization, guarded `open → in_progress → completed` lifecycle, atomic Task history and regression tests. Existing W01 migration remains unchanged; W01 foundation tests are adapted for the additive schema/dependent event-table rollback. **CI has not run; no PASS or merge authorized.** Official Task issuance, delegation, cross-office/head/Mayor privileges, return, cancellation, reopen and HTTP routes remain unavailable. W03 begins only after W02 review/acceptance.
 
 [Proposed policy intake and outstanding LGU confirmations](A01-W02-TRACK-W-PROPOSED-POLICY.md).
