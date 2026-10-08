@@ -62,7 +62,8 @@ jobs:
           test "$GITHUB_REF" = "refs/heads/KIRCH-TALIBON-A01-W02-CI-VALIDATION-KURT"
           test "$GITHUB_SHA" != "985a7a909125df41d81794a8bac779d2fee9ae38"
           test "$(git rev-parse HEAD)" = "985a7a909125df41d81794a8bac779d2fee9ae38"
-          git fetch --no-tags origin main
+          # actions/checkout fetched all refs; credentials deliberately remain disabled.
+          git show-ref --verify --quiet refs/remotes/origin/main
           test "$(git rev-parse origin/main)" = "509ce231ca2370b40e2699f1e004b3c587b3133f"
           test "$(git merge-base HEAD origin/main)" = "509ce231ca2370b40e2699f1e004b3c587b3133f"
           test -z "$(git status --porcelain)"
