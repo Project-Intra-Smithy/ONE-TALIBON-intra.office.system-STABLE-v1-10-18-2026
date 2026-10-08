@@ -1,0 +1,176 @@
+name: A01-W02 Post-Merge Exact Main Runtime Validation
+
+on:
+  push:
+    branches:
+      - KIRCH-TALIBON-A01-W02-POSTMERGE-CI-KURT
+
+permissions:
+  contents: read
+
+concurrency:
+  group: a01-w02-kurt-postmerge-exact-main
+  cancel-in-progress: false
+
+jobs:
+  w02-validation:
+    name: W02 integrated-main Task + W01 + Work Request
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: w02-test-only-ephemeral
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d talibon_portal_test"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=12
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: postgres
+      DB_PASSWORD: w02-test-only-ephemeral
+      PGPASSWORD: w02-test-only-ephemeral
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
+      SESSION_DRIVER: array
+      PULSE_ENABLED: 'false'
+      TELESCOPE_ENABLED: 'false'
+    steps:
+      - name: Checkout exact integrated main SHA (not Kurt harness commit)
+        uses: actions/checkout@v4
+        with:
+          ref: 1c8ce47546ebb2f964c37741781c10d901b8e618
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify identity, product source SHA and exact 11-file scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/KIRCH-TALIBON-A01-W02-POSTMERGE-CI-KURT"
+          test "$GITHUB_SHA" != "1c8ce47546ebb2f964c37741781c10d901b8e618"
+          test "$(git rev-parse HEAD)" = "1c8ce47546ebb2f964c37741781c10d901b8e618"
+          # actions/checkout fetched all refs; credentials deliberately remain disabled.
+          git show-ref --verify --quiet refs/remotes/origin/main
+          test "$(git rev-parse origin/main)" = "1c8ce47546ebb2f964c37741781c10d901b8e618"
+          test "$(git merge-base HEAD origin/main)" = "1c8ce47546ebb2f964c37741781c10d901b8e618"
+          # Verify exact integration provenance and byte-identical source tree.
+          test "$(git rev-parse HEAD^1)" = "509ce231ca2370b40e2699f1e004b3c587b3133f"
+          test "$(git rev-parse HEAD^2)" = "985a7a909125df41d81794a8bac779d2fee9ae38"
+          test "$(git rev-parse 'HEAD^{tree}')" = "$(git rev-parse '985a7a909125df41d81794a8bac779d2fee9ae38^{tree}')"
+          test -z "$(git status --porcelain)"
+          expected=$(cat <<'END_EXPECTED'
+          .forge/decisions/A01-W02-ARCHITECTURE-OFFICE-REGISTER-R1.md
+          .forge/decisions/A01-W02-TRACK-W-PROPOSED-POLICY.md
+          app/Domain/Tasks/TaskCoreAccess.php
+          app/Domain/Tasks/TaskCoreService.php
+          app/Domain/Tasks/TaskLifecycleState.php
+          app/Models/Task.php
+          app/Models/TaskEvent.php
+          database/migrations/2026_10_09_000000_extend_tasks_for_w02_core.php
+          database/migrations/2026_10_09_000100_create_task_events_table.php
+          tests/Feature/Tasks/TaskCoreServiceTest.php
+          tests/Feature/Tasks/TaskDomainFoundationTest.php
+          END_EXPECTED
+          )
+          actual="$(git diff --name-only "509ce231ca2370b40e2699f1e004b3c587b3133f" HEAD)"
+          test "$actual" = "$expected" || { echo "::error::W02 source diff scope drift"; diff <(printf '%s\n' "$expected") <(printf '%s\n' "$actual") || true; exit 1; }
+          mkdir -p storage/app/qa/a01-w02-postmerge
+          {
+            echo "KURT_CI_HARNESS_SHA=$GITHUB_SHA"
+            echo "INTEGRATED_MAIN_SHA=$(git rev-parse HEAD)"
+            echo "MAIN_BASE_SHA=509ce231ca2370b40e2699f1e004b3c587b3133f"
+            echo "MERGE_PARENT1=509ce231ca2370b40e2699f1e004b3c587b3133f"
+            echo "MERGE_PARENT2=985a7a909125df41d81794a8bac779d2fee9ae38"
+            echo "EXPECTED_PRODUCT_TREE_IDENTICAL_TO_W02=true"
+            echo "REPO=$GITHUB_REPOSITORY"
+            echo "RUN_ID=$GITHUB_RUN_ID"
+            echo "RUN_ATTEMPT=$GITHUB_RUN_ATTEMPT"
+            echo "RUNNER=$RUNNER_NAME"
+            echo "APP_ENV=$APP_ENV"
+            echo "DB_CONNECTION=$DB_CONNECTION"
+            echo "DB_DATABASE=$DB_DATABASE"
+            echo "DIFF_FILE_COUNT=11"
+          } | tee storage/app/qa/a01-w02-postmerge/manifest.txt
+
+      - name: Set up PHP 8.4 / PostgreSQL
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+          extensions: pdo_pgsql, pgsql, fileinfo, zip
+          tools: composer:v2
+
+      - name: Confirm isolated empty PostgreSQL service
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$APP_ENV" = "testing"
+          test "$DB_CONNECTION" = "pgsql"
+          test "$DB_HOST" = "127.0.0.1"
+          test "$DB_PORT" = "5432"
+          test "$DB_DATABASE" = "talibon_portal_test"
+          test "$DB_USERNAME" = "postgres"
+          test "$GITHUB_REPOSITORY" = "Project-Intra-Smithy/Talibon-Sales-Prototype"
+          identity="$(psql -X -A -t -v ON_ERROR_STOP=1 -h "$DB_HOST" -U postgres -d "$DB_DATABASE" -c 'SELECT current_database() || chr(124) || current_user')"
+          test "$identity" = "talibon_portal_test|postgres"
+          tables="$(psql -X -A -t -v ON_ERROR_STOP=1 -h "$DB_HOST" -U postgres -d "$DB_DATABASE" -c "SELECT count(*) FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE'")"
+          test "$tables" = "0" || { echo "::error::Nonempty PostgreSQL service; abort"; exit 1; }
+          test "$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')" = "8.4"
+          echo "EPHEMERAL_PG_DB_IDENTITY=$identity" >> storage/app/qa/a01-w02-postmerge/manifest.txt
+          echo "EPHEMERAL_PG_INITIAL_TABLES=0" >> storage/app/qa/a01-w02-postmerge/manifest.txt
+
+      - name: Install and migrate disposable CI database only
+        shell: bash
+        run: |
+          set -euo pipefail
+          composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+          cp .env.example .env
+          php artisan key:generate --force
+          php artisan optimize:clear
+          php artisan migrate --force
+          php artisan migrate:status > storage/app/qa/a01-w02-postmerge/migrations.txt
+          echo "MIGRATE_EXIT=0" >> storage/app/qa/a01-w02-postmerge/manifest.txt
+
+      - name: Run W02, W01 and Work Request suites
+        shell: bash
+        run: |
+          set -uo pipefail
+          dir=storage/app/qa/a01-w02-postmerge
+          php artisan test tests/Feature/Tasks/TaskCoreServiceTest.php --log-junit="$dir/w02-junit.xml" 2>&1 | tee "$dir/w02.log"
+          a=${PIPESTATUS[0]}
+          php artisan test tests/Feature/Tasks/TaskDomainFoundationTest.php --log-junit="$dir/w01-junit.xml" 2>&1 | tee "$dir/w01.log"
+          b=${PIPESTATUS[0]}
+          php artisan test tests/Feature/WorkRequestBackendValidationTest.php tests/Feature/WorkRequestPresentationTest.php --log-junit="$dir/work-request-junit.xml" 2>&1 | tee "$dir/work-request.log"
+          c=${PIPESTATUS[0]}
+          {
+            echo "W02_SUITE_EXIT=$a"
+            echo "W01_SUITE_EXIT=$b"
+            echo "WORK_REQUEST_SUITE_EXIT=$c"
+          } | tee -a "$dir/manifest.txt"
+          if [ "$a" -ne 0 ] || [ "$b" -ne 0 ] || [ "$c" -ne 0 ]; then
+            echo "VALIDATION_RESULT=FAIL" >> "$dir/manifest.txt"
+            exit 1
+          fi
+          echo "VALIDATION_RESULT=PASS" >> "$dir/manifest.txt"
+
+      - name: Upload validation evidence (also on failure)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a01-w02-postmerge-exact-main-kurt-evidence
+          path: storage/app/qa/a01-w02-postmerge/
+          if-no-files-found: warn
+          retention-days: 14
