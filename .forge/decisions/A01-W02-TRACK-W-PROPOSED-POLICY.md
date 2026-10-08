@@ -47,4 +47,4 @@
 
 **Decision owner:** Kirch approves technical scope and design; appropriate LGU authority confirms municipal rules. Siris coordinates return and evidence, not policy ratification. Update this document's decision status when verified; avoid duplicating narrative comments.
 
-**Next:** Kirch freezes the bounded W02 engineering-core file manifest and tests, then issues an exact-branch execution release. **Do not re-open completed LGU consultation as a prerequisite for nonproduction core implementation.** Granting specific municipal accounts active delegation, office-wide visibility or executive access awaits validated roles and any required formal endorsement. W03/C1 remain separate.
+**Next:** W02 CORE coding release has been issued; the individual-Task-only implementation candidate and test code are on the existing source-pinned branch. **Validation and acceptance remain pending** (no test PASS yet). Do not re-open completed LGU consultation for core development. Activating actual Department Head/delegate/Mayor privileges still requires verified account scope and the LGU's applicable endorsement. W03/C1 are separate.
