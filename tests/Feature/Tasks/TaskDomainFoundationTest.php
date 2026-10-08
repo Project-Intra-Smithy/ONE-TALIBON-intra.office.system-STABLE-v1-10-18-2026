@@ -24,6 +24,7 @@ class TaskDomainFoundationTest extends TestCase
             'id', 'title', 'instructions', 'state', 'created_by_user_id',
             'assigned_to_user_id', 'source_domain', 'source_type', 'source_id',
             'due_at', 'completed_at', 'created_at', 'updated_at',
+            'task_kind', 'owning_department_id',
         ], Schema::getColumnListing('tasks'));
 
         $columns = collect(DB::select(<<<'SQL'
@@ -36,7 +37,7 @@ class TaskDomainFoundationTest extends TestCase
             $this->assertSame('NO', $columns[$required]->is_nullable, $required);
         }
 
-        foreach (['instructions', 'assigned_to_user_id', 'source_domain', 'source_type', 'source_id', 'due_at', 'completed_at'] as $optional) {
+        foreach (['instructions', 'assigned_to_user_id', 'source_domain', 'source_type', 'source_id', 'due_at', 'completed_at', 'task_kind', 'owning_department_id'] as $optional) {
             $this->assertSame('YES', $columns[$optional]->is_nullable, $optional);
         }
 
@@ -70,11 +71,12 @@ class TaskDomainFoundationTest extends TestCase
             WHERE n.nspname = current_schema() AND t.relname = 'tasks' AND c.contype = 'f'
             SQL))->keyBy('conname');
 
-        $this->assertCount(2, $foreignKeys);
+        $this->assertCount(3, $foreignKeys);
         $this->assertSame('r', $foreignKeys['tasks_created_by_user_id_foreign']->confdeltype);
         $this->assertSame('n', $foreignKeys['tasks_assigned_to_user_id_foreign']->confdeltype);
         $this->assertStringContainsString('REFERENCES users(id)', $foreignKeys['tasks_created_by_user_id_foreign']->definition);
         $this->assertStringContainsString('REFERENCES users(id)', $foreignKeys['tasks_assigned_to_user_id_foreign']->definition);
+        $this->assertStringContainsString('REFERENCES departments(id)', $foreignKeys['tasks_owning_department_id_foreign']->definition);
     }
 
     public function test_task_persists_without_source_or_assignee_and_resolves_creator(): void
@@ -236,16 +238,23 @@ class TaskDomainFoundationTest extends TestCase
         $transactionColumnsBefore = Schema::getColumnListing('transactions');
         $this->assertContains('tasks', $allTablesBefore);
         $migration = require database_path('migrations/2026_10_08_000000_create_tasks_table.php');
+        $extension = require database_path('migrations/2026_10_09_000000_extend_tasks_for_w02_core.php');
+        $events = require database_path('migrations/2026_10_09_000100_create_task_events_table.php');
 
+        // Remove dependent W02 tables before isolated W01 rollback, then restore all.
+        $events->down();
+        $extension->down();
         $migration->down();
         $this->assertFalse(Schema::hasTable('tasks'));
         $this->assertEqualsCanonicalizing(
-            array_values(array_diff($allTablesBefore, ['tasks'])),
+            array_values(array_diff($allTablesBefore, ['tasks', 'task_events'])),
             $listCurrentSchemaTables(),
         );
         $this->assertSame($transactionColumnsBefore, Schema::getColumnListing('transactions'));
 
         $migration->up();
+        $extension->up();
+        $events->up();
         $this->assertTrue(Schema::hasTable('tasks'));
         $this->assertEqualsCanonicalizing($allTablesBefore, $listCurrentSchemaTables());
         $this->assertSame($transactionColumnsBefore, Schema::getColumnListing('transactions'));
