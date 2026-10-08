@@ -105,9 +105,12 @@ class TaskCoreServiceTest extends TestCase
         [$owner] = $this->staff('owner');
         [$stranger] = $this->staff('stranger');
         $stranger->forceFill(['role' => 'mayor'])->save();
+        $this->actingAs($owner);
         $task = $this->service()->createIndividual($owner, 'Only owner sees this');
+        $this->actingAs($stranger);
 
-        $this->assertCount(1, $this->service()->visibleIndividualTasks($owner)->get());
+        // The claimed actor must match the authenticated principal.
+        $this->assertDenied(fn () => $this->service()->visibleIndividualTasks($owner)->get());
         $this->assertCount(0, $this->service()->visibleIndividualTasks($stranger)->get());
 
         try {
@@ -150,6 +153,7 @@ class TaskCoreServiceTest extends TestCase
             'password' => 'safe-for-tests',
             'is_active' => true,
         ]);
+        $this->actingAs($orphan);
         $this->assertDenied(fn () => $this->service()->createIndividual($orphan, 'No employment'));
         $this->assertSame('open', $task->fresh()->state);
         $this->assertSame(1, $task->events()->count());
@@ -267,6 +271,25 @@ class TaskCoreServiceTest extends TestCase
         $this->assertSame(0, TaskEvent::query()->count());
     }
 
+    public function test_claimed_actor_cannot_spoof_authenticated_session_or_anonymous_context(): void
+    {
+        [$owner] = $this->staff('claimed-owner');
+        $task = $this->service()->createIndividual($owner, 'No actor spoofing');
+        [$stranger] = $this->staff('claimed-stranger');
+
+        $this->assertDenied(fn () => $this->service()->createIndividual($owner, 'Forged actor'));
+        $this->assertDenied(fn () => $this->service()->transitionIndividual($owner, $task->id, 'start'));
+
+        $this->actingAs($owner);
+        $this->assertCount(1, $this->service()->visibleIndividualTasks($owner)->get());
+        $this->assertDenied(fn () => $this->service()->createIndividual($stranger, 'Spoof another actor'));
+
+        auth()->logout();
+        $this->assertDenied(fn () => $this->service()->createIndividual($owner, 'No session'));
+        $this->assertSame('open', $task->fresh()->state);
+        $this->assertSame(1, $task->events()->count());
+    }
+
     private function assertDenied(callable $operation): void
     {
         try {
@@ -300,6 +323,7 @@ class TaskCoreServiceTest extends TestCase
             'employment_status' => 'active',
         ]);
 
+        $this->actingAs($user);
         return [$user, $department];
     }
 }
