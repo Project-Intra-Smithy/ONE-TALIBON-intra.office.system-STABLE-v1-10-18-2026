@@ -4,7 +4,7 @@
 
 Technical Authority: Kirch Ivan Balite
 
-Product repository: Kirch-Nairu/Talibon-Sales-Prototype
+Product repository: Project-Intra-Smithy/Talibon-Sales-Prototype (canonical organization repository; historical Kirch-Nairu remote redirects)
 
 Resolve live `main` from Git before any executable work is issued.
 
@@ -29,9 +29,9 @@ P1 — ACTIVE PROGRAM PHASE
 
 A01 — ACTIVE / EXECUTION PLAN ACCEPTED BY KIRCH
 
-A01-W01 — **PACKAGE ACCEPTED / CONTROLLED INTEGRATION PENDING**
+A01-W01 — **PACKAGE ACCEPTED / MERGED / POST-MERGE VALIDATION PASS / CONTROL CLOSEOUT PENDING**
 
-A01-W01 accepted candidate — `7ddff25caef8fc1a0a4bc400a2d6e1f627fae435` (R2 branch; not merged into main)
+A01-W01 accepted writer candidate — `7ddff25caef8fc1a0a4bc400a2d6e1f627fae435` (R2); integrated `main` — `d5b49728f49940030205c0f9e322482f9d60299c` (PR #28 merged)
 
 ## Control / Project state
 
@@ -94,7 +94,7 @@ Canonical current plan:
 
 A01 is the whole Series.
 
-Kirch decisions (08 October 2026): `ACCEPT A01 PLAN — RELEASE W01` followed by **`ACCEPT W01 TASK FOUNDATION AT PACKAGE LEVEL`** for exact candidate `7ddff25caef8fc1a0a4bc400a2d6e1f627fae435`. Maintainer independent source review PASS and Kurt's bounded exact-candidate self-hosted PostgreSQL runtime verification PASS (12 Task + 8 Work Request tests, 131 assertions). **No main integration / full-Series CI/QA / deployment approval.** Acceptance: `engineering-hub#2` comment `6055696417`; CI evidence: GitHub Actions run `37745487992`, artifact `11536130892`.
+Kirch decisions (08 October 2026): A01 plan ACCEPTED; W01 Task foundation PACKAGE ACCEPTED for Jane's exact R2 SHA `7ddff25caef8fc1a0a4bc400a2d6e1f627fae435`; W01 PR #28 independently authorized and merged as a normal merge commit into canonical `main@d5b49728f49940030205c0f9e322482f9d60299c`. Kurt's bounded pre-merge CI passed at run `37745487992`; post-merge exact-main Windows/PostgreSQL CI passed at run `37765414621` (Task 12/74 + Work Request 8/57 = 20 tests / 131 assertions; artifact `11553213228`). This is **W01-only** evidence, not formal A01-I01/A01-CI01/Siris QA01/final A01 Series acceptance or deployment approval. See Hub #2 acceptance comment `6055696417` and integration comment `6056381323`.
 
 Backend Wxx packages are subordinate Kirch/backend packages.
 
@@ -128,7 +128,7 @@ Release-control branch:
 
 `KIRCH-TALIBON-A01-W01-RELEASE-CONTROL`
 
-Historical release control PR #27 has been merged and R2 was fast-forwarded before Jane implemented. Accepted W01 HEAD: `7ddff25caef8fc1a0a4bc400a2d6e1f627fae435`. Historical W01 branch remains immutable. **R2 is NOT merged into main**; controlled integration is review-only at draft PR #28.
+Historical release-control PR #27 was merged and R2 was fast-forwarded before Jane implemented. Accepted W01 HEAD: `7ddff25caef8fc1a0a4bc400a2d6e1f627fae435`. Historical W01 branch remains immutable. **R2 has been integrated** by normal merge PR #28 at `main@d5b49728f49940030205c0f9e322482f9d60299c`; original implementation commits and attribution remain preserved.
 
 ## Frontend authority
 
@@ -148,17 +148,19 @@ For executable Series work:
 
 `IMPLEMENTED + COMMITTED + SELF-VALIDATED + EXACT CANDIDATE + KURT CI/CD + SIRIS QA WHERE REQUIRED + KIRCH TECHNICAL ACCEPTANCE + INTEGRATED + RECORDED`
 
-## Current W01 package acceptance / integration boundary — 08 October 2026
+## Current A01-W01 integrated validation / closeout control — 08 October 2026
 
-**Kirch Ivan Balite — A01-W01 package ACCEPTED. Integration remains separately gated.**
+**Disposition: W01 PACKAGE ACCEPTED + MERGED + POST-MERGE EXACT-MAIN RUNTIME PASS.** Owning Engineering Hub #2 / GitHub Project #2 control closeout still requires authoritative Project field verification. Do not claim a complete Project update from issue state alone.
 
-- Accepted base / currently verified main: `9f1859945ba07b4d5318352d85c41e96ab3ca4d4`.
-- Exact W01 R2 candidate: `7ddff25caef8fc1a0a4bc400a2d6e1f627fae435` (two commits ahead / zero behind; model, one additive migration, one focused test file).
-- [Kirch package acceptance](https://github.com/Project-Intra-Smithy/engineering-hub/issues/2#issuecomment-6055696417).
-- [Independent Maintainer source re-review](https://github.com/Project-Intra-Smithy/engineering-hub/issues/2#issuecomment-6054028157).
-- [Maintainer's Kurt exact-candidate evidence review](https://github.com/Project-Intra-Smithy/engineering-hub/issues/2#issuecomment-6055479987).
-- [Kurt's W01 validation run](https://github.com/Kirch-Nairu/Talibon-Sales-Prototype/actions/runs/37745487992): **20 passed / 131 assertions**, PostgreSQL Task migration / rollback / FK and index checks.
-- [Controlled integration PR #28 — DRAFT, UNMERGED](https://github.com/Kirch-Nairu/Talibon-Sales-Prototype/pull/28).
-- This reconciliation is documentation-only; historical acceptance anchors are not overwritten or retroactively generalized.
-- Pending separate decisions: **Kirch W01 integration approval**, post-integration exact SHA review, W02 bounded execution handoff, formal integrated A01-CI01, Siris independent A01-QA01, final A01 Series acceptance.
-- `Task != Work Request != Correspondence`; no invented LGU workflows or promotion.
+- Canonical organization repository: `Project-Intra-Smithy/Talibon-Sales-Prototype`.
+- Pre-W01 base: `9f1859945ba07b4d5318352d85c41e96ab3ca4d4`; accepted writer candidate: `7ddff25caef8fc1a0a4bc400a2d6e1f627fae435`; integrated product `main`: **`d5b49728f49940030205c0f9e322482f9d60299c`**.
+- [Kirch's W01 package acceptance](https://github.com/Project-Intra-Smithy/engineering-hub/issues/2#issuecomment-6055696417); [Kirch's executable merge decision + verification](https://github.com/Project-Intra-Smithy/engineering-hub/issues/2#issuecomment-6056381323); [merged product PR #28](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/pull/28).
+- Normal merge commit has parents (first) old base `9f185994...` and (second) accepted R2 `7ddff25...`. Base-to-integrated source diff: exactly three added W01 paths (Task model, Task migration, Task focused test); accepted R2-to-integrated source diff: zero changed files.
+- PRE-MERGE validation: [Kurt run 37745487992](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/actions/runs/37745487992) against R2 candidate SHA.
+- **POST-MERGE validation**: [GitHub Actions run 37765414621](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/actions/runs/37765414621), attempt 1, conclusion success; harness branch `KIRCH-TALIBON-A01-W01-CI-VALIDATION-KURT@83ee52672c4183c99b7e2c024a75e8ffb22b45b9`; product checkout SHA `d5b49728...`; Windows runner `KIRCH-P0-WIN10-TEMP`; PHP 8.4.26 / Composer 2.10.3 / PostgreSQL 16.15.
+- Test-only database `talibon_portal_test|127.0.0.1|postgres`; no competing connections at both logged checkpoints; Task migration ledger already had one applied record, so explicit forward migration **skipped** rather than claimed newly applied. Task focused rollback/recreation test passed, and FK/index audits recorded.
+- Focused Task tests **12 passed / 74 assertions / exit 0**; targeted Work Request backend and presentation regression tests **8 passed / 57 assertions / exit 0**. Total **20 passed / 131 assertions**, no failures/errors/skips in these suites. Does not claim the entire repository test suite.
+- [Post-merge runtime artifact 11553213228](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/actions/runs/37765414621/artifacts/11553213228), digest `sha256:40267d24579843e11e20027f82321b0eb3cea9c70246f0a41f869df6d04e4fe2`; contains manifest, JUnit, logs, index and FK evidence.
+- **Closeout still outstanding:** verify Project #2 `Status` and `Next` through a Projects-v2-capable UI/API, update the board to the decided control state, refresh to confirm persistence, and record the closeout decision in Hub #2. Current draft documentation PR #29 is **not** merged merely by this evidence.
+- **Gates unchanged:** W02 staged / technical preparation only; backend contract A01-C1 and frontend Task UI gated; exact A01-I01 backend/frontend release tuple, formal A01-CI01, Siris independent QA01 and Kirch's final A01 Series acceptance remain separate. No deployment.
+- Locked invariants: **Task != Work Request != Correspondence**. W01 did not implement lifecycle, permissions, routes, API, frontend, Work Request mutations, or speculative municipal policy.
