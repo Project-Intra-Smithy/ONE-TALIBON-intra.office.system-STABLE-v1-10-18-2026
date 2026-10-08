@@ -232,6 +232,48 @@ class TaskCoreServiceTest extends TestCase
         $this->assertSame($initialEvents, TaskEvent::query()->count());
     }
 
+    public function test_failure_to_record_initial_event_rolls_back_new_task(): void
+    {
+        [$owner] = $this->staff('createatomic');
+        TaskEvent::creating(static function (): void {
+            throw new RuntimeException('No audit event accepted.');
+        });
+
+        try {
+            try {
+                $this->service()->createIndividual($owner, 'Must be atomic');
+                $this->fail('Task created without history');
+            } catch (RuntimeException $e) {
+                $this->assertSame('No audit event accepted.', $e->getMessage());
+            }
+        } finally {
+            TaskEvent::flushEventListeners();
+        }
+
+        $this->assertSame(0, Task::query()->count());
+        $this->assertSame(0, TaskEvent::query()->count());
+    }
+
+    public function test_w02_schema_preserves_nullable_legacy_and_event_references(): void
+    {
+        $this->assertTrue(\Illuminate\Support\Facades\Schema::hasColumns('tasks', [
+            'task_kind', 'owning_department_id',
+        ]));
+        $this->assertTrue(\Illuminate\Support\Facades\Schema::hasColumns('task_events', [
+            'task_id', 'actor_user_id', 'action',
+            'previous_state', 'new_state', 'created_at',
+        ]));
+        [$owner] = $this->staff('schema');
+        $legacy = Task::query()->create([
+            'title' => 'Legacy record',
+            'state' => 'legacy-caller-state',
+            'created_by_user_id' => $owner->id,
+        ]);
+        $this->assertNull($legacy->fresh()->task_kind);
+        $this->assertNull($legacy->fresh()->owning_department_id);
+        $this->assertSame('legacy-caller-state', $legacy->fresh()->state);
+    }
+
     public function test_source_reference_is_passive_and_never_mutates_work_request(): void
     {
         [$owner, $office] = $this->staff('source');
