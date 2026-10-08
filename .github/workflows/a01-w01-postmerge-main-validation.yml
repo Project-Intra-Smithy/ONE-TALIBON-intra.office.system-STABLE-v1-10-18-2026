@@ -1,0 +1,229 @@
+name: A01-W01 Post-Merge Exact Main Runtime Validation
+
+on:
+  push:
+    branches:
+      - KIRCH-TALIBON-A01-W01-CI-VALIDATION-KURT
+
+permissions:
+  contents: read
+
+concurrency:
+  group: talibon-a01-w01-disposable-pgsql-validation
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: W01 integrated-main Task + Work Request runtime
+    runs-on: [self-hosted, Windows, X64, talibon-p0-temp]
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: powershell
+    env:
+      APP_ENV: testing
+      APP_DEBUG: false
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: postgres
+      DB_PASSWORD: ${{ secrets.P0_POSTGRES_PASSWORD }}
+      PGPASSWORD: ${{ secrets.P0_POSTGRES_PASSWORD }}
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
+      SESSION_DRIVER: file
+      TELESCOPE_ENABLED: false
+      PULSE_ENABLED: false
+    steps:
+      - name: Checkout integrated main at exact SHA
+        uses: actions/checkout@v4
+        with:
+          ref: d5b49728f49940030205c0f9e322482f9d60299c
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify post-merge SHA, parents and three-file source contract
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $base = '9f1859945ba07b4d5318352d85c41e96ab3ca4d4'
+          $w01 = '7ddff25caef8fc1a0a4bc400a2d6e1f627fae435'
+          $integrated = 'd5b49728f49940030205c0f9e322482f9d60299c'
+          if ($env:GITHUB_REF -cne 'refs/heads/KIRCH-TALIBON-A01-W01-CI-VALIDATION-KURT') { throw 'Wrong harness branch.' }
+          if (@($base, $w01, $integrated) -contains $env:GITHUB_SHA) { throw 'Harness and product SHA must differ.' }
+          $head = (git rev-parse HEAD).Trim()
+          $main = (git rev-parse origin/main).Trim()
+          if ($head -cne $integrated -or $main -cne $integrated) { throw "Exact main drift: head=$head remote=$main" }
+          $parents = @((git show -s --format=%P HEAD).Trim() -split ' ')
+          if ($LASTEXITCODE -ne 0 -or $parents.Count -ne 2 -or $parents[0] -cne $base -or $parents[1] -cne $w01) { throw "Merge parent mismatch: $($parents -join ',')" }
+          $expected = @('app/Models/Task.php', 'database/migrations/2026_10_08_000000_create_tasks_table.php', 'tests/Feature/Tasks/TaskDomainFoundationTest.php')
+          $changes = @(git diff --name-status $base $integrated)
+          if ($LASTEXITCODE -ne 0 -or $changes.Count -ne 3) { throw "Source diff count mismatch: $($changes -join '; ')" }
+          foreach ($line in $changes) {
+            $parts = $line -split "`t"
+            if ($parts.Count -ne 2 -or $parts[0] -cne 'A' -or $expected -cnotcontains $parts[1]) { throw "Unexpected executable change: $line" }
+          }
+          $zero = @(git diff --name-only $w01 $integrated)
+          if ($LASTEXITCODE -ne 0 -or $zero.Count -ne 0) { throw "Merged source differs from W01: $($zero -join ',')" }
+          $newCount = (git rev-list --count "$w01..$integrated").Trim()
+          if ($LASTEXITCODE -ne 0 -or $newCount -ne '1') { throw "Unexpected merge ancestry: $newCount" }
+          Write-Host "CI_HARNESS_SHA=$env:GITHUB_SHA"
+          Write-Host "PRODUCT_CHECKOUT_SHA=$head"
+          Write-Host "ORIGIN_MAIN_SHA=$main"
+          Write-Host "MERGE_PARENTS=$($parents -join ',')"
+          Write-Host "SOURCE_DIFF=$($changes -join '; ')"
+          Write-Host 'W01_TO_MERGED_FILE_DIFF=EMPTY'
+          Write-Host "RUNNER=$env:RUNNER_NAME OS=$env:RUNNER_OS ARCH=$env:RUNNER_ARCH"
+          if (@(git status --porcelain).Count -ne 0) { throw 'Unexpected dirty checkout.' }
+
+      - name: Prepare PHP 8.4 and PostgreSQL extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+          extensions: pdo_pgsql, pgsql, fileinfo, zip
+          tools: composer:v2
+
+      - name: Environment isolation, migrations, and exact-suite execution
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $evidence = 'storage/app/qa/a01-w01-postmerge'
+          New-Item -ItemType Directory -Force $evidence | Out-Null
+          $manifest = Join-Path $evidence 'manifest.txt'
+          $integrated = 'd5b49728f49940030205c0f9e322482f9d60299c'
+          @(
+            "CI_HARNESS_SHA=$env:GITHUB_SHA"
+            "PRODUCT_CHECKOUT_SHA=$integrated"
+            "W01_ACCEPTED_SOURCE_SHA=7ddff25caef8fc1a0a4bc400a2d6e1f627fae435"
+            "MERGE_FIRST_PARENT=9f1859945ba07b4d5318352d85c41e96ab3ca4d4"
+            "MERGE_SECOND_PARENT=7ddff25caef8fc1a0a4bc400a2d6e1f627fae435"
+            "W01_TO_MERGED_FILE_DIFF=EMPTY"
+            "INTEGRATED_MAIN_SHA=$integrated"
+            "APP_ENV=$env:APP_ENV"
+            "DB_CONNECTION=$env:DB_CONNECTION"
+            "DB_DATABASE=$env:DB_DATABASE"
+            "RUN_ID=$env:GITHUB_RUN_ID"
+            "ATTEMPT=$env:GITHUB_RUN_ATTEMPT"
+            "RUNNER_NAME=$env:RUNNER_NAME"
+            "RUNNER_OS=$env:RUNNER_OS"
+            "RUNNER_ARCH=$env:RUNNER_ARCH"
+          ) | Set-Content $manifest
+          if ($env:APP_ENV -cne 'testing' -or $env:DB_CONNECTION -cne 'pgsql' -or
+              $env:DB_DATABASE -cne 'talibon_portal_test' -or
+              $env:DB_HOST -cne '127.0.0.1' -or $env:DB_PORT -cne '5432' -or
+              $env:DB_USERNAME -cne 'postgres') {
+            throw 'BLOCKED: Test-only application/database environment guard failed.'
+          }
+          if ([string]::IsNullOrWhiteSpace($env:DB_PASSWORD)) { throw 'INFRASTRUCTURE: P0_POSTGRES_PASSWORD is unavailable.' }
+          $phpVersion = (& php -r "echo PHP_VERSION;").Trim()
+          if ($phpVersion -notmatch '^8\.4\.') { throw "INFRASTRUCTURE: Expected PHP 8.4, got $phpVersion" }
+          $modules = @(php -m)
+          if ($modules -notcontains 'pdo_pgsql' -or $modules -notcontains 'pgsql') { throw 'INFRASTRUCTURE: Missing PHP PostgreSQL extensions.' }
+          $composerVersion = (composer --version 2>&1 | Select-Object -First 1)
+          $psqlVersion = (psql --version 2>&1 | Select-Object -First 1)
+          if ($LASTEXITCODE -ne 0) { throw 'INFRASTRUCTURE: psql is unavailable.' }
+          "PHP=$phpVersion" | Add-Content $manifest
+          "COMPOSER=$composerVersion" | Add-Content $manifest
+          "PSQL=$psqlVersion" | Add-Content $manifest
+          Write-Host "PHP=$phpVersion"
+          Write-Host "COMPOSER=$composerVersion"
+          Write-Host "PSQL=$psqlVersion"
+
+          # Hold an OS-wide lock throughout DB-changing operations. Never wait,
+          # displace, or kill someone else's process.
+          $mutex = New-Object System.Threading.Mutex($false, 'Global\TalibonPortalTestValidation')
+          $ownsMutex = $false
+          try {
+            $ownsMutex = $mutex.WaitOne(0)
+            if (-not $ownsMutex) { throw 'BLOCKED: Another local validation owns the disposable DB mutex.' }
+            $identity = (& psql -X -A -t -v ON_ERROR_STOP=1 -h $env:DB_HOST -p $env:DB_PORT -U $env:DB_USERNAME -d $env:DB_DATABASE -c "SELECT current_database() || '|' || host(inet_server_addr()) || '|' || current_user;").Trim()
+            if ($LASTEXITCODE -ne 0 -or $identity -ne 'talibon_portal_test|127.0.0.1|postgres') {
+              throw "BLOCKED: PostgreSQL test database or loopback connection unverified: $identity"
+            }
+            "DATABASE_IDENTITY=$identity" | Add-Content $manifest
+            $otherSessions = (& psql -X -A -t -v ON_ERROR_STOP=1 -h $env:DB_HOST -p $env:DB_PORT -U $env:DB_USERNAME -d $env:DB_DATABASE -c "SELECT count(*) FROM pg_stat_activity WHERE datname = 'talibon_portal_test' AND pid <> pg_backend_pid();").Trim()
+            if ($LASTEXITCODE -ne 0 -or $otherSessions -ne '0') { throw "BLOCKED: Other sessions connected to disposable DB: $otherSessions" }
+            "OTHER_DB_CONNECTIONS_BEFORE=$otherSessions" | Add-Content $manifest
+            $baseline = (& psql -X -A -t -v ON_ERROR_STOP=1 -h $env:DB_HOST -p $env:DB_PORT -U $env:DB_USERNAME -d $env:DB_DATABASE -c "SELECT (to_regclass('public.users') IS NOT NULL AND to_regclass('public.transactions') IS NOT NULL AND to_regclass('public.migrations') IS NOT NULL)::text;").Trim()
+            if ($LASTEXITCODE -ne 0 -or $baseline -ne 'true') { throw "BLOCKED: Existing disposable baseline tables not verified: $baseline" }
+            "BASELINE_SCHEMA_VERIFIED=$baseline" | Add-Content $manifest
+
+            # Composer can only alter the ephemeral runner checkout, not the product Git.
+            composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+            if ($LASTEXITCODE -ne 0) { throw "INFRASTRUCTURE: Composer install exit $LASTEXITCODE" }
+            Copy-Item .env.example .env -Force
+            php artisan key:generate
+            if ($LASTEXITCODE -ne 0) { throw "INFRASTRUCTURE: Laravel key setup exit $LASTEXITCODE" }
+            php artisan optimize:clear
+            if ($LASTEXITCODE -ne 0) { throw "INFRASTRUCTURE: Laravel cache setup exit $LASTEXITCODE" }
+            $sessionsAgain = (& psql -X -A -t -v ON_ERROR_STOP=1 -h $env:DB_HOST -p $env:DB_PORT -U $env:DB_USERNAME -d $env:DB_DATABASE -c "SELECT count(*) FROM pg_stat_activity WHERE datname = 'talibon_portal_test' AND pid <> pg_backend_pid();").Trim()
+            if ($LASTEXITCODE -ne 0 -or $sessionsAgain -ne '0') { throw "BLOCKED: DB session appeared before migration: $sessionsAgain" }
+            "OTHER_DB_CONNECTIONS_PRE_MIGRATION=$sessionsAgain" | Add-Content $manifest
+
+            # Record whether W01 was already applied by the pre-merge validation.
+            # Abort rather than repair contradictory migration and table states.
+            $migrationCount = (& psql -X -A -t -v ON_ERROR_STOP=1 -h $env:DB_HOST -p $env:DB_PORT -U $env:DB_USERNAME -d $env:DB_DATABASE -c "SELECT count(*) FROM public.migrations WHERE migration = '2026_10_08_000000_create_tasks_table';").Trim()
+            if ($LASTEXITCODE -ne 0 -or @('0','1') -cnotcontains $migrationCount) { throw "BLOCKED: Migration ledger inconsistent: $migrationCount" }
+            $tableState = (& psql -X -A -t -v ON_ERROR_STOP=1 -h $env:DB_HOST -p $env:DB_PORT -U $env:DB_USERNAME -d $env:DB_DATABASE -c "SELECT CASE WHEN to_regclass('public.tasks') IS NULL THEN 'absent' ELSE 'present' END;").Trim()
+            if ($LASTEXITCODE -ne 0) { throw 'BLOCKED: Task table state unavailable.' }
+            "W01_MIGRATION_RECORDS_BEFORE=$migrationCount" | Add-Content $manifest
+            "W01_TASK_TABLE_BEFORE=$tableState" | Add-Content $manifest
+            if (($migrationCount -eq '1' -and $tableState -ne 'present') -or ($migrationCount -eq '0' -and $tableState -ne 'absent')) {
+              throw 'BLOCKED: Migration ledger and Task table disagree; no repair authorized.'
+            }
+            if ($migrationCount -eq '0') {
+              php artisan migrate --path=database/migrations/2026_10_08_000000_create_tasks_table.php --force
+              $migrationExit = $LASTEXITCODE
+              "FORWARD_MIGRATION_ACTION=APPLIED" | Add-Content $manifest
+              "FORWARD_MIGRATION_EXIT=$migrationExit" | Add-Content $manifest
+              if ($migrationExit -ne 0) { throw "PRODUCT_OR_INFRASTRUCTURE: W01 forward migration exit $migrationExit" }
+            } else {
+              "FORWARD_MIGRATION_ACTION=ALREADY_APPLIED_SKIP" | Add-Content $manifest
+              "FORWARD_MIGRATION_EXIT=NOT_RUN" | Add-Content $manifest
+            }
+            $schemaValid = (& psql -X -A -t -v ON_ERROR_STOP=1 -h $env:DB_HOST -p $env:DB_PORT -U $env:DB_USERNAME -d $env:DB_DATABASE -c "SELECT (to_regclass('public.tasks') IS NOT NULL AND (SELECT count(*) FROM public.migrations WHERE migration = '2026_10_08_000000_create_tasks_table') = 1)::text;").Trim()
+            if ($LASTEXITCODE -ne 0 -or $schemaValid -ne 'true') { throw "PRODUCT_OR_INFRASTRUCTURE: Post-migration Task schema invalid: $schemaValid" }
+            "W01_SCHEMA_AND_LEDGER_AFTER=true" | Add-Content $manifest
+
+            $schemaBefore = & psql -X -A -t -v ON_ERROR_STOP=1 -h $env:DB_HOST -p $env:DB_PORT -U $env:DB_USERNAME -d $env:DB_DATABASE -c "SELECT tablename || ':' || indexname FROM pg_indexes WHERE schemaname = 'public' AND tablename = 'tasks' ORDER BY indexname;"
+            $schemaBefore | Set-Content (Join-Path $evidence 'task-indexes.txt')
+            if ($LASTEXITCODE -ne 0) { throw 'INFRASTRUCTURE: PostgreSQL index audit failed.' }
+
+            # RefreshDatabase in the source suite manages rollback/recreation on
+            # this positively verified disposable DB; no migration touches production.
+            $ErrorActionPreference = 'Continue'
+            & php artisan test tests/Feature/Tasks/TaskDomainFoundationTest.php --log-junit=storage/app/qa/a01-w01-postmerge/task-junit.xml 2>&1 |
+              Tee-Object -FilePath (Join-Path $evidence 'task-suite.log')
+            $taskExit = $LASTEXITCODE
+            $ErrorActionPreference = 'Stop'
+            "TASK_SUITE_EXIT=$taskExit" | Add-Content $manifest
+            if ($taskExit -ne 0) { throw "PRODUCT_OR_TEST_CONTRACT: Task suite exit $taskExit; see artifact." }
+
+            $ErrorActionPreference = 'Continue'
+            & php artisan test tests/Feature/WorkRequestBackendValidationTest.php tests/Feature/WorkRequestPresentationTest.php --log-junit=storage/app/qa/a01-w01-postmerge/work-request-junit.xml 2>&1 |
+              Tee-Object -FilePath (Join-Path $evidence 'work-request-suite.log')
+            $regressionExit = $LASTEXITCODE
+            $ErrorActionPreference = 'Stop'
+            "WORK_REQUEST_SUITE_EXIT=$regressionExit" | Add-Content $manifest
+            if ($regressionExit -ne 0) { throw "PRODUCT_OR_TEST_CONTRACT: Work Request regression exit $regressionExit; see artifact." }
+
+            $schemaAfter = & psql -X -A -t -v ON_ERROR_STOP=1 -h $env:DB_HOST -p $env:DB_PORT -U $env:DB_USERNAME -d $env:DB_DATABASE -c "SELECT conname || ':' || pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid = 'public.tasks'::regclass AND contype = 'f' ORDER BY conname;"
+            $schemaAfter | Set-Content (Join-Path $evidence 'task-foreign-keys.txt')
+            if ($LASTEXITCODE -ne 0) { throw 'INFRASTRUCTURE: Foreign key audit failed.' }
+            "TASK_ROLLBACK_RECREATION=PASS_VIA_TASK_DOMAIN_TEST" | Add-Content $manifest
+            "VALIDATION_RESULT=PASS" | Add-Content $manifest
+          }
+          finally {
+            if ($ownsMutex) { $mutex.ReleaseMutex() }
+            $mutex.Dispose()
+          }
+
+      - name: Upload post-merge exact-main runtime evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a01-w01-postmerge-main-runtime-evidence
+          path: storage/app/qa/a01-w01-postmerge/
+          if-no-files-found: warn
+          retention-days: 14
