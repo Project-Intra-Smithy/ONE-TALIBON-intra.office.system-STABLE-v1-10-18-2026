@@ -47,7 +47,7 @@ final class RequireMfaAssurance
             return response()->json([
                 'message' => 'Multi-factor authentication is required.',
                 'code' => 'MFA_REQUIRED',
-                'next_url' => route($route),
+                'next_url' => route($route, absolute: false),
             ], 403);
         }
 
