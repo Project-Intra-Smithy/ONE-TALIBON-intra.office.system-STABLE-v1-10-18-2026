@@ -1,5 +1,9 @@
 # AGENTS.md — ONE TALIBON CURRENT GOVERNANCE
 
+## Mandatory issue + repository memory pair — read before doing work
+
+**No new work package starts, and no package is declared closed, without two crosslinked records:** the owning GitHub issue's START/CLOSE decision and the owning repository's committed START/CLOSE memory entry. Read [`.forge/memory/WORK-PACKAGE-START-CLOSE-PROTOCOL.md`](.forge/memory/WORK-PACKAGE-START-CLOSE-PROTOCOL.md), [backend package register](.forge/memory/WORK-PACKAGE-REGISTER.md), and [Engineering Hub #63](https://github.com/Project-Intra-Smithy/engineering-hub/issues/63). A missing half means `SYNC_REQUIRED / HOLD`, not an authorized start or accepted close. This applies equally to Maintainer, Code Writer, architecture, CI/QA and operations work within their respective authorization gates. Preserve evidence, actual authorship, next owner and deferred-reopen triggers. Never infer fresh completion from an older paragraph below; recheck live issues, refs and memory first.
+
 ## Human authority
 
 Technical Authority: **Kirch Ivan Balite**
