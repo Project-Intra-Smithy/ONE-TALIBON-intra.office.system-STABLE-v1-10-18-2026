@@ -119,7 +119,6 @@ export default function AppLayout({ title, children }: Props) {
             setFeedState('unavailable');
         }
 
-        setFeed(await response.json() as NotificationFeed);
     }, 8000);
 
     useEffect(() => {
