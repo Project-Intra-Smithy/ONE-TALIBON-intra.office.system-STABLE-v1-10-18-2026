@@ -30,7 +30,6 @@ final class TaskConcurrentConnectionTest extends TestCase
     public function test_two_postgresql_sessions_cannot_both_start_the_same_task(): void
     {
         $this->assertTrue(extension_loaded('pcntl'), 'The Linux CI runner must provide pcntl.');
-        $this->assertTrue(extension_loaded('sockets'), 'The Linux CI runner must provide sockets.');
         $this->assertSame('pgsql', DB::getDriverName());
 
         $actor = User::query()->create([
