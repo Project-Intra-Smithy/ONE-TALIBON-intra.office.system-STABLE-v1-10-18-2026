@@ -1,6 +1,24 @@
 # A01-W02 — Task architecture and office reference (R1)
 
-**Status:** W02 CORE CODE CANDIDATE WRITTEN / REVIEW AND CI PENDING. Kirch issued an explicit W02 CORE coding release. No merge, executable acceptance or production activation has occurred.
+## Verified current A01 release state — 09 October 2026
+
+**Current integrated backend:** `Project-Intra-Smithy/Talibon-Sales-Prototype@0573680696c8bd6fb421d625b5e7dc2c37cb1905` ([merged W03 PR #31](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/pull/31)); PR #31 accepted source `f38c1f5f76d837e21a5e750e329d82c323ceb7e4`, integration tree identical, 4 scoped paths. [Kurt exact-integrated-main CI #37889890224](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/actions/runs/37889890224) **PASS: 46 tests / 378 assertions** (W03 HTTP, independent PostgreSQL race, W02, W01, Work Request). This is a *bounded* validation, not whole-A01 CI/QA.
+
+| Existing control | Current disposition |
+| --- | --- |
+| [A01 plan #1](https://github.com/Project-Intra-Smithy/engineering-hub/issues/1) | CLOSED / accepted |
+| [A01-W01 #2](https://github.com/Project-Intra-Smithy/engineering-hub/issues/2) | CLOSED / accepted, merged, CI PASS |
+| [A01-W02 #18](https://github.com/Project-Intra-Smithy/engineering-hub/issues/18) | CLOSED / accepted, merged, CI PASS |
+| [A01-W03 #19](https://github.com/Project-Intra-Smithy/engineering-hub/issues/19) | CLOSED / accepted, merged, post-merge CI PASS |
+| [A01-C1 #20](https://github.com/Project-Intra-Smithy/engineering-hub/issues/20) | OPEN / contract NOT released; error/CSRF/MFA browser contract remains to be verified |
+| [A01-W04 #21](https://github.com/Project-Intra-Smithy/engineering-hub/issues/21), [A01-W05 #22](https://github.com/Project-Intra-Smithy/engineering-hub/issues/22), frontend, [formal CI01 #26](https://github.com/Project-Intra-Smithy/engineering-hub/issues/26), [independent QA01 #27](https://github.com/Project-Intra-Smithy/engineering-hub/issues/27) | STAGED / not accepted or released |
+
+**GitHub Projects:** W03 #19 custom `Status=Closed`, `Next=PR #31 merged; exact-main post-merge CI PASS — complete` verified by authenticated human UI screenshots after refresh on 09 October 2026, **not** independently via Projects API. C1/CI01/QA remain Intake. Live Projects UI is a distinct authority from issue state.
+
+**Authority:** Kirch owns package release, integration, and final acceptance. This reconciliation changes **documentation only** and does not grant C1, W04, W05, municipal official-Task privileges, formal A01-CI01/QA, or production deployment. Earlier W01/W02 release statements below are retained as historical snapshots, not active instructions.
+
+
+**Historical candidate status (superseded):** W02 CORE CODE CANDIDATE WRITTEN / REVIEW AND CI PENDING. Kirch issued an explicit W02 CORE coding release. No merge, executable acceptance or production activation has occurred.
 **Source:** Backend `main@509ce231ca2370b40e2699f1e004b3c587b3133f`; W02 branch. LGU consultation was completed through Siris; returned guidelines are the development baseline. Actual office/head/delegate account activation and formal adoption evidence remain separately verifiable. Three office-folder screenshots supplied by Kirch are directory evidence, not permission grants.
 
 ## Existing foundation
@@ -24,7 +42,7 @@
 
 **Security baseline:** authenticate active actor; default deny unknown office/delegate/executive capabilities; verify source and current DB state in transaction; lock before transitions; reject forged IDs, stale updates, confidentiality leaks and cross-office actions. Personal Tasks cannot issue official instructions. A return request is not automatic cancellation or supervisor approval. No Task HTTP endpoints in W02; W03 owns the API.
 
-**Validation:** invalid/terminal transitions, creator forgery, unauthorized assignment, cross-office enumeration, revoked delegation, inactive actors, confidential/executive access, concurrent updates, audit integrity, source nonmutation, and W01/Work Request regressions. Executable test results pending.
+**Historical test plan (superseded by W02/W03 bounded CI evidence above):** invalid/terminal transitions, creator forgery, unauthorized assignment, cross-office enumeration, revoked delegation, inactive actors, confidential/executive access, concurrent updates, audit integrity, source nonmutation, and W01/Work Request regressions. Executable test results pending.
 
 ## Executive directory — supplied Drive labels
 
@@ -91,6 +109,6 @@ Reconcile `Drive label → official office name/code → departments.id → bran
 
 **Expected owned paths (finalize exact names on release):** additive Task migration(s); `app/Domain/Tasks/*` for state/policy/service; optional `app/Models/TaskEvent.php` and Task model extensions; `tests/Feature/Tasks/*`. **Prohibited:** editing W01's accepted create-tasks migration, Work Request/Correspondence, shared roles/auth, frontend, live Task routes, real department seeding or production DB.
 
-**Implementation status:** Kirch's released branch now has additive Task kind/office and event migrations, session-bound individual-Task authorization, guarded `open → in_progress → completed` lifecycle, atomic Task history and regression tests. Existing W01 migration remains unchanged; W01 foundation tests are adapted for the additive schema/dependent event-table rollback. **CI has not run; no PASS or merge authorized.** Official Task issuance, delegation, cross-office/head/Mayor privileges, return, cancellation, reopen and HTTP routes remain unavailable. W03 begins only after W02 review/acceptance.
+**Implementation status:** Kirch's released branch now has additive Task kind/office and event migrations, session-bound individual-Task authorization, guarded `open → in_progress → completed` lifecycle, atomic Task history and regression tests. Existing W01 migration remains unchanged; W01 foundation tests are adapted for the additive schema/dependent event-table rollback. **At candidate drafting time, CI had not run; no PASS or merge was then authorized. Current W02/W03 integrated CI passed as recorded above.** Official Task issuance, delegation, cross-office/head/Mayor privileges, return, cancellation, reopen and HTTP routes remain unavailable. W03 begins only after W02 review/acceptance.
 
 [Proposed policy intake and outstanding LGU confirmations](A01-W02-TRACK-W-PROPOSED-POLICY.md).

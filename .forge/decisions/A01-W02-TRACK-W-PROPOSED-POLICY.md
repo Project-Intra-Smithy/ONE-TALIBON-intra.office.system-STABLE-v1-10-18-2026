@@ -1,5 +1,23 @@
 # A01-W02 — Track W policy intake
 
+## Verified current A01 release state — 09 October 2026
+
+**Current integrated backend:** `Project-Intra-Smithy/Talibon-Sales-Prototype@0573680696c8bd6fb421d625b5e7dc2c37cb1905` ([merged W03 PR #31](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/pull/31)); PR #31 accepted source `f38c1f5f76d837e21a5e750e329d82c323ceb7e4`, integration tree identical, 4 scoped paths. [Kurt exact-integrated-main CI #37889890224](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/actions/runs/37889890224) **PASS: 46 tests / 378 assertions** (W03 HTTP, independent PostgreSQL race, W02, W01, Work Request). This is a *bounded* validation, not whole-A01 CI/QA.
+
+| Existing control | Current disposition |
+| --- | --- |
+| [A01 plan #1](https://github.com/Project-Intra-Smithy/engineering-hub/issues/1) | CLOSED / accepted |
+| [A01-W01 #2](https://github.com/Project-Intra-Smithy/engineering-hub/issues/2) | CLOSED / accepted, merged, CI PASS |
+| [A01-W02 #18](https://github.com/Project-Intra-Smithy/engineering-hub/issues/18) | CLOSED / accepted, merged, CI PASS |
+| [A01-W03 #19](https://github.com/Project-Intra-Smithy/engineering-hub/issues/19) | CLOSED / accepted, merged, post-merge CI PASS |
+| [A01-C1 #20](https://github.com/Project-Intra-Smithy/engineering-hub/issues/20) | OPEN / contract NOT released; error/CSRF/MFA browser contract remains to be verified |
+| [A01-W04 #21](https://github.com/Project-Intra-Smithy/engineering-hub/issues/21), [A01-W05 #22](https://github.com/Project-Intra-Smithy/engineering-hub/issues/22), frontend, [formal CI01 #26](https://github.com/Project-Intra-Smithy/engineering-hub/issues/26), [independent QA01 #27](https://github.com/Project-Intra-Smithy/engineering-hub/issues/27) | STAGED / not accepted or released |
+
+**GitHub Projects:** W03 #19 custom `Status=Closed`, `Next=PR #31 merged; exact-main post-merge CI PASS — complete` verified by authenticated human UI screenshots after refresh on 09 October 2026, **not** independently via Projects API. C1/CI01/QA remain Intake. Live Projects UI is a distinct authority from issue state.
+
+**Authority:** Kirch owns package release, integration, and final acceptance. This reconciliation changes **documentation only** and does not grant C1, W04, W05, municipal official-Task privileges, formal A01-CI01/QA, or production deployment. Earlier W01/W02 release statements below are retained as historical snapshots, not active instructions.
+
+
 **Status:** LGU CONSULTATION RECEIVED / DEVELOPMENT BASELINE AVAILABLE / FORMAL ADOPTION AND LIVE ROLE ACTIVATION TO VERIFY  
 **Source:** Guidelines provided by the LGU through Siris's discovery assignment and forwarded by Kirch on 09 October 2026. The original respondent's name, position, issuing office, approval record and formal policy reference have not been supplied. The LGU's response itself calls these **proposed operational guidelines subject to confirmation and approval**. Consultation is complete; document ratification and live account-role mapping separately.  
 **Execution:** Engineering decisions remain under Kirch. This document records inputs; it is **not an implementation release or authorization grant**.
@@ -47,4 +65,4 @@
 
 **Decision owner:** Kirch approves technical scope and design; appropriate LGU authority confirms municipal rules. Siris coordinates return and evidence, not policy ratification. Update this document's decision status when verified; avoid duplicating narrative comments.
 
-**Next:** W02 CORE coding release has been issued; the individual-Task-only implementation candidate and test code are on the existing source-pinned branch. **Validation and acceptance remain pending** (no test PASS yet). Do not re-open completed LGU consultation for core development. Activating actual Department Head/delegate/Mayor privileges still requires verified account scope and the LGU's applicable endorsement. W03/C1 are separate.
+**Current next:** W02 and W03 individual-Task packages are accepted/merged with bounded CI PASS; C1 contract is pending. Do not reopen completed LGU consultation for basic individual-Task development. Activation of actual Department Head/delegate/Mayor privileges still requires verified account scope and applicable LGU endorsement; W04/W05/formal CI/QA remain separate.
