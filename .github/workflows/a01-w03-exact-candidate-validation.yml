@@ -51,17 +51,17 @@ jobs:
       - name: Checkout exact W03 product source (not CI harness)
         uses: actions/checkout@v4
         with:
-          ref: 92fb9aa8b5bc0fd861fa1e54dfc9d39460ec6864
+          ref: a928f074552640dc697f4b737fde352689e397f4
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Verify identity, product source SHA and exact 11-file scope
+      - name: Verify W03 product SHA and exact 3-file scope
         shell: bash
         run: |
           set -euo pipefail
           test "$GITHUB_REF" = "refs/heads/KIRCH-TALIBON-A01-W03-CI-VALIDATION-KURT"
-          test "$GITHUB_SHA" != "92fb9aa8b5bc0fd861fa1e54dfc9d39460ec6864"
-          test "$(git rev-parse HEAD)" = "92fb9aa8b5bc0fd861fa1e54dfc9d39460ec6864"
+          test "$GITHUB_SHA" != "a928f074552640dc697f4b737fde352689e397f4"
+          test "$(git rev-parse HEAD)" = "a928f074552640dc697f4b737fde352689e397f4"
           # actions/checkout fetched all refs; credentials deliberately remain disabled.
           git show-ref --verify --quiet refs/remotes/origin/main
           test "$(git rev-parse origin/main)" = "1c8ce47546ebb2f964c37741781c10d901b8e618"
