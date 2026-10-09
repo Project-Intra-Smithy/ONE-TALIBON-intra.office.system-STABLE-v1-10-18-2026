@@ -31,3 +31,9 @@
 
 ## Source contradictions not to hide
 `SSOT_CURRENT.md`, `WORK_LEDGER.md` and A01 plan contain historical tables that still call C1 'NOT released' alongside later 09 October released notices. The **dated 09 October release section + [C1 contract](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/blob/7b4ebb838982f6262b9fef65d18ba57488ebf941/.forge/contracts/A01-C1-INDIVIDUAL-TASK-HTTP-CONTRACT.md)** supersede those old snapshots; an editor must not quote the earlier row as current. The frontend `docs/BACKEND_CONTRACT_INTAKE.md` also still says 'Task API not released' because it predates C1; this packet documents the contradiction without editing the old file on a non-authorized path.
+
+## Source-review completion is not runtime acceptance
+
+**Producer review note (09 October 2026):** Source inspection conducted in Kirch's ChatGPT support session, **not** independent Jane execution, build, PHPUnit, browser, CI, Siris QA or contract approval. Backend pinned to `7b4ebb838982f6262b9fef65d18ba57488ebf941`; Lucien's pre-correction draft `76d78e68393d119dfb7b2dcbdad4cf15236b1d0f`.
+
+[Backend producer verification register](BACKEND_PRODUCER_VERIFICATION.md) now covers Tier A `C02–C12,C23` and Tier B `C13–C19` through source routes and actual response construction, including privileged and sensitive fields. **Outcome: SOURCE-TRACED / PARTIAL CONTRACT VERIFICATION, NOT RELEASE-CERTIFIED.** Enforce `C13` employee private profile/HRI PII gating; `C14` department responder split; `C15–C17` admin/audit/report access, with 250-audit-row and CSV-native boundaries; `C19` Mayor-role and MAYOR-office gating. Confirm MFA secret and recovery-code non-cache and one-time handling in actual runtime. No current imported frontend means cross-repository tests cannot yet pass. Hard-block privacy/unknown-LGU/workflow matters, rather than fabricating them.

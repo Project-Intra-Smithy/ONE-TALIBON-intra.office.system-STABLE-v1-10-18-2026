@@ -39,3 +39,9 @@
 **AJ and Jhayr:** complete FRONTEND-REG-001 source records and import/build proof first; then consume *only* families Kirch has released for them. Coordinate AppLayout, navigation and session once; do not fork competing contract truths.
 
 **Lucien:** provide source/consumer diffs and negative-test designs; may not approve or merge. **Jane/Nox:** can advise backend/architecture under Kirch, not certify Siris QA.
+
+## Exact-source intake supplement (producer verification)
+
+Before designing or reusing TypeScript types, read [producer verification by family](BACKEND_PRODUCER_VERIFICATION.md) and the [manifest](CONTRACT_MANIFEST.md). Apply the four branch-specific dashboard shapes, Work Request 25-item paginator/403 view gate, Correspondence camelCase Inertia versus snake_case JSON versus redirect split, 20-per-page Document Archive, and heterogeneous Notifications. MFA secrets/recovery codes are transient one-time responses and must never enter demo fixtures, persistent logs or shared global props.
+
+**Technical readiness is not delivery authorization.** Frontend code still requires imported application and separately approved per-family contracts. In particular `C23` is backend-released but has no accepted frontend consumer; `C13/C14` must split personnel directory from HR/private profile and department directory from process-specific workspace; `C15–C19` require role/PII/producer validation before new functionality is accepted. No agent or reviewer self-merges this draft.

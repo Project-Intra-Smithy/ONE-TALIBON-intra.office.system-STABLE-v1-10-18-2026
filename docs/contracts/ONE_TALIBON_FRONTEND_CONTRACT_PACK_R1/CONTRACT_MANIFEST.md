@@ -30,7 +30,7 @@ This **24-entry grouped trace register** accounts for 22 named browser-route pro
 | C20 | Travel orders | GET /travel-orders/*; POST /travel-orders, /{id}/status | TravelOrderController → TravelOrders/* | `PARKED_SPECIALIZED_OR_ORPHANED` | `EXCLUDE-COMMON` |
 | C21 | Property | GET /property, /property/lifecycle; POST property/lifecycle actions | PropertyController / PropertyLifecycleController → Property/* | `PARKED_SPECIALIZED_OR_ORPHANED` | `EXCLUDE-COMMON` |
 | C22 | Legislation | GET /legislation/*, /legislative-workspace; POST mutations | LegislativeRecordController / LegislativeWorkspaceController → Legislation/* | `PARKED_SPECIALIZED_OR_ORPHANED` | `EXCLUDE-COMMON` |
-| C23 | Personal Task A01-C1 | GET,POST /tasks; GET /tasks/{id}; POST /tasks/{id}/start, /complete | IndividualTaskController → no accepted frontend consumer | `IMPLEMENTED_NOT_RELEASED` | `BACKEND-RELEASED; FRONTEND-PENDING` |
+| C23 | Personal Task A01-C1 | GET,POST /tasks; GET /tasks/{id}; POST /tasks/{id}/start, /complete | IndividualTaskController → no accepted frontend consumer | `BACKEND_FORMALLY_RELEASED_FRONTEND_UNCONSUMED` | `BACKEND-RELEASED; FRONTEND-REG/F01/F02-PENDING` |
 | C24 | Integration API | /api/v1 integration/self, proof-writes, correspondence | Integration controllers → machine clients; no browser consumer | `MACHINE_ONLY` | `NEVER-BROWSER` |
 
 ## Cross-layer field and trust characteristics
@@ -57,3 +57,11 @@ Older `/messages/prototype/messages`, `showcase` procurement prop, and `featured
 
 ## Unresolved
 Exact field-level schemas for many rich Inertia projections, LGU classification rules, PII sharing, per-domain write authorization, official specialized workflows, and clean test results for the exact frontend tuple remain **NOT FULLY VERIFIED**. Do not copy inferred shapes into a generated typed SDK. See module instructions and [holds](AUTHORITY_AND_INTEGRATION_HOLDS.md).
+
+## Producer verification supplement — no change to release authority
+
+**Producer review note (09 October 2026):** Source inspection conducted in Kirch's ChatGPT support session, **not** independent Jane execution, build, PHPUnit, browser, CI, Siris QA or contract approval. Backend pinned to `7b4ebb838982f6262b9fef65d18ba57488ebf941`; Lucien's pre-correction draft `76d78e68393d119dfb7b2dcbdad4cf15236b1d0f`.
+
+The [producer verification register](BACKEND_PRODUCER_VERIFICATION.md) now traces **C02–C12, C23 (Tier A)** and **C13–C19 (Tier B)** to source-level routes, permission checks, page props, serialization and transport behavior. This is not a runtime certification. C01, C20–C22 and C24 remain explicitly excluded/held; source-routed static presentations are not separate approved APIs. A01-C1 has two independent axes: **backend formally released** and **frontend unconsumed**. `CURRENT_COMMON_OPERATIONAL` is product/source classification, never automatic contract publication.
+
+Documented source-level mappings may be used for contract drafting and compatibility design; **implementation authorization remains gated by FRONTEND-REG-001, versioned family approval, exact frontend/backend integration tests and Kirch's decision.**

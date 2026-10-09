@@ -15,3 +15,38 @@
 
 ## Shared adapter checks
 The client must preserve source `id` vs `public_id`, nullable department, flash success/errors, native 403/404/422, 419 CSRF, exact return context and server pagination. Tests must include out-of-office ID, invalid office/due date, disallowed action, stale event cursor and document evidence. Do not import full backend into the frontend workspace.
+
+## Exact observed Work Request queue/list projection
+
+**Producer review note (09 October 2026):** Source inspection conducted in Kirch's ChatGPT support session, **not** independent Jane execution, build, PHPUnit, browser, CI, Siris QA or contract approval. Backend pinned to `7b4ebb838982f6262b9fef65d18ba57488ebf941`; Lucien's pre-correction draft `76d78e68393d119dfb7b2dcbdad4cf15236b1d0f`.
+
+Source [WorkQueueQuery.php:22](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/blob/7b4ebb838982f6262b9fef65d18ba57488ebf941/app/Services/WorkQueueQuery.php#L22): `GET /transactions` returns Inertia `Transactions/Index` props `records,filters,scopeGroups,filterOptions,experience,overview,staffWorkload`. `records` is a Laravel paginator with `per_page=25`; for `view=overview` and `view=staff_workload` it is intentionally empty (`data:[]`, `total:0`), not a missing DB producer. Actor-specific `allowedViews` is enforced at source; unsupported selection is **403**, regardless of sidebar visibility. `filters:{view,search,status,priority,office_id}`; `filterOptions:{statuses,priorities,offices}`; `experience:{profile,department,hasOfficeScope,hasMunicipalScope}`.
+
+List items projected by [WorkQueueItemPresenter.php:24](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/blob/7b4ebb838982f6262b9fef65d18ba57488ebf941/app/Services/WorkQueueItemPresenter.php#L24) include `id,reference,title,transactionType,priority,status,originOffice,currentOffice,assignedEmployee,receivedAt,dueAt,completedAt,updatedAt,ageInOffice,dueState,requiresAction,expectedAction`. The office and assignee objects and date strings can be null. Do not reuse C1 Task item types. `Transactions/Show` instead includes a server-model `transaction`, `departments,assignableEmployees,accountability,transactionPermissions,evidence,relatedWork`; use a separately verified detail shape, not the list DTO ([TransactionController.php:98](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/blob/7b4ebb838982f6262b9fef65d18ba57488ebf941/app/Http/Controllers/TransactionController.php#L98)).
+
+`GET /transactions/{transaction}/live` validates optional nonnegative integer `after_event_id`, authorizes model view, and responds with snake_case `transaction:{status,current_department,assigned_employee,received_at,due_at,completed_at}`, plus `accountability,permissions:{canTransition,canMayorDecision,canAssign},assignableEmployees,events` ([TransactionLiveController.php:12](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/blob/7b4ebb838982f6262b9fef65d18ba57488ebf941/app/Http/Controllers/TransactionLiveController.php#L12), [TransactionLiveQuery.php:40](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/blob/7b4ebb838982f6262b9fef65d18ba57488ebf941/app/Services/TransactionLiveQuery.php#L40)). A UI label 'live' **does not** establish freshness when polls fail.
+
+## Exact observed Correspondence producer split
+
+Inbox `Correspondence/Index` props `records,overview,filters,filterOptions,workspace`, listing 20 items per page ([CorrespondenceWorkspaceController.php:40](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/blob/7b4ebb838982f6262b9fef65d18ba57488ebf941/app/Http/Controllers/CorrespondenceWorkspaceController.php#L40), [CorrespondenceInboxQuery.php:20](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/blob/7b4ebb838982f6262b9fef65d18ba57488ebf941/app/Services/CorrespondenceInboxQuery.php#L20)). Each item uses `publicId,reference,sender:{name,organization,source,channel},subject,classification,lifecycleState,currentOffice?,assignedEmployee?,workflowReference?,receivedAt?,routedAt?,age,actionRequired,overdue` where '?' means verify nullable source values ([CorrespondenceInboxQuery.php:191](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/blob/7b4ebb838982f6262b9fef65d18ba57488ebf941/app/Services/CorrespondenceInboxQuery.php#L191)).
+
+`Correspondence/Show` receives:
+
+```ts
+// Pseudo-type of SOURCE-OBSERVED keys, not a compiled acceptance type.
+type CorrespondenceWorkspaceProps = {
+  correspondence: {
+    publicId: string; reference: string | null;
+    municipalReference: string | null; externalReference: string | null;
+    lifecycleState: string; classification: string | null;
+    source: {senderName: string | null; senderOrganization: string | null; source: string | null; channel: string | null};
+    content: {subject: string; summary: string | null};
+    accountability: {currentOffice: unknown | null; receivingOffice: unknown | null; workflow: unknown | null};
+    dates: {receivedAt: string | null; registeredAt: string | null; classifiedAt: string | null; routedAt: string | null; actionStartedAt: string | null};
+  };
+  timeline: unknown[]; capabilities: Record<string, boolean>;
+  routeOptions: unknown[]; evidence: unknown[]; relatedWork: unknown[];
+};
+```
+
+`unknown` signals nested types not independently tested; do **not** erase these boundaries with `any`. Source [CorrespondenceDetailPresenter.php:48](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/blob/7b4ebb838982f6262b9fef65d18ba57488ebf941/app/Services/CorrespondenceDetailPresenter.php#L48). Workspace `POST /correspondence/{id}/workspace/{register,classify,route,act}` actions return redirects/flash, while direct lifecycle endpoints `/correspondence/{id}/{register,classify,route,act}` produce distinct JSON `{correspondence,correlation_id}` with snake_case fields; `GET /correspondence/{id}` returns a different JSON `correspondence` detail ([CorrespondenceWorkspaceActionController.php:20](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/blob/7b4ebb838982f6262b9fef65d18ba57488ebf941/app/Http/Controllers/CorrespondenceWorkspaceActionController.php#L20), [CorrespondenceLifecycleController.php:22](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/blob/7b4ebb838982f6262b9fef65d18ba57488ebf941/app/Http/Controllers/CorrespondenceLifecycleController.php#L22)). Never use one generic adapter for these three transports.
