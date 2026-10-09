@@ -66,6 +66,64 @@ final class TaskJsonContractBoundaryTest extends TestCase
         $this->assertContains('mfa.assured', $route->gatherMiddleware());
     }
 
+    public function test_mfa_pending_task_get_preserves_browser_intent_after_assurance(): void
+    {
+        $actor = $this->staff('intended');
+        $actor->forceFill([
+            'role' => 'department_head',
+            'mfa_secret' => 'JBSWY3DPEHPK3PXPJBSWY3DPEHPK3PXP',
+            'mfa_confirmed_at' => now(),
+            'mfa_version' => 1,
+        ])->save();
+        // Login without TestCase::actingAs, which deliberately satisfies MFA.
+        auth()->guard('web')->login($actor);
+
+        $destination = route('dashboard');
+        $this->withSession(['url.intended' => $destination]);
+
+        $this->get('/tasks')->assertForbidden()
+            ->assertJsonPath('code', 'MFA_REQUIRED')
+            ->assertJsonPath('next_url', '/security/mfa/challenge')
+            ->assertSessionHas('url.intended', $destination);
+
+        // Simulate a session whose MFA assurance was completed elsewhere.
+        // This checks post-assurance redirection, not OTP verification.
+        $this->withSession([
+            \\App\\Services\\AuthenticationAssurance::SESSION_USER_KEY => $actor->id,
+            \\App\\Services\\AuthenticationAssurance::SESSION_VERSION_KEY => 1,
+            \\App\\Services\\AuthenticationAssurance::SESSION_VERIFIED_AT_KEY => now()->getTimestamp(),
+        ]);
+        $this->get('/security/mfa/challenge')->assertRedirect($destination);
+    }
+
+    public function test_first_mfa_pending_task_get_does_not_create_browser_intent(): void
+    {
+        $actor = $this->staff('no-intent');
+        $actor->forceFill(['role' => 'department_head'])->save();
+        auth()->guard('web')->login($actor);
+
+        $this->get('/tasks')->assertForbidden()
+            ->assertJsonPath('code', 'MFA_REQUIRED')
+            ->assertSessionMissing('url.intended');
+    }
+
+    public function test_json_accept_boundary_does_not_rewrite_non_task_requests(): void
+    {
+        $middleware = new \\App\\Http\\Middleware\\EnsureTaskJsonAccept();
+
+        foreach (['/login', '/dashboard', '/api/v1/example', '/tasks-export'] as $path) {
+            $request = Request::create($path, 'GET');
+            $request->headers->set('Accept', 'text/html');
+            $middleware->handle($request, static fn () => response('ok'));
+            $this->assertSame('text/html', $request->header('Accept'), $path);
+        }
+
+        $request = Request::create('/tasks', 'GET');
+        $request->headers->set('Accept', 'text/html');
+        $middleware->handle($request, static fn () => response('ok'));
+        $this->assertSame('application/json', $request->header('Accept'));
+    }
+
     /** This is not a browser CSRF e2e test; testing env bypasses token checking. */
     private function staff(string $suffix): User
     {

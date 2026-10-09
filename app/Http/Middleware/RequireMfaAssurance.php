@@ -28,7 +28,9 @@ final class RequireMfaAssurance
             return $next($request);
         }
 
-        if ($request->isMethodSafe()) {
+        // Task URLs are JSON-only. A pending MFA Task fetch must not
+        // overwrite the user's last intended browser/Inertia destination.
+        if ($request->isMethodSafe() && ! $request->routeIs('tasks.*')) {
             $request->session()->put('url.intended', $request->fullUrl());
         }
 
