@@ -6,7 +6,7 @@ const root = 'http://127.0.0.1:4173';
 const out = 'artifacts/visual-fixture';
 const screens = ['login', 'mfa', 'dashboard', 'work', 'correspondence', 'records', 'memoranda', 'calendar', 'employees', 'departments'];
 const mobileScreens = ['login', 'dashboard', 'work', 'correspondence', 'calendar', 'employees'];
-const server = spawn('npm', ['run', 'dev', '--', '--port', '4173', '--strictPort'], {
+const server = spawn(process.execPath, ['node_modules/vite/bin/vite.js', '--host', '127.0.0.1', '--port', '4173', '--strictPort'], {
     stdio: 'pipe',
     env: { ...process.env, LARAVEL_BYPASS_ENV_CHECK: '1' },
 });
@@ -37,7 +37,7 @@ try {
             const page = await context.newPage();
             const errors = [];
             page.on('pageerror', error => errors.push(error.message));
-            await page.goto(`${root}/visual-preview.html?screen=${screen}`, { waitUntil: 'networkidle' });
+            await page.goto(`${root}/visual-preview.html?screen=${screen}`, { waitUntil: 'domcontentloaded', timeout: 20000 });
             await page.locator('#visual-fixture-label strong').getByText('VISUAL FIXTURE').waitFor();
             try { await page.locator('#app h1:visible, #app h2:visible').first().waitFor({ timeout: 8000 }); }
             catch {
