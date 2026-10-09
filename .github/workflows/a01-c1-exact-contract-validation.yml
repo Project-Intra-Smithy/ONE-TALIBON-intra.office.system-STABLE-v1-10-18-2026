@@ -166,6 +166,36 @@ jobs:
           fi
           echo "VALIDATION_RESULT=PASS" >> "$dir/manifest.txt"
 
+      - name: Verify real HTTP CSRF in non-testing Laravel runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=storage/app/qa/a01-c1-exact
+          test "$APP_ENV" = "testing"
+          test "$DB_DATABASE" = "talibon_portal_test"
+          test "$(git rev-parse HEAD)" = "dc6fc19afae62b05c295e57b958f8176b2ab5de1"
+          # This probes real Laravel web/CSRF middleware under APP_ENV=local,
+          # unlike feature tests whose APP_ENV=testing bypasses CSRF checks.
+          APP_ENV=local APP_DEBUG=false SESSION_DRIVER=file php artisan serve --host=127.0.0.1 --port=8765 > "$dir/csrf-server.log" 2>&1 &
+          app_pid=$!
+          trap 'kill "$app_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 70); do
+            status=$(curl --max-time 3 -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8765/tasks || true)
+            if [ "$status" = "401" ]; then break; fi
+            sleep 1
+          done
+          get_code=$(curl --fail-with-body --max-time 10 -sS -D "$dir/http-guest-headers.txt" -o "$dir/http-guest-body.json" -w '%{http_code}' http://127.0.0.1:8765/tasks || true)
+          test "$get_code" = "401" || { echo "::error::Unauthenticated JSON GET expected 401, got $get_code"; exit 1; }
+          grep -qi '^content-type: application/json' "$dir/http-guest-headers.txt"
+          csrf_code=$(curl --max-time 10 -sS -D "$dir/http-csrf-headers.txt" -o "$dir/http-csrf-body.json" -w '%{http_code}' -X POST http://127.0.0.1:8765/tasks -H 'Content-Type: application/json' -d '{"title":"Reject without CSRF"}')
+          test "$csrf_code" = "419" || { echo "::error::Unprotected POST or HTML redirect; expected 419 got $csrf_code"; exit 1; }
+          grep -qi '^content-type: application/json' "$dir/http-csrf-headers.txt"
+          echo "NONTESTING_LARAVEL_ENV=local" >> "$dir/manifest.txt"
+          echo "HTTP_GUEST_GET_CODE=$get_code" >> "$dir/manifest.txt"
+          echo "HTTP_CSRF_NO_TOKEN_POST_CODE=$csrf_code" >> "$dir/manifest.txt"
+          echo "HTTP_JSON_HEADER_CHECK=PASS" >> "$dir/manifest.txt"
+          echo "REAL_CSRF_SMOKE=PASS" >> "$dir/manifest.txt"
+
       - name: Upload validation evidence (also on failure)
         if: always()
         uses: actions/upload-artifact@v4
