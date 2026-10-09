@@ -29,6 +29,6 @@ Keep issue bodies short. Put design details in one linked document, not repeated
 
 ## Integration rule
 
-UI-only login is not validated authentication. Missing Task endpoints or permissions stay mocked/disabled. See [backend contract intake](docs/BACKEND_CONTRACT_INTAKE.md); integration requires an explicit contract, backend SHA and tests.
+UI-only login is not validated authentication. A01-C1 individual Task HTTP is **formally released on the canonical backend**, but this frontend has **no accepted Task consumer**; unknown Task screen actions remain unavailable, not invented or silently mocked as production. See [backend contract intake](docs/BACKEND_CONTRACT_INTAKE.md) and the [source-backed frontend reference pack](docs/contracts/ONE_TALIBON_FRONTEND_CONTRACT_PACK_R1/CONTRACT_MANIFEST.md). Integration requires verified route/contract, exact backend+frontend SHAs and actual authenticated tests.
 
-**Current first task:** [FRONTEND-REG-001 #1](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/1). Jhayr can proceed; AJ's access is not a blocker to Jhayr's work.
+**Current first task:** [FRONTEND-REG-001 #1](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/1). **AJ and Jhayr must upload what they have already built** on separate attributed branches/PRs (see the [README contributor upload guide](README.md#how-aj-and-jhayr-should-upload-their-existing-work)). Jhayr can proceed; AJ's access is not a blocker to Jhayr's work. The imported development baseline was build-verified but has outstanding runtime REWORK defects; merge to main does **not** mark those repaired.
