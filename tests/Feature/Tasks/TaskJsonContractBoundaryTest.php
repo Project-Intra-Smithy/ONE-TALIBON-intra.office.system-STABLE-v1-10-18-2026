@@ -47,7 +47,7 @@ final class TaskJsonContractBoundaryTest extends TestCase
 
         $this->get('/tasks')->assertForbidden()
             ->assertJsonPath('code', 'MFA_REQUIRED')
-            ->assertJsonStructure(['next_url']);
+            ->assertJsonPath('next_url', '/security/mfa/enroll');
         $this->post('/tasks', ['title' => 'Denied'])->assertForbidden()
             ->assertJsonPath('code', 'MFA_REQUIRED');
 
