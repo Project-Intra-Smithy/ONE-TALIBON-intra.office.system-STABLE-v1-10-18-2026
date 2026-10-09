@@ -1,0 +1,51 @@
+name: A01-C1 R2 — one-time evidence artifact remediation
+
+on:
+  push:
+    branches:
+      - KIRCH-TALIBON-A01-C1-ARTIFACT-REMEDIATION-20261009
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  remove-two-flagged-artifacts:
+    if: github.repository == 'Project-Intra-Smithy/Talibon-Sales-Prototype' && github.ref == 'refs/heads/KIRCH-TALIBON-A01-C1-ARTIFACT-REMEDIATION-20261009'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify identity and remove only two preidentified exploratory artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://api.github.com/repos/Project-Intra-Smithy/Talibon-Sales-Prototype/actions/artifacts"
+          auth=(-H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28")
+
+          # Refuse to touch the final redacted PASS package.
+          good=$(curl -fsSL "${auth[@]}" "${base}/11600573796")
+          jq -e --argjson id 11600573796 --argjson run 37897162733 --arg digest "sha256:df17a7e0afce90676602aaf652ffbe513f2cd4b90988893b47e792dad4d14670"             '.id == $id and .workflow_run.id == $run and .digest == $digest and .expired == false' <<< "$good" >/dev/null
+
+          # IDs and owning workflow runs are both mandatory guards.
+          for spec in "11600975206:37896653732" "11601125194:37896813930"; do
+            IFS=: read -r artifact run <<< "$spec"
+            payload=$(curl -fsSL "${auth[@]}" "${base}/${artifact}")
+            jq -e --argjson id "$artifact" --argjson run "$run" --arg name "a01-c1-exact-contract-kurt-evidence"               '.id == $id and .workflow_run.id == $run and .name == $name and .expired == false' <<< "$payload" >/dev/null
+          done
+
+          for artifact in 11600975206 11601125194; do
+            status=$(curl -sSL "${auth[@]}" -o /dev/null -w '%{http_code}' -X DELETE "${base}/${artifact}")
+            test "$status" = "204" || { echo "::error::Deletion refused for artifact ${artifact}, HTTP ${status}"; exit 1; }
+            echo "REMOVED_ARTIFACT_ID=${artifact}"
+          done
+
+          for artifact in 11600975206 11601125194; do
+            status=$(curl -sSL "${auth[@]}" -o /dev/null -w '%{http_code}' "${base}/${artifact}")
+            test "$status" = "404" || { echo "::error::Artifact ${artifact} remains HTTP ${status}"; exit 1; }
+            echo "DELETION_VERIFIED_ID=${artifact}"
+          done
+
+          curl -fsSL "${auth[@]}" "${base}/11600573796" | jq -e --arg digest "sha256:df17a7e0afce90676602aaf652ffbe513f2cd4b90988893b47e792dad4d14670"             '.id == 11600573796 and .expired == false and .digest == $digest' >/dev/null
+          echo "FINAL_REDACTED_ARTIFACT_PRESERVED=11600573796"
