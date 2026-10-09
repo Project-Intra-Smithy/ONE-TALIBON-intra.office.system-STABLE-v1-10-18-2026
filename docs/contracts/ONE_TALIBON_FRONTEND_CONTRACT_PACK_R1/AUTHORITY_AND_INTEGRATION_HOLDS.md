@@ -30,7 +30,7 @@
 - **No mutation authorization** is implied by recommended fixes. Each requires its own bounded task and review.
 
 ## Source contradictions not to hide
-`SSOT_CURRENT.md`, `WORK_LEDGER.md` and A01 plan contain historical tables that still call C1 'NOT released' alongside later 09 October released notices. The **dated 09 October release section + [C1 contract](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/blob/7b4ebb838982f6262b9fef65d18ba57488ebf941/.forge/contracts/A01-C1-INDIVIDUAL-TASK-HTTP-CONTRACT.md)** supersede those old snapshots; an editor must not quote the earlier row as current. The frontend `docs/BACKEND_CONTRACT_INTAKE.md` also still says 'Task API not released' because it predates C1; this packet documents the contradiction without editing the old file on a non-authorized path.
+`SSOT_CURRENT.md`, `WORK_LEDGER.md` and A01 plan contain historical tables that still call C1 'NOT released' alongside later 09 October released notices. The **dated 09 October release section + [C1 contract](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/blob/7b4ebb838982f6262b9fef65d18ba57488ebf941/.forge/contracts/A01-C1-INDIVIDUAL-TASK-HTTP-CONTRACT.md)** supersede those old snapshots; an editor must not quote the earlier row as current. The frontend `docs/BACKEND_CONTRACT_INTAKE.md` historically said 'Task API not released', but **this same draft PR has corrected that stale intake statement** to distinguish formally released A01-C1 backend from the pending frontend consumer. Do not treat the pre-correction snapshot as current.
 
 ## Source-review completion is not runtime acceptance
 
