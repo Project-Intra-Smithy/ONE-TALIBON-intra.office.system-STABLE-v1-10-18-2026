@@ -1,5 +1,9 @@
 # Contribution and task documentation rules
 
+## Mandatory START / CLOSE documentation
+
+All new/resumed bounded work in this frontend repository must follow the [paired issue + repository memory protocol](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/blob/46b0de3dc1e994d5456f3ecc0902a3265eedcbf6/.forge/memory/WORK-PACKAGE-START-CLOSE-PROTOCOL.md). On **START**, add the owning issue's scoped work order and update [`docs/WORK_PACKAGE_CONTINUITY.md`](docs/WORK_PACKAGE_CONTINUITY.md) with owner, source SHA, scope, tests, holds and NEXT; crosslink both and verify before code changes. On **CLOSE**, record exact PR/source+CI/browser evidence, disposition, pending gates and deferred work on both surfaces and verify before closing. Interrupted documentation leaves `SYNC_REQUIRED / HOLD`, not an untracked start or false completion. Resume existing PRs by recording a truthful checkpoint; do not invent retroactive acceptance. Any formal technical/CI/QA decision remains with its authorized owner.
+
 ## Work items
 
 Use **one issue per deliverable**. Title: `[ID] Action + result` (example: `[FRONTEND-REG-001] Import login UI`).

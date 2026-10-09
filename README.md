@@ -1,5 +1,7 @@
 # ONE TALIBON — Intra-Office Frontend Workspace
 
+> **Mandatory Forge continuity:** Every new or resumed bounded frontend work package needs linked `START` records in its owning issue and [repository work memory](docs/WORK_PACKAGE_CONTINUITY.md) before execution, then linked `CLOSE` records with exact evidence and remaining work before acceptance/issue closure. See [Common Core control #63](https://github.com/Project-Intra-Smithy/engineering-hub/issues/63). Existing draft PR #6/#7 are retained as historical in-flight work and must reconcile the records at their next consequential handoff; this notice does not approve or merge either PR.
+
 **Development repository for the frontend team: AJ (`@rynzz22`) and Jhayr (`@kyumw3b`).**  
 **Technical lead / integration and publication authority:** Kirch Ivan Balite (`@Kirch-Nairu`).  
 **Canonical backend:** [Project-Intra-Smithy/Talibon-Sales-Prototype](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype).
