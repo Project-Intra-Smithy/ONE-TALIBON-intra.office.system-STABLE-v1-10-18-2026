@@ -1,4 +1,10 @@
-# FRONTEND-REG-001 — staged existing React/Inertia frontend (NOT YET ACCEPTED)
+# FRONTEND-REG-001 — original staging record and runtime integration notes
+
+> **Historical staging provenance:** The frontend source previously existed only on a draft staging branch. Kirch explicitly authorized merging it into the same frontend repository's `main` as a **shared development baseline** on 09 October 2026. Historical language below (“staging branch”, “not yet accepted”, “draft”) describes original review context and **does not mean code is currently absent from main after merge**. It remains **NOT integration-accepted or production-ready**. For current onboarding and instructions to upload AJ/Jhayr's existing work, use the [root README](../README.md).
+
+**Historical CI verified:** original staging SHA `1172a1a7e0f4605233ab98fea9a24ac2e29fa823` passed `npm ci`, `npm run types:check`, `npm run build` twice: [push run 37924165911](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/actions/runs/37924165911) and [PR run 37924238397](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/actions/runs/37924238397). This is **not authenticated Laravel E2E validation**.
+
+**REWORK remains open:** [exact production-contract mismatches identified in staging review](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/pull/5#issuecomment-6080532978). Merge acceptance for a starting point is not acceptance of those defects.
 
 **Staging branch:** `KIRCH-TALIBON-FRONTEND-REG-001-EXISTING-UI-STAGING-R1` in the frontend team's private repo. **Canonical Laravel backend:** `Project-Intra-Smithy/Talibon-Sales-Prototype@7b4ebb838982f6262b9fef65d18ba57488ebf941`. **Original source:** `Kirch-Nairu/Talibon-Intra-Office-Portal@a7d7be17feb435b50c52cacd063e11d92ad047e1`. Human integration/release owner: Kirch. Jhayr coordinates import and adjustment; AJ supplies and verifies his existing contributions.
 

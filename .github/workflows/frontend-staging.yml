@@ -1,8 +1,9 @@
-name: Frontend staging — Node build and TypeScript
+name: Frontend — Node install, TypeScript and Vite build
 
 on:
   push:
     branches:
+      - main
       - KIRCH-TALIBON-FRONTEND-REG-001-EXISTING-UI-STAGING-R1
   pull_request:
     paths:
