@@ -19,6 +19,7 @@ label.innerHTML = `<strong>VISUAL FIXTURE</strong><span>Synthetic content · no 
 
 createInertiaApp({
     id: 'app',
+    page: { component: page.component, props: { ...page.props, errors: {} }, url: page.url, version: null },
     title: (title) => title ? `${title} · Visual fixture` : 'ONE TALIBON · Visual fixture',
     resolve: (name) => resolvePageComponent<ResolvedComponent>(`./pages/${name}.tsx`, import.meta.glob<ResolvedComponent>('./pages/**/*.tsx')),
     setup({ el, App, props }) { createRoot(el).render(<App {...props} />); },
