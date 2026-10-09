@@ -32,7 +32,19 @@ Kirch's historical decision (08 October 2026): `ACCEPT A01 PLAN — RELEASE W01`
 
 ---
 
-## Verified current A01 release state — 09 October 2026
+## Verified A01-C1 contract release — 09 October 2026
+
+**A01-C1 personal-Task backend HTTP contract: TECHNICALLY ACCEPTED / MERGED / EXACT-INTEGRATED-MAIN CI PASS.**
+Canonical integrated product: `Project-Intra-Smithy/Talibon-Sales-Prototype@b9a4ad3ed6e72ae3a5cb1a4108ebae06eedaec26`.
+Accepted Jane R2 candidate: `219bcc6f09ae8366063293c9364bd896b707f328`; [normal merged PR #34](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/pull/34), exact same resulting file tree.
+[Kurt candidate run #37897162733](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/actions/runs/37897162733) and [exact-integrated-main run #37898947831](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/actions/runs/37898947831) **PASS — 78 tests / 655 assertions each**, bounded PHP/PostgreSQL and non-testing authenticated cookie/CSRF/TOTP Task HTTP checks. Postmerge evidence artifact `11601582854`, digest `sha256:7e1379f93aac7e937073be809f10357ebde3533c77dbac588b62f40056795c8d`. [Security artifact cleanup run #37898725108](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/actions/runs/37898725108) removed exploratory artifacts `11600975206` and `11601125194`; original redacted artifact `11600573796` retained.
+Kirch authorized this bounded assistant-executed closeout; the [PR decision record](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/pull/34#issuecomment-6076423498) is explicitly AI-assisted, not evidence of a separate manual review.
+
+**FRONTEND-REG-001 is NOT COMPLETE.** [Frontend workspace issue #1](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/1) and [Engineering Hub #3](https://github.com/Project-Intra-Smithy/engineering-hub/issues/3) still require imported runnable login/dashboard sources, owner/source inventory, build/smoke evidence and screenshots. Workspace `main@bab1f4563b903d7d9810590cd0e3ce6628db8611` is documentation-only. Historical frontend asset `Kirch-Nairu/Talibon-Intra-Office-Portal@a7d7be17feb435b50c52cacd063e11d92ad047e1` is not integrated. **A01-F01/F02 implementation remains STAGED** until that registry gate is demonstrably complete. C1 backend contract release does not authorize frontend server-copy reuse.
+
+**Downstream not awarded:** full A01-I01 release tuple; formal Kurt CI01; Siris QA01; Kirch final A01 Series acceptance; W04/W05; LGU policy changes; deployment/production. GitHub Project custom Status/Next requires independent real UI/API update and verification; issue changes do not mutate those fields.
+
+## Historical W03 closeout snapshot (superseded by A01-C1 release)
 
 **Current integrated backend:** `Project-Intra-Smithy/Talibon-Sales-Prototype@0573680696c8bd6fb421d625b5e7dc2c37cb1905` ([merged W03 PR #31](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/pull/31)); PR #31 accepted source `f38c1f5f76d837e21a5e750e329d82c323ceb7e4`, integration tree identical, 4 scoped paths. [Kurt exact-integrated-main CI #37889890224](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/actions/runs/37889890224) **PASS: 46 tests / 378 assertions** (W03 HTTP, independent PostgreSQL race, W02, W01, Work Request). This is a *bounded* validation, not whole-A01 CI/QA.
 

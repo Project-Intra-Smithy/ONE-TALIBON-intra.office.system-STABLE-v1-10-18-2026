@@ -28,19 +28,17 @@ Current program: **P1 — Common Work & Accountability**
 
 Current Series: **A01 — First-Class Task Domain**
 
-Current Technical Authority decision: **A01 team execution plan review**
+Current Technical Authority decision: **A01-C1 bounded backend contract accepted and integrated.**
 
-A01-W01: **BLOCKED / SUSPENDED — DO NOT EXECUTE**
+- Canonical accepted backend main: `b9a4ad3ed6e72ae3a5cb1a4108ebae06eedaec26`
+- A01-W01/W02/W03: **ACCEPTED / MERGED / BOUNDED CI PASS**
+- A01-C1: **ACCEPTED / MERGED PR #34 / EXACT-MAIN BOUNDED CI PASS**
+- Post-merge CI: [37898947831](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/actions/runs/37898947831), **78/655 PASS**
+- FRONTEND-REG-001: **INCOMPLETE** — frontend workspace import/build/screenshots are pending; A01-F01/F02 remain staged.
+- Formal A01-I01/CI01/Siris QA01/A01 Series final acceptance and production: **NOT RELEASED**.
+- Historical W01 branch `KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION@ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4` remains immutable provenance, not a current implementation source.
 
-A01 implementation candidate: **NONE**
-
-Historical W01 branch:
-
-`KIRCH-TALIBON-P1-A01-W01-TASK-DOMAIN-FOUNDATION@ddbcf2a2715315c0e9998a7bcfdd9414edb3acd4`
-
-State: **HISTORICAL / IMMUTABLE / DO NOT RESUME**
-
-If W01 is later released, it requires a fresh replacement branch from then-current product `main` and a new exact issued source.
+Read [live SSOT](.forge/SSOT_CURRENT.md), [ledger](.forge/WORK_LEDGER.md) and [validation policy](.forge/VALIDATION.md) before issuing a new work package. Resolve `main` and all named frontend refs live; recorded SHAs here are audited historical anchors, not permission to skip drift checks.
 
 ## Work hierarchy
 
@@ -82,4 +80,4 @@ Documents, screenshots, historical code, Citizens' Charter material and prototyp
 - Do not treat frontend state as server authority.
 - Do not infer current authority from a historical handoff or a directory named `active`.
 - Stop on source, contract, authority or ownership contradiction.
-- Do not start A01-W01 until Kirch explicitly releases it and a fresh exact writer source is issued.
+- Do not restart historical W01 or begin new frontend F01/F02 until their actual current handoff gates and exact sources are verified.
