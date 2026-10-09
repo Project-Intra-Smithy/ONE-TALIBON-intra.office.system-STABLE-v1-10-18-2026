@@ -6,6 +6,7 @@
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
+    "visual:verify": "node scripts/verify-visual-preview.mjs",
     "types:check": "tsc --noEmit"
   },
   "dependencies": {

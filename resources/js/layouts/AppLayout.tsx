@@ -197,12 +197,12 @@ export default function AppLayout({ title, children }: Props) {
                         : 'lg:grid-cols-[248px_minmax(0,1fr)]'
                 }`}
             >
-                <aside className="hidden h-screen lg:sticky lg:top-0 lg:block">{desktopSidebar}</aside>
+                <aside className="hidden h-screen shadow-xl shadow-[#071e3d]/10 lg:sticky lg:top-0 lg:block">{desktopSidebar}</aside>
 
                 {mobileOpen && <MobileNavigation onClose={() => setMobileOpen(false)}>{mobileSidebar}</MobileNavigation>}
 
                 <main className="min-w-0">
-                    <header className="sticky top-0 z-20 flex min-h-[72px] items-center justify-between gap-2 border-b border-slate-200/80 bg-white px-3 transition-colors dark:border-slate-700/80 dark:bg-[#142236] sm:px-5">
+                    <header className="sticky top-0 z-20 flex min-h-[76px] items-center justify-between gap-2 border-b border-slate-200/80 bg-white/95 px-4 shadow-sm shadow-slate-900/5 backdrop-blur-md transition-colors dark:border-slate-700/80 dark:bg-[#142236]/95 sm:px-6">
                         <div className="flex min-w-0 items-center gap-2 sm:gap-3">
                             <button onClick={() => setMobileOpen(true)} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800 lg:hidden" aria-label="Open navigation">
                                 <Menu size={20} />
@@ -210,7 +210,7 @@ export default function AppLayout({ title, children }: Props) {
                             <div className="min-w-0">
                                 <div className="whitespace-nowrap text-lg font-extrabold tracking-tight text-[#0b2852] dark:text-white sm:text-xl">One <span className="text-[#1769aa] dark:text-blue-400">Talibon</span></div>
                                 <div className="hidden text-[10px] font-semibold uppercase tracking-wider sm:block">LGU Intra-Office Portal</div>
-                                <div className="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{title}</div>
+                                <div className="mt-0.5 truncate text-xs font-medium text-slate-500 dark:text-slate-400">{title}</div>
                             </div>
                         </div>
 
@@ -266,7 +266,7 @@ export default function AppLayout({ title, children }: Props) {
                             {flash.success || flash.error}
                         </div>
                     )}
-                    <div id="portal-content" tabIndex={-1} className="p-4 sm:p-6"><NotificationContext.Provider value={notifications}>{children}</NotificationContext.Provider></div>
+                    <div id="portal-content" tabIndex={-1}><NotificationContext.Provider value={notifications}>{children}</NotificationContext.Provider></div>
                     <footer className="mx-3 flex flex-wrap justify-between gap-2 border-t border-slate-200 py-4 text-xs text-slate-500 dark:border-slate-700 dark:text-slate-400 sm:mx-5"><span>Municipality of Talibon · Province of Bohol</span><span>One Talibon · Intra-Office Portal</span></footer>
                 </main>
             </div>

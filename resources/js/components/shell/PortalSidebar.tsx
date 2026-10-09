@@ -43,17 +43,17 @@ export default function PortalSidebar({
     const identityTitle = [user?.name, position, department].filter(Boolean).join(' · ');
 
     return (
-        <div className="flex h-full flex-col bg-[#0b2852] text-white">
+        <div className="flex h-full flex-col bg-[#092447] text-white">
             <div className={`border-b border-white/10 ${compact ? 'px-2 py-4' : 'px-5 py-5'}`}>
                 <div className={compact ? 'flex justify-center' : undefined}>
                     <MunicipalBrand inverse compact iconOnly={compact} />
                 </div>
 
                 {mobile ? (
-                    <div className="mt-3 text-xs text-blue-200">Prototype preview</div>
+                    <div className="mt-3 text-xs text-blue-200">Intra-office workspace</div>
                 ) : (
                     <div className={`mt-3 flex items-center ${compact ? 'justify-center' : 'justify-between gap-3'}`}>
-                        {!compact && <div className="text-xs text-blue-200">Prototype preview</div>}
+                        {!compact && <div className="text-xs text-blue-200">Intra-office workspace</div>}
                         <button
                             type="button"
                             onClick={onToggleCollapsed}
@@ -86,7 +86,7 @@ export default function PortalSidebar({
                                     </div>
                                 )}
 
-                                <div className={compact ? 'space-y-1' : 'mt-1.5 space-y-0.5'}>
+                                <div className={compact ? 'space-y-1' : 'mt-2 space-y-1'}>
                                     {group.items.map(({ key, label, href, icon: Icon }) => {
                                         const active = isPortalPathActive(currentUrl, href);
                                         const hasMemoCount = key === 'memoranda' && unreadMemoCount > 0;
@@ -106,7 +106,7 @@ export default function PortalSidebar({
                                                     compact ? 'justify-center px-2' : 'gap-3 px-3'
                                                 } ${
                                                     active
-                                                        ? 'bg-[#1769aa] text-white ring-1 ring-white/10'
+                                                        ? 'bg-[#1769aa] text-white ring-1 ring-white/20 before:absolute before:inset-y-2 before:left-0 before:w-1 before:rounded-r before:bg-[#e5b63a]'
                                                         : 'text-blue-100 hover:bg-white/10 hover:text-white'
                                                 }`}
                                             >

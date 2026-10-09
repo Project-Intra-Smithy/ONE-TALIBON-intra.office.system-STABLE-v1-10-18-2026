@@ -32,7 +32,7 @@ const dueLabel = {
 
 export default function WorkItemList({ records, title }: { records: Paginator; title: string }) {
     return (
-        <section className="overflow-hidden rounded-xl border border-slate-200 bg-white text-slate-900  dark:bg-[#142236] dark:text-slate-100 dark:border-slate-700" aria-label={title}>
+        <section className="municipal-panel overflow-hidden text-slate-900 dark:text-slate-100" aria-label={title}>
             <div className="flex flex-col gap-1 border-b border-slate-100 bg-slate-50 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5 dark:bg-slate-900/40 dark:border-slate-700">
                 <div className="text-[13px] font-bold text-slate-900 sm:text-sm dark:text-slate-100">{title}</div>
                 <div className="text-xs text-slate-500 sm:text-xs dark:text-slate-400">
@@ -46,7 +46,7 @@ export default function WorkItemList({ records, title }: { records: Paginator; t
 
             <div className="divide-y divide-slate-100 dark:divide-slate-700">
                 {records.data.map((item) => (
-                    <article key={item.id} className="px-4 py-4 sm:px-5">
+                    <article key={item.id} className="px-4 py-4 transition-colors hover:bg-slate-50/70 dark:hover:bg-slate-800/30 sm:px-5">
                         <div className="grid min-w-0 gap-4 xl:grid-cols-[minmax(250px,1.45fr)_145px_155px_145px_minmax(190px,1fr)_88px] xl:items-center">
                             <div className="min-w-0">
                                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1">

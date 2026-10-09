@@ -11,9 +11,9 @@ export default function MfaSettings({ configured, confirmedAt, recoveryGenerated
     return (
         <>
             <Head title="MFA security" />
-            <main className="min-h-screen bg-[#eef3f9] px-4 py-8 sm:px-6">
-                <div className="mx-auto max-w-2xl rounded-2xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-900/5 sm:p-8">
-                    <div className="flex items-start gap-3"><div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-800"><ShieldCheck size={21} /></div><div><div className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">Identity security</div><h1 className="mt-1 text-2xl font-bold text-slate-950">Multi-factor authentication</h1><p className="mt-2 text-sm leading-6 text-slate-600">Privileged sessions require MFA assurance before authorization and domain actions are reached.</p></div></div>
+            <main className="auth-canvas min-h-screen px-4 py-8 sm:px-6">
+                <div className="mx-auto max-w-2xl auth-panel bg-white p-6 sm:p-8">
+                    <div className="flex items-start gap-3"><div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-800"><ShieldCheck size={21} /></div><div><div className="auth-kicker">Identity security</div><h1 className="mt-1 text-2xl font-bold text-slate-950">Multi-factor authentication</h1><p className="mt-2 text-sm leading-6 text-slate-600">Privileged sessions require MFA assurance before authorization and domain actions are reached.</p></div></div>
 
                     <dl className="mt-6 grid gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm sm:grid-cols-2"><div><dt className="text-slate-500">Status</dt><dd className="mt-1 font-semibold text-slate-950">{configured ? 'Configured' : 'Not configured'}</dd></div><div><dt className="text-slate-500">Confirmed</dt><dd className="mt-1 font-semibold text-slate-950">{confirmedAt ?? 'Not confirmed'}</dd></div><div className="sm:col-span-2"><dt className="text-slate-500">Recovery codes last generated</dt><dd className="mt-1 font-semibold text-slate-950">{recoveryGeneratedAt ?? 'Not generated'}</dd></div></dl>
 

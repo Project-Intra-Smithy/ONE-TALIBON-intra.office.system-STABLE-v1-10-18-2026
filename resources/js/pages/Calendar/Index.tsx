@@ -49,7 +49,7 @@ export default function Index({ events = [], calendar }: { events: CalendarEvent
                 </div>
             </section>
 
-            <section aria-label="Calendar schedule" className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-colors dark:border-slate-700 dark:bg-[#142236] sm:rounded-3xl">
+            <section aria-label="Calendar schedule" className="municipal-panel overflow-hidden">
                 <div className="border-b border-slate-100 px-4 py-3 dark:border-slate-700 sm:px-5 sm:py-4"><h2 className="font-bold text-slate-950 dark:text-slate-100">Schedule</h2></div>
                 <div className="divide-y divide-slate-100 dark:divide-slate-700">
                     {safeEvents.map((event) => <article key={event.id} className="flex min-w-0 flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
@@ -65,7 +65,7 @@ export default function Index({ events = [], calendar }: { events: CalendarEvent
                         </div>
                         {event.action_url && <Link href={event.action_url} className="shrink-0 rounded-xl border border-slate-300 px-4 py-2 text-center text-xs font-bold text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800">Open</Link>}
                     </article>)}
-                    {safeEvents.length === 0 && <div className="px-5 py-10 text-center text-sm text-slate-500 dark:text-slate-400">No calendar events are visible in this range.</div>}
+                    {safeEvents.length === 0 && <div className="municipal-empty m-4 text-sm">No calendar events are visible in this range.</div>}
                 </div>
             </section>
         </PageFrame>
