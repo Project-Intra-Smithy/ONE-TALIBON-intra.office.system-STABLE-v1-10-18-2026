@@ -94,6 +94,9 @@ final class IndividualTaskController extends Controller
     {
         // Route supplies the action; no client-supplied actor, state or timestamp.
         $this->allowOnly($request->all(), []);
+        // Match the read path: unknown and foreign-owned IDs are both 404.
+        // The W02 service rechecks authority under its row lock for the write.
+        $this->tasks->findVisibleIndividual($request->user(), $task);
         $model = $this->tasks->transitionIndividual($request->user(), $task, $action);
 
         return response()->json(['data' => $this->present($model)]);
