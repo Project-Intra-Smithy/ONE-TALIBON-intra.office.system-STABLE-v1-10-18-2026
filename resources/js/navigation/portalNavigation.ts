@@ -11,6 +11,7 @@ import {
     type LucideIcon,
 } from 'lucide-react';
 import type { NavigationPermissions, WorkspaceExperience } from '../types';
+import { isStagedInertiaPath } from './stagedRoutes';
 
 type DestinationKey = keyof NavigationPermissions;
 
@@ -107,6 +108,7 @@ export function buildPortalNavigation(
             items: group.destinations
                 .map((key) => portalDestinations[key])
                 .filter((item) => permissions[item.permission])
+                .filter((item) => isStagedInertiaPath(item.href))
                 .filter((item) => !item.requiresReports || reportsAllowed)
                 .map((item) => item.key === 'dashboard' && experience
                     ? { ...item, label: dashboardLabels[experience] }

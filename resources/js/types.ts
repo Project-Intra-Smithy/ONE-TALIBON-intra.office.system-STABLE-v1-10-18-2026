@@ -77,10 +77,5 @@ export type SharedProps = {
     workspaceExperience: WorkspaceExperience | null;
     auth: { user: AuthUser | null };
     permissions: { reports: boolean; navigation: NavigationPermissions };
-    pendingMemo: PendingMemo | null;
-    unreadMemoCount: number;
-    unreadPlatformNotificationCount: number;
-    notifications: LiveNotification[];
-    notificationCount: number;
     flash: { success?: string; error?: string };
 };

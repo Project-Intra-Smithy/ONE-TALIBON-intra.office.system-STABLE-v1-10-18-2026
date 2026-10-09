@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "types:check": "tsc --noEmit"
   },
   "dependencies": {
