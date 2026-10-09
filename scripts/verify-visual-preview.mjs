@@ -39,7 +39,7 @@ try {
             page.on('pageerror', error => errors.push(error.message));
             await page.goto(`${root}/visual-preview.html?screen=${screen}`, { waitUntil: 'networkidle' });
             await page.locator('#visual-fixture-label strong').getByText('VISUAL FIXTURE').waitFor();
-            try { await page.locator('#app h1, #app h2').first().waitFor({ timeout: 8000 }); }
+            try { await page.locator('#app h1:visible, #app h2:visible').first().waitFor({ timeout: 8000 }); }
             catch {
                 await page.screenshot({ path: `${out}/${mode}-${screen}-failure.png`, fullPage: true });
                 throw new Error(`${mode}/${screen} did not mount: ${errors.join('; ') || (await page.locator('body').innerText()).slice(0, 500)}; server: ${serverOutput.slice(-500)}`);
