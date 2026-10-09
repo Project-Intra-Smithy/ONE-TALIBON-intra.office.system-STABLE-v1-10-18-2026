@@ -12,7 +12,7 @@ Plan-publication base:
 
 ## Work-package continuity index — read before issuing or closing work
 
-**Current START/CLOSE pairing protocol:** [`.forge/memory/WORK-PACKAGE-START-CLOSE-PROTOCOL.md`](memory/WORK-PACKAGE-START-CLOSE-PROTOCOL.md). **Current bounded package index:** [`.forge/memory/WORK-PACKAGE-REGISTER.md`](memory/WORK-PACKAGE-REGISTER.md). The existing history below records prior milestones and dated snapshots; do not treat an older description of W04/W05/frontend as live state without the owning issue and Git verification. A01-W04 has NO-CODE architecture review but still awaits Kirch disposition; A01-W05 is staged and has not run. See [Engineering Hub #63](https://github.com/Project-Intra-Smithy/engineering-hub/issues/63).
+**Current START/CLOSE pairing protocol:** [`.forge/memory/WORK-PACKAGE-START-CLOSE-PROTOCOL.md`](memory/WORK-PACKAGE-START-CLOSE-PROTOCOL.md). **Current bounded package index:** [`.forge/memory/WORK-PACKAGE-REGISTER.md`](memory/WORK-PACKAGE-REGISTER.md). The existing history below records prior milestones and dated snapshots; do not treat an older description of W04/W05/frontend as live state without the owning issue and Git verification. A01-W04 is KIRCH ACCEPTED / NO-CODE, with decision [Hub #21](https://github.com/Project-Intra-Smithy/engineering-hub/issues/21#issuecomment-6085638333) and matching CLOSE memory in `WORK-PACKAGE-REGISTER.md`. A01-W05 is authorized as successor but **execution not yet started** until its two START records are published; no fresh W05 PASS. See [Engineering Hub #63](https://github.com/Project-Intra-Smithy/engineering-hub/issues/63).
 
 ## Verified A01-C1 contract release — 09 October 2026
 
