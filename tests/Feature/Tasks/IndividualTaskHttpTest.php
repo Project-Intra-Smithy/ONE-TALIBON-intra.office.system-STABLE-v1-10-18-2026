@@ -140,7 +140,7 @@ final class IndividualTaskHttpTest extends TestCase
         $this->getJson('/tasks')->assertOk()->assertJsonCount(0, 'data');
         foreach ([$official, $legacy, $assigned] as $task) {
             $this->getJson('/tasks/'.$task->id)->assertNotFound();
-            $this->postJson('/tasks/'.$task->id.'/start')->assertForbidden();
+            $this->postJson('/tasks/'.$task->id.'/start')->assertNotFound();
         }
         $this->assertSame(0, TaskEvent::query()->count());
     }
