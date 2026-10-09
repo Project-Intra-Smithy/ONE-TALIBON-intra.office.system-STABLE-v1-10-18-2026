@@ -37,3 +37,12 @@ This is the **canonical backend package start/close index**. Governing rules: [W
 For new work, create `START` record at the owning issue and update this index **before writer execution**. Include exact source, owner, bounded scope, evidence gates, holds and next action. Post the resulting memory-commit SHA to the issue. For completed work, apply the same pair with `CLOSE`, decision/evidence/remaining obligations and final SHA before issue closure. If either update fails, status is `SYNC_REQUIRED`, not completed.
 
 Old A01 W01/W02/W03/C1 history remains in their original accepted issues, PRs and `.forge/WORK_LEDGER.md`; this index does not pretend to retroactively backfill unverified START/CLOSE pairs.
+
+## REVIEW_CHECKPOINT / A01-W05-NOX / 2026-10-10 — SOURCE REVIEW START
+
+- **Owning W05:** [Hub #22](https://github.com/Project-Intra-Smithy/engineering-hub/issues/22), authorized runner START [#6085702508](https://github.com/Project-Intra-Smithy/engineering-hub/issues/22#issuecomment-6085702508); **NOX dedicated review START** [#6085905557](https://github.com/Project-Intra-Smithy/engineering-hub/issues/22#issuecomment-6085905557). This is a subordinate review checkpoint; does not supersede Kurt's authorized run or close W05.
+- **Actors:** Kirch technical/acceptance authority; Kirion-Nox architecture reviewer using own connected account; Kurt executes CI evidence; Siris independent QA later.
+- **Verified source before this documentation-only checkpoint:** backend `main@e72c80c804460156042da9e3c777eab785d674df`; accepted executable anchor `b9a4ad3ed6e72ae3a5cb1a4108ebae06eedaec26`; compare 6 commits ahead / 0 behind, 10 Markdown-only paths, no PHP/migration/test/workflow drift.
+- **Scope:** bounded personal Task lifecycle, ownership, relational/concurrent integrity, HTTP session/MFA/CSRF, Work Request/Correspondence isolation, privacy/audit limitations, W05 runner matrix readiness. **No executable edits, no new branch, no broader redesign**.
+- **Evidence distinction:** carried C1 78 tests/655 assertions run 37898947831; W05 fresh results NOT RUN at review START; source inspection not runtime PASS.
+- **Next:** NOX inspect accepted source and publish review findings + review checkpoint close on issue and this register; Kurt's already-authorized W05 isolated runner remains next executable evidence action, Kirch decides W05 acceptance.
