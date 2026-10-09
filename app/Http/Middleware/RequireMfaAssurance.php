@@ -28,7 +28,9 @@ final class RequireMfaAssurance
             return $next($request);
         }
 
-        if ($request->isMethodSafe()) {
+        // Task URLs are JSON-only. A pending MFA Task fetch must not
+        // overwrite the user's last intended browser/Inertia destination.
+        if ($request->isMethodSafe() && ! $request->routeIs('tasks.*')) {
             $request->session()->put('url.intended', $request->fullUrl());
         }
 
@@ -40,6 +42,16 @@ final class RequireMfaAssurance
             'denied',
             'AuthenticationAssurance',
         );
+
+        // Task routes are an HTTP JSON contract, even for an MFA-pending
+        // browser session. Other Inertia flows retain their redirects.
+        if ($request->routeIs('tasks.*')) {
+            return response()->json([
+                'message' => 'Multi-factor authentication is required.',
+                'code' => 'MFA_REQUIRED',
+                'next_url' => route($route, absolute: false),
+            ], 403);
+        }
 
         return redirect()->route($route);
     }

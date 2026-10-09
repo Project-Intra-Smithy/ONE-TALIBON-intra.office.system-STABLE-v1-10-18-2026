@@ -234,8 +234,8 @@ final class IndividualTaskHttpTest extends TestCase
         // Tests\\TestCase::actingAs() deliberately auto-satisfies privileged MFA.
         // Use the guard directly for a password-authenticated, MFA-pending session.
         auth()->guard('web')->login($actor);
-        $this->getJson('/tasks')->assertRedirect(route('mfa.enroll'));
-        $this->postJson('/tasks', ['title' => 'No MFA'])->assertRedirect(route('mfa.enroll'));
+        $this->getJson('/tasks')->assertForbidden()->assertJsonPath('code', 'MFA_REQUIRED');
+        $this->postJson('/tasks', ['title' => 'No MFA'])->assertForbidden()->assertJsonPath('code', 'MFA_REQUIRED');
         $this->assertSame(0, Task::query()->count());
     }
 

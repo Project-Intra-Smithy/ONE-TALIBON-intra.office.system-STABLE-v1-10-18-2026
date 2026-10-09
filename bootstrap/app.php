@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\AssignIntegrationCorrelationId;
 use App\Http\Middleware\AssignRequestId;
+use App\Http\Middleware\EnsureTaskJsonAccept;
 use App\Http\Middleware\AuditIntegrationRequest;
 use App\Http\Middleware\AuthenticateIntegrationClient;
 use App\Http\Middleware\ExecuteIdempotentIntegrationRequest;
@@ -28,6 +29,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->trustProxies(at: '*');
+        // Normalize /tasks requests before web auth, CSRF or exception handling.
+        $middleware->prepend(EnsureTaskJsonAccept::class);
         $middleware->append(AssignRequestId::class);
         $middleware->web(append: [HandleInertiaRequests::class]);
         $middleware->alias([

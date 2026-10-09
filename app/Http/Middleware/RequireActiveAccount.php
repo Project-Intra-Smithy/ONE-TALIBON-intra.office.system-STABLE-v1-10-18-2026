@@ -35,6 +35,15 @@ final class RequireActiveAccount
 
         $this->logout($request);
 
+        // The global Task JSON boundary already normalized Accept, and
+        // a deactivated session must not turn into an HTML login redirect.
+        if ($request->routeIs('tasks.*')) {
+            return response()->json([
+                'message' => 'The account is inactive. Sign in again or contact an administrator.',
+                'code' => 'ACCOUNT_INACTIVE',
+            ], 401);
+        }
+
         return $this->inactiveResponse();
     }
 
