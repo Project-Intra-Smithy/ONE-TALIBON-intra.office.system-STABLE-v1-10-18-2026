@@ -51,17 +51,17 @@ jobs:
       - name: Checkout exact W03 product source (not CI harness)
         uses: actions/checkout@v4
         with:
-          ref: a928f074552640dc697f4b737fde352689e397f4
+          ref: 02516b1472c2e0fe5e4c8c85290249d075cc71c1
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Verify W03 product SHA and exact 3-file scope
+      - name: Verify W03 source SHA and exact 4-file scope
         shell: bash
         run: |
           set -euo pipefail
           test "$GITHUB_REF" = "refs/heads/KIRCH-TALIBON-A01-W03-CI-VALIDATION-KURT"
-          test "$GITHUB_SHA" != "a928f074552640dc697f4b737fde352689e397f4"
-          test "$(git rev-parse HEAD)" = "a928f074552640dc697f4b737fde352689e397f4"
+          test "$GITHUB_SHA" != "02516b1472c2e0fe5e4c8c85290249d075cc71c1"
+          test "$(git rev-parse HEAD)" = "02516b1472c2e0fe5e4c8c85290249d075cc71c1"
           # actions/checkout fetched all refs; credentials deliberately remain disabled.
           git show-ref --verify --quiet refs/remotes/origin/main
           test "$(git rev-parse origin/main)" = "1c8ce47546ebb2f964c37741781c10d901b8e618"
@@ -71,6 +71,7 @@ jobs:
           app/Http/Controllers/Tasks/IndividualTaskController.php
           routes/web.php
           tests/Feature/Tasks/IndividualTaskHttpTest.php
+          tests/Feature/Tasks/TaskConcurrentConnectionTest.php
           END_EXPECTED
           )
           actual="$(git diff --name-only "1c8ce47546ebb2f964c37741781c10d901b8e618" HEAD)"
@@ -87,7 +88,7 @@ jobs:
             echo "APP_ENV=$APP_ENV"
             echo "DB_CONNECTION=$DB_CONNECTION"
             echo "DB_DATABASE=$DB_DATABASE"
-            echo "DIFF_FILE_COUNT=3"
+            echo "DIFF_FILE_COUNT=4"
           } | tee storage/app/qa/a01-w03-exact/manifest.txt
 
       - name: Set up PHP 8.4 / PostgreSQL
@@ -129,26 +130,29 @@ jobs:
           php artisan migrate:status > storage/app/qa/a01-w03-exact/migrations.txt
           echo "MIGRATE_EXIT=0" >> storage/app/qa/a01-w03-exact/manifest.txt
 
-      - name: Run W03 HTTP, W02, W01 and Work Request suites
+      - name: Run W03 HTTP, actual PostgreSQL race, W02, W01 and Work Request suites
         shell: bash
         run: |
           set -uo pipefail
           dir=storage/app/qa/a01-w03-exact
           php artisan test tests/Feature/Tasks/IndividualTaskHttpTest.php --log-junit="$dir/w03-junit.xml" 2>&1 | tee "$dir/w03.log"
           a=${PIPESTATUS[0]}
-          php artisan test tests/Feature/Tasks/TaskCoreServiceTest.php --log-junit="$dir/w02-junit.xml" 2>&1 | tee "$dir/w02.log"
+          php artisan test tests/Feature/Tasks/TaskConcurrentConnectionTest.php --log-junit="$dir/race-junit.xml" 2>&1 | tee "$dir/race.log"
           b=${PIPESTATUS[0]}
-          php artisan test tests/Feature/Tasks/TaskDomainFoundationTest.php --log-junit="$dir/w01-junit.xml" 2>&1 | tee "$dir/w01.log"
+          php artisan test tests/Feature/Tasks/TaskCoreServiceTest.php --log-junit="$dir/w02-junit.xml" 2>&1 | tee "$dir/w02.log"
           c=${PIPESTATUS[0]}
-          php artisan test tests/Feature/WorkRequestBackendValidationTest.php tests/Feature/WorkRequestPresentationTest.php --log-junit="$dir/work-request-junit.xml" 2>&1 | tee "$dir/work-request.log"
+          php artisan test tests/Feature/Tasks/TaskDomainFoundationTest.php --log-junit="$dir/w01-junit.xml" 2>&1 | tee "$dir/w01.log"
           d=${PIPESTATUS[0]}
+          php artisan test tests/Feature/WorkRequestBackendValidationTest.php tests/Feature/WorkRequestPresentationTest.php --log-junit="$dir/work-request-junit.xml" 2>&1 | tee "$dir/work-request.log"
+          e=${PIPESTATUS[0]}
           {
             echo "W03_SUITE_EXIT=$a"
-            echo "W02_SUITE_EXIT=$b"
-            echo "W01_SUITE_EXIT=$c"
-            echo "WORK_REQUEST_SUITE_EXIT=$d"
+            echo "PGSQL_CONCURRENCY_EXIT=$b"
+            echo "W02_SUITE_EXIT=$c"
+            echo "W01_SUITE_EXIT=$d"
+            echo "WORK_REQUEST_SUITE_EXIT=$e"
           } | tee -a "$dir/manifest.txt"
-          if [ "$a" -ne 0 ] || [ "$b" -ne 0 ] || [ "$c" -ne 0 ] || [ "$d" -ne 0 ]; then
+          if [ "$a" -ne 0 ] || [ "$b" -ne 0 ] || [ "$c" -ne 0 ] || [ "$d" -ne 0 ] || [ "$e" -ne 0 ]; then
             echo "VALIDATION_RESULT=FAIL" >> "$dir/manifest.txt"
             exit 1
           fi
