@@ -6,7 +6,10 @@ const root = 'http://127.0.0.1:4173';
 const out = 'artifacts/visual-fixture';
 const screens = ['login', 'mfa', 'dashboard', 'work', 'correspondence', 'records', 'memoranda', 'calendar', 'employees', 'departments'];
 const mobileScreens = ['login', 'dashboard', 'work', 'correspondence', 'calendar', 'employees'];
-const server = spawn('npm', ['run', 'dev', '--', '--port', '4173', '--strictPort'], { stdio: 'pipe' });
+const server = spawn('npm', ['run', 'dev', '--', '--port', '4173', '--strictPort'], {
+    stdio: 'pipe',
+    env: { ...process.env, LARAVEL_BYPASS_ENV_CHECK: '1' },
+});
 let serverOutput = '';
 for (const stream of [server.stdout, server.stderr]) stream.on('data', chunk => { serverOutput += chunk.toString(); });
 
