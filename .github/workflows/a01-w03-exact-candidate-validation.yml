@@ -51,7 +51,7 @@ jobs:
       - name: Checkout exact W03 product source (not CI harness)
         uses: actions/checkout@v4
         with:
-          ref: 02516b1472c2e0fe5e4c8c85290249d075cc71c1
+          ref: f38c1f5f76d837e21a5e750e329d82c323ceb7e4
           fetch-depth: 0
           persist-credentials: false
 
@@ -60,8 +60,8 @@ jobs:
         run: |
           set -euo pipefail
           test "$GITHUB_REF" = "refs/heads/KIRCH-TALIBON-A01-W03-CI-VALIDATION-KURT"
-          test "$GITHUB_SHA" != "02516b1472c2e0fe5e4c8c85290249d075cc71c1"
-          test "$(git rev-parse HEAD)" = "02516b1472c2e0fe5e4c8c85290249d075cc71c1"
+          test "$GITHUB_SHA" != "f38c1f5f76d837e21a5e750e329d82c323ceb7e4"
+          test "$(git rev-parse HEAD)" = "f38c1f5f76d837e21a5e750e329d82c323ceb7e4"
           # actions/checkout fetched all refs; credentials deliberately remain disabled.
           git show-ref --verify --quiet refs/remotes/origin/main
           test "$(git rev-parse origin/main)" = "1c8ce47546ebb2f964c37741781c10d901b8e618"
@@ -133,6 +133,8 @@ jobs:
       - name: Run W03 HTTP, actual PostgreSQL race, W02, W01 and Work Request suites
         shell: bash
         run: |
+          # GitHub invokes bash with -e; unset it so every suite runs and is reported.
+          set +e
           set -uo pipefail
           dir=storage/app/qa/a01-w03-exact
           php artisan test tests/Feature/Tasks/IndividualTaskHttpTest.php --log-junit="$dir/w03-junit.xml" 2>&1 | tee "$dir/w03.log"
