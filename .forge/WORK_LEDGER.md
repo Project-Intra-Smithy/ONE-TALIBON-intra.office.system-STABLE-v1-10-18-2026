@@ -10,6 +10,23 @@ Accepted executable/runtime anchor:
 Plan-publication base:
 `ffdf1dec10a0417d4982887a19f49ba771dd953f`
 
+## Verified current A01 release state — 09 October 2026
+
+**Current integrated backend:** `Project-Intra-Smithy/Talibon-Sales-Prototype@0573680696c8bd6fb421d625b5e7dc2c37cb1905` ([merged W03 PR #31](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/pull/31)); PR #31 accepted source `f38c1f5f76d837e21a5e750e329d82c323ceb7e4`, integration tree identical, 4 scoped paths. [Kurt exact-integrated-main CI #37889890224](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/actions/runs/37889890224) **PASS: 46 tests / 378 assertions** (W03 HTTP, independent PostgreSQL race, W02, W01, Work Request). This is a *bounded* validation, not whole-A01 CI/QA.
+
+| Existing control | Current disposition |
+| --- | --- |
+| [A01 plan #1](https://github.com/Project-Intra-Smithy/engineering-hub/issues/1) | CLOSED / accepted |
+| [A01-W01 #2](https://github.com/Project-Intra-Smithy/engineering-hub/issues/2) | CLOSED / accepted, merged, CI PASS |
+| [A01-W02 #18](https://github.com/Project-Intra-Smithy/engineering-hub/issues/18) | CLOSED / accepted, merged, CI PASS |
+| [A01-W03 #19](https://github.com/Project-Intra-Smithy/engineering-hub/issues/19) | CLOSED / accepted, merged, post-merge CI PASS |
+| [A01-C1 #20](https://github.com/Project-Intra-Smithy/engineering-hub/issues/20) | OPEN / contract NOT released; error/CSRF/MFA browser contract remains to be verified |
+| [A01-W04 #21](https://github.com/Project-Intra-Smithy/engineering-hub/issues/21), [A01-W05 #22](https://github.com/Project-Intra-Smithy/engineering-hub/issues/22), frontend, [formal CI01 #26](https://github.com/Project-Intra-Smithy/engineering-hub/issues/26), [independent QA01 #27](https://github.com/Project-Intra-Smithy/engineering-hub/issues/27) | STAGED / not accepted or released |
+
+**GitHub Projects:** W03 #19 custom `Status=Closed`, `Next=PR #31 merged; exact-main post-merge CI PASS — complete` verified by authenticated human UI screenshots after refresh on 09 October 2026, **not** independently via Projects API. C1/CI01/QA remain Intake. Live Projects UI is a distinct authority from issue state.
+
+**Authority:** Kirch owns package release, integration, and final acceptance. This reconciliation changes **documentation only** and does not grant C1, W04, W05, municipal official-Task privileges, formal A01-CI01/QA, or production deployment. Earlier W01/W02 release statements below are retained as historical snapshots, not active instructions.
+
 ## Current state
 
 P0: COMPLETE / FROZEN
@@ -22,7 +39,7 @@ A01: ACTIVE / PLAN ACCEPTED BY KIRCH
 
 Project #1 V1.2 roadmap staging: PASS / ACCEPTED / CLOSED (Hub #10)
 
-A01-W01: **PACKAGE ACCEPTED / MERGED / POST-MERGE RUNTIME PASS / PROJECT CLOSEOUT PENDING**
+A01-W01/W02/W03: **CLOSED / ACCEPTED / MERGED / POST-MERGE CI PASS** (see current A01 release state above)
 
 Accepted W01 writer candidate: `7ddff25caef8fc1a0a4bc400a2d6e1f627fae435` (R2); integrated canonical `main`: `d5b49728f49940030205c0f9e322482f9d60299c`
 
@@ -89,9 +106,8 @@ Historical release PR #27 established W01 source base `9f1859945ba07b4d5318352d8
 
 ## Downstream
 
-- A01-W02 — STAGED; W01 is integrated and post-merge validated, but Project closeout and separate Kirch W02 implementation release remain pending
-- A01-W03 — blocked on W02
-- A01-C1 — blocked on stable backend contract
+- A01-W02 and W03 — COMPLETE / integrated and post-merge validated, no new W02/W03 release required
+- A01-C1 — OPEN / pending browser-consumable contract and JSON error/CSRF/MFA validation
 - A01 frontend — blocked on C1 + FRONTEND-REG-001
 - Kurt bounded W01 pre-merge and post-merge exact-SHA self-hosted PostgreSQL runtime validations — PASS / each 20 tests, 131 assertions; formal A01-CI01 remains staged for the separate A01-I01 integrated release tuple
 - Siris A01-QA01 — staged for integrated candidate, not executed or awarded
@@ -103,7 +119,7 @@ Track W — LGU Workflow Intake: ACTIVE PARALLEL
 
 Track R — Production Readiness: ACTIVE PARALLEL / SEPARATE ACCEPTANCE
 
-## Current next action — W01 post-merge control closeout
+## Historical next action — W01 post-merge control closeout (superseded 09 October 2026)
 
 `POST-MERGE CI PASS + KIRCH PROJECT SCREENSHOT VERIFIED → KIRCH DOCS PR #29 MERGE AUTHORIZED (VERIFY LIVE MERGE RESULT) → RECORD W01 TERMINAL DISPOSITION / SYNCHRONIZE HUB #2 + PROJECT #2 STATUS/NEXT → SEPARATE W02 RELEASE IF AUTHORIZED`
 
@@ -114,8 +130,8 @@ Track R — Production Readiness: ACTIVE PARALLEL / SEPARATE ACCEPTANCE
 - [Evidence artifact ID 11553213228](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/actions/runs/37765414621/artifacts/11553213228); ZIP digest `sha256:40267d24579843e11e20027f82321b0eb3cea9c70246f0a41f869df6d04e4fe2`. Includes manifest, JUnit, FK/index and logs.
 - **Project #2 custom Status/Next corrected and post-refresh persistence visually verified by Kirch's authenticated GitHub Project UI screenshots:** `Status=Active`, `Next=W01 integrated at d5b49728; post-merge CI PASS (37765414621); docs PR #29 awaiting review; W02 staged.` Initial expanded Project detail exposed full value; refreshed Current Focus card confirms saved prefix (card text truncated). [Maintainer visual-evidence record](https://github.com/Project-Intra-Smithy/engineering-hub/issues/2#issuecomment-6062001970). This is **human-operated UI evidence, not a GitHub Projects-v2 connector/API read**. Do not equate issue state with Project fields. Owner remains `Kirch-Nairu` and W01 stays Active/open until the terminal issue/Project closeout action. Kirch authorized the docs-only PR #29 merge on 08 October 2026, subject to exact-source and scope recheck.
 - **Docs-only PR #29:** Kirch explicitly authorized the controlled merge after Maintainer review of its exact two-file scope and current main on 08 October 2026. Its actual merge result/main SHA must be verified from GitHub before calling the canonical records synchronized; this statement is not itself a merge claim.
-- Gate separation: W02 staged; W03 on W02; backend A01-C1 and AJ/Jhayr Task frontend gated; formal A01-I01 release tuple pending; A01-CI01 / Siris QA01 / Kirch final A01 Series acceptance NOT RUN or NOT AWARDED by this W01-only validation. Track W and Track R remain separate. No production deploy, LGU process-rule invention, or Work Request/Correspondence rewrite.
+- Historical gate separation at W01 snapshot (superseded): W02 staged; W03 on W02; backend A01-C1 and AJ/Jhayr Task frontend gated; formal A01-I01 release tuple pending; A01-CI01 / Siris QA01 / Kirch final A01 Series acceptance NOT RUN or NOT AWARDED by this W01-only validation. Track W and Track R remain separate. No production deploy, LGU process-rule invention, or Work Request/Correspondence rewrite.
 
 ## Control rules
 
-`Task != Work Request != Correspondence`. Do not self-release W02, close W01 without terminal Project/issue field synchronization, merge unrelated scope, or claim formal A01 Series CI/QA acceptance.
+`Task != Work Request != Correspondence`. Do not self-release C1/W04/W05, merge unrelated scope, or claim formal A01 Series CI/QA acceptance from bounded W03 CI. Historical W01 controls above are closed.
