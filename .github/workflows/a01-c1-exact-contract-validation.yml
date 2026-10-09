@@ -1,4 +1,4 @@
-name: A01-C1 R2 Exact Product CI and Authenticated HTTP
+name: A01-C1 R2 Exact INTEGRATED MAIN CI and Authenticated HTTP
 
 on:
   push:
@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   c1-validation:
-    name: R2 C1 + Auth MFA + W03 + Race + W02 + W01 + Work Request + HTTP
+    name: Integrated Main + C1 + Auth MFA + W03 + Race + W02 + W01 + HTTP
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     services:
@@ -51,7 +51,7 @@ jobs:
       - name: Checkout exact C1 product source (not CI harness)
         uses: actions/checkout@v4
         with:
-          ref: 219bcc6f09ae8366063293c9364bd896b707f328
+          ref: b9a4ad3ed6e72ae3a5cb1a4108ebae06eedaec26
           fetch-depth: 0
           persist-credentials: false
 
@@ -60,12 +60,12 @@ jobs:
         run: |
           set -euo pipefail
           test "$GITHUB_REF" = "refs/heads/KIRCH-TALIBON-A01-C1-CI-VALIDATION-KURT"
-          test "$GITHUB_SHA" != "219bcc6f09ae8366063293c9364bd896b707f328"
-          test "$(git rev-parse HEAD)" = "219bcc6f09ae8366063293c9364bd896b707f328"
+          test "$GITHUB_SHA" != "b9a4ad3ed6e72ae3a5cb1a4108ebae06eedaec26"
+          test "$(git rev-parse HEAD)" = "b9a4ad3ed6e72ae3a5cb1a4108ebae06eedaec26"
           # actions/checkout fetched all refs; credentials deliberately remain disabled.
           git show-ref --verify --quiet refs/remotes/origin/main
-          test "$(git rev-parse origin/main)" = "e49e9b2dafc4cac8869b5099270429d9abf8730e"
-          test "$(git merge-base HEAD origin/main)" = "e49e9b2dafc4cac8869b5099270429d9abf8730e"
+          test "$(git rev-parse origin/main)" = "b9a4ad3ed6e72ae3a5cb1a4108ebae06eedaec26"
+          test "$(git merge-base HEAD origin/main)" = "b9a4ad3ed6e72ae3a5cb1a4108ebae06eedaec26"
           test -z "$(git status --porcelain)"
           expected=$(cat <<'END_EXPECTED'
           .forge/contracts/A01-C1-INDIVIDUAL-TASK-HTTP-CONTRACT.md
@@ -176,7 +176,7 @@ jobs:
           dir=storage/app/qa/a01-c1-exact
           test "$APP_ENV" = "testing"
           test "$DB_DATABASE" = "talibon_portal_test"
-          test "$(git rev-parse HEAD)" = "219bcc6f09ae8366063293c9364bd896b707f328"
+          test "$(git rev-parse HEAD)" = "b9a4ad3ed6e72ae3a5cb1a4108ebae06eedaec26"
           # This probes real Laravel web/CSRF middleware under APP_ENV=local,
           # unlike feature tests whose APP_ENV=testing bypasses CSRF checks.
           APP_ENV=local APP_DEBUG=false SESSION_DRIVER=file php artisan serve --host=127.0.0.1 --port=8765 > "$dir/csrf-server.log" 2>&1 &
@@ -204,7 +204,7 @@ jobs:
         run: |
           set -euo pipefail
           dir=storage/app/qa/a01-c1-exact
-          test "$(git rev-parse HEAD)" = "219bcc6f09ae8366063293c9364bd896b707f328"
+          test "$(git rev-parse HEAD)" = "b9a4ad3ed6e72ae3a5cb1a4108ebae06eedaec26"
           test "$DB_DATABASE" = "talibon_portal_test"
           test "$APP_ENV" = "testing"
           export KURT_TEST_PASSWORD="$(openssl rand -hex 18)"
