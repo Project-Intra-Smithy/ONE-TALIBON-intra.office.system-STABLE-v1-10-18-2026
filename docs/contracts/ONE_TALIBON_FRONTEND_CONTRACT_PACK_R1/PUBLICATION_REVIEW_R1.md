@@ -2,9 +2,9 @@
 
 **Disposition:** `FAMILY REVIEW COMPLETE / CONTROLLED DOCUMENTATION INTAKE RECOMMENDED / NO NEW CONTRACT RELEASE / NO MERGE APPROVAL`.
 
-**Human Technical Authority and final acceptor:** Kirch Ivan Balite (`Kirch-Nairu`). **Review attribution:** AI-assisted analysis using Kirch's GitHub connection, not a human-signature simulation, separate Nox/Jane/Lucien consensus, independent Siris QA, or automatic Kirch acceptance. Source/backend `7b4ebb838982f6262b9fef65d18ba57488ebf941`; frontend publication baseline `main@bab1f4563b903d7d9810590cd0e3ce6628db8611`; updated documentation remains in **existing Lucien PR #4** only.
+**Technical review and acceptance authority:** Kirch Ivan Balite (`Kirch-Nairu`). This document records source-level contract classifications, not independent runtime QA or approval of additional backend contracts. Backend evidence was pinned to `7b4ebb838982f6262b9fef65d18ba57488ebf941`. The original documentation candidate was merged via [PR #4](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/pull/4); frontend development has since advanced.
 
-**Meaning of “publish”:** Sharing a clearly marked, immutable SHA-linked **source-observed reference** with frontend engineers is not the same as issuing a **formally released stable backend→frontend contract**. No new family receives the latter by this review. Only A01-C1 (C23) already possesses a formally released backend contract. Never confuse draft-doc visibility in PR #4 with being published to frontend `main`.
+**Meaning of “publish”:** Sharing a clearly marked, immutable SHA-linked **source-observed reference** with frontend engineers is not the same as issuing a **formally released stable backend→frontend contract**. No new family receives the latter by this review. Only A01-C1 (C23) already possesses a formally released backend contract. The reference documents are available on frontend `main`, but that does not make source-observed interfaces formally released contracts.
 
 ## Publication-control codes
 
@@ -46,13 +46,13 @@ All 24 rows above describe **current source-family** maturity. Some composite fa
 
 ## What may be shared with AJ and Jhayr immediately
 
-The **existing draft PR #4 link**, with explicit `DRAFT / SOURCE-REFERENCE / NOT STABLE CONTRACT` label, can be used to compare already-existing frontend shell, login/MFA, dashboard, auth props, navigation and UI conventions against canonical backend. The agreed frontend application has **not** been imported; do not begin A01 F01/F02 implementations, new messaging privacy claims or official LGU processes from this packet.
+[PR #4](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/pull/4) is merged as source-reference documentation. The frontend source is on `main`; the active compatibility candidate is [draft PR #6](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/pull/6). Neither state authorizes A01 F01/F02 implementation, new messaging privacy claims or official LGU workflows.
 
-**Docs acceptance conditions for a future controlled merge:** independently verify exact PR head SHA and resulting docs-only diff, correct stale contradictions, immutable backend SHA, origin/ownership provenance, non-binding taxonomy, no private data or credentials, explicit exclusions and pending QA. Kirch must record an explicit merge/publication decision and revalidate any ref drift. A docs-only reference publication **could** be approved separately from operational integration acceptance if clearly labeled, but that approval is **not granted by this review**.
+**Publication record:** The source-reference documentation was merged separately from operational integration. Its classifications remain non-binding until family-specific approval. Before accepting an integrated frontend, verify the current candidate SHA, actual backend compatibility, role access, privacy, tests and remaining exclusions.
 
 ## Existing frontend import lane — do not change staffing
 
-[FRONTEND-REG-001 #1](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/1) remains human-owned: **Jhayr `kyumw3b` coordinates, AJ `rynzz22` supplies his existing frontend source/attribution as access permits, Kirch reviews.** Frontend `main` still consists only of documentation, with no open import PR or verified runnable baseline. The exact historical import candidate is `Kirch-Nairu/Talibon-Intra-Office-Portal@a7d7be17feb435b50c52cacd063e11d92ad047e1`, reference-only until per-file mapping and attribution are reviewed.
+[FRONTEND-REG-001 #1](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/1) remains open: Jhayr (`kyumw3b`) coordinates, AJ (`rynzz22`) contributes existing frontend work, and Kirch reviews. The imported React/Inertia baseline is on `main@fbf6568790009856a0285bc55ed7e8cb152add93`; [draft PR #6](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/pull/6) contains compatibility repairs with build/test CI passing. Authenticated Laravel desktop/mobile validation remains outstanding.
 
 Required next submission: updated `docs/FRONTEND_IMPORT_REGISTER.md`, isolated scoped import branch/PR, framework and dependency conflict record, actual install/typecheck/build and authenticated browser desktop/mobile evidence, exact SHAs and missing pieces. Import only existing frontend assets with permission/provenance; **no historical PHP/routes/models/migrations**. **Frontend import does not depend on acceptance of every C02–C24 family**, but release-gated feature integrations do.
 

@@ -1,5 +1,5 @@
 # ONE TALIBON — Backend producer verification register R1
-**Producer review note (09 October 2026):** Source inspection conducted in Kirch's ChatGPT support session, **not** independent Jane execution, build, PHPUnit, browser, CI, Siris QA or contract approval. Backend pinned to `7b4ebb838982f6262b9fef65d18ba57488ebf941`; Lucien's pre-correction draft `76d78e68393d119dfb7b2dcbdad4cf15236b1d0f`.
+**Source review (09 October 2026):** Source-level verification only. Runtime tests, independent QA and formal contract approval were not performed as part of this review. Backend pinned to `7b4ebb838982f6262b9fef65d18ba57488ebf941`; Lucien's pre-correction draft `76d78e68393d119dfb7b2dcbdad4cf15236b1d0f`.
 
 **Scope:** Tier A `C02–C12,C23`; Tier B `C13–C19`. Backend source SHA `7b4ebb838982f6262b9fef65d18ba57488ebf941`. Consumer classification from Lucien PR #4 head `76d78e68393d119dfb7b2dcbdad4cf15236b1d0f`. This register is a **source-level review**, not a formally accepted contract, runtime test, security certification or LGU business-policy grant. No new backend production API has been invented. Context: [backend verification #40](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/issues/40).
 

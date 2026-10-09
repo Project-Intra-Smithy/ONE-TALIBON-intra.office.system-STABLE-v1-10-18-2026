@@ -60,7 +60,7 @@ Exact field-level schemas for many rich Inertia projections, LGU classification 
 
 ## Producer verification supplement — no change to release authority
 
-**Producer review note (09 October 2026):** Source inspection conducted in Kirch's ChatGPT support session, **not** independent Jane execution, build, PHPUnit, browser, CI, Siris QA or contract approval. Backend pinned to `7b4ebb838982f6262b9fef65d18ba57488ebf941`; Lucien's pre-correction draft `76d78e68393d119dfb7b2dcbdad4cf15236b1d0f`.
+**Source review (09 October 2026):** Source-level verification only. Runtime tests, independent QA and formal contract approval were not performed as part of this review. Backend pinned to `7b4ebb838982f6262b9fef65d18ba57488ebf941`; Lucien's pre-correction draft `76d78e68393d119dfb7b2dcbdad4cf15236b1d0f`.
 
 The [producer verification register](BACKEND_PRODUCER_VERIFICATION.md) now traces **C02–C12, C23 (Tier A)** and **C13–C19 (Tier B)** to source-level routes, permission checks, page props, serialization and transport behavior. This is not a runtime certification. C01, C20–C22 and C24 remain explicitly excluded/held; source-routed static presentations are not separate approved APIs. A01-C1 has two independent axes: **backend formally released** and **frontend unconsumed**. `CURRENT_COMMON_OPERATIONAL` is product/source classification, never automatic contract publication.
 
