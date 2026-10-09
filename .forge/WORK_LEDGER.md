@@ -10,6 +10,10 @@ Accepted executable/runtime anchor:
 Plan-publication base:
 `ffdf1dec10a0417d4982887a19f49ba771dd953f`
 
+## Work-package continuity index — read before issuing or closing work
+
+**Current START/CLOSE pairing protocol:** [`.forge/memory/WORK-PACKAGE-START-CLOSE-PROTOCOL.md`](memory/WORK-PACKAGE-START-CLOSE-PROTOCOL.md). **Current bounded package index:** [`.forge/memory/WORK-PACKAGE-REGISTER.md`](memory/WORK-PACKAGE-REGISTER.md). The existing history below records prior milestones and dated snapshots; do not treat an older description of W04/W05/frontend as live state without the owning issue and Git verification. A01-W04 has NO-CODE architecture review but still awaits Kirch disposition; A01-W05 is staged and has not run. See [Engineering Hub #63](https://github.com/Project-Intra-Smithy/engineering-hub/issues/63).
+
 ## Verified A01-C1 contract release — 09 October 2026
 
 **A01-C1 personal-Task backend HTTP contract: TECHNICALLY ACCEPTED / MERGED / EXACT-INTEGRATED-MAIN CI PASS.**

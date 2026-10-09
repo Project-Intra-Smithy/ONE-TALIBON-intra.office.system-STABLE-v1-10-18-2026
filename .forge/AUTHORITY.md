@@ -82,3 +82,7 @@ Before work issuance:
 - state required validation;
 - state downstream Kurt/Siris/Kirch gates where applicable;
 - stop on contradiction.
+
+## Mandatory work-package continuity (10 October 2026)
+
+Before any new bounded implementation, code review, CI/QA, architecture or operations package starts, and before a package is declared accepted/closed, follow [`.forge/memory/WORK-PACKAGE-START-CLOSE-PROTOCOL.md`](memory/WORK-PACKAGE-START-CLOSE-PROTOCOL.md): **paired START and CLOSE records in the owning GitHub issue and the owning repository's discoverable memory index**, with exact SHAs, evidence, outstanding obligations and next owner. Confirm both records and crosslinks; incomplete sync is `SYNC_REQUIRED / HOLD` rather than silently active or closed. See [backend register](memory/WORK-PACKAGE-REGISTER.md) and [Engineering Hub #63](https://github.com/Project-Intra-Smithy/engineering-hub/issues/63). This adds a continuity/documentation gate, not authority to approve code, invent LGU policy or bypass CI/QA.
