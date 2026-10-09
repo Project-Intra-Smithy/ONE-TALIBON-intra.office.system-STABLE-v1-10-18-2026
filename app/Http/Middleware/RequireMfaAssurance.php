@@ -41,6 +41,16 @@ final class RequireMfaAssurance
             'AuthenticationAssurance',
         );
 
+        // Task routes are an HTTP JSON contract, even for an MFA-pending
+        // browser session. Other Inertia flows retain their redirects.
+        if ($request->routeIs('tasks.*')) {
+            return response()->json([
+                'message' => 'Multi-factor authentication is required.',
+                'code' => 'MFA_REQUIRED',
+                'next_url' => route($route),
+            ], 403);
+        }
+
         return redirect()->route($route);
     }
 }
