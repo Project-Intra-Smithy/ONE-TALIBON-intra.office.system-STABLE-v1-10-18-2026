@@ -1,4 +1,4 @@
-name: A01-C1 Exact Candidate JSON Contract Validation
+name: A01-C1 R2 Exact Product CI and Authenticated HTTP
 
 on:
   push:
@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   c1-validation:
-    name: C1 JSON + W03 HTTP + Race + W02 + W01 + Work Request
+    name: R2 C1 + Auth MFA + W03 + Race + W02 + W01 + Work Request + HTTP
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     services:
@@ -51,7 +51,7 @@ jobs:
       - name: Checkout exact C1 product source (not CI harness)
         uses: actions/checkout@v4
         with:
-          ref: e72abfd1340451c4f857fd3534e28cb518e868bd
+          ref: 219bcc6f09ae8366063293c9364bd896b707f328
           fetch-depth: 0
           persist-credentials: false
 
@@ -60,8 +60,8 @@ jobs:
         run: |
           set -euo pipefail
           test "$GITHUB_REF" = "refs/heads/KIRCH-TALIBON-A01-C1-CI-VALIDATION-KURT"
-          test "$GITHUB_SHA" != "e72abfd1340451c4f857fd3534e28cb518e868bd"
-          test "$(git rev-parse HEAD)" = "e72abfd1340451c4f857fd3534e28cb518e868bd"
+          test "$GITHUB_SHA" != "219bcc6f09ae8366063293c9364bd896b707f328"
+          test "$(git rev-parse HEAD)" = "219bcc6f09ae8366063293c9364bd896b707f328"
           # actions/checkout fetched all refs; credentials deliberately remain disabled.
           git show-ref --verify --quiet refs/remotes/origin/main
           test "$(git rev-parse origin/main)" = "e49e9b2dafc4cac8869b5099270429d9abf8730e"
@@ -142,6 +142,8 @@ jobs:
           dir=storage/app/qa/a01-c1-exact
           php artisan test tests/Feature/Tasks/TaskJsonContractBoundaryTest.php --log-junit="$dir/c1-junit.xml" 2>&1 | tee "$dir/c1.log"
           c1=${PIPESTATUS[0]}
+          php artisan test tests/Feature/PrivilegedMfaAuthenticationTest.php tests/Feature/MfaSecurityControlsTest.php tests/Feature/AuthenticationRuntimeContractTest.php --log-junit="$dir/auth-mfa-junit.xml" 2>&1 | tee "$dir/auth-mfa.log"
+          auth=${PIPESTATUS[0]}
           php artisan test tests/Feature/Tasks/IndividualTaskHttpTest.php --log-junit="$dir/w03-junit.xml" 2>&1 | tee "$dir/w03.log"
           a=${PIPESTATUS[0]}
           php artisan test tests/Feature/Tasks/TaskConcurrentConnectionTest.php --log-junit="$dir/race-junit.xml" 2>&1 | tee "$dir/race.log"
@@ -154,13 +156,14 @@ jobs:
           e=${PIPESTATUS[0]}
           {
             echo "C1_JSON_BOUNDARY_EXIT=$c1"
+            echo "AUTH_MFA_REGRESSION_EXIT=$auth"
             echo "W03_SUITE_EXIT=$a"
             echo "PGSQL_CONCURRENCY_EXIT=$b"
             echo "W02_SUITE_EXIT=$c"
             echo "W01_SUITE_EXIT=$d"
             echo "WORK_REQUEST_SUITE_EXIT=$e"
           } | tee -a "$dir/manifest.txt"
-          if [ "$c1" -ne 0 ] || [ "$a" -ne 0 ] || [ "$b" -ne 0 ] || [ "$c" -ne 0 ] || [ "$d" -ne 0 ] || [ "$e" -ne 0 ]; then
+          if [ "$c1" -ne 0 ] || [ "$auth" -ne 0 ] || [ "$a" -ne 0 ] || [ "$b" -ne 0 ] || [ "$c" -ne 0 ] || [ "$d" -ne 0 ] || [ "$e" -ne 0 ]; then
             echo "VALIDATION_RESULT=FAIL" >> "$dir/manifest.txt"
             exit 1
           fi
@@ -173,7 +176,7 @@ jobs:
           dir=storage/app/qa/a01-c1-exact
           test "$APP_ENV" = "testing"
           test "$DB_DATABASE" = "talibon_portal_test"
-          test "$(git rev-parse HEAD)" = "e72abfd1340451c4f857fd3534e28cb518e868bd"
+          test "$(git rev-parse HEAD)" = "219bcc6f09ae8366063293c9364bd896b707f328"
           # This probes real Laravel web/CSRF middleware under APP_ENV=local,
           # unlike feature tests whose APP_ENV=testing bypasses CSRF checks.
           APP_ENV=local APP_DEBUG=false SESSION_DRIVER=file php artisan serve --host=127.0.0.1 --port=8765 > "$dir/csrf-server.log" 2>&1 &
@@ -195,6 +198,203 @@ jobs:
           echo "HTTP_CSRF_NO_TOKEN_POST_CODE=$csrf_code" >> "$dir/manifest.txt"
           echo "HTTP_JSON_HEADER_CHECK=PASS" >> "$dir/manifest.txt"
           echo "REAL_CSRF_SMOKE=PASS" >> "$dir/manifest.txt"
+
+      - name: Authenticated real HTTP Task and MFA integration (non-testing Laravel)
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=storage/app/qa/a01-c1-exact
+          test "$(git rev-parse HEAD)" = "219bcc6f09ae8366063293c9364bd896b707f328"
+          test "$DB_DATABASE" = "talibon_portal_test"
+          test "$APP_ENV" = "testing"
+          export KURT_TEST_PASSWORD="$(openssl rand -hex 18)"
+          export KURT_TEST_MFA="$(python3 -c 'import base64,os;print(base64.b32encode(os.urandom(10)).decode())')"
+          cat > /tmp/kurt-r2-fixtures.php <<'KURT_PHP'
+          <?php
+          require "vendor/autoload.php";
+          $app=require "bootstrap/app.php";
+          $app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+          $pw=getenv("KURT_TEST_PASSWORD");
+          $secret=getenv("KURT_TEST_MFA");
+          if (!$pw || !$secret || config("database.connections.pgsql.database")!=="talibon_portal_test" || app()->environment("testing")) { throw new RuntimeException("Unsafe HTTP fixture environment"); }
+          $office=\App\Models\Department::query()->create(["code"=>"KURT-C1-R2","name"=>"Kurt C1 R2 Disposable Office","is_active"=>true]);
+          foreach ([["owner","department_head"],["foreign","department_head"],["inactive","employee"]] as [$name,$role]) {
+              $user=\App\Models\User::query()->create(["name"=>"Kurt R2 $name","email"=>"c1-kurt-$name@example.test","password"=>$pw,"role"=>$role,"is_active"=>true]);
+              if ($role==="department_head") $user->forceFill(["mfa_secret"=>$secret,"mfa_confirmed_at"=>now(),"mfa_version"=>1])->save();
+              \App\Models\Employee::query()->create(["employee_number"=>"KURT-C1-$name","full_name"=>"Kurt R2 $name","user_id"=>$user->id,"department_id"=>$office->id,"position_title"=>"Disposable CI Staff","employment_status"=>"active"]);
+          }
+          echo "Disposable HTTP identities ready (no Task rows seeded).\n";
+          
+          KURT_PHP
+          APP_ENV=local SESSION_DRIVER=file php /tmp/kurt-r2-fixtures.php
+          npm ci --no-audit --no-fund > "$dir/npm-install.log" 2>&1
+          npm run build > "$dir/frontend-build.log" 2>&1
+          APP_ENV=local APP_DEBUG=false SESSION_DRIVER=file php artisan serve --host=127.0.0.1 --port=8765 > "$dir/real-http-server.log" 2>&1 &
+          pid=$!
+          trap 'kill "$pid" 2>/dev/null || true' EXIT
+          ready=0
+          for attempt in $(seq 1 60); do
+            code=$(curl --max-time 3 -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8765/login || true)
+            if [ "$code" = "200" ]; then ready=1; break; fi
+            sleep 1
+          done
+          test "$ready" = "1" || { echo "::error::Non-testing Laravel login unavailable"; exit 1; }
+          cat > /tmp/kurt-r2-http.py <<'KURT_PY'
+          import base64, hashlib, hmac, http.cookiejar, json, os, subprocess, sys, time
+          import urllib.error, urllib.parse, urllib.request
+          
+          ROOT = "http://127.0.0.1:8765"
+          PW = os.environ["KURT_TEST_PASSWORD"]
+          SECRET = os.environ["KURT_TEST_MFA"]
+          RECORDS = []
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, req, fp, code, msg, headers, newurl): return None
+          class Client:
+              def __init__(self):
+                  self.jar = http.cookiejar.CookieJar()
+                  self.opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(self.jar), NoRedirect)
+              def send(self, method, path, payload=None, use_csrf=True, accept="application/json"):
+                  hdr = {"Accept": accept}
+                  if payload is not None:
+                      data = json.dumps(payload).encode() if accept == "application/json" else urllib.parse.urlencode(payload).encode()
+                      hdr["Content-Type"] = "application/json" if accept == "application/json" else "application/x-www-form-urlencoded"
+                  else: data = None
+                  xsrf = next((c.value for c in self.jar if c.name == "XSRF-TOKEN"), None)
+                  if use_csrf and xsrf and method not in ("GET","HEAD"):
+                      hdr["X-XSRF-TOKEN"] = urllib.parse.unquote(xsrf)
+                  req=urllib.request.Request(ROOT+path, data=data, method=method, headers=hdr)
+                  try: resp=self.opener.open(req, timeout=15)
+                  except urllib.error.HTTPError as err: resp=err
+                  body=resp.read()
+                  try: value=json.loads(body)
+                  except (ValueError,UnicodeDecodeError): value={}
+                  return resp.code,dict(resp.headers),value,body
+          def check(tag, response, wanted, json_type=False):
+              code,headers,value,body=response
+              if code!=wanted: raise AssertionError(f"{tag}: HTTP {code}, expected {wanted}, error={value.get('message','[not JSON]') if isinstance(value,dict) else '[not JSON]'}")
+              if json_type and "application/json" not in headers.get("Content-Type","").lower(): raise AssertionError(f"{tag}: non-JSON Content-Type")
+              RECORDS.append(f"{tag}={code}")
+              return response
+          def location(r):
+              return urllib.parse.urlparse(r[1].get("Location","")).path
+          def totp():
+              key=base64.b32decode(SECRET,casefold=True)
+              tick=int(time.time())//30
+              msg=tick.to_bytes(8,"big")
+              mac=hmac.new(key,msg,hashlib.sha1).digest()
+              offset=mac[-1]&15
+              token=int.from_bytes(mac[offset:offset+4],"big")&0x7fffffff
+              return f"{token%1000000:06d}"
+          def login(client,email):
+              check("login_page",client.send("GET","/login",accept="text/html"),200)
+              r=check("login_post",client.send("POST","/login",{"email":email,"password":PW},accept="text/html"),302)
+              if not any(c.name=="laravel_session" for c in client.jar): raise AssertionError("No server-issued Laravel session cookie")
+              RECORDS.append("REAL_COOKIE=PASS")
+              return location(r)
+          def challenge(client):
+              r=check("mfa_challenge_get",client.send("GET","/security/mfa/challenge",accept="text/html"),200)
+              r=check("mfa_challenge_post",client.send("POST","/security/mfa/challenge",{"code":totp()},accept="text/html"),302)
+              RECORDS.append("REAL_TOTP=PASS")
+              return location(r)
+          
+          # GUEST + CSRF: no fabricated session, no force authentication.
+          guest=Client()
+          check("guest_tasks",guest.send("GET","/tasks"),401,True)
+          check("csrf_less_post",guest.send("POST","/tasks",{"title":"Must reject"},use_csrf=False),419,True)
+          
+          # Case A: legitimate browser destination stored before password login.
+          a=Client()
+          r=check("A_guest_browser_intent",a.send("GET","/messages",accept="text/html"),302)
+          if location(r)!="/login": raise AssertionError("Guest browser destination not protected")
+          if login(a,"c1-kurt-owner@example.test")!="/security/mfa/challenge": raise AssertionError("MFA challenge not requested after password")
+          r=check("A_pending_tasks",a.send("GET","/tasks"),403,True)
+          if r[2].get("code")!="MFA_REQUIRED" or r[2].get("next_url")!="/security/mfa/challenge": raise AssertionError("Task MFA response changed")
+          if challenge(a)!="/messages": raise AssertionError("Case A intended browser destination was lost")
+          r=check("A_browser_destination",a.send("GET","/messages",accept="text/html"),200)
+          if "text/html" not in r[1].get("Content-Type",""): raise AssertionError("Non-task Inertia navigation changed")
+          RECORDS.append("A_BROWSER_INTENT_PRESERVED=PASS")
+          
+          # Actual write sequence, with CSRF token from server-issued XSRF-TOKEN cookie.
+          check("task_list",a.send("GET","/tasks"),200,True)
+          r=check("task_create",a.send("POST","/tasks",{"title":"Kurt exact R2 HTTP validation"}),201,True)
+          tid=r[2]["data"]["id"]
+          check("task_show",a.send("GET",f"/tasks/{tid}"),200,True)
+          check("reject_complete_before_start",a.send("POST",f"/tasks/{tid}/complete",{}),422,True)
+          check("reject_invalid_actor",a.send("POST",f"/tasks/{tid}/start",{"actor_user_id":999}),422,True)
+          check("reject_invalid_state",a.send("POST","/tasks",{"title":"Rejected","state":"completed"}),422,True)
+          r=check("task_start",a.send("POST",f"/tasks/{tid}/start",{}),200,True)
+          if r[2]["data"]["state"]!="in_progress": raise AssertionError("Task did not transition to in_progress")
+          r=check("task_complete",a.send("POST",f"/tasks/{tid}/complete",{}),200,True)
+          if r[2]["data"]["state"]!="completed": raise AssertionError("Task did not complete")
+          check("reject_restart_completed",a.send("POST",f"/tasks/{tid}/start",{}),422,True)
+          r=check("task_refetch",a.send("GET",f"/tasks/{tid}"),200,True)
+          if r[2]["data"]["state"]!="completed": raise AssertionError("State lost on refetch")
+          RECORDS.append("HTTP_CSRF_WRITE=PASS")
+          RECORDS.append("REFETCH_PERSISTENCE=PASS")
+          
+          # Case B: no prior protected-browser navigation; Task GET cannot create intent.
+          b=Client()
+          if login(b,"c1-kurt-foreign@example.test")!="/security/mfa/challenge": raise AssertionError("Case B MFA challenge absent")
+          r=check("B_pending_tasks",b.send("GET","/tasks"),403,True)
+          if r[2].get("next_url")!="/security/mfa/challenge": raise AssertionError("Case B next_url invalid")
+          if challenge(b)!="/dashboard": raise AssertionError("Case B invented an intended browser destination")
+          RECORDS.append("B_NO_TASK_INTENT=PASS")
+          check("foreign_owner_concealed",b.send("GET",f"/tasks/{tid}"),404,True)
+          check("foreign_start_concealed",b.send("POST",f"/tasks/{tid}/start",{}),404,True)
+          
+          # Case C: non-Task Inertia protected GET must retain prior redirect behavior.
+          c=Client()
+          if login(c,"c1-kurt-owner@example.test")!="/security/mfa/challenge": raise AssertionError("Case C MFA challenge absent")
+          r=check("C_normal_browser_pending",c.send("GET","/calendar",accept="text/html"),302)
+          if location(r)!="/security/mfa/challenge": raise AssertionError("Case C should redirect, not JSON 403")
+          if challenge(c)!="/calendar": raise AssertionError("Case C intended non-Task destination not preserved")
+          RECORDS.append("C_NON_TASK_NAVIGATION=PASS")
+          
+          # An already signed-in account is deactivated in the disposable test database.
+          inactive=Client()
+          if login(inactive,"c1-kurt-inactive@example.test")!="/dashboard": raise AssertionError("Normal employee login changed")
+          disable=r'''<?php
+          require "vendor/autoload.php";
+          $app=require "bootstrap/app.php";
+          $app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+          \App\Models\User::query()->where("email","c1-kurt-inactive@example.test")->update(["is_active"=>false]);
+          '''
+          subprocess.run(["php"],input=disable,text=True,check=True,env={**os.environ,"APP_ENV":"local","SESSION_DRIVER":"file"},stdout=subprocess.DEVNULL)
+          check("inactive_signed_in_tasks",inactive.send("GET","/tasks"),401,True)
+          
+          # Database read-back: verify creator authority, persisted state and exactly the three TaskEvents.
+          inspection=r'''<?php
+          require "vendor/autoload.php";
+          $app=require "bootstrap/app.php";
+          $app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+          $id=(int)getenv("KURT_CREATED_TASK_ID");
+          $t=\App\Models\Task::findOrFail($id);
+          $owner=\App\Models\User::query()->where("email","c1-kurt-owner@example.test")->firstOrFail();
+          $events=\App\Models\TaskEvent::query()->where("task_id",$id)->orderBy("id")->get();
+          echo json_encode(["state"=>$t->state,"creator_match"=>(int)$t->created_by_user_id===(int)$owner->id,"actions"=>$events->pluck("action")->all(),"actors_match"=>$events->every(fn($event)=>(int)$event->actor_user_id===(int)$owner->id)]);
+          '''
+          out=subprocess.check_output(["php"],input=inspection.encode(),env={**os.environ,"APP_ENV":"local","SESSION_DRIVER":"file","KURT_CREATED_TASK_ID":str(tid)})
+          detail=json.loads(out)
+          if detail!={"state":"completed","creator_match":True,"actions":["created","start","complete"],"actors_match":True}: raise AssertionError("Task persistence / TaskEvent actor verification failed")
+          RECORDS.append("DB_PERSISTENCE=PASS")
+          RECORDS.append("TASK_EVENTS=created,start,complete")
+          RECORDS.append("SERVER_ACTOR_IDENTITY=PASS")
+          with open("storage/app/qa/a01-c1-exact/real-http-status.txt","w") as f:
+              f.write("REAL_HTTP_METHOD=cookie-jar HTTP integration; NOT browser E2E\n")
+              f.write("RUNTIME_APP_ENV=local\n")
+              f.write("SECRETS=REDACTED/NOT CAPTURED\n")
+              f.write("\n".join(RECORDS)+"\n")
+          print("REAL_HTTP_INTEGRATION_PASS: cookie+CSRF+genuine TOTP+tasks+negative cases+persisted events")
+          
+          KURT_PY
+          python3 /tmp/kurt-r2-http.py
+          {
+            echo "REAL_HTTP_EXIT=0"
+            echo "REAL_HTTP_SESSION=PASS"
+            echo "REAL_HTTP_CSRF=PASS"
+            echo "REAL_HTTP_GENUINE_MFA=PASS"
+            echo "REAL_HTTP_PERSISTENCE_AND_EVENTS=PASS"
+          } >> "$dir/manifest.txt"
 
       - name: Upload validation evidence (also on failure)
         if: always()
