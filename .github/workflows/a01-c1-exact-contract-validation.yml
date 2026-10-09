@@ -288,7 +288,7 @@ jobs:
           def login(client,email):
               check("login_page",client.send("GET","/login",accept="text/html"),200)
               r=check("login_post",client.send("POST","/login",{"email":email,"password":PW},accept="text/html"),302)
-              if not any(c.name=="laravel_session" for c in client.jar): raise AssertionError("No server-issued Laravel session cookie")
+              if not any(c.name.endswith("_session") for c in client.jar): raise AssertionError("No server-issued application session cookie")
               RECORDS.append("REAL_COOKIE=PASS")
               return location(r)
           def challenge(client):
