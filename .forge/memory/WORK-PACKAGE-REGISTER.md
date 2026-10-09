@@ -8,7 +8,7 @@ This is the **canonical backend package start/close index**. Governing rules: [W
 | --- | --- | --- | --- |
 | `COMMON-CORE-CTRL-001` | **START — protocol being published**; not an accepted whole-system release | [Hub #63](https://github.com/Project-Intra-Smithy/engineering-hub/issues/63) | Docs-only protocol/memory on backend; verify this commit and crosslink it into #63. Stewardship continues until adopted in owning lanes. |
 | `A01-W04` | **CLOSE — KIRCH ACCEPTED / NO-CODE** (10 Oct 2026) | [Hub #21 acceptance](https://github.com/Project-Intra-Smithy/engineering-hub/issues/21#issuecomment-6085638333), [NOX evidence](https://github.com/Project-Intra-Smithy/engineering-hub/issues/21#issuecomment-6083235612) | Executable C1 `b9a4ad3ed6e72ae3a5cb1a4108ebae06eedaec26`, unchanged through pre-close `4d628b56251fcda3822d481d1fb5ef33959eb530` (docs only); event evidence accepted. Next W05 #22 PostgreSQL/HTTP verification; not W05 PASS or A01 acceptance. |
-| `A01-W05` | **STAGED / START NOT YET AUTHORIZED** | [Hub #22](https://github.com/Project-Intra-Smithy/engineering-hub/issues/22), [prepared evidence scope](https://github.com/Project-Intra-Smithy/engineering-hub/issues/22#issuecomment-6083367828) | Await W04 disposition; then issue + repo-memory START sync, independent bounded PostgreSQL/HTTP verification. No fresh W05 CI claimed. |
+| `A01-W05` | **START — AUTHORIZED / EVIDENCE EXECUTION PENDING** (10 Oct 2026) | [Hub #22 START](https://github.com/Project-Intra-Smithy/engineering-hub/issues/22#issuecomment-6085702508), [detailed runner scope](https://github.com/Project-Intra-Smithy/engineering-hub/issues/22#issuecomment-6083367828) | Pre-START `main@dc7ce74b5de0cade668eab6efd700a1b3b51c2f4`, executable C1 anchor `b9a4ad3ed6e72ae3a5cb1a4108ebae06eedaec26` (docs-only difference); Kurt to execute fresh disposable PostgreSQL/HTTP/migration/Work Request evidence; Kirch to review. No W05 CI/QA PASS. |
 
 ## CLOSE / A01-W04 / 2026-10-10 — NO-CODE ACCEPTED
 
@@ -20,6 +20,17 @@ This is the **canonical backend package start/close index**. Governing rules: [W
 - **Not awarded:** W05 backend acceptance, A01-I01 cross-repo integration, Kurt CI01, Siris QA01, full A01 technical acceptance, LGU UAT or production.
 - **NEXT:** [W05 #22](https://github.com/Project-Intra-Smithy/engineering-hub/issues/22) approved for evidence verification; publish both issue and backend-memory START and test against exact checked-out SHA, disposable PostgreSQL, real non-testing session boundary where safely supported. Kurt owns runner evidence; Kirch owns review.
 - **Crosslink:** issue decision comment above; the Git commit containing this CLOSE entry is posted back to #21 before issue closure.
+
+## START / A01-W05 / 2026-10-10 — BOUNDED VERIFICATION RELEASED
+
+- **Kirch authorization:** `ACCEPT W04 NO-CODE. AUTHORIZE W05 VERIFICATION.` W04 [closed with synced memory](https://github.com/Project-Intra-Smithy/engineering-hub/issues/21). This is W05 execution authority, not W05 test PASS.
+- **Owning issue / START:** [Engineering Hub #22, START comment #6085702508](https://github.com/Project-Intra-Smithy/engineering-hub/issues/22#issuecomment-6085702508). [Detailed runner package #6083367828](https://github.com/Project-Intra-Smithy/engineering-hub/issues/22#issuecomment-6083367828). **Accountable:** Kirch; **evidence runner:** Kurt (`@k3nchinxd`); **independent QA:** Siris at separate A01-QA01.
+- **Exact source:** backend `main@dc7ce74b5de0cade668eab6efd700a1b3b51c2f4` at START preflight; C1 accepted executable `b9a4ad3ed6e72ae3a5cb1a4108ebae06eedaec26`, 5 docs-only commits ahead, no changed PHP, migrations, tests or workflow code. Reverify final memory commit/execution checkout SHA before running.
+- **Scope/required checks:** isolated PostgreSQL forward/rollback/recovery safety and FK/index inspection, TaskDomainFoundation/TaskCoreService/TaskConcurrentConnection/IndividualTaskHttp/TaskJsonContractBoundary tests, Work Request/Correspondence regression, ownership/MFA/session/CSRF/throttle and JSON negatives, query/index/privacy evidence. Non-testing HTTP proof must be separately observed; mark unrun work `NOT RUN`. Reference full matrix in issue START.
+- **Safety:** disposable `APP_ENV=testing` and `talibon_portal_test` as existing test-harness guard; never perform destructive database tests on shared/protected instances. No Laravel source changes, new Task event mechanism, central `AuditLog` projection, frontend contract revision, privileged workflow/municipal rule invention, deploy, new branches or merges authorized by this evidence-only package.
+- **Historical carried evidence:** exact-product [C1 run 37898947831](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/actions/runs/37898947831), 78 tests / 655 assertions PASS = `CARRIED`, **not** W05 verification results.
+- **Exit:** attach `W05_BACKEND_ACCEPTANCE_EVIDENCE` to #22 with exact checkout SHA, real command lines/run IDs/counts/artifacts, negatives, DB proof and `READY_FOR_KIRCH_REVIEW` or `REWORK/HOLD`. Then paired issue/memory CLOSE; do not close W05 until actual review and sync.
+- **Next:** Kurt produces the verified evidence; Kirch reviews the exact report. If no executable runtime/session is available, log `BLOCKED / NOT RUN` and the specific missing runner condition rather than claiming execution.
 
 ## Update instructions
 
