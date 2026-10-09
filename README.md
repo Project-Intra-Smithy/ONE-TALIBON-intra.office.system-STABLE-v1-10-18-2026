@@ -1,6 +1,6 @@
 # ONE TALIBON — Frontend Workspace
 
-**Status:** Bootstrap only. Existing login/dashboard code has not been imported.
+**Status:** Existing frontend source **STAGED ON A DRAFT IMPORT BRANCH ONLY** for FRONTEND-REG-001. Not merged into `main`, not yet build/browser accepted.
 
 This is the development repository for AJ (`@rynzz22`) and Jhayr (`@kyumw3b`). Kirch (`@Kirch-Nairu`) reviews contracts and integration.
 
@@ -28,4 +28,6 @@ Existing UI work can progress without the Task API. **Do not invent endpoints, p
 - [Existing-work import register](docs/FRONTEND_IMPORT_REGISTER.md)
 - [Backend contract intake](docs/BACKEND_CONTRACT_INTAKE.md)
 
-**Current state:** No imported application, build result, Task API integration or production release is claimed.
+**Current state:** Existing Laravel/Inertia React frontend files have been staged in [FRONTEND-REG-001 draft staging branch](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/tree/KIRCH-TALIBON-FRONTEND-REG-001-EXISTING-UI-STAGING-R1). Build/CI and authenticated browser compatibility are **unverified until actual evidence appears**; `main` remains a docs-only bootstrap. A01 Task frontend integration and production release are **not** claimed.
+
+[Staging setup, included/excluded modules and verification gates](docs/STAGED_FRONTEND_RUNTIME.md).
