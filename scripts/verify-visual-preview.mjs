@@ -39,7 +39,11 @@ try {
             page.on('pageerror', error => errors.push(error.message));
             await page.goto(`${root}/visual-preview.html?screen=${screen}`, { waitUntil: 'networkidle' });
             await page.locator('#visual-fixture-label strong').getByText('VISUAL FIXTURE').waitFor();
-            await page.locator('#app h1, #app h2').first().waitFor();
+            try { await page.locator('#app h1, #app h2').first().waitFor({ timeout: 8000 }); }
+            catch {
+                await page.screenshot({ path: `${out}/${mode}-${screen}-failure.png`, fullPage: true });
+                throw new Error(`${mode}/${screen} did not mount: ${errors.join('; ') || (await page.locator('body').innerText()).slice(0, 500)}; server: ${serverOutput.slice(-500)}`);
+            }
             if (await page.getByRole('heading', { name: 'Something went wrong' }).count()) errors.push('Application error boundary rendered');
             const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
             if (overflow > 1) errors.push(`Horizontal overflow ${overflow}px`);
