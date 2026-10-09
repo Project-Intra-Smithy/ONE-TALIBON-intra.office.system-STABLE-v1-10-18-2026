@@ -396,6 +396,18 @@ jobs:
             echo "REAL_HTTP_PERSISTENCE_AND_EVENTS=PASS"
           } >> "$dir/manifest.txt"
 
+      - name: Remove secret-bearing HTTP headers from evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=storage/app/qa/a01-c1-exact
+          rm -f "$dir"/http-guest-headers.txt "$dir"/http-csrf-headers.txt
+          if test -d "$dir" && grep -Ril -E 'Set-Cookie:|XSRF-TOKEN=' "$dir" > /dev/null; then
+            echo "::error::Evidence contains cookie-bearing material; refusing artifact publication"
+            exit 1
+          fi
+
       - name: Upload validation evidence (also on failure)
         if: always()
         uses: actions/upload-artifact@v4
