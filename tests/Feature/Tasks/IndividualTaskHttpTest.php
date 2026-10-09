@@ -109,16 +109,14 @@ final class IndividualTaskHttpTest extends TestCase
         $id = $this->postJson('/tasks', ['title' => 'Private'])->assertCreated()->json('data.id');
 
         [$stranger] = $this->staff('stranger');
+        // TestCase::actingAs fulfills MFA for privileged test users. Exercise
+        // the *real* configured role; it grants no cross-person Task rights.
         $stranger->forceFill(['role' => 'mayor_approver'])->save();
-        // This privileged role requires MFA; do not bypass it to demonstrate
-        // access as a different actor. Instead use an unprivileged actor with
-        // an executive-looking but non-privileged free-text role.
-        $stranger->forceFill(['role' => 'mayor'])->save();
         $this->actingAs($stranger);
 
         $this->getJson('/tasks')->assertOk()->assertJsonCount(0, 'data');
         $this->getJson('/tasks/'.$id)->assertNotFound();
-        $this->postJson('/tasks/'.$id.'/start')->assertForbidden();
+        $this->postJson('/tasks/'.$id.'/start')->assertNotFound();
         $this->assertSame(1, TaskEvent::query()->where('task_id', $id)->count());
         $this->assertSame('open', Task::query()->findOrFail($id)->state);
     }
