@@ -1,0 +1,53 @@
+name: Retire merged frontend branches (one-shot)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/_retire-merged-branches-once.yml'
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  retire:
+    if: ${{ github.repository == 'Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE' }}
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      EXPECTED_PREVIOUS_MAIN: 'fbf6568790009856a0285bc55ed7e8cb152add93'
+    steps:
+      - name: Verify original refs and PR before cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "${GITHUB_EVENT_NAME}" == "push" && "${GITHUB_REF}" == "refs/heads/main" ]]
+          [[ "${{ github.event.before }}" == "${EXPECTED_PREVIOUS_MAIN}" ]] || { echo 'Unexpected main drift'; exit 1; }
+          names=(
+            'KIRCH-TALIBON-FRONTEND-ALL-CONTRACTS-PACK-R1'
+            'KIRCH-TALIBON-FRONTEND-REG-001-BOOTSTRAP-R1'
+            'KIRCH-TALIBON-FRONTEND-REG-001-EXISTING-UI-STAGING-R1'
+            'KIRCH-TALIBON-LUCIEN-CONTRACT-TRUTH-EVIDENCE-R1'
+          )
+          expected=(
+            'bab1f4563b903d7d9810590cd0e3ce6628db8611'
+            '7ea6ef221d81ad8423e3df0ff591cae343302f86'
+            'd5ddd92d22c8b3274469ead8b9e04071eeaf9b71'
+            'cb7678618ca9be404468484caacfc771113ad1d4'
+          )
+          pr=$(gh api "repos/${GITHUB_REPOSITORY}/pulls/6" --jq '[.state,.draft,.head.ref,.head.sha] | @tsv')
+          [[ "${pr}" == "$(printf 'open\ttrue\tKIRCH-TALIBON-UI-STAGE-001-WORK-R1\t24105a5e54926e0eddc170b06752056b85b4d0a1')" ]] || { echo 'Active PR #6 changed'; exit 1; }
+          open=$(gh api "repos/${GITHUB_REPOSITORY}/pulls?state=open&per_page=100" --jq '[.[] | .head.ref] | join(",")')
+          [[ "${open}" == 'KIRCH-TALIBON-UI-STAGE-001-WORK-R1' ]] || { echo 'Unexpected open PR'; exit 1; }
+          for i in "${!names[@]}"; do
+            name="${names[$i]}"
+            actual=$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/${name}" --jq '.object.sha')
+            ahead=$(gh api "repos/${GITHUB_REPOSITORY}/compare/main...${name}" --jq '.ahead_by')
+            [[ "${actual}" == "${expected[$i]}" && "${ahead}" == '0' ]] || { echo "Ref drift: ${name}"; exit 1; }
+            echo "Verified ${name}"
+          done
+          for name in "${names[@]}"; do
+            gh api -X DELETE "repos/${GITHUB_REPOSITORY}/git/refs/heads/${name}"
+            echo "Deleted ${name}"
+          done
