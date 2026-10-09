@@ -51,7 +51,7 @@ jobs:
       - name: Checkout exact C1 product source (not CI harness)
         uses: actions/checkout@v4
         with:
-          ref: dc6fc19afae62b05c295e57b958f8176b2ab5de1
+          ref: e72abfd1340451c4f857fd3534e28cb518e868bd
           fetch-depth: 0
           persist-credentials: false
 
@@ -60,8 +60,8 @@ jobs:
         run: |
           set -euo pipefail
           test "$GITHUB_REF" = "refs/heads/KIRCH-TALIBON-A01-C1-CI-VALIDATION-KURT"
-          test "$GITHUB_SHA" != "dc6fc19afae62b05c295e57b958f8176b2ab5de1"
-          test "$(git rev-parse HEAD)" = "dc6fc19afae62b05c295e57b958f8176b2ab5de1"
+          test "$GITHUB_SHA" != "e72abfd1340451c4f857fd3534e28cb518e868bd"
+          test "$(git rev-parse HEAD)" = "e72abfd1340451c4f857fd3534e28cb518e868bd"
           # actions/checkout fetched all refs; credentials deliberately remain disabled.
           git show-ref --verify --quiet refs/remotes/origin/main
           test "$(git rev-parse origin/main)" = "e49e9b2dafc4cac8869b5099270429d9abf8730e"
@@ -173,7 +173,7 @@ jobs:
           dir=storage/app/qa/a01-c1-exact
           test "$APP_ENV" = "testing"
           test "$DB_DATABASE" = "talibon_portal_test"
-          test "$(git rev-parse HEAD)" = "dc6fc19afae62b05c295e57b958f8176b2ab5de1"
+          test "$(git rev-parse HEAD)" = "e72abfd1340451c4f857fd3534e28cb518e868bd"
           # This probes real Laravel web/CSRF middleware under APP_ENV=local,
           # unlike feature tests whose APP_ENV=testing bypasses CSRF checks.
           APP_ENV=local APP_DEBUG=false SESSION_DRIVER=file php artisan serve --host=127.0.0.1 --port=8765 > "$dir/csrf-server.log" 2>&1 &
