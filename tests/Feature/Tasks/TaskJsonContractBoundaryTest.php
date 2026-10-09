@@ -89,9 +89,9 @@ final class TaskJsonContractBoundaryTest extends TestCase
         // Simulate a session whose MFA assurance was completed elsewhere.
         // This checks post-assurance redirection, not OTP verification.
         $this->withSession([
-            \\App\\Services\\AuthenticationAssurance::SESSION_USER_KEY => $actor->id,
-            \\App\\Services\\AuthenticationAssurance::SESSION_VERSION_KEY => 1,
-            \\App\\Services\\AuthenticationAssurance::SESSION_VERIFIED_AT_KEY => now()->getTimestamp(),
+            \App\Services\AuthenticationAssurance::SESSION_USER_KEY => $actor->id,
+            \App\Services\AuthenticationAssurance::SESSION_VERSION_KEY => 1,
+            \App\Services\AuthenticationAssurance::SESSION_VERIFIED_AT_KEY => now()->getTimestamp(),
         ]);
         $this->get('/security/mfa/challenge')->assertRedirect($destination);
     }
@@ -109,7 +109,7 @@ final class TaskJsonContractBoundaryTest extends TestCase
 
     public function test_json_accept_boundary_does_not_rewrite_non_task_requests(): void
     {
-        $middleware = new \\App\\Http\\Middleware\\EnsureTaskJsonAccept();
+        $middleware = new \App\Http\Middleware\EnsureTaskJsonAccept();
 
         foreach (['/login', '/dashboard', '/api/v1/example', '/tasks-export'] as $path) {
             $request = Request::create($path, 'GET');
