@@ -34,6 +34,7 @@ use App\Http\Controllers\RecordsController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionLiveController;
+use App\Http\Controllers\Tasks\IndividualTaskController;
 use App\Http\Controllers\TravelOrderController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -74,6 +75,16 @@ Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
     Route::get('/employees', EmployeeDirectoryController::class)->name('employees.index');
     Route::get('/employees/{employee}', EmployeeProfileController::class)->name('employees.show');
     Route::get('/calendar', CalendarController::class)->name('calendar.index');
+
+    // W03: same-origin session-authenticated *individual* Task JSON surface.
+    // This group already enforces auth, active account and MFA assurance.
+    Route::prefix('tasks')->name('tasks.')->middleware('throttle:60,1')->group(function (): void {
+        Route::get('/', [IndividualTaskController::class, 'index'])->name('index');
+        Route::post('/', [IndividualTaskController::class, 'store'])->name('store');
+        Route::get('/{task}', [IndividualTaskController::class, 'show'])->whereNumber('task')->name('show');
+        Route::post('/{task}/start', [IndividualTaskController::class, 'start'])->whereNumber('task')->name('start');
+        Route::post('/{task}/complete', [IndividualTaskController::class, 'complete'])->whereNumber('task')->name('complete');
+    });
     Route::get('/operations', OperationsMonitoringController::class)->name('operations.index');
 
     Route::get('/announcements', fn () => Inertia::render('Announcements/Index'))->name('announcements.index');
