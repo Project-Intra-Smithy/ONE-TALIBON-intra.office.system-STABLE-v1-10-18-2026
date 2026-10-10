@@ -21,6 +21,7 @@ import {
     Settings,
     UserCog,
     Users,
+    type LucideIcon,
 } from 'lucide-react';
 
 import type { NavigationPermissions, WorkspaceExperience } from '../types';
