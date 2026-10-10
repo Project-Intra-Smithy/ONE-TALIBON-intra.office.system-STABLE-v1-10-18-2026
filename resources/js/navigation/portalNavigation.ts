@@ -22,6 +22,8 @@ type DestinationDefinition = {
     icon: LucideIcon;
     permission: DestinationKey;
     requiresReports?: boolean;
+    group?: string;
+    readiness?: 'wired' | 'integration_pending';
 };
 
 type GroupDefinition = {
@@ -30,7 +32,8 @@ type GroupDefinition = {
 };
 
 export type PortalNavigationItem = DestinationDefinition;
-export type PortalNavigationGroup = { label: string; items: PortalNavigationItem[] };
+export type PortalNavigationGroup = { key: string; label: string; items: PortalNavigationItem[] };
+
 
 export const portalDestinations: Record<DestinationKey, DestinationDefinition> = {
     dashboard: { key: 'dashboard', label: 'Overview', href: '/dashboard', icon: LayoutDashboard, permission: 'dashboard' },
@@ -88,6 +91,13 @@ const fallbackGroups: GroupDefinition[] = [{
     ],
 }];
 
+// Backend-native consumers retain this export during the staged navigation
+// migration. It is derived from the candidate's actual destinations rather
+// than advertising routes which the current bundle cannot render.
+export const plannedPortalDestinations: Array<DestinationDefinition & { group: string; readiness: 'wired' }> = fallbackGroups[0].destinations
+    .map((key) => portalDestinations[key])
+    .map((destination) => ({ ...destination, group: 'navigation', readiness: 'wired' }));
+
 const dashboardLabels: Record<WorkspaceExperience, string> = {
     employee: 'Overview',
     department_head: 'Office Overview',
@@ -104,6 +114,7 @@ export function buildPortalNavigation(
 
     return definitions
         .map((group): PortalNavigationGroup => ({
+            key: group.label.toLowerCase().replace(/\s+/g, '_'),
             label: group.label,
             items: group.destinations
                 .map((key) => portalDestinations[key])

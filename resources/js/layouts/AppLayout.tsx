@@ -10,7 +10,7 @@ import { useVisiblePolling } from '../hooks/useVisiblePolling';
 import { buildPortalNavigation } from '../navigation/portalNavigation';
 import type { LiveNotification, NotificationFeed, SharedProps } from '../types';
 
-type Props = PropsWithChildren<{ title: string }>;
+type Props = PropsWithChildren<{ title: string; presentation?: 'standard' | 'dashboard' | string }>;
 
 const SIDEBAR_COLLAPSED_STORAGE_KEY = 'talibon.sidebar.collapsed';
 
@@ -33,7 +33,7 @@ function relativeTime(value?: string | null): string {
     return new Date(value).toLocaleString();
 }
 
-export default function AppLayout({ title, children }: Props) {
+export default function AppLayout({ title, presentation = 'standard', children }: Props) {
     const page = usePage<SharedProps>();
     const pageProps = page.props;
     const { auth, flash } = pageProps;
@@ -190,7 +190,7 @@ export default function AppLayout({ title, children }: Props) {
         <>
             <Head title={title} />
             <a href="#portal-content" className="sr-only z-[80] rounded bg-white p-3 text-blue-900 focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to content</a>
-            <div
+            <div data-presentation={presentation}
                 className={`min-h-screen bg-[var(--municipal-canvas)] text-slate-900 transition-colors dark:bg-[#0d1624] dark:text-slate-100 lg:grid lg:transition-[grid-template-columns] lg:duration-150 lg:ease-out motion-reduce:transition-none ${
                     desktopCollapsed
                         ? 'lg:grid-cols-[72px_minmax(0,1fr)]'
