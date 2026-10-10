@@ -1,0 +1,56 @@
+# ONE TALIBON FRONTEND — WORK PACKAGE CONTINUITY
+
+**Paired START/CLOSE policy:** [KIRION FORGE canonical protocol](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/blob/46b0de3dc1e994d5456f3ecc0902a3265eedcbf6/.forge/memory/WORK-PACKAGE-START-CLOSE-PROTOCOL.md). **Cross-phase stewardship:** [Engineering Hub #63](https://github.com/Project-Intra-Smithy/engineering-hub/issues/63). This file is the **frontend repo memory index** required for cross-session handoffs; backend memory and frontend memory are not substitutes for one another.
+
+**For every new or resumed frontend task:** write an issue `START` with exact `main` SHA, scope, authorized contracts, owner, tests and single NEXT; write a matching short `START` entry below before executing, then comment the memory commit back to the issue. For each acceptance/closure: issue `CLOSE` + memory `CLOSE`, test evidence, outstanding defects and linked next owner, then verify both before closing issue. Partial writes = `SYNC_REQUIRED / HOLD`. No all-purpose audit of unrelated capability families.
+
+## Existing work at installation (10 October 2026)
+
+| Work | Status and actual evidence | Required continuation |
+| --- | --- | --- |
+| [FRONTEND-REG-001 #1](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/1) | **OPEN**; baseline `main@b018d23d4608f343d179710d4af610b4a473238c`; contributor registration and real Laravel browser integration not yet accepted | Continue with AJ/Jhayr contributions and record next milestone START/CLOSE pair; verify changed source SHA |
+| [UI-STAGE-001 draft PR #6](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/pull/6) | **DRAFT/UNMERGED**, head `24105a5e54926e0eddc170b06752056b85b4d0a1`; fixture/TypeScript/build CI passed; actual authenticated integration NOT RUN | Do not overwrite or merge. At next review, checkpoint exact updated SHA and missing Laravel roles/browser evidence on owning issue and memory |
+| [UI-VISUAL-001 draft stacked PR #7](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/pull/7) | **DRAFT/UNMERGED**, head `0f9a034149243c6ba599e39eb14ecf8a4022e64c`; stacks on PR #6, fixture screenshots and browser CI; not production acceptance | Resolve visual-review findings and backend-mounted UI verification separately; coordinate PR #6 ordering; sync before formal close |
+
+**Initial entries reflect already-running historical work, not retroactively certified START/CLOSE pairs.** No source, acceptance or Project board changes are granted by this documentation.
+
+## Template for every future row / checkpoint
+
+```md
+### START | CHECKPOINT | CLOSE — <work ID> — <UTC date>
+- Owning issue / authority / accountable owner:
+- Source main@SHA / candidate branch@SHA / PR:
+- Actual verified implementation and contracts:
+- Scope, non-goals and locked invariants:
+- Run/test evidence: PASS/FAIL/NOT RUN (exact CI/screenshot URL):
+- Blocking safety or authority needs:
+- Deferred work + owner + next trigger:
+- Next single action and receiving lane:
+- Matching issue comment and memory commit URL:
+```
+
+Accepted historical records are immutable provenance. Append subsequent changes; do not silently edit source claims or assert successful browser integration from synthetic fixtures alone.
+
+
+### START — FRONTEND-REG-001 / 2026-10-10 / KIRCH CONTINUATION
+- **Owning issue/decision:** [FRONTEND-REG-001 #1 Kirch START #6093612346](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/1#issuecomment-6093612346). Kirch Technical Authority; human Jhayr (`kyumw3b`) coordination and human AJ (`rynzz22`) real contribution provenance; Nox independent review; Jane backend producer advisory.
+- **Pinned source at START:** official frontend `main@7e8eecca4daf3cedec43f774dc8533dd0ad53219`; backend `Project-Intra-Smithy/Talibon-Sales-Prototype@92778ba06d992c278177e0354014ab1b77dbea82` READ ONLY; isolated reference `The-Kirion-Smithy/ONE-TALIBON-LUCIEN-FRONTEND@744db7b6d568dbe0e39e80ed82a244d57f33d4f8`. No code source branch created by this START.
+- **Preserved candidates:** [official draft #6](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/pull/6) at `24105a5e54926e0eddc170b06752056b85b4d0a1` and its [draft stacked #7](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/pull/7) at `0f9a034149243c6ba599e39eb14ecf8a4022e64c`, both hosted build checks success; actual official authenticated integration still NOT RUN.
+- **Scope released after paired readback:** coordinate true human contributions and original author/source inventory; verify contributor permissions; reconcile current baseline and existing stacked drafts; collect clean disposable authenticated Laravel desktop/mobile/negative-case proof at an exact source tuple; no unreviewed source changes.
+- **Hard holds:** No F01/F02 implementation or Task route rewrites (C1 `/tasks` JSON only); no automatic PR #6/#7 merge, no backend or official production writes, no fabricated municipal flows; backend A01-W01–W05 and C1 already accepted, not reopened.
+- **Access/blockers:** AJ `rynzz22` GitHub permission reported `none`; Jhayr `kyumw3b` returned `null/unconfirmed`; current #1 assignee `catzdevw` identity unverified. Resolve before human code submissions, never impersonate an owner.
+- **Actual tests:** prior official #6 and #7 hosted build checks PASS; authentic official Laravel employee/admin desktop/mobile, Calendar/notifications, MFA/logout/access negatives NOT RUN. Isolated Lucien Codex reported 60 PASS/0 FAIL/3 NOT RUN on a **different scoped assembly**, not transferable as official PR acceptance.
+- **Issue ↔ memory reciprocal proof:** issue START comment #6093612346 links this exact work package; after committing, append resulting memory commit SHA to issue #1 and verify. CLOSE requires independent evidence and Kirch decision; keep #1 open until then.
+- **Single NEXT:** ensure memory START_SYNCED, verify AJ/Jhayr identity/permission and actual source packages, then stage genuine official PR #6/#7 disposable compatibility tests. No Task F01/F02 start.
+
+
+### START — FRONTEND-REG-001-COMPAT-FIX-R2 / 2026-10-11
+- **Issue-side START / authority:** [Issue #8](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/8), Kirch Ivan Balite (`Kirch-Nairu`), accountable human Technical Authority; Codex is AI-assisted executor, actual commit author/committer retained, not impersonating AJ/Jhayr; independent review Kirion-Nox. Parent [FRONTEND-REG-001 #1](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/1).
+- **Branch and pinned SHAs:** new exclusive `forge/frontend-reg-001-laravel-compat-fix-r2` created at stacked [PR #7](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/pull/7) HEAD `0f9a034149243c6ba599e39eb14ecf8a4022e64c` (PR #6 `24105a5e54926e0eddc170b06752056b85b4d0a1` ancestor). Official frontend main `9fff20feeb647c3de140603ad76d775caeaba5db` and canonical backend `Project-Intra-Smithy/Talibon-Sales-Prototype@92778ba06d992c278177e0354014ab1b77dbea82` are READ ONLY for this corrective lane.
+- **Memory ancestry note:** this branch's base predates `docs/WORK_PACKAGE_CONTINUITY.md`. This START creates that file by bringing forward the exact existing frontend `main@9fff20fe...` continuity text and appending this entry, rather than falsely claiming it existed in PR #7 source. Reconcile any later docs overlap before merging; no old START/CLOSE records are changed.
+- **Defect evidence (Codex user-reported only):** backend-native control TS/build PASS; PR #6 native assembly TS FAIL `24`; PR #7 selective stacked native assembly TS FAIL `33` (+9 mainly unsupported `density`); real Laravel/PostgreSQL/Chromium and security checks NOT RUN. Private Windows evidence `C:\dev\TAL\evidence\FRONTEND-REG-001-OFFICIAL-R2`, not independently accessible via GitHub.
+- **Owned path allowlist:** `resources/js/navigation/portalNavigation.ts`, `resources/js/layouts/AppLayout.tsx`, `resources/js/types.ts`, `resources/js/components/PageFrame.tsx`, `resources/js/components/PageHeader.tsx`, conditional `resources/js/navigation/stagedRoutes.ts`, and narrowly scoped `tests/ui-contracts.test.mjs` / `tests/visual-fixtures.test.mjs` / same-purpose tests in `tests/`; this `docs/WORK_PACKAGE_CONTINUITY.md`. No other paths without explicit extension.
+- **Scope:** preserve backend-native navigation builder compatibility, `plannedPortalDestinations`, group key, real permission/destination metadata, `AppLayout.presentation`, legitimate `density` declarations. Do not silence via `any`, `@ts-ignore`, invented route permissions, deleting backend callers or broad backend edits.
+- **Validation:** reproduce baseline; correct all 33 errors using minimal safe patches; require 0 full backend-assembly TS diagnostics, production build, tests, then genuine disposable PostgreSQL/Laravel/Chromium employee/admin responsive UI, MFA/CSRF/authorization negatives; record exact source/version, fixture and 3-state PASS/FAIL/NOT RUN matrices. Standalone hosted PR build is not equivalent proof.
+- **Disposition:** `START / PAIRED MEMORY CROSS-LINK REQUIRED`; implementation writes held until issue #8 references this exact branch memory commit and both verified. Keep existing PR #6/#7 draft/unmerged; corrective PR must be DRAFT targeted to PR #7 branch. No F01/F02, official registration CLOSE, backend edits or production. Kirch final acceptance after NOX review only.
+- **Single NEXT:** Crosslink this memory START commit on issue #8 and independently verify; then release Codex for code repairs on this exclusive branch.
