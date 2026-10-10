@@ -108,7 +108,7 @@ const dashboardLabels: Record<WorkspaceExperience, string> = {
 export function buildPortalNavigation(
     experience: WorkspaceExperience | null,
     permissions: NavigationPermissions,
-    reportsAllowed: boolean,
+    reportsAllowed = false,
 ): PortalNavigationGroup[] {
     const definitions = experience ? experienceGroups[experience] : fallbackGroups;
 
