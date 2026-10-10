@@ -30,3 +30,15 @@
 ```
 
 Accepted historical records are immutable provenance. Append subsequent changes; do not silently edit source claims or assert successful browser integration from synthetic fixtures alone.
+
+
+### START — FRONTEND-REG-001 / 2026-10-10 / KIRCH CONTINUATION
+- **Owning issue/decision:** [FRONTEND-REG-001 #1 Kirch START #6093612346](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/1#issuecomment-6093612346). Kirch Technical Authority; human Jhayr (`kyumw3b`) coordination and human AJ (`rynzz22`) real contribution provenance; Nox independent review; Jane backend producer advisory.
+- **Pinned source at START:** official frontend `main@7e8eecca4daf3cedec43f774dc8533dd0ad53219`; backend `Project-Intra-Smithy/Talibon-Sales-Prototype@92778ba06d992c278177e0354014ab1b77dbea82` READ ONLY; isolated reference `The-Kirion-Smithy/ONE-TALIBON-LUCIEN-FRONTEND@744db7b6d568dbe0e39e80ed82a244d57f33d4f8`. No code source branch created by this START.
+- **Preserved candidates:** [official draft #6](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/pull/6) at `24105a5e54926e0eddc170b06752056b85b4d0a1` and its [draft stacked #7](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/pull/7) at `0f9a034149243c6ba599e39eb14ecf8a4022e64c`, both hosted build checks success; actual official authenticated integration still NOT RUN.
+- **Scope released after paired readback:** coordinate true human contributions and original author/source inventory; verify contributor permissions; reconcile current baseline and existing stacked drafts; collect clean disposable authenticated Laravel desktop/mobile/negative-case proof at an exact source tuple; no unreviewed source changes.
+- **Hard holds:** No F01/F02 implementation or Task route rewrites (C1 `/tasks` JSON only); no automatic PR #6/#7 merge, no backend or official production writes, no fabricated municipal flows; backend A01-W01–W05 and C1 already accepted, not reopened.
+- **Access/blockers:** AJ `rynzz22` GitHub permission reported `none`; Jhayr `kyumw3b` returned `null/unconfirmed`; current #1 assignee `catzdevw` identity unverified. Resolve before human code submissions, never impersonate an owner.
+- **Actual tests:** prior official #6 and #7 hosted build checks PASS; authentic official Laravel employee/admin desktop/mobile, Calendar/notifications, MFA/logout/access negatives NOT RUN. Isolated Lucien Codex reported 60 PASS/0 FAIL/3 NOT RUN on a **different scoped assembly**, not transferable as official PR acceptance.
+- **Issue ↔ memory reciprocal proof:** issue START comment #6093612346 links this exact work package; after committing, append resulting memory commit SHA to issue #1 and verify. CLOSE requires independent evidence and Kirch decision; keep #1 open until then.
+- **Single NEXT:** ensure memory START_SYNCED, verify AJ/Jhayr identity/permission and actual source packages, then stage genuine official PR #6/#7 disposable compatibility tests. No Task F01/F02 start.
