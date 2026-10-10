@@ -59,8 +59,14 @@ test('all privileged prerequisites are explicit and no non-allowlisted source fi
   assert.match(db, /relations !== '0'/);
   assert.match(script, /migrate:fresh --seed --force/);
   assert.match(script, /trap cleanup EXIT INT TERM/);
+  assert.match(script, /setsid php artisan serve/);
+  assert.match(script, /server_pgid/);
+  assert.match(script, /kill -TERM/);
   assert.match(browser, /CSRF_LOGIN_419/);
   assert.match(browser, /CSRF_TASK_419_JSON/);
   assert.match(browser, /TASK_CROSS_OWNER_404/);
+  assert.match(browser, /MFA_PENDING_TASK_403_JSON/);
+  assert.match(browser, /MFA_ENROLL_BAD_TOTP_DENIED/);
+  assert.match(browser, /MFA_CHALLENGE_BAD_TOTP_DENIED/);
   assert.match(browser, /NOT_RUN/);
 });

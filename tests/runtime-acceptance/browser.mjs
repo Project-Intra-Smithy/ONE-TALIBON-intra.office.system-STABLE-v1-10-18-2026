@@ -23,7 +23,8 @@ const plannedCases = [
   'TASK_OWNER_TRANSITIONS_200', 'ADMIN_LOGIN_MFA_DESKTOP', 'ADMIN_PROTECTED_PAGE',
   'TASK_CROSS_OWNER_404', 'ADMIN_LOGIN_MFA_MOBILE', 'MFA_EPOCH_RESET_REVOKES_ASSURANCE',
   'MFA_CROSS_SESSION_REVOCATION', 'CSRF_LOGOUT_419_AND_VALID_LOGOUT',
-  'RATE_LIMIT_HTTP_429', 'RECOVERY_CODE_REPLAY',
+  'MFA_PENDING_TASK_403_JSON', 'MFA_ENROLL_BAD_TOTP_DENIED',
+  'MFA_CHALLENGE_BAD_TOTP_DENIED', 'RATE_LIMIT_HTTP_429', 'RECOVERY_CODE_REPLAY',
 ];
 const results = [];
 let failed = false;
@@ -45,7 +46,7 @@ async function check(name, fn) {
   }
 }
 const asPath = (url) => new URL(url).pathname;
-const mfaTotp = (secret) => {
+const mfaTotp = (secret, stepOffset = 0) => {
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
   let bits = '';
   for (const char of secret.toUpperCase().replace(/=|\s/g, '')) {
@@ -55,11 +56,21 @@ const mfaTotp = (secret) => {
   }
   const raw = Buffer.from(Array.from({ length: Math.floor(bits.length / 8) }, (_, i) => parseInt(bits.slice(i * 8, i * 8 + 8), 2)));
   const counter = Buffer.alloc(8);
-  counter.writeBigUInt64BE(BigInt(Math.floor(Date.now() / 30000)));
+  counter.writeBigUInt64BE(BigInt(Math.floor(Date.now() / 30000) + stepOffset));
   const digest = crypto.createHmac('sha1', raw).update(counter).digest();
   const off = digest[digest.length - 1] & 15;
   return ((digest.readUInt32BE(off) & 0x7fffffff) % 1000000).toString().padStart(6, '0');
 };
+function deliberatelyInvalidTotp(secret) {
+  const validWindow = new Set([-1, 0, 1].map(offset => mfaTotp(secret, offset)));
+  const bad = ['000000', '111111', '222222', '333333'].find(value => !validWindow.has(value));
+  assert.ok(bad);
+  return bad;
+}
+async function requireCase(name, fn) {
+  const passed = await check(name, fn);
+  if (!passed) throw new Error('Security contract failed: ' + name);
+}
 async function newContext(viewport) {
   return browser.newContext({ viewport, baseURL: base, acceptDownloads: false, serviceWorkers: 'block' });
 }
@@ -85,9 +96,29 @@ async function login(page, role, otpSecret = null) {
   assert.equal(blocked.status(), 302);
   const redirect = blocked.headers().location || '';
   assert.match(redirect, /security\/mfa\/(?:enroll|challenge)/);
+  if (otpSecret === null) {
+    await requireCase('MFA_PENDING_TASK_403_JSON', async () => {
+      const context = page.context();
+      const read = await context.request.get(base + '/tasks', { maxRedirects: 0 });
+      assert.equal(read.status(), 403);
+      assert.match(read.headers()['content-type'] || '', /application\/json/);
+      assert.equal((await read.json()).code, 'MFA_REQUIRED');
+      const write = await requestJson(context, 'POST', '/tasks', { title: 'Must not create before MFA' });
+      assert.equal(write.status(), 403);
+      assert.equal((await write.json()).code, 'MFA_REQUIRED');
+    });
+  }
   if (asPath(page.url()) === '/security/mfa/enroll') {
     otpSecret = (await page.locator('code').first().innerText()).trim();
     if (!otpSecret) throw new Error('MFA enrollment material unavailable');
+    await requireCase('MFA_ENROLL_BAD_TOTP_DENIED', async () => {
+      await page.getByLabel('Six-digit verification code').fill(deliberatelyInvalidTotp(otpSecret));
+      await page.getByRole('button', { name: /Confirm MFA enrollment/i }).click();
+      await page.locator('span.text-red-600').first().waitFor({ state: 'visible', timeout: 12000 });
+      assert.equal(asPath(page.url()), '/security/mfa/enroll');
+      const r = await page.context().request.get(base + '/dashboard', { maxRedirects: 0 });
+      assert.equal(r.status(), 302);
+    });
     await page.getByLabel('Six-digit verification code').fill(mfaTotp(otpSecret));
     await page.getByRole('button', { name: /Confirm MFA enrollment/i }).click();
     await page.waitForURL(url => url.pathname === '/security/mfa/recovery-codes', { timeout: 20000 });
@@ -97,6 +128,14 @@ async function login(page, role, otpSecret = null) {
   } else {
     assert.equal(asPath(page.url()), '/security/mfa/challenge');
     if (!otpSecret) throw new Error('missing in-memory TOTP for existing admin');
+    await requireCase('MFA_CHALLENGE_BAD_TOTP_DENIED', async () => {
+      await page.getByLabel('Authenticator code').fill(deliberatelyInvalidTotp(otpSecret));
+      await page.getByRole('button', { name: /Verify and continue/i }).click();
+      await page.locator('span.text-red-600').first().waitFor({ state: 'visible', timeout: 12000 });
+      assert.equal(asPath(page.url()), '/security/mfa/challenge');
+      const r = await page.context().request.get(base + '/dashboard', { maxRedirects: 0 });
+      assert.equal(r.status(), 302);
+    });
     await page.getByLabel('Authenticator code').fill(mfaTotp(otpSecret));
     await page.getByRole('button', { name: /Verify and continue/i }).click();
     await page.waitForURL(url => url.pathname === '/dashboard', { timeout: 20000 });

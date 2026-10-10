@@ -12,14 +12,19 @@ if [[ "${RUNNER_ENVIRONMENT:-}" != 'github-hosted' || "${APP_ENV:-}" != 'local' 
 fi
 cd "$RTCI_BACKEND_DIR"
 server_pid=''
+server_pgid=''
 server_log="${RUNNER_TEMP:?}/rtci-laravel-server-${GITHUB_RUN_ID:?}.log"
 cleanup() {
   local rc=$?
   trap - EXIT INT TERM
-  if [[ -n "$server_pid" ]]; then
-    kill "$server_pid" 2>/dev/null || true
-    wait "$server_pid" 2>/dev/null || true
+  if [[ -n "$server_pgid" ]]; then
+    # A dedicated Linux session/process group was created by setsid below.
+    # Signal ONLY this owned group; Laravel may spawn a php -S child.
+    kill -TERM -- "-$server_pgid" 2>/dev/null || true
+    sleep 1
+    kill -KILL -- "-$server_pgid" 2>/dev/null || true
   fi
+  if [[ -n "$server_pid" ]]; then wait "$server_pid" 2>/dev/null || true; fi
   rm -f -- "$server_log" "$RTCI_BACKEND_DIR/.env" "$RTCI_BACKEND_DIR/public/hot" "$RTCI_BACKEND_DIR/storage/framework/vite.hot"
   exit "$rc"
 }
@@ -40,8 +45,15 @@ php artisan test tests/Feature/PrivilegedMfaAuthenticationTest.php tests/Feature
 php artisan migrate:fresh --seed --force
 npx playwright install --with-deps chromium
 rm -f -- public/hot storage/framework/vite.hot
-php artisan serve --host=127.0.0.1 --port=8000 >"$server_log" 2>&1 &
+# Dedicated session/process group permits fail-safe descendant cleanup on EXIT/INT/TERM.
+setsid php artisan serve --host=127.0.0.1 --port=8000 >"$server_log" 2>&1 &
 server_pid=$!
+sleep 0.1
+server_pgid="$(ps -o pgid= -p "$server_pid" | tr -d '[:space:]')"
+if [[ -z "$server_pgid" || "$server_pgid" != "$server_pid" ]]; then
+  echo 'RT-CI HOLD: Laravel did not start in a unique owned process group' >&2
+  exit 1
+fi
 healthy=0
 for _ in $(seq 1 30); do
   if curl --fail --silent --output /dev/null --max-time 2 http://127.0.0.1:8000/up; then healthy=1; break; fi
