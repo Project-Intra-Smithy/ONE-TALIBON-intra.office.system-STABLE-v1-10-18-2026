@@ -1,0 +1,157 @@
+# RT-CI-001 — INERT REVIEW CANDIDATE; DO NOT DISPATCH WITHOUT SEPARATE KIRCH RELEASE.
+# Sole trigger: manual workflow_dispatch. On this CI branch GitHub cannot dispatch
+# this workflow until a SEPARATELY authorized default-branch bootstrap.
+name: RT-CI-001 — Exact Laravel/Chromium acceptance (manual held)
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rt-ci-001-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  real-laravel-acceptance:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.repository == 'Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      APP_ENV: local
+      APP_DEBUG: 'false'
+      APP_URL: http://127.0.0.1:8000
+      RTCI_BASE_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: postgres
+      # Disposable, non-production service-only password; not a municipal secret.
+      DB_PASSWORD: rt_ci_disposable_127001_only
+      SESSION_DRIVER: file
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
+      RTCI_WORKSPACE_DIR: ${{ github.workspace }}/ci
+      RTCI_BACKEND_DIR: ${{ github.workspace }}/src/backend
+      RTCI_REPORT_DIR: ${{ runner.temp }}/rtci-report
+      RTCI_APPROVED_SHA: ${{ vars.RT_CI_APPROVED_SHA }}
+      RTCI_BILLING_HARD_STOP_CONFIRMED: ${{ vars.RT_CI_BILLING_HARD_STOP_CONFIRMED }}
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_PASSWORD: rt_ci_disposable_127001_only
+        ports:
+          - '127.0.0.1:5432:5432'
+        options: >-
+          --health-cmd "pg_isready -U postgres -d talibon_portal_test"
+          --health-interval 10s --health-timeout 5s --health-retries 6
+    steps:
+      - name: Human release and billing gate BEFORE source checkout or secrets
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          if [[ "$RUNNER_ENVIRONMENT" != 'github-hosted' || "$RUNNER_OS" != 'Linux' ]]; then
+            echo 'RT-CI HOLD: hosted Linux only' >&2; exit 1
+          fi
+          if [[ -z "$RTCI_APPROVED_SHA" || "$GITHUB_SHA" != "$RTCI_APPROVED_SHA" ]]; then
+            echo 'RT-CI HOLD: missing/mismatched reviewed exact commit release' >&2; exit 1
+          fi
+          if [[ "$RTCI_BILLING_HARD_STOP_CONFIRMED" != 'KIRCH_CONFIRMED' ]]; then
+            echo 'RT-CI HOLD: organization zero-overage hard-stop attestation absent' >&2; exit 1
+          fi
+          echo 'RT-CI manual release tuple attested; billing still controlled by GitHub organization settings'
+
+      - name: Checkout reviewed CI-only tool source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4 SHA read from GitHub
+        with:
+          path: ci
+          persist-credentials: false
+
+      - name: Static inert-trigger and manifest contract
+        working-directory: ci
+        shell: bash
+        run: node --test tests/runtime-acceptance/source-contract.test.mjs
+
+      - name: Fail closed unless a separately approved private backend read-only credential exists
+        shell: bash
+        env:
+          BACKEND_READ: ${{ secrets.RT_CI_BACKEND_CONTENTS_READ_TOKEN }}
+        run: |
+          set -Eeuo pipefail
+          if [[ -z "$BACKEND_READ" ]]; then
+            echo 'RT-CI HOLD: backend read-only credential unavailable' >&2
+            exit 1
+          fi
+          echo 'RT-CI: backend checkout credential presence confirmed; scope/provenance requires independent human review'
+
+      - name: Checkout approved frontend exact commit
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE
+          ref: d66c677c830b84326765cee9046b018a7c0ab91d
+          path: src/frontend
+          persist-credentials: false
+
+      - name: Checkout pinned canonical private Laravel exact commit (read only)
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: Project-Intra-Smithy/Talibon-Sales-Prototype
+          ref: 92778ba06d992c278177e0354014ab1b77dbea82
+          path: src/backend
+          token: ${{ secrets.RT_CI_BACKEND_CONTENTS_READ_TOKEN }}
+          persist-credentials: false
+
+      - name: Selective SHA-verified native Laravel frontend assembly
+        working-directory: ci
+        shell: bash
+        run: node scripts/ci/frontend-reg-001/assemble.mjs "$GITHUB_WORKSPACE/src/frontend" "$RTCI_BACKEND_DIR"
+
+      - name: Setup pinned-compatible Node from canonical Laravel .nvmrc
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: src/backend/.nvmrc
+
+      - name: Setup PHP 8.4, Composer 2 and PostgreSQL extensions
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2 resolved annotated tag
+        with:
+          php-version: '8.4'
+          tools: composer:v2
+          extensions: pdo_pgsql, pgsql, fileinfo, zip
+          coverage: none
+
+      - name: Ephemeral synthetic login password (masked, never archived)
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          PW="$(openssl rand -hex 32)"
+          echo "::add-mask::$PW"
+          echo "PROTOTYPE_DEMO_PASSWORD=$PW" >> "$GITHUB_ENV"
+          echo "QA_DEMO_PASSWORD=$PW" >> "$GITHUB_ENV"
+          echo 'RT-CI generated an in-run synthetic fixture password'
+
+      - name: Verify dedicated PostgreSQL and forced PHPUnit target BEFORE destructive migration
+        working-directory: ci
+        shell: bash
+        run: node scripts/ci/frontend-reg-001/db-preflight.mjs "$RTCI_BACKEND_DIR"
+
+      - name: Real Laravel, TypeScript, PostgreSQL Feature security and Playwright Chromium
+        shell: bash
+        run: bash "$RTCI_WORKSPACE_DIR/scripts/ci/frontend-reg-001/run-native.sh"
+
+      - name: Upload ONLY sanitized case matrix, SHA attestation and guest-only screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: rt-ci-001-sanitized-evidence
+          path: |
+            ${{ runner.temp }}/rtci-report/source-attestation.json
+            ${{ runner.temp }}/rtci-report/browser-cases.json
+            ${{ runner.temp }}/rtci-report/guest-desktop.png
+            ${{ runner.temp }}/rtci-report/guest-mobile.png
+          if-no-files-found: ignore
+          retention-days: 1
+          compression-level: 6
