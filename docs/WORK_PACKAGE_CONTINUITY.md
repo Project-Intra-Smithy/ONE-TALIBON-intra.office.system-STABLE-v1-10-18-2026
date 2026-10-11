@@ -71,3 +71,15 @@ Accepted historical records are immutable provenance. Append subsequent changes;
 - **Focused regressions:** `tests/navigation-contract.test.mjs` exercises real transpiled navigation source, groups, readiness, route mapping, visibility, two-argument builder, unsupported target exclusions, and preserved dashboard/density hooks.
 - **Status:** CODE CANDIDATE ONLY, not acceptance/CLOSE. Local full canonical Laravel assembled TypeScript/build, PostgreSQL/Chromium/auth/security gates NOT RUN in this execution environment; hosted CI requires exact-head confirmation. Nox source review and Kirch disposition pending. No backend, PR #6/#7, main, merge or production write.
 - **NEXT:** Post resulting exact candidate SHA and tests evidence on Issue #8; NOX independently reviews exact head; Codex may run the separate approved local runtime gates only after source stabilization.
+
+
+### START — A01-F01 / KIRION-LUCIEN / 2026-10-11
+- **Owning GitHub issue:** [#13 — A01-F01](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/13), with issue-side START and explicit release by Kirch Ivan Balite. This memory entry is paired with that issue; verify both records before any F01 code writes.
+- **Human authority / reviewers:** Kirch Ivan Balite is sole technical integrator/acceptor; Kirion-Lucien is the actual writer/author; Kirion-Nox is the independent source reviewer. Prior AJ/Jhayr contribution provenance stays unchanged.
+- **Verified main source:** `Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE@e372a964b7168ef64b4e1ff91e1866b229ea4780`; exclusive new `forge/lucien-a01-f01-task-list-detail-r1` created from exact SHA.
+- **Backend source read-only:** `Project-Intra-Smithy/Talibon-Sales-Prototype@92778ba06d992c278177e0354014ab1b77dbea82`, released `.forge/contracts/A01-C1-INDIVIDUAL-TASK-HTTP-CONTRACT.md`.
+- **Owned changes:** `resources/js/pages/Dashboard.tsx`, bounded new `resources/js/components/tasks/**`, focused `tests/task-*.test.mjs`, and this continuity entry. No backend, migrations, official Work Requests/navigation reshaping, production or unrelated changes.
+- **F01 released behavior:** JSON-only authenticated GET `/tasks` list with server pagination/status, GET `/tasks/{id}` detail, error/401/MFA/419/404/429/5xx states, abort/stale-response safety, accessible responsive Dashboard section. No writes/POSTs, no `/tasks` Inertia page; no fictitious authorization or data. Real Laravel/PostgreSQL/Chromium browser evidence remains required separately.
+- **F02 dependency:** `forge/lucien-a01-f02-task-create-actions-r1` only *after F01 reviewed, Kirch accepted and integrated*; source must be future verified integrated head, not this F01 base. F02 code not authorized to start early.
+- **Testing/acceptance:** npm ci, types:check, npm test, npm build; real backend-mounted Chromium smoke, disposable authenticated role/session negatives. All claims exact SHA and PASS/FAIL/NOT_RUN; no inherited CI acceptance.
+- **Single NEXT:** crosslink the new memory START commit back to Issue #13, read both, and only then write F01 code on this branch.
