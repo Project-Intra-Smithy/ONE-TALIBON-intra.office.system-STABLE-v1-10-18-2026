@@ -68,7 +68,8 @@ async function mount(handler){
     viewport:{width:1100,height:850},reducedMotion:'reduce'});
   const page=await context.newPage(),errors=[];
   page.on('pageerror',err=>errors.push(err.message));
-  await page.route('**/tasks**',async route=>
+  // Exact HTTP endpoints only; never intercept Vite modules in /components/tasks/.
+  await page.route(/\/tasks(?:\/\d+)?(?:\?|$)/,async route=>
     handler(new URL(route.request().url()),route));
   await page.goto(url,{waitUntil:'domcontentloaded',timeout:20000});
   await page.getByRole('heading',{name:'Personal Tasks'}).waitFor();
