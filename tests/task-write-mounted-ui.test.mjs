@@ -55,9 +55,10 @@ async function mount(handler,width=390){
 test('mounted 390px and desktop: CREATE 201, reload, START 200, reload, COMPLETE 200, reload',async()=>{
   for(const width of [390,1180]){
     let record=null;
-    const posts=[];
+    const posts=[],requests=[];
     const {context,page,errors}=await mount(async(u,route)=>{
       const req=route.request();
+      requests.push(req.method()+' '+u.pathname+u.search);
       if(req.method()==='POST'){
         posts.push({path:u.pathname,headers:req.headers(),body:req.postDataJSON()});
         if(u.pathname==='/tasks'){
@@ -88,7 +89,13 @@ test('mounted 390px and desktop: CREATE 201, reload, START 200, reload, COMPLETE
       await form.getByRole('button',{name:'Create Task'}).click();
       await page.getByRole('status').getByText(/created and confirmed by the server/).waitFor();
       await page.reload();
-      await page.getByText('F02 safe create',{exact:true}).first().waitFor();
+      try {
+        await page.getByText('F02 safe create',{exact:true}).first().waitFor({timeout:9000});
+      } catch {
+        throw new Error('Mounted reload diagnostics: '+JSON.stringify({
+          record,requests:requests.slice(-20),body:(await page.locator('body').innerText()).slice(-2600)
+        }));
+      }
       await page.getByRole('button',{name:/F02 safe create/}).first().click();
       await page.getByRole('button',{name:'Start Task',exact:true}).click();
       await page.getByText(/started and confirmed by the server/).waitFor();
