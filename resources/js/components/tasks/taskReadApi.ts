@@ -32,6 +32,11 @@ export type ReadResult<T> =
     | { ok: true; data: T }
     | { ok: false; error: ReadError };
 
+/** A revoked, unauthenticated, MFA-pending or expired read must invalidate cached Task views. */
+export function isTaskAccessBoundary(error: ReadError): boolean {
+    return error.status === 401 || error.status === 403 || error.status === 419;
+}
+
 const taskStates = new Set<string>(TASK_STATES);
 const record = (value: unknown): value is Record<string, unknown> =>
     typeof value === 'object' && value !== null && !Array.isArray(value);
