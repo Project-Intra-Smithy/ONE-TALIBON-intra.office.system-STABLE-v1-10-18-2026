@@ -24,6 +24,8 @@ const userB='rt02-technical-b@example.test';
 let browser,A,B,pageA,pageB,desktop,mobile;
 const idsA=[],idsB=[];
 const codeStatus={};
+const throttleEvidence={status:'NOT_RUN',httpStatus:null,attempts:0};
+let httpPrechecksPassed=false;
 const status=async(r,n)=>assert.equal(r.status(),n);
 function viewport(){return {width:1440,height:900}}
 async function context(){return browser.newContext({viewport:viewport(),baseURL:base,serviceWorkers:'block',acceptDownloads:false})}
@@ -74,13 +76,19 @@ try{
   const body=await r.json();
   for(const id of idsA)assert.ok(body.data.some(x=>x.id===id&&x.kind==='individual'));
  });
- if(B)await test('B_OWNER_ONLY_INDIVIDUAL',async()=>{
+ if(A&&B&&idsA.length>=14)await test('B_OWNER_ONLY_INDIVIDUAL',async()=>{
   await create(B.ctx,'B',idsB,2);
   const r=await get(B.ctx,'/tasks?state=open&per_page=50');
   await status(r,200);
   const body=await r.json();
   assert.ok(idsB.every(id=>body.data.some(x=>x.id===id)));
   assert.ok(idsA.every(id=>!body.data.some(x=>x.id===id)));
+  // Re-query A only after B has created its Tasks: prove isolation in both directions.
+  const aR=await get(A.ctx,'/tasks?state=open&per_page=50');
+  await status(aR,200);
+  const aAfterB=(await aR.json()).data;
+  assert.ok(idsA.every(id=>aAfterB.some(x=>x.id===id&&x.kind==='individual')));
+  assert.ok(idsB.every(id=>!aAfterB.some(x=>x.id===id)));
  });
  if(A&&idsA.length>=14)await test('FILTERS_PAGES_DETAILS',async()=>{
   await status(await post(A.ctx,'/tasks/'+idsA[0]+'/start'),200);
@@ -99,12 +107,13 @@ try{
   const detail=await get(A.ctx,'/tasks/'+idsA[0]);
   await status(detail,200);assert.equal((await detail.json()).data.id,idsA[0]);
  });
- if(B&&idsA.length)await test('MASKED_CROSS_OWNER_404',async()=>{
+ if(A&&B&&idsA.length&&idsB.length)await test('MASKED_CROSS_OWNER_404',async()=>{
   const own=await get(B.ctx,'/tasks/'+idsA[0]);await status(own,404);
   const foreign=await get(A.ctx,'/tasks/'+idsB[0]);await status(foreign,404);
   assert.ok(!(await own.text()).includes('RT02 A synthetic Task'));
  });
- if(A&&B)await test('HTTP_401_403_419_422_429',async()=>{
+ if(A&&B){
+  try {
   const guest=await context();
   try{const g=await get(guest,'/tasks');await status(g,401);codeStatus[401]=true}finally{await guest.close()}
   const r422=await get(A.ctx,'/tasks?state=invalid');await status(r422,422);codeStatus[422]=true;
@@ -119,9 +128,10 @@ try{
    const d=await denial.json();assert.equal(d.code,'MFA_REQUIRED');
    assert.ok(d.next_url.startsWith('/security/mfa/'));codeStatus[403]=true;
   }finally{await admin.close()}
-  // Rate limit is isolated and checked last, after unrelated acceptance cases.
-  codeStatus[429]='DEFERRED_LAST';
- });
+  // Do not mark the HTTP case PASS before observing a real 429.
+  httpPrechecksPassed=true;
+  } catch(e) { set('HTTP_401_403_419_422_429','FAIL','HTTP prerequisite assertion failed (private error withheld)'); }
+ }
  if(B)await test('INACTIVE_AND_MFA_PENDING',async()=>{
   fix('deactivate');
   try{const r=await get(B.ctx,'/tasks');await status(r,401);assert.equal((await r.json()).code,'ACCOUNT_INACTIVE');}
@@ -157,19 +167,37 @@ try{
   await status(await post(B.ctx,'/logout'),302);
   const r=await get(B.ctx,'/tasks');await status(r,401);
  });
- if(codeStatus[429]==='DEFERRED_LAST'&&B) {
-  // Use a new session after logout, then exhaust the C1 Task throttle. No re-run.
-  const {ctx:throttleCtx}=await login(userB);
-  try{
+ if(httpPrechecksPassed&&B) {
+  // Use a new session after logout. The real response, never a deferred placeholder, is evidence.
+  let throttleCtx;
+  try {
+   ({ctx:throttleCtx}=await login(userB));
    for(let i=0;i<75;i++){
     const r=await get(throttleCtx,'/tasks');
-    if(r.status()===429){codeStatus[429]=true;break}
+    throttleEvidence.attempts++;
+    throttleEvidence.httpStatus=r.status();
+    if(r.status()===429){throttleEvidence.status='PASS';break}
    }
-  }finally{await throttleCtx.close()}
-  if(codeStatus[429]!==true)set('HTTP_401_403_419_422_429','FAIL','real throttle 429 not observed');
+   if(throttleEvidence.status!=='PASS')throttleEvidence.status='FAIL';
+   codeStatus[429]=throttleEvidence.status==='PASS';
+   if(throttleEvidence.status==='PASS'&&['401','403','419','422'].every(k=>codeStatus[k]===true))
+    set('HTTP_401_403_419_422_429','PASS');
+   else set('HTTP_401_403_419_422_429','FAIL','real 429 or prior HTTP status not proven');
+  } catch(e) {
+   throttleEvidence.status='FAIL';codeStatus[429]=false;
+   set('HTTP_401_403_419_422_429','FAIL','throttle attempt failed (private error withheld)');
+  } finally { await throttleCtx?.close().catch(()=>{}); }
  }
- if(['401','403','419','422','429'].every(k=>codeStatus[k]===true))set('HTTP_401_403_419_422_429','PASS');
- await test('COMPLETE_CASE_MATRIX',async()=>assert.equal(rows.size,12));
+ // A complete matrix is proof of every preceding PASS, not merely 12 constructed rows.
+ const preceding=names.filter(n=>n!=='COMPLETE_CASE_MATRIX');
+ if(preceding.every(n=>rows.get(n).status!=='NOT_RUN')) {
+  await test('COMPLETE_CASE_MATRIX',async()=>{
+   assert.equal(rows.size,names.length);
+   for(const name of preceding)assert.equal(rows.get(name).status,'PASS',name);
+   assert.equal(throttleEvidence.status,'PASS');
+   assert.equal(throttleEvidence.httpStatus,429);
+  });
+ }
 }catch(e){
  console.log('RT02 prerequisite failed; error content suppressed');
 }finally{
@@ -177,7 +205,7 @@ try{
  await A?.ctx?.close().catch(()=>{});
  await B?.ctx?.close().catch(()=>{});
  await browser?.close().catch(()=>{});
- const result={mission:'A01-F01-RT02',kind:'real-laravel-postgresql-chromium',backend:'3b429c5fe95467a223542a832677060c947e9384',frontend:'a4c7b6886b67f30e31834c9794464cc95842b1d4',cases:names.map(n=>rows.get(n)),statusCodes:codeStatus};
+ const result={mission:'A01-F01-RT02',kind:'real-laravel-postgresql-chromium',backend:'3b429c5fe95467a223542a832677060c947e9384',frontend:'a4c7b6886b67f30e31834c9794464cc95842b1d4',cases:names.map(n=>rows.get(n)),statusCodes:codeStatus,throttleEvidence};
  fs.writeFileSync(path.join(report,'browser-cases.json'),JSON.stringify(result,null,2)+'\n',{mode:0o600});
  const failed=result.cases.filter(x=>x.status!=='PASS').length;
  console.log('RT02 cases '+(12-failed)+' PASS / '+failed+' not PASS');

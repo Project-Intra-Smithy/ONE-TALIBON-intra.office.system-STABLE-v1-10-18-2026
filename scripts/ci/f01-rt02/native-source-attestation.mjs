@@ -1,4 +1,4 @@
-// Native frontend integration: attest exact backend parent and 33 reviewed overlay blobs.
+// Native frontend integration: attest exact backend parent and 37 pinned overlay blobs.
 // This validation runs on a disposable test branch; never mutates production source.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -19,7 +19,7 @@ must(git('merge-base', base, 'HEAD') === base, 'backend base must be an ancestor
 const merges = git('rev-list', '--min-parents=2', base + '..HEAD');
 must(merges === '', 'merge commits forbidden in disposable integration branch');
 must(doc.source.frontendCommit === source && doc.source.backendCommit === base, 'source tuple drift');
-must(doc.files.length === 36 && new Set(doc.files.map(x => x.path)).size === 36, 'expected 36 unique overlay paths');
+must(doc.files.length === 37 && new Set(doc.files.map(x => x.path)).size === 37, 'expected 37 unique overlay paths');
 const allowed = new Set([
   '.github/workflows/a01-f01-rt02-native.yml',
   manifestPath,
@@ -53,8 +53,9 @@ for (const item of doc.files) {
   must(oldSha === item.targetGitBlob, 'backend original blob mismatch: ' + item.path);
   allowed.add(item.path);
 }
+must(allowed.size === 44, 'expected 44 allowed changed paths');
 const changed = git('diff', '--name-only', base, 'HEAD').split('\n').filter(Boolean);
-must(changed.length === allowed.size && changed.every(x => allowed.has(x)), 'changed-file scope mismatch');
+must(changed.length === 44 && new Set(changed).size === 44 && changed.every(x => allowed.has(x)), 'expected 44 scoped changed paths');
 const dest = process.env.RTCI_REPORT_DIR;
 must(dest && dest.startsWith(process.env.RUNNER_TEMP + path.sep), 'report outside disposable runner');
 fs.mkdirSync(dest, { recursive: true, mode: 0o700 });
@@ -65,4 +66,4 @@ fs.writeFileSync(path.join(dest, 'source-attestation.json'), JSON.stringify({
   overlayCount: doc.files.length,
   verifiedSourceGitBlobs: doc.files.map(x => ({path:x.path, blob:x.sourceGitBlob})),
 }, null, 2) + '\n', { mode: 0o600 });
-console.log('FRONTEND-REG-001: 36 source blobs, parent and exclusive integration scope VERIFIED');
+console.log('FRONTEND-REG-001: 37 source blobs, parent and exclusive integration scope VERIFIED');

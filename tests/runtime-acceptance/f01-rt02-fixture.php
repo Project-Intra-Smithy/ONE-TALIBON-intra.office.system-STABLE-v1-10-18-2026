@@ -43,7 +43,7 @@ if ($action === 'setup') {
     }
     echo json_encode(['source' => 'real-postgresql', 'valid' => $valid,
        'actorCount' => 2, 'aIndividualOwned' => count($idsA), 'bIndividualOwned' => count($idsB),
-       'allTaskKindIndividual' => $valid, 'allUnassigned' => $valid, 'ownerIdDerivedFromSession' => $valid], JSON_THROW_ON_ERROR)."\n";
+       'allTaskKindIndividual' => $valid, 'allUnassigned' => $valid, 'dbOwnerIdsMatchExpectedActors' => $valid], JSON_THROW_ON_ERROR)."\n";
     if (!$valid) exit(81);
 } elseif ($action === 'deactivate' || $action === 'restore') {
     $b = User::query()->where('email', $emailB)->firstOrFail();
