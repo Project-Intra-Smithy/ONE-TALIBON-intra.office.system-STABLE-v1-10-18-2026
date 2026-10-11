@@ -1,35 +1,23 @@
 @import 'tailwindcss';
 @import './municipal.css';
 @import './municipal-controls.css';
-@import './portal-shell.css';
-@import './dashboard-portal.css';
-@import './public-portal.css';
+@import './visual-system.css';
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     color: var(--municipal-text);
-    color-scheme: light;
-    background: var(--municipal-canvas);
+    background: #f4f7fb;
 }
 
 :root.dark {
     color: var(--municipal-text);
-    color-scheme: dark;
-    background: var(--municipal-canvas);
+    background: #0d1624;
 }
 
 html {
-    min-width: 320px;
-    width: 100%;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
-}
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
 }
 
 body {
@@ -37,7 +25,6 @@ body {
     min-height: 100vh;
     margin: 0;
     line-height: 1.55;
-    overflow-x: clip;
     background: var(--municipal-canvas);
 }
 
@@ -45,176 +32,23 @@ body {
     background: var(--municipal-canvas);
 }
 
-img,
-picture,
-video,
-canvas,
-svg {
-    max-width: 100%;
-}
-
-#portal-content {
-    min-width: 0;
-    max-width: 100%;
-}
-
-#portal-content :where(main, section, article, header, footer, nav, form, fieldset, div) {
-    min-width: 0;
-}
-
-#portal-content :where(h1, h2, h3, h4, p, dd, dt, td, th) {
-    overflow-wrap: anywhere;
-}
-
-#portal-content :where(h1, h2, h3) {
-    text-wrap: pretty;
-}
-
 button, input, select, textarea {
     font: inherit;
-}
-
-/* Keep interaction movement restrained and avoid interpolating text colors through
-   low-contrast transient states when appearance changes. */
-#portal-content :where(a, button, input, select, textarea) {
-    transition-property: background-color, border-color, box-shadow, opacity;
-    transition-duration: 150ms;
-    transition-timing-function: ease-out;
 }
 
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
-textarea:focus-visible,
-summary:focus-visible,
-[tabindex]:focus-visible {
-    outline: 2px solid var(--municipal-focus);
+textarea:focus-visible {
+    outline: 2px solid var(--municipal-blue);
     outline-offset: 2px;
 }
 
-@media (forced-colors: active) {
-    a:focus-visible,
-    button:focus-visible,
-    input:focus-visible,
-    select:focus-visible,
-    textarea:focus-visible,
-    summary:focus-visible,
-    [tabindex]:focus-visible {
-        outline: 2px solid CanvasText;
-        outline-offset: 3px;
-    }
-}
-
-/* Employee Portal typography roles.
-   Scoped to authenticated portal content so Public Portal typography remains independent. */
-#portal-content .employee-page-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-}
-
-#portal-content .employee-section-title {
-    font-size: 0.9375rem;
-    font-weight: 700;
-    line-height: 1.35;
-}
-
-#portal-content .employee-record-title {
-    font-size: 0.875rem;
-    font-weight: 600;
-    line-height: 1.4;
-}
-
-#portal-content .employee-body-text {
-    font-size: 0.8125rem;
-    line-height: 1.5;
-}
-
-#portal-content .employee-supporting-text,
-#portal-content .employee-metadata {
-    font-size: 0.75rem;
-    line-height: 1.45;
-}
-
-#portal-content .employee-functional-label {
-    font-size: 0.6875rem;
-    font-weight: 700;
-    line-height: 1.35;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-}
-
-#portal-content .employee-table-heading {
-    font-size: 0.6875rem;
-    font-weight: 700;
-    line-height: 1.35;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-}
-
-/* Employee Portal spacing / density roles. */
-#portal-content .employee-section-stack {
-    display: grid;
-    gap: 0.875rem;
-}
-
-#portal-content .employee-panel-header {
-    padding: 0.625rem 1rem;
-}
-
-#portal-content .employee-record-row {
-    padding: 0.625rem 1rem;
-}
-
-#portal-content .employee-subsection-bar {
-    padding: 0.5rem 1rem;
-}
-
-#portal-content .employee-empty-state {
-    padding: 0.75rem 1rem;
-    background: transparent;
-    text-align: left;
-}
-
-#portal-content .employee-interactive-row {
-    transition: background-color 150ms ease-out;
-}
-
-#portal-content .employee-interactive-row:hover {
-    background: var(--municipal-hover);
-}
-
-:root.dark #portal-content .employee-interactive-row:hover {
-    background: var(--municipal-hover);
-}
-
-@media (prefers-reduced-motion: reduce) {
-    #portal-content :where(a, button, input, select, textarea),
-    #portal-content .employee-interactive-row {
-        transition-duration: 0.01ms;
-    }
-}
-
-/* Employee Portal semantic color roles.
-   Most surfaces remain neutral; urgency color is reserved for real operational meaning. */
-#portal-content .employee-tone-neutral {
-    color: var(--municipal-muted);
-}
-
-#portal-content .employee-tone-info {
-    color: var(--municipal-info);
-}
-
-#portal-content .employee-tone-success {
-    color: var(--municipal-success);
-}
-
-#portal-content .employee-tone-warning {
-    color: var(--municipal-warning);
-}
-
-#portal-content .employee-tone-danger {
-    color: var(--municipal-danger);
+:root.dark a:focus-visible,
+:root.dark button:focus-visible,
+:root.dark input:focus-visible,
+:root.dark select:focus-visible,
+:root.dark textarea:focus-visible {
+    outline-color: #60a5fa;
 }

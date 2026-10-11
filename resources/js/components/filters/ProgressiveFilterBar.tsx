@@ -1,5 +1,5 @@
 import { SlidersHorizontal, X } from 'lucide-react';
-import { type ReactNode, useEffect, useId, useRef, useState } from 'react';
+import { type ReactNode, useEffect, useId, useState } from 'react';
 
 type Props = {
     primary: ReactNode;
@@ -20,43 +20,20 @@ export default function ProgressiveFilterBar({
 }: Props) {
     const [expanded, setExpanded] = useState(false);
     const panelId = useId();
-    const panelRef = useRef<HTMLDivElement>(null);
-    const triggerRef = useRef<HTMLButtonElement>(null);
     const hasAdvanced = Boolean(advanced);
 
     useEffect(() => {
         if (!expanded) return;
-        const media = window.matchMedia('(max-width: 767px)');
-        const previousFocus = document.activeElement as HTMLElement | null;
-        const previousOverflow = document.body.style.overflow;
-        const focusable = () => Array.from(panelRef.current?.querySelectorAll<HTMLElement>('button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex="0"]') || []).filter((element) => element.getClientRects().length > 0);
-        const syncMode = () => {
-            document.body.style.overflow = media.matches ? 'hidden' : previousOverflow;
-            if (media.matches) (focusable()[0] || panelRef.current)?.focus();
-        };
-        syncMode();
-        media.addEventListener('change', syncMode);
         const onKeyDown = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') { setExpanded(false); triggerRef.current?.focus(); }
-            if (!media.matches || event.key !== 'Tab') return;
-            const elements = focusable();
-            const first = elements[0]; const last = elements[elements.length - 1];
-            if (!first) { event.preventDefault(); panelRef.current?.focus(); return; }
-            if (event.shiftKey && (document.activeElement === first || !panelRef.current?.contains(document.activeElement))) { event.preventDefault(); last.focus(); }
-            else if (!event.shiftKey && (document.activeElement === last || !panelRef.current?.contains(document.activeElement))) { event.preventDefault(); first.focus(); }
+            if (event.key === 'Escape') setExpanded(false);
         };
         window.addEventListener('keydown', onKeyDown);
-        return () => {
-            document.body.style.overflow = previousOverflow;
-            media.removeEventListener('change', syncMode);
-            window.removeEventListener('keydown', onKeyDown);
-            previousFocus?.focus();
-        };
+        return () => window.removeEventListener('keydown', onKeyDown);
     }, [expanded]);
 
     return (
-        <div className="municipal-panel municipal-progressive-filter">
-            <div className="municipal-filter-layout flex flex-col lg:flex-row lg:flex-wrap lg:items-end">
+        <div className="municipal-panel p-4 text-slate-900 dark:text-slate-100 sm:p-5">
+            <div className="flex flex-col gap-3 lg:flex-row lg:flex-wrap lg:items-end">
                 <div className="min-w-0 flex-1 lg:min-w-60">{primary}</div>
 
                 {common && (
@@ -69,12 +46,11 @@ export default function ProgressiveFilterBar({
                     {hasAdvanced && (
                         <button
                             type="button"
-                            ref={triggerRef}
                             aria-controls={panelId}
                             aria-expanded={expanded}
                             aria-haspopup="dialog"
                             onClick={() => setExpanded((value) => !value)}
-                            className="municipal-action municipal-action--secondary"
+                            className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-2.5 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 text-[13px] font-bold text-slate-700 hover:border-blue-300 hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 sm:text-xs"
                         >
                             <SlidersHorizontal size={15} aria-hidden="true" />
                             Filters{activeFilters.length > 0 ? ` ${activeFilters.length}` : ''}
@@ -85,9 +61,9 @@ export default function ProgressiveFilterBar({
             </div>
 
             {activeFilters.length > 0 && (
-                <div className="municipal-filter-active flex flex-wrap gap-1.5" aria-label="Active filters">
+                <div className="mt-3 flex flex-wrap gap-1.5" aria-label="Active filters">
                     {activeFilters.map((filter) => (
-                        <span key={filter} className="municipal-filter-chip">
+                        <span key={filter} className="rounded-md border border-blue-100 bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-800 dark:border-blue-900 dark:bg-blue-950/30 dark:text-blue-200 sm:text-xs">
                             {filter}
                         </span>
                     ))}
@@ -98,7 +74,7 @@ export default function ProgressiveFilterBar({
                 <div
                     id={panelId}
                     className={expanded
-                        ? 'fixed inset-0 z-50 flex items-end md:static md:z-auto municipal-filter-expanded md:block'
+                        ? 'fixed inset-0 z-50 flex items-end md:static md:z-auto md:mt-3 md:block'
                         : 'hidden'}
                 >
                     <button
@@ -108,27 +84,25 @@ export default function ProgressiveFilterBar({
                         onClick={() => setExpanded(false)}
                     />
                     <div
-                        ref={panelRef}
-                        tabIndex={-1}
                         role="dialog"
                         aria-label={title}
-                        className="municipal-filter-panel"
+                        className="relative z-10 max-h-[82vh] w-full overflow-y-auto rounded-t-xl bg-white p-4 text-slate-900 dark:bg-[#142236] dark:text-slate-100 shadow-2xl md:max-h-none md:rounded-xl md:border md:border-slate-200 md:bg-slate-50/70 dark:md:bg-slate-900/40 md:p-4 md:shadow-none"
                     >
                         <div className="mb-4 flex items-center justify-between md:hidden">
                             <div>
-                                <div className="text-xs font-bold uppercase tracking-wider text-[var(--municipal-brand)]">Filters</div>
-                                <div className="mt-0.5 text-sm font-bold text-[var(--municipal-text)]">{title}</div>
+                                <div className="text-xs font-bold uppercase tracking-wider text-blue-700">Filters</div>
+                                <div className="mt-0.5 text-sm font-bold text-slate-900 dark:text-slate-100">{title}</div>
                             </div>
                             <button
                                 type="button"
                                 onClick={() => setExpanded(false)}
-                                className="municipal-action municipal-action--secondary municipal-action--icon"
+                                className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-300 text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                                 aria-label="Close filters"
                             >
                                 <X size={16} aria-hidden="true" />
                             </button>
                         </div>
-                        <div className="municipal-filter-fields grid sm:grid-cols-2 lg:grid-cols-4">{advanced}</div>
+                        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{advanced}</div>
                     </div>
                 </div>
             )}

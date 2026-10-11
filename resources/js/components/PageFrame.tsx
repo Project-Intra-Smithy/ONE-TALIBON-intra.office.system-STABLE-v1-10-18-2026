@@ -1,10 +1,18 @@
-import type { CSSProperties, PropsWithChildren } from 'react';
-type Width = 'standard' | 'wide' | 'full';
-type Props = PropsWithChildren<{ width?: Width; density?: 'default' | 'compact'; className?: string }>;
-const widths: Record<Width, string> = { standard: '1152px', wide: '1440px', full: 'none' };
-export default function PageFrame({ children, width = 'wide', density = 'default', className = '' }: Props) {
-    // Existing explicit max-width utilities retain ownership until page-wave migration.
-    const legacyWidth = /(?:^|\s)(?:[\w-]+:)*max-w-/.test(className);
-    const style: CSSProperties = { ...(legacyWidth ? {} : { maxWidth: widths[width] }), '--municipal-page-gap': density === 'compact' ? '12px' : '16px' } as CSSProperties;
-    return <div data-density={density} className={`municipal-page-frame mx-auto w-full min-w-0 ${className}`} style={style}>{children}</div>;
+import type { PropsWithChildren } from 'react';
+
+type Width = 'standard' | 'wide';
+type Density = 'compact' | 'standard' | 'comfortable';
+type Props = PropsWithChildren<{ width?: Width; className?: string; density?: Density }>;
+
+const widths: Record<Width, string> = {
+    standard: 'max-w-6xl',
+    wide: 'max-w-7xl',
+};
+
+export default function PageFrame({ children, width = 'wide', density = 'standard', className = '' }: Props) {
+    return (
+        <div className={`mx-auto w-full min-w-0 ${widths[width]} ${density === 'compact' ? 'space-y-3 sm:space-y-4' : density === 'comfortable' ? 'space-y-6 sm:space-y-8' : 'space-y-5 sm:space-y-6'} pb-8 ${className}`}>
+            {children}
+        </div>
+    );
 }

@@ -17,8 +17,8 @@ export default function MfaRecoveryCodes({ continueUrl }: Props) {
     return (
         <>
             <Head title="MFA recovery codes" />
-            <main className="min-h-screen bg-[#eef3f9] px-4 py-8 sm:px-6">
-                <div className="mx-auto max-w-xl rounded-2xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-900/5 sm:p-8">
+            <main className="auth-canvas min-h-screen px-4 py-8 sm:px-6">
+                <div className="mx-auto max-w-xl auth-panel bg-white p-6 sm:p-8">
                     <div className="flex items-start gap-3"><div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700"><ShieldCheck size={21} /></div><div><div className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">MFA active</div><h1 className="mt-1 text-2xl font-bold text-slate-950">Store your recovery codes</h1><p className="mt-2 text-sm leading-6 text-slate-600">Each code works once. The portal stores only one-way hashes and will not show this set again.</p></div></div>
 
                     <pre className="mt-6 whitespace-pre-wrap rounded-xl border border-slate-200 bg-slate-950 p-4 font-mono text-sm leading-7 text-slate-100">{block}</pre>

@@ -1,0 +1,247 @@
+{
+  "schemaVersion": 1,
+  "purpose": "RT-CI-001 exact selective native Laravel UI overlay; static Git blob pins and runtime SHA-256 attestation",
+  "source": {
+    "frontendRepository": "Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE",
+    "frontendCommit": "a4c7b6886b67f30e31834c9794464cc95842b1d4",
+    "backendRepository": "Project-Intra-Smithy/Talibon-Sales-Prototype",
+    "backendCommit": "3b429c5fe95467a223542a832677060c947e9384",
+    "ciBranch": "forge/jane-a01-f01-rt02-native-ci-20261011"
+  },
+  "rules": {
+    "sourcePrefixes": [
+      "resources/js/",
+      "resources/css/"
+    ],
+    "skipUnchanged": "resources/js/types.ts matches backend blob",
+    "excludePreviewOnly": [
+      "resources/js/visual-fixtures.ts",
+      "resources/js/visual-preview.tsx",
+      "visual-preview.html"
+    ],
+    "replaceOnlyManifestPaths": true,
+    "denyPhpAndRoutes": true
+  },
+  "files": [
+    {
+      "path": "resources/css/app.css",
+      "sourceGitBlob": "cb3fc5148225415a42997ba5d89c153a08dde13e",
+      "targetGitBlob": "b6e39bd451d634a6bfb4c9234bc802aad478ef16",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/css/visual-system.css",
+      "sourceGitBlob": "788ccc7e1f27b20d69d5f99795606dafd98f6b08",
+      "targetGitBlob": null,
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/compat/notificationFeed.ts",
+      "sourceGitBlob": "47fbf53360e8479292b64971c94e152ff6c9cc27",
+      "targetGitBlob": null,
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/compat/uiContracts.ts",
+      "sourceGitBlob": "8aac091cd41074a94bbba098a6c30bf4dccbd89b",
+      "targetGitBlob": null,
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/components/PageFrame.tsx",
+      "sourceGitBlob": "98be85361a33c8d4e73f57a1c54438c751762361",
+      "targetGitBlob": "6c5e64ef496dae10660b5fe1eb4e28a156ed7bdf",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/components/PageHeader.tsx",
+      "sourceGitBlob": "028992f079cb6368412640cf3947bc3850bb4bbd",
+      "targetGitBlob": "c1261d9147b51b21b7d66e1b5c3306bbda53fc8a",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/components/dashboard/DashboardHeader.tsx",
+      "sourceGitBlob": "2f5507a5285aae828a640ec38486958c211ef76d",
+      "targetGitBlob": "a3501a809ad553b3d82055f04c5470c28060c40d",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/components/dashboard/ExecutiveOverview.tsx",
+      "sourceGitBlob": "9ebd9b01b0a72eac2d3c0d004f2a33c908e10412",
+      "targetGitBlob": "73d3009f0092265b20a946d52168cfe862dde256",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/components/dashboard/MetricGroup.tsx",
+      "sourceGitBlob": "dd662a6731232320d5b76cc5c36ddef2bbe18690",
+      "targetGitBlob": "c4ad102312a39f46c07bd26b4fa32c1f86b2f11d",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/components/dashboard/QuickActions.tsx",
+      "sourceGitBlob": "92cd2af37c887e7d193c18162e0e36e0ca0806dd",
+      "targetGitBlob": "d5f984f5c7e95e779611b8304d9cf1d90d2d2cd8",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/components/dashboard/SystemOverview.tsx",
+      "sourceGitBlob": "55150b6b1a47a9c629f6f8e94319fd67600abedf",
+      "targetGitBlob": "92b0a5feb524a611ad0f5434bd1113a42af712c8",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/components/filters/ProgressiveFilterBar.tsx",
+      "sourceGitBlob": "ecf863edf34ba6c06ce3085d24810d0d9ac16298",
+      "targetGitBlob": "5156aca1eabe224e4c8545c0244359f1f9e0e428",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/components/shell/PortalSidebar.tsx",
+      "sourceGitBlob": "66814270c1defac41a433a2ead9826ce5dafba50",
+      "targetGitBlob": "c12f67452a82cd4b64f076f33721f929e56b1d6c",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/components/work-queue/WorkItemList.tsx",
+      "sourceGitBlob": "709243a2d6ab8a5e26d4930e10db35370d8e5aea",
+      "targetGitBlob": "a007addb70e514d22e57a871e516fa6eb78d2fba",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/components/work-queue/WorkScopeTabs.tsx",
+      "sourceGitBlob": "c3c9f7c5d8ce89bc96ac62184f979f3421794eb6",
+      "targetGitBlob": "41046d7315738f42e0ccab59c388f85963f7cdca",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/hooks/useVisiblePolling.ts",
+      "sourceGitBlob": "e53ab9fd10a24c97efa1b486cde2fd7e524d9432",
+      "targetGitBlob": "8f7ef5d749b5751a197641a12b6b2912e1445ab1",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/layouts/AppLayout.tsx",
+      "sourceGitBlob": "cf9c819650a57c6903eeded93725e9101b770a82",
+      "targetGitBlob": "f72af546ab78a6a581ea1138e9869487b8af5ae1",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/navigation/portalNavigation.ts",
+      "sourceGitBlob": "d5f803dd6adc3c5e6551c5a661fc429f0a04157e",
+      "targetGitBlob": "29dcf0cc4ebdd20edfae7790fbbdd34009c1664c",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/navigation/stagedRoutes.ts",
+      "sourceGitBlob": "b175e6ee1980b144762cf58154d21cc89c0413d0",
+      "targetGitBlob": null,
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/pages/Auth/Login.tsx",
+      "sourceGitBlob": "2b68a79f55d23d1cc76cbe811ae55e6d78ed549c",
+      "targetGitBlob": "e18ed02f4c965f04a694ac3c8658baf0572bf85f",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/pages/Auth/MfaChallenge.tsx",
+      "sourceGitBlob": "3556a05849d585e649f4a94993878da391ac9aaf",
+      "targetGitBlob": "7a71e14bcdd33b6a5cf4dfb3f2f55da7aba67e5a",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/pages/Auth/MfaEnrollment.tsx",
+      "sourceGitBlob": "9eca2d27444a72fa7545d4ce0f98de3880f0041c",
+      "targetGitBlob": "b700c513c42c019689be4558612c9da37a8ab5dd",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/pages/Auth/MfaRecoveryCodes.tsx",
+      "sourceGitBlob": "1f2215721c56ceb1937e8878a363fe0ddcb13055",
+      "targetGitBlob": "bc63f2e8c71a05699f80b90646d94c88d72b6f2e",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/pages/Auth/MfaSettings.tsx",
+      "sourceGitBlob": "6d5597a0ec51b0d6e1d1e1ba97e8d11ee56fc621",
+      "targetGitBlob": "685109667c79e256a99b9b5fc62b00a11b2fb4de",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/pages/Calendar/Index.tsx",
+      "sourceGitBlob": "c0983928f4e751b12da2c07ae57cb2c2bc9e8f45",
+      "targetGitBlob": "ecf91584fc2fd5111b0c9593e9c39e53b5a1a112",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/pages/Correspondence/Index.tsx",
+      "sourceGitBlob": "9b06e580e31940a1d03d42f6c0208147bbd0ff1e",
+      "targetGitBlob": "bbaeb273769f9ca9bdc65baa23a972bfc535b40f",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/pages/Departments/Index.tsx",
+      "sourceGitBlob": "d8961a546377f3493666c173b01e91c9634bac86",
+      "targetGitBlob": "23cafcc2bbc692e3dce46a31a49f6e3dabdf74c7",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/pages/Employees/Index.tsx",
+      "sourceGitBlob": "6d47d45e75c086ff2dbc5ddf537faeef51b13f0c",
+      "targetGitBlob": "c1c1e84fe48f9f97f307bd491d032f3a70418d21",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/pages/Memoranda/Create.tsx",
+      "sourceGitBlob": "11966892303b2eada9317e2c9c239110c516ffa7",
+      "targetGitBlob": "4f0b2c6a73513479d89b7a7a853a81ca24ae7c41",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/pages/Memoranda/Index.tsx",
+      "sourceGitBlob": "900d3249cdd01e29308a300c3a24a508239f3108",
+      "targetGitBlob": "73389b219146d5cc946248e419237fc3fb0c4145",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/pages/Records/Index.tsx",
+      "sourceGitBlob": "daedc3215d64f31f38f076d223d0c6144f91adce",
+      "targetGitBlob": "0a679dee92df0dadee5252fa947fa5cd9fb46c25",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/pages/Transactions/Index.tsx",
+      "sourceGitBlob": "3518c2f88f6ba091fff32c0c6ae7fbba970f7bcb",
+      "targetGitBlob": "2d1757318ba5247e995ab1bc848ed6fa20fd838f",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/pages/Transactions/Show.tsx",
+      "sourceGitBlob": "d9dd3c309e75d5ebbd6db449d7607a045c0e706a",
+      "targetGitBlob": "cf2d4f5709fb7a5c309dd6e426fb09c89799090e",
+      "source": "PR6_PR7_PR9_APPROVED_HEAD"
+    },
+    {
+      "path": "resources/js/pages/Dashboard.tsx",
+      "sourceGitBlob": "2e581b73995a031d83913350e3451f2ce3a76d93",
+      "targetGitBlob": "4e759b1acf63df956368220264acf9ee3aff1143",
+      "source": "F01_PR14"
+    },
+    {
+      "path": "resources/js/components/tasks/PersonalTaskWorkspace.tsx",
+      "sourceGitBlob": "dcedeb29e41d19c962090ec08a2bd89fdc16ff72",
+      "targetGitBlob": null,
+      "source": "F01_PR14"
+    },
+    {
+      "path": "resources/js/components/tasks/taskReadApi.ts",
+      "sourceGitBlob": "f503bfc682b2b7403e621c0beca43e1cb0a22d8c",
+      "targetGitBlob": null,
+      "source": "F01_PR14"
+    }
+  ],
+  "mission": "MAINT-CC80-001 / A01-F01-RT02",
+  "historicalManifestGitBlob": "b37b296320bcb5b1aea396f5ab63bfe4038c8e8f",
+  "historicalCommit": "db9d4f3e57b2e9a1a15283c7b2f593ad862c3c40",
+  "status": "EXACT_BLOB_PREASSEMBLY_NO_RUNTIME_PASS"
+}

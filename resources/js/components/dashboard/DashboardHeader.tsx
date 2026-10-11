@@ -1,50 +1,28 @@
 import { usePage } from '@inertiajs/react';
-import { Building2, CalendarDays, UserRound } from 'lucide-react';
+import { talibonAssets } from '../../branding/talibonAssets';
 import type { SharedProps } from '../../types';
-import { dashboardRoleBrief, dashboardRoleLabel, dashboardScopeLabel } from './rolePresentation';
+import MunicipalContext from './MunicipalContext';
 import type { DashboardExperience } from './types';
+
+const profileCopy = {
+    employee: 'Here’s the work currently assigned to you.',
+    department_head: 'Review your office workload and items requiring action.',
+    executive_oversight: 'Review municipal workload and items requiring executive attention.',
+    system_administration: 'Review account access, security, and platform status.',
+};
 
 export default function DashboardHeader({ experience }: { experience: DashboardExperience }) {
     const { auth } = usePage<SharedProps>().props;
-    const role = dashboardRoleLabel(experience);
-    const today = new Intl.DateTimeFormat('en-PH', {
-        timeZone: 'Asia/Manila',
-        weekday: 'long',
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-    }).format(new Date());
-
-    return <header className="border-b border-slate-200 pb-3 dark:border-slate-700" aria-labelledby="dashboard-title">
-        <div className="flex min-w-0 flex-col gap-3 lg:flex-row lg:items-start lg:justify-between lg:gap-8">
-            <div className="min-w-0 max-w-3xl">
-                <div className="employee-functional-label [color:var(--municipal-brand)]">ONE TALIBON</div>
-                <h1 id="dashboard-title" className="employee-page-title mt-0.5 text-slate-950 dark:text-slate-100">Welcome to One Talibon Portal</h1>
-                <p className="employee-body-text mt-1 max-w-3xl text-slate-600 dark:text-slate-300">{dashboardRoleBrief(experience)}</p>
+    const name = auth.user?.name.trim().replace(/^(?:(?:Engr|Dr|Atty|Mr|Mrs|Ms)\.?\s+)+/i, '').split(/\s+/)[0];
+    return <div className="space-y-3">
+        <header className="relative isolate flex min-h-36 min-w-0 items-center overflow-hidden rounded-2xl bg-[#0b2852] text-white shadow-lg shadow-[#071e3d]/10 sm:min-h-40">
+            <img src={talibonAssets.internalHero} alt="" className="municipal-photo -z-10 opacity-[.18]" />
+            <div className="flex w-full self-stretch flex-col justify-center bg-[#071e3d]/45 px-5 py-6 sm:px-7">
+                <h1 className="break-words text-[clamp(1.75rem,3vw,2.25rem)] font-extrabold leading-tight tracking-[-0.035em]">Welcome{name ? ', ' + name : ''}</h1>
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-blue-50">{profileCopy[experience.key]}</p>
+                <p className="mt-3 text-xs text-blue-100">{experience.department.name}</p>
             </div>
-
-            <div className="employee-metadata flex shrink-0 items-center gap-2 text-slate-500 dark:text-slate-400">
-                <CalendarDays size={14} className="text-slate-400 dark:text-slate-500" aria-hidden="true" />
-                <span>{today}</span>
-                <span className="hidden text-slate-400 sm:inline"> /  Philippine time</span>
-            </div>
-        </div>
-
-        <dl className="employee-metadata mt-3 flex min-w-0 flex-wrap gap-x-5 gap-y-2 border-t border-slate-100 pt-2.5 dark:border-slate-800">
-            <div className="flex min-w-0 items-center gap-1.5">
-                <UserRound size={13} className="shrink-0 [color:var(--municipal-brand)]" aria-hidden="true" />
-                <dt className="sr-only">Employee</dt>
-                <dd className="truncate font-semibold text-slate-800 dark:text-slate-200">{auth.user?.name || 'Signed-in user'}</dd>
-                <span className="text-slate-400" aria-hidden="true"> / </span>
-                <span className="text-slate-500 dark:text-slate-400">{role}</span>
-            </div>
-            <div className="flex min-w-0 items-center gap-1.5">
-                <Building2 size={13} className="shrink-0 [color:var(--municipal-brand)]" aria-hidden="true" />
-                <dt className="sr-only">Department and scope</dt>
-                <dd className="truncate text-slate-600 dark:text-slate-300">{experience.department.shortName || experience.department.code}</dd>
-                <span className="text-slate-400" aria-hidden="true"> / </span>
-                <span className="text-slate-500 dark:text-slate-400">{dashboardScopeLabel(experience)}</span>
-            </div>
-        </dl>
-    </header>;
+        </header>
+        <MunicipalContext />
+    </div>;
 }
