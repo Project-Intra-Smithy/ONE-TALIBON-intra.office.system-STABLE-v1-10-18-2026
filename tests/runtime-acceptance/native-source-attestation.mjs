@@ -15,8 +15,9 @@ must(process.env.GITHUB_REPOSITORY === 'Project-Intra-Smithy/Talibon-Sales-Proto
 must(process.env.GITHUB_REF === 'refs/heads/forge/frontend-reg-001-native-integration-20261011', 'unexpected ref');
 must(process.env.RUNNER_ENVIRONMENT === 'github-hosted', 'requires hosted isolated runner');
 must(git('status', '--porcelain') === '', 'working tree changed');
-const parents = git('rev-list', '--parents', '-n', '1', 'HEAD').split(/\s+/);
-must(parents.length === 2 && parents[1] === base, 'integration commit must directly descend from exact backend main');
+must(git('merge-base', base, 'HEAD') === base, 'backend base must be an ancestor');
+const merges = git('rev-list', '--min-parents=2', base + '..HEAD');
+must(merges === '', 'merge commits forbidden in disposable integration branch');
 must(doc.source.frontendCommit === source && doc.source.backendCommit === base, 'source tuple drift');
 must(doc.files.length === 33 && new Set(doc.files.map(x => x.path)).size === 33, 'expected 33 unique overlay paths');
 const allowed = new Set([

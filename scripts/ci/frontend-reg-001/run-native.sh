@@ -32,7 +32,7 @@ trap cleanup EXIT INT TERM
 echo 'RT-CI preparing disposable Laravel checkout; no secrets or database dump will be emitted'
 cp .env.example .env
 # Fresh checkout has no vendor/autoload.php: Composer must precede all Artisan commands.
-composer install --no-interaction --prefer-dist --no-progress --no-audit
+composer install --no-interaction --prefer-dist --no-progress
 php artisan key:generate --force --no-interaction
 php artisan optimize:clear
 npm ci --no-audit --no-fund
