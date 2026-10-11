@@ -2,6 +2,7 @@ import { Link, router } from '@inertiajs/react';
 import { AlertTriangle, ArrowRight, Building2, Clock3, Inbox, Search, UserRound, X } from 'lucide-react';
 import { type FormEvent, useState } from 'react';
 import PageFrame from '../../components/PageFrame';
+import { correspondenceOverviewCount } from '../../compat/uiContracts';
 import PageHeader from '../../components/PageHeader';
 import ProgressiveFilterBar from '../../components/filters/ProgressiveFilterBar';
 import AppLayout from '../../layouts/AppLayout';
@@ -46,7 +47,8 @@ type Filters = {
 };
 type Props = {
     records: Paginator<CorrespondenceRow>;
-    filters: Filters;
+    filters: Filters & { view?: string };
+    overview: { counts: Record<string, number>; previews: Record<string, CorrespondenceRow[]> };
     filterOptions: { lifecycles: string[]; classifications: string[]; offices: Office[] };
     workspace: { departmentName: string; departmentCode: string };
 };
@@ -55,7 +57,8 @@ const humanize = (value: string) => value.replaceAll('_', ' ').replace(/\b\w/g, 
 const enabled = (value: Filters['assigned_to_me']) => value === true || value === 1 || value === '1';
 const formatDate = (value?: string | null) => value ? new Date(value).toLocaleString() : 'Not recorded';
 
-export default function CorrespondenceIndex({ records, filters, filterOptions, workspace }: Props) {
+export default function CorrespondenceIndex({ records, filters, filterOptions, workspace, overview }: Props) {
+    const isOverview = !filters.view || filters.view === 'overview';
     const [search, setSearch] = useState(filters.search ?? '');
     const [lifecycle, setLifecycle] = useState(filters.lifecycle ?? '');
     const [classification, setClassification] = useState(filters.classification ?? '');
@@ -67,6 +70,7 @@ export default function CorrespondenceIndex({ records, filters, filterOptions, w
     const apply = (event: FormEvent) => {
         event.preventDefault();
         router.get('/correspondence', {
+            view: 'all',
             search: search || undefined,
             lifecycle: lifecycle || undefined,
             classification: classification || undefined,
@@ -85,7 +89,7 @@ export default function CorrespondenceIndex({ records, filters, filterOptions, w
         setAssignedToMe(false);
         setActionRequired(false);
         setAging('');
-        router.get('/correspondence', {}, { replace: true });
+        router.get('/correspondence', { view: 'all' }, { replace: true });
     };
 
     const selectedOffice = filterOptions.offices.find((office) => String(office.id) === officeId);
@@ -106,13 +110,21 @@ export default function CorrespondenceIndex({ records, filters, filterOptions, w
                     title="Correspondence"
                     description={`Review incoming correspondence and routing for ${workspace.departmentName}.`}
                     icon={Inbox}
-                    aside={(
+                    aside={(!isOverview &&
                         <div className="border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600 dark:border-slate-600 dark:bg-[#0f1c2e] dark:text-slate-300 sm:text-xs">
                             <span className="font-semibold text-slate-900 dark:text-slate-100">{records.total}</span> visible record{records.total === 1 ? '' : 's'}
                         </div>
                     )}
                 />
 
+                <nav aria-label="Correspondence views" className="mb-4 flex flex-wrap gap-2">{(['overview', 'all', 'needs_action', 'received', 'assigned_to_me', 'routed', 'archived'] as const).map((option) => <Link key={option} href={`/correspondence?view=${option}`} aria-current={(filters.view ?? 'overview') === option ? 'page' : undefined} className={`rounded-lg px-3 py-2 text-xs font-semibold capitalize ${(filters.view ?? 'overview') === option ? 'bg-[#0b2852] text-white' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200'}`}>{option.replaceAll('_', ' ')}</Link>)}</nav>
+
+                {isOverview && <section aria-label="Correspondence overview" className="mb-5 space-y-4">
+                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">{(['all', 'received', 'needs_action', 'assigned_to_me', 'routed', 'archived', 'overdue'] as const).map((key) => <Link key={key} href={`/correspondence?view=${key}`} className="municipal-panel p-4"><div className="text-2xl font-bold text-[#0b2852] dark:text-blue-200">{correspondenceOverviewCount(overview, key)}</div><div className="mt-1 text-xs font-semibold capitalize text-slate-600 dark:text-slate-300">{key.replaceAll('_', ' ')}</div></Link>)}</div>
+                    {(['needs_action', 'received', 'routed', 'archived'] as const).map((key) => <div key={key} className="municipal-panel p-4 sm:p-5"><div className="mb-3 flex items-center justify-between gap-2"><h2 className="font-bold capitalize">{key.replaceAll('_', ' ')}</h2><Link href={`/correspondence?view=${key}`} className="text-xs font-semibold text-blue-700 dark:text-blue-300">View queue</Link></div><div className="divide-y divide-slate-100 dark:divide-slate-700">{(overview?.previews?.[key] ?? []).map((row) => <Link key={row.publicId} href={`/correspondence/${row.publicId}/workspace`} className="flex flex-col justify-between gap-1 py-3 text-sm sm:flex-row"><span className="min-w-0 break-words font-semibold">{row.subject}</span><span className="shrink-0 text-xs text-slate-500">{row.reference}</span></Link>)}{!(overview?.previews?.[key]?.length) && <p className="py-3 text-sm text-slate-500">No items in this authorized queue.</p>}</div></div>)}
+                </section>}
+
+                {!isOverview && <>
                 <form onSubmit={apply}>
                     <ProgressiveFilterBar
                         title="Correspondence filters"
@@ -232,6 +244,7 @@ export default function CorrespondenceIndex({ records, filters, filterOptions, w
                         </div>
                     </div>
                 ) : null}
+                </>}
             </PageFrame>
         </AppLayout>
     );

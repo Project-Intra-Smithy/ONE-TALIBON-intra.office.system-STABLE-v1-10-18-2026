@@ -2,6 +2,7 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import { Bell, Menu, X } from 'lucide-react';
 import { type PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { NotificationContext } from '../components/shell/NotificationContext';
+import { emptyNotificationFeed, parseNotificationFeed } from '../compat/notificationFeed';
 import MobileNavigation from '../components/shell/MobileNavigation';
 import PortalSidebar from '../components/shell/PortalSidebar';
 import { PortalIdentity, PortalLauncher, RecordsSearch } from '../components/shell/PortalTools';
@@ -36,13 +37,8 @@ export default function AppLayout({ title, children }: Props) {
     const page = usePage<SharedProps>();
     const pageProps = page.props;
     const { auth, flash } = pageProps;
-    const [feed, setFeed] = useState<NotificationFeed>(() => ({
-        pendingMemo: pageProps.pendingMemo,
-        unreadMemoCount: pageProps.unreadMemoCount,
-        unreadPlatformNotificationCount: pageProps.unreadPlatformNotificationCount,
-        notifications: pageProps.notifications,
-        notificationCount: pageProps.notificationCount,
-    }));
+    const [feed, setFeed] = useState<NotificationFeed>(emptyNotificationFeed);
+    const [feedState, setFeedState] = useState<'loading' | 'current' | 'unavailable' | 'expired'>('loading');
     const [mobileOpen, setMobileOpen] = useState(false);
     const [desktopCollapsed, setDesktopCollapsed] = useState(false);
     const [notificationsOpen, setNotificationsOpen] = useState(false);
@@ -53,10 +49,10 @@ export default function AppLayout({ title, children }: Props) {
     const notificationsInitialized = useRef(false);
     const notificationsPanel = useRef<HTMLDivElement>(null);
     const notificationsButton = useRef<HTMLButtonElement>(null);
-    const user = auth.user;
+    const user = auth?.user ?? null;
     const { pendingMemo, unreadMemoCount, notifications } = feed;
-    const navigation = pageProps.permissions.navigation;
-    const canViewReports = pageProps.permissions.reports && navigation.reports;
+    const navigation = pageProps.permissions?.navigation ?? {} as SharedProps['permissions']['navigation'];
+    const canViewReports = Boolean(pageProps.permissions?.reports && navigation.reports);
     const navigationGroups = buildPortalNavigation(
         pageProps.workspaceExperience,
         navigation,
@@ -101,34 +97,28 @@ export default function AppLayout({ title, children }: Props) {
         };
     }, [notificationsOpen]);
 
-    useEffect(() => {
-        setFeed({
-            pendingMemo: pageProps.pendingMemo,
-            unreadMemoCount: pageProps.unreadMemoCount,
-            unreadPlatformNotificationCount: pageProps.unreadPlatformNotificationCount,
-            notifications: pageProps.notifications,
-            notificationCount: pageProps.notificationCount,
-        });
-    }, [
-        pageProps.pendingMemo,
-        pageProps.unreadMemoCount,
-        pageProps.unreadPlatformNotificationCount,
-        pageProps.notifications,
-        pageProps.notificationCount,
-    ]);
-
     useVisiblePolling(async (signal) => {
-        const response = await fetch('/notifications/feed', {
-            credentials: 'same-origin',
-            headers: { Accept: 'application/json' },
-            signal,
-        });
-
-        if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) {
-            return;
+        try {
+            const response = await fetch('/notifications/feed', {
+                credentials: 'same-origin',
+                headers: { Accept: 'application/json' },
+                signal,
+            });
+            if (response.status === 401 || response.status === 403 || response.status === 419) {
+                setFeed(emptyNotificationFeed());
+                setFeedState('expired');
+                return;
+            }
+            if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) {
+                throw new Error('Notification feed unavailable');
+            }
+            setFeed(parseNotificationFeed(await response.json()));
+            setFeedState('current');
+        } catch (error) {
+            if (signal.aborted) return;
+            setFeedState('unavailable');
         }
 
-        setFeed(await response.json() as NotificationFeed);
     }, 8000);
 
     useEffect(() => {
@@ -244,7 +234,7 @@ export default function AppLayout({ title, children }: Props) {
                                         <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3 dark:border-slate-700">
                                             <div>
                                                 <div className="text-[12px] font-bold text-slate-950 dark:text-slate-100 sm:text-sm">Recent activity</div>
-                                                <div className="text-xs text-slate-500 dark:text-slate-400 sm:text-xs">New office arrivals and unread memoranda</div>
+                                                <div className="text-xs text-slate-500 dark:text-slate-400 sm:text-xs">{feedState === 'current' ? 'New office arrivals and unread memoranda' : feedState === 'expired' ? 'Session expired. Sign in again to refresh.' : feedState === 'unavailable' ? 'Updates unavailable; showing last received items.' : 'Loading updates…'}</div>
                                             </div>
                                             <button onClick={() => setNotificationsOpen(false)} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Close notifications"><X size={16} /></button>
                                         </div>
@@ -261,7 +251,7 @@ export default function AppLayout({ title, children }: Props) {
                                                     </div>
                                                 </Link>
                                             ))}
-                                            {notifications.length === 0 && <div className="px-4 py-8 text-center text-[13px] text-slate-500 dark:text-slate-400 sm:text-sm">No recent notifications.</div>}
+                                            {notifications.length === 0 && <div className="px-4 py-8 text-center text-[13px] text-slate-500 dark:text-slate-400 sm:text-sm">{feedState === 'current' ? 'No recent notifications.' : 'Notifications have not been refreshed.'}</div>}
                                         </div>
                                     </div>
                                 )}

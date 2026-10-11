@@ -93,6 +93,7 @@ export default function Show({
     const [assignableEmployees, setAssignableEmployees] = useState(initialAssignableEmployees);
     const [accountability, setAccountability] = useState(initialAccountability);
     const [permissions, setPermissions] = useState(initialPermissions);
+    const [liveState, setLiveState] = useState<'checking' | 'current' | 'stale' | 'expired'>('checking');
     const latestEventId = useRef(initialTx.events.reduce((latest, event) => Math.max(latest, event.id), 0));
     const form = useForm<WorkflowForm>({
         action: 'mark_review',
@@ -107,6 +108,7 @@ export default function Show({
         setAssignableEmployees(initialAssignableEmployees);
         setAccountability(initialAccountability);
         setPermissions(initialPermissions);
+        setLiveState('checking');
         latestEventId.current = initialTx.events.reduce((latest, event) => Math.max(latest, event.id), 0);
     }, [initialTx, initialAssignableEmployees, initialAccountability, initialPermissions]);
 
@@ -117,9 +119,13 @@ export default function Show({
             signal,
         });
 
-        if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) return;
+        if ([401, 403, 419].includes(response.status)) { setLiveState('expired'); return; }
+        if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) { setLiveState('stale'); return; }
 
-        const payload = await response.json() as LivePayload;
+        let payload: LivePayload;
+        try { payload = await response.json() as LivePayload; }
+        catch { setLiveState('stale'); return; }
+        if (!Array.isArray(payload?.events) || !payload.transaction || !payload.permissions || !Array.isArray(payload.assignableEmployees)) { setLiveState('stale'); return; }
         if (payload.events.length > 0) {
             latestEventId.current = Math.max(latestEventId.current, ...payload.events.map((event) => event.id));
         }
@@ -142,7 +148,8 @@ export default function Show({
         setAssignableEmployees(payload.assignableEmployees);
         setAccountability(payload.accountability);
         setPermissions(payload.permissions);
-    }, 4000, !form.processing);
+        setLiveState('current');
+    }, 4000, !form.processing, () => setLiveState('stale'));
 
     useEffect(() => {
         form.setData('assigned_employee_id', tx.assigned_employee?.id ?? '');
@@ -165,7 +172,7 @@ export default function Show({
             <div className="mx-auto max-w-6xl space-y-4 sm:space-y-6">
                 <div className="flex items-center justify-between gap-3 sm:gap-4">
                     <Link href="/transactions" className="text-[12px] font-semibold text-blue-700 sm:text-sm">← Back to My Work</Link>
-                    <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-semibold text-emerald-800 sm:gap-2 sm:px-3 sm:py-1.5 sm:text-xs"><Radio size={12} className="animate-pulse sm:h-[14px] sm:w-[14px]" />Live status</div>
+                    <div role="status" className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold sm:gap-2 sm:px-3 sm:py-1.5 sm:text-xs ${liveState === 'current' ? 'bg-emerald-50 text-emerald-800' : 'bg-amber-50 text-amber-900'}`}><Radio size={12} className="sm:h-[14px] sm:w-[14px]" />{liveState === 'current' ? 'Updates current' : liveState === 'expired' ? 'Session expired — sign in again' : liveState === 'stale' ? 'Updates unavailable — last known state' : 'Checking updates…'}</div>
                 </div>
 
                 <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:rounded-3xl sm:p-6 md:p-8 dark:bg-[#142236] dark:border-slate-700">

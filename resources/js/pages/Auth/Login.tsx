@@ -1,5 +1,5 @@
-import { Head, Link, useForm } from '@inertiajs/react';
-import { ArrowLeft, Building2, CheckCircle2, LockKeyhole, ShieldCheck } from 'lucide-react';
+import { Head, useForm } from '@inertiajs/react';
+import { Building2, CheckCircle2, LockKeyhole, ShieldCheck } from 'lucide-react';
 import type { FormEvent } from 'react';
 
 export default function Login() {
@@ -15,9 +15,7 @@ export default function Login() {
             <Head title="Employee Portal" />
             <div className="min-h-screen bg-slate-100 lg:grid lg:grid-cols-[0.9fr_1.1fr]">
                 <section className="hidden bg-[#08264d] p-10 text-white lg:flex lg:flex-col lg:justify-between xl:p-14">
-                    <Link href="/" className="inline-flex w-fit items-center gap-2 text-sm text-blue-100 transition hover:text-white">
-                        <ArrowLeft size={16} /> Back to One Talibon
-                    </Link>
+                    <div className="text-sm text-blue-100">One Talibon · Employee Portal</div>
 
                     <div className="max-w-xl">
                         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm text-blue-100">
@@ -39,9 +37,7 @@ export default function Login() {
 
                 <section className="flex min-h-screen items-center justify-center px-4 py-8 sm:px-6 lg:min-h-0 lg:p-10">
                     <div className="w-full max-w-md">
-                        <Link href="/" className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-blue-800 lg:hidden">
-                            <ArrowLeft size={16} /> One Talibon
-                        </Link>
+                        <div className="mb-6 text-sm font-semibold text-blue-800 lg:hidden">One Talibon · Employee Portal</div>
 
                         <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl shadow-slate-900/5 sm:p-8">
                             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-900">
@@ -109,7 +105,6 @@ export default function Login() {
                                     <div>
                                         <div className="text-sm font-semibold text-slate-900">First time accessing the Portal?</div>
                                         <p className="mt-1 text-xs leading-5 text-slate-600">Account activation is not enabled in this prototype.</p>
-                                        <Link href="/activate-account" className="mt-2 inline-block text-sm font-semibold text-blue-800 hover:underline">Activate Employee Account</Link>
                                     </div>
                                 </div>
                             </div>
