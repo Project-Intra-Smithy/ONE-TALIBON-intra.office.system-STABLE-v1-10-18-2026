@@ -40,8 +40,20 @@ export function isTaskAccessBoundary(error: ReadError): boolean {
 const taskStates = new Set<string>(TASK_STATES);
 const record = (value: unknown): value is Record<string, unknown> =>
     typeof value === 'object' && value !== null && !Array.isArray(value);
-const timestamp = (value: unknown): value is string | null =>
-    value === null || (typeof value === 'string' && !Number.isNaN(Date.parse(value)));
+// C1 Task datetimes require a full ISO-8601 time and an explicit UTC offset (Z or ±HH:MM).
+// Date.parse alone accepts non-contract date-only and offsetless values.
+const isoTimestampWithOffset = /^(\d{4})-(\d{2})-(\d{2})T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z|[+-](?:0\d|1[0-3]):[0-5]\d|[+-]14:00)$/;
+const timestamp = (value: unknown): value is string | null => {
+    if (value === null) return true;
+    if (typeof value !== 'string') return false;
+    const parts = isoTimestampWithOffset.exec(value);
+    if (!parts || Number.isNaN(Date.parse(value))) return false;
+    const year = Number(parts[1]), month = Number(parts[2]), day = Number(parts[3]);
+    if (month < 1 || month > 12) return false;
+    const leap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+    const daysInMonth = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    return day >= 1 && day <= daysInMonth[month - 1];
+};
 const uint = (value: unknown): value is number => typeof value === 'number' && Number.isSafeInteger(value) && value >= 0;
 export function isIndividualTask(value: unknown): value is IndividualTask {
     if (!record(value)) return false;
