@@ -18,7 +18,7 @@ The client must preserve source `id` vs `public_id`, nullable department, flash 
 
 ## Exact observed Work Request queue/list projection
 
-**Producer review note (09 October 2026):** Source inspection conducted in Kirch's ChatGPT support session, **not** independent Jane execution, build, PHPUnit, browser, CI, Siris QA or contract approval. Backend pinned to `7b4ebb838982f6262b9fef65d18ba57488ebf941`; Lucien's pre-correction draft `76d78e68393d119dfb7b2dcbdad4cf15236b1d0f`.
+**Source review (09 October 2026):** Source-level verification only. Runtime tests, independent QA and formal contract approval were not performed as part of this review. Backend pinned to `7b4ebb838982f6262b9fef65d18ba57488ebf941`; Lucien's pre-correction draft `76d78e68393d119dfb7b2dcbdad4cf15236b1d0f`.
 
 Source [WorkQueueQuery.php:22](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/blob/7b4ebb838982f6262b9fef65d18ba57488ebf941/app/Services/WorkQueueQuery.php#L22): `GET /transactions` returns Inertia `Transactions/Index` props `records,filters,scopeGroups,filterOptions,experience,overview,staffWorkload`. `records` is a Laravel paginator with `per_page=25`; for `view=overview` and `view=staff_workload` it is intentionally empty (`data:[]`, `total:0`), not a missing DB producer. Actor-specific `allowedViews` is enforced at source; unsupported selection is **403**, regardless of sidebar visibility. `filters:{view,search,status,priority,office_id}`; `filterOptions:{statuses,priorities,offices}`; `experience:{profile,department,hasOfficeScope,hasMunicipalScope}`.
 

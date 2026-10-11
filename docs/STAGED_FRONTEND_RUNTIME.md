@@ -6,7 +6,7 @@
 
 **REWORK remains open:** [exact production-contract mismatches identified in staging review](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/pull/5#issuecomment-6080532978). Merge acceptance for a starting point is not acceptance of those defects.
 
-**Staging branch:** `KIRCH-TALIBON-FRONTEND-REG-001-EXISTING-UI-STAGING-R1` in the frontend team's private repo. **Canonical Laravel backend:** `Project-Intra-Smithy/Talibon-Sales-Prototype@7b4ebb838982f6262b9fef65d18ba57488ebf941`. **Original source:** `Kirch-Nairu/Talibon-Intra-Office-Portal@a7d7be17feb435b50c52cacd063e11d92ad047e1`. Human integration/release owner: Kirch. Jhayr coordinates import and adjustment; AJ supplies and verifies his existing contributions.
+**Staging branch:** `KIRCH-TALIBON-FRONTEND-REG-001-EXISTING-UI-STAGING-R1` in the frontend team's private repo. **Canonical Laravel backend:** `Project-Intra-Smithy/Talibon-Sales-Prototype@7b4ebb838982f6262b9fef65d18ba57488ebf941`. **Original source:** `Kirch-Nairu/Talibon-Intra-Office-Portal@a7d7be17feb435b50c52cacd063e11d92ad047e1`. Technical review owner: Kirch. Jhayr coordinates import and adjustment; AJ supplies and verifies his existing contributions.
 
 ## This repository now has real frontend code ON THE STAGING BRANCH
 

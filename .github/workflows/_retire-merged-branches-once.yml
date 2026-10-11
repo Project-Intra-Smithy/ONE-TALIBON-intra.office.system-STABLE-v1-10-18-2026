@@ -1,0 +1,16 @@
+# Historical branch cleanup completed.
+# Four obsolete branch refs were retired successfully. No further actions are required.
+name: Branch cleanup completed (inactive)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirmation
+        run: echo "Historical frontend branch retirement is complete. Nothing to delete."
