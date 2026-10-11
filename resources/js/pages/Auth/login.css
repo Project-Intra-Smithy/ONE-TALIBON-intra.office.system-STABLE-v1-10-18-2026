@@ -1,0 +1,44 @@
+﻿/* FE-AUTH-01: scoped to the login page; shared auth and portal styles stay independent. */
+.employee-login {
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    padding: 48px 16px;
+    background: #f3f6f8;
+    color: #243443;
+}
+.employee-login__composition { width: 100%; max-width: 440px; }
+.employee-login__brand { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 28px; color: #102b46; }
+.employee-login__wordmark { font-size: 15px; font-weight: 750; letter-spacing: .15em; }
+.employee-login__brand p { margin: 2px 0 0; font-size: 12px; color: #315b7d; }
+.employee-login__panel { padding: 32px; background: #fff; border: 1px solid #d8e1e7; border-radius: 16px; box-shadow: 0 8px 24px -18px #102b4640; }
+@supports (backdrop-filter: blur(8px)) {
+    .employee-login__panel { background: rgb(255 255 255 / 88%); backdrop-filter: blur(8px); }
+}
+.employee-login__eyebrow { margin: 0 0 8px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; font-weight: 650; color: #315b7d; }
+.employee-login h1 { margin: 0; color: #102b46; font-size: 28px; font-weight: 650; line-height: 1.25; letter-spacing: -.035em; }
+.employee-login__intro { margin: 12px 0 28px; color: #526473; font-size: 14px; line-height: 1.65; }
+.employee-login__field { margin-bottom: 20px; }
+.employee-login__field label { display: block; margin-bottom: 7px; font-size: 14px; font-weight: 600; }
+.employee-login__field input { width: 100%; min-height: 48px; padding: 10px 12px; border: 1px solid #8498a8; border-radius: 7px; background: #fff; color: #243443; font-size: 16px; }
+.employee-login :is(input, button):focus-visible { outline: 2px solid #315b7d; outline-offset: 3px; }
+.employee-login__field input[aria-invalid='true'] { border-color: #b42318; }
+.employee-login__error { margin: 8px 0 0; color: #b42318; font-size: 13px; overflow-wrap: anywhere; }
+.employee-login__remember { display: flex; align-items: center; gap: 10px; min-height: 44px; margin: -4px 0 16px; font-size: 13px; cursor: pointer; }
+.employee-login__remember input { width: 18px; height: 18px; flex-shrink: 0; accent-color: #102b46; }
+.employee-login button { min-height: 48px; width: 100%; border-radius: 7px; font-size: 14px; font-weight: 600; }
+.employee-login__submit { display: flex; align-items: center; justify-content: center; gap: 12px; border: 1px solid #102b46; background: #102b46; color: #fff; cursor: pointer; }
+.employee-login__submit:hover:not(:disabled) { background: #315b7d; }
+.employee-login :disabled { cursor: not-allowed; }
+.employee-login__submit:disabled { background: #526473; border-color: #526473; }
+.employee-login__field input:disabled { background: #f3f6f8; }
+.employee-login__status { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.employee-login__alternative { border-top: 1px solid #e1e7ec; margin-top: 24px; padding-top: 24px; text-align: center; }
+.employee-login__alternative button { border: 1px solid #d8e1e7; background: #f3f6f8; color: #526473; }
+.employee-login__alternative p { margin: 8px 0 0; font-size: 12px; color: #526473; }
+.employee-login__notice { margin: 20px 12px 0; text-align: center; color: #526473; font-size: 12px; line-height: 1.6; }
+@media (max-width: 359px) {
+    .employee-login { padding: 32px 16px; }
+    .employee-login__panel { padding: 24px 20px; }
+}
+/* No animations or transitions: reduced-motion is also the default experience. */
