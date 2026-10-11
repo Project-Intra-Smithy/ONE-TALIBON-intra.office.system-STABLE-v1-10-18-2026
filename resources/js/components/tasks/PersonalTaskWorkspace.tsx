@@ -2,7 +2,7 @@ import { usePage } from '@inertiajs/react';
 import { AlertCircle, ArrowLeft, ChevronLeft, ChevronRight, ListChecks, RefreshCcw } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import type { SharedProps } from '../../types';
-import { getPersonalTask, getPersonalTasks, TASK_STATES, type IndividualTask, type ReadError, type TaskPage, type TaskState } from './taskReadApi';
+import { getPersonalTask, getPersonalTasks, isTaskAccessBoundary, TASK_STATES, type IndividualTask, type ReadError, type TaskPage, type TaskState } from './taskReadApi';
 
 const labels: Record<TaskState,string> = {open:'Open',in_progress:'In Progress',completed:'Completed'};
 const colors: Record<TaskState,string> = {
@@ -80,7 +80,7 @@ function TaskSession() {
         getPersonalTasks(state,page,control.signal).then(r=>{
             if (!active) return;
             if(r.ok) setList(r.data);
-            else { setListError(r.error); if(r.error.status===401||r.error.status===403||r.error.status===419) setSelected(null); }
+            else { setListError(r.error); if(isTaskAccessBoundary(r.error)) setSelected(null); }
         }).catch(()=>{if(active)setListError({status:null,code:null,message:'Unable to retrieve the Task list.',nextUrl:null,requestId:null});})
         .finally(()=>{if(active)setListLoading(false);});
         return ()=>{active=false;control.abort();};
@@ -91,7 +91,14 @@ function TaskSession() {
         setDetail(null);setDetailError(null);setDetailLoading(true);
         getPersonalTask(selected,control.signal).then(r=>{
             if(!active)return;
-            if(!r.ok)setDetailError(r.error);
+            if(!r.ok) {
+                if(isTaskAccessBoundary(r.error)) {
+                    // The detail read revoked authorization: do not expose previously cached list rows.
+                    setList(null);
+                    setListError(r.error);
+                    setSelected(null);
+                } else setDetailError(r.error);
+            }
             else if(r.data.id!==selected)setDetailError({status:null,code:'INVALID_RESPONSE',message:'The Task service returned an unexpected record.',requestId:null,nextUrl:null});
             else setDetail(r.data);
         }).catch(()=>{if(active)setDetailError({status:null,code:null,message:'Unable to retrieve Task details.',requestId:null,nextUrl:null});})
