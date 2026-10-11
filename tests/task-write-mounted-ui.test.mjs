@@ -52,7 +52,7 @@ async function mount(handler,width=390){
   await page.getByRole('heading',{name:'Personal Tasks'}).waitFor();
   return {context,page,errors};
 }
-test('mounted 390px and desktop: CREATE 201, reload, START 200, reload, COMPLETE 200, reload',async()=>{
+test('mounted 390px and desktop: CREATE 201, fresh page, START 200, fresh page, COMPLETE 200, fresh page',async()=>{
   for(const width of [390,1180]){
     let record=null;
     const posts=[],requests=[];
@@ -88,7 +88,9 @@ test('mounted 390px and desktop: CREATE 201, reload, START 200, reload, COMPLETE
       await form.getByRole('textbox',{name:/Title/}).fill('F02 safe create');
       await form.getByRole('button',{name:'Create Task'}).click();
       await page.getByRole('status').getByText(/created and confirmed by the server/).waitFor();
-      await page.reload();
+      // Inertia replaces the preview URL with /dashboard; standalone Vite cannot reload that Laravel route.
+      // A fresh navigation to the explicit fixture URL remounts the real component and re-reads HTTP.
+      await page.goto(pageUrl,{waitUntil:'domcontentloaded',timeout:20000});
       try {
         await page.getByText('F02 safe create',{exact:true}).first().waitFor({timeout:9000});
       } catch {
@@ -99,12 +101,16 @@ test('mounted 390px and desktop: CREATE 201, reload, START 200, reload, COMPLETE
       await page.getByRole('button',{name:/F02 safe create/}).first().click();
       await page.getByRole('button',{name:'Start Task',exact:true}).click();
       await page.getByText(/started and confirmed by the server/).waitFor();
-      await page.reload();
+      // Inertia replaces the preview URL with /dashboard; standalone Vite cannot reload that Laravel route.
+      // A fresh navigation to the explicit fixture URL remounts the real component and re-reads HTTP.
+      await page.goto(pageUrl,{waitUntil:'domcontentloaded',timeout:20000});
       await page.getByRole('button',{name:'In Progress',exact:true}).click();
       await page.getByRole('button',{name:/F02 safe create/}).first().click();
       await page.getByRole('button',{name:'Complete Task',exact:true}).click();
       await page.getByText(/completed and confirmed by the server/).waitFor();
-      await page.reload();
+      // Inertia replaces the preview URL with /dashboard; standalone Vite cannot reload that Laravel route.
+      // A fresh navigation to the explicit fixture URL remounts the real component and re-reads HTTP.
+      await page.goto(pageUrl,{waitUntil:'domcontentloaded',timeout:20000});
       await page.getByRole('button',{name:'Completed',exact:true}).click();
       await page.getByRole('button',{name:/F02 safe create/}).first().click();
       await page.getByText('This Task is completed. No further actions are available.').waitFor();
