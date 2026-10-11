@@ -17,17 +17,42 @@ const names=[
 'LIVE_UI_REVOKED_CLEARS_ROWS','AUTHENTICATED_TASK_1440_AND_390',
 'POSTGRESQL_HTTP_SOURCE_OWNERSHIP','COMPLETE_CASE_MATRIX'];
 const rows=new Map(names.map(name=>[name,{name,status:'NOT_RUN',reason:'upstream prerequisite not reached'}]));
-function set(name,status,reason){rows.set(name,{name,status,...(reason?{reason}:{} )});console.log('RT02 '+name+' '+status);}
-async function test(name,fn){try{await fn();set(name,'PASS');return true}catch(e){set(name,'FAIL','assertion-failed (private error withheld)');return false}}
+function set(name,status,reason,diagnostic){
+ const row={name,status,...(reason?{reason}:{}),...(diagnostic?{diagnostic}:{} )};
+ rows.set(name,row);
+ // Fixed, bounded phase names and numeric statuses only. Never log assertion messages or HTTP bodies.
+ console.log('RT02 '+name+' '+status+(diagnostic?' phase='+diagnostic.phase+' http='+diagnostic.statuses.map(x=>x.status).join(','):''));
+}
+async function test(name,fn){
+ const diagnostic={phase:'start',statuses:[]};
+ const mark=(phase,response)=>{
+  assert.match(phase,/^[a-z][a-z0-9-]{0,63}$/);
+  diagnostic.phase=phase;
+  if(response!==undefined){
+   const statusCode=typeof response==='number'?response:response.status();
+   assert.ok(Number.isInteger(statusCode)&&statusCode>=100&&statusCode<=599);
+   assert.ok(diagnostic.statuses.length<12);
+   diagnostic.statuses.push({phase,status:statusCode});
+  }
+ };
+ try{await fn(mark);set(name,'PASS',undefined,diagnostic);return true}
+ catch(e){set(name,'FAIL','assertion-failed (private error withheld)',diagnostic);return false}
+}
 const fix=(op,...args)=>execFileSync('php',['tests/runtime-acceptance/f01-rt02-fixture.php',op,...args],{cwd:process.cwd(),encoding:'utf8',stdio:['ignore','pipe','pipe']}).trim();
 const userB='rt02-technical-b@example.test';
-let browser,A,B,pageA,pageB,desktop,mobile;
+let browser,A,B,pageA,pageB,desktop,mobile,visibleTask;
 const idsA=[],idsB=[];
 const codeStatus={};
 const throttleEvidence={status:'NOT_RUN',httpStatus:null,attempts:0};
 let httpPrechecksPassed=false;
 const status=async(r,n)=>assert.equal(r.status(),n);
 function viewport(){return {width:1440,height:900}}
+// Task labels are test-generated, but escape them before building a role-name regexp.
+const escapeRegex=value=>value.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+function taskButton(page,task){
+ return page.getByRole('list',{name:'Open personal Tasks'})
+  .getByRole('button',{name:new RegExp(escapeRegex(task.title))});
+}
 async function context(){return browser.newContext({viewport:viewport(),baseURL:base,serviceWorkers:'block',acceptDownloads:false})}
 async function login(email){
  const ctx=await context(),page=await ctx.newPage();
@@ -143,29 +168,85 @@ try{
   assert.equal(receipt.valid,true);assert.equal(receipt.allTaskKindIndividual,true);
   fs.writeFileSync(path.join(report,'db-receipt.json'),JSON.stringify(receipt,null,2)+'\n',{mode:0o600});
  });
- if(A&&idsA.length)await test('AUTHENTICATED_TASK_1440_AND_390',async()=>{
+ if(A&&idsA.length)await test('AUTHENTICATED_TASK_1440_AND_390',async(mark)=>{
+  mark('ui-first-page-api');
+  const first=await get(A.ctx,'/tasks?state=open&page=1&per_page=10');
+  mark('ui-first-page-api',first);await status(first,200);
+  const list=(await first.json()).data;
+  assert.ok(Array.isArray(list)&&list.length>0);
+  const selected=list.find(task=>idsA.includes(task.id)&&task.kind==='individual'&&task.state==='open'&&/^RT02 A synthetic Task [0-9]{2}$/.test(task.title));
+  assert.ok(selected,'first-page owned Task required');
+  visibleTask={id:selected.id,title:selected.title};
   desktop=A.page;
+  mark('ui-desktop-heading');
   await desktop.goto(base+'/dashboard',{waitUntil:'domcontentloaded'});
   await desktop.getByRole('heading',{name:'Personal Tasks'}).waitFor({timeout:15000});
-  await desktop.getByText('RT02 A synthetic Task 03',{exact:true}).waitFor({timeout:15000});
+  mark('ui-desktop-visible-task');
+  await taskButton(desktop,visibleTask).waitFor({state:'visible',timeout:15000});
+  assert.equal(await taskButton(desktop,visibleTask).count(),1);
+  mark('ui-desktop-screenshot');
   await desktop.screenshot({path:path.join(report,'task-desktop.png'),animations:'disabled',fullPage:true});
   mobile=await browser.newContext({viewport:{width:390,height:844},baseURL:base,storageState:await A.ctx.storageState(),serviceWorkers:'block'});
-  const p=await mobile.newPage();await p.goto(base+'/dashboard',{waitUntil:'domcontentloaded'});
+  const p=await mobile.newPage();
+  mark('ui-mobile-heading');
+  await p.goto(base+'/dashboard',{waitUntil:'domcontentloaded'});
   await p.getByRole('heading',{name:'Personal Tasks'}).waitFor({timeout:15000});
-  await p.getByText('RT02 A synthetic Task 03',{exact:true}).waitFor({timeout:15000});
+  mark('ui-mobile-visible-task');
+  await taskButton(p,visibleTask).waitFor({state:'visible',timeout:15000});
+  assert.equal(await taskButton(p,visibleTask).count(),1);
+  mark('ui-mobile-screenshot');
   await p.screenshot({path:path.join(report,'task-mobile.png'),animations:'disabled',fullPage:true});
  });
- if(A&&desktop&&idsA.length)await test('LIVE_UI_REVOKED_CLEARS_ROWS',async()=>{
-  const l=desktop.getByRole('button',{name:/RT02 A synthetic Task 03/});await l.waitFor();
-  await status(await post(A.ctx,'/logout'),302);
+ if(A&&desktop&&visibleTask)await test('LIVE_UI_REVOKED_CLEARS_ROWS',async(mark)=>{
+  const l=taskButton(desktop,visibleTask);
+  mark('revoked-visible-list');
+  await l.waitFor({state:'visible',timeout:15000});
+  assert.equal(await desktop.getByRole('list',{name:'Open personal Tasks'}).count(),1);
+  mark('revoked-prelogout-detail-http');
+  const authorized=await get(A.ctx,'/tasks/'+visibleTask.id);
+  mark('revoked-prelogout-detail-http',authorized);await status(authorized,200);
+  mark('revoked-prelogout-detail-visible');
   await l.click();
+  await desktop.getByRole('region',{name:'Personal Task detail'}).getByRole('heading',{name:visibleTask.title,exact:true}).waitFor({timeout:15000});
+  // Keep both list rows and selected detail visible until the real logout occurs.
+  assert.equal(await desktop.getByRole('list',{name:'Open personal Tasks'}).count(),1);
+  mark('revoked-logout-post');
+  const loggedOut=await post(A.ctx,'/logout');
+  mark('revoked-logout-post',loggedOut);await status(loggedOut,302);
+  // Return to the still-mounted list without reloading the page or restoring credentials.
+  mark('revoked-stale-list-present');
+  assert.equal(await desktop.getByRole('region',{name:'Personal Task detail'}).count(),1);
+  await desktop.getByRole('button',{name:'Back to tasks'}).click();
+  await l.waitFor({state:'visible',timeout:15000});
+  mark('revoked-stale-detail-request');
+  const [denied]=await Promise.all([
+   desktop.waitForResponse(r=>r.request().method()==='GET'&&new URL(r.url()).pathname==='/tasks/'+visibleTask.id,{timeout:15000}),
+   l.click()
+  ]);
+  mark('revoked-stale-detail-response',denied);await status(denied,401);
+  mark('revoked-clear-alert');
   await desktop.getByRole('alert').getByText('Personal Tasks unavailable (401)').waitFor({timeout:15000});
-  assert.equal(await desktop.getByText('RT02 A synthetic Task 03',{exact:true}).count(),0);
+  mark('revoked-protected-dom-absent');
   assert.equal(await desktop.getByRole('list',{name:'Open personal Tasks'}).count(),0);
+  assert.equal(await desktop.getByText(visibleTask.title,{exact:true}).count(),0);
+  assert.equal(await desktop.getByRole('region',{name:'Personal Task detail'}).count(),0);
  });
- if(B)await test('LOGOUT_REVOKES_ACCESS',async()=>{
-  await status(await post(B.ctx,'/logout'),302);
-  const r=await get(B.ctx,'/tasks');await status(r,401);
+ if(B)await test('LOGOUT_REVOKES_ACCESS',async(mark)=>{
+  // The inactive-account middleware invalidated B's original browser session.
+  let fresh;
+  try{
+   mark('b-reauth-after-inactive');
+   fresh=await login(userB);
+   mark('b-prelogout-http');
+   const before=await get(fresh.ctx,'/tasks');
+   mark('b-prelogout-http',before);await status(before,200);
+   mark('b-logout-post');
+   const loggedOut=await post(fresh.ctx,'/logout');
+   mark('b-logout-post',loggedOut);await status(loggedOut,302);
+   mark('b-postlogout-http');
+   const denied=await get(fresh.ctx,'/tasks');
+   mark('b-postlogout-http',denied);await status(denied,401);
+  } finally { await fresh?.ctx?.close().catch(()=>{}); }
  });
  if(httpPrechecksPassed&&B) {
   // Use a new session after logout. The real response, never a deferred placeholder, is evidence.
