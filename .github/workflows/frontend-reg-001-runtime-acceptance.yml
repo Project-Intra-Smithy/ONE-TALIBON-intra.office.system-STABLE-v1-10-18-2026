@@ -34,7 +34,6 @@ jobs:
       QUEUE_CONNECTION: sync
       RTCI_WORKSPACE_DIR: ${{ github.workspace }}/ci
       RTCI_BACKEND_DIR: ${{ github.workspace }}/src/backend
-      RTCI_REPORT_DIR: ${{ runner.temp }}/rtci-report
       RTCI_APPROVED_SHA: ${{ vars.RT_CI_APPROVED_SHA }}
       RTCI_BILLING_HARD_STOP_CONFIRMED: ${{ vars.RT_CI_BILLING_HARD_STOP_CONFIRMED }}
     services:
@@ -64,6 +63,7 @@ jobs:
             echo 'RT-CI HOLD: organization zero-overage hard-stop attestation absent' >&2; exit 1
           fi
           echo 'RT-CI manual release tuple attested; billing still controlled by GitHub organization settings'
+          echo "RTCI_REPORT_DIR=$RUNNER_TEMP/rtci-report" >> "$GITHUB_ENV"
 
       - name: Checkout reviewed CI-only tool source
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4 SHA read from GitHub
