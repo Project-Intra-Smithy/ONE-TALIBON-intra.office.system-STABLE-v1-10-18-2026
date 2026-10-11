@@ -24,9 +24,14 @@ const response=(value,status=200)=>({status,contentType:'application/json',
 let browser, server, serverOutput='';
 
 before(async()=>{
-  // Existing CI installs Chromium after npm test: provide the existing
-  // Playwright package's browser binary at the mounted-test stage if absent.
+  // CI may already provide system Chrome (Chromium engine). Prefer that
+  // to downloading another browser before npm test; fall back to Playwright's
+  // pinned Chromium binary on environments without a system browser.
   if(!existsSync(chromium.executablePath())){
+    try{browser=await chromium.launch({channel:'chrome',headless:true});}
+    catch{/* No compatible system Chrome: provision pinned Playwright browser. */}
+  }
+  if(!browser&&!existsSync(chromium.executablePath())){
     const installer=spawn(process.execPath,
       ['node_modules/playwright/cli.js','install','chromium'],{stdio:'pipe'});
     let output='';
@@ -47,7 +52,7 @@ before(async()=>{
     await sleep(500);
   }
   assert.ok(ready,'Vite not ready: '+serverOutput.slice(-1500));
-  browser=await chromium.launch({headless:true});
+  if(!browser)browser=await chromium.launch({headless:true});
 });
 
 after(async()=>{
