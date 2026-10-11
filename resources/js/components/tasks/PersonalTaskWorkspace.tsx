@@ -79,7 +79,8 @@ function TaskSession() {
         setList(null);setListError(null);setListLoading(true);
         getPersonalTasks(state,page,control.signal).then(r=>{
             if (!active) return;
-            if(r.ok) setList(r.data);else setListError(r.error);
+            if(r.ok) setList(r.data);
+            else { setListError(r.error); if(r.error.status===401||r.error.status===403||r.error.status===419) setSelected(null); }
         }).catch(()=>{if(active)setListError({status:null,code:null,message:'Unable to retrieve the Task list.',nextUrl:null,requestId:null});})
         .finally(()=>{if(active)setListLoading(false);});
         return ()=>{active=false;control.abort();};
@@ -138,7 +139,7 @@ function TaskSession() {
                 {selected===null&&<p className="rounded-xl border border-dashed border-slate-300 p-6 text-sm text-slate-600 dark:border-slate-600 dark:text-slate-300">Choose an individual Task to see its details.</p>}
                 {selected!==null&&detailLoading&&<Loading label="Loading Task detail"/>}
                 {selected!==null&&!detailLoading&&detailError&&<ErrorPanel error={detailError} retry={()=>setDetailRefresh(n=>n+1)} back={()=>setSelected(null)}/>}
-                {selected!==null&&!detailLoading&&detail&&<><h3 className="sr-only" ref={focusTitle} tabIndex={-1}>Selected Task details</h3><Detail task={detail} back={()=>setSelected(null)}/></>}
+                {selected!==null&&!detailLoading&&detail?.id===selected&&<><h3 className="sr-only" ref={focusTitle} tabIndex={-1}>Selected Task details</h3><Detail task={detail} back={()=>setSelected(null)}/></>}
             </div>
         </div>
     </section>;
