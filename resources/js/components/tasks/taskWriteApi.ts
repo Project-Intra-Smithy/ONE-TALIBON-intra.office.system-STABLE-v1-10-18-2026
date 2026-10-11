@@ -3,7 +3,9 @@
  * Canonical C1: Project-Intra-Smithy/Talibon-Sales-Prototype@f9291aa6fb224aefa96e771a4c68f671c4db3278.
  * Never claim a mutation succeeded without a correctly shaped 201/200 server receipt.
  */
-import { isIndividualTask, safeMfaNextUrl, type IndividualTask, type TaskState } from './taskReadApi';
+// Type-only import is erased at runtime; Node's built-in TS strip-types runner and Vite
+// both resolve this module without a new dependency or shared tsconfig change.
+import type { IndividualTask, TaskState } from './taskReadApi';
 
 export type CreateTaskInput = { title: string; instructions: string | null; due_at: string | null };
 export type TaskMutationError = {
@@ -26,6 +28,28 @@ export function validTaskDueAt(v: unknown): v is string {
     const leap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
     const days = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     return month >= 1 && month <= 12 && day >= 1 && day <= days[month - 1];
+}
+
+// Strict duplicate boundary serializer for mutation receipts. F01 keeps its existing
+// read parser; this POST consumer must be independently executable by Node's TS runner.
+function isIndividualTask(v: unknown): v is IndividualTask {
+    if (!object(v) || !Number.isSafeInteger(v.id) || (v.id as number) <= 0 ||
+        v.kind !== 'individual' || typeof v.title !== 'string' ||
+        (v.instructions !== null && typeof v.instructions !== 'string') ||
+        !['open','in_progress','completed'].includes(String(v.state)) ||
+        (v.owning_department_id !== null &&
+            (!Number.isSafeInteger(v.owning_department_id) || (v.owning_department_id as number) < 0))) return false;
+    return ['due_at','completed_at','created_at','updated_at'].every(key=>
+        v[key]===null || validTaskDueAt(v[key]));
+}
+function safeMfaNextUrl(v: unknown): string | null {
+    if (typeof v !== 'string' || !v.startsWith('/security/mfa/') ||
+        v.startsWith('//') || v.includes('\\') || /[\u0000-\u001f]/.test(v)) return null;
+    try {
+        const target=new URL(v,'https://portal.local');
+        return target.origin==='https://portal.local' && target.pathname.startsWith('/security/mfa/')
+            ? target.pathname+target.search+target.hash : null;
+    }catch{return null;}
 }
 export function validateCreateTaskInput(v: unknown): v is CreateTaskInput {
     if (!object(v) || Object.keys(v).some(k => !['title','instructions','due_at'].includes(k))) return false;
