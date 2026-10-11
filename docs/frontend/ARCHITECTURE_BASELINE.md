@@ -106,3 +106,43 @@ Historical README P0 notes about notification initialization and Calendar `summa
 ## Next scoped task
 
 AJ and Jhayr review this baseline and [ownership boundaries](COMPONENT_OWNERSHIP.md); Kirch retains disposition authority. The next development task is **FE-AUTH-01 [#18](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/18)**: professional, minimal, glass-inspired government login presentation, preserving the documented C02 Inertia form, validation, session/CSRF and server-controlled redirects. Its own START pair and review gates apply; it has not begun here.
+
+## Current Accepted F01 / Postmerge Operational Addendum
+
+**12 October 2026 (Asia/Shanghai), FE-BASE-01-PR24-CORRECTIONS.** The preceding inventory and 11/11 test result remain historical evidence for `49ba8cafd7ad14e85984466907bc573f42d1d659`; they do not describe the current integrated Task consumer. This append follows [Kirch's review](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/pull/24#issuecomment-6112663595). His review was posted 11 October UTC / 12 October locally.
+
+| Accepted reference | Exact value / evidence |
+| --- | --- |
+| Frontend main, fetched at correction preflight | `e6f5947ab330802f4b860b28baddc910ca32e13e` |
+| Frontend Git tree, verified with `git rev-parse` | `a7cced7c276e7a62292f08c04606f4376450aac1` |
+| Backend main, fetched read-only at correction preflight | `f9291aa6fb224aefa96e771a4c68f671c4db3278` |
+| Accepted native integration | [CI #38165379027](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/actions/runs/38165379027), SUCCESS on the backend SHA above; Kirch-reviewed evidence: source pins 37/37, **41 Laravel tests / 406 assertions**, actual **PostgreSQL/Chromium 12/12**. Run conclusion/head independently read back; counts attributed to the maintainer's review. |
+| PR #24 at preflight | `de05358d053680459f8557759dd1414f848042b8`, base `e6f5947ab330802f4b860b28baddc910ca32e13e`; existing remote merge already included F01. Checkout fast-forwarded to it without creating a merge. |
+
+Accepted F01 mounts `resources/js/components/tasks/PersonalTaskWorkspace.tsx` inside `resources/js/pages/Dashboard.tsx`, using `components/tasks/taskReadApi.ts` for same-origin, session-authenticated JSON `GET /tasks` and `GET /tasks/{id}`. It is an owner-isolated personal Task list/detail, separate from Work Requests at `/transactions`; absence of a standalone Task page in the old inventory does not mean no current Task consumer. Preserve pagination, native state, masked owner denial, authorization/session data clearing and stale-response cancellation.
+
+The native CI evidence belongs only to the accepted frontend/backend tuple above. It is not a fresh PR #24 authenticated test and does not certify all four dashboard experiences, a login/MFA redesign, F02 mutations, complete A01, A02 or production. C02 Login, C03 MFA and C04 Dashboard remain **SOURCE-OBSERVED**, not individually formally released. F02 belongs to Lucien's separate #15 lane; A02 remains draft design, not a released endpoint or consumer payload. Future frontend promotion requires reviewed re-pinning of the backend's 37-blob manifest, a new exact tuple and native CI.
+
+### Agreed traceability-file substitution
+
+The maintained [FE-BASE-01 consumer-contract supplement](../contracts/ONE_TALIBON_FRONTEND_CONTRACT_PACK_R1/FRONTEND_CONSUMER_CONTRACTS.md#fe-base-01--working-frontend-traceability), including its dated current-state addendum, substitutes for Issue #17's originally proposed `docs/frontend-contract-matrix.md`. This implements the requested substitution acknowledged as reasonable in Kirch's review; no duplicate matrix is created. The architecture inventory and ownership map remain companion deliverables. AJ/Jhayr exact-head review and Kirch's final disposition remain pending.
+
+### Current-source verification ledger
+
+Executed 12 October 2026 (Asia/Shanghai) with checked-out HEAD **`ee31926963b9f7036ce48d7373424215f866d654`**, the published correction START commit. Its application, tests and dependency manifests match PR preflight `de05358d053680459f8557759dd1414f848042b8` and accepted frontend main; `git diff origin/main HEAD -- resources tests package.json package-lock.json` produced no diff. Subsequent correction edits are Markdown only. This ledger names the actual tested HEAD, not a future commit or the old 11/11 snapshot.
+
+Environment: Windows PowerShell, Node `v22.16.0`, npm `10.9.2`, existing installed dependencies. Local command output, not hosted PR CI:
+
+| Command / gate | Actual result | Evidence and limit |
+| --- | --- | --- |
+| `npm run types` | **FAIL**, exit 1 | `Missing script: "types"`; package scripts unchanged within documentation-only scope. |
+| `npm run types:check` | **PASS**, exit 0 | `tsc --noEmit`, no diagnostics. |
+| `npm test` | **PASS**, exit 0 | **27 tests / 27 pass / 0 fail / 0 skipped / 0 cancelled**, 28.95s; includes five real mounted React/Chromium cases using simulated Task HTTP. These do not exercise Laravel sessions, database or authorization. Node emitted experimental type-stripping warnings. |
+| `npm run build` | **PASS**, exit 0 | Vite `8.3.0`, 2186 modules, 1.45s. Generated build output excluded. |
+| `git diff --check` | **PASS**, exit 0 | Correction Markdown whitespace check; final committed range checked again before publication. |
+| `npm ci` | **NOT RUN** | Existing dependencies; not clean-install reproducibility. |
+| `npm run visual:verify`; keyboard/mobile/contrast review | **NOT RUN** | Mounted tests above are not the full visual fixture suite or responsive/accessibility acceptance. |
+| New authenticated Laravel/PostgreSQL/session/CSRF/MFA/two-owner tests | **NOT RUN** | No backend assembled or exercised for this PR correction. Accepted native CI remains separately attributed above. |
+| Hosted candidate CI; independent AJ/Jhayr review; Kirch disposition | **NOT RUN / PENDING** | No new approval or production acceptance claimed. |
+
+Remaining holds: missing `types` alias recorded for owner/Kirch disposition, not repaired here; AJ/Jhayr exact-head documentation review and Kirch merge decision; C02–C04 field/runtime questions and H13/H15 beyond bounded accepted F01 remain deferred to their owned packages and FE-QA #23 at an authorized exact tuple. F02 and A02 retain separate gates. **Single NEXT:** AJ/Jhayr review the corrected PR #24 head and return it to Kirch for disposition. Issue #17 remains open. The [paired correction checkpoint](../WORK_PACKAGE_CONTINUITY.md#close-proposal--fe-base-01-pr24-corrections--2026-10-12-asiashanghai) and Issue #17 publication crosslink identify the final delivery SHA.
