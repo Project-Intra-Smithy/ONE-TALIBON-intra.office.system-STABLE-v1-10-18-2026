@@ -4,14 +4,15 @@ on:
   push:
     branches:
       - forge/jane-a01-f01-canonical-integration-001
+      - main
 permissions:
   contents: read
 concurrency:
-  group: f01-canonical-001
+  group: f01-canonical-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   frontend-laravel-native:
-    if: ${{ github.repository == 'Project-Intra-Smithy/Talibon-Sales-Prototype' && github.ref == 'refs/heads/forge/jane-a01-f01-canonical-integration-001' }}
+    if: ${{ github.event_name == 'push' && github.repository == 'Project-Intra-Smithy/Talibon-Sales-Prototype' && (github.ref == 'refs/heads/forge/jane-a01-f01-canonical-integration-001' || github.ref == 'refs/heads/main') }}
     runs-on: ubuntu-latest
     timeout-minutes: 18
     env:
@@ -53,7 +54,13 @@ jobs:
         run: |
           set -Eeuo pipefail
           test "$RUNNER_ENVIRONMENT" = github-hosted
-          test "$GITHUB_REF" = refs/heads/forge/jane-a01-f01-canonical-integration-001
+          test "$GITHUB_REPOSITORY" = Project-Intra-Smithy/Talibon-Sales-Prototype
+          test "$GITHUB_EVENT_NAME" = push
+          case "$GITHUB_REF" in
+            refs/heads/forge/jane-a01-f01-canonical-integration-001|refs/heads/main) ;;
+            *) echo "F01 HOLD: untrusted push ref" >&2; exit 1 ;;
+          esac
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           echo "RTCI_REPORT_DIR=$RUNNER_TEMP/f01-canonical-report" >> "$GITHUB_ENV"
           PW="$(openssl rand -hex 32)"
           echo "::add-mask::$PW"
@@ -72,6 +79,8 @@ jobs:
           coverage: none
       - name: Verify canonical source sync and pinned 37 blobs
         run: node scripts/ci/f01-canonical/source-sync.mjs --verify
+      - name: Exercise candidate and postmerge-shaped Git regression fixtures
+        run: node scripts/ci/f01-canonical/source-sync.mjs --self-test
       - name: Verify isolated empty PostgreSQL and exact database target
         run: node scripts/ci/f01-canonical/db-preflight.mjs "$GITHUB_WORKSPACE"
       - name: Real TypeScript, production build, Laravel HTTP/CSRF/MFA and Chromium
@@ -83,6 +92,7 @@ jobs:
           name: f01-canonical-native-evidence
           path: |
             ${{ runner.temp }}/f01-canonical-report/source-attestation.json
+            ${{ runner.temp }}/f01-canonical-report/source-regression.json
             ${{ runner.temp }}/f01-canonical-report/browser-cases.json
             ${{ runner.temp }}/f01-canonical-report/db-receipt.json
             ${{ runner.temp }}/f01-canonical-report/task-desktop.png
@@ -90,4 +100,4 @@ jobs:
             ${{ runner.temp }}/f01-canonical-report/guest-desktop.png
             ${{ runner.temp }}/f01-canonical-report/guest-mobile.png
           if-no-files-found: ignore
-          retention-days: 1
+          retention-days: 7
