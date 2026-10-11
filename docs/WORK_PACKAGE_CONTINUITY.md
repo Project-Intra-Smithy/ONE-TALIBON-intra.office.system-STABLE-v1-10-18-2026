@@ -4,6 +4,14 @@
 
 **For every new or resumed frontend task:** write an issue `START` with exact `main` SHA, scope, authorized contracts, owner, tests and single NEXT; write a matching short `START` entry below before executing, then comment the memory commit back to the issue. For each acceptance/closure: issue `CLOSE` + memory `CLOSE`, test evidence, outstanding defects and linked next owner, then verify both before closing issue. Partial writes = `SYNC_REQUIRED / HOLD`. No all-purpose audit of unrelated capability families.
 
+## CHECKPOINT — RT-CI-001 / 2026-10-11 / MAINTAINER SECURITY HOLD
+
+- **Owning issue / paired audit START:** [#10 / #6106251015](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/10#issuecomment-6106251015). Kirch human Technical Authority; NOX independent trust-boundary review.
+- **Exact review tuple:** frontend `main@9fff20feeb647c3de140603ad76d775caeaba5db`; [CI draft PR #11](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/pull/11) `@a00877bf6f393e835557e983aabdd20945835562` (NOX source-only approved); backend `main@92778ba06d992c278177e0354014ab1b77dbea82` frozen.
+- **Audit:** [bounded source/credential-memory readback](RT-CI-001-MAINTAINER-SECURITY-MEMORY.md). Frontend `main` is unprotected; repository Actions secrets are not per-workflow isolated; full contributor/team policy and credential state are not verified. New-head GitHub Actions runtime NOT RUN.
+- **Disposition / prohibited scope:** `CREDENTIAL HOLD / NOX ACTIVATION SECURITY GATE PENDING`. Do not create/store token, mutate PR #11, merge into main, dispatch Actions, or award Laravel/browser acceptance. This **docs-only memory PR is itself unmerged** and does not override the prior issue evidence.
+- **NEXT:** collect complete settings-capable contributor/workflow trust census, then NOX review and Kirch decision; if unsafe, stage a tightly controlled separate CI repository subject to its own authority. Keep this checkpoint OPEN, not CLOSE. Issue ↔ memory commit crosslink to be verified after publication.
+
 ## Existing work at installation (10 October 2026)
 
 | Work | Status and actual evidence | Required continuation |
