@@ -1,8 +1,10 @@
 import { usePage } from '@inertiajs/react';
-import { AlertCircle, ArrowLeft, ChevronLeft, ChevronRight, ListChecks, RefreshCcw } from 'lucide-react';
+import { AlertCircle, ArrowLeft, ChevronLeft, ChevronRight, ListChecks, Plus, RefreshCcw } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import type { SharedProps } from '../../types';
 import { getPersonalTask, getPersonalTasks, isTaskAccessBoundary, TASK_STATES, type IndividualTask, type ReadError, type TaskPage, type TaskState } from './taskReadApi';
+import TaskCreateForm from './TaskCreateForm';
+import { createPersonalTask, startPersonalTask, completePersonalTask, type CreateTaskInput, type TaskMutationError } from './taskWriteApi';
 
 const labels: Record<TaskState,string> = {open:'Open',in_progress:'In Progress',completed:'Completed'};
 const colors: Record<TaskState,string> = {
@@ -42,7 +44,7 @@ function Loading({label}:{label:string}) {
         <div aria-hidden="true" className="h-3 w-1/2 animate-pulse rounded bg-slate-200 motion-reduce:animate-none dark:bg-slate-700"/>
     </div>;
 }
-function Detail({task,back}:{task:IndividualTask;back:()=>void}) {
+function Detail({task,back,onTransition,busy,blocked}:{task:IndividualTask;back:()=>void;onTransition:(kind:'start'|'complete',task:IndividualTask)=>void;busy:boolean;blocked:boolean}) {
     const dates:[string,string|null][]=[['Due',task.due_at],['Created',task.created_at],['Updated',task.updated_at],['Completed',task.completed_at]];
     return <section aria-label="Personal Task detail" className="min-w-0 rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-[#142236]">
         <button type="button" onClick={back} className="mb-4 inline-flex min-h-10 items-center gap-2 rounded-lg border border-slate-200 px-3 text-xs font-semibold dark:border-slate-600">
@@ -56,9 +58,13 @@ function Detail({task,back}:{task:IndividualTask;back:()=>void}) {
         </dl>
         <h5 className="mt-5 text-sm font-bold text-slate-900 dark:text-white">Instructions</h5>
         <p className="mt-2 whitespace-pre-wrap break-words text-sm leading-6 text-slate-700 dark:text-slate-300">{task.instructions??'No instructions were provided.'}</p>
-        <p className="mt-6 border-t border-slate-100 pt-4 text-xs text-slate-500 dark:border-slate-700 dark:text-slate-400">
-            This Task detail is read-only. Creation and state actions belong to F02 after separate acceptance.
-        </p>
+        <div className="mt-6 border-t border-slate-100 pt-4">
+            {task.state==='open'&&<button type="button" disabled={busy||blocked} onClick={()=>onTransition('start',task)}
+                className="min-h-11 rounded-lg bg-blue-700 px-4 py-2 text-xs font-bold text-white disabled:cursor-not-allowed disabled:opacity-50">{busy?'Processing…':'Start Task'}</button>}
+            {task.state==='in_progress'&&<button type="button" disabled={busy||blocked} onClick={()=>onTransition('complete',task)}
+                className="min-h-11 rounded-lg bg-emerald-700 px-4 py-2 text-xs font-bold text-white disabled:cursor-not-allowed disabled:opacity-50">{busy?'Processing…':'Complete Task'}</button>}
+            {task.state==='completed'&&<p className="text-xs font-semibold text-slate-600 dark:text-slate-300">This Task is completed. No further actions are available.</p>}
+        </div>
     </section>;
 }
 function TaskSession() {
@@ -73,7 +79,70 @@ function TaskSession() {
     const [detailError,setDetailError]=useState<ReadError|null>(null);
     const [detailLoading,setDetailLoading]=useState(false);
     const [detailRefresh,setDetailRefresh]=useState(0);
+    const [createOpen,setCreateOpen]=useState(false);
+    const [busy,setBusy]=useState(false);
+    const [unknownOutcome,setUnknownOutcome]=useState(false);
+    const [mutationError,setMutationError]=useState<TaskMutationError|null>(null);
+    const [confirmed,setConfirmed]=useState<string|null>(null);
+    const busyGuard=useRef(false);
+    const mutationController=useRef<AbortController|null>(null);
+    const mounted=useRef(true);
     const focusTitle=useRef<HTMLHeadingElement>(null);
+    useEffect(()=>()=>{mounted.current=false;mutationController.current?.abort();},[]);
+    const applyMutation=async(kind:'create'|'start'|'complete',input?:CreateTaskInput,task?:IndividualTask)=>{
+        if(busyGuard.current||unknownOutcome||!mounted.current)return;
+        if(kind==='create'&&!input)return;
+        if(kind!=='create'&&(!task||detail?.id!==task.id||detail.state!==task.state))return;
+        if(kind==='start'&&task?.state!=='open')return;
+        if(kind==='complete'&&task?.state!=='in_progress')return;
+        const controller=new AbortController();
+        busyGuard.current=true;mutationController.current=controller;setBusy(true);
+        setMutationError(null);setConfirmed(null);
+        try{
+            const result=kind==='create'
+                ? await createPersonalTask(input!,controller.signal)
+                : kind==='start'
+                  ? await startPersonalTask(task!.id,controller.signal)
+                  : await completePersonalTask(task!.id,controller.signal);
+            if(!mounted.current||controller.signal.aborted)return;
+            if(!result.ok){
+                if(isTaskAccessBoundary(result.error)){
+                    // A write can revoke protected F01 list, detail and create inputs.
+                    setList(null);setDetail(null);setSelected(null);setCreateOpen(false);
+                    setListError(result.error);setUnknownOutcome(false);
+                }else{
+                    setMutationError(result.error);
+                    if(result.error.unknownOutcome) {
+                        // Reconcile through fresh, authenticated GETs; never blindly repeat a POST.
+                        setUnknownOutcome(true);setRefresh(n=>n+1);
+                        if(selected!==null)setDetailRefresh(n=>n+1);
+                    }
+                }
+                return;
+            }
+            setConfirmed(kind==='create'?'Task #'+result.task.id+' created and confirmed by the server.'
+                :kind==='start'?'Task #'+result.task.id+' started and confirmed by the server.'
+                :'Task #'+result.task.id+' completed and confirmed by the server.');
+            if(kind==='create'){
+                setCreateOpen(false);setState('open');setPage(1);
+                setSelected(result.task.id);
+            }
+            setDetail(result.task);
+            setRefresh(n=>n+1);
+            setDetailRefresh(n=>n+1);
+        }catch{
+            if(mounted.current&&!controller.signal.aborted){
+                setMutationError({status:null,code:null,requestId:null,nextUrl:null,invalidFields:[],
+                    unknownOutcome:true,message:'Task outcome unknown. Inspect the refreshed server state before any manual retry.'});
+                setUnknownOutcome(true);setRefresh(n=>n+1);
+                if(selected!==null)setDetailRefresh(n=>n+1);
+            }
+        }finally{
+            if(mutationController.current===controller)mutationController.current=null;
+            busyGuard.current=false;
+            if(mounted.current)setBusy(false);
+        }
+    };
     useEffect(()=>{
         const control=new AbortController(); let active=true;
         setList(null);setListError(null);setListLoading(true);
@@ -112,9 +181,29 @@ function TaskSession() {
         <header className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-4 py-4 dark:border-slate-700 sm:px-5">
             <div><h2 id="personal-task-heading" className="flex items-center gap-2 text-base font-extrabold text-slate-900 dark:text-slate-100"><ListChecks size={19} className="text-blue-700 dark:text-blue-300" aria-hidden="true"/> Personal Tasks</h2>
                 <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">Your individual Task records, separate from Work Requests.</p></div>
-            <button type="button" onClick={()=>{setRefresh(n=>n+1);if(selected!==null)setDetailRefresh(n=>n+1);}}
-                className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-slate-300 px-3 text-xs font-semibold dark:border-slate-600"><RefreshCcw size={14} aria-hidden="true"/> Refresh</button>
+            <div className="flex flex-wrap gap-2">
+                <button type="button" disabled={busy||unknownOutcome} onClick={()=>{setCreateOpen(v=>!v);setMutationError(null);setConfirmed(null);}}
+                    className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-blue-700 px-3 text-xs font-semibold text-white disabled:opacity-50"><Plus size={15} aria-hidden="true"/> Create Task</button>
+                <button type="button" onClick={()=>{setRefresh(n=>n+1);if(selected!==null)setDetailRefresh(n=>n+1);}}
+                    className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-slate-300 px-3 text-xs font-semibold dark:border-slate-600"><RefreshCcw size={14} aria-hidden="true"/> Refresh</button>
+            </div>
         </header>
+        {confirmed&&<p role="status" className="mx-4 mt-3 rounded-lg border border-emerald-300 bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-900 dark:border-emerald-700 dark:bg-emerald-950 dark:text-emerald-100">{confirmed}</p>}
+        {mutationError&&<div role="alert" className="mx-4 mt-3 rounded-lg border border-amber-300 bg-amber-50 p-4 text-xs text-amber-950 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-100">
+            <p className="font-bold">{mutationError.message}{mutationError.status?' ('+mutationError.status+')':''}</p>
+            {mutationError.invalidFields.length>0&&<p className="mt-2">Check fields: {mutationError.invalidFields.join(', ')}.</p>}
+            {mutationError.requestId&&<p className="mt-2 break-all">Request ID: {mutationError.requestId}</p>}
+            {mutationError.nextUrl&&<a href={mutationError.nextUrl} className="mt-2 inline-block font-semibold underline">Complete MFA</a>}
+            {mutationError.status===419&&<a href="/login" className="mt-2 inline-block font-semibold underline">Sign in again</a>}
+            {unknownOutcome&&<div className="mt-3">
+                <p>Automatic retry is disabled. Inspect the refreshed server list/detail before any new submission.</p>
+                <button type="button" disabled={listLoading||detailLoading||!!listError||!!detailError}
+                    onClick={()=>{setUnknownOutcome(false);setMutationError(null);}}
+                    className="mt-2 min-h-10 rounded-lg border border-amber-600 px-3 py-2 font-semibold disabled:opacity-40">I checked the latest server state</button>
+            </div>}
+        </div>}
+        {createOpen&&<TaskCreateForm busy={busy} blocked={unknownOutcome||!!listError}
+            onCreate={input=>void applyMutation('create',input)} onCancel={()=>setCreateOpen(false)}/>}
         <div role="group" aria-label="Task state filter" className="flex overflow-x-auto border-b border-slate-200 px-2 dark:border-slate-700 sm:px-4">
             {TASK_STATES.map(value=><button type="button" key={value} aria-pressed={state===value} onClick={()=>chooseState(value)}
                 className={'min-h-11 shrink-0 border-b-[3px] px-3 py-2 text-xs font-bold sm:px-5 '+(state===value?'border-blue-700 text-blue-800 dark:border-blue-300 dark:text-blue-200':'border-transparent text-slate-500 hover:text-blue-700 dark:text-slate-400')}>{labels[value]}</button>)}
@@ -146,7 +235,7 @@ function TaskSession() {
                 {selected===null&&<p className="rounded-xl border border-dashed border-slate-300 p-6 text-sm text-slate-600 dark:border-slate-600 dark:text-slate-300">Choose an individual Task to see its details.</p>}
                 {selected!==null&&detailLoading&&<Loading label="Loading Task detail"/>}
                 {selected!==null&&!detailLoading&&detailError&&<ErrorPanel error={detailError} retry={()=>setDetailRefresh(n=>n+1)} back={()=>setSelected(null)}/>}
-                {selected!==null&&!detailLoading&&detail?.id===selected&&<><h3 className="sr-only" ref={focusTitle} tabIndex={-1}>Selected Task details</h3><Detail task={detail} back={()=>setSelected(null)}/></>}
+                {selected!==null&&!detailLoading&&detail?.id===selected&&<><h3 className="sr-only" ref={focusTitle} tabIndex={-1}>Selected Task details</h3><Detail task={detail} back={()=>setSelected(null)} onTransition={(kind,task)=>void applyMutation(kind,undefined,task)} busy={busy} blocked={unknownOutcome||!!listError}/></>}
             </div>
         </div>
     </section>;
