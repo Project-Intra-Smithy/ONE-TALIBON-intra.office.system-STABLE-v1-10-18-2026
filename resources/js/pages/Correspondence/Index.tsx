@@ -1,28 +1,30 @@
-import { Link, router, usePage } from '@inertiajs/react';
-import {
-    AlertTriangle,
-    ArrowRight,
-    Building2,
-    ChevronLeft,
-    Clock3,
-    Inbox,
-    Mail,
-    Search,
-    UserRound,
-    X,
-} from 'lucide-react';
-import { type FormEvent, useEffect, useState } from 'react';
-import CorrespondenceOverview, {
-    type CorrespondenceOverviewData,
-    type CorrespondencePreview,
-} from '../../components/correspondence/CorrespondenceOverview';
+import { Link, router } from '@inertiajs/react';
+import { AlertTriangle, ArrowRight, Building2, Clock3, Inbox, Search, UserRound, X } from 'lucide-react';
+import { type FormEvent, useState } from 'react';
 import PageFrame from '../../components/PageFrame';
+import { correspondenceOverviewCount } from '../../compat/uiContracts';
 import PageHeader from '../../components/PageHeader';
+import ProgressiveFilterBar from '../../components/filters/ProgressiveFilterBar';
 import AppLayout from '../../layouts/AppLayout';
-import { withReturnContext } from '../../navigation/returnContext';
 
 type Office = { id: number; code: string; name: string; short_name?: string | null };
-type CorrespondenceRow = CorrespondencePreview;
+type RecordOffice = { id: number; code: string; name: string; shortName?: string | null };
+type Assignee = { id: number; employeeNumber: string; name?: string | null; position: string };
+type CorrespondenceRow = {
+    publicId: string;
+    reference: string;
+    sender: { name: string; organization?: string | null; source: string; channel?: string | null };
+    subject: string;
+    classification?: string | null;
+    lifecycleState: string;
+    currentOffice?: RecordOffice | null;
+    assignedEmployee?: Assignee | null;
+    workflowReference?: string | null;
+    receivedAt?: string | null;
+    age: string;
+    actionRequired: boolean;
+    overdue: boolean;
+};
 type Paginator<T> = {
     data: T[];
     current_page: number;
@@ -35,7 +37,6 @@ type Paginator<T> = {
     next_page_url?: string | null;
 };
 type Filters = {
-    view?: string;
     search?: string;
     lifecycle?: string;
     classification?: string;
@@ -46,27 +47,18 @@ type Filters = {
 };
 type Props = {
     records: Paginator<CorrespondenceRow>;
-    overview: CorrespondenceOverviewData;
-    filters: Filters;
+    filters: Filters & { view?: string };
+    overview: { counts: Record<string, number>; previews: Record<string, CorrespondenceRow[]> };
     filterOptions: { lifecycles: string[]; classifications: string[]; offices: Office[] };
     workspace: { departmentName: string; departmentCode: string };
 };
 
-const queueOptions = [
-    { key: 'all', label: 'All Correspondence' },
-    { key: 'received', label: 'New Intake' },
-    { key: 'needs_action', label: 'Needs Action' },
-    { key: 'assigned_to_me', label: 'Assigned to Me' },
-    { key: 'routed', label: 'Routed' },
-    { key: 'archived', label: 'Completed / Filed' },
-    { key: 'overdue', label: 'Overdue' },
-];
-
 const humanize = (value: string) => value.replaceAll('_', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
 const enabled = (value: Filters['assigned_to_me']) => value === true || value === 1 || value === '1';
-export default function CorrespondenceIndex({ records, overview, filters, filterOptions, workspace }: Props) {
-    const { url } = usePage();
-    const currentView = filters.view || 'overview';
+const formatDate = (value?: string | null) => value ? new Date(value).toLocaleString() : 'Not recorded';
+
+export default function CorrespondenceIndex({ records, filters, filterOptions, workspace, overview }: Props) {
+    const isOverview = !filters.view || filters.view === 'overview';
     const [search, setSearch] = useState(filters.search ?? '');
     const [lifecycle, setLifecycle] = useState(filters.lifecycle ?? '');
     const [classification, setClassification] = useState(filters.classification ?? '');
@@ -74,41 +66,19 @@ export default function CorrespondenceIndex({ records, overview, filters, filter
     const [assignedToMe, setAssignedToMe] = useState(enabled(filters.assigned_to_me));
     const [actionRequired, setActionRequired] = useState(enabled(filters.action_required));
     const [aging, setAging] = useState(filters.aging ?? '');
-    const [moreFilters, setMoreFilters] = useState(Boolean(filters.classification || filters.aging || filters.assigned_to_me || filters.action_required));
-
-    useEffect(() => {
-        setSearch(filters.search ?? '');
-        setLifecycle(filters.lifecycle ?? '');
-        setClassification(filters.classification ?? '');
-        setOfficeId(filters.office_id ? String(filters.office_id) : '');
-        setAssignedToMe(enabled(filters.assigned_to_me));
-        setActionRequired(enabled(filters.action_required));
-        setAging(filters.aging ?? '');
-    }, [filters]);
-
-    const requestData = (view = currentView) => ({
-        view,
-        search: search || undefined,
-        lifecycle: lifecycle || undefined,
-        classification: classification || undefined,
-        office_id: officeId || undefined,
-        assigned_to_me: assignedToMe ? 1 : undefined,
-        action_required: actionRequired ? 1 : undefined,
-        aging: aging || undefined,
-    });
-
-    const selectView = (view: string) => {
-        if (view === 'overview') {
-            router.get('/correspondence', { view: 'overview' }, { preserveState: true, preserveScroll: true, replace: true });
-            return;
-        }
-
-        router.get('/correspondence', { view }, { preserveState: true, preserveScroll: true, replace: true });
-    };
 
     const apply = (event: FormEvent) => {
         event.preventDefault();
-        router.get('/correspondence', requestData(), { preserveState: true, preserveScroll: true, replace: true });
+        router.get('/correspondence', {
+            view: 'all',
+            search: search || undefined,
+            lifecycle: lifecycle || undefined,
+            classification: classification || undefined,
+            office_id: officeId || undefined,
+            assigned_to_me: assignedToMe ? 1 : undefined,
+            action_required: actionRequired ? 1 : undefined,
+            aging: aging || undefined,
+        }, { preserveState: true, preserveScroll: true, replace: true });
     };
 
     const clear = () => {
@@ -119,175 +89,162 @@ export default function CorrespondenceIndex({ records, overview, filters, filter
         setAssignedToMe(false);
         setActionRequired(false);
         setAging('');
-        setMoreFilters(false);
-        router.get('/correspondence', { view: currentView }, { preserveState: true, preserveScroll: true, replace: true });
+        router.get('/correspondence', { view: 'all' }, { replace: true });
     };
 
-    const currentLabel = queueOptions.find((option) => option.key === currentView)?.label || 'Correspondence';
-    const activeFilterCount = [search, lifecycle, classification, officeId, assignedToMe, actionRequired, aging].filter(Boolean).length;
+    const selectedOffice = filterOptions.offices.find((office) => String(office.id) === officeId);
+    const activeFilters = [
+        lifecycle ? `Lifecycle: ${humanize(lifecycle)}` : '',
+        classification ? `Class: ${humanize(classification)}` : '',
+        officeId ? `Office: ${selectedOffice?.short_name || selectedOffice?.name || officeId}` : '',
+        aging ? 'Overdue workflow' : '',
+        assignedToMe ? 'Assigned to me' : '',
+        actionRequired ? 'Action required' : '',
+    ].filter(Boolean);
 
     return (
         <AppLayout title="Correspondence">
-            <PageFrame width="standard" density="compact">
+            <PageFrame>
                 <PageHeader
-                    eyebrow="Daily correspondence"
+                    eyebrow="Municipal inbox and routing"
                     title="Correspondence"
-                    description={currentView === 'overview'
-                        ? `Receive, register, route, assign and track official municipal communications · ${workspace.departmentName}`
-                        : `${workspace.departmentName} · ${currentLabel} · ${records.total} record${records.total === 1 ? '' : 's'}`}
-                    icon={Mail}
+                    description={`Review incoming correspondence and routing for ${workspace.departmentName}.`}
+                    icon={Inbox}
+                    aside={(!isOverview &&
+                        <div className="border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600 dark:border-slate-600 dark:bg-[#0f1c2e] dark:text-slate-300 sm:text-xs">
+                            <span className="font-semibold text-slate-900 dark:text-slate-100">{records.total}</span> visible record{records.total === 1 ? '' : 's'}
+                        </div>
+                    )}
                 />
 
-                {currentView === 'overview' ? (
-                    <CorrespondenceOverview overview={overview} onSelect={selectView} />
-                ) : (
-                    <>
-                        <nav className="municipal-panel flex min-w-0 flex-wrap items-center gap-2 px-2.5 py-1.5" aria-label="Correspondence workspace navigation">
-                            <button
-                                type="button"
-                                onClick={() => selectView('overview')}
-                                className="inline-flex min-h-9 items-center gap-1 rounded-md px-2 text-[11px] font-bold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]"
-                            >
-                                <ChevronLeft size={13} aria-hidden="true" /> Overview
-                            </button>
-                            <span className="text-[10px] text-[var(--municipal-border-strong)]" aria-hidden="true">/</span>
-                            <span className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Correspondence</span>
-                            <span className="text-[10px] text-[var(--municipal-border-strong)]" aria-hidden="true">/</span>
-                            <label className="min-w-[190px] flex-1 sm:max-w-[320px]">
-                                <span className="sr-only">Switch correspondence view</span>
-                                <select
-                                    value={currentView}
-                                    onChange={(event) => selectView(event.target.value)}
-                                    className="min-h-9 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2.5 text-[11px] font-semibold text-[var(--municipal-text)] outline-none focus:border-[var(--municipal-focus)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20"
-                                >
-                                    {queueOptions.map((option) => <option key={option.key} value={option.key}>{option.label}</option>)}
-                                </select>
+                <nav aria-label="Correspondence views" className="mb-4 flex flex-wrap gap-2">{(['overview', 'all', 'needs_action', 'received', 'assigned_to_me', 'routed', 'archived'] as const).map((option) => <Link key={option} href={`/correspondence?view=${option}`} aria-current={(filters.view ?? 'overview') === option ? 'page' : undefined} className={`rounded-lg px-3 py-2 text-xs font-semibold capitalize ${(filters.view ?? 'overview') === option ? 'bg-[#0b2852] text-white' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200'}`}>{option.replaceAll('_', ' ')}</Link>)}</nav>
+
+                {isOverview && <section aria-label="Correspondence overview" className="mb-5 space-y-4">
+                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">{(['all', 'received', 'needs_action', 'assigned_to_me', 'routed', 'archived', 'overdue'] as const).map((key) => <Link key={key} href={`/correspondence?view=${key}`} className="municipal-stat block transition-colors hover:border-blue-300 dark:hover:border-blue-700"><div className="municipal-stat-value">{correspondenceOverviewCount(overview, key)}</div><div className="municipal-stat-label capitalize">{key.replaceAll('_', ' ')}</div></Link>)}</div>
+                    {(['needs_action', 'received', 'routed', 'archived'] as const).map((key) => <div key={key} className="municipal-panel p-4 sm:p-5"><div className="mb-3 flex items-center justify-between gap-2"><h2 className="font-bold capitalize">{key.replaceAll('_', ' ')}</h2><Link href={`/correspondence?view=${key}`} className="text-xs font-semibold text-blue-700 dark:text-blue-300">View queue</Link></div><div className="divide-y divide-slate-100 dark:divide-slate-700">{(overview?.previews?.[key] ?? []).map((row) => <Link key={row.publicId} href={`/correspondence/${row.publicId}/workspace`} className="flex flex-col justify-between gap-1 py-3 text-sm sm:flex-row"><span className="min-w-0 break-words font-semibold">{row.subject}</span><span className="shrink-0 text-xs text-slate-500">{row.reference}</span></Link>)}{!(overview?.previews?.[key]?.length) && <p className="py-3 text-sm text-slate-500">No items in this authorized queue.</p>}</div></div>)}
+                </section>}
+
+                {!isOverview && <>
+                <form onSubmit={apply}>
+                    <ProgressiveFilterBar
+                        title="Correspondence filters"
+                        activeFilters={activeFilters}
+                        primary={(
+                            <label className="block">
+                                <span className="mb-1 block text-xs font-bold uppercase tracking-wide text-slate-400 sm:text-xs dark:text-slate-400">Search correspondence</span>
+                                <div className="relative"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-400" size={15} aria-hidden="true" /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Reference, sender, subject…" className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pl-9 pr-3 text-[12px] text-slate-900 outline-none focus:border-blue-700 focus:ring-2 focus:ring-blue-100 sm:text-sm dark:bg-[#142236] dark:text-slate-100 dark:border-slate-700" /></div>
                             </label>
-                            <span className="ml-auto text-[10px] text-[var(--municipal-muted)]"><strong className="text-[var(--municipal-text)]">{records.total}</strong> record{records.total === 1 ? '' : 's'}</span>
-                        </nav>
+                        )}
+                        common={(
+                            <>
+                                <label className="block lg:min-w-44"><span className="mb-1 block text-xs font-bold uppercase tracking-wide text-slate-400 sm:text-xs dark:text-slate-400">Lifecycle</span><select value={lifecycle} onChange={(event) => setLifecycle(event.target.value)} className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-[12px] text-slate-900 sm:text-sm dark:bg-[#142236] dark:text-slate-100 dark:border-slate-700"><option value="">All visible states</option>{filterOptions.lifecycles.map((state) => <option key={state} value={state}>{humanize(state)}</option>)}</select></label>
+                                <label className={`flex min-h-10 items-center gap-2 rounded-xl border px-3 py-2.5 text-[13px] font-semibold transition sm:text-xs ${assignedToMe ? 'border-blue-200 bg-blue-50 text-blue-800 dark:bg-blue-950/40' : 'border-slate-300 bg-white text-slate-700 dark:bg-[#142236] dark:text-slate-300 dark:border-slate-700'}`}><input type="checkbox" checked={assignedToMe} onChange={(event) => setAssignedToMe(event.target.checked)} className="rounded border-slate-300 dark:border-slate-700" /> Assigned to me</label>
+                                <label className={`flex min-h-10 items-center gap-2 rounded-xl border px-3 py-2.5 text-[13px] font-semibold transition sm:text-xs ${actionRequired ? 'border-amber-200 bg-amber-50 text-amber-800' : 'border-slate-300 bg-white text-slate-700 dark:bg-[#142236] dark:text-slate-300 dark:border-slate-700'}`}><input type="checkbox" checked={actionRequired} onChange={(event) => setActionRequired(event.target.checked)} className="rounded border-slate-300 dark:border-slate-700" /> Action required</label>
+                            </>
+                        )}
+                        advanced={(
+                            <>
+                                {filterOptions.classifications.length > 0 && <label className="block text-xs font-semibold text-slate-600 sm:text-xs dark:text-slate-300">Classification<select value={classification} onChange={(event) => setClassification(event.target.value)} className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-[12px] text-slate-900 sm:text-sm dark:bg-[#142236] dark:text-slate-100 dark:border-slate-700"><option value="">All authorized classifications</option>{filterOptions.classifications.map((value) => <option key={value} value={value}>{humanize(value)}</option>)}</select></label>}
+                                <label className="block text-xs font-semibold text-slate-600 sm:text-xs dark:text-slate-300">Current office<select value={officeId} onChange={(event) => setOfficeId(event.target.value)} className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-[12px] text-slate-900 sm:text-sm dark:bg-[#142236] dark:text-slate-100 dark:border-slate-700"><option value="">All visible offices</option>{filterOptions.offices.map((office) => <option key={office.id} value={office.id}>{office.short_name || office.name}</option>)}</select></label>
+                                <label className="block text-xs font-semibold text-slate-600 sm:text-xs dark:text-slate-300">Aging<select value={aging} onChange={(event) => setAging(event.target.value)} className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-[12px] text-slate-900 sm:text-sm dark:bg-[#142236] dark:text-slate-100 dark:border-slate-700"><option value="">All</option><option value="overdue">Overdue workflow only</option></select></label>
+                            </>
+                        )}
+                        actions={(
+                            <>
+                                <button type="button" onClick={clear} className="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-[13px] font-semibold text-slate-700 sm:text-xs dark:bg-[#142236] dark:text-slate-300 dark:border-slate-700"><X size={14} aria-hidden="true" /> Clear</button>
+                                <button className="rounded-xl bg-[#0b2852] px-4 py-2.5 text-[13px] font-semibold text-white sm:text-xs">Apply filters</button>
+                            </>
+                        )}
+                    />
+                </form>
 
-                        <form onSubmit={apply} className="municipal-panel p-2.5">
-                            <div className="grid gap-2 lg:grid-cols-[minmax(260px,2fr)_minmax(150px,.7fr)_minmax(170px,.9fr)_auto] lg:items-end">
-                                <label className="block min-w-0">
-                                    <span className="mb-1 block text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Search correspondence</span>
-                                    <div className="relative">
-                                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--municipal-muted)]" size={14} aria-hidden="true" />
-                                        <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Reference, sender, subject..." className="min-h-10 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] pl-9 pr-3 text-xs text-[var(--municipal-text)] outline-none focus:border-[var(--municipal-focus)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20" />
-                                    </div>
-                                </label>
-                                <label className="block min-w-0">
-                                    <span className="mb-1 block text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Lifecycle</span>
-                                    <select value={lifecycle} onChange={(event) => setLifecycle(event.target.value)} className="min-h-10 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2 text-xs">
-                                        <option value="">All states</option>
-                                        {filterOptions.lifecycles.map((state) => <option key={state} value={state}>{humanize(state)}</option>)}
-                                    </select>
-                                </label>
-                                <label className="block min-w-0">
-                                    <span className="mb-1 block text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Current office</span>
-                                    <select value={officeId} onChange={(event) => setOfficeId(event.target.value)} className="min-h-10 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2 text-xs">
-                                        <option value="">All visible offices</option>
-                                        {filterOptions.offices.map((office) => <option key={office.id} value={office.id}>{office.short_name || office.name}</option>)}
-                                    </select>
-                                </label>
-                                <div className="flex items-end gap-1.5">
-                                    <button className="min-h-10 rounded-md bg-[var(--municipal-brand-deep)] px-3 text-xs font-bold text-white">Apply{activeFilterCount ? ` · ${activeFilterCount}` : ''}</button>
-                                    <button type="button" onClick={() => setMoreFilters((value) => !value)} className={`min-h-10 rounded-md border px-2.5 text-[10px] font-semibold ${moreFilters ? 'border-[var(--municipal-selected-border)] bg-[var(--municipal-selected-bg)] text-[var(--municipal-brand)]' : 'border-[var(--municipal-border)] text-[var(--municipal-text)]'}`}>Filters</button>
-                                    <button type="button" onClick={clear} aria-label="Clear correspondence filters" className="flex min-h-10 min-w-10 items-center justify-center rounded-md border border-[var(--municipal-border)] text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]"><X size={14} /></button>
-                                </div>
-                            </div>
+                <section className="municipal-panel overflow-hidden text-slate-900 dark:text-slate-100" aria-label="Correspondence inbox">
+                    <div className="flex flex-col gap-1 border-b border-slate-100 bg-slate-50 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5 dark:bg-slate-900/40 dark:border-slate-700">
+                        <div className="text-[13px] font-bold text-slate-900 sm:text-sm dark:text-slate-100">Current correspondence</div>
+                        <div className="text-xs text-slate-500 sm:text-xs dark:text-slate-400">
+                            {records.total === 0 ? 'No matching records' : `Showing ${records.from || 1}–${records.to || records.data.length} of ${records.total}`}
+                        </div>
+                    </div>
 
-                            {moreFilters ? (
-                                <div className="mt-2 grid gap-2 border-t border-[var(--municipal-border)] pt-2 sm:grid-cols-2 lg:grid-cols-[minmax(160px,1fr)_minmax(150px,.7fr)_auto_auto] lg:items-end">
-                                    <label className="block min-w-0">
-                                        <span className="mb-1 block text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Classification</span>
-                                        <select value={classification} onChange={(event) => setClassification(event.target.value)} className="min-h-10 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2 text-xs">
-                                            <option value="">All authorized classes</option>
-                                            {filterOptions.classifications.map((value) => <option key={value} value={value}>{humanize(value)}</option>)}
-                                        </select>
-                                    </label>
-                                    <label className="block min-w-0">
-                                        <span className="mb-1 block text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Aging</span>
-                                        <select value={aging} onChange={(event) => setAging(event.target.value)} className="min-h-10 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2 text-xs">
-                                            <option value="">All</option><option value="overdue">Overdue workflow only</option>
-                                        </select>
-                                    </label>
-                                    <label className={`flex min-h-10 items-center gap-2 rounded-md border px-3 text-[10px] font-semibold ${assignedToMe ? 'border-[#cfe0f6] bg-[#eef5ff] text-[#265fa8]' : 'border-[var(--municipal-border)]'}`}>
-                                        <input type="checkbox" checked={assignedToMe} onChange={(event) => setAssignedToMe(event.target.checked)} /> Assigned to me
-                                    </label>
-                                    <label className={`flex min-h-10 items-center gap-2 rounded-md border px-3 text-[10px] font-semibold ${actionRequired ? 'border-[#f0dfb4] bg-[#fff8e8] text-[#9a6a08]' : 'border-[var(--municipal-border)]'}`}>
-                                        <input type="checkbox" checked={actionRequired} onChange={(event) => setActionRequired(event.target.checked)} /> Action required
-                                    </label>
-                                </div>
-                            ) : null}
-                        </form>
+                    <div className="hidden grid-cols-[minmax(0,1.5fr)_minmax(120px,1fr)_minmax(0,1.2fr)_130px_88px] gap-4 border-b border-slate-100 px-5 py-3 text-xs font-bold uppercase tracking-wide text-slate-500 xl:grid dark:text-slate-400 dark:border-slate-700">
+                        <div>Subject / Reference</div><div>Sender / Received</div><div>Routing / Responsibility</div><div>State</div><div />
+                    </div>
 
-                        <section className="municipal-panel overflow-hidden" aria-label="Correspondence register">
-                            <header className="flex min-h-10 items-center justify-between gap-3 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-3 py-2">
-                                <div>
-                                    <h2 className="text-xs font-bold text-[var(--municipal-text)]">{currentLabel}</h2>
-                                    <p className="text-[9px] text-[var(--municipal-muted)]">Authorized correspondence for this workspace</p>
-                                </div>
-                                <span className="text-[10px] text-[var(--municipal-muted)]">{records.total === 0 ? 'No matching records' : `Showing ${records.from || 1}–${records.to || records.data.length} of ${records.total}`}</span>
-                            </header>
-
-                            <div className="hidden grid-cols-[minmax(0,1.6fr)_minmax(140px,.9fr)_minmax(0,1fr)_120px_64px] gap-3 border-b border-[var(--municipal-border)] px-3 py-2 text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)] xl:grid">
-                                <div>Subject / reference</div><div>Sender / receipt</div><div>Responsibility</div><div>State</div><div />
-                            </div>
-
-                            <div className="divide-y divide-[var(--municipal-border)]">
-                                {records.data.map((record) => (
-                                    <article key={record.publicId} className="px-3 py-2.5 hover:bg-[var(--municipal-hover)]" aria-label={`${record.reference} correspondence`}>
-                                        <div className="grid min-w-0 gap-2.5 xl:grid-cols-[minmax(0,1.6fr)_minmax(140px,.9fr)_minmax(0,1fr)_120px_64px] xl:items-center">
-                                            <div className="min-w-0">
-                                                <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[9px]">
-                                                    <span className="font-bold text-[var(--municipal-brand)]">{record.reference}</span>
-                                                    {record.workflowReference ? <span className="text-[var(--municipal-muted)]">Route {record.workflowReference}</span> : null}
-                                                </div>
-                                                <h3 className="mt-0.5 line-clamp-2 text-[11px] font-semibold leading-4 text-[var(--municipal-text)]">{record.subject}</h3>
-                                                {record.classification ? <div className="mt-0.5 text-[9px] uppercase tracking-wide text-[var(--municipal-muted)]">{humanize(record.classification)}</div> : null}
-                                            </div>
-
-                                            <div className="min-w-0">
-                                                <div className="truncate text-[10px] font-semibold text-[var(--municipal-text)]">{record.sender.name}</div>
-                                                <div className="truncate text-[9px] text-[var(--municipal-muted)]">{record.sender.organization || humanize(record.sender.source)}</div>
-                                                <div className="mt-0.5 flex items-center gap-1 text-[9px] text-[var(--municipal-muted)]"><Clock3 size={10} aria-hidden="true" /> {record.age} ago</div>
-                                            </div>
-
-                                            <div className="min-w-0 border-l-2 border-[var(--municipal-border)] pl-2.5">
-                                                <div className="flex items-start gap-1.5 text-[10px] font-semibold text-[var(--municipal-text)]"><Building2 size={11} className="mt-0.5 shrink-0" aria-hidden="true" /><span className="line-clamp-2">{record.currentOffice?.shortName || record.currentOffice?.name || 'Unregistered intake'}</span></div>
-                                                <div className="mt-0.5 flex items-start gap-1.5 text-[9px] text-[var(--municipal-muted)]"><UserRound size={10} className="mt-0.5 shrink-0" aria-hidden="true" /><span className="truncate">{record.assignedEmployee?.name || 'Unassigned'}</span></div>
-                                            </div>
-
-                                            <div className="flex flex-wrap gap-1">
-                                                <span className="rounded-full bg-[var(--municipal-surface-subtle)] px-2 py-1 text-[9px] font-bold uppercase text-[var(--municipal-text)]">{humanize(record.lifecycleState)}</span>
-                                                {record.actionRequired ? <span className="rounded-full bg-[#fff8e8] px-2 py-1 text-[9px] font-bold uppercase text-[#9a6a08]">Action</span> : null}
-                                                {record.overdue ? <span className="inline-flex items-center gap-1 rounded-full bg-[#fff0f1] px-2 py-1 text-[9px] font-bold uppercase text-[#b23b45]"><AlertTriangle size={9} /> Overdue</span> : null}
-                                            </div>
-
-                                            <Link href={withReturnContext(`/correspondence/${record.publicId}/workspace`, url, '/correspondence')} className="inline-flex min-h-9 items-center justify-center gap-1 text-[10px] font-bold text-[var(--municipal-brand)] hover:underline">Open <ArrowRight size={12} /></Link>
+                    <div className="divide-y divide-slate-100 dark:divide-slate-700">
+                        {records.data.map((record) => (
+                            <article key={record.publicId} className="px-4 py-4 sm:px-5" aria-label={`${record.reference} correspondence`}>
+                                <div className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1.5fr)_minmax(120px,1fr)_minmax(0,1.2fr)_130px_88px] xl:items-center">
+                                    <div className="min-w-0">
+                                        <div className="flex flex-wrap items-center gap-1.5">
+                                            <span className="text-xs font-bold text-blue-700 sm:text-xs">{record.reference}</span>
+                                            {record.workflowReference ? <span className="border-l border-slate-300 pl-1.5 text-xs text-slate-500 dark:text-slate-400 dark:border-slate-700">Route {record.workflowReference}</span> : null}
                                         </div>
-                                    </article>
-                                ))}
-
-                                {!records.data.length ? (
-                                    <div className="px-5 py-8 text-center">
-                                        <Inbox className="mx-auto text-[var(--municipal-muted)]" size={24} aria-hidden="true" />
-                                        <div className="mt-2 text-xs font-bold text-[var(--municipal-text)]">No correspondence matches this view.</div>
-                                        <div className="mt-1 text-[10px] text-[var(--municipal-muted)]">Change the queue or clear one of the active filters.</div>
+                                        <h2 className="mt-1 text-[13px] font-semibold leading-5 text-slate-950 sm:text-sm dark:text-slate-100">{record.subject}</h2>
+                                        {record.classification ? <div className="mt-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">{humanize(record.classification)}</div> : null}
                                     </div>
-                                ) : null}
-                            </div>
-                        </section>
 
-                        {records.last_page > 1 ? (
-                            <nav className="municipal-panel flex items-center justify-between gap-3 px-3 py-2 text-[10px]" aria-label="Correspondence pagination">
-                                <button type="button" disabled={!records.prev_page_url} onClick={() => records.prev_page_url && router.visit(records.prev_page_url, { preserveScroll: true })} className="min-h-9 px-2 font-semibold text-[var(--municipal-brand)] disabled:opacity-40">Previous</button>
-                                <span className="text-[var(--municipal-muted)]">Page {records.current_page} of {records.last_page}</span>
-                                <button type="button" disabled={!records.next_page_url} onClick={() => records.next_page_url && router.visit(records.next_page_url, { preserveScroll: true })} className="min-h-9 px-2 font-semibold text-[var(--municipal-brand)] disabled:opacity-40">Next</button>
-                            </nav>
+                                    <div className="min-w-0">
+                                        <div className="text-xs font-bold uppercase tracking-wide text-slate-400 xl:hidden dark:text-slate-400">Sender and receipt</div>
+                                        <div className="mt-1 text-xs font-semibold leading-4 text-slate-800 sm:text-xs dark:text-slate-100">{record.sender.name}</div>
+                                        <div className="mt-0.5 text-xs leading-4 text-slate-500 dark:text-slate-400">{record.sender.organization || humanize(record.sender.source)}{record.sender.channel ? ` · ${humanize(record.sender.channel)}` : ''}</div>
+                                        <div className="mt-1.5 flex items-start gap-1.5 text-xs leading-4 text-slate-500 dark:text-slate-400">
+                                            <Clock3 size={11} className="mt-0.5 shrink-0" aria-hidden="true" />
+                                            <span>{formatDate(record.receivedAt)} · {record.age} ago</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="border-l-2 border-slate-200 bg-slate-50 px-3 py-2.5 dark:bg-slate-900/40 dark:border-slate-700">
+                                        <div className="text-xs font-bold uppercase tracking-[0.14em] text-slate-400 dark:text-slate-400">Current responsibility</div>
+                                        <div className="mt-1 flex items-start gap-1.5 text-xs font-semibold leading-4 text-slate-800 sm:text-xs dark:text-slate-100">
+                                            <Building2 size={12} className="mt-0.5 shrink-0 text-slate-400 dark:text-slate-400" aria-hidden="true" />
+                                            <span>{record.currentOffice?.shortName || record.currentOffice?.name || 'Unregistered intake'}</span>
+                                        </div>
+                                        <div className="mt-1.5 flex items-start gap-1.5 text-xs leading-4 text-slate-600 sm:text-xs dark:text-slate-300">
+                                            <UserRound size={11} className="mt-0.5 shrink-0 text-slate-400 dark:text-slate-400" aria-hidden="true" />
+                                            <span>{record.assignedEmployee?.name || 'Unassigned'}{record.assignedEmployee?.position ? ` · ${record.assignedEmployee.position}` : ''}</span>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div className="text-xs font-bold uppercase tracking-wide text-slate-400 xl:hidden dark:text-slate-400">State</div>
+                                        <div className="mt-1 flex flex-wrap gap-1.5">
+                                            <span className="border border-slate-200 bg-slate-50 px-2 py-1 text-xs font-bold uppercase text-slate-700 sm:text-xs dark:bg-slate-900/40 dark:text-slate-300 dark:border-slate-700">{humanize(record.lifecycleState)}</span>
+                                            {record.actionRequired ? <span className="border border-amber-200 bg-amber-50 px-2 py-1 text-xs font-bold uppercase text-amber-800 sm:text-xs">Action required</span> : <span className="border border-slate-200 bg-white px-2 py-1 text-xs font-semibold uppercase text-slate-500 sm:text-xs dark:bg-[#142236] dark:text-slate-400 dark:border-slate-700">For information</span>}
+                                            {record.overdue ? <span className="inline-flex items-center gap-1 border border-rose-200 bg-rose-50 px-2 py-1 text-xs font-bold uppercase text-rose-800 sm:text-xs"><AlertTriangle size={10} aria-hidden="true" /> Overdue</span> : null}
+                                        </div>
+                                    </div>
+
+                                    <Link
+                                        href={`/correspondence/${record.publicId}/workspace`}
+                                        className="inline-flex min-h-10 items-center justify-center gap-1.5 border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-blue-800 transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2 sm:text-xs dark:bg-[#142236] dark:border-slate-700"
+                                        aria-label={`Open correspondence ${record.reference}`}
+                                    >
+                                        Open <ArrowRight size={13} aria-hidden="true" />
+                                    </Link>
+                                </div>
+                            </article>
+                        ))}
+
+                        {records.data.length === 0 ? (
+                            <div className="px-5 py-12 text-center">
+                                <Inbox className="mx-auto text-slate-300" size={28} aria-hidden="true" />
+                                <div className="mt-3 text-sm font-semibold text-slate-700 dark:text-slate-300">No correspondence matches this authorized view.</div>
+                                <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">Try changing the filters or search terms.</div>
+                            </div>
                         ) : null}
-                    </>
-                )}
+                    </div>
+                </section>
+
+                {records.last_page > 1 ? (
+                    <div className="flex flex-col gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs text-slate-600 sm:flex-row sm:items-center sm:justify-between sm:text-xs dark:bg-[#142236] dark:text-slate-300 dark:border-slate-700">
+                        <div>Showing {records.from ?? 0}–{records.to ?? 0} of {records.total} authorized records · page {records.current_page} of {records.last_page}</div>
+                        <div className="flex gap-2">
+                            <button type="button" disabled={!records.prev_page_url} onClick={() => records.prev_page_url && router.visit(records.prev_page_url, { preserveScroll: true })} className="min-h-9 border border-slate-300 bg-white px-3 py-1.5 font-semibold text-slate-700 disabled:opacity-40 dark:bg-[#142236] dark:text-slate-300 dark:border-slate-700">Previous</button>
+                            <button type="button" disabled={!records.next_page_url} onClick={() => records.next_page_url && router.visit(records.next_page_url, { preserveScroll: true })} className="min-h-9 border border-slate-300 bg-white px-3 py-1.5 font-semibold text-slate-700 disabled:opacity-40 dark:bg-[#142236] dark:text-slate-300 dark:border-slate-700">Next</button>
+                        </div>
+                    </div>
+                ) : null}
+                </>}
             </PageFrame>
         </AppLayout>
     );

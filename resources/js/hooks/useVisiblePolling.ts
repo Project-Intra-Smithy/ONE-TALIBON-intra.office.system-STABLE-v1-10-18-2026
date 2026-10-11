@@ -6,14 +6,16 @@ export function useVisiblePolling(
     task: PollTask,
     intervalMs: number,
     enabled = true,
-    immediate = false,
+    onError?: () => void,
 ) {
     const taskRef = useRef(task);
+    const errorRef = useRef(onError);
     const inFlight = useRef(false);
 
     useEffect(() => {
         taskRef.current = task;
-    }, [task]);
+        errorRef.current = onError;
+    }, [task, onError]);
 
     useEffect(() => {
         if (!enabled) return;
@@ -37,7 +39,7 @@ export function useVisiblePolling(
                 await taskRef.current(controller.signal);
             } catch (error) {
                 if (!(error instanceof DOMException && error.name === 'AbortError')) {
-                    // Background refresh is best-effort. The next visible poll retries.
+                    errorRef.current?.();
                 }
             } finally {
                 inFlight.current = false;
@@ -45,10 +47,7 @@ export function useVisiblePolling(
             }
         };
 
-        if (immediate) {
-            void run();
-        }
-
+        void run();
         const timer = window.setInterval(() => void run(), intervalMs);
         const onFocus = () => void run();
         const onVisibilityChange = () => {
@@ -67,5 +66,5 @@ export function useVisiblePolling(
             window.removeEventListener('focus', onFocus);
             document.removeEventListener('visibilitychange', onVisibilityChange);
         };
-    }, [enabled, immediate, intervalMs]);
+    }, [enabled, intervalMs]);
 }

@@ -1,61 +1,51 @@
-import { ChevronLeft } from 'lucide-react';
 import type { ScopeGroup } from './types';
+
+const queueEmphasis: Record<string, string> = {
+    needs_my_action: 'border-l-blue-700',
+    due_soon: 'border-l-amber-500',
+    overdue: 'border-l-rose-600',
+    escalations: 'border-l-rose-600',
+};
 
 export default function WorkScopeTabs({ groups, currentView, onSelect }: {
     groups: ScopeGroup[];
     currentView: string;
     onSelect: (view: string) => void;
 }) {
-    if (currentView === 'overview') return null;
-
-    const currentGroup = groups.find((group) => group.views.some((view) => view.key === currentView));
-    const current = currentGroup?.views.find((view) => view.key === currentView);
-
     return (
-        <nav
-            className="municipal-panel flex min-w-0 flex-wrap items-center gap-2 px-2.5 py-1.5"
-            aria-label="Task workspace navigation"
+        <section
+            className="municipal-panel space-y-4 p-3 text-slate-900 sm:p-5 dark:text-slate-100"
+            aria-label="Work queues"
         >
-            <button
-                type="button"
-                onClick={() => onSelect('overview')}
-                className="inline-flex min-h-9 shrink-0 items-center gap-1 rounded-md px-2 text-[11px] font-bold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]"
-            >
-                <ChevronLeft size={13} aria-hidden="true" />
-                Overview
-            </button>
+            {groups.map((group) => (
+                <div key={group.key}>
+                    <div className="mb-2 text-xs font-bold uppercase tracking-wider text-slate-500 sm:text-xs dark:text-slate-400">
+                        {group.label}
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap" role="group" aria-label={`${group.label} queues`}>
+                        {group.views.map((view) => {
+                            const active = view.key === currentView;
+                            const emphasis = queueEmphasis[view.key] || 'border-l-slate-300';
 
-            <span className="text-[10px] text-[var(--municipal-border-strong)]" aria-hidden="true">/</span>
-            <span className="shrink-0 text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">
-                {currentGroup?.label || 'Work'}
-            </span>
-            <span className="text-[10px] text-[var(--municipal-border-strong)]" aria-hidden="true">/</span>
-
-            <label className="min-w-[180px] flex-1 sm:max-w-[320px]">
-                <span className="sr-only">Switch task view</span>
-                <select
-                    value={currentView}
-                    onChange={(event) => onSelect(event.target.value)}
-                    className="min-h-9 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2.5 text-[11px] font-semibold text-[var(--municipal-text)] outline-none focus:border-[var(--municipal-focus)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20"
-                    aria-label="Switch task view"
-                >
-                    {groups.map((group) => (
-                        <optgroup key={group.key} label={group.label}>
-                            {group.views.map((view) => (
-                                <option key={view.key} value={view.key}>
-                                    {view.label} ({view.count})
-                                </option>
-                            ))}
-                        </optgroup>
-                    ))}
-                </select>
-            </label>
-
-            {current ? (
-                <span className="ml-auto text-[10px] text-[var(--municipal-muted)]">
-                    <strong className="text-[var(--municipal-text)]">{current.count}</strong> item{current.count === 1 ? '' : 's'}
-                </span>
-            ) : null}
-        </nav>
+                            return (
+                                <button
+                                    key={view.key}
+                                    type="button"
+                                    onClick={() => onSelect(view.key)}
+                                    aria-pressed={active}
+                                    aria-current={active ? 'page' : undefined}
+                                    className={`min-w-0 rounded-lg border border-l-[3px] px-3 py-2.5 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2 sm:min-w-[132px] sm:flex-1 sm:basis-[132px] sm:max-w-[190px] ${emphasis} ${active ? 'border-blue-800 bg-blue-50 text-blue-950 dark:bg-blue-950/40' : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50 dark:bg-[#142236] dark:text-slate-300 dark:border-slate-700'}`}
+                                >
+                                    <div className="text-xs font-bold leading-4 sm:text-xs">{view.label}</div>
+                                    <div className={`mt-0.5 text-xs sm:text-xs ${active ? 'text-blue-700' : 'text-slate-500 dark:text-slate-400'}`}>
+                                        {view.count} item{view.count === 1 ? '' : 's'}
+                                    </div>
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+            ))}
+        </section>
     );
 }

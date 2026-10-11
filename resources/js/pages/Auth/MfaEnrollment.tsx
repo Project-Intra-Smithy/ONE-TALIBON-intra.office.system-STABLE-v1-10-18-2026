@@ -19,12 +19,12 @@ export default function MfaEnrollment({ secret, provisioningUri, issuer }: Props
     return (
         <>
             <Head title="Set up MFA" />
-            <main className="min-h-screen bg-[#eef3f9] px-4 py-8 sm:px-6">
-                <div className="mx-auto max-w-2xl rounded-2xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-900/5 sm:p-8">
+            <main className="auth-canvas min-h-screen px-4 py-8 sm:px-6">
+                <div className="mx-auto max-w-2xl auth-panel bg-white p-6 sm:p-8">
                     <div className="flex items-start gap-3">
                         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-800"><ShieldCheck size={21} /></div>
                         <div>
-                            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">Privileged identity assurance</div>
+                            <div className="auth-kicker">Privileged identity assurance</div>
                             <h1 className="mt-1 text-2xl font-bold text-slate-950">Set up multi-factor authentication</h1>
                             <p className="mt-2 text-sm leading-6 text-slate-600">Municipal application access remains restricted until this enrollment is confirmed.</p>
                         </div>
