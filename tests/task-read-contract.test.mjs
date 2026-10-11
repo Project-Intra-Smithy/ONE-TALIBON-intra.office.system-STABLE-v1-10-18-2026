@@ -75,7 +75,7 @@ test('403 MFA uses validated server next_url, never arbitrary redirect',async()=
     assert.equal(r.ok,false);if(!r.ok)assert.equal(r.error.nextUrl,null);
   });
 });
-test('detail authorization loss invalidates cached list visibility, ordinary errors do not',()=>{
+test('authorization-boundary classifier distinguishes session loss from ordinary read failures',()=>{
   const err=(status)=>({status,code:null,message:'Access changed',requestId:null,nextUrl:null});
   for(const status of [401,403,419]) assert.equal(isTaskAccessBoundary(err(status)),true);
   for(const status of [null,404,422,429,500,503]) assert.equal(isTaskAccessBoundary(err(status)),false);
