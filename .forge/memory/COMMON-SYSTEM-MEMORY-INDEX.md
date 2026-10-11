@@ -1,5 +1,10 @@
 # KIRION FORGE MEMORY INDEX — COMMON SYSTEM PROGRAM
 
+## ACTIVE TIME-BOXED SPRINT (11–12 OCTOBER 2026)
+
+**[CC-S80-20261012 backend sprint memory](P1-MONDAY-SPRINT-2026-10-12.md)** | **[Engineering Hub #64 checklist and receipts](https://github.com/Project-Intra-Smithy/engineering-hub/issues/64)**. Goal: 12/15 original common-core exit criteria evidence-qualified by **Mon 2026-10-12 17:00 PHT**, separately from official accepted phases (baseline P0 = 1/8). Keep A01 backend acceptance intact; Jane A02 preparation is draft-only until its own paired START. No assumption of P1/P7 acceptance.
+
+
 ## Current package
 
 This index is the entry point for the post-P0 common-system engineering program.
