@@ -286,7 +286,7 @@ try{
  await A?.ctx?.close().catch(()=>{});
  await B?.ctx?.close().catch(()=>{});
  await browser?.close().catch(()=>{});
- const result={mission:'A01-F01-RT02',kind:'real-laravel-postgresql-chromium',backend:'3b429c5fe95467a223542a832677060c947e9384',frontend:'a4c7b6886b67f30e31834c9794464cc95842b1d4',cases:names.map(n=>rows.get(n)),statusCodes:codeStatus,throttleEvidence};
+ const result={mission:'A01-F01-CANONICAL-INTEGRATION-001',kind:'real-laravel-postgresql-chromium',backend:'3b429c5fe95467a223542a832677060c947e9384',frontend:'e6f5947ab330802f4b860b28baddc910ca32e13e',frontendTree:'a7cced7c276e7a62292f08c04606f4376450aac1',cases:names.map(n=>rows.get(n)),statusCodes:codeStatus,throttleEvidence};
  fs.writeFileSync(path.join(report,'browser-cases.json'),JSON.stringify(result,null,2)+'\n',{mode:0o600});
  const failed=result.cases.filter(x=>x.status!=='PASS').length;
  console.log('RT02 cases '+(12-failed)+' PASS / '+failed+' not PASS');
