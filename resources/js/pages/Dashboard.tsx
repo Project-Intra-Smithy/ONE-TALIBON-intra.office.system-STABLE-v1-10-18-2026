@@ -8,6 +8,7 @@ import QuickActions from '../components/dashboard/QuickActions';
 import RecentWorkList from '../components/dashboard/RecentWorkList';
 import SystemOverview from '../components/dashboard/SystemOverview';
 import type { DashboardProps } from '../components/dashboard/types';
+import PersonalTaskWorkspace from '../components/tasks/PersonalTaskWorkspace';
 import AppLayout from '../layouts/AppLayout';
 
 export default function Dashboard({ experience, metricGroups, correspondenceOverview, recentWork, officeOverview, executiveOverview, systemOverview }: DashboardProps) {
@@ -47,6 +48,7 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
                     {systemOverview && <ActivityRail system={systemOverview} />}
                 </>}
 
+                <PersonalTaskWorkspace />
                 <QuickActions actions={experience.quickActions} />
             </div>
         </div>
