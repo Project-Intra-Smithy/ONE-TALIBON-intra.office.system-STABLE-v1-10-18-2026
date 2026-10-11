@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   TASK_STATES, getPersonalTasks, getPersonalTask, isIndividualTask,
-  parseTaskPage, parseTaskDetail, safeMfaNextUrl
+  parseTaskPage, parseTaskDetail, isTaskAccessBoundary, safeMfaNextUrl
 } from '../resources/js/components/tasks/taskReadApi.ts';
 
 const TASK={id:15,kind:'individual',title:'Test task',instructions:null,state:'open',
@@ -74,6 +74,11 @@ test('403 MFA uses validated server next_url, never arbitrary redirect',async()=
     const r=await getPersonalTasks('open',1,new AbortController().signal);
     assert.equal(r.ok,false);if(!r.ok)assert.equal(r.error.nextUrl,null);
   });
+});
+test('detail authorization loss invalidates cached list visibility, ordinary errors do not',()=>{
+  const err=(status)=>({status,code:null,message:'Access changed',requestId:null,nextUrl:null});
+  for(const status of [401,403,419]) assert.equal(isTaskAccessBoundary(err(status)),true);
+  for(const status of [null,404,422,429,500,503]) assert.equal(isTaskAccessBoundary(err(status)),false);
 });
 test('masked 404, validation 422, throttle 429 and 503 keep correct read error semantics',async()=>{
   for(const code of [404,422,429,500,503]){
