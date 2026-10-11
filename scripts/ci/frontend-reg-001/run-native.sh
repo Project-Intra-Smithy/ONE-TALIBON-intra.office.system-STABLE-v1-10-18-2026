@@ -41,7 +41,8 @@ npm run build
 # This database has already passed the exclusive-hosted-container and empty-schema check.
 php artisan migrate:fresh --seed --force
 php artisan route:list --json > "${RUNNER_TEMP}/rtci-route-list.json"
-php artisan test tests/Feature/PrivilegedMfaAuthenticationTest.php tests/Feature/MfaSecurityControlsTest.php tests/Feature/Tasks/IndividualTaskHttpTest.php tests/Feature/Tasks/TaskJsonContractBoundaryTest.php
+# PHPUnit must run in testing, while subsequent real browser CSRF checks use local.
+APP_ENV=testing php artisan test tests/Feature/PrivilegedMfaAuthenticationTest.php tests/Feature/MfaSecurityControlsTest.php tests/Feature/Tasks/IndividualTaskHttpTest.php tests/Feature/Tasks/TaskJsonContractBoundaryTest.php
 # RefreshDatabase tests can erase/mutate fixtures; restore on the SAME owned service.
 php artisan migrate:fresh --seed --force
 npx playwright install --with-deps chromium
