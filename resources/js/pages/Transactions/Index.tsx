@@ -3,11 +3,11 @@ import { BriefcaseBusiness, Plus, Search, X } from 'lucide-react';
 import { type FormEvent, useEffect, useState } from 'react';
 import PageFrame from '../../components/PageFrame';
 import PageHeader from '../../components/PageHeader';
+import ProgressiveFilterBar from '../../components/filters/ProgressiveFilterBar';
 import StaffWorkloadTable from '../../components/work-queue/StaffWorkloadTable';
 import WorkItemList from '../../components/work-queue/WorkItemList';
-import WorkOverview from '../../components/work-queue/WorkOverview';
 import WorkScopeTabs from '../../components/work-queue/WorkScopeTabs';
-import type { Filters, Office, Paginator, ScopeGroup, StaffWorkload, WorkOverview as OverviewData } from '../../components/work-queue/types';
+import type { Filters, Office, Paginator, ScopeGroup, StaffWorkload } from '../../components/work-queue/types';
 import AppLayout from '../../layouts/AppLayout';
 
 type Props = {
@@ -19,57 +19,20 @@ type Props = {
         profile: string;
         department: { id: number; code: string; name: string; shortName?: string | null };
         hasOfficeScope: boolean;
-        hasMunicipalScope: boolean;
     };
-    overview: OverviewData;
     staffWorkload: StaffWorkload[];
 };
 
 const humanize = (value: string) => value.replaceAll('_', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
 
-const experienceCopy = (profile: string) => {
-    if (profile === 'executive_oversight') {
-        return {
-            eyebrow: 'Executive workflow',
-            description: 'Municipality-wide authorized work requests, approvals and decisions',
-        };
-    }
-
-    if (profile === 'system_administration') {
-        return {
-            eyebrow: 'Administrative workflow',
-            description: 'Authorized municipal work-request visibility',
-        };
-    }
-
-    if (profile === 'department_head') {
-        return {
-            eyebrow: 'Personal and office workflow',
-            description: 'Personal and office work-request accountability',
-        };
-    }
-
-    return {
-        eyebrow: 'Personal workflow',
-        description: 'Assigned requests and daily inter-office workflow',
-    };
-};
-
-const listMode = (view: string): 'action' | 'tracking' | 'office' => {
-    if (['my_requests', 'waiting_on_others', 'recently_updated'].includes(view)) return 'tracking';
-    if (['office_queue', 'unassigned', 'escalations'].includes(view)) return 'office';
-    return 'action';
-};
-
-export default function Index({ records, filters, scopeGroups, filterOptions, experience, overview, staffWorkload }: Props) {
-    const currentView = filters.view || 'overview';
+export default function Index({ records, filters, scopeGroups, filterOptions, experience, staffWorkload }: Props) {
+    const currentView = filters.view || 'all';
     const [search, setSearch] = useState(filters.search);
     const [status, setStatus] = useState(filters.status);
     const [priority, setPriority] = useState(filters.priority);
     const [officeId, setOfficeId] = useState(filters.office_id ? String(filters.office_id) : '');
     const currentQueue = scopeGroups.flatMap((group) => group.views).find((view) => view.key === currentView);
-    const currentTitle = currentView === 'overview' ? 'Overview' : currentQueue?.label || 'Work';
-    const copy = experienceCopy(experience.profile);
+    const currentTitle = currentQueue?.label || 'My Work';
 
     useEffect(() => {
         setSearch(filters.search);
@@ -86,7 +49,10 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
             priority: overrides.priority ?? priority,
             office_id: overrides.office_id ?? (officeId ? Number(officeId) : null),
         };
-        return Object.fromEntries(Object.entries(next).filter(([, value]) => value !== '' && value !== null && value !== undefined));
+
+        return Object.fromEntries(
+            Object.entries(next).filter(([, value]) => value !== '' && value !== null && value !== undefined),
+        );
     };
 
     const applyFilters = (event: FormEvent) => {
@@ -95,16 +61,7 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
     };
 
     const selectView = (view: string) => {
-        if (view === 'overview') {
-            router.get('/transactions', { view: 'overview' }, { preserveState: true, preserveScroll: true, replace: true });
-            return;
-        }
-
         router.get('/transactions', queryData({ view }), { preserveState: true, preserveScroll: true, replace: true });
-    };
-
-    const openOverviewQueue = (view: string) => {
-        router.get('/transactions', { view }, { preserveState: true, preserveScroll: true, replace: true });
     };
 
     const clearFilters = () => {
@@ -115,48 +72,72 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
         router.get('/transactions', { view: currentView }, { preserveState: true, preserveScroll: true, replace: true });
     };
 
-    const activeFilterCount = [search, status, priority, officeId].filter(Boolean).length;
-    const description = currentView === 'overview'
-        ? `${copy.description} · ${experience.department.name}`
-        : `${experience.department.name} · ${currentTitle} · ${currentQueue?.count ?? records.total} item${(currentQueue?.count ?? records.total) === 1 ? '' : 's'}`;
+    const selectedOffice = filterOptions.offices.find((office) => String(office.id) === officeId);
+    const activeFilters = [
+        status ? `Status: ${humanize(status)}` : '',
+        priority ? `Priority: ${humanize(priority)}` : '',
+        officeId ? `Office: ${selectedOffice?.shortName || selectedOffice?.name || officeId}` : '',
+    ].filter(Boolean);
 
     return (
-        <AppLayout title="Work Requests">
-            <PageFrame width="standard" density="compact">
+        <AppLayout title="My Work">
+            <PageFrame>
                 <PageHeader
-                    eyebrow={copy.eyebrow}
-                    title="Work Requests"
-                    description={description}
+                    eyebrow="Daily work queues"
+                    title="My Work"
+                    description="Review your assignments, deadlines and work requiring action."
                     icon={BriefcaseBusiness}
-                    aside={<Link href="/transactions/create" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-[var(--municipal-brand-deep)] px-3.5 text-xs font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]"><Plus size={15} /> New Request</Link>}
+                    aside={(
+                        <Link
+                            href="/transactions/create"
+                            className="municipal-action w-full sm:w-auto"
+                        >
+                            <Plus size={16} aria-hidden="true" /> New transaction
+                        </Link>
+                    )}
                 />
 
-                {currentView !== 'overview' ? (
-                    <WorkScopeTabs groups={scopeGroups} currentView={currentView} onSelect={selectView} />
-                ) : null}
+                <div className="flex flex-wrap items-center justify-between gap-2 px-1 text-xs text-slate-500 dark:text-slate-400 sm:text-xs">
+                    <span>{experience.department.name} · {experience.hasOfficeScope ? 'Personal and office queues' : 'Personal queues'}</span>
+                    <span><span className="font-semibold text-slate-700 dark:text-slate-200">{currentTitle}</span> · {currentQueue?.count ?? records.total} item{(currentQueue?.count ?? records.total) === 1 ? '' : 's'}</span>
+                </div>
 
-                {currentView === 'overview' ? (
-                    <WorkOverview profile={experience.profile} groups={scopeGroups} overview={overview} onSelect={openOverviewQueue} />
-                ) : (
-                    <>
-                        <form onSubmit={applyFilters} className="municipal-panel p-3">
-                            <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-[minmax(0,2fr)_repeat(3,minmax(0,1fr))_auto] md:items-end">
-                                <label className="block min-w-0">
-                                    <span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Search requests</span>
-                                    <div className="relative"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--municipal-muted)]" size={15} /><input value={search} onChange={(event) => setSearch(event.target.value)} className="min-h-11 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] pl-9 pr-3 text-xs text-[var(--municipal-text)] outline-none focus:border-[var(--municipal-focus)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20" placeholder="Reference, title, office, assignee..." /></div>
-                                </label>
-                                <label className="block min-w-0"><span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Status</span><select value={status} onChange={(event) => setStatus(event.target.value)} className="min-h-11 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"><option value="">All statuses</option>{filterOptions.statuses.map((value) => <option key={value} value={value}>{humanize(value)}</option>)}</select></label>
-                                <label className="block min-w-0"><span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Priority</span><select value={priority} onChange={(event) => setPriority(event.target.value)} className="min-h-11 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"><option value="">All priorities</option>{filterOptions.priorities.map((value) => <option key={value} value={value}>{humanize(value)}</option>)}</select></label>
-                                <label className="block min-w-0"><span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Current office</span><select value={officeId} onChange={(event) => setOfficeId(event.target.value)} className="min-h-11 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"><option value="">All authorized offices</option>{filterOptions.offices.map((office) => <option key={office.id} value={office.id}>{office.shortName || office.name}</option>)}</select></label>
-                                <div className="flex gap-2"><button className="min-h-11 rounded-md bg-[var(--municipal-brand-deep)] px-3.5 text-xs font-bold text-white">Apply{activeFilterCount > 0 ? ` / ${activeFilterCount}` : ''}</button><button type="button" onClick={clearFilters} className="flex min-h-11 min-w-11 items-center justify-center rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]" aria-label="Clear filters"><X size={15} /></button></div>
-                            </div>
-                        </form>
+                <WorkScopeTabs groups={scopeGroups} currentView={currentView} onSelect={selectView} />
 
-                        {currentView === 'staff_workload'
-                            ? <StaffWorkloadTable rows={staffWorkload} />
-                            : <WorkItemList records={records} title={currentTitle} mode={listMode(currentView)} />}
-                    </>
-                )}
+                <form onSubmit={applyFilters}>
+                    <ProgressiveFilterBar
+                        title="Queue filters"
+                        activeFilters={activeFilters}
+                        primary={(
+                            <label className="block">
+                                <span className="mb-1 block text-xs font-bold uppercase tracking-wide text-slate-400 sm:text-xs dark:text-slate-400">Search work</span>
+                                <div className="relative">
+                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-400" size={15} aria-hidden="true" />
+                                    <input value={search} onChange={(event) => setSearch(event.target.value)} className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pl-9 pr-3 text-[13px] text-slate-900 outline-none focus:border-blue-700 focus:ring-2 focus:ring-blue-100 sm:text-sm dark:bg-[#142236] dark:text-slate-100 dark:border-slate-700" placeholder="Reference, title, office, assignee…" />
+                                </div>
+                            </label>
+                        )}
+                        common={(
+                            <>
+                                <label className="block lg:min-w-40"><span className="mb-1 block text-xs font-bold uppercase tracking-wide text-slate-400 sm:text-xs dark:text-slate-400">Status</span><select value={status} onChange={(event) => setStatus(event.target.value)} className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-[13px] text-slate-900 sm:text-sm dark:bg-[#142236] dark:text-slate-100 dark:border-slate-700"><option value="">All statuses</option>{filterOptions.statuses.map((value) => <option key={value} value={value}>{humanize(value)}</option>)}</select></label>
+                                <label className="block lg:min-w-40"><span className="mb-1 block text-xs font-bold uppercase tracking-wide text-slate-400 sm:text-xs dark:text-slate-400">Priority</span><select value={priority} onChange={(event) => setPriority(event.target.value)} className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-[13px] text-slate-900 sm:text-sm dark:bg-[#142236] dark:text-slate-100 dark:border-slate-700"><option value="">All priorities</option>{filterOptions.priorities.map((value) => <option key={value} value={value}>{humanize(value)}</option>)}</select></label>
+                            </>
+                        )}
+                        advanced={(
+                            <label className="block"><span className="mb-1 block text-xs font-bold uppercase tracking-wide text-slate-400 sm:text-xs dark:text-slate-400">Current office</span><select value={officeId} onChange={(event) => setOfficeId(event.target.value)} className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-[13px] text-slate-900 sm:text-sm dark:bg-[#142236] dark:text-slate-100 dark:border-slate-700"><option value="">All authorized current offices</option>{filterOptions.offices.map((office) => <option key={office.id} value={office.id}>{office.shortName || office.name}</option>)}</select></label>
+                        )}
+                        actions={(
+                            <>
+                                <button className="rounded-xl bg-blue-900 px-4 py-2.5 text-[13px] font-bold text-white sm:text-xs">Apply</button>
+                                <button type="button" onClick={clearFilters} className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-slate-500 hover:bg-slate-50 dark:bg-[#142236] dark:text-slate-400 dark:border-slate-700" aria-label="Clear filters"><X size={15} aria-hidden="true" /></button>
+                            </>
+                        )}
+                    />
+                </form>
+
+                {currentView === 'staff_workload'
+                    ? <StaffWorkloadTable rows={staffWorkload} />
+                    : <WorkItemList records={records} title={currentTitle} />}
             </PageFrame>
         </AppLayout>
     );

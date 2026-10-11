@@ -1,138 +1,135 @@
-import { Link, usePage } from '@inertiajs/react';
-import { ArrowRight, Building2, CheckSquare2, Clock3, Inbox, Send, Square } from 'lucide-react';
-import { withReturnContext } from '../../navigation/returnContext';
-import {
-    formatWorkDate,
-    formatWorkDateTime,
-    humanizeWorkValue,
-    workDueLabel,
-    workDueTone,
-    workRelativeTime,
-    workStatusTone,
-} from './presentation';
+import { Link } from '@inertiajs/react';
+import { AlertTriangle, ArrowRight, Building2, Clock3, UserRound } from 'lucide-react';
 import type { Paginator } from './types';
 
-const priorityTone: Record<string, string> = {
-    normal: 'employee-tone-neutral',
-    high: 'employee-tone-warning',
-    urgent: 'employee-tone-danger',
+const humanize = (value: string) => value.replaceAll('_', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
+const formatDate = (value?: string | null) => {
+    if (!value) return 'Not set';
+    const date = new Date(value);
+
+    return Number.isNaN(date.getTime()) ? 'Not set' : date.toLocaleDateString();
 };
 
-export default function WorkItemList({ records, title, mode = 'action' }: {
-    records: Paginator;
-    title: string;
-    mode?: 'action' | 'tracking' | 'office';
-}) {
-    const { url } = usePage();
-    const eyebrow = mode === 'tracking' ? 'Request tracking' : mode === 'office' ? 'Office queue' : 'Work request queue';
+const dueTone = {
+    on_track: 'border-slate-200 bg-slate-50 text-slate-700 dark:bg-slate-900/40 dark:text-slate-300 dark:border-slate-700',
+    due_soon: 'border-amber-200 bg-amber-50 text-amber-800',
+    overdue: 'border-rose-200 bg-rose-50 text-rose-800',
+    completed: 'border-emerald-200 bg-emerald-50 text-emerald-800',
+} as const;
 
+const priorityTone: Record<string, string> = {
+    normal: 'border-slate-200 bg-slate-50 text-slate-700 dark:bg-slate-900/40 dark:text-slate-300 dark:border-slate-700',
+    high: 'border-amber-200 bg-amber-50 text-amber-800',
+    urgent: 'border-rose-200 bg-rose-50 text-rose-800',
+};
+
+const dueLabel = {
+    on_track: 'On track',
+    due_soon: 'Due soon',
+    overdue: 'Overdue',
+    completed: 'Completed',
+} as const;
+
+export default function WorkItemList({ records, title }: { records: Paginator; title: string }) {
     return (
-        <section className="municipal-panel overflow-hidden" aria-labelledby="work-item-list-title">
-            <div className="employee-panel-header flex flex-col gap-1 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                    <div className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-brand)]">{eyebrow}</div>
-                    <h2 id="work-item-list-title" className="employee-section-title text-[var(--municipal-text)]">{title}</h2>
-                </div>
-                <div className="employee-metadata text-[var(--municipal-muted)]">
-                    {records.total === 0 ? 'No matching items' : `Showing ${records.from || 1}-${records.to || records.data.length} of ${records.total}`}
+        <section className="municipal-panel overflow-hidden text-slate-900 dark:text-slate-100" aria-label={title}>
+            <div className="flex flex-col gap-1 border-b border-slate-100 bg-slate-50 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5 dark:bg-slate-900/40 dark:border-slate-700">
+                <div className="text-[13px] font-bold text-slate-900 sm:text-sm dark:text-slate-100">{title}</div>
+                <div className="text-xs text-slate-500 sm:text-xs dark:text-slate-400">
+                    {records.total === 0 ? 'No matching items' : `Showing ${records.from || 1}–${records.to || records.data.length} of ${records.total}`}
                 </div>
             </div>
 
-            <div className="employee-table-heading employee-subsection-bar hidden grid-cols-[32px_minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.2fr)_64px] gap-3 border-b border-[var(--municipal-border)] text-[var(--municipal-muted)] xl:grid">
-                <div><span className="sr-only">Workflow state</span></div><div>Work Request</div><div>Accountability</div><div>Assignment</div><div>Due / activity</div><div>Next action</div><div />
+            <div className="hidden grid-cols-[minmax(250px,1.45fr)_145px_155px_145px_minmax(190px,1fr)_88px] gap-4 border-b border-slate-100 px-5 py-3 text-xs font-bold uppercase tracking-wide text-slate-500 xl:grid dark:text-slate-400 dark:border-slate-700">
+                <div>Work item</div><div>Accountability</div><div>Assignment</div><div>Due</div><div>Next action</div><div />
             </div>
 
-            <div className="divide-y divide-[var(--municipal-border)]">
-                {records.data.map((item) => {
-                    const updatedRecency = workRelativeTime(item.updatedAt);
-                    const updatedExact = formatWorkDateTime(item.updatedAt);
-                    const statusLabel = humanizeWorkValue(item.status);
-                    const completed = item.dueState === 'completed';
-                    const StateIcon = mode === 'tracking' ? Send : mode === 'office' ? Inbox : completed ? CheckSquare2 : Square;
-                    const stateTitle = mode === 'tracking'
-                        ? 'Tracking item'
-                        : mode === 'office'
-                            ? 'Office work item'
-                            : completed
-                                ? 'Workflow completed'
-                                : 'Completion is controlled by the workflow record';
+            <div className="divide-y divide-slate-100 dark:divide-slate-700">
+                {records.data.map((item) => (
+                    <article key={item.id} className="px-4 py-4 transition-colors hover:bg-slate-50/70 dark:hover:bg-slate-800/30 sm:px-5">
+                        <div className="grid min-w-0 gap-4 xl:grid-cols-[minmax(250px,1.45fr)_145px_155px_145px_minmax(190px,1fr)_88px] xl:items-center">
+                            <div className="min-w-0">
+                                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                                    <span className="text-xs font-bold text-blue-700 sm:text-xs">{item.reference}</span>
+                                    <span className="text-xs text-slate-500 dark:text-slate-400">{humanize(item.transactionType)}</span>
+                                </div>
+                                <h2 className="mt-1 text-[13px] font-semibold leading-5 text-slate-950 sm:text-sm dark:text-slate-100">{item.title}</h2>
+                                <div className="mt-2 flex flex-wrap gap-1.5" aria-label="Work item state">
+                                    <span className={`border px-2 py-1 text-xs font-bold uppercase sm:text-xs ${priorityTone[item.priority] || priorityTone.normal}`}>
+                                        {humanize(item.priority)} priority
+                                    </span>
+                                    <span className="border border-slate-200 bg-slate-50 px-2 py-1 text-xs font-bold uppercase text-slate-700 sm:text-xs dark:bg-slate-900/40 dark:text-slate-300 dark:border-slate-700">
+                                        {humanize(item.status)}
+                                    </span>
+                                    <span className={`border px-2 py-1 text-xs font-bold uppercase sm:text-xs ${dueTone[item.dueState]}`}>
+                                        {item.dueState === 'overdue' && <AlertTriangle size={10} className="mr-1 inline" aria-hidden="true" />}
+                                        {dueLabel[item.dueState]}
+                                    </span>
+                                    {item.requiresAction ? (
+                                        <span className="inline-flex items-center gap-1 border border-blue-200 bg-blue-50 px-2 py-1 text-xs font-bold uppercase text-blue-800 sm:text-xs dark:bg-blue-950/40">
+                                            <UserRound size={10} aria-hidden="true" /> Needs action
+                                        </span>
+                                    ) : null}
+                                </div>
+                            </div>
 
-                    return (
-                        <article key={item.id} className={`employee-record-row py-2.5 ${completed ? 'bg-[var(--municipal-surface-subtle)]' : 'hover:bg-[var(--municipal-hover)]'}`}>
-                            <div className="grid min-w-0 gap-2.5 xl:grid-cols-[32px_minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.2fr)_64px] xl:items-center">
-                                <div className="flex min-h-8 items-start pt-0.5 text-[var(--municipal-brand)]" title={stateTitle}>
-                                    <StateIcon size={20} strokeWidth={1.8} aria-hidden="true" />
-                                    <span className="sr-only">{stateTitle}</span>
+                            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:contents">
+                                <div className="min-w-0">
+                                    <div className="text-xs font-bold uppercase tracking-wide text-slate-400 xl:hidden dark:text-slate-400">Accountability</div>
+                                    <div className="mt-1 flex items-start gap-1.5 text-xs font-semibold leading-4 text-slate-700 sm:text-xs dark:text-slate-300">
+                                        <Building2 size={12} className="mt-0.5 shrink-0 text-slate-400 dark:text-slate-400" aria-hidden="true" />
+                                        <span>{item.currentOffice?.shortName || item.currentOffice?.name || 'Unknown office'}</span>
+                                    </div>
+                                    <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">From {item.originOffice?.shortName || item.originOffice?.name || 'Unknown'}</div>
                                 </div>
 
                                 <div className="min-w-0">
-                                    <div className="employee-metadata flex flex-wrap items-center gap-x-2 gap-y-0.5">
-                                        <span className="employee-tone-info font-bold">{item.reference}</span>
-                                        <span className="text-[var(--municipal-muted)]">{humanizeWorkValue(item.transactionType)}</span>
-                                    </div>
-                                    <h3 className={`employee-record-title mt-0.5 line-clamp-2 text-[var(--municipal-text)] ${completed && mode === 'action' ? 'line-through decoration-[var(--municipal-border-strong)]' : ''}`}>{item.title}</h3>
-                                    <div className="employee-metadata mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
-                                        <span className={`${workStatusTone(item.status)} font-semibold`}>{statusLabel}</span>
-                                        <span className="text-[var(--municipal-border-strong)]" aria-hidden="true"> / </span>
-                                        <span className={priorityTone[item.priority] || priorityTone.normal}>{humanizeWorkValue(item.priority)} priority</span>
-                                        <span className="text-[var(--municipal-border-strong)]" aria-hidden="true"> / </span>
-                                        <span className={`font-semibold ${workDueTone[item.dueState]}`}>{workDueLabel[item.dueState]}</span>
-                                        {item.requiresAction ? <><span className="text-[var(--municipal-border-strong)]" aria-hidden="true"> / </span><span className="employee-tone-info font-semibold">Needs action</span></> : null}
-                                    </div>
+                                    <div className="text-xs font-bold uppercase tracking-wide text-slate-400 xl:hidden dark:text-slate-400">Assignment</div>
+                                    <div className="mt-1 text-xs font-semibold leading-4 text-slate-700 sm:text-xs dark:text-slate-300">{item.assignedEmployee?.name || 'Unassigned'}</div>
+                                    {item.assignedEmployee?.position ? <div className="mt-1 text-xs leading-4 text-slate-500 dark:text-slate-400">{item.assignedEmployee.position}</div> : null}
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:contents">
-                                    <div className="min-w-0">
-                                        <div className="employee-functional-label text-[var(--municipal-muted)] xl:hidden">Accountability</div>
-                                        <div className="employee-metadata mt-0.5 flex items-start gap-1.5 font-semibold text-[var(--municipal-text)]">
-                                            <Building2 size={12} className="mt-0.5 shrink-0 text-[var(--municipal-muted)]" aria-hidden="true" />
-                                            <span className="line-clamp-2">{item.currentOffice?.shortName || item.currentOffice?.name || 'Unknown office'}</span>
-                                        </div>
-                                        <div className="employee-metadata mt-0.5 truncate text-[var(--municipal-muted)]">From {item.originOffice?.shortName || item.originOffice?.name || 'Unknown'}</div>
+                                <div className="min-w-0">
+                                    <div className="text-xs font-bold uppercase tracking-wide text-slate-400 xl:hidden dark:text-slate-400">Due</div>
+                                    <div className="mt-1 flex items-center gap-1.5 text-xs font-semibold text-slate-700 sm:text-xs dark:text-slate-300">
+                                        <Clock3 size={12} className="shrink-0 text-slate-400 dark:text-slate-400" aria-hidden="true" />
+                                        {item.dueState === 'completed' ? formatDate(item.completedAt) : formatDate(item.dueAt)}
                                     </div>
-                                    <div className="min-w-0">
-                                        <div className="employee-functional-label text-[var(--municipal-muted)] xl:hidden">Assignment</div>
-                                        <div className="employee-metadata mt-0.5 truncate font-semibold text-[var(--municipal-text)]">{item.assignedEmployee?.name || 'Unassigned'}</div>
-                                        {item.assignedEmployee?.position ? <div className="employee-metadata mt-0.5 line-clamp-2 text-[var(--municipal-muted)]">{item.assignedEmployee.position}</div> : null}
-                                    </div>
-                                    <div className="min-w-0">
-                                        <div className="employee-functional-label text-[var(--municipal-muted)] xl:hidden">Due / activity</div>
-                                        <div className="employee-metadata mt-0.5 flex items-center gap-1.5 font-semibold text-[var(--municipal-text)]">
-                                            <Clock3 size={12} className="shrink-0 text-[var(--municipal-muted)]" aria-hidden="true" />
-                                            {item.dueState === 'completed' ? formatWorkDate(item.completedAt) : formatWorkDate(item.dueAt)}
-                                        </div>
-                                        <div className="employee-metadata mt-0.5 text-[var(--municipal-muted)]" title={updatedExact}>
-                                            Updated {updatedRecency || updatedExact}
-                                            {updatedRecency ? <span className="sr-only"> / {updatedExact}</span> : null}
-                                        </div>
-                                    </div>
+                                    <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">Updated {formatDate(item.updatedAt)}</div>
                                 </div>
-
-                                <div className="employee-supporting-text border-l-2 border-[var(--municipal-border)] pl-2.5 font-semibold text-[var(--municipal-text)]">
-                                    <div className="mb-0.5 employee-functional-label text-[var(--municipal-muted)] xl:hidden">Next action</div>
-                                    {item.expectedAction}
-                                </div>
-
-                                <Link href={withReturnContext(`/transactions/${item.id}`, url, '/transactions')} className="employee-metadata inline-flex min-h-11 items-center justify-center gap-1.5 font-bold text-[var(--municipal-brand)] hover:underline" aria-label={`Open work item ${item.reference}`}>
-                                    Open <ArrowRight size={13} aria-hidden="true" />
-                                </Link>
                             </div>
-                        </article>
-                    );
-                })}
 
-                {records.data.length === 0 ? <div className="employee-empty-state"><div className="employee-record-title text-[var(--municipal-text)]">No work requests match this view.</div><div className="employee-supporting-text mt-1 text-[var(--municipal-muted)]">Change the queue category or clear one of the active filters.</div></div> : null}
+                            <div className="border-l-2 border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold leading-4 text-slate-700 sm:text-xs xl:min-h-12 dark:bg-slate-900/40 dark:text-slate-300 dark:border-slate-700">
+                                <div className="mb-0.5 text-xs font-bold uppercase tracking-wide text-slate-400 xl:hidden dark:text-slate-400">Next action</div>
+                                {item.expectedAction}
+                            </div>
+
+                            <Link
+                                href={`/transactions/${item.id}`}
+                                className="inline-flex min-h-10 items-center justify-center gap-1.5 border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-blue-800 transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2 sm:text-xs dark:bg-[#142236] dark:border-slate-700"
+                                aria-label={`Open work item ${item.reference}`}
+                            >
+                                Open <ArrowRight size={13} aria-hidden="true" />
+                            </Link>
+                        </div>
+                    </article>
+                ))}
+
+                {records.data.length === 0 ? (
+                    <div className="px-5 py-12 text-center">
+                        <div className="text-sm font-semibold text-slate-700 dark:text-slate-300">No matching work in this view.</div>
+                        <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">Change the queue category or clear one of the active filters.</div>
+                    </div>
+                ) : null}
             </div>
 
-            {records.last_page > 1 ? <nav className="employee-panel-header flex items-center justify-between gap-3 border-t border-[var(--municipal-border)]" aria-label="Work request queue pagination">
-                {records.prev_page_url
-                    ? <Link href={records.prev_page_url} preserveScroll className="employee-metadata inline-flex min-h-11 items-center rounded-md px-3 font-semibold text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]">Previous</Link>
-                    : <span aria-disabled="true" className="employee-metadata inline-flex min-h-11 items-center px-3 font-semibold text-[var(--municipal-muted)]">Previous</span>}
-                <div className="employee-metadata text-[var(--municipal-muted)]" aria-current="page">Page {records.current_page} of {records.last_page}</div>
-                {records.next_page_url
-                    ? <Link href={records.next_page_url} preserveScroll className="employee-metadata inline-flex min-h-11 items-center rounded-md px-3 font-semibold text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]">Next</Link>
-                    : <span aria-disabled="true" className="employee-metadata inline-flex min-h-11 items-center px-3 font-semibold text-[var(--municipal-muted)]">Next</span>}
-            </nav> : null}
+            {records.last_page > 1 ? (
+                <div className="flex items-center justify-between gap-3 border-t border-slate-100 px-4 py-3 sm:px-5 dark:border-slate-700">
+                    <Link href={records.prev_page_url || '#'} preserveScroll className={`border px-3 py-2 text-xs font-semibold sm:text-xs ${records.prev_page_url ? 'border-slate-300 text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:border-slate-700' : 'pointer-events-none border-slate-100 text-slate-300 dark:border-slate-700'}`}>Previous</Link>
+                    <div className="text-xs text-slate-500 sm:text-xs dark:text-slate-400">Page {records.current_page} of {records.last_page}</div>
+                    <Link href={records.next_page_url || '#'} preserveScroll className={`border px-3 py-2 text-xs font-semibold sm:text-xs ${records.next_page_url ? 'border-slate-300 text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:border-slate-700' : 'pointer-events-none border-slate-100 text-slate-300 dark:border-slate-700'}`}>Next</Link>
+                </div>
+            ) : null}
         </section>
     );
 }
