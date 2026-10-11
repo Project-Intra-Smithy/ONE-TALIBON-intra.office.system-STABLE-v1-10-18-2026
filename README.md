@@ -1,5 +1,8 @@
 # ONE TALIBON — Intra-Office Frontend Workspace
 
+> **ACTIVE MONDAY SPRINT / 2026-10-12 17:00 PHT:** [Frontend sprint memory](docs/COMMON_CORE_SPRINT_2026-10-12.md) and [Engineering Hub #64 master checklist](https://github.com/Project-Intra-Smithy/engineering-hub/issues/64). F01 draft PR #14 CI green but genuine Task UI Laravel browser evidence / independent review pending; F02 held for accepted F01. Prior historical sections below are retained, not current sprint acceptance.
+
+
 > **Mandatory Forge continuity:** Every new or resumed bounded frontend work package needs linked `START` records in its owning issue and [repository work memory](docs/WORK_PACKAGE_CONTINUITY.md) before execution, then linked `CLOSE` records with exact evidence and remaining work before acceptance/issue closure. See [Common Core control #63](https://github.com/Project-Intra-Smithy/engineering-hub/issues/63). Existing draft PR #6/#7 are retained as historical in-flight work and must reconcile the records at their next consequential handoff; this notice does not approve or merge either PR.
 
 **Development repository for the frontend team: AJ (`@rynzz22`) and Jhayr (`@kyumw3b`).**  
