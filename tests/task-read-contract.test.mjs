@@ -25,6 +25,30 @@ test('contract Task serializer does not grant authority from owning department s
   assert.deepEqual(parseTaskDetail({data:TASK}),TASK);
   assert.equal(parseTaskDetail({data:{...TASK,id:'15'}}),null);
 });
+test('C1 timestamp guard requires real calendar date, seconds and explicit timezone on all fields',()=>{
+  const fields=['due_at','completed_at','created_at','updated_at'];
+  const valid=['2026-10-10T08:00:00+08:00','2026-10-10T00:00:00Z','2026-10-10T08:00:00.123456+08:00'];
+  const invalid=['2026-10-10','2026-10-10T08:00:00','2026-10-10T08:00+08:00',
+    '2026-02-30T08:00:00+08:00','2026-10-10T08:00:00+14:30','2026-13-10T08:00:00+08:00'];
+  for(const field of fields){
+    for(const date of valid) assert.equal(isIndividualTask({...TASK,[field]:date}),true,field+' '+date);
+    for(const date of invalid) assert.equal(isIndividualTask({...TASK,[field]:date}),false,field+' '+date);
+    assert.equal(isIndividualTask({...TASK,[field]:null}),true);
+  }
+});
+test('malformed 200 timestamp values fail both list and detail envelopes',async()=>{
+  for(const field of ['due_at','completed_at','created_at','updated_at']){
+    const malformed={...TASK,[field]:'2026-10-10T08:00:00'};
+    await withFetch(async()=>json({data:malformed}),async()=>{
+      const r=await getPersonalTask(15,new AbortController().signal);
+      assert.equal(r.ok,false);if(!r.ok)assert.equal(r.error.code,'INVALID_RESPONSE');
+    });
+    await withFetch(async()=>json({...PAGE,data:[malformed]}),async()=>{
+      const r=await getPersonalTasks('open',1,new AbortController().signal);
+      assert.equal(r.ok,false);if(!r.ok)assert.equal(r.error.code,'INVALID_RESPONSE');
+    });
+  }
+});
 test('list uses authoritative server meta and rejects malformed result',()=>{
   assert.equal(parseTaskPage(PAGE).meta.total,1);
   assert.equal(parseTaskPage({...PAGE,meta:{...PAGE.meta,total:400,last_page:40}}).meta.last_page,40);
