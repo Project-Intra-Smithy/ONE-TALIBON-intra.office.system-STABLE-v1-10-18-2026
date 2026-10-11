@@ -37,7 +37,7 @@ const record = (value: unknown): value is Record<string, unknown> =>
     typeof value === 'object' && value !== null && !Array.isArray(value);
 const timestamp = (value: unknown): value is string | null =>
     value === null || (typeof value === 'string' && !Number.isNaN(Date.parse(value)));
-const uint = (value: unknown) => typeof value === 'number' && Number.isSafeInteger(value) && value >= 0;
+const uint = (value: unknown): value is number => typeof value === 'number' && Number.isSafeInteger(value) && value >= 0;
 export function isIndividualTask(value: unknown): value is IndividualTask {
     if (!record(value)) return false;
     return uint(value.id) && value.id > 0 && value.kind === 'individual' &&
