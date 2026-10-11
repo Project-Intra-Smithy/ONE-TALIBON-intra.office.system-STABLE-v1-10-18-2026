@@ -10,7 +10,8 @@ import { useVisiblePolling } from '../hooks/useVisiblePolling';
 import { buildPortalNavigation } from '../navigation/portalNavigation';
 import type { LiveNotification, NotificationFeed, SharedProps } from '../types';
 
-type Props = PropsWithChildren<{ title: string }>;
+type Presentation = 'standard' | 'portal-dashboard';
+type Props = PropsWithChildren<{ title: string; presentation?: Presentation }>;
 
 const SIDEBAR_COLLAPSED_STORAGE_KEY = 'talibon.sidebar.collapsed';
 
@@ -33,7 +34,7 @@ function relativeTime(value?: string | null): string {
     return new Date(value).toLocaleString();
 }
 
-export default function AppLayout({ title, children }: Props) {
+export default function AppLayout({ title, presentation = 'standard', children }: Props) {
     const page = usePage<SharedProps>();
     const pageProps = page.props;
     const { auth, flash } = pageProps;
@@ -190,7 +191,7 @@ export default function AppLayout({ title, children }: Props) {
         <>
             <Head title={title} />
             <a href="#portal-content" className="sr-only z-[80] rounded bg-white p-3 text-blue-900 focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to content</a>
-            <div
+            <div data-presentation={presentation}
                 className={`min-h-screen bg-[var(--municipal-canvas)] text-slate-900 transition-colors dark:bg-[#0d1624] dark:text-slate-100 lg:grid lg:transition-[grid-template-columns] lg:duration-150 lg:ease-out motion-reduce:transition-none ${
                     desktopCollapsed
                         ? 'lg:grid-cols-[72px_minmax(0,1fr)]'
@@ -266,7 +267,7 @@ export default function AppLayout({ title, children }: Props) {
                             {flash.success || flash.error}
                         </div>
                     )}
-                    <div id="portal-content" tabIndex={-1}><NotificationContext.Provider value={notifications}>{children}</NotificationContext.Provider></div>
+                    <div id="portal-content" data-presentation={presentation === 'portal-dashboard' ? 'dashboard' : undefined} tabIndex={-1} className={presentation === 'portal-dashboard' ? 'p-3 sm:p-4' : undefined}><NotificationContext.Provider value={notifications}>{children}</NotificationContext.Provider></div>
                     <footer className="mx-3 flex flex-wrap justify-between gap-2 border-t border-slate-200 py-4 text-xs text-slate-500 dark:border-slate-700 dark:text-slate-400 sm:mx-5"><span>Municipality of Talibon · Province of Bohol</span><span>One Talibon · Intra-Office Portal</span></footer>
                 </main>
             </div>
