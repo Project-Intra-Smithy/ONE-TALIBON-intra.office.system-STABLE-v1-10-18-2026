@@ -67,8 +67,9 @@ function err(status:number|null, body:unknown, requestId:string|null, unknownOut
     const b = object(body) ? body : {};
     const code = typeof b.code === 'string' ? b.code : null;
     const nextUrl = status === 403 && code === 'MFA_REQUIRED' ? safeMfaNextUrl(b.next_url) : null;
-    const invalidFields = status === 422 && object(b.errors)
-        ? ['title','instructions','due_at','state','request'].filter(k => k in b.errors) : [];
+    const errorKeys = object(b.errors) ? Object.keys(b.errors) : [];
+    const invalidFields = status === 422
+        ? ['title','instructions','due_at','state','request'].filter(k => errorKeys.includes(k)) : [];
     let message = 'Task mutation failed. No change has been confirmed.';
     if (unknownOutcome) message = 'The server outcome is unknown. Read the latest Task state before deciding whether to submit another request.';
     else if (status === 401) message = code === 'ACCOUNT_INACTIVE' ? 'Account inactive. Sign in with an active account.' : 'Session ended. Sign in again.';
