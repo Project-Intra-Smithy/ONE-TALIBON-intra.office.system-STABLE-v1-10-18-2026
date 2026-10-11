@@ -31,3 +31,11 @@ jobs:
       - run: npm run types:check
       - run: npm test
       - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run visual:verify
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ui-visual-fixtures-${{ github.run_id }}
+          path: artifacts/visual-fixture/
+          if-no-files-found: warn

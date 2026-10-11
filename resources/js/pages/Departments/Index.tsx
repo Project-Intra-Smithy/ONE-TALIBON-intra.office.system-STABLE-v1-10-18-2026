@@ -32,7 +32,7 @@ export default function Index({ departments, summary }: { departments: Office[];
     const legislative = departments.filter((office) => office.branch === 'legislative');
 
     const officeCard = (office: Office) => (
-        <article key={office.id} className="min-w-0 rounded-xl border border-slate-200 bg-white p-4 transition-colors dark:border-slate-700 dark:bg-[#142236] sm:p-5">
+        <article key={office.id} className="municipal-panel min-w-0 p-4 transition-colors hover:border-blue-200 dark:hover:border-blue-800 sm:p-5">
             <div className="flex items-start gap-3">
                 <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${office.is_executive ? 'bg-blue-900 text-white' : office.is_legislative ? 'bg-indigo-50 text-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-200' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200'}`}>
                     {office.is_executive ? <Crown size={17} aria-hidden="true" /> : office.is_legislative ? <Gavel size={17} aria-hidden="true" /> : <Building2 size={17} aria-hidden="true" />}
@@ -72,7 +72,7 @@ export default function Index({ departments, summary }: { departments: Office[];
 
             <section aria-label="Municipal office summary" className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
                 {summaryItems.map(({ label, value, icon: Icon }) => (
-                    <div key={label} className="min-w-0 rounded-xl border border-slate-200 bg-white p-3 transition-colors dark:border-slate-700 dark:bg-[#142236] sm:rounded-xl sm:p-4">
+                    <div key={label} className="municipal-stat">
                         <Icon className="text-blue-800 dark:text-blue-300" size={17} aria-hidden="true" />
                         <div className="mt-2 text-xl font-bold text-slate-950 dark:text-slate-100 sm:text-2xl">{value}</div>
                         <div className="mt-0.5 break-words text-xs font-semibold leading-4 text-slate-500 dark:text-slate-400 sm:text-xs">{label}</div>

@@ -286,7 +286,7 @@ export default function Index({ records, filters, filterOptions }: Props) {
                             </article>
                         ))}
 
-                        {records.data.length === 0 && <div className="px-5 py-12 text-center"><div className="text-sm font-semibold text-slate-700 dark:text-slate-300">No authorized records match this search.</div><div className="mt-1 text-xs text-slate-500 dark:text-slate-400">Change the filters or clear the search criteria.</div></div>}
+                        {records.data.length === 0 && <div className="municipal-empty m-4"><div className="text-sm font-semibold text-slate-700 dark:text-slate-300">No authorized records match this search.</div><div className="mt-1 text-xs text-slate-500 dark:text-slate-400">Change the filters or clear the search criteria.</div></div>}
                     </div>
 
                     {records.last_page > 1 && (

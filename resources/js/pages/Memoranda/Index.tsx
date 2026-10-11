@@ -11,7 +11,7 @@ export default function Index({ memoranda = [], authority, view = 'overview' }: 
     return <AppLayout title="Memoranda"><PageFrame width="standard">
         <PageHeader eyebrow="Central issuance" title="Memoranda" icon={FileText}
             description="Municipal memoranda delivered to the appropriate employees and offices."
-            aside={canPublish && <Link href="/memoranda/create" className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#0b2852] px-4 py-3 text-sm font-semibold text-white"><Plus size={17} />Publish memorandum</Link>}
+            aside={canPublish && <Link href="/memoranda/create" className="municipal-action"><Plus size={17} />Publish memorandum</Link>}
         />
         <nav aria-label="Memoranda views" className="mb-4 flex flex-wrap gap-2">{(['overview', 'for_me', 'needs_acknowledgement', 'unread', 'acknowledged', ...(canPublish ? ['office_issuances'] : [])] as string[]).map((option) => <Link key={option} href={`/memoranda?view=${option}`} aria-current={view === option ? 'page' : undefined} className={`rounded-lg px-3 py-2 text-xs font-semibold ${view === option ? 'bg-[#0b2852] text-white' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200'}`}>{option.replaceAll('_', ' ')}</Link>)}</nav>
         <div className="municipal-panel divide-y divide-slate-100 overflow-hidden dark:divide-slate-700">
@@ -27,7 +27,7 @@ export default function Index({ memoranda = [], authority, view = 'overview' }: 
                     <ArrowRight size={17} className="text-slate-400 dark:text-slate-400" aria-hidden="true" />
                 </div>
             </Link>)}
-            {memoranda.length === 0 && <div className="px-5 py-10 text-center text-sm text-slate-500 dark:text-slate-400">No memoranda available.</div>}
+            {memoranda.length === 0 && <div className="municipal-empty m-4 text-sm">No memoranda available.</div>}
         </div>
     </PageFrame></AppLayout>;
 }

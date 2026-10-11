@@ -13,7 +13,7 @@ export default function Login() {
     return (
         <>
             <Head title="Employee Portal" />
-            <div className="min-h-screen bg-slate-100 lg:grid lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="auth-canvas min-h-screen lg:grid lg:grid-cols-[0.9fr_1.1fr]">
                 <section className="hidden bg-[#08264d] p-10 text-white lg:flex lg:flex-col lg:justify-between xl:p-14">
                     <div className="text-sm text-blue-100">One Talibon · Employee Portal</div>
 
@@ -39,11 +39,11 @@ export default function Login() {
                     <div className="w-full max-w-md">
                         <div className="mb-6 text-sm font-semibold text-blue-800 lg:hidden">One Talibon · Employee Portal</div>
 
-                        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl shadow-slate-900/5 sm:p-8">
+                        <div className="auth-panel bg-white p-6 sm:p-8">
                             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-900">
                                 <LockKeyhole size={22} />
                             </div>
-                            <div className="mt-5 text-xs font-bold uppercase tracking-[0.18em] text-blue-700">One Talibon</div>
+                            <div className="mt-5 auth-kicker">One Talibon</div>
                             <h2 className="mt-2 text-2xl font-bold text-slate-950">Employee Portal</h2>
                             <p className="mt-2 text-sm leading-6 text-slate-500">Sign in using the credentials privately issued for this prototype environment.</p>
 

@@ -90,7 +90,7 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
                     aside={(
                         <Link
                             href="/transactions/create"
-                            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#0b2852] px-4 py-2.5 text-[13px] font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 sm:w-auto sm:py-3 sm:text-sm"
+                            className="municipal-action w-full sm:w-auto"
                         >
                             <Plus size={16} aria-hidden="true" /> New transaction
                         </Link>
