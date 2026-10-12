@@ -136,3 +136,8 @@ Accepted historical records are immutable provenance. Append subsequent changes;
 - **Already integrated:** F01 PR14 merged. **Not integrated/held:** F02 PR27 `8f9f1af2c1be61744f65e641f72d90845bf7a67f` remains DRAFT/PARKED; do not import or treat as accepted without separate F02 gate. No UI-VISUAL other PRs included.
 - **Next:** synchronize backend/frontend issue+memory START, create frontend integration mainline preserving FE main; prepare F02 evidence/repair route separately.
 - **Tests:** FE mounted/create state and real Laravel browser unverified; no CI/QA acceptance granted. No production/ruleset/secret/schema/permission changes.
+
+### CHECKPOINT — CC-MAINT-INTEGRATE-001 / 2026-10-12 / FRONTEND BRANCH PREPARED
+- Source frontend accepted `main@4e1c10a0660ab93d1ee8498ae724466f2c17e1ce` at branch creation. Isolated staging `forge/integration/a01-task-frontend-mainline` created from this exact SHA. **NO F02 source imported**; F01 already in accepted frontend via PR14.
+- Owning [Hub #103 assembled backend receipt #6125862427](https://github.com/Project-Intra-Smithy/engineering-hub/issues/103#issuecomment-6125862427). Backend staging candidate `forge/integration/p1-common-core-mainline@40c980fc780aca4383413d2d937aa81c28c0530c` is **unverified**, not a contract release.
+- **Next:** Mantainer A reconciles parked F02 PR27 through independent authorized correction package and native regression; only then consider import into FE staging and execute real Laravel/PostgreSQL browser integration. FE project main, production and F02 hold unchanged.
