@@ -1,5 +1,10 @@
 # KIRION FORGE MEMORY INDEX — COMMON SYSTEM PROGRAM
 
+## ACTIVE FEATURE-FIRST MAINTAINER V2 — 12 OCTOBER 2026
+
+**[Engineering Hub #90 / MAINT-MAX-002](https://github.com/Project-Intra-Smithy/engineering-hub/issues/90)** — successor command authority for the original ONE TALIBON Common Municipal Engine; portable [Hub memory](https://github.com/Project-Intra-Smithy/engineering-hub/blob/main/KIRION_FORGE_MAINTAINER_MAX_2026-10-12.md). Governing feature batches [#82](https://github.com/Project-Intra-Smithy/engineering-hub/issues/82), LGU authority [#83](https://github.com/Project-Intra-Smithy/engineering-hub/issues/83). **This is a pointer, not a new package START/accepted feature.** Backend B01–B03 source candidates 9/9 AI-assisted source-reviewed but **untested, unmerged**; 3 disjoint stacked writer scopes. Backend executable source unchanged at `main@4abba38ad84ca6918740941c83ad53618485d80f` before this memory-only link. A01 F01 frontend merged; F02 parked draft. Formal phase P0 only accepted; full P2–P7 implementation requires real consumed contract release, no automatic authority from a roadmap. Update exact main SHA after docs merge.
+
+
 ## ACTIVE TIME-BOXED SPRINT (11–12 OCTOBER 2026)
 
 **[CC-S80-20261012 backend sprint memory](P1-MONDAY-SPRINT-2026-10-12.md)** | **[Engineering Hub #64 checklist and receipts](https://github.com/Project-Intra-Smithy/engineering-hub/issues/64)**. Goal: 12/15 original common-core exit criteria evidence-qualified by **Mon 2026-10-12 17:00 PHT**, separately from official accepted phases (baseline P0 = 1/8). Keep A01 backend acceptance intact; Jane A02 preparation is draft-only until its own paired START. No assumption of P1/P7 acceptance.
