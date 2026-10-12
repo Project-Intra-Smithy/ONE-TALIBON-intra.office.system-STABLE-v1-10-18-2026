@@ -9,6 +9,7 @@ import RecentWorkList from '../components/dashboard/RecentWorkList';
 import SystemOverview from '../components/dashboard/SystemOverview';
 import type { DashboardProps } from '../components/dashboard/types';
 import PersonalTaskWorkspace from '../components/tasks/PersonalTaskWorkspace';
+import PersonalTaskMutationPanel from '../components/tasks/PersonalTaskMutationPanel';
 import AppLayout from '../layouts/AppLayout';
 
 export default function Dashboard({ experience, metricGroups, correspondenceOverview, recentWork, officeOverview, executiveOverview, systemOverview }: DashboardProps) {
@@ -49,6 +50,7 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
                 </>}
 
                 <PersonalTaskWorkspace />
+                <PersonalTaskMutationPanel />
                 <QuickActions actions={experience.quickActions} />
             </div>
         </div>
