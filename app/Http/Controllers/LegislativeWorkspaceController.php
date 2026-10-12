@@ -6,7 +6,7 @@ use App\Models\CalendarEvent;
 use App\Models\LegislativeAgendaItem;
 use App\Models\LegislativeSession;
 use App\Models\User;
-use App\Models\WorkflowTransaction;
+use App\Services\TransactionVisibilityQuery;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -15,18 +15,25 @@ use Inertia\Response;
 
 class LegislativeWorkspaceController extends Controller
 {
-    public function index(Request $request): Response
+    public function index(Request $request, TransactionVisibilityQuery $workRequests): Response
     {
         $user = $request->user()->loadMissing('employee.department');
         abort_unless($this->canView($user), 403);
 
         return Inertia::render('Legislation/Workspace', [
             'sessions' => LegislativeSession::query()
-                ->with(['agendaItems.transaction:id,reference_no,title,status', 'agendaItems.legislativeRecord:id,record_number,title'])
+                ->with([
+                    // Agenda Work Request links are always reauthorized, including
+                    // for a now-separated administrator with a still-valid session.
+                    'agendaItems.transaction' => fn ($query) => $query
+                        ->whereIn('transactions.id', $workRequests->scope($user)->select('transactions.id'))
+                        ->select(['id', 'reference_no', 'title', 'status']),
+                    'agendaItems.legislativeRecord:id,record_number,title',
+                ])
                 ->orderBy('scheduled_at')
                 ->limit(50)
                 ->get(),
-            'legislativeWork' => WorkflowTransaction::query()
+            'legislativeWork' => $workRequests->scope($user)
                 ->whereHas('currentDepartment', fn ($q) => $q->where('branch', 'legislative'))
                 ->whereNotIn('status', ['approved', 'disapproved', 'closed'])
                 ->with('currentDepartment:id,code,name,short_name')
@@ -78,7 +85,7 @@ class LegislativeWorkspaceController extends Controller
         return back()->with('success', 'Legislative session scheduled.');
     }
 
-    public function addAgenda(Request $request, LegislativeSession $session): RedirectResponse
+    public function addAgenda(Request $request, LegislativeSession $session, TransactionVisibilityQuery $workRequests): RedirectResponse
     {
         $this->assertManager($request);
         $data = $request->validate([
@@ -93,6 +100,15 @@ class LegislativeWorkspaceController extends Controller
             'transaction_id' => ['nullable', 'integer', 'exists:transactions,id'],
             'legislative_record_id' => ['nullable', 'integer', 'exists:legislative_records,id'],
         ]);
+
+        // A globally existing Work Request is not necessarily an authorized
+        // link target. Do not create a cross-domain link to a concealed item.
+        if (isset($data['transaction_id'])) {
+            abort_unless(
+                $workRequests->scope($request->user())->whereKey($data['transaction_id'])->exists(),
+                403,
+            );
+        }
 
         LegislativeAgendaItem::query()->create([
             ...$data,
