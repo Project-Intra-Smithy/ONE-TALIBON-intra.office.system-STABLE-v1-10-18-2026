@@ -7,6 +7,7 @@ use App\Models\MemoRecipient;
 use App\Models\PlatformNotification;
 use App\Models\TransactionEvent;
 use App\Models\User;
+use App\Models\WorkflowTransaction;
 
 final class NotificationFeedQuery
 {
@@ -60,6 +61,22 @@ final class NotificationFeedQuery
 
         $platformBase = PlatformNotification::query()
             ->where('user_id', $user->id)
+            // Cached notification titles/action URLs can outlive an employee's
+            // Work Request authorization. Reauthorize source metadata at read.
+            ->where(function ($source) use ($user): void {
+                $source->where(function ($other): void {
+                    $other->where(function ($domain): void {
+                        $domain->whereNull('source_domain')
+                            ->orWhereNotIn('source_domain', ['transaction', 'work_request']);
+                    })->where(function ($type): void {
+                        $type->whereNull('source_type')
+                            ->orWhere('source_type', '<>', WorkflowTransaction::class);
+                    });
+                })->orWhereIn(
+                    'source_id',
+                    $this->workRequests->scope($user)->select('transactions.id'),
+                );
+            })
             ->where(function ($expiry): void {
                 $expiry->whereNull('expires_at')->orWhere('expires_at', '>', now());
             });
