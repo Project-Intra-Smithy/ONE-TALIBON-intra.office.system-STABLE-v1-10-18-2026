@@ -39,9 +39,9 @@ function TaskActions() {
 
     async function refresh(signal?: AbortSignal, expected?: { id: number; state: TaskState }): Promise<boolean> {
         setLoading(true);
+        setTasks([]);
         setError(null);
         setReceipt(null);
-        setUnknownOutcome(false);
         try {
             const response = await fetch('/tasks?per_page=20&page=1', {
                 method: 'GET',
@@ -66,6 +66,9 @@ function TaskActions() {
                 return false;
             }
             setTasks(page.data);
+            // An authenticated and validated GET is required before allowing
+            // another POST after a transport failure or uncertain outcome.
+            setUnknownOutcome(false);
 
             if (expected) {
                 const item = page.data.find((task) => task.id === expected.id);
@@ -187,7 +190,7 @@ function TaskActions() {
                     <p className="text-xs text-slate-600 dark:text-slate-300">{task.state.replaceAll('_', ' ')}</p>
                 </div>
                 {task.state !== 'completed' && <button type="button"
-                    disabled={busy || unknownOutcome}
+                    disabled={busy || loading || unknownOutcome}
                     onClick={() => void mutate(
                         '/tasks/' + task.id + (task.state === 'open' ? '/start' : '/complete'),
                         {},
