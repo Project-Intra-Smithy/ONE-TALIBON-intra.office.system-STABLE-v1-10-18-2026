@@ -56,9 +56,15 @@ final class WorkRequestRevocationTest extends TestCase
         $admin->update(['is_active' => false]);
         $this->assertRevoked($admin, $transaction);
 
-        $admin->update(['is_active' => true]);
-        $admin->employee()->update(['user_id' => null]);
-        $this->assertRevoked($admin, $transaction);
+        // An active User without an Employee must never inherit role authority.
+        $orphan = User::query()->create([
+            'name' => 'Unlinked role',
+            'email' => 'unlinked-wr95@example.test',
+            'password' => 'disposable-test-password',
+            'role' => 'system_admin',
+            'is_active' => true,
+        ]);
+        $this->assertRevoked($orphan, $transaction);
     }
 
     public function test_transfer_removes_stale_office_access_without_changing_existing_transactions(): void
