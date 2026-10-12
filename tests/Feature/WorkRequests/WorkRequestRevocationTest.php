@@ -3,6 +3,8 @@
 namespace Tests\Feature\WorkRequests;
 
 use App\Models\Department;
+use App\Models\LegislativeAgendaItem;
+use App\Models\LegislativeSession;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
 use App\Services\MayorOfficeWorkspaceQuery;
@@ -84,6 +86,69 @@ final class WorkRequestRevocationTest extends TestCase
         $this->assertSame(0, $visibility->scope($actor)->whereKey($transaction->id)->count());
         $this->assertFalse(Gate::forUser($actor)->allows('view', $transaction));
         $this->assertSame($origin->id, $transaction->fresh()->origin_department_id);
+    }
+
+    public function test_separated_administrator_cannot_read_work_request_titles_via_employee_profile(): void
+    {
+        $this->seed();
+        $admin = $this->user('admin@talibon.demo');
+        $employee = $admin->employee;
+        $transaction = $this->transaction($admin, $employee->department);
+        $transaction->update(['assigned_employee_id' => $employee->id]);
+
+        $this->actingAs($admin)
+            ->withHeaders(['X-Inertia' => 'true'])
+            ->get(route('employees.show', $employee))
+            ->assertOk()
+            ->assertJsonPath('props.activeAssignments.0.id', $transaction->id);
+
+        $employee->update(['employment_status' => 'separated']);
+
+        $this->actingAs($admin)
+            ->withHeaders(['X-Inertia' => 'true'])
+            ->get(route('employees.show', $employee))
+            ->assertOk()
+            ->assertJsonPath('props.activeAssignments', []);
+    }
+
+    public function test_separated_administrator_cannot_read_work_request_via_legislative_aggregates_or_agenda(): void
+    {
+        $this->seed();
+        $admin = $this->user('admin@talibon.demo');
+        $office = Department::query()->where('code', 'SB')->firstOrFail();
+        $transaction = $this->transaction($admin, $office);
+
+        $session = LegislativeSession::query()->create([
+            'session_code' => 'P1-REVOKE-AGENDA',
+            'session_type' => 'regular',
+            'title' => 'P1 security agenda fixture',
+            'scheduled_at' => now()->addDay(),
+            'status' => 'scheduled',
+            'created_by_user_id' => $admin->id,
+        ]);
+        LegislativeAgendaItem::query()->create([
+            'legislative_session_id' => $session->id,
+            'sequence_no' => 1,
+            'title' => 'Agenda entry',
+            'transaction_id' => $transaction->id,
+            'status' => 'pending',
+        ]);
+
+        $this->actingAs($admin)
+            ->withHeaders(['X-Inertia' => 'true'])
+            ->get(route('legislative.workspace'))
+            ->assertOk()
+            ->assertJsonPath('props.sessions.0.agenda_items.0.transaction.id', $transaction->id);
+
+        $admin->employee()->update(['employment_status' => 'separated']);
+
+        $this->actingAs($admin)
+            ->withHeaders(['X-Inertia' => 'true'])
+            ->get(route('legislative.workspace'))
+            ->assertOk()
+            ->assertJsonPath('props.legislativeWork', [])
+            ->assertJsonPath('props.sessions.0.agenda_items.0.transaction', null)
+            ->assertJsonPath('props.sessions.0.agenda_items.0.transaction_id', null);
     }
 
     private function assertRevoked(User $actor, WorkflowTransaction $transaction): void
