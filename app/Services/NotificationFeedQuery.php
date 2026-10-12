@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Domain\Workflow\Authorization\TransactionActorEligibility;
 use App\Models\MemoRecipient;
 use App\Models\PlatformNotification;
 use App\Models\TransactionEvent;
@@ -9,6 +10,11 @@ use App\Models\User;
 
 final class NotificationFeedQuery
 {
+    public function __construct(
+        private readonly TransactionActorEligibility $eligibility,
+        private readonly TransactionVisibilityQuery $workRequests,
+    ) {}
+
     /** @return array<string, mixed> */
     public static function emptyFeed(): array
     {
@@ -164,8 +170,9 @@ final class NotificationFeedQuery
 
     private function workflowFallbackNotifications(User $user): array
     {
-        $departmentId = $user->employee?->department_id;
-        if (! $departmentId) {
+        $current = $this->eligibility->resolve($user);
+        $departmentId = $current['office_id'] ?? null;
+        if ($departmentId === null) {
             return [];
         }
 
@@ -184,14 +191,15 @@ final class NotificationFeedQuery
                 'request_information',
             ])
             ->where('created_at', '>=', now()->subDay())
-            ->whereHas('transaction', function ($query) use ($departmentId): void {
-                $query->where('current_department_id', $departmentId)
+            ->whereHas('transaction', function ($query) use ($departmentId, $user): void {
+                $query->whereIn('transactions.id', $this->workRequests->scope($user)->select('transactions.id'))
+                    ->where('current_department_id', $departmentId)
                     ->whereNotIn('status', ['approved', 'disapproved', 'closed']);
             })
             ->latest('created_at')
             ->limit(5)
             ->get()
-            ->map(function (TransactionEvent $event) use ($user): array {
+            ->map(function (TransactionEvent $event) use ($current): array {
                 $transaction = $event->transaction;
                 $origin = $event->fromDepartment?->short_name
                     ?? $event->fromDepartment?->name
@@ -200,7 +208,7 @@ final class NotificationFeedQuery
                 return [
                     'key' => 'tx-event-'.$event->id,
                     'type' => 'transaction',
-                    'title' => $user->employee?->department?->code === 'MAYOR'
+                    'title' => $current['office_code'] === 'MAYOR'
                         ? 'New executive request received'
                         : 'New transaction received',
                     'message' => $transaction->reference_no.' · '.$transaction->title.' · from '.$origin,
