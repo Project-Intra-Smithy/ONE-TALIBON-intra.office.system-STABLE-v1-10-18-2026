@@ -20,8 +20,7 @@ class LegislativeWorkspaceController extends Controller
         $user = $request->user()->loadMissing('employee.department');
         abort_unless($this->canView($user), 403);
 
-        return Inertia::render('Legislation/Workspace', [
-            'sessions' => LegislativeSession::query()
+        $sessions = LegislativeSession::query()
                 ->with([
                     // Agenda Work Request links are always reauthorized, including
                     // for a now-separated administrator with a still-valid session.
@@ -32,7 +31,20 @@ class LegislativeWorkspaceController extends Controller
                 ])
                 ->orderBy('scheduled_at')
                 ->limit(50)
-                ->get(),
+                ->get();
+
+        // A concealed Work Request relation must not expose even its ID
+        // through the legislative agenda's serialized foreign-key field.
+        foreach ($sessions as $session) {
+            foreach ($session->agendaItems as $agenda) {
+                if ($agenda->transaction_id !== null && $agenda->transaction === null) {
+                    $agenda->setAttribute('transaction_id', null);
+                }
+            }
+        }
+
+        return Inertia::render('Legislation/Workspace', [
+            'sessions' => $sessions,
             'legislativeWork' => $workRequests->scope($user)
                 ->whereHas('currentDepartment', fn ($q) => $q->where('branch', 'legislative'))
                 ->whereNotIn('status', ['approved', 'disapproved', 'closed'])
