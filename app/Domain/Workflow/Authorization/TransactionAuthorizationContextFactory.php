@@ -8,7 +8,10 @@ use App\Models\WorkflowTransaction;
 
 final readonly class TransactionAuthorizationContextFactory
 {
-    public function __construct(private TransactionCapabilities $capabilities)
+    public function __construct(
+        private TransactionCapabilities $capabilities,
+        private TransactionActorEligibility $eligibility,
+    )
     {
     }
 
@@ -17,20 +20,20 @@ final readonly class TransactionAuthorizationContextFactory
         string $requestedAction,
         ?WorkflowTransaction $transaction = null,
     ): AuthorizationContext {
-        $user->loadMissing('employee.department');
+        $actor = $this->eligibility->resolve($user);
         $transaction?->loadMissing('currentDepartment');
 
-        $employee = $user->employee;
-        $roles = $user->role ? [$user->role] : [];
+        $role = $actor['role'] ?? null;
+        $roles = $role ? [$role] : [];
 
         return new AuthorizationContext(
             actorUserId: (int) $user->id,
-            actorEmployeeId: $employee?->id,
-            actorActive: (bool) $user->is_active,
+            actorEmployeeId: $actor['employee_id'] ?? null,
+            actorActive: $actor !== null,
             actorRoles: $roles,
             capabilities: $this->capabilities->resolve($roles),
-            actorOfficeId: $employee?->department_id,
-            actorOfficeCode: $employee?->department?->code,
+            actorOfficeId: $actor['office_id'] ?? null,
+            actorOfficeCode: $actor['office_code'] ?? null,
             delegatedOfficeIds: [],
             resourceOfficeId: $transaction?->current_department_id,
             resourceOfficeCode: $transaction?->currentDepartment?->code,
