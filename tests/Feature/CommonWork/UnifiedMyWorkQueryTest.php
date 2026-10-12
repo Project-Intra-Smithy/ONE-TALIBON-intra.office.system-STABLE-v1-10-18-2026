@@ -26,10 +26,12 @@ final class UnifiedMyWorkQueryTest extends TestCase
         $actor = $this->person($office);
         $this->actingAs($actor);
         $task = $this->task($actor, 'Personal task', 'in_progress');
-        $request = $this->request($actor, $office, $office, 'My request', 'for_review');
+        // PostgreSQL sequences do not roll back with per-test transactions.
+        // Construct the collision explicitly so this test is order-independent.
+        $request = $this->request($actor, $office, $office, 'My request', 'for_review', id: $task->id);
         $this->assertSame($task->id, $request->id, 'Fixtures must exercise cross-domain numeric ID collision.');
 
-        $items = $this->query()->paginate($actor)->getCollection()->map->jsonSerialize()->keyBy('key');
+        $items = $this->unifiedMyWorkQuery()->paginate($actor)->getCollection()->map->jsonSerialize()->keyBy('key');
         $this->assertCount(2, $items);
         $this->assertSame('in_progress', $items['individual_task:'.$task->id]['source_state']);
         $this->assertSame('task_owner', $items['individual_task:'.$task->id]['responsibility']);
@@ -52,7 +54,7 @@ final class UnifiedMyWorkQueryTest extends TestCase
         $delegated = $this->task($owner, 'Unreleased assigned', assignee: $head);
         foreach ([$head, $mayor, $admin] as $viewer) {
             $this->actingAs($viewer);
-            $this->assertSame([], $this->query()->paginate($viewer)->getCollection()->all());
+            $this->assertSame([], $this->unifiedMyWorkQuery()->paginate($viewer)->getCollection()->all());
         }
         $this->actingAs($owner);
         $keys = $this->keys($owner);
@@ -80,7 +82,7 @@ final class UnifiedMyWorkQueryTest extends TestCase
         $this->assertContains('work_request:'.$assigned->id, $keys);
         $this->assertNotContains('work_request:'.$officeOnly->id, $keys);
         $this->assertNotContains('work_request:'.$unrelated->id, $keys);
-        $rows = $this->query()->paginate($actor)->getCollection()->map->jsonSerialize()->keyBy('key');
+        $rows = $this->unifiedMyWorkQuery()->paginate($actor)->getCollection()->map->jsonSerialize()->keyBy('key');
         $this->assertSame('request_assignee', $rows['work_request:'.$assigned->id]['responsibility']);
 
         // Executive global Work Request access must not expand a personal feed.
@@ -96,15 +98,15 @@ final class UnifiedMyWorkQueryTest extends TestCase
         $stranger = $this->person($office);
         $this->task($actor, 'Private');
         $this->request($actor, $office, $office, 'Request');
-        $this->expectDenied(fn () => $this->query()->paginate($actor));
+        $this->expectDenied(fn () => $this->unifiedMyWorkQuery()->paginate($actor));
         $this->actingAs($stranger);
-        $this->expectDenied(fn () => $this->query()->paginate($actor));
+        $this->expectDenied(fn () => $this->unifiedMyWorkQuery()->paginate($actor));
         $this->actingAs($actor);
         $actor->forceFill(['is_active' => false])->save();
-        $this->expectDenied(fn () => $this->query()->paginate($actor));
+        $this->expectDenied(fn () => $this->unifiedMyWorkQuery()->paginate($actor));
         $actor->forceFill(['is_active' => true])->save();
         $actor->employee()->update(['employment_status' => 'separated']);
-        $this->expectDenied(fn () => $this->query()->paginate($actor));
+        $this->expectDenied(fn () => $this->unifiedMyWorkQuery()->paginate($actor));
     }
 
     public function test_state_labels_stay_native_and_read_does_not_write_events(): void
@@ -115,7 +117,7 @@ final class UnifiedMyWorkQueryTest extends TestCase
         $task = $this->task($actor, 'Done task', 'completed');
         $request = $this->request($actor, $office, $office, 'Approved request', 'approved');
         $before = [DB::table('tasks')->count(), DB::table('transactions')->count(), DB::table('task_events')->count(), DB::table('transaction_events')->count()];
-        $items = $this->query()->paginate($actor)->getCollection()->map->jsonSerialize()->keyBy('key');
+        $items = $this->unifiedMyWorkQuery()->paginate($actor)->getCollection()->map->jsonSerialize()->keyBy('key');
         $this->assertSame('completed', $items['individual_task:'.$task->id]['source_state']);
         $this->assertTrue($items['individual_task:'.$task->id]['is_terminal']);
         $this->assertSame('approved', $items['work_request:'.$request->id]['source_state']);
@@ -138,10 +140,10 @@ final class UnifiedMyWorkQueryTest extends TestCase
         DB::table('tasks')->update(['updated_at' => '2026-10-11 10:00:00+00']);
         DB::table('transactions')->update(['updated_at' => '2026-10-11 10:00:00+00']);
 
-        $first = $this->query()->paginate($actor, 1, 20);
-        $second = $this->query()->paginate($actor, 2, 20);
-        $third = $this->query()->paginate($actor, 3, 20);
-        $fourth = $this->query()->paginate($actor, 4, 20);
+        $first = $this->unifiedMyWorkQuery()->paginate($actor, 1, 20);
+        $second = $this->unifiedMyWorkQuery()->paginate($actor, 2, 20);
+        $third = $this->unifiedMyWorkQuery()->paginate($actor, 3, 20);
+        $fourth = $this->unifiedMyWorkQuery()->paginate($actor, 4, 20);
         $keys = collect([$first, $second, $third, $fourth])
             ->flatMap(fn ($page) => $page->getCollection()->map(fn (CommonWorkItem $item) => $item->jsonSerialize()['key']))
             ->all();
@@ -152,7 +154,7 @@ final class UnifiedMyWorkQueryTest extends TestCase
         $this->assertSame(20, $first->perPage());
         foreach ([[0, 20], [1, 0], [1, 51], [10001, 20]] as [$page, $limit]) {
             try {
-                $this->query()->paginate($actor, $page, $limit);
+                $this->unifiedMyWorkQuery()->paginate($actor, $page, $limit);
                 $this->fail('Unbounded pagination accepted.');
             } catch (InvalidArgumentException) {
                 $this->assertTrue(true);
@@ -160,7 +162,7 @@ final class UnifiedMyWorkQueryTest extends TestCase
         }
         DB::flushQueryLog();
         DB::enableQueryLog();
-        $this->query()->paginate($actor);
+        $this->unifiedMyWorkQuery()->paginate($actor);
         $queries = DB::getQueryLog();
         DB::disableQueryLog();
         DB::flushQueryLog();
@@ -168,7 +170,7 @@ final class UnifiedMyWorkQueryTest extends TestCase
         $this->assertCount(2, collect($queries)->filter(fn (array $query) => str_contains(strtolower($query['query']), 'union all')));
     }
 
-    private function query(): UnifiedMyWorkQuery
+    private function unifiedMyWorkQuery(): UnifiedMyWorkQuery
     {
         return app(UnifiedMyWorkQuery::class);
     }
@@ -176,7 +178,7 @@ final class UnifiedMyWorkQueryTest extends TestCase
     /** @return list<string> */
     private function keys(User $actor, int $page = 1): array
     {
-        return $this->query()->paginate($actor, $page)->getCollection()
+        return $this->unifiedMyWorkQuery()->paginate($actor, $page)->getCollection()
             ->map(fn (CommonWorkItem $item): string => $item->jsonSerialize()['key'])->all();
     }
 
@@ -233,9 +235,9 @@ final class UnifiedMyWorkQueryTest extends TestCase
         return $task;
     }
 
-    private function request(User $creator, Department $origin, Department $current, string $title, string $state = 'submitted', ?Employee $assignee = null): WorkflowTransaction
+    private function request(User $creator, Department $origin, Department $current, string $title, string $state = 'submitted', ?Employee $assignee = null, ?int $id = null): WorkflowTransaction
     {
-        return WorkflowTransaction::query()->create([
+        $request = new WorkflowTransaction([
             'reference_no' => 'A02-'.Str::upper(Str::random(12)),
             'transaction_type' => 'internal_request',
             'title' => $title,
@@ -246,5 +248,11 @@ final class UnifiedMyWorkQueryTest extends TestCase
             'assigned_employee_id' => $assignee?->id,
             'status' => $state,
         ]);
+        if ($id !== null) {
+            $request->forceFill(['id' => $id]);
+        }
+        $request->save();
+
+        return $request;
     }
 }
