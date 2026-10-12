@@ -77,6 +77,88 @@ final readonly class UnifiedMyWorkQuery
     }
 
     /**
+     * Read one source's exact native lifecycle state; never interpret Task and
+     * Work Request states as an interchangeable, shared state machine.
+     *
+     * @param string $source Required: individual_task or work_request.
+     * @param string $state Exact state configured for that native source.
+     * @return LengthAwarePaginator<int, CommonWorkItem>
+     */
+    public function nativeState(
+        User $claimedActor,
+        string $source,
+        string $state,
+        int $page = 1,
+        int $perPage = 20,
+    ): LengthAwarePaginator {
+        $this->assertPaginationAndSource($page, $perPage, $source);
+
+        // State filtering without a concrete source is prohibited. The Task
+        // enum and configured Work Request definitions are independent.
+        $allowed = match (CommonWorkSource::from($source)) {
+            CommonWorkSource::IndividualTask => TaskLifecycleState::tryFrom($state) !== null,
+            CommonWorkSource::WorkRequest => $this->isConfiguredRequestState($state),
+        };
+        if (! $allowed) {
+            throw new InvalidArgumentException('Unknown native state for the specified Common Work source.');
+        }
+
+        $actor = $this->taskAccess->verifiedActor($claimedActor);
+
+        // Source + state are bound SQL predicates on the same actor-authorized
+        // UNION ALL used by paginate() and dueWindow(). No broader queue scope.
+        $query = $this->sourceRows($this->authorizedRows($actor), $source)
+            ->where('source_state', '=', $state);
+
+        return $this->paginateRows($query, $page, $perPage);
+    }
+
+    /**
+     * Derive Work Request state vocabulary from existing workflow configuration.
+     * Type overrides may supply their own native states; no A03 status list,
+     * universal lifecycle or municipality-specific rule is invented here.
+     */
+    private function isConfiguredRequestState(string $state): bool
+    {
+        if ($state === '') {
+            return false;
+        }
+
+        $definitions = [config('workflow.default', [])];
+        foreach (config('workflow.types', []) as $definition) {
+            $definitions[] = $definition;
+        }
+
+        foreach ($definitions as $definition) {
+            if (! is_array($definition)) {
+                continue;
+            }
+            if (($definition['initial_status'] ?? null) === $state) {
+                return true;
+            }
+            $terminal = $definition['terminal_statuses'] ?? [];
+            if (is_array($terminal) && in_array($state, $terminal, true)) {
+                return true;
+            }
+
+            foreach ($definition['transitions'] ?? [] as $rule) {
+                if (! is_array($rule)) {
+                    continue;
+                }
+                if (($rule['status'] ?? null) === $state) {
+                    return true;
+                }
+                $from = $rule['allowed_from'] ?? [];
+                if (is_array($from) && in_array($state, $from, true)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Enforce explicit instants rather than parsing timezone-ambiguous dates,
      * local wall-clock values or relative expressions such as "tomorrow".
      */
