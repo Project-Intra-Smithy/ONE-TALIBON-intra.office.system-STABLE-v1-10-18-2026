@@ -5,9 +5,13 @@ namespace Tests\Feature\WorkRequests;
 use App\Models\Department;
 use App\Models\LegislativeAgendaItem;
 use App\Models\LegislativeSession;
+use App\Models\PlatformNotification;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
+use App\Services\CalendarService;
+use App\Services\CalendarWorkspaceQueryService;
 use App\Services\MayorOfficeWorkspaceQuery;
+use App\Services\NotificationFeedQuery;
 use App\Services\TransactionVisibilityQuery;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
@@ -149,6 +153,52 @@ final class WorkRequestRevocationTest extends TestCase
             ->assertJsonPath('props.legislativeWork', [])
             ->assertJsonPath('props.sessions.0.agenda_items.0.transaction', null)
             ->assertJsonPath('props.sessions.0.agenda_items.0.transaction_id', null);
+    }
+
+    public function test_calendar_drops_cached_work_request_deadline_after_privileged_employee_revocation(): void
+    {
+        $this->seed();
+        $admin = $this->user('admin@talibon.demo');
+        $transaction = $this->transaction($admin, $admin->employee->department);
+        app(CalendarService::class)->syncTransactionDue($transaction);
+
+        $calendar = app(CalendarWorkspaceQueryService::class);
+        $today = now()->toDateString();
+        $this->assertTrue(collect($calendar->workspace($admin, 'month', $today)['events'])
+            ->contains('title', $transaction->reference_no.' due · '.$transaction->title));
+
+        $admin->employee()->update(['employment_status' => 'separated']);
+
+        $this->assertFalse(collect($calendar->workspace($admin, 'month', $today)['events'])
+            ->contains('title', $transaction->reference_no.' due · '.$transaction->title));
+    }
+
+    public function test_cached_platform_transaction_notification_is_removed_after_revocation(): void
+    {
+        $this->seed();
+        $admin = $this->user('admin@talibon.demo');
+        $transaction = $this->transaction($admin, $admin->employee->department);
+        $notification = PlatformNotification::query()->create([
+            'user_id' => $admin->id,
+            'department_id' => $admin->employee->department_id,
+            'event_key' => 'p1-95-'.$transaction->id,
+            'source_domain' => 'transaction',
+            'source_type' => WorkflowTransaction::class,
+            'source_id' => $transaction->id,
+            'priority' => 'info',
+            'title' => $transaction->title,
+            'message' => 'Protected transaction reference',
+            'action_url' => '/transactions/'.$transaction->id,
+        ]);
+
+        $feed = app(NotificationFeedQuery::class);
+        $this->assertTrue(collect($feed->feed($admin)['notifications'])
+            ->contains('key', 'platform-'.$notification->id));
+
+        $admin->employee()->update(['employment_status' => 'separated']);
+
+        $this->assertFalse(collect($feed->feed($admin)['notifications'])
+            ->contains('key', 'platform-'.$notification->id));
     }
 
     private function assertRevoked(User $actor, WorkflowTransaction $transaction): void
