@@ -1,0 +1,174 @@
+name: P1 real Laravel Inertia Chromium Task acceptance
+
+on:
+  push:
+    branches:
+      - forge/p1-fast-integrated-candidate-r1
+
+permissions:
+  contents: read
+
+concurrency:
+  group: p1-task-browser-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  browser:
+    if: ${{ github.repository == 'Project-Intra-Smithy/Talibon-Sales-Prototype' && github.event_name == 'push' && github.ref == 'refs/heads/forge/p1-fast-integrated-candidate-r1' }}
+    name: Disposable PG16 real authenticated Task UI journey
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: p1_browser
+      DB_PASSWORD: p1browser_${{ github.run_id }}_${{ github.run_attempt }}
+      PROTOTYPE_DEMO_PASSWORD: P1Browser_${{ github.run_id }}_${{ github.run_attempt }}_isolated_only
+      P1_BROWSER_ORIGIN: http://127.0.0.1:8000
+      SESSION_DRIVER: file
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
+    services:
+      postgres:
+        image: public.ecr.aws/docker/library/postgres:16
+        env:
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_USER: p1_browser
+          POSTGRES_PASSWORD: p1browser_${{ github.run_id }}_${{ github.run_attempt }}
+        ports:
+          - '127.0.0.1:5432:5432'
+        options: >-
+          --health-cmd "pg_isready -U p1_browser -d talibon_portal_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 8
+    steps:
+      - name: Exact source and no persisted credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Refuse non-hosted or unexpected source
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$GITHUB_REPOSITORY" = Project-Intra-Smithy/Talibon-Sales-Prototype
+          test "$GITHUB_REF" = refs/heads/forge/p1-fast-integrated-candidate-r1
+          test "$GITHUB_EVENT_NAME" = push
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          echo "::add-mask::$DB_PASSWORD"
+          echo "::add-mask::$PROTOTYPE_DEMO_PASSWORD"
+          echo "P1_BROWSER_HEAD=$GITHUB_SHA"
+
+      - name: Install Node according to committed toolchain
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install PHP 8.4
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, fileinfo, zip
+          tools: composer:v2
+          coverage: none
+
+      - name: Install locked dependencies and production assets
+        shell: bash
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ github.token }}"}}'
+        run: |
+          set -Eeuo pipefail
+          composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+          npm ci --no-audit --no-fund
+          npm run types:check
+          npm run build
+          npx playwright install --with-deps chromium
+
+      - name: Verify empty isolated PG16 and create technical browser fixtures
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          php <<'PHP'
+          <?php
+          if (getenv('GITHUB_ACTIONS') !== 'true' || getenv('RUNNER_ENVIRONMENT') !== 'github-hosted' ||
+              getenv('DB_HOST') !== '127.0.0.1' || getenv('DB_PORT') !== '5432' ||
+              getenv('DB_DATABASE') !== 'talibon_portal_test' || getenv('DB_USERNAME') !== 'p1_browser') {
+              throw new RuntimeException('Unsafe PostgreSQL browser target');
+          }
+          $db = new PDO('pgsql:host=127.0.0.1;port=5432;dbname=talibon_portal_test',
+              getenv('DB_USERNAME'), getenv('DB_PASSWORD'), [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+          $row = $db->query("select current_database() db, current_user actor, current_setting('port') port,
+              current_setting('server_version_num') version,
+              (select count(*) from information_schema.tables where table_schema='public' and table_type='BASE TABLE') tables")
+              ->fetch(PDO::FETCH_ASSOC);
+          if ($row['db'] !== 'talibon_portal_test' || $row['actor'] !== 'p1_browser' ||
+              $row['port'] !== '5432' || (int) $row['version'] < 160000 ||
+              (int) $row['version'] >= 170000 || (int) $row['tables'] !== 0) {
+              throw new RuntimeException('Destructive browser DB guard refused');
+          }
+          printf("P1_BROWSER_PG16_GUARD=PASS pg=%s zero_initial_tables=%s\n",
+              $row['version'], $row['tables']);
+          PHP
+          cp .env.example .env
+          php artisan key:generate --no-interaction
+          php artisan optimize:clear
+          php artisan migrate:fresh --force
+          php artisan db:seed --class=MunicipalityStructureSeeder --force
+          php artisan db:seed --class=WorkforceDemoSeeder --force
+          php <<'PHP'
+          <?php
+          require 'vendor/autoload.php';
+          $app = require 'bootstrap/app.php';
+          $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+          $office = App\Models\Department::query()->where('code','MPDO')->firstOrFail();
+          $user = App\Models\User::query()->create([
+              'name' => 'P1 Disposable QA Second Account',
+              'email' => 'p1qa2@talibon.demo',
+              'password' => getenv('PROTOTYPE_DEMO_PASSWORD'),
+              'role' => 'employee',
+              'is_active' => true,
+          ]);
+          App\Models\Employee::query()->create([
+              'employee_number' => 'P1-QA2',
+              'full_name' => 'P1 Disposable QA Second Account',
+              'work_email' => $user->email,
+              'user_id' => $user->id,
+              'department_id' => $office->id,
+              'position_title' => 'Technical QA Employee',
+              'employment_status' => 'active',
+          ]);
+          echo "SECOND_ACCOUNT_CREATED=PASS\n";
+          PHP
+
+      - name: Start real Laravel HTTP and run Chromium user A/B workflow
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          export P1_BROWSER_REPORT_DIR="$RUNNER_TEMP/p1-browser-report"
+          mkdir -p "$P1_BROWSER_REPORT_DIR"
+          php artisan serve --host=127.0.0.1 --port=8000 > "$RUNNER_TEMP/p1-laravel-serve.log" 2>&1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true' EXIT
+          for i in $(seq 1 35); do
+            if curl -fsS -o /dev/null http://127.0.0.1:8000/login; then break; fi
+            sleep 1
+          done
+          curl -fsS -o /dev/null http://127.0.0.1:8000/login
+          node tests/Browser/p1-task-lifecycle.mjs
+
+      - name: Upload only sanitized browser receipts and synthetic screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: p1-task-lifecycle-browser
+          path: ${{ runner.temp }}/p1-browser-report/*
+          if-no-files-found: ignore
+          retention-days: 7
