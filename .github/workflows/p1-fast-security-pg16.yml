@@ -1,0 +1,135 @@
+name: P1 exact-candidate Work Request security PG16
+
+on:
+  push:
+    branches:
+      - forge/p1-fast-integrated-candidate-r1
+
+permissions:
+  contents: read
+
+concurrency:
+  group: p1-pg16-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  work-request-security:
+    name: Exact-source disposable PostgreSQL 16 security checks
+    if: ${{ github.repository == 'Project-Intra-Smithy/Talibon-Sales-Prototype' && github.event_name == 'push' && github.ref == 'refs/heads/forge/p1-fast-integrated-candidate-r1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: p1_ci
+      DB_PASSWORD: p1_${{ github.run_id }}_${{ github.run_attempt }}
+      CACHE_STORE: array
+      SESSION_DRIVER: array
+      QUEUE_CONNECTION: sync
+    services:
+      pg16:
+        image: public.ecr.aws/docker/library/postgres:16
+        env:
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_USER: p1_ci
+          POSTGRES_PASSWORD: p1_${{ github.run_id }}_${{ github.run_attempt }}
+        ports:
+          - '127.0.0.1:5432:5432'
+        options: >-
+          --health-cmd "pg_isready -U p1_ci -d talibon_portal_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 8
+    steps:
+      - name: Checkout exact PR candidate without persistent credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Refuse untrusted source and shared runner
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$GITHUB_EVENT_NAME" = push
+          test "$GITHUB_REPOSITORY" = Project-Intra-Smithy/Talibon-Sales-Prototype
+          test "$GITHUB_REF" = refs/heads/forge/p1-fast-integrated-candidate-r1
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test -z "$(git status --porcelain)"
+          printf 'P1_EXACT_HEAD=%s\n' "$GITHUB_SHA"
+
+      - name: Install PHP 8.4 with PostgreSQL support
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, fileinfo, zip
+          tools: composer:v2
+          coverage: none
+
+      - name: Install locked Composer dependencies using ephemeral read-only token
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ github.token }}"}}'
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+
+      - name: Guard disposable PostgreSQL before any migration or RefreshDatabase
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          php <<'PHP'
+          <?php
+          if (getenv('GITHUB_ACTIONS') !== 'true' || getenv('RUNNER_ENVIRONMENT') !== 'github-hosted') {
+              throw new RuntimeException('Not an ephemeral GitHub-hosted runner');
+          }
+          foreach (['DB_DATABASE' => 'talibon_portal_test', 'DB_USERNAME' => 'p1_ci',
+                    'DB_HOST' => '127.0.0.1', 'DB_PORT' => '5432', 'APP_ENV' => 'testing'] as $name => $required) {
+              if (getenv($name) !== $required) throw new RuntimeException("Unexpected $name");
+          }
+          $db = new PDO('pgsql:host=127.0.0.1;port=5432;dbname=talibon_portal_test',
+              getenv('DB_USERNAME'), getenv('DB_PASSWORD'), [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+          $row = $db->query("select current_database() as db, current_user as actor,
+              current_setting('port') as port, current_setting('server_version_num') as version,
+              (select count(*) from information_schema.tables where table_schema='public' and table_type='BASE TABLE') as tables")
+              ->fetch(PDO::FETCH_ASSOC);
+          if ($row['db'] !== 'talibon_portal_test' || $row['actor'] !== 'p1_ci' ||
+              $row['port'] !== '5432' || (int) $row['version'] < 160000 ||
+              (int) $row['version'] >= 170000 || (int) $row['tables'] !== 0) {
+              throw new RuntimeException('Destructive test database preflight refused');
+          }
+          printf("DISPOSABLE_PG16_PREFLIGHT=PASS db=%s role=%s port=%s pg=%s initial_tables=%s\n",
+              $row['db'], $row['actor'], $row['port'], $row['version'], $row['tables']);
+          PHP
+
+      - name: Prepare isolated Laravel testing runtime
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          cp .env.example .env
+          php artisan key:generate --no-interaction
+          php artisan optimize:clear
+
+      - name: Targeted Work Request revocation, validation and workflow regression
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$RUNNER_TEMP/p1-pg16-evidence"
+          vendor/bin/phpunit --no-coverage --log-junit "$RUNNER_TEMP/p1-pg16-evidence/revocation.xml" tests/Feature/WorkRequests/WorkRequestRevocationTest.php
+          vendor/bin/phpunit --no-coverage --log-junit "$RUNNER_TEMP/p1-pg16-evidence/backend-validation.xml" tests/Feature/WorkRequestBackendValidationTest.php
+          vendor/bin/phpunit --no-coverage --log-junit "$RUNNER_TEMP/p1-pg16-evidence/workflow-hardening.xml" tests/Feature/WorkflowHardeningTest.php
+
+      - name: Upload sanitized JUnit results for same-head review
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: p1-work-request-security-pg16
+          path: ${{ runner.temp }}/p1-pg16-evidence/*.xml
+          if-no-files-found: ignore
+          retention-days: 7
