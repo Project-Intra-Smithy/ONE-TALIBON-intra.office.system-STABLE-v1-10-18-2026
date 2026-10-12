@@ -11,18 +11,18 @@ type Props = {
 
 export default function PageHeader({ eyebrow, title, description, aside, icon: Icon }: Props) {
     return (
-        <header className="municipal-page-header min-w-0">
-            <div className="municipal-page-header-layout flex flex-col lg:flex-row lg:items-end lg:justify-between">
+        <header className="min-w-0 border-b border-[var(--municipal-border)] pb-5 sm:pb-6">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between lg:gap-6">
                 <div className="min-w-0">
-                    <div className="flex items-center gap-2 text-xs font-semibold text-[var(--municipal-brand)] sm:text-xs">
+                    <div className="municipal-eyebrow flex items-center gap-2">
                         {Icon && <Icon size={15} aria-hidden="true" />}
                         <span>{eyebrow}</span>
                     </div>
-                    <h1 className="municipal-page-header-title break-words municipal-page-title">
+                    <h1 className="mt-2 break-words text-[clamp(1.75rem,3vw,2.25rem)] font-extrabold leading-tight tracking-[-0.035em] text-[#0b2852] dark:text-slate-100">
                         {title}
                     </h1>
                     {description && (
-                        <p className="municipal-page-header-description max-w-3xl municipal-page-description">
+                        <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600 dark:text-slate-300">
                             {description}
                         </p>
                     )}

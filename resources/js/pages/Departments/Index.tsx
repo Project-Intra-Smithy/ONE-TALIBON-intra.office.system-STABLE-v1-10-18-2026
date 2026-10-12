@@ -1,7 +1,6 @@
-import { Building2, Search, X } from 'lucide-react';
-import { useMemo, useState } from 'react';
-import DepartmentOperationsCard from '../../components/departments/DepartmentOperationsCard';
+import { Building2, Crown, Gavel, Network, Users } from 'lucide-react';
 import PageFrame from '../../components/PageFrame';
+import PageHeader from '../../components/PageHeader';
 import AppLayout from '../../layouts/AppLayout';
 
 type Office = {
@@ -26,133 +25,80 @@ type Summary = {
     activeTransactions: number;
 };
 
-type BranchFilter = 'all' | 'executive' | 'legislative';
-
-const branchOptions: Array<{ key: BranchFilter; label: string }> = [
-    { key: 'all', label: 'All' },
-    { key: 'executive', label: 'Executive / Administrative' },
-    { key: 'legislative', label: 'Legislative' },
-];
-
-const searchableOffice = (office: Office) => [office.name, office.code, office.short_name, office.office_type]
-    .filter(Boolean)
-    .join(' ')
-    .toLowerCase();
+const officeTypeLabel = (value: string) => value.replace(/_/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase());
 
 export default function Index({ departments, summary }: { departments: Office[]; summary: Summary }) {
-    const [query, setQuery] = useState('');
-    const [branch, setBranch] = useState<BranchFilter>('all');
-    const normalizedQuery = query.trim().toLowerCase();
-    const filtered = useMemo(
-        () => departments.filter((office) => {
-            const matchesBranch = branch === 'all' || office.branch === branch;
-            const matchesSearch = !normalizedQuery || searchableOffice(office).includes(normalizedQuery);
-            return matchesBranch && matchesSearch;
-        }),
-        [branch, departments, normalizedQuery],
-    );
-    const executive = filtered.filter((office) => office.branch === 'executive');
-    const legislative = filtered.filter((office) => office.branch === 'legislative');
-    const hasResults = filtered.length > 0;
+    const executive = departments.filter((office) => office.branch === 'executive');
+    const legislative = departments.filter((office) => office.branch === 'legislative');
 
-    return (
-        <AppLayout title="Departments & Offices">
-            <PageFrame>
-                <header className="min-w-0 pb-1">
-                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">
-                        <Building2 size={13} aria-hidden="true" /> Municipal directory
+    const officeCard = (office: Office) => (
+        <article key={office.id} className="municipal-panel min-w-0 p-4 transition-colors hover:border-blue-200 dark:hover:border-blue-800 sm:p-5">
+            <div className="flex items-start gap-3">
+                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${office.is_executive ? 'bg-blue-900 text-white' : office.is_legislative ? 'bg-indigo-50 text-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-200' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200'}`}>
+                    {office.is_executive ? <Crown size={17} aria-hidden="true" /> : office.is_legislative ? <Gavel size={17} aria-hidden="true" /> : <Building2 size={17} aria-hidden="true" />}
+                </div>
+                <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                        <span className="rounded-md bg-slate-100 px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-slate-600 dark:bg-slate-800 dark:text-slate-200">{office.code}</span>
+                        <span className="break-words text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-400">{officeTypeLabel(office.office_type)}</span>
                     </div>
-                    <h1 className="mt-1 text-xl font-bold tracking-tight text-[var(--municipal-brand)] dark:text-slate-100 sm:text-2xl">Departments & Offices</h1>
-                    <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-600 dark:text-slate-300 sm:text-sm">
-                        Find offices and current application-directory staffing and routed-work context.
-                    </p>
-                    <p className="mt-2 max-w-3xl text-[11px] leading-4 text-slate-500 dark:text-slate-400">
-                        Pending authoritative data: office leadership, acting officers and the final LGU office roster require ORG-001 confirmation before they are presented here.
-                    </p>
-                </header>
-
-                <section aria-label="Directory search and branch filters" className="rounded-xl bg-white p-3 shadow-sm ring-1 ring-slate-200 dark:bg-[#142236] dark:ring-slate-700 sm:p-4">
-                    <div className="grid gap-3 lg:grid-cols-[minmax(300px,1fr)_auto] lg:items-end">
-                        <label className="block min-w-0">
-                            <span className="mb-1 block text-[10px] font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">Search offices</span>
-                            <div className="relative">
-                                <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true" />
-                                <input
-                                    value={query}
-                                    onChange={(event) => setQuery(event.target.value)}
-                                    placeholder="Search office name, code, or type"
-                                    className="h-10 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-10 text-sm text-slate-900 outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/15 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
-                                />
-                                {query && (
-                                    <button type="button" onClick={() => setQuery('')} className="absolute right-1.5 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md text-slate-400 hover:bg-slate-100 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 dark:hover:bg-slate-800 dark:hover:text-slate-200" aria-label="Clear office search">
-                                        <X size={14} aria-hidden="true" />
-                                    </button>
-                                )}
-                            </div>
-                        </label>
-
-                        <div className="min-w-0">
-                            <div className="mb-1 text-[10px] font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">Branch</div>
-                            <div className="flex max-w-full flex-wrap gap-1 pb-0.5" role="group" aria-label="Filter offices by branch">
-                                {branchOptions.map((option) => {
-                                    const active = branch === option.key;
-                                    return <button key={option.key} type="button" onClick={() => setBranch(option.key)} className={`min-h-11 rounded-lg px-3 py-2 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#142236] ${active ? 'bg-[var(--municipal-brand-deep)] text-white dark:bg-emerald-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'}`} aria-pressed={active}>{option.label}</button>;
-                                })}
-                            </div>
-                        </div>
-                    </div>
-                    <div className="mt-2 text-[11px] font-medium text-slate-500 dark:text-slate-400" aria-live="polite">
-                        {hasResults ? `${filtered.length} office${filtered.length === 1 ? '' : 's'} shown` : 'No offices shown'}
-                    </div>
-                </section>
-
-                <section aria-label="Municipal office summary" className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-lg bg-slate-100/70 px-3 py-2 text-[11px] text-slate-600 dark:bg-slate-900/35 dark:text-slate-300 sm:px-4">
-                    <SummaryItem value={summary.offices} label="offices" />
-                    <Separator />
-                    <SummaryItem value={summary.employees} label="active employees" />
-                    <Separator />
-                    <SummaryItem value={summary.activeTransactions} label="active routed work" />
-                    <Separator className="hidden sm:inline" />
-                    <span className="basis-full sm:basis-auto" />
-                    <SummaryItem value={summary.executiveOffices} label="executive / admin" quiet />
-                    <Separator />
-                    <SummaryItem value={summary.legislativeOffices} label="legislative" quiet />
-                </section>
-
-                {!hasResults ? (
-                    <section className="rounded-xl border border-dashed border-slate-300 bg-white px-5 py-10 text-center dark:border-slate-700 dark:bg-[#142236]">
-                        <Building2 className="mx-auto text-slate-300 dark:text-slate-600" size={28} aria-hidden="true" />
-                        <h2 className="mt-3 text-sm font-bold text-slate-800 dark:text-slate-200">No municipal offices match this search.</h2>
-                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Change the branch scope or clear the current search terms.</p>
-                        <button type="button" onClick={() => { setQuery(''); setBranch('all'); }} className="mt-4 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 dark:border-slate-600 dark:bg-[#142236] dark:text-emerald-300">Clear search and filters</button>
-                    </section>
-                ) : (
-                    <>
-                        {executive.length > 0 && <OfficeSection id="executive-offices-heading" title="Executive / Administrative" description="Municipal operating offices" offices={executive} />}
-                        {legislative.length > 0 && <OfficeSection id="legislative-offices-heading" title="Legislative" description="Legislative offices" offices={legislative} />}
-                    </>
-                )}
-            </PageFrame>
-        </AppLayout>
-    );
-}
-
-function SummaryItem({ value, label, quiet = false }: { value: number; label: string; quiet?: boolean }) {
-    return <span className={quiet ? 'text-slate-500 dark:text-slate-400' : undefined}><strong className="font-bold tabular-nums text-slate-800 dark:text-slate-200">{value}</strong> {label}</span>;
-}
-
-function Separator({ className = '' }: { className?: string }) {
-    return <span className={`text-slate-300 dark:text-slate-600 ${className}`} aria-hidden="true"> / </span>;
-}
-
-function OfficeSection({ id, title, description, offices }: { id: string; title: string; description: string; offices: Office[] }) {
-    return (
-        <section className="space-y-2.5" aria-labelledby={id}>
-            <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-1">
-                <div className="min-w-0"><h2 id={id} className="text-base font-bold text-slate-950 dark:text-slate-100 sm:text-lg">{title}</h2><p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">{description}</p></div>
-                <div className="text-[11px] font-medium text-slate-500 dark:text-slate-400">{offices.length} office{offices.length === 1 ? '' : 's'}</div>
+                    <h2 className="mt-2 break-words text-sm font-bold leading-5 text-slate-950 dark:text-slate-100 sm:text-base">{office.name}</h2>
+                    {office.short_name && office.short_name !== office.name ? <div className="mt-0.5 break-words text-xs text-slate-500 dark:text-slate-400 sm:text-xs">{office.short_name}</div> : null}
+                </div>
             </div>
-            <div className="grid items-stretch gap-3 md:grid-cols-2 xl:grid-cols-3">{offices.map((office) => <DepartmentOperationsCard key={office.id} office={office} />)}</div>
-        </section>
+            <dl className="mt-4 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3 dark:border-slate-700">
+                <div><dt className="text-xs font-bold uppercase tracking-wide text-slate-400 dark:text-slate-400">Active employees</dt><dd className="mt-1 text-lg font-bold text-slate-950 dark:text-slate-100">{office.active_employees_count}</dd></div>
+                <div><dt className="text-xs font-bold uppercase tracking-wide text-slate-400 dark:text-slate-400">Active work</dt><dd className="mt-1 text-lg font-bold text-slate-950 dark:text-slate-100">{office.active_transactions_count}</dd></div>
+            </dl>
+        </article>
     );
+
+    const summaryItems = [
+        { label: 'Municipal offices', value: summary.offices, icon: Network },
+        { label: 'Executive / administrative', value: summary.executiveOffices, icon: Crown },
+        { label: 'Legislative offices', value: summary.legislativeOffices, icon: Gavel },
+        { label: 'Active employees', value: summary.employees, icon: Users },
+        { label: 'Active routed work', value: summary.activeTransactions, icon: Building2 },
+    ];
+
+    return <AppLayout title="Municipal Offices">
+        <PageFrame>
+            <PageHeader
+                eyebrow="Municipal operating structure"
+                title="Municipal Offices"
+                description="Directory of active municipal offices, branch placement, staffing, and current routed workload used across the intra-office portal."
+                icon={Building2}
+            />
+
+            <section aria-label="Municipal office summary" className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
+                {summaryItems.map(({ label, value, icon: Icon }) => (
+                    <div key={label} className="municipal-stat">
+                        <Icon className="text-blue-800 dark:text-blue-300" size={17} aria-hidden="true" />
+                        <div className="mt-2 text-xl font-bold text-slate-950 dark:text-slate-100 sm:text-2xl">{value}</div>
+                        <div className="mt-0.5 break-words text-xs font-semibold leading-4 text-slate-500 dark:text-slate-400 sm:text-xs">{label}</div>
+                    </div>
+                ))}
+            </section>
+
+            <section className="space-y-3" aria-labelledby="executive-offices-heading">
+                <div>
+                    <div className="text-xs font-bold uppercase tracking-wider text-blue-700 dark:text-blue-300">Executive and administrative branch</div>
+                    <h2 id="executive-offices-heading" className="mt-1 text-lg font-bold text-slate-950 dark:text-slate-100">Offices supporting municipal operations</h2>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{executive.map(officeCard)}</div>
+            </section>
+
+            <section className="space-y-3" aria-labelledby="legislative-offices-heading">
+                <div>
+                    <div className="text-xs font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-300">Legislative branch</div>
+                    <h2 id="legislative-offices-heading" className="mt-1 break-words text-lg font-bold text-slate-950 dark:text-slate-100">Vice Mayor, Sangguniang Bayan, and legislative support</h2>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{legislative.map(officeCard)}</div>
+            </section>
+
+            <div className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-[13px] leading-5 text-slate-600 transition-colors dark:border-slate-700 dark:bg-[#142236] dark:text-slate-300 sm:text-xs">
+                Office names, branch placement, and routing availability reflect the municipality structure currently configured for this portal.
+            </div>
+        </PageFrame>
+    </AppLayout>;
 }

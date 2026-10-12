@@ -19,9 +19,9 @@ export default function MfaChallenge() {
     return (
         <>
             <Head title="MFA challenge" />
-            <main className="min-h-screen bg-[#eef3f9] px-4 py-8 sm:px-6">
-                <div className="mx-auto max-w-xl rounded-2xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-900/5 sm:p-8">
-                    <div className="flex items-start gap-3"><div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-800"><ShieldCheck size={21} /></div><div><div className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">Privileged identity assurance</div><h1 className="mt-1 text-2xl font-bold text-slate-950">Verify your second factor</h1><p className="mt-2 text-sm leading-6 text-slate-600">Password authentication is complete. Municipal application access remains blocked until MFA succeeds.</p></div></div>
+            <main className="auth-canvas min-h-screen px-4 py-8 sm:px-6">
+                <div className="mx-auto max-w-xl auth-panel bg-white p-6 sm:p-8">
+                    <div className="flex items-start gap-3"><div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-800"><ShieldCheck size={21} /></div><div><div className="auth-kicker">Privileged identity assurance</div><h1 className="mt-1 text-2xl font-bold text-slate-950">Verify your second factor</h1><p className="mt-2 text-sm leading-6 text-slate-600">Password authentication is complete. Municipal application access remains blocked until MFA succeeds.</p></div></div>
 
                     <form onSubmit={submitTotp} className="mt-7 space-y-3">
                         <label className="block"><span className="mb-1.5 block text-sm font-medium text-slate-700">Authenticator code</span><input autoFocus inputMode="numeric" autoComplete="one-time-code" maxLength={6} value={totp.data.code} onChange={(event) => totp.setData('code', event.target.value.replace(/\D/g, '').slice(0, 6))} className="w-full rounded-xl border border-slate-300 px-4 py-3 font-mono text-lg tracking-[0.25em] outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100" />{totp.errors.code && <span className="mt-1 block text-sm text-red-600">{totp.errors.code}</span>}</label>
