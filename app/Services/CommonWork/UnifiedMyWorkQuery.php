@@ -3,6 +3,7 @@
 namespace App\Services\CommonWork;
 
 use App\Domain\Tasks\TaskCoreAccess;
+use App\Domain\Workflow\Authorization\TransactionActorEligibility;
 use App\Domain\Tasks\TaskCoreService;
 use App\Domain\Tasks\TaskLifecycleState;
 use App\Models\User;
@@ -24,6 +25,7 @@ final readonly class UnifiedMyWorkQuery
         private TaskCoreAccess $taskAccess,
         private TaskCoreService $tasks,
         private TransactionVisibilityQuery $transactions,
+        private TransactionActorEligibility $transactionEligibility,
     ) {}
 
     /**
@@ -276,12 +278,13 @@ final readonly class UnifiedMyWorkQuery
 
         // Work Request visibility always precedes personal responsibility
         // narrowing. Employee ID and User ID are never interchangeable.
+        $employeeId = $this->transactionEligibility->resolve($actor)['employee_id'] ?? 0;
         $requestRows = $this->transactions->scope($actor)
-            ->where(function (Builder $query) use ($actor): void {
+            ->where(function (Builder $query) use ($actor, $employeeId): void {
                 $query->where('created_by_user_id', $actor->id)
-                    ->orWhere('assigned_employee_id', $actor->employee->id);
+                    ->orWhere('assigned_employee_id', $employeeId);
             })
-            ->selectRaw("'work_request' AS source_type, transactions.id AS source_id, transactions.transaction_type AS source_kind, transactions.title, transactions.status AS source_state, transactions.reference_no AS reference, CASE WHEN transactions.assigned_employee_id = ? THEN 'request_assignee' ELSE 'request_creator' END AS responsibility, transactions.due_at, transactions.updated_at", [$actor->employee->id]);
+            ->selectRaw("'work_request' AS source_type, transactions.id AS source_id, transactions.transaction_type AS source_kind, transactions.title, transactions.status AS source_state, transactions.reference_no AS reference, CASE WHEN transactions.assigned_employee_id = ? THEN 'request_assignee' ELSE 'request_creator' END AS responsibility, transactions.due_at, transactions.updated_at", [$employeeId]);
 
         // Preserve positional shape, SQL parameter binding and UNION ALL.
         return DB::query()
