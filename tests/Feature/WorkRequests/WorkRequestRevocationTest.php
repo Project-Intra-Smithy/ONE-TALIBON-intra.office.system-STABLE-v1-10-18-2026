@@ -100,11 +100,16 @@ final class WorkRequestRevocationTest extends TestCase
         $transaction = $this->transaction($admin, $employee->department);
         $transaction->update(['assigned_employee_id' => $employee->id]);
 
-        $this->actingAs($admin)
+        $before = $this->actingAs($admin)
             ->withHeaders(['X-Inertia' => 'true'])
-            ->get(route('employees.show', $employee))
-            ->assertOk()
-            ->assertJsonPath('props.activeAssignments.0.id', $transaction->id);
+            ->get(route('employees.show', $employee));
+        $before->assertOk();
+        // Seeded assignments may appear ahead of this fixture; order is not
+        // part of the revocation contract. Assert set membership instead.
+        $this->assertContains(
+            $transaction->id,
+            array_column($before->json('props.activeAssignments'), 'id'),
+        );
 
         $employee->update(['employment_status' => 'separated']);
 
