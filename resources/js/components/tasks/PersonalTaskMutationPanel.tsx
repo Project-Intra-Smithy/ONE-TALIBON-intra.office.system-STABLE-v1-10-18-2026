@@ -24,6 +24,7 @@ function TaskActions() {
     const [error, setError] = useState<string | null>(null);
     const [receipt, setReceipt] = useState<string | null>(null);
     const [unknownOutcome, setUnknownOutcome] = useState(false);
+    const [accessDenied, setAccessDenied] = useState(false);
     const request = useRef(false);
     const mounted = useRef(false);
 
@@ -53,6 +54,7 @@ function TaskActions() {
             if (!mounted.current) return false;
             if (!response.ok) {
                 setTasks([]);
+                if (protectedError(response.status)) setAccessDenied(true);
                 setError(protectedError(response.status)
                     ? 'Task access expired or was revoked. Sign in and complete any required MFA again.'
                     : 'Unable to reload your Tasks. No cached Task data is being displayed.');
@@ -65,19 +67,21 @@ function TaskActions() {
                 setError('The Task service returned an invalid response.');
                 return false;
             }
-            setTasks(page.data);
-            // An authenticated and validated GET is required before allowing
-            // another POST after a transport failure or uncertain outcome.
-            setUnknownOutcome(false);
-
             if (expected) {
                 const item = page.data.find((task) => task.id === expected.id);
                 if (!item || item.state !== expected.state) {
+                    setTasks([]);
+                    setUnknownOutcome(true);
                     setError('The requested Task state is not confirmed by the server. Reload before continuing.');
                     return false;
                 }
                 setReceipt('Server confirmed: ' + item.title + ' — ' + item.state.replaceAll('_', ' '));
             }
+            // Valid authoritative reread is the only path to clear an
+            // unknown mutation outcome; stale or mismatched state stays held.
+            setTasks(page.data);
+            setAccessDenied(false);
+            setUnknownOutcome(false);
             return true;
         } catch {
             if (!mounted.current || signal?.aborted) return false;
@@ -90,7 +94,7 @@ function TaskActions() {
     }
 
     async function mutate(url: string, payload: Record<string, string>, expectedState: TaskState) {
-        if (request.current || unknownOutcome) return;
+        if (request.current || unknownOutcome || accessDenied) return;
         const token = document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content;
         if (!token) { setError('Missing CSRF token; reload the application.'); return; }
 
@@ -113,7 +117,7 @@ function TaskActions() {
             const body = await jsonBody(response);
             if (!mounted.current) return;
             if (!response.ok) {
-                if (protectedError(response.status)) setTasks([]);
+                if (protectedError(response.status)) { setTasks([]); setAccessDenied(true); }
                 setError(protectedError(response.status)
                     ? 'Task access expired or was revoked. Sign in again.'
                     : 'The Task operation was rejected (' + response.status + '). Verify the form and refresh.');
@@ -126,6 +130,7 @@ function TaskActions() {
                 return;
             }
 
+            setUnknownOutcome(true);
             if (await refresh(undefined, { id: task.id, state: expectedState }) && expectedState === 'open') {
                 setTitle('');
             }
@@ -166,7 +171,7 @@ function TaskActions() {
                     placeholder="Enter a personal Task"
                     className="mt-1 block min-h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white"/>
             </label>
-            <button type="submit" disabled={busy || loading || unknownOutcome}
+            <button type="submit" disabled={busy || loading || unknownOutcome || accessDenied}
                 className="self-end rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-50">
                 Create Task
             </button>
@@ -190,7 +195,7 @@ function TaskActions() {
                     <p className="text-xs text-slate-600 dark:text-slate-300">{task.state.replaceAll('_', ' ')}</p>
                 </div>
                 {task.state !== 'completed' && <button type="button"
-                    disabled={busy || loading || unknownOutcome}
+                    disabled={busy || loading || unknownOutcome || accessDenied}
                     onClick={() => void mutate(
                         '/tasks/' + task.id + (task.state === 'open' ? '/start' : '/complete'),
                         {},
