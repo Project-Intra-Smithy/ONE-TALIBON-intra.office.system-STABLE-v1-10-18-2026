@@ -11,6 +11,8 @@ use Throwable;
 
 final class CalendarWorkspaceQueryService
 {
+    public function __construct(private readonly TransactionVisibilityQuery $workRequests) {}
+
     private const VIEWS = ['month', 'week', 'day', 'schedule'];
 
     public function workspace(User $user, ?string $requestedView, ?string $requestedDate): array
@@ -31,6 +33,14 @@ final class CalendarWorkspaceQueryService
                 if ($departmentId) {
                     $query->orWhere('department_id', $departmentId);
                 }
+            })
+            // Source-specific authorization still applies when a calendar
+            // entry caches a Work Request title/URL. Other calendar domains
+            // retain their existing independent scope and lifecycle.
+            ->where(function (Builder $source) use ($user): void {
+                $source->whereNull('source_domain')
+                    ->orWhere('source_domain', '<>', 'transaction')
+                    ->orWhereIn('source_id', $this->workRequests->scope($user)->select('transactions.id'));
             })
             ->where('starts_at', '<=', $rangeEnd)
             ->where(function (Builder $query) use ($rangeStart): void {
