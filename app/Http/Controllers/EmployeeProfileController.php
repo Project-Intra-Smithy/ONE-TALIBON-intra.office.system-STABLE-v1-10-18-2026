@@ -6,15 +6,15 @@ use App\Models\Document;
 use App\Models\Employee;
 use App\Models\EmployeeDevelopmentRecord;
 use App\Models\PerformanceRecord;
-use App\Models\WorkflowTransaction;
 use App\Services\EmployeeHealthVaultService;
+use App\Services\TransactionVisibilityQuery;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class EmployeeProfileController extends Controller
 {
-    public function __invoke(Request $request, Employee $employee, EmployeeHealthVaultService $healthVault): Response
+    public function __invoke(Request $request, Employee $employee, EmployeeHealthVaultService $healthVault, TransactionVisibilityQuery $workRequests): Response
     {
         $viewer = $request->user()->loadMissing('employee.department');
         $employee->load(['department:id,code,name,short_name', 'supervisor:id,employee_number,full_name,position_title']);
@@ -48,13 +48,13 @@ class EmployeeProfileController extends Controller
             : collect();
 
         $activeAssignments = $canViewWorkContext
-            ? WorkflowTransaction::query()
+            ? $workRequests->scope($viewer)
                 ->where('assigned_employee_id', $employee->id)
                 ->whereNotIn('status', ['approved', 'disapproved', 'closed'])
                 ->latest()
                 ->limit(10)
                 ->get(['id', 'reference_no', 'title', 'priority', 'status', 'due_at'])
-                ->map(fn (WorkflowTransaction $transaction): array => [
+                ->map(fn ($transaction): array => [
                     'id' => $transaction->id,
                     'reference_no' => $transaction->reference_no,
                     'title' => $transaction->title,
