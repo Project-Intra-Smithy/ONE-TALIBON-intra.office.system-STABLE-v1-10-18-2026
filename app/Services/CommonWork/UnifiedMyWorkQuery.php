@@ -32,23 +32,101 @@ final readonly class UnifiedMyWorkQuery
      */
     public function paginate(User $claimedActor, int $page = 1, int $perPage = 20, ?string $source = null): LengthAwarePaginator
     {
+        $this->assertPaginationAndSource($page, $perPage, $source);
+
+        // No caller-supplied user can bypass live account/employee verification.
+        $actor = $this->taskAccess->verifiedActor($claimedActor);
+        $query = $this->sourceRows($this->authorizedRows($actor), $source);
+
+        return $this->paginateRows($query, $page, $perPage);
+    }
+
+    /**
+     * The explicit, timezone-aware due interval is [fromInclusive, beforeExclusive).
+     * Only already-authorized personal rows are eligible; null due dates are excluded.
+     * This does not assign urgency, synthesize a municipal SLA or normalize states.
+     *
+     * @param string $fromInclusive RFC3339 timestamp with a required UTC offset or Z.
+     * @param string $beforeExclusive RFC3339 timestamp with a required UTC offset or Z.
+     * @param ?string $source individual_task, work_request, or null for both sources.
+     * @return LengthAwarePaginator<int, CommonWorkItem>
+     */
+    public function dueWindow(
+        User $claimedActor,
+        string $fromInclusive,
+        string $beforeExclusive,
+        int $page = 1,
+        int $perPage = 20,
+        ?string $source = null,
+    ): LengthAwarePaginator {
+        $this->assertPaginationAndSource($page, $perPage, $source);
+        $from = $this->utcBoundary($fromInclusive);
+        $before = $this->utcBoundary($beforeExclusive);
+
+        if ($from->greaterThanOrEqualTo($before)) {
+            throw new InvalidArgumentException('Common Work due window must have an increasing, nonempty interval.');
+        }
+
+        $actor = $this->taskAccess->verifiedActor($claimedActor);
+        $query = $this->sourceRows($this->authorizedRows($actor), $source)
+            ->whereNotNull('due_at')
+            ->where('due_at', '>=', $from->format('Y-m-d H:i:s.uP'))
+            ->where('due_at', '<', $before->format('Y-m-d H:i:s.uP'));
+
+        return $this->paginateRows($query, $page, $perPage);
+    }
+
+    /**
+     * Enforce explicit instants rather than parsing timezone-ambiguous dates,
+     * local wall-clock values or relative expressions such as "tomorrow".
+     */
+    private function utcBoundary(string $value): CarbonImmutable
+    {
+        if (! preg_match('/\A\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01])T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{1,6})?(?:Z|[+-](?:0\d|1[0-4]):[0-5]\d)\z/D', $value)) {
+            throw new InvalidArgumentException('Common Work due boundaries require RFC3339 timestamps with explicit timezones.');
+        }
+
+        try {
+            $instant = CarbonImmutable::parse($value);
+        } catch (\Throwable) {
+            throw new InvalidArgumentException('Invalid Common Work due boundary.');
+        }
+
+        // Carbon can normalize impossible calendar dates; reject rollover.
+        if ($instant->format('Y-m-d\TH:i:s') !== substr($value, 0, 19)) {
+            throw new InvalidArgumentException('Invalid Common Work due boundary.');
+        }
+
+        return $instant->utc();
+    }
+
+    private function assertPaginationAndSource(int $page, int $perPage, ?string $source): void
+    {
         if ($page < 1 || $page > 10000 || $perPage < 1 || $perPage > 50) {
             throw new InvalidArgumentException('Common Work pagination is outside the allowed bounds.');
         }
         if ($source !== null && CommonWorkSource::tryFrom($source) === null) {
             throw new InvalidArgumentException('Unknown Common Work source.');
         }
+    }
 
-        // No caller-supplied user can bypass live account/employee verification.
-        $actor = $this->taskAccess->verifiedActor($claimedActor);
-        $query = $this->authorizedRows($actor);
-
-        // Restrict only the already-authorized SQL projection. Never substitute
-        // an unscoped Task or Work Request query for a single-source request.
+    private function sourceRows(QueryBuilder $query, ?string $source): QueryBuilder
+    {
+        // A source filter is applied after the original, actor-authorized UNION.
         if ($source !== null) {
             $query->where('source_type', $source);
         }
 
+        return $query;
+    }
+
+    /**
+     * Share B01's unchanged total ordering, SQL pagination and item mapping.
+     *
+     * @return LengthAwarePaginator<int, CommonWorkItem>
+     */
+    private function paginateRows(QueryBuilder $query, int $page, int $perPage): LengthAwarePaginator
+    {
         $rows = $query
             ->orderByDesc('updated_at')
             ->orderBy('source_type')
