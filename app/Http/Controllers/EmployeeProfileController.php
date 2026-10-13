@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use App\Domain\Workflow\Authorization\TransactionActorEligibility;
 use App\Models\Employee;
+use App\Models\User;
 use App\Models\EmployeeDevelopmentRecord;
 use App\Models\PerformanceRecord;
 use App\Services\EmployeeHealthVaultService;
@@ -14,9 +16,14 @@ use Inertia\Response;
 
 class EmployeeProfileController extends Controller
 {
-    public function __invoke(Request $request, Employee $employee, EmployeeHealthVaultService $healthVault, TransactionVisibilityQuery $workRequests): Response
+    public function __invoke(Request $request, Employee $employee, EmployeeHealthVaultService $healthVault, TransactionVisibilityQuery $workRequests, TransactionActorEligibility $eligibility): Response
     {
-        $viewer = $request->user()->loadMissing('employee.department');
+        // A retained authenticated session and an old privileged role are not
+        // evidence of current municipal employment. Fail before loading any
+        // private employee or document metadata.
+        $current = $eligibility->resolve($request->user());
+        abort_unless($current !== null, 403);
+        $viewer = User::query()->with('employee.department')->findOrFail($current['user_id']);
         $employee->load(['department:id,code,name,short_name', 'supervisor:id,employee_number,full_name,position_title']);
 
         $isSelf = (int) ($viewer->employee?->id ?? 0) === (int) $employee->id;
