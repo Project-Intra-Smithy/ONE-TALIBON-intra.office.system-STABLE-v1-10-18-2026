@@ -11,13 +11,14 @@ use App\Models\TravelOrder;
 use App\Models\TravelOrderEvent;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
+use App\Services\CommonEvidence\CorrespondenceEvidenceScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 final class DocumentAccessService
 {
     public function __construct(
-        private readonly CorrespondenceAccessDecider $correspondenceAccess,
+        private readonly CorrespondenceEvidenceScope $correspondenceScope,
         private readonly TravelOrderAccess $travelOrderAccess,
         private readonly TransactionVisibilityQuery $transactionVisibility,
     ) {}
@@ -80,8 +81,7 @@ final class DocumentAccessService
             }
 
             $scope = match ($family) {
-                'correspondence' => $this->correspondenceAccess
-                    ->scopeVisibleTo(CorrespondenceRecord::query(), $actor),
+                'correspondence' => $this->correspondenceScope->visibleTo($actor),
                 'travel_order' => $this->travelOrderAccess
                     ->scopeVisibleTo(TravelOrder::query(), $actor),
                 'transaction' => $this->transactionVisibility->scope($actor),
