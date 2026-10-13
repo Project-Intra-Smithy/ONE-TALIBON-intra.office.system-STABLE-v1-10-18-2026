@@ -64,3 +64,13 @@ All browser data/HTTP are synthetic. No known defects observed in these checks. 
 Authenticated Laravel session/CSRF/role/browser acceptance, real backend tuple, native browser 200% zoom, screen-reader audit, Firefox/WebKit, independent QA, and hosted CI of unpublished application code **NOT RUN**. Passing fixture tests/build is not production or integration approval. Existing page interiors, including Dashboard, are not redesigned by this shell package.
 
 Kirch owns ownership acknowledgment, design reconciliation and FE-BASE-01 disposition. Runtime testing reopens when Kirch/backend QA supplies an authorized tuple/environment; assistive/cross-browser checks belong to QA after release. Official branding remains deferred until supplied. **Single NEXT: Kirch disposes those gates before AJ publishes the prepared code.** No issue or PR is merged/closed; no Phase 2 work.
+
+## Preservation readback - 2026-10-13
+
+Local/remote documentation head was `efcba15eb4b604658a555d7d6048534472aaeae5`; live main/base remains `6c385ee85f3fec4325182791554b66a861cfd9f3`. The eight-file applied patch is unchanged (391 insertions, 54 deletions); no source staged or published. SHA256 matches above. Reverse applicability and isolated-index applicability against HEAD PASS. Do not reapply the patch to this checkout.
+
+TypeScript, production build (2186 modules) and whitespace check rerun PASS. The 37-test and five-viewport results above belong to the previous execution on the identical patch; tests/screenshots were not rerun for this handoff. All intervening committed changes are documentation/screenshots. Hosted application CI and real Laravel acceptance remain NOT RUN.
+
+Backend live main is now `e530d238408eee7ff28d7f77656621903ed5e502`; original reference retained without claiming a new validated runtime tuple. PR24 remains OPEN/CHANGES_REQUESTED and all three publication gates remain. PR29 remains documentation/evidence only.
+
+Dashboard #22 preparation is in the [continuity handoff](../../WORK_PACKAGE_CONTINUITY.md); implementation has not started. Production bundle excludes existing preview, but network isolation and complete role fixtures are prerequisites to reuse. No preview launched, authentication work, merge or issue closure.
