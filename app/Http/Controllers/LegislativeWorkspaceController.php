@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Workflow\Authorization\TransactionActorEligibility;
+
 use App\Models\CalendarEvent;
 use App\Models\LegislativeAgendaItem;
 use App\Models\LegislativeSession;
@@ -15,9 +17,11 @@ use Inertia\Response;
 
 class LegislativeWorkspaceController extends Controller
 {
+    public function __construct(private readonly TransactionActorEligibility $eligibility) {}
+
     public function index(Request $request, TransactionVisibilityQuery $workRequests): Response
     {
-        $user = $request->user()->loadMissing('employee.department');
+        $user = $this->eligibleUser($request);
         abort_unless($this->canView($user), 403);
 
         $sessions = LegislativeSession::query()
@@ -133,8 +137,18 @@ class LegislativeWorkspaceController extends Controller
 
     private function assertManager(Request $request): void
     {
-        $user = $request->user()->loadMissing('employee.department');
+        $user = $this->eligibleUser($request);
         abort_unless($this->canManage($user), 403);
+    }
+
+    private function eligibleUser(Request $request): User
+    {
+        // Always re-resolve User, Employee and Department from the database.
+        // In particular, system_admin is not an employment exception.
+        $current = $this->eligibility->resolve($request->user());
+        abort_unless($current !== null, 403);
+
+        return User::query()->with('employee.department')->findOrFail($current['user_id']);
     }
 
     private function canView(User $user): bool
