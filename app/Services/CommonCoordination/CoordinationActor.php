@@ -3,6 +3,7 @@
 namespace App\Services\CommonCoordination;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Fresh, active employee identity for P0-only read projections.
@@ -17,7 +18,10 @@ final readonly class CoordinationActor
 
     public static function from(User $actor): ?self
     {
-        if (! $actor->exists) {
+        // A caller-supplied active user is not proof of session ownership.
+        // Do not expose private municipal projections to a different account.
+        if (! $actor->exists || $actor->getKey() === null
+            || (int) Auth::id() !== (int) $actor->getKey()) {
             return null;
         }
 

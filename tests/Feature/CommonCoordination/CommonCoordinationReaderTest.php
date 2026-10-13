@@ -113,6 +113,7 @@ final class CommonCoordinationReaderTest extends TestCase
     public function test_messages_are_fixed_safe_links_not_chat_membership_grants(): void
     {
         $actor = $this->actor($this->department());
+        $this->actingAs($actor);
         $reader = app(CommonCoordinationReader::class);
         $this->assertSame(
             '/messages?channel=Department%20Heads',
@@ -120,6 +121,28 @@ final class CommonCoordinationReaderTest extends TestCase
         );
         $this->assertNull($reader->chatLink($actor, 'Secret Group'));
         $this->assertCount(6, $this->read($actor)['chats']);
+    }
+
+    public function test_private_projections_require_exact_authenticated_session_actor(): void
+    {
+        $owner = $this->actor($this->department());
+        $other = $this->actor($this->department());
+        $leave = $this->leave($owner);
+        $this->notify($owner, $leave);
+
+        $reader = app(CommonCoordinationReader::class);
+        $this->assertSame([], $reader->snapshot($owner)['chats']);
+
+        $this->actingAs($other);
+        $denied = $reader->snapshot($owner, '2026-09-25');
+        $this->assertSame([], $denied['notifications']['leave_updates']);
+        $this->assertSame([], $denied['calendar']['events']);
+        $this->assertSame([], $denied['chats']);
+        $this->assertNull($reader->chatLink($owner, 'General'));
+
+        $this->actingAs($owner);
+        $this->assertCount(1, $reader->snapshot($owner, '2026-09-25')['notifications']['leave_updates']);
+        $this->assertNotNull($reader->chatLink($owner, 'General'));
     }
 
     public function test_pagination_is_bounded_with_one_thousand_source_receipts(): void
@@ -166,6 +189,7 @@ final class CommonCoordinationReaderTest extends TestCase
 
     private function read(User $actor, ?string $date = '2026-09-25'): array
     {
+        $this->actingAs($actor);
         return app(CommonCoordinationReader::class)->snapshot($actor, $date);
     }
 
