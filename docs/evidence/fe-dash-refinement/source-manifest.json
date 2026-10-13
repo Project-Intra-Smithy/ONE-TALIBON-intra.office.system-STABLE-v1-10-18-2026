@@ -1,0 +1,21 @@
+{
+    "patchSha256":  "3f3ae774b1e8769902c02511198649e69770d0b6d41a9ede2085034232a8e034",
+    "sourceTree":  "a4883e1c9ba132bbca57132113e697425b93bb9d",
+    "files":  [
+                  "resources/css/phase-one-shell.css",
+                  "resources/js/components/dashboard/CorrespondenceOverview.tsx",
+                  "resources/js/components/dashboard/DashboardSection.tsx",
+                  "resources/js/components/dashboard/MetricGroup.tsx",
+                  "resources/js/components/dashboard/dashboard.css",
+                  "resources/js/components/dashboard/preview-isolation.ts",
+                  "resources/js/components/shell/PortalSidebar.tsx",
+                  "resources/js/pages/Dashboard.tsx",
+                  "resources/js/visual-preview.tsx",
+                  "tests/dashboard-mounted-ui.test.mjs",
+                  "tests/shell-mounted-ui.test.mjs",
+                  "tests/task-mounted-ui.test.mjs",
+                  "vite.config.ts"
+              ],
+    "previousPhaseTwoTree":  "e11167f71ef609774ffff4f125fd83d82f71a1ff",
+    "memoryHead":  "1d2d91ebcd386d55ae9dc5927c12e264bca1d58f"
+}
