@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 35
     env:
-      P0_EXACT_SHA: d01438f1b238367820145308eba1caa8837433d0
+      P0_EXACT_SHA: d3d0a10694ae024704bdd163ff7ea0feea710076
       P0_ACCEPTED_BASE: b757147f4ae553af5110fe97792a981c2d6acdf0
       P0_TEST_FILE: tests/Feature/P0DestinationRevocation/P0DestinationRevocationTest.php
       APP_ENV: testing

@@ -29,7 +29,7 @@ jobs:
             sha: 81cab9efca5eeaee95a022a310a2b56a8aa98129
             test_file: tests/Feature/DocumentAccessPrecedenceTest.php
           - lane: P4
-            sha: 183bcc73c54114fe22b00076ac5549daf2006cdd
+            sha: 732db1a2a3aa29ff2a0b2fc8e593cc45c5472b7b
             test_file: tests/Feature/CommonSearch/AuthorizedSourceSearchTest.php
     env:
       APP_ENV: testing
