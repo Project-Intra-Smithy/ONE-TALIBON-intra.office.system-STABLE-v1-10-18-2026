@@ -1,0 +1,261 @@
+name: P3 populated exact-source performance evidence
+on:
+  push:
+    branches:
+      - forge/lucien-p3-perf-evidence-001
+permissions:
+  contents: read
+concurrency:
+  group: p3-populated-evidence
+  cancel-in-progress: false
+jobs:
+  benchmark:
+    if: ${{ github.repository == 'Project-Intra-Smithy/Talibon-Sales-Prototype' && github.ref == 'refs/heads/forge/lucien-p3-perf-evidence-001' && github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_p3_benchmark
+      DB_USERNAME: postgres
+      DB_PASSWORD: p3_benchmark_${{ github.run_id }}_disposable
+      CACHE_STORE: array
+      SESSION_DRIVER: array
+      QUEUE_CONNECTION: sync
+      P3_SOURCE_SHA: 81cab9efca5eeaee95a022a310a2b56a8aa98129
+      P3_SOURCE_TREE: aa5a66bc9953dd304f71a217c9cc31bc3f919029
+    services:
+      postgres:
+        image: public.ecr.aws/docker/library/postgres:16
+        env:
+          POSTGRES_DB: talibon_p3_benchmark
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: p3_benchmark_${{ github.run_id }}_disposable
+        ports:
+          - '127.0.0.1:5432:5432'
+        options: >-
+          --health-cmd "pg_isready -U postgres -d talibon_p3_benchmark"
+          --health-interval 5s
+          --health-timeout 4s
+          --health-retries 12
+    steps:
+      - name: Checkout exact immutable P3 candidate without persisted credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ env.P3_SOURCE_SHA }}
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify immutable candidate tree and isolated runner
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$P3_SOURCE_SHA"
+          test "$(git rev-parse HEAD^{tree})" = "$P3_SOURCE_TREE"
+          test -z "$(git status --porcelain)"
+          printf "P3_EXACT_SHA=%s\nP3_TREE=%s\n" "$P3_SOURCE_SHA" "$P3_SOURCE_TREE"
+      - name: Configure PHP 8.4
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql,pgsql,fileinfo,zip,mbstring
+          tools: composer:v2
+          coverage: none
+      - name: Install pinned Composer dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ github.token }}"}}'
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+      - name: Verify dedicated empty PostgreSQL before migrations
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          php -r '
+            $pdo=new PDO("pgsql:host=127.0.0.1;port=5432;dbname=talibon_p3_benchmark","postgres",getenv("DB_PASSWORD"),[PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION]);
+            $r=$pdo->query("SELECT current_database() db,current_user usr,current_setting(\x27server_version_num\x27) version,(SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=\x27public\x27 AND table_type=\x27BASE TABLE\x27) cnt")->fetch(PDO::FETCH_ASSOC);
+            if($r["db"]!=="talibon_p3_benchmark"||$r["usr"]!=="postgres"||(int)$r["cnt"]!==0||(int)$r["version"]<160000||(int)$r["version"]>=170000)throw new RuntimeException("Unsafe benchmark DB");
+            echo "DISPOSABLE_PG16_EMPTY=PASS version=".$r["version"].PHP_EOL;
+          '
+      - name: Build isolated Laravel schema
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          cp .env.example .env
+          php artisan key:generate --no-interaction
+          php artisan migrate --force --no-interaction
+      - name: Run populated application-query benchmark
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$RUNNER_TEMP/p3-perf"
+          cat > "$RUNNER_TEMP/p3-benchmark.php" <<'PHP'
+          <?php
+          declare(strict_types=1);
+          require getcwd().'/vendor/autoload.php';
+          $app=require getcwd().'/bootstrap/app.php';
+          $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+          use App\Models\Department;
+          use App\Models\Employee;
+          use App\Models\User;
+          use App\Models\WorkflowTransaction;
+          use App\Models\CorrespondenceRecord;
+          use App\Models\CorrespondenceEvent;
+          use App\Models\Document;
+          use App\Models\DocumentLink;
+          use App\Services\DocumentArchiveQuery;
+          use App\Services\DocumentAccessService;
+          use App\Domain\Correspondence\CorrespondenceClassification;
+          use App\Domain\Correspondence\CorrespondenceLifecycleState;
+          use Illuminate\Support\Facades\DB;
+          use Illuminate\Support\Facades\Auth;
+          use Illuminate\Support\Str;
+          $t0=hrtime(true);
+          $now=now();
+          $office=Department::query()->create(['code'=>'P3-PERF-A','name'=>'P3 authorized office','short_name'=>'P3A','branch'=>'executive','office_type'=>'department','is_active'=>true,'is_routable'=>true,'sort_order'=>10]);
+          $secret=Department::query()->create(['code'=>'P3-PERF-B','name'=>'P3 denied office','short_name'=>'P3B','branch'=>'executive','office_type'=>'department','is_active'=>true,'is_routable'=>true,'sort_order'=>20]);
+          $actor=User::query()->create(['name'=>'P3 benchmark actor','email'=>'p3-benchmark@example.test','password'=>'disposable','role'=>'department_head','is_active'=>true]);
+          Employee::query()->create(['employee_number'=>'P3-PERF-EMP','full_name'=>$actor->name,'work_email'=>$actor->email,'user_id'=>$actor->id,'department_id'=>$office->id,'position_title'=>'Test reviewer','employment_status'=>'active']);
+          $actor=$actor->fresh('employee.department');
+          Auth::setUser($actor);
+          $tx=WorkflowTransaction::query()->create(['reference_no'=>'P3-PERF-TX','transaction_type'=>'internal_request','title'=>'P3 authorized transaction','priority'=>'normal','origin_department_id'=>$office->id,'current_department_id'=>$office->id,'created_by_user_id'=>$actor->id,'status'=>'submitted']);
+          $denied=CorrespondenceRecord::query()->create([
+            'public_id'=>(string)Str::uuid(),'external_reference_no'=>'P3-PERF-EXT','source'=>'email','channel'=>'official_email',
+            'sender_name'=>'P3 test sender','sender_organization'=>'P3 hidden office','subject'=>'P3 hidden security text','received_at'=>$now,
+            'receiving_department_id'=>$secret->id,'municipal_reference_no'=>'P3-PERF-COR',
+            'classification'=>CorrespondenceClassification::Restricted->value,'lifecycle_state'=>CorrespondenceLifecycleState::Classified->value,
+          ]);
+          $categories=[
+             'allowed'=>[10000,$tx->getMorphClass(),$tx->id],
+             'denied'=>[1000,$denied->getMorphClass(),$denied->id],
+             'orphan'=>[200,(new CorrespondenceEvent())->getMorphClass(),2147483600],
+          ];
+          foreach($categories as $kind=>[$count,$type,$sourceId]){
+              for($start=0;$start<$count;$start+=250){
+                  $rows=[];
+                  for($i=$start;$i<min($count,$start+250);$i++){
+                      $rows[]=['public_id'=>(string)Str::uuid(),'title'=>'P3 Scale '.$kind,'original_name'=>'P3 Scale '.$kind.'.pdf',
+                        'document_type'=>'supporting_document','classification'=>'restricted','storage_disk'=>'documents',
+                        'storage_path'=>'p3-benchmark/disposable.pdf','owner_department_id'=>$office->id,
+                        'uploaded_by_user_id'=>$actor->id,'created_at'=>$now,'updated_at'=>$now];
+                  }
+                  DB::table('documents')->insert($rows);
+              }
+              $ids=DB::table('documents')->where('title','P3 Scale '.$kind)->pluck('id');
+              foreach($ids->chunk(250) as $group) {
+                  $links=[];
+                  foreach($group as $id) $links[]=['document_id'=>$id,'linkable_type'=>$type,'linkable_id'=>$sourceId,
+                      'relationship'=>'supporting_document','created_at'=>$now,'updated_at'=>$now];
+                  DB::table('document_links')->insert($links);
+              }
+          }
+          $many=Document::query()->create(['public_id'=>(string)Str::uuid(),'title'=>'P3 High Link','original_name'=>'P3 High Link.pdf',
+              'document_type'=>'supporting_document','classification'=>'restricted','storage_disk'=>'documents',
+              'storage_path'=>'p3-benchmark/disposable.pdf','owner_department_id'=>$office->id,'uploaded_by_user_id'=>$actor->id]);
+          for($start=0;$start<1000;$start+=200){
+              $links=[];
+              for($i=$start;$i<$start+200;$i++) $links[]=['document_id'=>$many->id,'linkable_type'=>$tx->getMorphClass(),
+                 'linkable_id'=>$tx->id,'relationship'=>'link_'.sprintf('%04d',$i),'created_at'=>$now,'updated_at'=>$now];
+              DB::table('document_links')->insert($links);
+          }
+          DB::statement('ANALYZE documents');
+          DB::statement('ANALYZE document_links');
+          DB::statement('ANALYZE transactions');
+          DB::statement('ANALYZE correspondence_records');
+          $archive=app(DocumentArchiveQuery::class);
+          $access=app(DocumentAccessService::class);
+          $metrics=[];
+          $traces=[];
+          $measure=function(string $name,callable $fn)use(&$metrics,&$traces){
+              DB::enableQueryLog(); DB::flushQueryLog();
+              $before=memory_get_usage(true);$peak=memory_get_peak_usage(true);$start=hrtime(true);
+              try{$value=$fn();$queries=DB::getQueryLog();}
+              finally{DB::disableQueryLog();DB::flushQueryLog();}
+              $metrics[$name]=[
+                  'wall_ms'=>round((hrtime(true)-$start)/1e6,3),
+                  'queries'=>count($queries),
+                  'sql_sum_ms'=>round(array_sum(array_map(fn($q)=>(float)($q['time']??0),$queries)),3),
+                  'resident_delta_bytes'=>memory_get_usage(true)-$before,
+                  'incremental_peak_bytes'=>max(0,memory_get_peak_usage(true)-$peak),
+              ];
+              $traces[$name]=$queries;
+              return $value;
+          };
+          $page1=$measure('archive_page_1',fn()=>$archive->workspace($actor,['page'=>1]));
+          $deep=$measure('archive_page_450',fn()=>$archive->workspace($actor,['page'=>450]));
+          $search=$measure('archive_literal_search',fn()=>$archive->workspace($actor,['archive_search'=>'P3 Scale allowed','page'=>1]));
+          $allow=$measure('download_1000_links_allowed',fn()=>$access->canDownload($actor,$many));
+          DocumentLink::query()->create(['document_id'=>$many->id,'linkable_type'=>$denied->getMorphClass(),
+            'linkable_id'=>$denied->id,'relationship'=>'restricted_parent']);
+          $block=$measure('download_1001_links_denied',fn()=>$access->canDownload($actor,$many));
+          $blockedArchive=$measure('archive_1001_links_denied',fn()=>$archive->workspace($actor,['document'=>$many->public_id]));
+          $expectedVisible=10000;
+          if($page1['records']->total()!==$expectedVisible+1 || $deep['records']->total()!==$expectedVisible+1 ||
+             $search['records']->total()!==$expectedVisible || count($page1['records']->items())!==20 ||
+             count($deep['records']->items())!==20 || !$allow || $block || $blockedArchive['selected']!==null){
+              throw new RuntimeException('Populated access/count invariant failed');
+          }
+          $plans=[];
+          foreach(['archive_page_1','archive_page_450','archive_literal_search'] as $name) {
+              $found=null;
+              foreach($traces[$name] as $q) {
+                  $sql=strtolower($q['query']);
+                  if(str_contains($sql,'document_links') && str_contains($sql,'order by') && str_contains($sql,'limit')){$found=$q;break;}
+              }
+              if(!$found)throw new RuntimeException("Could not locate actual archive page SELECT for ".$name);
+              $stmt=DB::select('EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) '.$found['query'],$found['bindings']);
+              $raw=$stmt[0]->{'QUERY PLAN'}??null;
+              $p=is_string($raw)?json_decode($raw,true,512,JSON_THROW_ON_ERROR):$raw;
+              $plan=$p[0];
+              $plans[$name]=[
+                 'execution_time_ms'=>$plan['Execution Time']??null,
+                 'planning_time_ms'=>$plan['Planning Time']??null,
+                 'plan'=>$plan['Plan'],
+              ];
+          }
+          $employeeId=$actor->employee->id;
+          DB::table('employees')->where('id',$employeeId)->update(['employment_status'=>'inactive']);
+          $employmentDenied=!$access->canDownload($actor,$many);
+          $archiveEmploymentDenied=false;
+          try{$archive->workspace($actor,[]);}catch(Symfony\Component\HttpKernel\Exception\HttpException $e){$archiveEmploymentDenied=$e->getStatusCode()===403;}
+          DB::table('employees')->where('id',$employeeId)->update(['employment_status'=>'active']);
+          DB::table('departments')->where('id',$office->id)->update(['is_active'=>false]);
+          $officeDenied=!$access->canDownload($actor,$many);
+          $archiveOfficeDenied=false;
+          try{$archive->workspace($actor,[]);}catch(Symfony\Component\HttpKernel\Exception\HttpException $e){$archiveOfficeDenied=$e->getStatusCode()===403;}
+          if(!$employmentDenied||!$archiveEmploymentDenied||!$officeDenied||!$archiveOfficeDenied)
+             throw new RuntimeException('Retained-actor membership revocation failed');
+          $result=[
+             'exact_candidate_sha'=>getenv('P3_SOURCE_SHA'),
+             'candidate_tree'=>getenv('P3_SOURCE_TREE'),
+             'postgres_version'=>DB::selectOne('SHOW server_version')->server_version??'unknown',
+             'synthetic_data'=>['authorized_documents'=>10000,'denied_documents'=>1000,'orphaned_documents'=>200,
+                'high_link_document'=>1,'high_link_count_before_denial'=>1000,'high_link_count_after_denial'=>1001],
+             'metrics'=>$metrics,'plans'=>$plans,
+             'assertions'=>['archive_counts_and_pages'=>true,'authorized_download'=>true,'denied_high_priority_download'=>true,
+                'hidden_denied_document'=>true,'retained_employee_revocation'=>true,'retained_office_deactivation'=>true],
+             'limits'=>['synthetic_not_production'=>true,'sequential_revocation_not_concurrent_transactions'=>true,
+                'single_runner_no_load_concurrency'=>true,'peak_memory_monotonic_process_level'=>true],
+             'run_wall_ms'=>round((hrtime(true)-$t0)/1e6,3)
+          ];
+          file_put_contents(getenv('RUNNER_TEMP').'/p3-perf/results.json',json_encode($result,JSON_PRETTY_PRINT|JSON_THROW_ON_ERROR));
+          foreach($metrics as $name=>$m)printf("P3_PERF case=%s queries=%d wall_ms=%.3f sql_sum_ms=%.3f\n",$name,$m['queries'],$m['wall_ms'],$m['sql_sum_ms']);
+          foreach($plans as $name=>$p)printf("P3_PLAN case=%s execution_ms=%s node=%s rows=%s\n",$name,$p['execution_time_ms'],
+              $p['plan']['Node Type']??'unknown',$p['plan']['Actual Rows']??'unknown');
+          echo "P3_POPULATED_BENCHMARK=PASS source_unchanged=yes\n";
+          PHP
+          php "$RUNNER_TEMP/p3-benchmark.php"
+          test "$(git rev-parse HEAD)" = "$P3_SOURCE_SHA"
+          test -z "$(git status --porcelain)"
+      - name: Upload bounded non-secret benchmark receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: p3-populated-perf-${{ env.P3_SOURCE_SHA }}
+          path: ${{ runner.temp }}/p3-perf/results.json
+          if-no-files-found: ignore
+          retention-days: 14
