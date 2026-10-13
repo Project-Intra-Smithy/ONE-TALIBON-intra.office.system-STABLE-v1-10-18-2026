@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { chromium } from 'playwright';
+import { execFileSync } from 'node:child_process';
 
 const origin = process.env.P1_BROWSER_ORIGIN ?? 'http://127.0.0.1:8000';
 const password = process.env.PROTOTYPE_DEMO_PASSWORD;
@@ -84,6 +85,68 @@ try {
     await pageA.screenshot({ path: output + '/task-completed-desktop.png', fullPage: false });
     await pageB.screenshot({ path: output + '/foreign-account-mobile.png', fullPage: false });
     receipts.push('COMPLETE_CONFIRMED');
+
+    // This mutation is restricted to the CI-created, disposable PG16 account
+    // and is intentionally performed OUTSIDE the active Chromium session.
+    // Thus the browser must recheck eligibility rather than trust old cookies.
+    const prepare = `
+require 'vendor/autoload.php';
+\$app = require 'bootstrap/app.php';
+\$app->make(Illuminate\\Contracts\\Console\\Kernel::class)->bootstrap();
+\$user = App\\Models\\User::query()->where('email', 'p1qa2@talibon.demo')->firstOrFail();
+\$employee = App\\Models\\Employee::query()->where('user_id', \$user->id)->firstOrFail();
+App\\Models\\PlatformNotification::query()->create([
+    'user_id' => \$user->id,
+    'event_key' => 'p1-h-browser-'.getenv('GITHUB_RUN_ID'),
+    'source_domain' => 'hr_contract',
+    'source_type' => App\\Models\\Employee::class,
+    'source_id' => \$employee->id,
+    'title' => 'P1-H-BROWSER-PROTECTED-METADATA',
+    'message' => 'P1-H-BROWSER-PRIVATE-MESSAGE',
+    'priority' => 'info',
+    'action_url' => '/transactions/999999',
+]);
+echo json_encode(['employee_id' => \$employee->id]);
+`;
+    const prepared = JSON.parse(execFileSync('php', ['-r', prepare], { encoding: 'utf8' }));
+    const profile = '/employees/' + prepared.employee_id;
+    const http = async (path) => pageB.evaluate(async (url) => {
+        const r = await fetch(url, {
+            credentials: 'same-origin', headers: { Accept: 'application/json' },
+        });
+        return { status: r.status, body: await r.text() };
+    }, path);
+
+    assert.equal((await http(profile)).status, 200, 'Own employee profile should load when active');
+    const beforeRevocation = await http('/notifications/feed');
+    assert.equal(beforeRevocation.status, 200);
+    assert.ok(beforeRevocation.body.includes('P1-H-BROWSER-PROTECTED-METADATA'));
+    assert.ok(!beforeRevocation.body.includes('/transactions/999999'),
+        'Cached foreign destination must not be projected');
+
+    const revoke = `
+require 'vendor/autoload.php';
+\$app = require 'bootstrap/app.php';
+\$app->make(Illuminate\\Contracts\\Console\\Kernel::class)->bootstrap();
+\$user = App\\Models\\User::query()->where('email', 'p1qa2@talibon.demo')->firstOrFail();
+App\\Models\\Employee::query()->where('user_id', \$user->id)->update(['employment_status' => 'separated']);
+echo 'P1_H_BROWSER_EMPLOYEE_SEPARATED';
+`;
+    assert.equal(execFileSync('php', ['-r', revoke], { encoding: 'utf8' }).trim(),
+        'P1_H_BROWSER_EMPLOYEE_SEPARATED');
+    const deniedProfile = await http(profile);
+    assert.equal(deniedProfile.status, 403, 'Existing authenticated session must lose HR profile access');
+    assert.ok(!deniedProfile.body.includes('P1-H-BROWSER-PRIVATE-MESSAGE'));
+
+    const deniedFeed = await http('/notifications/feed');
+    assert.equal(deniedFeed.status, 200, 'Notification feed must fail closed with empty content');
+    const empty = JSON.parse(deniedFeed.body);
+    assert.equal(empty.unreadPlatformNotificationCount, 0);
+    assert.equal(empty.notificationCount, 0);
+    assert.deepEqual(empty.notifications, []);
+    assert.ok(!deniedFeed.body.includes('P1-H-BROWSER-PROTECTED-METADATA'));
+    receipts.push('RETAINED_SESSION_EMPLOYMENT_REVOKED');
+
 
     await pageA.getByRole('button', { name: 'Sign out' }).first().click();
     await pageA.waitForURL('**/login');
