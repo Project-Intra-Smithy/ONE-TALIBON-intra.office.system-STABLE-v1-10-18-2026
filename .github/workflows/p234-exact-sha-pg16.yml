@@ -263,60 +263,60 @@ jobs:
               // before RefreshDatabase rolls back its populated fixture.
               $needle = '$queryCount = count(DB::getQueryLog());';
               $insertion = <<<'MEASURE'
-$queryCount = count(DB::getQueryLog());
-            $p4Trace = DB::getQueryLog();
-            $p4EvidenceDir = getenv('RUNNER_TEMP').'/p234-evidence';
-            $p4Rows = DB::table('correspondence_records')
-                ->where('subject', 'P4 scalable match')->count();
-            if ($p4Rows < 1000) {
-                throw new \RuntimeException('P4 plan fixture has fewer than 1000 rows');
-            }
-            file_put_contents($p4EvidenceDir.'/query-counts.txt',
-                'P234_ACTUAL_QUERY_COUNT P4_combined_two_pages='.$queryCount.
-                ' populated_correspondence_rows='.$p4Rows.PHP_EOL, FILE_APPEND);
-            $p4Plans = [];
-            foreach ($p4Trace as $entry) {
-                $sql = trim($entry['query'] ?? '');
-                if (! preg_match('/^SELECT\s/i', $sql)
-                    || ! str_contains($sql, 'authorized_search')) {
-                    continue;
-                }
-                if (count($p4Plans) >= 2) {
-                    break;
-                }
-                $row = DB::selectOne(
-                    'EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) '.$sql,
-                    $entry['bindings'] ?? [],
-                );
-                $fields = (array) $row;
-                $payload = reset($fields);
-                $plan = json_decode($payload, true, 512, JSON_THROW_ON_ERROR);
-                $p4Plans[] = [
-                    'case' => count($p4Plans) === 0 ? 'authorized_search_count' : 'authorized_search_page',
-                    'populated_correspondence_rows' => $p4Rows,
-                    'plan' => $plan[0],
-                ];
-            }
-            if (count($p4Plans) !== 2) {
-                throw new \RuntimeException('P4 expected actual UNION count + page SELECT plans');
-            }
-            file_put_contents(
-                $p4EvidenceDir.'/read-only-explain.json',
-                json_encode([
-                    'lane' => 'P4',
-                    'source' => 'actual test query-log SQL and parameter bindings, not leaked',
-                    'measurement' => 'within 1000-row RefreshDatabase fixture before rollback',
-                    'plans' => $p4Plans,
-                ], JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR)
-            );
-            foreach ($p4Plans as $entry) {
-                $node = $entry['plan']['Plan'];
-                printf("P234_P4_POPULATED_EXPLAIN case=%s rows=%s node=%s actual_rows=%s shared_hit=%s shared_read=%s\n",
-                    $entry['case'], $p4Rows, $node['Node Type'] ?? 'unknown',
-                    $node['Actual Rows'] ?? 'unknown', $node['Shared Hit Blocks'] ?? 0,
-                    $node['Shared Read Blocks'] ?? 0);
-            }
-MEASURE;
+          $queryCount = count(DB::getQueryLog());
+                      $p4Trace = DB::getQueryLog();
+                      $p4EvidenceDir = getenv('RUNNER_TEMP').'/p234-evidence';
+                      $p4Rows = DB::table('correspondence_records')
+                          ->where('subject', 'P4 scalable match')->count();
+                      if ($p4Rows < 1000) {
+                          throw new \RuntimeException('P4 plan fixture has fewer than 1000 rows');
+                      }
+                      file_put_contents($p4EvidenceDir.'/query-counts.txt',
+                          'P234_ACTUAL_QUERY_COUNT P4_combined_two_pages='.$queryCount.
+                          ' populated_correspondence_rows='.$p4Rows.PHP_EOL, FILE_APPEND);
+                      $p4Plans = [];
+                      foreach ($p4Trace as $entry) {
+                          $sql = trim($entry['query'] ?? '');
+                          if (! preg_match('/^SELECT\s/i', $sql)
+                              || ! str_contains($sql, 'authorized_search')) {
+                              continue;
+                          }
+                          if (count($p4Plans) >= 2) {
+                              break;
+                          }
+                          $row = DB::selectOne(
+                              'EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) '.$sql,
+                              $entry['bindings'] ?? [],
+                          );
+                          $fields = (array) $row;
+                          $payload = reset($fields);
+                          $plan = json_decode($payload, true, 512, JSON_THROW_ON_ERROR);
+                          $p4Plans[] = [
+                              'case' => count($p4Plans) === 0 ? 'authorized_search_count' : 'authorized_search_page',
+                              'populated_correspondence_rows' => $p4Rows,
+                              'plan' => $plan[0],
+                          ];
+                      }
+                      if (count($p4Plans) !== 2) {
+                          throw new \RuntimeException('P4 expected actual UNION count + page SELECT plans');
+                      }
+                      file_put_contents(
+                          $p4EvidenceDir.'/read-only-explain.json',
+                          json_encode([
+                              'lane' => 'P4',
+                              'source' => 'actual test query-log SQL and parameter bindings, not leaked',
+                              'measurement' => 'within 1000-row RefreshDatabase fixture before rollback',
+                              'plans' => $p4Plans,
+                          ], JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR)
+                      );
+                      foreach ($p4Plans as $entry) {
+                          $node = $entry['plan']['Plan'];
+                          printf("P234_P4_POPULATED_EXPLAIN case=%s rows=%s node=%s actual_rows=%s shared_hit=%s shared_read=%s\n",
+                              $entry['case'], $p4Rows, $node['Node Type'] ?? 'unknown',
+                              $node['Actual Rows'] ?? 'unknown', $node['Shared Hit Blocks'] ?? 0,
+                              $node['Shared Read Blocks'] ?? 0);
+                      }
+          MEASURE;
               $code = str_replace($needle, $insertion, $code, $count);
               if ($count !== 1) {
                   throw new RuntimeException('P4 query and EXPLAIN injection anchor not unique');
