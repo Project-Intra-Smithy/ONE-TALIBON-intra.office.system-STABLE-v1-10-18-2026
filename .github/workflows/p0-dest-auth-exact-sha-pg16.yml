@@ -239,6 +239,116 @@ jobs:
           printf 'P0_PHPUNIT_EXIT=%s\n' "$code"
           exit "$code"
 
+      - name: Supplementary HTTP statuses and cross-session revocation telemetry (temporary test copy)
+        # The six canonical tests already ran unchanged. This second pass
+        # instruments ONLY a temporary copy outside the checkout, using real
+        # Laravel RequestHandled events and two independently connected PG PIDs.
+        if: ${{ success() }}
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$RUNNER_TEMP/p0-instrumented"
+          cat > "$RUNNER_TEMP/p0-instrument.php" <<'PHP'
+          <?php
+          $source = file_get_contents(getenv('P0_TEST_FILE'));
+          $classAnchor = "final class P0DestinationRevocationTest extends TestCase\n{\n";
+          $httpHook = <<<'HOOK'
+              protected function setUp(): void
+              {
+                  parent::setUp();
+                  app('events')->listen(\Illuminate\Foundation\Http\Events\RequestHandled::class,
+                      static function (\Illuminate\Foundation\Http\Events\RequestHandled $event): void {
+                          $path = preg_replace(
+                              '~[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}~i',
+                              '{synthetic-public-id}',
+                              $event->request->path()
+                          );
+                          file_put_contents(getenv('RUNNER_TEMP').'/p0-evidence/http-statuses.jsonl',
+                              json_encode(['method' => $event->request->method(),
+                                  'route' => $path, 'http_status' => $event->response->getStatusCode()],
+                                  JSON_THROW_ON_ERROR).PHP_EOL, FILE_APPEND);
+                      });
+              }
+          
+          HOOK;
+          $source = str_replace($classAnchor, $classAnchor.$httpHook, $source, $n);
+          if ($n !== 1) throw new RuntimeException('Missing or ambiguous test class anchor');
+          $updateAnchor = "\$affected = DB::connection('p0_revoker')->table(\$table)->where('id', \$id)->update(\$values);";
+          $trace = <<<'TRACE'
+          $primaryBackendPid = (int) DB::connection()->selectOne('SELECT pg_backend_pid() pid')->pid;
+                  $revokerBackendPid = (int) DB::connection('p0_revoker')->selectOne('SELECT pg_backend_pid() pid')->pid;
+                  $primaryTransactionLevel = DB::connection()->transactionLevel();
+                  if ($primaryBackendPid === $revokerBackendPid || $primaryTransactionLevel !== 0) {
+                      throw new \RuntimeException('Cross-connection P0 fixture not isolated/autocommit');
+                  }
+                  $affected = DB::connection('p0_revoker')->table($table)->where('id', $id)->update($values);
+                  $primaryReadBack = DB::connection()->table($table)->where('id', $id)->first();
+                  foreach ($values as $column => $value) {
+                      if ($primaryReadBack === null || (string) $primaryReadBack->{$column} !== (string) $value) {
+                          throw new \RuntimeException('P0 revocation not visible on primary PostgreSQL connection');
+                      }
+                  }
+                  file_put_contents(getenv('RUNNER_TEMP').'/p0-evidence/cross-connection.jsonl',
+                      json_encode(['table' => $table, 'changed_columns' => array_keys($values),
+                          'primary_backend_pid' => $primaryBackendPid, 'revoker_backend_pid' => $revokerBackendPid,
+                          'primary_transaction_level' => $primaryTransactionLevel,
+                          'autocommit_update_affected_rows' => $affected,
+                          'fresh_primary_read_observed_revocation' => true],
+                          JSON_THROW_ON_ERROR).PHP_EOL, FILE_APPEND);
+          TRACE;
+          $source = str_replace($updateAnchor, $trace, $source, $m);
+          if ($m !== 1) throw new RuntimeException('Missing/ambiguous separate-connection update anchor');
+          $target = getenv('RUNNER_TEMP').'/p0-instrumented/P0DestinationRevocationTest.php';
+          file_put_contents($target, $source);
+          printf("P0_SUPPLEMENTARY_INSTRUMENTED_TEMP_COPY=PASS hook=%d revoker=%d\n", $n, $m);
+          PHP
+          php "$RUNNER_TEMP/p0-instrument.php"
+          php -l "$RUNNER_TEMP/p0-instrumented/P0DestinationRevocationTest.php"
+          set +e
+          vendor/bin/phpunit --bootstrap "$RUNNER_TEMP/p0-db-guard.php" \
+            --no-coverage --log-junit "$RUNNER_TEMP/p0-evidence/junit-p0-telemetry.xml" \
+            "$RUNNER_TEMP/p0-instrumented/P0DestinationRevocationTest.php"
+          code=$?
+          set -e
+          printf 'P0_TELEMETRY_PHPUNIT_EXIT=%s\n' "$code" > "$RUNNER_TEMP/p0-evidence/telemetry-exit-code.txt"
+          if test "$code" -ne 0; then exit "$code"; fi
+          php <<'PHP'
+          <?php
+          $root = getenv('RUNNER_TEMP').'/p0-evidence/';
+          $httpPath = $root.'http-statuses.jsonl';
+          $crossPath = $root.'cross-connection.jsonl';
+          $http = is_file($httpPath) ? array_map(fn ($s) => json_decode($s, true),
+              file($httpPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)) : [];
+          $cross = is_file($crossPath) ? array_map(fn ($s) => json_decode($s, true),
+              file($crossPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)) : [];
+          $codes = [];
+          foreach ($http as $entry) {
+              $s = (string) $entry['http_status'];
+              $codes[$s] = ($codes[$s] ?? 0) + 1;
+          }
+          ksort($codes);
+          if (count($http) < 15 || !isset($codes['403']) || !isset($codes['200'])
+              || count($cross) < 6
+              || count(array_filter($cross, fn ($row) =>
+                  $row['primary_backend_pid'] === $row['revoker_backend_pid']
+                  || $row['primary_transaction_level'] !== 0
+                  || $row['autocommit_update_affected_rows'] !== 1
+                  || !$row['fresh_primary_read_observed_revocation'])) !== 0) {
+              throw new RuntimeException('Supplemental P0 HTTP/revocation instrumentation incomplete');
+          }
+          file_put_contents($root.'telemetry-summary.json',
+              json_encode(['http_request_count' => count($http),
+                  'http_status_counts' => $codes, 'committed_cross_connection_revocations' => count($cross),
+                  'all_backend_pids_distinct' => true, 'primary_transaction_level' => 0,
+                  'fresh_reads_observed_all_committed_changes' => true,
+                  'candidate_test_file_mutated' => false],
+                  JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR));
+          printf("P0_HTTP_TELEMETRY=PASS requests=%d statuses=%s\n",
+              count($http), json_encode($codes));
+          printf("P0_CROSS_CONNECTION_TELEMETRY=PASS committed_updates=%d distinct_backends=true primary_transaction_level=0\n", count($cross));
+          PHP
+          test -z "$(git status --porcelain)"
+          
       - name: Classify JUnit method outcomes without printing record contents
         if: always()
         shell: bash
