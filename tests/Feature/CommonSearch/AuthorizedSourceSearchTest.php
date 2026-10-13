@@ -42,7 +42,7 @@ final class AuthorizedSourceSearchTest extends TestCase
         $office = $this->office();
         $actor = $this->actor($office);
         $correspondence = $this->correspondence($office, 'Shared token registration');
-        $this->travel($office, $actor->employee, 'Shared token travel', $correspondence->public_id);
+        $this->makeTravelOrder($office, $actor->employee, 'Shared token travel', $correspondence->public_id);
 
         $this->actingAs($actor);
         $result = app(AuthorizedSourceSearch::class)->search($actor, 'shared token');
@@ -68,8 +68,8 @@ final class AuthorizedSourceSearchTest extends TestCase
         $foreign = $this->actor($other);
         $this->correspondence($own, 'Sentinel authorized correspondence');
         $this->correspondence($other, 'Sentinel foreign correspondence');
-        $this->travel($own, $actor->employee, 'Sentinel authorized travel');
-        $this->travel($other, $foreign->employee, 'Sentinel foreign travel');
+        $this->makeTravelOrder($own, $actor->employee, 'Sentinel authorized travel');
+        $this->makeTravelOrder($other, $foreign->employee, 'Sentinel foreign travel');
 
         $this->actingAs($actor);
         $result = app(AuthorizedSourceSearch::class)->search($actor, 'Sentinel');
@@ -298,7 +298,7 @@ final class AuthorizedSourceSearchTest extends TestCase
         ]);
     }
 
-    private function travel(Department $office, Employee $employee, string $title, ?string $publicId = null): TravelOrder
+    private function makeTravelOrder(Department $office, Employee $employee, string $title, ?string $publicId = null): TravelOrder
     {
         $order = TravelOrder::query()->create([
             'public_id' => $publicId,
