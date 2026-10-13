@@ -24,10 +24,16 @@ use InvalidArgumentException;
  */
 final readonly class AuthorizedSourceSearch
 {
+    private CorrespondenceAccessDecider $correspondenceAccess;
+
+    private TravelOrderAccess $travelOrderAccess;
+
     public function __construct(
-        private CorrespondenceAccessDecider $correspondenceAccess,
-        private TravelOrderAccess $travelOrderAccess,
+        CorrespondenceAccessDecider $correspondenceAccess,
+        TravelOrderAccess $travelOrderAccess,
     ) {
+        $this->correspondenceAccess = $correspondenceAccess;
+        $this->travelOrderAccess = $travelOrderAccess;
     }
 
     /**
