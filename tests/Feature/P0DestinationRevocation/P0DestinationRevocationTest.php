@@ -226,6 +226,7 @@ final class P0DestinationRevocationTest extends TestCase
             'position_title' => 'P0 test operator',
             'employment_status' => 'active',
         ]);
+
         return $user->fresh('employee.department');
     }
 
@@ -242,6 +243,7 @@ final class P0DestinationRevocationTest extends TestCase
             'status' => TravelOrderStatus::Approved,
         ]);
         $order->issuedTo()->sync([$issuedTo->id]);
+
         return $order;
     }
 
