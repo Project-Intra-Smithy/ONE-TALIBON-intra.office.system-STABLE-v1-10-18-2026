@@ -16,6 +16,7 @@ use App\Services\CorrespondenceAccessDecider;
 use App\Services\DocumentAccessService;
 use App\Services\DocumentArchiveQuery;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -158,7 +159,7 @@ class DocumentAccessPrecedenceTest extends TestCase
 
         Storage::disk('documents')->put($document->storage_path, '%PDF-1.7 test');
         $actor->employee->update(['employment_status' => 'inactive']);
-        $actor = $actor->fresh('employee.department');
+        // Deliberately keep the original actor with cached active relations.
         $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
         $this->actingAs($actor)
             ->get('/documents/'.$document->public_id.'/download')
@@ -220,6 +221,154 @@ class DocumentAccessPrecedenceTest extends TestCase
         $this->assertSame('Authorized correspondence context', $archive['selected']['relatedTitle']);
         $this->assertSame('Authorized correspondence context', $archive['records']->items()[0]['relatedTitle']);
         $this->assertNotSame($denied->subject, $archive['selected']['relatedTitle']);
+    }
+
+    public function test_sql_archive_zero_one_and_one_thousand_documents_keep_stable_pages_and_counts(): void
+    {
+        $office = $this->department('SQL-BULK');
+        $actor = $this->human($office);
+        $transaction = $this->transaction($actor, $office);
+        $archive = app(DocumentArchiveQuery::class);
+
+        $empty = $archive->workspace($actor, []);
+        $this->assertSame(0, $empty['records']->total());
+        $this->assertSame(0, $empty['counts']['all']);
+        $this->assertSame([], $empty['filterOptions']['documentTypes']);
+
+        $one = $this->document($actor, $office, 'P3 single reference');
+        DocumentLink::query()->create([
+            'document_id' => $one->id,
+            'linkable_type' => $transaction->getMorphClass(),
+            'linkable_id' => $transaction->id,
+            'relationship' => 'supporting_document',
+        ]);
+        $single = $archive->workspace($actor, ['document' => $one->public_id]);
+        $this->assertSame(1, $single['records']->total());
+        $this->assertSame($one->public_id, $single['selected']['publicId']);
+        $this->assertContains('Supporting Document', $single['filterOptions']['documentTypes']);
+
+        $now = now();
+        for ($batch = 0; $batch < 10; $batch++) {
+            $documents = [];
+            for ($row = 0; $row < 100; $row++) {
+                $documents[] = [
+                    'public_id' => (string) Str::uuid(),
+                    'title' => 'P3 Bulk Archive',
+                    'original_name' => 'P3 Bulk Archive.pdf',
+                    'document_type' => 'supporting_document',
+                    'classification' => 'restricted',
+                    'storage_disk' => 'documents',
+                    'storage_path' => 'p3-tests/bulk-synthetic.pdf',
+                    'owner_department_id' => $office->id,
+                    'uploaded_by_user_id' => $actor->id,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+            }
+            DB::table('documents')->insert($documents);
+        }
+
+        $documentIds = Document::query()
+            ->where('title', 'P3 Bulk Archive')->pluck('id');
+        $this->assertCount(1000, $documentIds);
+        foreach ($documentIds->chunk(200) as $chunk) {
+            $links = [];
+            foreach ($chunk as $documentId) {
+                $links[] = [
+                    'document_id' => $documentId,
+                    'linkable_type' => $transaction->getMorphClass(),
+                    'linkable_id' => $transaction->id,
+                    'relationship' => 'supporting_document',
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+            }
+            DB::table('document_links')->insert($links);
+        }
+
+        DB::flushQueryLog();
+        DB::enableQueryLog();
+        $before = memory_get_peak_usage(true);
+        try {
+            $first = $archive->workspace($actor, ['page' => 1]);
+            $second = $archive->workspace($actor, ['page' => 2]);
+            $searched = $archive->workspace($actor, ['archive_search' => 'P3 Bulk Archive']);
+            $queryCount = count(DB::getQueryLog());
+            $peakGrowth = max(0, memory_get_peak_usage(true) - $before);
+        } finally {
+            DB::disableQueryLog();
+            DB::flushQueryLog();
+        }
+
+        $this->assertSame(1001, $first['records']->total());
+        $this->assertSame(1001, $first['counts']['all']);
+        $this->assertSame(1000, $searched['records']->total());
+        $this->assertCount(20, $first['records']->items());
+        $this->assertCount(20, $second['records']->items());
+        $this->assertEmpty(array_intersect(
+            array_column($first['records']->items(), 'publicId'),
+            array_column($second['records']->items(), 'publicId'),
+        ));
+        $this->assertLessThanOrEqual(36, $queryCount);
+        $this->assertLessThan(128 * 1024 * 1024, $peakGrowth);
+    }
+
+    public function test_sql_archive_conceals_denied_same_family_source_title_reference_and_url(): void
+    {
+        $office = $this->department('VISIBLE-META');
+        $other = $this->department('HIDDEN-META');
+        $actor = $this->human($office);
+        $denied = $this->restrictedCorrespondence($other);
+        $allowed = $this->restrictedCorrespondence($office);
+        $allowed->update(['subject' => 'Authorized SQL archive source']);
+        $document = $this->document($actor, $office, 'Source metadata mask');
+
+        foreach ([$denied, $allowed] as $record) {
+            DocumentLink::query()->create([
+                'document_id' => $document->id,
+                'linkable_type' => $record->getMorphClass(),
+                'linkable_id' => $record->id,
+                'relationship' => 'supporting_document',
+            ]);
+        }
+
+        $archive = app(DocumentArchiveQuery::class)->workspace($actor, [
+            'document' => $document->public_id,
+        ]);
+        $this->assertSame('Authorized SQL archive source', $archive['selected']['relatedTitle']);
+        $serialized = json_encode($archive);
+        $this->assertStringNotContainsString($denied->subject, $serialized);
+        $this->assertStringNotContainsString($denied->municipal_reference_no, $serialized);
+        $this->assertStringNotContainsString($denied->public_id, $serialized);
+        $this->assertSame(0, app(DocumentArchiveQuery::class)->workspace($actor, [
+            'archive_search' => $denied->subject,
+        ])['records']->total());
+    }
+
+    public function test_deleted_correspondence_parent_and_orphaned_travel_event_remain_authoritative(): void
+    {
+        $office = $this->department('ORPHAN-SQL');
+        $actor = $this->human($office);
+        $transaction = $this->transaction($actor, $office);
+        foreach ([CorrespondenceRecord::class, \App\Models\TravelOrderEvent::class] as $class) {
+            $document = $this->document($actor, $office, 'Higher priority missing '.$class);
+            DocumentLink::query()->create([
+                'document_id' => $document->id,
+                'linkable_type' => $transaction->getMorphClass(),
+                'linkable_id' => $transaction->id,
+                'relationship' => 'transaction',
+            ]);
+            DocumentLink::query()->create([
+                'document_id' => $document->id,
+                'linkable_type' => (new $class)->getMorphClass(),
+                'linkable_id' => 2147483600,
+                'relationship' => 'deleted_parent',
+            ]);
+            $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
+            $this->assertNull(app(DocumentArchiveQuery::class)->workspace($actor, [
+                'document' => $document->public_id,
+            ])['selected']);
+        }
     }
 
     private function department(string $name): Department
