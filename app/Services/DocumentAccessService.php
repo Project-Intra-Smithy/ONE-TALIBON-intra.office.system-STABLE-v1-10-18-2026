@@ -31,7 +31,9 @@ final class DocumentAccessService
         $links = DocumentLink::query()
             ->where('document_id', $document->id)
             ->orderBy('id')
-            ->limit(16)
+            // Parent precedence is global to the document, not to its first 16 links.
+            // A later restricted correspondence or travel parent must dominate an
+            // earlier transaction link even when more than 16 links exist.
             ->get(['linkable_type', 'linkable_id']);
 
         $hasCorrespondenceParent = false;
