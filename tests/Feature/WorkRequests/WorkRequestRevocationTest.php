@@ -351,7 +351,7 @@ final class WorkRequestRevocationTest extends TestCase
         $this->assertSame(0, app(TransactionVisibilityQuery::class)->scope($actor)->whereKey($foreign)->count());
 
         foreach ([
-            ['legacy', null, null, $allowed->id],
+            ['legacy', 'legacy_unknown', null, $allowed->id],
             ['wrong-domain', 'unrelated', WorkflowTransaction::class, $allowed->id],
             ['wrong-type', 'transaction', LeaveRequest::class, $allowed->id],
             ['alias', 'work_request', WorkflowTransaction::class, $allowed->id],
@@ -410,7 +410,7 @@ final class WorkRequestRevocationTest extends TestCase
         foreach ([
             ['bad-domain', 'work_request', WorkflowTransaction::class],
             ['bad-type', 'transaction', LeaveRequest::class],
-            ['legacy', null, null],
+            ['legacy', 'legacy_unknown', null],
         ] as [$key, $domain, $type]) {
             CalendarEvent::query()->create([
                 'event_key' => 'p1-h-calendar-'.$key,
