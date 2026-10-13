@@ -116,6 +116,16 @@ jobs:
           php artisan key:generate --no-interaction
           php artisan optimize:clear
 
+      - name: PHP syntax checks for P1-H changed application and regression files
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          php -l app/Http/Controllers/EmployeeProfileController.php
+          php -l app/Http/Controllers/LegislativeWorkspaceController.php
+          php -l app/Services/NotificationFeedQuery.php
+          php -l app/Services/CalendarWorkspaceQueryService.php
+          php -l tests/Feature/WorkRequests/WorkRequestRevocationTest.php
+
       - name: Targeted Work Request revocation, validation and workflow regression
         shell: bash
         run: |
@@ -124,6 +134,13 @@ jobs:
           vendor/bin/phpunit --no-coverage --log-junit "$RUNNER_TEMP/p1-pg16-evidence/revocation.xml" tests/Feature/WorkRequests/WorkRequestRevocationTest.php
           vendor/bin/phpunit --no-coverage --log-junit "$RUNNER_TEMP/p1-pg16-evidence/backend-validation.xml" tests/Feature/WorkRequestBackendValidationTest.php
           vendor/bin/phpunit --no-coverage --log-junit "$RUNNER_TEMP/p1-pg16-evidence/workflow-hardening.xml" tests/Feature/WorkflowHardeningTest.php
+          vendor/bin/phpunit --no-coverage --log-junit "$RUNNER_TEMP/p1-pg16-evidence/security-consumers.xml" \
+            tests/Feature/Phase1EmployeeProfileTest.php \
+            tests/Feature/Phase1ExecutiveLegislativeWorkspaceTest.php \
+            tests/Feature/CalendarWorkspaceTest.php \
+            tests/Feature/MeetingCalendarProjectionTest.php \
+            tests/Feature/Phase1SharedPlatformServicesTest.php \
+            tests/Feature/CoreDocumentAttachmentsTest.php
 
       - name: Upload sanitized JUnit results for same-head review
         if: always()
