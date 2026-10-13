@@ -166,7 +166,8 @@ jobs:
               ->fetch(PDO::FETCH_ASSOC);
           if ($row['db'] !== 'talibon_portal_test' || $row['actor'] !== 'postgres'
               || $row['port'] !== '5432' || (int) $row['version'] < 160000
-              || (int) $row['version'] >= 170000 || (int) $row['initial_tables'] !== 0) {
+              || (int) $row['version'] >= 170000
+              || ((int) $row['initial_tables'] !== 0 && getenv('P0_SUPPLEMENTAL_RUN') !== 'true')) {
               throw new RuntimeException('P0 unsafe database identity or preexisting tables');
           }
           printf("P0_EFFECTIVE_PHPUNIT_PG16=PASS db=%s role=%s port=%s version=%s initial_tables=%d\n",
@@ -305,7 +306,7 @@ jobs:
           php "$RUNNER_TEMP/p0-instrument.php"
           php -l "$RUNNER_TEMP/p0-instrumented/P0DestinationRevocationTest.php"
           set +e
-          vendor/bin/phpunit --bootstrap "$RUNNER_TEMP/p0-db-guard.php" \
+          P0_SUPPLEMENTAL_RUN=true vendor/bin/phpunit --bootstrap "$RUNNER_TEMP/p0-db-guard.php" \
             --no-coverage --log-junit "$RUNNER_TEMP/p0-evidence/junit-p0-telemetry.xml" \
             "$RUNNER_TEMP/p0-instrumented/P0DestinationRevocationTest.php"
           code=$?
