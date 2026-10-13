@@ -211,9 +211,9 @@ final class DocumentArchiveQuery
 
             foreach ($eventLinkIds['correspondence'] as $key => $eventId) {
                 $parentId = (int) ($parents[$eventId] ?? 0);
-                if ($parentId > 0) {
-                    $index[$key] = ['family' => 'correspondence', 'parentId' => $parentId];
-                }
+                // Keep unresolved event links in the precedence family: a missing
+                // parent must not downgrade a document to a lower-priority source.
+                $index[$key] = ['family' => 'correspondence', 'parentId' => $parentId];
             }
         }
 
@@ -224,9 +224,9 @@ final class DocumentArchiveQuery
 
             foreach ($eventLinkIds['transaction'] as $key => $eventId) {
                 $parentId = (int) ($parents[$eventId] ?? 0);
-                if ($parentId > 0) {
-                    $index[$key] = ['family' => 'transaction', 'parentId' => $parentId];
-                }
+                // Keep unresolved event links in the precedence family: a missing
+                // parent must not downgrade a document to a lower-priority source.
+                $index[$key] = ['family' => 'transaction', 'parentId' => $parentId];
             }
         }
 
@@ -237,9 +237,9 @@ final class DocumentArchiveQuery
 
             foreach ($eventLinkIds['travel_order'] as $key => $eventId) {
                 $parentId = (int) ($parents[$eventId] ?? 0);
-                if ($parentId > 0) {
-                    $index[$key] = ['family' => 'travel_order', 'parentId' => $parentId];
-                }
+                // Keep unresolved event links in the precedence family: a missing
+                // parent must not downgrade a document to a lower-priority source.
+                $index[$key] = ['family' => 'travel_order', 'parentId' => $parentId];
             }
         }
 
@@ -393,7 +393,20 @@ final class DocumentArchiveQuery
      */
     private function present(User $actor, Document $document, array $linkIndex): array
     {
-        $link = $document->links->first();
+        // Present only the source metadata the actor is authorized to see.
+        // Taking the first link can disclose a denied parent title/reference even
+        // when a different link within the same precedence family permits access.
+        $link = null;
+        foreach (['correspondence', 'travel_order', 'transaction'] as $family) {
+            foreach ($document->links as $candidate) {
+                $entry = $linkIndex[$this->linkKey($candidate)] ?? null;
+                if ($entry && $entry['family'] === $family && $entry['authorized']) {
+                    $link = $candidate;
+                    break 2;
+                }
+            }
+        }
+
         $context = $link
             ? ($linkIndex[$this->linkKey($link)]['context'] ?? [])
             : [];
