@@ -1,0 +1,295 @@
+name: P0 exact SHA destination authorization PostgreSQL 16
+
+on:
+  push:
+    branches:
+      - forge/ci-p234-pg16-exec-001
+    paths:
+      - .github/workflows/p0-dest-auth-exact-sha-pg16.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: p0-dest-auth-pg16-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  p0:
+    name: P0 direct-destination revocation exact SHA
+    if: ${{ github.repository == 'Project-Intra-Smithy/Talibon-Sales-Prototype' && github.event_name == 'push' && github.ref == 'refs/heads/forge/ci-p234-pg16-exec-001' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      P0_EXACT_SHA: d01438f1b238367820145308eba1caa8837433d0
+      P0_ACCEPTED_BASE: b757147f4ae553af5110fe97792a981c2d6acdf0
+      P0_TEST_FILE: tests/Feature/P0DestinationRevocation/P0DestinationRevocationTest.php
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: postgres
+      CACHE_STORE: file
+      SESSION_DRIVER: array
+      QUEUE_CONNECTION: sync
+    steps:
+      - name: Generate mask before provisioning disposable PostgreSQL
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          password="$(openssl rand -hex 32)"
+          test "${#password}" -eq 64
+          printf '::add-mask::%s\n' "$password"
+          printf 'DB_PASSWORD=%s\n' "$password" >> "$GITHUB_ENV"
+          container="p0-dest-auth-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          docker run --detach --rm --name "$container" \
+            --env POSTGRES_DB=talibon_portal_test \
+            --env POSTGRES_USER=postgres \
+            --env POSTGRES_PASSWORD="$password" \
+            --publish 127.0.0.1:5432:5432 \
+            public.ecr.aws/docker/library/postgres:16 >/dev/null
+          printf 'P0_DISPOSABLE_CONTAINER=%s\n' "$container" >> "$GITHUB_ENV"
+          healthy=no
+          for attempt in $(seq 1 60); do
+            if docker exec "$container" pg_isready -U postgres -d talibon_portal_test >/dev/null 2>&1; then
+              healthy=yes
+              break
+            fi
+            sleep 1
+          done
+          test "$healthy" = yes
+          echo 'P0_RANDOM_POSTGRES_PASSWORD_MASKED_BEFORE_CONTAINER=PASS'
+
+      - name: Checkout mandatory immutable P0 source without persisted credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: d01438f1b238367820145308eba1caa8837433d0
+          persist-credentials: false
+          fetch-depth: 10
+
+      - name: Attest exact source SHA clean tree and three-file change manifest
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$GITHUB_EVENT_NAME" = push
+          test "$GITHUB_REF" = refs/heads/forge/ci-p234-pg16-exec-001
+          test "$(git rev-parse HEAD)" = "$P0_EXACT_SHA"
+          test -z "$(git status --porcelain)"
+          git cat-file -e "$P0_ACCEPTED_BASE^{commit}"
+          git diff --name-only "$P0_ACCEPTED_BASE" "$P0_EXACT_SHA" > "$RUNNER_TEMP/p0-diff.txt"
+          printf '%s\n' \
+            app/Services/CorrespondenceAccessDecider.php \
+            app/Services/TravelOrderAccess.php \
+            tests/Feature/P0DestinationRevocation/P0DestinationRevocationTest.php > "$RUNNER_TEMP/p0-expected-files.txt"
+          diff -u "$RUNNER_TEMP/p0-expected-files.txt" "$RUNNER_TEMP/p0-diff.txt"
+          git ls-files --error-unmatch "$P0_TEST_FILE" >/dev/null
+          mkdir -p "$RUNNER_TEMP/p0-evidence"
+          {
+            echo "source_sha=$P0_EXACT_SHA"
+            echo "source_tree=$(git rev-parse HEAD^{tree})"
+            echo "accepted_base=$P0_ACCEPTED_BASE"
+            echo "source_manifest=three-authorized-files-only"
+            echo "test_suite=P0DestinationRevocationTest"
+            echo "runner=github-hosted"
+            echo "workflow_commit=$GITHUB_SHA"
+            echo "workflow_run_id=$GITHUB_RUN_ID"
+          } > "$RUNNER_TEMP/p0-evidence/source-receipt.txt"
+          echo "P0_EXACT_HEAD_ATTESTED=$P0_EXACT_SHA"
+          echo 'P0_THREE_FILE_MANIFEST=PASS'
+
+      - name: Configure PHP 8.4 PostgreSQL runtime
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, fileinfo, zip, mbstring
+          tools: composer:v2
+          coverage: none
+
+      - name: Install committed Composer lockfile
+        shell: bash
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ github.token }}"}}'
+        run: |
+          set -Eeuo pipefail
+          test -f composer.lock
+          sha256sum composer.lock | cut -d' ' -f1 | sed 's/^/P0_COMPOSER_LOCK_SHA256=/'
+          composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+          test -x vendor/bin/phpunit
+          test -x vendor/bin/pint
+          php -v | head -n 1
+          composer --version
+
+      - name: Guard effective PHPUnit PostgreSQL configuration and pristine database
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          cat > "$RUNNER_TEMP/p0-db-guard.php" <<'PHP'
+          <?php
+          require getcwd().'/vendor/autoload.php';
+          foreach ([
+              'APP_ENV' => 'testing',
+              'DB_CONNECTION' => 'pgsql',
+              'DB_HOST' => '127.0.0.1',
+              'DB_PORT' => '5432',
+              'DB_DATABASE' => 'talibon_portal_test',
+              'DB_USERNAME' => 'postgres',
+          ] as $name => $wanted) {
+              foreach ([
+                  'getenv' => getenv($name),
+                  'env' => $_ENV[$name] ?? null,
+                  'server' => $_SERVER[$name] ?? null,
+              ] as $source => $actual) {
+                  if ((string) $actual !== $wanted) {
+                      throw new RuntimeException("P0 unsafe effective configuration: {$name} from {$source}");
+                  }
+              }
+          }
+          if (getenv('GITHUB_ACTIONS') !== 'true'
+              || getenv('RUNNER_ENVIRONMENT') !== 'github-hosted'
+              || !getenv('DB_PASSWORD')) {
+              throw new RuntimeException('P0 refused non-ephemeral runner or missing disposable credential');
+          }
+          $pdo = new PDO('pgsql:host=127.0.0.1;port=5432;dbname=talibon_portal_test',
+              'postgres', getenv('DB_PASSWORD'), [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+          $row = $pdo->query("SELECT current_database() db, current_user actor,
+              current_setting('port') port, current_setting('server_version_num') version,
+              (SELECT COUNT(*) FROM information_schema.tables
+               WHERE table_schema='public' AND table_type='BASE TABLE') initial_tables")
+              ->fetch(PDO::FETCH_ASSOC);
+          if ($row['db'] !== 'talibon_portal_test' || $row['actor'] !== 'postgres'
+              || $row['port'] !== '5432' || (int) $row['version'] < 160000
+              || (int) $row['version'] >= 170000 || (int) $row['initial_tables'] !== 0) {
+              throw new RuntimeException('P0 unsafe database identity or preexisting tables');
+          }
+          printf("P0_EFFECTIVE_PHPUNIT_PG16=PASS db=%s role=%s port=%s version=%s initial_tables=%d\n",
+              $row['db'], $row['actor'], $row['port'], $row['version'], $row['initial_tables']);
+          PHP
+          php "$RUNNER_TEMP/p0-db-guard.php"
+
+      - name: Prepare disposable Laravel application and independently verify PDO
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          cp .env.example .env
+          php artisan key:generate --no-interaction
+          php artisan optimize:clear
+          php <<'PHP'
+          <?php
+          require 'vendor/autoload.php';
+          $app = require 'bootstrap/app.php';
+          $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+          $db = $app->make('db')->connection();
+          $config = $db->getConfig();
+          $row = $db->selectOne("SELECT current_database() db, current_user actor,
+              current_setting('server_version_num') version");
+          if ($config['driver'] !== 'pgsql'
+              || $config['host'] !== '127.0.0.1'
+              || (int) $config['port'] !== 5432
+              || $config['database'] !== 'talibon_portal_test'
+              || $config['username'] !== 'postgres'
+              || $row->db !== 'talibon_portal_test'
+              || $row->actor !== 'postgres'
+              || (int) $row->version < 160000 || (int) $row->version >= 170000) {
+              throw new RuntimeException('P0 Laravel PDO differs from disposable PostgreSQL target');
+          }
+          echo "P0_LARAVEL_EFFECTIVE_PDO=PASS db={$row->db} role={$row->actor} version={$row->version}\n";
+          PHP
+
+      - name: PHP syntax all changed files and nonmutating Laravel Pint
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$RUNNER_TEMP/p0-evidence"
+          php -l app/Services/TravelOrderAccess.php
+          php -l app/Services/CorrespondenceAccessDecider.php
+          php -l "$P0_TEST_FILE"
+          echo 'P0_PHP_LINT=3/3 PASS'
+          set +e
+          vendor/bin/pint --test \
+            app/Services/TravelOrderAccess.php \
+            app/Services/CorrespondenceAccessDecider.php \
+            "$P0_TEST_FILE"
+          code=$?
+          set -e
+          printf 'PINT_EXIT=%s\n' "$code" > "$RUNNER_TEMP/p0-evidence/pint-exit-code.txt"
+          printf 'P0_PINT_EXIT=%s\n' "$code"
+
+      - name: Execute six canonical committed HTTP tests on disposable PostgreSQL
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          # The bootstrap repeats the DB guard AFTER phpunit.xml force-env overrides,
+          # and before the DatabaseMigrations test lifecycle can create tables.
+          set +e
+          vendor/bin/phpunit --bootstrap "$RUNNER_TEMP/p0-db-guard.php" \
+            --no-coverage \
+            --log-junit "$RUNNER_TEMP/p0-evidence/junit-p0.xml" \
+            "$P0_TEST_FILE"
+          code=$?
+          set -e
+          printf 'PHPUNIT_EXIT=%s\n' "$code" > "$RUNNER_TEMP/p0-evidence/phpunit-exit-code.txt"
+          printf 'P0_PHPUNIT_EXIT=%s\n' "$code"
+          exit "$code"
+
+      - name: Classify JUnit method outcomes without printing record contents
+        if: always()
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          if test -f "$RUNNER_TEMP/p0-evidence/junit-p0.xml"; then
+            php <<'PHP'
+          <?php
+          $path = getenv('RUNNER_TEMP').'/p0-evidence/junit-p0.xml';
+          $doc = simplexml_load_file($path);
+          if ($doc === false) exit(1);
+          $out = [];
+          foreach ($doc->xpath('//testcase') as $case) {
+              $name = (string) $case['name'];
+              $errors = count($case->xpath('./error'));
+              $failures = count($case->xpath('./failure'));
+              $skips = count($case->xpath('./skipped'));
+              $status = $errors ? 'ERROR' : ($failures ? 'FAIL' : ($skips ? 'SKIP' : 'PASS'));
+              $out[] = ['method' => $name, 'result' => $status,
+                  'assertions' => (string) $case['assertions'], 'seconds' => (string) $case['time']];
+              printf("P0_JUNIT_METHOD=%s result=%s assertions=%s\n", $name, $status, (string) $case['assertions']);
+          }
+          file_put_contents(getenv('RUNNER_TEMP').'/p0-evidence/method-results.json',
+              json_encode(['count' => count($out), 'methods' => $out], JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR));
+          printf("P0_JUNIT_RECORDED_METHODS=%d\n", count($out));
+          PHP
+          fi
+          cat "$RUNNER_TEMP/p0-evidence/pint-exit-code.txt" 2>/dev/null || true
+          cat "$RUNNER_TEMP/p0-evidence/phpunit-exit-code.txt" 2>/dev/null || true
+
+      - name: Enforce Pint formatting and exactly six passed methods
+        if: always()
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test -f "$RUNNER_TEMP/p0-evidence/pint-exit-code.txt"
+          grep -qx 'PINT_EXIT=0' "$RUNNER_TEMP/p0-evidence/pint-exit-code.txt"
+          test -f "$RUNNER_TEMP/p0-evidence/phpunit-exit-code.txt"
+          grep -qx 'PHPUNIT_EXIT=0' "$RUNNER_TEMP/p0-evidence/phpunit-exit-code.txt"
+          php <<'PHP'
+          <?php
+          $report = json_decode(file_get_contents(getenv('RUNNER_TEMP').'/p0-evidence/method-results.json'), true);
+          if ($report['count'] !== 6 || count(array_filter($report['methods'],
+              fn ($r) => $r['result'] !== 'PASS')) !== 0) {
+              throw new RuntimeException('P0 six-method exact-head acceptance gate failed');
+          }
+          echo 'P0_PG16_6_OF_6_METHODS_AND_PINT=PASS';
+          PHP
+
+      - name: Upload non-secret exact-SHA JUnit and security receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: p0-dest-auth-pg16-d01438f1b238367820145308eba1caa8837433d0
+          path: ${{ runner.temp }}/p0-evidence/*
+          if-no-files-found: ignore
+          retention-days: 14
