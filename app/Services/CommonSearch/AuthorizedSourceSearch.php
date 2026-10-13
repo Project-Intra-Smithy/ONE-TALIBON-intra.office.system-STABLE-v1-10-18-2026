@@ -115,9 +115,9 @@ final readonly class AuthorizedSourceSearch
         }
 
         $actor = User::query()->with('employee.department')->find($claimed->getKey());
-        if (! $actor || ! $actor->is_active
-            || ! $actor->employee || $actor->employee->employment_status !== 'active'
-            || ! $actor->employee->department || ! $actor->employee->department->is_active) {
+        if ($actor === null || $actor->is_active === false
+            || $actor->employee === null || $actor->employee->employment_status !== 'active'
+            || $actor->employee->department === null || $actor->employee->department->is_active === false) {
             throw new AuthorizationException('Common Search municipal access is revoked.');
         }
 
@@ -132,8 +132,8 @@ final readonly class AuthorizedSourceSearch
         $this->literalMatch($scope, $term, ['subject', 'municipal_reference_no', 'external_reference_no']);
 
         return $scope->selectRaw(
-            "'correspondence' AS source_kind, id AS source_id, CAST(public_id AS TEXT) AS public_id, "
-            ."subject AS title, COALESCE(municipal_reference_no, external_reference_no) AS reference, updated_at AS changed_at"
+            '\'correspondence\' AS source_kind, id AS source_id, CAST(public_id AS TEXT) AS public_id, '
+            .'subject AS title, COALESCE(municipal_reference_no, external_reference_no) AS reference, updated_at AS changed_at'
         );
     }
 
@@ -145,8 +145,8 @@ final readonly class AuthorizedSourceSearch
         $this->literalMatch($scope, $term, ['purpose', 'reference_number']);
 
         return $scope->selectRaw(
-            "'travel_order' AS source_kind, id AS source_id, CAST(public_id AS TEXT) AS public_id, "
-            ."purpose AS title, reference_number AS reference, updated_at AS changed_at"
+            '\'travel_order\' AS source_kind, id AS source_id, CAST(public_id AS TEXT) AS public_id, '
+            .'purpose AS title, reference_number AS reference, updated_at AS changed_at'
         );
     }
 
@@ -158,7 +158,7 @@ final readonly class AuthorizedSourceSearch
                 // PostgreSQL POSITION treats %, _, backslashes and quotes as
                 // literal text. All user bytes are parameters, not SQL syntax.
                 $match->orWhereRaw(
-                    "POSITION(? IN LOWER(COALESCE({$column}, ''))) > 0",
+                    sprintf('POSITION(? IN LOWER(COALESCE(%s, \'\'))) > 0', $column),
                     [$term],
                 );
             }
