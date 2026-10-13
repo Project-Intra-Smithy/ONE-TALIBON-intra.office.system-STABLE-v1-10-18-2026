@@ -195,7 +195,13 @@ jobs:
             P3) php -l app/Services/CommonEvidence/AuthorizedArchiveSql.php ;;
             P4)
               find app/Services/CommonSearch -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+              # Preserve the exact candidate and still execute PHPUnit even if
+              # Pint finds owner-scope formatting defects. Enforce later.
+              set +e
               vendor/bin/pint --test app/Services/CommonSearch tests/Feature/CommonSearch
+              pint_exit=$?
+              set -e
+              printf 'PINT_EXIT=%s\n' "$pint_exit" > "$RUNNER_TEMP/p234-evidence/pint-exit-code.txt"
               ;;
           esac
 
@@ -249,6 +255,17 @@ jobs:
           file_put_contents($path, json_encode(['lane' => getenv('P234_LANE'), 'plans' => $output], JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR));
           printf("P234_EXPLAIN_READ_ONLY=PASS lane=%s probes=%d\n", getenv('P234_LANE'), count($output));
           PHP
+
+      - name: Enforce P4 Pint gate after behavioral and EXPLAIN evidence
+        if: always()
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          if test "$P234_LANE" = P4; then
+            test -f "$RUNNER_TEMP/p234-evidence/pint-exit-code.txt"
+            cat "$RUNNER_TEMP/p234-evidence/pint-exit-code.txt"
+            grep -qx 'PINT_EXIT=0' "$RUNNER_TEMP/p234-evidence/pint-exit-code.txt"
+          fi
 
       - name: Record sanitized runtime and JUnit totals
         if: always()
