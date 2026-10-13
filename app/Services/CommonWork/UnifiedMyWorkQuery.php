@@ -59,7 +59,8 @@ final readonly class UnifiedMyWorkQuery
         int $page = 1,
         int $perPage = 20,
         ?string $source = null,
-    ): LengthAwarePaginator {
+    ): LengthAwarePaginator
+    {
         $this->assertPaginationAndSource($page, $perPage, $source);
         $from = $this->utcBoundary($fromInclusive);
         $before = $this->utcBoundary($beforeExclusive);
@@ -91,7 +92,8 @@ final readonly class UnifiedMyWorkQuery
         string $state,
         int $page = 1,
         int $perPage = 20,
-    ): LengthAwarePaginator {
+    ): LengthAwarePaginator
+    {
         $this->assertPaginationAndSource($page, $perPage, $source);
 
         // State filtering without a concrete source is prohibited. The Task
@@ -266,7 +268,6 @@ final readonly class UnifiedMyWorkQuery
 
     /**
      * The single authorization boundary for both pagination and aggregation.
-     * @return QueryBuilder
      */
     private function authorizedRows(User $actor): QueryBuilder
     {
