@@ -1,0 +1,200 @@
+name: CC-INT-STAGE-001 canonical baseline Feature differential
+
+on:
+  push:
+    branches:
+      - forge/ci-p234-pg16-exec-001
+    paths:
+      - .github/workflows/cc-int-stage-baseline-pg16.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cc-int-stage-001-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  integration:
+    name: Canonical baseline PG16 full Feature comparison
+    if: ${{ github.repository == 'Project-Intra-Smithy/Talibon-Sales-Prototype' && github.event_name == 'push' && github.ref == 'refs/heads/forge/ci-p234-pg16-exec-001' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      CC_INTEGRATED_SHA: 5ed21eecac447a2ebe11da96f8baf6e05d722fdf
+      CC_CANONICAL_BASE: 5ed21eecac447a2ebe11da96f8baf6e05d722fdf
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: postgres
+      CACHE_STORE: file
+      SESSION_DRIVER: array
+      QUEUE_CONNECTION: sync
+    steps:
+      - name: Mask random ephemeral PostgreSQL and Laravel secrets before use
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          db_password="$(openssl rand -hex 32)"
+          app_key="$(php -r 'echo "base64:".base64_encode(random_bytes(32));')"
+          test "${#db_password}" -eq 64
+          printf '::add-mask::%s\n' "$db_password"
+          printf '::add-mask::%s\n' "$app_key"
+          printf 'DB_PASSWORD=%s\n' "$db_password" >> "$GITHUB_ENV"
+          printf 'APP_KEY=%s\n' "$app_key" >> "$GITHUB_ENV"
+          container="cc-int-stage-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          started=no
+          for image in public.ecr.aws/docker/library/postgres:16 postgres:16; do
+            if docker run --detach --rm --name "$container" \
+              --env POSTGRES_DB=talibon_portal_test \
+              --env POSTGRES_USER=postgres \
+              --env POSTGRES_PASSWORD="$db_password" \
+              --publish 127.0.0.1:5432:5432 "$image" >/dev/null; then
+              started=yes
+              break
+            fi
+            docker rm -f "$container" >/dev/null 2>&1 || true
+          done
+          test "$started" = yes
+          printf 'CC_INT_PG_CONTAINER=%s\n' "$container" >> "$GITHUB_ENV"
+          healthy=no
+          for i in $(seq 1 60); do
+            if docker exec "$container" pg_isready -U postgres -d talibon_portal_test >/dev/null 2>&1; then
+              healthy=yes
+              break
+            fi
+            sleep 1
+          done
+          test "$healthy" = yes
+          echo 'CC_INT_DISPOSABLE_PG16=READY mask-before-use=PASS'
+
+      - name: Checkout exact immutable combined staging source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 5ed21eecac447a2ebe11da96f8baf6e05d722fdf
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Verify immutable pre-staging canonical baseline SHA
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$CC_INTEGRATED_SHA"
+          test "$CC_INTEGRATED_SHA" = "$CC_CANONICAL_BASE"
+          test -z "$(git status --porcelain)"
+          mkdir -p "$RUNNER_TEMP/cc-int-evidence"
+          printf 'baseline_source_sha=%s\nworkflow_sha=%s\n' "$CC_INTEGRATED_SHA" "$GITHUB_SHA" > "$RUNNER_TEMP/cc-int-evidence/source-receipt.txt"
+          echo "CC_BASELINE_SOURCE=PASS exact=$CC_INTEGRATED_SHA"
+
+      - name: Configure pinned PHP 8.4 PostgreSQL runtime
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, fileinfo, zip, mbstring
+          tools: composer:v2
+          coverage: none
+
+      - name: Install exact committed PHP dependencies
+        shell: bash
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ github.token }}"}}'
+        run: |
+          set -Eeuo pipefail
+          composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+          test -x vendor/bin/phpunit
+          test -x vendor/bin/pint
+
+      - name: Guard actual disposable PostgreSQL identity and empty initial schema
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          php <<'PHP'
+          <?php
+          $db = new PDO(
+              'pgsql:host='.getenv('DB_HOST').';port='.getenv('DB_PORT').';dbname='.getenv('DB_DATABASE'),
+              getenv('DB_USERNAME'), getenv('DB_PASSWORD'), [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+          );
+          $v = $db->query("SELECT current_database() AS db, current_user AS actor, current_setting('server_version_num')::int AS ver, pg_backend_pid() AS pid")->fetch(PDO::FETCH_ASSOC);
+          $tables=(int)$db->query("SELECT count(*) FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE'")->fetchColumn();
+          if($v['db']!=='talibon_portal_test'||$v['actor']!=='postgres'||(int)$v['ver']<160000||(int)$v['ver']>=170000||$tables!==0){throw new RuntimeException('Wrong or nonempty PG16 target');}
+          printf("CC_INT_PG16_EFFECTIVE=PASS database=%s role=%s version=%d initial_tables=%d\n",$v['db'],$v['actor'],$v['ver'],$tables);
+          PHP
+
+      - name: Baseline PHP syntax sanity and unmodified source attestation
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          php -l app/Services/CorrespondenceAccessDecider.php
+          php -l app/Services/TravelOrderAccess.php
+          echo 'CC_BASELINE_PHP_LINT=PASS (2 pre-staging policy files)'
+
+      - name: Baseline control only — no staging-only focused tests
+        shell: bash
+        run: |
+          echo 'CC_BASELINE_FOCUSED_NOT_APPLICABLE=PRE_STAGING_SOURCE'
+
+      - name: Execute complete feature regression suite on assembled source
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          evidence="$RUNNER_TEMP/cc-int-evidence"
+          set +e
+          vendor/bin/phpunit --no-coverage --log-junit "$evidence/junit-feature.xml" tests/Feature > "$evidence/feature.log" 2>&1
+          rc=$?
+          set -e
+          printf 'FEATURE_EXIT=%s\n' "$rc" > "$evidence/feature-status.txt"
+          tail -n 40 "$evidence/feature.log"
+          echo "CC_INT_FULL_FEATURE_EXIT=$rc"
+
+      - name: Install locked JavaScript dependencies and build staged frontend
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          evidence="$RUNNER_TEMP/cc-int-evidence"
+          node --version
+          npm --version
+          set +e
+          npm ci --no-audit --no-fund > "$evidence/npm-ci.log" 2>&1
+          install_rc=$?
+          if test "$install_rc" -eq 0; then
+            npm run build > "$evidence/npm-build.log" 2>&1
+            build_rc=$?
+          else
+            build_rc=125
+          fi
+          set -e
+          printf 'NPM_INSTALL_EXIT=%s\nBUILD_EXIT=%s\n' "$install_rc" "$build_rc" | tee "$evidence/javascript-status.txt"
+          tail -n 20 "$evidence/npm-build.log" 2>/dev/null || tail -n 20 "$evidence/npm-ci.log"
+
+      - name: Enforce baseline Feature regression truth without masking failures
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          evidence="$RUNNER_TEMP/cc-int-evidence"
+          cat "$evidence/feature-status.txt"
+          cat "$evidence/javascript-status.txt"
+          grep -qx 'FEATURE_EXIT=0' "$evidence/feature-status.txt"
+          grep -qx 'NPM_INSTALL_EXIT=0' "$evidence/javascript-status.txt"
+          grep -qx 'BUILD_EXIT=0' "$evidence/javascript-status.txt"
+          echo 'CC_BASELINE_FEATURE_AND_JS=PASS'
+
+      - name: Upload redacted source, lint, JUnit and application regression receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cc-int-baseline-pg16-5ed21eecac44
+          path: ${{ runner.temp }}/cc-int-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Destroy ephemeral PostgreSQL container
+        if: always()
+        shell: bash
+        run: |
+          if test -n "${CC_INT_PG_CONTAINER:-}"; then docker rm -f "$CC_INT_PG_CONTAINER" >/dev/null 2>&1 || true; fi
