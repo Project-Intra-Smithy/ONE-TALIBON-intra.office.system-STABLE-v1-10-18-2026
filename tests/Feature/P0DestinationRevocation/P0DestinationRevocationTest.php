@@ -29,7 +29,7 @@ final class P0DestinationRevocationTest extends TestCase
     {
         $office = $this->office();
         $actor = $this->human('department_head', $office);
-        $order = $this->travel($office, $actor->employee);
+        $order = $this->makeTravelOrder($office, $actor->employee);
 
         $this->actingAs($actor);
         $this->get('/travel-orders')->assertOk();
@@ -51,7 +51,7 @@ final class P0DestinationRevocationTest extends TestCase
     {
         $mayor = $this->office('MAYOR');
         $actor = $this->human('mayor_approver', $mayor);
-        $order = $this->travel($mayor, $actor->employee);
+        $order = $this->makeTravelOrder($mayor, $actor->employee);
 
         $this->actingAs($actor);
         $this->get('/travel-orders/create')->assertOk();
@@ -72,7 +72,7 @@ final class P0DestinationRevocationTest extends TestCase
         $mayor = $this->office('MAYOR');
         $other = $this->office();
         $actor = $this->human('mayor_approver', $mayor);
-        $order = $this->travel($other, $this->human('employee', $other)->employee);
+        $order = $this->makeTravelOrder($other, $this->human('employee', $other)->employee);
 
         $this->actingAs($actor);
         $this->get('/travel-orders/'.$order->public_id)->assertOk();
@@ -228,7 +228,7 @@ final class P0DestinationRevocationTest extends TestCase
         return $user->fresh('employee.department');
     }
 
-    private function travel(Department $office, Employee $issuedTo): TravelOrder
+    private function makeTravelOrder(Department $office, Employee $issuedTo): TravelOrder
     {
         $order = TravelOrder::query()->create([
             'reference_number' => 'P0-TR-'.Str::upper(Str::random(12)),
