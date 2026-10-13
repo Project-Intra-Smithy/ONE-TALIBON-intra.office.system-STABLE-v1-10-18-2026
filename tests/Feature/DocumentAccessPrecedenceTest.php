@@ -164,6 +164,63 @@ class DocumentAccessPrecedenceTest extends TestCase
             ->assertForbidden();
     }
 
+
+    public function test_orphaned_higher_priority_event_link_does_not_downgrade_to_transaction(): void
+    {
+        $office = $this->department('ORPHAN');
+        $actor = $this->human($office);
+        $transaction = $this->transaction($actor, $office);
+        $document = $this->document($actor, $office, 'Orphan event');
+
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => $transaction->getMorphClass(),
+            'linkable_id' => $transaction->id,
+            'relationship' => 'supporting_document',
+        ]);
+
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => (new \\App\\Models\\CorrespondenceEvent())->getMorphClass(),
+            'linkable_id' => 999999999,
+            'relationship' => 'missing_high_priority_event',
+        ]);
+
+        $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
+        $archive = app(DocumentArchiveQuery::class)->workspace($actor, ['document' => $document->public_id]);
+        $this->assertNull($archive['selected']);
+        $this->assertSame(0, $archive['records']->total());
+    }
+
+    public function test_archive_uses_authorized_parent_for_relationship_metadata(): void
+    {
+        $office = $this->department('CONTEXT');
+        $other = $this->department('HIDDEN-CONTEXT');
+        $actor = $this->human($office);
+        $denied = $this->restrictedCorrespondence($other);
+        $allowed = $this->restrictedCorrespondence($office);
+        $allowed->update(['subject' => 'Authorized correspondence context']);
+        $document = $this->document($actor, $office, 'Mixed correspondence context');
+
+        foreach ([$denied, $allowed] as $index => $record) {
+            DocumentLink::query()->create([
+                'document_id' => $document->id,
+                'linkable_type' => $record->getMorphClass(),
+                'linkable_id' => $record->id,
+                'relationship' => 'correspondence_'.($index + 1),
+            ]);
+        }
+
+        $this->assertTrue(app(DocumentAccessService::class)->canDownload($actor, $document));
+        $archive = app(DocumentArchiveQuery::class)->workspace($actor, [
+            'document' => $document->public_id,
+        ]);
+        $this->assertSame(1, $archive['records']->total());
+        $this->assertSame('Authorized correspondence context', $archive['selected']['relatedTitle']);
+        $this->assertSame('Authorized correspondence context', $archive['records']->items()[0]['relatedTitle']);
+        $this->assertNotSame($denied->subject, $archive['selected']['relatedTitle']);
+    }
+
     private function department(string $name): Department
     {
         return Department::query()->create([
