@@ -139,12 +139,15 @@ jobs:
               'DB_DATABASE' => 'talibon_portal_test',
               'DB_USERNAME' => 'postgres',
           ] as $name => $wanted) {
-              foreach ([
-                  'getenv' => getenv($name),
-                  'env' => $_ENV[$name] ?? null,
-                  'server' => $_SERVER[$name] ?? null,
-              ] as $source => $actual) {
-                  if ((string) $actual !== $wanted) {
+              // Outside PHPUnit the CLI may not hydrate $_ENV/$_SERVER.
+              // getenv() must always match; any populated superglobal must
+              // also match. Inside PHPUnit, phpunit.xml forces each value
+              // and tests/TestCase.php requires all three matching sources.
+              if (getenv($name) !== $wanted) {
+                  throw new RuntimeException("P0 unsafe process environment: {$name}");
+              }
+              foreach (['env' => $_ENV[$name] ?? null, 'server' => $_SERVER[$name] ?? null] as $source => $actual) {
+                  if ($actual !== null && (string) $actual !== $wanted) {
                       throw new RuntimeException("P0 unsafe effective configuration: {$name} from {$source}");
                   }
               }
