@@ -40,28 +40,45 @@ jobs:
       DB_PORT: '5432'
       DB_DATABASE: talibon_portal_test
       DB_USERNAME: postgres
-      DB_PASSWORD: p234_${{ github.run_id }}_${{ github.run_attempt }}_${{ matrix.lane }}_disposable
       CACHE_STORE: file
       SESSION_DRIVER: array
       QUEUE_CONNECTION: sync
       P234_LANE: ${{ matrix.lane }}
       P234_EXACT_SHA: ${{ matrix.sha }}
       P234_TEST_FILE: ${{ matrix.test_file }}
-    services:
-      postgres:
-        image: public.ecr.aws/docker/library/postgres:16
-        env:
-          POSTGRES_DB: talibon_portal_test
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: p234_${{ github.run_id }}_${{ github.run_attempt }}_${{ matrix.lane }}_disposable
-        ports:
-          - '127.0.0.1:5432:5432'
-        options: >-
-          --health-cmd "pg_isready -U postgres -d talibon_portal_test"
-          --health-interval 5s
-          --health-timeout 4s
-          --health-retries 12
     steps:
+      # Postgres must not be a job-level Actions service: services initialize
+      # before steps, so no preceding ::add-mask:: can protect their environment.
+      - name: Mask random disposable PostgreSQL credential before starting container
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          pg_password="$(openssl rand -hex 32)"
+          test "${#pg_password}" -eq 64
+          # Register the mask BEFORE writing the job environment or creating
+          # a container. Never echo the credential or inspect container env.
+          printf '::add-mask::%s\n' "$pg_password"
+          printf 'DB_PASSWORD=%s\n' "$pg_password" >> "$GITHUB_ENV"
+          container="p234-pg16-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${P234_LANE}"
+          docker run --detach --rm --name "$container" \
+            --env POSTGRES_DB=talibon_portal_test \
+            --env POSTGRES_USER=postgres \
+            --env POSTGRES_PASSWORD="$pg_password" \
+            --publish 127.0.0.1:5432:5432 \
+            public.ecr.aws/docker/library/postgres:16 > /dev/null
+          printf 'P234_PG16_CONTAINER=%s\n' "$container" >> "$GITHUB_ENV"
+          healthy=no
+          for attempt in $(seq 1 60); do
+            if docker exec "$container" pg_isready -U postgres -d talibon_portal_test >/dev/null 2>&1; then
+              healthy=yes
+              break
+            fi
+            sleep 1
+          done
+          test "$healthy" = yes
+          printf 'P234_POSTGRES_STARTED=PASS lane=%s credential=masked-random-run-only\n' "$P234_LANE"
+
       - name: Checkout exact immutable candidate SHA with no persisted credentials
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -223,7 +240,7 @@ jobs:
       - name: Measure focused 1000-row SQL query counts using disposable test copies
         # This is supplemental instrumentation: canonical candidate source is
         # already run unchanged above. Never edit or commit candidate files.
-        if: ${{ success() && matrix.lane != 'P4' }}
+        if: ${{ success() }}
         shell: bash
         run: |
           set -Eeuo pipefail
@@ -241,6 +258,72 @@ jobs:
                   var_export('P234_ACTUAL_QUERY_COUNT '.$variable.'=', true).
                   ".\$".$variable.".PHP_EOL, FILE_APPEND);";
           }, $code, -1, $hits);
+          if (getenv('P234_LANE') === 'P4') {
+              // This code is inserted INSIDE the 1,000-row PHPUnit method,
+              // before RefreshDatabase rolls back its populated fixture.
+              $needle = '$queryCount = count(DB::getQueryLog());';
+              $insertion = <<<'MEASURE'
+$queryCount = count(DB::getQueryLog());
+            $p4Trace = DB::getQueryLog();
+            $p4EvidenceDir = getenv('RUNNER_TEMP').'/p234-evidence';
+            $p4Rows = DB::table('correspondence_records')
+                ->where('subject', 'P4 scalable match')->count();
+            if ($p4Rows < 1000) {
+                throw new \RuntimeException('P4 plan fixture has fewer than 1000 rows');
+            }
+            file_put_contents($p4EvidenceDir.'/query-counts.txt',
+                'P234_ACTUAL_QUERY_COUNT P4_combined_two_pages='.$queryCount.
+                ' populated_correspondence_rows='.$p4Rows.PHP_EOL, FILE_APPEND);
+            $p4Plans = [];
+            foreach ($p4Trace as $entry) {
+                $sql = trim($entry['query'] ?? '');
+                if (! preg_match('/^SELECT\s/i', $sql)
+                    || ! str_contains($sql, 'authorized_search')) {
+                    continue;
+                }
+                if (count($p4Plans) >= 2) {
+                    break;
+                }
+                $row = DB::selectOne(
+                    'EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) '.$sql,
+                    $entry['bindings'] ?? [],
+                );
+                $fields = (array) $row;
+                $payload = reset($fields);
+                $plan = json_decode($payload, true, 512, JSON_THROW_ON_ERROR);
+                $p4Plans[] = [
+                    'case' => count($p4Plans) === 0 ? 'authorized_search_count' : 'authorized_search_page',
+                    'populated_correspondence_rows' => $p4Rows,
+                    'plan' => $plan[0],
+                ];
+            }
+            if (count($p4Plans) !== 2) {
+                throw new \RuntimeException('P4 expected actual UNION count + page SELECT plans');
+            }
+            file_put_contents(
+                $p4EvidenceDir.'/read-only-explain.json',
+                json_encode([
+                    'lane' => 'P4',
+                    'source' => 'actual test query-log SQL and parameter bindings, not leaked',
+                    'measurement' => 'within 1000-row RefreshDatabase fixture before rollback',
+                    'plans' => $p4Plans,
+                ], JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR)
+            );
+            foreach ($p4Plans as $entry) {
+                $node = $entry['plan']['Plan'];
+                printf("P234_P4_POPULATED_EXPLAIN case=%s rows=%s node=%s actual_rows=%s shared_hit=%s shared_read=%s\n",
+                    $entry['case'], $p4Rows, $node['Node Type'] ?? 'unknown',
+                    $node['Actual Rows'] ?? 'unknown', $node['Shared Hit Blocks'] ?? 0,
+                    $node['Shared Read Blocks'] ?? 0);
+            }
+MEASURE;
+              $code = str_replace($needle, $insertion, $code, $count);
+              if ($count !== 1) {
+                  throw new RuntimeException('P4 query and EXPLAIN injection anchor not unique');
+              }
+              // P4 will have one query-count site rather than the P2/P3 names.
+              $hits += $count;
+          }
           if ($hits < 1) throw new RuntimeException('No query-count assignments instrumented');
           file_put_contents($copy, $code);
           printf("P234_INSTRUMENTED_TEST_COPY=PASS assigned_count_sites=%d candidate_file_unchanged=YES\n", $hits);
@@ -248,6 +331,7 @@ jobs:
           case "$P234_LANE" in
             P2) filter='test_pagination_is_bounded_with_one_thousand_source_receipts' ;;
             P3) filter='test_sql_archive_zero_one_and_one_thousand_documents_keep_stable_pages_and_counts|test_thousand_transaction_links_cannot_amplify_download_queries_or_hide_restricted_parent' ;;
+            P4) filter='test_one_thousand_results_are_bounded_and_ordered_without_duplicate_pages' ;;
             *) exit 1 ;;
           esac
           vendor/bin/phpunit --no-coverage --filter "$filter" \
@@ -255,8 +339,10 @@ jobs:
           cat "$RUNNER_TEMP/p234-evidence/query-counts.txt"
           test -z "$(git status --porcelain)"
 
-      - name: Read-only representative EXPLAIN plans on disposable tables
-        if: ${{ success() }}
+      - name: Read-only EXPLAIN SQL-shape probes on P2/P3 disposable tables
+        # P4 records real count+page plans INSIDE its 1000-row fixture.
+        # P2/P3 post-rollback probes are labeled SQL-shape only, never benchmarks.
+        if: ${{ success() && matrix.lane != 'P4' }}
         shell: bash
         run: |
           set -Eeuo pipefail
