@@ -72,17 +72,18 @@ class PerformanceLiveEndpointsTest extends TestCase
             'delivered_at' => now()->subMinute(),
         ]);
 
+        $transaction = $this->transaction($office, $office, $user, $user->employee);
         $platform = PlatformNotification::query()->create([
             'user_id' => $user->id,
             'department_id' => $office->id,
             'event_key' => 'perf-feed-platform',
             'source_domain' => 'transaction',
             'source_type' => WorkflowTransaction::class,
-            'source_id' => 99,
+            'source_id' => $transaction->id,
             'priority' => 'action_required',
             'title' => 'Workflow action required',
             'message' => 'Synthetic platform notification.',
-            'action_url' => '/transactions/99',
+            'action_url' => '/transactions/'.$transaction->id,
             'requires_acknowledgement' => false,
         ]);
 
@@ -130,17 +131,18 @@ class PerformanceLiveEndpointsTest extends TestCase
             'delivered_at' => now()->subMinute(),
         ]);
 
+        $transaction = $this->transaction($office, $office, $user, $user->employee);
         PlatformNotification::query()->create([
             'user_id' => $user->id,
             'department_id' => $office->id,
             'event_key' => 'perf-feed-query-platform',
             'source_domain' => 'transaction',
             'source_type' => WorkflowTransaction::class,
-            'source_id' => 101,
+            'source_id' => $transaction->id,
             'priority' => 'action_required',
             'title' => 'Query-shape workflow action',
             'message' => 'Synthetic bounded query notification.',
-            'action_url' => '/transactions/101',
+            'action_url' => '/transactions/'.$transaction->id,
             'requires_acknowledgement' => false,
         ]);
 

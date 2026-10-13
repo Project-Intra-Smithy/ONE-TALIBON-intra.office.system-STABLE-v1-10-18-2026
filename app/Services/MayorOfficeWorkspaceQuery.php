@@ -2,20 +2,27 @@
 
 namespace App\Services;
 
+use App\Domain\Workflow\Authorization\TransactionActorEligibility;
 use App\Models\Department;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
 
 final class MayorOfficeWorkspaceQuery
 {
+    public function __construct(private readonly TransactionActorEligibility $eligibility)
+    {
+    }
+
     /** @return array<string, mixed> */
     public function workspace(User $user): array
     {
-        $user->loadMissing('employee.department');
+        $current = $this->eligibility->resolve($user);
+        abort_unless($current !== null, 403);
 
+        $role = $current['role'];
         abort_unless(
-            $user->isRole('system_admin', 'mayor_approver', 'mayor_staff')
-            && ($user->isRole('system_admin') || $user->employee?->department?->code === 'MAYOR'),
+            in_array($role, ['system_admin', 'mayor_approver', 'mayor_staff'], true)
+            && ($role === 'system_admin' || $current['office_code'] === 'MAYOR'),
             403,
         );
 
