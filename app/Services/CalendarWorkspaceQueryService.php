@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Domain\Workflow\Authorization\TransactionActorEligibility;
 use App\Models\CalendarEvent;
 use App\Models\User;
+use App\Models\WorkflowTransaction;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,18 +13,36 @@ use Throwable;
 
 final class CalendarWorkspaceQueryService
 {
-    public function __construct(private readonly TransactionVisibilityQuery $workRequests) {}
+    public function __construct(
+        private readonly TransactionVisibilityQuery $workRequests,
+        private readonly TransactionActorEligibility $eligibility,
+    ) {}
 
     private const VIEWS = ['month', 'week', 'day', 'schedule'];
 
     public function workspace(User $user, ?string $requestedView, ?string $requestedDate): array
     {
-        $user->loadMissing('employee.department');
+        $current = $this->eligibility->resolve($user);
         $timezone = (string) config('app.timezone', 'Asia/Manila');
         $view = in_array($requestedView, self::VIEWS, true) ? $requestedView : 'month';
         $anchor = $this->date($requestedDate, $timezone);
         [$rangeStart, $rangeEnd] = $this->range($view, $anchor);
-        $departmentId = $user->employee?->department_id;
+        // Current office only: a cached Employee relation cannot confer access.
+        $departmentId = $current['office_id'] ?? null;
+
+        if ($current === null) {
+            return [
+                'events' => collect(),
+                'calendar' => [
+                    'view' => $view,
+                    'anchor_date' => $anchor->toDateString(),
+                    'today' => CarbonImmutable::now($timezone)->toDateString(),
+                    'range_start' => $rangeStart->toIso8601String(),
+                    'range_end' => $rangeEnd->toIso8601String(),
+                    'timezone' => $timezone,
+                ],
+            ];
+        }
 
         $events = CalendarEvent::query()
             ->with('department:id,code,name,short_name')
@@ -38,9 +58,25 @@ final class CalendarWorkspaceQueryService
             // entry caches a Work Request title/URL. Other calendar domains
             // retain their existing independent scope and lifecycle.
             ->where(function (Builder $source) use ($user): void {
-                $source->whereNull('source_domain')
-                    ->orWhere('source_domain', '<>', 'transaction')
-                    ->orWhereIn('source_id', $this->workRequests->scope($user)->select('transactions.id'));
+                $source->where(function (Builder $other): void {
+                    // Unrelated calendar sources keep their existing scope,
+                    // but no malformed/legacy tuple or cached transaction
+                    // link may impersonate an authorized Work Request.
+                    $other->where(function (Builder $domain): void {
+                        $domain->whereNull('source_domain')
+                            ->orWhereNotIn('source_domain', ['transaction', 'work_request']);
+                    })->where(function (Builder $type): void {
+                        $type->whereNull('source_type')
+                            ->orWhere('source_type', '<>', WorkflowTransaction::class);
+                    })->where(function (Builder $url): void {
+                        $url->whereNull('action_url')
+                            ->orWhere('action_url', 'not like', '/transactions/%');
+                    });
+                })->orWhere(function (Builder $transaction) use ($user): void {
+                    $transaction->where('source_domain', 'transaction')
+                        ->where('source_type', WorkflowTransaction::class)
+                        ->whereIn('source_id', $this->workRequests->scope($user)->select('transactions.id'));
+                });
             })
             ->where('starts_at', '<=', $rangeEnd)
             ->where(function (Builder $query) use ($rangeStart): void {
