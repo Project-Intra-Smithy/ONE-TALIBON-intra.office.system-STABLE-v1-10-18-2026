@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Domain\Correspondence\CorrespondenceClassification;
 use App\Domain\Correspondence\CorrespondenceLifecycleState;
+use App\Models\CorrespondenceEvent;
 use App\Models\CorrespondenceRecord;
 use App\Models\Department;
 use App\Models\Document;
@@ -181,7 +182,7 @@ class DocumentAccessPrecedenceTest extends TestCase
 
         DocumentLink::query()->create([
             'document_id' => $document->id,
-            'linkable_type' => (new \\App\\Models\\CorrespondenceEvent())->getMorphClass(),
+            'linkable_type' => (new CorrespondenceEvent())->getMorphClass(),
             'linkable_id' => 999999999,
             'relationship' => 'missing_high_priority_event',
         ]);
