@@ -1,0 +1,289 @@
+name: P234 exact SHA disposable PostgreSQL 16 validation
+
+on:
+  push:
+    branches:
+      - forge/ci-p234-pg16-exec-001
+
+permissions:
+  contents: read
+
+concurrency:
+  group: p234-pg16-validation-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  candidate:
+    name: PG16 exact-source ${{ matrix.lane }}
+    if: ${{ github.repository == 'Project-Intra-Smithy/Talibon-Sales-Prototype' && github.event_name == 'push' && github.ref == 'refs/heads/forge/ci-p234-pg16-exec-001' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - lane: P2
+            sha: 21e19400e74a0b0eefb50cbd78d120dc3ad82062
+            test_file: tests/Feature/CommonCoordination/CommonCoordinationReaderTest.php
+          - lane: P3
+            sha: 81cab9efca5eeaee95a022a310a2b56a8aa98129
+            test_file: tests/Feature/DocumentAccessPrecedenceTest.php
+          - lane: P4
+            sha: 0e72ddc91cf6b4a7f9a203819c9fe6e71b2ef020
+            test_file: tests/Feature/CommonSearch/AuthorizedSourceSearchTest.php
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: postgres
+      DB_PASSWORD: p234_${{ github.run_id }}_${{ github.run_attempt }}_${{ matrix.lane }}_disposable
+      CACHE_STORE: file
+      SESSION_DRIVER: array
+      QUEUE_CONNECTION: sync
+      P234_LANE: ${{ matrix.lane }}
+      P234_EXACT_SHA: ${{ matrix.sha }}
+      P234_TEST_FILE: ${{ matrix.test_file }}
+    services:
+      postgres:
+        image: public.ecr.aws/docker/library/postgres:16
+        env:
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: p234_${{ github.run_id }}_${{ github.run_attempt }}_${{ matrix.lane }}_disposable
+        ports:
+          - '127.0.0.1:5432:5432'
+        options: >-
+          --health-cmd "pg_isready -U postgres -d talibon_portal_test"
+          --health-interval 5s
+          --health-timeout 4s
+          --health-retries 12
+    steps:
+      - name: Checkout exact immutable candidate SHA with no persisted credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ matrix.sha }}
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Verify trusted runner, exact SHA, tree and test path
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$GITHUB_EVENT_NAME" = push
+          test "$GITHUB_REPOSITORY" = Project-Intra-Smithy/Talibon-Sales-Prototype
+          test "$GITHUB_REF" = refs/heads/forge/ci-p234-pg16-exec-001
+          test "$(git rev-parse HEAD)" = "$P234_EXACT_SHA"
+          test -z "$(git status --porcelain)"
+          git ls-files --error-unmatch "$P234_TEST_FILE" >/dev/null
+          printf 'P234_LANE=%s\nP234_EXACT_HEAD=%s\nP234_SOURCE_TREE=%s\nP234_TEST_FILE=%s\n' \
+            "$P234_LANE" "$P234_EXACT_SHA" "$(git rev-parse HEAD^{tree})" "$P234_TEST_FILE"
+
+      - name: Configure pinned PHP 8.4 PostgreSQL runtime
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, fileinfo, zip, mbstring
+          tools: composer:v2
+          coverage: none
+
+      - name: Install committed Composer lockfile with ephemeral GitHub read token
+        shell: bash
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ github.token }}"}}'
+        run: |
+          set -Eeuo pipefail
+          test -f composer.lock
+          composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+          test -x vendor/bin/phpunit
+          test -x vendor/bin/pint
+
+      - name: Guard PostgreSQL identity before any migration or RefreshDatabase
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$RUNNER_TEMP/p234-evidence"
+          cat > "$RUNNER_TEMP/p234-database-guard.php" <<'PHP'
+          <?php
+          require getcwd().'/vendor/autoload.php';
+          // PHPUnit's checked-in XML forcibly sets DB_USERNAME=postgres.
+          // This executable guard is loaded again *inside* PHPUnit bootstrap.
+          $required = [
+              'APP_ENV' => 'testing',
+              'DB_CONNECTION' => 'pgsql',
+              'DB_HOST' => '127.0.0.1',
+              'DB_PORT' => '5432',
+              'DB_DATABASE' => 'talibon_portal_test',
+              'DB_USERNAME' => 'postgres',
+          ];
+          foreach ($required as $name => $value) {
+              $effective = $_ENV[$name] ?? $_SERVER[$name] ?? getenv($name);
+              if ($effective !== $value) {
+                  throw new RuntimeException("P234 database guard: unexpected effective {$name}");
+              }
+          }
+          if (getenv('GITHUB_ACTIONS') !== 'true'
+              || getenv('RUNNER_ENVIRONMENT') !== 'github-hosted'
+              || !getenv('DB_PASSWORD')) {
+              throw new RuntimeException('P234 database guard: unsafe runner or missing ephemeral credential');
+          }
+          $dsn = 'pgsql:host=127.0.0.1;port=5432;dbname=talibon_portal_test';
+          $pdo = new PDO($dsn, 'postgres', getenv('DB_PASSWORD'), [
+              PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+          ]);
+          $actual = $pdo->query("
+              SELECT current_database() db, current_user actor,
+                     current_setting('port') port,
+                     current_setting('server_version_num') version,
+                     (SELECT COUNT(*) FROM information_schema.tables
+                       WHERE table_schema='public' AND table_type='BASE TABLE') tables
+          ")->fetch(PDO::FETCH_ASSOC);
+          if ($actual['db'] !== 'talibon_portal_test' || $actual['actor'] !== 'postgres'
+              || $actual['port'] !== '5432' || (int) $actual['version'] < 160000
+              || (int) $actual['version'] >= 170000 || (int) $actual['tables'] !== 0) {
+              throw new RuntimeException('P234 database guard: refused non-empty/wrong PostgreSQL target');
+          }
+          fwrite(STDOUT, sprintf(
+              "P234_PHPUNIT_EFFECTIVE_DB=PASS lane=%s db=%s actor=%s port=%s version=%s initial_tables=%d\n",
+              getenv('P234_LANE'), $actual['db'], $actual['actor'],
+              $actual['port'], $actual['version'], $actual['tables']
+          ));
+          PHP
+          php "$RUNNER_TEMP/p234-database-guard.php"
+
+      - name: Prepare disposable Laravel configuration and application key
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          cp .env.example .env
+          php artisan key:generate --no-interaction
+          php artisan optimize:clear
+
+      - name: Prove actual Laravel connection points to disposable PostgreSQL 16
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          php <<'PHP'
+          <?php
+          require 'vendor/autoload.php';
+          $app = require 'bootstrap/app.php';
+          $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+          $connection = $app->make('db')->connection();
+          $cfg = $connection->getConfig();
+          $row = $connection->selectOne("SELECT current_database() db, current_user actor, current_setting('server_version_num') version");
+          if ($cfg['driver'] !== 'pgsql' || $cfg['host'] !== '127.0.0.1'
+              || (int) $cfg['port'] !== 5432 || $cfg['database'] !== 'talibon_portal_test'
+              || $cfg['username'] !== 'postgres' || $row->db !== 'talibon_portal_test'
+              || $row->actor !== 'postgres' || (int) $row->version < 160000
+              || (int) $row->version >= 170000) {
+              throw new RuntimeException('Actual Laravel connection failed safe PG16 identity');
+          }
+          echo "P234_LARAVEL_REAL_PDO=PASS db={$row->db} role={$row->actor} pg={$row->version}\n";
+          PHP
+
+      - name: PHP syntax and P4 Pint formatting validation
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          php -l "$P234_TEST_FILE"
+          case "$P234_LANE" in
+            P2) php -l app/Services/CommonCoordination/CommonCoordinationReader.php ;;
+            P3) php -l app/Services/CommonEvidence/AuthorizedArchiveSql.php ;;
+            P4)
+              find app/Services/CommonSearch -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+              vendor/bin/pint --test app/Services/CommonSearch tests/Feature/CommonSearch
+              ;;
+          esac
+
+      - name: Exact file focused PHPUnit against disposable PG16 and emit JUnit
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          # --bootstrap runs after PHPUnit applies forced phpunit.xml environment,
+          # before test methods/RefreshDatabase. Any wrong DB must hard-fail.
+          set +e
+          vendor/bin/phpunit --bootstrap "$RUNNER_TEMP/p234-database-guard.php" \
+            --no-coverage --log-junit "$RUNNER_TEMP/p234-evidence/junit.xml" \
+            "$P234_TEST_FILE"
+          status=$?
+          set -e
+          printf 'PHPUNIT_EXIT=%s\n' "$status" > "$RUNNER_TEMP/p234-evidence/exit-code.txt"
+          exit "$status"
+
+      - name: Read-only representative EXPLAIN plans on disposable tables
+        if: ${{ success() }}
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          php <<'PHP'
+          <?php
+          $pdo = new PDO(
+              'pgsql:host=127.0.0.1;port=5432;dbname=talibon_portal_test',
+              'postgres', getenv('DB_PASSWORD'), [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+          );
+          $cases = match (getenv('P234_LANE')) {
+              'P2' => [
+                  'notification_owner_cursor' => "SELECT id FROM platform_notifications WHERE user_id = 0 AND read_at IS NULL ORDER BY created_at DESC, id DESC LIMIT 20",
+              ],
+              'P3' => [
+                  'authorized_evidence_link_precedence' => "SELECT d.id FROM documents d WHERE EXISTS (SELECT 1 FROM document_links l WHERE l.document_id=d.id AND l.linkable_type='App\\Models\\WorkflowTransaction') ORDER BY d.created_at DESC, d.id DESC LIMIT 20",
+              ],
+              'P4' => [
+                  'correspondence_literal_page' => "SELECT id, subject FROM correspondence_records WHERE POSITION('p4' IN LOWER(COALESCE(subject, ''))) > 0 ORDER BY updated_at DESC, id DESC LIMIT 50",
+                  'travel_order_literal_page' => "SELECT id, purpose FROM travel_orders WHERE POSITION('p4' IN LOWER(COALESCE(purpose, ''))) > 0 ORDER BY updated_at DESC, id DESC LIMIT 50",
+              ],
+          };
+          $output = [];
+          foreach ($cases as $name => $sql) {
+              if (!preg_match('/^SELECT\s/i', $sql)) throw new RuntimeException('Read-only EXPLAIN SQL rejected');
+              $raw = $pdo->query('EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) '.$sql)->fetchColumn();
+              $plan = json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
+              $output[] = ['case' => $name, 'statement' => $sql, 'plan' => $plan[0],
+                  'population_note' => 'Post-test tables may be empty after RefreshDatabase rollback; plan is a read-only SQL shape probe, not a 1000-record fixture benchmark.'];
+          }
+          $path = getenv('RUNNER_TEMP').'/p234-evidence/read-only-explain.json';
+          file_put_contents($path, json_encode(['lane' => getenv('P234_LANE'), 'plans' => $output], JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR));
+          printf("P234_EXPLAIN_READ_ONLY=PASS lane=%s probes=%d\n", getenv('P234_LANE'), count($output));
+          PHP
+
+      - name: Record sanitized runtime and JUnit totals
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/p234-evidence"
+          {
+            echo "lane=$P234_LANE"
+            echo "source_sha=$P234_EXACT_SHA"
+            echo "test_file=$P234_TEST_FILE"
+            echo "runner=github-hosted"
+            echo "postgres_major=16"
+            echo "phpunit_xml_forced_username=postgres"
+            echo "workflow_ref=$GITHUB_REF"
+            echo "workflow_run_id=$GITHUB_RUN_ID"
+          } > "$RUNNER_TEMP/p234-evidence/source-receipt.txt"
+          if test -f "$RUNNER_TEMP/p234-evidence/junit.xml"; then
+            php -r '
+              $xml = simplexml_load_file($argv[1]);
+              $nodes = $xml->xpath("//testsuite");
+              foreach ($nodes as $suite) {
+                if ((string) $suite["tests"] !== "") {
+                  printf("P234_JUNIT_SUITE tests=%s assertions=%s failures=%s errors=%s skipped=%s\n",
+                    (string)$suite["tests"], (string)$suite["assertions"], (string)$suite["failures"],
+                    (string)$suite["errors"], (string)$suite["skipped"]);
+                }
+              }
+            ' "$RUNNER_TEMP/p234-evidence/junit.xml" || true
+          fi
+
+      - name: Upload non-secret exact-head per-lane receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: p234-pg16-${{ matrix.lane }}-${{ matrix.sha }}
+          path: ${{ runner.temp }}/p234-evidence/*
+          if-no-files-found: ignore
+          retention-days: 14
