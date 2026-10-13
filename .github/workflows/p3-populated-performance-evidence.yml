@@ -217,17 +217,20 @@ jobs:
                  'plan'=>$plan['Plan'],
               ];
           }
+          // Independently prove a previously authorized document becomes denied.
+          $revocable=Document::query()->where('title','P3 Scale allowed')->firstOrFail();
+          $revocableAllowedBefore=$access->canDownload($actor,$revocable);
           $employeeId=$actor->employee->id;
           DB::table('employees')->where('id',$employeeId)->update(['employment_status'=>'inactive']);
-          $employmentDenied=!$access->canDownload($actor,$many);
+          $employmentDenied=!$access->canDownload($actor,$revocable);
           $archiveEmploymentDenied=false;
           try{$archive->workspace($actor,[]);}catch(Symfony\Component\HttpKernel\Exception\HttpException $e){$archiveEmploymentDenied=$e->getStatusCode()===403;}
           DB::table('employees')->where('id',$employeeId)->update(['employment_status'=>'active']);
           DB::table('departments')->where('id',$office->id)->update(['is_active'=>false]);
-          $officeDenied=!$access->canDownload($actor,$many);
+          $officeDenied=!$access->canDownload($actor,$revocable);
           $archiveOfficeDenied=false;
           try{$archive->workspace($actor,[]);}catch(Symfony\Component\HttpKernel\Exception\HttpException $e){$archiveOfficeDenied=$e->getStatusCode()===403;}
-          if(!$employmentDenied||!$archiveEmploymentDenied||!$officeDenied||!$archiveOfficeDenied)
+          if(!$revocableAllowedBefore||!$employmentDenied||!$archiveEmploymentDenied||!$officeDenied||!$archiveOfficeDenied)
              throw new RuntimeException('Retained-actor membership revocation failed');
           $result=[
              'exact_candidate_sha'=>getenv('P3_SOURCE_SHA'),
@@ -236,7 +239,7 @@ jobs:
              'synthetic_data'=>['authorized_documents'=>10000,'denied_documents'=>1000,'orphaned_documents'=>200,
                 'high_link_document'=>1,'high_link_count_before_denial'=>1000,'high_link_count_after_denial'=>1001],
              'metrics'=>$metrics,'plans'=>$plans,
-             'assertions'=>['archive_counts_and_pages'=>true,'authorized_download'=>true,'denied_high_priority_download'=>true,
+             'assertions'=>['allowed_revocable_baseline'=>true,'archive_counts_and_pages'=>true,'authorized_download'=>true,'denied_high_priority_download'=>true,
                 'hidden_denied_document'=>true,'retained_employee_revocation'=>true,'retained_office_deactivation'=>true],
              'limits'=>['synthetic_not_production'=>true,'sequential_revocation_not_concurrent_transactions'=>true,
                 'single_runner_no_load_concurrency'=>true,'peak_memory_monotonic_process_level'=>true],
