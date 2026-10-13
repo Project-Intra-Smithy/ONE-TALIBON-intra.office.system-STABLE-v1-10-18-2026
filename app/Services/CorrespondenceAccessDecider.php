@@ -282,11 +282,24 @@ class CorrespondenceAccessDecider
 
     private function hasActiveMunicipalIdentity(User $actor): bool
     {
-        $actor->loadMissing('employee');
+        if ($actor->getKey() === null) {
+            return false;
+        }
 
-        return $actor->is_active
-            && $actor->employee !== null
-            && $actor->employee->employment_status === 'active'
-            && $actor->employee->department_id !== null;
+        // Never authorize from session-loaded identity or cached employee/office
+        // relations. This is shared by intake, list, detail and all mutations.
+        $current = User::query()->with('employee.department')->find($actor->getKey());
+
+        if (! $current || ! $current->is_active || $current->role !== $actor->role
+            || ! $current->employee || $current->employee->employment_status !== 'active'
+            || ! $current->employee->department || ! $current->employee->department->is_active) {
+            return false;
+        }
+
+        // The caller's office and employee identity must match the fresh guard
+        // for the remainder of this authorization decision, including SQL scopes.
+        $actor->setRelation('employee', $current->employee);
+
+        return true;
     }
 }
