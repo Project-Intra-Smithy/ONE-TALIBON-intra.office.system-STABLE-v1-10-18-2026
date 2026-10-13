@@ -31,7 +31,7 @@ use Illuminate\Support\Str;
 final readonly class AuthorizedArchiveSql
 {
     public function __construct(
-        private CorrespondenceAccessDecider $correspondenceAccess,
+        private CorrespondenceEvidenceScope $correspondenceScope,
         private TravelOrderAccess $travelOrderAccess,
         private TransactionVisibilityQuery $transactionVisibility,
     ) {}
@@ -238,8 +238,8 @@ final readonly class AuthorizedArchiveSql
 
     private function authorizedLinks(User $actor): Builder
     {
-        $correspondence = $this->correspondenceAccess
-            ->scopeVisibleTo(CorrespondenceRecord::query(), $actor)
+        $correspondence = $this->correspondenceScope
+            ->visibleTo($actor)
             ->select(['id','public_id','municipal_reference_no','external_reference_no','subject',
                 'receiving_department_id','workflow_transaction_id']);
         $travel = $this->travelOrderAccess
