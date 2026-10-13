@@ -221,3 +221,10 @@ Tests required: types, full tests, production build/exclusion; four roles at 320
 
 Paired issue START: https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/22#issuecomment-6149847264
 
+
+### CHECKPOINT / FE-DASH-01 UI refinement / 2026-10-14
+Resume same bounded package at START memory 42e7147d26365e769eb8f57152e001463f02095d / issue START #issuecomment-6149847264. User priorities: diagnose blank visual-preview and reported isFeatureEnabled provenance, verify current four-role refinement, complete Calendar and final checks; stop after dashboard verification. Existing code preserved, no redesign/Login/MFA/publication.
+Live main remains 6c385ee85f3fec4325182791554b66a861cfd9f3. PR29 b4ffa2ce6571026c5afab62af8b7b5ac101595c6/base main; PR24 1257c6cceb316da5200e99c612eb0c361e5e1ff0/base e6f5947ab330802f4b860b28baddc910ca32e13e. Prior interrupted validation completed 66/67: Calendar heading wait failed; four-role/dashboard/Task/shell tests passed. Types/build/exclusion passed before interruption. Port5173 process points to original workspace; Phase2 server not running. isFeatureEnabled absent in app/test sources and searched runtime dependencies; cause not established without stack. Owner AJ/Codex, Kirch publication/runtime holds unchanged. NEXT: reproduce both server roots in clean Chrome, capture error provenance, fix evidenced defects and finish checks.
+
+Issue checkpoint: https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/22#issuecomment-6154613047
+
