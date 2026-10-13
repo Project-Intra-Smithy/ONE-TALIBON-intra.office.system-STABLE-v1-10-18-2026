@@ -1,0 +1,461 @@
+{
+  "work_id": "CC-INT-STAGE-001",
+  "status": "STAGING_ASSEMBLED_UNTESTED",
+  "canonical_base": "5ed21eecac447a2ebe11da96f8baf6e05d722fdf",
+  "staging_branch": "forge/integration/p0-p4-common-core-staging-20261013",
+  "source_only_stage_commit": "ff05268451dfdd42a0557cee68718109fb9ff045",
+  "lanes": [
+    {
+      "lane": "P0",
+      "pr": 76,
+      "source": "7671000757fb489437a5eb4582660dd5ac21bbf5",
+      "layer": "59090325ed82c7e2744d8464c4c478adbcb1c609",
+      "skip": []
+    },
+    {
+      "lane": "P1",
+      "pr": 69,
+      "source": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "skip": [
+        ".forge/memory/WORK-PACKAGE-REGISTER.md",
+        ".github/workflows/p1-fast-security-pg16.yml",
+        ".github/workflows/p1-task-browser.yml"
+      ]
+    },
+    {
+      "lane": "P2",
+      "pr": 72,
+      "source": "21e19400e74a0b0eefb50cbd78d120dc3ad82062",
+      "layer": "4e21c8a4fc1bc75afa0ad43301e54d6202cabd22",
+      "skip": []
+    },
+    {
+      "lane": "P3",
+      "pr": 71,
+      "source": "81cab9efca5eeaee95a022a310a2b56a8aa98129",
+      "layer": "809f4f708b9c6c52dc5d6ca72ad9c06765f677ea",
+      "skip": []
+    },
+    {
+      "lane": "P4",
+      "pr": 73,
+      "source": "efa61eab4f4eae69e89dca2debdd9f6cbe0cb810",
+      "layer": "ff05268451dfdd42a0557cee68718109fb9ff045",
+      "skip": []
+    }
+  ],
+  "records": [
+    {
+      "lane": "P0",
+      "path": "app/Services/CorrespondenceAccessDecider.php",
+      "source_commit": "7671000757fb489437a5eb4582660dd5ac21bbf5",
+      "source_blob": "bf0a2bb04f9e780c36c1f1a4daa386830faff0c1",
+      "stage_layer": "59090325ed82c7e2744d8464c4c478adbcb1c609",
+      "original_status": "modified"
+    },
+    {
+      "lane": "P0",
+      "path": "app/Services/TravelOrderAccess.php",
+      "source_commit": "7671000757fb489437a5eb4582660dd5ac21bbf5",
+      "source_blob": "6d734d79e28acb746fed2fde005729075569f3c3",
+      "stage_layer": "59090325ed82c7e2744d8464c4c478adbcb1c609",
+      "original_status": "modified"
+    },
+    {
+      "lane": "P0",
+      "path": "tests/Feature/P0DestinationRevocation/P0DestinationRevocationTest.php",
+      "source_commit": "7671000757fb489437a5eb4582660dd5ac21bbf5",
+      "source_blob": "ab4febb8f02e58d0d939d71440c829bc3f64ac0d",
+      "stage_layer": "59090325ed82c7e2744d8464c4c478adbcb1c609",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": ".forge/contracts/A02-UNIFIED-MY-WORK-DRAFT.md",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "e9f0fcdb502b87732bde9e89887847c2091e65e1",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": ".forge/contracts/COMMON_CORE_ACCELERATED_DELIVERY_LGU_DECISIONS.md",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "8c5cee71adfbc154c3e2c9ab94bc9016c4ae3730",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Domain/Workflow/Authorization/TransactionAccessDecider.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "f010f55fa9c27bfe7f79db6bcd9cf4cfd617a778",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "modified"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Domain/Workflow/Authorization/TransactionActorEligibility.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "94a47d492f3a33b66d01b4e4169a8b64945c39ed",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Domain/Workflow/Authorization/TransactionAuthorizationContextFactory.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "8aff3f55c5f8b586673289a4f3350a194ae4ae12",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "modified"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Http/Controllers/EmployeeProfileController.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "f6af31137b2a442f8b1f842bb64a2fd1eb9172fb",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "modified"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Http/Controllers/LegislativeWorkspaceController.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "484583ee034a2aa7439800be465dc2f244a2b0ec",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "modified"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Services/CalendarWorkspaceQueryService.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "f93f362aec4b6aeea680db38dacc8848bd64b773",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "modified"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Services/CommonReferences/CommonSourceReferencePresenter.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "b627093cdf7e4f798a0de9d2c459b364a83bce3e",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Services/CommonReferences/CommonSourceReferenceResolver.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "b66f7da0584c8778933334ae244508077bed9ba9",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Services/CommonReferences/ReferenceResolution.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "c4e3b1f7e8e5095a2ef718fe23b5f2509c632bfd",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Services/CommonReferences/ReferenceStatus.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "85c19868b19a413bd61f886a8c99c563c98d0016",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Services/CommonReferences/SourceKind.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "ec4898724a49cc99718f20a44ace90502508f761",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Services/CommonReferences/SourceTarget.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "b7e67bfb386874c910f3004c41ca765167bb87f4",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Services/CommonWork/CommonWorkItem.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "ad14c88b78e85e15ea0bb8a06aedd57e10275943",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Services/CommonWork/CommonWorkSource.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "fecf720a7529daf7dc687a72e85626b1b8ec5d8c",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Services/CommonWork/UnifiedMyWorkQuery.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "96851f9ff55647cd60db9027b35b3d1d08c82f1d",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Services/MayorOfficeWorkspaceQuery.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "104c26b304b091f884b7e53bb8a961d34beccc6b",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "modified"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Services/NotificationFeedQuery.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "374d53bb3c622344a33cb80a68f910b04e673f75",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "modified"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Services/TaskActivity/TaskActivityFeed.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "5a7c88c58fd0d8e277dce0d5a7c2e3608f7fca34",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Services/TaskActivity/TaskActivityOverview.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "7c451c7b9190686b6c88af48d9fdc873444d04c7",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Services/TaskActivity/TaskActivityReader.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "552797d89787960d8daad8bc489727559b5488bd",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "app/Services/TransactionVisibilityQuery.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "5e4aaa17f0bfeb75eb99f512a6727e7a6445bd7a",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "modified"
+    },
+    {
+      "lane": "P1",
+      "path": "resources/js/components/tasks/PersonalTaskMutationPanel.tsx",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "5db9779ccaed678603fec129f7e55851ce7c0c8e",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "resources/js/pages/Dashboard.tsx",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "9226bf8360eeb44512cd96a646ca3677da5d5152",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "modified"
+    },
+    {
+      "lane": "P1",
+      "path": "tests/Browser/p1-task-lifecycle.mjs",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "35dfd54b181d9c2057f8a09e874fc3c15f7a3ae8",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "tests/Feature/CommonWork/UnifiedMyWorkQueryExtendedTest.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "6582f3d3be1eb4a69b9166c3940563ebe674531c",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "tests/Feature/CommonWork/UnifiedMyWorkQueryTest.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "be689b5207af910d11a638108e4b6dc3b0846d58",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "tests/Feature/PerformanceLiveEndpointsTest.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "3422ce6c3f4c671fee44d3c026c763de2b4bc9e7",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "modified"
+    },
+    {
+      "lane": "P1",
+      "path": "tests/Feature/Tasks/TaskActivityPg16Fixture.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "986ff440be342a2cec36e565eb3599c033c9b245",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "tests/Feature/Tasks/TaskActivityPg16OverviewTest.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "dd8f63bd16ea4ae4c151af391672176ec9cf3bc4",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "tests/Feature/Tasks/TaskActivityPg16ReaderFeedTest.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "33149eefdc0afd556d7489860dbfdae8eb326b1c",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P1",
+      "path": "tests/Feature/WorkRequests/WorkRequestRevocationTest.php",
+      "source_commit": "104b41363129590d0089a2661cd0e0a7386c8805",
+      "source_blob": "1b73e6cecad887a8cd426a1850b85ef3b7c3490c",
+      "stage_layer": "2de01349c0c7a1c7ec906015762f97931587268a",
+      "original_status": "added"
+    },
+    {
+      "lane": "P2",
+      "path": "app/Services/CommonCoordination/CalendarResponsibilityReader.php",
+      "source_commit": "21e19400e74a0b0eefb50cbd78d120dc3ad82062",
+      "source_blob": "ca3901320343a68e0dd9be5de623341ef4b3ae4a",
+      "stage_layer": "4e21c8a4fc1bc75afa0ad43301e54d6202cabd22",
+      "original_status": "added"
+    },
+    {
+      "lane": "P2",
+      "path": "app/Services/CommonCoordination/CommonCoordinationReader.php",
+      "source_commit": "21e19400e74a0b0eefb50cbd78d120dc3ad82062",
+      "source_blob": "2e48ed1aa796adacd8ff08a6ee66641b67c74a24",
+      "stage_layer": "4e21c8a4fc1bc75afa0ad43301e54d6202cabd22",
+      "original_status": "added"
+    },
+    {
+      "lane": "P2",
+      "path": "app/Services/CommonCoordination/CoordinationActor.php",
+      "source_commit": "21e19400e74a0b0eefb50cbd78d120dc3ad82062",
+      "source_blob": "5e274c829787d66225106ac197e6d77d5816d854",
+      "stage_layer": "4e21c8a4fc1bc75afa0ad43301e54d6202cabd22",
+      "original_status": "added"
+    },
+    {
+      "lane": "P2",
+      "path": "app/Services/CommonCoordination/NotificationContextReader.php",
+      "source_commit": "21e19400e74a0b0eefb50cbd78d120dc3ad82062",
+      "source_blob": "f66ed1f954983bec1aab0725a8a010e01c276482",
+      "stage_layer": "4e21c8a4fc1bc75afa0ad43301e54d6202cabd22",
+      "original_status": "added"
+    },
+    {
+      "lane": "P2",
+      "path": "tests/Feature/CommonCoordination/CommonCoordinationReaderTest.php",
+      "source_commit": "21e19400e74a0b0eefb50cbd78d120dc3ad82062",
+      "source_blob": "1df27d334f53e38fdb5bfbe21cdfc1a0151218e4",
+      "stage_layer": "4e21c8a4fc1bc75afa0ad43301e54d6202cabd22",
+      "original_status": "added"
+    },
+    {
+      "lane": "P3",
+      "path": "app/Services/CommonEvidence/AuthorizedArchiveSql.php",
+      "source_commit": "81cab9efca5eeaee95a022a310a2b56a8aa98129",
+      "source_blob": "8ab2f60d88d42071b2d673600fd897aad712eda8",
+      "stage_layer": "809f4f708b9c6c52dc5d6ca72ad9c06765f677ea",
+      "original_status": "added"
+    },
+    {
+      "lane": "P3",
+      "path": "app/Services/CommonEvidence/CorrespondenceEvidenceScope.php",
+      "source_commit": "81cab9efca5eeaee95a022a310a2b56a8aa98129",
+      "source_blob": "5df5ed73523df5e29be0f015f6e5c5df69322b10",
+      "stage_layer": "809f4f708b9c6c52dc5d6ca72ad9c06765f677ea",
+      "original_status": "added"
+    },
+    {
+      "lane": "P3",
+      "path": "app/Services/DocumentAccessService.php",
+      "source_commit": "81cab9efca5eeaee95a022a310a2b56a8aa98129",
+      "source_blob": "2c686d33b591ff7464753a4a16b0cb57a0619f78",
+      "stage_layer": "809f4f708b9c6c52dc5d6ca72ad9c06765f677ea",
+      "original_status": "modified"
+    },
+    {
+      "lane": "P3",
+      "path": "app/Services/DocumentArchiveQuery.php",
+      "source_commit": "81cab9efca5eeaee95a022a310a2b56a8aa98129",
+      "source_blob": "4bb57d49ad9101bfb563261e5c9bd1e981796788",
+      "stage_layer": "809f4f708b9c6c52dc5d6ca72ad9c06765f677ea",
+      "original_status": "modified"
+    },
+    {
+      "lane": "P3",
+      "path": "tests/Feature/DocumentAccessPrecedenceTest.php",
+      "source_commit": "81cab9efca5eeaee95a022a310a2b56a8aa98129",
+      "source_blob": "90615128b8389c491ea1c07165dd95bbcbc39a1f",
+      "stage_layer": "809f4f708b9c6c52dc5d6ca72ad9c06765f677ea",
+      "original_status": "added"
+    },
+    {
+      "lane": "P4",
+      "path": "app/Services/CommonSearch/AcceptedP0Source.php",
+      "source_commit": "efa61eab4f4eae69e89dca2debdd9f6cbe0cb810",
+      "source_blob": "2c474aea254d4927abecbde1d3420b1dd4b22d13",
+      "stage_layer": "ff05268451dfdd42a0557cee68718109fb9ff045",
+      "original_status": "added"
+    },
+    {
+      "lane": "P4",
+      "path": "app/Services/CommonSearch/AuthorizedSourceSearch.php",
+      "source_commit": "efa61eab4f4eae69e89dca2debdd9f6cbe0cb810",
+      "source_blob": "6f52a4c56c0a33cbf8a49e3235ea53c5c8b75017",
+      "stage_layer": "ff05268451dfdd42a0557cee68718109fb9ff045",
+      "original_status": "added"
+    },
+    {
+      "lane": "P4",
+      "path": "tests/Feature/CommonSearch/AuthorizedSourceSearchTest.php",
+      "source_commit": "efa61eab4f4eae69e89dca2debdd9f6cbe0cb810",
+      "source_blob": "cf74856aaf067102c696860e40d232a8c230592d",
+      "stage_layer": "ff05268451dfdd42a0557cee68718109fb9ff045",
+      "original_status": "added"
+    }
+  ],
+  "excluded": [
+    {
+      "lane": "P1",
+      "path": ".forge/memory/WORK-PACKAGE-REGISTER.md",
+      "reason": "Preserve canonical current-main register"
+    },
+    {
+      "lane": "P1",
+      "path": ".github/workflows/p1-fast-security-pg16.yml",
+      "reason": "Do not promote standalone legacy CI workflow"
+    },
+    {
+      "lane": "P1",
+      "path": ".github/workflows/p1-task-browser.yml",
+      "reason": "Do not promote standalone legacy CI workflow"
+    }
+  ],
+  "source_path_count": 49,
+  "main_memory_blob_preserved": true
+}
