@@ -438,6 +438,32 @@ class DocumentAccessPrecedenceTest extends TestCase
         $this->assertLessThanOrEqual(14, $archiveQueries);
     }
 
+    public function test_received_registrar_exception_matches_can_view_in_workspace_even_with_a_receiving_office(): void
+    {
+        $actorOffice = $this->department('REGISTRAR');
+        $otherOffice = $this->department('RECEIVED-FOREIGN');
+        $actor = $this->human($actorOffice);
+        $received = $this->restrictedCorrespondence($otherOffice);
+        $received->update([
+            'lifecycle_state' => CorrespondenceLifecycleState::Received->value,
+        ]);
+        $document = $this->document($actor, $actorOffice, 'Received registrar intake');
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => $received->getMorphClass(),
+            'linkable_id' => $received->id,
+            'relationship' => 'intake_evidence',
+        ]);
+
+        $this->assertTrue(app(CorrespondenceAccessDecider::class)->canViewInWorkspace($actor, $received));
+        $this->assertTrue(app(DocumentAccessService::class)->canDownload($actor, $document));
+        $result = app(DocumentArchiveQuery::class)->workspace($actor, [
+            'document' => $document->public_id,
+        ]);
+        $this->assertSame(1, $result['records']->total());
+        $this->assertSame($document->public_id, $result['selected']['publicId']);
+    }
+
     private function department(string $name): Department
     {
         return Department::query()->create([
