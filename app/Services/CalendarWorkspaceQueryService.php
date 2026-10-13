@@ -70,7 +70,7 @@ final class CalendarWorkspaceQueryService
                             ->orWhere('source_type', '<>', WorkflowTransaction::class);
                     })->where(function (Builder $url): void {
                         $url->whereNull('action_url')
-                            ->orWhere('action_url', 'not like', '/transactions/%');
+                            ->orWhere('action_url', 'not like', '%/transactions/%');
                     });
                 })->orWhere(function (Builder $transaction) use ($user): void {
                     $transaction->where('source_domain', 'transaction')
@@ -159,7 +159,10 @@ final class CalendarWorkspaceQueryService
             'start_time' => $event->all_day ? null : $start->format('H:i'),
             'end_time' => $event->all_day || ! $end ? null : $end->format('H:i'),
             'location' => $event->location,
-            'action_url' => $event->action_url,
+            'action_url' => $event->source_domain === 'transaction'
+                && $event->source_type === WorkflowTransaction::class
+                    ? '/transactions/'.$event->source_id
+                    : $event->action_url,
             'status' => $event->status,
             'department' => $event->department ? [
                 'code' => $event->department->code,
