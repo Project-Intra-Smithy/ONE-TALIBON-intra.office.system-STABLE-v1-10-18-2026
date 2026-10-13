@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - forge/ci-p234-pg16-exec-001
+    paths:
+      - .github/workflows/p234-exact-sha-pg16.yml
 
 permissions:
   contents: read
