@@ -10,7 +10,6 @@ use App\Services\TravelOrderAccess;
 use Carbon\CarbonImmutable;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -28,7 +27,8 @@ final readonly class AuthorizedSourceSearch
     public function __construct(
         private CorrespondenceAccessDecider $correspondenceAccess,
         private TravelOrderAccess $travelOrderAccess,
-    ) {}
+    ) {
+    }
 
     /**
      * @return array{data:list<array<string, string|null>>, meta:array{page:int,per_page:int,total:int,last_page:int,has_more:bool}}
