@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 35
     env:
-      P0_EXACT_SHA: d3d0a10694ae024704bdd163ff7ea0feea710076
+      P0_EXACT_SHA: 7671000757fb489437a5eb4582660dd5ac21bbf5
       P0_ACCEPTED_BASE: b757147f4ae553af5110fe97792a981c2d6acdf0
       P0_TEST_FILE: tests/Feature/P0DestinationRevocation/P0DestinationRevocationTest.php
       APP_ENV: testing
@@ -67,7 +67,7 @@ jobs:
       - name: Checkout mandatory immutable P0 source without persisted credentials
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
-          ref: d3d0a10694ae024704bdd163ff7ea0feea710076
+          ref: 7671000757fb489437a5eb4582660dd5ac21bbf5
           persist-credentials: false
           fetch-depth: 10
 
