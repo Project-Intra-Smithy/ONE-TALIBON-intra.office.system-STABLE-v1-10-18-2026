@@ -23,6 +23,16 @@ final class DocumentAccessService
 
     public function canDownload(User $actor, Document $document): bool
     {
+        // A session can outlive the employee's service or department membership.
+        // Never authorize using cached relations from the session user.
+        $liveActor = User::query()->with('employee.department')->find($actor->getKey());
+        if (! $liveActor || ! $liveActor->is_active || ! $liveActor->employee
+            || $liveActor->employee->employment_status !== 'active'
+            || ! $liveActor->employee->department || ! $liveActor->employee->department->is_active) {
+            return false;
+        }
+        $actor = $liveActor;
+
         if ($document->storage_disk !== (string) config('documents.disk', 'documents')
             || ! $document->storage_path) {
             return false;
