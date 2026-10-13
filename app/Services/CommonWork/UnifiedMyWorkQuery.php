@@ -28,7 +28,7 @@ final readonly class UnifiedMyWorkQuery
     ) {}
 
     /**
-     * @param ?string $source Exact source discriminator, or null for both sources.
+     * @param  ?string  $source  Exact source discriminator, or null for both sources.
      * @return LengthAwarePaginator<int, CommonWorkItem>
      */
     public function paginate(User $claimedActor, int $page = 1, int $perPage = 20, ?string $source = null): LengthAwarePaginator
@@ -47,9 +47,9 @@ final readonly class UnifiedMyWorkQuery
      * Only already-authorized personal rows are eligible; null due dates are excluded.
      * This does not assign urgency, synthesize a municipal SLA or normalize states.
      *
-     * @param string $fromInclusive RFC3339 timestamp with a required UTC offset or Z.
-     * @param string $beforeExclusive RFC3339 timestamp with a required UTC offset or Z.
-     * @param ?string $source individual_task, work_request, or null for both sources.
+     * @param  string  $fromInclusive  RFC3339 timestamp with a required UTC offset or Z.
+     * @param  string  $beforeExclusive  RFC3339 timestamp with a required UTC offset or Z.
+     * @param  ?string  $source  individual_task, work_request, or null for both sources.
      * @return LengthAwarePaginator<int, CommonWorkItem>
      */
     public function dueWindow(
@@ -59,8 +59,7 @@ final readonly class UnifiedMyWorkQuery
         int $page = 1,
         int $perPage = 20,
         ?string $source = null,
-    ): LengthAwarePaginator
-    {
+    ): LengthAwarePaginator {
         $this->assertPaginationAndSource($page, $perPage, $source);
         $from = $this->utcBoundary($fromInclusive);
         $before = $this->utcBoundary($beforeExclusive);
@@ -82,8 +81,8 @@ final readonly class UnifiedMyWorkQuery
      * Read one source's exact native lifecycle state; never interpret Task and
      * Work Request states as an interchangeable, shared state machine.
      *
-     * @param string $source Required: individual_task or work_request.
-     * @param string $state Exact state configured for that native source.
+     * @param  string  $source  Required: individual_task or work_request.
+     * @param  string  $state  Exact state configured for that native source.
      * @return LengthAwarePaginator<int, CommonWorkItem>
      */
     public function nativeState(
@@ -92,8 +91,7 @@ final readonly class UnifiedMyWorkQuery
         string $state,
         int $page = 1,
         int $perPage = 20,
-    ): LengthAwarePaginator
-    {
+    ): LengthAwarePaginator {
         $this->assertPaginationAndSource($page, $perPage, $source);
 
         // State filtering without a concrete source is prohibited. The Task
