@@ -371,6 +371,73 @@ class DocumentAccessPrecedenceTest extends TestCase
         }
     }
 
+    public function test_thousand_transaction_links_cannot_amplify_download_queries_or_hide_restricted_parent(): void
+    {
+        $office = $this->department('BUDGET');
+        $hidden = $this->department('BUDGET-SECRET');
+        $actor = $this->human($office);
+        $transaction = $this->transaction($actor, $office);
+        $denied = $this->restrictedCorrespondence($hidden);
+        $document = $this->document($actor, $office, 'Many-link access budget');
+
+        $links = [];
+        for ($i = 0; $i < 1000; $i++) {
+            $links[] = [
+                'document_id' => $document->id,
+                'linkable_type' => $transaction->getMorphClass(),
+                'linkable_id' => $transaction->id,
+                'relationship' => 'evidence_'.sprintf('%04d', $i),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+        foreach (array_chunk($links, 200) as $batch) {
+            DB::table('document_links')->insert($batch);
+        }
+        $this->assertSame(1000, $document->links()->count());
+
+        DB::enableQueryLog();
+        DB::flushQueryLog();
+        try {
+            $allowed = app(DocumentAccessService::class)->canDownload($actor, $document);
+            $allowQueries = count(DB::getQueryLog());
+        } finally {
+            DB::disableQueryLog();
+            DB::flushQueryLog();
+        }
+        $this->assertTrue($allowed);
+        $this->assertLessThanOrEqual(10, $allowQueries);
+
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => $denied->getMorphClass(),
+            'linkable_id' => $denied->id,
+            'relationship' => 'restricted_authoritative_parent',
+        ]);
+        $this->assertSame(1001, $document->links()->count());
+
+        DB::enableQueryLog();
+        DB::flushQueryLog();
+        try {
+            $deniedDownload = app(DocumentAccessService::class)->canDownload($actor, $document);
+            $downloadQueries = count(DB::getQueryLog());
+            DB::flushQueryLog();
+            $archive = app(DocumentArchiveQuery::class)->workspace($actor, [
+                'document' => $document->public_id,
+            ]);
+            $archiveQueries = count(DB::getQueryLog());
+        } finally {
+            DB::disableQueryLog();
+            DB::flushQueryLog();
+        }
+
+        $this->assertFalse($deniedDownload);
+        $this->assertNull($archive['selected']);
+        $this->assertSame(0, $archive['records']->total());
+        $this->assertLessThanOrEqual(10, $downloadQueries);
+        $this->assertLessThanOrEqual(14, $archiveQueries);
+    }
+
     private function department(string $name): Department
     {
         return Department::query()->create([
