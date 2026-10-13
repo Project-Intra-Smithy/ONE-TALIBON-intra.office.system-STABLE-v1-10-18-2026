@@ -220,6 +220,41 @@ jobs:
           printf 'PHPUNIT_EXIT=%s\n' "$status" > "$RUNNER_TEMP/p234-evidence/exit-code.txt"
           exit "$status"
 
+      - name: Measure focused 1000-row SQL query counts using disposable test copies
+        # This is supplemental instrumentation: canonical candidate source is
+        # already run unchanged above. Never edit or commit candidate files.
+        if: ${{ success() && matrix.lane != 'P4' }}
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$RUNNER_TEMP/p234-instrumented"
+          php <<'PHP'
+          <?php
+          $source = getenv('P234_TEST_FILE');
+          $copy = getenv('RUNNER_TEMP').'/p234-instrumented/'.basename($source);
+          $code = file_get_contents($source);
+          $pattern = '/(\$(?:count|queryCount|allowQueries|downloadQueries|archiveQueries)\s*=\s*count\(DB::getQueryLog\(\)\);)/';
+          $code = preg_replace_callback($pattern, static function (array $match): string {
+              $variable = preg_match('/\$(\w+)/', $match[1], $m) ? $m[1] : 'unmatched';
+              return $match[1]."\n".
+                  "            file_put_contents(getenv('RUNNER_TEMP').'/p234-evidence/query-counts.txt', ".
+                  var_export('P234_ACTUAL_QUERY_COUNT '.$variable.'=', true).
+                  ".\$".$variable.".PHP_EOL, FILE_APPEND);";
+          }, $code, -1, $hits);
+          if ($hits < 1) throw new RuntimeException('No query-count assignments instrumented');
+          file_put_contents($copy, $code);
+          printf("P234_INSTRUMENTED_TEST_COPY=PASS assigned_count_sites=%d candidate_file_unchanged=YES\n", $hits);
+          PHP
+          case "$P234_LANE" in
+            P2) filter='test_pagination_is_bounded_with_one_thousand_source_receipts' ;;
+            P3) filter='test_sql_archive_zero_one_and_one_thousand_documents_keep_stable_pages_and_counts|test_thousand_transaction_links_cannot_amplify_download_queries_or_hide_restricted_parent' ;;
+            *) exit 1 ;;
+          esac
+          vendor/bin/phpunit --no-coverage --filter "$filter" \
+            "$RUNNER_TEMP/p234-instrumented/$(basename "$P234_TEST_FILE")"
+          cat "$RUNNER_TEMP/p234-evidence/query-counts.txt"
+          test -z "$(git status --porcelain)"
+
       - name: Read-only representative EXPLAIN plans on disposable tables
         if: ${{ success() }}
         shell: bash
@@ -250,6 +285,11 @@ jobs:
               $plan = json_decode($raw, true, 512, JSON_THROW_ON_ERROR);
               $output[] = ['case' => $name, 'statement' => $sql, 'plan' => $plan[0],
                   'population_note' => 'Post-test tables may be empty after RefreshDatabase rollback; plan is a read-only SQL shape probe, not a 1000-record fixture benchmark.'];
+          $top = $plan[0]['Plan'];
+          printf("P234_EXPLAIN_PLAN case=%s node=%s actual_rows=%s planned_rows=%s shared_hit=%s shared_read=%s\n",
+              $name, $top['Node Type'] ?? 'unknown', $top['Actual Rows'] ?? 'unknown',
+              $top['Plan Rows'] ?? 'unknown', $top['Shared Hit Blocks'] ?? 0,
+              $top['Shared Read Blocks'] ?? 0);
           }
           $path = getenv('RUNNER_TEMP').'/p234-evidence/read-only-explain.json';
           file_put_contents($path, json_encode(['lane' => getenv('P234_LANE'), 'plans' => $output], JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR));
