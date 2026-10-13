@@ -125,6 +125,7 @@ jobs:
           php -l app/Services/NotificationFeedQuery.php
           php -l app/Services/CalendarWorkspaceQueryService.php
           php -l tests/Feature/WorkRequests/WorkRequestRevocationTest.php
+          php -l tests/Feature/PerformanceLiveEndpointsTest.php
 
       - name: Targeted Work Request revocation, validation and workflow regression
         shell: bash
@@ -141,6 +142,7 @@ jobs:
             tests/Feature/MeetingCalendarProjectionTest.php \
             tests/Feature/Phase1SharedPlatformServicesTest.php \
             tests/Feature/CoreDocumentAttachmentsTest.php
+          vendor/bin/phpunit --no-coverage --log-junit "$RUNNER_TEMP/p1-pg16-evidence/performance-live.xml" tests/Feature/PerformanceLiveEndpointsTest.php
 
       - name: Upload sanitized JUnit results for same-head review
         if: always()
