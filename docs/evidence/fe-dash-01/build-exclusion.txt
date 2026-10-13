@@ -1,0 +1,1 @@
+PASS: production manifest/assets exclude preview entry, middleware, isolation transport and synthetic role data.

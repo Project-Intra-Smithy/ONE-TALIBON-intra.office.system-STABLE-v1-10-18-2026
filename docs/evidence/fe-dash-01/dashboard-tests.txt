@@ -1,0 +1,174 @@
+TAP version 13
+# (node:15552) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: dashboard: employee at 320px preserves content and stacks sections
+ok 1 - dashboard: employee at 320px preserves content and stacks sections
+  ---
+  duration_ms: 1779.8343
+  type: 'test'
+  ...
+# Subtest: dashboard: employee at 390px preserves content and stacks sections
+ok 2 - dashboard: employee at 390px preserves content and stacks sections
+  ---
+  duration_ms: 670.0441
+  type: 'test'
+  ...
+# Subtest: dashboard: employee at 768px preserves content and stacks sections
+ok 3 - dashboard: employee at 768px preserves content and stacks sections
+  ---
+  duration_ms: 726.4345
+  type: 'test'
+  ...
+# Subtest: dashboard: employee at 1024px preserves content and stacks sections
+ok 4 - dashboard: employee at 1024px preserves content and stacks sections
+  ---
+  duration_ms: 957.1994
+  type: 'test'
+  ...
+# Subtest: dashboard: employee at 1440px preserves content and stacks sections
+ok 5 - dashboard: employee at 1440px preserves content and stacks sections
+  ---
+  duration_ms: 1098.6605
+  type: 'test'
+  ...
+# Subtest: dashboard: employee empty, nullable, absent and long data
+ok 6 - dashboard: employee empty, nullable, absent and long data
+  ---
+  duration_ms: 3739.1444
+  type: 'test'
+  ...
+# Subtest: dashboard: department_head at 320px preserves content and stacks sections
+ok 7 - dashboard: department_head at 320px preserves content and stacks sections
+  ---
+  duration_ms: 1270.9465
+  type: 'test'
+  ...
+# Subtest: dashboard: department_head at 390px preserves content and stacks sections
+ok 8 - dashboard: department_head at 390px preserves content and stacks sections
+  ---
+  duration_ms: 1196.0626
+  type: 'test'
+  ...
+# Subtest: dashboard: department_head at 768px preserves content and stacks sections
+ok 9 - dashboard: department_head at 768px preserves content and stacks sections
+  ---
+  duration_ms: 1137.5061
+  type: 'test'
+  ...
+# Subtest: dashboard: department_head at 1024px preserves content and stacks sections
+ok 10 - dashboard: department_head at 1024px preserves content and stacks sections
+  ---
+  duration_ms: 1145.3555
+  type: 'test'
+  ...
+# Subtest: dashboard: department_head at 1440px preserves content and stacks sections
+ok 11 - dashboard: department_head at 1440px preserves content and stacks sections
+  ---
+  duration_ms: 1293.0785
+  type: 'test'
+  ...
+# Subtest: dashboard: department_head empty, nullable, absent and long data
+ok 12 - dashboard: department_head empty, nullable, absent and long data
+  ---
+  duration_ms: 5048.4495
+  type: 'test'
+  ...
+# Subtest: dashboard: executive_oversight at 320px preserves content and stacks sections
+ok 13 - dashboard: executive_oversight at 320px preserves content and stacks sections
+  ---
+  duration_ms: 1592.4935
+  type: 'test'
+  ...
+# Subtest: dashboard: executive_oversight at 390px preserves content and stacks sections
+ok 14 - dashboard: executive_oversight at 390px preserves content and stacks sections
+  ---
+  duration_ms: 1216.7786
+  type: 'test'
+  ...
+# Subtest: dashboard: executive_oversight at 768px preserves content and stacks sections
+ok 15 - dashboard: executive_oversight at 768px preserves content and stacks sections
+  ---
+  duration_ms: 944.1024
+  type: 'test'
+  ...
+# Subtest: dashboard: executive_oversight at 1024px preserves content and stacks sections
+ok 16 - dashboard: executive_oversight at 1024px preserves content and stacks sections
+  ---
+  duration_ms: 951.077
+  type: 'test'
+  ...
+# Subtest: dashboard: executive_oversight at 1440px preserves content and stacks sections
+ok 17 - dashboard: executive_oversight at 1440px preserves content and stacks sections
+  ---
+  duration_ms: 941.9655
+  type: 'test'
+  ...
+# Subtest: dashboard: executive_oversight empty, nullable, absent and long data
+ok 18 - dashboard: executive_oversight empty, nullable, absent and long data
+  ---
+  duration_ms: 2992.2774
+  type: 'test'
+  ...
+# Subtest: dashboard: system_administration at 320px preserves content and stacks sections
+ok 19 - dashboard: system_administration at 320px preserves content and stacks sections
+  ---
+  duration_ms: 880.6964
+  type: 'test'
+  ...
+# Subtest: dashboard: system_administration at 390px preserves content and stacks sections
+ok 20 - dashboard: system_administration at 390px preserves content and stacks sections
+  ---
+  duration_ms: 796.3694
+  type: 'test'
+  ...
+# Subtest: dashboard: system_administration at 768px preserves content and stacks sections
+ok 21 - dashboard: system_administration at 768px preserves content and stacks sections
+  ---
+  duration_ms: 739.6653
+  type: 'test'
+  ...
+# Subtest: dashboard: system_administration at 1024px preserves content and stacks sections
+ok 22 - dashboard: system_administration at 1024px preserves content and stacks sections
+  ---
+  duration_ms: 796.8988
+  type: 'test'
+  ...
+# Subtest: dashboard: system_administration at 1440px preserves content and stacks sections
+ok 23 - dashboard: system_administration at 1440px preserves content and stacks sections
+  ---
+  duration_ms: 783.189
+  type: 'test'
+  ...
+# Subtest: dashboard: system_administration empty, nullable, absent and long data
+ok 24 - dashboard: system_administration empty, nullable, absent and long data
+  ---
+  duration_ms: 2845.7018
+  type: 'test'
+  ...
+# Subtest: dashboard: role switch, keyboard focus, action destinations, preview transport isolation
+ok 25 - dashboard: role switch, keyboard focus, action destinations, preview transport isolation
+  ---
+  duration_ms: 3187.3921
+  type: 'test'
+  ...
+# Subtest: dashboard: missing isolation middleware fails closed before mounting production components
+ok 26 - dashboard: missing isolation middleware fails closed before mounting production components
+  ---
+  duration_ms: 490.2048
+  type: 'test'
+  ...
+# Subtest: dashboard: zoom reflow, heading hierarchy and keyboard table access
+ok 27 - dashboard: zoom reflow, heading hierarchy and keyboard table access
+  ---
+  duration_ms: 1244.0973
+  type: 'test'
+  ...
+1..27
+# tests 27
+# suites 0
+# pass 27
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 43685.9742

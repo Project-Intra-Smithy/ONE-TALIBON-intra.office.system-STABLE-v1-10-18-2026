@@ -1,0 +1,56 @@
+
+> build
+> vite build
+
+vite v8.3.0 building client environment for production...
+transforming...
+✓ 2185 modules transformed.
+rendering chunks...
+computing gzip size...
+public/build/manifest.json                             13.28 kB │ gzip:   1.60 kB
+public/build/assets/AppLayout-DLRHo53A.css              5.05 kB │ gzip:   1.46 kB
+public/build/assets/Dashboard-DaBznRHd.css              5.10 kB │ gzip:   1.46 kB
+public/build/assets/app-BjzYzLAs.css                   64.32 kB │ gzip:  12.21 kB
+public/build/assets/plus-D7z3S9LC.js                    0.15 kB │ gzip:   0.15 kB
+public/build/assets/arrow-left-lahTUVQw.js              0.16 kB │ gzip:   0.16 kB
+public/build/assets/arrow-right-mkukKskt.js             0.16 kB │ gzip:   0.16 kB
+public/build/assets/circle-check-2TTy0NDk.js            0.17 kB │ gzip:   0.16 kB
+public/build/assets/user-round-CmP6wlFm.js              0.18 kB │ gzip:   0.17 kB
+public/build/assets/clock-3-ByTYcaRY.js                 0.18 kB │ gzip:   0.17 kB
+public/build/assets/rotate-ccw-CTPTCnwQ.js              0.19 kB │ gzip:   0.18 kB
+public/build/assets/user-round-check-D39Chs-k.js        0.23 kB │ gzip:   0.20 kB
+public/build/assets/log-out-lBuwTfCx.js                 0.25 kB │ gzip:   0.22 kB
+public/build/assets/triangle-alert-BpFv17wG.js          0.26 kB │ gzip:   0.21 kB
+public/build/assets/shield-check-C5huEkgw.js            0.31 kB │ gzip:   0.24 kB
+public/build/assets/key-round-MXQpayDv.js               0.35 kB │ gzip:   0.26 kB
+public/build/assets/PageFrame-ga6X-6g8.js               0.38 kB │ gzip:   0.27 kB
+public/build/assets/building-2-C3ufn0IR.js              0.43 kB │ gzip:   0.24 kB
+public/build/assets/uiContracts-BEtMDG4o.js             0.46 kB │ gzip:   0.31 kB
+public/build/assets/createLucideIcon-CM2l0Xds.js        0.90 kB │ gzip:   0.54 kB
+public/build/assets/PageHeader-OQsgPm14.js              0.93 kB │ gzip:   0.49 kB
+public/build/assets/EvidenceList-CFsftrdP.js            1.88 kB │ gzip:   0.94 kB
+public/build/assets/MfaRecoveryCodes-CWxBKmA6.js        2.06 kB │ gzip:   0.90 kB
+public/build/assets/Status-Deu0V5EN.js                  2.17 kB │ gzip:   0.92 kB
+public/build/assets/EvidenceFields-CZZYw53E.js          2.21 kB │ gzip:   1.11 kB
+public/build/assets/Index-Bx-ekQTh.js                   2.73 kB │ gzip:   1.19 kB
+public/build/assets/MfaEnrollment-BN3OsdCs.js           3.42 kB │ gzip:   1.37 kB
+public/build/assets/Show-2kWWyF30.js                    3.58 kB │ gzip:   1.22 kB
+public/build/assets/MfaChallenge-1gJzoJdW.js            3.68 kB │ gzip:   1.29 kB
+public/build/assets/ProgressiveFilterBar-BBOmBvAL.js    3.71 kB │ gzip:   1.41 kB
+public/build/assets/MfaSettings-8ZIKx2zY.js             3.82 kB │ gzip:   1.36 kB
+public/build/assets/Index-Cu_V7QF-.js                   4.19 kB │ gzip:   1.65 kB
+public/build/assets/Login-BZYaKNaq.js                   5.78 kB │ gzip:   1.90 kB
+public/build/assets/Index-OpwEvUp_.js                   5.83 kB │ gzip:   1.85 kB
+public/build/assets/Create-DgsJYNo8.js                  6.46 kB │ gzip:   1.81 kB
+public/build/assets/Create-C8aq4IHd.js                  7.05 kB │ gzip:   1.91 kB
+public/build/assets/Index-DOJ6tsXW.js                   8.21 kB │ gzip:   2.26 kB
+public/build/assets/Index-BhaxGXTH.js                  12.23 kB │ gzip:   3.05 kB
+public/build/assets/Show-CdxhKdxy.js                   15.12 kB │ gzip:   3.93 kB
+public/build/assets/Index-vR_hIRO3.js                  16.32 kB │ gzip:   3.91 kB
+public/build/assets/Index-fzgjc9vZ.js                  18.05 kB │ gzip:   4.41 kB
+public/build/assets/Show-Bx0i7o1H.js                   20.41 kB │ gzip:   4.56 kB
+public/build/assets/Dashboard-izFLa_Rr.js              26.56 kB │ gzip:   7.59 kB
+public/build/assets/AppLayout-D-8EGSqT.js              35.84 kB │ gzip:  10.67 kB
+public/build/assets/app-DoDY9-Z1.js                   350.50 kB │ gzip: 110.25 kB
+
+✓ built in 2.01s

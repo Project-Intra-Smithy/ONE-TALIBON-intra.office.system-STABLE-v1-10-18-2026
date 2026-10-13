@@ -1,0 +1,406 @@
+
+> test
+> node --experimental-strip-types --test tests/*.test.mjs
+
+TAP version 13
+# (node:30412) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: dashboard: employee at 320px preserves content and stacks sections
+ok 1 - dashboard: employee at 320px preserves content and stacks sections
+  ---
+  duration_ms: 5449.0646
+  type: 'test'
+  ...
+# Subtest: dashboard: employee at 390px preserves content and stacks sections
+ok 2 - dashboard: employee at 390px preserves content and stacks sections
+  ---
+  duration_ms: 1963.1277
+  type: 'test'
+  ...
+# Subtest: dashboard: employee at 768px preserves content and stacks sections
+ok 3 - dashboard: employee at 768px preserves content and stacks sections
+  ---
+  duration_ms: 2005.0897
+  type: 'test'
+  ...
+# Subtest: dashboard: employee at 1024px preserves content and stacks sections
+ok 4 - dashboard: employee at 1024px preserves content and stacks sections
+  ---
+  duration_ms: 1948.8924
+  type: 'test'
+  ...
+# Subtest: dashboard: employee at 1440px preserves content and stacks sections
+ok 5 - dashboard: employee at 1440px preserves content and stacks sections
+  ---
+  duration_ms: 1688.2875
+  type: 'test'
+  ...
+# Subtest: dashboard: employee empty, nullable, absent and long data
+ok 6 - dashboard: employee empty, nullable, absent and long data
+  ---
+  duration_ms: 5289.751
+  type: 'test'
+  ...
+# Subtest: dashboard: department_head at 320px preserves content and stacks sections
+ok 7 - dashboard: department_head at 320px preserves content and stacks sections
+  ---
+  duration_ms: 1489.7213
+  type: 'test'
+  ...
+# Subtest: dashboard: department_head at 390px preserves content and stacks sections
+ok 8 - dashboard: department_head at 390px preserves content and stacks sections
+  ---
+  duration_ms: 1154.2504
+  type: 'test'
+  ...
+# Subtest: dashboard: department_head at 768px preserves content and stacks sections
+ok 9 - dashboard: department_head at 768px preserves content and stacks sections
+  ---
+  duration_ms: 949.5123
+  type: 'test'
+  ...
+# Subtest: dashboard: department_head at 1024px preserves content and stacks sections
+ok 10 - dashboard: department_head at 1024px preserves content and stacks sections
+  ---
+  duration_ms: 1010.6977
+  type: 'test'
+  ...
+# Subtest: dashboard: department_head at 1440px preserves content and stacks sections
+ok 11 - dashboard: department_head at 1440px preserves content and stacks sections
+  ---
+  duration_ms: 1107.151
+  type: 'test'
+  ...
+# Subtest: dashboard: department_head empty, nullable, absent and long data
+ok 12 - dashboard: department_head empty, nullable, absent and long data
+  ---
+  duration_ms: 4058.9901
+  type: 'test'
+  ...
+# Subtest: dashboard: executive_oversight at 320px preserves content and stacks sections
+ok 13 - dashboard: executive_oversight at 320px preserves content and stacks sections
+  ---
+  duration_ms: 1081.2248
+  type: 'test'
+  ...
+# Subtest: dashboard: executive_oversight at 390px preserves content and stacks sections
+ok 14 - dashboard: executive_oversight at 390px preserves content and stacks sections
+  ---
+  duration_ms: 1043.6094
+  type: 'test'
+  ...
+# Subtest: dashboard: executive_oversight at 768px preserves content and stacks sections
+ok 15 - dashboard: executive_oversight at 768px preserves content and stacks sections
+  ---
+  duration_ms: 1037.9705
+  type: 'test'
+  ...
+# Subtest: dashboard: executive_oversight at 1024px preserves content and stacks sections
+ok 16 - dashboard: executive_oversight at 1024px preserves content and stacks sections
+  ---
+  duration_ms: 1006.6138
+  type: 'test'
+  ...
+# Subtest: dashboard: executive_oversight at 1440px preserves content and stacks sections
+ok 17 - dashboard: executive_oversight at 1440px preserves content and stacks sections
+  ---
+  duration_ms: 1071.9188
+  type: 'test'
+  ...
+# Subtest: dashboard: executive_oversight empty, nullable, absent and long data
+ok 18 - dashboard: executive_oversight empty, nullable, absent and long data
+  ---
+  duration_ms: 3649.5171
+  type: 'test'
+  ...
+# Subtest: dashboard: system_administration at 320px preserves content and stacks sections
+ok 19 - dashboard: system_administration at 320px preserves content and stacks sections
+  ---
+  duration_ms: 1180.3511
+  type: 'test'
+  ...
+# Subtest: dashboard: system_administration at 390px preserves content and stacks sections
+ok 20 - dashboard: system_administration at 390px preserves content and stacks sections
+  ---
+  duration_ms: 1208.6719
+  type: 'test'
+  ...
+# Subtest: dashboard: system_administration at 768px preserves content and stacks sections
+ok 21 - dashboard: system_administration at 768px preserves content and stacks sections
+  ---
+  duration_ms: 1235.0706
+  type: 'test'
+  ...
+# Subtest: dashboard: system_administration at 1024px preserves content and stacks sections
+ok 22 - dashboard: system_administration at 1024px preserves content and stacks sections
+  ---
+  duration_ms: 1226.8265
+  type: 'test'
+  ...
+# Subtest: dashboard: system_administration at 1440px preserves content and stacks sections
+ok 23 - dashboard: system_administration at 1440px preserves content and stacks sections
+  ---
+  duration_ms: 999.4248
+  type: 'test'
+  ...
+# Subtest: dashboard: system_administration empty, nullable, absent and long data
+ok 24 - dashboard: system_administration empty, nullable, absent and long data
+  ---
+  duration_ms: 3035.4819
+  type: 'test'
+  ...
+# Subtest: dashboard: role switch, keyboard focus, action destinations, preview transport isolation
+ok 25 - dashboard: role switch, keyboard focus, action destinations, preview transport isolation
+  ---
+  duration_ms: 2131.1009
+  type: 'test'
+  ...
+# Subtest: dashboard: missing isolation middleware fails closed before mounting production components
+ok 26 - dashboard: missing isolation middleware fails closed before mounting production components
+  ---
+  duration_ms: 439.8713
+  type: 'test'
+  ...
+# Subtest: dashboard: zoom reflow, heading hierarchy and keyboard table access
+ok 27 - dashboard: zoom reflow, heading hierarchy and keyboard table access
+  ---
+  duration_ms: 1289.2279
+  type: 'test'
+  ...
+# Subtest: catalog exactly preserves canonical 23 identity, group, and readiness relationships
+ok 28 - catalog exactly preserves canonical 23 identity, group, and readiness relationships
+  ---
+  duration_ms: 3.3846
+  type: 'test'
+  ...
+# Subtest: canonical paths and permission associations are not synthetic
+ok 29 - canonical paths and permission associations are not synthetic
+  ---
+  duration_ms: 0.5858
+  type: 'test'
+  ...
+# Subtest: permission denial, optional third builder argument and absent routes remain guarded
+ok 30 - permission denial, optional third builder argument and absent routes remain guarded
+  ---
+  duration_ms: 3.4814
+  type: 'test'
+  ...
+# Subtest: already corrected dashboard and density presentation contracts remain intact
+ok 31 - already corrected dashboard and density presentation contracts remain intact
+  ---
+  duration_ms: 2.1472
+  type: 'test'
+  ...
+# Subtest: shell: 320px layout, active navigation, drawer keyboard and targets
+ok 32 - shell: 320px layout, active navigation, drawer keyboard and targets
+  ---
+  duration_ms: 5465.2801
+  type: 'test'
+  ...
+# Subtest: shell: 390px layout, active navigation, drawer keyboard and targets
+ok 33 - shell: 390px layout, active navigation, drawer keyboard and targets
+  ---
+  duration_ms: 1715.8534
+  type: 'test'
+  ...
+# Subtest: shell: 768px layout, active navigation, drawer keyboard and targets
+ok 34 - shell: 768px layout, active navigation, drawer keyboard and targets
+  ---
+  duration_ms: 1966.3075
+  type: 'test'
+  ...
+# Subtest: shell: 1024px layout, active navigation, drawer keyboard and targets
+ok 35 - shell: 1024px layout, active navigation, drawer keyboard and targets
+  ---
+  duration_ms: 1460.5778
+  type: 'test'
+  ...
+# Subtest: shell: 1440px layout, active navigation, drawer keyboard and targets
+ok 36 - shell: 1440px layout, active navigation, drawer keyboard and targets
+  ---
+  duration_ms: 1430.1556
+  type: 'test'
+  ...
+# Subtest: shell: denied flags filter both navigation and records search
+ok 37 - shell: denied flags filter both navigation and records search
+  ---
+  duration_ms: 988.3112
+  type: 'test'
+  ...
+# Subtest: shell: search GET and logout POST keep Inertia transport and CSRF
+ok 38 - shell: search GET and logout POST keep Inertia transport and CSRF
+  ---
+  duration_ms: 2570.6631
+  type: 'test'
+  ...
+# Subtest: shell: short viewport, zoom, resize focus and skip link
+ok 39 - shell: short viewport, zoom, resize focus and skip link
+  ---
+  duration_ms: 1491.2305
+  type: 'test'
+  ...
+# Subtest: shell: navigation visit closes drawer and updates active state
+ok 40 - shell: navigation visit closes drawer and updates active state
+  ---
+  duration_ms: 1194.6859
+  type: 'test'
+  ...
+# Subtest: shell: notification polling, expired state, focus return and dark preference
+ok 41 - shell: notification polling, expired state, focus return and dark preference
+  ---
+  duration_ms: 9202.3895
+  type: 'test'
+  ...
+# Subtest: mounted React: list 200 then detail 401 clears confidential rows
+ok 42 - mounted React: list 200 then detail 401 clears confidential rows
+  ---
+  duration_ms: 5201.4329
+  type: 'test'
+  ...
+# Subtest: mounted React: list 200 then detail 403 clears confidential rows
+ok 43 - mounted React: list 200 then detail 403 clears confidential rows
+  ---
+  duration_ms: 1812.7828
+  type: 'test'
+  ...
+# Subtest: mounted React: list 200 then detail 419 clears confidential rows
+ok 44 - mounted React: list 200 then detail 419 clears confidential rows
+  ---
+  duration_ms: 2193.4463
+  type: 'test'
+  ...
+# Subtest: mounted React: delayed aborted detail cannot restore revoked data
+ok 45 - mounted React: delayed aborted detail cannot restore revoked data
+  ---
+  duration_ms: 2092.592
+  type: 'test'
+  ...
+# Subtest: mounted Inertia identity switch clears old viewer and loads only new rows
+ok 46 - mounted Inertia identity switch clears old viewer and loads only new rows
+  ---
+  duration_ms: 1471.7796
+  type: 'test'
+  ...
+# (node:26412) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: contract Task serializer does not grant authority from owning department snapshot
+ok 47 - contract Task serializer does not grant authority from owning department snapshot
+  ---
+  duration_ms: 3.8776
+  type: 'test'
+  ...
+# Subtest: C1 timestamp guard requires real calendar date, seconds and explicit timezone on all fields
+ok 48 - C1 timestamp guard requires real calendar date, seconds and explicit timezone on all fields
+  ---
+  duration_ms: 1.0266
+  type: 'test'
+  ...
+# Subtest: malformed 200 timestamp values fail both list and detail envelopes
+ok 49 - malformed 200 timestamp values fail both list and detail envelopes
+  ---
+  duration_ms: 79.9174
+  type: 'test'
+  ...
+# Subtest: list uses authoritative server meta and rejects malformed result
+ok 50 - list uses authoritative server meta and rejects malformed result
+  ---
+  duration_ms: 0.4982
+  type: 'test'
+  ...
+# Subtest: only released Task GETs: same-origin credentials, no Inertia header or invented filters
+ok 51 - only released Task GETs: same-origin credentials, no Inertia header or invented filters
+  ---
+  duration_ms: 6.2117
+  type: 'test'
+  ...
+# Subtest: 401 inactive session and 419 expiration require fresh authentication
+ok 52 - 401 inactive session and 419 expiration require fresh authentication
+  ---
+  duration_ms: 2.4254
+  type: 'test'
+  ...
+# Subtest: 403 MFA uses validated server next_url, never arbitrary redirect
+ok 53 - 403 MFA uses validated server next_url, never arbitrary redirect
+  ---
+  duration_ms: 1.9938
+  type: 'test'
+  ...
+# Subtest: authorization-boundary classifier distinguishes session loss from ordinary read failures
+ok 54 - authorization-boundary classifier distinguishes session loss from ordinary read failures
+  ---
+  duration_ms: 0.3789
+  type: 'test'
+  ...
+# Subtest: masked 404, validation 422, throttle 429 and 503 keep correct read error semantics
+ok 55 - masked 404, validation 422, throttle 429 and 503 keep correct read error semantics
+  ---
+  duration_ms: 2.429
+  type: 'test'
+  ...
+# Subtest: invalid 200 payload and HTML never render as authorized Tasks
+ok 56 - invalid 200 payload and HTML never render as authorized Tasks
+  ---
+  duration_ms: 1.5703
+  type: 'test'
+  ...
+# Subtest: aborted stale fetch is not turned into another account error response
+ok 57 - aborted stale fetch is not turned into another account error response
+  ---
+  duration_ms: 0.9798
+  type: 'test'
+  ...
+# (node:14060) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: canonical shared props omit notifications and the initial feed is safe
+ok 58 - canonical shared props omit notifications and the initial feed is safe
+  ---
+  duration_ms: 3.3508
+  type: 'test'
+  ...
+# Subtest: calendar producer date fallback rejects rollover and supports its four views
+ok 59 - calendar producer date fallback rejects rollover and supports its four views
+  ---
+  duration_ms: 2.2202
+  type: 'test'
+  ...
+# Subtest: memo audiences reflect server authority, including recipient-only
+ok 60 - memo audiences reflect server authority, including recipient-only
+  ---
+  duration_ms: 0.5655
+  type: 'test'
+  ...
+# Subtest: correspondence overview counts are separate from intentionally empty list
+ok 61 - correspondence overview counts are separate from intentionally empty list
+  ---
+  duration_ms: 0.3647
+  type: 'test'
+  ...
+# Subtest: staged page links exclude missing backend-rendered components
+ok 62 - staged page links exclude missing backend-rendered components
+  ---
+  duration_ms: 1.1088
+  type: 'test'
+  ...
+# (node:27088) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: every preview screen mounts an existing Inertia component with a visible synthetic label
+ok 63 - every preview screen mounts an existing Inertia component with a visible synthetic label
+  ---
+  duration_ms: 6.895
+  type: 'test'
+  ...
+# Subtest: role fixture is bounded to supported role presentations
+ok 64 - role fixture is bounded to supported role presentations
+  ---
+  duration_ms: 0.5277
+  type: 'test'
+  ...
+1..64
+# tests 64
+# suites 0
+# pass 64
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 53897.801
