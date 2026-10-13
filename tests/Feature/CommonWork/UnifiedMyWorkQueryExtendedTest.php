@@ -93,8 +93,21 @@ final class UnifiedMyWorkQueryExtendedTest extends TestCase
             'department_id' => $a->id, 'position_title' => 'Fixture', 'employment_status' => 'active',
         ]);
         $actor = $this->person($a);
+        // User and Employee sequences are independent. If their numeric IDs
+        // happen to coincide, replace only this synthetic Employee association
+        // so the negative checks actually exercise different identity keys.
+        if ($actor->id === $actor->employee->id) {
+            $actor->employee->update(['user_id' => null, 'employment_status' => 'separated']);
+            Employee::query()->create([
+                'employee_number' => 'A02-'.Str::random(12), 'full_name' => 'A02 Synthetic Staff',
+                'user_id' => $actor->id, 'department_id' => $a->id,
+                'position_title' => 'Tester', 'employment_status' => 'active',
+            ]);
+            $actor = $actor->fresh('employee.department');
+        }
         $colleague = $this->person($a);
         $outsider = $this->person($b);
+        $this->assertSame($actor->id, $actor->employee->user_id);
         $this->assertNotSame($actor->id, $actor->employee->id);
         $this->actingAs($actor);
         $owned = $this->task($actor);

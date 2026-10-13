@@ -3,9 +3,9 @@
 namespace App\Services\CommonWork;
 
 use App\Domain\Tasks\TaskCoreAccess;
-use App\Domain\Workflow\Authorization\TransactionActorEligibility;
 use App\Domain\Tasks\TaskCoreService;
 use App\Domain\Tasks\TaskLifecycleState;
+use App\Models\Employee;
 use App\Models\User;
 use App\Services\TransactionVisibilityQuery;
 use Carbon\CarbonImmutable;
@@ -25,7 +25,6 @@ final readonly class UnifiedMyWorkQuery
         private TaskCoreAccess $taskAccess,
         private TaskCoreService $tasks,
         private TransactionVisibilityQuery $transactions,
-        private TransactionActorEligibility $transactionEligibility,
     ) {}
 
     /**
@@ -278,8 +277,33 @@ final readonly class UnifiedMyWorkQuery
 
         // Work Request visibility always precedes personal responsibility
         // narrowing. Employee ID and User ID are never interchangeable.
-        $employeeId = $this->transactionEligibility->resolve($actor)['employee_id'] ?? 0;
+        // This actor was freshly authenticated and employment-checked by TaskCoreAccess.
+        // Reconfirm its exact Employee ID in one live scalar read rather than
+        // duplicating TransactionActorEligibility::resolve()'s three queries.
+        // A switched or separated employee fails closed; the Work Request scope
+        // below remains the independent, authoritative office/role gate.
+        $employeeId = (int) (Employee::query()
+            ->whereKey($actor->employee->getKey())
+            ->where('user_id', $actor->getKey())
+            ->where('department_id', $actor->employee->department_id)
+            ->where('employment_status', 'active')
+            ->value('id') ?? 0);
         $requestRows = $this->transactions->scope($actor)
+            // An employment/office change after either PHP guard must not
+            // keep a former assignee identity eligible at SQL execution time.
+            ->whereExists(function (QueryBuilder $current) use ($actor, $employeeId): void {
+                $current->selectRaw('1')
+                    ->from('employees as current_employee')
+                    ->join('departments as current_office', 'current_office.id', '=', 'current_employee.department_id')
+                    ->join('users as current_user', 'current_user.id', '=', 'current_employee.user_id')
+                    ->where('current_employee.id', $employeeId)
+                    ->where('current_employee.user_id', $actor->getKey())
+                    ->where('current_employee.department_id', $actor->employee->department_id)
+                    ->where('current_employee.employment_status', 'active')
+                    ->where('current_office.is_active', true)
+                    ->where('current_user.is_active', true)
+                    ->where('current_user.role', $actor->role);
+            })
             ->where(function (Builder $query) use ($actor, $employeeId): void {
                 $query->where('created_by_user_id', $actor->id)
                     ->orWhere('assigned_employee_id', $employeeId);
