@@ -155,6 +155,25 @@ final class AuthorizedSourceSearchTest extends TestCase
         $this->assertStringContainsString("50%_\\'", $result['data'][0]['title']);
     }
 
+    public function test_search_result_link_is_reauthorized_at_the_destination_after_transfer(): void
+    {
+        $old = $this->office();
+        $new = $this->office();
+        $actor = $this->actor($old);
+        $record = $this->correspondence($old, 'P4 transfer destination secret');
+
+        $this->actingAs($actor);
+        $results = app(AuthorizedSourceSearch::class)
+            ->search($actor, 'P4 transfer destination secret', source: 'correspondence');
+        $this->assertSame(1, $results['meta']['total']);
+        $this->assertStringContainsString($record->public_id, $results['data'][0]['url']);
+
+        // Search output is a navigation hint, not a durable authorization grant.
+        $actor->employee()->update(['department_id' => $new->id]);
+        $this->actingAs($actor->fresh('employee.department'));
+        $this->get($results['data'][0]['url'])->assertForbidden();
+    }
+
     public function test_pagination_limits_and_disallowed_domain_are_rejected(): void
     {
         $office = $this->office();
