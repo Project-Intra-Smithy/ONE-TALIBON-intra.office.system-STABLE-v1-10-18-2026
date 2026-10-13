@@ -14,6 +14,7 @@ use App\Models\WorkflowTransaction;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
 /**
@@ -103,7 +104,7 @@ final class P0DestinationRevocationTest extends TestCase
         // Index FormRequest only requires login. Canonical scope must return no titles/totals.
         $result = $this->get('/correspondence?view=all')->assertOk();
         $this->assertStringNotContainsString($record->subject, $result->getContent());
-        $result->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+        $result->assertInertia(fn (AssertableInertia $page) => $page
             ->where('records.total', 0)
             ->where('overview.counts.all', 0));
         $this->revoke('departments', $office->id, ['is_active' => true]);
