@@ -66,12 +66,12 @@ test('canonical paths and permission associations are not synthetic', () => {
 });
 
 test('permission denial, optional third builder argument and absent routes remain guarded', () => {
-    assert.deepEqual(visible(false).map((item) => item.key).sort(), ['calendar','employeeDirectory'].sort());
+    assert.deepEqual(visible(false).map((item) => item.key).sort(), ['calendar','employeeDirectory','messages'].sort());
     const allowed = visible(true);
     assert.deepEqual(allowed.map((item) => item.key).sort(),
-        ['home','myWork','correspondence','employeeDirectory','records','memoranda','calendar','executiveDepartments'].sort());
+        ['home','myWork','correspondence','employeeDirectory','records','memoranda','calendar','executiveDepartments','messages','documentCenter'].sort());
     assert.ok(allowed.every((item) => item.readiness === 'wired' && staged.isStagedInertiaPath(item.href)));
-    assert.ok(!allowed.some((item) => ['/admin','/documents','/messages','/portal-search'].includes(item.href)));
+    assert.ok(!allowed.some((item) => ['/admin','/portal-search'].includes(item.href)));
     assert.equal(JSON.stringify(nav.buildPortalNavigation('employee', permissions(true))),
         JSON.stringify(nav.buildPortalNavigation('employee', permissions(true), true)));
     assert.equal(nav.isPortalPathActive('/records?view=all', '/records'), true);
