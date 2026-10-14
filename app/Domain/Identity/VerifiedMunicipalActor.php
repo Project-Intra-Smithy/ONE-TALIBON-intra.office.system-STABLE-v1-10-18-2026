@@ -4,6 +4,7 @@ namespace App\Domain\Identity;
 
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -15,7 +16,10 @@ use Illuminate\Support\Facades\Auth;
  */
 final readonly class VerifiedMunicipalActor
 {
-    private function __construct(private User $actor) {}
+    private function __construct(
+        private User $actor,
+        private Request $requestContext,
+    ) {}
 
     public static function forCurrentSession(User $claimed): self
     {
@@ -31,11 +35,19 @@ final readonly class VerifiedMunicipalActor
             throw new AuthorizationException('Common Search municipal access is revoked.');
         }
 
-        return new self($actor);
+        return new self($actor, request());
     }
 
     public function user(): User
     {
+        // This verified proof is valid only for the originating request and
+        // authenticated principal. Replaying it from another request/session
+        // must not bypass the ordinary fresh authorization entrypoints.
+        if (request() !== $this->requestContext
+            || (int) Auth::id() !== (int) $this->actor->getKey()) {
+            throw new AuthorizationException('Common Search verified identity cannot be replayed.');
+        }
+
         return $this->actor;
     }
 }
