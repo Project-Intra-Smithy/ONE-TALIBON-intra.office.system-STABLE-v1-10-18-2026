@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "candidateKind": "combined-p0-p4",
+  "status": "PENDING_REVIEW_NOT_EXECUTABLE",
+  "frontend": {
+    "repository": "Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE",
+    "sha": "431fe2e19daf41138791d1dbad2cbeedc5dbff42"
+  },
+  "backend": {
+    "repository": "Project-Intra-Smithy/Talibon-Sales-Prototype",
+    "sha": "REPLACE_WITH_EXACT_COMBINED_BACKEND_SHA"
+  },
+  "backendBaseline": {
+    "pr": 81,
+    "sha": "d99285f96b0bbcfd4156139c4fc01e3db62ed26b"
+  },
+  "overlay": {
+    "strategy": "explicit_allowlist_exact_git_blobs_only",
+    "files": [
+      {
+        "path": "resources/css/document-center.css",
+        "gitBlob": "7e00ba6d9b222c1a4f88d1d70649e7a991541e38"
+      },
+      {
+        "path": "resources/js/components/documents/DocumentArchive.tsx",
+        "gitBlob": "e1ec71cfbd0b25ce718303fd805b192e581b1f26"
+      },
+      {
+        "path": "resources/js/components/documents/DocumentCollectionNav.tsx",
+        "gitBlob": "fe36854d2f0ef60567dd44b9b78099e03390a2a4"
+      },
+      {
+        "path": "resources/js/components/documents/DocumentMetadataPanel.tsx",
+        "gitBlob": "1fc0e462f0d437b8b1a07d247d658b6535d1be9b"
+      },
+      {
+        "path": "resources/js/components/documents/DocumentRegister.tsx",
+        "gitBlob": "ee8b6e06c04ee6f43099dd7fd22bfd7477949e48"
+      },
+      {
+        "path": "resources/js/components/documents/documentCenterPresentation.ts",
+        "gitBlob": "8263fbba7bcf8e3297b7534dad93b23c3a9a54b3"
+      },
+      {
+        "path": "resources/js/components/messages/ConversationList.tsx",
+        "gitBlob": "d69a8799477829d2ba103582e47be8774a6e508b"
+      },
+      {
+        "path": "resources/js/components/messages/GroupIdentity.tsx",
+        "gitBlob": "9caf3e5576b62680b533671b475679ebb87ec6a6"
+      },
+      {
+        "path": "resources/js/components/messages/LiveMessageTimeline.tsx",
+        "gitBlob": "b3ebadd2cebec31ca04c62acc79a9fe35fd5f574"
+      },
+      {
+        "path": "resources/js/components/messages/MessageBubble.tsx",
+        "gitBlob": "98168ba7db5df3415535b7b4b03f6693a491f621"
+      },
+      {
+        "path": "resources/js/components/messages/MessageComposer.tsx",
+        "gitBlob": "ddf50705f8119aff3677373c2577c04017662acd"
+      },
+      {
+        "path": "resources/js/components/messages/MessageContextPanel.tsx",
+        "gitBlob": "b4559e89456b99b6cc5bb53700bfaf649937ca7e"
+      },
+      {
+        "path": "resources/js/components/messages/MessageThread.tsx",
+        "gitBlob": "e6ab2efbca1a0547c2c045c21fdbde521f428f4c"
+      },
+      {
+        "path": "resources/js/components/messages/messageChannels.ts",
+        "gitBlob": "561cf18e3c53df697cabe290cbdccb7af2e6bce4"
+      },
+      {
+        "path": "resources/js/components/messages/messageWorkspace.ts",
+        "gitBlob": "43312111589271e7c04afba57b1bb1372df6f540"
+      },
+      {
+        "path": "resources/js/components/messages/messaging.ts",
+        "gitBlob": "695eae567b54015e662ea839de27c798adf2a126"
+      },
+      {
+        "path": "resources/js/components/portal/PortalSearchField.tsx",
+        "gitBlob": "e28704bbfc31bd3da93c979aafddfd6335f3df06"
+      },
+      {
+        "path": "resources/js/components/portal/StatusBadge.tsx",
+        "gitBlob": "dbd2e59bf7c001dcb0224e39a4295c521e7e55b0"
+      },
+      {
+        "path": "resources/js/components/product/AuthorityPendingSurface.tsx",
+        "gitBlob": "f8816e4f1401d97523ea2831a399ca26f2c5bbf4"
+      },
+      {
+        "path": "resources/js/components/tasks/PersonalTaskWorkspace.tsx",
+        "gitBlob": "41e9b1efa85b1b39f12d62d359dbae3d3cb2d4d9"
+      },
+      {
+        "path": "resources/js/components/tasks/TaskMutationControls.tsx",
+        "gitBlob": "b61d8c3a40ec11a0bf3b50ce5dfee6e2ab4fa784"
+      },
+      {
+        "path": "resources/js/components/tasks/taskReadApi.ts",
+        "gitBlob": "38d4b2627356fa8e56edce828dceccab1e039304"
+      },
+      {
+        "path": "resources/js/hooks/messaging/useMessaging.ts",
+        "gitBlob": "7f95cde8eeaff09c86cc8e0343b1114a1693a107"
+      },
+      {
+        "path": "resources/js/navigation/stagedRoutes.ts",
+        "gitBlob": "20477b2a5878cf1acbedec1d700de7fe76adf1b6"
+      },
+      {
+        "path": "resources/js/pages/Announcements/Index.tsx",
+        "gitBlob": "cb24d44ef1ec7b8c25fd6f810b944c7eb80d5cad"
+      },
+      {
+        "path": "resources/js/pages/Documents/Index.tsx",
+        "gitBlob": "dd3fae01a1040759811e9b6715c6f0d1bfb2b2ae"
+      },
+      {
+        "path": "resources/js/pages/Meetings/Index.tsx",
+        "gitBlob": "04b9e559cbd2045f7aa935da8e0b83a7bb5fe9b8"
+      },
+      {
+        "path": "resources/js/pages/Messages/Index.tsx",
+        "gitBlob": "17284213ae4967914e191039d66b713d22f87e30"
+      },
+      {
+        "path": "resources/js/pages/Transactions/Index.tsx",
+        "gitBlob": "9bd2652c2565b6439154f892f9ca25d2df7b2fcf"
+      }
+    ]
+  },
+  "note": "Runtime executor must reproduce exact path+gitBlob in assembled backend, inspect missing dependencies, obtain Kirch acceptance of combined candidate, set status to runtime-testing-authorized in an ephemeral local copy, and record exact commit; never change frozen frontend SHA."
+}
