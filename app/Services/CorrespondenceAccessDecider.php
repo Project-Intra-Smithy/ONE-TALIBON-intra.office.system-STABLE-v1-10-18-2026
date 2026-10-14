@@ -63,6 +63,15 @@ class CorrespondenceAccessDecider
             && in_array($actor->role, self::REGISTER_ROLES, true);
     }
 
+    /** Reuse the already verified current operation actor; normal calls re-read identity. */
+    public function canRegisterVerifiedActor(
+        VerifiedMunicipalActor $verified,
+        CorrespondenceRecord $record,
+    ): bool {
+        return $record->lifecycle_state === CorrespondenceLifecycleState::Received
+            && in_array($verified->user()->role, self::REGISTER_ROLES, true);
+    }
+
     public function canClassify(User $actor, CorrespondenceRecord $record): bool
     {
         return $record->lifecycle_state === CorrespondenceLifecycleState::Registered
