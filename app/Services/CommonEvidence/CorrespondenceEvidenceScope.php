@@ -34,6 +34,7 @@ final readonly class CorrespondenceEvidenceScope
             }
         });
     }
+
     /**
      * Exact P0 registrar RECEIVED exception and source scope using one fresh,
      * request-bound authorization proof. This is not the generic list scope.
