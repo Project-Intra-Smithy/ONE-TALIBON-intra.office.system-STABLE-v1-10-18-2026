@@ -213,3 +213,17 @@ NEXT: commit/publish paired START memory then implement user-authorized visual c
 
 Owning START: https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/32
 
+
+
+### CLOSE PROPOSAL — FE-MFA-UI-01 / 2026-10-15
+CLOSE PROPOSAL / FE-MFA-UI-01 / 2026-10-15 — LOCAL IMPLEMENTED / REVIEW HELD
+Owner AJ, Codex-assisted; Kirch retains integration authority. START issue #32 and memory b82882c4aa06a8b34371e819d51a56c477f94ba0.
+Source: frontend main 6c385ee85f3fec4325182791554b66a861cfd9f3; original candidate e51c95794172a694a3575c00e6d35a5a65ea635d; PR #28 documentation head b82882c4aa06a8b34371e819d51a56c477f94ba0, base e6f5947ab330802f4b860b28baddc910ca32e13e. Backend reference ef02919b3ded8d16431c40540388efd7cbb4e403; no assembled runtime tuple.
+Changed locally: MfaChallenge.tsx plus mfa-challenge.css only. Forest green controls/focus/icons, compact centered solid white card, requested account verification copy, removed decorative badge/redundant divider text, municipal photograph bundled through Vite with 24px blur and 28% dark overlay. MFA/recovery handlers, payloads, routes, validation and errors unchanged. Existing local login work preserved.
+Evidence: npm test 35/35 PASS; types:check PASS; final build PASS; git diff --check PASS. Chromium fixture at 320/390/768/1440 PASS: no horizontal overflow, white card, green button, 24px blur, both inputs usable; mobile/desktop screenshots visually inspected. Local artifact script/screenshots: artifacts/mfa-ui/. Initial asset URL corrected and build/browser checks repeated.
+Candidate SHA256: MfaChallenge.tsx 029D178FD567021CE64076366984AD7F86EFEF095035CBE43F32F395E636A73E; mfa-challenge.css 31E704A7E6F46D77B08BB17B6A5DE1519B1560DF3575289EFBA4E0804D678855. Application changes and existing photo remain local/uncommitted; documentation only published.
+NOT RUN: authenticated Laravel MFA/recovery E2E, Firefox/WebKit, hosted CI on application changes. No observed visual defects remaining; no technical acceptance or production promotion. Hub #63 inaccessible. Issue stays open for review.
+NEXT: AJ/Kirch review the local MFA visual candidate; authenticated QA deferred until approved backend/frontend assembly. Final memory commit crosslink follows.
+
+Owning CLOSE: https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/32#issuecomment-6173299133
+
