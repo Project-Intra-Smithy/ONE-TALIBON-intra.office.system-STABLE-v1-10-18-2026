@@ -222,6 +222,8 @@ async function main() {
   assert.equal(own.length, 1, 'Task POST must create exactly one visible persisted row');
   const id = own[0].id;
   assertDb(dbTask(id), 'open', ['created']);
+  assert.ok(results.http.some(x => x.actor === 'A' && x.method === 'POST' && x.path === '/tasks' && x.status === 201),
+    'Task UI create must have an actual Laravel HTTP 201 response');
   success('TASK_CREATED_HTTP201_AND_PG16_READBACK', { taskId: id });
   await screenshot(pageA, '01-created-desktop');
   await pageA.reload({ waitUntil: 'domcontentloaded' });
@@ -235,13 +237,21 @@ async function main() {
     'Foreign Task ID must remain masked with HTTP 404');
   await screenshot(pageB, '02-foreign-mobile');
   success('FOREIGN_ACCOUNT_LIST_AND_DETAIL_MASKED');
-  await pageA.getByRole('button', { name: 'Start Task' }).click();
+  await Promise.all([
+    pageA.waitForResponse(x => x.request().method() === 'POST' && new URL(x.url()).pathname === '/tasks/' + id + '/start' && x.status() === 200),
+    pageA.getByRole('button', { name: 'Start Task' }).click(),
+  ]);
+  await pageA.getByRole('region', { name: 'Personal Task detail' }).waitFor({ state: 'detached' });
   await stateTab(pageA, 'In Progress');
   assert.equal((await taskDetail(pageA, id)).state, 'in_progress');
   assertDb(dbTask(id), 'in_progress', ['created', 'start']);
   await openTask(pageA, title);
   success('TASK_START_HTTP_AND_PG16_EVENT');
-  await pageA.getByRole('button', { name: 'Complete Task' }).click();
+  await Promise.all([
+    pageA.waitForResponse(x => x.request().method() === 'POST' && new URL(x.url()).pathname === '/tasks/' + id + '/complete' && x.status() === 200),
+    pageA.getByRole('button', { name: 'Complete Task' }).click(),
+  ]);
+  await pageA.getByRole('region', { name: 'Personal Task detail' }).waitFor({ state: 'detached' });
   await stateTab(pageA, 'Completed');
   assert.equal((await taskDetail(pageA, id)).state, 'completed');
   assertDb(dbTask(id), 'completed', ['created', 'start', 'complete']);
@@ -286,7 +296,10 @@ async function main() {
   assert.equal((await taskList(pageB, 'completed')).some(row => row.id === id), false);
   success('MOBILE_RENDERS_AND_CROSS_ACCOUNT_COMPLETED_ISOLATION');
   await pageA.goto(origin + '/dashboard');
-  await pageA.getByRole('button', { name: 'Sign out' }).first().click();
+  await Promise.all([
+    pageA.waitForResponse(x => x.request().method() === 'POST' && new URL(x.url()).pathname === '/logout'),
+    pageA.getByRole('button', { name: 'Sign out' }).first().click(),
+  ]);
   await pageA.waitForURL((url) => url.pathname === '/login');
   assert.equal((await liveJson(pageA, '/tasks')).status, 401);
   assert.equal((await liveJson(pageB, '/tasks?per_page=1&page=1')).status, 200);
