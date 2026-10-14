@@ -486,14 +486,15 @@ class DocumentAccessPrecedenceTest extends TestCase
             ->whereKey($record->id)->count());
     }
 
-    public function test_linked_null_workflow_office_requires_assignment_not_receiving_office_fallback(): void
+    public function test_linked_workflow_uses_current_office_or_assignment_not_origin_office(): void
     {
         $office = $this->department('ORIGIN');
+        $routedOffice = $this->department('ROUTED');
         $actor = $this->human($office);
         $otherEmployee = $this->human($office);
         $transaction = $this->transaction($actor, $office);
         $transaction->update([
-            'current_department_id' => null,
+            'current_department_id' => $routedOffice->id,
             'assigned_employee_id' => null,
         ]);
         $record = $this->restrictedCorrespondence($office);
@@ -518,6 +519,14 @@ class DocumentAccessPrecedenceTest extends TestCase
         $transaction->update(['assigned_employee_id' => null]);
         $record = $record->fresh('workflowTransaction');
         $this->assertFalse($access->canViewInWorkspace($actor, $record));
+        $this->assertSame(0, $access->scopeVisibleTo(CorrespondenceRecord::query(), $actor)
+            ->whereKey($record->id)->count());
+
+        $transaction->update(['current_department_id' => $office->id]);
+        $record = $record->fresh('workflowTransaction');
+        $this->assertTrue($access->canViewInWorkspace($actor, $record));
+        $this->assertSame(1, $access->scopeVisibleTo(CorrespondenceRecord::query(), $actor)
+            ->whereKey($record->id)->count());
     }
 
     private function department(string $name): Department
