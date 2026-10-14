@@ -117,27 +117,3 @@
 .auth-panel { border: 1px solid var(--municipal-border); border-radius: 1.25rem; box-shadow: 0 22px 50px -35px rgba(7,30,61,.4); }
 .auth-kicker { color: #1769aa; font-size: .7rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
 .auth-panel :where(input):focus-visible { outline: 2px solid #1769aa; outline-offset: 2px; }
-
-/* The label is outside the Inertia mount and exists only in visual-preview.html. */
-.fixture-banner {
-    position: relative;
-    z-index: 80;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: .45rem 1rem;
-    background: #f9e8b0;
-    border-bottom: 1px solid #d4ac4c;
-    color: #3d3218;
-    padding: .45rem 1rem;
-    font-size: .75rem;
-    line-height: 1.35;
-}
-.fixture-banner strong { letter-spacing: .1em; }
-.fixture-banner nav { display: flex; flex-wrap: wrap; gap: .2rem .7rem; margin-left: auto; }
-.fixture-banner a { color: #382b10; text-decoration: underline; text-underline-offset: 2px; }
-.fixture-banner a[aria-current="page"] { font-weight: 800; text-decoration-thickness: 2px; }
-@media (max-width: 640px) {
-    .fixture-banner nav { width: 100%; margin-left: 0; overflow-x: auto; flex-wrap: nowrap; }
-    .fixture-banner nav a { flex: none; }
-}

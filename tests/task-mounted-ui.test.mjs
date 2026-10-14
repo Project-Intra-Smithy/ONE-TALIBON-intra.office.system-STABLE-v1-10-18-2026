@@ -42,7 +42,7 @@ before(async()=>{
   }
   server=spawn(process.execPath,
     ['node_modules/vite/bin/vite.js','--host','127.0.0.1','--port','4174','--strictPort'],
-    {stdio:'pipe',env:{...process.env,LARAVEL_BYPASS_ENV_CHECK:'1'}});
+    {stdio:'pipe',env:{...process.env,LARAVEL_BYPASS_ENV_CHECK:'1',FRONTEND_TEST_CACHE_DIR:'node_modules/.vite-test-task'}});
   for(const stream of [server.stdout,server.stderr])
     stream.on('data',chunk=>{serverOutput+=String(chunk);});
   let ready=false;
@@ -70,7 +70,7 @@ async function mount(handler){
   page.on('pageerror',err=>errors.push(err.message));
   // Exact HTTP endpoints only; never intercept Vite modules in /components/tasks/.
   await page.route(/\/tasks(?:\/\d+)?(?:\?|$)/,async route=>
-    handler(new URL(route.request().url()),route));
+    { const url = new URL(route.request().url()); url.pathname = url.pathname.replace(/^\/__dashboard-preview/, ''); return handler(url,route); });
   await page.goto(url,{waitUntil:'domcontentloaded',timeout:20000});
   await page.getByRole('heading',{name:'Personal Tasks'}).waitFor();
   return {context,page,errors};

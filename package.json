@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
+    "preview:draft": "vite --host 127.0.0.1 --port 4185 --strictPort",
     "build": "vite build",
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "visual:verify": "node scripts/verify-visual-preview.mjs",
