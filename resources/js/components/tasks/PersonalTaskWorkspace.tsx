@@ -3,6 +3,7 @@ import { AlertCircle, ArrowLeft, ChevronLeft, ChevronRight, ListChecks, RefreshC
 import { useEffect, useRef, useState } from 'react';
 import type { SharedProps } from '../../types';
 import { getPersonalTask, getPersonalTasks, isTaskAccessBoundary, TASK_STATES, type IndividualTask, type ReadError, type TaskPage, type TaskState } from './taskReadApi';
+import { TaskCreateForm, TaskStateActions } from './TaskMutationControls';
 
 const labels: Record<TaskState,string> = {open:'Open',in_progress:'In Progress',completed:'Completed'};
 const colors: Record<TaskState,string> = {
@@ -42,7 +43,7 @@ function Loading({label}:{label:string}) {
         <div aria-hidden="true" className="h-3 w-1/2 animate-pulse rounded bg-slate-200 motion-reduce:animate-none dark:bg-slate-700"/>
     </div>;
 }
-function Detail({task,back}:{task:IndividualTask;back:()=>void}) {
+function Detail({task,back,onChanged,onDenied}:{task:IndividualTask;back:()=>void;onChanged:()=>void;onDenied:(error:ReadError)=>void}) {
     const dates:[string,string|null][]=[['Due',task.due_at],['Created',task.created_at],['Updated',task.updated_at],['Completed',task.completed_at]];
     return <section aria-label="Personal Task detail" className="min-w-0 rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-[#142236]">
         <button type="button" onClick={back} className="mb-4 inline-flex min-h-10 items-center gap-2 rounded-lg border border-slate-200 px-3 text-xs font-semibold dark:border-slate-600">
@@ -56,9 +57,7 @@ function Detail({task,back}:{task:IndividualTask;back:()=>void}) {
         </dl>
         <h5 className="mt-5 text-sm font-bold text-slate-900 dark:text-white">Instructions</h5>
         <p className="mt-2 whitespace-pre-wrap break-words text-sm leading-6 text-slate-700 dark:text-slate-300">{task.instructions??'No instructions were provided.'}</p>
-        <p className="mt-6 border-t border-slate-100 pt-4 text-xs text-slate-500 dark:border-slate-700 dark:text-slate-400">
-            This Task detail is read-only. Creation and state actions belong to F02 after separate acceptance.
-        </p>
+        <TaskStateActions task={task} onChanged={onChanged} onDenied={onDenied}/>
     </section>;
 }
 function TaskSession() {
@@ -106,6 +105,8 @@ function TaskSession() {
         return ()=>{active=false;control.abort();};
     },[selected,detailRefresh]);
     useEffect(()=>{if(detail)focusTitle.current?.focus();},[detail]);
+    const onChanged=()=>{setState('open');setPage(1);setSelected(null);setDetail(null);setRefresh(n=>n+1);};
+    const onDenied=(error:ReadError)=>{setList(null);setDetail(null);setSelected(null);setListError(error);};
     const chooseState=(value:TaskState)=>{if(value===state)return;setState(value);setPage(1);setSelected(null);};
     const choosePage=(value:number)=>{if(!list||value<1||value>list.meta.last_page||value>10000)return;setPage(value);setSelected(null);};
     return <section className="municipal-panel overflow-hidden" aria-labelledby="personal-task-heading">
@@ -115,6 +116,7 @@ function TaskSession() {
             <button type="button" onClick={()=>{setRefresh(n=>n+1);if(selected!==null)setDetailRefresh(n=>n+1);}}
                 className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-slate-300 px-3 text-xs font-semibold dark:border-slate-600"><RefreshCcw size={14} aria-hidden="true"/> Refresh</button>
         </header>
+        <TaskCreateForm onChanged={onChanged} onDenied={onDenied}/>
         <div role="group" aria-label="Task state filter" className="flex overflow-x-auto border-b border-slate-200 px-2 dark:border-slate-700 sm:px-4">
             {TASK_STATES.map(value=><button type="button" key={value} aria-pressed={state===value} onClick={()=>chooseState(value)}
                 className={'min-h-11 shrink-0 border-b-[3px] px-3 py-2 text-xs font-bold sm:px-5 '+(state===value?'border-blue-700 text-blue-800 dark:border-blue-300 dark:text-blue-200':'border-transparent text-slate-500 hover:text-blue-700 dark:text-slate-400')}>{labels[value]}</button>)}
@@ -146,7 +148,7 @@ function TaskSession() {
                 {selected===null&&<p className="rounded-xl border border-dashed border-slate-300 p-6 text-sm text-slate-600 dark:border-slate-600 dark:text-slate-300">Choose an individual Task to see its details.</p>}
                 {selected!==null&&detailLoading&&<Loading label="Loading Task detail"/>}
                 {selected!==null&&!detailLoading&&detailError&&<ErrorPanel error={detailError} retry={()=>setDetailRefresh(n=>n+1)} back={()=>setSelected(null)}/>}
-                {selected!==null&&!detailLoading&&detail?.id===selected&&<><h3 className="sr-only" ref={focusTitle} tabIndex={-1}>Selected Task details</h3><Detail task={detail} back={()=>setSelected(null)}/></>}
+                {selected!==null&&!detailLoading&&detail?.id===selected&&<><h3 className="sr-only" ref={focusTitle} tabIndex={-1}>Selected Task details</h3><Detail task={detail} back={()=>setSelected(null)} onChanged={onChanged} onDenied={onDenied}/></>}
             </div>
         </div>
     </section>;

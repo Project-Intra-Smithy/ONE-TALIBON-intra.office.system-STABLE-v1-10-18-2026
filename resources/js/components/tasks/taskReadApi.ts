@@ -1,7 +1,7 @@
 /**
- * A01-C1 read-only JSON consumer for individual personal Tasks.
+ * CC-FRONTEND-RUNTIME-INTEGRATION-R1 individual Task JSON consumer.
  * Backend authority: Talibon-Sales-Prototype@92778ba06d992c278177e0354014ab1b77dbea82
- * GET /tasks and GET /tasks/{id} only. No Inertia visits, CSRF exceptions, or writes.
+ * Same-origin GET/POST endpoints only; server owns identity, lifecycle and authorization.
  */
 export type TaskState = 'open' | 'in_progress' | 'completed';
 export const TASK_STATES: readonly TaskState[] = ['open', 'in_progress', 'completed'];
@@ -137,4 +137,69 @@ export function getPersonalTasks(state: TaskState, page: number, signal: AbortSi
 export function getPersonalTask(id: number, signal: AbortSignal): Promise<ReadResult<IndividualTask>> {
     if (!Number.isSafeInteger(id) || id < 1) throw new Error('Invalid numeric Task ID');
     return readTaskJson('/tasks/' + id, signal, parseTaskDetail);
+}
+
+/** W03 write adapter. Never send actor IDs, owning department or client-selected states. */
+export type TaskWriteAction = 'start' | 'complete';
+
+function csrfHeaders(): Record<string, string> {
+    if (typeof document === 'undefined') return {};
+    const raw = document.cookie.split(';').map((part) => part.trim()).find((part) => part.startsWith('XSRF-TOKEN='));
+    if (raw) {
+        try { return { 'X-XSRF-TOKEN': decodeURIComponent(raw.slice('XSRF-TOKEN='.length)) }; }
+        catch { return {}; }
+    }
+    const meta = document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content;
+    return meta ? { 'X-CSRF-TOKEN': meta } : {};
+}
+
+async function writeTaskJson(url: string, payload: Record<string, string>): Promise<ReadResult<IndividualTask>> {
+    let response: Response;
+    try {
+        response = await fetch(url, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { Accept: 'application/json', 'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest', ...csrfHeaders() },
+            body: JSON.stringify(payload),
+        });
+    } catch {
+        return { ok: false, error: { status: null, code: 'NETWORK_ERROR',
+            message: 'Unable to reach the Task service. No change has been confirmed.',
+            nextUrl: null, requestId: null } };
+    }
+    const requestId = response.headers.get('X-Request-ID');
+    const isJson = response.headers.get('content-type')?.toLowerCase().includes('application/json');
+    let body: unknown = null;
+    if (isJson) { try { body = await response.json(); } catch { body = null; } }
+    if (!response.ok) {
+        const original = httpError(response.status, body, requestId);
+        return { ok: false, error: {
+            ...original,
+            message: response.status === 409 ? 'Task state changed or this action is unavailable. Refresh the record.'
+                : response.status === 422 ? 'The Task input was rejected. Check the title and instructions.'
+                : response.status === 429 ? 'Too many Task actions. Try again later.'
+                : original.message,
+        } };
+    }
+    const task = parseTaskDetail(body);
+    if (!isJson || task === null) return { ok: false, error: {
+        status: null, code: 'INVALID_RESPONSE',
+        message: 'The server response could not be verified. Refresh before retrying the action.',
+        requestId, nextUrl: null,
+    } };
+    return { ok: true, data: task };
+}
+
+export function createPersonalTask(title: string, instructions: string | null): Promise<ReadResult<IndividualTask>> {
+    const cleanTitle = title.trim();
+    if (!cleanTitle || cleanTitle.length > 255 || (instructions !== null && instructions.length > 10000))
+        throw new Error('Invalid Task form input');
+    return writeTaskJson('/tasks', { title: cleanTitle, ...(instructions?.trim() ? { instructions: instructions.trim() } : {}) });
+}
+
+export function transitionPersonalTask(id: number, action: TaskWriteAction): Promise<ReadResult<IndividualTask>> {
+    if (!Number.isSafeInteger(id) || id < 1 || !['start','complete'].includes(action))
+        throw new Error('Invalid Task transition');
+    return writeTaskJson('/tasks/' + id + '/' + action, {});
 }
