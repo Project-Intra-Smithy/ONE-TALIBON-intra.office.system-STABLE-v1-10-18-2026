@@ -20,6 +20,7 @@ final readonly class CorrespondenceEvidenceScope
     {
         return $this->access->scopeVisibleTo(CorrespondenceRecord::query(), $actor);
     }
+
     /** P0 fail-closed SQL scope, reusing the current operation's verified actor. */
     public function visibleToVerifiedActor(VerifiedMunicipalActor $verified): Builder
     {
