@@ -358,3 +358,14 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 - **Preservation:** existing models/states/roles, Task/Work Request, P1–P4 unrelated code; no migration, new municipal clearance/role, CI workflow, secret, production access, merge, or frontend. Later LGU real documents/transactions will inform approved process configuration; do not publish private samples.
 - **Gates / status:** `START_MEMORY_PUBLISHED / DRAFT_SOURCE_ONLY / PG16_NOT_RUN / NOX_REVIEW_PENDING / LGU_LOCAL_PERMISSIONS_PENDING / NO_MERGE`. Proof of Nox review and disposable PG16 regression testing required for acceptance; do not report PASS without exact-head execution.
 - **Next:** crosslink this canonical memory commit to Hub #122, create guarded stacked patch branch and implement narrow source/test changes. No issue CLOSE until actual evidence and human disposition.
+
+
+---
+
+### START / CC-P4-QUERY-IDENTITY-R1 / 2026-10-15
+- **Authority/issue:** Kirch's execution-first source request; [Hub #118 START #6176329859](https://github.com/Project-Intra-Smithy/engineering-hub/issues/118#issuecomment-6176329859); no merge/deployment release.
+- **Source:** `Project-Intra-Smithy/Talibon-Sales-Prototype` integration [PR81](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/pull/81) `d99285f96b0bbcfd4156139c4fc01e3db62ed26b`. New source branch `forge/p4-native-query-identity-r1` based exactly on PR81, draft stacked PR to PR81 branch. PR84 separate and untouched.
+- **Owned paths:** new `app/Domain/Identity/VerifiedMunicipalActor.php`; `app/Services/CommonSearch/AuthorizedSourceSearch.php`; `app/Services/CorrespondenceAccessDecider.php`; `app/Services/TravelOrderAccess.php`; `tests/Feature/CommonSearch/AuthorizedSourceSearchTest.php`.
+- **Objective:** P4 Search once-per-operation fresh validated municipal actor for Correspondence+Travel SQL read scopes. Preserve source-specific predicates, current-session guard, revocation on next operation, pagination and no broader permissions. Windows PG16 actual observed two-page 1000-result query budget `28/12` before fix; acceptance demands <=12 plus negative tests.
+- **Gates:** independent reviewer + Windows native PG16 scoped lint/Pint/search & revocation tests at final patch SHA. `TEST_NOT_RUN` is not pass. Preserve P0/P1–P3 unrelated behavior, original policies for direct consumers; no new LGU roles/schema/routes/secrets/Actions/Docker/WSL/production or PR81/PR84 merge.
+- **State/next:** `START_ISSUE_MEMORY_SYNCED / SOURCE_WRITE_AUTHORIZED / DRAFT_ONLY`. Publish paired commit, then create bounded branch and implement. Return exact commit and test handoff.
