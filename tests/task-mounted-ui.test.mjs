@@ -180,7 +180,7 @@ test('mounted Inertia identity switch clears old viewer and loads only new rows'
   }finally{releaseNew();await context.close();}
 });
 
-test('mounted React: create, reload, start, complete and reload preserve Task lifecycle',async()=>{
+test('mounted React: create, start, complete and fresh fixture visit preserve Task lifecycle',async()=>{
   let record=null;const calls=[];
   const {page,context,errors}=await mount(async(u,route)=>{
     const method=route.request().method(),path=u.pathname;
@@ -221,7 +221,9 @@ test('mounted React: create, reload, start, complete and reload preserve Task li
     await page.getByRole('button',{name:'Complete Task'}).click();
     await page.getByRole('button',{name:'Completed',exact:true}).click();
     await page.getByRole('button',{name:new RegExp(name)}).waitFor();
-    await page.reload();
+    // Explicit fixture re-navigation remounts React. This is not a Laravel session reload.
+    await page.goto(url,{waitUntil:'domcontentloaded'});
+    await page.getByRole('heading',{name:'Personal Tasks'}).waitFor();
     await page.getByRole('button',{name:'Completed',exact:true}).click();
     await page.getByRole('button',{name:new RegExp(name)}).waitFor();
     assert.equal(record.state,'completed');
