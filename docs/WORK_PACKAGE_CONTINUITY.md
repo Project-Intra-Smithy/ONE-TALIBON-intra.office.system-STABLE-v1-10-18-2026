@@ -176,3 +176,14 @@ Accepted historical records are immutable provenance. Append subsequent changes;
 
 - Owning [issue START](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/18#issuecomment-6163841064). Historical PR #6/#7 reverified MERGED.
 
+
+### CLOSE PROPOSAL — FE-AUTH-01 frosted background / 2026-10-14
+- Owner: AJ, Codex-assisted. LOCAL IMPLEMENTED / REVIEW HELD; issue #18 remains open, Kirch owns acceptance. [START](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/18#issuecomment-6163841064), published START memory 3b5385e87f33924203fa04d2f5b25e9f299c5d9d, draft PR #28.
+- Tuple: source 9f19bf4c20718832fd19e84182c12b735018defd plus preserved local edits and this CSS refinement; pre-CLOSE documentation head 3b5385e87f33924203fa04d2f5b25e9f299c5d9d. Verified frontend main 6c385ee85f3fec4325182791554b66a861cfd9f3; PR reported base e6f5947ab330802f4b860b28baddc910ca32e13e; backend reference ef02919b3ded8d16431c40540388efd7cbb4e403. No assembled runtime tuple.
+- Delta: login.css adds full composition photo/white pseudo-element layers (24px blur, 88% white); existing opaque left identity layer preserves its photograph, 2px blur and blue overlay. No Login.tsx, form, typography, proportions or authentication changes in this package. CSS SHA256 D51124CCC1CB0448CEACD03F7624359B7F1363759D0220622C479C53360A4908. Application/evidence remain local; only paired documentation published.
+- Evidence: npm run build PASS; npm run types:check PASS; npm test 35/35 PASS (eight Login browser cases); git diff --check PASS. Chrome presentation captures at 320/390/768/1024/1440px: no page errors or horizontal overflow; desktop and narrow-mobile screenshots visually inspected. Existing keyboard/payload/errors/loading and short viewport tests PASS. Local evidence: docs/evidence/fe-auth-01/frosted-background/ (capture.mjs, responsive.json, five login screenshots, README.md). Capture hides fixture navigation only.
+- NOT RUN: authenticated Laravel/CSRF/session/MFA E2E, Firefox/WebKit, screen reader/native zoom, hosted CI of unpublished CSS. No observed defect in tested scope. C02 SOURCE-OBSERVED; existing dependency/review/integration holds remain. Runtime QA owned by Kirch/backend lane when an approved tuple exists; no issue closure or production promotion.
+- NEXT: AJ reviews local frosted screenshots with Kirch before application publication. Final memory commit crosslinked in issue after publication; failed reciprocal publication means CLOSE_SYNC_REQUIRED.
+
+- [Owning issue CLOSE proposal](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/18#issuecomment-6163876150).
+
