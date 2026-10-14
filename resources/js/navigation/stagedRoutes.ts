@@ -9,6 +9,8 @@ const stagedPaths = [
     /^\/departments\/?$/,
     /^\/employees\/?$/,
     /^\/calendar\/?$/,
+    /^\/messages\/?$/,
+    /^\/documents\/?$/,
     /^\/security\/mfa(?:\/enroll|\/challenge|\/recovery-codes)?\/?$/,
     /^\/login\/?$/,
 ];
