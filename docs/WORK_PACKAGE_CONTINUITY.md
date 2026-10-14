@@ -141,3 +141,15 @@ Accepted historical records are immutable provenance. Append subsequent changes;
 - Source frontend accepted `main@4e1c10a0660ab93d1ee8498ae724466f2c17e1ce` at branch creation. Isolated staging `forge/integration/a01-task-frontend-mainline` created from this exact SHA. **NO F02 source imported**; F01 already in accepted frontend via PR14.
 - Owning [Hub #103 assembled backend receipt #6125862427](https://github.com/Project-Intra-Smithy/engineering-hub/issues/103#issuecomment-6125862427). Backend staging candidate `forge/integration/p1-common-core-mainline@40c980fc780aca4383413d2d937aa81c28c0530c` is **unverified**, not a contract release.
 - **Next:** Mantainer A reconciles parked F02 PR27 through independent authorized correction package and native regression; only then consider import into FE staging and execute real Laravel/PostgreSQL browser integration. FE project main, production and F02 hold unchanged.
+
+### START — FE-RC-DRAFT-01 / 2026-10-15
+START / FE-RC-DRAFT-01 / 2026-10-15
+Owner: AJ, Codex-assisted; Kirch retains technical acceptance. Outcome: local integrated frontend draft and synthetic preview, no application publication or issue closure.
+Sources: live frontend main 6c385ee85f3fec4325182791554b66a861cfd9f3; Phase 1 b4ffa2ce6571026c5afab62af8b7b5ac101595c6 plus working tree; Phase 2 23278cc52bc05265b2dc75e424edd459a09f3288 plus working tree; Auth 9508f0322535d05d76fb0cce5d3af2b6a7070468 plus working tree. Backend reference ef02919b3ded8d16431c40540388efd7cbb4e403; no runtime tuple. PR29/31 base is main; PR28 base e6f5947ab330802f4b860b28baddc910ca32e13e. PR6/7 merged.
+Scope: separate local/fe-rc-draft-20261015 worktree; preserve originals, integrate shell/dashboard/auth/workspace UI, repair preview navigation/isolation only. Existing contracts/role logic preserved. No Laravel edits, main merge, redesign, blocked code publication or invented backend operations.
+Tests pending: types:check, all tests, production build/exclusion, ten-screen responsive/navigation/network isolation. Authenticated Laravel/CI/release approval NOT RUN.
+Memory: docs/WORK_PACKAGE_CONTINUITY.md; documentation-only branch docs/fe-rc-draft-20261015, exact commit crosslink follows before code changes. Main publication required by upstream protocol is deferred under explicit user no-main-merge instruction; formal canonical synchronization remains HOLD, local provisional draft is explicitly authorized. Hub #63 inaccessible to current identity.
+NEXT: crosslink START memory, then assemble the authorized local draft. Related #1, #18, #22, #32. Issues remain open.
+
+Owning START: https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/33
+
