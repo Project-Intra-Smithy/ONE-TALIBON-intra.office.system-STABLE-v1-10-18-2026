@@ -517,6 +517,28 @@ class DocumentAccessPrecedenceTest extends TestCase
         $this->assertFalse($download->canDownload($actor, $document));
     }
 
+    public function test_protected_source_rejects_a_different_authenticated_principal(): void
+    {
+        $office = $this->department('SESSION-SCOPE');
+        $actor = $this->human($office);
+        $other = $this->human($office);
+        $transaction = $this->transaction($actor, $office);
+        $document = $this->document($actor, $office, 'Session scoped evidence');
+
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => $transaction->getMorphClass(),
+            'linkable_id' => $transaction->id,
+            'relationship' => 'transaction_evidence',
+        ]);
+
+        $this->actingAs($other);
+        $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
+
+        $this->expectException(\Illuminate\Auth\Access\AuthorizationException::class);
+        app(DocumentArchiveQuery::class)->workspace($actor, []);
+    }
+
     private function department(string $name): Department
     {
         return Department::query()->create([
