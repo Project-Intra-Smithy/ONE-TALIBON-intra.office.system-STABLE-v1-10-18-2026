@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Domain\Correspondence\CorrespondenceClassification;
 use App\Domain\Correspondence\CorrespondenceLifecycleState;
+use App\Domain\Identity\VerifiedMunicipalActor;
 use App\Models\CorrespondenceRecord;
 use App\Models\IntegrationClient;
 use App\Models\User;
@@ -122,8 +123,22 @@ class CorrespondenceAccessDecider
             return $query->whereRaw('1 = 0');
         }
 
+        return $this->scopeVisibleToActiveActor($query, $actor);
+    }
+
+    /**
+     * Reuse an independently verified, current-session actor only within the
+     * same search operation. Other callers still revalidate live identity.
+     */
+    public function scopeVisibleToVerifiedActor(Builder $query, VerifiedMunicipalActor $verified): Builder
+    {
+        return $this->scopeVisibleToActiveActor($query, $verified->user());
+    }
+
+    private function scopeVisibleToActiveActor(Builder $query, User $actor): Builder
+    {
         $canRegister = in_array($actor->role, self::REGISTER_ROLES, true);
-        $classifications = $this->visibleClassificationValues($actor);
+        $classifications = $this->classificationValuesForActiveActor($actor);
 
         if (! $canRegister && $classifications === []) {
             return $query->whereRaw('1 = 0');
@@ -187,6 +202,12 @@ class CorrespondenceAccessDecider
             return [];
         }
 
+        return $this->classificationValuesForActiveActor($actor);
+    }
+
+    /** @return array<int, string> */
+    private function classificationValuesForActiveActor(User $actor): array
+    {
         if (in_array($actor->role, self::RESTRICTED_VIEW_ROLES, true)) {
             return array_map(
                 fn (CorrespondenceClassification $classification): string => $classification->value,

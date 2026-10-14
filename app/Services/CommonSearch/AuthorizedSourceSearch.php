@@ -2,15 +2,14 @@
 
 namespace App\Services\CommonSearch;
 
+use App\Domain\Identity\VerifiedMunicipalActor;
 use App\Models\CorrespondenceRecord;
 use App\Models\TravelOrder;
 use App\Models\User;
 use App\Services\CorrespondenceAccessDecider;
 use App\Services\TravelOrderAccess;
 use Carbon\CarbonImmutable;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
@@ -46,7 +45,7 @@ final readonly class AuthorizedSourceSearch
         int $perPage = 20,
         ?string $source = null,
     ): array {
-        $actor = $this->currentActor($claimedActor);
+        $verified = VerifiedMunicipalActor::forCurrentSession($claimedActor);
 
         if ($page < 1 || $page > 10000 || $perPage < 1 || $perPage > 50) {
             throw new InvalidArgumentException('Common Search pagination is outside allowed bounds.');
@@ -69,10 +68,10 @@ final readonly class AuthorizedSourceSearch
 
         $sources = [];
         if ($kind === null || $kind === AcceptedP0Source::Correspondence) {
-            $sources[] = $this->correspondence($actor, $term);
+            $sources[] = $this->correspondence($verified, $term);
         }
         if ($kind === null || $kind === AcceptedP0Source::TravelOrder) {
-            $sources[] = $this->travelOrders($actor, $term);
+            $sources[] = $this->travelOrders($verified, $term);
         }
 
         $union = array_shift($sources);
@@ -112,28 +111,10 @@ final readonly class AuthorizedSourceSearch
         );
     }
 
-    private function currentActor(User $claimed): User
-    {
-        // Only an authenticated, fresh municipal employee may consume this
-        // internal search. No model-relation cache or caller-supplied role grant.
-        if ($claimed->getKey() === null || (int) Auth::id() !== (int) $claimed->getKey()) {
-            throw new AuthorizationException('Common Search requires the current session actor.');
-        }
-
-        $actor = User::query()->with('employee.department')->find($claimed->getKey());
-        if ($actor === null || $actor->is_active === false
-            || $actor->employee === null || $actor->employee->employment_status !== 'active'
-            || $actor->employee->department === null || $actor->employee->department->is_active === false) {
-            throw new AuthorizationException('Common Search municipal access is revoked.');
-        }
-
-        return $actor;
-    }
-
-    private function correspondence(User $actor, string $term): Builder
+    private function correspondence(VerifiedMunicipalActor $verified, string $term): Builder
     {
         $scope = $this->correspondenceAccess
-            ->scopeVisibleTo(CorrespondenceRecord::query(), $actor);
+            ->scopeVisibleToVerifiedActor(CorrespondenceRecord::query(), $verified);
 
         $this->literalMatch($scope, $term, ['subject', 'municipal_reference_no', 'external_reference_no']);
 
@@ -143,10 +124,10 @@ final readonly class AuthorizedSourceSearch
         );
     }
 
-    private function travelOrders(User $actor, string $term): Builder
+    private function travelOrders(VerifiedMunicipalActor $verified, string $term): Builder
     {
         $scope = $this->travelOrderAccess
-            ->scopeVisibleTo(TravelOrder::query(), $actor);
+            ->scopeVisibleToVerifiedActor(TravelOrder::query(), $verified);
 
         $this->literalMatch($scope, $term, ['purpose', 'reference_number']);
 

@@ -111,6 +111,24 @@ final class AuthorizedSourceSearchTest extends TestCase
         app(AuthorizedSourceSearch::class)->search($actor, 'Revoked');
     }
 
+    public function test_each_search_operation_revalidates_identity_after_employment_revocation(): void
+    {
+        $office = $this->office();
+        $actor = $this->actor($office);
+        $this->correspondence($office, 'P4 operation-local authorization');
+        $this->actingAs($actor);
+
+        $service = app(AuthorizedSourceSearch::class);
+        $this->assertSame(1, $service->search($actor, 'P4 operation-local')['meta']['total']);
+
+        // The next invocation must query the live actor rather than reuse a
+        // validated object or cached employee relation from the prior search.
+        $actor->employee()->update(['employment_status' => 'separated']);
+
+        $this->expectException(AuthorizationException::class);
+        $service->search($actor, 'P4 operation-local');
+    }
+
     public function test_inactive_office_and_inactive_user_are_denied(): void
     {
         $office = $this->office();
