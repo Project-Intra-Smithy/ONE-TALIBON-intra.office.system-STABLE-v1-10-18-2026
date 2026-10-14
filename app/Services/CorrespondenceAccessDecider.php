@@ -58,18 +58,22 @@ class CorrespondenceAccessDecider
 
     public function canRegister(User $actor, CorrespondenceRecord $record): bool
     {
-        return $record->lifecycle_state === CorrespondenceLifecycleState::Received
-            && $this->hasActiveMunicipalIdentity($actor)
-            && in_array($actor->role, self::REGISTER_ROLES, true);
-    }
+        if ($record->lifecycle_state !== CorrespondenceLifecycleState::Received
+            || ! $this->hasActiveMunicipalIdentity($actor)
+            || ! in_array($actor->role, self::REGISTER_ROLES, true)) {
+            return false;
+        }
 
-    /** Reuse the already verified current operation actor; normal calls re-read identity. */
-    public function canRegisterVerifiedActor(
-        VerifiedMunicipalActor $verified,
-        CorrespondenceRecord $record,
-    ): bool {
-        return $record->lifecycle_state === CorrespondenceLifecycleState::Received
-            && in_array($verified->user()->role, self::REGISTER_ROLES, true);
+        // General registration-role eligibility is not municipality-wide
+        // confidential-content clearance. Keep the existing unassigned
+        // RECEIVED intake exception; otherwise require record-specific scope.
+        if ($record->classification === null
+            && $record->receiving_department_id === null
+            && $record->workflow_transaction_id === null) {
+            return true;
+        }
+
+        return $this->canView($actor, $record);
     }
 
     public function canClassify(User $actor, CorrespondenceRecord $record): bool
@@ -297,17 +301,20 @@ class CorrespondenceAccessDecider
         }
 
         $record->loadMissing('workflowTransaction');
-        $workflow = $record->workflowTransaction;
-        if ($workflow !== null && $workflow->assigned_employee_id !== null) {
-            if ((int) $workflow->assigned_employee_id === (int) $actor->employee->id) {
-                return true;
+        if ($record->workflow_transaction_id !== null) {
+            $workflow = $record->workflowTransaction;
+            if ($workflow === null) {
+                return false;
             }
+
+            return ($workflow->assigned_employee_id !== null
+                    && (int) $workflow->assigned_employee_id === (int) $actor->employee->id)
+                || ($workflow->current_department_id !== null
+                    && (int) $workflow->current_department_id === (int) $actor->employee->department_id);
         }
 
-        $officeId = $workflow?->current_department_id ?? $record->receiving_department_id;
-
-        return $officeId !== null
-            && (int) $actor->employee->department_id === (int) $officeId;
+        return $record->receiving_department_id !== null
+            && (int) $record->receiving_department_id === (int) $actor->employee->department_id;
     }
 
     private function hasActiveMunicipalIdentity(User $actor): bool
