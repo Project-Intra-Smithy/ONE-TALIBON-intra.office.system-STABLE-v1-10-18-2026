@@ -604,6 +604,38 @@ class DocumentAccessPrecedenceTest extends TestCase
         app(DocumentArchiveQuery::class)->workspace($actor, []);
     }
 
+    public function test_restricted_received_foreign_correspondence_never_leaks_archive_fields_or_download(): void
+    {
+        $actorOffice = $this->department('REVIEW-ACTOR');
+        $foreignOffice = $this->department('REVIEW-HIDDEN');
+        $actor = $this->human($actorOffice);
+        $foreign = $this->restrictedCorrespondence($foreignOffice);
+        $foreign->update([
+            'lifecycle_state' => CorrespondenceLifecycleState::Received->value,
+            'subject' => 'REVIEW-CONFIDENTIAL-SENTINEL',
+        ]);
+        $document = $this->document($actor, $actorOffice, 'P3 confidential archive review');
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => $foreign->getMorphClass(),
+            'linkable_id' => $foreign->id,
+            'relationship' => 'restricted_attachment',
+        ]);
+
+        $service = app(DocumentArchiveQuery::class);
+        $all = $service->workspace($actor, ['document' => $document->public_id]);
+        $this->assertSame(0, $all['records']->total());
+        $this->assertNull($all['selected']);
+        $this->assertSame(0, $all['counts']['all']);
+        $this->assertStringNotContainsString($foreign->subject, json_encode($all));
+        $this->assertStringNotContainsString($foreign->municipal_reference_no, json_encode($all));
+
+        $search = $service->workspace($actor, ['archive_search' => $foreign->subject]);
+        $this->assertSame(0, $search['records']->total());
+        $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
+        $this->actingAs($actor)->get('/documents/'.$document->public_id.'/download')->assertForbidden();
+    }
+
     private function department(string $name): Department
     {
         return Department::query()->create([
