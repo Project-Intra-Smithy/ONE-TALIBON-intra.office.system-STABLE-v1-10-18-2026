@@ -187,3 +187,8 @@ Accepted historical records are immutable provenance. Append subsequent changes;
 
 - [Owning issue CLOSE proposal](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/18#issuecomment-6163876150).
 
+
+### RESUME/START — FE-AUTH-01 continuous background / 2026-10-14
+Owner AJ, Codex-assisted. Scope: login.css shared full-screen photograph, existing blue/2px left treatment, right 24px blur/88% white; update existing test photo selector only. Preserve form/layout/authentication and all prior local edits. Source/PR #28 head beb7939e48d61c5a9aeea6915ba087a6c8e52b95 plus local changes; live main 6c385ee85f3fec4325182791554b66a861cfd9f3; PR base e6f5947ab330802f4b860b28baddc910ca32e13e; backend reference ef02919b3ded8d16431c40540388efd7cbb4e403, no runtime tuple. #6/#7 merged. Checks pending: types, tests, build, responsive browser captures. Laravel E2E NOT RUN. Kirch review/integration holds remain; Hub #63 inaccessible. Application stays local. NEXT: synchronize memory then implement this background-only correction.
+Owning START: https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/18#issuecomment-6172571969
+
