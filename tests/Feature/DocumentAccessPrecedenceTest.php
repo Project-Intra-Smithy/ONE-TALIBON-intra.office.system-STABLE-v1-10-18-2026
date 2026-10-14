@@ -438,15 +438,13 @@ class DocumentAccessPrecedenceTest extends TestCase
         $this->assertLessThanOrEqual(14, $archiveQueries);
     }
 
-    public function test_received_registrar_exception_matches_can_view_in_workspace_even_with_a_receiving_office(): void
+    public function test_received_registration_role_does_not_expose_foreign_restricted_evidence(): void
     {
         $actorOffice = $this->department('REGISTRAR');
         $otherOffice = $this->department('RECEIVED-FOREIGN');
         $actor = $this->human($actorOffice);
         $received = $this->restrictedCorrespondence($otherOffice);
-        $received->update([
-            'lifecycle_state' => CorrespondenceLifecycleState::Received->value,
-        ]);
+        $received->update(['lifecycle_state' => CorrespondenceLifecycleState::Received->value]);
         $document = $this->document($actor, $actorOffice, 'Received registrar intake');
         DocumentLink::query()->create([
             'document_id' => $document->id,
@@ -455,13 +453,155 @@ class DocumentAccessPrecedenceTest extends TestCase
             'relationship' => 'intake_evidence',
         ]);
 
-        $this->assertTrue(app(CorrespondenceAccessDecider::class)->canViewInWorkspace($actor, $received));
-        $this->assertTrue(app(DocumentAccessService::class)->canDownload($actor, $document));
+        $access = app(CorrespondenceAccessDecider::class);
+        $this->assertFalse($access->canRegister($actor, $received));
+        $this->assertFalse($access->canViewInWorkspace($actor, $received));
+        $this->assertSame(0, $access->scopeVisibleTo(CorrespondenceRecord::query(), $actor)
+            ->whereKey($received->id)->count());
+        $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
         $result = app(DocumentArchiveQuery::class)->workspace($actor, [
             'document' => $document->public_id,
         ]);
-        $this->assertSame(1, $result['records']->total());
-        $this->assertSame($document->public_id, $result['selected']['publicId']);
+        $this->assertSame(0, $result['records']->total());
+        $this->assertNull($result['selected']);
+    }
+
+    public function test_received_unassigned_intake_remains_visible_without_foreign_office_grant(): void
+    {
+        $actorOffice = $this->department('INTAKE');
+        $actor = $this->human($actorOffice);
+        $record = $this->restrictedCorrespondence($actorOffice);
+        $record->update([
+            'lifecycle_state' => CorrespondenceLifecycleState::Received->value,
+            'classification' => null,
+            'receiving_department_id' => null,
+            'municipal_reference_no' => null,
+        ]);
+        $record = $record->fresh();
+
+        $access = app(CorrespondenceAccessDecider::class);
+        $this->assertTrue($access->canRegister($actor, $record));
+        $this->assertTrue($access->canViewInWorkspace($actor, $record));
+        $this->assertSame(1, $access->scopeVisibleTo(CorrespondenceRecord::query(), $actor)
+            ->whereKey($record->id)->count());
+    }
+
+    public function test_linked_workflow_uses_current_office_or_assignment_not_origin_office(): void
+    {
+        $office = $this->department('ORIGIN');
+        $routedOffice = $this->department('ROUTED');
+        $actor = $this->human($office);
+        $otherEmployee = $this->human($office);
+        $transaction = $this->transaction($actor, $office);
+        $transaction->update([
+            'current_department_id' => $routedOffice->id,
+            'assigned_employee_id' => null,
+        ]);
+        $record = $this->restrictedCorrespondence($office);
+        $record->update(['workflow_transaction_id' => $transaction->id]);
+        $record = $record->fresh('workflowTransaction');
+
+        $access = app(CorrespondenceAccessDecider::class);
+        $this->assertFalse($access->canViewInWorkspace($actor, $record));
+        $this->assertSame(0, $access->scopeVisibleTo(CorrespondenceRecord::query(), $actor)
+            ->whereKey($record->id)->count());
+
+        $transaction->update(['assigned_employee_id' => $actor->employee->id]);
+        $record = $record->fresh('workflowTransaction');
+        $this->assertTrue($access->canViewInWorkspace($actor, $record));
+        $this->assertSame(1, $access->scopeVisibleTo(CorrespondenceRecord::query(), $actor)
+            ->whereKey($record->id)->count());
+
+        $this->assertFalse($access->canViewInWorkspace($otherEmployee, $record));
+        $this->assertSame(0, $access->scopeVisibleTo(CorrespondenceRecord::query(), $otherEmployee)
+            ->whereKey($record->id)->count());
+
+        $transaction->update(['assigned_employee_id' => null]);
+        $record = $record->fresh('workflowTransaction');
+        $this->assertFalse($access->canViewInWorkspace($actor, $record));
+        $this->assertSame(0, $access->scopeVisibleTo(CorrespondenceRecord::query(), $actor)
+            ->whereKey($record->id)->count());
+
+        $transaction->update(['current_department_id' => $office->id]);
+        $record = $record->fresh('workflowTransaction');
+        $this->assertTrue($access->canViewInWorkspace($actor, $record));
+        $this->assertSame(1, $access->scopeVisibleTo(CorrespondenceRecord::query(), $actor)
+            ->whereKey($record->id)->count());
+    }
+
+    public function test_archive_and_download_recheck_identity_between_distinct_operations(): void
+    {
+        $office = $this->department('OPERATION-REVOCATION');
+        $actor = $this->human($office);
+        $transaction = $this->transaction($actor, $office);
+        $document = $this->document($actor, $office, 'Independent operation revocation');
+
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => $transaction->getMorphClass(),
+            'linkable_id' => $transaction->id,
+            'relationship' => 'transaction_evidence',
+        ]);
+
+        $archive = app(DocumentArchiveQuery::class);
+        $download = app(DocumentAccessService::class);
+        $this->assertSame(1, $archive->workspace($actor, [])['records']->total());
+        $this->assertTrue($download->canDownload($actor, $document));
+
+        $actor->employee()->update(['employment_status' => 'separated']);
+        $this->assertFalse($download->canDownload($actor, $document));
+
+        $this->expectException(\Illuminate\Auth\Access\AuthorizationException::class);
+        $archive->workspace($actor, []);
+    }
+
+    public function test_stale_previous_office_cannot_expose_archive_or_download_after_transfer(): void
+    {
+        $first = $this->department('PRE-TRANSFER');
+        $second = $this->department('POST-TRANSFER');
+        $actor = $this->human($first);
+        $transaction = $this->transaction($actor, $first);
+        $document = $this->document($actor, $first, 'Old office evidence');
+
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => $transaction->getMorphClass(),
+            'linkable_id' => $transaction->id,
+            'relationship' => 'transaction_evidence',
+        ]);
+
+        $archive = app(DocumentArchiveQuery::class);
+        $download = app(DocumentAccessService::class);
+        $this->assertSame(1, $archive->workspace($actor, [])['records']->total());
+        $this->assertTrue($download->canDownload($actor, $document));
+
+        // The original User model intentionally retains a stale loaded office.
+        $actor->employee()->update(['department_id' => $second->id]);
+
+        $this->assertSame(0, $archive->workspace($actor, [])['records']->total());
+        $this->assertFalse($download->canDownload($actor, $document));
+    }
+
+    public function test_protected_source_rejects_a_different_authenticated_principal(): void
+    {
+        $office = $this->department('SESSION-SCOPE');
+        $actor = $this->human($office);
+        $other = $this->human($office);
+        $transaction = $this->transaction($actor, $office);
+        $document = $this->document($actor, $office, 'Session scoped evidence');
+
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => $transaction->getMorphClass(),
+            'linkable_id' => $transaction->id,
+            'relationship' => 'transaction_evidence',
+        ]);
+
+        $this->actingAs($other);
+        $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
+
+        $this->expectException(\Illuminate\Auth\Access\AuthorizationException::class);
+        app(DocumentArchiveQuery::class)->workspace($actor, []);
     }
 
     private function department(string $name): Department

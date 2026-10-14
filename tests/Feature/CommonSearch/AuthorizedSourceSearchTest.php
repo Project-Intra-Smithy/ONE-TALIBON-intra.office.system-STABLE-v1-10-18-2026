@@ -4,6 +4,7 @@ namespace Tests\Feature\CommonSearch;
 
 use App\Domain\Correspondence\CorrespondenceClassification;
 use App\Domain\Correspondence\CorrespondenceLifecycleState;
+use App\Domain\Identity\VerifiedMunicipalActor;
 use App\Domain\TravelOrders\TravelOrderStatus;
 use App\Models\CorrespondenceRecord;
 use App\Models\Department;
@@ -11,8 +12,11 @@ use App\Models\Employee;
 use App\Models\TravelOrder;
 use App\Models\User;
 use App\Services\CommonSearch\AuthorizedSourceSearch;
+use App\Services\CorrespondenceAccessDecider;
+use App\Services\TravelOrderAccess;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
@@ -109,6 +113,68 @@ final class AuthorizedSourceSearchTest extends TestCase
 
         $this->expectException(AuthorizationException::class);
         app(AuthorizedSourceSearch::class)->search($actor, 'Revoked');
+    }
+
+    public function test_each_search_operation_revalidates_identity_after_employment_revocation(): void
+    {
+        $office = $this->office();
+        $actor = $this->actor($office);
+        $this->correspondence($office, 'P4 operation-local authorization');
+        $this->actingAs($actor);
+
+        $service = app(AuthorizedSourceSearch::class);
+        $this->assertSame(1, $service->search($actor, 'P4 operation-local')['meta']['total']);
+
+        // The next invocation must query the live actor rather than reuse a
+        // validated object or cached employee relation from the prior search.
+        $actor->employee()->update(['employment_status' => 'separated']);
+
+        $this->expectException(AuthorizationException::class);
+        $service->search($actor, 'P4 operation-local');
+    }
+
+    public function test_verified_source_scope_rejects_context_from_another_signed_in_actor(): void
+    {
+        $office = $this->office();
+        $actor = $this->actor($office);
+        $other = $this->actor($this->office());
+
+        $this->actingAs($actor);
+        $verified = VerifiedMunicipalActor::forCurrentSession($actor);
+        $this->actingAs($other);
+
+        foreach ([
+            fn () => app(CorrespondenceAccessDecider::class)
+                ->scopeVisibleToVerifiedActor(CorrespondenceRecord::query(), $verified),
+            fn () => app(TravelOrderAccess::class)
+                ->scopeVisibleToVerifiedActor(TravelOrder::query(), $verified),
+        ] as $scope) {
+            try {
+                $scope();
+                $this->fail('Verified source scope must reject another signed-in actor.');
+            } catch (AuthorizationException) {
+                $this->assertTrue(true);
+            }
+        }
+    }
+
+    public function test_verified_source_scope_cannot_be_replayed_in_a_new_request(): void
+    {
+        $office = $this->office();
+        $actor = $this->actor($office);
+        $this->actingAs($actor);
+        $verified = VerifiedMunicipalActor::forCurrentSession($actor);
+        $originalRequest = request();
+
+        try {
+            app()->instance('request', Request::create('/different-request', 'GET'));
+
+            $this->expectException(AuthorizationException::class);
+            app(CorrespondenceAccessDecider::class)
+                ->scopeVisibleToVerifiedActor(CorrespondenceRecord::query(), $verified);
+        } finally {
+            app()->instance('request', $originalRequest);
+        }
     }
 
     public function test_inactive_office_and_inactive_user_are_denied(): void

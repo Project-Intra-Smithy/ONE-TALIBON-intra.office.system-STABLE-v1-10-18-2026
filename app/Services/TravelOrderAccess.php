@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Domain\Identity\VerifiedMunicipalActor;
 use App\Models\TravelOrder;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -43,6 +44,20 @@ final class TravelOrderAccess
             return $query->whereRaw('1 = 0');
         }
 
+        return $this->scopeVisibleToActiveActor($query, $current);
+    }
+
+    /**
+     * Search already checked current-session identity and live office status.
+     * Never cache verified identity across separate search operations.
+     */
+    public function scopeVisibleToVerifiedActor(Builder $query, VerifiedMunicipalActor $verified): Builder
+    {
+        return $this->scopeVisibleToActiveActor($query, $verified->user());
+    }
+
+    private function scopeVisibleToActiveActor(Builder $query, User $current): Builder
+    {
         $employee = $current->employee;
 
         if ($this->hasMunicipalReadAuthority($current)) {

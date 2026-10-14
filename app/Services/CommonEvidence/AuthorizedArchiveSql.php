@@ -2,6 +2,7 @@
 
 namespace App\Services\CommonEvidence;
 
+use App\Domain\Identity\VerifiedMunicipalActor;
 use App\Models\CorrespondenceEvent;
 use App\Models\CorrespondenceRecord;
 use App\Models\DocumentLink;
@@ -39,8 +40,8 @@ final readonly class AuthorizedArchiveSql
     /** @param array<string, mixed> $filters */
     public function workspace(User $claimedActor, array $filters): array
     {
-        $actor = $this->activeActor($claimedActor);
-        $all = $this->catalog($actor);
+        $verified = VerifiedMunicipalActor::forProtectedSource($claimedActor);
+        $all = $this->catalog($verified);
         $scope = (string) ($filters['archive_scope'] ?? 'all');
         $search = Str::lower(trim((string) ($filters['archive_search'] ?? '')));
         $type = (string) ($filters['document_type'] ?? '');
@@ -159,7 +160,7 @@ final readonly class AuthorizedArchiveSql
     /** @return array<string, mixed> */
     public function activity(User $claimedActor): array
     {
-        $all = $this->catalog($this->activeActor($claimedActor));
+        $all = $this->catalog(VerifiedMunicipalActor::forProtectedSource($claimedActor));
         $counts = DB::query()->fromSub(clone $all, 'activity_counts')
             ->selectRaw(
                 "COUNT(*) FILTER (WHERE direction = 'sent') AS sent, "
@@ -179,21 +180,10 @@ final readonly class AuthorizedArchiveSql
         ];
     }
 
-    private function activeActor(User $claimed): User
+    private function catalog(VerifiedMunicipalActor $verified): Builder
     {
-        // Always bypass stale Eloquent relations from a retained session.
-        $actor = User::query()->with('employee.department')->find($claimed->getKey());
-        if (! $actor || ! $actor->is_active || ! $actor->employee
-            || $actor->employee->employment_status !== 'active'
-            || ! $actor->employee->department || ! $actor->employee->department->is_active) {
-            abort(403);
-        }
-        return $actor;
-    }
-
-    private function catalog(User $actor): Builder
-    {
-        $links = $this->authorizedLinks($actor);
+        $actor = $verified->user();
+        $links = $this->authorizedLinks($verified);
         $ranked = DB::query()->fromSub($links, 'authorized_links')
             ->selectRaw(
                 'authorized_links.*, ROW_NUMBER() OVER '
@@ -236,18 +226,18 @@ final readonly class AuthorizedArchiveSql
             );
     }
 
-    private function authorizedLinks(User $actor): Builder
+    private function authorizedLinks(VerifiedMunicipalActor $verified): Builder
     {
         $correspondence = $this->correspondenceScope
-            ->visibleTo($actor)
+            ->visibleToVerifiedActor($verified)
             ->select(['id','public_id','municipal_reference_no','external_reference_no','subject',
                 'receiving_department_id','workflow_transaction_id']);
         $travel = $this->travelOrderAccess
-            ->scopeVisibleTo(TravelOrder::query(), $actor)
+            ->scopeVisibleToVerifiedActor(TravelOrder::query(), $verified)
             ->select(['id','public_id','reference_number','purpose','department_id']);
         // Existing transaction SQL scope corresponds to TransactionPolicy::view:
         // VIEW_ALL or the actor's origin/current office. Recheck on download.
-        $transactions = $this->transactionVisibility->scope($actor)
+        $transactions = $this->transactionVisibility->scopeVisibleToVerifiedActor($verified)
             ->select(['id','reference_no','title','origin_department_id',
                 'current_department_id','assigned_employee_id']);
 

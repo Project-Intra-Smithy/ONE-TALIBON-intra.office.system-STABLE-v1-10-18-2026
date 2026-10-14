@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Domain\Correspondence\CorrespondenceClassification;
 use App\Domain\Correspondence\CorrespondenceLifecycleState;
+use App\Domain\Identity\VerifiedMunicipalActor;
 use App\Models\CorrespondenceRecord;
 use App\Models\IntegrationClient;
 use App\Models\User;
@@ -57,9 +58,22 @@ class CorrespondenceAccessDecider
 
     public function canRegister(User $actor, CorrespondenceRecord $record): bool
     {
-        return $record->lifecycle_state === CorrespondenceLifecycleState::Received
-            && $this->hasActiveMunicipalIdentity($actor)
-            && in_array($actor->role, self::REGISTER_ROLES, true);
+        if ($record->lifecycle_state !== CorrespondenceLifecycleState::Received
+            || ! $this->hasActiveMunicipalIdentity($actor)
+            || ! in_array($actor->role, self::REGISTER_ROLES, true)) {
+            return false;
+        }
+
+        // General registration-role eligibility is not municipality-wide
+        // confidential-content clearance. Keep the existing unassigned
+        // RECEIVED intake exception; otherwise require record-specific scope.
+        if ($record->classification === null
+            && $record->receiving_department_id === null
+            && $record->workflow_transaction_id === null) {
+            return true;
+        }
+
+        return $this->canView($actor, $record);
     }
 
     public function canClassify(User $actor, CorrespondenceRecord $record): bool
@@ -114,7 +128,8 @@ class CorrespondenceAccessDecider
 
     /**
      * Apply the same office, assignment and classification rules used by canView(),
-     * plus the unregistered RECEIVE intake boundary needed by human registrars.
+     * plus the unassigned RECEIVE intake boundary. A registration role alone
+     * must not expose protected correspondence outside the actor's scope.
      */
     public function scopeVisibleTo(Builder $query, User $actor): Builder
     {
@@ -122,8 +137,22 @@ class CorrespondenceAccessDecider
             return $query->whereRaw('1 = 0');
         }
 
+        return $this->scopeVisibleToActiveActor($query, $actor);
+    }
+
+    /**
+     * Reuse an independently verified, current-session actor only within the
+     * same search operation. Other callers still revalidate live identity.
+     */
+    public function scopeVisibleToVerifiedActor(Builder $query, VerifiedMunicipalActor $verified): Builder
+    {
+        return $this->scopeVisibleToActiveActor($query, $verified->user());
+    }
+
+    private function scopeVisibleToActiveActor(Builder $query, User $actor): Builder
+    {
         $canRegister = in_array($actor->role, self::REGISTER_ROLES, true);
-        $classifications = $this->visibleClassificationValues($actor);
+        $classifications = $this->classificationValuesForActiveActor($actor);
 
         if (! $canRegister && $classifications === []) {
             return $query->whereRaw('1 = 0');
@@ -187,6 +216,12 @@ class CorrespondenceAccessDecider
             return [];
         }
 
+        return $this->classificationValuesForActiveActor($actor);
+    }
+
+    /** @return array<int, string> */
+    private function classificationValuesForActiveActor(User $actor): array
+    {
         if (in_array($actor->role, self::RESTRICTED_VIEW_ROLES, true)) {
             return array_map(
                 fn (CorrespondenceClassification $classification): string => $classification->value,
@@ -267,17 +302,20 @@ class CorrespondenceAccessDecider
         }
 
         $record->loadMissing('workflowTransaction');
-        $workflow = $record->workflowTransaction;
-        if ($workflow !== null && $workflow->assigned_employee_id !== null) {
-            if ((int) $workflow->assigned_employee_id === (int) $actor->employee->id) {
-                return true;
+        if ($record->workflow_transaction_id !== null) {
+            $workflow = $record->workflowTransaction;
+            if ($workflow === null) {
+                return false;
             }
+
+            return ($workflow->assigned_employee_id !== null
+                    && (int) $workflow->assigned_employee_id === (int) $actor->employee->id)
+                || ($workflow->current_department_id !== null
+                    && (int) $workflow->current_department_id === (int) $actor->employee->department_id);
         }
 
-        $officeId = $workflow?->current_department_id ?? $record->receiving_department_id;
-
-        return $officeId !== null
-            && (int) $actor->employee->department_id === (int) $officeId;
+        return $record->receiving_department_id !== null
+            && (int) $record->receiving_department_id === (int) $actor->employee->department_id;
     }
 
     private function hasActiveMunicipalIdentity(User $actor): bool

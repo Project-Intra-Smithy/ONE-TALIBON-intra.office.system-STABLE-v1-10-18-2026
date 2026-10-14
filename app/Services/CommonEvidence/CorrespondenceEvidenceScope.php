@@ -2,18 +2,15 @@
 
 namespace App\Services\CommonEvidence;
 
-use App\Domain\Correspondence\CorrespondenceLifecycleState;
+use App\Domain\Identity\VerifiedMunicipalActor;
 use App\Models\CorrespondenceRecord;
 use App\Models\User;
 use App\Services\CorrespondenceAccessDecider;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Mirrors CorrespondenceAccessDecider::canViewInWorkspace (canRegister OR canView).
- *
- * The generic scopeVisibleTo is narrower for RECEIVED intake with partially
- * populated receiving/classification fields; document evidence must preserve
- * the existing direct-authorization contract, without inventing a new role.
+ * Archive and download use the same correspondence visibility predicate as
+ * list/detail and search. Never add a broader registrar-only RECEIVED OR.
  */
 final readonly class CorrespondenceEvidenceScope
 {
@@ -21,16 +18,11 @@ final readonly class CorrespondenceEvidenceScope
 
     public function visibleTo(User $actor): Builder
     {
-        $probe = new CorrespondenceRecord([
-            'lifecycle_state' => CorrespondenceLifecycleState::Received->value,
-        ]);
-        $canRegister = $this->access->canRegister($actor, $probe);
-
-        return CorrespondenceRecord::query()->where(function (Builder $authorized) use ($actor, $canRegister): void {
-            $this->access->scopeVisibleTo($authorized, $actor);
-            if ($canRegister) {
-                $authorized->orWhere('lifecycle_state', CorrespondenceLifecycleState::Received->value);
-            }
-        });
+        return $this->access->scopeVisibleTo(CorrespondenceRecord::query(), $actor);
+    }
+    /** P0 fail-closed SQL scope, reusing the current operation's verified actor. */
+    public function visibleToVerifiedActor(VerifiedMunicipalActor $verified): Builder
+    {
+        return $this->access->scopeVisibleToVerifiedActor(CorrespondenceRecord::query(), $verified);
     }
 }

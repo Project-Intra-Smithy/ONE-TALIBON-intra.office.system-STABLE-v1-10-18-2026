@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Domain\Identity\VerifiedMunicipalActor;
 use App\Domain\Workflow\Authorization\TransactionActorEligibility;
 use App\Domain\Workflow\Authorization\TransactionCapabilities;
 use App\Models\User;
@@ -26,11 +27,26 @@ final class TransactionVisibilityQuery
             return $query->whereRaw('1 = 0');
         }
 
-        if ($this->allowsAll($current['role'])) {
+        return $this->visibleForEligibleActor($current['role'], (int) $current['office_id']);
+    }
+
+    /**
+     * A source read already verified by the operation-scoped P0 actor context.
+     * The ordinary scope(User) still performs its own live eligibility read.
+     */
+    public function scopeVisibleToVerifiedActor(VerifiedMunicipalActor $verified): Builder
+    {
+        $actor = $verified->user();
+
+        return $this->visibleForEligibleActor($actor->role, (int) $actor->employee->department_id);
+    }
+
+    private function visibleForEligibleActor(?string $role, int $departmentId): Builder
+    {
+        $query = WorkflowTransaction::query();
+        if ($this->allowsAll($role)) {
             return $query;
         }
-
-        $departmentId = $current['office_id'];
 
         return $query->where(function (Builder $visible) use ($departmentId): void {
             $visible->where('current_department_id', $departmentId)
