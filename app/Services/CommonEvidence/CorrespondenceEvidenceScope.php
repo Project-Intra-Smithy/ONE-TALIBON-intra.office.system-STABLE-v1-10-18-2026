@@ -5,6 +5,7 @@ namespace App\Services\CommonEvidence;
 use App\Models\CorrespondenceRecord;
 use App\Models\User;
 use App\Services\CorrespondenceAccessDecider;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Archive and download use the same correspondence visibility predicate as
