@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Domain\Identity\VerifiedMunicipalActor;
 use App\Models\CorrespondenceEvent;
 use App\Models\CorrespondenceRecord;
 use App\Models\Document;
@@ -12,6 +13,7 @@ use App\Models\TravelOrderEvent;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
 use App\Services\CommonEvidence\CorrespondenceEvidenceScope;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
@@ -25,11 +27,10 @@ final class DocumentAccessService
 
     public function canDownload(User $actor, Document $document): bool
     {
-        // A retained session may contain stale employee and office relations.
-        $actor = User::query()->with('employee.department')->find($actor->getKey());
-        if (! $actor || ! $actor->is_active || ! $actor->employee
-            || $actor->employee->employment_status !== 'active'
-            || ! $actor->employee->department || ! $actor->employee->department->is_active) {
+        // Fresh proof for this download only; never reuse archive-page authority.
+        try {
+            $verified = VerifiedMunicipalActor::forProtectedSource($actor);
+        } catch (AuthorizationException) {
             return false;
         }
 
@@ -81,10 +82,10 @@ final class DocumentAccessService
             }
 
             $scope = match ($family) {
-                'correspondence' => $this->correspondenceScope->visibleTo($actor),
+                'correspondence' => $this->correspondenceScope->visibleToVerifiedActor($verified),
                 'travel_order' => $this->travelOrderAccess
-                    ->scopeVisibleTo(TravelOrder::query(), $actor),
-                'transaction' => $this->transactionVisibility->scope($actor),
+                    ->scopeVisibleToVerifiedActor(TravelOrder::query(), $verified),
+                'transaction' => $this->transactionVisibility->scopeVisibleToVerifiedActor($verified),
             };
             [$eventClass, $eventParent] = match ($family) {
                 'correspondence' => [CorrespondenceEvent::class, 'correspondence_record_id'],

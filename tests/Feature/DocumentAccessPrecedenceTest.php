@@ -464,6 +464,59 @@ class DocumentAccessPrecedenceTest extends TestCase
         $this->assertSame($document->public_id, $result['selected']['publicId']);
     }
 
+    public function test_archive_and_download_recheck_identity_between_distinct_operations(): void
+    {
+        $office = $this->department('OPERATION-REVOCATION');
+        $actor = $this->human($office);
+        $transaction = $this->transaction($actor, $office);
+        $document = $this->document($actor, $office, 'Independent operation revocation');
+
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => $transaction->getMorphClass(),
+            'linkable_id' => $transaction->id,
+            'relationship' => 'transaction_evidence',
+        ]);
+
+        $archive = app(DocumentArchiveQuery::class);
+        $download = app(DocumentAccessService::class);
+        $this->assertSame(1, $archive->workspace($actor, [])['records']->total());
+        $this->assertTrue($download->canDownload($actor, $document));
+
+        $actor->employee()->update(['employment_status' => 'separated']);
+        $this->assertFalse($download->canDownload($actor, $document));
+
+        $this->expectException(\Illuminate\Auth\Access\AuthorizationException::class);
+        $archive->workspace($actor, []);
+    }
+
+    public function test_stale_previous_office_cannot_expose_archive_or_download_after_transfer(): void
+    {
+        $first = $this->department('PRE-TRANSFER');
+        $second = $this->department('POST-TRANSFER');
+        $actor = $this->human($first);
+        $transaction = $this->transaction($actor, $first);
+        $document = $this->document($actor, $first, 'Old office evidence');
+
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => $transaction->getMorphClass(),
+            'linkable_id' => $transaction->id,
+            'relationship' => 'transaction_evidence',
+        ]);
+
+        $archive = app(DocumentArchiveQuery::class);
+        $download = app(DocumentAccessService::class);
+        $this->assertSame(1, $archive->workspace($actor, [])['records']->total());
+        $this->assertTrue($download->canDownload($actor, $document));
+
+        // The original User model intentionally retains a stale loaded office.
+        $actor->employee()->update(['department_id' => $second->id]);
+
+        $this->assertSame(0, $archive->workspace($actor, [])['records']->total());
+        $this->assertFalse($download->canDownload($actor, $document));
+    }
+
     private function department(string $name): Department
     {
         return Department::query()->create([
