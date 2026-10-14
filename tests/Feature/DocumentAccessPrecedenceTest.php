@@ -438,15 +438,13 @@ class DocumentAccessPrecedenceTest extends TestCase
         $this->assertLessThanOrEqual(14, $archiveQueries);
     }
 
-    public function test_received_registrar_exception_matches_can_view_in_workspace_even_with_a_receiving_office(): void
+    public function test_received_registration_role_does_not_expose_foreign_restricted_evidence(): void
     {
         $actorOffice = $this->department('REGISTRAR');
         $otherOffice = $this->department('RECEIVED-FOREIGN');
         $actor = $this->human($actorOffice);
         $received = $this->restrictedCorrespondence($otherOffice);
-        $received->update([
-            'lifecycle_state' => CorrespondenceLifecycleState::Received->value,
-        ]);
+        $received->update(['lifecycle_state' => CorrespondenceLifecycleState::Received->value]);
         $document = $this->document($actor, $actorOffice, 'Received registrar intake');
         DocumentLink::query()->create([
             'document_id' => $document->id,
@@ -455,13 +453,71 @@ class DocumentAccessPrecedenceTest extends TestCase
             'relationship' => 'intake_evidence',
         ]);
 
-        $this->assertTrue(app(CorrespondenceAccessDecider::class)->canViewInWorkspace($actor, $received));
-        $this->assertTrue(app(DocumentAccessService::class)->canDownload($actor, $document));
+        $access = app(CorrespondenceAccessDecider::class);
+        $this->assertFalse($access->canRegister($actor, $received));
+        $this->assertFalse($access->canViewInWorkspace($actor, $received));
+        $this->assertSame(0, $access->scopeVisibleTo(CorrespondenceRecord::query(), $actor)
+            ->whereKey($received->id)->count());
+        $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
         $result = app(DocumentArchiveQuery::class)->workspace($actor, [
             'document' => $document->public_id,
         ]);
-        $this->assertSame(1, $result['records']->total());
-        $this->assertSame($document->public_id, $result['selected']['publicId']);
+        $this->assertSame(0, $result['records']->total());
+        $this->assertNull($result['selected']);
+    }
+
+    public function test_received_unassigned_intake_remains_visible_without_foreign_office_grant(): void
+    {
+        $actorOffice = $this->department('INTAKE');
+        $actor = $this->human($actorOffice);
+        $record = $this->restrictedCorrespondence($actorOffice);
+        $record->update([
+            'lifecycle_state' => CorrespondenceLifecycleState::Received->value,
+            'classification' => null,
+            'receiving_department_id' => null,
+            'municipal_reference_no' => null,
+        ]);
+        $record = $record->fresh();
+
+        $access = app(CorrespondenceAccessDecider::class);
+        $this->assertTrue($access->canRegister($actor, $record));
+        $this->assertTrue($access->canViewInWorkspace($actor, $record));
+        $this->assertSame(1, $access->scopeVisibleTo(CorrespondenceRecord::query(), $actor)
+            ->whereKey($record->id)->count());
+    }
+
+    public function test_linked_null_workflow_office_requires_assignment_not_receiving_office_fallback(): void
+    {
+        $office = $this->department('ORIGIN');
+        $actor = $this->human($office);
+        $otherEmployee = $this->human($office);
+        $transaction = $this->transaction($actor, $office);
+        $transaction->update([
+            'current_department_id' => null,
+            'assigned_employee_id' => null,
+        ]);
+        $record = $this->restrictedCorrespondence($office);
+        $record->update(['workflow_transaction_id' => $transaction->id]);
+        $record = $record->fresh('workflowTransaction');
+
+        $access = app(CorrespondenceAccessDecider::class);
+        $this->assertFalse($access->canViewInWorkspace($actor, $record));
+        $this->assertSame(0, $access->scopeVisibleTo(CorrespondenceRecord::query(), $actor)
+            ->whereKey($record->id)->count());
+
+        $transaction->update(['assigned_employee_id' => $actor->employee->id]);
+        $record = $record->fresh('workflowTransaction');
+        $this->assertTrue($access->canViewInWorkspace($actor, $record));
+        $this->assertSame(1, $access->scopeVisibleTo(CorrespondenceRecord::query(), $actor)
+            ->whereKey($record->id)->count());
+
+        $this->assertFalse($access->canViewInWorkspace($otherEmployee, $record));
+        $this->assertSame(0, $access->scopeVisibleTo(CorrespondenceRecord::query(), $otherEmployee)
+            ->whereKey($record->id)->count());
+
+        $transaction->update(['assigned_employee_id' => null]);
+        $record = $record->fresh('workflowTransaction');
+        $this->assertFalse($access->canViewInWorkspace($actor, $record));
     }
 
     private function department(string $name): Department
