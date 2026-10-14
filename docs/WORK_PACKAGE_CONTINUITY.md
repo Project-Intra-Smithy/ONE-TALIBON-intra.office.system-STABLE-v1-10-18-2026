@@ -200,3 +200,16 @@ Evidence: types:check PASS; final build PASS; final npm test 35/35 PASS; diff ch
 NOT RUN: actual Laravel authentication/session/CSRF E2E, Firefox/WebKit, screen reader/native zoom, hosted CI for unpublished application changes. Kirch retains review/integration authority; issue remains open. Application changes remain local; documentation only published. NEXT: AJ/Kirch review the continuous-background local candidate; runtime QA deferred to an approved backend/frontend tuple. Final memory SHA linked below after publication.
 Owning CLOSE proposal: https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/18#issuecomment-6172634800
 
+
+
+### START — FE-MFA-UI-01 / 2026-10-15
+START / FE-MFA-UI-01 / 2026-10-15
+Owner: AJ (@rynzz22), Codex-assisted; Kirch retains integration acceptance.
+Scope: MfaChallenge.tsx and isolated MFA CSS only: forest green #145A43, municipal photo with 24px blur/dark overlay, compact white centered card, requested wording, remove decoration. Preserve MFA/recovery logic, routes, validation and existing local login work.
+Source: frontend main 6c385ee85f3fec4325182791554b66a861cfd9f3; local/PR #28 head e51c95794172a694a3575c00e6d35a5a65ea635d, base e6f5947ab330802f4b860b28baddc910ca32e13e. Backend reference ef02919b3ded8d16431c40540388efd7cbb4e403; no assembled runtime tuple. Historical PR #6/#7 merged.
+Done when: existing npm test, types:check, build and diff check pass; responsive fixture inspection. Authenticated Laravel E2E NOT RUN. Hub #63 inaccessible; no merge/production acceptance.
+Memory: docs/WORK_PACKAGE_CONTINUITY.md; exact START commit crosslink follows before implementation.
+NEXT: commit/publish paired START memory then implement user-authorized visual changes locally.
+
+Owning START: https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/32
+
