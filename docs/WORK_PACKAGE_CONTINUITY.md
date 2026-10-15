@@ -252,3 +252,8 @@ NEXT: AJ/Kirch review candidate and reconcile Login-test baseline before approvi
 Application SHA: d49ce3ccdae8801655d9022221bcf05c70527754
 Owning CLOSE: https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/37#issuecomment-6198997503
 
+
+### RESUME/START - FE-UX-REFINE-01 reference cards / 2026-10-16
+RESUME/START FE-UX-REFINE-01 / 2026-10-16. Owner AJ, Codex-assisted; Kirch acceptance. Source feat/aj-ui-finalization bde36a80c46c0725b3119d2529934366d256a33c; live main 6c385ee85f3fec4325182791554b66a861cfd9f3. No refinement PR. Scope: user reference-inspired white sidebar, balanced floating Dashboard/work cards and compact logically grouped Records cards; existing components/styles only. Preserve contracts, permissions and local Auth edits. Tests: TypeScript, npm test, build, existing responsive harness with sidebar color assertions. Known baseline: eight stale Login tests fail; authenticated Laravel QA and canonical-main sync held. No main merge. NEXT: crosslink branch START, implement requested presentation.
+Owning START: https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/37#issuecomment-6199342167
+
