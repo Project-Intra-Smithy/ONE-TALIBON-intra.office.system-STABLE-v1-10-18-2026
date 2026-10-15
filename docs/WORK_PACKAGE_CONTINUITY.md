@@ -240,3 +240,15 @@ Memory: docs/WORK_PACKAGE_CONTINUITY.md, exact commit link follows before code c
 NEXT: crosslink START memory on refinement branch, then implement existing consumers.
 Owning START: https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/37
 
+
+### CLOSE PROPOSAL - FE-UX-REFINE-01 / 2026-10-16
+CLOSE PROPOSAL / FE-UX-REFINE-01 / 2026-10-16 — IMPLEMENTED / REVIEW HELD
+Owner AJ, Codex-assisted; actual author retained; Kirch decides acceptance. START issue #37 and branch memory f32b5302b93517943f3a20500375f8b8b927bced.
+Candidate: feat/aj-ui-finalization application commit d49ce3c (full SHA in final memory crosslink). Source 9508f0322535d05d76fb0cce5d3af2b6a7070468 plus preserved local Auth edits. Main 6c385ee85f3fec4325182791554b66a861cfd9f3; backend reference 5416da97611a7dd6fee15f9275bee4a24c7a4db1. No assembled runtime tuple. PR34 separate at 3f9c63030a2e391ae6c4b6bc60e2148361dbff3b, base main above. No merge or issue closure.
+Delivered: existing Dashboard/work/Records/Calendar presentation, readable count bars, focus-moving shortcuts, larger text/targets, spacious work cards, mobile filter keyboard containment, scoped forest-green shell, recorded-duration calendar timeline. No backend/routes/permissions/auth changes. Existing local Login/MFA and tests remain untouched and unstaged.
+Evidence: docs/evidence/fe-ux-refine-01/README.md, exact file inventory, screenshots and logs. TypeScript/build PASS; whitespace PASS. npm test 29 PASS / 8 FAIL (all preserved Login tests expect old Welcome back heading; current local Login uses Sign in to your workspace). Task authorization/data-clearing regressions and scheduling tests PASS. Chrome fixture: 30 screen-width mounts plus three sparse role mounts, keyboard shortcuts/filter Tab-Escape/calendar controls and 200% CSS zoom PASS; no overflow. Dark capture inspected and contrast corrected. No workspace failure observed.
+NOT RUN: real Laravel session/CSRF/MFA/role acceptance, create/detail/document actions and real filtering, populated optional role overviews, full contrast/screen-reader/native zoom, Firefox/WebKit, hosted CI for working-tree tuple. Scheduling browsing uses loaded data only; no persistence/dependencies/inferred completion. Auth test mismatch belongs to AJ auth lane; runtime QA to Kirch-approved backend/frontend assembly. Canonical-main memory synchronization HOLD under no-main-merge instruction; Hub63 inaccessible. No production readiness claim.
+NEXT: AJ/Kirch review candidate and reconcile Login-test baseline before approving exact disposable authenticated QA tuple. Final committed memory SHA crosslink follows; incomplete publication remains CLOSE_SYNC_REQUIRED.
+Application SHA: d49ce3ccdae8801655d9022221bcf05c70527754
+Owning CLOSE: https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/37#issuecomment-6198997503
+
