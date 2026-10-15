@@ -227,3 +227,16 @@ NEXT: AJ/Kirch review the local MFA visual candidate; authenticated QA deferred 
 
 Owning CLOSE: https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/32#issuecomment-6173299133
 
+
+### START — FE-UX-REFINE-01 / 2026-10-16
+START / FE-UX-REFINE-01 / 2026-10-16
+Owner: AJ, Codex-assisted; actual Git authorship retained, Kirch owns technical acceptance.
+Outcome: accessible, spacious white/forest-green refinement of existing Dashboard and work, records and scheduling consumers on feat/aj-ui-finalization.
+Source: branch 9508f0322535d05d76fb0cce5d3af2b6a7070468 plus pre-existing local Login/MFA edits (preserved); live main 6c385ee85f3fec4325182791554b66a861cfd9f3. PR34 separate assembled candidate 3f9c63030a2e391ae6c4b6bc60e2148361dbff3b, base main above; no PR for refinement branch. Backend reference 5416da97611a7dd6fee15f9275bee4a24c7a4db1; no runtime assembly. PR6/7 merged.
+Scope: existing Dashboard/dashboard components, work cards, Records, Calendar and workspace-scoped presentation CSS, focused verification. Preserve routes, authorization, props, task behavior, Login/MFA and existing edits. No new preview, backend, fabricated data or main merge.
+Done when: types:check, tests, production build, responsive fixture and keyboard checks, exact evidence/limitations recorded. Existing frontend source inspected: small 9â€“13px metadata, two-column narrow metrics, blue hero, crowded calendar controls and schedule-only presentation need refinement.
+Holds: authenticated Laravel QA NOT RUN; backend and frontend references are not an accepted runtime tuple. Hub63 inaccessible. User explicitly requires refinement branch and prohibits main merge: branch issue/memory pairing will be published, canonical-main protocol synchronization remains HOLD; implementation is a provisional local candidate under this request.
+Memory: docs/WORK_PACKAGE_CONTINUITY.md, exact commit link follows before code changes.
+NEXT: crosslink START memory on refinement branch, then implement existing consumers.
+Owning START: https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/37
+
