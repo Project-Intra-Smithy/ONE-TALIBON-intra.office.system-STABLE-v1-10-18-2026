@@ -1,5 +1,4 @@
 import { usePage } from '@inertiajs/react';
-import { talibonAssets } from '../../branding/talibonAssets';
 import type { SharedProps } from '../../types';
 import MunicipalContext from './MunicipalContext';
 import type { DashboardExperience } from './types';
@@ -15,12 +14,11 @@ export default function DashboardHeader({ experience }: { experience: DashboardE
     const { auth } = usePage<SharedProps>().props;
     const name = auth.user?.name.trim().replace(/^(?:(?:Engr|Dr|Atty|Mr|Mrs|Ms)\.?\s+)+/i, '').split(/\s+/)[0];
     return <div className="space-y-3">
-        <header className="relative isolate flex min-h-36 min-w-0 items-center overflow-hidden rounded-2xl bg-[#0b2852] text-white shadow-lg shadow-[#071e3d]/10 sm:min-h-40">
-            <img src={talibonAssets.internalHero} alt="" className="municipal-photo -z-10 opacity-[.18]" />
-            <div className="flex w-full self-stretch flex-col justify-center bg-[#071e3d]/45 px-5 py-6 sm:px-7">
+        <header className="workspace-welcome municipal-panel">
+            <div className="px-5 py-7 sm:px-7">
                 <h1 className="break-words text-[clamp(1.75rem,3vw,2.25rem)] font-extrabold leading-tight tracking-[-0.035em]">Welcome{name ? ', ' + name : ''}</h1>
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-blue-50">{profileCopy[experience.key]}</p>
-                <p className="mt-3 text-xs text-blue-100">{experience.department.name}</p>
+                <p className="mt-3 max-w-2xl text-base leading-7 text-slate-700 dark:text-slate-200">{profileCopy[experience.key]}</p>
+                <p className="mt-3 text-base text-slate-600 dark:text-slate-300">{experience.department.name}</p>
             </div>
         </header>
         <MunicipalContext />

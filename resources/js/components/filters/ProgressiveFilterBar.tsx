@@ -1,5 +1,5 @@
 import { SlidersHorizontal, X } from 'lucide-react';
-import { type ReactNode, useEffect, useId, useState } from 'react';
+import { type ReactNode, useEffect, useId, useRef, useState } from 'react';
 
 type Props = {
     primary: ReactNode;
@@ -21,11 +21,21 @@ export default function ProgressiveFilterBar({
     const [expanded, setExpanded] = useState(false);
     const panelId = useId();
     const hasAdvanced = Boolean(advanced);
+    const trigger = useRef<HTMLButtonElement>(null);
+    const panel = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (!expanded) return;
+        const controls = () => Array.from(panel.current?.querySelectorAll<HTMLElement>('button, input, select, textarea, a[href]') ?? []).filter(element => element.getClientRects().length && !element.hasAttribute('disabled'));
+        controls()[0]?.focus();
         const onKeyDown = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') setExpanded(false);
+            if (event.key === 'Escape') { setExpanded(false); trigger.current?.focus(); }
+            if (event.key === 'Tab' && window.matchMedia('(max-width: 767px)').matches) {
+                const items = controls();
+                const first = items[0], last = items[items.length - 1];
+                if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+                if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+            }
         };
         window.addEventListener('keydown', onKeyDown);
         return () => window.removeEventListener('keydown', onKeyDown);
@@ -45,6 +55,7 @@ export default function ProgressiveFilterBar({
                 <div className="flex flex-wrap items-center gap-2 lg:shrink-0 lg:justify-end">
                     {hasAdvanced && (
                         <button
+                            ref={trigger}
                             type="button"
                             aria-controls={panelId}
                             aria-expanded={expanded}
@@ -81,9 +92,10 @@ export default function ProgressiveFilterBar({
                         type="button"
                         className="absolute inset-0 bg-slate-950/45 md:hidden"
                         aria-label="Close filters"
-                        onClick={() => setExpanded(false)}
+                        onClick={() => { setExpanded(false); trigger.current?.focus(); }}
                     />
                     <div
+                        ref={panel}
                         role="dialog"
                         aria-label={title}
                         className="relative z-10 max-h-[82vh] w-full overflow-y-auto rounded-t-xl bg-white p-4 text-slate-900 dark:bg-[#142236] dark:text-slate-100 shadow-2xl md:max-h-none md:rounded-xl md:border md:border-slate-200 md:bg-slate-50/70 dark:md:bg-slate-900/40 md:p-4 md:shadow-none"
@@ -95,7 +107,7 @@ export default function ProgressiveFilterBar({
                             </div>
                             <button
                                 type="button"
-                                onClick={() => setExpanded(false)}
+                                onClick={() => { setExpanded(false); trigger.current?.focus(); }}
                                 className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-slate-300 text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                                 aria-label="Close filters"
                             >

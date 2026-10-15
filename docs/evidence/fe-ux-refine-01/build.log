@@ -1,0 +1,55 @@
+> build
+> vite build
+
+vite v8.3.0 building client environment for production...
+transforming...
+✓ 2189 modules transformed.
+rendering chunks...
+computing gzip size...
+public/build/manifest.json                                 13.06 kB │ gzip:   1.62 kB
+public/build/assets/municipality-of-talibon-D6tYBJWL.jpg  118.91 kB
+public/build/assets/MfaChallenge-PpaozAE9.css               1.59 kB │ gzip:   0.65 kB
+public/build/assets/Login-v8Vp1EMa.css                      5.91 kB │ gzip:   1.93 kB
+public/build/assets/app-C_jXxPQs.css                       76.76 kB │ gzip:  14.36 kB
+public/build/assets/plus-DwiLZi6a.js                        0.15 kB │ gzip:   0.15 kB
+public/build/assets/arrow-left-DWV7jizW.js                  0.16 kB │ gzip:   0.16 kB
+public/build/assets/arrow-right-CjBuWJvY.js                 0.16 kB │ gzip:   0.16 kB
+public/build/assets/circle-check-CT149NOu.js                0.17 kB │ gzip:   0.16 kB
+public/build/assets/user-round-CpvQd4hf.js                  0.18 kB │ gzip:   0.17 kB
+public/build/assets/clock-3-kEFmCzEC.js                     0.18 kB │ gzip:   0.17 kB
+public/build/assets/rotate-ccw-Bvc9nOZz.js                  0.19 kB │ gzip:   0.18 kB
+public/build/assets/user-round-check-S1y8jafD.js            0.23 kB │ gzip:   0.20 kB
+public/build/assets/log-out-DE4yU-_Z.js                     0.25 kB │ gzip:   0.22 kB
+public/build/assets/triangle-alert-CABD6lIa.js              0.26 kB │ gzip:   0.21 kB
+public/build/assets/shield-check-vy6HZz9z.js                0.31 kB │ gzip:   0.25 kB
+public/build/assets/key-round-Ca9ZZ_hX.js                   0.35 kB │ gzip:   0.26 kB
+public/build/assets/PageFrame-saq6pUgs.js                   0.38 kB │ gzip:   0.27 kB
+public/build/assets/uiContracts-BEtMDG4o.js                 0.46 kB │ gzip:   0.31 kB
+public/build/assets/createLucideIcon-B1SH7mBE.js            0.90 kB │ gzip:   0.54 kB
+public/build/assets/PageHeader-BiiUFm2z.js                  0.93 kB │ gzip:   0.49 kB
+public/build/assets/EvidenceList-01jv2jXC.js                1.88 kB │ gzip:   0.94 kB
+public/build/assets/MfaRecoveryCodes-DzpREu7G.js            2.06 kB │ gzip:   0.90 kB
+public/build/assets/Status-C6T0RVJz.js                      2.17 kB │ gzip:   0.92 kB
+public/build/assets/EvidenceFields-CF8KMjNW.js              2.21 kB │ gzip:   1.11 kB
+public/build/assets/MfaChallenge-BnLBVy5X.js                2.70 kB │ gzip:   0.98 kB
+public/build/assets/Index-BGYn6-rr.js                       2.75 kB │ gzip:   1.20 kB
+public/build/assets/MfaEnrollment-CR4zjt3W.js               3.42 kB │ gzip:   1.37 kB
+public/build/assets/Show-Be00ySo7.js                        3.61 kB │ gzip:   1.23 kB
+public/build/assets/MfaSettings-DfL2yQnq.js                 3.82 kB │ gzip:   1.36 kB
+public/build/assets/ProgressiveFilterBar-BPWiAhEH.js        4.26 kB │ gzip:   1.67 kB
+public/build/assets/Login-0OWg_Dx4.js                       4.53 kB │ gzip:   1.51 kB
+public/build/assets/Index-CTJ6uMnw.js                       5.80 kB │ gzip:   1.84 kB
+public/build/assets/Create-D1sqRzNw.js                      6.48 kB │ gzip:   1.81 kB
+public/build/assets/Create-C8HUMBxx.js                      7.11 kB │ gzip:   1.92 kB
+public/build/assets/Index-1KCo7CTs.js                       8.17 kB │ gzip:   2.24 kB
+public/build/assets/Index-N09r2B6E.js                       9.94 kB │ gzip:   3.40 kB
+public/build/assets/Index-DDaidK9N.js                      12.18 kB │ gzip:   3.04 kB
+public/build/assets/Show-CmR2Z2M0.js                       15.06 kB │ gzip:   3.91 kB
+public/build/assets/Index-5J_QoasG.js                      16.29 kB │ gzip:   3.89 kB
+public/build/assets/Index-CWspS-ZC.js                      17.38 kB │ gzip:   4.28 kB
+public/build/assets/Show-BlRHJu4R.js                       20.33 kB │ gzip:   4.55 kB
+public/build/assets/AppLayout-CUBZ-8fF.js                  39.78 kB │ gzip:  11.58 kB
+public/build/assets/Dashboard-stYmq-ih.js                  41.68 kB │ gzip:  10.03 kB
+public/build/assets/app-B9xCpnMx.js                       350.40 kB │ gzip: 110.22 kB
+
+✓ built in 579ms

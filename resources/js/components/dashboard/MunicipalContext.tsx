@@ -7,7 +7,7 @@ export default function MunicipalContext() {
         return () => window.clearInterval(timer);
     }, []);
     const date = new Intl.DateTimeFormat('en-PH', { timeZone: 'Asia/Manila', weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }).format(now);
-    return <aside className="flex flex-wrap justify-between gap-x-4 gap-y-1 text-xs text-slate-600 dark:text-slate-300" aria-label="Municipal context">
+    return <aside className="flex flex-wrap justify-between gap-x-4 gap-y-1 text-sm text-slate-600 dark:text-slate-300" aria-label="Municipal context">
         <span>Talibon, Bohol</span>
         <span>{date} · Philippine time</span>
     </aside>;

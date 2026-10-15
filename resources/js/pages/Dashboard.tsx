@@ -16,10 +16,16 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
     const primaryGroups = metricGroups.filter((group) => group.key === primaryKey);
     const secondaryGroups = metricGroups.filter((group) => group.key !== primaryKey);
 
-    return <AppLayout title="Dashboard">
+    return <AppLayout workspaceRefinement title="Dashboard">
         <div className="mx-auto max-w-[1480px] space-y-5">
             <DashboardHeader experience={experience} />
-            <div className="@container min-w-0 space-y-5">
+            <QuickActions actions={experience.quickActions} />
+            <nav className="workspace-shortcuts" aria-label="Jump to work section">
+                <a href="#work-overview" onClick={() => document.getElementById('work-overview')?.focus()}>Work overview</a>
+                {correspondenceOverview && (experience.key === 'employee' || experience.key === 'department_head') && <a href="#dashboard-correspondence" onClick={() => document.getElementById('dashboard-correspondence')?.focus()}>Correspondence</a>}
+                <a href="#personal-tasks" onClick={() => document.getElementById('personal-tasks')?.focus()}>Personal tasks</a>
+            </nav>
+            <div id="work-overview" tabIndex={-1} className="@container min-w-0 space-y-5 workspace-section-target">
                 {primaryGroups.map((group) => <MetricGroup key={group.key} group={group} />)}
 
                 {experience.key === 'employee' && <>
@@ -48,8 +54,7 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
                     {systemOverview && <ActivityRail system={systemOverview} />}
                 </>}
 
-                <PersonalTaskWorkspace />
-                <QuickActions actions={experience.quickActions} />
+                <div id="personal-tasks" tabIndex={-1} className="workspace-section-target"><PersonalTaskWorkspace /></div>
             </div>
         </div>
     </AppLayout>;

@@ -2,6 +2,7 @@
 @import './municipal.css';
 @import './municipal-controls.css';
 @import './visual-system.css';
+@import './workspace-refinement.css';
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {

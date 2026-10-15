@@ -19,7 +19,7 @@ export default function WorkScopeTabs({ groups, currentView, onSelect }: {
         >
             {groups.map((group) => (
                 <div key={group.key}>
-                    <div className="mb-2 text-xs font-bold uppercase tracking-wider text-slate-500 sm:text-xs dark:text-slate-400">
+                    <div className="mb-2 text-sm font-bold uppercase tracking-wider text-slate-500 sm:text-sm dark:text-slate-400">
                         {group.label}
                     </div>
                     <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap" role="group" aria-label={`${group.label} queues`}>
@@ -36,8 +36,8 @@ export default function WorkScopeTabs({ groups, currentView, onSelect }: {
                                     aria-current={active ? 'page' : undefined}
                                     className={`min-w-0 rounded-lg border border-l-[3px] px-3 py-2.5 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2 sm:min-w-[132px] sm:flex-1 sm:basis-[132px] sm:max-w-[190px] ${emphasis} ${active ? 'border-blue-800 bg-blue-50 text-blue-950 dark:bg-blue-950/40' : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50 dark:bg-[#142236] dark:text-slate-300 dark:border-slate-700'}`}
                                 >
-                                    <div className="text-xs font-bold leading-4 sm:text-xs">{view.label}</div>
-                                    <div className={`mt-0.5 text-xs sm:text-xs ${active ? 'text-blue-700' : 'text-slate-500 dark:text-slate-400'}`}>
+                                    <div className="text-sm font-bold leading-6 sm:text-sm">{view.label}</div>
+                                    <div className={`mt-0.5 text-sm sm:text-sm ${active ? 'text-blue-700' : 'text-slate-500 dark:text-slate-400'}`}>
                                         {view.count} item{view.count === 1 ? '' : 's'}
                                     </div>
                                 </button>

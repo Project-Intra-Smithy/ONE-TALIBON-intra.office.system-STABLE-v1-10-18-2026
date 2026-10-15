@@ -1,0 +1,339 @@
+> test
+> node --experimental-strip-types --test tests/*.test.mjs
+
+TAP version 13
+# Subtest: login: required fields, keyboard order, exact Inertia payload, pending and server errors
+not ok 1 - login: required fields, keyboard order, exact Inertia payload, pending and server errors
+  ---
+  duration_ms: 37061.8531
+  type: 'test'
+  location: 'C:\\Users\\admin\\Documents\\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\\tests\\login-mounted-ui.test.mjs:28:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.waitFor: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('heading', { name: 'Welcome back' }) to be visible
+
+  code: 'ERR_TEST_FAILURE'
+  name: 'TimeoutError'
+  stack: |-
+    mount (C:\Users\admin\Documents\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\tests\login-mounted-ui.test.mjs:25:56)
+    async TestContext.<anonymous> (C:\Users\admin\Documents\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\tests\login-mounted-ui.test.mjs:29:13)
+  ...
+# Subtest: login: 320px responsive fixture
+not ok 2 - login: 320px responsive fixture
+  ---
+  duration_ms: 30379.421
+  type: 'test'
+  location: 'C:\\Users\\admin\\Documents\\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\\tests\\login-mounted-ui.test.mjs:97:44'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.waitFor: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('heading', { name: 'Welcome back' }) to be visible
+
+  code: 'ERR_TEST_FAILURE'
+  name: 'TimeoutError'
+  stack: |-
+    mount (C:\Users\admin\Documents\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\tests\login-mounted-ui.test.mjs:25:56)
+    async TestContext.<anonymous> (C:\Users\admin\Documents\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\tests\login-mounted-ui.test.mjs:98:13)
+  ...
+# Subtest: login: 390px responsive fixture
+not ok 3 - login: 390px responsive fixture
+  ---
+  duration_ms: 30349.8761
+  type: 'test'
+  location: 'C:\\Users\\admin\\Documents\\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\\tests\\login-mounted-ui.test.mjs:97:44'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.waitFor: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('heading', { name: 'Welcome back' }) to be visible
+
+  code: 'ERR_TEST_FAILURE'
+  name: 'TimeoutError'
+  stack: |-
+    mount (C:\Users\admin\Documents\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\tests\login-mounted-ui.test.mjs:25:56)
+    async TestContext.<anonymous> (C:\Users\admin\Documents\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\tests\login-mounted-ui.test.mjs:98:13)
+  ...
+# Subtest: login: 768px responsive fixture
+not ok 4 - login: 768px responsive fixture
+  ---
+  duration_ms: 30324.2553
+  type: 'test'
+  location: 'C:\\Users\\admin\\Documents\\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\\tests\\login-mounted-ui.test.mjs:97:44'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.waitFor: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('heading', { name: 'Welcome back' }) to be visible
+
+  code: 'ERR_TEST_FAILURE'
+  name: 'TimeoutError'
+  stack: |-
+    mount (C:\Users\admin\Documents\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\tests\login-mounted-ui.test.mjs:25:56)
+    async TestContext.<anonymous> (C:\Users\admin\Documents\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\tests\login-mounted-ui.test.mjs:98:13)
+  ...
+# Subtest: login: 1024px responsive fixture
+not ok 5 - login: 1024px responsive fixture
+  ---
+  duration_ms: 30291.9852
+  type: 'test'
+  location: 'C:\\Users\\admin\\Documents\\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\\tests\\login-mounted-ui.test.mjs:97:44'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.waitFor: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('heading', { name: 'Welcome back' }) to be visible
+
+  code: 'ERR_TEST_FAILURE'
+  name: 'TimeoutError'
+  stack: |-
+    mount (C:\Users\admin\Documents\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\tests\login-mounted-ui.test.mjs:25:56)
+    async TestContext.<anonymous> (C:\Users\admin\Documents\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\tests\login-mounted-ui.test.mjs:98:13)
+  ...
+# Subtest: login: 1440px responsive fixture
+not ok 6 - login: 1440px responsive fixture
+  ---
+  duration_ms: 30721.2288
+  type: 'test'
+  location: 'C:\\Users\\admin\\Documents\\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\\tests\\login-mounted-ui.test.mjs:97:44'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.waitFor: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('heading', { name: 'Welcome back' }) to be visible
+
+  code: 'ERR_TEST_FAILURE'
+  name: 'TimeoutError'
+  stack: |-
+    mount (C:\Users\admin\Documents\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\tests\login-mounted-ui.test.mjs:25:56)
+    async TestContext.<anonymous> (C:\Users\admin\Documents\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\tests\login-mounted-ui.test.mjs:98:13)
+  ...
+# Subtest: login: narrow viewport and opaque fallback
+not ok 7 - login: narrow viewport and opaque fallback
+  ---
+  duration_ms: 30344.1616
+  type: 'test'
+  location: 'C:\\Users\\admin\\Documents\\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\\tests\\login-mounted-ui.test.mjs:120:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.waitFor: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('heading', { name: 'Welcome back' }) to be visible
+
+  code: 'ERR_TEST_FAILURE'
+  name: 'TimeoutError'
+  stack: |-
+    mount (C:\Users\admin\Documents\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\tests\login-mounted-ui.test.mjs:25:56)
+    async TestContext.<anonymous> (C:\Users\admin\Documents\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\tests\login-mounted-ui.test.mjs:121:13)
+  ...
+# Subtest: login: short mobile viewport keeps password and submit reachable
+not ok 8 - login: short mobile viewport keeps password and submit reachable
+  ---
+  duration_ms: 30331.8536
+  type: 'test'
+  location: 'C:\\Users\\admin\\Documents\\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\\tests\\login-mounted-ui.test.mjs:130:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.waitFor: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('heading', { name: 'Welcome back' }) to be visible
+
+  code: 'ERR_TEST_FAILURE'
+  name: 'TimeoutError'
+  stack: |-
+    mount (C:\Users\admin\Documents\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\tests\login-mounted-ui.test.mjs:25:56)
+    async TestContext.<anonymous> (C:\Users\admin\Documents\FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE\tests\login-mounted-ui.test.mjs:131:13)
+  ...
+# Subtest: catalog exactly preserves canonical 23 identity, group, and readiness relationships
+ok 9 - catalog exactly preserves canonical 23 identity, group, and readiness relationships
+  ---
+  duration_ms: 1.2437
+  type: 'test'
+  ...
+# Subtest: canonical paths and permission associations are not synthetic
+ok 10 - canonical paths and permission associations are not synthetic
+  ---
+  duration_ms: 0.1762
+  type: 'test'
+  ...
+# Subtest: permission denial, optional third builder argument and absent routes remain guarded
+ok 11 - permission denial, optional third builder argument and absent routes remain guarded
+  ---
+  duration_ms: 0.8611
+  type: 'test'
+  ...
+# Subtest: already corrected dashboard and density presentation contracts remain intact
+ok 12 - already corrected dashboard and density presentation contracts remain intact
+  ---
+  duration_ms: 0.6221
+  type: 'test'
+  ...
+# (node:39220) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: schedule dates respect municipal timezone, date-only values and leap years
+ok 13 - schedule dates respect municipal timezone, date-only values and leap years
+  ---
+  duration_ms: 31.0604
+  type: 'test'
+  ...
+# Subtest: timeline clips real durations and rejects missing, reversed or out-of-range intervals
+ok 14 - timeline clips real durations and rejects missing, reversed or out-of-range intervals
+  ---
+  duration_ms: 1.243
+  type: 'test'
+  ...
+# Subtest: mounted React: list 200 then detail 401 clears confidential rows
+ok 15 - mounted React: list 200 then detail 401 clears confidential rows
+  ---
+  duration_ms: 7890.2785
+  type: 'test'
+  ...
+# Subtest: mounted React: list 200 then detail 403 clears confidential rows
+ok 16 - mounted React: list 200 then detail 403 clears confidential rows
+  ---
+  duration_ms: 687.7805
+  type: 'test'
+  ...
+# Subtest: mounted React: list 200 then detail 419 clears confidential rows
+ok 17 - mounted React: list 200 then detail 419 clears confidential rows
+  ---
+  duration_ms: 742.7152
+  type: 'test'
+  ...
+# Subtest: mounted React: delayed aborted detail cannot restore revoked data
+ok 18 - mounted React: delayed aborted detail cannot restore revoked data
+  ---
+  duration_ms: 1105.8236
+  type: 'test'
+  ...
+# Subtest: mounted Inertia identity switch clears old viewer and loads only new rows
+ok 19 - mounted Inertia identity switch clears old viewer and loads only new rows
+  ---
+  duration_ms: 611.2017
+  type: 'test'
+  ...
+# (node:12460) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: contract Task serializer does not grant authority from owning department snapshot
+ok 20 - contract Task serializer does not grant authority from owning department snapshot
+  ---
+  duration_ms: 2.7801
+  type: 'test'
+  ...
+# Subtest: C1 timestamp guard requires real calendar date, seconds and explicit timezone on all fields
+ok 21 - C1 timestamp guard requires real calendar date, seconds and explicit timezone on all fields
+  ---
+  duration_ms: 12.23
+  type: 'test'
+  ...
+# Subtest: malformed 200 timestamp values fail both list and detail envelopes
+ok 22 - malformed 200 timestamp values fail both list and detail envelopes
+  ---
+  duration_ms: 48.8775
+  type: 'test'
+  ...
+# Subtest: list uses authoritative server meta and rejects malformed result
+ok 23 - list uses authoritative server meta and rejects malformed result
+  ---
+  duration_ms: 0.2755
+  type: 'test'
+  ...
+# Subtest: only released Task GETs: same-origin credentials, no Inertia header or invented filters
+ok 24 - only released Task GETs: same-origin credentials, no Inertia header or invented filters
+  ---
+  duration_ms: 2.9936
+  type: 'test'
+  ...
+# Subtest: 401 inactive session and 419 expiration require fresh authentication
+ok 25 - 401 inactive session and 419 expiration require fresh authentication
+  ---
+  duration_ms: 1.1374
+  type: 'test'
+  ...
+# Subtest: 403 MFA uses validated server next_url, never arbitrary redirect
+ok 26 - 403 MFA uses validated server next_url, never arbitrary redirect
+  ---
+  duration_ms: 2.8291
+  type: 'test'
+  ...
+# Subtest: authorization-boundary classifier distinguishes session loss from ordinary read failures
+ok 27 - authorization-boundary classifier distinguishes session loss from ordinary read failures
+  ---
+  duration_ms: 0.2893
+  type: 'test'
+  ...
+# Subtest: masked 404, validation 422, throttle 429 and 503 keep correct read error semantics
+ok 28 - masked 404, validation 422, throttle 429 and 503 keep correct read error semantics
+  ---
+  duration_ms: 2.1415
+  type: 'test'
+  ...
+# Subtest: invalid 200 payload and HTML never render as authorized Tasks
+ok 29 - invalid 200 payload and HTML never render as authorized Tasks
+  ---
+  duration_ms: 1.8511
+  type: 'test'
+  ...
+# Subtest: aborted stale fetch is not turned into another account error response
+ok 30 - aborted stale fetch is not turned into another account error response
+  ---
+  duration_ms: 0.6288
+  type: 'test'
+  ...
+# (node:22864) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: canonical shared props omit notifications and the initial feed is safe
+ok 31 - canonical shared props omit notifications and the initial feed is safe
+  ---
+  duration_ms: 2.3914
+  type: 'test'
+  ...
+# Subtest: calendar producer date fallback rejects rollover and supports its four views
+ok 32 - calendar producer date fallback rejects rollover and supports its four views
+  ---
+  duration_ms: 1.9741
+  type: 'test'
+  ...
+# Subtest: memo audiences reflect server authority, including recipient-only
+ok 33 - memo audiences reflect server authority, including recipient-only
+  ---
+  duration_ms: 0.4069
+  type: 'test'
+  ...
+# Subtest: correspondence overview counts are separate from intentionally empty list
+ok 34 - correspondence overview counts are separate from intentionally empty list
+  ---
+  duration_ms: 0.325
+  type: 'test'
+  ...
+# Subtest: staged page links exclude missing backend-rendered components
+ok 35 - staged page links exclude missing backend-rendered components
+  ---
+  duration_ms: 1.6433
+  type: 'test'
+  ...
+# (node:33740) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: every preview screen mounts an existing Inertia component with a visible synthetic label
+ok 36 - every preview screen mounts an existing Inertia component with a visible synthetic label
+  ---
+  duration_ms: 5.732
+  type: 'test'
+  ...
+# Subtest: role fixture is bounded to supported role presentations
+ok 37 - role fixture is bounded to supported role presentations
+  ---
+  duration_ms: 0.476
+  type: 'test'
+  ...
+1..37
+# tests 37
+# suites 0
+# pass 29
+# fail 8
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 259687.7411
