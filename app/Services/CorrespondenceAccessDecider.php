@@ -79,8 +79,10 @@ class CorrespondenceAccessDecider
     public function canClassify(User $actor, CorrespondenceRecord $record): bool
     {
         return $record->lifecycle_state === CorrespondenceLifecycleState::Registered
-            && $this->hasOfficeOrAssignmentContext($actor, $record)
-            && in_array($actor->role, self::CLASSIFY_ROLES, true);
+            && in_array($actor->role, self::CLASSIFY_ROLES, true)
+            // A classifier must already be cleared to see the record's
+            // existing classification, not just hold a classification role.
+            && $this->canView($actor, $record);
     }
 
     public function canRoute(User $actor, CorrespondenceRecord $record): bool
