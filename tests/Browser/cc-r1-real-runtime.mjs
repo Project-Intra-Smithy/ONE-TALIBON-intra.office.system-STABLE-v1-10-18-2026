@@ -137,8 +137,15 @@ async function login(page, email, password) {
 async function inertia(page, url, component) {
   const response = await page.goto(origin + url, { waitUntil: 'domcontentloaded' });
   assert.equal(response?.status(), 200, url + ' must render HTTP 200');
-  const raw = await page.locator('#app[data-page]').getAttribute('data-page');
-  assert.ok(raw, url + ' must contain Laravel Inertia page props');
+  // React/Inertia hydration may remove the bootstrap data-page attribute
+  // from the live DOM. Read the unmodified Laravel navigation response,
+  // then separately require the hydrated React content below.
+  const raw = await page.evaluate(
+    (html) => new DOMParser().parseFromString(html, 'text/html')
+      .querySelector('#app[data-page]')?.getAttribute('data-page') ?? null,
+    await response.text(),
+  );
+  assert.ok(raw, url + ' must contain genuine Laravel Inertia page props');
   const data = JSON.parse(raw);
   assert.equal(data.component, component, 'Unexpected Laravel Inertia component for ' + url);
   assert.equal(typeof data.props, 'object');
