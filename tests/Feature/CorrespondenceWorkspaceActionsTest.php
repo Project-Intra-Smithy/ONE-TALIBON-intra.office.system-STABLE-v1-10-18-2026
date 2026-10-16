@@ -139,7 +139,7 @@ class CorrespondenceWorkspaceActionsTest extends TestCase
         $this->actingAs($legislative)
             ->post('/correspondence/'.$record->public_id.'/workspace/classify', [
                 'classification' => 'internal',
-                'evidence' => [UploadedFile::fake()->create('sec01-unauthorized.pdf', 2, 'application/pdf')],
+                'evidence' => [UploadedFile::fake()->createWithContent('sec01-unauthorized.pdf', "%PDF-1.7\nSEC01 denied-workspace evidence\n%%EOF")],
             ])
             ->assertForbidden();
 
