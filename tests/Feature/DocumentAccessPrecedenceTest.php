@@ -10,6 +10,7 @@ use App\Models\Department;
 use App\Models\Document;
 use App\Models\DocumentLink;
 use App\Models\Employee;
+use App\Models\TravelOrderEvent;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
 use App\Services\CorrespondenceAccessDecider;
@@ -166,7 +167,6 @@ class DocumentAccessPrecedenceTest extends TestCase
             ->assertForbidden();
     }
 
-
     public function test_orphaned_higher_priority_event_link_does_not_downgrade_to_transaction(): void
     {
         $office = $this->department('ORPHAN');
@@ -289,6 +289,7 @@ class DocumentAccessPrecedenceTest extends TestCase
         DB::flushQueryLog();
         DB::enableQueryLog();
         $before = memory_get_peak_usage(true);
+
         try {
             $first = $archive->workspace($actor, ['page' => 1]);
             $second = $archive->workspace($actor, ['page' => 2]);
@@ -350,7 +351,7 @@ class DocumentAccessPrecedenceTest extends TestCase
         $office = $this->department('ORPHAN-SQL');
         $actor = $this->human($office);
         $transaction = $this->transaction($actor, $office);
-        foreach ([CorrespondenceRecord::class, \App\Models\TravelOrderEvent::class] as $class) {
+        foreach ([CorrespondenceRecord::class, TravelOrderEvent::class] as $class) {
             $document = $this->document($actor, $office, 'Higher priority missing '.$class);
             DocumentLink::query()->create([
                 'document_id' => $document->id,
@@ -360,7 +361,7 @@ class DocumentAccessPrecedenceTest extends TestCase
             ]);
             DocumentLink::query()->create([
                 'document_id' => $document->id,
-                'linkable_type' => (new $class)->getMorphClass(),
+                'linkable_type' => (new $class())->getMorphClass(),
                 'linkable_id' => 2147483600,
                 'relationship' => 'deleted_parent',
             ]);
@@ -398,6 +399,7 @@ class DocumentAccessPrecedenceTest extends TestCase
 
         DB::enableQueryLog();
         DB::flushQueryLog();
+
         try {
             $allowed = app(DocumentAccessService::class)->canDownload($actor, $document);
             $allowQueries = count(DB::getQueryLog());
@@ -418,6 +420,7 @@ class DocumentAccessPrecedenceTest extends TestCase
 
         DB::enableQueryLog();
         DB::flushQueryLog();
+
         try {
             $deniedDownload = app(DocumentAccessService::class)->canDownload($actor, $document);
             $downloadQueries = count(DB::getQueryLog());
@@ -783,6 +786,7 @@ class DocumentAccessPrecedenceTest extends TestCase
     {
         $path = 'p3-tests/'.Str::uuid().'.pdf';
         Storage::disk('documents')->put($path, '%PDF-1.7 test');
+
         return Document::query()->create([
             'title' => $title,
             'original_name' => $title.'.pdf',
