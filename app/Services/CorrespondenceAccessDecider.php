@@ -183,17 +183,7 @@ class CorrespondenceAccessDecider
                 $employeeId,
                 $departmentId,
             ): void {
-                $scoped->where(function (Builder $context) use ($employeeId, $departmentId): void {
-                    $context->whereHas('workflowTransaction', function (Builder $workflow) use ($employeeId, $departmentId): void {
-                        $workflow->where(function (Builder $ownership) use ($employeeId, $departmentId): void {
-                            $ownership->where('assigned_employee_id', $employeeId)
-                                ->orWhere('current_department_id', $departmentId);
-                        });
-                    })->orWhere(function (Builder $unlinked) use ($departmentId): void {
-                        $unlinked->whereNull('workflow_transaction_id')
-                            ->where('receiving_department_id', $departmentId);
-                    });
-                });
+                $this->scopeCurrentOfficeOrAssignment($scoped, $employeeId, $departmentId);
 
                 $scoped->where(function (Builder $classification) use ($canRegister, $classifications): void {
                     if ($canRegister) {
@@ -205,6 +195,29 @@ class CorrespondenceAccessDecider
                         $classification->{$method}('classification', $classifications);
                     }
                 });
+            });
+        });
+    }
+
+    /**
+     * One SQL authority predicate for list scopes and direct record checks.
+     * This intentionally reads current workflow assignment rather than an
+     * Eloquent relationship preloaded on a retained correspondence model.
+     */
+    private function scopeCurrentOfficeOrAssignment(
+        Builder $query,
+        int $employeeId,
+        int $departmentId,
+    ): Builder {
+        return $query->where(function (Builder $context) use ($employeeId, $departmentId): void {
+            $context->whereHas('workflowTransaction', function (Builder $workflow) use ($employeeId, $departmentId): void {
+                $workflow->where(function (Builder $ownership) use ($employeeId, $departmentId): void {
+                    $ownership->where('assigned_employee_id', $employeeId)
+                        ->orWhere('current_department_id', $departmentId);
+                });
+            })->orWhere(function (Builder $unlinked) use ($departmentId): void {
+                $unlinked->whereNull('workflow_transaction_id')
+                    ->where('receiving_department_id', $departmentId);
             });
         });
     }
@@ -301,21 +314,18 @@ class CorrespondenceAccessDecider
             return false;
         }
 
-        $record->loadMissing('workflowTransaction');
-        if ($record->workflow_transaction_id !== null) {
-            $workflow = $record->workflowTransaction;
-            if ($workflow === null) {
-                return false;
-            }
-
-            return ($workflow->assigned_employee_id !== null
-                    && (int) $workflow->assigned_employee_id === (int) $actor->employee->id)
-                || ($workflow->current_department_id !== null
-                    && (int) $workflow->current_department_id === (int) $actor->employee->department_id);
+        // Always evaluate current persisted office/assignment context. A retained
+        // CorrespondenceRecord may have an already-loaded but revoked workflow
+        // relation, so loadMissing() is not an authorization freshness guard.
+        if ($record->getKey() === null) {
+            return false;
         }
 
-        return $record->receiving_department_id !== null
-            && (int) $record->receiving_department_id === (int) $actor->employee->department_id;
+        return $this->scopeCurrentOfficeOrAssignment(
+            CorrespondenceRecord::query()->whereKey($record->getKey()),
+            (int) $actor->employee->id,
+            (int) $actor->employee->department_id,
+        )->exists();
     }
 
     private function hasActiveMunicipalIdentity(User $actor): bool
