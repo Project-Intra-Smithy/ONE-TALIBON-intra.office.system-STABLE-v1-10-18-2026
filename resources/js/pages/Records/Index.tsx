@@ -1,5 +1,5 @@
 import { Link, router } from '@inertiajs/react';
-import { ArrowRight, Building2, CalendarDays, FileSearch, Search, UserRound, X } from 'lucide-react';
+import { ArrowRight, FileSearch, Search, X } from 'lucide-react';
 import { type FormEvent, useEffect, useState } from 'react';
 import ProgressiveFilterBar from '../../components/filters/ProgressiveFilterBar';
 import PageHeader from '../../components/PageHeader';
@@ -226,8 +226,8 @@ export default function Index({ records, filters, filterOptions }: Props) {
                     />
                 </form>
 
-                <section aria-label="Records registry" className="overflow-hidden rounded-xl border border-slate-200 bg-white text-slate-900  dark:bg-[#142236] dark:text-slate-100 dark:border-slate-700">
-                    <div className="flex flex-col gap-1 border-b border-slate-100 bg-slate-50 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5 dark:bg-slate-900/40 dark:border-slate-700">
+                <section aria-label="Records registry" className="records-registry text-slate-900 dark:text-slate-100">
+                    <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
                         <div className="flex items-center gap-2 text-sm font-bold text-slate-800 sm:text-base dark:text-slate-100">
                             <FileSearch size={15} />
                             Records Registry
@@ -237,52 +237,28 @@ export default function Index({ records, filters, filterOptions }: Props) {
                         </div>
                     </div>
 
-                    <div className="divide-y divide-slate-100 dark:divide-slate-700">
+                    <div className="records-list">
                         {records.data.map((record) => (
-                            <article key={`${record.recordType}:${record.detailUrl}`} className="px-5 py-6">
-                                <div className="grid gap-4 2xl:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)_auto] lg:items-start">
-                                    <div className="min-w-0">
-                                        <div className="flex flex-wrap items-center gap-1.5">
-                                            <span className="rounded-md bg-slate-100 px-2 py-1 text-sm font-bold uppercase tracking-wide text-slate-700 sm:text-sm dark:bg-slate-900/40 dark:text-slate-300">
-                                                {recordTypeLabel(record.recordType)}
-                                            </span>
-                                            <span className="rounded-md border border-slate-200 bg-white px-2 py-1 text-sm font-bold uppercase tracking-wide text-slate-600 sm:text-sm dark:bg-[#142236] dark:text-slate-300 dark:border-slate-700">
-                                                {humanize(record.state)}
-                                            </span>
-                                            {record.classification && (
-                                                <span className="text-sm font-semibold text-slate-500 sm:text-sm dark:text-slate-400">{humanize(record.classification)}</span>
-                                            )}
-                                        </div>
-                                        <Link href={record.detailUrl} className="mt-2 block w-fit max-w-full text-sm font-bold uppercase tracking-[0.08em] text-blue-700 hover:underline sm:text-sm">
-                                            {record.reference || 'Reference pending'}
-                                        </Link>
-                                        <h2 className="mt-1 break-words text-sm font-semibold leading-6 text-slate-950 sm:text-base dark:text-slate-100">{record.title}</h2>
-                                        <p className="mt-1 break-words text-sm leading-6 text-slate-500 sm:text-sm dark:text-slate-400">{record.source}</p>
-                                        {record.originOffice && (
-                                            <p className="mt-1.5 text-sm font-medium text-slate-500 sm:text-sm dark:text-slate-400">Origin: {officeLabel(record.originOffice)}</p>
-                                        )}
+                            <article key={`${record.recordType}:${record.detailUrl}`} className="record-card">
+                                <div className="record-card-heading">
+                                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-600 dark:text-slate-300">
+                                        <span>{recordTypeLabel(record.recordType)}</span>
+                                        <span className="record-state">{humanize(record.state)}</span>
+                                        {record.classification && <span>{humanize(record.classification)}</span>}
                                     </div>
-
-                                    <dl className="grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
-                                        <div className="min-w-0">
-                                            <dt className="text-sm font-bold uppercase tracking-[0.12em] text-slate-600 sm:text-sm dark:text-slate-400">Current office</dt>
-                                            <dd className="mt-1 flex items-start gap-1.5 break-words text-sm font-semibold text-slate-700 sm:text-sm dark:text-slate-300"><Building2 size={12} className="mt-0.5 shrink-0 text-slate-600 dark:text-slate-400" />{officeLabel(record.currentOffice)}</dd>
-                                        </div>
-                                        <div className="min-w-0">
-                                            <dt className="text-sm font-bold uppercase tracking-[0.12em] text-slate-600 sm:text-sm dark:text-slate-400">Responsible</dt>
-                                            <dd className="mt-1 flex items-start gap-1.5 break-words text-sm font-semibold text-slate-700 sm:text-sm dark:text-slate-300"><UserRound size={12} className="mt-0.5 shrink-0 text-slate-600 dark:text-slate-400" />{record.recordType === 'travel_order' ? 'Issued personnel on detail' : (record.assignedEmployee?.name || 'Unassigned')}</dd>
-                                            {record.assignedEmployee?.position && <dd className="mt-1 pl-[18px] text-sm text-slate-500 sm:text-sm dark:text-slate-400">{record.assignedEmployee.position}</dd>}
-                                        </div>
-                                        <div className="col-span-2 min-w-0 sm:col-span-1 lg:col-span-2 xl:col-span-1">
-                                            <dt className="text-sm font-bold uppercase tracking-[0.12em] text-slate-600 sm:text-sm dark:text-slate-400">Record date</dt>
-                                            <dd className="mt-1 flex items-start gap-1.5 text-sm font-semibold text-slate-700 sm:text-sm dark:text-slate-300"><CalendarDays size={12} className="mt-0.5 shrink-0 text-slate-600 dark:text-slate-400" />{formatDate(record.recordDate)}</dd>
-                                        </div>
-                                    </dl>
-
-                                    <Link href={record.detailUrl} aria-label={`Open record ${record.reference || record.title}`} className="inline-flex w-fit items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50 sm:text-sm lg:justify-self-end dark:bg-[#142236] dark:text-slate-300 dark:border-slate-700">
-                                        Open record <ArrowRight size={14} />
-                                    </Link>
+                                    <h2 className="mt-3 font-semibold text-slate-950 dark:text-slate-100">{record.title}</h2>
+                                    <p className="mt-1 text-sm font-medium text-[#145a43] dark:text-emerald-200">{record.reference || 'Reference pending'}</p>
+                                    {record.originOffice && <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">From {officeLabel(record.originOffice)}</p>}
                                 </div>
+                                <dl className="record-metadata">
+                                    <div><dt>Current office</dt><dd>{officeLabel(record.currentOffice)}</dd></div>
+                                    <div><dt>Assigned to</dt><dd>{record.recordType === 'travel_order' ? 'Issued personnel on detail' : (record.assignedEmployee?.name || 'Unassigned')}</dd>{record.assignedEmployee?.position && <dd className="record-secondary">{record.assignedEmployee.position}</dd>}</div>
+                                    <div><dt>Record date</dt><dd>{formatDate(record.recordDate)}</dd></div>
+                                </dl>
+                                <footer className="record-card-footer">
+                                    <div className="text-sm text-slate-600 dark:text-slate-300"><span>{humanize(record.source)}</span><span className="block">Updated {formatDate(record.updatedAt)}</span></div>
+                                    <Link href={record.detailUrl} aria-label={`Open record ${record.reference || record.title}`} className="workspace-button">Open record <ArrowRight size={16} aria-hidden="true" /></Link>
+                                </footer>
                             </article>
                         ))}
 

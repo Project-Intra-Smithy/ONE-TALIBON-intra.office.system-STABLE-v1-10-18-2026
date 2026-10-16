@@ -18,8 +18,10 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
 
     return <AppLayout workspaceRefinement title="Dashboard">
         <div className="mx-auto max-w-[1480px] space-y-5">
-            <DashboardHeader experience={experience} />
-            <QuickActions actions={experience.quickActions} />
+            <div className="workspace-dashboard-intro">
+                <DashboardHeader experience={experience} />
+                <QuickActions actions={experience.quickActions} />
+            </div>
             <nav className="workspace-shortcuts" aria-label="Jump to work section">
                 <a href="#work-overview" onClick={() => document.getElementById('work-overview')?.focus()}>Work overview</a>
                 {correspondenceOverview && (experience.key === 'employee' || experience.key === 'department_head') && <a href="#dashboard-correspondence" onClick={() => document.getElementById('dashboard-correspondence')?.focus()}>Correspondence</a>}
@@ -28,11 +30,13 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
             <div id="work-overview" tabIndex={-1} className="@container min-w-0 space-y-5 workspace-section-target">
                 {primaryGroups.map((group) => <MetricGroup key={group.key} group={group} />)}
 
-                {experience.key === 'employee' && <>
-                    {correspondenceOverview && <CorrespondenceOverview overview={correspondenceOverview} />}
+                {experience.key === 'employee' && <div className="workspace-dashboard-columns">
                     <RecentWorkList title="Recent work" description="Latest updates to your assigned and initiated work." items={recentWork} emptyMessage="No recent work to show." />
-                    <ActivityRail />
-                </>}
+                    <div className="space-y-5">
+                        {correspondenceOverview && <CorrespondenceOverview overview={correspondenceOverview} />}
+                        <ActivityRail />
+                    </div>
+                </div>}
 
                 {experience.key === 'department_head' && <>
                     {officeOverview && <OfficeOverview overview={officeOverview} />}

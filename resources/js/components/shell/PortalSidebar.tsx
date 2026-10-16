@@ -1,6 +1,5 @@
 import { Link, router } from '@inertiajs/react';
 import { LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
-import { talibonAssets } from '../../branding/talibonAssets';
 import { isPortalPathActive, type PortalNavigationGroup } from '../../navigation/portalNavigation';
 import type { AuthUser } from '../../types';
 import AppearanceControl from '../AppearanceControl';
@@ -43,21 +42,21 @@ export default function PortalSidebar({
     const identityTitle = [user?.name, position, department].filter(Boolean).join(' · ');
 
     return (
-        <div className="flex h-full flex-col bg-[#092447] text-white">
-            <div className={`border-b border-white/10 ${compact ? 'px-2 py-4' : 'px-5 py-5'}`}>
+        <div className="portal-sidebar flex h-full flex-col bg-white text-slate-800">
+            <div className={`border-b border-slate-200 ${compact ? 'px-2 py-4' : 'px-5 py-5'}`}>
                 <div className={compact ? 'flex justify-center' : undefined}>
-                    <MunicipalBrand inverse compact iconOnly={compact} />
+                    <MunicipalBrand compact iconOnly={compact} />
                 </div>
 
                 {mobile ? (
-                    <div className="mt-3 text-xs text-blue-200">Intra-office workspace</div>
+                    <div className="mt-3 text-xs text-slate-600">Intra-office workspace</div>
                 ) : (
                     <div className={`mt-3 flex items-center ${compact ? 'justify-center' : 'justify-between gap-3'}`}>
-                        {!compact && <div className="text-xs text-blue-200">Intra-office workspace</div>}
+                        {!compact && <div className="text-xs text-slate-600">Intra-office workspace</div>}
                         <button
                             type="button"
                             onClick={onToggleCollapsed}
-                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 text-blue-100 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
                             aria-label={compact ? 'Expand navigation' : 'Collapse navigation'}
                             aria-expanded={!compact}
                             title={compact ? 'Expand navigation' : 'Collapse navigation'}
@@ -81,7 +80,7 @@ export default function PortalSidebar({
                         return (
                             <section key={group.label} aria-label={group.label}>
                                 {!compact && (
-                                    <div className={`px-2 text-xs font-bold uppercase tracking-[0.2em] ${groupActive ? 'text-white' : 'text-blue-300'}`}>
+                                    <div className={`px-2 text-xs font-bold uppercase tracking-[0.08em] ${groupActive ? 'text-[#145a43]' : 'text-slate-600'}`}>
                                         {group.label}
                                     </div>
                                 )}
@@ -102,12 +101,12 @@ export default function PortalSidebar({
                                                 aria-current={active ? 'page' : undefined}
                                                 aria-label={compact ? accessibleLabel : undefined}
                                                 title={compact ? accessibleLabel : undefined}
-                                                className={`relative flex min-h-11 items-center rounded-lg py-2 text-[13px] font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-1 focus-visible:ring-offset-[#0b2852] ${
+                                                className={`relative flex min-h-11 items-center rounded-lg py-2 text-base font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-1 focus-visible:ring-offset-white ${
                                                     compact ? 'justify-center px-2' : 'gap-3 px-3'
                                                 } ${
                                                     active
-                                                        ? 'bg-[#1769aa] text-white ring-1 ring-white/20 before:absolute before:inset-y-2 before:left-0 before:w-1 before:rounded-r before:bg-[#e5b63a]'
-                                                        : 'text-blue-100 hover:bg-white/10 hover:text-white'
+                                                        ? 'bg-[#edf5ef] text-[#145a43] before:absolute before:inset-y-2 before:left-0 before:w-1 before:rounded-r before:bg-[#145a43]'
+                                                        : 'text-slate-700 hover:bg-slate-100 hover:text-slate-950'
                                                 }`}
                                             >
                                                 <Icon size={18} aria-hidden="true" className="shrink-0" />
@@ -146,20 +145,14 @@ export default function PortalSidebar({
                 </div>
             </nav>
 
-            <div className={`relative shrink-0 border-t border-white/10 ${compact ? 'p-2' : 'p-3 sm:p-4'}`}>
-                <img
-                    src={talibonAssets.sidebarIllustration}
-                    alt=""
-                    className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-15"
-                />
-
+            <div className={`relative shrink-0 border-t border-slate-200 ${compact ? 'p-2' : 'p-3 sm:p-4'}`}>
                 {compact ? (
                     <div className="relative flex flex-col items-center gap-3">
                         <div
                             role="img"
                             aria-label={identityTitle ? `Signed in as ${identityTitle}` : 'Signed in user'}
                             title={identityTitle || undefined}
-                            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/10 text-xs font-bold text-white"
+                            className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-100 text-xs font-bold text-slate-800"
                         >
                             {userInitials(user?.name)}
                         </div>
@@ -169,7 +162,7 @@ export default function PortalSidebar({
                         <button
                             type="button"
                             onClick={() => router.post('/logout')}
-                            className="flex h-10 w-10 items-center justify-center rounded-lg text-blue-100 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                            className="flex h-10 w-10 items-center justify-center rounded-lg text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
                             aria-label="Sign out"
                             title="Sign out"
                         >
@@ -180,7 +173,7 @@ export default function PortalSidebar({
                     <div className="relative">
                         <AppearanceControl />
 
-                        <div className="mt-3 border-t border-white/10 pt-3">
+                        <div className="mt-3 border-t border-slate-200 pt-3">
                             <div
                                 className="text-sm font-semibold leading-snug break-words"
                                 title={user?.name || undefined}
@@ -190,7 +183,7 @@ export default function PortalSidebar({
 
                             {secondaryIdentity && (
                                 <div
-                                    className="mt-1 text-xs leading-snug text-blue-200 break-words"
+                                    className="mt-1 text-xs leading-snug text-slate-600 break-words"
                                     title={secondaryIdentity}
                                 >
                                     {secondaryIdentity}
@@ -200,7 +193,7 @@ export default function PortalSidebar({
                             <button
                                 type="button"
                                 onClick={() => router.post('/logout')}
-                                className="mt-2 flex min-h-10 w-full items-center gap-2 rounded-lg px-2 text-[13px] text-blue-100 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 sm:mt-3 sm:text-sm"
+                                className="mt-2 flex min-h-10 w-full items-center gap-2 rounded-lg px-2 text-[13px] text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 sm:mt-3 sm:text-sm"
                             >
                                 <LogOut size={15} aria-hidden="true" />
                                 <span>Sign out</span>

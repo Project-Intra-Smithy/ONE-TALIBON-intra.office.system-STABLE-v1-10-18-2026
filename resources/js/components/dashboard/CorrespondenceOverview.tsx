@@ -39,7 +39,7 @@ function CorrespondenceList({ title, items, dateKey }: {
 
 export default function CorrespondenceOverview({ overview }: { overview: CorrespondenceOverviewData }) {
     return (
-        <section className="municipal-panel overflow-hidden" aria-labelledby="dashboard-correspondence">
+        <section className="@container municipal-panel overflow-hidden" aria-labelledby="dashboard-correspondence">
             <header className="flex flex-col gap-2 border-b border-slate-200 px-4 py-4 dark:border-slate-700 sm:flex-row sm:items-center sm:justify-between sm:px-5">
                 <div>
                     <div className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-blue-700 dark:text-blue-300 sm:text-sm"><Inbox size={15} aria-hidden="true" /> Correspondence attention</div>

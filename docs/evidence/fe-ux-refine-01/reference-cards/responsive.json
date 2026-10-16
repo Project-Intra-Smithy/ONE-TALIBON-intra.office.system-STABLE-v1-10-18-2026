@@ -1,0 +1,231 @@
+[
+  {
+    "screen": "dashboard",
+    "width": 320,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "work",
+    "width": 320,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "correspondence",
+    "width": 320,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "records",
+    "width": 320,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "memoranda",
+    "width": 320,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "calendar",
+    "width": 320,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "dashboard",
+    "width": 390,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "work",
+    "width": 390,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "correspondence",
+    "width": 390,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "records",
+    "width": 390,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "memoranda",
+    "width": 390,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "calendar",
+    "width": 390,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "dashboard",
+    "width": 768,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "work",
+    "width": 768,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "correspondence",
+    "width": 768,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "records",
+    "width": 768,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "memoranda",
+    "width": 768,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "calendar",
+    "width": 768,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "dashboard",
+    "width": 1024,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "work",
+    "width": 1024,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "correspondence",
+    "width": 1024,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "records",
+    "width": 1024,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "memoranda",
+    "width": 1024,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "calendar",
+    "width": 1024,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "dashboard",
+    "width": 1440,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "work",
+    "width": 1440,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "correspondence",
+    "width": 1440,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "records",
+    "width": 1440,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "memoranda",
+    "width": 1440,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "screen": "calendar",
+    "width": 1440,
+    "overflow": 0,
+    "errors": [],
+    "oversize": []
+  },
+  {
+    "role": "department_head",
+    "width": 320,
+    "overflow": 0
+  },
+  {
+    "role": "executive_oversight",
+    "width": 320,
+    "overflow": 0
+  },
+  {
+    "role": "system_administration",
+    "width": 320,
+    "overflow": 0
+  },
+  {
+    "scenario": "200-percent-CSS-zoom",
+    "overflow": 0
+  }
+]

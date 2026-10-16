@@ -1,7 +1,7 @@
 import {spawn} from 'node:child_process';
 import {mkdir,writeFile,readFile} from 'node:fs/promises';
 import {chromium} from 'playwright';
-const root='http://127.0.0.1:4192',out='artifacts/ux-refinement';
+const root='http://127.0.0.1:4192',out=process.env.UX_OUTPUT || 'artifacts/ux-refinement';
 const server=spawn(process.execPath,['node_modules/vite/bin/vite.js','--host','127.0.0.1','--port','4192','--strictPort'],{stdio:'pipe',env:{...process.env,LARAVEL_BYPASS_ENV_CHECK:'1'}});
 let output='';for(const stream of [server.stdout,server.stderr])stream.on('data',c=>output+=c);
 let browser;const results=[];
@@ -14,9 +14,23 @@ try{
    page.on('pageerror',e=>errors.push(e.message));
    await page.route('**/notifications/feed',r=>r.fulfill({status:200,contentType:'application/json',body:JSON.stringify({notifications:[],unreadMemoCount:0,pendingMemo:null})}));
    await page.route('**/tasks?*',r=>r.fulfill({status:200,contentType:'application/json',body:JSON.stringify({data:[],meta:{page:1,last_page:1,per_page:15,total:0}})}));
-   await page.route('**/brand/*.svg', async r=>r.fulfill({contentType:'image/svg+xml',body:await readFile('public'+new URL(r.request().url()).pathname)}));
    await page.route('**/images/talibon/*.svg', async r=>r.fulfill({contentType:'image/svg+xml',body:await readFile('public'+new URL(r.request().url()).pathname)}));
    await page.goto(root+'/visual-preview.html?screen='+screen);await page.locator('#portal-content h1').waitFor();
+   await page.waitForFunction(()=>Array.from(document.querySelectorAll('.municipal-brand img')).every(img=>img.complete&&img.naturalWidth>0));
+   if(width>=1024){
+    const sidebar=page.locator('aside .portal-sidebar');
+    if(await sidebar.evaluate(e=>getComputedStyle(e).backgroundColor)!=='rgb(255, 255, 255)')errors.push('Sidebar is not white');
+    if(screen==='dashboard'){
+     await page.getByRole('button',{name:'Collapse navigation',exact:true}).click();
+     await page.getByRole('button',{name:'Expand navigation',exact:true}).click();
+    }
+   }
+   if(screen==='dashboard'&&width===320){
+    await page.getByRole('button',{name:'Open navigation',exact:true}).click();
+    const sidebar=page.getByRole('dialog',{name:'Municipal navigation'}).locator('.portal-sidebar');
+    if(await sidebar.evaluate(e=>getComputedStyle(e).backgroundColor)!=='rgb(255, 255, 255)')errors.push('Mobile sidebar is not white');
+    await page.keyboard.press('Escape');
+   }
    const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth);
    const oversize=await page.locator('#portal-content').evaluate(e=>[...e.querySelectorAll('*')].filter(x=>x.getBoundingClientRect().right>innerWidth+1).slice(0,8).map(x=>({tag:x.tagName,cls:x.className})));
    if(screen==='dashboard'){
@@ -47,6 +61,7 @@ try{
  const extra=await browser.newPage({viewport:{width:1440,height:900},reducedMotion:'reduce'});
  await extra.goto(root+'/visual-preview.html?screen=dashboard');await extra.locator('#portal-content h1').waitFor();
  await extra.evaluate(()=>{document.documentElement.classList.add('dark');});
+ if(await extra.locator('aside .portal-sidebar').evaluate(e=>getComputedStyle(e).backgroundColor)!=='rgb(255, 255, 255)')throw Error('Dark-theme sidebar is not white');
  await extra.screenshot({path:out+'/dashboard-dark.png',fullPage:true});
  await extra.evaluate(()=>{document.documentElement.classList.remove('dark');document.body.style.zoom='2';});
  results.push({scenario:'200-percent-CSS-zoom',overflow:await extra.evaluate(()=>document.documentElement.scrollWidth-innerWidth)});

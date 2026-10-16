@@ -40,9 +40,9 @@ export default function WorkItemList({ records, title }: { records: Paginator; t
                 </div>
             </div>
 
-            <div className="divide-y divide-slate-100 dark:divide-slate-700">
+            <div className="workspace-work-cards">
                 {records.data.map((item) => (
-                    <article key={item.id} className="px-5 py-6 transition-colors hover:bg-slate-50/70 dark:hover:bg-slate-800/30 sm:px-5">
+                    <article key={item.id} className="workspace-work-card @container">
                         <div className="grid min-w-0 gap-5">
                             <div className="min-w-0">
                                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -69,7 +69,7 @@ export default function WorkItemList({ records, title }: { records: Paginator; t
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+                            <div className="grid grid-cols-1 gap-4 @min-[390px]:grid-cols-3">
                                 <div className="min-w-0">
                                     <div className="text-sm font-bold uppercase tracking-wide text-slate-600 dark:text-slate-400">Accountability</div>
                                     <div className="mt-1 flex items-start gap-1.5 text-sm font-semibold leading-6 text-slate-700 sm:text-sm dark:text-slate-300">
