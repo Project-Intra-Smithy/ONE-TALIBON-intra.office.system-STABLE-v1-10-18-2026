@@ -137,12 +137,16 @@ async function login(page, email, password) {
 async function inertia(page, url, component) {
   const response = await page.goto(origin + url, { waitUntil: 'domcontentloaded' });
   assert.equal(response?.status(), 200, url + ' must render HTTP 200');
-  // React/Inertia hydration may remove the bootstrap data-page attribute
-  // from the live DOM. Read the unmodified Laravel navigation response,
-  // then separately require the hydrated React content below.
+  // Inertia Laravel v3 embeds bootstrap JSON in a script[data-page="app"].
+  // Older Inertia versions use #app[data-page]. Read the genuine navigation
+  // HTTP body before hydration and require the real React screen afterward.
   const raw = await page.evaluate(
-    (html) => new DOMParser().parseFromString(html, 'text/html')
-      .querySelector('#app[data-page]')?.getAttribute('data-page') ?? null,
+    (html) => {
+      const parsed = new DOMParser().parseFromString(html, 'text/html');
+      return parsed.querySelector('script[data-page="app"][type="application/json"]')?.textContent
+        ?? parsed.querySelector('#app[data-page]')?.getAttribute('data-page')
+        ?? null;
+    },
     await response.text(),
   );
   assert.ok(raw, url + ' must contain genuine Laravel Inertia page props');
