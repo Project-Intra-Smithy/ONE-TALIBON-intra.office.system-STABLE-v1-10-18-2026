@@ -1,0 +1,31 @@
+diff --git a/artifacts/login-test-audit/before.test.mjs b/tests/login-mounted-ui.test.mjs
+index 70e9657..b2d607e 100644
+--- a/artifacts/login-test-audit/before.test.mjs
++++ b/tests/login-mounted-ui.test.mjs
+@@ -22,7 +22,7 @@ after(async()=>{await browser?.close();server?.kill();});
+ async function mount(width=390){
+  const page=await browser.newPage({viewport:{width,height:900},reducedMotion:'reduce'});
+  await page.goto(root+'/visual-preview.html?screen=login');
+- await page.getByRole('heading',{name:'Welcome back'}).waitFor();
++ await page.getByRole('heading',{name:'Sign in to your workspace',exact:true}).waitFor();
+  return page;
+ }
+ test('login: required fields, keyboard order, exact Inertia payload, pending and server errors',async()=>{
+@@ -37,7 +37,7 @@ test('login: required fields, keyboard order, exact Inertia payload, pending and
+   await route.fulfill({status:200,contentType:'application/json',headers:{'X-Inertia':'true'},body:JSON.stringify({component:'Auth/Login',props:{errors:{email:'These credentials do not match our records.',password:'Synthetic password validation error.'}},url:'/login',version:null,clearHistory:false,encryptHistory:false})});
+  });
+  try{
+-  const email=page.getByLabel('Email',{exact:true}),password=page.getByLabel('Password',{exact:true});
++  const email=page.getByLabel('Email address',{exact:true}),password=page.getByLabel('Password',{exact:true});
+   assert.equal(await email.getAttribute('autocomplete'),'username');
+   assert.equal(await password.getAttribute('type'),'password');
+   assert.equal(await password.getAttribute('autocomplete'),'current-password');
+@@ -102,7 +102,7 @@ for(const width of [320,390,768,1024,1440])test(`login: ${width}px responsive fi
+   const panel=await page.locator('.employee-login__panel').boundingBox();
+   if(width>=768) assert.ok(panel.x>=brand.x+brand.width);
+   else assert.ok(panel.y>=brand.y+brand.height);
+-  const photoUrl=await page.locator('.employee-login__composition').evaluate(el=>getComputedStyle(el,'::before').backgroundImage.match(/url\(["']?(.*?)["']?\)/)[1]);
++  const photoUrl=await page.locator('.employee-login__backdrop').evaluate(el=>getComputedStyle(el).backgroundImage.match(/url\(["']?(.*?)["']?\)/)[1]);
+   const photo=await page.request.get(photoUrl);
+   assert.equal(photo.status(),200);
+   assert.match(photo.headers()['content-type'],/image\/jpeg/);
