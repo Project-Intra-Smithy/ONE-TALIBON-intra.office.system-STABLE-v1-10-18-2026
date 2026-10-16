@@ -529,6 +529,81 @@ class DocumentAccessPrecedenceTest extends TestCase
             ->whereKey($record->id)->count());
     }
 
+    public function test_retained_workflow_relation_rechecks_revoked_and_new_current_office(): void
+    {
+        $formerOffice = $this->department('SEC03-FORMER');
+        $currentOffice = $this->department('SEC03-CURRENT');
+        $formerActor = $this->human($formerOffice);
+        $currentActor = $this->human($currentOffice);
+        $workflow = $this->transaction($formerActor, $formerOffice);
+        $record = $this->restrictedCorrespondence($formerOffice);
+        $record->update([
+            'workflow_transaction_id' => $workflow->id,
+            'lifecycle_state' => CorrespondenceLifecycleState::Routed->value,
+        ]);
+
+        // The same correspondence instance is retained across the authoritative
+        // reassignment; do not fresh() or reload its preloaded relationship.
+        $record->load('workflowTransaction');
+        $access = app(CorrespondenceAccessDecider::class);
+        $this->assertTrue($access->canView($formerActor, $record));
+        $this->assertFalse($access->canView($currentActor, $record));
+
+        DB::table('transactions')->where('id', $workflow->id)->update([
+            'current_department_id' => $currentOffice->id,
+            'assigned_employee_id' => null,
+        ]);
+
+        $this->assertSame($formerOffice->id, (int) $record->workflowTransaction->current_department_id);
+        $this->assertSame(0, $access->scopeVisibleTo(CorrespondenceRecord::query(), $formerActor)
+            ->whereKey($record->id)->count());
+        $this->assertSame(1, $access->scopeVisibleTo(CorrespondenceRecord::query(), $currentActor)
+            ->whereKey($record->id)->count());
+
+        $this->assertFalse($access->canView($formerActor, $record));
+        $this->assertFalse($access->canViewInWorkspace($formerActor, $record));
+        $this->assertFalse($access->canAct($formerActor, $record));
+        $this->assertTrue($access->canView($currentActor, $record));
+        $this->assertTrue($access->canViewInWorkspace($currentActor, $record));
+        $this->assertTrue($access->canAct($currentActor, $record));
+    }
+
+    public function test_retained_workflow_relation_rechecks_explicit_employee_reassignment(): void
+    {
+        $originOffice = $this->department('SEC03-ASSIGN-ORIGIN');
+        $routingOffice = $this->department('SEC03-ASSIGN-ROUTED');
+        $formerAssignee = $this->human($originOffice);
+        $newAssignee = $this->human($originOffice);
+        $workflow = $this->transaction($formerAssignee, $originOffice);
+        $workflow->update([
+            'current_department_id' => $routingOffice->id,
+            'assigned_employee_id' => $formerAssignee->employee->id,
+        ]);
+        $record = $this->restrictedCorrespondence($originOffice);
+        $record->update(['workflow_transaction_id' => $workflow->id]);
+        $record->load('workflowTransaction');
+
+        $access = app(CorrespondenceAccessDecider::class);
+        $this->assertTrue($access->canView($formerAssignee, $record));
+        $this->assertFalse($access->canView($newAssignee, $record));
+
+        // Direct SQL update models another authoritative workflow operation.
+        DB::table('transactions')->where('id', $workflow->id)->update([
+            'assigned_employee_id' => $newAssignee->employee->id,
+        ]);
+
+        $this->assertSame(
+            $formerAssignee->employee->id,
+            (int) $record->workflowTransaction->assigned_employee_id,
+        );
+        $this->assertSame(0, $access->scopeVisibleTo(CorrespondenceRecord::query(), $formerAssignee)
+            ->whereKey($record->id)->count());
+        $this->assertSame(1, $access->scopeVisibleTo(CorrespondenceRecord::query(), $newAssignee)
+            ->whereKey($record->id)->count());
+        $this->assertFalse($access->canView($formerAssignee, $record));
+        $this->assertTrue($access->canView($newAssignee, $record));
+    }
+
     public function test_archive_and_download_recheck_identity_between_distinct_operations(): void
     {
         $office = $this->department('OPERATION-REVOCATION');
