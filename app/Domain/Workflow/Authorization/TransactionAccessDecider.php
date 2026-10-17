@@ -20,6 +20,12 @@ final class TransactionAccessDecider
 
     public function allows(AuthorizationContext $context): bool
     {
+        // Actor eligibility is mandatory before *every* ability, including
+        // privileged shortcuts for transitions and municipal-wide visibility.
+        if (! $context->actorActive || ! $context->actorHasEmployee()) {
+            return false;
+        }
+
         return match ($context->requestedAction) {
             self::VIEW_ANY => $this->canEnterTransactionArea($context),
             self::VIEW => $this->canView($context),
