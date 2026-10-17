@@ -16,6 +16,7 @@ use App\Models\WorkflowTransaction;
 use App\Services\CorrespondenceAccessDecider;
 use App\Services\DocumentAccessService;
 use App\Services\DocumentArchiveQuery;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -183,7 +184,7 @@ class DocumentAccessPrecedenceTest extends TestCase
 
         DocumentLink::query()->create([
             'document_id' => $document->id,
-            'linkable_type' => (new CorrespondenceEvent())->getMorphClass(),
+            'linkable_type' => (new CorrespondenceEvent)->getMorphClass(),
             'linkable_id' => 999999999,
             'relationship' => 'missing_high_priority_event',
         ]);
@@ -361,7 +362,7 @@ class DocumentAccessPrecedenceTest extends TestCase
             ]);
             DocumentLink::query()->create([
                 'document_id' => $document->id,
-                'linkable_type' => (new $class())->getMorphClass(),
+                'linkable_type' => (new $class)->getMorphClass(),
                 'linkable_id' => 2147483600,
                 'relationship' => 'deleted_parent',
             ]);
@@ -629,7 +630,7 @@ class DocumentAccessPrecedenceTest extends TestCase
         $actor->employee()->update(['employment_status' => 'separated']);
         $this->assertFalse($download->canDownload($actor, $document));
 
-        $this->expectException(\Illuminate\Auth\Access\AuthorizationException::class);
+        $this->expectException(AuthorizationException::class);
         $archive->workspace($actor, []);
     }
 
@@ -678,7 +679,7 @@ class DocumentAccessPrecedenceTest extends TestCase
         $this->actingAs($other);
         $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
 
-        $this->expectException(\Illuminate\Auth\Access\AuthorizationException::class);
+        $this->expectException(AuthorizationException::class);
         app(DocumentArchiveQuery::class)->workspace($actor, []);
     }
 
