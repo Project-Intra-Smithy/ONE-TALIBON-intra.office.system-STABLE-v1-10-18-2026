@@ -4,16 +4,21 @@ namespace Tests\Feature;
 
 use App\Domain\Correspondence\CorrespondenceClassification;
 use App\Domain\Correspondence\CorrespondenceLifecycleState;
+use App\Models\AuditLog;
 use App\Models\CorrespondenceEvent;
 use App\Models\CorrespondenceRecord;
 use App\Models\Department;
+use App\Models\Document;
+use App\Models\DocumentLink;
 use App\Models\Employee;
 use App\Models\OutboxMessage;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
 use App\Services\TransactionWorkflowService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -103,6 +108,158 @@ class CorrespondenceWorkspaceActionsTest extends TestCase
             ->assertSessionHasErrors('classification');
 
         $this->assertSame(CorrespondenceLifecycleState::Registered, $record->fresh()->lifecycle_state);
+    }
+
+    public function test_sec01_hr_officer_cannot_downgrade_registered_restricted_correspondence_via_json(): void
+    {
+        $office = $this->department('SEC01-HR');
+        $hr = $this->human('hr_officer', $office);
+        $record = $this->record('Restricted HR item', CorrespondenceLifecycleState::Registered, $office, CorrespondenceClassification::Restricted);
+        $document = $this->sec01Evidence($hr, $office, $record);
+
+        $this->actingAs($hr)
+            ->postJson('/correspondence/'.$record->public_id.'/classify', [
+                'classification' => 'internal',
+            ])
+            ->assertForbidden();
+
+        $this->assertSec01NoClassificationSideEffects($record, $document);
+    }
+
+    public function test_sec01_legislative_staff_cannot_reclassify_or_attach_workspace_evidence(): void
+    {
+        config(['documents.disk' => 'documents']);
+        Storage::fake('documents');
+
+        $office = $this->department('SEC01-LEG');
+        $legislative = $this->human('legislative_staff', $office);
+        $record = $this->record('Restricted legislative item', CorrespondenceLifecycleState::Registered, $office, CorrespondenceClassification::Restricted);
+        $document = $this->sec01Evidence($legislative, $office, $record);
+
+        $this->actingAs($legislative)
+            ->post('/correspondence/'.$record->public_id.'/workspace/classify', [
+                'classification' => 'internal',
+                'evidence' => [UploadedFile::fake()->createWithContent('sec01-unauthorized.pdf', "%PDF-1.7\nSEC01 denied-workspace evidence\n%%EOF")],
+            ])
+            ->assertForbidden();
+
+        $this->assertSec01NoClassificationSideEffects($record, $document);
+        $this->assertSame(1, Document::query()->count(), 'Denied upload must not create evidence.');
+        $this->assertSame(1, DocumentLink::query()->count(), 'Denied upload must not create evidence links.');
+    }
+
+    public function test_sec01_foreign_department_head_cannot_classify_without_current_scope(): void
+    {
+        $ownerOffice = $this->department('SEC01-OWNER');
+        $foreignOffice = $this->department('SEC01-FOREIGN');
+        $owner = $this->human('department_head', $ownerOffice);
+        $foreignHead = $this->human('department_head', $foreignOffice);
+        $record = $this->record('Owner only', CorrespondenceLifecycleState::Registered, $ownerOffice, CorrespondenceClassification::Restricted);
+        $document = $this->sec01Evidence($owner, $ownerOffice, $record);
+
+        $this->actingAs($foreignHead)
+            ->postJson('/correspondence/'.$record->public_id.'/classify', [
+                'classification' => 'internal',
+            ])
+            ->assertForbidden();
+
+        $this->assertSec01NoClassificationSideEffects($record, $document);
+    }
+
+    public function test_sec01_cleared_department_head_and_mayor_approver_can_classify_restricted_records(): void
+    {
+        $office = $this->department('SEC01-PRIV');
+        $head = $this->human('department_head', $office);
+        $mayor = $this->human('mayor_approver', $office);
+
+        $headRecord = $this->record('Head restricted item', CorrespondenceLifecycleState::Registered, $office, CorrespondenceClassification::Restricted);
+        $this->actingAs($head)
+            ->postJson('/correspondence/'.$headRecord->public_id.'/classify', [
+                'classification' => 'internal',
+                'remarks' => 'Authorized head decision.',
+            ])
+            ->assertOk()
+            ->assertJsonPath('correspondence.classification', 'internal')
+            ->assertJsonPath('correspondence.lifecycle_state', 'classified');
+
+        $mayorRecord = $this->record('Mayor restricted item', CorrespondenceLifecycleState::Registered, $office, CorrespondenceClassification::Restricted);
+        $this->actingAs($mayor)
+            ->post('/correspondence/'.$mayorRecord->public_id.'/workspace/classify', [
+                'classification' => 'confidential',
+                'remarks' => 'Authorized mayor decision.',
+            ])
+            ->assertRedirect('/correspondence/'.$mayorRecord->public_id.'/workspace')
+            ->assertSessionHas('success', 'Correspondence classification updated.');
+
+        $this->assertSame(CorrespondenceClassification::Internal, $headRecord->fresh()->classification);
+        $this->assertSame(CorrespondenceClassification::Confidential, $mayorRecord->fresh()->classification);
+        $this->assertSame(CorrespondenceLifecycleState::Classified, $mayorRecord->fresh()->lifecycle_state);
+        $this->assertSame(2, CorrespondenceEvent::query()->where('event', 'classified')->count());
+        $this->assertSame(2, OutboxMessage::query()->where('event_type', 'correspondence.classified')->count());
+    }
+
+    public function test_sec01_existing_non_restricted_classifier_clearance_is_preserved(): void
+    {
+        $office = $this->department('SEC01-OTHER');
+        foreach (['hr_officer', 'legislative_staff'] as $role) {
+            $actor = $this->human($role, $office);
+            $record = $this->record('Allowed '.$role, CorrespondenceLifecycleState::Registered, $office, CorrespondenceClassification::Confidential);
+
+            $this->actingAs($actor)
+                ->postJson('/correspondence/'.$record->public_id.'/classify', [
+                    'classification' => 'internal',
+                ])
+                ->assertOk()
+                ->assertJsonPath('correspondence.classification', 'internal');
+
+            $this->assertSame(CorrespondenceLifecycleState::Classified, $record->fresh()->lifecycle_state);
+        }
+    }
+
+    private function sec01Evidence(User $actor, Department $office, CorrespondenceRecord $record): Document
+    {
+        $document = Document::query()->create([
+            'title' => 'SEC01 existing evidence',
+            'original_name' => 'sec01-existing.pdf',
+            'document_type' => 'supporting_document',
+            'classification' => 'restricted',
+            'storage_disk' => 'documents',
+            'storage_path' => 'sec01/'.Str::uuid().'.pdf',
+            'owner_department_id' => $office->id,
+            'uploaded_by_user_id' => $actor->id,
+        ]);
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => $record->getMorphClass(),
+            'linkable_id' => $record->id,
+            'relationship' => 'supporting_document',
+            'created_by_user_id' => $actor->id,
+        ]);
+
+        return $document;
+    }
+
+    private function assertSec01NoClassificationSideEffects(CorrespondenceRecord $record, Document $document): void
+    {
+        $fresh = $record->fresh();
+        $this->assertSame(CorrespondenceClassification::Restricted, $fresh->classification);
+        $this->assertSame(CorrespondenceLifecycleState::Registered, $fresh->lifecycle_state);
+        $this->assertNull($fresh->classified_at);
+        $this->assertNull($fresh->classified_by_user_id);
+        $this->assertSame('restricted', $document->fresh()->classification);
+        $this->assertSame(0, CorrespondenceEvent::query()
+            ->where('correspondence_record_id', $record->id)
+            ->where('event', 'classified')
+            ->count());
+        $this->assertSame(0, OutboxMessage::query()
+            ->where('aggregate_id', $record->public_id)
+            ->where('event_type', 'correspondence.classified')
+            ->count());
+        $this->assertSame(0, AuditLog::query()
+            ->where('entity_type', 'correspondence_record')
+            ->where('entity_id', $record->id)
+            ->where('action', 'correspondence.classified')
+            ->count());
     }
 
     public function test_workspace_route_creates_exactly_one_existing_document_review_workflow_with_payload(): void

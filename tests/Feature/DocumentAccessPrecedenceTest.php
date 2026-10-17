@@ -10,11 +10,13 @@ use App\Models\Department;
 use App\Models\Document;
 use App\Models\DocumentLink;
 use App\Models\Employee;
+use App\Models\TravelOrderEvent;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
 use App\Services\CorrespondenceAccessDecider;
 use App\Services\DocumentAccessService;
 use App\Services\DocumentArchiveQuery;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -166,7 +168,6 @@ class DocumentAccessPrecedenceTest extends TestCase
             ->assertForbidden();
     }
 
-
     public function test_orphaned_higher_priority_event_link_does_not_downgrade_to_transaction(): void
     {
         $office = $this->department('ORPHAN');
@@ -183,7 +184,7 @@ class DocumentAccessPrecedenceTest extends TestCase
 
         DocumentLink::query()->create([
             'document_id' => $document->id,
-            'linkable_type' => (new CorrespondenceEvent())->getMorphClass(),
+            'linkable_type' => (new CorrespondenceEvent)->getMorphClass(),
             'linkable_id' => 999999999,
             'relationship' => 'missing_high_priority_event',
         ]);
@@ -289,6 +290,7 @@ class DocumentAccessPrecedenceTest extends TestCase
         DB::flushQueryLog();
         DB::enableQueryLog();
         $before = memory_get_peak_usage(true);
+
         try {
             $first = $archive->workspace($actor, ['page' => 1]);
             $second = $archive->workspace($actor, ['page' => 2]);
@@ -350,7 +352,7 @@ class DocumentAccessPrecedenceTest extends TestCase
         $office = $this->department('ORPHAN-SQL');
         $actor = $this->human($office);
         $transaction = $this->transaction($actor, $office);
-        foreach ([CorrespondenceRecord::class, \App\Models\TravelOrderEvent::class] as $class) {
+        foreach ([CorrespondenceRecord::class, TravelOrderEvent::class] as $class) {
             $document = $this->document($actor, $office, 'Higher priority missing '.$class);
             DocumentLink::query()->create([
                 'document_id' => $document->id,
@@ -398,6 +400,7 @@ class DocumentAccessPrecedenceTest extends TestCase
 
         DB::enableQueryLog();
         DB::flushQueryLog();
+
         try {
             $allowed = app(DocumentAccessService::class)->canDownload($actor, $document);
             $allowQueries = count(DB::getQueryLog());
@@ -418,6 +421,7 @@ class DocumentAccessPrecedenceTest extends TestCase
 
         DB::enableQueryLog();
         DB::flushQueryLog();
+
         try {
             $deniedDownload = app(DocumentAccessService::class)->canDownload($actor, $document);
             $downloadQueries = count(DB::getQueryLog());
@@ -529,6 +533,81 @@ class DocumentAccessPrecedenceTest extends TestCase
             ->whereKey($record->id)->count());
     }
 
+    public function test_retained_workflow_relation_rechecks_revoked_and_new_current_office(): void
+    {
+        $formerOffice = $this->department('SEC03-FORMER');
+        $currentOffice = $this->department('SEC03-CURRENT');
+        $formerActor = $this->human($formerOffice);
+        $currentActor = $this->human($currentOffice);
+        $workflow = $this->transaction($formerActor, $formerOffice);
+        $record = $this->restrictedCorrespondence($formerOffice);
+        $record->update([
+            'workflow_transaction_id' => $workflow->id,
+            'lifecycle_state' => CorrespondenceLifecycleState::Routed->value,
+        ]);
+
+        // The same correspondence instance is retained across the authoritative
+        // reassignment; do not fresh() or reload its preloaded relationship.
+        $record->load('workflowTransaction');
+        $access = app(CorrespondenceAccessDecider::class);
+        $this->assertTrue($access->canView($formerActor, $record));
+        $this->assertFalse($access->canView($currentActor, $record));
+
+        DB::table('transactions')->where('id', $workflow->id)->update([
+            'current_department_id' => $currentOffice->id,
+            'assigned_employee_id' => null,
+        ]);
+
+        $this->assertSame($formerOffice->id, (int) $record->workflowTransaction->current_department_id);
+        $this->assertSame(0, $access->scopeVisibleTo(CorrespondenceRecord::query(), $formerActor)
+            ->whereKey($record->id)->count());
+        $this->assertSame(1, $access->scopeVisibleTo(CorrespondenceRecord::query(), $currentActor)
+            ->whereKey($record->id)->count());
+
+        $this->assertFalse($access->canView($formerActor, $record));
+        $this->assertFalse($access->canViewInWorkspace($formerActor, $record));
+        $this->assertFalse($access->canAct($formerActor, $record));
+        $this->assertTrue($access->canView($currentActor, $record));
+        $this->assertTrue($access->canViewInWorkspace($currentActor, $record));
+        $this->assertTrue($access->canAct($currentActor, $record));
+    }
+
+    public function test_retained_workflow_relation_rechecks_explicit_employee_reassignment(): void
+    {
+        $originOffice = $this->department('SEC03-ASSIGN-ORIGIN');
+        $routingOffice = $this->department('SEC03-ASSIGN-ROUTED');
+        $formerAssignee = $this->human($originOffice);
+        $newAssignee = $this->human($originOffice);
+        $workflow = $this->transaction($formerAssignee, $originOffice);
+        $workflow->update([
+            'current_department_id' => $routingOffice->id,
+            'assigned_employee_id' => $formerAssignee->employee->id,
+        ]);
+        $record = $this->restrictedCorrespondence($originOffice);
+        $record->update(['workflow_transaction_id' => $workflow->id]);
+        $record->load('workflowTransaction');
+
+        $access = app(CorrespondenceAccessDecider::class);
+        $this->assertTrue($access->canView($formerAssignee, $record));
+        $this->assertFalse($access->canView($newAssignee, $record));
+
+        // Direct SQL update models another authoritative workflow operation.
+        DB::table('transactions')->where('id', $workflow->id)->update([
+            'assigned_employee_id' => $newAssignee->employee->id,
+        ]);
+
+        $this->assertSame(
+            $formerAssignee->employee->id,
+            (int) $record->workflowTransaction->assigned_employee_id,
+        );
+        $this->assertSame(0, $access->scopeVisibleTo(CorrespondenceRecord::query(), $formerAssignee)
+            ->whereKey($record->id)->count());
+        $this->assertSame(1, $access->scopeVisibleTo(CorrespondenceRecord::query(), $newAssignee)
+            ->whereKey($record->id)->count());
+        $this->assertFalse($access->canView($formerAssignee, $record));
+        $this->assertTrue($access->canView($newAssignee, $record));
+    }
+
     public function test_archive_and_download_recheck_identity_between_distinct_operations(): void
     {
         $office = $this->department('OPERATION-REVOCATION');
@@ -551,7 +630,7 @@ class DocumentAccessPrecedenceTest extends TestCase
         $actor->employee()->update(['employment_status' => 'separated']);
         $this->assertFalse($download->canDownload($actor, $document));
 
-        $this->expectException(\Illuminate\Auth\Access\AuthorizationException::class);
+        $this->expectException(AuthorizationException::class);
         $archive->workspace($actor, []);
     }
 
@@ -600,7 +679,7 @@ class DocumentAccessPrecedenceTest extends TestCase
         $this->actingAs($other);
         $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
 
-        $this->expectException(\Illuminate\Auth\Access\AuthorizationException::class);
+        $this->expectException(AuthorizationException::class);
         app(DocumentArchiveQuery::class)->workspace($actor, []);
     }
 
@@ -708,6 +787,7 @@ class DocumentAccessPrecedenceTest extends TestCase
     {
         $path = 'p3-tests/'.Str::uuid().'.pdf';
         Storage::disk('documents')->put($path, '%PDF-1.7 test');
+
         return Document::query()->create([
             'title' => $title,
             'original_name' => $title.'.pdf',
