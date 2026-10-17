@@ -53,10 +53,10 @@ try {
 
             if (mode === 'mobile' && screen === 'dashboard') {
                 await page.getByRole('button', { name: 'Open navigation' }).click();
-                await page.getByRole('dialog', { name: 'Municipal navigation' }).waitFor();
+                await page.getByRole('dialog', { name: 'Workspace navigation' }).waitFor();
                 await page.screenshot({ path: `${out}/mobile-navigation.png`, fullPage: false });
                 await page.keyboard.press('Escape');
-                if (await page.getByRole('dialog', { name: 'Municipal navigation' }).count()) throw new Error('Mobile navigation did not close on Escape');
+                if (await page.getByRole('dialog', { name: 'Workspace navigation' }).count()) throw new Error('Mobile navigation did not close on Escape');
                 console.log('PASS mobile navigation Escape');
             }
             if (mode === 'mobile' && screen === 'work') {
