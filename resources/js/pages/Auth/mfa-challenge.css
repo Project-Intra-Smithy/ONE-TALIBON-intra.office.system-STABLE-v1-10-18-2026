@@ -1,0 +1,86 @@
+.mfa-challenge {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 24px 16px;
+    background: #263c33;
+    overflow: hidden;
+}
+
+.mfa-challenge::before {
+    content: '';
+    position: absolute;
+    inset: -48px;
+    z-index: -2;
+    background: url('../../../../public/images/talibon/municipality-of-talibon.jpg') center / cover no-repeat;
+    filter: blur(24px);
+}
+
+.mfa-challenge::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: rgb(0 0 0 / 28%);
+}
+
+.mfa-challenge-card {
+    width: 100%;
+    max-width: 440px;
+    padding: 28px;
+    border: 1px solid #e2e8e5;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 8px 32px rgb(0 0 0 / 14%);
+}
+
+.mfa-challenge-kicker {
+    color: #145a43;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .08em;
+}
+
+.mfa-challenge-input {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #fff;
+    color: #0f172a;
+}
+
+.mfa-challenge-input:focus {
+    border-color: #145a43;
+    outline: 2px solid #145a43;
+    outline-offset: 2px;
+}
+
+.mfa-challenge-primary,
+.mfa-challenge-secondary {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #145a43;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.mfa-challenge-primary { background: #145a43; color: #fff; }
+.mfa-challenge-primary:hover { background: #104a37; }
+.mfa-challenge-secondary { background: #fff; color: #145a43; }
+.mfa-challenge-secondary:hover { background: #f0f6f3; }
+.mfa-challenge-signout, .mfa-challenge svg { color: #145a43; }
+.mfa-challenge-signout:hover { text-decoration: underline; }
+.mfa-challenge button:focus-visible { outline: 2px solid #145a43; outline-offset: 3px; }
+.mfa-challenge button:disabled { opacity: .6; cursor: wait; }
+
+@media (max-width: 480px) {
+    .mfa-challenge-card { padding: 24px 20px; }
+}

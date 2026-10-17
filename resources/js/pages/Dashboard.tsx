@@ -1,3 +1,4 @@
+import { jumpToSection } from '../components/dashboard/DashboardSection';
 import ActivityRail from '../components/dashboard/ActivityRail';
 import CorrespondenceOverview from '../components/dashboard/CorrespondenceOverview';
 import DashboardHeader from '../components/dashboard/DashboardHeader';
@@ -11,17 +12,30 @@ import type { DashboardProps } from '../components/dashboard/types';
 import PersonalTaskWorkspace from '../components/tasks/PersonalTaskWorkspace';
 import PersonalTaskMutationPanel from '../components/tasks/PersonalTaskMutationPanel';
 import AppLayout from '../layouts/AppLayout';
+import '../components/dashboard/dashboard.css';
 
 export default function Dashboard({ experience, metricGroups, correspondenceOverview, recentWork, officeOverview, executiveOverview, systemOverview }: DashboardProps) {
     const primaryKey = { employee: 'personal', department_head: 'office', executive_oversight: 'executive', system_administration: 'system' }[experience.key];
     const primaryGroups = metricGroups.filter((group) => group.key === primaryKey);
     const secondaryGroups = metricGroups.filter((group) => group.key !== primaryKey);
 
-    return <AppLayout title="Dashboard">
-        <div className="mx-auto max-w-[1480px] space-y-5">
+    const sections = [
+        ...(correspondenceOverview && ['employee', 'department_head'].includes(experience.key) ? ['Correspondence workspace'] : []),
+        ...(experience.key === 'employee' ? ['Recent work'] : []),
+        ...(experience.key === 'department_head' ? ['My recent work', ...(officeOverview ? ['Staff workload', 'Active status mix'] : [])] : []),
+        ...(experience.key === 'executive_oversight' && executiveOverview ? ['Office workload', 'Oldest unresolved work', 'Recently completed'] : []),
+        ...(experience.key === 'system_administration' && systemOverview ? ['Office identities', 'Security activity'] : []),
+    ];
+    return <AppLayout title="Dashboard" presentation="portal-dashboard">
+        <div className="dashboard">
             <DashboardHeader experience={experience} />
-            <div className="@container min-w-0 space-y-5">
+            <div className="dashboard-content">
                 {primaryGroups.map((group) => <MetricGroup key={group.key} group={group} />)}
+                <nav className="dashboard-jumps" aria-label="Dashboard sections">
+                    {sections.map(title => <button type="button" key={title} onClick={() => jumpToSection(title)}>{title}</button>)}
+                    <button type="button" onClick={() => { const target = document.getElementById('dashboard-personal-tasks'); target?.focus({ preventScroll: true }); target?.scrollIntoView({ block: 'start' }); }}>Personal Tasks</button>
+                </nav>
+                <QuickActions actions={experience.quickActions} />
 
                 {experience.key === 'employee' && <>
                     {correspondenceOverview && <CorrespondenceOverview overview={correspondenceOverview} />}
@@ -30,18 +44,18 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
                 </>}
 
                 {experience.key === 'department_head' && <>
-                    {officeOverview && <OfficeOverview overview={officeOverview} />}
                     {correspondenceOverview && <CorrespondenceOverview overview={correspondenceOverview} />}
                     {secondaryGroups.map((group) => <MetricGroup key={group.key} group={group} />)}
                     <RecentWorkList title="My recent work" description="Latest updates to your personally assigned and initiated work." items={recentWork} emptyMessage="No recent personal work to show." />
                     <ActivityRail />
+                    {officeOverview && <OfficeOverview overview={officeOverview} />}
                 </>}
 
                 {experience.key === 'executive_oversight' && <>
-                    {executiveOverview && <ExecutiveOverview overview={executiveOverview} />}
                     {secondaryGroups.map((group) => <MetricGroup key={group.key} group={group} />)}
                     {recentWork.length > 0 && <RecentWorkList title="My recent work" description="Latest updates to your personally assigned and initiated work." items={recentWork} />}
                     <ActivityRail />
+                    {executiveOverview && <ExecutiveOverview overview={executiveOverview} />}
                 </>}
 
                 {experience.key === 'system_administration' && <>
@@ -49,9 +63,7 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
                     {systemOverview && <ActivityRail system={systemOverview} />}
                 </>}
 
-                <PersonalTaskWorkspace />
-                <PersonalTaskMutationPanel />
-                <QuickActions actions={experience.quickActions} />
+                <div id="dashboard-personal-tasks" tabIndex={-1}><PersonalTaskWorkspace /><PersonalTaskMutationPanel /></div>
             </div>
         </div>
     </AppLayout>;
