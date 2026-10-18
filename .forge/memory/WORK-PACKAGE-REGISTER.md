@@ -399,3 +399,35 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 - **Owned paths**: `app/Services/CorrespondenceAccessDecider.php`, `app/Services/CommonEvidence/CorrespondenceEvidenceScope.php`, `tests/Feature/DocumentAccessPrecedenceTest.php`. Preserve PR84 foreign Restricted RECEIVED refusal and linked-workflow assignment/current-office-only, P3 query optimization and all PR86 negative tests; no app roles, schema, thresholds, unrelated files, PR84/85/86 writes, merge or production.
 - **NEXT**: Nox commit bounded isolated candidate; native Windows PG16 QA and independent nonauthor source/security review; LGU process authority remains unverified and separate from staging.
 - **Checkpoint**: [Hub #118 #6178074685](https://github.com/Project-Intra-Smithy/engineering-hub/issues/118#issuecomment-6178074685); Nox isolated dependent [DRAFT PR88](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/pull/88) source `690086857dfa98093108f015d37300efdf79e12a`, 1 ahead/0 behind PR86 base. Three source/test files; native PG16, PHPUnit, PHP lint/Pint NOT_RUN; independent nonauthor review required. Final integration by Maintainer A pending, Talibon LGU policy not approved, no merge or deploy.
+
+
+## R17 — MAINTAINER-PAIRED START RECORDS / 2026-10-19 PHT
+
+### START / OT-R17-A1-LUCIEN1-40-OFFICE-CATALOG-BACKEND-R1 / 2026-10-18T17:20Z
+- **Owning issue + START:** [#93](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/issues/93#issuecomment-6252851207); **owner:** Kirion-Lucien; **maintainer:** Kirch Ivan Balite.
+- **Source baseline:** PR92 964ee473e226bcf320c7c45c44e1e06f1e3abcc8; app 88f3d6bd6258d502f1b5e6bf323bcf22619f5f8d; freeze before implementation; exclusive isolated branch; canonical main memory-only.
+- **Scope/invariants:** DepartmentController, NEW catalog/config, backend tests; 40/14 catalog, preserve 33 Department IDs; never cross file ownership, change real employee account authority or weaken MFA.
+- **Tests / hold:** exact source and lockfile attestation, negative controls, nonauthor review, one separately bounded isolated synthetic QA cycle; no merge/deploy, no Messaging policy lift, no LGU staff UAT certification.
+- **State / NEXT:** START_PENDING_CROSSLINK at memory commit time; Obtain complete locally prepared patch; apply on isolated branch, independent review, PG16 tests.
+
+### START / OT-R17-A1-JANE1-R15-TWO-FILE-QA-HARNESS-CORRECTION-R1 / 2026-10-18T17:20Z
+- **Owning issue + START:** [#94](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/issues/94#issuecomment-6252854069); **owner:** Kirion-Jane; **maintainer:** Kirch Ivan Balite.
+- **Source baseline:** QA c3b903c31a047b25230c89421c3445f0b9b2d360; app 88f3d6bd6258d502f1b5e6bf323bcf22619f5f8d; freeze before implementation; exclusive isolated branch; canonical main memory-only.
+- **Scope/invariants:** Exactly two QA files; H1/H2/H3 corrections; no historic R14 verdict rewrite; never cross file ownership, change real employee account authority or weaken MFA.
+- **Tests / hold:** exact source and lockfile attestation, negative controls, nonauthor review, one separately bounded isolated synthetic QA cycle; no merge/deploy, no Messaging policy lift, no LGU staff UAT certification.
+- **State / NEXT:** START_PENDING_CROSSLINK at memory commit time; Independent review then bounded isolated QA/CI; preserve AC10 denial-mode conflict.
+
+### START / OT-R17-A2-JANE2-INDEPENDENT-INTEGRATED-QA-UAT-GO-R1 / 2026-10-18T17:20Z
+- **Owning issue + START:** [#95](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/issues/95#issuecomment-6252855647); **owner:** Kirion-Jane; **maintainer:** Kirch Ivan Balite.
+- **Source baseline:** PR92 964ee473e226bcf320c7c45c44e1e06f1e3abcc8; R17 candidate pending; freeze before implementation; exclusive isolated branch; canonical main memory-only.
+- **Scope/invariants:** Independent Q0-Q7 + AC/HTTP/PG16 Chromium verification; no source writes; never cross file ownership, change real employee account authority or weaken MFA.
+- **Tests / hold:** exact source and lockfile attestation, negative controls, nonauthor review, one separately bounded isolated synthetic QA cycle; no merge/deploy, no Messaging policy lift, no LGU staff UAT certification.
+- **State / NEXT:** START_PENDING_CROSSLINK at memory commit time; Only after assembled verified candidate & approved isolated runner; report NOT_RUN until tested.
+
+### START / OT-R17-A1-NOX1-MESSAGING-DENIAL-G1G2-SECURITY-R1 / 2026-10-18T17:20Z
+- **Owning issue + START:** [#96](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/issues/96#issuecomment-6252856975); **owner:** Kirion-Nox; **maintainer:** Kirch Ivan Balite.
+- **Source baseline:** PR92 964ee473e226bcf320c7c45c44e1e06f1e3abcc8; app 88f3d6bd6258d502f1b5e6bf323bcf22619f5f8d; freeze before implementation; exclusive isolated branch; canonical main memory-only.
+- **Scope/invariants:** routes/web.php + narrow middleware/config/tests; restricted 3 Messaging + 8 correspondence denial; no G1/G2 self-approval; never cross file ownership, change real employee account authority or weaken MFA.
+- **Tests / hold:** exact source and lockfile attestation, negative controls, nonauthor review, one separately bounded isolated synthetic QA cycle; no merge/deploy, no Messaging policy lift, no LGU staff UAT certification.
+- **State / NEXT:** START_PENDING_CROSSLINK at memory commit time; Publish full local patch and obtain independent review; native direct HTTP/PG16 negative tests.
+
