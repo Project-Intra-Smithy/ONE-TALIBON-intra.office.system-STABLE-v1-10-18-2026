@@ -1,6 +1,6 @@
-# Single-candidate, non-production frontend compile gate.
-# Maintainer-created workflow-only commit atop Lucien's exact composed source.
-name: OT PR92 Composite Frontend Gate
+# Isolated PR92 candidate: frontend compiler + Laravel PostgreSQL functional gate only.
+# No production secrets, deployment credentials, or protected record data are used.
+name: OT PR92 Composite Frontend and Laravel Gate
 on:
   push:
     branches:
@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   frontend:
-    name: Exact-source npm, TypeScript and Vite
+    name: Source-attested npm, TypeScript and Vite
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -23,19 +23,19 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: false
-          fetch-depth: 2
+          fetch-depth: 3
 
-      - name: Attest fixed composed source and CI-only delta
+      - name: Attest unchanged Lucien source and CI-only commits
         shell: bash
         run: |
           set -Eeuo pipefail
           test "$GITHUB_REPOSITORY" = "Project-Intra-Smithy/Talibon-Sales-Prototype"
           test "$GITHUB_REF" = "refs/heads/forge/integration/one-talibon-release-candidate-r1"
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          test "$(git rev-parse HEAD^)" = "3e0806a72756c335da562604860966f9ad9184cf"
-          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/ot-pr92-composite-build.yml"
-          echo "VERIFIED_UPSTREAM_COMPOSITE=3e0806a72756c335da562604860966f9ad9184cf"
-          echo "CI_WRAPPER_HEAD=$GITHUB_SHA"
+          test "$(git rev-parse HEAD~2)" = "3e0806a72756c335da562604860966f9ad9184cf"
+          test "$(git diff --name-only 3e0806a72756c335da562604860966f9ad9184cf HEAD)" = ".github/workflows/ot-pr92-composite-build.yml"
+          echo "VERIFIED_COMPOSITE_SOURCE=3e0806a72756c335da562604860966f9ad9184cf"
+          echo "CI_ONLY_HEAD=$GITHUB_SHA"
           git status --short
 
       - name: Setup locked Node.js
@@ -52,6 +52,94 @@ jobs:
 
       - name: Production Vite build
         run: npm run build
+
+      - name: Confirm no tracked source changes
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test -z "$(git status --porcelain --untracked-files=no)"
+
+  laravel:
+    name: Isolated PostgreSQL 16 routes and Task feature tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: postgres
+      DB_PASSWORD: ''
+      DB_TIMEZONE: Asia/Manila
+      CACHE_STORE: file
+      SESSION_DRIVER: array
+      QUEUE_CONNECTION: sync
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 127.0.0.1:5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d talibon_portal_test"
+          --health-interval=5s --health-timeout=5s --health-retries=10
+    steps:
+      - name: Checkout exact source plus CI-only wrapper
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 3
+
+      - name: Verify application source pin
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$GITHUB_REPOSITORY" = "Project-Intra-Smithy/Talibon-Sales-Prototype"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git rev-parse HEAD~2)" = "3e0806a72756c335da562604860966f9ad9184cf"
+          test "$(git diff --name-only 3e0806a72756c335da562604860966f9ad9184cf HEAD)" = ".github/workflows/ot-pr92-composite-build.yml"
+          echo "VERIFIED_COMPOSITE_SOURCE=3e0806a72756c335da562604860966f9ad9184cf"
+
+      - name: Setup locked PHP Composer runtime
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, mbstring, xml, ctype, fileinfo, zip
+          coverage: none
+          tools: composer:v2
+
+      - name: Install locked Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare disposable Laravel testing configuration
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          cp .env.example .env
+          php artisan key:generate
+          php artisan config:clear
+
+      - name: Prove isolated PostgreSQL 16 identity before migrating
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          PGPASSWORD='' psql -h 127.0.0.1 -p 5432 -U postgres -d talibon_portal_test -Atc "SELECT current_database(),current_user,inet_server_addr(),inet_server_port(),version();"
+          PGPASSWORD='' psql -h 127.0.0.1 -p 5432 -U postgres -d talibon_portal_test -Atc "SELECT count(*) FROM information_schema.tables WHERE table_schema='public';" | grep -x '0'
+
+      - name: Inspect native Laravel routes
+        run: php artisan route:list -v
+
+      - name: Create isolated schema
+        run: php artisan migrate --force
+
+      - name: Run bounded Task lifecycle HTTP feature tests
+        run: php artisan test tests/Feature/Tasks/IndividualTaskHttpTest.php
 
       - name: Confirm no tracked source changes
         shell: bash
