@@ -1,0 +1,388 @@
+# R17 JANE1 source-only corrected candidate. NO hosted CI authorized.
+# Historical PR92 frozen app only. R17 restricted negatives require separately
+# attested integrated application, reviewed runner, and different QA ownership.
+# Review-stage branches must NOT be pushed to the watched historical CI ref.
+name: OT PR92 Read-only Module Chromium Smoke
+on:
+  push:
+    branches:
+      - forge/qa/ot-pr92-module-smoke-r1
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ot-pr92-module-smoke-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  read-only-module-browser:
+    name: Frozen-app source-attested PG16 / Chromium module smoke
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_module_smoke_test
+      DB_USERNAME: postgres
+      DB_PASSWORD: ''
+      DB_TIMEZONE: Asia/Manila
+      CACHE_STORE: file
+      SESSION_DRIVER: file
+      QUEUE_CONNECTION: sync
+      QA_UAT_MODE: PR92_HISTORICAL
+      QA_BASE_URL: http://127.0.0.1:8000
+      QA_FROZEN_APP_SHA: 88f3d6bd6258d502f1b5e6bf323bcf22619f5f8d
+      QA_FROZEN_TREE_SHA: 297a0a064d1e45672cf48609579bf7ba74e2db24
+      # There is no MFA-enrollment implementation in this R10 harness.
+      QA_ALLOW_SYNTHETIC_MFA_ENROLLMENT: 'false'
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: talibon_module_smoke_test
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 127.0.0.1:5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d talibon_module_smoke_test"
+          --health-interval=5s --health-timeout=5s --health-retries=12
+    steps:
+      - name: Checkout test-only SHA without persistent credentials
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Hard-fail source attestation BEFORE any setup or seeding
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p storage/app/qa/ot-pr92-module-smoke
+          printf '{"gate":"source-attestation","state":"STARTED"}\n' > storage/app/qa/ot-pr92-module-smoke/preflight.json
+          test "$GITHUB_REPOSITORY" = 'Project-Intra-Smithy/Talibon-Sales-Prototype'
+          test "$GITHUB_REF" = 'refs/heads/forge/qa/ot-pr92-module-smoke-r1'
+          test "$QA_UAT_MODE" = 'PR92_HISTORICAL'
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(sha256sum tests/Browser/ot-pr92-module-smoke.mjs | cut -d' ' -f1)" = '63fce439c2ca8946ec8113033ae39c95d8018c691b3cdf9ee3d892c7f229ec92'
+          test "$(git rev-list --count "$QA_FROZEN_APP_SHA"..HEAD)" = '1'
+          test "$(git rev-parse HEAD^)" = "$QA_FROZEN_APP_SHA"
+          test "$(git rev-list --parents -n 1 HEAD | wc -w)" = '2'
+          test "$(git status --porcelain --untracked-files=no)" = ''
+          test "$(git rev-parse "$QA_FROZEN_APP_SHA^{tree}")" = "$QA_FROZEN_TREE_SHA"
+          git diff --name-only "$QA_FROZEN_APP_SHA" HEAD | sort > /tmp/ot92-actual-paths
+          printf '%s\n' \
+            '.github/workflows/ot-pr92-module-smoke.yml' \
+            'tests/Browser/ot-pr92-module-smoke.mjs' | sort > /tmp/ot92-approved-paths
+          diff -u /tmp/ot92-approved-paths /tmp/ot92-actual-paths
+          git diff --name-status "$QA_FROZEN_APP_SHA" HEAD | sort > /tmp/ot92-actual-status
+          printf 'A\t%s\n' '.github/workflows/ot-pr92-module-smoke.yml' 'tests/Browser/ot-pr92-module-smoke.mjs' | sort > /tmp/ot92-expected-status
+          diff -u /tmp/ot92-expected-status /tmp/ot92-actual-status
+          # All tracked app paths, migrations, lockfiles and seeders are byte-identical.
+          git diff --quiet "$QA_FROZEN_APP_SHA" HEAD -- . \
+            ':(exclude).github/workflows/ot-pr92-module-smoke.yml' \
+            ':(exclude)tests/Browser/ot-pr92-module-smoke.mjs'
+          echo "FROZEN_APP_SHA=$QA_FROZEN_APP_SHA"
+          echo "FROZEN_APP_TREE=$QA_FROZEN_TREE_SHA"
+          echo "TEST_ONLY_HEAD=$GITHUB_SHA"
+          printf '{"gate":"source-attestation","state":"PASS"}\n' > storage/app/qa/ot-pr92-module-smoke/preflight.json
+
+      - name: Setup PHP 8.4 with PostgreSQL drivers and locked Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, mbstring, xml, ctype, fileinfo, zip
+          coverage: none
+          tools: composer:v2
+
+      - name: Locked PHP packages
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Setup Node from frozen source
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Locked JS packages and Chromium
+        run: |
+          npm ci --no-audit --no-fund
+          npx playwright install --with-deps chromium
+          node -e "if(require('./node_modules/playwright/package.json').version!=='1.55.0')process.exit(1)"
+          npx playwright --version
+
+      - name: Prepare isolated Laravel environment and ephemeral synthetic credential
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          cp .env.example .env
+          openssl rand -hex 32 > "$RUNNER_TEMP/ot92-demo-password"
+          # Only mask the in-memory password. NEVER persist to GITHUB_ENV or artifacts.
+          echo "::add-mask::$(cat "$RUNNER_TEMP/ot92-demo-password")"
+          php artisan key:generate --no-interaction >/dev/null
+          php artisan config:clear >/dev/null
+
+      - name: SQL and Laravel connection identity BEFORE migration
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          psql -h 127.0.0.1 -U postgres -d talibon_module_smoke_test -Atc \
+            "SELECT current_database(),current_user,inet_server_addr(),inet_server_port(),current_setting('server_version');"
+          server_version="$(psql -h 127.0.0.1 -U postgres -d talibon_module_smoke_test -Atc 'SHOW server_version_num')"
+          test "$server_version" -ge 160000 && test "$server_version" -lt 170000
+          printf '{"postgres_server_version_num":%s,"database":"talibon_module_smoke_test","actor":"postgres","host":"127.0.0.1","port":5432}\n' "$server_version" > storage/app/qa/ot-pr92-module-smoke/database-version.json
+          empty="$(psql -h 127.0.0.1 -U postgres -d talibon_module_smoke_test -Atc \
+            "SELECT count(*) FROM information_schema.tables WHERE table_schema='public';")"
+          test "$empty" = '0'
+          php -r '
+            require "vendor/autoload.php";
+            $app = require "bootstrap/app.php";
+            $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+            $db = Illuminate\Support\Facades\DB::connection();
+            $pdo = $db->getPdo();
+            $name = $pdo->query("select current_database()")->fetchColumn();
+            $version = $pdo->query("show server_version_num")->fetchColumn();
+            $user = $pdo->query("select current_user")->fetchColumn();
+            $port = (int) $pdo->query("select inet_server_port()")->fetchColumn();
+            if ($db->getDriverName() !== "pgsql" || $name !== "talibon_module_smoke_test" || $user !== "postgres" || $port !== 5432 || (string)$db->getConfig("host") !== "127.0.0.1" || (int)$db->getConfig("port") !== 5432 || (int) $version < 160000 || (int) $version >= 170000) exit(3);
+            echo json_encode(["driver"=>$db->getDriverName(),"database"=>$name,"user"=>$user,"port"=>$port,"version_num"=>(int)$version], JSON_THROW_ON_ERROR), PHP_EOL;
+          '
+
+      - name: Route closure and disposable schema
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          php artisan route:list -v > /tmp/ot92-routes.txt
+          for route in portal-search documents records correspondence transactions memoranda employees departments calendar messages admin; do
+            grep -F "$route" /tmp/ot92-routes.txt >/dev/null
+          done
+          php artisan migrate --force
+          export PROTOTYPE_DEMO_PASSWORD="$(cat "$RUNNER_TEMP/ot92-demo-password")"
+          php artisan db:seed --force
+          php artisan db:seed --class=F4BrowserQaCorrespondenceSeeder --force
+          php artisan db:seed --class=F5BrowserQaSeeder --force
+
+      - name: Prove typed SQL fixture identities independently of Inertia
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          php <<'PHP'
+          <?php
+          require 'vendor/autoload.php';
+          $app = require 'bootstrap/app.php';
+          $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+          $db = Illuminate\Support\Facades\DB::connection();
+          $record = App\Models\CorrespondenceRecord::query()
+              ->where('public_id','f4000000-0000-4000-8000-000000000001')->firstOrFail();
+          $transaction = App\Models\WorkflowTransaction::query()
+              ->where('reference_no','TAL-F5-QA-REPORT-0001')->firstOrFail();
+          $actor = App\Models\User::query()->where('email','engineering@talibon.demo')->firstOrFail();
+          $employee = App\Models\Employee::query()->where('employee_number','DEMO-0008')->firstOrFail();
+          $foreign = App\Models\Employee::query()->where('employee_number','DEMO-0004')->firstOrFail();
+          $office = App\Models\Department::query()->findOrFail($record->receiving_department_id);
+          $current = App\Models\Department::query()->findOrFail($transaction->current_department_id);
+          $assignee = App\Models\Employee::query()->findOrFail($transaction->assigned_employee_id);
+          $access = app(App\Services\CorrespondenceAccessDecider::class);
+          $docs = app(App\Services\DocumentEvidenceQuery::class);
+          $caps = [
+              'canRegister'=>(bool)$access->canRegister($actor,$record),
+              'canClassify'=>(bool)$access->canClassify($actor,$record),
+              'canRoute'=>(bool)$access->canRoute($actor,$record),
+              'canAct'=>false, // F4-0001 has no linked workflow; explicit invariant below.
+          ];
+          if ($record->workflow_transaction_id !== null || $record->municipal_reference_no !== 'TAL-CORR-F4-0001') exit(11);
+          if ($transaction->status !== 'for_review' || $transaction->reference_no !== 'TAL-F5-QA-REPORT-0001') exit(12);
+          if ($db->table('transactions')->where('reference_no','OT92-NO-AUTHORIZED-ROW-R10')->exists()) exit(13);
+          if ($db->table('correspondence_records')->where('municipal_reference_no','OT92-NO-AUTHORIZED-ROW-R10')->exists()) exit(14);
+          $evidenceIds = fn(array $projected) => array_values(array_map(
+              fn($v) => (string)$v['publicId'], $projected['record']));
+          $baselineCorrespondence = $db->table('correspondence_records')->where('id',$record->id)->selectRaw("id, public_id, municipal_reference_no, subject, summary, lifecycle_state, classification, source, channel, receiving_department_id, workflow_transaction_id, to_char(updated_at AT TIME ZONE 'UTC', 'YYYY-MM-DD\"T\"HH24:MI:SS.US\"Z\"') AS updated_at_utc")->first();
+          $baselineTransaction = $db->table('transactions')->where('id',$transaction->id)->selectRaw("id, reference_no, title, transaction_type, status, origin_department_id, current_department_id, assigned_employee_id, assigned_to_user_id, to_char(updated_at AT TIME ZONE 'UTC', 'YYYY-MM-DD\"T\"HH24:MI:SS.US\"Z\"') AS updated_at_utc")->first();
+          if (!$baselineCorrespondence || !$baselineTransaction) exit(15);
+          $fixture = [
+              'nonMutationOracle'=>[
+                  'correspondence'=>(array)$baselineCorrespondence,
+                  'transaction'=>(array)$baselineTransaction,
+              ],
+              'correspondence'=>[
+                  'publicId'=>(string)$record->public_id, 'reference'=>$record->municipal_reference_no,
+                  'subject'=>$record->subject,'summary'=>$record->summary,
+                  'state'=>$record->lifecycle_state->value,'classification'=>$record->classification?->value,
+                  'source'=>$record->source,'channel'=>$record->channel,
+                  'officeId'=>(int)$record->receiving_department_id,'officeCode'=>$office->code,
+                  'capabilities'=>$caps, 'evidenceIds'=>$evidenceIds($docs->forCorrespondence($record)),
+              ],
+              'transaction'=>[
+                  'id'=>(int)$transaction->id,'reference'=>$transaction->reference_no,'title'=>$transaction->title,
+                  'type'=>$transaction->transaction_type,'status'=>$transaction->status,
+                  'officeId'=>(int)$transaction->current_department_id,'officeCode'=>$current->code,
+                  'originOfficeId'=>(int)$transaction->origin_department_id,
+                  'assigneeEmployeeId'=>(int)$transaction->assigned_employee_id,
+                  'assigneeUserId'=>(int)$transaction->assigned_to_user_id,
+                  'assigneeName'=>$assignee->full_name,
+                  'permissions'=>[
+                      'canTransition'=>(bool)$actor->can('transition',$transaction),
+                      'canMayorDecision'=>(bool)$actor->can('mayorDecision',$transaction),
+                      'canAssign'=>(bool)$actor->can('assign',$transaction),
+                  ],
+                  'evidenceIds'=>$evidenceIds($docs->forTransaction($transaction)),
+              ],
+              'employeeSelfId'=>(int)$employee->id,'employeeForeignId'=>(int)$foreign->id,
+          ];
+          file_put_contents(getenv('RUNNER_TEMP').'/ot92-fixtures.json',
+              json_encode($fixture,JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES));
+          chmod(getenv('RUNNER_TEMP').'/ot92-fixtures.json',0600);
+          echo 'TYPED_SQL_F4_F5_AND_NEGATIVE_CONTROL_READY';
+          PHP
+
+      - name: Offline harness integrity self-test before live test
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          node --check tests/Browser/ot-pr92-module-smoke.mjs
+          node tests/Browser/ot-pr92-module-smoke.mjs --offline-self-test
+
+      - name: Record safe resolved runtime versions (no credentials)
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          node <<'JS'
+          const fs=require('fs');const cp=require('child_process');
+          const clean=x=>{const m=String(x).match(/[0-9]+(?:\.[0-9]+){0,4}/);if(!m)throw Error('VERSION_MISSING');return m[0]};
+          const run=(cmd,args)=>cp.execFileSync(cmd,args,{encoding:'utf8',timeout:15000,stdio:['ignore','pipe','ignore']});
+          const {chromium}=require('playwright');
+          const obj={schema:'ot92-runtime/1',runner:'ubuntu-24.04',php:clean(run('php',['-r','echo PHP_VERSION;'])),
+            composer:clean(run('composer',['--version'])),node:clean(process.version),npm:clean(run('npm',['--version'])),
+            playwright:clean(require('playwright/package.json').version),chromium:clean(run(chromium.executablePath(),['--version'])),
+            postgresServerVersionNum:Number(run('psql',['-h','127.0.0.1','-U','postgres','-d','talibon_module_smoke_test','-Atc','SHOW server_version_num']).trim()),
+            repo:'Project-Intra-Smithy/Talibon-Sales-Prototype',frozenApp:'88f3d6bd6258d502f1b5e6bf323bcf22619f5f8d'};
+          if(obj.postgresServerVersionNum<160000||obj.postgresServerVersionNum>=170000)throw Error('WRONG_POSTGRES_MAJOR');
+          fs.writeFileSync('storage/app/qa/ot-pr92-module-smoke/runtime-versions.json',JSON.stringify(obj)+'\n',{mode:0o600});
+          JS
+
+      - name: Build exact frozen production Vite assets
+        run: npm run build
+
+      - name: Run loopback Laravel and bounded browser smoke
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          export QA_DEMO_PASSWORD="$(cat "$RUNNER_TEMP/ot92-demo-password")"
+          php artisan serve --host=127.0.0.1 --port=8000 > "$RUNNER_TEMP/ot92-laravel-private.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --silent --fail --output /dev/null http://127.0.0.1:8000/login; then break; fi
+            sleep 1
+          done
+          curl --silent --fail --output /dev/null http://127.0.0.1:8000/login
+          node tests/Browser/ot-pr92-module-smoke.mjs
+
+      - name: Audit expected F4/F5 database non-mutation
+        if: always()
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          if [ ! -f "$RUNNER_TEMP/ot92-fixtures.json" ]; then exit 41; fi
+          php <<'PHP'
+          <?php
+          require 'vendor/autoload.php';
+          $app = require 'bootstrap/app.php';
+          $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+          $fixture = json_decode(file_get_contents(getenv('RUNNER_TEMP').'/ot92-fixtures.json'),true,512,JSON_THROW_ON_ERROR);
+          $db = Illuminate\Support\Facades\DB::connection();
+          // Identical raw PG16 SQL projections, preserving identity, state, assignment, UTC microseconds.
+          $c = $db->table('correspondence_records')->where('id',$fixture['nonMutationOracle']['correspondence']['id'])->selectRaw("id, public_id, municipal_reference_no, subject, summary, lifecycle_state, classification, source, channel, receiving_department_id, workflow_transaction_id, to_char(updated_at AT TIME ZONE 'UTC', 'YYYY-MM-DD\"T\"HH24:MI:SS.US\"Z\"') AS updated_at_utc")->first();
+          $t = $db->table('transactions')->where('id',$fixture['nonMutationOracle']['transaction']['id'])->selectRaw("id, reference_no, title, transaction_type, status, origin_department_id, current_department_id, assigned_employee_id, assigned_to_user_id, to_char(updated_at AT TIME ZONE 'UTC', 'YYYY-MM-DD\"T\"HH24:MI:SS.US\"Z\"') AS updated_at_utc")->first();
+          if (!$c || !$t) { fwrite(STDERR,"ORACLE_MISSING_ROW\n"); exit(42); }
+          foreach (['correspondence'=>(array)$c,'transaction'=>(array)$t] as $label=>$actual) {
+              $expected = $fixture['nonMutationOracle'][$label] ?? null;
+              if (!is_array($expected)) { fwrite(STDERR,"ORACLE_INVALID_BASELINE\n"); exit(42); }
+              foreach ($expected as $field=>$value) {
+                  if (!array_key_exists($field,$actual) || $actual[$field] !== $value) {
+                      fwrite(STDERR,"ORACLE_CHANGED:{$label}:{$field}\n");
+                      exit(42);
+                  }
+              }
+          }
+          echo 'F4_F5_READ_ONLY_STATE_UNCHANGED';
+          PHP
+
+      - name: Cleanup disposable credentials, sessions, .env, fixtures and logs
+        id: cleanup
+        if: always()
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          umask 077
+          dir=storage/app/qa/ot-pr92-module-smoke
+          mkdir -p "$dir"
+          # Fail-closed: no secrets or arbitrary private files retained for upload.
+          rm -f "$RUNNER_TEMP/ot92-demo-password" "$RUNNER_TEMP/ot92-fixtures.json" "$RUNNER_TEMP/ot92-laravel-private.log" .env
+          if [ -d storage/framework/sessions ]; then
+            test -f storage/framework/sessions/.gitignore || exit 43
+            test "$(git hash-object storage/framework/sessions/.gitignore)" = "$(git rev-parse HEAD:storage/framework/sessions/.gitignore)" || exit 43
+            find storage/framework/sessions -type f ! -path 'storage/framework/sessions/.gitignore' -delete
+          fi
+          cred=true; fixture=true; sessions=true; envsafe=true
+          test ! -e "$RUNNER_TEMP/ot92-demo-password" || cred=false
+          test ! -e "$RUNNER_TEMP/ot92-fixtures.json" || fixture=false
+          test ! -e "$RUNNER_TEMP/ot92-laravel-private.log" || cred=false
+          test ! -e .env || envsafe=false
+          if [ -d storage/framework/sessions ]; then
+            test -z "$(find storage/framework/sessions -type f ! -path 'storage/framework/sessions/.gitignore' -print -quit)" || sessions=false
+            test -z "$(find storage/framework/sessions -type l -print -quit)" || sessions=false
+            test -f storage/framework/sessions/.gitignore || sessions=false
+            test "$(git hash-object storage/framework/sessions/.gitignore)" = "$(git rev-parse HEAD:storage/framework/sessions/.gitignore)" || sessions=false
+          fi
+          if [ "$cred" != true ] || [ "$fixture" != true ] || [ "$sessions" != true ] || [ "$envsafe" != true ]; then
+            printf '{"state":"FAIL","credentialsAbsent":false,"fixtureAbsent":false,"sessionsAbsent":false,"envAbsent":false}\n' > "$dir/cleanup.json"
+            exit 43
+          fi
+          printf '{"state":"PASS","credentialsAbsent":true,"fixtureAbsent":true,"sessionsAbsent":true,"envAbsent":true}\n' > "$dir/cleanup.json"
+
+      - name: Attest tracked application source remained clean
+        if: always()
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test -z "$(git status --porcelain --untracked-files=no)"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+
+      - name: Fail-closed sanitize exactly six evidence files
+        id: sanitize
+        if: always()
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test '${{ steps.cleanup.outcome }}' = success
+          dir=storage/app/qa/ot-pr92-module-smoke
+          test -f "$dir/preflight.json"
+          test -f "$dir/database-version.json"
+          test -f "$dir/runtime-versions.json"
+          test -f "$dir/results.json"
+          test -f "$dir/cleanup.json"
+          (cd "$dir" && sha256sum preflight.json database-version.json runtime-versions.json results.json cleanup.json | sort -k2 > SHA256SUMS)
+          node tests/Browser/ot-pr92-module-smoke.mjs --audit-artifacts
+
+      - name: Upload ONLY approved sanitized evidence after successful scrub
+        if: always() && steps.sanitize.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ot-pr92-module-smoke-sanitized-${{ github.run_id }}
+          path: |
+            storage/app/qa/ot-pr92-module-smoke/preflight.json
+            storage/app/qa/ot-pr92-module-smoke/database-version.json
+            storage/app/qa/ot-pr92-module-smoke/runtime-versions.json
+            storage/app/qa/ot-pr92-module-smoke/results.json
+            storage/app/qa/ot-pr92-module-smoke/cleanup.json
+            storage/app/qa/ot-pr92-module-smoke/SHA256SUMS
+          retention-days: 7
+          if-no-files-found: error
