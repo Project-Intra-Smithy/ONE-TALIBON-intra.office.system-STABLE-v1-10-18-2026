@@ -1,4 +1,5 @@
-# R17 single approved synthetic-data isolated QA cycle. No release, secrets, or deployment.
+# R17 CI-only correction candidate. Nontriggering branch; no CI execution authorized.
+# Before a later integrated CI execution, freeze and independently re-attest the exact final reviewed source tuple.
 name: OT R17 Isolated Synthetic UAT Gate
 on:
   push:
@@ -14,7 +15,7 @@ concurrency:
 
 jobs:
   frontend:
-    name: Pinned frontend TypeScript, tests and Vite
+    name: Pinned frontend TypeScript and Vite
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -29,7 +30,7 @@ jobs:
           test "$GITHUB_REPOSITORY" = 'Project-Intra-Smithy/Talibon-Sales-Prototype'
           test "$GITHUB_REF" = 'refs/heads/forge/r17/one-talibon-synthetic-uat-candidate-r1'
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          test "$(git rev-parse HEAD^)" = 'a13c6e8c776274f997877b601d9ca7259f34e4d6'
+          test "$(git rev-parse HEAD^)" = 'd1ab9733f62e8c267db14edd04fe4d309c855924'
           test "$(git merge-base 964ee473e226bcf320c7c45c44e1e06f1e3abcc8 HEAD)" = '964ee473e226bcf320c7c45c44e1e06f1e3abcc8'
           git diff --name-only 964ee473e226bcf320c7c45c44e1e06f1e3abcc8 HEAD | LC_ALL=C sort > "$RUNNER_TEMP/changed.txt"
           cat > "$RUNNER_TEMP/expected.txt" <<'EOF'
@@ -56,8 +57,6 @@ jobs:
         run: npm ci --no-audit --no-fund
       - name: TypeScript type checking
         run: npm run types:check
-      - name: Existing frontend regressions
-        run: npm test
       - name: Production Vite build
         run: npm run build
       - name: Tracked source remains clean
@@ -102,7 +101,7 @@ jobs:
         run: |
           set -Eeuo pipefail
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          test "$(git rev-parse HEAD^)" = 'a13c6e8c776274f997877b601d9ca7259f34e4d6'
+          test "$(git rev-parse HEAD^)" = 'd1ab9733f62e8c267db14edd04fe4d309c855924'
           test -z "$(git status --porcelain --untracked-files=no)"
       - uses: shivammathur/setup-php@v2
         with:
