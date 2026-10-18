@@ -39,6 +39,33 @@ type DirectoryEntry = {
     routable: boolean;
 };
 
+
+/** Presentation-only. The backend retains responsibility for every access decision. */
+export function filterDirectoryEntries(entries: readonly DirectoryEntry[], search: string, group: string): DirectoryEntry[] {
+    const needle = search.trim().toLocaleLowerCase();
+    return entries.filter((entry) =>
+        (!group || entry.group === group)
+        && (!needle || [entry.shortName, entry.name, entry.responsibility]
+            .some((value) => value.toLocaleLowerCase().includes(needle))),
+    );
+}
+
+/** Respect server group order while never silently dropping an unexpected catalog entry. */
+export function groupDirectoryEntries(entries: readonly DirectoryEntry[], groupOrder: readonly string[]) {
+    const extraGroups = Array.from(new Set(entries.map((entry) => entry.group).filter((group) => !groupOrder.includes(group))));
+    return [...groupOrder, ...extraGroups]
+        .map((groupName) => ({ groupName, entries: entries.filter((entry) => entry.group === groupName) }))
+        .filter((group) => group.entries.length > 0);
+}
+
+/** Never turn an untrusted catalog key, external URL, or arbitrary path into a Records link. */
+export function safeRecordsHref(entry: DirectoryEntry): string | null {
+    const href = entry.recordsHref;
+    if (!href || !href.startsWith('/') || href.startsWith('//') || href.includes('\\')) return null;
+    if (!/^\/records(?:\/|\?|#|$)/.test(href) || /FOCAL-\d{3}/i.test(href)) return null;
+    return href;
+}
+
 export default function Index({ departments, summary, directoryEntries = [], directoryGroups = [] }: {
     departments: Office[];
     summary: Summary;
@@ -47,11 +74,8 @@ export default function Index({ departments, summary, directoryEntries = [], dir
 }) {
     const [search, setSearch] = useState('');
     const [group, setGroup] = useState('');
-    const query = search.trim().toLocaleLowerCase();
-    const visible = directoryEntries.filter(entry =>
-        (!group || entry.group === group) &&
-        (!query || [entry.shortName, entry.name, entry.responsibility].some(value => value.toLocaleLowerCase().includes(query)))
-    );
+    const visible = filterDirectoryEntries(directoryEntries, search, group);
+    const groupedVisible = groupDirectoryEntries(visible, directoryGroups);
     if (directoryEntries.length) return <AppLayout title="Office Directory">
         <PageFrame>
             <PageHeader eyebrow="One Talibon · Municipal directory" title="Office Directory"
@@ -72,19 +96,48 @@ export default function Index({ departments, summary, directoryEntries = [], dir
                 </div>
                 <p role="status" aria-live="polite" className="text-sm text-slate-600 dark:text-slate-300">{visible.length} matching offices · {directoryEntries.length} total directory entries · {directoryGroups.length} groups</p>
             </section>
-            {visible.length === 0 ? <div role="status" className="municipal-panel p-8 text-center">No matching offices</div> :
-                <section aria-label="Office cards" className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                    {visible.map(entry => <article key={entry.key} className="municipal-panel min-w-0 space-y-2 p-4">
-                        <div className="flex flex-wrap items-center gap-2"><Building2 size={17} aria-hidden="true"/>
-                            <span className="rounded bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-700 dark:text-white">{entry.group}</span>
-                            <span className="text-xs text-slate-500">{entry.shortName}</span>
-                        </div>
-                        <h2 className="break-words text-base font-bold">{entry.name}</h2>
-                        <p className="break-words text-sm text-slate-600 dark:text-slate-300">{entry.responsibility}</p>
-                        {entry.recordsHref ? <a className="inline-flex min-h-10 items-center text-sm underline" href={entry.recordsHref}>Open authorized office records</a> :
-                            <p className="text-xs text-slate-500">Office-specific records access is not available in this directory.</p>}
-                    </article>)}
-                </section>}
+            {visible.length === 0 ? (
+                <section role="status" aria-live="polite" className="municipal-panel p-8 text-center">
+                    <h2 className="text-lg font-bold">No matching offices</h2>
+                    <p className="mt-2 text-sm">Try another search or choose All office groups.</p>
+                    <button type="button" onClick={() => { setSearch(''); setGroup(''); }}
+                        className="mt-3 min-h-11 rounded-lg border border-slate-300 px-4 py-2 font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-700">
+                        Clear filters
+                    </button>
+                </section>
+            ) : (
+                <div className="min-w-0 space-y-5" aria-label="Office directory grouped results">
+                    {groupedVisible.map(({ groupName, entries }, index) => (
+                        <section key={groupName} className="min-w-0 space-y-3" aria-labelledby={`office-directory-group-${index}`}>
+                            <h2 id={`office-directory-group-${index}`} className="break-words text-lg font-bold text-slate-950 dark:text-slate-100">
+                                {groupName} <span className="text-sm font-medium text-slate-600 dark:text-slate-300">({entries.length})</span>
+                            </h2>
+                            <div className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                                {entries.map((entry) => {
+                                    const recordsHref = safeRecordsHref(entry);
+                                    return (
+                                        <article key={entry.key} className="municipal-panel min-w-0 space-y-2 p-4 sm:p-5">
+                                            <div className="flex flex-wrap items-center gap-2">
+                                                <Building2 size={17} aria-hidden="true" />
+                                                <span className="rounded bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-700 dark:text-white">{entry.shortName}</span>
+                                            </div>
+                                            <h3 className="break-words text-base font-bold text-slate-950 dark:text-slate-100">{entry.name}</h3>
+                                            <p className="break-words text-sm text-slate-700 dark:text-slate-300">{entry.responsibility}</p>
+                                            {recordsHref ? (
+                                                <a className="inline-flex min-h-11 max-w-full items-center text-sm font-semibold underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700" href={recordsHref}>
+                                                    Open authorized office records
+                                                </a>
+                                            ) : (
+                                                <p className="text-xs text-slate-600 dark:text-slate-400">Records access unavailable — authority pending</p>
+                                            )}
+                                        </article>
+                                    );
+                                })}
+                            </div>
+                        </section>
+                    ))}
+                </div>
+            )}
         </PageFrame>
     </AppLayout>;
     const executive = departments.filter((office) => office.branch === 'executive');
