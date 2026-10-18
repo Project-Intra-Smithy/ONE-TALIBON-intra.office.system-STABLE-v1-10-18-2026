@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: false
-          fetch-depth: 6
+          fetch-depth: 3
 
       - name: Attest two bounded CSS fixes and workflow wrapper
         shell: bash
@@ -32,11 +32,11 @@ jobs:
           test "$GITHUB_REPOSITORY" = "Project-Intra-Smithy/Talibon-Sales-Prototype"
           test "$GITHUB_REF" = "refs/heads/forge/integration/one-talibon-release-candidate-r1"
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          test "$(git rev-parse HEAD^)" = "d5cae536f5222072fe57f88454b655d4e4bcd642"
+          test "$(git rev-parse HEAD^)" = "88f3d6bd6258d502f1b5e6bf323bcf22619f5f8d"
           test "$(git rev-parse HEAD:resources/css/app.css)" = "a4f5561e0a8e03cd001a6d48e0178d099b8e446b"
           test "$(git rev-parse HEAD:resources/css/phase-one-shell.css)" = "deb8cdbeb6f188da9a035b8a0e43e90c5b05bc80"
-          test "$(git diff --name-only 3e0806a72756c335da562604860966f9ad9184cf HEAD)" = "$(printf '.github/workflows/ot-pr92-composite-build.yml\nresources/css/app.css\nresources/css/phase-one-shell.css')"
-          echo "VERIFIED_COMPOSITE_SOURCE=3e0806a72756c335da562604860966f9ad9184cf"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/ot-pr92-composite-build.yml"
+          echo "VERIFIED_CORRECTED_COMPOSITE_SOURCE=88f3d6bd6258d502f1b5e6bf323bcf22619f5f8d"
           echo "MOBILE_R3_CORRECTED_CI_HEAD=$GITHUB_SHA"
           git status --short
 
@@ -96,7 +96,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: false
-          fetch-depth: 6
+          fetch-depth: 3
 
       - name: Verify global scrollbar-gutter fix and dashboard CSS
         shell: bash
@@ -104,11 +104,11 @@ jobs:
           set -Eeuo pipefail
           test "$GITHUB_REPOSITORY" = "Project-Intra-Smithy/Talibon-Sales-Prototype"
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          test "$(git rev-parse HEAD^)" = "d5cae536f5222072fe57f88454b655d4e4bcd642"
+          test "$(git rev-parse HEAD^)" = "88f3d6bd6258d502f1b5e6bf323bcf22619f5f8d"
           test "$(git rev-parse HEAD:resources/css/app.css)" = "a4f5561e0a8e03cd001a6d48e0178d099b8e446b"
           test "$(git rev-parse HEAD:resources/css/phase-one-shell.css)" = "deb8cdbeb6f188da9a035b8a0e43e90c5b05bc80"
-          test "$(git diff --name-only 3e0806a72756c335da562604860966f9ad9184cf HEAD)" = "$(printf '.github/workflows/ot-pr92-composite-build.yml\nresources/css/app.css\nresources/css/phase-one-shell.css')"
-          echo "VERIFIED_COMPOSITE_SOURCE=3e0806a72756c335da562604860966f9ad9184cf"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/ot-pr92-composite-build.yml"
+          echo "VERIFIED_CORRECTED_COMPOSITE_SOURCE=88f3d6bd6258d502f1b5e6bf323bcf22619f5f8d"
 
       - name: Setup locked PHP Composer runtime
         uses: shivammathur/setup-php@v2
