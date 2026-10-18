@@ -3,33 +3,53 @@
 namespace App\Services;
 
 use App\Models\Department;
+use Illuminate\Support\Collection;
 
+/**
+ * Read-only public-facing catalog projection; does not authorize workflow actions.
+ */
 final class OfficeDirectoryCatalog
 {
-    /** @return array{directoryGroups: array<int, string>, directoryEntries: array<int, array<string,mixed>>} */
-    public function workspace(): array
+    /** @return array{directoryEntries: array<int, array<string, mixed>>, directoryGroups: array<int, string>} */
+    public function props(): array
     {
+        /** @var array<int, array{key:string, group:string, shortName:string, name:string, responsibility:string, backendCode:?string}> $entries */
         $entries = config('office_directory.entries', []);
+        /** @var array<int, string> $groups */
         $groups = config('office_directory.groups', []);
-        $codes = array_values(array_filter(array_column($entries, 'code')));
-        $existing = Department::query()->whereIn('code', $codes)
-            ->get(['id', 'code', 'is_active', 'is_routable'])->keyBy('code');
 
-        $safeEntries = array_map(static function (array $item) use ($existing): array {
-            $record = $item['code'] ? $existing->get($item['code']) : null;
+        $codes = array_values(array_unique(array_filter(
+            array_column($entries, 'backendCode'),
+            static fn (mixed $code): bool => is_string($code) && $code !== '',
+        )));
+
+        /** @var Collection<string, Department> $departments */
+        $departments = Department::query()
+            ->whereIn('code', $codes)
+            ->get(['code', 'is_active', 'is_routable'])
+            ->keyBy('code');
+
+        $directoryEntries = array_map(static function (array $entry) use ($departments): array {
+            $code = $entry['backendCode'];
+            $department = is_string($code) ? $departments->get($code) : null;
 
             return [
-                'key' => $item['key'],
-                'group' => $item['group'],
-                'shortName' => $item['shortName'],
-                'name' => $item['name'],
-                'responsibility' => $item['responsibility'],
-                'backingDepartmentCode' => $record?->code,
+                'key' => $entry['key'],
+                'group' => $entry['group'],
+                'shortName' => $entry['shortName'],
+                'name' => $entry['name'],
+                'responsibility' => $entry['responsibility'],
+                'backingDepartmentCode' => $department?->code,
                 'recordsHref' => null,
-                'routable' => $record !== null && $record->is_active && $record->is_routable,
+                'routable' => $department !== null
+                    && $department->is_active === true
+                    && $department->is_routable === true,
             ];
         }, $entries);
 
-        return ['directoryEntries' => $safeEntries, 'directoryGroups' => $groups];
+        return [
+            'directoryEntries' => $directoryEntries,
+            'directoryGroups' => $groups,
+        ];
     }
 }

@@ -15,7 +15,7 @@ class DepartmentController extends Controller
 {
     public function __construct(
         private readonly DepartmentWorkspaceQuery $workspace,
-        private readonly OfficeDirectoryCatalog $catalog,
+        private readonly OfficeDirectoryCatalog $officeDirectory,
     ) {
     }
 
@@ -23,11 +23,16 @@ class DepartmentController extends Controller
     {
         $actor = $request->user();
 
-        if ($actor && $this->workspace->allowed($actor) && $request->query('view') !== 'directory') {
+        // Only the explicit directory view changes a head's default presentation.
+        // Existing auth/active/MFA middleware and head workload scope remain unchanged.
+        if ($actor && $request->query('view') !== 'directory' && $this->workspace->allowed($actor)) {
             return Inertia::render('Departments/Workspace', $this->workspace->workspace($actor));
         }
 
-        return Inertia::render('Departments/Index', array_merge($this->directory(), $this->catalog->workspace()));
+        return Inertia::render('Departments/Index', array_merge(
+            $this->directory(),
+            $this->officeDirectory->props(),
+        ));
     }
 
     /** @return array<string, mixed> */
