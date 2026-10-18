@@ -152,3 +152,10 @@ Accepted historical records are immutable provenance. Append subsequent changes;
 - **Tests / hold:** exact source and lockfile attestation, negative controls, nonauthor review, one separately bounded isolated synthetic QA cycle; no merge/deploy, no Messaging policy lift, no LGU staff UAT certification.
 - **State / NEXT:** START_PENDING_CROSSLINK at memory commit time; Publish full patch, verify backend #93 props, isolated frontend types/tests/build and browser.
 
+
+
+### R17 CHECKPOINT / OT-R17-A2-LUCIEN2-FRONTEND-RUNTIME-UAT-R1 / 2026-10-19 PHT
+- **START:** [Issue #39](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/39#issuecomment-6252852697), reciprocal frontend canonical memory [c6e881ef](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/commit/c6e881ef86668b1b46d32479dad19044daa69e64).
+- **Source change truth:** No accepted source commit in this frontend repository. Maintainer separately authored integrated candidate backend [a13c6e8c](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/commit/a13c6e8c776274f997877b601d9ca7259f34e4d6) with directory UI; original Lucien2 local patch not byte-published, collision review required.
+- **Observed:** Static 40/14 source mapping and frontend filter present; exact compiled full TypeScript and responsive Chromium **NOT_RUN**. R17 GitHub Actions [39150124158](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/actions/runs/39150124158) failed at YAML pre-job; corrected separate review branch d1ab9733 did not rerun.
+- **HOLD/NEXT:** Publish Lucien2 complete local diff, compare to bounded integrated source, obtain nonauthor review, run separately authorized exact-source tests; no Task rewrite, Messaging exposure, independent merge or CLOSE.
