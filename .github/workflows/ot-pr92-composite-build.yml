@@ -1,6 +1,6 @@
 # Isolated PR92 candidate: frontend compiler + Laravel PostgreSQL functional gate only.
 # No production secrets, deployment credentials, or protected record data are used.
-name: OT PR92 Corrected Composite and Laravel Gate
+name: OT PR92 Mobile R3 Composite and Laravel Gate
 on:
   push:
     branches:
@@ -25,18 +25,19 @@ jobs:
           persist-credentials: false
           fetch-depth: 6
 
-      - name: Attest sole dashboard CSS correction and workflow-only commits
+      - name: Attest two bounded CSS fixes and workflow wrapper
         shell: bash
         run: |
           set -Eeuo pipefail
           test "$GITHUB_REPOSITORY" = "Project-Intra-Smithy/Talibon-Sales-Prototype"
           test "$GITHUB_REF" = "refs/heads/forge/integration/one-talibon-release-candidate-r1"
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          test "$(git rev-parse HEAD^)" = "53c06d73fd0771c20df622153395c852f4527533"
+          test "$(git rev-parse HEAD^)" = "d5cae536f5222072fe57f88454b655d4e4bcd642"
+          test "$(git rev-parse HEAD:resources/css/app.css)" = "a4f5561e0a8e03cd001a6d48e0178d099b8e446b"
           test "$(git rev-parse HEAD:resources/css/phase-one-shell.css)" = "deb8cdbeb6f188da9a035b8a0e43e90c5b05bc80"
-          test "$(git diff --name-only 3e0806a72756c335da562604860966f9ad9184cf HEAD)" = "$(printf '.github/workflows/ot-pr92-composite-build.yml\nresources/css/phase-one-shell.css')"
+          test "$(git diff --name-only 3e0806a72756c335da562604860966f9ad9184cf HEAD)" = "$(printf '.github/workflows/ot-pr92-composite-build.yml\nresources/css/app.css\nresources/css/phase-one-shell.css')"
           echo "VERIFIED_COMPOSITE_SOURCE=3e0806a72756c335da562604860966f9ad9184cf"
-          echo "CSS_CORRECTED_CI_HEAD=$GITHUB_SHA"
+          echo "MOBILE_R3_CORRECTED_CI_HEAD=$GITHUB_SHA"
           git status --short
 
       - name: Setup locked Node.js
@@ -97,15 +98,16 @@ jobs:
           persist-credentials: false
           fetch-depth: 6
 
-      - name: Verify exact dashboard CSS and no other application drift
+      - name: Verify global scrollbar-gutter fix and dashboard CSS
         shell: bash
         run: |
           set -Eeuo pipefail
           test "$GITHUB_REPOSITORY" = "Project-Intra-Smithy/Talibon-Sales-Prototype"
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          test "$(git rev-parse HEAD^)" = "53c06d73fd0771c20df622153395c852f4527533"
+          test "$(git rev-parse HEAD^)" = "d5cae536f5222072fe57f88454b655d4e4bcd642"
+          test "$(git rev-parse HEAD:resources/css/app.css)" = "a4f5561e0a8e03cd001a6d48e0178d099b8e446b"
           test "$(git rev-parse HEAD:resources/css/phase-one-shell.css)" = "deb8cdbeb6f188da9a035b8a0e43e90c5b05bc80"
-          test "$(git diff --name-only 3e0806a72756c335da562604860966f9ad9184cf HEAD)" = "$(printf '.github/workflows/ot-pr92-composite-build.yml\nresources/css/phase-one-shell.css')"
+          test "$(git diff --name-only 3e0806a72756c335da562604860966f9ad9184cf HEAD)" = "$(printf '.github/workflows/ot-pr92-composite-build.yml\nresources/css/app.css\nresources/css/phase-one-shell.css')"
           echo "VERIFIED_COMPOSITE_SOURCE=3e0806a72756c335da562604860966f9ad9184cf"
 
       - name: Setup locked PHP Composer runtime
