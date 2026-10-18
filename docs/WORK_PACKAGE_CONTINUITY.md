@@ -141,3 +141,14 @@ Accepted historical records are immutable provenance. Append subsequent changes;
 - Source frontend accepted `main@4e1c10a0660ab93d1ee8498ae724466f2c17e1ce` at branch creation. Isolated staging `forge/integration/a01-task-frontend-mainline` created from this exact SHA. **NO F02 source imported**; F01 already in accepted frontend via PR14.
 - Owning [Hub #103 assembled backend receipt #6125862427](https://github.com/Project-Intra-Smithy/engineering-hub/issues/103#issuecomment-6125862427). Backend staging candidate `forge/integration/p1-common-core-mainline@40c980fc780aca4383413d2d937aa81c28c0530c` is **unverified**, not a contract release.
 - **Next:** Mantainer A reconciles parked F02 PR27 through independent authorized correction package and native regression; only then consider import into FE staging and execute real Laravel/PostgreSQL browser integration. FE project main, production and F02 hold unchanged.
+
+
+## R17 — MAINTAINER-PAIRED START / 2026-10-19 PHT
+
+### START / OT-R17-A2-LUCIEN2-FRONTEND-RUNTIME-UAT-R1 / 2026-10-18T17:20Z
+- **Owning issue + START:** [#39](https://github.com/Project-Intra-Smithy/FRONTEND-TEAM-ONE-TALIBON-INTRA-OFFICE-WORKSPACE/issues/39#issuecomment-6252852697); **owner:** Kirion-Lucien; **maintainer:** Kirch Ivan Balite.
+- **Source baseline:** frontend main 6c385ee85f3fec4325182791554b66a861cfd9f3, backend app 88f3d6bd6258d502f1b5e6bf323bcf22619f5f8d; freeze before implementation; exclusive isolated branch; canonical main memory-only.
+- **Scope/invariants:** Departments UI 40/14, responsive+nav only, no Task rewrite, no Messaging exposure; never cross file ownership, change real employee account authority or weaken MFA.
+- **Tests / hold:** exact source and lockfile attestation, negative controls, nonauthor review, one separately bounded isolated synthetic QA cycle; no merge/deploy, no Messaging policy lift, no LGU staff UAT certification.
+- **State / NEXT:** START_PENDING_CROSSLINK at memory commit time; Publish full patch, verify backend #93 props, isolated frontend types/tests/build and browser.
+
