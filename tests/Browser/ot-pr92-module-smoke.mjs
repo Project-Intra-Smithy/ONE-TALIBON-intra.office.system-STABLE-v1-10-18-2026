@@ -192,4 +192,3 @@ async function main(){if(process.env.QA_UAT_MODE==='R17_RESTRICTED')throw Error(
 if(process.argv.includes('--offline-self-test'))await offlineSelfTest();
 else if(process.argv.includes('--audit-artifacts')){await auditArtifacts();console.log('ARTIFACT_ALLOWLIST_AND_SANITIZATION_PASS');}
 else await main().catch(async e=>{OUT.failure=safeFailure(e);OUT.smokeCoverage='FAIL';OUT.fullAcAcceptance='NOT_RUN';await write();console.error(`HARNESS_STOP ${OUT.failure}`);process.exitCode=1;});
-

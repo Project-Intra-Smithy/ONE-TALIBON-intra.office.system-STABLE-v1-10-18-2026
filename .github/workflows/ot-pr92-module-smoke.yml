@@ -381,4 +381,3 @@ jobs:
             storage/app/qa/ot-pr92-module-smoke/SHA256SUMS
           retention-days: 7
           if-no-files-found: error
-
