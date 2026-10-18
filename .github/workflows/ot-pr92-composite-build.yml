@@ -1,0 +1,60 @@
+# Single-candidate, non-production frontend compile gate.
+# Maintainer-created workflow-only commit atop Lucien's exact composed source.
+name: OT PR92 Composite Frontend Gate
+on:
+  push:
+    branches:
+      - forge/integration/one-talibon-release-candidate-r1
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ot-pr92-composite-build-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  frontend:
+    name: Exact-source npm, TypeScript and Vite
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout without persistent credentials
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+
+      - name: Attest fixed composed source and CI-only delta
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$GITHUB_REPOSITORY" = "Project-Intra-Smithy/Talibon-Sales-Prototype"
+          test "$GITHUB_REF" = "refs/heads/forge/integration/one-talibon-release-candidate-r1"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git rev-parse HEAD^)" = "3e0806a72756c335da562604860966f9ad9184cf"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/ot-pr92-composite-build.yml"
+          echo "VERIFIED_UPSTREAM_COMPOSITE=3e0806a72756c335da562604860966f9ad9184cf"
+          echo "CI_WRAPPER_HEAD=$GITHUB_SHA"
+          git status --short
+
+      - name: Setup locked Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install locked frontend dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: TypeScript strict check
+        run: npm run types:check
+
+      - name: Production Vite build
+        run: npm run build
+
+      - name: Confirm no tracked source changes
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test -z "$(git status --porcelain --untracked-files=no)"
