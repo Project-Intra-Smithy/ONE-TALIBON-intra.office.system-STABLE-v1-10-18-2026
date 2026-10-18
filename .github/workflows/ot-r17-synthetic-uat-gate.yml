@@ -143,11 +143,16 @@ jobs:
         shell: bash
         run: |
           set -Eeuo pipefail
-          test -z "${DB_URL:-}"
+          test -z "${DB_URL:-}" && test -z "${DATABASE_URL:-}"
+          for override in PGHOST PGHOSTADDR PGPORT PGDATABASE PGUSER PGSERVICE; do
+            test -z "${!override:-}"
+          done
+          test "$DB_CONNECTION:$DB_HOST:$DB_PORT:$DB_DATABASE:$DB_USERNAME" = 'pgsql:127.0.0.1:5432:talibon_r17_synthetic_qa:postgres'
           v="$(PGPASSWORD='' psql -h 127.0.0.1 -U postgres -d talibon_r17_synthetic_qa -Atc 'SHOW server_version_num')"
           test "$v" -ge 160000
           test "$v" -lt 170000
-          test "$(PGPASSWORD='' psql -h 127.0.0.1 -U postgres -d talibon_r17_synthetic_qa -Atc "SELECT count(*) FROM information_schema.tables WHERE table_schema='public'")" = 0
+          test "$(PGPASSWORD='' psql -X -v ON_ERROR_STOP=1 -h 127.0.0.1 -p 5432 -U postgres -d talibon_r17_synthetic_qa -Atc 'SELECT current_database() || chr(58) || current_user || chr(58) || inet_server_port()')" = 'talibon_r17_synthetic_qa:postgres:5432'
+          test "$(PGPASSWORD='' psql -X -v ON_ERROR_STOP=1 -h 127.0.0.1 -p 5432 -U postgres -d talibon_r17_synthetic_qa -Atc "SELECT count(*) FROM information_schema.tables WHERE table_schema='public'")" = 0
           php -r '$app=require "bootstrap/app.php";$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();$c=config("database.connections.pgsql");if(config("database.default")!=="pgsql"||$c["host"]!=="127.0.0.1"||(int)$c["port"]!==5432||$c["database"]!=="talibon_r17_synthetic_qa"||$c["username"]!=="postgres")exit(3); echo "ISOLATED_PG16_CONFIG_VERIFIED\n";'
       - name: PHP static syntax preflight
         run: |
@@ -168,19 +173,128 @@ jobs:
           set -Eeuo pipefail
           php artisan config:cache
           php -r '$app=require "bootstrap/app.php";$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();if(config("messaging_release.restricted_uat")!==true)exit(4);echo "RESTRICTED_UAT_CONFIG_VERIFIED\n";'
+      - name: Prepare exact runner-local PHPUnit database contract
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test -z "${DB_URL:-}" && test -z "${DATABASE_URL:-}"
+          for override in PGHOST PGHOSTADDR PGPORT PGDATABASE PGUSER PGSERVICE; do
+            test -z "${!override:-}"
+          done
+          python3 - <<'PYTHON'
+          from pathlib import Path
+          source = Path('phpunit.xml').read_text(encoding='utf-8')
+          previous = '<env name="DB_DATABASE" value="talibon_portal_test" force="true"/>'
+          bootstrap = 'bootstrap="vendor/autoload.php"'
+          if source.count(previous) != 1 or source.count(bootstrap) != 1:
+              raise SystemExit('R17_PHPUNIT_XML_CONTRACT_DENIED')
+          updated = source.replace(previous, '<env name="DB_DATABASE" value="talibon_r17_synthetic_qa" force="true"/>')
+          updated = updated.replace(bootstrap, 'bootstrap=".r17-phpunit-bootstrap.php"')
+          Path('.r17-phpunit.xml').write_text(updated, encoding='utf-8')
+          import xml.etree.ElementTree as ET
+          root = ET.parse('.r17-phpunit.xml').getroot()
+          entries = [e for e in root.findall('./php/env') if e.get('name') == 'DB_DATABASE']
+          if len(entries) != 1 or entries[0].get('value') != 'talibon_r17_synthetic_qa' or entries[0].get('force') != 'true':
+              raise SystemExit('R17_PHPUNIT_XML_OUTPUT_DENIED')
+          PYTHON
+          cat > .r17-phpunit-bootstrap.php <<'PHP'
+          <?php
+          // R17 CI-only fail-closed test-process gate; must run before PHPUnit test setup.
+          declare(strict_types=1);
+          function r17Deny(string $code): never {
+              fwrite(STDERR, "R17_PHPUNIT_DB_IDENTITY_DENIED:" . $code . "\n");
+              exit(73);
+          }
+          $expected = [
+              'DB_CONNECTION' => 'pgsql',
+              'DB_HOST' => '127.0.0.1',
+              'DB_PORT' => '5432',
+              'DB_DATABASE' => 'talibon_r17_synthetic_qa',
+              'DB_USERNAME' => 'postgres',
+          ];
+          foreach (['DB_URL', 'DATABASE_URL', 'PGHOST', 'PGHOSTADDR', 'PGPORT', 'PGDATABASE', 'PGUSER', 'PGSERVICE'] as $override) {
+              foreach ([$_ENV[$override] ?? null, $_SERVER[$override] ?? null, getenv($override)] as $value) {
+                  if ($value !== null && $value !== false && $value !== '') r17Deny('OVERRIDE_' . $override);
+              }
+          }
+          foreach ($expected as $key => $value) {
+              $seen = false;
+              foreach ([$_ENV[$key] ?? null, $_SERVER[$key] ?? null, getenv($key)] as $actual) {
+                  if ($actual === null || $actual === false) continue;
+                  $seen = true;
+                  if ((string) $actual !== $value) r17Deny('ENV_' . $key);
+              }
+              if (!$seen) r17Deny('ENV_MISSING_' . $key);
+          }
+          $cachePath = __DIR__ . '/bootstrap/cache/config.php';
+          if (!is_file($cachePath)) r17Deny('CONFIG_CACHE_MISSING');
+          $cached = require $cachePath;
+          if (!is_array($cached)) r17Deny('CONFIG_CACHE_INVALID');
+          $database = $cached['database'] ?? [];
+          $pgsql = $database['connections']['pgsql'] ?? [];
+          if (($database['default'] ?? null) !== 'pgsql'
+              || ($pgsql['driver'] ?? null) !== 'pgsql'
+              || ($pgsql['host'] ?? null) !== '127.0.0.1'
+              || (string) ($pgsql['port'] ?? '') !== '5432'
+              || ($pgsql['database'] ?? null) !== 'talibon_r17_synthetic_qa'
+              || ($pgsql['username'] ?? null) !== 'postgres'
+              || !empty($pgsql['url'])
+              || (($cached['messaging_release']['restricted_uat'] ?? null) !== true)
+          ) r17Deny('CONFIG_CACHE_IDENTITY');
+          require __DIR__ . '/vendor/autoload.php';
+          try {
+              $app = require __DIR__ . '/bootstrap/app.php';
+              $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+              $actual = config('database.connections.pgsql');
+              if (config('database.default') !== 'pgsql'
+                  || ($actual['host'] ?? null) !== '127.0.0.1'
+                  || (string) ($actual['port'] ?? '') !== '5432'
+                  || ($actual['database'] ?? null) !== 'talibon_r17_synthetic_qa'
+                  || ($actual['username'] ?? null) !== 'postgres'
+                  || !empty($actual['url'])
+                  || config('messaging_release.restricted_uat') !== true
+              ) r17Deny('EFFECTIVE_LARAVEL_CONFIG');
+              $connection = $app->make('db')->connection();
+              if ($connection->getDriverName() !== 'pgsql') r17Deny('EFFECTIVE_DRIVER');
+              $row = $connection->selectOne("SELECT current_database() AS db, current_user AS db_user, inet_server_port() AS db_port, current_setting('server_version_num')::integer AS version");
+              if ($row === null
+                  || $row->db !== 'talibon_r17_synthetic_qa'
+                  || $row->db_user !== 'postgres'
+                  || (int) $row->db_port !== 5432
+                  || (int) $row->version < 160000
+                  || (int) $row->version >= 170000
+              ) r17Deny('EFFECTIVE_SQL_IDENTITY');
+          } catch (Throwable $error) {
+              r17Deny('BOOT_OR_SQL_VERIFICATION');
+          }
+          echo "R17_PHPUNIT_PG16_IDENTITY_VERIFIED\n";
+          PHP
+          php -l .r17-phpunit-bootstrap.php
+          test -f .r17-phpunit.xml && test -f .r17-phpunit-bootstrap.php
+      - name: Attest effective cached migration identity before any schema writes
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test -z "${DB_URL:-}" && test -z "${DATABASE_URL:-}"
+          php -r '$app=require "bootstrap/app.php";$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();$c=config("database.connections.pgsql");if(config("database.default")!=="pgsql"||($c["driver"]??null)!=="pgsql"||($c["host"]??null)!=="127.0.0.1"||(string)($c["port"]??"")!=="5432"||($c["database"]??null)!=="talibon_r17_synthetic_qa"||($c["username"]??null)!=="postgres"||!empty($c["url"])||config("messaging_release.restricted_uat")!==true)exit(72);$r=Illuminate\Support\Facades\DB::selectOne("SELECT current_database() AS db,current_user AS u,inet_server_port() AS p,current_setting('server_version_num')::int AS v");if(!$r||$r->db!=="talibon_r17_synthetic_qa"||$r->u!=="postgres"||(int)$r->p!==5432||(int)$r->v<160000||(int)$r->v>=170000)exit(73);echo "R17_CACHED_MIGRATION_DB_IDENTITY_VERIFIED\n";'
       - name: Route registry and schema
         run: |
           php artisan route:list --path=messages -v
           php artisan migrate --force
       - name: Focused R17 directory and security guards
-        run: php artisan test tests/Feature/OfficeDirectoryCatalogTest.php tests/Feature/RestrictedUatRouteGuardTest.php
+        run: vendor/bin/phpunit --configuration=.r17-phpunit.xml tests/Feature/OfficeDirectoryCatalogTest.php tests/Feature/RestrictedUatRouteGuardTest.php
       - name: Focused six-channel Messaging denial with no-write assertions
-        run: php artisan test tests/Feature/Messaging/RestrictedUatMessagingGateTest.php
+        run: vendor/bin/phpunit --configuration=.r17-phpunit.xml tests/Feature/Messaging/RestrictedUatMessagingGateTest.php
       - name: Focused eight-route Correspondence denial and config guard
-        run: php artisan test tests/Feature/Security/RestrictedUatCorrespondenceDenialTest.php
+        run: vendor/bin/phpunit --configuration=.r17-phpunit.xml tests/Feature/Security/RestrictedUatCorrespondenceDenialTest.php
       - name: Preserve existing individual Task lifecycle
-        run: php artisan test tests/Feature/Tasks/IndividualTaskHttpTest.php
+        run: vendor/bin/phpunit --configuration=.r17-phpunit.xml tests/Feature/Tasks/IndividualTaskHttpTest.php
       - name: Preserve Work Request validation and revocation regressions
-        run: php artisan test tests/Feature/WorkRequestBackendValidationTest.php tests/Feature/WorkRequests/WorkRequestRevocationTest.php
+        run: vendor/bin/phpunit --configuration=.r17-phpunit.xml tests/Feature/WorkRequestBackendValidationTest.php tests/Feature/WorkRequests/WorkRequestRevocationTest.php
+      - name: Verify no tracked mutation from isolated test execution
+        run: test -z "$(git status --porcelain --untracked-files=no)"
+      - name: Remove runner-local PHPUnit guard and configuration
+        if: always()
+        run: rm -f .r17-phpunit.xml .r17-phpunit-bootstrap.php
       - name: Tracked code integrity
         run: test -z "$(git status --porcelain --untracked-files=no)"
