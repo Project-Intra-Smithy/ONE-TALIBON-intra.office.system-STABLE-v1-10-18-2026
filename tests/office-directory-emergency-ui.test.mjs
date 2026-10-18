@@ -32,6 +32,27 @@ const entries = labels.flatMap((group, index) => Array.from({ length: counts[ind
     group,shortName:group + item,name:group + ' sample ' + item,responsibility:group + ' planning and permit services',
     backingDepartmentCode:null,recordsHref:null,routable:false,
 })));
+test('exported safeRecordsHref permits only literal /records and denies URL normalization escapes', () => {
+    const entry = entries[0];
+    assert.equal(safe({ ...entry, recordsHref: '/records' }), '/records');
+    for (const href of [
+        null, '', '/records/', '/records/123',
+        '/records/../admin', '/records/%2e%2e/admin',
+        '/records/%2E./admin', '/records/foo/../../messages',
+        '/records?office=FOCAL-001', '/records#other',
+        '/records/%2fadmin', '/records/%5cadmin',
+        '/records%2fadmin', '/records//admin',
+        '//evil.example', '/admin', 'javascript:alert(1)',
+        'https://evil.example/records', 'http://127.0.0.1/records',
+        'file:///records', 'https://[bad-url',
+        String.raw`/records\private`, String.raw`\records`,
+        String.raw`/records\..\admin`, '/records' + String.fromCharCode(0),
+        ' /records', '/records ', '/RECORDS'
+    ]) {
+        assert.equal(safe({ ...entry, recordsHref: href }), null, `Unsafe target accepted: ${String(href)}`);
+    }
+});
+
 test('synthetic 40/14 group shape is complete and ordered', () => {
     assert.equal(entries.length,40);
     const groups = grouped(entries,labels);

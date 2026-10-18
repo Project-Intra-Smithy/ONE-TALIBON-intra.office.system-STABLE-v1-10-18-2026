@@ -60,10 +60,7 @@ export function groupDirectoryEntries(entries: readonly DirectoryEntry[], groupO
 
 /** Never turn an untrusted catalog key, external URL, or arbitrary path into a Records link. */
 export function safeRecordsHref(entry: DirectoryEntry): string | null {
-    const href = entry.recordsHref;
-    if (!href || !href.startsWith('/') || href.startsWith('//') || href.includes('\\')) return null;
-    if (!/^\/records(?:\/|\?|#|$)/.test(href) || /FOCAL-\d{3}/i.test(href)) return null;
-    return href;
+    return entry.recordsHref === '/records' ? '/records' : null;
 }
 
 export default function Index({ departments, summary, directoryEntries = [], directoryGroups = [] }: {
