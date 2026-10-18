@@ -145,3 +145,24 @@
     .portal-shell[data-presentation="portal-dashboard"] .portal-records-search { grid-column: 2; grid-row: 1; }
     .portal-shell[data-presentation="portal-dashboard"] .portal-header > :nth-child(2) { grid-column: 3; grid-row: 1; }
 }
+
+/* PR92 Chromium Gate B corrective candidate: the account label must not
+   force the title column to zero width on 320px authenticated dashboards.
+   Accessible identity remains on the avatar group via its aria-label/title;
+   notification, launcher and navigation controls retain 44px hit targets. */
+@media (max-width: 639px) {
+    .portal-shell[data-presentation="portal-dashboard"] .portal-header-identity-copy { display: none; }
+    .portal-shell[data-presentation="portal-dashboard"] .portal-header > :first-child { min-width: 0; }
+    .portal-shell[data-presentation="portal-dashboard"] .portal-page-title {
+        overflow: hidden;
+        overflow-wrap: normal;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
+@media (max-width: 359px) {
+    .portal-shell[data-presentation="portal-dashboard"] .portal-header {
+        column-gap: 8px;
+        padding-inline: 10px;
+    }
+}
