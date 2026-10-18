@@ -2,7 +2,7 @@
 # FAIL-CLOSED: exact independent-reviewed application parent SHA/tree must be frozen
 # after the final application assembly, before a separately authorized CI-only child.
 # This review branch must never be pushed to the workflow trigger branch.
-name: OT R17 Isolated Synthetic UAT Gate
+name: OT R17 Isolated Synthetic CI Gate (No Chromium)
 on:
   push:
     branches:
