@@ -431,3 +431,12 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 - **Tests / hold:** exact source and lockfile attestation, negative controls, nonauthor review, one separately bounded isolated synthetic QA cycle; no merge/deploy, no Messaging policy lift, no LGU staff UAT certification.
 - **State / NEXT:** START_PENDING_CROSSLINK at memory commit time; Publish full local patch and obtain independent review; native direct HTTP/PG16 negative tests.
 
+
+
+### R17 CHECKPOINT / 2026-10-19 01:39 PHT / EMERGENCY INTEGRATION SOURCE, CI PRE-JOB FAILURE
+- **Master issue-side checkpoint:** [PR92 #6253035188](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/pull/92#issuecomment-6253035188); paired START issue comments #93/#94/#95/#96 and repo memory de3e5415 remain historical truth.
+- **Actual source:** Maintainer-authored isolated emergency 40/14 directory + 3 Messaging/8 Correspondence fail-closed guards [a13c6e8c](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/commit/a13c6e8c776274f997877b601d9ca7259f34e4d6) (not unreceived worker patch bytes); candidate workflow [cd5d111e](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/commit/cd5d111e84a741084bb6385e27be7958bb9c3459), QA-source independent-review [bd931544](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/commit/bd931544d086a643ea1a0d73cd43b666b3ccda76); corrected YAML nontriggering [d1ab9733](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/commit/d1ab9733f62e8c267db14edd04fe4d309c855924).
+- **Observed Actions:** [run 39150124158](https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/actions/runs/39150124158) `completed/failure` at invalid YAML heredoc indentation, **zero jobs, zero runtime tests**; no retry authorized/executed.
+- **Static review:** 40 unique catalog keys/14 groups, frontend search/filter/no match, exactly 3 Messaging + 8 correspondence guarded routes; **NOT equivalent** to native Laravel/PostgreSQL/HTTP/Chromium.
+- **OPEN GATES:** Actual Lucien1/Lucien2/Nox1 worker patch byte import, independent nonauthor review, real Q0–Q7/AC, staff scope/LGU authority, G1/G2 security. No merge, deploy, official UAT GO or CLOSE.
+- **Single NEXT:** Kirch decide if one corrected isolated CI run is separately authorized; workers publish exact patches; Jane2 review source and test outcome.
