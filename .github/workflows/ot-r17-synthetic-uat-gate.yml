@@ -33,18 +33,18 @@ jobs:
           test "$(git merge-base 964ee473e226bcf320c7c45c44e1e06f1e3abcc8 HEAD)" = '964ee473e226bcf320c7c45c44e1e06f1e3abcc8'
           git diff --name-only 964ee473e226bcf320c7c45c44e1e06f1e3abcc8 HEAD | LC_ALL=C sort > "$RUNNER_TEMP/changed.txt"
           cat > "$RUNNER_TEMP/expected.txt" <<'EOF'
-.github/workflows/ot-r17-synthetic-uat-gate.yml
-app/Http/Controllers/DepartmentController.php
-app/Http/Middleware/DenyUnapprovedMessaging.php
-app/Http/Middleware/DenyUnverifiedCorrespondenceMutations.php
-app/Services/OfficeDirectoryCatalog.php
-config/office_directory.php
-resources/js/pages/Departments/Index.tsx
-resources/js/pages/Departments/Workspace.tsx
-routes/web.php
-tests/Feature/OfficeDirectoryCatalogTest.php
-tests/Feature/RestrictedUatRouteGuardTest.php
-EOF
+          .github/workflows/ot-r17-synthetic-uat-gate.yml
+          app/Http/Controllers/DepartmentController.php
+          app/Http/Middleware/DenyUnapprovedMessaging.php
+          app/Http/Middleware/DenyUnverifiedCorrespondenceMutations.php
+          app/Services/OfficeDirectoryCatalog.php
+          config/office_directory.php
+          resources/js/pages/Departments/Index.tsx
+          resources/js/pages/Departments/Workspace.tsx
+          routes/web.php
+          tests/Feature/OfficeDirectoryCatalogTest.php
+          tests/Feature/RestrictedUatRouteGuardTest.php
+          EOF
           LC_ALL=C sort -o "$RUNNER_TEMP/expected.txt" "$RUNNER_TEMP/expected.txt"
           diff -u "$RUNNER_TEMP/expected.txt" "$RUNNER_TEMP/changed.txt"
           test -z "$(git status --porcelain --untracked-files=no)"
