@@ -1,10 +1,16 @@
-# R17 CI-only correction candidate. Nontriggering branch; no CI execution authorized.
-# Before a later integrated CI execution, freeze and independently re-attest the exact final reviewed source tuple.
+# R17 reviewed-source contract proposal. This is NOT approval to run Actions.
+# FAIL-CLOSED: exact independent-reviewed application parent SHA/tree must be frozen
+# after the final application assembly, before a separately authorized CI-only child.
+# This review branch must never be pushed to the workflow trigger branch.
 name: OT R17 Isolated Synthetic UAT Gate
 on:
   push:
     branches:
       - forge/r17/one-talibon-synthetic-uat-candidate-r1
+
+env:
+  R17_APPROVED_APP_PARENT: 'NOT_YET_REVIEWED'
+  R17_APPROVED_APP_TREE: 'NOT_YET_REVIEWED'
 
 permissions:
   contents: read
@@ -30,7 +36,11 @@ jobs:
           test "$GITHUB_REPOSITORY" = 'Project-Intra-Smithy/Talibon-Sales-Prototype'
           test "$GITHUB_REF" = 'refs/heads/forge/r17/one-talibon-synthetic-uat-candidate-r1'
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          test "$(git rev-parse HEAD^)" = 'd1ab9733f62e8c267db14edd04fe4d309c855924'
+          [[ "$R17_APPROVED_APP_PARENT" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$R17_APPROVED_APP_TREE" =~ ^[0-9a-f]{40}$ ]]
+          test "$(git rev-parse HEAD^)" = "$R17_APPROVED_APP_PARENT"
+          test "$(git show -s --format=%T HEAD^)" = "$R17_APPROVED_APP_TREE"
+          test "$(git diff --name-only HEAD^ HEAD)" = '.github/workflows/ot-r17-synthetic-uat-gate.yml'
           test "$(git merge-base 964ee473e226bcf320c7c45c44e1e06f1e3abcc8 HEAD)" = '964ee473e226bcf320c7c45c44e1e06f1e3abcc8'
           git diff --name-only 964ee473e226bcf320c7c45c44e1e06f1e3abcc8 HEAD | LC_ALL=C sort > "$RUNNER_TEMP/changed.txt"
           cat > "$RUNNER_TEMP/expected.txt" <<'EOF'
@@ -39,15 +49,21 @@ jobs:
           app/Http/Middleware/DenyUnapprovedMessaging.php
           app/Http/Middleware/DenyUnverifiedCorrespondenceMutations.php
           app/Services/OfficeDirectoryCatalog.php
+          config/messaging_release.php
           config/office_directory.php
+          docs/qa/OT-R17-OFFICE-DIRECTORY-PROPS-R1.md
           resources/js/pages/Departments/Index.tsx
           resources/js/pages/Departments/Workspace.tsx
           routes/web.php
+          tests/Feature/Messaging/RestrictedUatMessagingGateTest.php
           tests/Feature/OfficeDirectoryCatalogTest.php
           tests/Feature/RestrictedUatRouteGuardTest.php
+          tests/Feature/Security/RestrictedUatCorrespondenceDenialTest.php
+          tests/office-directory-emergency-ui.test.mjs
           EOF
           LC_ALL=C sort -o "$RUNNER_TEMP/expected.txt" "$RUNNER_TEMP/expected.txt"
           diff -u "$RUNNER_TEMP/expected.txt" "$RUNNER_TEMP/changed.txt"
+          sha256sum "$RUNNER_TEMP/expected.txt"
           test -z "$(git status --porcelain --untracked-files=no)"
       - uses: actions/setup-node@v4
         with:
@@ -57,6 +73,8 @@ jobs:
         run: npm ci --no-audit --no-fund
       - name: TypeScript type checking
         run: npm run types:check
+      - name: Executed directory UI Node regression (not Chromium)
+        run: node --test tests/office-directory-emergency-ui.test.mjs
       - name: Production Vite build
         run: npm run build
       - name: Tracked source remains clean
@@ -101,7 +119,11 @@ jobs:
         run: |
           set -Eeuo pipefail
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          test "$(git rev-parse HEAD^)" = 'd1ab9733f62e8c267db14edd04fe4d309c855924'
+          [[ "$R17_APPROVED_APP_PARENT" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$R17_APPROVED_APP_TREE" =~ ^[0-9a-f]{40}$ ]]
+          test "$(git rev-parse HEAD^)" = "$R17_APPROVED_APP_PARENT"
+          test "$(git show -s --format=%T HEAD^)" = "$R17_APPROVED_APP_TREE"
+          test "$(git diff --name-only HEAD^ HEAD)" = '.github/workflows/ot-r17-synthetic-uat-gate.yml'
           test -z "$(git status --porcelain --untracked-files=no)"
       - uses: shivammathur/setup-php@v2
         with:
@@ -131,19 +153,31 @@ jobs:
         run: |
           set -Eeuo pipefail
           php -l config/office_directory.php
+          php -l config/messaging_release.php
           php -l app/Services/OfficeDirectoryCatalog.php
           php -l app/Http/Controllers/DepartmentController.php
           php -l app/Http/Middleware/DenyUnapprovedMessaging.php
           php -l app/Http/Middleware/DenyUnverifiedCorrespondenceMutations.php
           php -l routes/web.php
           php -l tests/Feature/OfficeDirectoryCatalogTest.php
+          php -l tests/Feature/Messaging/RestrictedUatMessagingGateTest.php
+          php -l tests/Feature/Security/RestrictedUatCorrespondenceDenialTest.php
           php -l tests/Feature/RestrictedUatRouteGuardTest.php
+      - name: Verify effective restricted mode including cached Laravel config
+        run: |
+          set -Eeuo pipefail
+          php artisan config:cache
+          php -r '$app=require "bootstrap/app.php";$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();if(config("messaging_release.restricted_uat")!==true)exit(4);echo "RESTRICTED_UAT_CONFIG_VERIFIED\n";'
       - name: Route registry and schema
         run: |
           php artisan route:list --path=messages -v
           php artisan migrate --force
       - name: Focused R17 directory and security guards
         run: php artisan test tests/Feature/OfficeDirectoryCatalogTest.php tests/Feature/RestrictedUatRouteGuardTest.php
+      - name: Focused six-channel Messaging denial with no-write assertions
+        run: php artisan test tests/Feature/Messaging/RestrictedUatMessagingGateTest.php
+      - name: Focused eight-route Correspondence denial and config guard
+        run: php artisan test tests/Feature/Security/RestrictedUatCorrespondenceDenialTest.php
       - name: Preserve existing individual Task lifecycle
         run: php artisan test tests/Feature/Tasks/IndividualTaskHttpTest.php
       - name: Tracked code integrity
