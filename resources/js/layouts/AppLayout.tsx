@@ -213,7 +213,10 @@ export default function AppLayout({ title, presentation = 'standard', children }
                                 <Menu size={20} />
                             </button>
                             <div className="min-w-0">
-                                <div className="portal-context">One Talibon / Workspace</div>
+                              <div className="portal-context">
+                                   <span className="sm:hidden">One Talibon</span>
+                                   <span className="hidden sm:inline">One Talibon / Workspace</span>
+                            </div>
                                 <div className="portal-page-title">{title}</div>
                             </div>
                         </div>
