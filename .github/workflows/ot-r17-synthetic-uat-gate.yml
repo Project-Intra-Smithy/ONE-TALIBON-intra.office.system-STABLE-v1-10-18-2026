@@ -180,5 +180,7 @@ jobs:
         run: php artisan test tests/Feature/Security/RestrictedUatCorrespondenceDenialTest.php
       - name: Preserve existing individual Task lifecycle
         run: php artisan test tests/Feature/Tasks/IndividualTaskHttpTest.php
+      - name: Preserve Work Request validation and revocation regressions
+        run: php artisan test tests/Feature/WorkRequestBackendValidationTest.php tests/Feature/WorkRequests/WorkRequestRevocationTest.php
       - name: Tracked code integrity
         run: test -z "$(git status --porcelain --untracked-files=no)"
