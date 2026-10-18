@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\WorkflowTransaction;
 use App\Services\DepartmentWorkspaceQuery;
+use App\Services\OfficeDirectoryCatalog;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -14,6 +15,7 @@ class DepartmentController extends Controller
 {
     public function __construct(
         private readonly DepartmentWorkspaceQuery $workspace,
+        private readonly OfficeDirectoryCatalog $catalog,
     ) {
     }
 
@@ -21,11 +23,11 @@ class DepartmentController extends Controller
     {
         $actor = $request->user();
 
-        if ($actor && $this->workspace->allowed($actor)) {
+        if ($actor && $this->workspace->allowed($actor) && $request->query('view') !== 'directory') {
             return Inertia::render('Departments/Workspace', $this->workspace->workspace($actor));
         }
 
-        return Inertia::render('Departments/Index', $this->directory());
+        return Inertia::render('Departments/Index', array_merge($this->directory(), $this->catalog->workspace()));
     }
 
     /** @return array<string, mixed> */

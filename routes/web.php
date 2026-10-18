@@ -36,6 +36,8 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionLiveController;
 use App\Http\Controllers\Tasks\IndividualTaskController;
 use App\Http\Controllers\TravelOrderController;
+use App\Http\Middleware\DenyUnapprovedMessaging;
+use App\Http\Middleware\DenyUnverifiedCorrespondenceMutations;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -89,10 +91,10 @@ Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
 
     Route::get('/announcements', fn () => Inertia::render('Announcements/Index'))->name('announcements.index');
     Route::get('/meetings', fn () => Inertia::render('Meetings/Index'))->name('meetings.index');
-    Route::get('/messages', fn () => Inertia::render('Messages/Index'))->name('messages.index');
-    Route::get('/messages/feed', ListMessagesController::class)->name('messages.feed.index');
+    Route::get('/messages', fn () => Inertia::render('Messages/Index'))->middleware(DenyUnapprovedMessaging::class)->name('messages.index');
+    Route::get('/messages/feed', ListMessagesController::class)->middleware(DenyUnapprovedMessaging::class)->name('messages.feed.index');
     Route::post('/messages/feed', StoreMessageController::class)
-        ->middleware('throttle:60,1')
+        ->middleware([DenyUnapprovedMessaging::class, 'throttle:60,1'])
         ->name('messages.feed.store');
     Route::get('/local-special-bodies', fn () => Inertia::render('LocalBodies/Index'))->name('local-special-bodies.index');
     Route::get('/development-plans', fn () => Inertia::render('Plans/Index'))->name('development-plans.index');
@@ -109,15 +111,15 @@ Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
     Route::get('/travel-orders/{travelOrder}', [TravelOrderController::class, 'show'])->name('travel-orders.show');
     Route::post('/travel-orders/{travelOrder}/status', [TravelOrderController::class, 'updateStatus'])->name('travel-orders.status');
     Route::get('/correspondence/{correspondence}/workspace', [CorrespondenceWorkspaceController::class, 'show'])->name('correspondence.workspace.show');
-    Route::post('/correspondence/{correspondence}/workspace/register', [CorrespondenceWorkspaceActionController::class, 'register'])->name('correspondence.workspace.register');
-    Route::post('/correspondence/{correspondence}/workspace/classify', [CorrespondenceWorkspaceActionController::class, 'classify'])->name('correspondence.workspace.classify');
-    Route::post('/correspondence/{correspondence}/workspace/route', [CorrespondenceWorkspaceActionController::class, 'route'])->name('correspondence.workspace.route');
-    Route::post('/correspondence/{correspondence}/workspace/act', [CorrespondenceWorkspaceActionController::class, 'act'])->name('correspondence.workspace.act');
+    Route::post('/correspondence/{correspondence}/workspace/register', [CorrespondenceWorkspaceActionController::class, 'register'])->middleware(DenyUnverifiedCorrespondenceMutations::class)->name('correspondence.workspace.register');
+    Route::post('/correspondence/{correspondence}/workspace/classify', [CorrespondenceWorkspaceActionController::class, 'classify'])->middleware(DenyUnverifiedCorrespondenceMutations::class)->name('correspondence.workspace.classify');
+    Route::post('/correspondence/{correspondence}/workspace/route', [CorrespondenceWorkspaceActionController::class, 'route'])->middleware(DenyUnverifiedCorrespondenceMutations::class)->name('correspondence.workspace.route');
+    Route::post('/correspondence/{correspondence}/workspace/act', [CorrespondenceWorkspaceActionController::class, 'act'])->middleware(DenyUnverifiedCorrespondenceMutations::class)->name('correspondence.workspace.act');
     Route::get('/correspondence/{correspondence}', [CorrespondenceLifecycleController::class, 'show'])->name('correspondence.show');
-    Route::post('/correspondence/{correspondence}/register', [CorrespondenceLifecycleController::class, 'register'])->name('correspondence.register');
-    Route::post('/correspondence/{correspondence}/classify', [CorrespondenceLifecycleController::class, 'classify'])->name('correspondence.classify');
-    Route::post('/correspondence/{correspondence}/route', [CorrespondenceLifecycleController::class, 'route'])->name('correspondence.route');
-    Route::post('/correspondence/{correspondence}/act', [CorrespondenceLifecycleController::class, 'act'])->name('correspondence.act');
+    Route::post('/correspondence/{correspondence}/register', [CorrespondenceLifecycleController::class, 'register'])->middleware(DenyUnverifiedCorrespondenceMutations::class)->name('correspondence.register');
+    Route::post('/correspondence/{correspondence}/classify', [CorrespondenceLifecycleController::class, 'classify'])->middleware(DenyUnverifiedCorrespondenceMutations::class)->name('correspondence.classify');
+    Route::post('/correspondence/{correspondence}/route', [CorrespondenceLifecycleController::class, 'route'])->middleware(DenyUnverifiedCorrespondenceMutations::class)->name('correspondence.route');
+    Route::post('/correspondence/{correspondence}/act', [CorrespondenceLifecycleController::class, 'act'])->middleware(DenyUnverifiedCorrespondenceMutations::class)->name('correspondence.act');
 
     Route::get('/property', [PropertyController::class, 'index'])->name('property.index');
     Route::post('/property', [PropertyController::class, 'store'])->name('property.store');
