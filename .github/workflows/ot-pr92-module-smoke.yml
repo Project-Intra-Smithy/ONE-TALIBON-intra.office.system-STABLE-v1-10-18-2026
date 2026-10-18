@@ -64,7 +64,7 @@ jobs:
           test "$GITHUB_REPOSITORY" = 'Project-Intra-Smithy/Talibon-Sales-Prototype'
           test "$GITHUB_REF" = 'refs/heads/forge/qa/ot-pr92-module-smoke-r1'
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          test "$(sha256sum tests/Browser/ot-pr92-module-smoke.mjs | cut -d' ' -f1)" = 'e5d62ea1221754cd749dfb178b0b298d5bd5d1a0041ec334ed095c85cb731127'
+          test "$(sha256sum tests/Browser/ot-pr92-module-smoke.mjs | cut -d' ' -f1)" = 'd8de471d3014574ca892740502e25bfc8c5b3a58babb3853b5e8ea4f1f4a28d2'
           test "$(git rev-list --count "$QA_FROZEN_APP_SHA"..HEAD)" = '1'
           test "$(git rev-parse HEAD^)" = "$QA_FROZEN_APP_SHA"
           test "$(git rev-list --parents -n 1 HEAD | wc -w)" = '2'
@@ -198,7 +198,14 @@ jobs:
           if ($db->table('correspondence_records')->where('municipal_reference_no','OT92-NO-AUTHORIZED-ROW-R10')->exists()) exit(14);
           $evidenceIds = fn(array $projected) => array_values(array_map(
               fn($v) => (string)$v['publicId'], $projected['record']));
+          $baselineCorrespondence = $db->table('correspondence_records')->where('id',$record->id)->selectRaw("id, public_id, municipal_reference_no, subject, summary, lifecycle_state, classification, source, channel, receiving_department_id, workflow_transaction_id, to_char(updated_at AT TIME ZONE 'UTC', 'YYYY-MM-DD\"T\"HH24:MI:SS.US\"Z\"') AS updated_at_utc")->first();
+          $baselineTransaction = $db->table('transactions')->where('id',$transaction->id)->selectRaw("id, reference_no, title, transaction_type, status, origin_department_id, current_department_id, assigned_employee_id, assigned_to_user_id, to_char(updated_at AT TIME ZONE 'UTC', 'YYYY-MM-DD\"T\"HH24:MI:SS.US\"Z\"') AS updated_at_utc")->first();
+          if (!$baselineCorrespondence || !$baselineTransaction) exit(15);
           $fixture = [
+              'nonMutationOracle'=>[
+                  'correspondence'=>(array)$baselineCorrespondence,
+                  'transaction'=>(array)$baselineTransaction,
+              ],
               'correspondence'=>[
                   'publicId'=>(string)$record->public_id, 'reference'=>$record->municipal_reference_no,
                   'subject'=>$record->subject,'summary'=>$record->summary,
@@ -206,7 +213,6 @@ jobs:
                   'source'=>$record->source,'channel'=>$record->channel,
                   'officeId'=>(int)$record->receiving_department_id,'officeCode'=>$office->code,
                   'capabilities'=>$caps, 'evidenceIds'=>$evidenceIds($docs->forCorrespondence($record)),
-                  'updatedAt'=>(string)$record->updated_at,
               ],
               'transaction'=>[
                   'id'=>(int)$transaction->id,'reference'=>$transaction->reference_no,'title'=>$transaction->title,
@@ -222,7 +228,6 @@ jobs:
                       'canAssign'=>(bool)$actor->can('assign',$transaction),
                   ],
                   'evidenceIds'=>$evidenceIds($docs->forTransaction($transaction)),
-                  'updatedAt'=>(string)$transaction->updated_at,
               ],
               'employeeSelfId'=>(int)$employee->id,'employeeForeignId'=>(int)$foreign->id,
           ];
@@ -288,14 +293,20 @@ jobs:
           $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
           $fixture = json_decode(file_get_contents(getenv('RUNNER_TEMP').'/ot92-fixtures.json'),true,512,JSON_THROW_ON_ERROR);
           $db = Illuminate\Support\Facades\DB::connection();
-          $c = $db->table('correspondence_records')->where('public_id',$fixture['correspondence']['publicId'])->first();
-          $t = $db->table('transactions')->where('id',$fixture['transaction']['id'])->first();
-          if (!$c || !$t || $c->municipal_reference_no !== $fixture['correspondence']['reference'] ||
-              $c->lifecycle_state !== $fixture['correspondence']['state'] ||
-              (string)$c->updated_at !== $fixture['correspondence']['updatedAt'] ||
-              $t->reference_no !== $fixture['transaction']['reference'] || $t->status !== $fixture['transaction']['status'] ||
-              (int)$t->assigned_employee_id !== $fixture['transaction']['assigneeEmployeeId'] ||
-              (string)$t->updated_at !== $fixture['transaction']['updatedAt']) exit(42);
+          // Identical raw PG16 SQL projections, preserving identity, state, assignment, UTC microseconds.
+          $c = $db->table('correspondence_records')->where('id',$fixture['nonMutationOracle']['correspondence']['id'])->selectRaw("id, public_id, municipal_reference_no, subject, summary, lifecycle_state, classification, source, channel, receiving_department_id, workflow_transaction_id, to_char(updated_at AT TIME ZONE 'UTC', 'YYYY-MM-DD\"T\"HH24:MI:SS.US\"Z\"') AS updated_at_utc")->first();
+          $t = $db->table('transactions')->where('id',$fixture['nonMutationOracle']['transaction']['id'])->selectRaw("id, reference_no, title, transaction_type, status, origin_department_id, current_department_id, assigned_employee_id, assigned_to_user_id, to_char(updated_at AT TIME ZONE 'UTC', 'YYYY-MM-DD\"T\"HH24:MI:SS.US\"Z\"') AS updated_at_utc")->first();
+          if (!$c || !$t) { fwrite(STDERR,"ORACLE_MISSING_ROW\n"); exit(42); }
+          foreach (['correspondence'=>(array)$c,'transaction'=>(array)$t] as $label=>$actual) {
+              $expected = $fixture['nonMutationOracle'][$label] ?? null;
+              if (!is_array($expected)) { fwrite(STDERR,"ORACLE_INVALID_BASELINE\n"); exit(42); }
+              foreach ($expected as $field=>$value) {
+                  if (!array_key_exists($field,$actual) || $actual[$field] !== $value) {
+                      fwrite(STDERR,"ORACLE_CHANGED:{$label}:{$field}\n");
+                      exit(42);
+                  }
+              }
+          }
           echo 'F4_F5_READ_ONLY_STATE_UNCHANGED';
           PHP
 
@@ -311,7 +322,9 @@ jobs:
           # Fail-closed: no secrets or arbitrary private files retained for upload.
           rm -f "$RUNNER_TEMP/ot92-demo-password" "$RUNNER_TEMP/ot92-fixtures.json" "$RUNNER_TEMP/ot92-laravel-private.log" .env
           if [ -d storage/framework/sessions ]; then
-            find storage/framework/sessions -type f -delete
+            test -f storage/framework/sessions/.gitignore || exit 43
+            test "$(git hash-object storage/framework/sessions/.gitignore)" = "$(git rev-parse HEAD:storage/framework/sessions/.gitignore)" || exit 43
+            find storage/framework/sessions -type f ! -path 'storage/framework/sessions/.gitignore' -delete
           fi
           cred=true; fixture=true; sessions=true; envsafe=true
           test ! -e "$RUNNER_TEMP/ot92-demo-password" || cred=false
@@ -319,7 +332,10 @@ jobs:
           test ! -e "$RUNNER_TEMP/ot92-laravel-private.log" || cred=false
           test ! -e .env || envsafe=false
           if [ -d storage/framework/sessions ]; then
-            test -z "$(find storage/framework/sessions -type f -print -quit)" || sessions=false
+            test -z "$(find storage/framework/sessions -type f ! -path 'storage/framework/sessions/.gitignore' -print -quit)" || sessions=false
+            test -z "$(find storage/framework/sessions -type l -print -quit)" || sessions=false
+            test -f storage/framework/sessions/.gitignore || sessions=false
+            test "$(git hash-object storage/framework/sessions/.gitignore)" = "$(git rev-parse HEAD:storage/framework/sessions/.gitignore)" || sessions=false
           fi
           if [ "$cred" != true ] || [ "$fixture" != true ] || [ "$sessions" != true ] || [ "$envsafe" != true ]; then
             printf '{"state":"FAIL","credentialsAbsent":false,"fixtureAbsent":false,"sessionsAbsent":false,"envAbsent":false}\n' > "$dir/cleanup.json"
@@ -365,3 +381,4 @@ jobs:
             storage/app/qa/ot-pr92-module-smoke/SHA256SUMS
           retention-days: 7
           if-no-files-found: error
+

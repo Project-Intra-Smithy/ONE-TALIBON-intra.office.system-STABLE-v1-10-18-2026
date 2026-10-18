@@ -35,12 +35,14 @@ function checked(r,name,value){r.checks.push({name,ok:value===true});return valu
 function pathOnly(url){try{return new URL(url,BASE).pathname}catch{return 'INVALID_PATH'}}
 function sanitizeStatus(status){return Number.isInteger(status)&&status>=100&&status<=599?status:null}
 function safeComponent(value){return SPECS.some(x=>x.component===value)||['Correspondence/Show','Transactions/Show','Employees/Show','Departments/Workspace'].includes(value)?value:null}
+const SAFE_LOGIN_CODES=new Set(['LOGIN_GET_STATUS','LOGIN_FORM_TIMEOUT','LOGIN_LOCATOR_AMBIGUOUS','LOGIN_FORM_DISABLED','LOGIN_POST_STATUS','LOGIN_REDIRECT_TIMEOUT','LOGIN_UNEXPECTED_EMPLOYEE_MFA','AUTH_SESSION_UNESTABLISHED']);
 function safeFailure(error){const m=String(error?.message||'');if(m==='BLOCKED_SYNTHETIC_MFA_ENROLLMENT_NOT_AUTHORIZED'||m==='BLOCKED_EXISTING_MFA_NOT_PROVISIONED')return m;
-  if(m.startsWith('P0_'))return 'P0_PROTECTED_DATA_EXPOSURE';
-  if(/LOGIN_|AUTH_|selector|waiting for|Timeout|page.goto|sign in/i.test(m))return 'FAIL_AUTH';
-  return 'INFRA_FAIL';}
+ if(SAFE_LOGIN_CODES.has(m)||m==='R17_GATE_INCOMPATIBILITY')return m;
+ if(m.startsWith('P0_'))return 'P0_PROTECTED_DATA_EXPOSURE';
+ if(/LOGIN_|AUTH_|selector|waiting for|Timeout|page.goto|sign in/i.test(m))return 'FAIL_AUTH';
+ return 'INFRA_FAIL';}
 function classifyLogin(error){const code=safeFailure(error);if(code.startsWith('BLOCKED_'))return {outcome:'BLOCKED_MFA',code};
-  return {outcome:code==='FAIL_AUTH'?'FAIL_AUTH':'INFRA_FAIL',code};}
+ return {outcome:SAFE_LOGIN_CODES.has(code)||code==='FAIL_AUTH'?'FAIL_AUTH':'INFRA_FAIL',code};}
 function pagedRows(props,key='records'){const x=props?.[key];if(!x||!Array.isArray(x.data)||!Number.isInteger(x.total)||x.total<x.data.length)return null;return x.data;}
 function exactRow(rows,identity,required){if(!Array.isArray(rows)||!identity||!required||typeof required!=='object')return false;
   return rows.some(r=>r&&typeof r==='object'&&r[identity.key]===identity.value&&Object.entries(required).every(([k,v])=>r[k]===v));}
@@ -74,7 +76,15 @@ async function offlineSelfTest(){let n=0;const mustReject=(name,fn)=>{assert.equ
  mustReject('H02 wrong correspondence identity',()=>correspondenceDetail(dp,f));
  const t={transaction:{id:42,reference:REFS.transaction,title:'X',status:'for_review',type:'document_review',officeId:2,originOfficeId:2,assigneeEmployeeId:7,assigneeUserId:5,assigneeName:'Example',permissions:{canTransition:false,canMayorDecision:false,canAssign:false},evidenceIds:[]}};
  mustReject('H02 wrong transaction id',()=>transactionDetail({transaction:{id:43},transactionPermissions:t.transaction.permissions,evidence:{record:[]}},t));
- assert.equal(classifyLogin(new Error('LOGIN_HTTP_FAILURE')).outcome,'FAIL_AUTH');n++;
+ assert.equal(classifyLogin(new Error('LOGIN_GET_STATUS')).outcome,'FAIL_AUTH');n++;
+  assert.equal(classifyLogin(new Error('LOGIN_FORM_TIMEOUT')).code,'LOGIN_FORM_TIMEOUT');n++;
+  assert.equal(classifyLogin(new Error('LOGIN_UNEXPECTED_EMPLOYEE_MFA')).outcome,'FAIL_AUTH');n++;
+  const seen=[];const mock={locator(s){seen.push(s);return {waitFor:async o=>{assert.equal(o.state,'visible');assert.equal(o.timeout,10000);},count:async()=>1,isEnabled:async()=>true};}};
+  const controls=await exactLoginControls(mock);assert.equal(controls.emailCount+controls.passwordCount,2);assert.deepEqual(seen,['input#login-email','input#login-password']);n++;
+  const double={locator(){return {waitFor:async()=>{},count:async()=>2,isEnabled:async()=>true};}};
+  await assert.rejects(()=>exactLoginControls(double),/LOGIN_LOCATOR_AMBIGUOUS/);n++;
+  const delayed={locator(){return {waitFor:async()=>{await Promise.resolve();},count:async()=>1,isEnabled:async()=>true};}};
+  await exactLoginControls(delayed);n++;
  assert.equal(classifyLogin(new Error('Timeout 18000 exceeded')).outcome,'FAIL_AUTH');n++;
  assert.equal(classifyLogin(new Error('BLOCKED_SYNTHETIC_MFA_ENROLLMENT_NOT_AUTHORIZED')).outcome,'BLOCKED_MFA');n++;
  assert.equal(allAcAccepted([{outcome:'PARTIAL',missing:['hold']}]),false);n++;
@@ -94,12 +104,45 @@ function snapshot(o){return {...o}}function delta(a,b){return Object.fromEntries
 async function inertia(page){return page.evaluate(()=>{const s=document.getElementById('app')?.getAttribute('data-page');try{const v=JSON.parse(s);return {component:v.component,props:v.props??{}}}catch{return null}})}
 async function heading(page,pattern){return page.getByRole('heading',{name:pattern}).first().isVisible().catch(()=>false)}
 async function navigation(page,url){return await page.locator('.portal-desktop-navigation nav[aria-label="Primary navigation"] a[href]').evaluateAll((nodes,target)=>nodes.some(a=>{try{return new URL(a.href).pathname===target&&a.getClientRects().length>0}catch{return false}}),pathOnly(url))?'VISIBLE':'NOT_VISIBLE'}
-async function login(page,actor,password){const r=await page.goto(`${BASE}/login`,{waitUntil:'domcontentloaded',timeout:20000});if(r?.status()!==200)throw Error('LOGIN_HTTP_FAILURE');
- if(!(await page.getByLabel('Email').isVisible())||!(await page.getByLabel('Password').isVisible()))throw Error('LOGIN_SELECTOR_MISSING');
- await page.getByLabel('Email').fill(EMAIL[actor]);await page.getByLabel('Password').fill(password);
- await Promise.all([page.waitForURL(u=>['/dashboard','/security/mfa/enroll','/security/mfa/challenge'].includes(u.pathname),{timeout:18000}),page.getByRole('button',{name:/sign in/i}).click()]);
- const landed=pathOnly(page.url());if(landed==='/security/mfa/enroll')throw Error('BLOCKED_SYNTHETIC_MFA_ENROLLMENT_NOT_AUTHORIZED');if(landed==='/security/mfa/challenge')throw Error('BLOCKED_EXISTING_MFA_NOT_PROVISIONED');if(landed!=='/dashboard')throw Error('AUTH_SESSION_UNESTABLISHED');
- const chk=await page.goto(`${BASE}/dashboard`,{waitUntil:'domcontentloaded',timeout:12000});if(chk?.status()!==200||pathOnly(page.url())!=='/dashboard')throw Error('AUTH_SESSION_UNESTABLISHED');}
+const AUTH_SAFE_PATHS=new Set(['/login','/dashboard','/security/mfa/enroll','/security/mfa/challenge']);
+function sanitizedLoginPath(page){const p=pathOnly(page.url());return AUTH_SAFE_PATHS.has(p)?p:'OTHER_PATH';}
+async function exactLoginControls(page){
+ const email=page.locator('input#login-email');
+ const passwordInput=page.locator('input#login-password');
+ try{await email.waitFor({state:'visible',timeout:10000});await passwordInput.waitFor({state:'visible',timeout:10000});}
+ catch{throw Error('LOGIN_FORM_TIMEOUT');}
+ const emailCount=await email.count(),passwordCount=await passwordInput.count();
+ if(emailCount!==1||passwordCount!==1)throw Error('LOGIN_LOCATOR_AMBIGUOUS');
+ if(!(await email.isEnabled())||!(await passwordInput.isEnabled()))throw Error('LOGIN_FORM_DISABLED');
+ return {email,passwordInput,emailCount,passwordCount};
+}
+async function login(page,actor,password){
+ page.qaLoginStartedAt=Date.now();page.qaLoginStage='LOGIN_GET_STATUS';
+ const r=await page.goto(`${BASE}/login`,{waitUntil:'domcontentloaded',timeout:20000});
+ page.qaLoginHttpStatus=sanitizeStatus(r?.status());
+ if(r?.status()!==200)throw Error('LOGIN_GET_STATUS');
+ page.qaLoginStage='LOGIN_FORM_TIMEOUT';
+ const controls=await exactLoginControls(page);
+ page.qaLoginCounts={email:controls.emailCount,password:controls.passwordCount};
+ page.qaLoginStage='LOGIN_FORM_READY';
+ await controls.email.fill(EMAIL[actor]);await controls.passwordInput.fill(password);
+ page.qaLoginStage='LOGIN_SUBMIT';
+ const redirect=page.waitForURL(u=>['/dashboard','/security/mfa/enroll','/security/mfa/challenge'].includes(u.pathname),{timeout:18000}).catch(()=>{throw Error('LOGIN_REDIRECT_TIMEOUT');});
+ const posted=page.waitForResponse(x=>x.request().method()==='POST'&&pathOnly(x.url())==='/login',{timeout:18000}).catch(()=>{throw Error('LOGIN_POST_STATUS');});
+ const [,response]=await Promise.all([redirect,posted,page.getByRole('button',{name:/sign in/i}).click()]);
+ page.qaLoginHttpStatus=sanitizeStatus(response.status());
+ if(![302,303].includes(response.status()))throw Error('LOGIN_POST_STATUS');
+ const landed=pathOnly(page.url());page.qaLoginStage='LOGIN_REDIRECT';
+ if(actor==='employee'&&landed!=='/dashboard')throw Error('LOGIN_UNEXPECTED_EMPLOYEE_MFA');
+ if(landed==='/security/mfa/enroll')throw Error('BLOCKED_SYNTHETIC_MFA_ENROLLMENT_NOT_AUTHORIZED');
+ if(landed==='/security/mfa/challenge')throw Error('BLOCKED_EXISTING_MFA_NOT_PROVISIONED');
+ if(landed!=='/dashboard')throw Error('AUTH_SESSION_UNESTABLISHED');
+ page.qaLoginStage='LOGIN_SESSION_VERIFY';
+ const chk=await page.goto(`${BASE}/dashboard`,{waitUntil:'domcontentloaded',timeout:12000});
+ page.qaLoginHttpStatus=sanitizeStatus(chk?.status());
+ if(chk?.status()!==200||pathOnly(page.url())!=='/dashboard')throw Error('AUTH_SESSION_UNESTABLISHED');
+ page.qaLoginStage='LOGIN_SESSION_CONFIRMED';
+}
 async function openPage(page,url){const response=await page.goto(`${BASE}${url}`,{waitUntil:'domcontentloaded',timeout:18000});const status=sanitizeStatus(response?.status());const body=await inertia(page);return {status,component:safeComponent(body?.component),props:body?.props??{},response};}
 async function smokeIndex(page,spec,row){const before=snapshot(page.qaErrors),r=await openPage(page,spec.url);row.httpStatus=r.status;row.component=r.component;row.nav=await navigation(page,spec.url);
  checked(row,'http_200',r.status===200);checked(row,'component',r.component===spec.component);checked(row,'props_keys',spec.keys.every(k=>Object.hasOwn(r.props,k)));
@@ -132,12 +175,12 @@ async function realNavigation(page){const r={actor:'department_head',from:'/reco
  const p=page.waitForResponse(x=>x.request().method()==='GET'&&pathOnly(x.url())==='/transactions',{timeout:15000});await link.click();const res=await p;await page.waitForURL(u=>u.pathname==='/transactions',{timeout:15000});let body=await res.json().catch(()=>null);r.status=res.status();r.component=safeComponent(body?.component||(await inertia(page))?.component);r.outcome=r.status===200&&r.component==='Transactions/Index'?'PASS_SMOKE':'FAIL';
  }catch(e){r.outcome='FAIL';r.failure=safeFailure(e);}}
 async function write(){await fs.mkdir(ROOT,{recursive:true});await fs.writeFile(path.join(ROOT,'results.json'),JSON.stringify(OUT,null,2)+'\n',{mode:0o600});}
-async function main(){const password=process.env.QA_DEMO_PASSWORD;if(!password)throw Error('SYNTHETIC_PASSWORD_UNAVAILABLE');if(process.env.QA_ALLOW_SYNTHETIC_MFA_ENROLLMENT==='true')throw Error('SYNTHETIC_MFA_ENROLLMENT_NOT_AUTHORIZED_R10');
+async function main(){if(process.env.QA_UAT_MODE==='R17_RESTRICTED')throw Error('R17_GATE_INCOMPATIBILITY');const password=process.env.QA_DEMO_PASSWORD;if(!password)throw Error('SYNTHETIC_PASSWORD_UNAVAILABLE');if(process.env.QA_ALLOW_SYNTHETIC_MFA_ENROLLMENT==='true')throw Error('SYNTHETIC_MFA_ENROLLMENT_NOT_AUTHORIZED_R10');
  const head=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),parent=execFileSync('git',['rev-parse','HEAD^'],{encoding:'utf8'}).trim(),tree=execFileSync('git',['rev-parse',`${APP}^{tree}`],{encoding:'utf8'}).trim();
  if(parent!==APP||tree!==TREE||process.env.QA_FROZEN_APP_SHA!==APP||process.env.QA_FROZEN_TREE_SHA!==TREE)throw Error('FROZEN_SOURCE_ATTESTATION_FAILED');OUT.qaCommit=head;
  const f=JSON.parse(await fs.readFile(FIXTURE_PATH,'utf8'));if(f.correspondence?.reference!==REFS.correspondence||f.transaction?.reference!==REFS.transaction)throw Error('SQL_FIXTURE_IDENTITY_FAILED');OUT.databaseProof={sqlFixtureCrosscheck:true,correspondence:true,transaction:true};
  const {chromium}=await import('playwright');const browser=await chromium.launch({headless:true});OUT.runtime.browserMajor=Number(browser.version().split('.')[0]);
- try{const sessions={};for(const actor of Object.keys(EMAIL)){const ctx=await browser.newContext({viewport:{width:1440,height:900}});const page=await ctx.newPage();page.qaErrors=watch(page);try{await login(page,actor,password);sessions[actor]={page,ctx};OUT.auth.push({actor,outcome:'PASS'});}catch(e){await ctx.close();const cls=classifyLogin(e);OUT.auth.push({actor,...cls});if(cls.outcome==='FAIL_AUTH'||cls.outcome==='INFRA_FAIL')OUT.failure=cls.outcome;for(const r of OUT.ac.filter(x=>x.actor===actor)){r.outcome=cls.outcome==='BLOCKED_MFA'?'BLOCKED_MFA':'NOT_RUN';r.smoke='NOT_RUN';}}}
+ try{const sessions={};for(const actor of Object.keys(EMAIL)){const ctx=await browser.newContext({viewport:{width:1440,height:900}});const page=await ctx.newPage();page.qaErrors=watch(page);try{await login(page,actor,password);sessions[actor]={page,ctx};OUT.auth.push({actor,outcome:'PASS',stage:page.qaLoginStage,path:sanitizedLoginPath(page),httpStatus:page.qaLoginHttpStatus,elapsedMs:Date.now()-page.qaLoginStartedAt,locatorCounts:page.qaLoginCounts});}catch(e){await ctx.close();const cls=classifyLogin(e);OUT.auth.push({actor,...cls,stage:page.qaLoginStage||'LOGIN_INIT',path:sanitizedLoginPath(page),httpStatus:page.qaLoginHttpStatus??null,elapsedMs:Date.now()-(page.qaLoginStartedAt||Date.now()),locatorCounts:page.qaLoginCounts??null});if(cls.outcome==='FAIL_AUTH'||cls.outcome==='INFRA_FAIL')OUT.failure=cls.outcome;for(const r of OUT.ac.filter(x=>x.actor===actor)){r.outcome=cls.outcome==='BLOCKED_MFA'?'BLOCKED_MFA':'NOT_RUN';r.smoke='NOT_RUN';}}}
  try{for(const s of SPECS){const actor=sessions[s.actor];if(actor)await runAC(actor.page,s,f);}
  const employee=sessions.employee;if(employee){await denial(employee.page,rowFor('AC01'),`/correspondence/${f.correspondence.publicId}/workspace`,[f.correspondence.reference,f.correspondence.subject,...f.correspondence.evidenceIds]);await denial(employee.page,rowFor('AC02'),`/transactions/${f.transaction.id}`,[f.transaction.reference,f.transaction.title,...f.transaction.evidenceIds]);await denial(employee.page,rowFor('AC11'),'/admin',['employee@talibon.demo']);}
  if(sessions.department_head){const page=sessions.department_head.page;const x=await openPage(page,'/departments');checked(rowFor('AC07'),'head_placeholder_not_workflow',x.status===200&&x.component==='Departments/Workspace');for(const route of ['/records','/documents','/correspondence','/transactions'])for(const width of [320,1440])await responsive(page,route,width);await realNavigation(page);}
@@ -149,3 +192,4 @@ async function main(){const password=process.env.QA_DEMO_PASSWORD;if(!password)t
 if(process.argv.includes('--offline-self-test'))await offlineSelfTest();
 else if(process.argv.includes('--audit-artifacts')){await auditArtifacts();console.log('ARTIFACT_ALLOWLIST_AND_SANITIZATION_PASS');}
 else await main().catch(async e=>{OUT.failure=safeFailure(e);OUT.smokeCoverage='FAIL';OUT.fullAcAcceptance='NOT_RUN';await write();console.error(`HARNESS_STOP ${OUT.failure}`);process.exitCode=1;});
+
