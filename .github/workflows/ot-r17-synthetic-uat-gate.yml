@@ -1,0 +1,151 @@
+# R17 single approved synthetic-data isolated QA cycle. No release, secrets, or deployment.
+name: OT R17 Isolated Synthetic UAT Gate
+on:
+  push:
+    branches:
+      - forge/r17/one-talibon-synthetic-uat-candidate-r1
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ot-r17-one-synthetic-uat-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  frontend:
+    name: Pinned frontend TypeScript, tests and Vite
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 5
+      - name: Strict single-candidate source preflight
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$GITHUB_REPOSITORY" = 'Project-Intra-Smithy/Talibon-Sales-Prototype'
+          test "$GITHUB_REF" = 'refs/heads/forge/r17/one-talibon-synthetic-uat-candidate-r1'
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git rev-parse HEAD^)" = 'a13c6e8c776274f997877b601d9ca7259f34e4d6'
+          test "$(git merge-base 964ee473e226bcf320c7c45c44e1e06f1e3abcc8 HEAD)" = '964ee473e226bcf320c7c45c44e1e06f1e3abcc8'
+          git diff --name-only 964ee473e226bcf320c7c45c44e1e06f1e3abcc8 HEAD | LC_ALL=C sort > "$RUNNER_TEMP/changed.txt"
+          cat > "$RUNNER_TEMP/expected.txt" <<'EOF'
+.github/workflows/ot-r17-synthetic-uat-gate.yml
+app/Http/Controllers/DepartmentController.php
+app/Http/Middleware/DenyUnapprovedMessaging.php
+app/Http/Middleware/DenyUnverifiedCorrespondenceMutations.php
+app/Services/OfficeDirectoryCatalog.php
+config/office_directory.php
+resources/js/pages/Departments/Index.tsx
+resources/js/pages/Departments/Workspace.tsx
+routes/web.php
+tests/Feature/OfficeDirectoryCatalogTest.php
+tests/Feature/RestrictedUatRouteGuardTest.php
+EOF
+          LC_ALL=C sort -o "$RUNNER_TEMP/expected.txt" "$RUNNER_TEMP/expected.txt"
+          diff -u "$RUNNER_TEMP/expected.txt" "$RUNNER_TEMP/changed.txt"
+          test -z "$(git status --porcelain --untracked-files=no)"
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install immutable npm dependencies
+        run: npm ci --no-audit --no-fund
+      - name: TypeScript type checking
+        run: npm run types:check
+      - name: Existing frontend regressions
+        run: npm test
+      - name: Production Vite build
+        run: npm run build
+      - name: Tracked source remains clean
+        run: test -z "$(git status --porcelain --untracked-files=no)"
+
+  laravel:
+    name: Isolated PostgreSQL16 Laravel source and focused negatives
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_r17_synthetic_qa
+      DB_USERNAME: postgres
+      DB_PASSWORD: ''
+      DB_TIMEZONE: Asia/Manila
+      CACHE_STORE: file
+      SESSION_DRIVER: array
+      QUEUE_CONNECTION: sync
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: talibon_r17_synthetic_qa
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 127.0.0.1:5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d talibon_r17_synthetic_qa"
+          --health-interval=5s --health-timeout=5s --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 5
+      - name: Pin same isolated source
+        run: |
+          set -Eeuo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git rev-parse HEAD^)" = 'a13c6e8c776274f997877b601d9ca7259f34e4d6'
+          test -z "$(git status --porcelain --untracked-files=no)"
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, mbstring, xml, ctype, fileinfo, zip
+          tools: composer:v2
+          coverage: none
+      - name: Locked Composer installation
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Prepare isolated env
+        run: |
+          set -Eeuo pipefail
+          cp .env.example .env
+          php artisan key:generate
+          php artisan config:clear
+      - name: Fail closed before touching any database
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test -z "${DB_URL:-}"
+          v="$(PGPASSWORD='' psql -h 127.0.0.1 -U postgres -d talibon_r17_synthetic_qa -Atc 'SHOW server_version_num')"
+          test "$v" -ge 160000
+          test "$v" -lt 170000
+          test "$(PGPASSWORD='' psql -h 127.0.0.1 -U postgres -d talibon_r17_synthetic_qa -Atc "SELECT count(*) FROM information_schema.tables WHERE table_schema='public'")" = 0
+          php -r '$app=require "bootstrap/app.php";$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();$c=config("database.connections.pgsql");if(config("database.default")!=="pgsql"||$c["host"]!=="127.0.0.1"||(int)$c["port"]!==5432||$c["database"]!=="talibon_r17_synthetic_qa"||$c["username"]!=="postgres")exit(3); echo "ISOLATED_PG16_CONFIG_VERIFIED\n";'
+      - name: PHP static syntax preflight
+        run: |
+          set -Eeuo pipefail
+          php -l config/office_directory.php
+          php -l app/Services/OfficeDirectoryCatalog.php
+          php -l app/Http/Controllers/DepartmentController.php
+          php -l app/Http/Middleware/DenyUnapprovedMessaging.php
+          php -l app/Http/Middleware/DenyUnverifiedCorrespondenceMutations.php
+          php -l routes/web.php
+          php -l tests/Feature/OfficeDirectoryCatalogTest.php
+          php -l tests/Feature/RestrictedUatRouteGuardTest.php
+      - name: Route registry and schema
+        run: |
+          php artisan route:list --path=messages -v
+          php artisan migrate --force
+      - name: Focused R17 directory and security guards
+        run: php artisan test tests/Feature/OfficeDirectoryCatalogTest.php tests/Feature/RestrictedUatRouteGuardTest.php
+      - name: Preserve existing individual Task lifecycle
+        run: php artisan test tests/Feature/Tasks/IndividualTaskHttpTest.php
+      - name: Tracked code integrity
+        run: test -z "$(git status --porcelain --untracked-files=no)"
