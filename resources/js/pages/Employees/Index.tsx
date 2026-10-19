@@ -6,7 +6,7 @@ import PageHeader from '../../components/PageHeader';
 import AppLayout from '../../layouts/AppLayout';
 
 type Department = { code: string; name: string; short_name?: string };
-type Employee = { id: number; employee_number: string; full_name?: string; work_email?: string; position_title: string; employment_status: string; user_id?: number | null; department: Department; presence: 'online' | 'offline' };
+type Employee = { id: number; employee_number: string; full_name?: string; work_email?: string; position_title: string; employment_status: string; department: Department; presence: 'online' | 'offline' };
 type PaginatedEmployees = { data: Employee[]; current_page: number; last_page: number; per_page: number; total: number; prev_page_url?: string | null; next_page_url?: string | null };
 type Props = { employees: PaginatedEmployees; departments: Department[]; filters: { q: string; department: string }; summary: { employees: number; portalAccounts: number; featuredLogins: number; offices: number } };
 
@@ -17,7 +17,7 @@ export default function EmployeeDirectory({ employees, departments, filters, sum
     const reset = () => { setQ(''); setDepartment(''); router.get('/employees', {}, { preserveState: true, replace: true }); };
     useEffect(() => {
         const interval = window.setInterval(() => {
-            if (document.visibilityState === 'visible') router.reload({ only: ['employees'], preserveScroll: true });
+            if (document.visibilityState === 'visible') router.reload({ only: ['employees'] });
         }, 60000);
         return () => window.clearInterval(interval);
     }, []);
