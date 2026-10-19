@@ -1,3 +1,4 @@
+/* ONE TALIBON — MFA Challenge matching Login visual family */
 .mfa-challenge {
     position: relative;
     isolation: isolate;
@@ -6,17 +7,19 @@
     min-height: 100vh;
     min-height: 100svh;
     padding: 24px 16px;
-    background: #263c33;
+    background: #183b45;
     overflow: hidden;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-.mfa-challenge::before {
-    content: '';
+.mfa-challenge__backdrop {
     position: absolute;
-    inset: -48px;
+    inset: -18px;
     z-index: -2;
     background: url('/images/talibon/municipality-of-talibon.jpg') center / cover no-repeat;
-    filter: blur(24px);
+    filter: blur(4px);
+    transform: scale(1.025);
+    pointer-events: none;
 }
 
 .mfa-challenge::after {
@@ -24,63 +27,120 @@
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: rgb(0 0 0 / 28%);
+    background: linear-gradient(90deg, rgba(7, 26, 42, .62) 0%, rgba(8, 33, 48, .40) 47%, rgba(16, 46, 52, .14) 100%);
+    pointer-events: none;
 }
 
 .mfa-challenge-card {
+    position: relative;
     width: 100%;
-    max-width: 440px;
-    padding: 28px;
-    border: 1px solid #e2e8e5;
-    border-radius: 12px;
-    background: #fff;
-    box-shadow: 0 8px 32px rgb(0 0 0 / 14%);
+    max-width: 480px;
+    min-width: 0;
+    padding: clamp(28px, 4vw, 44px);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.48);
+    backdrop-filter: blur(30px) saturate(130%);
+    -webkit-backdrop-filter: blur(30px) saturate(130%);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
+    color: #14283d;
 }
 
 .mfa-challenge-kicker {
-    color: #145a43;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .08em;
+    color: #0e6a50;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .22em;
+    text-transform: uppercase;
 }
 
 .mfa-challenge-input {
+    display: block;
     width: 100%;
-    min-height: 44px;
-    padding: 10px 12px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    background: #fff;
-    color: #0f172a;
+    min-height: 52px;
+    padding: 12px 16px;
+    border: 1px solid rgba(20, 40, 61, 0.28);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.96);
+    color: #102a43;
+    font-size: 16px;
+    transition: border-color .15s ease, box-shadow .15s ease;
 }
 
 .mfa-challenge-input:focus {
-    border-color: #145a43;
-    outline: 2px solid #145a43;
-    outline-offset: 2px;
+    border-color: #0e6a50;
+    box-shadow: 0 0 0 3px rgba(14, 106, 80, 0.18);
+    outline: none;
 }
 
 .mfa-challenge-primary,
 .mfa-challenge-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    min-height: 44px;
-    padding: 10px 12px;
-    border: 1px solid #145a43;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
+    min-height: 52px;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
     cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease;
 }
 
-.mfa-challenge-primary { background: #145a43; color: #fff; }
-.mfa-challenge-primary:hover { background: #104a37; }
-.mfa-challenge-secondary { background: #fff; color: #145a43; }
-.mfa-challenge-secondary:hover { background: #f0f6f3; }
-.mfa-challenge-signout, .mfa-challenge svg { color: #145a43; }
-.mfa-challenge-signout:hover { text-decoration: underline; }
-.mfa-challenge button:focus-visible { outline: 2px solid #145a43; outline-offset: 3px; }
-.mfa-challenge button:disabled { opacity: .6; cursor: wait; }
+.mfa-challenge-primary {
+    border: 1px solid #0e6a50;
+    background: #0e6a50;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(14, 106, 80, 0.25);
+}
+
+.mfa-challenge-primary:hover:not(:disabled) {
+    background: #09553f;
+}
+
+.mfa-challenge-secondary {
+    border: 1px solid rgba(14, 106, 80, 0.45);
+    background: rgba(255, 255, 255, 0.92);
+    color: #0e6a50;
+}
+
+.mfa-challenge-secondary:hover:not(:disabled) {
+    background: #edf5ef;
+    border-color: #0e6a50;
+}
+
+.mfa-challenge-signout {
+    color: #0e6a50;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 4px;
+}
+
+.mfa-challenge-signout:hover {
+    color: #09553f;
+    text-decoration: underline;
+}
+
+.mfa-challenge button:focus-visible,
+.mfa-challenge input:focus-visible {
+    outline: 3px solid #0b7055;
+    outline-offset: 3px;
+}
+
+.mfa-challenge button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
 
 @media (max-width: 480px) {
-    .mfa-challenge-card { padding: 24px 20px; }
+    .mfa-challenge-card {
+        padding: 24px 18px;
+        border-radius: 18px;
+    }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .mfa-challenge-card { background: #f4f7f5; }
 }

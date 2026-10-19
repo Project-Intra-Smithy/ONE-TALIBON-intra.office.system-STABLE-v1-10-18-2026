@@ -20,7 +20,7 @@ export default function MfaChallenge() {
     return (
         <>
             <Head title="MFA challenge" />
-            <main className="mfa-challenge">
+            <main className="mfa-challenge"><div className="mfa-challenge__backdrop" aria-hidden="true" />
                 <div className="mfa-challenge-card">
                     <header>
                         <p className="mfa-challenge-kicker">ONE TALIBON &middot; ACCOUNT VERIFICATION</p>

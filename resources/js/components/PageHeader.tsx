@@ -13,12 +13,15 @@ export default function PageHeader({ eyebrow, title, description, aside, icon: I
     return (
         <header className="min-w-0 border-b border-[var(--municipal-border)] pb-5 sm:pb-6">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between lg:gap-6">
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                     <div className="municipal-eyebrow flex items-center gap-2">
                         {Icon && <Icon size={15} aria-hidden="true" />}
                         <span>{eyebrow}</span>
                     </div>
-                    <h1 className="mt-2 break-words text-[clamp(1.75rem,3vw,2.25rem)] font-extrabold leading-tight tracking-[-0.035em] text-[#0b2852] dark:text-slate-100">
+                    <h1
+                        className="mt-2 text-[clamp(1.5rem,3.2vw,2.25rem)] font-extrabold leading-tight tracking-[-0.035em] text-[#0b2852] dark:text-slate-100"
+                        style={{ overflowWrap: 'break-word', wordBreak: 'normal', hyphens: 'manual' }}
+                    >
                         {title}
                     </h1>
                     {description && (
