@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Domain\Identity\VerifiedMunicipalActor;
 use App\Models\CorrespondenceRecord;
 use App\Models\Department;
 use App\Models\TravelOrder;
@@ -25,13 +26,19 @@ final class RecordsSearchQuery
     /** @param array<string, mixed> $filters */
     public function workspace(User $actor, array $filters): array
     {
-        $actor->loadMissing('employee.department');
+        // One fresh, request-bound eligibility proof for this read operation.
+        // Each source retains its independent SQL visibility predicates.
+        // No cross-request caching or mutation authorization is implied.
+        $verified = VerifiedMunicipalActor::forProtectedSource($actor);
         $view = (string) ($filters['view'] ?? 'overview');
         $recordType = (string) ($filters['record_type'] ?? 'all');
 
-        $correspondenceBase = $this->authorizedCorrespondence($actor);
-        $transactionBase = $this->transactionVisibility->scope($actor);
-        $travelOrderBase = $this->travelOrderAccess->scopeVisibleTo(TravelOrder::query(), $actor);
+        $correspondenceBase = $this->authorizedCorrespondence($verified);
+        $transactionBase = $this->transactionVisibility->scopeVisibleToVerifiedActor($verified);
+        $travelOrderBase = $this->travelOrderAccess->scopeVisibleToVerifiedActor(
+            TravelOrder::query(),
+            $verified,
+        );
 
         $correspondence = clone $correspondenceBase;
         $transactions = clone $transactionBase;
@@ -40,24 +47,44 @@ final class RecordsSearchQuery
         $this->applyTransactionFilters($transactions, $filters);
         $this->applyTravelOrderFilters($travelOrders, $filters);
 
-        $overviewRecent = $this->paginate(
-            'all',
-            clone $correspondenceBase,
-            clone $transactionBase,
-            clone $travelOrderBase,
-            6,
-            1,
-        );
+        $recordsPage = $this->paginate($recordType, $correspondence, $transactions, $travelOrders);
+
+        // On the unfiltered all-source first page the primary 25-item
+        // result is the same authorized, ordered list as overview's first 6.
+        // All other requests retain an independently unfiltered overview;
+        // filtered lists or later pages must never change overview content.
+        $canReuseOverview = $recordType === 'all'
+            && (int) ($filters['page'] ?? 1) === 1
+            && ! array_filter(
+                [
+                    $filters['search'] ?? null,
+                    $filters['state'] ?? null,
+                    $filters['office_id'] ?? null,
+                    $filters['date_from'] ?? null,
+                    $filters['date_to'] ?? null,
+                ],
+                static fn ($value): bool => $value !== null && $value !== '',
+            );
+        $overviewRecent = $canReuseOverview
+            ? array_slice($recordsPage->items(), 0, 6)
+            : $this->paginate(
+                'all',
+                clone $correspondenceBase,
+                clone $transactionBase,
+                clone $travelOrderBase,
+                6,
+                1,
+            )->items();
 
         return [
-            'records' => $this->paginate($recordType, $correspondence, $transactions, $travelOrders),
+            'records' => $recordsPage,
             'overview' => [
                 'counts' => $this->overviewCounts(
                     $correspondenceBase,
                     $transactionBase,
                     $travelOrderBase,
                 ),
-                'recent' => $overviewRecent->items(),
+                'recent' => $overviewRecent,
             ],
             'filters' => [
                 'view' => $view,
@@ -91,10 +118,10 @@ final class RecordsSearchQuery
         ];
     }
 
-    private function authorizedCorrespondence(User $actor): Builder
+    private function authorizedCorrespondence(VerifiedMunicipalActor $verified): Builder
     {
         $query = CorrespondenceRecord::query();
-        $this->correspondenceAccess->scopeVisibleTo($query, $actor);
+        $this->correspondenceAccess->scopeVisibleToVerifiedActor($query, $verified);
 
         return $query;
     }
@@ -423,13 +450,13 @@ final class RecordsSearchQuery
             $union->unionAll($source);
         }
 
+        // Keep the office scope in SQL rather than fetching IDs and then
+        // issuing a second round-trip. The department still must be active.
         $ids = DB::query()
             ->fromSub($union->toBase(), 'record_offices')
             ->whereNotNull('department_id')
             ->distinct()
-            ->pluck('department_id')
-            ->map(fn ($id): int => (int) $id)
-            ->all();
+            ->select('department_id');
 
         return Department::query()
             ->where('is_active', true)
