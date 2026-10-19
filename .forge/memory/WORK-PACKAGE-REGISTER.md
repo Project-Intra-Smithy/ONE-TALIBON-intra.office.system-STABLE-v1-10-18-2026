@@ -440,3 +440,9 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 - **Static review:** 40 unique catalog keys/14 groups, frontend search/filter/no match, exactly 3 Messaging + 8 correspondence guarded routes; **NOT equivalent** to native Laravel/PostgreSQL/HTTP/Chromium.
 - **OPEN GATES:** Actual Lucien1/Lucien2/Nox1 worker patch byte import, independent nonauthor review, real Q0–Q7/AC, staff scope/LGU authority, G1/G2 security. No merge, deploy, official UAT GO or CLOSE.
 - **Single NEXT:** Kirch decide if one corrected isolated CI run is separately authorized; workers publish exact patches; Jane2 review source and test outcome.
+
+### START / AJ-HOME-AUTH-01 / 2026-10-19
+Owner AJ, Codex-assisted; Kirch review/integration. Issue: https://github.com/Project-Intra-Smithy/Talibon-Sales-Prototype/issues/98.
+Base 8a130e151fdf79e87e134a5d26e58667889f0a7e; isolated feat/aj-homepage-auth-refinement. Selectively port AJ local Auth candidates from frontend 8be1c5e plus preserved dirty files; no wholesale branch merge. Existing public homepage presentation only, auth contracts preserved, Dashboard regression only. No backend contracts, PR34/PR92, other worktrees, merge or deployment.
+Checks planned: types/build, available tests, Chromium 320/390/768/1024/1440, keyboard/navigation/loading/errors. Authenticated Laravel E2E separately reported.
+User explicitly authorizes implementation and branch publication; canonical-main memory synchronization remains SYNC_REQUIRED / HOLD pending Kirch review, not a reason to claim acceptance. NEXT: crosslink published START commit in #98, implement focused UI package.
