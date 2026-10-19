@@ -1,0 +1,97 @@
+/* Document Center repository composition; shared shell remains unchanged. */
+.dc-workspace { display:grid; grid-template-columns:190px minmax(0,1fr); align-items:start; border:1px solid var(--municipal-border); border-radius:8px; background:var(--municipal-surface); }
+.dc-workspace * { min-width:0; }
+.dc-rail { padding:10px 6px; border-right:1px solid var(--municipal-border); }
+.dc-rail-heading { padding:0 6px 8px; font-size:12px; font-weight:650; }
+.dc-category { display:flex; width:100%; align-items:center; gap:5px; padding:5px 6px; min-height:26px; border-radius:4px; text-align:left; color:var(--municipal-text); font-size:11px; line-height:15px; }
+#portal-content .dc-category { min-height:26px; border-radius:4px; }
+.dc-category > svg { flex-shrink:0; color:var(--municipal-gold); }
+.dc-category span { flex:1; overflow-wrap:anywhere; }
+.dc-category .dc-category-arrow { color:var(--municipal-muted); }
+.dc-category:hover { background:var(--municipal-hover); }
+.dc-category[aria-pressed="true"] { background:var(--municipal-selected-bg); color:var(--municipal-brand); font-weight:650; }
+.dc-category-unavailable { color:var(--municipal-muted); opacity:.65; font-weight:400; cursor:default; }
+.dc-category-unavailable > svg { color:var(--municipal-muted); opacity:.7; }
+.dc-category-unavailable:hover { background:transparent; }
+.dc-collections { padding-bottom:6px; margin-bottom:6px; border-bottom:1px solid var(--municipal-border); }
+.dc-main { padding:10px; min-width:0; }
+.dc-toolbar-row { display:grid; grid-template-columns:minmax(200px,1fr) 130px 120px auto auto; gap:6px; align-items:center; }
+.dc-toolbar-row .municipal-action { white-space:nowrap; flex-wrap:nowrap; }
+.dc-filters summary { width:fit-content; cursor:pointer; padding:5px 0; font-size:11px; color:var(--municipal-brand); font-weight:600; }
+.dc-date-filters { display:flex; flex-wrap:wrap; align-items:end; gap:8px; padding-top:4px; }
+.dc-date-filters label { display:grid; gap:4px; font-size:12px; }
+.dc-filter-help { margin-top:6px; font-size:11px; line-height:16px; color:var(--municipal-muted); }
+.dc-context { display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; padding:5px 0 8px; font-size:11px; color:var(--municipal-muted); }
+.dc-register-group { border:1px solid var(--municipal-border); border-radius:6px; overflow:hidden; }
+.dc-register-caption { display:flex; justify-content:space-between; gap:8px; padding:7px 10px; font-size:11px; border-bottom:1px solid var(--municipal-border); }
+.dc-register-caption h2 { font-size:12px; font-weight:650; }
+.dc-register-caption > span { color:var(--municipal-muted); }
+.dc-register-head, .dc-record-grid { display:grid; grid-template-columns:minmax(0,2.2fr) 90px minmax(0,1.2fr) minmax(90px,.85fr) 60px; gap:10px; align-items:center; padding:5px 10px; }
+.dc-register-head { min-height:32px; background:var(--municipal-surface-subtle); color:var(--municipal-muted); font-size:11px; font-weight:650; }
+.dc-register-body { max-height:336px; overflow-y:auto; scrollbar-gutter:stable; }
+.dc-register-head { padding-right:25px; }
+.dc-record { border-bottom:1px solid var(--municipal-border); }
+.dc-record:last-child { border-bottom:0; }
+.dc-record:hover { background:var(--municipal-hover); }
+.dc-record.dc-record-selected { background:var(--municipal-selected-bg); box-shadow:inset 3px 0 var(--municipal-selected-border); }
+.dc-record-grid { min-height:48px; }
+#portal-content .dc-record-title button { display:flex; align-items:center; gap:7px; width:100%; min-height:36px; text-align:left; font-size:13px; line-height:17px; font-weight:550; }
+.dc-record-title svg { flex-shrink:0; color:var(--municipal-brand); }
+.dc-record-title span { overflow-wrap:anywhere; }
+.dc-record-title small, .dc-record-type small { display:block; margin-top:2px; color:var(--municipal-muted); font-size:11px; line-height:15px; font-weight:400; }
+.dc-record-type, .dc-record-date { font-size:11px; line-height:16px; overflow-wrap:anywhere; }
+.dc-record-date { color:var(--municipal-muted); }
+.dc-record-actions { display:flex; align-items:center; justify-content:flex-end; }
+.dc-open { display:inline-flex; align-items:center; min-height:36px; white-space:nowrap; word-break:normal; overflow-wrap:normal; flex-shrink:0; font-size:12px; font-weight:600; color:var(--municipal-brand); }
+.dc-open:hover { text-decoration:underline; }
+.dc-metadata { border-top:1px solid var(--municipal-border); }
+.dc-metadata-empty { padding:10px; font-size:12px; color:var(--municipal-muted); }
+.dc-metadata-header { display:flex; align-items:center; justify-content:space-between; padding:0 10px; min-height:32px; }
+.dc-metadata-header h2 { font-size:12px; font-weight:650; }
+#portal-content .dc-metadata-header button { display:flex; align-items:center; justify-content:center; min-height:32px; width:36px; }
+.dc-metadata-content { display:grid; grid-template-columns:minmax(150px,.9fr) minmax(0,2fr); gap:16px; padding:0 10px 10px; }
+.dc-document-identity { display:flex; gap:10px; align-items:start; }
+.dc-document-identity > svg { color:var(--municipal-brand); flex-shrink:0; margin-top:3px; }
+.dc-document-identity h3 { font-size:13px; line-height:18px; font-weight:600; overflow-wrap:anywhere; }
+.dc-metadata-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px 12px; align-content:start; }
+.dc-metadata-grid dt { font-size:10px; line-height:14px; color:var(--municipal-muted); }
+.dc-metadata-grid dd { font-size:11px; line-height:15px; overflow-wrap:anywhere; }
+.dc-empty { padding:16px 10px; font-size:12px; color:var(--municipal-muted); }
+.dc-inline-metadata, .dc-mobile-label, .dc-mobile-preview, .dc-mobile-categories, .dc-mobile-collection { display:none; }
+.dc-register-group nav[aria-label="Document pages"] { padding:6px 10px; border-top:1px solid var(--municipal-border); }
+@media (max-width:1199px) {
+ .dc-toolbar-row { grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto auto; }
+ .dc-toolbar-row > .municipal-search-field { grid-column:1 / -1; }
+ .dc-register-head, .dc-record-grid { grid-template-columns:minmax(0,2fr) 80px minmax(0,1fr) 85px 50px; gap:6px; }
+ .dc-metadata-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:1023px) {
+ .dc-workspace { grid-template-columns:minmax(0,1fr); }
+ .dc-rail { border-right:0; border-bottom:1px solid var(--municipal-border); padding:10px; }
+ .dc-desktop-categories { display:none; }
+ .dc-mobile-collection, .dc-mobile-categories { display:block; }
+ .dc-mobile-categories summary { min-height:44px; padding:12px 0; cursor:pointer; font-size:12px; }
+ #portal-content .dc-category { min-height:44px; }
+ .dc-register-head { display:none; }
+ .dc-register-body { max-height:none; overflow:visible; }
+ .dc-record-grid { display:flex; flex-direction:column; align-items:stretch; gap:6px; padding:10px; }
+ .dc-record-title { order:1; }
+ .dc-record-type { order:2; }
+ .dc-record-status { order:3; }
+ .dc-record-date { order:4; }
+ .dc-record-actions { order:5; justify-content:space-between; gap:8px; }
+ .dc-mobile-label { display:inline; }
+ .dc-mobile-preview { display:inline-flex; align-items:center; min-height:44px; white-space:nowrap; font-size:12px; color:var(--municipal-brand); }
+ .dc-below-metadata { display:none; }
+ .dc-inline-metadata { display:block; padding:0 10px 10px; }
+ .dc-metadata-content { grid-template-columns:minmax(0,1fr); }
+ .dc-metadata-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+ .dc-open, #portal-content .dc-record-title button, #portal-content .dc-metadata-header button { min-height:44px; }
+}
+@media (max-width:639px) {
+ .dc-toolbar-row { grid-template-columns:repeat(2,minmax(0,1fr)); }
+ .dc-toolbar-row > .municipal-search-field { grid-column:1 / -1; }
+ .dc-filters summary { min-height:44px; padding-block:12px; }
+ .dc-date-filters { display:grid; grid-template-columns:minmax(0,1fr); }
+}
+@media (pointer:coarse) { #portal-content .dc-category, #portal-content .dc-record-title button, #portal-content .dc-metadata-header button, .dc-open { min-height:44px; } }

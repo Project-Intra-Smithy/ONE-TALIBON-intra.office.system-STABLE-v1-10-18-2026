@@ -1,0 +1,39 @@
+export type Message = {
+    publicId: string;
+    cursor: number;
+    channel: string;
+    body: string;
+    createdAt: string;
+    sender: {
+        name: string | null;
+        office: string | null;
+    };
+    isMine: boolean;
+};
+
+export const messagesEndpoint = '/messages/feed';
+
+export function mergeMessages(
+    current: Message[],
+    incoming: Message[],
+): Message[] {
+    const byPublicId = new Map(current.map((message) => [message.publicId, message]));
+    incoming.forEach((message) => byPublicId.set(message.publicId, message));
+
+    return [...byPublicId.values()].sort((left, right) => left.cursor - right.cursor);
+}
+
+export function xsrfToken(): string {
+    const entry = document.cookie
+        .split('; ')
+        .find((cookie) => cookie.startsWith('XSRF-TOKEN='));
+
+    if (!entry) return '';
+
+    const encoded = entry.slice('XSRF-TOKEN='.length);
+    try {
+        return decodeURIComponent(encoded);
+    } catch {
+        return encoded;
+    }
+}

@@ -1,0 +1,202 @@
+﻿[
+    {
+        "file":  "resources/css/phase-one-shell.css",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "D368F654F0FFBC2948047E09932821C00F33C071C710586E8C60BA4860960E42"
+    },
+    {
+        "file":  "resources/css/visual-system.css",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "23CD9C9ED39C6253C63524189015C068956F62C9B986AFB11F8634D297DC8D78"
+    },
+    {
+        "file":  "resources/js/components/dashboard/ActivityRail.tsx",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "8583E963181F60149CDC0C152D2BA8827BA5A09D89E1E2E37CE811981945B22D"
+    },
+    {
+        "file":  "resources/js/components/dashboard/CorrespondenceOverview.tsx",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "E35EEA3FA059F017E1F5DF5169F300780EC968A43EBF6834F1E82E4C6BF5BD44"
+    },
+    {
+        "file":  "resources/js/components/dashboard/dashboard.css",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "E0B36F3B6AEAF5B8DB4448B0E262FD1981456A5ED08C3B285983DC32CDF1AB12"
+    },
+    {
+        "file":  "resources/js/components/dashboard/DashboardHeader.tsx",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "B175089039C5B96873E9EABFF2C2E8F62FBC2153C5330A0FFB317C35A61177F3"
+    },
+    {
+        "file":  "resources/js/components/dashboard/DashboardSection.tsx",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "BCF6D782054330181F28E8C7B72890EEBD59B14FA39D1DF587C07D75150C7AAF"
+    },
+    {
+        "file":  "resources/js/components/dashboard/ExecutiveOverview.tsx",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "FC724532C7290143708803107877CBAC19F1BEABE9B9125FA1022EC59A9AD2F2"
+    },
+    {
+        "file":  "resources/js/components/dashboard/MetricGroup.tsx",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "80F9D5C40F35F7023E6643E73A1A56956E5286CBE30BDFAFC9AA2EE74FAEB3D1"
+    },
+    {
+        "file":  "resources/js/components/dashboard/OfficeOverview.tsx",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "F4A14D1D22D64C40E79E8B3B193D6BEA09981B49253A465330102DB1EA72D35D"
+    },
+    {
+        "file":  "resources/js/components/dashboard/preview.css",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "B8AC45AFC9EA7EFF8AAABB10585F5A1EAC69586C9DD94A6EBFFE5E750E44A69F"
+    },
+    {
+        "file":  "resources/js/components/dashboard/preview-fixtures.ts",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "DC6512F11C2F42061DF14E228BE97455C0350EF2EB41390CF77B668A713C4D90"
+    },
+    {
+        "file":  "resources/js/components/dashboard/preview-isolation.ts",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "16F2B632F2E82C8BA58032CCA9ABEA3B6AEAA057F7379EB2783853A2210CC53A"
+    },
+    {
+        "file":  "resources/js/components/dashboard/QuickActions.tsx",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "2589FAC46C83C77110A7CBCFDF695D83E6C6DFF69D22A9F473A25B7902E58BCC"
+    },
+    {
+        "file":  "resources/js/components/dashboard/RecentWorkList.tsx",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "EA079E7ACC236091E1DB70F20ED75B898B4D0754F7579DEA04D6C17B9EFE7302"
+    },
+    {
+        "file":  "resources/js/components/dashboard/SystemOverview.tsx",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "E2BD08F329A8C1B699B6FFAFCBA084EE6FDE00BF9B40C12D016BE4DD8985B1E3"
+    },
+    {
+        "file":  "resources/js/components/shell/__tests__/shell-fixture.tsx",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "3C5F7395B690F01D9297456283110D903E557ECA67FC138916BC891C6F9C02B8"
+    },
+    {
+        "file":  "resources/js/components/shell/MobileNavigation.tsx",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "92F7F62647C190BCBF679145EB31ECDC0BEA3A11BF5C04D22FCA886D73B6C09B"
+    },
+    {
+        "file":  "resources/js/components/shell/PortalSidebar.tsx",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "2CED906AF937586F0B3ED729B9DE09ABC98019318320BE4B46720C991C200B48"
+    },
+    {
+        "file":  "resources/js/components/shell/PortalTools.tsx",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "2175905FA67C20288F53ED48A1BAD39F4817FE160A81D8402F34FCDD49C64D8C"
+    },
+    {
+        "file":  "resources/js/layouts/AppLayout.tsx",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "AC9DA06B7F24D085EB04F3007FE048F58D9AE5D9C05A2089DA1F4D5F16D860C8"
+    },
+    {
+        "file":  "resources/js/pages/Dashboard.tsx",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "F25E35943B1B4B4AD01C570B6860D3E06772E2714B1771D9C8DE6A6391DA9B32"
+    },
+    {
+        "file":  "resources/js/visual-fixtures.ts",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "5BBAEABDC38928B983F7AED24987C49CB145B63A9A0B6FEEA515A83706B42042"
+    },
+    {
+        "file":  "resources/js/visual-preview.tsx",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "842198FED27574E6757CC4E7BB40419E806507B6A44EEF24C59F553A98581A00"
+    },
+    {
+        "file":  "scripts/verify-dashboard-build.mjs",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "00133983F9E5061ECC0E2AD6CB3B047B0A1AA93461FC03FA0271F16A3CFC31CB"
+    },
+    {
+        "file":  "tests/dashboard-mounted-ui.test.mjs",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "3A416C2B35E93733CA051360141F1059B68CD3F086ED1C17A0A25CAE4A18311B"
+    },
+    {
+        "file":  "tests/fixtures/dashboard-preview-plugin.ts",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "5B0D1F47887972F1DE00A38399614400455CFB2F8535A7A25EC03E1B9CE4EB56"
+    },
+    {
+        "file":  "tests/fixtures/shell.html",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "D8197FFC5AEE4E6AD26D4A86CA5F671AEA537D052A051564FDE6A22011445E67"
+    },
+    {
+        "file":  "tests/shell-mounted-ui.test.mjs",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "5B2751599A9FEE902F3408911480A02D779605B25AC5D21360096846F0071801"
+    },
+    {
+        "file":  "tests/task-mounted-ui.test.mjs",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "1FBF05A328A6226F2F6F17C34DEFB9EB798B4B6F16496C7FD95103BC0C96C466"
+    },
+    {
+        "file":  "tsconfig.json",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "3C17B4324802FFB31D745593D0721F4C7AB6271024D1891403FCC8D450B1C99D"
+    },
+    {
+        "file":  "visual-preview.html",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "99116D21ADF3BD52F0B109BA1924EC80579883EB87E0C7EACF30EAF07BD72701"
+    },
+    {
+        "file":  "vite.config.ts",
+        "source":  "Phase 2 working tree (includes Phase 1)",
+        "sha256":  "B7D8A57B6655DF739D9F118E8D101EB8C94CE7A4D2F136F52CFBC2EAD07A7D3A"
+    },
+    {
+        "file":  "resources/js/pages/Auth/Login.tsx",
+        "source":  "Auth working tree",
+        "sha256":  "A3CD66136F66316B586EB378F4E51D7D3ACBB1DCDFC3308CD39A8E7353E14A48"
+    },
+    {
+        "file":  "resources/js/pages/Auth/login.css",
+        "source":  "Auth working tree",
+        "sha256":  "18C7702A52879B90628CBE4D13DF2283DFEAB9F869749C63EB6E037A45B22EA7"
+    },
+    {
+        "file":  "resources/js/pages/Auth/MfaChallenge.tsx",
+        "source":  "Auth working tree",
+        "sha256":  "029D178FD567021CE64076366984AD7F86EFEF095035CBE43F32F395E636A73E"
+    },
+    {
+        "file":  "resources/js/pages/Auth/mfa-challenge.css",
+        "source":  "Auth working tree",
+        "sha256":  "31E704A7E6F46D77B08BB17B6A5DE1519B1560DF3575289EFBA4E0804D678855"
+    },
+    {
+        "file":  "public/images/talibon/municipality-of-talibon.jpg",
+        "source":  "Auth working tree",
+        "sha256":  "BDA46D5ACBE46EC7C991EA7BDF7285F5F660665FBC69102C7368CDE8424B4444"
+    },
+    {
+        "file":  "tests/login-mounted-ui.test.mjs",
+        "source":  "Auth working tree",
+        "sha256":  "AD37D665E609A960C957E65FA167EB632069F5BBD8E22A2A29D3F25D2B59B605"
+    },
+    {
+        "file":  "package-lock.json",
+        "source":  "Auth working tree",
+        "sha256":  "90E528F2839DB791FCFFA2120B84C0C62DCBB4D9082C7314904152946CA11B6C"
+    }
+]

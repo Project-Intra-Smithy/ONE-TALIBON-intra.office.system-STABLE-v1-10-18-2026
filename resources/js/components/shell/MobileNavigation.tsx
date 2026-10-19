@@ -1,7 +1,9 @@
 import { X } from 'lucide-react';
 import { useEffect, useRef, type PropsWithChildren } from 'react';
 
-export default function MobileNavigation({ children, onClose }: PropsWithChildren<{ onClose: () => void }>) {
+type Props = PropsWithChildren<{ onClose: () => void; onDesktop: () => void }>;
+
+export default function MobileNavigation({ children, onClose, onDesktop }: Props) {
     const dialog = useRef<HTMLDialogElement>(null);
     const closeButton = useRef<HTMLButtonElement>(null);
     useEffect(() => {
@@ -11,7 +13,21 @@ export default function MobileNavigation({ children, onClose }: PropsWithChildre
         element?.showModal();
         closeButton.current?.focus();
         document.body.style.overflow = 'hidden';
+        const keepFocusInside = (event: KeyboardEvent) => {
+            if (event.key !== 'Tab' || !element) return;
+            const controls = Array.from(element.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input:not([disabled]), [tabindex="0"]'))
+                .filter(control => control.tabIndex >= 0 && control.getClientRects().length > 0);
+            const first = controls[0];
+            const last = controls[controls.length - 1];
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault(); last?.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault(); first?.focus();
+            }
+        };
+        element?.addEventListener('keydown', keepFocusInside);
         return () => {
+            element?.removeEventListener('keydown', keepFocusInside);
             element?.close();
             document.body.style.overflow = previousOverflow;
             previousFocus?.focus();
@@ -19,13 +35,22 @@ export default function MobileNavigation({ children, onClose }: PropsWithChildre
     }, []);
     useEffect(() => {
         const desktop = window.matchMedia('(min-width: 1024px)');
-        const closeOnDesktop = () => { if (desktop.matches) onClose(); };
+        const closeOnDesktop = () => { if (desktop.matches) onDesktop(); };
         desktop.addEventListener('change', closeOnDesktop);
         return () => desktop.removeEventListener('change', closeOnDesktop);
-    }, [onClose]);
-    return <dialog ref={dialog} onCancel={(event) => { event.preventDefault(); onClose(); }} aria-label="Municipal navigation" className="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none border-0 bg-transparent p-0 text-white backdrop:bg-slate-950/55 lg:hidden">
-        <button type="button" onClick={onClose} className="absolute inset-0" aria-label="Dismiss navigation backdrop" tabIndex={-1} />
-        <aside className="relative h-full w-[84%] max-w-[290px] shadow-2xl">{children}</aside>
-        <button ref={closeButton} type="button" onClick={onClose} className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-lg bg-white text-slate-900 shadow dark:bg-slate-800 dark:text-slate-100" aria-label="Close navigation"><X size={18} /></button>
+    }, [onDesktop]);
+    return <dialog id="portal-mobile-navigation" ref={dialog}
+        onCancel={(event) => { event.preventDefault(); onClose(); }}
+        aria-label="Workspace navigation" className="portal-mobile-navigation">
+        <button type="button" onClick={onClose} className="portal-drawer-backdrop" aria-label="Dismiss navigation backdrop" tabIndex={-1} />
+        <div className="portal-drawer">
+            <div className="portal-drawer-heading">
+                <span>Navigation</span>
+                <button ref={closeButton} type="button" onClick={onClose} aria-label="Close navigation">
+                    <X size={20} aria-hidden="true" /><span>Close</span>
+                </button>
+            </div>
+            <div className="portal-drawer-content">{children}</div>
+        </div>
     </dialog>;
 }

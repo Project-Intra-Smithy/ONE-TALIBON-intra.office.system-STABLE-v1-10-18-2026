@@ -42,7 +42,7 @@ before(async()=>{
   }
   server=spawn(process.execPath,
     ['node_modules/vite/bin/vite.js','--host','127.0.0.1','--port','4174','--strictPort'],
-    {stdio:'pipe',env:{...process.env,LARAVEL_BYPASS_ENV_CHECK:'1'}});
+    {stdio:'pipe',env:{...process.env,LARAVEL_BYPASS_ENV_CHECK:'1',FRONTEND_TEST_CACHE_DIR:'node_modules/.vite-test-task'}});
   for(const stream of [server.stdout,server.stderr])
     stream.on('data',chunk=>{serverOutput+=String(chunk);});
   let ready=false;
@@ -69,8 +69,8 @@ async function mount(handler){
   const page=await context.newPage(),errors=[];
   page.on('pageerror',err=>errors.push(err.message));
   // Exact HTTP endpoints only; never intercept Vite modules in /components/tasks/.
-  await page.route(/\/tasks(?:\/\d+)?(?:\?|$)/,async route=>
-    handler(new URL(route.request().url()),route));
+  await page.route(/\/tasks(?:\/\d+)?(?:\/(?:start|complete))?(?:\?|$)/,async route=>
+    {const u=new URL(route.request().url());u.pathname=u.pathname.replace(/^\/__dashboard-preview/, '');return handler(u,route);});
   await page.goto(url,{waitUntil:'domcontentloaded',timeout:20000});
   await page.getByRole('heading',{name:'Personal Tasks'}).waitFor();
   return {context,page,errors};
@@ -178,4 +178,76 @@ test('mounted Inertia identity switch clears old viewer and loads only new rows'
     assert.equal(await page.getByText(a.title,{exact:true}).count(),0);
     assert.deepEqual(errors,[]);
   }finally{releaseNew();await context.close();}
+});
+
+test('mounted React: create, start, complete and fresh fixture visit preserve Task lifecycle',async()=>{
+  let record=null;const calls=[];
+  const {page,context,errors}=await mount(async(u,route)=>{
+    const method=route.request().method(),path=u.pathname;
+    calls.push(method+' '+path);
+    if(method==='GET'&&path==='/tasks'){
+      const selected=u.searchParams.get('state');
+      return route.fulfill(response(pageBody(record&&record.state===selected?[record]:[])));
+    }
+    if(method==='POST'&&path==='/tasks'){
+      const body=route.request().postDataJSON();
+      assert.deepEqual(Object.keys(body).sort(),['title']);
+      record=task(73,body.title);
+      return route.fulfill(response({data:record},201));
+    }
+    if(method==='GET'&&path==='/tasks/73')return route.fulfill(response({data:record}));
+    if(method==='POST'&&path==='/tasks/73/start'){
+      assert.deepEqual(route.request().postDataJSON(),{});
+      record={...record,state:'in_progress'};
+      return route.fulfill(response({data:record}));
+    }
+    if(method==='POST'&&path==='/tasks/73/complete'){
+      assert.deepEqual(route.request().postDataJSON(),{});
+      record={...record,state:'completed'};
+      return route.fulfill(response({data:record}));
+    }
+    return route.abort();
+  });
+  try {
+    const name='Mounted integration task';
+    const form=page.getByRole('form',{name:'Create individual Task'});
+    await form.getByRole('textbox',{name:'Title'}).fill(name);
+    await form.getByRole('button',{name:'Create Task'}).click();
+    await page.getByText('Task #73 created.').waitFor();
+    await page.getByRole('button',{name:new RegExp(name)}).click();
+    await page.getByRole('button',{name:'Start Task'}).click();
+    await page.getByRole('button',{name:'In Progress',exact:true}).click();
+    await page.getByRole('button',{name:new RegExp(name)}).click();
+    await page.getByRole('button',{name:'Complete Task'}).click();
+    await page.getByRole('button',{name:'Completed',exact:true}).click();
+    await page.getByRole('button',{name:new RegExp(name)}).waitFor();
+    // Explicit fixture re-navigation remounts React. This is not a Laravel session reload.
+    await page.goto(url,{waitUntil:'domcontentloaded'});
+    await page.getByRole('heading',{name:'Personal Tasks'}).waitFor();
+    await page.getByRole('button',{name:'Completed',exact:true}).click();
+    await page.getByRole('button',{name:new RegExp(name)}).waitFor();
+    assert.equal(record.state,'completed');
+    assert.equal(calls.filter(x=>x.startsWith('POST ')).length,3);
+    assert.deepEqual(errors,[]);
+  } finally {await context.close();}
+});
+
+test('mounted React: denied write clears protected Task details',async()=>{
+  const restricted=task(15,secret+' MUTATION DENIED');
+  const {page,context,errors}=await mount(async(u,route)=>{
+    if(route.request().method()==='GET'&&u.pathname==='/tasks')
+      return route.fulfill(response(pageBody([restricted])));
+    if(route.request().method()==='GET'&&u.pathname==='/tasks/15')
+      return route.fulfill(response({data:restricted}));
+    if(route.request().method()==='POST'&&u.pathname==='/tasks/15/start')
+      return route.fulfill(response({code:'MFA_REQUIRED',next_url:'/security/mfa/challenge'},403));
+    return route.abort();
+  });
+  try {
+    await page.getByRole('button',{name:new RegExp(restricted.title)}).click();
+    await page.getByRole('button',{name:'Start Task'}).click();
+    await page.getByRole('alert').getByText('Personal Tasks unavailable (403)').waitFor();
+    await assertGone(page,[restricted.title]);
+    assert.deepEqual(errors,[]);
+  } finally {await context.close();}
 });

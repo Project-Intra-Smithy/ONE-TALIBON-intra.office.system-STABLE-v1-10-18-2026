@@ -9,6 +9,7 @@ import WorkItemList from '../../components/work-queue/WorkItemList';
 import WorkScopeTabs from '../../components/work-queue/WorkScopeTabs';
 import type { Filters, Office, Paginator, ScopeGroup, StaffWorkload } from '../../components/work-queue/types';
 import AppLayout from '../../layouts/AppLayout';
+import PersonalTaskWorkspace from '../../components/tasks/PersonalTaskWorkspace';
 
 type Props = {
     records: Paginator;
@@ -102,6 +103,8 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
                     <span><span className="font-semibold text-slate-700 dark:text-slate-200">{currentTitle}</span> · {currentQueue?.count ?? records.total} item{(currentQueue?.count ?? records.total) === 1 ? '' : 's'}</span>
                 </div>
 
+                <PersonalTaskWorkspace />
+                <h2 className="mt-5 text-base font-bold text-slate-900 dark:text-white">Work Requests</h2>
                 <WorkScopeTabs groups={scopeGroups} currentView={currentView} onSelect={selectView} />
 
                 <form onSubmit={applyFilters}>

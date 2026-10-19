@@ -1,0 +1,32 @@
+/* The label is outside the Inertia mount and exists only in visual-preview.html. */
+.fixture-banner {
+    position: relative;
+    z-index: 80;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .45rem 1rem;
+    background: #f9e8b0;
+    border-bottom: 1px solid #d4ac4c;
+    color: #3d3218;
+    padding: .45rem 1rem;
+    font-size: .75rem;
+    line-height: 1.35;
+}
+.fixture-banner strong { letter-spacing: .1em; }
+.fixture-banner nav { display: flex; flex-wrap: wrap; gap: .2rem .7rem; margin-left: auto; }
+.fixture-banner a { color: #382b10; text-decoration: underline; text-underline-offset: 2px; }
+.fixture-banner a[aria-current="page"] { font-weight: 800; text-decoration-thickness: 2px; }
+@media (max-width: 640px) {
+    .fixture-banner nav { width: 100%; margin-left: 0; overflow-x: auto; flex-wrap: nowrap; }
+    .fixture-banner nav a { flex: none; }
+}
+
+.fixture-banner { position: static !important; display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; padding: 16px 20px; background: #f1f7f3; color: #17352b; border-bottom: 1px solid #b8cbbf; font: 16px/1.5 system-ui, sans-serif; overflow-wrap: anywhere; }
+.fixture-banner nav { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.fixture-banner a { display: inline-flex; align-items: center; min-height: 44px; color: #166343; }
+.fixture-banner label { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.fixture-banner select { max-width: 100%; min-height: 44px; background: white; border: 1px solid #607c6a; border-radius: 8px; padding: 8px; font: inherit; }
+.fixture-banner :focus-visible { outline: 3px solid #166343; outline-offset: 3px; }
+#preview-status { width: 100%; }
+#preview-status:empty { display: none; }

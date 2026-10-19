@@ -1,3 +1,4 @@
+import { dashboardFixture, type DashboardRole } from './components/dashboard/preview-fixtures.ts';
 /* Synthetic, non-operational props for the isolated visual preview only. */
 const office = { id: 1, code: 'SAMPLE', name: 'Sample Municipal Office', shortName: 'Sample Office' };
 const otherOffice = { id: 2, code: 'EXAMPLE', name: 'Example Service Office', shortName: 'Example Office' };
@@ -13,7 +14,6 @@ const shared = (role: string) => ({
     auth: { user: { id: 1, name: 'Preview Employee', email: 'preview.invalid@example.test', role, employee: { employee_number: 'DEMO-001', position: 'Sample staff member', department: { ...office, short_name: office.shortName } } } },
     permissions: { reports: true, navigation: nav }, flash: {},
 });
-const metric = (label: string, value: number, link: string) => ({ label, value, link });
 const sampleCorrespondence = [
     { publicId: 'demo-a', reference: 'DEMO-COR-001', sender: { name: 'Sample sender', organization: 'Example organization', source: 'external' }, subject: 'Sample request for office coordination', classification: 'internal', lifecycleState: 'received', currentOffice: office, assignedEmployee: null, workflowReference: 'DEMO-WR-001', receivedAt: now, age: '1 day', actionRequired: true, overdue: false },
     { publicId: 'demo-b', reference: 'DEMO-COR-002', sender: { name: 'Example office', source: 'internal' }, subject: 'Illustrative document routing notice', classification: 'internal', lifecycleState: 'routed', currentOffice: otherOffice, assignedEmployee: { id: 1, employeeNumber: 'DEMO-001', name: 'Preview Staff', position: 'Sample position' }, receivedAt: now, age: '2 days', actionRequired: false, overdue: false },
@@ -28,25 +28,11 @@ export const previewScreens = [
 ] as const;
 
 type Fixture = { component: string; url: string; props: Record<string, unknown> };
-export function fixturePage(screen: string, role = 'employee'): Fixture {
+export function fixturePage(screen: string, role = 'employee', state = 'populated'): Fixture {
     const roles = ['employee', 'department_head', 'executive_oversight', 'system_administration'];
     const safeRole = roles.includes(role) ? role : 'employee';
     const base = shared(safeRole);
-    const recentWork = work.map((item) => ({ ...item, detailUrl: `/transactions/${item.id}` }));
-    const dashboard = {
-        experience: { key: safeRole, label: safeRole.replaceAll('_', ' '), department: office, scopes: { personal: true, office: true, municipal: false, system: false }, capabilities: { openOfficeWorkspace: false, viewMunicipalAggregates: false, openSystemAdministration: false }, quickActions: [
-            { label: 'My Work', description: 'Review work', url: '/transactions' },
-            { label: 'Correspondence', description: 'Review inbox', url: '/correspondence' },
-            { label: 'Records', description: 'Search records', url: '/records' },
-            { label: 'Calendar', description: 'View schedule', url: '/calendar' },
-        ] },
-        metricGroups: [{ key: 'personal', title: 'My work', metrics: [metric('Requires action', 2, '/transactions'), metric('Due soon', 1, '/transactions'), metric('Correspondence', 4, '/correspondence'), metric('Records', 12, '/records')] }],
-        correspondenceOverview: { attention: metric('Needs action', 2, '/correspondence?view=needs_action'), status: [
-            { lifecycle: 'received', label: 'Received', count: 2, link: '/correspondence?view=received' },
-            { lifecycle: 'routed', label: 'Routed', count: 1, link: '/correspondence?view=routed' },
-        ], recentlyReceived: [{ reference: 'DEMO-COR-001', subject: sampleCorrespondence[0].subject, sender: 'Sample sender', lifecycle: 'received', currentOffice: office, receivedAt: now, detailUrl: '/correspondence/demo-a/workspace' }], recentlyRouted: [{ reference: 'DEMO-COR-002', subject: sampleCorrespondence[1].subject, sender: 'Example office', lifecycle: 'routed', currentOffice: otherOffice, routedAt: now, detailUrl: '/correspondence/demo-b/workspace' }] },
-        recentWork,
-    };
+    const dashboard = dashboardFixture(safeRole as DashboardRole, state);
     const scenarios: Record<string, Fixture> = {
         dashboard: { component: 'Dashboard', url: '/dashboard', props: dashboard },
         work: { component: 'Transactions/Index', url: '/transactions', props: {

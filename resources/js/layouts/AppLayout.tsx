@@ -1,3 +1,4 @@
+import '../../css/phase-one-shell.css';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { Bell, Menu, X } from 'lucide-react';
 import { type PropsWithChildren, useEffect, useRef, useState } from 'react';
@@ -5,7 +6,7 @@ import { NotificationContext } from '../components/shell/NotificationContext';
 import { emptyNotificationFeed, parseNotificationFeed } from '../compat/notificationFeed';
 import MobileNavigation from '../components/shell/MobileNavigation';
 import PortalSidebar from '../components/shell/PortalSidebar';
-import { PortalIdentity, PortalLauncher, RecordsSearch } from '../components/shell/PortalTools';
+import { PortalIdentity, RecordsSearch } from '../components/shell/PortalTools';
 import { useVisiblePolling } from '../hooks/useVisiblePolling';
 import { buildPortalNavigation } from '../navigation/portalNavigation';
 import type { LiveNotification, NotificationFeed, SharedProps } from '../types';
@@ -192,30 +193,34 @@ export default function AppLayout({ title, presentation = 'standard', children }
             <Head title={title} />
             <a href="#portal-content" className="sr-only z-[80] rounded bg-white p-3 text-blue-900 focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to content</a>
             <div data-presentation={presentation}
-                className={`min-h-screen bg-[var(--municipal-canvas)] text-slate-900 transition-colors dark:bg-[#0d1624] dark:text-slate-100 lg:grid lg:transition-[grid-template-columns] lg:duration-150 lg:ease-out motion-reduce:transition-none ${
+                className={`portal-shell ${
                     desktopCollapsed
-                        ? 'lg:grid-cols-[72px_minmax(0,1fr)]'
-                        : 'lg:grid-cols-[248px_minmax(0,1fr)]'
+                        ? 'portal-shell--compact'
+                        : ''
                 }`}
             >
-                <aside className="hidden h-screen shadow-xl shadow-[#071e3d]/10 lg:sticky lg:top-0 lg:block">{desktopSidebar}</aside>
+                <aside className="portal-desktop-navigation">{desktopSidebar}</aside>
 
-                {mobileOpen && <MobileNavigation onClose={() => setMobileOpen(false)}>{mobileSidebar}</MobileNavigation>}
+                {mobileOpen && <MobileNavigation onClose={() => setMobileOpen(false)} onDesktop={() => {
+                    setMobileOpen(false);
+                    requestAnimationFrame(() => document.querySelector<HTMLButtonElement>('.portal-desktop-navigation button')?.focus());
+                }}>{mobileSidebar}</MobileNavigation>}
 
-                <main className="min-w-0">
-                    <header className="sticky top-0 z-20 flex min-h-[76px] items-center justify-between gap-2 border-b border-slate-200/80 bg-white/95 px-4 shadow-sm shadow-slate-900/5 backdrop-blur-md transition-colors dark:border-slate-700/80 dark:bg-[#142236]/95 sm:px-6">
+                <main className="portal-main">
+                    <header className="portal-header">
                         <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-                            <button onClick={() => setMobileOpen(true)} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800 lg:hidden" aria-label="Open navigation">
+                            <button type="button" aria-expanded={mobileOpen} aria-controls="portal-mobile-navigation" aria-haspopup="dialog" onClick={() => setMobileOpen(true)} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800 lg:hidden" aria-label="Open navigation">
                                 <Menu size={20} />
                             </button>
                             <div className="min-w-0">
-                                <div className="whitespace-nowrap text-lg font-extrabold tracking-tight text-[#0b2852] dark:text-white sm:text-xl">One <span className="text-[#1769aa] dark:text-blue-400">Talibon</span></div>
-                                <div className="hidden text-[10px] font-semibold uppercase tracking-wider sm:block">LGU Intra-Office Portal</div>
-                                <div className="mt-0.5 truncate text-xs font-medium text-slate-500 dark:text-slate-400">{title}</div>
+                              <div className="portal-context">
+                                   <span className="sm:hidden">One Talibon</span>
+                                   <span className="hidden sm:inline">One Talibon / Workspace</span>
+                            </div>
+                                <div className="portal-page-title">{title}</div>
                             </div>
                         </div>
 
-                        {navigationGroups.some((group) => group.items.some((item) => item.key === 'records')) && <RecordsSearch />}
                         <div className="flex shrink-0 items-center gap-1 sm:gap-2">
                             <div ref={notificationsPanel} className="relative">
                                 <button
@@ -234,8 +239,8 @@ export default function AppLayout({ title, presentation = 'standard', children }
                                     <div id="portal-notifications" className="fixed left-3 right-3 top-20 z-50 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl dark:border-slate-700 dark:bg-[#142236] sm:absolute sm:left-auto sm:right-0 sm:top-10 sm:w-[350px]">
                                         <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3 dark:border-slate-700">
                                             <div>
-                                                <div className="text-[12px] font-bold text-slate-950 dark:text-slate-100 sm:text-sm">Recent activity</div>
-                                                <div className="text-xs text-slate-500 dark:text-slate-400 sm:text-xs">{feedState === 'current' ? 'New office arrivals and unread memoranda' : feedState === 'expired' ? 'Session expired. Sign in again to refresh.' : feedState === 'unavailable' ? 'Updates unavailable; showing last received items.' : 'Loading updates…'}</div>
+                                                <div className="text-base font-bold text-slate-950 dark:text-slate-100 sm:text-sm">Recent activity</div>
+                                                <div className="text-sm text-slate-500 dark:text-slate-400 sm:text-sm">{feedState === 'current' ? 'New office arrivals and unread memoranda' : feedState === 'expired' ? 'Session expired. Sign in again to refresh.' : feedState === 'unavailable' ? 'Updates unavailable; showing last received items.' : 'Loading updates…'}</div>
                                             </div>
                                             <button onClick={() => setNotificationsOpen(false)} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Close notifications"><X size={16} /></button>
                                         </div>
@@ -244,31 +249,31 @@ export default function AppLayout({ title, presentation = 'standard', children }
                                                 <Link key={notification.key} href={notification.url} onClick={() => setNotificationsOpen(false)} className="block px-4 py-3 transition hover:bg-slate-50 dark:hover:bg-slate-800/60">
                                                     <div className="flex items-start justify-between gap-3">
                                                         <div className="min-w-0">
-                                                            <div className="text-xs font-bold uppercase tracking-wide text-blue-700 dark:text-blue-300 sm:text-xs">{notification.title}</div>
-                                                            <div className="mt-1 text-[13px] leading-4 text-slate-700 dark:text-slate-200 sm:text-sm">{notification.message}</div>
-                                                            {notification.created_at && <div className="mt-1.5 text-xs text-slate-400 sm:text-xs">{relativeTime(notification.created_at)}</div>}
+                                                            <div className="text-sm font-bold uppercase tracking-wide text-blue-700 dark:text-blue-300 sm:text-sm">{notification.title}</div>
+                                                            <div className="mt-1 text-base leading-4 text-slate-700 dark:text-slate-200 sm:text-sm">{notification.message}</div>
+                                                            {notification.created_at && <div className="mt-1.5 text-sm text-slate-400 sm:text-sm">{relativeTime(notification.created_at)}</div>}
                                                         </div>
-                                                        {notification.urgent && <span className="shrink-0 rounded-full bg-rose-50 px-2 py-1 text-xs font-bold uppercase text-rose-700 dark:bg-rose-950/40 dark:text-rose-300 sm:text-xs">Action</span>}
+                                                        {notification.urgent && <span className="shrink-0 rounded-full bg-rose-50 px-2 py-1 text-sm font-bold uppercase text-rose-700 dark:bg-rose-950/40 dark:text-rose-300 sm:text-sm">Action</span>}
                                                     </div>
                                                 </Link>
                                             ))}
-                                            {notifications.length === 0 && <div className="px-4 py-8 text-center text-[13px] text-slate-500 dark:text-slate-400 sm:text-sm">{feedState === 'current' ? 'No recent notifications.' : 'Notifications have not been refreshed.'}</div>}
+                                            {notifications.length === 0 && <div className="px-4 py-8 text-center text-base text-slate-500 dark:text-slate-400 sm:text-sm">{feedState === 'current' ? 'No recent notifications.' : 'Notifications have not been refreshed.'}</div>}
                                         </div>
                                     </div>
                                 )}
                             </div>
-                            <PortalLauncher groups={navigationGroups} />
                             <PortalIdentity user={user} />
                         </div>
+                        {navigationGroups.some((group) => group.items.some((item) => item.key === 'records')) && <RecordsSearch />}
                     </header>
 
                     {(flash?.success || flash?.error) && (
-                        <div className={`mx-3 mt-3 rounded-xl border px-3 py-2.5 text-[12px] font-semibold sm:mx-4 sm:mt-4 sm:px-4 sm:py-3 sm:text-sm md:mx-8 ${flash.success ? 'border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200' : 'border-rose-200 bg-rose-50 text-rose-800 dark:border-rose-900 dark:bg-rose-950/40 dark:text-rose-200'}`}>
+                        <div role={flash.error ? 'alert' : 'status'} className={`portal-flash mx-3 mt-3 rounded-xl border px-3 py-2.5 text-[12px] font-semibold sm:mx-4 sm:mt-4 sm:px-4 sm:py-3 sm:text-sm md:mx-8 ${flash.success ? 'border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200' : 'border-rose-200 bg-rose-50 text-rose-800 dark:border-rose-900 dark:bg-rose-950/40 dark:text-rose-200'}`}>
                             {flash.success || flash.error}
                         </div>
                     )}
                     <div id="portal-content" data-presentation={presentation === 'portal-dashboard' ? 'dashboard' : undefined} tabIndex={-1} className={presentation === 'portal-dashboard' ? 'p-3 sm:p-4' : undefined}><NotificationContext.Provider value={notifications}>{children}</NotificationContext.Provider></div>
-                    <footer className="mx-3 flex flex-wrap justify-between gap-2 border-t border-slate-200 py-4 text-xs text-slate-500 dark:border-slate-700 dark:text-slate-400 sm:mx-5"><span>Municipality of Talibon · Province of Bohol</span><span>One Talibon · Intra-Office Portal</span></footer>
+                    <footer className="portal-footer mx-3 flex flex-wrap justify-between gap-2 border-t border-slate-200 py-4 text-xs text-slate-500 dark:border-slate-700 dark:text-slate-400 sm:mx-5"><span>Municipality of Talibon · Province of Bohol</span><span>One Talibon · Intra-Office Portal</span></footer>
                 </main>
             </div>
 
