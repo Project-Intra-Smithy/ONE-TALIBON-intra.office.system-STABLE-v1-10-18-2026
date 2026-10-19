@@ -335,6 +335,37 @@ class RecordsSearchTest extends TestCase
                 }));
     }
 
+    public function test_unfiltered_overview_recent_and_filtered_register_keep_separate_scopes(): void
+    {
+        $office = $this->department('OVERVIEW-PARITY');
+        $actor = $this->human('department_head', $office);
+
+        foreach (range(1, 8) as $number) {
+            $this->transaction(
+                "Overview parity {$number}",
+                $office,
+                $office,
+                $actor,
+            );
+        }
+
+        // The default primary list and overview use the same authorized
+        // ordering; overview is limited to six items regardless of page size.
+        $this->actingAs($actor)->get('/records')
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->where('records.total', 8)
+                ->has('records.data', 8)
+                ->has('overview.recent', 6));
+
+        // A filtered registry must not narrow the unfiltered overview feed.
+        $this->actingAs($actor)->get('/records?record_type=correspondence')
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->where('records.total', 0)
+                ->has('overview.recent', 6));
+    }
+
     public function test_pagination_is_bounded_and_preserves_query_filters(): void
     {
         $office = $this->department('PAGE');
