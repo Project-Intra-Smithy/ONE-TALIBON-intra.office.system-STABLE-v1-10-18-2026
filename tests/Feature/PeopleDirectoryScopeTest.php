@@ -1,0 +1,82 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\AttendanceLog;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
+use Inertia\Testing\AssertableInertia as Assert;
+use Tests\TestCase;
+
+class PeopleDirectoryScopeTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_hris_redirects_to_the_directory_and_legacy_payroll_and_leave_endpoints_are_not_exposed(): void
+    {
+        $this->seed();
+        $actor = User::query()->where('email', 'employee@talibon.demo')->firstOrFail();
+
+        $this->actingAs($actor)->get('/hris')->assertRedirect(route('employees.index'));
+        $this->get('/employees')->assertOk()
+            ->assertInertia(fn (Assert $page) => $page->component('Employees/Index')->has('employees.data'));
+        foreach (['/hris/payroll', '/hris/admin', '/hris/dtr', '/hris/admin/development',
+            '/hris/admin/lifecycle', '/hris/admin/offboarding', '/hris/health/'.$actor->employee->id] as $path) {
+            $this->get($path)->assertNotFound();
+        }
+        $this->post('/hris/leave-requests', [])->assertNotFound();
+    }
+
+    public function test_portal_presence_requires_a_real_heartbeat_and_can_only_update_the_signed_in_actor(): void
+    {
+        $this->seed();
+        $actor = User::query()->where('email', 'employee@talibon.demo')->firstOrFail();
+        $other = User::query()->where('email', 'engineering@talibon.demo')->firstOrFail();
+
+        $this->actingAs($actor)->get(route('employees.show', $actor->employee))
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Employees/DirectoryProfile')
+                ->where('employee.presence', 'offline')
+                ->missing('privateProfile')->missing('performanceRecords')->missing('developmentRecords'));
+
+        $this->postJson(route('employees.presence'), ['user_id' => $other->id])->assertOk();
+        $this->assertNotNull($actor->fresh()->last_seen_at);
+        $this->assertNull($other->fresh()->last_seen_at);
+        $this->get(route('employees.show', $actor->employee))
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Employees/DirectoryProfile')->where('employee.presence', 'online'));
+
+        DB::table('users')->where('id', $actor->id)->update(['last_seen_at' => now()->subMinutes(10)]);
+        $this->get(route('employees.show', $actor->employee))
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Employees/DirectoryProfile')->where('employee.presence', 'offline'));
+
+        $this->postJson(route('employees.presence'))->assertOk();
+        $this->post(route('logout'))->assertRedirect(route('login'));
+        $this->assertNull($actor->fresh()->last_seen_at);
+    }
+
+    public function test_attendance_is_authenticated_employee_self_only_and_does_not_enumerate_other_staff(): void
+    {
+        $this->seed();
+        $actor = User::query()->where('email', 'employee@talibon.demo')->firstOrFail();
+        $other = User::query()->where('email', 'engineering@talibon.demo')->firstOrFail();
+        AttendanceLog::query()->where('employee_id', $actor->employee->id)->delete();
+        AttendanceLog::query()->create([
+            'employee_id' => $other->employee->id,
+            'occurred_at' => now(),
+            'event_type' => 'in',
+            'source' => 'synthetic_test',
+        ]);
+
+        $this->actingAs($actor)->get(route('hris.attendance', ['employee_id' => $other->employee->id]))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Hris/Attendance')
+                ->where('employee.number', $actor->employee->employee_number)
+                ->has('events', 0)
+                ->missing('payrollPeriods')
+                ->missing('leaveTypes'));
+    }
+}

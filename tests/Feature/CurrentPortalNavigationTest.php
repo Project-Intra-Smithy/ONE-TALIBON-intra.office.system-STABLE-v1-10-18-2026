@@ -130,11 +130,11 @@ class CurrentPortalNavigationTest extends TestCase
             $this->assertTrue(Route::has($routeName), "Expected current route {$routeName} to remain registered.");
         }
 
-        foreach (['audit', 'mfa.settings', 'mfa.recovery.show', 'mfa.recovery.regenerate', 'mfa.reset', 'mfa.disable', 'property.index', 'property.lifecycle.index', 'reports.index', 'hris', 'hris.dtr', 'hris.payroll', 'hris.admin'] as $routeName) {
+        foreach (['audit', 'mfa.settings', 'mfa.recovery.show', 'mfa.recovery.regenerate', 'mfa.reset', 'mfa.disable', 'property.index', 'property.lifecycle.index', 'reports.index', 'hris', 'hris.attendance', 'employees.presence'] as $routeName) {
             $this->assertTrue(Route::has($routeName), "Expected hidden backend route {$routeName} to remain registered.");
         }
 
-        foreach (['procurement.showcase', 'showcase.session.store', 'showcase.session.switch'] as $routeName) {
+        foreach (['procurement.showcase', 'showcase.session.store', 'showcase.session.switch', 'hris.payroll', 'hris.leave.store', 'hris.admin', 'hris.health.show', 'hris.offboarding.index'] as $routeName) {
             $this->assertFalse(Route::has($routeName), "Expected excluded/transitional route {$routeName} to be absent.");
         }
     }
