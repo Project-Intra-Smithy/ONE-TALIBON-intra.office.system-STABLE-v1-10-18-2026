@@ -11,8 +11,8 @@ class SystemAdministrationNavigationCompatibilityTest extends TestCase
         $layout = file_get_contents(resource_path('js/layouts/AppLayout.tsx'));
 
         $this->assertIsString($layout);
-        $this->assertStringContainsString('pageProps.permissions.reports', $layout);
-        $this->assertStringContainsString('pageProps.permissions.navigation', $layout);
+        $this->assertStringContainsString('pageProps.permissions?.reports', $layout);
+        $this->assertStringContainsString('pageProps.permissions?.navigation', $layout);
         $this->assertStringContainsString('navigation.reports', $layout);
         $this->assertStringNotContainsString('includes(user?.role', $layout);
         $this->assertStringNotContainsString("user?.role ===", $layout);

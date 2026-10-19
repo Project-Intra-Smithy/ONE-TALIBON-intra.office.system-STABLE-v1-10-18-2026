@@ -22,9 +22,9 @@ class SystemAdministrationNavigationContractTest extends TestCase
 
         $activeNavigation = implode("\n", [$layout, $navigation, $access, $destinations, $routePlan]);
 
-        $this->assertStringContainsString('pageProps.permissions.navigation', $layout);
-        $this->assertStringContainsString('pageProps.permissions.reports', $layout);
-        $this->assertStringContainsString('pageProps.permissions.reports && navigation.reports', $layout);
+        $this->assertStringContainsString('pageProps.permissions?.navigation', $layout);
+        $this->assertStringContainsString('pageProps.permissions?.reports', $layout);
+        $this->assertStringContainsString('pageProps.permissions?.reports && navigation.reports', $layout);
         $this->assertStringContainsString('buildPortalNavigation(', $layout);
         $this->assertStringContainsString('isPortalDestinationVisible(destination, experience, permissions)', $navigation);
         $this->assertStringContainsString('permissions[destination.permission]', $access);

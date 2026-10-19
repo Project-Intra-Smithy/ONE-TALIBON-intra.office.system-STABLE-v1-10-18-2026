@@ -22,6 +22,12 @@ class W03ContextContinuityTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        config()->set('messaging_release.restricted_uat', false);
+    }
+
     public function test_return_target_strips_nested_context_and_rejects_unsafe_or_wrong_routes(): void
     {
         $this->assertSame(
@@ -100,12 +106,14 @@ class W03ContextContinuityTest extends TestCase
 
     public function test_transaction_detail_related_work_uses_server_owned_workspace_scope_for_office_link(): void
     {
-        $source = file_get_contents(resource_path('js/pages/Transactions/Show.tsx'));
+        $controller = file_get_contents(app_path('Http/Controllers/TransactionController.php'));
+        $panel = file_get_contents(resource_path('js/components/workflow/RelatedWorkPanel.tsx'));
 
-        $this->assertIsString($source);
-        $this->assertStringContainsString("page.props.workspaceExperience === 'department_head'", $source);
-        $this->assertStringContainsString("href: '/transactions?view=office_queue'", $source);
-        $this->assertStringContainsString("href: '/transactions?view=all'", $source);
+        $this->assertIsString($controller);
+        $this->assertIsString($panel);
+        $this->assertStringContainsString("'relatedWork' => \$this->relatedWork(", $controller);
+        $this->assertStringContainsString('Array.isArray(props.relatedWork)', $panel);
+        $this->assertStringContainsString("target.searchParams.set('return_to', returnTarget)", $panel);
     }
 
     public function test_correspondence_register_and_classify_preserve_validated_list_context(): void

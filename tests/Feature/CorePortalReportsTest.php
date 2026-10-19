@@ -343,7 +343,7 @@ class CorePortalReportsTest extends TestCase
         $layout = file_get_contents(resource_path('js/layouts/AppLayout.tsx'));
         $page = file_get_contents(resource_path('js/pages/Reports/Index.tsx'));
 
-        $this->assertStringContainsString('pageProps.permissions.reports', $layout);
+        $this->assertStringContainsString('pageProps.permissions?.reports', $layout);
         $this->assertStringNotContainsString("user?.role === 'department_head'", $layout);
         $this->assertStringNotContainsString('setInterval', $page);
         $this->assertStringNotContainsString('router.reload', $page);

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\WorkRequests;
 
+use App\Http\Middleware\HandleInertiaRequests;
 use App\Models\CalendarEvent;
 use App\Models\Department;
 use App\Models\Document;
@@ -26,6 +27,15 @@ use Tests\TestCase;
 final class WorkRequestRevocationTest extends TestCase
 {
     use RefreshDatabase;
+
+    /** @return array<string, string> */
+    private function inertiaHeaders(): array
+    {
+        return [
+            'X-Inertia' => 'true',
+            'X-Inertia-Version' => (string) app(HandleInertiaRequests::class)->version(request()),
+        ];
+    }
 
     public function test_separated_privileged_actor_loses_all_policy_actions_and_query_access_with_stale_relations(): void
     {
@@ -106,7 +116,7 @@ final class WorkRequestRevocationTest extends TestCase
         $transaction->update(['assigned_employee_id' => $employee->id]);
 
         $before = $this->actingAs($admin)
-            ->withHeaders(['X-Inertia' => 'true'])
+            ->withHeaders($this->inertiaHeaders())
             ->get(route('employees.show', $employee));
         $before->assertOk();
         // Seeded assignments may appear ahead of this fixture; order is not
@@ -119,7 +129,7 @@ final class WorkRequestRevocationTest extends TestCase
         $employee->update(['employment_status' => 'separated']);
 
         $this->actingAs($admin)
-            ->withHeaders(['X-Inertia' => 'true'])
+            ->withHeaders($this->inertiaHeaders())
             ->get(route('employees.show', $employee))
             ->assertForbidden();
     }
@@ -148,7 +158,7 @@ final class WorkRequestRevocationTest extends TestCase
         ]);
 
         $this->actingAs($admin)
-            ->withHeaders(['X-Inertia' => 'true'])
+            ->withHeaders($this->inertiaHeaders())
             ->get(route('legislative.workspace'))
             ->assertOk()
             ->assertJsonPath('props.sessions.0.agenda_items.0.transaction.id', $transaction->id);
@@ -156,7 +166,7 @@ final class WorkRequestRevocationTest extends TestCase
         $admin->employee()->update(['employment_status' => 'separated']);
 
         $this->actingAs($admin)
-            ->withHeaders(['X-Inertia' => 'true'])
+            ->withHeaders($this->inertiaHeaders())
             ->get(route('legislative.workspace'))
             ->assertForbidden();
     }
@@ -278,13 +288,13 @@ final class WorkRequestRevocationTest extends TestCase
         ]);
 
         $url = route('employees.show', $target);
-        $this->actingAs($admin)->withHeaders(['X-Inertia' => 'true'])
+        $this->actingAs($admin)->withHeaders($this->inertiaHeaders())
             ->get($url)->assertOk()
             ->assertJsonPath('props.privateProfile.government_ids.tin', '999-888-777-001');
 
         $admin->load('employee.department');
         $admin->employee()->update(['employment_status' => 'separated']);
-        $separated = $this->actingAs($admin)->withHeaders(['X-Inertia' => 'true'])
+        $separated = $this->actingAs($admin)->withHeaders($this->inertiaHeaders())
             ->get($url)->assertForbidden();
         $this->assertStringNotContainsString('999-888-777-001', $separated->getContent());
         $this->assertStringNotContainsString('protected-p1h@example.test', $separated->getContent());

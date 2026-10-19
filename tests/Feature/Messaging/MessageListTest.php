@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Messaging;
 
+use App\Http\Middleware\DenyUnapprovedMessaging;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Message;
@@ -13,6 +14,12 @@ use Tests\TestCase;
 final class MessageListTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->withoutMiddleware(DenyUnapprovedMessaging::class);
+    }
 
     public function test_initial_list_is_bounded_chronological_and_channel_isolated(): void
     {

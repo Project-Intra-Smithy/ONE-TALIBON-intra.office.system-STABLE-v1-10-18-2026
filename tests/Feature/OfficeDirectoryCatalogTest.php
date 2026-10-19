@@ -164,7 +164,8 @@ class OfficeDirectoryCatalogTest extends TestCase
             'mfa_version' => 1,
         ])->save();
 
-        $this->actingAs($admin)->get('/departments?view=directory')
+        auth()->guard('web')->login($admin);
+        $this->get('/departments?view=directory')
             ->assertRedirect(route('mfa.challenge'));
     }
 

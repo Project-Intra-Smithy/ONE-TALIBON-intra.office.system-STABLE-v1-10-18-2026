@@ -28,6 +28,7 @@ class CoreDocumentAttachmentsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        config()->set('messaging_release.restricted_uat', false);
         Storage::fake('documents');
     }
 

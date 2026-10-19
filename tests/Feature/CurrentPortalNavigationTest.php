@@ -30,8 +30,8 @@ class CurrentPortalNavigationTest extends TestCase
 
         $activeNavigation = implode("\n", [$layout, $navigation, $access, $destinations, $routePlan]);
 
-        $this->assertStringContainsString('pageProps.permissions.navigation', $layout);
-        $this->assertStringContainsString('pageProps.permissions.reports && navigation.reports', $layout);
+        $this->assertStringContainsString('pageProps.permissions?.navigation', $layout);
+        $this->assertStringContainsString('pageProps.permissions?.reports && navigation.reports', $layout);
         $this->assertStringContainsString('isPortalDestinationVisible(destination, experience, permissions)', $navigation);
         $this->assertStringContainsString('permissions[destination.permission]', $access);
         $this->assertStringContainsString('workspaceExperience', $layout);
@@ -109,9 +109,10 @@ class CurrentPortalNavigationTest extends TestCase
         $this->assertIsString($layout);
 
         $this->assertStringContainsString('navigationGroups.map((group)', $sidebar);
-        $this->assertStringContainsString('group.items.map((item)', $sidebar);
-        $this->assertStringContainsString('collapsible={false}', $sidebar);
-        $this->assertStringContainsString('<SidebarFooter compact={compact} user={user} />', $sidebar);
+        $this->assertStringContainsString('group.items.map(({ key, label, href, icon: Icon })', $sidebar);
+        $this->assertStringContainsString('onToggleCollapsed', $sidebar);
+        $this->assertStringContainsString('<AppearanceControl compact />', $sidebar);
+        $this->assertStringContainsString("router.post('/logout')", $sidebar);
         $this->assertStringNotContainsString('useState(active)', $section);
         $this->assertStringContainsString('expanded?: boolean;', $section);
         $this->assertStringContainsString('onToggle?: () => void;', $section);

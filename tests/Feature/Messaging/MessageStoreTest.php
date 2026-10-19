@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Messaging;
 
+use App\Http\Middleware\DenyUnapprovedMessaging;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\User;
@@ -12,6 +13,12 @@ use Tests\TestCase;
 final class MessageStoreTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->withoutMiddleware(DenyUnapprovedMessaging::class);
+    }
 
     public function test_assured_user_can_send_with_real_identity_and_persistence(): void
     {
