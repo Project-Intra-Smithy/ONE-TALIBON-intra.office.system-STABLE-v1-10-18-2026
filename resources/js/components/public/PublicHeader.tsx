@@ -43,7 +43,7 @@ export default function PublicHeader({ authenticated }: Props) {
                 </span>
             </a>
 
-            <nav aria-label="Talibon Intra-Office Portal navigation" className="ml-auto hidden items-center gap-5 2xl:flex">
+            <nav aria-label="Talibon Intra-Office Portal navigation" className="ml-auto hidden items-center gap-5 xl:flex">
                 {publicLinks.map(([label, href]) => <a key={href} href={href} className="public-nav-link">
                     {label}
                 </a>)}
@@ -63,7 +63,7 @@ export default function PublicHeader({ authenticated }: Props) {
                     ref={trigger}
                     type="button"
                     onClick={() => setOpen(!open)}
-                    className="public-menu-button 2xl:hidden"
+                    className="public-menu-button xl:hidden"
                     style={{ width: '44px', minHeight: '44px' }}
                     aria-label={open ? 'Close portal navigation' : 'Open portal navigation'}
                     aria-expanded={open}
@@ -77,7 +77,7 @@ export default function PublicHeader({ authenticated }: Props) {
         <nav
             id="public-mobile-navigation"
             aria-label="Mobile Talibon Intra-Office Portal navigation"
-            className={`${open ? 'block' : 'hidden'} public-navigation 2xl:hidden`}
+            className={`${open ? 'block' : 'hidden'} public-navigation xl:hidden`}
         >
             <div className="mx-auto flex w-full max-w-[1360px] flex-col px-[var(--public-page-gutter)] py-1.5">
                 {publicLinks.map(([label, href]) => <a

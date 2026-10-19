@@ -1,4 +1,4 @@
-import type { PortalDestinationKey } from '../../navigation/navigationTypes';
+import type { PortalDestinationKey } from '../../navigation/portalNavigation';
 import type { StatusTone } from '../portal/StatusBadge';
 export type DocumentOffice = { id?: number; code: string; name: string; shortName?: string | null };
 export type DocumentRow = { recordType: string; reference?: string | null; title: string; source: string; originOffice?: DocumentOffice | null; currentOffice?: DocumentOffice | null; assignedEmployee?: { name: string; position?: string | null } | null; state: string; classification?: string | null; recordDate?: string | null; updatedAt?: string | null; detailUrl: string };

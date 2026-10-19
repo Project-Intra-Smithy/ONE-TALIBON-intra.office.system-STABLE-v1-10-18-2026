@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\WorkflowTransaction;
 use App\Services\DepartmentWorkspaceQuery;
+use App\Services\OfficeDirectoryCatalog;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -14,6 +15,7 @@ class DepartmentController extends Controller
 {
     public function __construct(
         private readonly DepartmentWorkspaceQuery $workspace,
+        private readonly OfficeDirectoryCatalog $officeDirectory,
     ) {
     }
 
@@ -21,11 +23,16 @@ class DepartmentController extends Controller
     {
         $actor = $request->user();
 
-        if ($actor && $this->workspace->allowed($actor)) {
+        // Only the explicit directory view changes a head's default presentation.
+        // Existing auth/active/MFA middleware and head workload scope remain unchanged.
+        if ($actor && $request->query('view') !== 'directory' && $this->workspace->allowed($actor)) {
             return Inertia::render('Departments/Workspace', $this->workspace->workspace($actor));
         }
 
-        return Inertia::render('Departments/Index', $this->directory());
+        return Inertia::render('Departments/Index', array_merge(
+            $this->directory(),
+            $this->officeDirectory->props(),
+        ));
     }
 
     /** @return array<string, mixed> */

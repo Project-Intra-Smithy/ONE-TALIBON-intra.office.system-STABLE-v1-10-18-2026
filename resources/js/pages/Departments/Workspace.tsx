@@ -4,6 +4,7 @@ import AppLayout from '../../layouts/AppLayout';
 export default function Workspace() {
     return (
         <AppLayout title="Department Workspace">
+            <div className="px-4 py-2"><a href="/departments?view=directory" className="text-sm font-semibold underline">Browse all 40 directory entries</a></div>
             <AuthorityPendingSurface
                 title="Department Workspace"
                 description="Department-specific workflow presentation is withheld until each LGU process owner confirms the authoritative workflow contract."

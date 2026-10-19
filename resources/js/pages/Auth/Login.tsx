@@ -1,117 +1,125 @@
 import { Head, useForm } from '@inertiajs/react';
-import { Building2, CheckCircle2, LockKeyhole, ShieldCheck } from 'lucide-react';
-import type { FormEvent } from 'react';
+import { ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { useState, type FormEvent } from 'react';
+import './login.css';
 
 export default function Login() {
-    const form = useForm({ email: '', password: '', remember: false });
+  const form = useForm({ email: '', password: '', remember: false });
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
-    function submit(event: FormEvent) {
-        event.preventDefault();
-        form.post('/login');
-    }
+  function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!form.processing) form.post('/login');
+  }
 
-    return (
-        <>
-            <Head title="Employee Portal" />
-            <div className="auth-canvas min-h-screen lg:grid lg:grid-cols-[0.9fr_1.1fr]">
-                <section className="hidden bg-[#08264d] p-10 text-white lg:flex lg:flex-col lg:justify-between xl:p-14">
-                    <div className="text-sm text-blue-100">One Talibon · Employee Portal</div>
-
-                    <div className="max-w-xl">
-                        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm text-blue-100">
-                            <ShieldCheck size={17} /> Secure municipal employee access
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <Building2 size={34} />
-                            <div>
-                                <div className="text-xs font-semibold uppercase tracking-[0.24em] text-blue-200">Municipality of Talibon</div>
-                                <div className="text-3xl font-black tracking-tight">ONE TALIBON</div>
-                            </div>
-                        </div>
-                        <h1 className="mt-8 text-4xl font-bold leading-tight xl:text-5xl">Employee Portal</h1>
-                        <p className="mt-5 text-base leading-7 text-blue-100 xl:text-lg">Secure access to the municipality's internal coordination, routing, records, and operational workspaces.</p>
-                    </div>
-
-                    <div className="text-sm leading-6 text-blue-200">Employee operations remain separate from the public One Talibon information portal.</div>
-                </section>
-
-                <section className="flex min-h-screen items-center justify-center px-4 py-8 sm:px-6 lg:min-h-0 lg:p-10">
-                    <div className="w-full max-w-md">
-                        <div className="mb-6 text-sm font-semibold text-blue-800 lg:hidden">One Talibon · Employee Portal</div>
-
-                        <div className="auth-panel bg-white p-6 sm:p-8">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-900">
-                                <LockKeyhole size={22} />
-                            </div>
-                            <div className="mt-5 auth-kicker">One Talibon</div>
-                            <h2 className="mt-2 text-2xl font-bold text-slate-950">Employee Portal</h2>
-                            <p className="mt-2 text-sm leading-6 text-slate-500">Sign in using the credentials privately issued for this prototype environment.</p>
-
-                            <form onSubmit={submit} className="mt-7 space-y-4">
-                                <label className="block">
-                                    <span className="mb-1.5 block text-sm font-medium text-slate-700">Email</span>
-                                    <input
-                                        autoComplete="username"
-                                        autoFocus
-                                        value={form.data.email}
-                                        onChange={(event) => form.setData('email', event.target.value)}
-                                        type="email"
-                                        required
-                                        className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
-                                    />
-                                    {form.errors.email && <span className="mt-1.5 block text-sm text-red-600">{form.errors.email}</span>}
-                                </label>
-
-                                <label className="block">
-                                    <span className="mb-1.5 block text-sm font-medium text-slate-700">Password</span>
-                                    <input
-                                        autoComplete="current-password"
-                                        value={form.data.password}
-                                        onChange={(event) => form.setData('password', event.target.value)}
-                                        type="password"
-                                        required
-                                        className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
-                                    />
-                                    {form.errors.password && <span className="mt-1.5 block text-sm text-red-600">{form.errors.password}</span>}
-                                </label>
-
-                                <label className="flex items-center gap-2 text-sm text-slate-600">
-                                    <input
-                                        type="checkbox"
-                                        checked={form.data.remember}
-                                        onChange={(event) => form.setData('remember', event.target.checked)}
-                                        className="rounded border-slate-300 text-blue-800 focus:ring-blue-700"
-                                    />
-                                    Remember me on this device
-                                </label>
-
-                                <button disabled={form.processing} className="w-full rounded-xl bg-[#0b2852] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#10396f] disabled:opacity-60">
-                                    {form.processing ? 'Signing in…' : 'Sign In'}
-                                </button>
-                            </form>
-
-                            <div className="my-6 flex items-center gap-3 text-xs uppercase tracking-wider text-slate-400">
-                                <span className="h-px flex-1 bg-slate-200" /> Future identity integration <span className="h-px flex-1 bg-slate-200" />
-                            </div>
-
-                            <button type="button" disabled className="flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-500">
-                                Continue with Google
-                            </button>
-                            <p className="mt-2 text-center text-xs leading-5 text-slate-500">Google account integration will be enabled after official LGU identity setup.</p>
-
-                            <div className="mt-6 rounded-2xl bg-blue-50 p-4">
-                                <div className="flex items-start gap-3">
-                                    <CheckCircle2 className="mt-0.5 shrink-0 text-blue-800" size={18} />
-                                    <div>
-                                        <div className="text-sm font-semibold text-slate-900">First time accessing the Portal?</div>
-                                        <p className="mt-1 text-xs leading-5 text-slate-600">Account activation is not enabled in this prototype.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+  return (
+    <>
+      <Head title="Employee Portal" />
+      <main className="employee-login">
+        <div className="employee-login__backdrop" aria-hidden="true" />
+        <div className="employee-login__composition">
+          <header className="employee-login__identity">
+            <div className="employee-login__identity-content">
+              <p className="employee-login__municipality">Municipality of Talibon</p>
+              <h1 className="employee-login__headline">
+                <span>ONE</span>
+                <span className="employee-login__headline-accent">TALIBON</span>
+              </h1>
+              <p className="employee-login__subtitle">Intraoffice Portal</p>
+              <span className="employee-login__rule" aria-hidden="true" />
+              <p className="employee-login__description">
+                One place for the tools and information your team uses every day,
+                kept simple and easy to reach.
+              </p>
             </div>
-        </>
-    );
+          </header>
+
+          <section className="employee-login__panel" aria-labelledby="login-title">
+            <p className="employee-login__eyebrow">Sign in</p>
+            <h2 id="login-title">Sign in to your workspace</h2>
+            <p className="employee-login__intro">Use your ONE TALIBON account to continue.</p>
+
+            <form onSubmit={submit} aria-label="Employee sign-in" aria-busy={form.processing}>
+              <div className="employee-login__field">
+                <label htmlFor="login-email">Email address</label>
+                <input
+                  id="login-email"
+                  name="email"
+                  type="email"
+                  inputMode="email"
+                  autoComplete="username"
+                  value={form.data.email}
+                  onChange={(event) => form.setData('email', event.target.value)}
+                  required
+                  disabled={form.processing}
+                  aria-invalid={Boolean(form.errors.email)}
+                  aria-describedby={form.errors.email ? 'login-email-error' : undefined}
+                />
+                {form.errors.email && (
+                  <p id="login-email-error" className="employee-login__error" role="alert">
+                    {form.errors.email}
+                  </p>
+                )}
+              </div>
+
+              <div className="employee-login__field">
+                <label htmlFor="login-password">Password</label>
+                <div className="employee-login__password">
+                  <input
+                    id="login-password"
+                    name="password"
+                    type={passwordVisible ? 'text' : 'password'}
+                    autoComplete="current-password"
+                    value={form.data.password}
+                    onChange={(event) => form.setData('password', event.target.value)}
+                    required
+                    disabled={form.processing}
+                    aria-invalid={Boolean(form.errors.password)}
+                    aria-describedby={form.errors.password ? 'login-password-error' : undefined}
+                  />
+                  <button
+                    type="button"
+                    className="employee-login__visibility"
+                    aria-label={passwordVisible ? 'Hide password' : 'Show password'}
+                    aria-controls="login-password"
+                    aria-pressed={passwordVisible}
+                    disabled={form.processing}
+                    onClick={() => setPasswordVisible((visible) => !visible)}
+                  >
+                    {passwordVisible ? <EyeOff size={20} aria-hidden="true" /> : <Eye size={20} aria-hidden="true" />}
+                  </button>
+                </div>
+                {form.errors.password && (
+                  <p id="login-password-error" className="employee-login__error" role="alert">
+                    {form.errors.password}
+                  </p>
+                )}
+              </div>
+
+              <label className="employee-login__remember">
+                <input
+                  name="remember"
+                  type="checkbox"
+                  checked={form.data.remember}
+                  onChange={(event) => form.setData('remember', event.target.checked)}
+                  disabled={form.processing}
+                />
+                <span>Remember me on this device</span>
+              </label>
+
+              <button type="submit" className="employee-login__submit" disabled={form.processing}>
+                <span>{form.processing ? 'Signing in…' : 'Sign in'}</span>
+                <ArrowRight size={19} aria-hidden="true" />
+              </button>
+              <span className="employee-login__status" role="status">
+                {form.processing ? 'Signing in. Please wait.' : ''}
+              </span>
+            </form>
+            <button type="button" disabled className="employee-login__google" aria-describedby="google-note">Continue with Google</button>
+            <p id="google-note" className="employee-login__google-note">Google account integration will be enabled after official LGU identity setup.</p>
+          </section>
+        </div>
+      </main>
+    </>
+  );
 }

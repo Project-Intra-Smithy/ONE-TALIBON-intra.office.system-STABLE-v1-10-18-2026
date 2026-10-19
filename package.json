@@ -8,7 +8,8 @@
     "dev:stack:pull": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dev-start.ps1 -Pull",
     "dev:stack:stop": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/dev-stop.ps1",
     "build": "vite build",
-    "types:check": "tsc --noEmit"
+    "types:check": "tsc --noEmit",
+    "test:aj-home-auth": "node --test tests/Browser/aj-home-auth.test.mjs"
   },
   "dependencies": {
     "@inertiajs/react": "^3.0.0",

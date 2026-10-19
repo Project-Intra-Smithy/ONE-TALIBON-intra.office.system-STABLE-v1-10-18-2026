@@ -21,7 +21,7 @@ html {
 }
 
 body {
-    min-width: 320px;
+    min-width: 0; /* Allow the page to fit the layout viewport after the vertical scrollbar consumes space. */
     min-height: 100vh;
     margin: 0;
     line-height: 1.55;

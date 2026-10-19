@@ -1,0 +1,168 @@
+/* Phase 1 foundation: scoped to AppLayout, never authentication surfaces.
+   Existing municipal token names remain compatible with current consumers. */
+.portal-shell {
+    --municipal-navy: #124c38;
+    --municipal-blue: #176044;
+    --municipal-canvas: #f5f7f5;
+    --municipal-surface: #fff;
+    --municipal-text: #25332c;
+    --municipal-muted: #526158;
+    --municipal-border: #d8e0da;
+    --focus-ring: #176044;
+    --radius-panel: 10px;
+    --shadow-panel: none;
+    --space-page: clamp(1rem, 2.5vw, 2rem);
+    min-height: 100dvh;
+    color: var(--municipal-text);
+    background: var(--municipal-surface);
+    font-size: 16px;
+    line-height: 1.5;
+}
+.dark .portal-shell {
+    --municipal-canvas: #182b22;
+    --municipal-surface: #102219;
+    --municipal-text: #eff6f1;
+    --municipal-muted: #bed0c3;
+    --municipal-border: #40584a;
+    --focus-ring: #a7e3be;
+}
+.portal-shell :where(button, input, select) { min-height: 44px; }
+.portal-shell :where(button, a, input, select, textarea):focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 3px;
+}
+.portal-main { min-width: 0; }
+.portal-desktop-navigation { display: none; }
+.portal-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px var(--space-page);
+    border-bottom: 1px solid var(--municipal-border);
+    background: var(--municipal-surface);
+}
+.portal-header > :first-child { flex: 1; }
+.portal-context { color: var(--municipal-muted); font-size: 14px; }
+.portal-page-title { font-size: 20px; font-weight: 700; overflow-wrap: anywhere; }
+.portal-records-search { display: flex; grid-column: 1 / -1; width: 100%; gap: 8px; min-width: 0; }
+.portal-records-search label { flex: 1; min-width: 0; }
+.portal-records-search input { font-size: 16px; background: var(--municipal-canvas); color: var(--municipal-text); border-color: var(--municipal-border); }
+.portal-search-submit { padding: 8px 16px; border-radius: 8px; background: #124c38; color: white; font-weight: 600; }
+.portal-search-submit:hover { background: #0b3929; }
+.portal-identity { color: var(--municipal-text); }
+.portal-identity > span { background: #e3f0e8; color: #124c38; }
+.portal-sidebar { display: flex; flex-direction: column; height: 100%; background: #124c38; color: white; --focus-ring: #fff; }
+.portal-brand { font-size: 20px; font-weight: 750; letter-spacing: .025em; }
+.portal-sidebar a { line-height: 1.5; }
+.portal-sidebar :where(button, a):focus-visible { outline-color: white; }
+.portal-sidebar [aria-label="Appearance"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.portal-sidebar > :last-child .text-blue-300 { color: #d1eadb; }
+.portal-sidebar [aria-label="Appearance"] button { font-size: 14px; flex-direction: column; padding: 4px; }
+.portal-sidebar--compact [aria-label="Appearance"] { grid-template-columns: 1fr; }
+.portal-sidebar [aria-label="Appearance"] button:not([aria-pressed="true"]) { color: #e0eee5; }
+.portal-sidebar [aria-label="Appearance"] button[aria-pressed="true"] { color: #124c38; }
+.portal-sidebar--compact [aria-label="Appearance"] { padding: 0; border: 0; }
+.portal-sidebar > :last-child { padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+.portal-mobile-navigation { position: fixed; inset: 0; margin: 0; height: 100dvh; max-height: none; width: 100%; max-width: none; border: 0; background: transparent; padding: 0; color: white; }
+.portal-mobile-navigation::backdrop { background: rgb(9 28 18 / 55%); }
+.portal-drawer-backdrop { position: absolute; inset: 0; width: 100%; }
+.portal-drawer { position: relative; display: flex; flex-direction: column; width: min(352px, 100%); height: 100%; background: #124c38; }
+.portal-drawer-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; border-bottom: 1px solid #ffffff30; }
+.portal-drawer-heading button { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 8px; }
+.portal-drawer-heading button:focus-visible { outline-color: white; }
+.portal-drawer-content { min-height: 0; flex: 1; overflow-y: auto; }
+/* Scroll the entire drawer on short/zoomed viewports so account controls remain reachable. */
+.portal-drawer-content .portal-sidebar { height: auto; min-height: 100%; }
+.portal-drawer-content nav { flex-shrink: 0; overflow: visible; }
+.portal-shell #portal-content { width: 100%; max-width: 1280px; margin-inline: auto; padding: var(--space-page); }
+.portal-shell #portal-content :where(input:not([type="checkbox"]):not([type="radio"]), select, textarea) { font-size: 16px; }
+.portal-shell #portal-content button { min-height: 44px; }
+.portal-shell .municipal-action { font-size: 16px; }
+.portal-shell .municipal-action:not(.municipal-action-secondary) { background: #124c38; }
+.portal-shell .municipal-action:not(.municipal-action-secondary):hover { background: #0b3929; }
+.portal-shell .municipal-panel { border-radius: 10px; box-shadow: none; }
+.portal-flash { font-size: 16px; overflow-wrap: anywhere; }
+.portal-footer { margin-inline: var(--space-page); font-size: 14px; color: var(--municipal-muted); }
+#portal-notifications { max-height: calc(100dvh - 6rem); overflow-y: auto; box-shadow: 0 4px 16px #10221918; }
+.portal-header #portal-notifications { color: var(--municipal-text); background: var(--municipal-surface); }
+.portal-header #portal-notifications a { overflow-wrap: anywhere; }
+@media (min-width: 640px) {
+    .portal-sidebar:not(.portal-sidebar--compact) [aria-label="Appearance"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+    .portal-shell { display: grid; grid-template-columns: 272px minmax(0, 1fr); }
+    .portal-shell--compact { grid-template-columns: 76px minmax(0, 1fr); }
+    .portal-desktop-navigation { display: block; position: sticky; top: 0; height: 100dvh; overflow-y: auto; }
+    .portal-desktop-navigation .portal-sidebar { height: 100%; }
+    .portal-desktop-navigation nav { overflow-y: auto; }
+    .portal-records-search { max-width: 640px; }
+}
+/* White-dominant operational shell; shared by Dashboard and Calendar. */
+.portal-shell { --municipal-navy: #145a43; --municipal-blue: #145a43; --municipal-canvas: #f7f9f8; --municipal-text: #1f2933; --municipal-border: #e3e9e5; background: var(--municipal-canvas); }
+.portal-sidebar { background: var(--municipal-surface); color: var(--municipal-text); border-right: 1px solid var(--municipal-border); --focus-ring: #145a43; }
+.portal-sidebar [class*="text-emerald"], .portal-sidebar [class*="text-white"], .portal-sidebar [class*="text-blue-300"] { color: var(--municipal-muted); }
+.portal-sidebar [class*="border-white"] { border-color: var(--municipal-border); }
+.portal-sidebar .portal-brand { color: var(--municipal-text); font-size: 18px; }
+.portal-sidebar a[aria-current="page"] { color: #145a43; background: #eaf4ee; }
+.portal-sidebar a:hover, .portal-sidebar button:hover { color: var(--municipal-text); background: var(--municipal-canvas); }
+.portal-sidebar :where(a,button,summary):focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; box-shadow: none; }
+.portal-sidebar nav section > div:first-child:not(:last-child) { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+.portal-sidebar [aria-label="Appearance"] button:not([aria-pressed="true"]) { color: var(--municipal-text); }
+.portal-settings summary { display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; border-radius: 8px; font-size: 14px; }
+.portal-settings summary::-webkit-details-marker { display: none; }
+.portal-settings[open] summary { margin-bottom: 8px; }
+.portal-sidebar--compact .portal-settings summary { justify-content: center; }
+.portal-sidebar > :last-child { max-height: 48dvh; overflow-y: auto; }
+.portal-drawer { background: var(--municipal-surface, #fff); color: var(--municipal-text, #1f2933); }
+.portal-drawer-heading { border-color: var(--municipal-border, #e3e9e5); }
+.portal-drawer-heading button:focus-visible { outline-color: #145a43; }
+.portal-drawer-content .portal-sidebar { min-height: 0; height: 100%; }
+.portal-drawer-content nav { flex-shrink: 1; overflow-y: auto; }
+.dark .portal-shell { --municipal-canvas: #14231d; --municipal-surface: #1b3026; --municipal-text: #eff6f1; --municipal-border: #40584a; }
+.dark .portal-sidebar { --focus-ring: #a7e3be; }
+.dark .portal-sidebar a[aria-current="page"] { color: #bef0cf; background: #294b3a; }
+.dark .portal-drawer { background: #1b3026; color: #eff6f1; }
+@media (min-width: 1024px) { .portal-shell:not(.portal-shell--compact) { grid-template-columns: 248px minmax(0, 1fr); } }
+/* At 320px, keep the full action row and records search usable without
+   allowing the optional breadcrumb and long dashboard title to add a third row. */
+@media (max-width: 359px) {
+    .portal-shell[data-presentation="portal-dashboard"] .portal-context { display: none; }
+    .portal-shell[data-presentation="portal-dashboard"] .portal-page-title {
+        font-size: 16px;
+        line-height: 1.25;
+    }
+}
+/* Dashboard density: retain readable labels and 44px controls at every width. */
+.portal-shell[data-presentation="portal-dashboard"] .portal-header { gap: 8px 16px; padding-block: 10px; }
+.portal-shell[data-presentation="portal-dashboard"] #portal-content { padding-block: 16px; }
+.portal-shell[data-presentation="portal-dashboard"] .portal-main { container: dashboard-shell / inline-size; }
+@container dashboard-shell (min-width: 960px) {
+    .portal-shell[data-presentation="portal-dashboard"] .portal-header {
+        grid-template-columns: minmax(180px, 1fr) minmax(260px, 440px) auto;
+    }
+    .portal-shell[data-presentation="portal-dashboard"] .portal-records-search { grid-column: 2; grid-row: 1; }
+    .portal-shell[data-presentation="portal-dashboard"] .portal-header > :nth-child(2) { grid-column: 3; grid-row: 1; }
+}
+
+/* PR92 Chromium Gate B corrective candidate: the account label must not
+   force the title column to zero width on 320px authenticated dashboards.
+   Accessible identity remains on the avatar group via its aria-label/title;
+   notification, launcher and navigation controls retain 44px hit targets. */
+@media (max-width: 639px) {
+    .portal-shell[data-presentation="portal-dashboard"] .portal-header-identity-copy { display: none; }
+    .portal-shell[data-presentation="portal-dashboard"] .portal-header > :first-child { min-width: 0; }
+    .portal-shell[data-presentation="portal-dashboard"] .portal-page-title {
+        overflow: hidden;
+        overflow-wrap: normal;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
+@media (max-width: 359px) {
+    .portal-shell[data-presentation="portal-dashboard"] .portal-header {
+        column-gap: 8px;
+        padding-inline: 10px;
+    }
+}

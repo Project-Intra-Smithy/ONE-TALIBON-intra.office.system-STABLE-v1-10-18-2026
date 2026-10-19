@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react';
 import { ArrowUpRight, Folder } from 'lucide-react';
-import type { PortalDestinationKey, PortalNavigationItem } from '../../navigation/navigationTypes';
+import type { PortalDestinationKey, PortalNavigationItem } from '../../navigation/portalNavigation';
 import { collectionLabels } from './documentCenterPresentation';
 type Props = { collections: { value: string; label: string }[]; current: string; onSelect: (value: string) => void; workspaces: PortalNavigationItem[] };
 const categories: { label: string; destination?: PortalDestinationKey }[] = [
