@@ -1,4 +1,6 @@
+import '../../../css/public-portal.css';
 import '../../../css/public-homepage-lane5.css';
+import '../../../css/public-homepage-refinement.css';
 import { Head } from '@inertiajs/react';
 import { Info } from 'lucide-react';
 import PublicFooter from '../../components/public/PublicFooter';
@@ -12,7 +14,7 @@ type Props = { appName: string; authenticated: boolean; content: PublicContent }
 export default function Home({ authenticated, content }: Props) {
     return <>
         <Head title="ONE TALIBON — Intra-Office Portal" />
-        <div className="public-portal min-h-screen">
+        <div className="public-portal public-refined min-h-screen">
             <a href="#public-content" className="public-skip-link sr-only z-[80] rounded bg-white p-3 [color:var(--public-link)] focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to main content</a>
             <PublicHeader authenticated={authenticated} />
 
