@@ -1,8 +1,8 @@
 import '../../css/phase-one-shell.css';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { Bell, Menu, X } from 'lucide-react';
+import { Bell, ListChecks, Menu, X } from 'lucide-react';
 import { type PropsWithChildren, useEffect, useRef, useState } from 'react';
-import { NotificationContext } from '../components/shell/NotificationContext';
+import { NotificationContext, NotificationStateContext } from '../components/shell/NotificationContext';
 import { emptyNotificationFeed, parseNotificationFeed } from '../compat/notificationFeed';
 import MobileNavigation from '../components/shell/MobileNavigation';
 import PortalSidebar from '../components/shell/PortalSidebar';
@@ -37,6 +37,14 @@ function relativeTime(value?: string | null): string {
 
 export default function AppLayout({ title, presentation = 'standard', workspaceRefinement = true, children }: Props) {
     const page = usePage<SharedProps>();
+    const [hash, setHash] = useState(() => typeof window === 'undefined' ? '' : window.location.hash);
+    useEffect(() => {
+        const update = () => setHash(window.location.hash);
+        window.addEventListener('hashchange', update);
+        update();
+        return () => window.removeEventListener('hashchange', update);
+    }, [page.url]);
+    const currentUrl = page.url.split('#')[0] + hash;
     const pageProps = page.props;
     const { auth, flash } = pageProps;
     const [feed, setFeed] = useState<NotificationFeed>(emptyNotificationFeed);
@@ -183,7 +191,7 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
     }, [liveAlert]);
 
     const sidebarProps = {
-        currentUrl: page.url,
+        currentUrl,
         navigationGroups,
         unreadMemoCount,
         user,
@@ -227,7 +235,7 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
                     requestAnimationFrame(() => document.querySelector<HTMLButtonElement>('.portal-desktop-navigation button')?.focus());
                 }}>{mobileSidebar}</MobileNavigation>}
 
-                <main className="portal-main">
+                <main className="portal-main pb-20 md:pb-0">
                     <header className="portal-header">
                         <div className="flex min-w-0 items-center gap-2 sm:gap-3">
                             <button type="button" aria-expanded={mobileOpen} aria-controls="portal-mobile-navigation" aria-haspopup="dialog" onClick={() => setMobileOpen(true)} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800 lg:hidden" aria-label="Open navigation">
@@ -294,7 +302,27 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
                             {flash.success || flash.error}
                         </div>
                     )}
-                    <div id="portal-content" data-workspace-refinement={workspaceRefinement || undefined} data-presentation={presentation === 'portal-dashboard' ? 'dashboard' : undefined} tabIndex={-1} className={presentation === 'portal-dashboard' ? 'p-3 sm:p-4' : undefined}><NotificationContext.Provider value={notifications}>{children}</NotificationContext.Provider></div>
+                    <div id="portal-content" data-workspace-refinement={workspaceRefinement || undefined} data-presentation={presentation === 'portal-dashboard' ? 'dashboard' : undefined} tabIndex={-1} className={presentation === 'portal-dashboard' ? 'p-3 sm:p-4' : undefined}><NotificationStateContext.Provider value={feedState}><NotificationContext.Provider value={notifications}>{children}</NotificationContext.Provider></NotificationStateContext.Provider></div>
+                    <nav aria-label="Mobile workspace navigation" className="fixed bottom-0 inset-x-0 z-30 flex items-center justify-around border-t border-slate-200 bg-white/95 px-1 pt-1 backdrop-blur-md dark:border-slate-700 dark:bg-[#142236]/95 md:hidden" style={{ paddingBottom: 'max(4px, env(safe-area-inset-bottom, 0px))' }}>
+                        {navigationGroups.flatMap(group => group.items).filter(item => ['home', 'myWork', 'calendar'].includes(item.key)).flatMap(item =>
+                            item.key === 'home'
+                                ? [{...item, label: 'Home'},{...item, key: 'personalTasks', label: 'Tasks', href: '/dashboard#dashboard-personal-tasks', icon: ListChecks}]
+                                : [{...item, label: item.key === 'myWork' ? 'Work' : item.label}]
+                        ).map(({ key, label, href, icon: Icon }) => {
+                            const active = key === 'personalTasks' ? currentUrl.includes('#dashboard-personal-tasks')
+                                : key === 'home' ? page.url.split('?')[0] === '/dashboard' && !hash.includes('dashboard-personal-tasks')
+                                : page.url.split('?')[0] === href;
+                            return <a key={key} href={href} aria-current={active ? 'page' : undefined}
+                                onClick={() => { if (key === 'personalTasks') document.getElementById('dashboard-personal-tasks')?.focus(); }}
+                                className={`flex min-h-12 min-w-11 flex-col items-center justify-center rounded-lg px-2 text-[11px] font-bold focus-visible:ring-2 focus-visible:ring-emerald-700 ${active ? 'bg-emerald-50 text-[#145a43] dark:bg-emerald-950 dark:text-emerald-200' : 'text-slate-700 dark:text-slate-200'}`}>
+                                <Icon size={20} aria-hidden="true"/><span>{label}</span>
+                            </a>;
+                        })}
+                        <button type="button" onClick={() => setMobileOpen(true)} aria-label="Open more navigation options" aria-expanded={mobileOpen}
+                            className="flex min-h-12 min-w-11 flex-col items-center justify-center rounded-lg px-2 text-[11px] font-bold focus-visible:ring-2 focus-visible:ring-emerald-700">
+                            <Menu size={20} aria-hidden="true"/><span>More</span>
+                        </button>
+                    </nav>
                     <footer className="portal-footer mx-3 flex flex-wrap justify-between gap-2 border-t border-slate-200 py-4 text-xs text-slate-500 dark:border-slate-700 dark:text-slate-400 sm:mx-5"><span>Municipality of Talibon · Province of Bohol</span><span>One Talibon · Intra-Office Portal</span></footer>
                 </main>
             </div>
