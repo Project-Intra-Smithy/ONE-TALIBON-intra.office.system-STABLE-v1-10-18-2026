@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\PrototypeMessaging;
 
-use App\Models\PrototypeMessage;
-use App\Prototype\Messaging\PrototypeMessagingChannels;
+use App\Models\Message;
+use App\Messaging\MessagingChannels;
 use Database\Seeders\MunicipalityStructureSeeder;
 use Database\Seeders\PrototypeMessagingDemoSeeder;
 use Database\Seeders\WorkforceDemoSeeder;
@@ -20,19 +20,19 @@ final class PrototypeMessagingDemoSeederTest extends TestCase
         $this->seed(WorkforceDemoSeeder::class);
         $this->seed(PrototypeMessagingDemoSeeder::class);
 
-        foreach (PrototypeMessagingChannels::all() as $channel) {
+        foreach (MessagingChannels::all() as $channel) {
             $this->assertGreaterThanOrEqual(
                 3,
-                PrototypeMessage::query()->where('channel', $channel)->count(),
+                Message::query()->where('channel', $channel)->count(),
                 "Expected seeded messages for {$channel}.",
             );
         }
 
-        $count = PrototypeMessage::query()->count();
+        $count = Message::query()->count();
         $this->seed(PrototypeMessagingDemoSeeder::class);
 
-        $this->assertSame($count, PrototypeMessage::query()->count());
+        $this->assertSame($count, Message::query()->count());
         $this->assertSame(18, $count);
-        $this->assertSame(0, PrototypeMessage::query()->whereDoesntHave('sender')->count());
+        $this->assertSame(0, Message::query()->whereDoesntHave('sender')->count());
     }
 }
