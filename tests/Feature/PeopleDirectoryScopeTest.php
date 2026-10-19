@@ -38,9 +38,15 @@ class PeopleDirectoryScopeTest extends TestCase
             ->assertInertia(fn (Assert $page) => $page
                 ->component('Employees/DirectoryProfile')
                 ->where('employee.presence', 'offline')
+                ->missing('employee.user_id')
+                ->missing('employee.personal_email')
+                ->missing('employee.gsis_number')
+                ->missing('employee.philhealth_number')
                 ->missing('privateProfile')->missing('performanceRecords')->missing('developmentRecords'));
 
+        $attendanceBefore = AttendanceLog::query()->count();
         $this->postJson(route('employees.presence'), ['user_id' => $other->id])->assertOk();
+        $this->assertSame($attendanceBefore, AttendanceLog::query()->count());
         $this->assertNotNull($actor->fresh()->last_seen_at);
         $this->assertNull($other->fresh()->last_seen_at);
         $this->get(route('employees.show', $actor->employee))
@@ -55,6 +61,7 @@ class PeopleDirectoryScopeTest extends TestCase
         $this->postJson(route('employees.presence'))->assertOk();
         $this->post(route('logout'))->assertRedirect(route('login'));
         $this->assertNull($actor->fresh()->last_seen_at);
+        $this->postJson(route('employees.presence'))->assertUnauthorized();
     }
 
     public function test_attendance_is_authenticated_employee_self_only_and_does_not_enumerate_other_staff(): void

@@ -40,7 +40,6 @@ class EmployeeDirectoryController extends Controller
                 'employee_number' => $employee->employee_number,
                 'full_name' => $employee->full_name,
                 'work_email' => $employee->work_email,
-                'user_id' => $employee->user_id,
                 'position_title' => $employee->position_title,
                 'employment_status' => $employee->employment_status,
                 'department' => $employee->department?->only(['code', 'name', 'short_name']),
