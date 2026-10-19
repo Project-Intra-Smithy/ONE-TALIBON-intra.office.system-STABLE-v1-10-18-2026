@@ -42,6 +42,8 @@ function Loading({label}:{label:string}) {
         <div aria-hidden="true" className="h-3 w-1/2 animate-pulse rounded bg-slate-200 motion-reduce:animate-none dark:bg-slate-700"/>
     </div>;
 }
+const TASK_SYNC_EVENT='one-talibon:personal-task-confirmed';
+type TaskSyncDetail={userId:number;taskId:number;state:TaskState};
 function Detail({task,back}:{task:IndividualTask;back:()=>void}) {
     const dates:[string,string|null][]=[['Due',task.due_at],['Created',task.created_at],['Updated',task.updated_at],['Completed',task.completed_at]];
     return <section aria-label="Personal Task detail" className="min-w-0 rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-[#142236]">
@@ -57,11 +59,11 @@ function Detail({task,back}:{task:IndividualTask;back:()=>void}) {
         <h5 className="mt-5 text-base font-bold text-slate-900 dark:text-white">Instructions</h5>
         <p className="mt-2 whitespace-pre-wrap break-words text-base leading-6 text-slate-700 dark:text-slate-300">{task.instructions??'No instructions were provided.'}</p>
         <p className="mt-6 border-t border-slate-100 pt-4 text-sm text-slate-500 dark:border-slate-700 dark:text-slate-400">
-            This Task detail is read-only. Creation and state actions belong to F02 after separate acceptance.
+            Use the Personal Task actions panel below to create or update your own Tasks.
         </p>
     </section>;
 }
-function TaskSession() {
+function TaskSession({userId}:{userId:number}) {
     const [state,setState]=useState<TaskState>('open');
     const [page,setPage]=useState(1);
     const [refresh,setRefresh]=useState(0);
@@ -106,6 +108,20 @@ function TaskSession() {
         return ()=>{active=false;control.abort();};
     },[selected,detailRefresh]);
     useEffect(()=>{if(detail)focusTitle.current?.focus();},[detail]);
+    useEffect(()=>{
+        const synchronize=(event:Event)=>{
+            const detail=(event as CustomEvent<TaskSyncDetail>).detail;
+            if(!detail||detail.userId!==userId||!TASK_STATES.includes(detail.state))return;
+            setSelected(null);
+            setDetail(null);
+            setDetailError(null);
+            setState(detail.state);
+            setPage(1);
+            setRefresh(value=>value+1);
+        };
+        window.addEventListener(TASK_SYNC_EVENT,synchronize);
+        return()=>window.removeEventListener(TASK_SYNC_EVENT,synchronize);
+    },[userId]);
     const chooseState=(value:TaskState)=>{if(value===state)return;setState(value);setPage(1);setSelected(null);};
     const choosePage=(value:number)=>{if(!list||value<1||value>list.meta.last_page||value>10000)return;setPage(value);setSelected(null);};
     return <section className="municipal-panel overflow-hidden" aria-labelledby="personal-task-heading">
@@ -172,5 +188,5 @@ function TaskSession() {
 /** Key component state by logged-in user; never show one account's cached Task data to another. */
 export default function PersonalTaskWorkspace(){
     const id=usePage<SharedProps>().props.auth?.user?.id;
-    return typeof id==='number'?<TaskSession key={id}/>:null;
+    return typeof id==='number'?<TaskSession key={id} userId={id}/>:null;
 }

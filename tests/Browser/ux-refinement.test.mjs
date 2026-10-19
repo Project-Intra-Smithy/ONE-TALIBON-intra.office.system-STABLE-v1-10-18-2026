@@ -61,7 +61,7 @@ before(async () => {
                 const entry = manifest['resources/js/app.tsx'];
                 const css = new Set([manifest['resources/css/app.css'].file, ...(entry.css || [])]);
                 res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-                res.end(`<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1">${[...css].map(file => `<link rel="stylesheet" href="/build/${file}">`).join('')}</head><body><script data-page="app" type="application/json">${scriptJson(body)}</script><div id="app"></div><script type="module" src="/build/${entry.file}"></script></body></html>`);
+                res.end(`<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="csrf-token" content="synthetic-csrf">${[...css].map(file => `<link rel="stylesheet" href="/build/${file}">`).join('')}</head><body><script data-page="app" type="application/json">${scriptJson(body)}</script><div id="app"></div><script type="module" src="/build/${entry.file}"></script></body></html>`);
             }
         } catch (error) { res.writeHead(500); res.end(String(error)); }
     });
@@ -159,7 +159,7 @@ test('personal Task selection, keyboard back action and denied reads', async () 
     let denied = false;
     const methods = [];
     try {
-        await page.route(/\/tasks(?:\/|\?)/, route => {
+        await page.route(/\/tasks(?:\/|\?|$)/, route => {
             methods.push(route.request().method());
             return route.fulfill({ status: denied ? 403 : 200, contentType: 'application/json', body: JSON.stringify(denied ? { message: 'Forbidden' } : route.request().url().includes('/tasks/7') ? { data: task } : { data: [task], meta: { page: 1, per_page: 10, last_page: 1, total: 1 } }) });
         });
@@ -174,5 +174,67 @@ test('personal Task selection, keyboard back action and denied reads', async () 
         await page.getByRole('alert').filter({ hasText: 'Personal Tasks unavailable' }).waitFor();
         assert.equal(await page.getByRole('button', { name: /Synthetic Task/ }).count(), 0);
         assert.ok(methods.length >= 3 && methods.every(method => method === 'GET'));
+    } finally { await page.close(); }
+});
+
+test('server-confirmed Task mutations refresh the read workspace without optimistic state', async () => {
+    const { page } = await mount(install('dashboard'), 1440);
+    let task = null;
+    let rejectNextStart = false;
+    const responseTask = () => ({ data: task });
+    try {
+        await page.route(/\/tasks(?:\/|\?|$)/, async route => {
+            const request = route.request();
+            const url = new URL(request.url());
+            if (request.method() === 'POST' && url.pathname === '/tasks') {
+                const payload = request.postDataJSON();
+                task = { id: 41, kind: 'individual', title: payload.title, instructions: null, state: 'open', owning_department_id: null, due_at: null, completed_at: null, created_at: '2026-10-20T09:00:00+08:00', updated_at: '2026-10-20T09:00:00+08:00' };
+                return route.fulfill({ status: 201, contentType: 'application/json', body: JSON.stringify(responseTask()) });
+            }
+            if (request.method() === 'POST' && url.pathname.endsWith('/start')) {
+                if (rejectNextStart) {
+                    rejectNextStart = false;
+                    return route.fulfill({ status: 422, contentType: 'application/json', body: JSON.stringify({ message: 'Rejected' }) });
+                }
+                task = { ...task, state: 'in_progress', updated_at: '2026-10-20T09:01:00+08:00' };
+                return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(responseTask()) });
+            }
+            if (request.method() === 'POST' && url.pathname.endsWith('/complete')) {
+                task = { ...task, state: 'completed', completed_at: '2026-10-20T09:02:00+08:00', updated_at: '2026-10-20T09:02:00+08:00' };
+                return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(responseTask()) });
+            }
+            if (url.pathname === '/tasks/41') {
+                return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(responseTask()) });
+            }
+            const requestedState = url.searchParams.get('state');
+            const data = task && (!requestedState || task.state === requestedState) ? [task] : [];
+            return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ data, meta: { page: 1, per_page: 20, last_page: 1, total: data.length } }) });
+        });
+
+        const actions = page.getByRole('region', { name: 'Personal Task actions' });
+        await page.getByLabel('New personal Task title').fill('Synchronized Task');
+        await page.getByRole('button', { name: 'Create Task' }).click();
+        await actions.getByText(/Server confirmed: Synchronized Task — open/).waitFor();
+        await page.getByRole('list', { name: 'Open personal Tasks' }).getByText('Synchronized Task').waitFor();
+
+        await page.getByRole('button', { name: /Synchronized Task/ }).first().click();
+        await page.getByRole('region', { name: 'Personal Task detail' }).waitFor();
+        await actions.getByRole('button', { name: 'Start' }).click();
+        await actions.getByText(/Server confirmed: Synchronized Task — in progress/).waitFor();
+        await page.getByRole('list', { name: 'In Progress personal Tasks' }).getByText('Synchronized Task').waitFor();
+        assert.equal(await page.getByRole('region', { name: 'Personal Task detail' }).count(), 0);
+
+        await actions.getByRole('button', { name: 'Complete' }).click();
+        await actions.getByText(/Server confirmed: Synchronized Task — completed/).waitFor();
+        await page.getByRole('list', { name: 'Completed personal Tasks' }).getByText('Synchronized Task').waitFor();
+
+        await page.getByLabel('New personal Task title').fill('Rejected Task');
+        await page.getByRole('button', { name: 'Create Task' }).click();
+        await actions.getByText(/Server confirmed: Rejected Task — open/).waitFor();
+        rejectNextStart = true;
+        await page.getByRole('list', { name: 'Open personal Tasks' }).getByText('Rejected Task').waitFor();
+        await actions.getByRole('button', { name: 'Start' }).click();
+        await actions.getByRole('alert').filter({ hasText: 'rejected (422)' }).waitFor();
+        await page.getByRole('list', { name: 'Open personal Tasks' }).getByText('Rejected Task').waitFor();
     } finally { await page.close(); }
 });

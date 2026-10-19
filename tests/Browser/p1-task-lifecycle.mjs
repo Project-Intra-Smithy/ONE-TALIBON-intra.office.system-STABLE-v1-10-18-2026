@@ -112,9 +112,9 @@ echo json_encode(['employee_id' => \$employee->id]);
     const profile = '/employees/' + prepared.employee_id;
     const http = async (path) => pageB.evaluate(async (url) => {
         const r = await fetch(url, {
-            credentials: 'same-origin', headers: { Accept: 'application/json' },
+            credentials: 'same-origin', headers: { Accept: 'application/json' }, redirect: 'manual',
         });
-        return { status: r.status, body: await r.text() };
+        return { status: r.status, body: await r.text(), redirected: r.redirected, url: r.url };
     }, path);
 
     assert.equal((await http(profile)).status, 200, 'Own employee profile should load when active');
@@ -135,8 +135,11 @@ echo 'P1_H_BROWSER_EMPLOYEE_SEPARATED';
     assert.equal(execFileSync('php', ['-r', revoke], { encoding: 'utf8' }).trim(),
         'P1_H_BROWSER_EMPLOYEE_SEPARATED');
     const deniedProfile = await http(profile);
-    assert.equal(deniedProfile.status, 403, 'Existing authenticated session must lose HR profile access');
+    assert.equal(deniedProfile.status, 404, 'Separated employees must disappear from the active Directory surface');
+    assert.equal(deniedProfile.redirected, false, 'Directory denial must not redirect and restore access');
+    assert.equal(new URL(deniedProfile.url).pathname, profile);
     assert.ok(!deniedProfile.body.includes('P1-H-BROWSER-PRIVATE-MESSAGE'));
+    assert.ok(!deniedProfile.body.includes('P1-H-BROWSER-PROTECTED-METADATA'));
 
     const deniedFeed = await http('/notifications/feed');
     assert.equal(deniedFeed.status, 200, 'Notification feed must fail closed with empty content');

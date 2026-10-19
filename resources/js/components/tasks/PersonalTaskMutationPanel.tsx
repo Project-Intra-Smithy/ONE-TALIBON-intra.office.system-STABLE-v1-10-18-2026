@@ -9,6 +9,7 @@ import {
 } from './taskReadApi';
 
 const allowedStates = new Set<TaskState>(['open', 'in_progress', 'completed']);
+const TASK_SYNC_EVENT = 'one-talibon:personal-task-confirmed';
 const protectedError = (status: number) => status === 401 || status === 403 || status === 419;
 
 async function jsonBody(response: Response): Promise<unknown> {
@@ -16,7 +17,7 @@ async function jsonBody(response: Response): Promise<unknown> {
     try { return await response.json(); } catch { return null; }
 }
 
-function TaskActions() {
+function TaskActions({ userId }: { userId: number }) {
     const [tasks, setTasks] = useState<IndividualTask[]>([]);
     const [title, setTitle] = useState('');
     const [loading, setLoading] = useState(true);
@@ -131,8 +132,11 @@ function TaskActions() {
             }
 
             setUnknownOutcome(true);
-            if (await refresh(undefined, { id: task.id, state: expectedState }) && expectedState === 'open') {
-                setTitle('');
+            if (await refresh(undefined, { id: task.id, state: expectedState })) {
+                if (expectedState === 'open') setTitle('');
+                window.dispatchEvent(new CustomEvent(TASK_SYNC_EVENT, {
+                    detail: { userId, taskId: task.id, state: expectedState },
+                }));
             }
         } catch {
             if (mounted.current) {
@@ -213,5 +217,5 @@ function TaskActions() {
 export default function PersonalTaskMutationPanel() {
     const userId = usePage<SharedProps>().props.auth?.user?.id;
 
-    return typeof userId === 'number' ? <TaskActions key={userId}/> : null;
+    return typeof userId === 'number' ? <TaskActions key={userId} userId={userId}/> : null;
 }

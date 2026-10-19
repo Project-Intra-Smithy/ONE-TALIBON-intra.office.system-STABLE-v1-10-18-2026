@@ -13,7 +13,19 @@ final class EmployeeDirectoryProfileController extends Controller
 {
     public function __invoke(Request $request, Employee $employee): Response
     {
+        // Inactive directory subjects are deliberately concealed as absent.
         abort_unless($employee->employment_status === 'active', 404);
+
+        // Re-read operational identity so a retained session cannot rely on a
+        // stale authenticated-model relation after separation or office closure.
+        $actor = Employee::query()
+            ->with('department:id,is_active')
+            ->where('user_id', $request->user()->id)
+            ->first();
+        abort_unless(
+            $actor?->employment_status === 'active' && $actor->department?->is_active === true,
+            403,
+        );
         $employee->loadMissing([
             'department:id,code,name,short_name',
             'user' => fn ($query) => $query

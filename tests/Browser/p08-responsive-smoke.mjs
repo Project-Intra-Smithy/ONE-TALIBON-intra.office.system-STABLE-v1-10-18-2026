@@ -1,3 +1,4 @@
+import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs/promises';
@@ -89,7 +90,7 @@ async function login(page) {
     if (!response || response.status() !== 200) throw new Error(`Login page returned ${response?.status() ?? 'none'}`);
 
     await page.getByLabel('Email').fill('employee@talibon.demo');
-    await page.getByLabel('Password').fill(PASSWORD);
+    await page.locator('input#login-password').fill(PASSWORD);
     await Promise.all([
         page.waitForURL((url) => url.pathname === '/dashboard', { timeout: 15000 }),
         page.getByRole('button', { name: 'Sign In' }).click(),
@@ -116,10 +117,13 @@ async function runViewport(browser, spec) {
             ['/dashboard', 'Dashboard'],
             ['/transactions', 'Work Requests'],
             ['/records', 'Records'],
-            ['/messages', 'Messaging'],
         ]) {
             row.checks.push(await assertPage(page, route, label));
         }
+
+        const messaging = await page.goto(`${BASE}/messages`, { waitUntil: 'domcontentloaded', timeout: 20000 });
+        assert.equal(messaging?.status(), 403, 'Withdrawn Messaging must remain denied');
+        row.checks.push({ route: '/messages', label: 'Messaging denial', status: 403, result: 'pass' });
 
         row.result = 'pass';
     } catch (error) {

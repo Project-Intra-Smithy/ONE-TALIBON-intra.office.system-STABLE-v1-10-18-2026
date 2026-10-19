@@ -54,6 +54,10 @@
             <file>tests/Feature/TravelOrderWorkspaceTest.php</file>
             <file>tests/Feature/WorkforceShowcasePersonaTest.php</file>
         </testsuite>
+        <testsuite name="HistoricalFullHrisContracts">
+            <!-- Executable evidence for intentionally withdrawn private-HRIS behavior. -->
+            <directory>tests/HistoricalContracts</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>

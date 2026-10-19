@@ -59,7 +59,7 @@ async function login(email){
  const loginPage=await page.goto(base+'/login',{waitUntil:'domcontentloaded'});
  await status(loginPage,200);
  await page.getByLabel('Email').fill(email);
- await page.getByLabel('Password').fill(password);
+ await page.locator('input#login-password').fill(password);
  await page.getByRole('button',{name:'Sign In'}).click();
  await page.waitForURL(u=>u.pathname==='/dashboard',{timeout:20000});
  await status(await ctx.request.get(base+'/dashboard',{maxRedirects:0}),200);
@@ -146,7 +146,7 @@ try{
   await status(r419,419);codeStatus[419]=true;
   const admin=await context(),p=await admin.newPage();
   try{
-   await p.goto(base+'/login');await p.getByLabel('Email').fill('admin@talibon.demo');await p.getByLabel('Password').fill(password);
+   await p.goto(base+'/login');await p.getByLabel('Email').fill('admin@talibon.demo');await p.locator('input#login-password').fill(password);
    await p.getByRole('button',{name:'Sign In'}).click();
    await p.waitForURL(u=>u.pathname.startsWith('/security/mfa/'),{timeout:15000});
    const denial=await get(admin,'/tasks');await status(denial,403);

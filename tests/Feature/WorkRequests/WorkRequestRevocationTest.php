@@ -119,19 +119,16 @@ final class WorkRequestRevocationTest extends TestCase
             ->withHeaders($this->inertiaHeaders())
             ->get(route('employees.show', $employee));
         $before->assertOk();
-        // Seeded assignments may appear ahead of this fixture; order is not
-        // part of the revocation contract. Assert set membership instead.
-        $this->assertContains(
-            $transaction->id,
-            array_column($before->json('props.activeAssignments'), 'id'),
-        );
+        $before->assertJsonMissingPath('props.activeAssignments');
+        $this->assertStringNotContainsString($transaction->title, $before->getContent());
+        $this->assertStringNotContainsString($transaction->reference_no, $before->getContent());
 
         $employee->update(['employment_status' => 'separated']);
 
         $this->actingAs($admin)
             ->withHeaders($this->inertiaHeaders())
             ->get(route('employees.show', $employee))
-            ->assertForbidden();
+            ->assertNotFound();
     }
 
     public function test_separated_administrator_cannot_read_work_request_via_legislative_aggregates_or_agenda(): void
@@ -288,9 +285,12 @@ final class WorkRequestRevocationTest extends TestCase
         ]);
 
         $url = route('employees.show', $target);
-        $this->actingAs($admin)->withHeaders($this->inertiaHeaders())
+        $projection = $this->actingAs($admin)->withHeaders($this->inertiaHeaders())
             ->get($url)->assertOk()
-            ->assertJsonPath('props.privateProfile.government_ids.tin', '999-888-777-001');
+            ->assertJsonMissingPath('props.privateProfile')
+            ->assertJsonMissingPath('props.activeAssignments');
+        $this->assertStringNotContainsString('999-888-777-001', $projection->getContent());
+        $this->assertStringNotContainsString('protected-p1h@example.test', $projection->getContent());
 
         $admin->load('employee.department');
         $admin->employee()->update(['employment_status' => 'separated']);

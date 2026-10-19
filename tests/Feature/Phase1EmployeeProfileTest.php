@@ -12,7 +12,7 @@ class Phase1EmployeeProfileTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_employee_can_view_own_private_and_employment_profile(): void
+    public function test_employee_can_view_own_minimized_directory_profile(): void
     {
         $this->seed();
 
@@ -29,11 +29,12 @@ class Phase1EmployeeProfileTest extends TestCase
         $this->actingAs($user)->get('/employees/'.$employee->id)
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
-                ->component('Employees/Show')
-                ->where('permissions.isSelf', true)
-                ->where('permissions.canViewPrivate', true)
-                ->where('privateProfile.personal_email', 'employee.private@example.test')
-                ->where('employmentProfile.employment_type', 'regular'));
+                ->component('Employees/DirectoryProfile')
+                ->where('isSelf', true)
+                ->where('employee.id', $employee->id)
+                ->where('employee.email', $employee->work_email)
+                ->missing('privateProfile')
+                ->missing('employmentProfile'));
     }
 
     public function test_department_head_does_not_receive_another_employees_private_or_201_profile(): void
@@ -53,14 +54,14 @@ class Phase1EmployeeProfileTest extends TestCase
         $this->actingAs($head)->get('/employees/'.$target->id)
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
-                ->component('Employees/Show')
-                ->where('permissions.canViewPrivate', false)
-                ->where('permissions.canViewHrRecord', false)
-                ->where('privateProfile', null)
-                ->where('employmentProfile', null));
+                ->component('Employees/DirectoryProfile')
+                ->where('isSelf', false)
+                ->where('employee.id', $target->id)
+                ->missing('privateProfile')
+                ->missing('employmentProfile'));
     }
 
-    public function test_hr_can_view_employee_private_profile_but_health_vault_is_not_implicitly_granted(): void
+    public function test_hr_receives_only_the_same_directory_projection(): void
     {
         $this->seed();
 
@@ -74,10 +75,10 @@ class Phase1EmployeeProfileTest extends TestCase
         $this->actingAs($hr)->get('/employees/'.$target->id)
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
-                ->component('Employees/Show')
-                ->where('permissions.canViewPrivate', true)
-                ->where('permissions.canViewHrRecord', true)
-                ->where('permissions.healthVaultAccess', false)
-                ->where('privateProfile.emergency_contact_name', 'Synthetic Emergency Contact'));
+                ->component('Employees/DirectoryProfile')
+                ->where('isSelf', false)
+                ->where('employee.id', $target->id)
+                ->missing('privateProfile')
+                ->missing('employmentProfile'));
     }
 }
