@@ -41,7 +41,7 @@ export default function MobileNavigation({ children, onClose, onDesktop }: Props
     }, [onDesktop]);
     return <dialog id="portal-mobile-navigation" ref={dialog}
         onCancel={(event) => { event.preventDefault(); onClose(); }}
-        aria-label="Workspace navigation" className="portal-mobile-navigation">
+        aria-label="Municipal navigation" className="portal-mobile-navigation">
         <button type="button" onClick={onClose} className="portal-drawer-backdrop" aria-label="Dismiss navigation backdrop" tabIndex={-1} />
         <div className="portal-drawer">
             <div className="portal-drawer-heading">
