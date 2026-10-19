@@ -15,7 +15,7 @@
     position: absolute;
     inset: -48px;
     z-index: -2;
-    background: url('../../../../public/images/talibon/municipality-of-talibon.jpg') center / cover no-repeat;
+    background: url('/images/talibon/municipality-of-talibon.jpg') center / cover no-repeat;
     filter: blur(24px);
 }
 

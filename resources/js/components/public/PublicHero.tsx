@@ -1,6 +1,5 @@
 import { Link } from '@inertiajs/react';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
-import { talibonAssets } from '../../branding/talibonAssets';
 import { PUBLIC_SECTION_ANCHOR_STYLE } from './publicLayout';
 import type { PublicContent } from './types';
 
@@ -16,13 +15,6 @@ export default function PublicHero({ content, authenticated }: Props) {
         className="public-reference-hero public-gateway-hero"
         aria-labelledby="public-hero-title"
     >
-        <img
-            src={talibonAssets.publicHero}
-            alt=""
-            className="public-reference-hero-image"
-        />
-        <div className="public-reference-hero-overlay" aria-hidden="true" />
-
         <div className="public-reference-hero-copy">
             <p className="public-reference-hero-eyebrow">{content.hero.eyebrow}</p>
             <h1 id="public-hero-title">{content.hero.title}</h1>
