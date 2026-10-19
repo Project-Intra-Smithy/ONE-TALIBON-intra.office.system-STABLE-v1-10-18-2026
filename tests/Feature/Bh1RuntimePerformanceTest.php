@@ -35,10 +35,11 @@ final class Bh1RuntimePerformanceTest extends TestCase
             'calendar.month.inertia' => '/calendar?view=month&date=2026-09-25',
             'calendar.week.inertia' => '/calendar?view=week&date=2026-09-25',
             'calendar.day.inertia' => '/calendar?view=day&date=2026-09-25',
-            'messages.inertia' => '/messages',
         ] as $label => $url) {
             $this->measure($label, $url, true);
         }
+
+        $this->get('/messages')->assertForbidden();
 
         $this->measureJson('notifications.feed', '/notifications/feed');
     }

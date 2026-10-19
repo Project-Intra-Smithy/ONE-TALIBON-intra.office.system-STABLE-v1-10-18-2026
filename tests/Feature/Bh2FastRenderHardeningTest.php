@@ -69,10 +69,11 @@ final class Bh2FastRenderHardeningTest extends TestCase
             'memoranda' => '/memoranda',
             'calendar' => '/calendar?view=month&date=2026-09-27',
             'meetings' => '/meetings',
-            'messages' => '/messages',
         ] as $label => $url) {
             $this->measure($label, $url);
         }
+
+        $this->get('/messages')->assertForbidden();
     }
 
     private function engineeringUser(): User
