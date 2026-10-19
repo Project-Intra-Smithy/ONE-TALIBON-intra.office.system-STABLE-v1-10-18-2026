@@ -33,6 +33,15 @@ class CorrespondenceCoreBTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Exercise authorized lifecycle/domain behavior only in isolated non-UAT tests.
+        // The shipped restricted-UAT default remains fail-closed and is checked separately.
+        config()->set('messaging_release.restricted_uat', false);
+    }
+
     public function test_classified_correspondence_routes_through_existing_workflow_engine_atomically(): void
     {
         [$record, $origin, $router] = $this->classified(CorrespondenceClassification::Internal);

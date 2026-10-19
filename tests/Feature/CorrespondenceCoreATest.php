@@ -31,6 +31,15 @@ class CorrespondenceCoreATest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Exercise authorized lifecycle/domain behavior only in isolated non-UAT tests.
+        // The shipped restricted-UAT default remains fail-closed and is checked separately.
+        config()->set('messaging_release.restricted_uat', false);
+    }
+
     public function test_integration_receive_with_valid_scope_creates_authoritative_received_boundary(): void
     {
         [$client, $credential, $token] = $this->credential([

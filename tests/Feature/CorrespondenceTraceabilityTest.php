@@ -18,6 +18,15 @@ class CorrespondenceTraceabilityTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Exercise authorized lifecycle/domain behavior only in isolated non-UAT tests.
+        // The shipped restricted-UAT default remains fail-closed and is checked separately.
+        config()->set('messaging_release.restricted_uat', false);
+    }
+
     public function test_incoming_document_trace_combines_lifecycle_and_later_workflow_movements_with_evidence(): void
     {
         $receivingOffice = $this->department('RECEIVING');

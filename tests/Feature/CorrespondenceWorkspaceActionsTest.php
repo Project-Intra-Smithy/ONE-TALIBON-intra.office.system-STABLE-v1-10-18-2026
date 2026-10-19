@@ -27,6 +27,15 @@ class CorrespondenceWorkspaceActionsTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Exercise authorized lifecycle/domain behavior only in isolated non-UAT tests.
+        // The shipped restricted-UAT default remains fail-closed and is checked separately.
+        config()->set('messaging_release.restricted_uat', false);
+    }
+
     public function test_workspace_register_generates_reference_redirects_and_is_exactly_once(): void
     {
         $office = $this->department('REGISTER');
