@@ -53,6 +53,8 @@ class PeopleDirectoryScopeTest extends TestCase
             ->assertInertia(fn (Assert $page) => $page
                 ->component('Employees/DirectoryProfile')->where('employee.presence', 'online'));
 
+        DB::table('portal_presence_sessions')->where('user_id', $actor->id)
+            ->update(['last_seen_at' => now()->subMinutes(10)]);
         DB::table('users')->where('id', $actor->id)->update(['last_seen_at' => now()->subMinutes(10)]);
         $this->get(route('employees.show', $actor->employee))
             ->assertInertia(fn (Assert $page) => $page
@@ -62,6 +64,49 @@ class PeopleDirectoryScopeTest extends TestCase
         $this->post(route('logout'))->assertRedirect(route('login'));
         $this->assertNull($actor->fresh()->last_seen_at);
         $this->postJson(route('employees.presence'))->assertUnauthorized();
+    }
+
+    public function test_logging_out_one_session_does_not_clear_another_fresh_session_presence(): void
+    {
+        $this->seed();
+        $actor = User::query()->where('email', 'employee@talibon.demo')->firstOrFail();
+
+        // Model two independently active browser sessions for the same account.
+        DB::table('portal_presence_sessions')->insert([
+            [
+                'user_id' => $actor->id,
+                'session_hash' => hash('sha256', 'session-a'),
+                'last_seen_at' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => $actor->id,
+                'session_hash' => hash('sha256', 'session-b'),
+                'last_seen_at' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
+
+        $this->actingAs($actor)
+            ->withSession(['presence_session_hash' => hash('sha256', 'session-a')])
+            ->post(route('logout'))
+            ->assertRedirect(route('login'));
+
+        $this->actingAs($actor)->get(route('employees.show', $actor->employee))
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Employees/DirectoryProfile')
+                ->where('employee.presence', 'online'));
+
+        $this->assertDatabaseMissing('portal_presence_sessions', [
+            'user_id' => $actor->id,
+            'session_hash' => hash('sha256', 'session-a'),
+        ]);
+        $this->assertDatabaseHas('portal_presence_sessions', [
+            'user_id' => $actor->id,
+            'session_hash' => hash('sha256', 'session-b'),
+        ]);
     }
 
     public function test_attendance_is_authenticated_employee_self_only_and_does_not_enumerate_other_staff(): void

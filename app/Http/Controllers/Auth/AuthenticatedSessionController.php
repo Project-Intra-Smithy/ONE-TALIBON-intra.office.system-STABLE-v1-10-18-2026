@@ -20,8 +20,7 @@ class AuthenticatedSessionController extends Controller
         private readonly AuthenticationAssurance $assurance,
         private readonly AuthenticationAttemptLimiter $limiter,
         private readonly AuditLogger $audit,
-    ) {
-    }
+    ) {}
 
     public function create(): Response
     {
@@ -62,7 +61,20 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         if ($request->user()) {
-            DB::table('users')->where('id', $request->user()->id)->update(['last_seen_at' => null]);
+            $userId = $request->user()->id;
+            $sessionHash = (string) $request->session()->get(
+                'presence_session_hash',
+                hash('sha256', $request->session()->getId()),
+            );
+            DB::table('portal_presence_sessions')
+                ->where('user_id', $userId)
+                ->where('session_hash', $sessionHash)
+                ->delete();
+            DB::table('users')->where('id', $userId)->update([
+                'last_seen_at' => DB::table('portal_presence_sessions')
+                    ->where('user_id', $userId)
+                    ->max('last_seen_at'),
+            ]);
         }
         Auth::guard('web')->logout();
         $request->session()->invalidate();

@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Employee;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -18,7 +20,14 @@ class EmployeeDirectoryController extends Controller
 
         $employees = Employee::query()
             ->select(['id', 'employee_number', 'full_name', 'work_email', 'user_id', 'department_id', 'position_title', 'employment_status'])
-            ->with(['department:id,code,name,short_name', 'user:id,is_active,last_seen_at'])
+            ->with([
+                'department:id,code,name,short_name',
+                'user' => fn ($query) => $query
+                    ->select(['id', 'is_active'])
+                    ->addSelect(['presence_last_seen_at' => DB::table('portal_presence_sessions')
+                        ->selectRaw('MAX(last_seen_at)')
+                        ->whereColumn('user_id', 'users.id')]),
+            ])
             ->where('employment_status', 'active')
             ->when($search !== '', function (Builder $query) use ($search): void {
                 $needle = '%'.mb_strtolower($search).'%';
@@ -44,7 +53,8 @@ class EmployeeDirectoryController extends Controller
                 'employment_status' => $employee->employment_status,
                 'department' => $employee->department?->only(['code', 'name', 'short_name']),
                 'presence' => $employee->user?->is_active
-                    && $employee->user->last_seen_at?->greaterThan(now()->subMinutes(3))
+                    && filled($employee->user->presence_last_seen_at)
+                    && CarbonImmutable::parse($employee->user->presence_last_seen_at)->greaterThan(now()->subMinutes(3))
                         ? 'online' : 'offline',
             ]);
 
