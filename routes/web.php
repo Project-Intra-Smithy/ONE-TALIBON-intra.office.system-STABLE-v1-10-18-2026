@@ -24,7 +24,10 @@ use App\Http\Controllers\HrisLifecycleController;
 use App\Http\Controllers\HrisOffboardingController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\EmployeeAttendanceController;
 use App\Http\Controllers\EmployeeDirectoryController;
+use App\Http\Controllers\EmployeeDirectoryProfileController;
+use App\Http\Controllers\EmployeePresenceController;
 use App\Http\Controllers\EmployeeProfileController;
 use App\Http\Controllers\LegislativeRecordController;
 use App\Http\Controllers\LegislativeWorkspaceController;
@@ -85,7 +88,7 @@ Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
     Route::get('/documents', DocumentCenterController::class)->name('document-center.index');
     Route::get('/departments', DepartmentController::class)->name('departments.index');
     Route::get('/employees', EmployeeDirectoryController::class)->name('employees.index');
-    Route::get('/employees/{employee}', EmployeeProfileController::class)->name('employees.show');
+    Route::get('/employees/{employee}', EmployeeDirectoryProfileController::class)->name('employees.show');
     Route::get('/calendar', CalendarController::class)->name('calendar.index');
 
     // W03: same-origin session-authenticated *individual* Task JSON surface.
@@ -176,45 +179,11 @@ Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
     Route::post('/legislative-workspace/sessions', [LegislativeWorkspaceController::class, 'store'])->name('legislative.sessions.store');
     Route::post('/legislative-workspace/sessions/{session}/agenda', [LegislativeWorkspaceController::class, 'addAgenda'])->name('legislative.sessions.agenda.store');
 
-    Route::get('/hris', HrisController::class)->name('hris');
-    Route::get('/hris/dtr', [DtrController::class, 'index'])->name('hris.dtr');
-    Route::get('/hris/payroll', PayrollController::class)->name('hris.payroll');
-    Route::post('/hris/leave-requests', [LeaveRequestController::class, 'store'])->name('hris.leave.store');
-
-    Route::get('/hris/health-access', [HealthAccessController::class, 'index'])->name('hris.health.access');
-    Route::post('/hris/health-access', [HealthAccessController::class, 'store'])->name('hris.health.access.store');
-    Route::post('/hris/health-access/{grant}/revoke', [HealthAccessController::class, 'revoke'])->name('hris.health.access.revoke');
-    Route::get('/hris/health/{employee}', [EmployeeHealthVaultController::class, 'show'])->name('hris.health.show');
-    Route::post('/hris/health/{employee}', [EmployeeHealthVaultController::class, 'store'])->name('hris.health.store');
-
-    Route::middleware('hris.admin')->prefix('hris/admin')->group(function (): void {
-        Route::get('/', [HrisAdminController::class, 'index'])->name('hris.admin');
-        Route::post('/leave-requests/{leaveRequest}/approve', [HrisAdminController::class, 'approve'])->name('hris.leave.approve');
-        Route::post('/leave-requests/{leaveRequest}/reject', [HrisAdminController::class, 'reject'])->name('hris.leave.reject');
-
-        Route::post('/dtr/generate', [DtrController::class, 'generate'])->name('hris.dtr.generate');
-        Route::post('/dtr/{period}/lock', [DtrController::class, 'lock'])->name('hris.dtr.lock');
-        Route::post('/payroll/{payroll}/link-dtr', [DtrController::class, 'linkPayroll'])->name('hris.payroll.link-dtr');
-
-        Route::get('/development', [HrisDevelopmentController::class, 'index'])->name('hris.development.index');
-        Route::post('/development/employees/{employee}/performance', [HrisDevelopmentController::class, 'storePerformance'])->name('hris.development.performance.store');
-        Route::post('/development/employees/{employee}/records', [HrisDevelopmentController::class, 'storeDevelopment'])->name('hris.development.record.store');
-        Route::post('/development/sync-expiries', [HrisDevelopmentController::class, 'syncExpiryAlerts'])->name('hris.development.expiry.sync');
-
-        Route::get('/lifecycle', [HrisLifecycleController::class, 'index'])->name('hris.lifecycle.index');
-        Route::post('/lifecycle/onboarding', [HrisLifecycleController::class, 'storeOnboarding'])->name('hris.lifecycle.onboarding.store');
-        Route::get('/lifecycle/onboarding/{case}', [HrisLifecycleController::class, 'showOnboarding'])->name('hris.lifecycle.onboarding.show');
-        Route::post('/lifecycle/onboarding/tasks/{task}/complete', [HrisLifecycleController::class, 'completeOnboardingTask'])->name('hris.lifecycle.onboarding.tasks.complete');
-        Route::post('/lifecycle/onboarding/{case}/complete', [HrisLifecycleController::class, 'completeOnboarding'])->name('hris.lifecycle.onboarding.complete');
-        Route::post('/lifecycle/employees/{employee}/movements', [HrisLifecycleController::class, 'applyMovement'])->name('hris.lifecycle.movements.store');
-        Route::post('/lifecycle/movement-tasks/{task}/complete', [HrisLifecycleController::class, 'completeMovementTask'])->name('hris.lifecycle.movement.tasks.complete');
-
-        Route::get('/offboarding', [HrisOffboardingController::class, 'index'])->name('hris.offboarding.index');
-        Route::post('/offboarding', [HrisOffboardingController::class, 'store'])->name('hris.offboarding.store');
-        Route::get('/offboarding/{case}', [HrisOffboardingController::class, 'show'])->name('hris.offboarding.show');
-        Route::post('/offboarding/tasks/{task}/complete', [HrisOffboardingController::class, 'completeTask'])->name('hris.offboarding.tasks.complete');
-        Route::post('/offboarding/{case}/finalize', [HrisOffboardingController::class, 'finalize'])->name('hris.offboarding.finalize');
-    });
+    // Active people scope only. Historical HRIS code remains archived and unrouted.
+    Route::get('/hris', fn () => redirect()->route('employees.index'))->name('hris');
+    Route::get('/hris/attendance', EmployeeAttendanceController::class)->name('hris.attendance');
+    Route::post('/employees/presence', EmployeePresenceController::class)
+        ->middleware('throttle:12,1')->name('employees.presence');
 
     Route::get('/audit', AuditController::class)->name('audit');
 });

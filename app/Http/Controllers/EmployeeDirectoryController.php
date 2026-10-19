@@ -18,7 +18,7 @@ class EmployeeDirectoryController extends Controller
 
         $employees = Employee::query()
             ->select(['id', 'employee_number', 'full_name', 'work_email', 'user_id', 'department_id', 'position_title', 'employment_status'])
-            ->with('department:id,code,name,short_name')
+            ->with(['department:id,code,name,short_name', 'user:id,is_active,last_seen_at'])
             ->where('employment_status', 'active')
             ->when($search !== '', function (Builder $query) use ($search): void {
                 $needle = '%'.mb_strtolower($search).'%';
@@ -34,7 +34,20 @@ class EmployeeDirectoryController extends Controller
             })
             ->orderBy('full_name')
             ->paginate(40)
-            ->withQueryString();
+            ->withQueryString()
+            ->through(fn (Employee $employee): array => [
+                'id' => $employee->id,
+                'employee_number' => $employee->employee_number,
+                'full_name' => $employee->full_name,
+                'work_email' => $employee->work_email,
+                'user_id' => $employee->user_id,
+                'position_title' => $employee->position_title,
+                'employment_status' => $employee->employment_status,
+                'department' => $employee->department?->only(['code', 'name', 'short_name']),
+                'presence' => $employee->user?->is_active
+                    && $employee->user->last_seen_at?->greaterThan(now()->subMinutes(3))
+                        ? 'online' : 'offline',
+            ]);
 
         $activeEmployeeCount = Employee::query()->where('employment_status', 'active')->count();
         $portalAccountCount = Employee::query()

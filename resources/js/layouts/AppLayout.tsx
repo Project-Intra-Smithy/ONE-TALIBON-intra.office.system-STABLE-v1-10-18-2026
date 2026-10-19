@@ -61,6 +61,27 @@ export default function AppLayout({ title, presentation = 'standard', children }
         canViewReports,
     );
 
+    // Authenticated visible-tab heartbeat; absent or stale evidence is offline.
+    useEffect(() => {
+        if (!user?.id) return;
+        const heartbeat = () => {
+            if (document.visibilityState !== 'visible') return;
+            const cookie = document.cookie.split('; ').find((item) => item.startsWith('XSRF-TOKEN='))?.slice(11);
+            if (!cookie) return;
+            void fetch('/employees/presence', {
+                method: 'POST', credentials: 'same-origin',
+                headers: { Accept: 'application/json', 'X-XSRF-TOKEN': decodeURIComponent(cookie) },
+            }).catch(() => {});
+        };
+        heartbeat();
+        const interval = window.setInterval(heartbeat, 60000);
+        document.addEventListener('visibilitychange', heartbeat);
+        return () => {
+            window.clearInterval(interval);
+            document.removeEventListener('visibilitychange', heartbeat);
+        };
+    }, [user?.id]);
+
     useEffect(() => {
         try {
             setDesktopCollapsed(window.localStorage.getItem(SIDEBAR_COLLAPSED_STORAGE_KEY) === 'true');

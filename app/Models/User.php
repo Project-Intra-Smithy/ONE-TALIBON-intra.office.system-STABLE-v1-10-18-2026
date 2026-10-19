@@ -39,6 +39,7 @@ class User extends Authenticatable
             'mfa_recovery_codes' => 'array',
             'mfa_recovery_codes_generated_at' => 'datetime',
             'mfa_version' => 'integer',
+            'last_seen_at' => 'datetime',
         ];
     }
 
