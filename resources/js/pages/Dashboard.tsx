@@ -12,9 +12,13 @@ import type { DashboardProps } from '../components/dashboard/types';
 import PersonalTaskWorkspace from '../components/tasks/PersonalTaskWorkspace';
 import PersonalTaskMutationPanel from '../components/tasks/PersonalTaskMutationPanel';
 import AppLayout from '../layouts/AppLayout';
+import WorkspaceUnavailable from '../components/WorkspaceUnavailable';
 import '../components/dashboard/dashboard.css';
 
 export default function Dashboard({ experience, metricGroups, correspondenceOverview, recentWork, officeOverview, executiveOverview, systemOverview }: DashboardProps) {
+    if (!experience?.department || !Array.isArray(experience.quickActions) || !Array.isArray(metricGroups) || !Array.isArray(recentWork)) {
+        return <WorkspaceUnavailable title="Dashboard" />;
+    }
     const primaryKey = { employee: 'personal', department_head: 'office', executive_oversight: 'executive', system_administration: 'system' }[experience.key];
     const primaryGroups = metricGroups.filter((group) => group.key === primaryKey);
     const secondaryGroups = metricGroups.filter((group) => group.key !== primaryKey);
