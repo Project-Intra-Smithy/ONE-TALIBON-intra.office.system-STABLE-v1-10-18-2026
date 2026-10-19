@@ -138,9 +138,9 @@ export default function PortalSidebar({
                                                     )
                                                 )}
                                             </Link>
-                                            {key === 'myWork' && <a href="/dashboard#dashboard-personal-tasks"
-                                                onClick={() => { onNavigate?.(); document.getElementById('dashboard-personal-tasks')?.focus(); }}
-                                                aria-current={currentUrl.includes('#dashboard-personal-tasks') ? 'page' : undefined}
+                                            {key === 'myWork' && <a href="/dashboard#personal-tasks"
+                                                onClick={() => { onNavigate?.(); document.getElementById('personal-tasks')?.focus(); }}
+                                                aria-current={currentUrl.includes('#personal-tasks') ? 'page' : undefined}
                                                 aria-label={compact ? 'Personal tasks' : undefined}
                                                 title="Personal tasks"
                                                 className="relative mt-1 flex min-h-11 items-center gap-3 rounded-lg px-3 py-2 text-base font-medium text-emerald-50 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white/80">

@@ -67,7 +67,7 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
                     {systemOverview && <ActivityRail system={systemOverview} />}
                 </>}
 
-                <div id="dashboard-personal-tasks" tabIndex={-1}><PersonalTaskWorkspace /><PersonalTaskMutationPanel /></div>
+                <div id="dashboard-personal-tasks" tabIndex={-1}><span id="personal-tasks" tabIndex={-1} className="sr-only" /><PersonalTaskWorkspace /><PersonalTaskMutationPanel /></div>
             </div>
         </div>
     </AppLayout>;
