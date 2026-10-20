@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Models\WorkflowTransaction;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 require dirname(__DIR__, 2).'/vendor/autoload.php';
 
@@ -41,6 +42,7 @@ $args = array_slice($argv, 2);
 
 $output = match ($command) {
     'isolation' => isolationSnapshot($database),
+    'auth-setup' => setupAuthentication(),
     'setup' => setupFixtures($args[0] ?? ''),
     'totals' => totalsSnapshot(),
     'transaction' => transactionSnapshot($args[0] ?? ''),
@@ -63,6 +65,48 @@ function isolationSnapshot(string $database): array
         'environment' => app()->environment(),
         'database' => $database,
         'isolated' => app()->environment('testing') && $database === H1_DATABASE,
+    ];
+}
+
+function setupAuthentication(): array
+{
+    $password = (string) env('QA_DEMO_PASSWORD', '');
+    $totpSecret = (string) env('QA_TOTP_SECRET', '');
+    if (mb_strlen($password) < 16 || ! preg_match('/^[A-Z2-7]{16,}$/', $totpSecret)) {
+        throw new RuntimeException('Process-local H1 credentials are missing or invalid.');
+    }
+
+    $emails = [
+        'engineering@talibon.demo',
+        'budget@talibon.demo',
+        'mayor@talibon.demo',
+        'employee@talibon.demo',
+    ];
+
+    DB::transaction(function () use ($emails, $password, $totpSecret): void {
+        User::query()->whereIn('email', $emails)->get()->each(function (User $user) use ($password, $totpSecret): void {
+            $privileged = in_array($user->email, [
+                'engineering@talibon.demo',
+                'budget@talibon.demo',
+                'mayor@talibon.demo',
+            ], true);
+
+            $user->forceFill([
+                'password' => Hash::make($password),
+                'mfa_secret' => $privileged ? $totpSecret : null,
+                'mfa_confirmed_at' => $privileged ? now() : null,
+                'mfa_version' => $privileged ? max(1, (int) $user->mfa_version) : 0,
+            ])->save();
+        });
+    });
+
+    $users = User::query()->whereIn('email', $emails)->get();
+
+    return [
+        'ready' => $users->count() === count($emails)
+            && $users->every(fn (User $user): bool => Hash::check($password, $user->password)),
+        'accounts' => $users->count(),
+        'privilegedMfaAccounts' => $users->whereNotNull('mfa_confirmed_at')->count(),
     ];
 }
 

@@ -5,6 +5,7 @@ import fs from 'node:fs/promises';
 
 const BASE = process.env.QA_BASE_URL || 'http://127.0.0.1:8000';
 const PASSWORD = process.env.QA_DEMO_PASSWORD;
+const TOTP_SECRET = process.env.QA_TOTP_SECRET;
 const EXPECTED_SHA = process.env.QA_EXPECTED_SHA;
 const ENVIRONMENT = process.env.QA_ENVIRONMENT || 'local-isolated-h1';
 const REPORT = 'storage/app/qa/h1-mutation-readiness-report.json';
@@ -72,6 +73,9 @@ if (targetedMode) {
 if (!EXPECTED_SHA) {
   throw new Error('QA_EXPECTED_SHA is required');
 }
+if (!PASSWORD || !TOTP_SECRET) {
+  throw new Error('QA_DEMO_PASSWORD and QA_TOTP_SECRET are required process-local credentials');
+}
 
 const marker = EXPECTED_SHA.slice(0, 10);
 const transactionTitle = `H1 mutation transaction ${marker}`;
@@ -84,7 +88,7 @@ const returnTitle = `H3 return transaction ${marker}`;
 const requestInformationTitle = `H3 request information transaction ${marker}`;
 const disapproveTitle = `H3 mayor disapprove transaction ${marker}`;
 const cancelTravelReference = `H3-TO-CANCEL-${marker.toUpperCase()}`;
-const secrets = new Set(PASSWORD ? [PASSWORD] : []);
+const secrets = new Set([PASSWORD, TOTP_SECRET].filter(Boolean));
 const runtimeByPage = new WeakMap();
 
 const report = {
@@ -268,24 +272,14 @@ async function login(browser, spec) {
   if (response?.status() !== 200) throw new Error(`${spec.label} login page returned ${response?.status()}`);
   await appReady(page);
 
-  await page.getByRole('button', { name: 'Open Municipal Workspace', exact: true }).click();
-  await page.getByRole('dialog').waitFor({ state: 'visible', timeout: 10000 });
+  await page.getByLabel('Email').fill(spec.email);
+  await page.locator('input#login-password').fill(PASSWORD);
+  await page.getByRole('button', { name: 'Sign In', exact: true }).click();
 
-  const personaByEmail = {
-    'engineering@talibon.demo': { role: 'Department Head', office: 'Municipal Engineering Office' },
-    'budget@talibon.demo': { role: 'Department Head', office: 'Municipal Budget Office' },
-    'mayor@talibon.demo': { role: 'Municipal Executive', office: null },
-    'employee@talibon.demo': { role: 'Employee', office: null },
-  };
-
-  const persona = personaByEmail[spec.email];
-  if (!persona) throw new Error(`${spec.label} has no showcase gateway mapping for ${spec.email}`);
-
-  await page.getByRole('button', { name: new RegExp(`^${persona.role}`) }).click();
-
-  if (persona.office) {
-    await page.getByRole('heading', { name: 'Choose office context', exact: true }).waitFor({ state: 'visible', timeout: 10000 });
-    await page.getByRole('button', { name: new RegExp(`^${persona.office}`) }).click();
+  if (spec.privileged) {
+    await page.waitForURL((url) => url.pathname === '/security/mfa/challenge', { timeout: 15000 });
+    await page.getByLabel('Authenticator code').fill(totp(TOTP_SECRET));
+    await page.getByRole('button', { name: 'Verify and continue', exact: true }).click();
   }
 
   await page.waitForURL((url) => url.pathname === '/dashboard', { timeout: 15000 });
@@ -642,6 +636,13 @@ async function main() {
   report.isolation = probe('isolation');
   if (!report.isolation.isolated || report.isolation.database !== 'talibon_h1_mutations') {
     report.failure = { stage: 'isolation', summary: 'H1 destructive QA isolation could not be proven' };
+    await writeReport();
+    process.exitCode = 1;
+    return;
+  }
+  const authentication = probe('auth-setup');
+  if (!authentication.ready) {
+    report.failure = { stage: 'authentication-fixture', summary: 'Synthetic credentials or MFA fixture could not be established' };
     await writeReport();
     process.exitCode = 1;
     return;

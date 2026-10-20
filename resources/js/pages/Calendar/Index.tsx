@@ -66,6 +66,65 @@ const formatTimeOnly = (value: string, timezone?: string) =>
 const humanize = (value: string) =>
     value.replaceAll('_', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
 
+const dateOnly = (value: string, timezone: string) => dateKey(value, timezone);
+
+const dateSequence = (start: string, end: string) => {
+    const dates: string[] = [];
+    const cursor = new Date(`${start}T00:00:00Z`);
+    const last = new Date(`${end}T00:00:00Z`);
+
+    while (!Number.isNaN(cursor.getTime()) && cursor <= last && dates.length < 42) {
+        dates.push(cursor.toISOString().slice(0, 10));
+        cursor.setUTCDate(cursor.getUTCDate() + 1);
+    }
+
+    return dates;
+};
+
+const eventOccursOn = (event: CalendarEvent, day: string, timezone: string) => {
+    const start = dateOnly(event.starts_at, timezone);
+    const end = dateOnly(event.ends_at ?? event.starts_at, timezone);
+    return Boolean(start && end && start <= day && end >= day);
+};
+
+const dateHeading = (day: string, options: Intl.DateTimeFormatOptions) =>
+    new Date(`${day}T00:00:00Z`).toLocaleDateString('en-US', { ...options, timeZone: 'UTC' });
+
+function EventButton({
+    event,
+    timezone,
+    onOpen,
+    chipClass,
+    compact = false,
+}: {
+    event: CalendarEvent;
+    timezone: string;
+    onOpen: (event: CalendarEvent) => void;
+    chipClass: string;
+    compact?: boolean;
+}) {
+    return <div className={`rounded-lg border px-3 py-2 ${chipClass}`}>
+        <button
+            type="button"
+            onClick={() => onOpen(event)}
+            className="w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
+            aria-label={`Open ${event.title} details`}
+        >
+            <span className={`${compact ? 'text-xs' : 'text-sm'} block font-bold`}>{event.title}</span>
+            <span className="mt-0.5 block text-xs opacity-80">
+                {event.all_day ? 'All day' : formatTimeOnly(event.starts_at, timezone)}
+                {event.location ? ` • ${event.location}` : ''}
+            </span>
+        </button>
+        {event.action_url && !compact && <Link
+            href={event.action_url}
+            className="mt-2 inline-flex min-h-[36px] items-center gap-1 text-xs font-bold underline decoration-transparent underline-offset-2 hover:decoration-current focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
+        >
+            Open <ExternalLink size={13} aria-hidden="true" />
+        </Link>}
+    </div>;
+}
+
 export default function CalendarIndex({
     events,
     calendar,
@@ -115,9 +174,11 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
         const currentDate = new Date(`${selectedDate}T00:00:00Z`);
         if (Number.isNaN(currentDate.getTime())) return;
 
-        if (view === 'month' || view === 'schedule') {
+        if (view === 'month') {
             currentDate.setUTCDate(1);
             currentDate.setUTCMonth(currentDate.getUTCMonth() + direction);
+        } else if (view === 'schedule') {
+            currentDate.setUTCDate(currentDate.getUTCDate() + direction * 31);
         } else if (view === 'week') {
             currentDate.setUTCDate(currentDate.getUTCDate() + direction * 7);
         } else if (view === 'day') {
@@ -141,6 +202,16 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
               timeZone: 'UTC',
           })
         : 'Calendar';
+
+    const rangeStart = dateOnly(calendar.range_start, timezone) ?? anchor;
+    const rangeEnd = dateOnly(calendar.range_end, timezone) ?? anchor;
+    const rangeDays = dateSequence(rangeStart, rangeEnd);
+    const periodTitle = view === 'month'
+        ? monthTitle
+        : view === 'day'
+          ? dateHeading(anchor, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
+          : `${dateHeading(rangeStart, { month: 'short', day: 'numeric', year: 'numeric' })} – ${dateHeading(rangeEnd, { month: 'short', day: 'numeric', year: 'numeric' })}`;
+    const periodName = view === 'schedule' ? 'schedule window' : view;
 
     // Group events by YYYY-MM-DD
     const eventsByDate = new Map<string, CalendarEvent[]>();
@@ -238,7 +309,7 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
                                 <button
                                     type="button"
                                     onClick={() => navigatePeriod(-1)}
-                                    aria-label="Previous calendar month"
+                                    aria-label={`Previous ${periodName}`}
                                     className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 dark:text-slate-200"
                                 >
                                     <ChevronLeft size={20} aria-hidden="true" />
@@ -246,14 +317,14 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
                                 <button
                                     type="button"
                                     onClick={() => navigatePeriod(1)}
-                                    aria-label="Next calendar month"
+                                    aria-label={`Next ${periodName}`}
                                     className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center border-l border-slate-200 text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 dark:border-slate-700 dark:text-slate-200"
                                 >
                                     <ChevronRight size={20} aria-hidden="true" />
                                 </button>
                             </div>
                             <h2 className="ml-2 text-xl font-bold tracking-tight text-slate-900 dark:text-white" aria-live="polite">
-                                {monthTitle}
+                                {periodTitle}
                             </h2>
                         </div>
 
@@ -441,70 +512,66 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
                         </div>
                     )}
 
-                    {/* View: Week / Day / Schedule View presentation */}
-                    {view !== 'month' && (
-                        <div className="p-4 sm:p-6">
-                            <div className="space-y-3">
-                                {safeEvents.length > 0 ? (
-                                    safeEvents.map((event) => (
-                                        <div
-                                            key={event.id}
-                                            tabIndex={0}
-                                            role="button"
-                                            onClick={() => setActiveEvent(event)}
-                                            onKeyDown={(e) => {
-                                                if (e.key === 'Enter' || e.key === ' ') {
-                                                    e.preventDefault();
-                                                    setActiveEvent(event);
-                                                }
-                                            }}
-                                            className="flex flex-col justify-between gap-3 rounded-xl border border-slate-200 p-4 transition-colors hover:border-[#145a43] hover:bg-slate-50/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 sm:flex-row sm:items-center dark:border-slate-700 dark:bg-slate-800/40 dark:hover:bg-slate-800"
-                                        >
-                                            <div className="min-w-0">
-                                                <div className="flex flex-wrap items-center gap-2">
-                                                    <span
-                                                        className={`rounded-full border px-2.5 py-0.5 text-xs font-bold uppercase ${getPriorityBadgeClass(
-                                                            event.priority
-                                                        )}`}
-                                                    >
-                                                        {humanize(event.priority)}
-                                                    </span>
-                                                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                                                        {humanize(event.event_type)}
-                                                    </span>
-                                                    {event.all_day && (
-                                                        <span className="rounded bg-slate-100 px-2 py-0.5 text-xs font-bold text-slate-600 dark:bg-slate-700 dark:text-slate-300">
-                                                            All day
-                                                        </span>
-                                                    )}
-                                                </div>
-                                                <h3 className="mt-2 text-base font-bold text-slate-900 dark:text-white">
-                                                    {event.title}
-                                                </h3>
-                                                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                                                    {formatDate(event.starts_at, timezone)}
-                                                    {event.ends_at && ` – ${formatDate(event.ends_at, timezone)}`}
-                                                    {event.location && ` • ${event.location}`}
-                                                </p>
+                    {view === 'week' && (
+                        <section aria-label={`Week of ${rangeStart}`} data-calendar-view="week" className="overflow-x-auto p-3 sm:p-5">
+                            <div className="grid min-w-[760px] grid-cols-7 divide-x divide-slate-200 rounded-xl border border-slate-200 dark:divide-slate-700 dark:border-slate-700">
+                                {rangeDays.map((day) => {
+                                    const dayEvents = safeEvents.filter((event) => eventOccursOn(event, day, timezone));
+                                    const allDay = dayEvents.filter((event) => event.all_day);
+                                    const timed = dayEvents.filter((event) => !event.all_day);
+                                    return <section key={day} aria-label={`${day}, ${dayEvents.length} events`} className={day === today ? 'bg-emerald-50/60 dark:bg-emerald-950/20' : ''}>
+                                        <button type="button" onClick={() => navigateTo('day', day)} className="min-h-[64px] w-full border-b border-slate-200 px-2 py-3 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-700 dark:border-slate-700">
+                                            <span className="block text-xs font-bold uppercase text-slate-500">{dateHeading(day, { weekday: 'short' })}</span>
+                                            <span className="mt-1 block text-lg font-extrabold text-slate-900 dark:text-white">{dateHeading(day, { day: 'numeric' })}</span>
+                                        </button>
+                                        <div className="min-h-[260px] space-y-3 p-2">
+                                            {allDay.length > 0 && <div aria-label="All-day events" className="space-y-1 border-b border-slate-200 pb-2 dark:border-slate-700">
+                                                {allDay.map((event) => <EventButton key={event.id} event={event} timezone={timezone} compact onOpen={setActiveEvent} chipClass={getEventChipClass(event.priority)} />)}
+                                            </div>}
+                                            <div aria-label="Timed events" className="space-y-1.5">
+                                                {timed.map((event) => <EventButton key={event.id} event={event} timezone={timezone} compact onOpen={setActiveEvent} chipClass={getEventChipClass(event.priority)} />)}
                                             </div>
-                                            {event.action_url && (
-                                                <Link
-                                                    href={event.action_url}
-                                                    onClick={(e) => e.stopPropagation()}
-                                                    className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-700 transition-colors hover:bg-slate-100 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-200"
-                                                >
-                                                    Open <ExternalLink size={15} aria-hidden="true" />
-                                                </Link>
-                                            )}
+                                            {dayEvents.length === 0 && <p className="py-5 text-center text-xs text-slate-400">No events</p>}
                                         </div>
-                                    ))
-                                ) : (
-                                    <p className="py-8 text-center text-base text-slate-500">
-                                        No calendar events are visible in this range.
-                                    </p>
-                                )}
+                                    </section>;
+                                })}
                             </div>
-                        </div>
+                        </section>
+                    )}
+
+                    {view === 'day' && (
+                        <section aria-label={`Day agenda for ${anchor}`} data-calendar-view="day" className="p-4 sm:p-6">
+                            {(() => {
+                                const dayEvents = safeEvents.filter((event) => eventOccursOn(event, anchor, timezone));
+                                const allDay = dayEvents.filter((event) => event.all_day);
+                                const timed = dayEvents.filter((event) => !event.all_day);
+                                return <div className="space-y-5">
+                                    <div>
+                                        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">All-day events</h3>
+                                        <div className="mt-2 space-y-2">{allDay.length ? allDay.map((event) => <EventButton key={event.id} event={event} timezone={timezone} onOpen={setActiveEvent} chipClass={getEventChipClass(event.priority)} />) : <p className="text-sm text-slate-500">No all-day events.</p>}</div>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">Timed agenda</h3>
+                                        <div className="mt-2 divide-y divide-slate-200 border-y border-slate-200 dark:divide-slate-700 dark:border-slate-700">{timed.length ? timed.map((event) => <div key={event.id} className="grid grid-cols-[6rem_1fr] gap-3 py-3 sm:grid-cols-[8rem_1fr]"><time className="text-sm font-bold text-[#145a43] dark:text-emerald-300">{formatTimeOnly(event.starts_at, timezone)}</time><EventButton event={event} timezone={timezone} onOpen={setActiveEvent} chipClass={getEventChipClass(event.priority)} /></div>) : <p className="py-6 text-center text-sm text-slate-500">No timed events.</p>}</div>
+                                    </div>
+                                </div>;
+                            })()}
+                        </section>
+                    )}
+
+                    {view === 'schedule' && (
+                        <section aria-label={`${rangeStart} through ${rangeEnd} schedule`} data-calendar-view="schedule" className="p-4 sm:p-6">
+                            <div className="space-y-6">
+                                {rangeDays.filter((day) => safeEvents.some((event) => eventOccursOn(event, day, timezone))).map((day) => {
+                                    const dayEvents = safeEvents.filter((event) => eventOccursOn(event, day, timezone));
+                                    return <section key={day} aria-labelledby={`schedule-${day}`} className="grid gap-3 sm:grid-cols-[11rem_1fr]">
+                                        <h3 id={`schedule-${day}`} className="text-sm font-extrabold text-slate-900 dark:text-white">{dateHeading(day, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}</h3>
+                                        <div className="space-y-2">{dayEvents.map((event) => <EventButton key={event.id} event={event} timezone={timezone} onOpen={setActiveEvent} chipClass={getEventChipClass(event.priority)} />)}</div>
+                                    </section>;
+                                })}
+                                {!safeEvents.length && <p className="py-8 text-center text-base text-slate-500">No calendar events are visible in this 31-day schedule.</p>}
+                            </div>
+                        </section>
                     )}
                 </div>
 
