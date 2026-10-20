@@ -6,7 +6,7 @@ import { readFile, mkdir } from 'node:fs/promises';
 import { chromium } from 'playwright';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import { fixturePage } from '../resources/js/visual-fixtures.ts';
+import { fixturePage } from './Browser/ux-fixtures.ts';
 
 test('built directory preserves 40/14, keyboard filters, unavailable links and five widths', async () => {
     const buildRoot = 'artifacts/office-directory/build';
