@@ -20,7 +20,7 @@ const requireStub = (name) => {
     if (name === 'react') return { useState: () => ['', stub] };
     if (name === 'lucide-react') return new Proxy({}, { get: () => stub });
     if (name === 'react/jsx-runtime') return { jsx: stub, jsxs: stub };
-    if (name.includes('PageFrame') || name.includes('PageHeader') || name.includes('AppLayout')) return { __esModule: true, default: stub };
+    if (name.includes('PageFrame') || name.includes('PageHeader') || name.includes('AppLayout') || name.includes('OfficeLogo')) return { __esModule: true, default: stub };
     throw new Error('Unexpected import: ' + name);
 };
 new Function('require', 'module', 'exports', result.outputText)(requireStub, module, module.exports);
@@ -66,6 +66,12 @@ test('search and group intersect and no-match yields zero groups', () => {
     assert.equal(grouped(filter(entries,'NOTHING-XYZ',''),labels).length,0);
     assert.equal(filter(entries, 'anything', 'Finance').length,0);
     assert.equal(filter(entries,'  ','').length,40);
+});
+test('search normalizes internal whitespace and uses exact server code without identity aliases', () => {
+    const rows = [{ ...entries[0], name: 'Municipal Planning Office', backingDepartmentCode: 'CODE-1' }];
+    assert.equal(filter(rows, ' municipal   planning ', '').length, 1);
+    assert.equal(filter(rows, ' code-1 ', '').length, 1);
+    assert.equal(filter(rows, 'invented alias', '').length, 0);
 });
 test('unknown group not silently lost and unsafe records URLs remain disabled', () => {
     assert.equal(grouped([{...entries[0],group:'Extra'}],labels)[0].groupName,'Extra');
