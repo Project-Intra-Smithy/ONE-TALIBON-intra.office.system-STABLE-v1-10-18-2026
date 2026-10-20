@@ -211,7 +211,7 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
         : view === 'day'
           ? dateHeading(anchor, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
           : `${dateHeading(rangeStart, { month: 'short', day: 'numeric', year: 'numeric' })} – ${dateHeading(rangeEnd, { month: 'short', day: 'numeric', year: 'numeric' })}`;
-    const periodName = view === 'schedule' ? 'schedule window' : view;
+    const periodName = view === 'month' ? 'calendar month' : view === 'schedule' ? 'schedule window' : view;
 
     // Group events by YYYY-MM-DD
     const eventsByDate = new Map<string, CalendarEvent[]>();
