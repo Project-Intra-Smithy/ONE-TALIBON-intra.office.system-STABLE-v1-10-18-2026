@@ -268,24 +268,59 @@ async function login(browser, spec) {
   const context = await browser.newContext({ viewport: { width: 1280, height: 850 } });
   const page = await context.newPage();
   monitor(page, spec.label);
+  let stage = 'login-page';
 
-  const response = await page.goto(`${BASE}/login`, { waitUntil: 'domcontentloaded', timeout: 20000 });
-  if (response?.status() !== 200) throw new Error(`${spec.label} login page returned ${response?.status()}`);
-  await appReady(page);
+  try {
+    const response = await page.goto(`${BASE}/login`, { waitUntil: 'domcontentloaded', timeout: 20000 });
+    if (response?.status() !== 200) throw new Error(`${spec.label} login page returned ${response?.status()}`);
+    await appReady(page);
 
-  await page.getByLabel('Email').fill(spec.email);
-  await page.locator('input#login-password').fill(PASSWORD);
-  await page.getByRole('button', { name: /^Sign in$/i }).click();
+    stage = 'credential-submission';
+    await page.getByLabel('Email').fill(spec.email);
+    await page.locator('input#login-password').fill(PASSWORD);
+    const credentialResponse = page.waitForResponse((candidate) => {
+      const request = candidate.request();
+      return request.method() === 'POST' && new URL(candidate.url()).pathname === '/login';
+    }, { timeout: 15000 });
+    await page.getByRole('button', { name: /^Sign in$/i }).click();
+    const submitted = await credentialResponse;
+    report.diagnostics.push({
+      at: new Date().toISOString(), actor: spec.label, path: pathOnly(submitted.url()),
+      type: 'authentication-stage', detail: 'credential-submission', status: submitted.status(),
+    });
+    await page.waitForURL((url) => url.pathname !== '/login', { timeout: 15000 });
 
-  if (spec.privileged) {
-    await page.waitForURL((url) => url.pathname === '/security/mfa/challenge', { timeout: 15000 });
-    await page.getByLabel('Authenticator code').fill(totp(TOTP_SECRET));
-    await page.getByRole('button', { name: 'Verify and continue', exact: true }).click();
+    const challenged = new URL(page.url()).pathname === '/security/mfa/challenge';
+    if (spec.privileged !== challenged) {
+      throw new Error(`MFA policy mismatch: expected challenged=${spec.privileged}, actual=${challenged}`);
+    }
+
+    if (challenged) {
+      stage = 'mfa-response';
+      await page.getByLabel('Authenticator code').fill(totp(TOTP_SECRET));
+      const mfaResponse = page.waitForResponse((candidate) => {
+        const request = candidate.request();
+        return request.method() === 'POST' && new URL(candidate.url()).pathname === '/security/mfa/challenge';
+      }, { timeout: 15000 });
+      await page.getByRole('button', { name: 'Verify and continue', exact: true }).click();
+      const verified = await mfaResponse;
+      report.diagnostics.push({
+        at: new Date().toISOString(), actor: spec.label, path: pathOnly(verified.url()),
+        type: 'authentication-stage', detail: 'mfa-response', status: verified.status(),
+      });
+    }
+
+    stage = 'dashboard-load';
+    await page.waitForURL((url) => url.pathname === '/dashboard', { timeout: 15000 });
+    await appReady(page);
+    return { context, page };
+  } catch (error) {
+    await fs.mkdir(SHOTS, { recursive: true });
+    const file = `${SHOTS}/authentication-${spec.label.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}.png`;
+    await page.screenshot({ path: file, animations: 'disabled', fullPage: false }).catch(() => {});
+    report.screenshots.push(file);
+    throw new Error(`${spec.label} authentication failed at ${stage} on ${pathOnly(page.url())}: ${clean(error.message)}`);
   }
-
-  await page.waitForURL((url) => url.pathname === '/dashboard', { timeout: 15000 });
-  await appReady(page);
-  return { context, page };
 }
 
 function requestMatches(request, method, pathMatcher) {

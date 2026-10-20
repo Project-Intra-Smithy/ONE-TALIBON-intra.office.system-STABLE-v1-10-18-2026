@@ -2,9 +2,11 @@ import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs/promises';
+import crypto from 'node:crypto';
 
 const BASE = process.env.QA_BASE_URL || 'http://127.0.0.1:8000';
 const PASSWORD = process.env.QA_DEMO_PASSWORD;
+const TOTP_SECRET = process.env.QA_TOTP_SECRET;
 const EXPECTED_SHA = process.env.QA_EXPECTED_SHA;
 const REPORT = 'storage/app/qa/p08-responsive-smoke-report.json';
 const SHOTS = 'storage/app/qa/p08-responsive-failures';
@@ -37,6 +39,33 @@ async function capture(page, name) {
     const file = `${SHOTS}/${name}.png`;
     await page.screenshot({ path: file, fullPage: false, animations: 'disabled' }).catch(() => {});
     return file;
+}
+
+function base32(input) {
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+    let bits = '';
+    for (const character of input.replace(/=+$/g, '').replace(/\s+/g, '').toUpperCase()) {
+        const index = alphabet.indexOf(character);
+        if (index < 0) throw new Error('Invalid MFA secret');
+        bits += index.toString(2).padStart(5, '0');
+    }
+    const bytes = [];
+    for (let index = 0; index + 8 <= bits.length; index += 8) {
+        bytes.push(parseInt(bits.slice(index, index + 8), 2));
+    }
+    return Buffer.from(bytes);
+}
+
+function totp(secret) {
+    const counter = Buffer.alloc(8);
+    counter.writeBigUInt64BE(BigInt(Math.floor(Date.now() / 30000)));
+    const digest = crypto.createHmac('sha1', base32(secret)).update(counter).digest();
+    const offset = digest.at(-1) & 15;
+    const number = ((digest[offset] & 127) << 24)
+        | (digest[offset + 1] << 16)
+        | (digest[offset + 2] << 8)
+        | digest[offset + 3];
+    return String(number % 1_000_000).padStart(6, '0');
 }
 
 async function assertPage(page, route, label) {
@@ -91,10 +120,15 @@ async function login(page) {
 
     await page.getByLabel('Email').fill('employee@talibon.demo');
     await page.locator('input#login-password').fill(PASSWORD);
-    await Promise.all([
-        page.waitForURL((url) => url.pathname === '/dashboard', { timeout: 15000 }),
-        page.getByRole('button', { name: 'Sign In' }).click(),
-    ]);
+    await page.getByRole('button', { name: /^Sign in$/i }).click();
+    await page.waitForURL((url) => ['/dashboard', '/security/mfa/challenge'].includes(url.pathname), { timeout: 15000 });
+
+    if (new URL(page.url()).pathname === '/security/mfa/challenge') {
+        if (!TOTP_SECRET) throw new Error('QA_TOTP_SECRET is required when the account is challenged for MFA');
+        await page.getByLabel('Authenticator code').fill(totp(TOTP_SECRET));
+        await page.getByRole('button', { name: 'Verify and continue', exact: true }).click();
+        await page.waitForURL((url) => url.pathname === '/dashboard', { timeout: 15000 });
+    }
 }
 
 async function runViewport(browser, spec) {
