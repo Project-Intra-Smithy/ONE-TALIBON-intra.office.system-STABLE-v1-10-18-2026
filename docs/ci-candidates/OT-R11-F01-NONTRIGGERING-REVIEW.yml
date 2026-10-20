@@ -25,7 +25,8 @@ jobs:
       DB_PORT: '5432'
       DB_DATABASE: talibon_h1_mutations
       DB_USERNAME: postgres
-      DB_PASSWORD: ''
+      DB_PASSWORD: R11_disposable_${{ github.run_id }}_${{ github.run_attempt }}
+      PGPASSWORD: R11_disposable_${{ github.run_id }}_${{ github.run_attempt }}
       SESSION_DRIVER: file
       CACHE_STORE: file
       QUEUE_CONNECTION: sync
@@ -34,11 +35,13 @@ jobs:
       QA_EXPECTED_SHA: e39c7ecc6b4b7ae6538f545a48dff57625edc478
     services:
       postgres:
-        image: postgres:16
+        # PostgreSQL 16.15 multi-platform manifest observed during the R11 review.
+        # Re-review this digest before any separately authorized hosted execution.
+        image: postgres:16@sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d
         env:
           POSTGRES_DB: talibon_portal_test
           POSTGRES_USER: postgres
-          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_PASSWORD: R11_disposable_${{ github.run_id }}_${{ github.run_attempt }}
         ports:
           - '127.0.0.1:5432:5432'
         options: >-
@@ -80,7 +83,7 @@ jobs:
         with:
           php-version: '8.4'
           coverage: none
-          tools: composer:v2
+          tools: composer:2.10.3
           extensions: pdo_pgsql, pgsql, fileinfo, zip
       - name: Setup Node 22 from R11 .nvmrc
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
@@ -95,9 +98,12 @@ jobs:
           composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
           npm ci --no-audit --no-fund
           php --version | head -n 1
+          composer --version
           node --version
           npm --version
           sha256sum composer.lock package-lock.json
+          test "$(sha256sum composer.lock | cut -d' ' -f1)" = c5e160d6c444dd640ee9cd6fa337247886c3754211fce7fef77da6a9bf020ba6
+          test "$(sha256sum package-lock.json | cut -d' ' -f1)" = 9503e950d2539298e129287aedb7caa062ba94ee86c9713ddf13a78e7f87ca14
 
       - name: Generate ephemeral synthetic credentials, never store in source
         shell: bash
@@ -116,7 +122,7 @@ jobs:
           } >> "$GITHUB_ENV"
           echo SYNTHETIC_CREDS_GENERATED=PASS
 
-      - name: Prepare isolated Laravel key and dual empty PostgreSQL 16 databases
+      - name: Prepare isolated Laravel key and three empty PostgreSQL 16 databases
         shell: bash
         run: |
           set -Eeuo pipefail
@@ -127,12 +133,15 @@ jobs:
           test "$(psql -h 127.0.0.1 -p 5432 -U postgres -d talibon_portal_test -Atc 'SHOW server_version_num' | cut -c 1-2)" = 16
           test "$(psql -h 127.0.0.1 -p 5432 -U postgres -d talibon_portal_test -Atc "SELECT count(*) FROM pg_tables WHERE schemaname='public'")" = 0
           test "$(psql -h 127.0.0.1 -p 5432 -U postgres -d postgres -Atc "SELECT count(*) FROM pg_database WHERE datname='talibon_h1_mutations'")" = 0
+          test "$(psql -h 127.0.0.1 -p 5432 -U postgres -d postgres -Atc "SELECT count(*) FROM pg_database WHERE datname='talibon_csrf_negative'")" = 0
           psql -h 127.0.0.1 -p 5432 -U postgres -d postgres -v ON_ERROR_STOP=1 -c 'CREATE DATABASE talibon_h1_mutations'
+          psql -h 127.0.0.1 -p 5432 -U postgres -d postgres -v ON_ERROR_STOP=1 -c 'CREATE DATABASE talibon_csrf_negative'
           test "$(psql -h 127.0.0.1 -p 5432 -U postgres -d talibon_h1_mutations -Atc "SELECT count(*) FROM pg_tables WHERE schemaname='public'")" = 0
+          test "$(psql -h 127.0.0.1 -p 5432 -U postgres -d talibon_csrf_negative -Atc "SELECT count(*) FROM pg_tables WHERE schemaname='public'")" = 0
           cp .env.example .env
           php artisan key:generate --force --no-interaction
           php artisan optimize:clear
-          echo PG16_TWO_EMPTY_DISPOSABLE_DATABASES=PASS
+          echo PG16_THREE_EMPTY_DISPOSABLE_DATABASES=PASS
 
       - name: TypeScript, locked production build and frontend/Directory contracts
         shell: bash
@@ -141,7 +150,7 @@ jobs:
           npm run types:check
           npm run build
           npm run test:contracts
-          node --test tests/office-directory-emergency-ui.test.mjs
+          node --experimental-strip-types --test tests/office-logo.test.mjs tests/office-directory-emergency-ui.test.mjs
 
       - name: Install Chromium and run frontend UX/Auth/Directory browser fixtures serially
         shell: bash
@@ -150,7 +159,7 @@ jobs:
           npx playwright install --with-deps chromium
           npm run test:ux
           npm run test:aj-home-auth
-          node --test tests/office-directory-mounted-ui.test.mjs
+          node --experimental-strip-types --test tests/office-directory-mounted-ui.test.mjs
 
       - name: Migrate only empty disposable Feature database and run active suite
         shell: bash
@@ -161,6 +170,17 @@ jobs:
           DB_DATABASE=talibon_portal_test php artisan migrate:fresh --seed --force
           mkdir -p storage/app/qa
           DB_DATABASE=talibon_portal_test php artisan test --testsuite=Feature --log-junit=storage/app/qa/r11-f01-feature-junit.xml
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const xml = fs.readFileSync('storage/app/qa/r11-f01-feature-junit.xml', 'utf8');
+          const root = xml.match(/<testsuite\b[^>]*\btests="(\d+)"[^>]*\bassertions="(\d+)"[^>]*\berrors="(\d+)"[^>]*\bfailures="(\d+)"[^>]*\bskipped="(\d+)"/);
+          if (!root) throw Error('Could not parse Feature JUnit root counters');
+          const [, tests, assertions, errors, failures, skipped] = root.map(Number);
+          if (tests !== 557 || assertions < 6358 || errors !== 0 || failures !== 0 || skipped !== 0) {
+            throw Error(`Feature JUnit mismatch: tests=${tests} assertions=${assertions} errors=${errors} failures=${failures} skipped=${skipped}`);
+          }
+          console.log(`R11_FEATURE_JUNIT=PASS tests=${tests} assertions=${assertions} skipped=${skipped}`);
+          NODE
           echo R11_F01_FEATURE_EXECUTION_COMPLETE
 
       - name: Migrate separate empty H1 acceptance database and exercise native Laravel Chromium
@@ -184,6 +204,35 @@ jobs:
           if test "$ready" -ne 1; then echo R11_LARAVEL_SERVER_NOT_READY; exit 1; fi
           node tests/Browser/h1-mutation-readiness.mjs
           node tests/Browser/p08-responsive-smoke.mjs
+
+      - name: Prove real Laravel CSRF rejection outside APP_ENV testing
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$APP_ENV" = testing
+          test "$(psql -h 127.0.0.1 -p 5432 -U postgres -d talibon_csrf_negative -Atc "SELECT count(*) FROM pg_tables WHERE schemaname='public'")" = 0
+          APP_ENV=local DB_DATABASE=talibon_csrf_negative php artisan migrate:fresh --seed --force
+          before="$(psql -h 127.0.0.1 -p 5432 -U postgres -d talibon_csrf_negative -Atc 'SELECT count(*) FROM users')"
+          APP_ENV=local DB_DATABASE=talibon_csrf_negative APP_URL=http://127.0.0.1:8001 \
+            php artisan serve --host=127.0.0.1 --port=8001 > storage/logs/r11-f01-csrf-server.log 2>&1 &
+          csrf_server_pid=$!
+          trap 'kill "$csrf_server_pid" 2>/dev/null || true' EXIT
+          ready=0
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:8001/login > /dev/null; then ready=1; break; fi
+            sleep 1
+          done
+          test "$ready" = 1
+          status="$(curl --silent --output storage/app/qa/r11-f01-csrf-response.txt --write-out '%{http_code}' \
+            --request POST --header 'Accept: application/json' \
+            --data-urlencode 'email=employee@talibon.demo' \
+            --data-urlencode "password=$QA_DEMO_PASSWORD" \
+            http://127.0.0.1:8001/login)"
+          after="$(psql -h 127.0.0.1 -p 5432 -U postgres -d talibon_csrf_negative -Atc 'SELECT count(*) FROM users')"
+          test "$status" = 419
+          test "$before" = "$after"
+          grep -Eiq 'CSRF|expired' storage/app/qa/r11-f01-csrf-response.txt
+          echo R11_REAL_ENV_CSRF_NEGATIVE=PASS
 
       - name: Attest H1 and P08 counts; never mislabel Calendar Chromium as run
         shell: bash
