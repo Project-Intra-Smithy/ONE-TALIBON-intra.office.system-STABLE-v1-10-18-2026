@@ -1078,10 +1078,10 @@ async function main() {
       check(row, 'prerequisite-mayor-route-one-request', sendEvidence.requests.length === 1, `requests=${sendEvidence.requests.length}`);
       check(row, 'prerequisite-mayor-route-success', sendEvidence.responses[0]?.status >= 200 && sendEvidence.responses[0]?.status < 400, `status=${sendEvidence.responses[0]?.status ?? null}`);
       const mayorRouteSettled = await waitForSemanticConvergence(budget.page, row, {
-        pathMatcher: '/transactions',
-        expectedPath: '/transactions',
-        markerLabel: 'transaction handoff success confirmation',
-        marker: () => budget.page.getByText(/Accountability moved to the receiving office/i).first(),
+        pathMatcher: `/transactions/${created.id}`,
+        expectedPath: '/transactions/{id}',
+        markerLabel: 'for approval status',
+        marker: () => budget.page.getByText('for approval', { exact: true }).first(),
       });
       check(row, 'prerequisite-mayor-route-ui-convergence', mayorRouteSettled);
       const before = probe('transaction', requestInformationTitle);
@@ -1819,18 +1819,26 @@ async function main() {
         pathMatcher: '/transactions',
         action: () => engineering.page.getByRole('button', { name: /^Submit Work Request$/i }).click(),
       });
-      setMutationEvidence(row, evidence);
-      await engineering.page.getByText(/title field is required/i).first().waitFor({ state: 'visible', timeout: 2000 }).catch(() => {});
+      row.requestCount = evidence.requests.length;
+      row.responseStatuses = evidence.responses.map((item) => item.status);
+      row.responseStatus = evidence.responses[0]?.status ?? null;
+      const title = engineering.page.getByLabel('Subject');
+      const nativeMessage = await title.evaluate((input) => input.validationMessage);
       const ready = await appReady(engineering.page, 2500).catch(() => null);
       const after = probe('totals');
       row.database.after = after;
       row.duplicateMutationCount = 0;
-      const visible = await engineering.page.getByText(/title field is required/i).first().isVisible().catch(() => false);
-      row.visibleResult = visible ? 'Validation error remains visible without navigation or reload.' : 'Expected title validation error is not visible.';
-      const immediate = visible && !!ready && pathOnly(engineering.page.url()) === '/transactions/create' && after.transactions === before.transactions;
+      const nativeInvalid = nativeMessage.length > 0 && await title.evaluate((input) => input.matches(':invalid'));
+      row.requestVerdict = evidence.requests.length === 0 ? 'PASS' : 'FAIL';
+      row.backendVerdict = after.transactions === before.transactions ? 'PASS' : 'FAIL';
+      row.visibleResult = nativeInvalid ? 'Required Subject validation is presented by the browser before submission.' : 'Required Subject validation is missing.';
+      const immediate = nativeInvalid && evidence.requests.length === 0 && !!ready && pathOnly(engineering.page.url()) === '/transactions/create' && after.transactions === before.transactions;
       row.immediateConvergence = immediate ? 'PASS' : 'FAIL';
+      row.uiConvergenceVerdict = row.immediateConvergence;
       row.reloadConsistency = 'NOT_APPLICABLE';
-      check(row, 'visible-validation-error', immediate, `transactions before=${before.transactions} after=${after.transactions}`);
+      row.reloadVerdict = 'NOT_APPLICABLE';
+      check(row, 'native-validation-prevented-request', evidence.requests.length === 0, `requests=${evidence.requests.length}`);
+      check(row, 'visible-validation-error', immediate, `nativeMessagePresent=${nativeMessage.length > 0} transactions before=${before.transactions} after=${after.transactions}`);
       check(row, 'invalid-submit-did-not-mutate', after.transactions === before.transactions, 'transaction count changed on denied validation');
     });
 
