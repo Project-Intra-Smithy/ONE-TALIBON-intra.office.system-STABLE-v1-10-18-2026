@@ -274,7 +274,7 @@ async function login(browser, spec) {
 
   await page.getByLabel('Email').fill(spec.email);
   await page.locator('input#login-password').fill(PASSWORD);
-  await page.getByRole('button', { name: 'Sign In', exact: true }).click();
+  await page.getByRole('button', { name: /^Sign in$/i }).click();
 
   if (spec.privileged) {
     await page.waitForURL((url) => url.pathname === '/security/mfa/challenge', { timeout: 15000 });
