@@ -1080,8 +1080,8 @@ async function main() {
       const mayorRouteSettled = await waitForSemanticConvergence(budget.page, row, {
         pathMatcher: `/transactions/${created.id}`,
         expectedPath: '/transactions/{id}',
-        markerLabel: 'for approval status',
-        marker: () => budget.page.getByText('for approval', { exact: true }).first(),
+        markerLabel: 'created transaction heading after Mayor handoff',
+        marker: () => budget.page.getByRole('heading', { name: requestInformationTitle }),
       });
       check(row, 'prerequisite-mayor-route-ui-convergence', mayorRouteSettled);
       const before = probe('transaction', requestInformationTitle);
