@@ -676,7 +676,7 @@ async function main() {
 
       const evidence = await browserMutation(engineering.page, {
         pathMatcher: '/transactions',
-        action: () => engineering.page.getByRole('button', { name: /Route transaction/i }).click(),
+        action: () => engineering.page.getByRole('button', { name: /^Submit Work Request$/i }).click(),
       });
       setMutationEvidence(row, evidence);
       await engineering.page.getByRole('heading', { name: transactionTitle }).waitFor({ state: 'visible', timeout: 2000 }).catch(() => {});
@@ -700,7 +700,7 @@ async function main() {
       row.duplicateMutationCount = Math.max(0, after.count - before.count - 1);
       row.immediateConvergence = immediate ? 'PASS' : 'FAIL';
       check(row, 'immediate-authoritative-state', immediate, JSON.stringify(after));
-      check(row, 'create-action-left-behind', await engineering.page.getByRole('button', { name: /Route transaction/i }).count() === 0, 'create form action should not remain on detail page');
+      check(row, 'create-action-left-behind', await engineering.page.getByRole('button', { name: /^Submit Work Request$/i }).count() === 0, 'create form action should not remain on detail page');
 
       await reloadAndVerify(engineering.page, row, async () => {
         const reloadState = probe('transaction', transactionTitle);
@@ -1031,7 +1031,7 @@ async function main() {
       await selectByText(engineering.page.getByLabel('Receiving office'), /Budget/i);
       const createEvidence = await browserMutation(engineering.page, {
         pathMatcher: '/transactions',
-        action: () => engineering.page.getByRole('button', { name: /Route transaction/i }).click(),
+        action: () => engineering.page.getByRole('button', { name: /^Submit Work Request$/i }).click(),
       });
       check(row, 'prerequisite-create-one-request', createEvidence.requests.length === 1, `requests=${createEvidence.requests.length}`);
       check(row, 'prerequisite-create-success', createEvidence.responses[0]?.status >= 200 && createEvidence.responses[0]?.status < 400, `status=${createEvidence.responses[0]?.status ?? null}`);
@@ -1580,7 +1580,7 @@ async function main() {
       await appReady(employee.page);
       const before = probe('memorandum', memorandumNumber, 'employee@talibon.demo');
       row.database.before = before;
-      const button = employee.page.getByRole('button', { name: 'I acknowledge receipt', exact: true });
+      const button = employee.page.getByRole('button', { name: /^Acknowledge Memorandum$/i });
       await button.waitFor({ state: 'visible', timeout: 5000 });
       const evidence = await browserMutation(employee.page, {
         pathMatcher: `/memoranda/${shared.memorandumId}/acknowledge`,
@@ -1594,7 +1594,7 @@ async function main() {
       const auditDelta = after.ackAuditCount - before.ackAuditCount;
       row.duplicateMutationCount = Math.max(0, auditDelta - 1);
       const visible = await employee.page.getByText(/Acknowledged/i).first().isVisible().catch(() => false);
-      const actionGone = await employee.page.getByRole('button', { name: 'I acknowledge receipt', exact: true }).count() === 0;
+      const actionGone = await employee.page.getByRole('button', { name: /^Acknowledge Memorandum$/i }).count() === 0;
       row.visibleResult = visible ? 'Acknowledged state is visible immediately.' : 'Acknowledged state is not visible immediately.';
       const immediate = visible && actionGone && !!ready && after.targetAcknowledged && auditDelta === 1;
       row.immediateConvergence = immediate ? 'PASS' : 'FAIL';
@@ -1813,7 +1813,7 @@ async function main() {
       await engineering.page.getByLabel('Description').fill(invalidTransactionTitle);
       const evidence = await browserMutation(engineering.page, {
         pathMatcher: '/transactions',
-        action: () => engineering.page.getByRole('button', { name: /Route transaction/i }).click(),
+        action: () => engineering.page.getByRole('button', { name: /^Submit Work Request$/i }).click(),
       });
       setMutationEvidence(row, evidence);
       await engineering.page.getByText(/title field is required/i).first().waitFor({ state: 'visible', timeout: 2000 }).catch(() => {});
