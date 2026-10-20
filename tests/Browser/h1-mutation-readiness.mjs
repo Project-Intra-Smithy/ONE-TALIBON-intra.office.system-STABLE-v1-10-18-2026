@@ -12,6 +12,7 @@ const REPORT = 'storage/app/qa/h1-mutation-readiness-report.json';
 const SHOTS = 'storage/app/qa/h1-mutation-failures';
 const CORRESPONDENCE_ID = '11000000-0000-4000-8000-000000000001';
 const MAYOR_SEEDED_TRANSACTION = 'Road Rehabilitation Funding Request';
+const TARGET_DATE = new Date(Date.now() + (2 * 24 * 60 * 60 * 1000)).toISOString().slice(0, 10);
 
 const ALL_H1_SCENARIOS = [
   'transactions-create',
@@ -672,6 +673,7 @@ async function main() {
       await appReady(engineering.page);
       await engineering.page.getByLabel('Subject').fill(transactionTitle);
       await engineering.page.getByLabel('Description').fill('Synthetic H1 browser mutation acceptance transaction.');
+      await engineering.page.getByLabel('Target Completion').fill(TARGET_DATE);
       await selectByText(engineering.page.getByLabel('Receiving office'), /Budget/i);
 
       const evidence = await browserMutation(engineering.page, {
@@ -1028,6 +1030,7 @@ async function main() {
       await appReady(engineering.page);
       await engineering.page.getByLabel('Subject').fill(requestInformationTitle);
       await engineering.page.getByLabel('Description').fill('Synthetic H3 request-information acceptance transaction.');
+      await engineering.page.getByLabel('Target Completion').fill(TARGET_DATE);
       await selectByText(engineering.page.getByLabel('Receiving office'), /Budget/i);
       const createEvidence = await browserMutation(engineering.page, {
         pathMatcher: '/transactions',
@@ -1811,6 +1814,7 @@ async function main() {
         await pendingMemoLater.click();
       }
       await engineering.page.getByLabel('Description').fill(invalidTransactionTitle);
+      await engineering.page.getByLabel('Target Completion').fill(TARGET_DATE);
       const evidence = await browserMutation(engineering.page, {
         pathMatcher: '/transactions',
         action: () => engineering.page.getByRole('button', { name: /^Submit Work Request$/i }).click(),
