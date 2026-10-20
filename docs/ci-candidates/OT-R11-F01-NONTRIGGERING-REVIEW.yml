@@ -1,0 +1,234 @@
+# REVIEW-ONLY TEMPLATE. NOT A REGISTERED GITHUB ACTION.
+# Kept at docs/ci-candidates/ (not .github/workflows/).
+# Deliberately no event trigger key. Installing or activating this requires a
+# separately authorized source change and independent Kurt CI review.
+# No hosted run, deployment, main write, Messaging enablement or HRIS expansion.
+name: OT R11 F01 Destination Native Acceptance — INERT REVIEW TEMPLATE
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ot-r11-f01-review-candidate
+  cancel-in-progress: false
+
+jobs:
+  native-r11:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 65
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_h1_mutations
+      DB_USERNAME: postgres
+      DB_PASSWORD: ''
+      SESSION_DRIVER: file
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
+      QA_BASE_URL: http://127.0.0.1:8000
+      QA_ENVIRONMENT: r11-f01-hosted-disposable
+      QA_EXPECTED_SHA: e39c7ecc6b4b7ae6538f545a48dff57625edc478
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - '127.0.0.1:5432:5432'
+        options: >-
+          --health-cmd="pg_isready -U postgres -d talibon_portal_test"
+          --health-interval=5s --health-timeout=5s --health-retries=12
+
+    steps:
+      - name: Checkout immutable accepted R11 application source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: e39c7ecc6b4b7ae6538f545a48dff57625edc478
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Assert hosted destination identity and immutable R11 tree
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$RUNNER_OS" = Linux
+          test "$GITHUB_REPOSITORY" = Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026
+          test "$(git rev-parse HEAD)" = e39c7ecc6b4b7ae6538f545a48dff57625edc478
+          test "$(git show -s --format=%T HEAD)" = 0900d14f42ee1797eac707c9db588de1c73b011d
+          test -z "$(git status --porcelain --untracked-files=no)"
+          git merge-base --is-ancestor 88789678c52aaf2932c31c7cd0a45294e55aec29 HEAD
+          changed="$(git diff --name-only 88789678c52aaf2932c31c7cd0a45294e55aec29 HEAD | sort)"
+          expected="$(printf '%s\n' tests/Browser/h1-mutation-readiness.mjs tests/Browser/p08-responsive-smoke.mjs | sort)"
+          test "$changed" = "$expected"
+          test -f phpunit.xml
+          test -f composer.lock
+          test -f package-lock.json
+          test -f tests/Browser/h1-mutation-probe.php
+          test -f tests/Browser/h1-mutation-readiness.mjs
+          test -f tests/Browser/p08-responsive-smoke.mjs
+          echo R11_SOURCE_ATTESTATION=PASS
+
+      - name: Install PHP 8.4 and Node from accepted lockfiles
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
+        with:
+          php-version: '8.4'
+          coverage: none
+          tools: composer:v2
+          extensions: pdo_pgsql, pgsql, fileinfo, zip
+      - name: Setup Node 22 from R11 .nvmrc
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install locked packages without cross-repository fetches
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+          npm ci --no-audit --no-fund
+          php --version | head -n 1
+          node --version
+          npm --version
+          sha256sum composer.lock package-lock.json
+
+      - name: Generate ephemeral synthetic credentials, never store in source
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          password="$(openssl rand -hex 32)"
+          totp="$(python3 -c 'import secrets,base64; print(base64.b32encode(secrets.token_bytes(20)).decode("ascii").rstrip("="))')"
+          test 64 -eq "$(printf '%s' "$password" | wc -c)"
+          test 32 -eq "$(printf '%s' "$totp" | wc -c)"
+          echo "::add-mask::$password"
+          echo "::add-mask::$totp"
+          {
+            printf 'PROTOTYPE_DEMO_PASSWORD=%s\n' "$password"
+            printf 'QA_DEMO_PASSWORD=%s\n' "$password"
+            printf 'QA_TOTP_SECRET=%s\n' "$totp"
+          } >> "$GITHUB_ENV"
+          echo SYNTHETIC_CREDS_GENERATED=PASS
+
+      - name: Prepare isolated Laravel key and dual empty PostgreSQL 16 databases
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$DB_HOST" = 127.0.0.1
+          test "$DB_PORT" = 5432
+          test "$DB_DATABASE" = talibon_h1_mutations
+          test "$APP_ENV" = testing
+          test "$(psql -h 127.0.0.1 -p 5432 -U postgres -d talibon_portal_test -Atc 'SHOW server_version_num' | cut -c 1-2)" = 16
+          test "$(psql -h 127.0.0.1 -p 5432 -U postgres -d talibon_portal_test -Atc "SELECT count(*) FROM pg_tables WHERE schemaname='public'")" = 0
+          test "$(psql -h 127.0.0.1 -p 5432 -U postgres -d postgres -Atc "SELECT count(*) FROM pg_database WHERE datname='talibon_h1_mutations'")" = 0
+          psql -h 127.0.0.1 -p 5432 -U postgres -d postgres -v ON_ERROR_STOP=1 -c 'CREATE DATABASE talibon_h1_mutations'
+          test "$(psql -h 127.0.0.1 -p 5432 -U postgres -d talibon_h1_mutations -Atc "SELECT count(*) FROM pg_tables WHERE schemaname='public'")" = 0
+          cp .env.example .env
+          php artisan key:generate --force --no-interaction
+          php artisan optimize:clear
+          echo PG16_TWO_EMPTY_DISPOSABLE_DATABASES=PASS
+
+      - name: TypeScript, locked production build and frontend/Directory contracts
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          npm run types:check
+          npm run build
+          npm run test:contracts
+          node --test tests/office-directory-emergency-ui.test.mjs
+
+      - name: Install Chromium and run frontend UX/Auth/Directory browser fixtures serially
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          npx playwright install --with-deps chromium
+          npm run test:ux
+          npm run test:aj-home-auth
+          node --test tests/office-directory-mounted-ui.test.mjs
+
+      - name: Migrate only empty disposable Feature database and run active suite
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$APP_ENV" = testing
+          test "$(psql -h 127.0.0.1 -p 5432 -U postgres -d talibon_portal_test -Atc "SELECT count(*) FROM pg_tables WHERE schemaname='public'")" = 0
+          DB_DATABASE=talibon_portal_test php artisan migrate:fresh --seed --force
+          mkdir -p storage/app/qa
+          DB_DATABASE=talibon_portal_test php artisan test --testsuite=Feature --log-junit=storage/app/qa/r11-f01-feature-junit.xml
+          echo R11_F01_FEATURE_EXECUTION_COMPLETE
+
+      - name: Migrate separate empty H1 acceptance database and exercise native Laravel Chromium
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$APP_ENV" = testing
+          test "$DB_DATABASE" = talibon_h1_mutations
+          test "$(psql -h 127.0.0.1 -p 5432 -U postgres -d talibon_h1_mutations -Atc "SELECT count(*) FROM pg_tables WHERE schemaname='public'")" = 0
+          php artisan migrate:fresh --seed --force
+          php tests/Browser/h1-mutation-probe.php isolation
+          mkdir -p storage/logs
+          php artisan serve --host=127.0.0.1 --port=8000 > storage/logs/r11-f01-local-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          ready=0
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:8000/login > /dev/null; then ready=1; break; fi
+            sleep 1
+          done
+          if test "$ready" -ne 1; then echo R11_LARAVEL_SERVER_NOT_READY; exit 1; fi
+          node tests/Browser/h1-mutation-readiness.mjs
+          node tests/Browser/p08-responsive-smoke.mjs
+
+      - name: Attest H1 and P08 counts; never mislabel Calendar Chromium as run
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const sha = 'e39c7ecc6b4b7ae6538f545a48dff57625edc478';
+          const h = JSON.parse(fs.readFileSync('storage/app/qa/h1-mutation-readiness-report.json'));
+          const p = JSON.parse(fs.readFileSync('storage/app/qa/p08-responsive-smoke-report.json'));
+          const s = h.summary;
+          const okay = h.completed === true && h.git?.exactHead === true &&
+            h.git.actualSha === sha && s.scenarios === 20 && s.passed === 16 &&
+            s.denialPass === 1 && s.blockedByPolicy === 3 && s.failed === 0 &&
+            s.pageerrorCount === 0 && s.server5xxCount === 0 &&
+            p.completed === true && p.actualSha === sha &&
+            p.viewports?.length === 2 &&
+            p.viewports.every(v => v.result === 'pass' &&
+              fs.existsSync(v.authenticatedScreenshot) &&
+              fs.existsSync(v.denialScreenshot)) &&
+            p.viewports.some(v => v.width === 1440 && v.height === 900) &&
+            p.viewports.some(v => v.width === 390 && v.height === 844);
+          if (!okay) throw Error('R11 F01 native/browser receipt mismatch');
+          const receipt = {
+            mission: 'OT-R11-F01-DESTINATION-NONTRIGGERING-CANDIDATE-R1',
+            sourceSha: sha,
+            sourceTree: '0900d14f42ee1797eac707c9db588de1c73b011d',
+            h1: {
+              scenarios: s.scenarios, authorizedPassed: s.passed,
+              expectedDenial: s.denialPass, blockedByPolicy: s.blockedByPolicy,
+              failed: s.failed, pageerrors: s.pageerrorCount, server5xx: s.server5xxCount
+            },
+            p08: p.viewports.map(v => ({width:v.width,height:v.height,result:v.result})),
+            calendarChromium: 'NOT_RUN_NO_TRACKED_R11_CALENDAR_BROWSER_HARNESS',
+            assertions: 'SUPPORTED_ONLY_BY_EXIT_CODES_AND_THE_SUMMARIES_ABOVE',
+            scope: 'Synthetic local runner only; not municipal UAT or deployment'
+          };
+          fs.writeFileSync('storage/app/qa/r11-f01-sanitized-receipt.json', JSON.stringify(receipt, null, 2));
+          console.log('R11_F01_NATIVE_BROWSER_ATTESTATION=PASS; CALENDAR_CHROMIUM=NOT_RUN');
+          NODE
+
+      - name: Upload strictly limited synthetic/source-only attestation
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r11-f01-source-and-sanitized-summary
+          path: storage/app/qa/r11-f01-sanitized-receipt.json
+          if-no-files-found: error
+          retention-days: 7
