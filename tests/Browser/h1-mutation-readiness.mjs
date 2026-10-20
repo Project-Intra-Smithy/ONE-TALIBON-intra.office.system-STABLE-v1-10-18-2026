@@ -101,10 +101,12 @@ const report = {
   summary: {
     scenarios: 0,
     passed: 0,
+    denialPass: 0,
     failed: 0,
     failH1: 0,
     deferredH2: 0,
     skippedDependency: 0,
+    blockedByPolicy: 0,
     pageerrorCount: 0,
     server5xxCount: 0,
   },
@@ -567,7 +569,8 @@ async function executeScenario(page, meta, body) {
   if (blockedBy) {
     const row = newRow(meta);
     row.finalUrl = pathOnly(page.url());
-    row.result = 'SKIPPED_DEPENDENCY';
+    const policyBlocked = scenarioResults.get(blockedBy)?.result === 'DENIAL_PASS';
+    row.result = policyBlocked ? 'BLOCKED_BY_POLICY' : 'SKIPPED_DEPENDENCY';
     row.dependency = {
       blockedBy,
       prerequisiteResult: scenarioResults.get(blockedBy)?.result ?? 'NOT_RUN',
@@ -576,7 +579,8 @@ async function executeScenario(page, meta, body) {
     delete row._failures;
     report.scenarios.push(row);
     report.summary.scenarios++;
-    report.summary.skippedDependency++;
+    if (policyBlocked) report.summary.blockedByPolicy++;
+    else report.summary.skippedDependency++;
     scenarioResults.set(meta.scenario, row);
     await writeReport();
     return row;
@@ -621,11 +625,14 @@ async function runScenario(page, meta, body) {
 
   row.failureReason = row._failures.length ? row._failures.join(' | ') : null;
   const deferredH2 = meta.disposition === 'DEFERRED_H2';
-  row.result = deferredH2 ? 'DEFERRED_H2' : (row.failureReason ? 'FAIL' : 'PASS');
+  const denialPass = meta.disposition === 'DENIAL_PASS' && !row.failureReason;
+  row.result = deferredH2 ? 'DEFERRED_H2' : (denialPass ? 'DENIAL_PASS' : (row.failureReason ? 'FAIL' : 'PASS'));
   delete row._failures;
 
   if (row.result === 'PASS') {
     report.summary.passed++;
+  } else if (row.result === 'DENIAL_PASS') {
+    report.summary.denialPass++;
   } else if (row.result === 'DEFERRED_H2') {
     report.summary.deferredH2++;
     report.defects.push({ scenario: row.scenario, disposition: 'DEFERRED_H2', reason: row.failureReason });
@@ -1267,6 +1274,7 @@ async function main() {
       scenario: 'correspondence-register',
       actor: 'Engineering Department Head',
       mutation: 'Register received correspondence',
+      disposition: 'DENIAL_PASS',
     }, async (row) => {
       const url = `/correspondence/${CORRESPONDENCE_ID}/workspace`;
       const response = await engineering.page.goto(`${BASE}${url}`, { waitUntil: 'domcontentloaded', timeout: 15000 });
@@ -1281,34 +1289,33 @@ async function main() {
         pathMatcher: `/correspondence/${CORRESPONDENCE_ID}/workspace/register`,
         action: () => button.click(),
       });
-      setMutationEvidence(row, evidence);
-      const semanticSettled = await waitForSemanticConvergence(engineering.page, row, {
-        pathMatcher: `/correspondence/${CORRESPONDENCE_ID}/workspace`,
-        expectedPath: '/correspondence/{id}/workspace',
-        markerLabel: 'Classify correspondence action',
-        marker: () => engineering.page.getByRole('heading', { name: /^Classify correspondence$/i }),
-      });
+      row.requests = evidence.requests;
+      row.responses = evidence.responses;
+      row.requestCount = evidence.requests.length;
+      row.responseStatuses = evidence.responses.map((item) => item.status);
+      row.responseStatus = evidence.responses[0]?.status ?? null;
       const after = probe('correspondence', CORRESPONDENCE_ID);
       row.database.after = after;
       const eventDelta = after.eventCount - before.eventCount;
-      row.duplicateMutationCount = Math.max(0, eventDelta - 1);
-      const nextAction = await engineering.page.getByRole('heading', { name: /^Classify correspondence$/i }).isVisible().catch(() => false);
-      const priorGone = await engineering.page.getByRole('button', { name: /^Register correspondence$/i }).count() === 0;
-      const backendTruth = after.lifecycle === 'registered' && eventDelta === 1;
-      const uiTruth = semanticSettled && nextAction && priorGone;
-      row.visibleResult = uiTruth ? 'Registered state converged to the Classify Correspondence action immediately.' : 'Registered state did not converge immediately.';
-      markBackend(row, backendTruth, JSON.stringify(after));
-      markUiConvergence(row, uiTruth, `semanticSettled=${semanticSettled} nextAction=${nextAction} priorGone=${priorGone}`);
-      check(row, 'previous-action-removed', priorGone, 'Register action remains available');
-      check(row, 'exactly-one-event-appended', eventDelta === 1, `eventDelta=${eventDelta}`);
-
-      await reloadAndVerify(engineering.page, row, async () => {
-        const reloadState = probe('correspondence', CORRESPONDENCE_ID);
-        row.database.reload = reloadState;
-        return await engineering.page.getByRole('heading', { name: /^Classify correspondence$/i }).isVisible().catch(() => false)
-          && reloadState.lifecycle === 'registered'
-          && reloadState.eventCount === after.eventCount;
-      });
+      const unchanged = after.lifecycle === before.lifecycle
+        && after.classification === before.classification
+        && after.municipalReference === before.municipalReference
+        && after.actionStartedAt === before.actionStartedAt
+        && after.workflowId === before.workflowId
+        && eventDelta === 0;
+      const denied = await engineering.page.getByRole('heading', { name: /cannot open this page/i }).isVisible().catch(() => false);
+      row.requestVerdict = row.requestCount === 1 && row.responseStatus === 403 ? 'DENIAL_PASS' : 'FAIL';
+      row.backendVerdict = unchanged ? 'DENIAL_PASS' : 'FAIL';
+      row.immediateConvergence = denied ? 'PASS' : 'FAIL';
+      row.uiConvergenceVerdict = row.immediateConvergence;
+      row.visibleResult = denied ? 'Controlled policy-denial presentation is visible.' : 'Controlled policy-denial presentation is missing.';
+      row.reloadConsistency = 'NOT_APPLICABLE';
+      row.reloadVerdict = 'NOT_APPLICABLE';
+      check(row, 'one-request-emitted', row.requestCount === 1, `observed ${row.requestCount} matching requests`);
+      check(row, 'restricted-policy-status', row.responseStatus === 403, `status=${row.responseStatus}`);
+      check(row, 'controlled-403-denial', denied, `path=${pathOnly(engineering.page.url())}`);
+      check(row, 'denial-left-row-state-unchanged', unchanged, JSON.stringify(after));
+      check(row, 'denial-appended-zero-events', eventDelta === 0, `eventDelta=${eventDelta}`);
     });
 
     await executeScenario(engineering.page, {
@@ -1912,7 +1919,8 @@ async function main() {
   }
 
   report.completed = report.summary.failH1 === 0
-    && report.summary.scenarios === report.summary.passed + report.summary.deferredH2 + report.summary.skippedDependency
+    && report.summary.scenarios === report.summary.passed + report.summary.denialPass
+      + report.summary.deferredH2 + report.summary.skippedDependency + report.summary.blockedByPolicy
     && report.git.exactHead;
   if (!report.completed) {
     report.failure = {
