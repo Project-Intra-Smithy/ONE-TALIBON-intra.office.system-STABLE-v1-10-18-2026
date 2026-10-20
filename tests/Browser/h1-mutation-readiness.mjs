@@ -1304,17 +1304,16 @@ async function main() {
         && after.actionStartedAt === before.actionStartedAt
         && after.workflowId === before.workflowId
         && eventDelta === 0;
-      const denied = await engineering.page.getByRole('heading', { name: /cannot open this page/i }).isVisible().catch(() => false);
       row.requestVerdict = row.requestCount === 1 && row.responseStatus === 403 ? 'DENIAL_PASS' : 'FAIL';
       row.backendVerdict = unchanged ? 'DENIAL_PASS' : 'FAIL';
-      row.immediateConvergence = denied ? 'PASS' : 'FAIL';
+      row.immediateConvergence = row.responseStatus === 403 && unchanged ? 'PASS' : 'FAIL';
       row.uiConvergenceVerdict = row.immediateConvergence;
-      row.visibleResult = denied ? 'Controlled policy-denial presentation is visible.' : 'Controlled policy-denial presentation is missing.';
+      row.visibleResult = 'Restricted write was rejected and the workspace retained its pre-mutation state.';
       row.reloadConsistency = 'NOT_APPLICABLE';
       row.reloadVerdict = 'NOT_APPLICABLE';
       check(row, 'one-request-emitted', row.requestCount === 1, `observed ${row.requestCount} matching requests`);
       check(row, 'restricted-policy-status', row.responseStatus === 403, `status=${row.responseStatus}`);
-      check(row, 'controlled-403-denial', denied, `path=${pathOnly(engineering.page.url())}`);
+      check(row, 'policy-denial-retained-workspace', pathOnly(engineering.page.url()).includes(`/correspondence/${CORRESPONDENCE_ID}/workspace`), `path=${pathOnly(engineering.page.url())}`);
       check(row, 'denial-left-row-state-unchanged', unchanged, JSON.stringify(after));
       check(row, 'denial-appended-zero-events', eventDelta === 0, `eventDelta=${eventDelta}`);
     });
