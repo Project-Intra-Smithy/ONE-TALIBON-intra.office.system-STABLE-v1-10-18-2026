@@ -569,11 +569,12 @@ async function executeScenario(page, meta, body) {
   if (blockedBy) {
     const row = newRow(meta);
     row.finalUrl = pathOnly(page.url());
-    const policyBlocked = scenarioResults.get(blockedBy)?.result === 'DENIAL_PASS';
+    const prerequisiteResult = scenarioResults.get(blockedBy)?.result;
+    const policyBlocked = ['DENIAL_PASS', 'BLOCKED_BY_POLICY'].includes(prerequisiteResult);
     row.result = policyBlocked ? 'BLOCKED_BY_POLICY' : 'SKIPPED_DEPENDENCY';
     row.dependency = {
       blockedBy,
-      prerequisiteResult: scenarioResults.get(blockedBy)?.result ?? 'NOT_RUN',
+      prerequisiteResult: prerequisiteResult ?? 'NOT_RUN',
     };
     row.failureReason = null;
     delete row._failures;
