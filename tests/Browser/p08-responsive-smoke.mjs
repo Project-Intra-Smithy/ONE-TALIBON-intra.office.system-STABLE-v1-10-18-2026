@@ -154,10 +154,12 @@ async function runViewport(browser, spec) {
         ]) {
             row.checks.push(await assertPage(page, route, label));
         }
+        row.authenticatedScreenshot = await capture(page, `${spec.width}x${spec.height}-records`);
 
         const messaging = await page.goto(`${BASE}/messages`, { waitUntil: 'domcontentloaded', timeout: 20000 });
         assert.equal(messaging?.status(), 403, 'Withdrawn Messaging must remain denied');
         row.checks.push({ route: '/messages', label: 'Messaging denial', status: 403, result: 'pass' });
+        row.denialScreenshot = await capture(page, `${spec.width}x${spec.height}-messaging-denial`);
 
         row.result = 'pass';
     } catch (error) {
