@@ -5,7 +5,7 @@ export default function PublicInstitutionalPanel({ content }: { content: PublicC
     return <section id="about-portal" tabIndex={-1} className="about section" aria-labelledby="public-about-portal-title">
         <div className="wrap about-grid">
             <div className="about-main">
-                <img src={talibonAssets.municipalSeal} alt="Municipal identity placeholder" width="64" height="64" loading="lazy" />
+                <img src={talibonAssets.municipalSeal} alt="Municipality of Talibon seal" width="64" height="64" loading="lazy" />
                 <div>
                     <p className="label">{content.about.eyebrow}</p>
                     <h2 id="public-about-portal-title">{content.about.title}</h2>

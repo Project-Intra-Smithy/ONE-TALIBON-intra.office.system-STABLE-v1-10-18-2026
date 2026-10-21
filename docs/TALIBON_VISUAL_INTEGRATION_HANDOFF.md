@@ -40,7 +40,7 @@ Edit `resources/js/branding/talibonAssets.ts` or replace its referenced files.
 
 | Slot | Current file | Intended replacement |
 | --- | --- | --- |
-| municipalSeal | `public/brand/talibon-mark-placeholder.svg` | Approved municipal seal, square transparent SVG/PNG; current mark is explicitly not an official seal |
+| municipalSeal | `public/brand/municipal.logo.png` | User-supplied Municipality of Talibon seal, square transparent PNG |
 | internalHero, publicHero, publicPromoImage | `public/images/talibon/coastal-placeholder.svg` | Approved coastal/municipal photographs; current illustration is 1600×560 |
 | publicLandmark, sidebarIllustration | `public/images/talibon/landmark-placeholder.svg` | Approved landmark/promo/sidebar artwork; current illustration is 640×360 |
 
@@ -102,7 +102,7 @@ Public and shared pages:
 
 43 production files changed (plus engineering log and this handoff):
 
-- Assets: `public/brand/talibon-mark-placeholder.svg`; `public/images/talibon/coastal-placeholder.svg`; `public/images/talibon/landmark-placeholder.svg`.
+- Assets: `public/brand/municipal.logo.png`; retained unused historical placeholder `public/brand/talibon-mark-placeholder.svg`; `public/images/talibon/coastal-placeholder.svg`; `public/images/talibon/landmark-placeholder.svg`.
 - Styles/branding: `resources/css/app.css`; `resources/css/municipal.css`; `resources/js/branding/talibonAssets.ts`.
 - Shared components: `AppearanceControl.tsx`, `MunicipalBrand.tsx`, `PageFrame.tsx`, `PageHeader.tsx`, `filters/ProgressiveFilterBar.tsx` under `resources/js/components`.
 - Dashboard components: `ActivityRail.tsx`, `CorrespondenceOverview.tsx`, `DashboardHeader.tsx`, `ExecutiveOverview.tsx`, `MetricGroup.tsx`, `MunicipalContext.tsx`, `OfficeOverview.tsx`, `QuickActions.tsx`, `RecentWorkList.tsx`, `SystemOverview.tsx`, `metricPresentation.ts` under `resources/js/components/dashboard`.
