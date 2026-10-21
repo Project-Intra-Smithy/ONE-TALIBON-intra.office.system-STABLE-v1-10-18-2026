@@ -1,55 +1,30 @@
-import {
-    ArrowLeftRight,
-    BellRing,
-    Building2,
-    ClipboardCheck,
-    FileText,
-    UsersRound,
-} from 'lucide-react';
-import { PUBLIC_SECTION_ANCHOR_STYLE } from './publicLayout';
+import { ArrowLeftRight, BellRing, CalendarDays, ClipboardCheck, FileText, UsersRound } from 'lucide-react';
 import type { CapabilityItem, PublicContent } from './types';
-
 const capabilityIcons: Record<CapabilityItem['id'], typeof FileText> = {
-    transactions: ArrowLeftRight,
-    documents: FileText,
-    projects: ClipboardCheck,
-    people: UsersRound,
-    calendar: Building2,
-    'follow-up': BellRing,
+    transactions: ArrowLeftRight, documents: FileText, projects: ClipboardCheck,
+    people: UsersRound, calendar: CalendarDays, 'follow-up': BellRing,
 };
-
 export default function PublicCivicDashboard({ content }: { content: PublicContent }) {
-    const canonicalCapabilities = content.capabilities.items.filter((capability) => capability.id !== 'projects');
-
-    return <section
-        id="capabilities"
-        style={PUBLIC_SECTION_ANCHOR_STYLE}
-        className="public-gateway-capabilities"
-        aria-labelledby="public-capabilities-title"
-    >
-        <header className="public-gateway-section-heading">
-            <div>
-                <p>Internal Portal Capabilities</p>
+    const capabilities = content.capabilities.items.filter(item => item.id !== 'projects');
+    return <section id="capabilities" tabIndex={-1} className="section" aria-labelledby="public-capabilities-title">
+        <div className="wrap caps">
+            <div className="caps-intro">
+                <p className="label">Internal portal capabilities</p>
                 <h2 id="public-capabilities-title">{content.capabilities.title}</h2>
+                <p>{content.capabilities.description}</p>
+                <span className="label">Available to authorized employees</span>
             </div>
-            <span>Authenticated workspace · authority-bounded</span>
-        </header>
-
-        <p className="public-gateway-section-intro">{content.capabilities.description}</p>
-
-        <div className="public-gateway-capability-grid">
-            {canonicalCapabilities.map(capability => {
-                const Icon = capabilityIcons[capability.id];
-
-                return <article key={capability.id} className="public-gateway-capability">
-                    <span className="public-gateway-capability-icon"><Icon size={19} aria-hidden="true" /></span>
-                    <div>
-                        <h3>{capability.title}</h3>
-                        <p>{capability.description}</p>
-                        <small>{capability.detail.note ?? 'Available to authorized personnel inside the portal.'}</small>
-                    </div>
-                </article>;
-            })}
+            <ul className="cap-list">
+                {capabilities.map(item => {
+                    const Icon = capabilityIcons[item.id];
+                    return <li key={item.id} className="cap">
+                        <Icon className="icon" aria-hidden="true" /><h3>{item.title}</h3>
+                        <div><p>{item.description}</p>
+                            {item.detail.note && item.detail.note !== 'Available inside the authenticated portal.' && <p>{item.detail.note}</p>}
+                        </div>
+                    </li>;
+                })}
+            </ul>
         </div>
     </section>;
 }

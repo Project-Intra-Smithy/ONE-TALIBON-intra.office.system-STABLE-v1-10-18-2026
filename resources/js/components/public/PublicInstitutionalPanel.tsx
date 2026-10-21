@@ -1,40 +1,22 @@
-import { CircleHelp, LockKeyhole, MapPin } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import { talibonAssets } from '../../branding/talibonAssets';
-import { PUBLIC_SECTION_ANCHOR_STYLE } from './publicLayout';
 import type { PublicContent } from './types';
-
 export default function PublicInstitutionalPanel({ content }: { content: PublicContent }) {
-    return <section
-        id="about-portal"
-        style={PUBLIC_SECTION_ANCHOR_STYLE}
-        className="public-gateway-institutional"
-        aria-labelledby="public-about-portal-title"
-    >
-        <div className="public-gateway-institutional-main">
-            <img src={talibonAssets.municipalHallEmblem} alt="Talibon Municipal Hall emblem" />
-            <div>
-                <p className="public-gateway-kicker">{content.about.eyebrow}</p>
-                <h2 id="public-about-portal-title">{content.about.title}</h2>
-                <p>{content.about.description}</p>
-                <span><MapPin size={13} aria-hidden="true" /> Municipality of Talibon · Province of Bohol</span>
-            </div>
-        </div>
-
-        <div id="support" style={PUBLIC_SECTION_ANCHOR_STYLE} className="public-gateway-support">
-            <div className="public-gateway-support-item">
-                <LockKeyhole size={18} aria-hidden="true" />
+    return <section id="about-portal" tabIndex={-1} className="about section" aria-labelledby="public-about-portal-title">
+        <div className="wrap about-grid">
+            <div className="about-main">
+                <img src={talibonAssets.municipalSeal} alt="Municipal identity placeholder" width="64" height="64" loading="lazy" />
                 <div>
-                    <strong>Access boundary</strong>
-                    <p>Internal records, transactions, approvals, and employee information require authenticated access.</p>
+                    <p className="label">{content.about.eyebrow}</p>
+                    <h2 id="public-about-portal-title">{content.about.title}</h2>
+                    <p>{content.about.description}</p>
+                    <p className="place"><MapPin className="icon" aria-hidden="true" />{content.municipality}</p>
                 </div>
             </div>
-            <div className="public-gateway-support-item">
-                <CircleHelp size={18} aria-hidden="true" />
-                <div>
-                    <strong>{content.contact.heading}</strong>
-                    <p>{content.contact.description}</p>
-                </div>
-            </div>
+            <dl className="facts" id="support" tabIndex={-1}>
+                <div><dt>Access boundary</dt><dd>Internal records, transactions, approvals, and employee information require authenticated access.</dd></div>
+                <div><dt>{content.contact.heading}</dt><dd>{content.contact.description}</dd></div>
+            </dl>
         </div>
     </section>;
 }

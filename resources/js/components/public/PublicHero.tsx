@@ -1,40 +1,28 @@
 import { Link } from '@inertiajs/react';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
-import { PUBLIC_SECTION_ANCHOR_STYLE } from './publicLayout';
+import PublicHeader from './PublicHeader';
 import type { PublicContent } from './types';
 
-type Props = {
-    content: PublicContent;
-    authenticated: boolean;
-};
+type Props = { content: PublicContent; authenticated: boolean };
 
 export default function PublicHero({ content, authenticated }: Props) {
-    return <section
-        id="home"
-        style={PUBLIC_SECTION_ANCHOR_STYLE}
-        className="public-reference-hero public-gateway-hero"
-        aria-labelledby="public-hero-title"
-    >
-        <div className="public-reference-hero-copy">
-            <p className="public-reference-hero-eyebrow">{content.hero.eyebrow}</p>
-            <h1 id="public-hero-title">{content.hero.title}</h1>
-            <p className="public-reference-hero-lead">{content.hero.lead}</p>
-            <p className="public-reference-hero-description">Manage documents, memoranda, schedules, requests, and office coordination in one secure workspace.</p>
-
-            <div className="public-gateway-hero-actions">
-                <Link href={authenticated ? '/dashboard' : '/login'} className="public-primary-action public-gateway-login">
-                    {authenticated ? 'Open Employee Portal' : 'Employee Login'}
-                    <ArrowRight size={16} aria-hidden="true" />
+    return <header id="home" tabIndex={-1} className="hero" aria-labelledby="public-hero-title">
+        <img className="hero-img" src="/images/municipality/talibon-homepage-hero.jpg" alt="Talibon Municipal Hall, front entrance with Philippine flags" width="1280" height="640" fetchPriority="high" />
+        <PublicHeader authenticated={authenticated} />
+        <div className="hero-body wrap">
+            <p className="label">{content.hero.eyebrow}</p>
+            <h1 id="public-hero-title">{content.hero.title === 'ONE TALIBON. ONE WORKSPACE.' ? 'One Talibon. One workspace.' : content.hero.title}</h1>
+            <p className="hero-lede">{content.hero.lead === 'MUNICIPAL WORK, CONNECTED ACROSS OFFICES.' ? 'Municipal work, connected across offices.' : content.hero.lead} {content.hero.description}</p>
+            <div className="hero-actions">
+                <Link href={authenticated ? '/dashboard' : '/login'} className="btn btn-light">
+                    {authenticated ? 'Open Employee Portal' : 'Employee Login'} <ArrowRight className="icon" aria-hidden="true" />
                 </Link>
-                <a href="#about-portal" className="public-secondary-action public-gateway-secondary-action">
-                    About the Portal
-                </a>
+                <a href="#about-portal" className="btn btn-ghost">About the Portal</a>
             </div>
-
-            <p className="public-gateway-hero-trust">
-                <ShieldCheck size={14} aria-hidden="true" />
-                Authorized municipal personnel only · protected operational records remain inside authenticated access.
-            </p>
         </div>
-    </section>;
+        <div className="hero-note"><div className="wrap">
+            <ShieldCheck className="icon" aria-hidden="true" />
+            <p>Authorized municipal personnel only. Protected operational records remain inside authenticated access.</p>
+        </div></div>
+    </header>;
 }

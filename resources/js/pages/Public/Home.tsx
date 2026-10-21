@@ -1,37 +1,21 @@
-import '../../../css/public-portal.css';
-import '../../../css/public-homepage-lane5.css';
 import '../../../css/public-homepage-refinement.css';
 import { Head } from '@inertiajs/react';
-import { Info } from 'lucide-react';
 import PublicFooter from '../../components/public/PublicFooter';
-import PublicHeader from '../../components/public/PublicHeader';
+import PublicHero from '../../components/public/PublicHero';
 import PublicMunicipalHomepage from '../../components/public/PublicMunicipalHomepage';
-import { PUBLIC_CONTENT_FRAME_CLASS } from '../../components/public/publicLayout';
 import type { PublicContent } from '../../components/public/types';
 
 type Props = { appName: string; authenticated: boolean; content: PublicContent };
 
 export default function Home({ authenticated, content }: Props) {
     return <>
-        <Head title="ONE TALIBON — Intra-Office Portal" />
-        <div className="public-portal public-refined min-h-screen">
-            <a href="#public-content" className="public-skip-link sr-only z-[80] rounded bg-white p-3 [color:var(--public-link)] focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to main content</a>
-            <PublicHeader authenticated={authenticated} />
-
+        <Head title="ONE TALIBON - Intra-Office Portal" />
+        <div className="public-portal public-refined" id="top">
+            <a href="#public-content" className="skip-link">Skip to main content</a>
+            <PublicHero content={content} authenticated={authenticated} />
             <main id="public-content" tabIndex={-1}>
-                <div className="public-content public-reference-content">
-                    <div className={`${PUBLIC_CONTENT_FRAME_CLASS} public-disclosure public-reference-disclosure`}>
-                        <Info size={13} className="mt-0.5 shrink-0" aria-hidden="true" />
-                        <p>
-                            <strong className="mr-2 font-extrabold uppercase tracking-[0.08em] [color:var(--public-text)]">Reference information</strong>
-                            <span>Non-live portal information only; no protected employee records are exposed.</span>
-                        </p>
-                    </div>
-
-                    <PublicMunicipalHomepage content={content} authenticated={authenticated} />
-                </div>
+                <PublicMunicipalHomepage content={content} authenticated={authenticated} />
             </main>
-
             <PublicFooter content={content} authenticated={authenticated} />
         </div>
     </>;
