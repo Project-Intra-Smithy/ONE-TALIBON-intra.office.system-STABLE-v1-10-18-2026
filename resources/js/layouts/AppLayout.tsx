@@ -253,7 +253,11 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
                             </div>
                         </div>
 
-                        {navigationGroups.some((group) => group.items.some((item) => item.key === 'records')) && <RecordsSearch />}
+                        {navigationGroups.some((group) => group.items.some((item) => item.key === 'records')) && (
+                            <div className="hidden min-w-0 lg:block">
+                                <RecordsSearch />
+                            </div>
+                        )}
                         <div className="flex shrink-0 items-center gap-1 sm:gap-2">
                             <div ref={notificationsPanel} className="relative">
                                 <button
