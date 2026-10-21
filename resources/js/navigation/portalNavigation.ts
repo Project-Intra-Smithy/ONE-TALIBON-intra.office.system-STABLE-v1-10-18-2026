@@ -44,6 +44,7 @@ export type PortalDestinationKey =
     | 'portalSearch'
     | 'documentCenter'
     | 'home'
+    | 'myDepartment'
     | 'myWork'
     | 'correspondence'
     | 'procurementTracking'
@@ -88,6 +89,7 @@ export type PortalNavigationGroup = {
 
 export const portalRoutePlan = {
     home: '/dashboard',
+    myDepartment: '/dashboard#department-overview',
     portalSearch: '/portal-search',
     documentCenter: '/documents',
     myWork: '/transactions',
@@ -116,6 +118,7 @@ export const portalDestinations: Partial<Record<PortalDestinationKey, PortalDest
     portalSearch: { key: 'portalSearch', label: 'Search Portal', href: portalRoutePlan.portalSearch, icon: FileSearch, group: 'home', readiness: 'wired' },
     documentCenter: { key: 'documentCenter', label: 'Document Center', href: portalRoutePlan.documentCenter, icon: FileText, group: 'files', readiness: 'wired', permission: 'records' },
     home: { key: 'home', label: 'Home', href: portalRoutePlan.home, icon: LayoutDashboard, group: 'home', readiness: 'wired', permission: 'dashboard' },
+    myDepartment: { key: 'myDepartment', label: 'My Department', href: portalRoutePlan.myDepartment, icon: Building2, group: 'work', readiness: 'wired', permission: 'dashboard', experiences: ['department_head'] },
     myWork: { key: 'myWork', label: 'Work Requests', href: portalRoutePlan.myWork, icon: FileText, group: 'work', readiness: 'wired', permission: 'transactions' },
     correspondence: { key: 'correspondence', label: 'Correspondence', href: portalRoutePlan.correspondence, icon: Inbox, group: 'work', readiness: 'wired', permission: 'correspondence' },
     procurementTracking: { key: 'procurementTracking', label: 'Procurement / PR Tracking', href: portalRoutePlan.procurementTracking, icon: ListChecks, group: 'work', readiness: 'integration_pending' },
@@ -166,6 +169,7 @@ export const portalGroupLabels: Record<PortalGroupKey, string> = {
 
 export const portalDestinationOrder: PortalDestinationKey[] = [
     'home',
+    'myDepartment',
     'portalSearch',
     'documentCenter',
     'myWork',
@@ -233,7 +237,11 @@ export function buildPortalNavigation(
 
 export function isPortalPathActive(currentUrl: string, href: string): boolean {
     const path = (currentUrl.split(/[?#]/, 1)[0] || '/').replace(/\/$/, '') || '/';
-    const target = href.replace(/\/$/, '') || '/';
+    const hash = currentUrl.split('#')[1];
+    const targetHash = href.split('#')[1];
+    if (targetHash && targetHash !== hash) return false;
+    if (!targetHash && href === '/dashboard' && hash === 'department-overview') return false;
+    const target = href.split(/[?#]/, 1)[0].replace(/\/$/, '') || '/';
 
     return path === target || (target !== '/' && path.startsWith(`${target}/`));
 }

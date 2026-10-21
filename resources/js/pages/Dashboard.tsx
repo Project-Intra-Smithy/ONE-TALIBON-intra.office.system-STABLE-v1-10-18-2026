@@ -45,7 +45,9 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
                 </div>}
 
                 {experience.key === 'department_head' && <>
-                    {officeOverview && <OfficeOverview overview={officeOverview} />}
+                    <section id="department-overview" tabIndex={-1} className="workspace-section-target" aria-label="My Department">
+                        {officeOverview ? <OfficeOverview overview={officeOverview} /> : <p className="municipal-panel p-5">Department overview is unavailable. Refresh the page to try again.</p>}
+                    </section>
                     {correspondenceOverview && <CorrespondenceOverview overview={correspondenceOverview} />}
                     {secondaryGroups.map((group) => <MetricGroup key={group.key} group={group} />)}
                     <RecentWorkList title="My recent work" description="Latest updates to your personally assigned and initiated work." items={recentWork} emptyMessage="No recent personal work to show." />

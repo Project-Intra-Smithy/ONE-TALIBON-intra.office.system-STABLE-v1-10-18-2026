@@ -16,6 +16,12 @@ function formatDate(value:string|null):string {
     return Number.isNaN(date.getTime()) ? 'Unavailable'
       : new Intl.DateTimeFormat('en-PH',{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Manila'}).format(date);
 }
+function dueLabel(task: IndividualTask): string | null {
+    if (!task.due_at || task.state === 'completed') return null;
+    const remaining = Date.parse(task.due_at) - Date.now();
+    if (!Number.isFinite(remaining)) return null;
+    return remaining < 0 ? 'Overdue' : remaining <= 48 * 60 * 60 * 1000 ? 'Due within 48 hours' : null;
+}
 function Status({value}:{value:TaskState}) {
     return <span className={'inline-block rounded-full px-2.5 py-1 text-sm font-semibold '+colors[value]}>{labels[value]}</span>;
 }
@@ -124,63 +130,49 @@ function TaskSession({userId}:{userId:number}) {
     },[userId]);
     const chooseState=(value:TaskState)=>{if(value===state)return;setState(value);setPage(1);setSelected(null);};
     const choosePage=(value:number)=>{if(!list||value<1||value>list.meta.last_page||value>10000)return;setPage(value);setSelected(null);};
-    return <section className="municipal-panel overflow-hidden" aria-labelledby="personal-task-heading">
+    return <section className="municipal-panel task-workspace overflow-hidden" aria-labelledby="personal-task-heading">
         <header className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-4 py-4 dark:border-slate-700 sm:px-5">
-            <div><h2 id="personal-task-heading" className="flex items-center gap-2 text-base font-extrabold text-slate-900 dark:text-slate-100"><ListChecks size={19} className="text-[#145a43] dark:text-emerald-400" aria-hidden="true"/> Personal Tasks</h2>
-                <p className="mt-1 text-sm leading-6 text-slate-500 dark:text-slate-400">Your individual Task records, separate from Work Requests.</p></div>
+            <div><h2 id="personal-task-heading" className="flex items-center gap-2 text-xl font-extrabold text-slate-900 dark:text-slate-100"><ListChecks size={19} className="text-blue-700 dark:text-blue-300" aria-hidden="true"/> My Tasks</h2>
+                <p className="mt-1 text-sm leading-6 text-slate-500 dark:text-slate-400">Review your tasks by status, check deadlines, and select a task for full details.</p></div>
             <button type="button" onClick={()=>{setRefresh(n=>n+1);if(selected!==null)setDetailRefresh(n=>n+1);}}
-                className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-200"><RefreshCcw size={14} aria-hidden="true"/> Refresh</button>
+                className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-slate-300 px-3 text-sm font-semibold dark:border-slate-600"><RefreshCcw size={14} aria-hidden="true"/> Refresh</button>
         </header>
-        <div role="group" aria-label="Task state filter" className="flex flex-wrap gap-2 border-b border-slate-200 bg-slate-50/70 p-2.5 dark:border-slate-700 dark:bg-slate-900/40 sm:p-3">
-            {TASK_STATES.map(value=>{
-                const isActive = state === value;
-                return (
-                    <button
-                        type="button"
-                        key={value}
-                        aria-pressed={isActive}
-                        onClick={()=>chooseState(value)}
-                        className={`inline-flex min-h-[44px] items-center gap-2 rounded-lg px-4 py-2 text-sm sm:text-base font-bold transition-all motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 ${
-                            isActive
-                                ? 'bg-[#145a43] text-white shadow-sm ring-1 ring-[#0e4331]'
-                                : 'border border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-100 hover:text-slate-950 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-200 dark:hover:bg-slate-800'
-                        }`}
-                    >
-                        {isActive && <span className="h-2 w-2 rounded-full bg-emerald-300" aria-hidden="true" />}
-                        <span>{labels[value]}</span>
-                        {isActive && <span className="sr-only"> (Selected)</span>}
-                    </button>
-                );
-            })}
+        <div role="group" aria-label="Task state filter" className="flex flex-wrap border-b border-slate-200 px-2 dark:border-slate-700 sm:px-4">
+            {TASK_STATES.map(value=><button type="button" key={value} aria-pressed={state===value} onClick={()=>chooseState(value)}
+                className={'min-h-11 shrink-0 border-b-[3px] px-3 py-2 text-sm font-bold sm:px-5 '+(state===value?'border-blue-700 text-blue-800 dark:border-blue-300 dark:text-blue-200':'border-transparent text-slate-500 hover:text-blue-700 dark:text-slate-400')}>{labels[value]}</button>)}
         </div>
-        <div className="grid min-w-0 gap-4 p-4 sm:p-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,.9fr)]">
+        <div className={'task-workspace-body grid min-w-0 gap-4 p-4 sm:p-5 '+(selected!==null?'task-workspace-selected':'')}>
             <div className="min-w-0">
                 {listLoading&&<Loading label="Loading personal Tasks"/>}
                 {!listLoading&&listError&&<ErrorPanel error={listError} retry={()=>setRefresh(n=>n+1)}/>}
                 {!listLoading&&!listError&&list&&(list.data.length===0?
                     <div className="rounded-xl border border-dashed border-slate-300 p-6 text-center text-base text-slate-600 dark:border-slate-600 dark:text-slate-300">
                         {list.meta.total===0?'No individual Tasks in this state.':'No Tasks returned for this page.'}</div>:
-                    <ul aria-label={labels[state]+' personal Tasks'} className="space-y-2">
-                        {list.data.map(task=><li key={task.id}><button type="button" aria-pressed={selected===task.id} onClick={()=>setSelected(task.id)}
-                            className={'w-full rounded-xl border p-4 text-left transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 '+(selected===task.id?'border-[#145a43] bg-[#edf5ef] ring-2 ring-[#145a43] dark:bg-emerald-950/40 dark:border-emerald-500':'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-[#142236] dark:hover:bg-slate-800/50')}>
-                            <span className="flex flex-wrap items-center justify-between gap-2"><Status value={task.state}/><span className="text-sm font-semibold text-slate-500 dark:text-slate-400">#{task.id}</span></span>
-                            <span className="mt-2 block break-words text-base font-bold text-slate-900 dark:text-white">{task.title}</span>
-                            <span className="mt-1 block text-sm text-slate-500 dark:text-slate-400">Due: {formatDate(task.due_at)}</span>
-                            {task.instructions&&<span className="mt-2 line-clamp-2 block break-words text-sm leading-6 text-slate-600 dark:text-slate-300">{task.instructions}</span>}
+                    <ul aria-label={labels[state]+' personal Tasks'} className="task-rows space-y-2">
+                        {list.data.map(task=><li key={task.id}><button type="button" aria-pressed={selected===task.id} id={"task-row-"+task.id} onClick={()=>setSelected(task.id)}
+                            className={'task-row w-full rounded-lg border p-4 text-left motion-reduce:transition-none '+(selected===task.id?'border-blue-500 bg-blue-50 dark:bg-blue-950/40':'border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800/50')}>
+                            <span className="block break-words text-lg font-bold text-slate-900 dark:text-white">{task.title}</span>
+                            <span className="task-row-meta mt-2 flex flex-wrap items-center gap-x-4 gap-y-2">
+                                <Status value={task.state}/>
+                                <span className="text-sm text-slate-600 dark:text-slate-300">Due: {formatDate(task.due_at)}</span>
+                                {dueLabel(task)&&<span className="task-deadline text-sm font-bold">{dueLabel(task)}</span>}
+                                <span className="text-sm text-slate-500 dark:text-slate-400">#{task.id}</span>
+                            </span>
+                            <span className="task-row-action mt-2 block text-sm font-semibold">{selected===task.id?'Viewing task':'View details'}</span>
                         </button></li>)}
                     </ul>)}
                 {!listLoading&&list&&<nav aria-label="Server Task pagination" className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                    <p className="text-sm text-slate-600 dark:text-slate-300">Page {list.meta.page} of {list.meta.last_page} • {list.meta.total} Tasks</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-300">Page {list.meta.page} of {list.meta.last_page} · {list.meta.total} Tasks</p>
                     <div className="flex gap-2">
-                        <button type="button" aria-label="Previous Task page" disabled={list.meta.page<=1} onClick={()=>choosePage(list.meta.page-1)} className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-200"><ChevronLeft size={18}/></button>
-                        <button type="button" aria-label="Next Task page" disabled={list.meta.page>=list.meta.last_page||list.meta.page>=10000} onClick={()=>choosePage(list.meta.page+1)} className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-200"><ChevronRight size={18}/></button>
+                        <button type="button" aria-label="Previous Task page" disabled={list.meta.page<=1} onClick={()=>choosePage(list.meta.page-1)} className="min-h-10 rounded-lg border border-slate-300 px-3 disabled:opacity-40 dark:border-slate-600"><ChevronLeft size={17}/></button>
+                        <button type="button" aria-label="Next Task page" disabled={list.meta.page>=list.meta.last_page||list.meta.page>=10000} onClick={()=>choosePage(list.meta.page+1)} className="min-h-10 rounded-lg border border-slate-300 px-3 disabled:opacity-40 dark:border-slate-600"><ChevronRight size={17}/></button>
                     </div></nav>}
             </div>
-            <div className="min-w-0" aria-live="polite">
+            <div className={selected===null?'sr-only':'min-w-0'} aria-live="polite">
                 {selected===null&&<p className="rounded-xl border border-dashed border-slate-300 p-6 text-base text-slate-600 dark:border-slate-600 dark:text-slate-300">Choose an individual Task to see its details.</p>}
                 {selected!==null&&detailLoading&&<Loading label="Loading Task detail"/>}
                 {selected!==null&&!detailLoading&&detailError&&<ErrorPanel error={detailError} retry={()=>setDetailRefresh(n=>n+1)} back={()=>setSelected(null)}/>}
-                {selected!==null&&!detailLoading&&detail?.id===selected&&<><h3 className="sr-only" ref={focusTitle} tabIndex={-1}>Selected Task details</h3><Detail task={detail} back={()=>setSelected(null)}/></>}
+                {selected!==null&&!detailLoading&&detail?.id===selected&&<><h3 className="sr-only" ref={focusTitle} tabIndex={-1}>Selected Task details</h3><Detail task={detail} back={()=>{setSelected(null);requestAnimationFrame(()=>document.getElementById('task-row-'+selected)?.focus());}}/></>}
             </div>
         </div>
     </section>;
