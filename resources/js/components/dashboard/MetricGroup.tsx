@@ -1,37 +1,30 @@
 import { Link } from '@inertiajs/react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { isStagedInertiaPath } from '../../navigation/stagedRoutes';
-import DashboardSection, { EmptyState } from './DashboardSection';
 import type { MetricGroupData } from './types';
 
 export default function MetricGroup({ group }: { group: MetricGroupData }) {
     const title = ({ personal: 'My work', office: 'Office workload', executive: 'Municipal workload', system: 'Accounts and security' } as Record<string, string>)[group.key] || group.title;
-    const maximum = Math.max(0, ...group.metrics.map(metric => Number.isFinite(metric.value) ? metric.value : 0));
-
-    return <DashboardSection title={title}>
-        <dl
-            className="dashboard-metrics dashboard-metrics--chart"
-            aria-describedby={`dashboard-metric-note-${group.key}`}
-        >
-            {group.metrics.map((metric) => <div key={metric.label}>
-                <dt>{isStagedInertiaPath(metric.link)
-                    ? <Link href={metric.link} aria-label={metric.label + ': ' + metric.value + '. Open related work.'}>{metric.label}<ArrowRight size={16} aria-hidden="true" /></Link>
-                    : metric.label}</dt>
-                <dd>{Number.isFinite(metric.value) ? metric.value.toLocaleString() : 'Unavailable'}</dd>
-                <div className="dashboard-bar" aria-hidden="true">
-                    <span style={{ width: `${maximum > 0 && Number.isFinite(metric.value) ? Math.max(0, metric.value) / maximum * 100 : 0}%` }} />
-                </div>
-            </div>)}
-        </dl>
-
-        {group.metrics.length > 0 && maximum === 0 && <EmptyState>No recorded counts in this summary.</EmptyState>}
-        {!group.metrics.length && <EmptyState>No summary figures available.</EmptyState>}
-
-        <p
-            id={`dashboard-metric-note-${group.key}`}
-            className="dashboard-chart-note"
-        >
-            Current counts; categories may overlap
-        </p>
-    </DashboardSection>;
+    // Counts may overlap: compare magnitude, never imply a completion percentage.
+    const maximum = Math.max(1, ...group.metrics.map(metric => Math.max(0, metric.value)));
+    return <section className="municipal-panel overflow-hidden" aria-labelledby={'dashboard-' + group.key + '-metrics'}>
+        <header className="border-b border-slate-200 px-4 py-3 dark:border-slate-700 sm:px-5">
+            <h2 id={'dashboard-' + group.key + '-metrics'} className="text-base font-bold sm:text-lg">{title}</h2>
+        </header>
+        <div className="workspace-metrics">
+            {group.metrics.map((metric) => {
+                const className = 'workspace-metric group relative min-w-0 p-5';
+                const content = <>
+                <div className="text-3xl font-bold leading-tight tabular-nums">{metric.value.toLocaleString()}</div>
+                <div className="mt-2 pr-4 text-base leading-6 text-slate-700 dark:text-slate-200">{metric.label}</div>
+                <div className="workspace-count-track" aria-hidden="true"><span style={{ width: `${Math.max(0, metric.value) / maximum * 100}%` }} /></div>
+                {isStagedInertiaPath(metric.link) && <ArrowUpRight size={14} className="absolute right-4 top-4 text-slate-600 group-hover:text-[#1769aa] dark:group-hover:text-blue-300" aria-hidden="true" />}
+                </>;
+                return isStagedInertiaPath(metric.link)
+                    ? <Link key={metric.label} href={metric.link} aria-label={metric.label + ': ' + metric.value + '. Open related work.'} className={`${className} transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/40`}>{content}</Link>
+                    : <div key={metric.label} className={className}>{content}</div>;
+            })}
+        </div>
+        <p className="px-5 pb-5 text-base text-slate-600 dark:text-slate-300">Bars compare counts in this section. Categories may overlap.</p>
+    </section>;
 }

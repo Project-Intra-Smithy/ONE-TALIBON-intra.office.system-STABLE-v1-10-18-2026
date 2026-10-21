@@ -1,6 +1,5 @@
 import { Link, router } from '@inertiajs/react';
-import { ListChecks, LogOut, PanelLeftClose, PanelLeftOpen, Settings } from 'lucide-react';
-import { Fragment } from 'react';
+import { ListChecks, LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { isPortalPathActive, type PortalNavigationGroup } from '../../navigation/portalNavigation';
 import type { AuthUser } from '../../types';
 import AppearanceControl from '../AppearanceControl';
@@ -43,21 +42,21 @@ export default function PortalSidebar({
     const identityTitle = [user?.name, position, department].filter(Boolean).join(' · ');
 
     return (
-        <div className={`portal-sidebar ${compact ? 'portal-sidebar--compact' : ''}`}>
-            <div className={`border-b border-white/10 ${compact ? 'px-2 py-4' : 'px-5 py-5'}`}>
+        <div className="portal-sidebar flex h-full flex-col bg-white text-slate-800">
+            <div className={`border-b border-slate-200 ${compact ? 'px-2 py-4' : 'px-5 py-5'}`}>
                 <div className={compact ? 'flex justify-center' : undefined}>
-                    <MunicipalBrand inverse compact iconOnly={compact} />
+                    <MunicipalBrand compact iconOnly={compact} />
                 </div>
 
                 {mobile ? (
-                    <div className="mt-3 text-xs text-emerald-100">Intra-office workspace</div>
+                    <div className="mt-3 text-xs text-slate-600">Intra-office workspace</div>
                 ) : (
                     <div className={`mt-3 flex items-center ${compact ? 'justify-center' : 'justify-between gap-3'}`}>
-                        {!compact && <div className="text-xs text-emerald-100">Intra-office workspace</div>}
+                        {!compact && <div className="text-xs text-slate-600">Intra-office workspace</div>}
                         <button
                             type="button"
                             onClick={onToggleCollapsed}
-                            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/10 text-emerald-50 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
                             aria-label={compact ? 'Expand navigation' : 'Collapse navigation'}
                             aria-expanded={!compact}
                             title={compact ? 'Expand navigation' : 'Collapse navigation'}
@@ -81,21 +80,20 @@ export default function PortalSidebar({
                         return (
                             <section key={group.label} aria-label={group.label}>
                                 {!compact && (
-                                    <div className={`px-2 text-sm font-semibold ${groupActive ? 'text-white' : 'text-emerald-100'}`}>
+                                    <div className={`px-2 text-xs font-bold uppercase tracking-[0.08em] ${groupActive ? 'text-[#145a43]' : 'text-slate-600'}`}>
                                         {group.label}
                                     </div>
                                 )}
 
                                 <div className={compact ? 'space-y-1' : 'mt-2 space-y-1'}>
                                     {group.items.map(({ key, label, href, icon: Icon }) => {
-                                        const active = isPortalPathActive(currentUrl, href);
+                                        const active = isPortalPathActive(currentUrl, href) && !(key === 'home' && currentUrl.includes('#personal-tasks'));
                                         const hasMemoCount = key === 'memoranda' && unreadMemoCount > 0;
                                         const accessibleLabel = hasMemoCount
                                             ? `${label}, ${unreadMemoCount} unread`
                                             : label;
 
-                                        return (
-                                            <Fragment key={key}>
+                                        const itemElement = (
                                             <Link
                                                 key={key}
                                                 href={href}
@@ -103,17 +101,17 @@ export default function PortalSidebar({
                                                 aria-current={active ? 'page' : undefined}
                                                 aria-label={compact ? accessibleLabel : undefined}
                                                 title={compact ? accessibleLabel : undefined}
-                                                className={`relative flex min-h-11 items-center rounded-lg py-2 text-base font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-1 focus-visible:ring-offset-[#124c38] ${
+                                                className={`relative flex min-h-11 items-center rounded-lg py-2 text-base font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-1 focus-visible:ring-offset-white ${
                                                     compact ? 'justify-center px-2' : 'gap-3 px-3'
                                                 } ${
                                                     active
-                                                        ? 'bg-white text-[#124c38] font-bold before:absolute before:inset-y-2 before:left-0 before:w-1 before:rounded-r before:bg-[#124c38]'
-                                                        : 'text-emerald-50 hover:bg-white/10 hover:text-white'
+                                                        ? 'bg-[#edf5ef] text-[#145a43] before:absolute before:inset-y-2 before:left-0 before:w-1 before:rounded-r before:bg-[#145a43]'
+                                                        : 'text-slate-700 hover:bg-slate-100 hover:text-slate-950'
                                                 }`}
                                             >
                                                 <Icon size={18} aria-hidden="true" className="shrink-0" />
 
-                                                {!compact && <span className="min-w-0 flex-1 break-words">{label}</span>}
+                                                {!compact && <span className="min-w-0 flex-1 truncate">{label}</span>}
 
                                                 {hasMemoCount && (
                                                     compact ? (
@@ -138,16 +136,43 @@ export default function PortalSidebar({
                                                     )
                                                 )}
                                             </Link>
-                                            {key === 'myWork' && <a href="/dashboard#personal-tasks"
-                                                onClick={() => { onNavigate?.(); document.getElementById('personal-tasks')?.focus(); }}
-                                                aria-current={currentUrl.includes('#personal-tasks') ? 'page' : undefined}
-                                                aria-label={compact ? 'Personal tasks' : undefined}
-                                                title="Personal tasks"
-                                                className="relative mt-1 flex min-h-11 items-center gap-3 rounded-lg px-3 py-2 text-base font-medium text-emerald-50 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white/80">
-                                                <ListChecks size={18} aria-hidden="true"/>{!compact && <span>Personal Tasks</span>}
-                                            </a>}
-                                            </Fragment>
                                         );
+
+                                        if (key === 'myWork' && group.key === 'work') {
+                                            const tasksActive = currentUrl.includes('#personal-tasks');
+                                            return (
+                                                <div key="work-with-tasks" className="space-y-1">
+                                                    {itemElement}
+                                                    <a
+                                                        key="personalTasks"
+                                                        href="/dashboard#personal-tasks"
+                                                        onClick={() => {
+                                                            onNavigate?.();
+                                                            if (typeof window !== 'undefined' && window.location.pathname === '/dashboard') {
+                                                                const el = document.getElementById('personal-tasks');
+                                                                el?.scrollIntoView({ behavior: 'smooth' });
+                                                                el?.focus();
+                                                            }
+                                                        }}
+                                                        aria-current={tasksActive ? 'page' : undefined}
+                                                        aria-label={compact ? 'Tasks' : undefined}
+                                                        title={compact ? 'Tasks' : undefined}
+                                                        className={`relative flex min-h-11 items-center rounded-lg py-2 text-base font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-1 focus-visible:ring-offset-white ${
+                                                            compact ? 'justify-center px-2' : 'gap-3 px-3'
+                                                        } ${
+                                                            tasksActive
+                                                                ? 'bg-[#edf5ef] text-[#145a43] before:absolute before:inset-y-2 before:left-0 before:w-1 before:rounded-r before:bg-[#145a43]'
+                                                                : 'text-slate-700 hover:bg-slate-100 hover:text-slate-950'
+                                                        }`}
+                                                    >
+                                                        <ListChecks size={18} aria-hidden="true" className="shrink-0" />
+                                                        {!compact && <span className="min-w-0 flex-1 truncate">Tasks</span>}
+                                                    </a>
+                                                </div>
+                                            );
+                                        }
+
+                                        return itemElement;
                                     })}
                                 </div>
                             </section>
@@ -156,24 +181,24 @@ export default function PortalSidebar({
                 </div>
             </nav>
 
-            <div className={`relative shrink-0 border-t border-white/10 ${compact ? 'p-2' : 'p-3 sm:p-4'}`}>
+            <div className={`relative shrink-0 border-t border-slate-200 ${compact ? 'p-2' : 'p-3 sm:p-4'}`}>
                 {compact ? (
                     <div className="relative flex flex-col items-center gap-3">
                         <div
                             role="img"
                             aria-label={identityTitle ? `Signed in as ${identityTitle}` : 'Signed in user'}
                             title={identityTitle || undefined}
-                            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-xs font-bold text-white"
+                            className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-100 text-xs font-bold text-slate-800"
                         >
                             {userInitials(user?.name)}
                         </div>
 
-                        <details className="portal-settings"><summary aria-label="Appearance settings" title="Appearance settings"><Settings size={18} /></summary><AppearanceControl compact /></details>
+                        <AppearanceControl compact />
 
                         <button
                             type="button"
                             onClick={() => router.post('/logout')}
-                            className="flex h-11 w-11 items-center justify-center rounded-lg text-emerald-50 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                            className="flex h-10 w-10 items-center justify-center rounded-lg text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
                             aria-label="Sign out"
                             title="Sign out"
                         >
@@ -182,9 +207,9 @@ export default function PortalSidebar({
                     </div>
                 ) : (
                     <div className="relative">
-                        <details className="portal-settings"><summary><Settings size={18} aria-hidden="true" />Appearance settings</summary><AppearanceControl /></details>
+                        <AppearanceControl />
 
-                        <div className="mt-3 border-t border-white/10 pt-3">
+                        <div className="mt-3 border-t border-slate-200 pt-3">
                             <div
                                 className="text-sm font-semibold leading-snug break-words"
                                 title={user?.name || undefined}
@@ -194,7 +219,7 @@ export default function PortalSidebar({
 
                             {secondaryIdentity && (
                                 <div
-                                    className="mt-1 text-xs leading-snug text-emerald-100 break-words"
+                                    className="mt-1 text-xs leading-snug text-slate-600 break-words"
                                     title={secondaryIdentity}
                                 >
                                     {secondaryIdentity}
@@ -204,7 +229,7 @@ export default function PortalSidebar({
                             <button
                                 type="button"
                                 onClick={() => router.post('/logout')}
-                                className="mt-2 flex min-h-11 w-full items-center gap-2 rounded-lg px-2 text-base text-emerald-50 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 sm:mt-3 sm:text-sm"
+                                className="mt-2 flex min-h-10 w-full items-center gap-2 rounded-lg px-2 text-[13px] text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 sm:mt-3 sm:text-sm"
                             >
                                 <LogOut size={15} aria-hidden="true" />
                                 <span>Sign out</span>
