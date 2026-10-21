@@ -7,7 +7,7 @@ import { execFileSync } from 'node:child_process';
 import { chromium } from 'playwright';
 
 let server, browser, base, manifest;
-const out = 'storage/app/qa/aj-home-auth';
+const out = process.env.QA_OUTPUT || 'storage/app/qa/aj-home-final';
 const posts = [];
 const content = JSON.parse(execFileSync(process.env.PHP_BINARY || 'php', ['-r', "echo json_encode(require 'config/public_portal.php');"], { encoding: 'utf8' }));
 const experience = { key: 'employee', label: 'Employee', department: { id: 1, code: 'TEST', name: 'Test office' }, scopes: { personal: true, office: false, municipal: false, system: false }, capabilities: { openOfficeWorkspace: false, viewMunicipalAggregates: false, openSystemAdministration: false }, quickActions: [] };
@@ -47,7 +47,7 @@ before(async () => {
             }
             const entry = manifest['resources/js/app.tsx'];
             const css = new Set([manifest['resources/css/app.css'].file, ...(entry.css || [])]);
-            res.setHeader('Content-Type', 'text/html');
+            res.setHeader('Content-Type', 'text/html; charset=utf-8');
             res.end(`<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width,initial-scale=1">${[...css].map(file => `<link rel="stylesheet" href="/build/${file}">`).join('')}</head><body><script data-page="app" type="application/json">${JSON.stringify(data).replaceAll('<', '\\u003c')}</script><div id="app"></div><script type="module" src="/build/${entry.file}"></script></body></html>`);
         } catch (error) { res.writeHead(500); res.end(String(error)); }
     });
@@ -69,10 +69,24 @@ for (const width of [320, 390, 768, 1024, 1440]) {
                 assert.deepEqual(errors, [], `${path} runtime errors`);
                 assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${path} horizontal overflow at ${width}`);
                 if (path === '/') {
-                    assert.equal(await page.locator('h1').innerText(), content.hero.title);
+                    assert.equal(await page.locator('h1').innerText(), 'One Talibon. One workspace.');
+                    await page.evaluate(() => document.fonts.ready);
+                    assert.ok(await page.locator('.hero-img').evaluate(img => img.complete && img.naturalWidth > 0));
+                    assert.equal(await page.locator('.hero-img').evaluate(img => getComputedStyle(img).objectPosition), '50% 42%');
+                    assert.equal(await page.locator('.hero').evaluate(el => Math.round(el.getBoundingClientRect().width)), width);
+                    assert.equal(await page.locator('.hero-lede').innerText(), `Municipal work, connected across offices. ${content.hero.description}`);
+                    assert.equal(await page.locator('.about-main > div > p').nth(1).innerText(), content.about.description);
+                    for (const description of await page.locator('.cap > div').all()) {
+                        assert.ok((await description.boundingBox()).width >= 200, 'capability description has readable line width');
+                    }
+                    assert.equal(await page.locator('.cap-list h3').count(), content.capabilities.items.filter(item => item.id !== 'projects').length);
+                    for (const link of await page.locator('a[href^="#"]').all()) {
+                        assert.equal(await page.locator(await link.getAttribute('href')).count(), 1, 'anchor target exists');
+                    }
+                    assert.equal(await page.locator('.footer .brand-name').evaluate(el => getComputedStyle(el).color), 'rgb(27, 90, 63)');
                     for (const id of ['home', 'capabilities', 'about-portal', 'support']) assert.equal(await page.locator(`#${id}`).count(), 1);
-                    assert.ok(await page.locator('a[href="/login"]').count() >= 3);
-                    assert.equal(await page.getByRole('button', { name: 'Open portal navigation', includeHidden: true }).isVisible(), width < 1280);
+                    assert.equal(await page.locator('a[href="/login"]').count(), 3);
+                    assert.equal(await page.getByRole('button', { name: 'Open portal navigation', includeHidden: true }).isVisible(), width <= 1100);
                 }
                 if (path === '/login') {
                     assert.equal(await page.getByRole('button', { name: 'Continue with Google' }).isDisabled(), true);
@@ -113,7 +127,7 @@ test('persisted dark appearance, short auth viewport and authenticated homepage 
     const { page } = await mount('/authenticated-home', 320);
     try {
         await page.evaluate(() => document.documentElement.classList.add('dark'));
-        assert.equal(await page.locator('.public-refined').evaluate(el => getComputedStyle(el).backgroundColor), 'rgb(255, 255, 255)');
+        assert.equal(await page.locator('.public-refined').evaluate(el => getComputedStyle(el).backgroundColor), 'rgb(248, 249, 248)');
         assert.equal(await page.locator('.public-login-link').getAttribute('href'), '/dashboard');
         await page.locator('.public-login-link').click(); await page.waitForURL('**/dashboard');
         assert.equal(await page.locator('.public-refined').count(), 0);
@@ -137,5 +151,24 @@ test('MFA focus, challenge/recovery payloads, pending, errors and logout', async
         await page.getByLabel('One-time recovery code').fill('synthetic-recovery'); await page.getByRole('button', { name: 'Use recovery code' }).click();
         await page.getByText('Test server: recovery rejected').waitFor(); assert.deepEqual(posts.at(-1), { path: '/security/mfa/challenge', payload: { code: '', recovery_code: 'synthetic-recovery' } });
         await page.getByRole('button', { name: 'Sign out' }).click(); await page.waitForURL('**/login'); assert.equal(posts.at(-1).path, '/logout');
+    } finally { await page.close(); }
+});
+
+// Functional anchors must scroll and leave mobile keyboard focus in visible content.
+test('homepage section navigation, keyboard focus and reduced motion', async () => {
+    const { page } = await mount('/', 390);
+    try {
+        for (const id of ['capabilities', 'about-portal', 'support', 'home']) {
+            await page.getByRole('button', { name: 'Open portal navigation' }).click();
+            await page.locator(`#public-mobile-navigation a[href="#${id}"]`).click();
+            assert.equal(await page.evaluate(() => document.activeElement.id), id);
+            assert.equal(await page.locator('#public-mobile-navigation').isVisible(), false);
+            assert.equal(new URL(page.url()).hash, `#${id}`);
+            const box = await page.locator(`#${id}`).boundingBox();
+            assert.ok(box.y >= -1 && box.y < 900, `${id} scrolled into view`);
+        }
+        await page.locator('.hero-actions a[href="#about-portal"]').click();
+        assert.equal(new URL(page.url()).hash, '#about-portal');
+        assert.equal(await page.locator('.public-refined').evaluate(el => getComputedStyle(el).scrollBehavior), 'auto');
     } finally { await page.close(); }
 });
