@@ -16,11 +16,12 @@ final class GoogleOidcProvider
     {
         return Socialite::driver('google')
             ->scopes(['openid', 'email', 'profile'])
+            ->enablePKCE()
             ->redirect();
     }
 
     public function user(): GoogleUser
     {
-        return Socialite::driver('google')->user();
+        return Socialite::driver('google')->enablePKCE()->user();
     }
 }
