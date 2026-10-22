@@ -73,7 +73,29 @@ return [
     ],
 
     'types' => [
-        // Add transaction-type-specific transition overrides here.
+        // Candidate-only ordinary Work Request vocabulary. The server explicitly
+        // rejects completion unless municipal authority and evidence integration
+        // have been accepted. Other request types retain existing transitions.
+        'internal_request' => [
+            'transitions' => [
+                'complete' => [
+                    'status' => 'closed',
+                    'allowed_from' => ['for_review'],
+                    'destination' => 'current',
+                    'completes' => true,
+                ],
+            ],
+        ],
+    ],
+
+    // R3 Slot02: intentionally inert until W03/W05/W06 decisions and the
+    // upload/notification adapters are integrated and independently reviewed.
+    'ordinary_completion' => [
+        'enabled' => false,
+        'allowed_roles' => [],
+        // Only a synthetic Laravel test may bypass the as-yet unintegrated
+        // result-evidence upload boundary. Never enable this in deployed code.
+        'synthetic_without_evidence' => false,
     ],
 
     'sla' => [
