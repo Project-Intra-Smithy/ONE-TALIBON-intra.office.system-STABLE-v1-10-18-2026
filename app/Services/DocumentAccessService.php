@@ -23,6 +23,7 @@ final class DocumentAccessService
         private readonly CorrespondenceEvidenceScope $correspondenceScope,
         private readonly TravelOrderAccess $travelOrderAccess,
         private readonly TransactionVisibilityQuery $transactionVisibility,
+        private readonly CorrespondenceAccessDecider $classificationAccess,
     ) {}
 
     public function canDownload(User $actor, Document $document): bool
@@ -31,6 +32,15 @@ final class DocumentAccessService
         try {
             $verified = VerifiedMunicipalActor::forProtectedSource($actor);
         } catch (AuthorizationException) {
+            return false;
+        }
+
+        // A visible parent does not grant access to a more restricted file.
+        // The current restricted-source role matrix is the conservative gate;
+        // missing or unrecognized document classifications remain hidden.
+        $allowed = $this->classificationAccess->visibleClassificationValues($verified->user());
+        if (! is_string($document->classification)
+            || ! in_array($document->classification, $allowed, true)) {
             return false;
         }
 
