@@ -12,6 +12,9 @@ type ManageableEvent = {
     location?: string | null;
     calendar_bucket?: 'personal' | 'office' | 'municipality';
     can_manage?: boolean;
+    manual_version: number;
+    start_date: string;
+    end_date?: string | null;
 };
 
 type Permissions = { personal: boolean; office: boolean; municipality: boolean };
@@ -24,6 +27,7 @@ type Draft = {
     starts_at: string;
     ends_at: string;
     all_day: boolean;
+    expected_revision: number;
 };
 
 // Interpret display inputs in the application's Asia/Manila timezone, rather
@@ -38,7 +42,7 @@ function manilaLocal(iso?: string | null): string {
 const toOffset = (value: string) => value ? value + ':00+08:00' : null;
 const freshDraft = (scope: 'personal' | 'office'): Draft => ({
     scope, title: '', description: '', priority: 'normal',
-    location: '', starts_at: '', ends_at: '', all_day: false,
+    location: '', starts_at: '', ends_at: '', all_day: false, expected_revision: 1,
 });
 
 export default function CalendarManualEventPanel({
@@ -50,14 +54,14 @@ export default function CalendarManualEventPanel({
     const [busy, setBusy] = useState(false);
     const [errors, setErrors] = useState<string[]>([]);
     const [expanded, setExpanded] = useState(false);
+    const reset = () => { setEditingId(null); setDraft(freshDraft('personal')); setErrors([]); };
 
     if (!permissions.personal && !permissions.office) return null;
 
     const chooseEvent = (value: string) => {
         setErrors([]);
         if (value === '') {
-            setEditingId(null);
-            setDraft(freshDraft('personal'));
+            reset();
             return;
         }
         const event = editable.find((item) => item.id === Number(value));
@@ -67,15 +71,17 @@ export default function CalendarManualEventPanel({
             scope: event.calendar_bucket === 'office' ? 'office' : 'personal',
             title: event.title, description: event.description ?? '',
             priority: (['high', 'urgent'].includes(event.priority) ? event.priority : 'normal') as Draft['priority'],
-            location: event.location ?? '', starts_at: manilaLocal(event.starts_at),
-            ends_at: manilaLocal(event.ends_at), all_day: event.all_day,
+            location: event.location ?? '',
+            starts_at: event.all_day ? event.start_date : manilaLocal(event.starts_at),
+            ends_at: event.all_day ? (event.end_date ?? '') : manilaLocal(event.ends_at),
+            all_day: event.all_day, expected_revision: event.manual_version,
         });
     };
 
     const payload = () => ({
         ...draft,
-        starts_at: toOffset(draft.starts_at),
-        ends_at: toOffset(draft.ends_at),
+        starts_at: draft.all_day ? draft.starts_at : toOffset(draft.starts_at),
+        ends_at: draft.all_day ? (draft.ends_at || null) : toOffset(draft.ends_at),
     });
     const handleError = (validation: Record<string, string>) => {
         setErrors(Object.values(validation));
@@ -84,11 +90,17 @@ export default function CalendarManualEventPanel({
     const submit = (event: FormEvent) => {
         event.preventDefault();
         setErrors([]);
-        if (!draft.starts_at) { setErrors(['A start date and time are required.']); return; }
+        if (!draft.title.trim() || !draft.starts_at) {
+            setErrors(['A title and start date are required.']); return;
+        }
+        if (draft.ends_at && draft.ends_at < draft.starts_at) {
+            setErrors(['End must not precede start.']); return;
+        }
         setBusy(true);
         const options = {
             preserveScroll: true,
             onError: handleError,
+            onSuccess: () => reset(),
             onFinish: () => setBusy(false),
         };
         if (editingId === null) {
@@ -101,9 +113,11 @@ export default function CalendarManualEventPanel({
         if (editingId === null || busy || !window.confirm('Cancel this calendar event?')) return;
         setBusy(true);
         router.delete('/calendar/events/' + editingId, {
+            data: { expected_revision: draft.expected_revision },
             preserveScroll: true,
             onError: handleError,
-            onFinish: () => { setBusy(false); chooseEvent(''); },
+            onSuccess: () => reset(),
+            onFinish: () => setBusy(false),
         });
     };
 
@@ -142,17 +156,23 @@ export default function CalendarManualEventPanel({
                     <input className="municipal-field mt-1 w-full" maxLength={255} value={draft.location} onChange={(event) => setDraft({ ...draft, location: event.target.value })}/>
                 </label>
                 <label className="text-sm">Start (Manila time)
-                    <input className="municipal-field mt-1 w-full" type="datetime-local" required value={draft.starts_at} onChange={(event) => setDraft({ ...draft, starts_at: event.target.value })}/>
+                    <input className="municipal-field mt-1 w-full" type={draft.all_day ? 'date' : 'datetime-local'} required value={draft.starts_at} onChange={(event) => setDraft({ ...draft, starts_at: event.target.value })}/>
                 </label>
                 <label className="text-sm">End (optional, Manila time)
-                    <input className="municipal-field mt-1 w-full" type="datetime-local" value={draft.ends_at} onChange={(event) => setDraft({ ...draft, ends_at: event.target.value })}/>
+                    <input className="municipal-field mt-1 w-full" type={draft.all_day ? 'date' : 'datetime-local'} value={draft.ends_at} onChange={(event) => setDraft({ ...draft, ends_at: event.target.value })}/>
                 </label>
             </div>
             <label className="text-sm">Description (optional)
                 <textarea className="municipal-field mt-1 w-full" maxLength={2000} rows={2} value={draft.description} onChange={(event) => setDraft({ ...draft, description: event.target.value })}/>
             </label>
-            <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={draft.all_day} onChange={(event) => setDraft({ ...draft, all_day: event.target.checked })}/> All day</label>
-            {errors.length > 0 && <div role="alert" className="text-sm text-red-700">{errors.join(' ')}</div>}
+            <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={draft.all_day} onChange={(event) => {
+                const enabled = event.target.checked;
+                setDraft({ ...draft, all_day: enabled,
+                    starts_at: enabled ? draft.starts_at.slice(0, 10) : (draft.starts_at ? draft.starts_at.slice(0, 10) + 'T09:00' : ''),
+                    ends_at: enabled ? draft.ends_at.slice(0, 10) : (draft.ends_at ? draft.ends_at.slice(0, 10) + 'T10:00' : ''),
+                });
+            }}/> All day</label>
+            {errors.length > 0 && <div role="alert" aria-live="assertive" className="text-sm text-red-700">{errors.join(' ')}</div>}
             <div className="flex flex-wrap gap-2">
                 <button type="submit" disabled={busy} className="municipal-action municipal-action--primary">{busy ? 'Saving…' : editingId === null ? 'Create event' : 'Save changes'}</button>
                 {editingId !== null && <button type="button" disabled={busy} onClick={cancel} className="municipal-action municipal-action--secondary">Cancel event</button>}

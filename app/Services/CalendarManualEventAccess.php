@@ -47,6 +47,7 @@ final class CalendarManualEventAccess
             || $event->source_domain !== 'calendar_manual'
             || $event->source_type !== null
             || $event->source_id !== null
+            || $event->action_url !== null
             || $event->created_by_user_id !== $actor->id
             || $event->status !== 'scheduled') {
             throw new AuthorizationException('Calendar event cannot be modified.');

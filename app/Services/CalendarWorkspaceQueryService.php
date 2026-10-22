@@ -164,6 +164,7 @@ final class CalendarWorkspaceQueryService
                     ? '/transactions/'.$event->source_id
                     : $event->action_url,
             'status' => $event->status,
+            'manual_version' => (int) $event->manual_version,
             'department' => $event->department ? [
                 'code' => $event->department->code,
                 'name' => $event->department->name,
@@ -173,6 +174,7 @@ final class CalendarWorkspaceQueryService
             'can_manage' => $event->event_type === 'manual_event'
                 && $event->source_domain === 'calendar_manual'
                 && $event->source_type === null && $event->source_id === null
+                && $event->action_url === null
                 && $event->status === 'scheduled'
                 && (int) $event->created_by_user_id === $userId
                 && (
