@@ -5,10 +5,11 @@
   "description": "Secure municipal intra-office portal for LGU Talibon.",
   "license": "proprietary",
   "require": {
-    "php": "^8.3",
     "inertiajs/inertia-laravel": "^3.0",
     "laravel/framework": "^13.17",
+    "laravel/socialite": "^5.31",
     "laravel/tinker": "^3.0",
+    "php": "^8.3",
     "pragmarx/google2fa": "^9.1"
   },
   "require-dev": {
