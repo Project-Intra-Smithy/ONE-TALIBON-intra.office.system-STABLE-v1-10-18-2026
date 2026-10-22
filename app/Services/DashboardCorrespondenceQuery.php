@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Domain\Identity\VerifiedMunicipalActor;
 use App\Models\CorrespondenceRecord;
 use App\Models\Department;
 use App\Models\User;
@@ -23,8 +24,23 @@ final class DashboardCorrespondenceQuery
 
     public function workspace(User $actor): array
     {
+        return $this->workspaceForActor($actor);
+    }
+
+    /** Reuse this dashboard read's verified actor for source-specific clearance. */
+    public function workspaceForVerifiedActor(VerifiedMunicipalActor $verified): array
+    {
+        return $this->workspaceForActor($verified->user(), $verified);
+    }
+
+    private function workspaceForActor(User $actor, ?VerifiedMunicipalActor $verified = null): array
+    {
         $base = CorrespondenceRecord::query();
-        $this->access->scopeVisibleTo($base, $actor);
+        if ($verified === null) {
+            $this->access->scopeVisibleTo($base, $actor);
+        } else {
+            $this->access->scopeVisibleToVerifiedActor($base, $verified);
+        }
 
         $statusCounts = (clone $base)
             ->whereIn('lifecycle_state', array_keys(self::CURRENT_STATES))
