@@ -6,11 +6,13 @@ use App\Data\Correspondence\CustodyCommand;
 use App\Data\Correspondence\CustodyEvidenceRef;
 use App\Data\Correspondence\CustodyOperation;
 use App\Data\Correspondence\StaffReceiptData;
+use App\Data\Correspondence\CustodyRetrievalRequest;
 use App\Domain\Correspondence\CorrespondenceClassification;
 use App\Domain\Correspondence\CorrespondenceLifecycleState;
 use App\Models\User;
 use App\Services\CorrespondenceCustodyService;
 use App\Services\ManualCorrespondenceIntakeService;
+use App\Services\CorrespondenceCustodyRetrievalService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Tests\TestCase;
 
@@ -62,6 +64,16 @@ final class CorrespondenceCustodyLifecycleTest extends TestCase
         $this->expectException(AuthorizationException::class);
         app(ManualCorrespondenceIntakeService::class)
             ->receive(new User(), $receipt, self::UUID_CORRELATION);
+    }
+
+    public function test_archive_retrieval_remains_denied_even_with_valid_purpose(): void
+    {
+        $request = new CustodyRetrievalRequest(
+            self::UUID_RECORD, self::UUID_KEY, self::UUID_CORRELATION, 'synthetic-review',
+        );
+
+        $this->expectException(AuthorizationException::class);
+        app(CorrespondenceCustodyRetrievalService::class)->retrieve(new User(), $request);
     }
 
     public function test_no_mismatched_operation_can_be_executed(): void
