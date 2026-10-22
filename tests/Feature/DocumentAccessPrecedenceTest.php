@@ -755,6 +755,41 @@ class DocumentAccessPrecedenceTest extends TestCase
         $this->get('/documents/'.$document->public_id.'/download')->assertOk();
     }
 
+    public function test_unknown_document_classification_fails_closed_on_download_metadata_and_archive(): void
+    {
+        $office = $this->department('UNKNOWN-CLEARANCE');
+        $head = $this->human($office);
+        $transaction = $this->transaction($head, $office);
+        $document = $this->document($head, $office, 'Invalid classification evidence');
+
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => $transaction->getMorphClass(),
+            'linkable_id' => $transaction->id,
+            'relationship' => 'supporting_document',
+        ]);
+
+        $this->actingAs($head);
+        $this->assertTrue(app(DocumentAccessService::class)->canDownload($head, $document));
+
+        // Simulate a malformed legacy classification without altering the
+        // application schema or production records.
+        $document->update(['classification' => 'unrecognized_level']);
+
+        $this->assertFalse(app(DocumentAccessService::class)
+            ->canDownload($head, $document->fresh()));
+        $archive = app(DocumentArchiveQuery::class)->workspace($head, [
+            'document' => $document->public_id,
+        ]);
+        $this->assertSame(0, $archive['records']->total());
+        $this->assertSame(0, $archive['counts']['all']);
+        $this->assertNull($archive['selected']);
+        $this->get('/documents/'.$document->public_id.'/download')->assertForbidden();
+        $this->get('/transactions/'.$transaction->id)
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->where('evidence.record', []));
+    }
+
     private function department(string $name): Department
     {
         return Department::query()->create([
