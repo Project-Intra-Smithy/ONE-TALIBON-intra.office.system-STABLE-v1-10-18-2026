@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Data\Documents\DocumentImportIntent;
 use App\Models\Document;
 use App\Models\CorrespondenceRecord;
+use App\Models\TravelOrder;
+use App\Models\WorkflowTransaction;
 use App\Models\DocumentImportRevision;
 use App\Models\User;
 use Carbon\CarbonImmutable;
@@ -217,6 +219,14 @@ final class DocumentIngestionService
 
         if (! $actor->is_active || $departmentId < 1 || ! $parent->exists || ! $parent->getKey()) {
             throw ValidationException::withMessages(['import' => 'An active actor and persisted record are required.']);
+        }
+
+        // Only record families covered by the existing protected document
+        // retrieval architecture may become import parents.
+        if (! $parent instanceof CorrespondenceRecord
+            && ! $parent instanceof WorkflowTransaction
+            && ! $parent instanceof TravelOrder) {
+            throw ValidationException::withMessages(['import' => 'Unsupported document record association.']);
         }
 
         // Default policy always denies; a Maintainer-owned binding is required.

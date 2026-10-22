@@ -249,6 +249,28 @@ class DocumentIngestionTest extends TestCase
         }
     }
 
+    public function test_unsupported_parent_fails_even_if_caller_grants_authorization(): void
+    {
+        [$actor] = $this->context();
+        $office = $actor->employee->department;
+        $this->app->instance(DocumentImportAuthorization::class, new class extends DocumentImportAuthorization
+        {
+            public function authorize(User $actor, Model $parent, string $classification): void
+            {
+                // Intentionally over-broad synthetic policy to prove independent
+                // import association allowlisting.
+            }
+        });
+
+        try {
+            $this->service()->ingest($actor, $office, $this->file('bad-parent'), $this->intent());
+            $this->fail('Office directory model must never be an import document parent.');
+        } catch (ValidationException) {
+            $this->assertDatabaseCount('documents', 0);
+            $this->assertSame([], Storage::disk('documents')->allFiles());
+        }
+    }
+
     public function test_cross_office_parent_is_denied_even_with_valid_file(): void
     {
         [$actor, $record] = $this->context();
