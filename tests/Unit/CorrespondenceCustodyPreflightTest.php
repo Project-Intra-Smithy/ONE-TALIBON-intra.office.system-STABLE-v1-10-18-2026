@@ -153,8 +153,9 @@ final class CorrespondenceCustodyPreflightTest extends TestCase
         $this->expectException(ValidationException::class);
         (new CustodyPreflight())->assertValid(
             $this->command(CustodyOperation::Dispatched, [
-                'response_document_id' => 1, 'dispatch_reference' => 'SYN-1',
-                'destination_reference' => 'synthetic', 'channel' => 'paper',
+                'response_document_id' => 1, 'dispatch_evidence_document_id' => 55,
+                'dispatch_reference' => 'SYN-1', 'destination_reference' => 'synthetic',
+                'channel' => 'paper',
             ], evidence: []),
             $this->snapshot(milestones: ['response_registered', 'issuance_attested']),
         );
@@ -203,6 +204,9 @@ final class CorrespondenceCustodyPreflightTest extends TestCase
             $this->command(CustodyOperation::IssuanceAttested, [
                 'response_document_id' => 5, 'signature_evidence_document_id' => 1, 'authority_reference' => 'not-approved',
                 'signed_on' => '2026-10-22',
+            ], evidence: [
+                new CustodyEvidenceRef(1, 1, str_repeat('a', 64), Level::Restricted),
+                new CustodyEvidenceRef(5, 1, str_repeat('a', 64), Level::Restricted),
             ]),
             $this->snapshot(),
         );
