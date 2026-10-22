@@ -197,7 +197,7 @@ final readonly class AuthorizedArchiveSql
         // Apply document-level clearance before pagination, counts, search,
         // selected-document lookup and activity. Parent-source authorization
         // from authorizedLinks() remains an independent required condition.
-        $allowedClassifications = $this->classificationAccess->visibleClassificationValues($actor);
+        $allowedClassifications = $this->classificationAccess->visibleClassificationValuesForVerifiedActor($verified);
         $eligibleLinkIds = DB::query()->fromSub(clone $links, 'visible_links')
             ->select('link_id');
         $correspondenceTypes = $this->morphTypes(CorrespondenceRecord::class, CorrespondenceEvent::class);
