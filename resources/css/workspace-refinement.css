@@ -110,3 +110,23 @@
 @media (max-width: 639px) {
     [data-workspace-shell] .portal-header-identity-copy { display: none; }
 }
+
+/* Task rows share the municipal theme; selection never changes workflow state. */
+.task-workspace { --task-accent: var(--municipal-blue, #145a43); --task-selection: #edf5ef; --task-border: #b6cfc0; --task-deadline: #9a3412; }
+.dark .task-workspace { --task-accent: #a5dfc0; --task-selection: #17372c; --task-border: #56816a; --task-deadline: #fdba74; }
+.task-workspace .task-row[aria-pressed="true"] { background: var(--task-selection); border-color: var(--task-border); box-shadow: inset 3px 0 var(--task-accent); }
+.task-workspace .task-row-action { color: var(--task-accent); }
+.task-workspace .task-deadline { color: var(--task-deadline); }
+.task-workspace [aria-label="Task state filter"] [aria-pressed="true"] { color: var(--task-accent); border-color: var(--task-accent); }
+.task-workspace button:focus-visible { outline: 3px solid var(--task-accent); outline-offset: 2px; }
+@media (min-width: 1280px) { .task-workspace-selected { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); } }
+.dark .portal-sidebar { background: var(--municipal-surface); color: var(--municipal-text); border-color: var(--municipal-border); }
+.dark .portal-sidebar :where(.text-slate-600, .text-slate-700, .text-slate-800) { color: var(--municipal-muted); }
+.dark .portal-sidebar .municipal-brand, .dark .portal-sidebar .municipal-brand span { color: var(--municipal-text); }
+.dark .portal-sidebar a[aria-current="page"], .dark .portal-sidebar a:hover { background: #17372c; color: #a5dfc0; }
+.dark .portal-sidebar [aria-label="Appearance"] { background: var(--municipal-canvas); border-color: var(--municipal-border); }
+.dark .portal-sidebar [aria-label="Appearance"] button { color: #cbd5e1; }
+.dark .portal-sidebar [aria-label="Appearance"] button[aria-pressed="true"] { background: #17372c; color: #a5dfc0; }
+.dark .portal-sidebar :where(a, button):focus-visible { outline-color: #a5dfc0; }
+.dark .portal-sidebar nav section > div:first-child { color: var(--municipal-muted); }
+.dark .portal-sidebar [aria-label="Appearance"] > span { color: var(--municipal-muted); }

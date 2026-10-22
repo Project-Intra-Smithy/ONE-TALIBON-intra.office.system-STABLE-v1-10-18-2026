@@ -34,11 +34,11 @@ const serverFlags = ['systemAdministration', 'dashboard', 'transactions', 'corre
 const permissions = (grant) => Object.fromEntries(serverFlags.map((key) => [key, grant]));
 const visible = (grant) => [...nav.buildPortalNavigation('employee', permissions(grant))].flatMap((group) => [...group.items]);
 
-test('catalog exactly preserves canonical 23 identity, group, and readiness relationships', () => {
+test('catalog exactly preserves canonical 24 identity, group, and readiness relationships', () => {
     const catalog = [...nav.plannedPortalDestinations];
-    assert.equal(catalog.length, 23);
-    assert.equal(new Set(catalog.map((item) => item.key)).size, 23);
-    assert.equal(nav.wiredPortalDestinations.length, 12);
+    assert.equal(catalog.length, 24);
+    assert.equal(new Set(catalog.map((item) => item.key)).size, 24);
+    assert.equal(nav.wiredPortalDestinations.length, 13);
     assert.equal(nav.integrationPendingPortalDestinations.length, 11);
     assert.deepEqual([...new Set(catalog.map((item) => item.group))].sort(),
         ['home','work','files','communication','schedule','people','organization','planning','administration','systems'].sort());
@@ -84,4 +84,19 @@ test('already corrected dashboard and density presentation contracts remain inta
     assert.ok(layout.includes("presentation === 'portal-dashboard' ? 'dashboard' : undefined"));
     assert.match(frame, /density\?: Density/);
     assert.match(frame, /'compact'/);
+});
+
+test('PR44 My Department remains head-only and canonical Personal Tasks navigation stays present', () => {
+    for (const role of ['employee', 'department_head', 'executive_oversight', 'system_administration', null]) {
+        const items = [...nav.buildPortalNavigation(role, permissions(true))].flatMap(group => group.items);
+        const department = items.filter(item => item.key === 'myDepartment');
+        assert.equal(department.length, role === 'department_head' ? 1 : 0);
+        if (department.length) assert.equal(department[0].href, '/dashboard#department-overview');
+    }
+    assert.equal(nav.isPortalPathActive('/dashboard#department-overview', '/dashboard#department-overview'), true);
+    assert.equal(nav.isPortalPathActive('/dashboard#department-overview', '/dashboard'), false);
+    assert.equal(nav.isPortalPathActive('/dashboard', '/dashboard#department-overview'), false);
+    const sidebar = readFileSync(fileURLToPath(new URL('../../resources/js/components/shell/PortalSidebar.tsx', import.meta.url)), 'utf8');
+    assert.match(sidebar, /href="\/dashboard#personal-tasks"/);
+    assert.match(sidebar, /const tasksActive =/);
 });

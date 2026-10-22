@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link, router } from '@inertiajs/react';
 import { ListChecks, LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { isPortalPathActive, type PortalNavigationGroup } from '../../navigation/portalNavigation';
@@ -35,6 +36,14 @@ export default function PortalSidebar({
     unreadMemoCount,
     user,
 }: Props) {
+    const [hash, setHash] = useState(() => typeof window === 'undefined' ? '' : window.location.hash);
+    useEffect(() => {
+        const update = () => setHash(window.location.hash);
+        window.addEventListener('hashchange', update);
+        update();
+        return () => window.removeEventListener('hashchange', update);
+    }, [currentUrl]);
+    const navigationUrl = currentUrl.split('#')[0] + hash;
     const compact = !mobile && collapsed;
     const position = user?.employee?.position;
     const department = user?.employee?.department?.name;
@@ -75,7 +84,7 @@ export default function PortalSidebar({
             >
                 <div className={compact ? 'space-y-3' : 'space-y-4'}>
                     {navigationGroups.map((group) => {
-                        const groupActive = group.items.some((item) => isPortalPathActive(currentUrl, item.href));
+                        const groupActive = group.items.some((item) => isPortalPathActive(navigationUrl, item.href));
 
                         return (
                             <section key={group.label} aria-label={group.label}>
@@ -87,17 +96,24 @@ export default function PortalSidebar({
 
                                 <div className={compact ? 'space-y-1' : 'mt-2 space-y-1'}>
                                     {group.items.map(({ key, label, href, icon: Icon }) => {
-                                        const active = isPortalPathActive(currentUrl, href) && !(key === 'home' && currentUrl.includes('#personal-tasks'));
+                                        const active = isPortalPathActive(navigationUrl, href) && !(key === 'home' && hash === '#personal-tasks');
+                                        const NavigationLink = href.includes('#') ? 'a' : Link;
                                         const hasMemoCount = key === 'memoranda' && unreadMemoCount > 0;
                                         const accessibleLabel = hasMemoCount
                                             ? `${label}, ${unreadMemoCount} unread`
                                             : label;
 
                                         const itemElement = (
-                                            <Link
+                                            <NavigationLink
                                                 key={key}
                                                 href={href}
-                                                onClick={() => onNavigate?.()}
+                                                onClick={() => {
+                                                    onNavigate?.();
+                                                    const target = href.split('#')[1];
+                                                    if (target && window.location.pathname === href.split('#')[0]) {
+                                                        requestAnimationFrame(() => document.getElementById(target)?.focus());
+                                                    }
+                                                }}
                                                 aria-current={active ? 'page' : undefined}
                                                 aria-label={compact ? accessibleLabel : undefined}
                                                 title={compact ? accessibleLabel : undefined}
@@ -135,11 +151,11 @@ export default function PortalSidebar({
                                                         </span>
                                                     )
                                                 )}
-                                            </Link>
+                                            </NavigationLink>
                                         );
 
                                         if (key === 'myWork' && group.key === 'work') {
-                                            const tasksActive = currentUrl.includes('#personal-tasks');
+                                            const tasksActive = hash === '#personal-tasks' && navigationUrl.split('#')[0] === '/dashboard';
                                             return (
                                                 <div key="work-with-tasks" className="space-y-1">
                                                     {itemElement}

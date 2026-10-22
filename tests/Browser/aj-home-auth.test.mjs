@@ -93,7 +93,7 @@ for (const width of [320, 390, 768, 1024, 1440]) {
                     assert.equal(await page.locator('.employee-login__panel').evaluate(el => getComputedStyle(el).backgroundColor), 'rgba(255, 255, 255, 0.48)');
                     assert.equal((await page.request.get(base + '/images/talibon/municipality-of-talibon.jpg')).status(), 200);
                 }
-                if (path === '/dashboard') assert.ok(await page.getByRole('heading', { name: 'Personal Tasks', exact: true }).count());
+                if (path === '/dashboard') assert.ok(await page.getByRole('heading', { name: 'My Tasks', exact: true }).count());
                 await page.screenshot({ path: `${out}/${path.replaceAll('/', '-') || 'home'}-${width}.png`, fullPage: true });
             } finally { await page.close(); }
         }
