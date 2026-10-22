@@ -10,6 +10,7 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\PlatformNotification;
 use App\Models\User;
+use App\Models\WorkflowTransaction;
 use App\Services\CorrespondenceRoutingService;
 use App\Services\TransactionVisibilityQuery;
 use App\Services\TransactionWorkflowService;
@@ -132,6 +133,61 @@ class CorrespondenceLinkedTransactionParityTest extends TestCase
 
         $this->assertFalse(Gate::forUser($staff)->allows('view', $workflow->fresh()));
         $this->assertFalse(app(TransactionVisibilityQuery::class)->scope($staff)->whereKey($workflow->id)->exists());
+    }
+
+    public function test_standalone_document_review_keeps_ordinary_current_office_visibility(): void
+    {
+        $office = $this->department('STANDALONE');
+        $actor = $this->human('department_staff', $office);
+        $transaction = WorkflowTransaction::query()->create([
+            'reference_no' => 'P0A-TX-'.Str::upper(Str::random(10)),
+            'transaction_type' => 'document_review',
+            'title' => 'Legitimate standalone document review',
+            'priority' => 'normal',
+            'origin_department_id' => $office->id,
+            'current_department_id' => $office->id,
+            'created_by_user_id' => $actor->id,
+            'status' => 'submitted',
+        ]);
+
+        $this->assertTrue(Gate::forUser($actor)->allows('view', $transaction));
+        $this->assertTrue(app(TransactionVisibilityQuery::class)
+            ->scope($actor)->whereKey($transaction->id)->exists());
+    }
+
+    public function test_multiple_correspondence_links_require_clearance_to_every_source(): void
+    {
+        [$restricted, , $router, $target] = $this->fixture();
+        $staff = $this->human('department_staff', $target);
+        $head = $this->human('department_head', $target);
+        $routed = app(CorrespondenceRoutingService::class)->route(
+            $router,
+            $restricted,
+            ['target_department_id' => $target->id, 'priority' => 'normal'],
+            (string) Str::uuid(),
+        );
+        $workflow = $routed->fresh('workflowTransaction')->workflowTransaction;
+
+        CorrespondenceRecord::query()->create([
+            'public_id' => (string) Str::uuid(),
+            'external_reference_no' => 'P0A-OPEN-'.Str::upper(Str::random(8)),
+            'source' => 'official_email',
+            'channel' => 'official_email',
+            'sender_name' => 'Synthetic Sender',
+            'subject' => 'Open linked source',
+            'received_at' => now(),
+            'receiving_department_id' => $target->id,
+            'classification' => CorrespondenceClassification::Internal->value,
+            'lifecycle_state' => CorrespondenceLifecycleState::Routed->value,
+            'workflow_transaction_id' => $workflow->id,
+        ]);
+
+        $this->assertFalse(Gate::forUser($staff)->allows('view', $workflow));
+        $this->assertFalse(app(TransactionVisibilityQuery::class)
+            ->scope($staff)->whereKey($workflow->id)->exists());
+        $this->assertTrue(Gate::forUser($head)->allows('view', $workflow));
+        $this->assertTrue(app(TransactionVisibilityQuery::class)
+            ->scope($head)->whereKey($workflow->id)->exists());
     }
 
     /**
