@@ -152,16 +152,14 @@ final readonly class NotifyWorkflowTransactionMutation
      */
     private function dispatchOffice(Department $office, WorkflowTransaction $transaction, array $payload): void
     {
-        if ($transaction->transaction_type !== 'document_review') {
-            $this->notifications->notifyDepartment($office, $payload);
+        $sources = $this->linkedCorrespondence($transaction);
+        if ($sources->isEmpty()) {
+            // A document_review may be in its pre-link creation window.
+            // Do not send title-bearing office notices without source proof.
+            if ($transaction->transaction_type !== 'document_review') {
+                $this->notifications->notifyDepartment($office, $payload);
+            }
 
-            return;
-        }
-
-        $source = CorrespondenceRecord::query()
-            ->where('workflow_transaction_id', $transaction->id)
-            ->first();
-        if ($source === null) {
             return;
         }
 
@@ -174,7 +172,7 @@ final readonly class NotifyWorkflowTransactionMutation
             ->get();
 
         foreach ($recipients as $recipient) {
-            if ($this->correspondenceAccess->canView($recipient, $source)) {
+            if ($this->canViewEverySource($recipient, $sources)) {
                 $this->notifications->notifyUser(
                     $recipient,
                     $payload + ['department_id' => $office->id],
@@ -185,15 +183,32 @@ final readonly class NotifyWorkflowTransactionMutation
 
     private function canReceive(User $recipient, WorkflowTransaction $transaction): bool
     {
-        if ($transaction->transaction_type !== 'document_review') {
-            return true;
+        $sources = $this->linkedCorrespondence($transaction);
+        if ($sources->isEmpty()) {
+            // Preserve ordinary workflow assignments. A source-less
+            // document_review has no verifiable correspondence provenance.
+            return $transaction->transaction_type !== 'document_review';
         }
 
-        $source = CorrespondenceRecord::query()
-            ->where('workflow_transaction_id', $transaction->id)
-            ->first();
+        return $this->canViewEverySource($recipient, $sources);
+    }
 
-        return $source !== null && $this->correspondenceAccess->canView($recipient, $source);
+    /** @return \Illuminate\Database\Eloquent\Collection<int, CorrespondenceRecord> */
+    private function linkedCorrespondence(WorkflowTransaction $transaction): \Illuminate\Database\Eloquent\Collection
+    {
+        // Check all linked sources, including malformed legacy transaction
+        // types. The order in which sources were created must never matter.
+        return CorrespondenceRecord::query()
+            ->where('workflow_transaction_id', $transaction->id)
+            ->get();
+    }
+
+    /** @param \Illuminate\Database\Eloquent\Collection<int, CorrespondenceRecord> $sources */
+    private function canViewEverySource(User $recipient, \Illuminate\Database\Eloquent\Collection $sources): bool
+    {
+        return $sources->isNotEmpty()
+            && $sources->every(fn (CorrespondenceRecord $source): bool =>
+                $this->correspondenceAccess->canView($recipient, $source));
     }
 
     private function activeOffice(?int $officeId): ?Department
