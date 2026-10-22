@@ -35,6 +35,7 @@ final readonly class AuthorizedArchiveSql
         private CorrespondenceEvidenceScope $correspondenceScope,
         private TravelOrderAccess $travelOrderAccess,
         private TransactionVisibilityQuery $transactionVisibility,
+        private CorrespondenceAccessDecider $classificationAccess,
     ) {}
 
     /** @param array<string, mixed> $filters */
@@ -193,7 +194,13 @@ final readonly class AuthorizedArchiveSql
         $actorId = (int) $actor->id;
         $officeId = (int) $actor->employee->department_id;
         $employeeId = (int) $actor->employee->id;
+        // Apply document-level clearance before pagination, counts, search,
+        // selected-document lookup and activity. Parent-source authorization
+        // from authorizedLinks() remains an independent required condition.
+        $allowedClassifications = $this->classificationAccess->visibleClassificationValues($actor);
+
         return DB::table('documents as d')
+            ->whereIn('d.classification', $allowedClassifications)
             ->joinSub($ranked, 'source', function (JoinClause $join): void {
                 $join->on('source.document_id', '=', 'd.id')->where('source.source_position', '=', 1);
             })
