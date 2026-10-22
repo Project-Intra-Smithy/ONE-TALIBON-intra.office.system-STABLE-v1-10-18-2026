@@ -28,6 +28,13 @@ final class CustodyPreflight
 
     public function assertValid(CustodyCommand $command, CustodySnapshot $current): void
     {
+        // Explicit reference fields only: never persist client-forged issuer,
+        // signer, custodian, office or status in the event metadata.
+        $permitted = self::REQUIRED[$command->operation->value];
+        if (array_diff(array_keys($command->attributes), $permitted) !== []) {
+            throw ValidationException::withMessages(['attributes' => 'Unknown custody metadata fields are prohibited.']);
+        }
+
         if ($current->state !== $command->expectedState || $current->lastEventId !== $command->expectedEventId) {
             throw new ConflictHttpException('Correspondence revision or state is stale.');
         }
