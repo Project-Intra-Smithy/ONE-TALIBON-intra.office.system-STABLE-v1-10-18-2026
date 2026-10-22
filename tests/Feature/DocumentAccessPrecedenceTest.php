@@ -201,6 +201,7 @@ class DocumentAccessPrecedenceTest extends TestCase
             $office = $this->department('CONTEXT-'.$order);
             $other = $this->department('HIDDEN-'.$order);
             $actor = $this->human($office);
+            $this->actingAs($actor);
             $denied = $this->restrictedCorrespondence($other);
             $allowed = $this->restrictedCorrespondence($office);
             $allowed->update(['subject' => 'Authorized correspondence context']);
@@ -224,8 +225,7 @@ class DocumentAccessPrecedenceTest extends TestCase
             $this->assertSame(0, $archive['records']->total());
             $this->assertSame(0, $archive['counts']['all']);
             $this->assertNull($archive['selected']);
-            $this->actingAs($actor)
-                ->get('/documents/'.$document->public_id.'/download')->assertForbidden();
+            $this->get('/documents/'.$document->public_id.'/download')->assertForbidden();
         }
     }
 
@@ -371,13 +371,21 @@ class DocumentAccessPrecedenceTest extends TestCase
         $archive = app(DocumentArchiveQuery::class)->workspace($actor, [
             'document' => $document->public_id,
         ]);
-        $this->assertSame('Authorized SQL archive source', $archive['selected']['relatedTitle']);
+        // One denied parent within the controlling correspondence family
+        // excludes the entire document, including otherwise allowed metadata.
+        $this->assertNull($archive['selected']);
+        $this->assertSame(0, $archive['records']->total());
+        $this->assertSame(0, $archive['counts']['all']);
         $serialized = json_encode($archive);
         $this->assertStringNotContainsString($denied->subject, $serialized);
         $this->assertStringNotContainsString($denied->municipal_reference_no, $serialized);
         $this->assertStringNotContainsString($denied->public_id, $serialized);
+        $this->assertStringNotContainsString($allowed->subject, $serialized);
         $this->assertSame(0, app(DocumentArchiveQuery::class)->workspace($actor, [
             'archive_search' => $denied->subject,
+        ])['records']->total());
+        $this->assertSame(0, app(DocumentArchiveQuery::class)->workspace($actor, [
+            'archive_search' => $allowed->subject,
         ])['records']->total());
     }
 
