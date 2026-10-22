@@ -242,6 +242,7 @@ export default function Show({
                         {submissionError && <p role="alert" className="mt-2 text-sm text-rose-800 dark:text-rose-300">{submissionError}</p>}
                         {Object.entries(form.errors).map(([field, message]) => message && <p key={field} role="alert" className="mt-1 text-sm text-rose-800 dark:text-rose-300">{field}: {message}</p>)}
                         {(liveState === 'stale' || liveState === 'expired') && <Link href={`/transactions/${tx.id}`} className="mt-2 inline-block rounded-lg border border-slate-400 px-3 py-2 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2">Refresh transaction</Link>}
+                        {allowedActions.length > 0 && liveState === 'current' && (<>
                         <textarea value={form.data.remarks} onChange={(e) => form.setData('remarks', e.target.value)} rows={2} className="mt-3 w-full rounded-xl border border-blue-200 bg-white px-3 py-2.5 text-[12px] sm:mt-4 sm:px-4 sm:py-3 sm:text-sm dark:bg-[#142236]" placeholder="Review note / routing remarks" />
                         <div className="mt-3">
                             <EvidenceFields files={form.data.evidence} onChange={(files) => form.setData('evidence', files)} errors={form.errors as Record<string, string | undefined>} disabled={form.processing} label="Evidence for this workflow action" />
@@ -276,6 +277,7 @@ export default function Show({
                                 {mayAct('request_information') && <button disabled={form.processing} onClick={() => transition('request_information')} className="rounded-lg border border-blue-200 bg-white px-3.5 py-2 text-[12px] font-semibold text-blue-900 disabled:opacity-50 sm:rounded-xl sm:px-5 sm:py-2.5 sm:text-sm dark:bg-[#142236]">Request Information</button>}
                             </div>
                         )}
+                        </>)}
                     </section>
                 )}
 
