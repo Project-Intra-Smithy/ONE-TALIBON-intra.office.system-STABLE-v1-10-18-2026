@@ -156,6 +156,44 @@ class WorkRequestOrdinaryCompletionTest extends TestCase
         $this->assertSame('closed', $request->fresh()->status);
     }
 
+    public function test_stale_completion_after_forwarding_is_denied_without_a_close_event(): void
+    {
+        [$workflow, $request, $receiver] = $this->reviewedRequest();
+        $this->permitSyntheticCompletion();
+        $mayor = Department::query()->where('code', 'MAYOR')->firstOrFail();
+
+        $workflow->transition(
+            $receiver,
+            $request,
+            'forward',
+            targetDepartmentId: (int) $mayor->id,
+            remarks: 'Routing to another office before any final result.',
+        );
+
+        // Keep the old for_review model intentionally: the persisted row has
+        // already moved to the other receiving office.
+        $this->assertAuthorization(
+            fn () => $workflow->transition($receiver, $request, 'complete', remarks: 'Obsolete stale completion attempt.'),
+        );
+        $this->assertSame('submitted', $request->fresh()->status);
+        $this->assertFalse($request->events()->where('action', 'complete')->exists());
+    }
+
+    public function test_terminal_closure_rejects_unrelated_mutations(): void
+    {
+        [$workflow, $request, $receiver] = $this->reviewedRequest();
+        $this->permitSyntheticCompletion();
+        $workflow->transition($receiver, $request, 'complete', remarks: 'Completed synthetic ordinary work.');
+        $count = $request->events()->count();
+
+        $this->assertValidation(
+            fn () => $workflow->transition($receiver, $request, 'mark_review', remarks: 'Attempted reopening through review.'),
+            'action',
+        );
+        $this->assertSame('closed', $request->fresh()->status);
+        $this->assertSame($count, $request->events()->count());
+    }
+
     public function test_inactive_receiver_is_denied_even_after_prior_review(): void
     {
         [$workflow, $request, $receiver] = $this->reviewedRequest();
