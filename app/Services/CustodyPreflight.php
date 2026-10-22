@@ -72,6 +72,10 @@ final class CustodyPreflight
             default => null,
         };
         if ($proofByMilestone !== null) {
+            if (in_array($command->operation, [CustodyOperation::IssuanceAttested, CustodyOperation::Dispatched], true) &&
+                (int) $command->attributes[$proofByMilestone] === (int) $command->attributes['response_document_id']) {
+                throw ValidationException::withMessages(['evidence' => 'Signing or dispatch proof must be distinct from response content.']);
+            }
             $proofPresent = false;
             foreach ($command->evidence as $proof) {
                 if ($proof->documentId === (int) $command->attributes[$proofByMilestone]) {
