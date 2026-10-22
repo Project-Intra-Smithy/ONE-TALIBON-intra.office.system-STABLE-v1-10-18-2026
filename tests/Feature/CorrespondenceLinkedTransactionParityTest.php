@@ -273,7 +273,7 @@ class CorrespondenceLinkedTransactionParityTest extends TestCase
 
     public function test_unlinked_ordinary_request_keeps_office_notification_delivery(): void
     {
-        $office = $this->department('ORDINARY-NOTIFICATION');
+        $office = $this->department('ORD');
         $actor = $this->human('department_staff', $office);
         $workflow = WorkflowTransaction::query()->create([
             'reference_no' => 'P0A-ORD-'.Str::upper(Str::random(9)),
