@@ -49,7 +49,7 @@ final class GoogleOidcController extends Controller
         }
     }
 
-    /** Intended integration route: GET /auth/google/link [auth, active, mfa.assured, throttle]. */
+    /** Intended integration route: POST /auth/google/link [web CSRF, auth, active, mfa.assured, throttle]. */
     public function link(Request $request): RedirectResponse
     {
         if (! $this->ready() || $this->limited($request)) {
