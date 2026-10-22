@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Domain\Workflow\Authorization\TransactionActorEligibility;
 use App\Domain\Workflow\Events\WorkflowTransactionCreated;
 use App\Domain\Workflow\Events\WorkflowTransactionTransitioned;
 use App\Domain\Workflow\ResolvedWorkflowTransition;
@@ -10,11 +11,13 @@ use App\Domain\Workflow\WorkflowDefinition;
 use App\Domain\Workflow\WorkflowDefinitionResolver;
 use App\Domain\Workflow\WorkflowDestinationResolver;
 use App\Domain\Workflow\WorkflowTransitionRule;
+use App\Models\CorrespondenceRecord;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\TransactionEvent;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
@@ -97,6 +100,12 @@ class TransactionWorkflowService
         WorkflowTransaction $transaction,
         string $action,
     ): void {
+        if ($action === 'complete') {
+            $this->authorizeOrdinaryCompletion($actor, $transaction);
+
+            return;
+        }
+
         $ability = match ($action) {
             'assign' => 'assign',
             'approve', 'disapprove' => 'mayorDecision',
@@ -107,6 +116,52 @@ class TransactionWorkflowService
         };
 
         Gate::forUser($actor)->authorize($ability, $transaction);
+    }
+
+    /**
+     * R3 candidate-only closure. Never infer finalization authority from generic
+     * transition capability or from a directory/employee assignment.
+     */
+    private function authorizeOrdinaryCompletion(User $actor, WorkflowTransaction $transaction): void
+    {
+        Gate::forUser($actor)->authorize('transition', $transaction);
+
+        if (config('workflow.ordinary_completion.enabled', false) !== true) {
+            throw ValidationException::withMessages([
+                'action' => 'Ordinary completion is not enabled pending municipal process authority.',
+            ]);
+        }
+
+        $identity = app(TransactionActorEligibility::class)->resolve($actor);
+        $roles = config('workflow.ordinary_completion.allowed_roles', []);
+        if (! is_array($roles)) {
+            $roles = [];
+        }
+
+        if (! $identity
+            || (int) $identity['office_id'] !== (int) $transaction->current_department_id
+            || $identity['role'] === 'system_admin'
+            || ! in_array($identity['role'], $roles, true)) {
+            throw new AuthorizationException('This actor has no approved ordinary completion authority.');
+        }
+
+        // OPS-012/019: do not close a linked classified Correspondence record
+        // while its independent privacy/custody policy remains unresolved.
+        if (CorrespondenceRecord::query()->where('workflow_transaction_id', $transaction->id)->exists()) {
+            throw ValidationException::withMessages([
+                'action' => 'Linked Correspondence requires independent classification and custody acceptance.',
+            ]);
+        }
+
+        // The present shared evidence adapter permits zero uploads. Until the
+        // Maintainer integrates validated result attachments, only synthetic
+        // tests may exercise the isolated domain transition.
+        if (! app()->environment('testing')
+            || config('workflow.ordinary_completion.synthetic_without_evidence', false) !== true) {
+            throw ValidationException::withMessages([
+                'evidence' => 'Completion requires an approved result-evidence adapter.',
+            ]);
+        }
     }
 
     private function createWithinTransaction(
@@ -158,6 +213,20 @@ class TransactionWorkflowService
             throw ValidationException::withMessages([
                 'action' => "The [{$action}] action is not valid from status [{$locked->status}].",
             ]);
+        }
+
+        if ($action === 'complete') {
+            if ($targetDepartmentId !== null || $assignedEmployeeId !== null) {
+                throw ValidationException::withMessages([
+                    'action' => 'Ordinary completion cannot change destination or assignment.',
+                ]);
+            }
+            if (! is_string($remarks) || mb_strlen(trim($remarks)) < 10) {
+                throw ValidationException::withMessages([
+                    'remarks' => 'A completion result of at least 10 characters is required.',
+                ]);
+            }
+            $remarks = trim($remarks);
         }
 
         $resolved = $this->resolveTransition(
@@ -270,12 +339,17 @@ class TransactionWorkflowService
         WorkflowTransitionRule $rule,
         ResolvedWorkflowTransition $resolved,
     ): void {
+        $completedAt = $rule->completes ? now() : $transaction->completed_at;
+
         $transaction->update([
             'current_department_id' => $resolved->toDepartmentId,
             'assigned_employee_id' => $resolved->assignmentEmployeeId,
             'status' => $resolved->newStatus,
             'received_at' => $rule->refreshReceivedAt ? now() : $transaction->received_at,
-            'completed_at' => $rule->completes ? now() : $transaction->completed_at,
+            'completed_at' => $completedAt,
+            'closed_at' => ($rule->completes && $resolved->newStatus === 'closed')
+                ? $completedAt
+                : $transaction->closed_at,
         ]);
     }
 
