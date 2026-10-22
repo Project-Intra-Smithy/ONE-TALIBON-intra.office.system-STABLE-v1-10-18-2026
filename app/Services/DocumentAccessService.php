@@ -38,7 +38,7 @@ final class DocumentAccessService
         // A visible parent does not grant access to a more restricted file.
         // The current restricted-source role matrix is the conservative gate;
         // missing or unrecognized document classifications remain hidden.
-        $allowed = $this->classificationAccess->visibleClassificationValues($verified->user());
+        $allowed = $this->classificationAccess->visibleClassificationValuesForVerifiedActor($verified);
         if (! is_string($document->classification)
             || ! in_array($document->classification, $allowed, true)) {
             return false;
