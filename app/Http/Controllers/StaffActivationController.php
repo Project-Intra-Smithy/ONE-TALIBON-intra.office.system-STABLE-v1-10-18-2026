@@ -77,12 +77,22 @@ final class StaffActivationController extends Controller
             'role' => ['required', Rule::in(StaffActivationService::INVITABLE_ROLES)],
         ]);
 
+        // Never derive a bearer-token destination from an untrusted Host header.
+        $baseUrl = rtrim((string) config('app.url'), '/');
+        $scheme = parse_url($baseUrl, PHP_URL_SCHEME);
+        if (! filter_var($baseUrl, FILTER_VALIDATE_URL) || ! in_array($scheme, ['http', 'https'], true)
+            || (app()->environment('production') && $scheme !== 'https')) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'invitation' => 'The configured activation origin is not ready for secure invitation delivery.',
+            ]);
+        }
+
         $issued = $this->activations->issue(
             $request->user(), (int) $values['employee_id'],
             (int) $values['department_id'], $values['role'],
         );
 
-        $link = route('staff.activation.show', ['token' => $issued['token']]);
+        $link = $baseUrl.route('staff.activation.show', ['token' => $issued['token']], false);
         return redirect()->route('admin.invitations.index')
             ->with('staff_activation_link', $link);
     }
