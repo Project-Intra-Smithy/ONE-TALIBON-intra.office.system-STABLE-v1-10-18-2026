@@ -197,6 +197,7 @@ final class CalendarManualEventCrudTest extends TestCase
         $this->assertTrue($event->all_day);
         $this->assertSame('2026-11-03 00:00', $event->starts_at->setTimezone('Asia/Manila')->format('Y-m-d H:i'));
         $this->assertSame('2026-11-04 23:59', $event->ends_at->setTimezone('Asia/Manila')->format('Y-m-d H:i'));
+        $this->assertSame('2026-11-04 23:59:59', $event->ends_at->setTimezone('Asia/Manila')->format('Y-m-d H:i:s'));
     }
 
     public function test_blank_title_missing_date_and_incorrect_timezone_fail_validation(): void

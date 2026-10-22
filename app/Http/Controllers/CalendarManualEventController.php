@@ -150,7 +150,7 @@ final class CalendarManualEventController extends Controller
         $start = $this->parseDate($data['starts_at'], $allDay, 'starts_at', false);
         $end = isset($data['ends_at'])
             ? $this->parseDate($data['ends_at'], $allDay, 'ends_at', true)
-            : ($allDay ? $start->endOfDay() : null);
+            : ($allDay ? $start->setTime(23, 59, 59) : null);
 
         if ($end !== null && $end->lessThan($start)) {
             throw ValidationException::withMessages(['ends_at' => 'End must not precede start.']);
@@ -164,7 +164,7 @@ final class CalendarManualEventController extends Controller
         if ($allDay && preg_match('/^\d{4}-\d{2}-\d{2}$/D', $value)) {
             $date = CarbonImmutable::createFromFormat('!Y-m-d', $value, self::ZONE);
             if ($date && $date->format('Y-m-d') === $value) {
-                return $end ? $date->endOfDay() : $date->startOfDay();
+                return $end ? $date->setTime(23, 59, 59) : $date->startOfDay();
             }
         }
 
@@ -173,7 +173,7 @@ final class CalendarManualEventController extends Controller
             $date = CarbonImmutable::createFromFormat('!Y-m-d\TH:i:sP', $value);
             if ($date && $date->format('Y-m-d\TH:i:sP') === $value) {
                 $date = $date->setTimezone(self::ZONE);
-                return $allDay ? ($end ? $date->endOfDay() : $date->startOfDay()) : $date;
+                return $allDay ? ($end ? $date->setTime(23, 59, 59) : $date->startOfDay()) : $date;
             }
         }
 
