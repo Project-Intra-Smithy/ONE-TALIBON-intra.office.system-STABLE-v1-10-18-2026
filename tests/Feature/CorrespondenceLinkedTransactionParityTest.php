@@ -12,6 +12,7 @@ use App\Models\PlatformNotification;
 use App\Models\User;
 use App\Services\CorrespondenceRoutingService;
 use App\Services\TransactionVisibilityQuery;
+use App\Services\TransactionWorkflowService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
@@ -55,6 +56,8 @@ class CorrespondenceLinkedTransactionParityTest extends TestCase
         $this->assertNull($created->remarks);
         $this->assertStringNotContainsString($secret, (string) $workflow->title);
         $this->assertSame(0, PlatformNotification::query()->where('message', 'like', '%'.$secret.'%')->count());
+        $this->assertSame(0, PlatformNotification::query()
+            ->where('source_domain', 'transaction')->where('source_id', $workflow->id)->count());
         $this->assertSame(0, CalendarEvent::query()->where('title', 'like', '%'.$secret.'%')->count());
         $this->assertSame($origin->id, $workflow->origin_department_id);
     }
@@ -78,6 +81,39 @@ class CorrespondenceLinkedTransactionParityTest extends TestCase
         $this->assertTrue(Gate::forUser($head)->allows('view', $workflow));
         $this->assertFalse(app(TransactionVisibilityQuery::class)->scope($staff)->whereKey($workflow->id)->exists());
         $this->assertTrue(app(TransactionVisibilityQuery::class)->scope($head)->whereKey($workflow->id)->exists());
+    }
+
+    public function test_restricted_assignment_notification_is_delivered_only_to_cleared_head(): void
+    {
+        [$record, , $router, $target] = $this->fixture();
+        $head = $this->human('department_head', $target);
+        $staff = $this->human('department_staff', $target);
+
+        $linked = app(CorrespondenceRoutingService::class)->route(
+            $router,
+            $record,
+            ['target_department_id' => $target->id, 'priority' => 'normal'],
+            (string) Str::uuid(),
+        );
+        $workflow = $linked->fresh('workflowTransaction')->workflowTransaction;
+
+        app(TransactionWorkflowService::class)->transition(
+            $head,
+            $workflow,
+            'assign',
+            assignedEmployeeId: $head->employee->id,
+        );
+
+        $this->assertSame(1, PlatformNotification::query()
+            ->where('source_domain', 'transaction')
+            ->where('source_id', $workflow->id)
+            ->where('user_id', $head->id)
+            ->count());
+        $this->assertSame(0, PlatformNotification::query()
+            ->where('source_domain', 'transaction')
+            ->where('source_id', $workflow->id)
+            ->where('user_id', $staff->id)
+            ->count());
     }
 
     public function test_legacy_copied_subject_remains_unreadable_to_denied_staff(): void
