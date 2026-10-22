@@ -27,3 +27,12 @@ test('Department overview is a dashboard anchor, not an invented route or author
     assert.match(nav, /myDepartment: '\/dashboard#department-overview'/);
     assert.match(nav, /experiences: \['department_head'\]/);
 });
+
+test('visible appearance controls persist and apply light dark and system preferences', () => {
+    const appearance = read('../../resources/js/theme/appearance.ts');
+    assert.match(appearance, /validPreferences[^=]*= \['system', 'light', 'dark'\]/);
+    assert.match(appearance, /localStorage\.getItem\(STORAGE_KEY\)/);
+    assert.match(appearance, /localStorage\.setItem\(STORAGE_KEY, preference\)/);
+    assert.match(appearance, /classList\.toggle\('dark', resolved === 'dark'\)/);
+    assert.match(appearance, /matchMedia\('\(prefers-color-scheme: dark\)'\)/);
+});
