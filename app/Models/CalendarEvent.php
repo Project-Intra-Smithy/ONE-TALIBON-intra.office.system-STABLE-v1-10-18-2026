@@ -29,6 +29,7 @@ class CalendarEvent extends Model
         'action_url',
         'status',
         'created_by_user_id',
+        'manual_version',
     ];
 
     protected function casts(): array
@@ -37,6 +38,7 @@ class CalendarEvent extends Model
             'starts_at' => 'datetime',
             'ends_at' => 'datetime',
             'all_day' => 'boolean',
+            'manual_version' => 'integer',
         ];
     }
 

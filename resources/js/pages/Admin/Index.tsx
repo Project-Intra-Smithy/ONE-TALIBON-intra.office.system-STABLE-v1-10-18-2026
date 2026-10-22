@@ -36,6 +36,11 @@ export default function AdminIndex({ overview, registry, registryFilters, depart
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">{overviewCards.map(([name,value])=><Metric key={name} label={name} value={value}/>)}</div>
         </Section>
 
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-[#142236]">
+            <div><h2 className="text-sm font-bold text-slate-950 dark:text-slate-100">Employee invitations</h2><p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Invite an existing verified employee to activate an assigned portal role.</p></div>
+            <Link href="/admin/invitations" className="rounded-xl bg-[#0b2852] px-4 py-3 text-xs font-bold text-white focus-visible:ring-2 focus-visible:ring-blue-500">Manage invitations</Link>
+        </div>
+
         <Section title="Account registry" icon={<Users size={17}/>} description="Search authorized portal identities and review role, account state, and MFA status. Results remain server-filtered and paginated.">
             <form onSubmit={applyFilters} aria-label="Account registry filters" className="grid gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/40 sm:grid-cols-2 lg:grid-cols-4">
                 <label className="min-w-0 text-xs font-semibold text-slate-600 dark:text-slate-300 lg:col-span-2">Search identity

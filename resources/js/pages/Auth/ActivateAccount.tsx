@@ -1,68 +1,54 @@
-import { Head, Link } from '@inertiajs/react';
-import { ArrowLeft, Building2, CheckCircle2, LockKeyhole, ShieldCheck } from 'lucide-react';
+import { Head, Link, useForm } from '@inertiajs/react';
+import { type FormEvent } from 'react';
+import { Building2, LockKeyhole } from 'lucide-react';
 
-const steps = [
-    'An authorized administrator registers the employee account internally.',
-    'The employee opens Activate Employee Account.',
-    'The employee signs in with the authorized LGU Google account.',
-    'The employee provides the assigned Employee ID.',
-    'The system matches the pre-registered identity.',
-    'Security and MFA setup is completed where required.',
-    'The Employee Portal becomes active.',
-];
-
-export default function ActivateAccount() {
-    return (
-        <>
-            <Head title="Activate Employee Account" />
-            <div className="min-h-screen bg-slate-100 px-4 py-8 sm:px-6 lg:py-12">
-                <div className="mx-auto max-w-4xl">
-                    <div className="flex items-center justify-between gap-4">
-                        <Link href="/" className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-blue-900"><ArrowLeft size={16} /> One Talibon</Link>
-                        <Link href="/login" className="text-sm font-semibold text-blue-900 hover:underline">Employee Login</Link>
+type Props = { token?:string|null; status?:'valid'|'invalid'|'expired'|'consumed'|'revoked'|null };
+const messages = {
+    invalid: 'This activation link is invalid. Request a new invitation from the system administrator.',
+    expired: 'This invitation has expired. Request a replacement from the system administrator.',
+    consumed: 'This invitation has already been used. Sign in normally or contact the administrator.',
+    revoked: 'This invitation is no longer authorized. Contact the administrator.',
+};
+const field = 'mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500';
+export default function ActivateAccount({token,status}:Props) {
+    const form=useForm({employee_number:'',password:'',password_confirmation:''});
+    const submit=(event:FormEvent)=>{
+        event.preventDefault();
+        if (status!=='valid'||!token) return;
+        form.post('/activate-account/'+token, {onFinish:()=>form.reset('password','password_confirmation')});
+    };
+    return <>
+        <Head title="Activate Employee Account" />
+        <main className="min-h-screen bg-slate-100 px-4 py-12">
+            <div className="mx-auto max-w-lg overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg">
+                <div className="bg-[#0b2852] px-6 py-7 text-white">
+                    <div className="flex items-center gap-3"><Building2 aria-hidden="true" size={24} />
+                        <div><p className="text-xs font-bold uppercase tracking-widest text-blue-200">ONE TALIBON</p><h1 className="text-2xl font-bold">Employee activation</h1></div>
                     </div>
-
-                    <div className="mt-7 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-900/5">
-                        <div className="bg-[#0b2852] px-6 py-8 text-white sm:px-9">
-                            <div className="flex items-center gap-3"><Building2 size={28} /><div><div className="text-xs font-bold uppercase tracking-[0.18em] text-blue-200">One Talibon</div><h1 className="mt-1 text-3xl font-black">Activate Employee Account</h1></div></div>
-                            <p className="mt-4 max-w-2xl text-sm leading-6 text-blue-100">This page demonstrates the intended production activation flow. It does not perform account lookup, Google authentication, Employee ID validation, or any account mutation.</p>
-                        </div>
-
-                        <div className="p-6 sm:p-9">
-                            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-semibold text-amber-900">
-                                Account activation is not enabled in this prototype.
-                            </div>
-
-                            <div className="mt-7 grid gap-3">
-                                {steps.map((step, index) => (
-                                    <div key={step} className="flex items-start gap-3 rounded-2xl border border-slate-200 p-4">
-                                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-50 text-sm font-bold text-blue-900">{index + 1}</span>
-                                        <p className="pt-1 text-sm leading-6 text-slate-700">{step}</p>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="mt-7 grid gap-4 md:grid-cols-2">
-                                <div className="rounded-2xl bg-slate-50 p-5">
-                                    <LockKeyhole size={20} className="text-blue-900" />
-                                    <h2 className="mt-3 font-bold text-slate-950">No public self-registration</h2>
-                                    <p className="mt-2 text-sm leading-6 text-slate-600">Employees will claim only identities already registered by authorized municipal administration.</p>
-                                </div>
-                                <div className="rounded-2xl bg-slate-50 p-5">
-                                    <ShieldCheck size={20} className="text-blue-900" />
-                                    <h2 className="mt-3 font-bold text-slate-950">Production identity controls</h2>
-                                    <p className="mt-2 text-sm leading-6 text-slate-600">Official Google identity integration, matching, activation tokens, and security controls remain future production work.</p>
-                                </div>
-                            </div>
-
-                            <div className="mt-7 flex flex-col gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:items-center sm:justify-between">
-                                <div className="inline-flex items-center gap-2 text-sm text-slate-600"><CheckCircle2 size={17} className="text-emerald-700" /> Existing Employee Portal authentication remains unchanged.</div>
-                                <Link href="/login" className="rounded-xl bg-[#0b2852] px-5 py-3 text-center text-sm font-semibold text-white hover:bg-[#10396f]">Back to Employee Login</Link>
-                            </div>
-                        </div>
-                    </div>
+                    <p className="mt-3 text-sm text-blue-100">Secure activation is available only to invited, registered municipal employees.</p>
+                </div>
+                <div className="space-y-5 p-6">
+                    {status==='valid' && token ? <>
+                        <p className="text-sm leading-6 text-slate-700">Confirm the employee number on your authorized invitation and set a new password. Your office and role are already assigned by the administrator. Privileged users must complete MFA enrollment after activation.</p>
+                        <form onSubmit={submit} className="space-y-4" aria-label="Activate employee account">
+                            <label className="block text-xs font-bold text-slate-700">Registered employee number
+                                <input required autoComplete="off" maxLength={64} value={form.data.employee_number} onChange={event=>form.setData('employee_number',event.target.value)} className={field}/>
+                            </label>
+                            <label className="block text-xs font-bold text-slate-700">New password (minimum 16 characters, letters and numbers)
+                                <input required minLength={16} maxLength={128} type="password" autoComplete="new-password" value={form.data.password} onChange={event=>form.setData('password',event.target.value)} className={field}/>
+                            </label>
+                            <label className="block text-xs font-bold text-slate-700">Confirm new password
+                                <input required type="password" autoComplete="new-password" value={form.data.password_confirmation} onChange={event=>form.setData('password_confirmation',event.target.value)} className={field}/>
+                            </label>
+                            {Object.entries(form.errors).map(([key,value])=><p key={key} role="alert" className="text-xs font-semibold text-red-700">{value}</p>)}
+                            <button disabled={form.processing} className="flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#0b2852] px-5 text-sm font-bold text-white disabled:opacity-50"><LockKeyhole size={16}/>Activate account</button>
+                        </form>
+                    </> : <div role="status" className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700">
+                        {status && status in messages ? messages[status as keyof typeof messages] : 'Request a private employee activation invitation from your authorized municipal administrator. Public registration is not available.'}
+                    </div>}
+                    <Link href="/login" className="inline-flex min-h-11 items-center text-sm font-semibold text-blue-900 hover:underline">Return to Employee Login</Link>
                 </div>
             </div>
-        </>
-    );
+        </main>
+    </>;
 }
