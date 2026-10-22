@@ -19,11 +19,11 @@ final class CustodyPreflight
     private const REQUIRED = [
         'action_outcome' => ['workflow_transaction_id', 'action_code', 'result_reference'],
         'response_registered' => ['response_document_id', 'response_version', 'response_sha256'],
-        'issuance_attested' => ['response_document_id', 'authority_reference', 'signed_on'],
-        'dispatched' => ['response_document_id', 'dispatch_reference', 'destination_reference', 'channel'],
-        'delivery_recorded' => ['dispatch_event_id', 'delivery_status', 'delivery_reference'],
-        'custody_accepted' => ['disposition_reference', 'custody_receipt_reference', 'custody_location_reference', 'retention_authority_reference'],
-        'archived' => ['custody_event_id', 'archive_location_reference', 'retention_authority_reference'],
+        'issuance_attested' => ['response_document_id', 'signature_evidence_document_id', 'authority_reference', 'signed_on'],
+        'dispatched' => ['response_document_id', 'dispatch_evidence_document_id', 'dispatch_reference', 'destination_reference', 'channel'],
+        'delivery_recorded' => ['dispatch_event_id', 'delivery_evidence_document_id', 'delivery_status', 'delivery_reference'],
+        'custody_accepted' => ['disposition_reference', 'custody_receipt_document_id', 'custody_receipt_reference', 'custody_location_reference', 'retention_authority_reference'],
+        'archived' => ['custody_event_id', 'archive_evidence_document_id', 'archive_location_reference', 'retention_authority_reference'],
     ];
 
     public function assertValid(CustodyCommand $command, CustodySnapshot $current): void
@@ -63,6 +63,26 @@ final class CustodyPreflight
         if ($command->evidence === []) {
             throw ValidationException::withMessages(['evidence' => 'Immutable document proof is required.']);
         }
+        $proofByMilestone = match ($command->operation) {
+            CustodyOperation::IssuanceAttested => 'signature_evidence_document_id',
+            CustodyOperation::Dispatched => 'dispatch_evidence_document_id',
+            CustodyOperation::DeliveryRecorded => 'delivery_evidence_document_id',
+            CustodyOperation::CustodyAccepted => 'custody_receipt_document_id',
+            CustodyOperation::Archived => 'archive_evidence_document_id',
+            default => null,
+        };
+        if ($proofByMilestone !== null) {
+            $proofPresent = false;
+            foreach ($command->evidence as $proof) {
+                if ($proof->documentId === (int) $command->attributes[$proofByMilestone]) {
+                    $proofPresent = true;
+                }
+            }
+            if (! $proofPresent) {
+                throw ValidationException::withMessages(['evidence' => 'Stage-specific signed, dispatch, delivery or custody proof is missing.']);
+            }
+        }
+
         // Any response document ID/version/hash named in the command must
         // identify one of the submitted immutable evidence references.
         if (in_array($command->operation, [
