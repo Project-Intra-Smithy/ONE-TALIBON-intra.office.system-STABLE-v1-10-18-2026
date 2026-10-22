@@ -198,11 +198,41 @@ final readonly class AuthorizedArchiveSql
         // selected-document lookup and activity. Parent-source authorization
         // from authorizedLinks() remains an independent required condition.
         $allowedClassifications = $this->classificationAccess->visibleClassificationValues($actor);
+        $eligibleLinkIds = DB::query()->fromSub(clone $links, 'visible_links')
+            ->select('link_id');
+        $correspondenceTypes = $this->morphTypes(CorrespondenceRecord::class, CorrespondenceEvent::class);
+        $travelTypes = $this->morphTypes(TravelOrder::class, TravelOrderEvent::class);
+        $transactionTypes = $this->morphTypes(WorkflowTransaction::class, TransactionEvent::class);
 
         return DB::table('documents as d')
             ->whereIn('d.classification', $allowedClassifications)
             ->joinSub($ranked, 'source', function (JoinClause $join): void {
                 $join->on('source.document_id', '=', 'd.id')->where('source.source_position', '=', 1);
+            })
+            // A displayed link is insufficient when another parent of the
+            // controlling family is restricted, missing or unauthorized.
+            // Apply this SQL denial before page totals, search and activity.
+            ->whereNotExists(function (Builder $blocked) use (
+                $eligibleLinkIds, $correspondenceTypes, $travelTypes, $transactionTypes
+            ): void {
+                $blocked->selectRaw('1')
+                    ->from('document_links as other_link')
+                    ->whereColumn('other_link.document_id', 'd.id')
+                    ->where(function (Builder $family) use (
+                        $correspondenceTypes, $travelTypes, $transactionTypes
+                    ): void {
+                        $family->where(function (Builder $corr) use ($correspondenceTypes): void {
+                            $corr->where('source.family_priority', 1)
+                                ->whereIn('other_link.linkable_type', $correspondenceTypes);
+                        })->orWhere(function (Builder $travel) use ($travelTypes): void {
+                            $travel->where('source.family_priority', 2)
+                                ->whereIn('other_link.linkable_type', $travelTypes);
+                        })->orWhere(function (Builder $tx) use ($transactionTypes): void {
+                            $tx->where('source.family_priority', 3)
+                                ->whereIn('other_link.linkable_type', $transactionTypes);
+                        });
+                    })
+                    ->whereNotIn('other_link.id', clone $eligibleLinkIds);
             })
             ->leftJoin('users as u', 'u.id', '=', 'd.uploaded_by_user_id')
             ->leftJoin('departments as own', 'own.id', '=', 'd.owner_department_id')
