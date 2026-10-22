@@ -39,7 +39,7 @@ final readonly class CustodyCommand
             }
         }
         foreach ($attributes as $key => $value) {
-            if (! is_string($key) || ! is_string($value) && ! is_int($value) || $key === '' || mb_strlen((string) $value) > 2000) {
+            if (! is_string($key) || ! is_string($value) && ! is_int($value) || $key === '' || strlen((string) $value) > 2000) {
                 throw new InvalidArgumentException('Invalid custody attribute.');
             }
         }
