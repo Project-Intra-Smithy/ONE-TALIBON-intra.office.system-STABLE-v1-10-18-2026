@@ -103,9 +103,10 @@ final class DocumentAccessService
                 'transaction' => [TransactionEvent::class, 'transaction_id'],
             };
 
-            // A family with any link controls precedence, including orphan
-            // links. A denied family cannot fall through to a lower family.
-            return $this->anyAuthorizedParent(
+            // The highest-priority linked family controls the document.
+            // Every parent within that family must be authorized, not merely
+            // the first accessible parent. Orphan event references deny.
+            return $this->allAuthorizedParents(
                 $scope, $ids['direct'], $ids['events'], $eventClass, $eventParent,
             );
         }
@@ -118,28 +119,41 @@ final class DocumentAccessService
      * @param list<int> $events
      * @param class-string $eventClass
      */
-    private function anyAuthorizedParent(
+    private function allAuthorizedParents(
         Builder $scope,
         array $direct,
         array $events,
         string $eventClass,
         string $eventParent,
     ): bool {
-        return $scope->where(function (Builder $parents) use ($direct, $events, $eventClass, $eventParent): void {
-            if ($direct !== []) {
-                $parents->whereIn('id', array_values(array_unique($direct)));
+        $parentIds = array_map('intval', array_values(array_unique($direct)));
+        $eventIds = array_values(array_unique($events));
+
+        if ($eventIds !== []) {
+            $eventParents = $eventClass::query()
+                ->whereIn('id', $eventIds)
+                ->pluck($eventParent, 'id');
+            // Missing or invalid events cannot turn into an allowed parent.
+            if ($eventParents->count() !== count($eventIds)) {
+                return false;
             }
 
-            if ($events !== []) {
-                $eventParents = $eventClass::query()
-                    ->whereIn('id', array_values(array_unique($events)))
-                    ->select($eventParent);
-                if ($direct !== []) {
-                    $parents->orWhereIn('id', $eventParents);
-                } else {
-                    $parents->whereIn('id', $eventParents);
+            foreach ($eventIds as $eventId) {
+                $parentId = $eventParents->get($eventId);
+                if (! is_numeric($parentId) || (int) $parentId <= 0) {
+                    return false;
                 }
+                $parentIds[] = (int) $parentId;
             }
-        })->exists();
+        }
+
+        $parentIds = array_values(array_unique($parentIds));
+        if ($parentIds === []) {
+            return false;
+        }
+
+        // Deny if any of the candidate parents is missing or invisible.
+        return $scope->whereIn('id', $parentIds)
+            ->distinct()->count('id') === count($parentIds);
     }
 }
