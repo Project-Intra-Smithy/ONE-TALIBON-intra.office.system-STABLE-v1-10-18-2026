@@ -18,7 +18,7 @@ final readonly class CustodyRetrievalRequest
                 throw new InvalidArgumentException('Custody retrieval references must be UUIDs.');
             }
         }
-        if (trim($purposeReference) === '' || mb_strlen($purposeReference) > 160) {
+        if (trim($purposeReference) === '' || strlen($purposeReference) > 160) {
             throw new InvalidArgumentException('A bounded retrieval-purpose reference is required.');
         }
     }
