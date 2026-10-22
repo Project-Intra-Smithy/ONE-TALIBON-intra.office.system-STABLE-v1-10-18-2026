@@ -15,7 +15,9 @@ use App\Models\WorkflowTransaction;
 use App\Services\CorrespondenceRoutingService;
 use App\Services\TransactionVisibilityQuery;
 use App\Services\TransactionWorkflowService;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -156,82 +158,71 @@ class CorrespondenceLinkedTransactionParityTest extends TestCase
             ->scope($actor)->whereKey($transaction->id)->exists());
     }
 
-    public function test_multiple_correspondence_links_require_clearance_to_every_source(): void
+    public function test_internal_correspondence_link_preserves_staff_visibility_and_notifications(): void
     {
-        [$restricted, , $router, $target] = $this->fixture();
+        [$internal, , $router, $target] = $this->fixture();
+        $internal->update(['classification' => CorrespondenceClassification::Internal->value]);
         $staff = $this->human('department_staff', $target);
         $head = $this->human('department_head', $target);
+
         $routed = app(CorrespondenceRoutingService::class)->route(
             $router,
-            $restricted,
+            $internal,
             ['target_department_id' => $target->id, 'priority' => 'normal'],
             (string) Str::uuid(),
         );
         $workflow = $routed->fresh('workflowTransaction')->workflowTransaction;
 
-        CorrespondenceRecord::query()->create([
-            'public_id' => (string) Str::uuid(),
-            'external_reference_no' => 'P0A-OPEN-'.Str::upper(Str::random(8)),
-            'source' => 'official_email',
-            'channel' => 'official_email',
-            'sender_name' => 'Synthetic Sender',
-            'subject' => 'Open linked source',
-            'received_at' => now(),
-            'receiving_department_id' => $target->id,
-            'classification' => CorrespondenceClassification::Internal->value,
-            'lifecycle_state' => CorrespondenceLifecycleState::Routed->value,
-            'workflow_transaction_id' => $workflow->id,
-        ]);
-
-        $this->assertFalse(Gate::forUser($staff)->allows('view', $workflow));
-        $this->assertFalse(app(TransactionVisibilityQuery::class)
-            ->scope($staff)->whereKey($workflow->id)->exists());
+        $this->assertSame(1, CorrespondenceRecord::query()
+            ->where('workflow_transaction_id', $workflow->id)->count());
+        $this->assertTrue(Gate::forUser($staff)->allows('view', $workflow));
         $this->assertTrue(Gate::forUser($head)->allows('view', $workflow));
         $this->assertTrue(app(TransactionVisibilityQuery::class)
+            ->scope($staff)->whereKey($workflow->id)->exists());
+        $this->assertTrue(app(TransactionVisibilityQuery::class)
             ->scope($head)->whereKey($workflow->id)->exists());
+
+        $listener = app(NotifyWorkflowTransactionMutation::class);
+        $event = $workflow->events()->firstOrFail();
+        $assign = new \ReflectionMethod($listener, 'notifyAssignedEmployee');
+        $assign->invoke($listener, $workflow, $event, $staff->employee->id);
+
+        $this->assertSame(1, PlatformNotification::query()
+            ->where('user_id', $staff->id)
+            ->where('source_domain', 'transaction')
+            ->where('source_id', $workflow->id)->count());
     }
 
-    public function test_multi_source_notifications_are_denied_regardless_of_link_order_or_legacy_type(): void
+    public function test_restricted_source_blocks_staff_notifications_for_current_and_legacy_types(): void
     {
-        foreach (['internal_first', 'restricted_first'] as $order) {
-            [$original, , $router, $target, $secret] = $this->fixture();
+        foreach (['document_review', 'internal_request'] as $type) {
+            [$restricted, , $router, $target, $secret] = $this->fixture();
             $head = $this->human('department_head', $target);
             $staff = $this->human('department_staff', $target);
 
-            if ($order === 'internal_first') {
-                $original->update(['classification' => CorrespondenceClassification::Internal->value]);
-            }
             $routed = app(CorrespondenceRoutingService::class)->route(
                 $router,
-                $original,
+                $restricted,
                 ['target_department_id' => $target->id, 'priority' => 'normal'],
                 (string) Str::uuid(),
             );
             $workflow = $routed->fresh('workflowTransaction')->workflowTransaction;
 
-            CorrespondenceRecord::query()->create([
-                'public_id' => (string) Str::uuid(),
-                'external_reference_no' => 'SEC03-'.Str::upper(Str::random(10)),
-                'source' => 'official_email',
-                'channel' => 'official_email',
-                'sender_name' => 'Synthetic Sender',
-                'subject' => 'Additional source',
-                'received_at' => now(),
-                'receiving_department_id' => $target->id,
-                'classification' => $order === 'internal_first'
-                    ? CorrespondenceClassification::Restricted->value
-                    : CorrespondenceClassification::Internal->value,
-                'lifecycle_state' => CorrespondenceLifecycleState::Routed->value,
-                'workflow_transaction_id' => $workflow->id,
-            ]);
-
-            // Simulate previously persisted classified titles. The second
-            // order uses a malformed legacy type despite its source linkage.
+            // A persisted legacy type and copied secret must not bypass the
+            // single restricted correspondence record's source clearance.
             $workflow->forceFill([
                 'title' => $secret,
-                'transaction_type' => $order === 'restricted_first'
-                    ? 'internal_request' : 'document_review',
+                'transaction_type' => $type,
             ])->save();
+
+            $this->assertSame(1, CorrespondenceRecord::query()
+                ->where('workflow_transaction_id', $workflow->id)->count());
+            $this->assertFalse(Gate::forUser($staff)->allows('view', $workflow->fresh()));
+            $this->assertFalse(app(TransactionVisibilityQuery::class)
+                ->scope($staff)->whereKey($workflow->id)->exists());
+            $this->assertTrue(Gate::forUser($head)->allows('view', $workflow->fresh()));
+            $this->assertTrue(app(TransactionVisibilityQuery::class)
+                ->scope($head)->whereKey($workflow->id)->exists());
 
             $listener = app(NotifyWorkflowTransactionMutation::class);
             $event = $workflow->events()->firstOrFail();
@@ -269,6 +260,43 @@ class CorrespondenceLinkedTransactionParityTest extends TestCase
                 ->where('source_domain', 'transaction')
                 ->where('source_id', $workflow->id)->count());
         }
+    }
+
+    public function test_database_rejects_second_correspondence_link_to_one_workflow_transaction(): void
+    {
+        [$restricted, , $router, $target] = $this->fixture();
+        $routed = app(CorrespondenceRoutingService::class)->route(
+            $router,
+            $restricted,
+            ['target_department_id' => $target->id, 'priority' => 'normal'],
+            (string) Str::uuid(),
+        );
+        $workflow = $routed->fresh('workflowTransaction')->workflowTransaction;
+
+        // Both records are individually valid. Only their shared workflow
+        // transaction ID must violate the database's one-to-one constraint.
+        [$second] = $this->fixture();
+        $this->assertNull($second->workflow_transaction_id);
+        $this->assertSame(1, CorrespondenceRecord::query()
+            ->where('workflow_transaction_id', $workflow->id)->count());
+
+        try {
+            // The nested transaction rolls back to a savepoint, allowing us
+            // to assert database state after PostgreSQL rejects the update.
+            DB::transaction(function () use ($second, $workflow): void {
+                $second->forceFill(['workflow_transaction_id' => $workflow->id])->save();
+            });
+            $this->fail('A second correspondence record unexpectedly linked to the same workflow.');
+        } catch (QueryException $exception) {
+            $this->assertSame('23505', $exception->errorInfo[0] ?? null);
+        }
+
+        $this->assertDatabaseHas('correspondence_records', [
+            'id' => $second->id,
+            'workflow_transaction_id' => null,
+        ]);
+        $this->assertSame(1, CorrespondenceRecord::query()
+            ->where('workflow_transaction_id', $workflow->id)->count());
     }
 
     public function test_unlinked_ordinary_request_keeps_office_notification_delivery(): void
