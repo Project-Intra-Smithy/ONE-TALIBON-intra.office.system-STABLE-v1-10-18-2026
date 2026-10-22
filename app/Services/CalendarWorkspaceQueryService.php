@@ -87,7 +87,7 @@ final class CalendarWorkspaceQueryService
             ->orderBy('starts_at')
             ->orderBy('id')
             ->get()
-            ->map(fn (CalendarEvent $event): array => $this->project($event, $user->id, $departmentId, $timezone))
+            ->map(fn (CalendarEvent $event): array => $this->project($event, (int) $current['user_id'], $departmentId, $timezone, $current['role']))
             ->values();
 
         return [
@@ -136,7 +136,7 @@ final class CalendarWorkspaceQueryService
         return [$start, $start->addDays(41)->endOfDay()];
     }
 
-    private function project(CalendarEvent $event, int $userId, ?int $departmentId, string $timezone): array
+    private function project(CalendarEvent $event, int $userId, ?int $departmentId, string $timezone, ?string $role): array
     {
         $start = CarbonImmutable::instance($event->starts_at)->setTimezone($timezone);
         $end = $event->ends_at ? CarbonImmutable::instance($event->ends_at)->setTimezone($timezone) : null;
@@ -170,6 +170,18 @@ final class CalendarWorkspaceQueryService
                 'short_name' => $event->department->short_name,
             ] : null,
             'calendar_bucket' => $bucket,
+            'can_manage' => $event->event_type === 'manual_event'
+                && $event->source_domain === 'calendar_manual'
+                && $event->source_type === null && $event->source_id === null
+                && $event->status === 'scheduled'
+                && (int) $event->created_by_user_id === $userId
+                && (
+                    ($event->scope === 'personal' && (int) $event->user_id === $userId
+                        && $event->department_id === null)
+                    || ($event->scope === 'department' && $role === 'department_head'
+                        && $event->user_id === null
+                        && (int) $event->department_id === (int) $departmentId)
+                ),
         ];
     }
 }
