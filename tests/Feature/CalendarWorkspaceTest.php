@@ -79,10 +79,21 @@ final class CalendarWorkspaceTest extends TestCase
         $staff = $this->human($office);
         $at = CarbonImmutable::parse('2026-09-25 09:00', 'Asia/Manila');
         $legacy = $this->event('legacy-restricted-deadline', $at, department: $office);
+        // Source domain is NOT NULL in the real PostgreSQL schema. A legacy
+        // unrelated-domain tuple is malformed yet persists legally.
         $legacy->update([
             'event_type' => 'workflow_deadline',
             'title' => 'RESTRICTED-LEGACY-CANARY',
-            'source_domain' => null,
+            'source_domain' => 'calendar_test',
+            'source_type' => null,
+            'source_id' => null,
+            'action_url' => null,
+        ]);
+        $malformed = $this->event('invalid-linked-deadline', $at->addMinutes(30), department: $office);
+        $malformed->update([
+            'event_type' => 'workflow_deadline',
+            'title' => 'RESTRICTED-MALFORMED-CANARY',
+            'source_domain' => 'transaction',
             'source_type' => null,
             'source_id' => null,
             'action_url' => null,
@@ -93,9 +104,11 @@ final class CalendarWorkspaceTest extends TestCase
         $keys = collect($query->workspace($staff, 'day', '2026-09-25')['events'])
             ->pluck('event_key')->all();
         $this->assertNotContains('legacy-restricted-deadline', $keys);
+        $this->assertNotContains('invalid-linked-deadline', $keys);
         $this->get('/calendar?view=day&date=2026-09-25')
             ->assertOk()
-            ->assertDontSee('RESTRICTED-LEGACY-CANARY');
+            ->assertDontSee('RESTRICTED-LEGACY-CANARY')
+            ->assertDontSee('RESTRICTED-MALFORMED-CANARY');
 
         $ordinary = $this->event('ordinary-calendar-visible', $at->addHour(), department: $office);
         $transaction = WorkflowTransaction::query()->create([
@@ -122,6 +135,72 @@ final class CalendarWorkspaceTest extends TestCase
         $this->assertContains($ordinary->event_key, $keys);
         $this->assertContains($deadline->event_key, $keys);
         $this->assertNotContains($legacy->event_key, $keys);
+        $this->assertNotContains($malformed->event_key, $keys);
+    }
+
+    public function test_p0a_deadline_denial_coexists_with_personal_calendar_crud_projection(): void
+    {
+        $office = $this->department('PARITY');
+        $actor = $this->human($office);
+        $at = CarbonImmutable::parse('2026-09-25 09:00', 'Asia/Manila');
+
+        $deadline = $this->event('classified-legacy-parity', $at, department: $office);
+        $deadline->update([
+            'event_type' => 'workflow_deadline',
+            'title' => 'CLASSIFIED-PARITY-CANARY',
+            'source_domain' => 'calendar_test',
+            'source_type' => null,
+            'source_id' => null,
+            'action_url' => null,
+        ]);
+
+        $manual = CalendarEvent::query()->create([
+            'event_key' => 'manual-parity-'.Str::uuid(),
+            'event_type' => 'manual_event',
+            'title' => 'Authorized personal calendar entry',
+            'scope' => 'personal',
+            'user_id' => $actor->id,
+            'department_id' => null,
+            'source_domain' => 'calendar_manual',
+            'source_type' => null,
+            'source_id' => null,
+            'priority' => 'normal',
+            'starts_at' => $at->addHour(),
+            'ends_at' => $at->addHours(2),
+            'all_day' => false,
+            'action_url' => null,
+            'status' => 'scheduled',
+            'created_by_user_id' => $actor->id,
+            'manual_version' => 1,
+        ]);
+
+        $this->actingAs($actor);
+        $events = collect(app(CalendarWorkspaceQueryService::class)
+            ->workspace($actor, 'day', '2026-09-25')['events']);
+        $this->assertNotContains($deadline->event_key, $events->pluck('event_key')->all());
+
+        $entry = $events->firstWhere('event_key', $manual->event_key);
+        $this->assertNotNull($entry);
+        $this->assertSame('personal', $entry['calendar_bucket']);
+        $this->assertTrue($entry['can_manage']);
+        $this->assertSame(1, $entry['manual_version']);
+        $this->assertSame('Authorized personal calendar entry', $entry['title']);
+
+        $this->get('/calendar?view=day&date=2026-09-25')
+            ->assertOk()
+            ->assertDontSee('CLASSIFIED-PARITY-CANARY');
+        $this->put('/calendar/events/'.$manual->id, [
+            'scope' => 'personal',
+            'title' => 'Updated authorized entry',
+            'priority' => 'normal',
+            'starts_at' => '2026-09-25T10:00:00+08:00',
+            'ends_at' => '2026-09-25T11:00:00+08:00',
+            'all_day' => false,
+            'expected_revision' => 1,
+        ])->assertRedirect();
+        $this->assertSame('Updated authorized entry', $manual->fresh()->title);
+        $this->assertSame(2, $manual->fresh()->manual_version);
+        $this->assertSame('CLASSIFIED-PARITY-CANARY', $deadline->fresh()->title);
     }
 
     private function event(string $key, CarbonImmutable $start, ?CarbonImmutable $end = null, bool $allDay = false, string $scope = 'department', ?Department $department = null, ?User $user = null): CalendarEvent
