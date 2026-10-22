@@ -54,24 +54,19 @@ final class TransactionVisibilityQuery
             });
         }
 
-        // Classed correspondence is the authority for linked Work Request reads.
-        // Exclude unlinked document_review records, including the synchronous
-        // creation window, and hide legacy links unless their source is visible.
-        // This filter protects work queues, Records, reports and notification feeds.
-        $allLinked = CorrespondenceRecord::query()
-            ->whereNotNull('workflow_transaction_id')
-            ->select('workflow_transaction_id');
-        $readableLinked = $this->correspondenceAccess
+        // Preserve legitimate standalone document_review Work Requests.
+        // A linked transaction is excluded if ANY originating Correspondence
+        // record is outside the actor's source-specific authorization scope.
+        // This also prevents one visible child from overriding a restricted one.
+        $readableSourceIds = $this->correspondenceAccess
             ->scopeVisibleTo(CorrespondenceRecord::query(), $actor)
+            ->select('id');
+        $deniedTransactions = CorrespondenceRecord::query()
             ->whereNotNull('workflow_transaction_id')
+            ->whereNotIn('id', $readableSourceIds)
             ->select('workflow_transaction_id');
 
-        return $query->where(function (Builder $visible) use ($allLinked, $readableLinked): void {
-            $visible->where(function (Builder $standalone) use ($allLinked): void {
-                $standalone->where('transactions.transaction_type', '!=', 'document_review')
-                    ->whereNotIn('transactions.id', $allLinked);
-            })->orWhereIn('transactions.id', $readableLinked);
-        });
+        return $query->whereNotIn('transactions.id', $deniedTransactions);
     }
 
     public function canViewAll(User $actor): bool
