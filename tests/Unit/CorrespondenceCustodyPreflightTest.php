@@ -77,6 +77,7 @@ final class CorrespondenceCustodyPreflightTest extends TestCase
             [
                 'disposition_reference' => 'case-1',
                 'custody_receipt_reference' => 'receipt-1',
+                'custody_receipt_document_id' => 1,
                 'custody_location_reference' => 'vault',
                 'retention_authority_reference' => 'pending',
             ],
@@ -84,6 +85,36 @@ final class CorrespondenceCustodyPreflightTest extends TestCase
         (new CustodyPreflight())->assertValid(
             $cmd,
             $this->snapshot(state: State::Released, milestones: ['action_outcome']),
+        );
+    }
+
+    public function test_response_content_cannot_be_its_own_dispatch_receipt(): void
+    {
+        $this->expectException(ValidationException::class);
+        (new CustodyPreflight())->assertValid(
+            $this->command(CustodyOperation::Dispatched, [
+                'response_document_id' => 1,
+                'dispatch_evidence_document_id' => 1,
+                'dispatch_reference' => 'synthetic-out',
+                'destination_reference' => 'synthetic-target',
+                'channel' => 'physical',
+            ]),
+            $this->snapshot(milestones: ['response_registered', 'issuance_attested']),
+        );
+    }
+
+    public function test_dispatch_requires_separately_identified_proof_document(): void
+    {
+        $this->expectException(ValidationException::class);
+        (new CustodyPreflight())->assertValid(
+            $this->command(CustodyOperation::Dispatched, [
+                'response_document_id' => 1,
+                'dispatch_evidence_document_id' => 55,
+                'dispatch_reference' => 'synthetic-out',
+                'destination_reference' => 'synthetic-target',
+                'channel' => 'physical',
+            ]),
+            $this->snapshot(milestones: ['response_registered', 'issuance_attested']),
         );
     }
 
@@ -158,7 +189,7 @@ final class CorrespondenceCustodyPreflightTest extends TestCase
         $this->expectException(ConflictHttpException::class);
         (new CustodyPreflight())->assertValid(
             $this->command(CustodyOperation::Archived, [
-                'custody_event_id' => 11, 'archive_location_reference' => 'protected-vault',
+                'custody_event_id' => 11, 'archive_evidence_document_id' => 1, 'archive_location_reference' => 'protected-vault',
                 'retention_authority_reference' => 'not-approved',
             ]),
             $this->snapshot(),
@@ -170,7 +201,7 @@ final class CorrespondenceCustodyPreflightTest extends TestCase
         $this->expectException(ConflictHttpException::class);
         (new CustodyPreflight())->assertValid(
             $this->command(CustodyOperation::IssuanceAttested, [
-                'response_document_id' => 5, 'authority_reference' => 'not-approved',
+                'response_document_id' => 5, 'signature_evidence_document_id' => 1, 'authority_reference' => 'not-approved',
                 'signed_on' => '2026-10-22',
             ]),
             $this->snapshot(),
