@@ -52,8 +52,26 @@ final class TaskCoreAccess
      */
     public function visibleIndividualTasks(User $claimedActor): Builder
     {
+        return $this->individualTasksForActor($this->verifiedActor($claimedActor));
+    }
+
+    /**
+     * Verify once and return both the fresh actor and its owner-only Task scope.
+     * Common Work can reuse this proof for its UNION within this operation;
+     * ordinary Task entrypoints keep independent live verification.
+     *
+     * @return array{User, Builder<Task>}
+     */
+    public function verifiedIndividualTasks(User $claimedActor): array
+    {
         $actor = $this->verifiedActor($claimedActor);
 
+        return [$actor, $this->individualTasksForActor($actor)];
+    }
+
+    /** @return Builder<Task> */
+    private function individualTasksForActor(User $actor): Builder
+    {
         return Task::query()
             ->where('task_kind', 'individual')
             ->whereNull('assigned_to_user_id')
