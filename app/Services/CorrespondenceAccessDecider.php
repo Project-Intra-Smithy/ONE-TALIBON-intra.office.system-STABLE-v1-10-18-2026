@@ -234,6 +234,17 @@ class CorrespondenceAccessDecider
         return $this->classificationValuesForActiveActor($actor);
     }
 
+    /**
+     * Use clearance from this operation's already verified, session-bound actor.
+     * Ordinary public clearance lookups keep independent live verification.
+     *
+     * @return array<int, string>
+     */
+    public function visibleClassificationValuesForVerifiedActor(VerifiedMunicipalActor $verified): array
+    {
+        return $this->classificationValuesForActiveActor($verified->user());
+    }
+
     /** @return array<int, string> */
     private function classificationValuesForActiveActor(User $actor): array
     {
