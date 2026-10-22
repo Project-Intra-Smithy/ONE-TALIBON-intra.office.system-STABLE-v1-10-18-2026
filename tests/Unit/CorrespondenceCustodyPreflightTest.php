@@ -43,6 +43,50 @@ final class CorrespondenceCustodyPreflightTest extends TestCase
         $this->assertNotSame($first->digest(), $changed->digest());
     }
 
+    public function test_response_reference_must_identify_the_submitted_document_proof(): void
+    {
+        $this->expectException(ValidationException::class);
+        (new CustodyPreflight())->assertValid(
+            $this->command(CustodyOperation::ResponseRegistered, [
+                'response_document_id' => 99, 'response_version' => 1,
+                'response_sha256' => str_repeat('a', 64),
+            ]),
+            $this->snapshot(),
+        );
+    }
+
+    public function test_response_hash_or_version_cannot_be_swapped(): void
+    {
+        $this->expectException(ValidationException::class);
+        (new CustodyPreflight())->assertValid(
+            $this->command(CustodyOperation::ResponseRegistered, [
+                'response_document_id' => 1, 'response_version' => 2,
+                'response_sha256' => str_repeat('a', 64),
+            ]),
+            $this->snapshot(),
+        );
+    }
+
+    public function test_released_correspondence_cannot_enter_custody_without_delivery_outcome(): void
+    {
+        $this->expectException(ConflictHttpException::class);
+        $cmd = new CustodyCommand(
+            CustodyOperation::CustodyAccepted, self::RECORD, self::KEY, self::CORRELATION,
+            State::Released, 12,
+            [new CustodyEvidenceRef(1, 1, str_repeat('a', 64), Level::Restricted)],
+            [
+                'disposition_reference' => 'case-1',
+                'custody_receipt_reference' => 'receipt-1',
+                'custody_location_reference' => 'vault',
+                'retention_authority_reference' => 'pending',
+            ],
+        );
+        (new CustodyPreflight())->assertValid(
+            $cmd,
+            $this->snapshot(state: State::Released, milestones: ['action_outcome']),
+        );
+    }
+
     public function test_stale_revision_is_rejected(): void
     {
         $this->expectException(ConflictHttpException::class);
