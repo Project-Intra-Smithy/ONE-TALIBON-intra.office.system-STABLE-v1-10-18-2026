@@ -30,6 +30,11 @@ final class GoogleOidcFlow
         ]);
     }
 
+    public function cancel(Request $request): void
+    {
+        $request->session()->forget(self::SESSION_KEY);
+    }
+
     /** @return array{purpose:string,user_id:int|null} */
     public function consume(Request $request): array
     {
