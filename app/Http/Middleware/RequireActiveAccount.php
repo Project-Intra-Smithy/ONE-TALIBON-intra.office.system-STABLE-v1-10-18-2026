@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\User;
 use App\Services\AuditLogger;
+use App\Services\EmploymentAccountEligibility;
 use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class RequireActiveAccount
 {
-    public function __construct(private readonly AuditLogger $audit)
+    public function __construct(private readonly AuditLogger $audit, private readonly EmploymentAccountEligibility $eligibility)
     {
     }
 
@@ -20,7 +21,7 @@ final class RequireActiveAccount
     {
         $user = $request->user();
 
-        if (! $user || $user->is_active) {
+        if (! $user || $this->eligibility->allowed($user)) {
             return $next($request);
         }
 
