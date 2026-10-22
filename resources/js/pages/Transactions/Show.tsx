@@ -235,7 +235,6 @@ export default function Show({
                 )}
 
                 {((allowedActions.length > 0 && liveState === 'current') || (permissions.canTransition || permissions.canMayorDecision || permissions.canAssign)) && (
-
                     <section className="rounded-2xl border border-blue-100 bg-blue-50/60 p-4 sm:rounded-3xl sm:p-6 dark:bg-blue-950/40">
                         <div className="flex items-center gap-2 text-sm font-bold text-slate-950 sm:text-base dark:text-slate-100"><Send size={16} className="sm:h-[18px] sm:w-[18px]" /> Workflow actions</div>
                         {allowedActions.length === 0 && <p role="status" className="mt-3 text-sm text-amber-900 dark:text-amber-200">Actions are unavailable until the server confirms the permitted transitions. Refresh this transaction to check again.</p>}
@@ -263,10 +262,10 @@ export default function Show({
                                 {mayAct('mark_review') && <button disabled={form.processing} onClick={() => transition('mark_review')} className="rounded-lg border border-blue-200 bg-white px-3 py-2 text-[12px] font-semibold text-blue-900 disabled:opacity-50 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm dark:bg-[#142236]"><Clock3 className="mr-1.5 inline" size={14} />Mark for Review</button>}
                                 {mayAct('send_to_mayor') && <button disabled={form.processing} onClick={() => transition('send_to_mayor')} className="rounded-lg bg-[#0b2852] px-3 py-2 text-[12px] font-semibold text-white disabled:opacity-50 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm">Send to Mayor's Office</button>}
                                 {mayAct('return_origin') && <button disabled={form.processing} onClick={() => transition('return_origin')} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-[12px] font-semibold text-slate-700 disabled:opacity-50 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm dark:bg-[#142236] dark:text-slate-300 dark:border-slate-700"><RotateCcw className="mr-1.5 inline" size={14} />Return to Origin</button>}
-                                <div className="flex min-w-0 basis-full gap-2 sm:min-w-[280px] sm:flex-1 sm:basis-auto">
+                                {mayAct('forward') && <div className="flex min-w-0 basis-full gap-2 sm:min-w-[280px] sm:flex-1 sm:basis-auto">
                                     <select value={form.data.target_department_id} onChange={(e) => form.setData('target_department_id', e.target.value ? Number(e.target.value) : '')} className="min-w-0 flex-1 rounded-lg border border-blue-200 bg-white px-2.5 py-2 text-[12px] sm:rounded-xl sm:px-3 sm:py-2.5 sm:text-sm dark:bg-[#142236]"><option value="">Forward to department…</option>{departments.filter((d) => d.id !== tx.current_department.id).map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}</select>
-                                    {mayAct('forward') && <button disabled={!form.data.target_department_id || form.processing || !mayAct('forward')} onClick={() => transition('forward')} className="rounded-lg border border-blue-200 bg-white px-3 py-2 text-[12px] font-semibold text-blue-900 disabled:opacity-40 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm dark:bg-[#142236]">Forward</button>}
-                                </div>
+                                    <button disabled={!form.data.target_department_id || form.processing || !mayAct('forward')} onClick={() => transition('forward')} className="rounded-lg border border-blue-200 bg-white px-3 py-2 text-[12px] font-semibold text-blue-900 disabled:opacity-40 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm dark:bg-[#142236]">Forward</button>
+                                </div>}
                             </div>
                         )}
 
