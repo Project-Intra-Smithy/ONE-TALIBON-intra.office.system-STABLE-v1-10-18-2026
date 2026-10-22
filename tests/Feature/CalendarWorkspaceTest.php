@@ -82,7 +82,7 @@ final class CalendarWorkspaceTest extends TestCase
         $legacy->update([
             'event_type' => 'workflow_deadline',
             'title' => 'RESTRICTED-LEGACY-CANARY',
-            'source_domain' => null,
+            'source_domain' => 'work_request',
             'source_type' => null,
             'source_id' => null,
             'action_url' => null,
