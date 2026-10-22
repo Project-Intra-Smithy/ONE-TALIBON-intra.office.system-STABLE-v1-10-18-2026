@@ -100,8 +100,9 @@ final class CorrespondenceCustodyService
                 ->where('operation_key', $command->operationKey)
                 ->first();
             if ($prior !== null) {
-                if (! hash_equals($prior->payload_digest, $command->digest())
-                    || $prior->operation_type !== $command->operation->value) {
+                if ((int) $prior->actor_user_id !== (int) $verified->id ||
+                    ! hash_equals($prior->payload_digest, $command->digest()) ||
+                    $prior->operation_type !== $command->operation->value) {
                     throw new ConflictHttpException('Custody idempotency key already belongs to a different operation.');
                 }
 
