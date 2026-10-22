@@ -29,14 +29,14 @@ final class CorrespondenceCustodyLifecycleTest extends TestCase
         $service = app(CorrespondenceCustodyService::class);
         $actor = new User();
         foreach ([
-            CustodyOperation::ActionOutcome => 'recordActionOutcome',
-            CustodyOperation::ResponseRegistered => 'registerResponse',
-            CustodyOperation::IssuanceAttested => 'attestIssuance',
-            CustodyOperation::Dispatched => 'recordDispatch',
-            CustodyOperation::DeliveryRecorded => 'recordDelivery',
-            CustodyOperation::CustodyAccepted => 'acceptCustody',
-            CustodyOperation::Archived => 'archive',
-        ] as $operation => $method) {
+            [CustodyOperation::ActionOutcome, 'recordActionOutcome'],
+            [CustodyOperation::ResponseRegistered, 'registerResponse'],
+            [CustodyOperation::IssuanceAttested, 'attestIssuance'],
+            [CustodyOperation::Dispatched, 'recordDispatch'],
+            [CustodyOperation::DeliveryRecorded, 'recordDelivery'],
+            [CustodyOperation::CustodyAccepted, 'acceptCustody'],
+            [CustodyOperation::Archived, 'archive'],
+        ] as [$operation, $method]) {
             try {
                 $service->{$method}($actor, $this->command($operation));
                 $this->fail($method.' unexpectedly enabled official custody.');
