@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Domain\Identity\VerifiedMunicipalActor;
 use App\Models\User;
 
 final class DashboardWorkspaceQuery
@@ -17,21 +18,25 @@ final class DashboardWorkspaceQuery
 
     public function workspace(User $actor): array
     {
+        // One fresh eligibility and session proof per dashboard operation.
+        // No actor proof is retained on this service between requests.
+        $verified = VerifiedMunicipalActor::forProtectedSource($actor);
+        $actor = $verified->user();
         $experience = $this->experiences->resolve($actor);
 
         return match ($experience['key']) {
             'system_administration' => $this->systemWorkspace($actor, $experience),
-            'executive_oversight' => $this->executiveWorkspace($actor, $experience),
-            'department_head' => $this->departmentHeadWorkspace($actor, $experience),
-            default => $this->employeeWorkspace($actor, $experience),
+            'executive_oversight' => $this->executiveWorkspace($actor, $experience, $verified),
+            'department_head' => $this->departmentHeadWorkspace($actor, $experience, $verified),
+            default => $this->employeeWorkspace($actor, $experience, $verified),
         };
     }
 
     /** @param array<string, mixed> $experience */
-    private function employeeWorkspace(User $actor, array $experience): array
+    private function employeeWorkspace(User $actor, array $experience, VerifiedMunicipalActor $verified): array
     {
-        $personal = $this->personal->workspace($actor);
-        $correspondence = $this->correspondence->workspace($actor);
+        $personal = $this->personal->workspaceForVerifiedActor($verified);
+        $correspondence = $this->correspondence->workspaceForVerifiedActor($verified);
 
         return $this->operationalProps(
             $experience,
@@ -42,11 +47,11 @@ final class DashboardWorkspaceQuery
     }
 
     /** @param array<string, mixed> $experience */
-    private function departmentHeadWorkspace(User $actor, array $experience): array
+    private function departmentHeadWorkspace(User $actor, array $experience, VerifiedMunicipalActor $verified): array
     {
-        $personal = $this->personal->workspace($actor);
-        $office = $this->office->workspace($actor);
-        $correspondence = $this->correspondence->workspace($actor);
+        $personal = $this->personal->workspaceForVerifiedActor($verified);
+        $office = $this->office->workspaceForVerifiedActor($verified);
+        $correspondence = $this->correspondence->workspaceForVerifiedActor($verified);
         $props = $this->operationalProps(
             $experience,
             [
@@ -62,11 +67,11 @@ final class DashboardWorkspaceQuery
     }
 
     /** @param array<string, mixed> $experience */
-    private function executiveWorkspace(User $actor, array $experience): array
+    private function executiveWorkspace(User $actor, array $experience, VerifiedMunicipalActor $verified): array
     {
-        $personal = $this->personal->workspace($actor);
+        $personal = $this->personal->workspaceForVerifiedActor($verified);
         $executive = $this->executive->workspace($actor);
-        $correspondence = $this->correspondence->workspace($actor);
+        $correspondence = $this->correspondence->workspaceForVerifiedActor($verified);
         $props = $this->operationalProps(
             $experience,
             [
