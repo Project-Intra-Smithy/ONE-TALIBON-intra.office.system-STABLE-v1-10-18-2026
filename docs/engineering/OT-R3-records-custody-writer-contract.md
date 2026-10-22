@@ -18,7 +18,7 @@ Base SHA: e39c7ecc6b4b7ae6538f545a48dff57625edc478
 3. A proof must be linked to the Correspondence record and its version must be independently established in Document.metadata.version, its checksum and classification equal the referenced immutable proof; absent version means denial, not fallback. Writer 02 ingestion/versioning must define this metadata contract before any positive path.
 4. Source and linked-transaction classification parity, including DocumentAccessService, are Slot01 P0-A dependencies; canView alone cannot grant custody authority.
 5. A linked Work Request approval or completion, review checkbox, 'File' label, catalog upload, or automatic notification never releases correspondence or transfers Records custody. No execution route is mounted. No destruction feature is provided.
-6. Requested archival retrieval provenance will require a separately authorized read service that verifies classified linked record and logs access. This writer does not create open retrieval routes or claim a records retention schedule.
+6. An additional unmounted `CorrespondenceCustodyRetrievalService::retrieve(User, CustodyRetrievalRequest)` now provides a denied retrieval seam with future fresh actor/classification recheck and append-only retrieval event provenance. No read endpoint is activated. This does not establish a Records retention schedule or municipal retrieval permission.
 7. Testing: Laravel negative tests require an isolated repo runner; no PG16 acceptance is implied by source tests or pure preflight checks. Main, Codex, frontend, G1/G2, deployed UAT and preserved databases must remain untouched.
 
 ## Future integration (not done)
