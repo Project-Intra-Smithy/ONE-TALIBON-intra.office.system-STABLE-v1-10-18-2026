@@ -56,6 +56,7 @@ type LivePayload = {
     };
     accountability: Accountability;
     permissions: Permissions;
+    allowed_actions?: string[];
     assignableEmployees: Employee[];
     events: Event[];
 };
@@ -80,6 +81,7 @@ export default function Show({
     assignableEmployees: initialAssignableEmployees,
     accountability: initialAccountability,
     transactionPermissions: initialPermissions,
+    allowed_actions: initialAllowedActions,
     evidence,
 }: {
     transaction: Tx;
@@ -87,12 +89,19 @@ export default function Show({
     assignableEmployees: Employee[];
     accountability: Accountability;
     transactionPermissions: Permissions;
+    allowed_actions?: string[];
     evidence: EvidencePayload;
 }) {
     const [tx, setTx] = useState(initialTx);
     const [assignableEmployees, setAssignableEmployees] = useState(initialAssignableEmployees);
     const [accountability, setAccountability] = useState(initialAccountability);
     const [permissions, setPermissions] = useState(initialPermissions);
+    // Fail closed until the authoritative server action projection is supplied.
+    const [allowedActions, setAllowedActions] = useState<string[]>(
+        Array.isArray(initialAllowedActions) ? initialAllowedActions : [],
+    );
+    const [submissionError, setSubmissionError] = useState('');
+    const submissionLock = useRef(false);
     const [liveState, setLiveState] = useState<'checking' | 'current' | 'stale' | 'expired'>('checking');
     const latestEventId = useRef(initialTx.events.reduce((latest, event) => Math.max(latest, event.id), 0));
     const form = useForm<WorkflowForm>({
@@ -108,9 +117,12 @@ export default function Show({
         setAssignableEmployees(initialAssignableEmployees);
         setAccountability(initialAccountability);
         setPermissions(initialPermissions);
+        setAllowedActions(Array.isArray(initialAllowedActions) ? initialAllowedActions : []);
+        setSubmissionError('');
+        submissionLock.current = false;
         setLiveState('checking');
         latestEventId.current = initialTx.events.reduce((latest, event) => Math.max(latest, event.id), 0);
-    }, [initialTx, initialAssignableEmployees, initialAccountability, initialPermissions]);
+    }, [initialTx, initialAssignableEmployees, initialAccountability, initialPermissions, initialAllowedActions]);
 
     useVisiblePolling(async (signal) => {
         const response = await fetch(`/transactions/${tx.id}/live?after_event_id=${latestEventId.current}`, {
@@ -119,13 +131,13 @@ export default function Show({
             signal,
         });
 
-        if ([401, 403, 419].includes(response.status)) { setLiveState('expired'); return; }
-        if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) { setLiveState('stale'); return; }
+        if ([401, 403, 419].includes(response.status)) { setAllowedActions([]); setLiveState('expired'); return; }
+        if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) { setAllowedActions([]); setLiveState('stale'); return; }
 
         let payload: LivePayload;
         try { payload = await response.json() as LivePayload; }
-        catch { setLiveState('stale'); return; }
-        if (!Array.isArray(payload?.events) || !payload.transaction || !payload.permissions || !Array.isArray(payload.assignableEmployees)) { setLiveState('stale'); return; }
+        catch { setAllowedActions([]); setLiveState('stale'); return; }
+        if (!Array.isArray(payload?.events) || !payload.transaction || !payload.permissions || !Array.isArray(payload.assignableEmployees)) { setAllowedActions([]); setLiveState('stale'); return; }
         if (payload.events.length > 0) {
             latestEventId.current = Math.max(latestEventId.current, ...payload.events.map((event) => event.id));
         }
@@ -147,20 +159,36 @@ export default function Show({
         });
         setAssignableEmployees(payload.assignableEmployees);
         setAccountability(payload.accountability);
+        // Do not reconstruct permission from legacy broad booleans or stale local status.
+        setAllowedActions(Array.isArray(payload.allowed_actions) ? payload.allowed_actions : []);
         setPermissions(payload.permissions);
         setLiveState('current');
-    }, 4000, !form.processing, () => setLiveState('stale'));
+    }, 4000, !form.processing, () => { setAllowedActions([]); setLiveState('stale'); });
 
     useEffect(() => {
         form.setData('assigned_employee_id', tx.assigned_employee?.id ?? '');
     }, [tx.assigned_employee?.id]);
 
+    const mayAct = (action: string) => liveState === 'current' && allowedActions.includes(action);
     const transition = (action: string) => {
+        if (submissionLock.current || form.processing || !mayAct(action)) return;
+        submissionLock.current = true;
+        setSubmissionError('');
         form.transform((data) => ({ ...data, action }));
         form.post(`/transactions/${tx.id}/transition`, {
             preserveScroll: true,
             forceFormData: true,
-            onSuccess: () => form.reset('remarks', 'evidence'),
+            onSuccess: () => {
+                setAllowedActions([]);
+                setLiveState('checking');
+                form.reset('remarks', 'evidence');
+            },
+            onError: () => {
+                setAllowedActions([]);
+                setLiveState('stale');
+                setSubmissionError('Action not accepted. Review the error below and refresh the transaction before trying again.');
+            },
+            onFinish: () => { submissionLock.current = false; },
         });
     };
 
@@ -206,41 +234,46 @@ export default function Show({
                     </section>
                 )}
 
-                {(permissions.canTransition || permissions.canMayorDecision) && (
+                {((allowedActions.length > 0 && liveState === 'current') || (permissions.canTransition || permissions.canMayorDecision || permissions.canAssign)) && (
+
                     <section className="rounded-2xl border border-blue-100 bg-blue-50/60 p-4 sm:rounded-3xl sm:p-6 dark:bg-blue-950/40">
                         <div className="flex items-center gap-2 text-sm font-bold text-slate-950 sm:text-base dark:text-slate-100"><Send size={16} className="sm:h-[18px] sm:w-[18px]" /> Workflow actions</div>
+                        {allowedActions.length === 0 && <p role="status" className="mt-3 text-sm text-amber-900 dark:text-amber-200">Actions are unavailable until the server confirms the permitted transitions. Refresh this transaction to check again.</p>}
+                        {submissionError && <p role="alert" className="mt-2 text-sm text-rose-800 dark:text-rose-300">{submissionError}</p>}
+                        {Object.entries(form.errors).map(([field, message]) => message && <p key={field} role="alert" className="mt-1 text-sm text-rose-800 dark:text-rose-300">{field}: {message}</p>)}
+                        {(liveState === 'stale' || liveState === 'expired') && <Link href={`/transactions/${tx.id}`} className="mt-2 inline-block rounded-lg border border-slate-400 px-3 py-2 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2">Refresh transaction</Link>}
                         <textarea value={form.data.remarks} onChange={(e) => form.setData('remarks', e.target.value)} rows={2} className="mt-3 w-full rounded-xl border border-blue-200 bg-white px-3 py-2.5 text-[12px] sm:mt-4 sm:px-4 sm:py-3 sm:text-sm dark:bg-[#142236]" placeholder="Review note / routing remarks" />
                         <div className="mt-3">
                             <EvidenceFields files={form.data.evidence} onChange={(files) => form.setData('evidence', files)} errors={form.errors as Record<string, string | undefined>} disabled={form.processing} label="Evidence for this workflow action" />
                         </div>
 
-                        {permissions.canAssign && (
+                        {mayAct('assign') && (
                             <div className="mt-3 rounded-xl border border-blue-100 bg-white p-3 sm:mt-4 sm:p-4 dark:bg-[#142236]">
                                 <div className="flex items-center gap-2 text-[11px] font-bold text-slate-800 sm:text-sm dark:text-slate-100"><UserRoundCheck size={15} /> Assign responsible employee</div>
                                 <div className="mt-2 flex gap-2">
                                     <select value={form.data.assigned_employee_id} onChange={(e) => form.setData('assigned_employee_id', e.target.value ? Number(e.target.value) : '')} className="min-w-0 flex-1 rounded-lg border border-slate-300 bg-white px-2.5 py-2 text-[11px] sm:rounded-xl sm:px-3 sm:py-2.5 sm:text-sm dark:bg-[#142236] dark:border-slate-700"><option value="">Choose employee…</option>{assignableEmployees.map((employee) => <option key={employee.id} value={employee.id}>{employee.full_name || employee.employee_number} · {employee.position_title}</option>)}</select>
-                                    <button disabled={!form.data.assigned_employee_id || form.processing} onClick={() => transition('assign')} className="rounded-lg bg-blue-800 px-3 py-2 text-[11px] font-semibold text-white disabled:opacity-40 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm">Assign</button>
+                                    <button disabled={!form.data.assigned_employee_id || form.processing || !mayAct('assign')} onClick={() => transition('assign')} className="rounded-lg bg-blue-800 px-3 py-2 text-[11px] font-semibold text-white disabled:opacity-40 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm">Assign</button>
                                 </div>
                             </div>
                         )}
 
-                        {permissions.canTransition && (
+                        {['mark_review', 'send_to_mayor', 'return_origin', 'forward'].some(mayAct) && (
                             <div className="mt-3 flex flex-wrap gap-2 sm:mt-4 sm:gap-3">
-                                <button disabled={form.processing} onClick={() => transition('mark_review')} className="rounded-lg border border-blue-200 bg-white px-3 py-2 text-[12px] font-semibold text-blue-900 disabled:opacity-50 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm dark:bg-[#142236]"><Clock3 className="mr-1.5 inline" size={14} />Mark for Review</button>
-                                <button disabled={form.processing} onClick={() => transition('send_to_mayor')} className="rounded-lg bg-[#0b2852] px-3 py-2 text-[12px] font-semibold text-white disabled:opacity-50 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm">Send to Mayor's Office</button>
-                                <button disabled={form.processing} onClick={() => transition('return_origin')} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-[12px] font-semibold text-slate-700 disabled:opacity-50 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm dark:bg-[#142236] dark:text-slate-300 dark:border-slate-700"><RotateCcw className="mr-1.5 inline" size={14} />Return to Origin</button>
+                                {mayAct('mark_review') && <button disabled={form.processing} onClick={() => transition('mark_review')} className="rounded-lg border border-blue-200 bg-white px-3 py-2 text-[12px] font-semibold text-blue-900 disabled:opacity-50 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm dark:bg-[#142236]"><Clock3 className="mr-1.5 inline" size={14} />Mark for Review</button>}
+                                {mayAct('send_to_mayor') && <button disabled={form.processing} onClick={() => transition('send_to_mayor')} className="rounded-lg bg-[#0b2852] px-3 py-2 text-[12px] font-semibold text-white disabled:opacity-50 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm">Send to Mayor's Office</button>}
+                                {mayAct('return_origin') && <button disabled={form.processing} onClick={() => transition('return_origin')} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-[12px] font-semibold text-slate-700 disabled:opacity-50 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm dark:bg-[#142236] dark:text-slate-300 dark:border-slate-700"><RotateCcw className="mr-1.5 inline" size={14} />Return to Origin</button>}
                                 <div className="flex min-w-0 basis-full gap-2 sm:min-w-[280px] sm:flex-1 sm:basis-auto">
                                     <select value={form.data.target_department_id} onChange={(e) => form.setData('target_department_id', e.target.value ? Number(e.target.value) : '')} className="min-w-0 flex-1 rounded-lg border border-blue-200 bg-white px-2.5 py-2 text-[12px] sm:rounded-xl sm:px-3 sm:py-2.5 sm:text-sm dark:bg-[#142236]"><option value="">Forward to department…</option>{departments.filter((d) => d.id !== tx.current_department.id).map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}</select>
-                                    <button disabled={!form.data.target_department_id || form.processing} onClick={() => transition('forward')} className="rounded-lg border border-blue-200 bg-white px-3 py-2 text-[12px] font-semibold text-blue-900 disabled:opacity-40 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm dark:bg-[#142236]">Forward</button>
+                                    {mayAct('forward') && <button disabled={!form.data.target_department_id || form.processing || !mayAct('forward')} onClick={() => transition('forward')} className="rounded-lg border border-blue-200 bg-white px-3 py-2 text-[12px] font-semibold text-blue-900 disabled:opacity-40 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm dark:bg-[#142236]">Forward</button>}
                                 </div>
                             </div>
                         )}
 
-                        {permissions.canMayorDecision && (
+                        {['approve', 'disapprove', 'request_information'].some(mayAct) && (
                             <div className="mt-3 flex flex-wrap gap-2 border-t border-blue-100 pt-3 sm:mt-4 sm:gap-3 sm:pt-4">
-                                <button disabled={form.processing} onClick={() => transition('approve')} className="rounded-lg bg-emerald-700 px-3.5 py-2 text-[12px] font-semibold text-white disabled:opacity-50 sm:rounded-xl sm:px-5 sm:py-2.5 sm:text-sm"><CheckCircle2 className="mr-1.5 inline" size={14} />Approve</button>
-                                <button disabled={form.processing} onClick={() => transition('disapprove')} className="rounded-lg bg-rose-700 px-3.5 py-2 text-[12px] font-semibold text-white disabled:opacity-50 sm:rounded-xl sm:px-5 sm:py-2.5 sm:text-sm">Disapprove</button>
-                                <button disabled={form.processing} onClick={() => transition('request_information')} className="rounded-lg border border-blue-200 bg-white px-3.5 py-2 text-[12px] font-semibold text-blue-900 disabled:opacity-50 sm:rounded-xl sm:px-5 sm:py-2.5 sm:text-sm dark:bg-[#142236]">Request Information</button>
+                                {mayAct('approve') && <button disabled={form.processing} onClick={() => transition('approve')} className="rounded-lg bg-emerald-700 px-3.5 py-2 text-[12px] font-semibold text-white disabled:opacity-50 sm:rounded-xl sm:px-5 sm:py-2.5 sm:text-sm"><CheckCircle2 className="mr-1.5 inline" size={14} />Approve</button>}
+                                {mayAct('disapprove') && <button disabled={form.processing} onClick={() => transition('disapprove')} className="rounded-lg bg-rose-700 px-3.5 py-2 text-[12px] font-semibold text-white disabled:opacity-50 sm:rounded-xl sm:px-5 sm:py-2.5 sm:text-sm">Disapprove</button>}
+                                {mayAct('request_information') && <button disabled={form.processing} onClick={() => transition('request_information')} className="rounded-lg border border-blue-200 bg-white px-3.5 py-2 text-[12px] font-semibold text-blue-900 disabled:opacity-50 sm:rounded-xl sm:px-5 sm:py-2.5 sm:text-sm dark:bg-[#142236]">Request Information</button>}
                             </div>
                         )}
                     </section>
