@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Domain\Correspondence\CorrespondenceClassification;
 use App\Domain\Correspondence\CorrespondenceLifecycleState;
+use App\Domain\Workflow\Listeners\NotifyWorkflowTransactionMutation;
 use App\Models\CalendarEvent;
 use App\Models\CorrespondenceRecord;
 use App\Models\Department;
@@ -188,6 +189,118 @@ class CorrespondenceLinkedTransactionParityTest extends TestCase
         $this->assertTrue(Gate::forUser($head)->allows('view', $workflow));
         $this->assertTrue(app(TransactionVisibilityQuery::class)
             ->scope($head)->whereKey($workflow->id)->exists());
+    }
+
+    public function test_multi_source_notifications_are_denied_regardless_of_link_order_or_legacy_type(): void
+    {
+        foreach (['internal_first', 'restricted_first'] as $order) {
+            [$original, , $router, $target, $secret] = $this->fixture();
+            $head = $this->human('department_head', $target);
+            $staff = $this->human('department_staff', $target);
+
+            if ($order === 'internal_first') {
+                $original->update(['classification' => CorrespondenceClassification::Internal->value]);
+            }
+            $routed = app(CorrespondenceRoutingService::class)->route(
+                $router,
+                $original,
+                ['target_department_id' => $target->id, 'priority' => 'normal'],
+                (string) Str::uuid(),
+            );
+            $workflow = $routed->fresh('workflowTransaction')->workflowTransaction;
+
+            CorrespondenceRecord::query()->create([
+                'public_id' => (string) Str::uuid(),
+                'external_reference_no' => 'SEC03-'.Str::upper(Str::random(10)),
+                'source' => 'official_email',
+                'channel' => 'official_email',
+                'sender_name' => 'Synthetic Sender',
+                'subject' => 'Additional source',
+                'received_at' => now(),
+                'receiving_department_id' => $target->id,
+                'classification' => $order === 'internal_first'
+                    ? CorrespondenceClassification::Restricted->value
+                    : CorrespondenceClassification::Internal->value,
+                'lifecycle_state' => CorrespondenceLifecycleState::Routed->value,
+                'workflow_transaction_id' => $workflow->id,
+            ]);
+
+            // Simulate previously persisted classified titles. The second
+            // order uses a malformed legacy type despite its source linkage.
+            $workflow->forceFill([
+                'title' => $secret,
+                'transaction_type' => $order === 'restricted_first'
+                    ? 'internal_request' : 'document_review',
+            ])->save();
+
+            $listener = app(NotifyWorkflowTransactionMutation::class);
+            $event = $workflow->events()->firstOrFail();
+            $assign = new \ReflectionMethod($listener, 'notifyAssignedEmployee');
+            $assign->invoke($listener, $workflow, $event, $staff->employee->id);
+            $this->assertSame(0, PlatformNotification::query()
+                ->where('user_id', $staff->id)
+                ->where('source_domain', 'transaction')
+                ->where('source_id', $workflow->id)->count());
+
+            $assign->invoke($listener, $workflow, $event, $head->employee->id);
+            $this->assertSame(1, PlatformNotification::query()
+                ->where('user_id', $head->id)
+                ->where('source_domain', 'transaction')
+                ->where('source_id', $workflow->id)->count());
+
+            $notifyOffice = new \ReflectionMethod($listener, 'dispatchOffice');
+            $notifyOffice->invoke($listener, $target, $workflow, [
+                'event_key' => 'sec03-office-'.$workflow->id,
+                'source_domain' => 'transaction',
+                'source_type' => WorkflowTransaction::class,
+                'source_id' => $workflow->id,
+                'priority' => 'info',
+                'title' => 'Confidential routing',
+                'message' => $secret,
+                'action_url' => '/transactions/'.$workflow->id,
+            ]);
+
+            $this->assertSame(0, PlatformNotification::query()
+                ->where('user_id', $staff->id)
+                ->where('source_domain', 'transaction')
+                ->where('source_id', $workflow->id)->count());
+            $this->assertSame(2, PlatformNotification::query()
+                ->where('user_id', $head->id)
+                ->where('source_domain', 'transaction')
+                ->where('source_id', $workflow->id)->count());
+        }
+    }
+
+    public function test_unlinked_ordinary_request_keeps_office_notification_delivery(): void
+    {
+        $office = $this->department('ORDINARY-NOTIFICATION');
+        $actor = $this->human('department_staff', $office);
+        $workflow = WorkflowTransaction::query()->create([
+            'reference_no' => 'P0A-ORD-'.Str::upper(Str::random(9)),
+            'transaction_type' => 'internal_request',
+            'title' => 'Ordinary request',
+            'priority' => 'normal',
+            'origin_department_id' => $office->id,
+            'current_department_id' => $office->id,
+            'created_by_user_id' => $actor->id,
+            'status' => 'submitted',
+        ]);
+
+        $listener = app(NotifyWorkflowTransactionMutation::class);
+        $notifyOffice = new \ReflectionMethod($listener, 'dispatchOffice');
+        $notifyOffice->invoke($listener, $office, $workflow, [
+            'event_key' => 'sec03-ordinary-'.$workflow->id,
+            'source_domain' => 'transaction',
+            'source_type' => WorkflowTransaction::class,
+            'source_id' => $workflow->id,
+            'priority' => 'info',
+            'title' => 'Ordinary receipt',
+            'message' => $workflow->title,
+        ]);
+
+        $this->assertSame(1, PlatformNotification::query()
+            ->where('user_id', $actor->id)
+            ->where('source_id', $workflow->id)->count());
     }
 
     /**
