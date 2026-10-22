@@ -57,6 +57,53 @@ final class GoogleOidcIdentityContractTest extends TestCase
         );
     }
 
+    public function test_recent_mfa_assured_account_can_link_once_without_creating_a_user(): void
+    {
+        $user = $this->employeeUser('system_admin', 'staff@example.test');
+        $request = $this->assuredRequest($user);
+
+        $linked = app(GoogleOidcAccountService::class)->link(
+            $request, (int) $user->id,
+            new GoogleOidcProfile('linked-subject-1', 'staff@example.test'),
+        );
+
+        $this->assertSame($user->id, $linked->id);
+        $this->assertSame(1, User::query()->count());
+        $this->assertDatabaseHas('google_identity_bindings', [
+            'user_id' => $user->id,
+            'google_subject' => 'linked-subject-1',
+            'verified_email_at_link' => 'staff@example.test',
+        ]);
+    }
+
+    public function test_expired_mfa_cannot_be_reused_for_new_google_link(): void
+    {
+        $user = $this->employeeUser('system_admin', 'staff@example.test');
+        $request = $this->assuredRequest($user);
+        $request->session()->put(
+            AuthenticationAssurance::SESSION_VERIFIED_AT_KEY,
+            now()->getTimestamp() - 601,
+        );
+
+        $this->expectException(AuthorizationException::class);
+        app(GoogleOidcAccountService::class)->link(
+            $request, (int) $user->id,
+            new GoogleOidcProfile('not-linked-expired', 'staff@example.test'),
+        );
+    }
+
+    public function test_linking_request_must_match_authenticated_local_user(): void
+    {
+        $user = $this->employeeUser('system_admin', 'staff@example.test');
+        $request = $this->assuredRequest($user);
+
+        $this->expectException(AuthorizationException::class);
+        app(GoogleOidcAccountService::class)->link(
+            $request, (int) $user->id + 100,
+            new GoogleOidcProfile('not-linked-forged-id', 'staff@example.test'),
+        );
+    }
+
     public function test_subject_bound_to_another_user_cannot_be_stolen(): void
     {
         $owner = $this->employeeUser('employee', 'owner@example.test');
