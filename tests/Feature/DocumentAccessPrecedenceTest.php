@@ -195,17 +195,50 @@ class DocumentAccessPrecedenceTest extends TestCase
         $this->assertSame(0, $archive['records']->total());
     }
 
-    public function test_archive_uses_authorized_parent_for_relationship_metadata(): void
+    public function test_mixed_correspondence_parents_deny_shared_document_in_both_link_orders(): void
     {
-        $office = $this->department('CONTEXT');
-        $other = $this->department('HIDDEN-CONTEXT');
-        $actor = $this->human($office);
-        $denied = $this->restrictedCorrespondence($other);
-        $allowed = $this->restrictedCorrespondence($office);
-        $allowed->update(['subject' => 'Authorized correspondence context']);
-        $document = $this->document($actor, $office, 'Mixed correspondence context');
+        foreach (['restricted_first', 'visible_first'] as $order) {
+            $office = $this->department('CONTEXT-'.$order);
+            $other = $this->department('HIDDEN-'.$order);
+            $actor = $this->human($office);
+            $denied = $this->restrictedCorrespondence($other);
+            $allowed = $this->restrictedCorrespondence($office);
+            $allowed->update(['subject' => 'Authorized correspondence context']);
+            $document = $this->document($actor, $office, 'Mixed correspondence '.$order);
 
-        foreach ([$denied, $allowed] as $index => $record) {
+            $parents = $order === 'restricted_first'
+                ? [$denied, $allowed] : [$allowed, $denied];
+            foreach ($parents as $index => $record) {
+                DocumentLink::query()->create([
+                    'document_id' => $document->id,
+                    'linkable_type' => $record->getMorphClass(),
+                    'linkable_id' => $record->id,
+                    'relationship' => 'correspondence_'.($index + 1),
+                ]);
+            }
+
+            $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
+            $archive = app(DocumentArchiveQuery::class)->workspace($actor, [
+                'document' => $document->public_id,
+            ]);
+            $this->assertSame(0, $archive['records']->total());
+            $this->assertSame(0, $archive['counts']['all']);
+            $this->assertNull($archive['selected']);
+            $this->actingAs($actor)
+                ->get('/documents/'.$document->public_id.'/download')->assertForbidden();
+        }
+    }
+
+    public function test_multiple_authorized_correspondence_parents_retain_document_access(): void
+    {
+        $office = $this->department('MULTI-PARENT-ALLOWED');
+        $actor = $this->human($office);
+        $first = $this->restrictedCorrespondence($office);
+        $second = $this->restrictedCorrespondence($office);
+        $second->update(['subject' => 'Second allowed correspondence']);
+        $document = $this->document($actor, $office, 'Both sources authorized');
+
+        foreach ([$first, $second] as $index => $record) {
             DocumentLink::query()->create([
                 'document_id' => $document->id,
                 'linkable_type' => $record->getMorphClass(),
@@ -219,9 +252,10 @@ class DocumentAccessPrecedenceTest extends TestCase
             'document' => $document->public_id,
         ]);
         $this->assertSame(1, $archive['records']->total());
-        $this->assertSame('Authorized correspondence context', $archive['selected']['relatedTitle']);
-        $this->assertSame('Authorized correspondence context', $archive['records']->items()[0]['relatedTitle']);
-        $this->assertNotSame($denied->subject, $archive['selected']['relatedTitle']);
+        $this->assertSame(1, $archive['counts']['all']);
+        $this->assertSame($document->public_id, $archive['selected']['publicId']);
+        $this->actingAs($actor)
+            ->get('/documents/'.$document->public_id.'/download')->assertOk();
     }
 
     public function test_sql_archive_zero_one_and_one_thousand_documents_keep_stable_pages_and_counts(): void
