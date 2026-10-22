@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Domain\Identity\VerifiedMunicipalActor;
 use App\Models\Employee;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
@@ -17,12 +18,25 @@ final class DashboardOfficeQuery
     /** @return array<string, mixed> */
     public function workspace(User $actor): array
     {
+        return $this->workspaceForActor($actor);
+    }
+
+    /** Reuse the dashboard operation's fresh proof, not a caller's cached User. */
+    public function workspaceForVerifiedActor(VerifiedMunicipalActor $verified): array
+    {
+        return $this->workspaceForActor($verified->user(), $verified);
+    }
+
+    private function workspaceForActor(User $actor, ?VerifiedMunicipalActor $verified = null): array
+    {
         $actor->loadMissing('employee.department');
         $departmentId = (int) $actor->employee->department_id;
         $terminal = $this->terminalStatuses();
         $now = now();
         $dueSoonEnd = $now->copy()->addDay();
-        $authorized = $this->visibility->scope($actor);
+        $authorized = $verified === null
+            ? $this->visibility->scope($actor)
+            : $this->visibility->scopeVisibleToVerifiedActor($verified);
         $summary = $this->summary($authorized, $departmentId, $terminal, $now);
 
         return [
