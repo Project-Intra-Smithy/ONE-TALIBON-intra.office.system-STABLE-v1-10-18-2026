@@ -22,4 +22,9 @@ final class CustodyCapabilityGate
     {
         throw new AuthorizationException('Municipal staff intake is not authorized.');
     }
+
+    public function assertMayRetrieve(User $actor): never
+    {
+        throw new AuthorizationException('Records custody retrieval is not authorized.');
+    }
 }
