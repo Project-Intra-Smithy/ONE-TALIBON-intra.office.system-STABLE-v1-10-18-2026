@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\MfaChallengeController;
 use App\Http\Controllers\Auth\MfaEnrollmentController;
 use App\Http\Controllers\Auth\MfaSecurityController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\CalendarManualEventController;
 use App\Http\Controllers\CorrespondenceLifecycleController;
 use App\Http\Controllers\CorrespondenceWorkspaceActionController;
 use App\Http\Controllers\CorrespondenceWorkspaceController;
@@ -90,6 +91,13 @@ Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
     Route::get('/employees', EmployeeDirectoryController::class)->name('employees.index');
     Route::get('/employees/{employee}', EmployeeDirectoryProfileController::class)->name('employees.show');
     Route::get('/calendar', CalendarController::class)->name('calendar.index');
+    // Session-authenticated, active, MFA-assured manual entries only. Workflow
+    // and leave source calendar events are strictly read-only here.
+    Route::prefix('calendar/events')->middleware('throttle:30,1')->group(function (): void {
+        Route::post('/', [CalendarManualEventController::class, 'store'])->name('calendar.events.store');
+        Route::put('/{event}', [CalendarManualEventController::class, 'update'])->whereNumber('event')->name('calendar.events.update');
+        Route::delete('/{event}', [CalendarManualEventController::class, 'destroy'])->whereNumber('event')->name('calendar.events.destroy');
+    });
 
     // W03: same-origin session-authenticated *individual* Task JSON surface.
     // This group already enforces auth, active account and MFA assurance.
