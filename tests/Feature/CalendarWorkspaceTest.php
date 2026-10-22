@@ -203,6 +203,82 @@ final class CalendarWorkspaceTest extends TestCase
         $this->assertSame('CLASSIFIED-PARITY-CANARY', $deadline->fresh()->title);
     }
 
+    public function test_p0a_calendar_denies_orphan_wrong_source_and_unreadable_workflow_even_when_calendar_scope_is_visible(): void
+    {
+        $currentOffice = $this->department('LIVE-SCOPE');
+        $otherOffice = $this->department('DENIED-SCOPE');
+        $viewer = $this->human($currentOffice);
+        $otherActor = $this->human($otherOffice);
+        $date = CarbonImmutable::parse('2026-09-25 09:00', 'Asia/Manila');
+
+        $allowed = WorkflowTransaction::query()->create([
+            'reference_no' => 'CAL-ALLOWED-'.Str::upper(Str::random(8)),
+            'transaction_type' => 'internal_request',
+            'title' => 'Allowed work request',
+            'priority' => 'normal',
+            'origin_department_id' => $currentOffice->id,
+            'current_department_id' => $currentOffice->id,
+            'created_by_user_id' => $viewer->id,
+            'status' => 'submitted',
+        ]);
+        $denied = WorkflowTransaction::query()->create([
+            'reference_no' => 'CAL-DENIED-'.Str::upper(Str::random(8)),
+            'transaction_type' => 'internal_request',
+            'title' => 'CROSS-OFFICE-HIDDEN-TITLE',
+            'priority' => 'normal',
+            'origin_department_id' => $otherOffice->id,
+            'current_department_id' => $otherOffice->id,
+            'created_by_user_id' => $otherActor->id,
+            'status' => 'submitted',
+        ]);
+
+        // All cases have the VIEWER'S office calendar scope. The source
+        // authorization, not office calendar scope, must deny the cached title.
+        $cases = [
+            'orphan' => ['transaction', WorkflowTransaction::class, 999999999, null],
+            'wrong-domain' => ['work_request', WorkflowTransaction::class, $allowed->id, null],
+            'wrong-type' => ['transaction', 'Invalid\\Legacy\\Transaction', $allowed->id, null],
+            'other-office' => ['transaction', WorkflowTransaction::class, $denied->id, '/transactions/'.$denied->id],
+        ];
+        foreach ($cases as $name => [$domain, $type, $sourceId, $url]) {
+            $event = $this->event('p0a-'.$name, $date, department: $currentOffice);
+            $event->update([
+                'event_type' => 'workflow_deadline',
+                'title' => 'P0A-HIDDEN-'.$name,
+                'source_domain' => $domain,
+                'source_type' => $type,
+                'source_id' => $sourceId,
+                'action_url' => $url,
+            ]);
+        }
+
+        $valid = $this->event('p0a-allowed', $date->addHour(), department: $currentOffice);
+        $valid->update([
+            'event_type' => 'workflow_deadline',
+            'title' => 'P0A-ALLOWED-DEADLINE',
+            'source_domain' => 'transaction',
+            'source_type' => WorkflowTransaction::class,
+            'source_id' => $allowed->id,
+            'action_url' => '/transactions/'.$allowed->id,
+        ]);
+        $ordinary = $this->event('p0a-ordinary', $date->addHours(2), department: $currentOffice);
+
+        $this->actingAs($viewer);
+        $events = collect(app(CalendarWorkspaceQueryService::class)
+            ->workspace($viewer, 'day', '2026-09-25')['events'])->keyBy('event_key');
+        $this->assertSameCanonicalizing([$valid->event_key, $ordinary->event_key], $events->keys()->all());
+        $this->assertSame('/transactions/'.$allowed->id, $events[$valid->event_key]['action_url']);
+        $this->assertFalse($events[$valid->event_key]['can_manage']);
+        $this->assertFalse($events[$ordinary->event_key]['can_manage']);
+
+        $response = $this->get('/calendar?view=day&date=2026-09-25')->assertOk();
+        foreach (array_keys($cases) as $name) {
+            $response->assertDontSee('P0A-HIDDEN-'.$name);
+        }
+        $response->assertDontSee('CROSS-OFFICE-HIDDEN-TITLE');
+        $response->assertSee('P0A-ALLOWED-DEADLINE');
+    }
+
     private function event(string $key, CarbonImmutable $start, ?CarbonImmutable $end = null, bool $allDay = false, string $scope = 'department', ?Department $department = null, ?User $user = null): CalendarEvent
     {
         return CalendarEvent::query()->create(['event_key' => $key, 'event_type' => 'calendar_test', 'title' => Str::headline($key), 'description' => 'Calendar workspace test event.', 'scope' => $scope, 'department_id' => $department?->id, 'user_id' => $user?->id, 'source_domain' => 'calendar_test', 'source_type' => self::class, 'source_id' => random_int(1, 1000000), 'priority' => 'normal', 'starts_at' => $start, 'ends_at' => $end, 'all_day' => $allDay, 'location' => 'Municipal Hall', 'action_url' => '/calendar-test/'.$key, 'status' => 'scheduled']);
