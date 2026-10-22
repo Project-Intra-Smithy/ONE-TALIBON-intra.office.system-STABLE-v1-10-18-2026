@@ -63,6 +63,34 @@ final class CustodyPreflight
         if ($command->evidence === []) {
             throw ValidationException::withMessages(['evidence' => 'Immutable document proof is required.']);
         }
+        // Any response document ID/version/hash named in the command must
+        // identify one of the submitted immutable evidence references.
+        if (in_array($command->operation, [
+            CustodyOperation::ResponseRegistered,
+            CustodyOperation::IssuanceAttested,
+            CustodyOperation::Dispatched,
+        ], true)) {
+            $matched = false;
+            foreach ($command->evidence as $proof) {
+                if ($proof->documentId !== (int) $command->attributes['response_document_id']) {
+                    continue;
+                }
+                if ($command->operation === CustodyOperation::ResponseRegistered &&
+                    ($proof->version !== (int) $command->attributes['response_version'] ||
+                        ! hash_equals($proof->checksumSha256, (string) $command->attributes['response_sha256']))) {
+                    continue;
+                }
+                $matched = true;
+            }
+            if (! $matched) {
+                throw ValidationException::withMessages(['evidence' => 'Response document identity/version/hash does not match its proof.']);
+            }
+        }
+        if (in_array($command->operation, [CustodyOperation::CustodyAccepted, CustodyOperation::Archived], true) &&
+            $current->state === CorrespondenceLifecycleState::Released &&
+            ! $current->has(CustodyOperation::DeliveryRecorded)) {
+            throw new ConflictHttpException('Released correspondence requires documented delivery outcome before custody or archive.');
+        }
         foreach ($command->evidence as $proof) {
             if (self::rank($proof->classification) < self::rank($current->classification)) {
                 throw ValidationException::withMessages(['classification' => 'Document proof cannot downgrade source classification.']);
