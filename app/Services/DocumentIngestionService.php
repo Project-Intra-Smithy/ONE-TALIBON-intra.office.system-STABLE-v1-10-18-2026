@@ -53,7 +53,13 @@ final class DocumentIngestionService
     ): array {
         $departmentId = $this->validateInput($actor, $parent, $file, $intent);
         $checksum = $this->checksum($file);
-        $previous = $this->previous($intent, $departmentId, $parent, false);
+        $previous = $intent->supersedesRevisionId
+            ? $this->previous($intent, $departmentId, $parent, false)
+            : DocumentImportRevision::query()
+                ->where('owner_department_id', $departmentId)
+                ->where('source_system', $intent->sourceSystem)
+                ->where('source_file_id', $intent->sourceFileId)
+                ->orderByDesc('version_number')->first();
 
         return [
             'checksum_sha256' => $checksum,
@@ -90,7 +96,7 @@ final class DocumentIngestionService
             $actor->id, $departmentId, $parent->getMorphClass(), $parent->getKey(),
             $intent->sourceSystem, $intent->sourceFileId, $intent->sourceRevision,
             $intent->classification, $intent->relationship, $intent->supersedesRevisionId,
-            $intent->sourceModifiedAt, $checksum,
+            $intent->sourceModifiedAt, $this->safeName($file), (int) $file->getSize(), $checksum,
         ], JSON_THROW_ON_ERROR));
 
         $created = [];
@@ -248,7 +254,7 @@ final class DocumentIngestionService
     private function validSourceValue(string $value, int $limit): bool
     {
         return trim($value) === $value && $value !== ''
-            && mb_strlen($value) <= $limit && ! preg_match('/[\x00-\x1F\x7F]/', $value);
+            && strlen($value) <= $limit && ! preg_match('/[\x00-\x1F\x7F]/', $value);
     }
 
     private function validTimestamp(string $value): bool
