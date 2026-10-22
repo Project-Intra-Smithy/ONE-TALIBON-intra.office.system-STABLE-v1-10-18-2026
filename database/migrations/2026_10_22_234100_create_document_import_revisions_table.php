@@ -26,6 +26,8 @@ return new class extends Migration {
             $table->timestampTz('source_modified_at')->nullable();
             $table->string('original_filename', 255);
             $table->char('checksum_sha256', 64);
+            // Nullable for successors; unique for the single root per source.
+            $table->char('initial_source_key', 64)->nullable()->unique();
             $table->uuid('operation_key')->unique();
             $table->char('request_fingerprint', 64);
             $table->timestampsTz();

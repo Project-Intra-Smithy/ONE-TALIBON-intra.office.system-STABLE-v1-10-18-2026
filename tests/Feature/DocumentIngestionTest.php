@@ -231,6 +231,24 @@ class DocumentIngestionTest extends TestCase
         }
     }
 
+    public function test_parent_classification_floor_blocks_public_upload_to_restricted_correspondence(): void
+    {
+        [$actor, $record] = $this->context();
+        $record->forceFill(['classification' => 'restricted'])->save();
+        $this->permit();
+
+        try {
+            $this->service()->ingest(
+                $actor, $record, $this->file('downgrade'),
+                $this->intent(classification: 'public')
+            );
+            $this->fail('Restricted parent must not receive public classified evidence.');
+        } catch (AuthorizationException) {
+            $this->assertDatabaseCount('documents', 0);
+            $this->assertDatabaseCount('document_import_revisions', 0);
+        }
+    }
+
     public function test_cross_office_parent_is_denied_even_with_valid_file(): void
     {
         [$actor, $record] = $this->context();

@@ -4,10 +4,13 @@ namespace App\Services;
 
 use App\Data\Documents\DocumentImportIntent;
 use App\Models\Document;
+use App\Models\CorrespondenceRecord;
 use App\Models\DocumentImportRevision;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -155,6 +158,9 @@ final class DocumentIngestionService
 
                 $revision = DocumentImportRevision::query()->create([
                     'document_id' => $document->id,
+                    'initial_source_key' => $previous ? null : hash('sha256', json_encode([
+                        $departmentId, $intent->sourceSystem, $intent->sourceFileId,
+                    ], JSON_THROW_ON_ERROR)),
                     'supersedes_revision_id' => $previous?->id,
                     'root_revision_id' => $previous ? ($previous->root_revision_id ?? $previous->id) : null,
                     'version_number' => $previous ? (int) $previous->version_number + 1 : 1,
@@ -180,6 +186,22 @@ final class DocumentIngestionService
 
                 return $revision;
             });
+        } catch (QueryException $exception) {
+            $this->attachments->cleanupDocuments($created);
+
+            // A concurrent identical operation may win the unique-key race.
+            if (in_array((string) $exception->getCode(), ['23505', '23000'], true)) {
+                $replay = DocumentImportRevision::query()
+                    ->where('operation_key', $intent->operationKey)->first();
+
+                if ($replay && hash_equals($replay->request_fingerprint, $fingerprint)) {
+                    return $replay;
+                }
+
+                throw new ConflictHttpException('Duplicate import or concurrent revision conflict.', $exception);
+            }
+
+            throw $exception;
         } catch (Throwable $exception) {
             $this->attachments->cleanupDocuments($created);
 
@@ -209,6 +231,18 @@ final class DocumentIngestionService
             || ($intent->supersedesRevisionId !== null && $intent->supersedesRevisionId < 1)
             || ($intent->sourceModifiedAt !== null && ! $this->validTimestamp($intent->sourceModifiedAt))) {
             throw ValidationException::withMessages(['import' => 'Invalid document import metadata.']);
+        }
+
+        // The parent label supplies a minimum classification, even if a future
+        // policy adapter mistakenly grants a less-protective upload.
+        if ($parent instanceof CorrespondenceRecord) {
+            $parentClassification = $parent->classification?->value;
+            if (! is_string($parentClassification)
+                || ! isset(self::CLASSIFICATION_RANK[$parentClassification])
+                || self::CLASSIFICATION_RANK[$intent->classification]
+                    < self::CLASSIFICATION_RANK[$parentClassification]) {
+                throw new AuthorizationException('Import classification cannot downgrade its source.');
+            }
         }
 
         $this->attachments->assertValidUploads([$file]);
