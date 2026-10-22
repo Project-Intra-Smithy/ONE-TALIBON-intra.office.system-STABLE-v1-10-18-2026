@@ -20,6 +20,29 @@ final class CorrespondenceCustodyPreflightTest extends TestCase
     private const KEY = '20000000-0000-4000-8000-000000000002';
     private const CORRELATION = '30000000-0000-4000-8000-000000000003';
 
+    public function test_client_forced_issuer_attribute_is_rejected(): void
+    {
+        $this->expectException(ValidationException::class);
+        (new CustodyPreflight())->assertValid(
+            $this->command(CustodyOperation::ActionOutcome, [
+                'workflow_transaction_id' => 4, 'action_code' => 'x',
+                'result_reference' => 'doc', 'issuer_user_id' => 999,
+            ]),
+            $this->snapshot(),
+        );
+    }
+
+    public function test_same_idempotency_key_changed_document_digest_is_detectable(): void
+    {
+        $first = $this->command(CustodyOperation::ActionOutcome, [
+            'workflow_transaction_id' => 4, 'action_code' => 'x', 'result_reference' => 'doc',
+        ]);
+        $changed = $this->command(CustodyOperation::ActionOutcome, [
+            'workflow_transaction_id' => 4, 'action_code' => 'x', 'result_reference' => 'doc',
+        ], evidence: [new CustodyEvidenceRef(1, 1, str_repeat('b', 64), Level::Restricted)]);
+        $this->assertNotSame($first->digest(), $changed->digest());
+    }
+
     public function test_stale_revision_is_rejected(): void
     {
         $this->expectException(ConflictHttpException::class);
