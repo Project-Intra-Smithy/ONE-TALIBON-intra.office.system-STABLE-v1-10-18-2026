@@ -118,7 +118,7 @@ async function login(page) {
     const response = await page.goto(`${BASE}/login`, { waitUntil: 'domcontentloaded', timeout: 20000 });
     if (!response || response.status() !== 200) throw new Error(`Login page returned ${response?.status() ?? 'none'}`);
 
-    await page.getByLabel('Email').fill('employee@talibon.demo');
+    await page.locator('input#login-email').fill('employee@talibon.demo');
     await page.locator('input#login-password').fill(PASSWORD);
     await page.getByRole('button', { name: /^Sign in$/i }).click();
     await page.waitForURL((url) => ['/dashboard', '/security/mfa/challenge'].includes(url.pathname), { timeout: 15000 });
@@ -132,7 +132,10 @@ async function login(page) {
 }
 
 async function runViewport(browser, spec) {
-    const context = await browser.newContext({ viewport: { width: spec.width, height: spec.height } });
+    const context = await browser.newContext({
+        viewport: { width: spec.width, height: spec.height },
+        extraHTTPHeaders: { skip_zrok_interstitial: '1' },
+    });
     const page = await context.newPage();
     const row = { ...spec, checks: [], result: 'fail', screenshot: null };
     report.viewports.push(row);
