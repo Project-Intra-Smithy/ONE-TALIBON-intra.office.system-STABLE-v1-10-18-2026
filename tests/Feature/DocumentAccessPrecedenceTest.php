@@ -715,6 +715,46 @@ class DocumentAccessPrecedenceTest extends TestCase
         $this->actingAs($actor)->get('/documents/'.$document->public_id.'/download')->assertForbidden();
     }
 
+    public function test_restricted_file_under_visible_work_request_requires_independent_document_clearance(): void
+    {
+        $office = $this->department('DOC-CLEARANCE');
+        $head = $this->human($office);
+        $staff = $this->human($office);
+        $staff->update(['role' => 'department_staff']);
+        $staff = $staff->fresh('employee.department');
+        $transaction = $this->transaction($head, $office);
+        $marker = 'RESTRICTED-ATTACHMENT-'.Str::upper(Str::random(10));
+        $document = $this->document($head, $office, $marker);
+
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => $transaction->getMorphClass(),
+            'linkable_id' => $transaction->id,
+            'relationship' => 'transaction_evidence',
+        ]);
+
+        $this->actingAs($staff);
+        $this->assertTrue($staff->can('view', $transaction));
+        $this->assertFalse(app(DocumentAccessService::class)->canDownload($staff, $document));
+        $hidden = app(DocumentArchiveQuery::class)->workspace($staff, ['document' => $document->public_id]);
+        $this->assertSame(0, $hidden['records']->total());
+        $this->assertSame(0, $hidden['counts']['all']);
+        $this->assertNull($hidden['selected']);
+        $this->assertStringNotContainsString($marker, json_encode($hidden));
+        $this->get('/transactions/'.$transaction->id)
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->where('evidence.record', []));
+        $this->get('/documents/'.$document->public_id.'/download')->assertForbidden();
+
+        $this->actingAs($head);
+        $this->assertTrue(app(DocumentAccessService::class)->canDownload($head, $document));
+        $this->assertSame(1, app(DocumentArchiveQuery::class)->workspace($head, [])['records']->total());
+        $this->get('/transactions/'.$transaction->id)
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->where('evidence.record.0.publicId', $document->public_id));
+        $this->get('/documents/'.$document->public_id.'/download')->assertOk();
+    }
+
     private function department(string $name): Department
     {
         return Department::query()->create([
