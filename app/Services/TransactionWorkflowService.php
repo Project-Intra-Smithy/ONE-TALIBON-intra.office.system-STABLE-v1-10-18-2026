@@ -221,9 +221,9 @@ class TransactionWorkflowService
                     'action' => 'Ordinary completion cannot change destination or assignment.',
                 ]);
             }
-            if (! is_string($remarks) || mb_strlen(trim($remarks)) < 10) {
+            if (! is_string($remarks) || trim($remarks) === '') {
                 throw ValidationException::withMessages([
-                    'remarks' => 'A completion result of at least 10 characters is required.',
+                    'remarks' => 'A documented completion result is required.',
                 ]);
             }
             $remarks = trim($remarks);
