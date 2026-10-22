@@ -125,6 +125,7 @@ final class CorrespondenceCustodyService
             );
             $this->preflight->assertValid($command, $current);
             $this->assertExistingEvidence($record, $command);
+            $this->assertPriorProvenance($record, $command);
 
             $previousState = $record->lifecycle_state;
             $nextState = match ($command->operation) {
@@ -183,6 +184,69 @@ final class CorrespondenceCustodyService
         }
 
         return $actor;
+    }
+
+    /**
+     * Do not allow a different document, digest, dispatch or custody receipt
+     * to be substituted after an earlier milestone has been attested.
+     * This executes under the same correspondence row lock as the event append.
+     */
+    private function assertPriorProvenance(CorrespondenceRecord $record, CustodyCommand $command): void
+    {
+        if ($command->operation === CustodyOperation::ActionOutcome &&
+            (int) $command->attributes['workflow_transaction_id'] !== (int) $record->workflow_transaction_id) {
+            throw ValidationException::withMessages(['workflow' => 'Action outcome does not belong to the linked Work Request.']);
+        }
+
+        $priorOperation = match ($command->operation) {
+            CustodyOperation::IssuanceAttested => CustodyOperation::ResponseRegistered,
+            CustodyOperation::Dispatched => CustodyOperation::IssuanceAttested,
+            CustodyOperation::DeliveryRecorded => CustodyOperation::Dispatched,
+            CustodyOperation::Archived => CustodyOperation::CustodyAccepted,
+            default => null,
+        };
+
+        if ($priorOperation === null) {
+            return;
+        }
+
+        $prior = CorrespondenceEvent::query()
+            ->where('correspondence_record_id', $record->id)
+            ->where('event', 'custody.'.$priorOperation->value)
+            ->orderByDesc('id')->first();
+
+        if ($prior === null) {
+            throw new ConflictHttpException('Required custody provenance event does not exist.');
+        }
+
+        if ($command->operation === CustodyOperation::DeliveryRecorded &&
+            (int) $command->attributes['dispatch_event_id'] !== (int) $prior->id ||
+            $command->operation === CustodyOperation::Archived &&
+            ((int) $command->attributes['custody_event_id'] !== (int) $prior->id ||
+                $command->attributes['retention_authority_reference'] !==
+                ($prior->metadata['references']['retention_authority_reference'] ?? null))) {
+            throw new ConflictHttpException('Custody provenance does not match the preceding operation.');
+        }
+
+        if (! in_array($command->operation, [CustodyOperation::IssuanceAttested, CustodyOperation::Dispatched], true)) {
+            return;
+        }
+
+        $previousProofs = $prior->metadata['evidence'] ?? [];
+        $sameDocumentProof = false;
+        foreach ($command->evidence as $proof) {
+            foreach ($previousProofs as $previousProof) {
+                if ($proof->documentId === (int) ($previousProof['document_id'] ?? 0) &&
+                    $proof->version === (int) ($previousProof['version'] ?? 0) &&
+                    hash_equals($proof->checksumSha256, (string) ($previousProof['sha256'] ?? '')) &&
+                    $proof->documentId === (int) $command->attributes['response_document_id']) {
+                    $sameDocumentProof = true;
+                }
+            }
+        }
+        if (! $sameDocumentProof) {
+            throw new ConflictHttpException('Previously registered or issued document proof was changed.');
+        }
     }
 
     private function assertExistingEvidence(CorrespondenceRecord $record, CustodyCommand $command): void
