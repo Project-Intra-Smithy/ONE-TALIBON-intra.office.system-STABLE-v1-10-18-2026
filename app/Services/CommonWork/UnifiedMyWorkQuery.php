@@ -3,7 +3,6 @@
 namespace App\Services\CommonWork;
 
 use App\Domain\Tasks\TaskCoreAccess;
-use App\Domain\Tasks\TaskCoreService;
 use App\Domain\Tasks\TaskLifecycleState;
 use App\Models\Employee;
 use App\Models\User;
@@ -23,7 +22,6 @@ final readonly class UnifiedMyWorkQuery
 {
     public function __construct(
         private TaskCoreAccess $taskAccess,
-        private TaskCoreService $tasks,
         private TransactionVisibilityQuery $transactions,
     ) {}
 
@@ -36,8 +34,8 @@ final readonly class UnifiedMyWorkQuery
         $this->assertPaginationAndSource($page, $perPage, $source);
 
         // No caller-supplied user can bypass live account/employee verification.
-        $actor = $this->taskAccess->verifiedActor($claimedActor);
-        $query = $this->sourceRows($this->authorizedRows($actor), $source);
+        [$actor, $taskRows] = $this->taskAccess->verifiedIndividualTasks($claimedActor);
+        $query = $this->sourceRows($this->authorizedRows($actor, $taskRows), $source);
 
         return $this->paginateRows($query, $page, $perPage);
     }
@@ -68,8 +66,8 @@ final readonly class UnifiedMyWorkQuery
             throw new InvalidArgumentException('Common Work due window must have an increasing, nonempty interval.');
         }
 
-        $actor = $this->taskAccess->verifiedActor($claimedActor);
-        $query = $this->sourceRows($this->authorizedRows($actor), $source)
+        [$actor, $taskRows] = $this->taskAccess->verifiedIndividualTasks($claimedActor);
+        $query = $this->sourceRows($this->authorizedRows($actor, $taskRows), $source)
             ->whereNotNull('due_at')
             ->where('due_at', '>=', $from->format('Y-m-d H:i:s.uP'))
             ->where('due_at', '<', $before->format('Y-m-d H:i:s.uP'));
@@ -104,11 +102,11 @@ final readonly class UnifiedMyWorkQuery
             throw new InvalidArgumentException('Unknown native state for the specified Common Work source.');
         }
 
-        $actor = $this->taskAccess->verifiedActor($claimedActor);
+        [$actor, $taskRows] = $this->taskAccess->verifiedIndividualTasks($claimedActor);
 
         // Source + state are bound SQL predicates on the same actor-authorized
         // UNION ALL used by paginate() and dueWindow(). No broader queue scope.
-        $query = $this->sourceRows($this->authorizedRows($actor), $source)
+        $query = $this->sourceRows($this->authorizedRows($actor, $taskRows), $source)
             ->where('source_state', '=', $state);
 
         return $this->paginateRows($query, $page, $perPage);
@@ -243,10 +241,10 @@ final readonly class UnifiedMyWorkQuery
      */
     public function summary(User $claimedActor): array
     {
-        $actor = $this->taskAccess->verifiedActor($claimedActor);
+        [$actor, $taskRows] = $this->taskAccess->verifiedIndividualTasks($claimedActor);
 
         // One database aggregate: never hydrate or enumerate every visible row.
-        $counts = $this->authorizedRows($actor)
+        $counts = $this->authorizedRows($actor, $taskRows)
             ->selectRaw(
                 'COUNT(*) AS total, '
                 .'COUNT(*) FILTER (WHERE source_type = ?) AS individual_task, '
@@ -267,12 +265,11 @@ final readonly class UnifiedMyWorkQuery
     /**
      * The single authorization boundary for both pagination and aggregation.
      */
-    private function authorizedRows(User $actor): QueryBuilder
+    private function authorizedRows(User $actor, Builder $taskRows): QueryBuilder
     {
         // Reuse the accepted owner-only A01 Task scope exactly. Legacy,
         // assigned and official Task rows remain excluded.
-        $taskRows = $this->tasks->visibleIndividualTasks($actor)
-            ->selectRaw("'individual_task' AS source_type, tasks.id AS source_id, tasks.task_kind AS source_kind, tasks.title, tasks.state AS source_state, NULL AS reference, 'task_owner' AS responsibility, tasks.due_at, tasks.updated_at");
+        $taskRows->selectRaw("'individual_task' AS source_type, tasks.id AS source_id, tasks.task_kind AS source_kind, tasks.title, tasks.state AS source_state, NULL AS reference, 'task_owner' AS responsibility, tasks.due_at, tasks.updated_at");
 
         // Work Request visibility always precedes personal responsibility
         // narrowing. Employee ID and User ID are never interchangeable.

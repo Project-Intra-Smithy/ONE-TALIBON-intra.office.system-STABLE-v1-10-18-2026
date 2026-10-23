@@ -307,6 +307,11 @@ class CorrespondenceWorkspaceActionsTest extends TestCase
         $this->assertDatabaseHas('transaction_events', [
             'transaction_id' => $workflow->id,
             'action' => 'submitted',
+            'remarks' => null,
+        ]);
+        $this->assertDatabaseHas('correspondence_events', [
+            'correspondence_record_id' => $record->id,
+            'event' => 'routed',
             'remarks' => 'Please review immediately.',
         ]);
         $this->assertSame(1, CorrespondenceEvent::query()->where('correspondence_record_id', $record->id)->where('event', 'routed')->count());

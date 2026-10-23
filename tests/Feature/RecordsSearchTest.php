@@ -188,9 +188,15 @@ class RecordsSearchTest extends TestCase
             workflow: $workflow,
         );
 
-        $this->actingAs($actor)->get('/records?record_type=transaction&search='.urlencode($origin->code))
+        // Origin-office membership does not override linked source authorization.
+        $originResponse = $this->actingAs($actor)
+            ->get('/records?record_type=transaction&search='.urlencode($origin->code))
             ->assertOk()
-            ->assertInertia(fn (Assert $page) => $page->where('records.total', 1));
+            ->assertInertia(fn (Assert $page) => $page
+                ->where('records.total', 0));
+
+        $originResponse->assertDontSee($workflow->title);
+        $originResponse->assertDontSee($correspondence->subject);
 
         $this->actingAs($recipient)->get('/records?search='.urlencode($current->code))
             ->assertOk()
@@ -203,6 +209,20 @@ class RecordsSearchTest extends TestCase
         $this->actingAs($recipient)->get('/records?search='.urlencode($recipient->employee->full_name))
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page->where('records.total', 2));
+
+        // A standalone transaction still permits its originating office to
+        // discover work after another office becomes the current custodian.
+        $standalone = $this->transaction(
+            'Standalone origin office work',
+            $origin,
+            $current,
+            $actor,
+        );
+        $this->actingAs($actor)->get('/records?record_type=transaction&search='.urlencode($origin->code))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->where('records.total', 1)
+                ->where('records.data.0.title', $standalone->title));
     }
 
     public function test_record_type_and_state_filters_remain_source_specific(): void

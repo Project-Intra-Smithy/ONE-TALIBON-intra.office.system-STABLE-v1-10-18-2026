@@ -5,7 +5,6 @@ namespace App\Services\CommonEvidence;
 use App\Domain\Identity\VerifiedMunicipalActor;
 use App\Models\CorrespondenceEvent;
 use App\Models\CorrespondenceRecord;
-use App\Models\DocumentLink;
 use App\Models\TransactionEvent;
 use App\Models\TravelOrder;
 use App\Models\TravelOrderEvent;
@@ -35,6 +34,7 @@ final readonly class AuthorizedArchiveSql
         private CorrespondenceEvidenceScope $correspondenceScope,
         private TravelOrderAccess $travelOrderAccess,
         private TransactionVisibilityQuery $transactionVisibility,
+        private CorrespondenceAccessDecider $classificationAccess,
     ) {}
 
     /** @param array<string, mixed> $filters */
@@ -101,10 +101,10 @@ final readonly class AuthorizedArchiveSql
 
         $counts = DB::query()->fromSub(clone $all, 'all_archive')
             ->selectRaw(
-                "COUNT(*) AS total, "
+                'COUNT(*) AS total, '
                 ."COUNT(*) FILTER (WHERE direction = 'sent') AS sent, "
                 ."COUNT(*) FILTER (WHERE direction = 'received') AS received, "
-                ."COUNT(*) FILTER (WHERE uploaded_by_me = 1) AS uploads"
+                .'COUNT(*) FILTER (WHERE uploaded_by_me = 1) AS uploads'
             )->first();
 
         $documentTypes = DB::query()->fromSub(clone $all, 'archive_types')
@@ -121,7 +121,7 @@ final readonly class AuthorizedArchiveSql
             ->orderByDesc('year')->pluck('year')->all();
         $offices = DB::query()->fromSub(clone $all, 'archive_offices')
             ->whereNotNull('owner_office_id')
-            ->select(['owner_office_id','owner_office_code','owner_office_name','owner_office_short_name'])
+            ->select(['owner_office_id', 'owner_office_code', 'owner_office_name', 'owner_office_short_name'])
             ->distinct()->orderBy('owner_office_name')->get()
             ->map(fn (object $row): array => [
                 'id' => (int) $row->owner_office_id,
@@ -172,6 +172,7 @@ final readonly class AuthorizedArchiveSql
                 ->orderByDesc('uploaded_at')->orderByDesc('doc_id')->limit(3)->get()
                 ->map(fn (object $row): array => $this->present($row))->all();
         };
+
         return [
             'sentCount' => (int) ($counts->sent ?? 0),
             'receivedCount' => (int) ($counts->received ?? 0),
@@ -193,31 +194,90 @@ final readonly class AuthorizedArchiveSql
         $actorId = (int) $actor->id;
         $officeId = (int) $actor->employee->department_id;
         $employeeId = (int) $actor->employee->id;
+        // Apply document-level clearance before pagination, counts, search,
+        // selected-document lookup and activity. Parent-source authorization
+        // from authorizedLinks() remains an independent required condition.
+        $allowedClassifications = $this->classificationAccess
+            ->visibleDocumentClassificationValuesForVerifiedActor($verified);
+        $eligibleLinkIds = DB::query()->fromSub(clone $links, 'visible_links')
+            ->select('link_id');
+        $correspondenceTypes = $this->morphTypes(CorrespondenceRecord::class, CorrespondenceEvent::class);
+        $travelTypes = $this->morphTypes(TravelOrder::class, TravelOrderEvent::class);
+        $transactionTypes = $this->morphTypes(WorkflowTransaction::class, TransactionEvent::class);
+        $supportedTypes = array_values(array_unique(array_merge(
+            $correspondenceTypes,
+            $travelTypes,
+            $transactionTypes,
+        )));
+
         return DB::table('documents as d')
+            ->whereIn('d.classification', $allowedClassifications)
+            // Unknown or malformed polymorphic parents have no reviewed
+            // authorization rule, so they conceal the whole document.
+            ->whereNotExists(function (Builder $unknown) use ($supportedTypes): void {
+                $unknown->selectRaw('1')
+                    ->from('document_links as unsupported_link')
+                    ->whereColumn('unsupported_link.document_id', 'd.id')
+                    ->whereNotIn('unsupported_link.linkable_type', $supportedTypes);
+            })
+            // Download rejects every nonpositive parent ID, including a
+            // recognized link in a lower-priority family. Keep archive,
+            // counts, selection and activity at the same fail-closed boundary.
+            ->whereNotExists(function (Builder $invalid): void {
+                $invalid->selectRaw('1')
+                    ->from('document_links as invalid_link')
+                    ->whereColumn('invalid_link.document_id', 'd.id')
+                    ->where('invalid_link.linkable_id', '<=', 0);
+            })
             ->joinSub($ranked, 'source', function (JoinClause $join): void {
                 $join->on('source.document_id', '=', 'd.id')->where('source.source_position', '=', 1);
+            })
+            // A displayed link is insufficient when another parent of the
+            // controlling family is restricted, missing or unauthorized.
+            // Apply this SQL denial before page totals, search and activity.
+            ->whereNotExists(function (Builder $blocked) use (
+                $eligibleLinkIds, $correspondenceTypes, $travelTypes, $transactionTypes
+            ): void {
+                $blocked->selectRaw('1')
+                    ->from('document_links as other_link')
+                    ->whereColumn('other_link.document_id', 'd.id')
+                    ->where(function (Builder $family) use (
+                        $correspondenceTypes, $travelTypes, $transactionTypes
+                    ): void {
+                        $family->where(function (Builder $corr) use ($correspondenceTypes): void {
+                            $corr->where('source.family_priority', 1)
+                                ->whereIn('other_link.linkable_type', $correspondenceTypes);
+                        })->orWhere(function (Builder $travel) use ($travelTypes): void {
+                            $travel->where('source.family_priority', 2)
+                                ->whereIn('other_link.linkable_type', $travelTypes);
+                        })->orWhere(function (Builder $tx) use ($transactionTypes): void {
+                            $tx->where('source.family_priority', 3)
+                                ->whereIn('other_link.linkable_type', $transactionTypes);
+                        });
+                    })
+                    ->whereNotIn('other_link.id', clone $eligibleLinkIds);
             })
             ->leftJoin('users as u', 'u.id', '=', 'd.uploaded_by_user_id')
             ->leftJoin('departments as own', 'own.id', '=', 'd.owner_department_id')
             ->leftJoin('departments as cur', 'cur.id', '=', 'source.current_office_id')
             ->leftJoin('departments as orig', 'orig.id', '=', 'source.origin_office_id')
             ->selectRaw(
-                "d.id AS doc_id, CAST(d.public_id AS TEXT) AS public_id, "
+                'd.id AS doc_id, CAST(d.public_id AS TEXT) AS public_id, '
                 ."COALESCE(NULLIF(d.original_name, ''), d.title) AS name, d.title AS title, "
                 ."d.document_type, INITCAP(REPLACE(COALESCE(d.document_type, ''), '_', ' ')) AS document_type_label, "
                 ."d.classification, INITCAP(REPLACE(COALESCE(d.classification, ''), '_', ' ')) AS classification_label, "
-                ."d.size_bytes, d.created_at AS uploaded_at, "
-                ."d.uploaded_by_user_id, u.name AS uploaded_by, "
-                ."own.id AS owner_office_id, own.code AS owner_office_code, "
-                ."own.name AS owner_office_name, own.short_name AS owner_office_short_name, "
-                ."cur.id AS current_office_id, cur.code AS current_office_code, "
-                ."cur.name AS current_office_name, cur.short_name AS current_office_short_name, "
-                ."orig.id AS origin_office_id, orig.code AS origin_office_code, "
-                ."orig.name AS origin_office_name, orig.short_name AS origin_office_short_name, "
-                ."source.related_type, source.related_key, source.related_reference, source.related_title, "
+                .'d.size_bytes, d.created_at AS uploaded_at, '
+                .'d.uploaded_by_user_id, u.name AS uploaded_by, '
+                .'own.id AS owner_office_id, own.code AS owner_office_code, '
+                .'own.name AS owner_office_name, own.short_name AS owner_office_short_name, '
+                .'cur.id AS current_office_id, cur.code AS current_office_code, '
+                .'cur.name AS current_office_name, cur.short_name AS current_office_short_name, '
+                .'orig.id AS origin_office_id, orig.code AS origin_office_code, '
+                .'orig.name AS origin_office_name, orig.short_name AS origin_office_short_name, '
+                .'source.related_type, source.related_key, source.related_reference, source.related_title, '
                 ."source.relationship, INITCAP(REPLACE(COALESCE(source.relationship, ''), '_', ' ')) AS relationship_label, "
                 ."CASE WHEN d.uploaded_by_user_id = {$actorId} THEN 1 ELSE 0 END AS uploaded_by_me, "
-                ."CASE "
+                .'CASE '
                 ."WHEN d.uploaded_by_user_id = {$actorId} "
                 ."AND source.current_office_id > 0 AND source.current_office_id <> {$officeId} THEN 'sent' "
                 ."WHEN (d.uploaded_by_user_id IS NULL OR d.uploaded_by_user_id <> {$actorId}) "
@@ -230,16 +290,16 @@ final readonly class AuthorizedArchiveSql
     {
         $correspondence = $this->correspondenceScope
             ->visibleToVerifiedActor($verified)
-            ->select(['id','public_id','municipal_reference_no','external_reference_no','subject',
-                'receiving_department_id','workflow_transaction_id']);
+            ->select(['id', 'public_id', 'municipal_reference_no', 'external_reference_no', 'subject',
+                'receiving_department_id', 'workflow_transaction_id']);
         $travel = $this->travelOrderAccess
             ->scopeVisibleToVerifiedActor(TravelOrder::query(), $verified)
-            ->select(['id','public_id','reference_number','purpose','department_id']);
+            ->select(['id', 'public_id', 'reference_number', 'purpose', 'department_id']);
         // Existing transaction SQL scope corresponds to TransactionPolicy::view:
         // VIEW_ALL or the actor's origin/current office. Recheck on download.
         $transactions = $this->transactionVisibility->scopeVisibleToVerifiedActor($verified)
-            ->select(['id','reference_no','title','origin_department_id',
-                'current_department_id','assigned_employee_id']);
+            ->select(['id', 'reference_no', 'title', 'origin_department_id',
+                'current_department_id', 'assigned_employee_id']);
 
         $corrTypes = $this->morphTypes(CorrespondenceRecord::class, CorrespondenceEvent::class);
         $travelTypes = $this->morphTypes(TravelOrder::class, TravelOrderEvent::class);
@@ -257,12 +317,13 @@ final readonly class AuthorizedArchiveSql
         foreach ($sources as $source) {
             $union->unionAll($source);
         }
+
         return $union;
     }
 
     /**
-     * @param EloquentBuilder $authorized Source-policy-filtered parent SELECT
-     * @param list<string> $higherPriorityTypes Types that block lower precedence
+     * @param  EloquentBuilder  $authorized  Source-policy-filtered parent SELECT
+     * @param  list<string>  $higherPriorityTypes  Types that block lower precedence
      */
     private function links(
         EloquentBuilder $authorized,
@@ -286,21 +347,21 @@ final readonly class AuthorizedArchiveSql
 
         if ($family === 'correspondence') {
             $links->leftJoin('transactions as w', 'w.id', '=', 'r.workflow_transaction_id');
-            $context = "CAST(r.public_id AS TEXT) AS related_key, "
-                ."COALESCE(r.municipal_reference_no, r.external_reference_no) AS related_reference, "
-                ."r.subject AS related_title, w.origin_department_id AS origin_office_id, "
-                ."COALESCE(w.current_department_id, r.receiving_department_id) AS current_office_id, "
-                ."w.assigned_employee_id AS assigned_employee_id";
+            $context = 'CAST(r.public_id AS TEXT) AS related_key, '
+                .'COALESCE(r.municipal_reference_no, r.external_reference_no) AS related_reference, '
+                .'r.subject AS related_title, w.origin_department_id AS origin_office_id, '
+                .'COALESCE(w.current_department_id, r.receiving_department_id) AS current_office_id, '
+                .'w.assigned_employee_id AS assigned_employee_id';
         } elseif ($family === 'travel_order') {
-            $context = "CAST(r.public_id AS TEXT) AS related_key, "
-                ."r.reference_number AS related_reference, r.purpose AS related_title, "
-                ."NULL::BIGINT AS origin_office_id, r.department_id AS current_office_id, "
-                ."NULL::BIGINT AS assigned_employee_id";
+            $context = 'CAST(r.public_id AS TEXT) AS related_key, '
+                .'r.reference_number AS related_reference, r.purpose AS related_title, '
+                .'NULL::BIGINT AS origin_office_id, r.department_id AS current_office_id, '
+                .'NULL::BIGINT AS assigned_employee_id';
         } else {
-            $context = "CAST(r.id AS TEXT) AS related_key, "
-                ."r.reference_no AS related_reference, r.title AS related_title, "
-                ."r.origin_department_id AS origin_office_id, r.current_department_id AS current_office_id, "
-                ."r.assigned_employee_id AS assigned_employee_id";
+            $context = 'CAST(r.id AS TEXT) AS related_key, '
+                .'r.reference_no AS related_reference, r.title AS related_title, '
+                .'r.origin_department_id AS origin_office_id, r.current_department_id AS current_office_id, '
+                .'r.assigned_employee_id AS assigned_employee_id';
         }
 
         if ($higherPriorityTypes !== []) {
@@ -326,6 +387,7 @@ final readonly class AuthorizedArchiveSql
             $types[] = $class;
             $types[] = (new $class)->getMorphClass();
         }
+
         return array_values(array_unique($types));
     }
 
@@ -338,6 +400,7 @@ final readonly class AuthorizedArchiveSql
             'transaction' => route('transactions.show', ['transaction' => $row->related_key], false),
             default => null,
         };
+
         return [
             'publicId' => $row->public_id,
             'name' => $row->name,
@@ -371,6 +434,7 @@ final readonly class AuthorizedArchiveSql
         if ($id === null) {
             return null;
         }
+
         return [
             'id' => (int) $id,
             'code' => $row->{$prefix.'_office_code'},

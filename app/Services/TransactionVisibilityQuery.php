@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Domain\Identity\VerifiedMunicipalActor;
 use App\Domain\Workflow\Authorization\TransactionActorEligibility;
 use App\Domain\Workflow\Authorization\TransactionCapabilities;
+use App\Models\CorrespondenceRecord;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
 use Illuminate\Database\Eloquent\Builder;
@@ -14,8 +15,8 @@ final class TransactionVisibilityQuery
     public function __construct(
         private readonly TransactionCapabilities $capabilities,
         private readonly TransactionActorEligibility $eligibility,
-    ) {
-    }
+        private readonly CorrespondenceAccessDecider $correspondenceAccess,
+    ) {}
 
     public function scope(User $actor): Builder
     {
@@ -27,7 +28,7 @@ final class TransactionVisibilityQuery
             return $query->whereRaw('1 = 0');
         }
 
-        return $this->visibleForEligibleActor($current['role'], (int) $current['office_id']);
+        return $this->visibleForEligibleActor($actor, $current['role'], (int) $current['office_id']);
     }
 
     /**
@@ -38,20 +39,47 @@ final class TransactionVisibilityQuery
     {
         $actor = $verified->user();
 
-        return $this->visibleForEligibleActor($actor->role, (int) $actor->employee->department_id);
+        return $this->visibleForEligibleActor(
+            $actor,
+            $actor->role,
+            (int) $actor->employee->department_id,
+            $verified,
+        );
     }
 
-    private function visibleForEligibleActor(?string $role, int $departmentId): Builder
-    {
+    private function visibleForEligibleActor(
+        User $actor,
+        ?string $role,
+        int $departmentId,
+        ?VerifiedMunicipalActor $verified = null,
+    ): Builder {
         $query = WorkflowTransaction::query();
-        if ($this->allowsAll($role)) {
-            return $query;
+
+        if (! $this->allowsAll($role)) {
+            $query->where(function (Builder $visible) use ($departmentId): void {
+                $visible->where('current_department_id', $departmentId)
+                    ->orWhere('origin_department_id', $departmentId);
+            });
         }
 
-        return $query->where(function (Builder $visible) use ($departmentId): void {
-            $visible->where('current_department_id', $departmentId)
-                ->orWhere('origin_department_id', $departmentId);
-        });
+        // Preserve legitimate standalone document_review Work Requests.
+        // A linked transaction is excluded if ANY originating Correspondence
+        // record is outside the actor's source-specific authorization scope.
+        // This also prevents one visible child from overriding a restricted one.
+        // Ordinary transaction scopes still revalidate correspondence
+        // identity. Protected archive/download scopes reuse their fresh proof.
+        $readableSourceIds = ($verified === null
+            ? $this->correspondenceAccess->scopeVisibleTo(CorrespondenceRecord::query(), $actor)
+            : $this->correspondenceAccess->scopeVisibleToVerifiedActor(
+                CorrespondenceRecord::query(),
+                $verified,
+            ))->select('id');
+        $deniedTransactions = CorrespondenceRecord::query()
+            ->whereNotNull('workflow_transaction_id')
+            ->whereNotIn('id', $readableSourceIds)
+            ->select('workflow_transaction_id');
+
+        return $query->whereNotIn('transactions.id', $deniedTransactions);
     }
 
     public function canViewAll(User $actor): bool

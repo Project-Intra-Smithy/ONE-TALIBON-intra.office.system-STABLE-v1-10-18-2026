@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Domain\Identity\VerifiedMunicipalActor;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,13 +17,27 @@ final class DashboardPersonalQuery
     /** @return array<string, mixed> */
     public function workspace(User $actor): array
     {
+        return $this->workspaceForActor($actor);
+    }
+
+    /** A dashboard aggregator already established fresh, session-bound identity. */
+    public function workspaceForVerifiedActor(VerifiedMunicipalActor $verified): array
+    {
+        return $this->workspaceForActor($verified->user(), $verified);
+    }
+
+    private function workspaceForActor(User $actor, ?VerifiedMunicipalActor $verified = null): array
+    {
         $actor->loadMissing('employee.department');
         $employeeId = (int) $actor->employee->id;
         $departmentId = (int) $actor->employee->department_id;
         $now = now();
         $dueSoonEnd = $now->copy()->addDay();
         $terminal = $this->terminalStatuses();
-        $personal = $this->personalScope($this->visibility->scope($actor), $actor);
+        $authorized = $verified === null
+            ? $this->visibility->scope($actor)
+            : $this->visibility->scopeVisibleToVerifiedActor($verified);
+        $personal = $this->personalScope($authorized, $actor);
         $summary = $this->summary(
             $personal,
             $actor->id,

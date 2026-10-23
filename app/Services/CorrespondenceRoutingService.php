@@ -9,7 +9,6 @@ use App\Models\WorkflowTransaction;
 use Carbon\CarbonInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class CorrespondenceRoutingService
@@ -23,8 +22,7 @@ class CorrespondenceRoutingService
         private readonly CorrespondenceEventRecorder $events,
         private readonly TransactionalOutbox $outbox,
         private readonly AuditLogger $audit,
-    ) {
-    }
+    ) {}
 
     /** @param array{target_department_id:int, priority:string, due_at?:mixed, remarks?:mixed} $data */
     public function route(
@@ -90,12 +88,17 @@ class CorrespondenceRoutingService
     ): WorkflowTransaction {
         $workflow = $this->workflow->createWithinExistingTransaction($actor, [
             'transaction_type' => self::WORKFLOW_TYPE,
-            'title' => Str::limit(($record->municipal_reference_no ?? $record->external_reference_no).' — '.$record->subject, 255, ''),
-            'description' => $record->summary,
+            // P0-A: WorkflowTransactionCreated listeners run synchronously before
+            // this correspondence record is linked to the workflow. NEVER copy
+            // source subject/summary/reference into a weaker transaction surface.
+            'title' => 'Correspondence review',
+            'description' => null,
             'priority' => $data['priority'],
             'target_department_id' => $data['target_department_id'],
             'due_at' => $data['due_at'] ?? null,
-            'remarks' => $data['remarks'] ?? null,
+            // Routing remarks remain in the access-controlled CorrespondenceEvent,
+            // not in pre-link WorkflowTransactionCreated/event/calendar surfaces.
+            'remarks' => null,
         ]);
 
         if (! $this->workflowStates->representsRouted($workflow)) {
