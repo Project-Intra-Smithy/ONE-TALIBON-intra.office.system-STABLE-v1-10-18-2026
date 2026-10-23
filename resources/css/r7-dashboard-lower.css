@@ -1,0 +1,20 @@
+/* R7 lower dashboard region — fully scoped; active feature components retain their behavior. */
+.r7-lower { min-width:0; }
+.r7-lower-grid { display:grid; grid-template-columns:1fr 1.55fr 1fr 1fr; gap:12px; align-items:start; }
+.r7-lower-card { display:flex; flex-direction:column; min-width:0; background:var(--municipal-surface,#fff); border:1px solid var(--municipal-border,#d9e2dc); border-radius:6px; overflow:hidden; min-height:220px; box-shadow:0 1px 4px rgba(13,56,35,.05); }
+.r7-lower-title { display:flex; align-items:center; gap:9px; padding:11px 13px; min-height:45px; border-bottom:1px solid var(--municipal-border,#d9e2dc); font-weight:760; color:var(--municipal-text,#163027); font-size:.85rem; text-transform:uppercase; letter-spacing:.01em; }
+.r7-lower-title svg { flex-shrink:0; color:var(--municipal-brand,#12613f); }
+.r7-lower-body { display:grid; gap:10px; padding:18px 14px; font-size:.83rem; line-height:1.55; color:var(--municipal-text,#163027); }
+.r7-supporting { font-size:.78rem; color:var(--municipal-muted,#64736c); }
+.r7-embedded-task { display:grid; gap:10px; padding:9px; min-width:0; }
+.r7-embedded-task .municipal-panel { border-radius:5px; }
+.r7-embedded-task .task-workspace-body { padding:8px; }
+.r7-embedded-task .task-row { padding:10px; }
+.r7-lower-links .ot-dashboard-quick { border:0; border-radius:0; box-shadow:none; padding:10px; }
+.r7-lower-links .ot-dashboard-quick-heading { display:none; }
+.r7-lower-links .ot-dashboard-tiles { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+.r7-lower-links .ot-dashboard-tile { min-height:76px; }
+.r7-lower :where(a,button):focus-visible { outline:3px solid var(--municipal-focus,#19754b); outline-offset:2px; }
+@media(max-width:1199px) { .r7-lower-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:767px) { .r7-lower-grid { grid-template-columns:minmax(0,1fr); } .r7-lower-card { min-height:unset; } .r7-lower-links .ot-dashboard-tiles { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media(max-width:380px) { .r7-lower-links .ot-dashboard-tiles { grid-template-columns:repeat(2,minmax(0,1fr)); } }
