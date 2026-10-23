@@ -185,3 +185,92 @@
   gap:8px;
 }
 .ot-reference-dashboard .ot-dashboard-lead .ot-dashboard-panel-heading > h2 { flex:1 1 auto; min-width:0; }
+
+/* R6: available Dashboard width, not the window width, determines density.
+   The shell sidebar and user zoom can make a 1280px viewport much narrower. */
+.ot-reference-dashboard {
+  container: ot-dashboard / inline-size;
+}
+.ot-reference-dashboard .ot-dashboard-tiles {
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+.ot-reference-dashboard .ot-dashboard-tile {
+  min-height:82px;
+  padding:9px 7px;
+}
+.ot-reference-dashboard .ot-dashboard-tile-icon {
+  color:var(--municipal-brand,#12613f);
+  background:var(--municipal-brand-soft,#e9f2ec);
+}
+.dark .ot-reference-dashboard .ot-dashboard-tile-icon {
+  color:var(--municipal-brand-active,#8bd7a8);
+  background:var(--municipal-brand-soft,#173326);
+}
+.ot-reference-dashboard .ot-dashboard-work {
+  grid-template-columns:minmax(0,1fr);
+  align-items:stretch;
+}
+.ot-reference-dashboard .ot-dashboard-work .ot-dashboard-panel-heading {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-height:44px;
+  padding:10px 13px;
+}
+.ot-reference-dashboard .ot-dashboard-work .ot-dashboard-panel-heading svg {
+  color:currentColor;
+}
+.ot-reference-dashboard .ot-dashboard-work .ot-dashboard-panel-heading h2 {
+  min-width:0;
+}
+.ot-reference-dashboard .ot-dashboard-work :is(.ot-dashboard-lead,.ot-dashboard-activity,.ot-dashboard-metrics) {
+  min-width:0;
+}
+.ot-reference-dashboard .ot-dashboard-scroll-region :is(a,button):focus-visible {
+  position:relative;
+  z-index:1;
+  outline:2px solid var(--municipal-focus,#19754b);
+  outline-offset:-2px;
+}
+.ot-reference-dashboard .ot-dashboard-metrics .workspace-metric > div:nth-child(2) {
+  font-size:.8rem;
+  line-height:1.4;
+}
+.ot-reference-dashboard .ot-dashboard-scroll-region {
+  scrollbar-gutter:auto;
+}
+@container ot-dashboard (min-width:520px) {
+  .ot-reference-dashboard .ot-dashboard-tiles { grid-template-columns:repeat(4,minmax(0,1fr)); }
+}
+@container ot-dashboard (min-width:730px) {
+  .ot-reference-dashboard .ot-dashboard-tiles { grid-template-columns:repeat(6,minmax(0,1fr)); }
+  .ot-reference-dashboard .ot-dashboard-work { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .ot-reference-dashboard .ot-dashboard-metrics { grid-column:1/-1; }
+  .ot-reference-dashboard .ot-dashboard-metrics .workspace-metrics { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+@container ot-dashboard (min-width:1080px) {
+  .ot-reference-dashboard .ot-dashboard-tiles { grid-template-columns:repeat(8,minmax(0,1fr)); }
+  .ot-reference-dashboard .ot-dashboard-work { grid-template-columns:minmax(0,1.12fr) minmax(0,.95fr) minmax(0,.88fr); }
+  .ot-reference-dashboard .ot-dashboard-metrics { grid-column:auto; }
+  .ot-reference-dashboard .ot-dashboard-metrics .workspace-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@container ot-dashboard (max-width:850px) {
+  .ot-reference-dashboard .ot-dashboard-hero-copy { max-width:100%; }
+  .ot-reference-dashboard .ot-dashboard-hero-motto { display:none; }
+  .ot-reference-dashboard .ot-dashboard-hero { background-size:cover,auto 150%; background-position:center,right center; }
+}
+/* Do not impose a nested scrolling region where the actual work canvas is narrow. */
+@container ot-dashboard (max-width:729px) {
+  .ot-reference-dashboard .ot-dashboard-scroll-region {
+    max-height:none;
+    overflow-y:visible;
+    scrollbar-gutter:auto;
+  }
+}
+@media (max-width:767px) {
+  .ot-reference-dashboard .ot-dashboard-scroll-region { max-height:none; overflow:visible; }
+}
+@media (forced-colors:active) {
+  .ot-reference-dashboard .ot-dashboard-tile-icon { color:ButtonText; background:ButtonFace; outline:1px solid CanvasText; }
+  .ot-reference-dashboard .ot-dashboard-scroll-region :is(a,button):focus-visible { outline-color:Highlight; }
+}
