@@ -4,6 +4,10 @@ Municipal Intra Office System — canonical product engineering repository.
 
 Technical Authority: **Kirch Ivan Balite**
 
+## Current frontend work-package memory
+
+- [R7 dashboard-body work register](docs/frontend/R7_WORK_PACKAGE_REGISTER.md) — Source candidates, separate worker ownership and unfinished independent acceptance under [Engineering Hub #140](https://github.com/Project-Intra-Smithy/engineering-hub/issues/140). This is an **active development record**, not a released application baseline.
+
 ## Authority pointers
 
 Do not use this README as a current-state ledger.
