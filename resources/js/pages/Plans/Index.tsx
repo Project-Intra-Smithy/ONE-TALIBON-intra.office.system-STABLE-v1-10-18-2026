@@ -95,12 +95,13 @@ export default function PlansIndex() {
         <AppLayout title="LGU Plans Library">
             <PageFrame width="standard" density="compact">
                 <PageHeader eyebrow="Municipality of Talibon" title="LGU Plans Library" description="Municipal development plans · Prototype reference data" icon={ClipboardList} />
+                <p className="text-xs leading-5 text-[var(--municipal-muted)]">Reference library · Records shown here are not validated live municipal approvals.</p>
                 <PlanFilterBar filters={filters} leadOffices={leadOffices} resultCount={filteredPlans.length} onChange={(nextFilters) => { setFilters(nextFilters); setSelectedPlanId(null); }} />
-                <section aria-label="Plans library" className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                <section aria-label="Plans library" className="grid min-w-0 gap-2 md:grid-cols-2 xl:grid-cols-3">
                     {filteredPlans.map((plan) => <PlanCard key={plan.id} plan={plan} selected={selectedPlanId === plan.id} onSelect={() => setSelectedPlanId(plan.id)} />)}
                     {filteredPlans.length === 0 && <p role="status" className="py-3 text-sm text-[var(--municipal-muted)] sm:col-span-2 xl:col-span-3">No plans match the current filters.</p>}
                 </section>
-                <details className="group min-w-0 border-t border-[var(--municipal-border)] text-[var(--municipal-muted)]">
+                <details className="group municipal-panel min-w-0 rounded-lg text-[var(--municipal-muted)]">
                     <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-[13px] font-semibold marker:hidden">
                         <span>Planning context</span>
                         <span className="text-xs text-[var(--municipal-brand)] group-open:hidden">Show</span>
