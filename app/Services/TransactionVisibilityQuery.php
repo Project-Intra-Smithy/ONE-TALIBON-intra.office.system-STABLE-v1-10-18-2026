@@ -16,8 +16,7 @@ final class TransactionVisibilityQuery
         private readonly TransactionCapabilities $capabilities,
         private readonly TransactionActorEligibility $eligibility,
         private readonly CorrespondenceAccessDecider $correspondenceAccess,
-    ) {
-    }
+    ) {}
 
     public function scope(User $actor): Builder
     {
@@ -53,8 +52,7 @@ final class TransactionVisibilityQuery
         ?string $role,
         int $departmentId,
         ?VerifiedMunicipalActor $verified = null,
-    ): Builder
-    {
+    ): Builder {
         $query = WorkflowTransaction::query();
 
         if (! $this->allowsAll($role)) {

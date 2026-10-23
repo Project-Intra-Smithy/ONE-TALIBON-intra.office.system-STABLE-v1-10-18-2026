@@ -5,8 +5,8 @@ namespace App\Domain\Tasks;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * W02 individual Task policy. Never infer office, executive or delegated

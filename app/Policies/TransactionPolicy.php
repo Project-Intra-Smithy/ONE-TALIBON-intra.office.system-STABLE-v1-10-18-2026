@@ -4,10 +4,10 @@ namespace App\Policies;
 
 use App\Domain\Workflow\Authorization\TransactionAccessDecider;
 use App\Domain\Workflow\Authorization\TransactionAuthorizationContextFactory;
-use App\Services\CorrespondenceAccessDecider;
 use App\Models\CorrespondenceRecord;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
+use App\Services\CorrespondenceAccessDecider;
 
 final readonly class TransactionPolicy
 {
@@ -15,8 +15,7 @@ final readonly class TransactionPolicy
         private TransactionAuthorizationContextFactory $contexts,
         private TransactionAccessDecider $access,
         private CorrespondenceAccessDecider $correspondenceAccess,
-    ) {
-    }
+    ) {}
 
     public function viewAny(User $user): bool
     {

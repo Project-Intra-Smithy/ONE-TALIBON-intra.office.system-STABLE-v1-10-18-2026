@@ -22,8 +22,7 @@ class CorrespondenceRoutingService
         private readonly CorrespondenceEventRecorder $events,
         private readonly TransactionalOutbox $outbox,
         private readonly AuditLogger $audit,
-    ) {
-    }
+    ) {}
 
     /** @param array{target_department_id:int, priority:string, due_at?:mixed, remarks?:mixed} $data */
     public function route(

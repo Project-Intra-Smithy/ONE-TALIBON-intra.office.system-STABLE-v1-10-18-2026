@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\WorkflowTransaction;
 use App\Services\CorrespondenceAccessDecider;
 use App\Services\PlatformNotificationService;
+use Illuminate\Database\Eloquent\Collection;
 
 final readonly class NotifyWorkflowTransactionMutation
 {
@@ -20,8 +21,7 @@ final readonly class NotifyWorkflowTransactionMutation
         private PlatformNotificationService $notifications,
         private WorkflowDefinitionResolver $definitions,
         private CorrespondenceAccessDecider $correspondenceAccess,
-    ) {
-    }
+    ) {}
 
     public function handle(
         WorkflowTransactionCreated|WorkflowTransactionTransitioned $domainEvent,
@@ -148,7 +148,7 @@ final readonly class NotifyWorkflowTransactionMutation
     /**
      * Scope notice delivery to users who can view the originating document.
      *
-     * @param array<string, mixed> $payload
+     * @param  array<string, mixed>  $payload
      */
     private function dispatchOffice(Department $office, WorkflowTransaction $transaction, array $payload): void
     {
@@ -193,8 +193,8 @@ final readonly class NotifyWorkflowTransactionMutation
         return $this->canViewEverySource($recipient, $sources);
     }
 
-    /** @return \Illuminate\Database\Eloquent\Collection<int, CorrespondenceRecord> */
-    private function linkedCorrespondence(WorkflowTransaction $transaction): \Illuminate\Database\Eloquent\Collection
+    /** @return Collection<int, CorrespondenceRecord> */
+    private function linkedCorrespondence(WorkflowTransaction $transaction): Collection
     {
         // Check all linked sources, including malformed legacy transaction
         // types. The order in which sources were created must never matter.
@@ -203,12 +203,11 @@ final readonly class NotifyWorkflowTransactionMutation
             ->get();
     }
 
-    /** @param \Illuminate\Database\Eloquent\Collection<int, CorrespondenceRecord> $sources */
-    private function canViewEverySource(User $recipient, \Illuminate\Database\Eloquent\Collection $sources): bool
+    /** @param Collection<int, CorrespondenceRecord> $sources */
+    private function canViewEverySource(User $recipient, Collection $sources): bool
     {
         return $sources->isNotEmpty()
-            && $sources->every(fn (CorrespondenceRecord $source): bool =>
-                $this->correspondenceAccess->canView($recipient, $source));
+            && $sources->every(fn (CorrespondenceRecord $source): bool => $this->correspondenceAccess->canView($recipient, $source));
     }
 
     private function activeOffice(?int $officeId): ?Department

@@ -8,14 +8,15 @@ use App\Models\DocumentLink;
 use App\Models\TransactionEvent;
 use App\Models\TravelOrder;
 use App\Models\TravelOrderEvent;
-use App\Models\WorkflowTransaction;
 use App\Models\User;
+use App\Models\WorkflowTransaction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
 final class DocumentEvidenceQuery
 {
     public function __construct(private readonly DocumentAccessService $access) {}
+
     /** @return array{record:array<int,array<string,mixed>>,events:array<string,array<int,array<string,mixed>>>} */
     public function forTransaction(WorkflowTransaction $transaction, ?User $actor = null): array
     {
@@ -23,7 +24,7 @@ final class DocumentEvidenceQuery
             ? $transaction->events->pluck('id')->map(fn ($id): int => (int) $id)->all()
             : $transaction->events()->pluck('id')->map(fn ($id): int => (int) $id)->all();
 
-        return $this->forParentAndEvents($transaction, (new TransactionEvent())->getMorphClass(), $eventIds, $actor);
+        return $this->forParentAndEvents($transaction, (new TransactionEvent)->getMorphClass(), $eventIds, $actor);
     }
 
     /** @return array{record:array<int,array<string,mixed>>,events:array<string,array<int,array<string,mixed>>>} */
@@ -31,7 +32,7 @@ final class DocumentEvidenceQuery
     {
         $eventIds = $record->events()->pluck('id')->map(fn ($id): int => (int) $id)->all();
 
-        return $this->forParentAndEvents($record, (new CorrespondenceEvent())->getMorphClass(), $eventIds, $actor);
+        return $this->forParentAndEvents($record, (new CorrespondenceEvent)->getMorphClass(), $eventIds, $actor);
     }
 
     /** @return array{record:array<int,array<string,mixed>>,events:array<string,array<int,array<string,mixed>>>} */
@@ -41,11 +42,11 @@ final class DocumentEvidenceQuery
             ? $travelOrder->events->pluck('id')->map(fn ($id): int => (int) $id)->all()
             : $travelOrder->events()->pluck('id')->map(fn ($id): int => (int) $id)->all();
 
-        return $this->forParentAndEvents($travelOrder, (new TravelOrderEvent())->getMorphClass(), $eventIds, $actor);
+        return $this->forParentAndEvents($travelOrder, (new TravelOrderEvent)->getMorphClass(), $eventIds, $actor);
     }
 
     /**
-     * @param array<int, int> $eventIds
+     * @param  array<int, int>  $eventIds
      * @return array{record:array<int,array<string,mixed>>,events:array<string,array<int,array<string,mixed>>>}
      */
     private function forParentAndEvents(Model $parent, string $eventType, array $eventIds, ?User $actor): array
@@ -89,6 +90,7 @@ final class DocumentEvidenceQuery
             $item = $this->item($link);
             if ($link->linkable_type === $parentType && (int) $link->linkable_id === (int) $parent->getKey()) {
                 $record[] = $item;
+
                 continue;
             }
 

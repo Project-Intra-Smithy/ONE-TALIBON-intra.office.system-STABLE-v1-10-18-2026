@@ -20,7 +20,10 @@ final class CalendarWorkspaceTest extends TestCase
 
     public function test_authorized_events_are_visible_with_server_derived_buckets(): void
     {
-        $own = $this->department('OWN'); $other = $this->department('OTHER'); $actor = $this->human($own); $otherUser = $this->human($other);
+        $own = $this->department('OWN');
+        $other = $this->department('OTHER');
+        $actor = $this->human($own);
+        $otherUser = $this->human($other);
         $at = CarbonImmutable::parse('2026-09-25 09:00', 'Asia/Manila');
         $this->event('municipal-visible', $at, scope: 'municipality');
         $this->event('office-visible', $at->addHour(), department: $own);
@@ -29,20 +32,30 @@ final class CalendarWorkspaceTest extends TestCase
         $this->event('other-person-hidden', $at->addHours(4), user: $otherUser);
         $events = collect(app(CalendarWorkspaceQueryService::class)->workspace($actor, 'day', '2026-09-25')['events'])->keyBy('event_key');
         $this->assertSame(['municipal-visible', 'office-visible', 'personal-visible'], $events->keys()->all());
-        $this->assertSame('municipality', $events['municipal-visible']['calendar_bucket']); $this->assertSame('office', $events['office-visible']['calendar_bucket']); $this->assertSame('personal', $events['personal-visible']['calendar_bucket']);
+        $this->assertSame('municipality', $events['municipal-visible']['calendar_bucket']);
+        $this->assertSame('office', $events['office-visible']['calendar_bucket']);
+        $this->assertSame('personal', $events['personal-visible']['calendar_bucket']);
     }
 
     public function test_calendar_windows_are_deterministic_and_bounded(): void
     {
-        $actor = $this->human($this->department('RANGE')); $service = app(CalendarWorkspaceQueryService::class);
+        $actor = $this->human($this->department('RANGE'));
+        $service = app(CalendarWorkspaceQueryService::class);
         $expected = ['month' => ['2026-08-30T00:00:00+08:00', '2026-10-10T23:59:59+08:00'], 'week' => ['2026-09-20T00:00:00+08:00', '2026-09-26T23:59:59+08:00'], 'day' => ['2026-09-25T00:00:00+08:00', '2026-09-25T23:59:59+08:00'], 'schedule' => ['2026-09-25T00:00:00+08:00', '2026-10-25T23:59:59+08:00']];
-        foreach ($expected as $view => [$start, $end]) { $calendar = $service->workspace($actor, $view, '2026-09-25')['calendar']; $this->assertSame($start, $calendar['range_start']); $this->assertSame($end, $calendar['range_end']); }
+        foreach ($expected as $view => [$start, $end]) {
+            $calendar = $service->workspace($actor, $view, '2026-09-25')['calendar'];
+            $this->assertSame($start, $calendar['range_start']);
+            $this->assertSame($end, $calendar['range_end']);
+        }
     }
 
     public function test_invalid_view_and_date_fall_back_safely(): void
     {
-        $actor = $this->human($this->department('FALLBACK')); $calendar = app(CalendarWorkspaceQueryService::class)->workspace($actor, 'year', '2026-02-31')['calendar'];
-        $this->assertSame('month', $calendar['view']); $this->assertSame(CarbonImmutable::now('Asia/Manila')->toDateString(), $calendar['anchor_date']); $this->assertSame('Asia/Manila', $calendar['timezone']);
+        $actor = $this->human($this->department('FALLBACK'));
+        $calendar = app(CalendarWorkspaceQueryService::class)->workspace($actor, 'year', '2026-02-31')['calendar'];
+        $this->assertSame('month', $calendar['view']);
+        $this->assertSame(CarbonImmutable::now('Asia/Manila')->toDateString(), $calendar['anchor_date']);
+        $this->assertSame('Asia/Manila', $calendar['timezone']);
         $this->actingAs($actor)->get('/calendar?view%5B0%5D=week&date%5B0%5D=2026-09-25')->assertOk();
     }
 
@@ -60,11 +73,17 @@ final class CalendarWorkspaceTest extends TestCase
 
     public function test_all_day_and_timed_projection_use_calendar_local_values(): void
     {
-        $office = $this->department('PROJECTION'); $actor = $this->human($office);
+        $office = $this->department('PROJECTION');
+        $actor = $this->human($office);
         $this->event('all-day', CarbonImmutable::parse('2026-09-25 00:00', 'Asia/Manila'), CarbonImmutable::parse('2026-09-27 23:59', 'Asia/Manila'), true, department: $office);
         $this->event('timed', CarbonImmutable::parse('2026-09-25 09:30', 'Asia/Manila'), CarbonImmutable::parse('2026-09-25 11:00', 'Asia/Manila'), department: $office);
         $events = collect(app(CalendarWorkspaceQueryService::class)->workspace($actor, 'month', '2026-09-25')['events'])->keyBy('event_key');
-        $this->assertTrue($events['all-day']['all_day']); $this->assertSame('2026-09-25', $events['all-day']['start_date']); $this->assertSame('2026-09-27', $events['all-day']['end_date']); $this->assertNull($events['all-day']['start_time']); $this->assertSame('09:30', $events['timed']['start_time']); $this->assertSame('11:00', $events['timed']['end_time']);
+        $this->assertTrue($events['all-day']['all_day']);
+        $this->assertSame('2026-09-25', $events['all-day']['start_date']);
+        $this->assertSame('2026-09-27', $events['all-day']['end_date']);
+        $this->assertNull($events['all-day']['start_time']);
+        $this->assertSame('09:30', $events['timed']['start_time']);
+        $this->assertSame('11:00', $events['timed']['end_time']);
     }
 
     public function test_calendar_route_returns_normalized_workspace_contract(): void
@@ -128,14 +147,17 @@ final class CalendarWorkspaceTest extends TestCase
     {
         return CalendarEvent::query()->create(['event_key' => $key, 'event_type' => 'calendar_test', 'title' => Str::headline($key), 'description' => 'Calendar workspace test event.', 'scope' => $scope, 'department_id' => $department?->id, 'user_id' => $user?->id, 'source_domain' => 'calendar_test', 'source_type' => self::class, 'source_id' => random_int(1, 1000000), 'priority' => 'normal', 'starts_at' => $start, 'ends_at' => $end, 'all_day' => $allDay, 'location' => 'Municipal Hall', 'action_url' => '/calendar-test/'.$key, 'status' => 'scheduled']);
     }
+
     private function department(string $suffix): Department
     {
         return Department::query()->create(['code' => 'CAL-'.Str::upper(Str::random(6)), 'name' => 'Calendar '.$suffix, 'short_name' => 'CAL-'.$suffix, 'branch' => 'executive', 'office_type' => 'department', 'sort_order' => 10, 'is_routable' => true, 'is_active' => true]);
     }
+
     private function human(Department $department): User
     {
         $user = User::query()->create(['name' => 'Calendar User '.Str::random(5), 'email' => Str::lower(Str::random(10)).'@example.test', 'password' => 'password', 'role' => 'department_staff', 'is_active' => true]);
         Employee::query()->create(['employee_number' => 'CAL-EMP-'.Str::upper(Str::random(10)), 'full_name' => $user->name, 'work_email' => $user->email, 'user_id' => $user->id, 'department_id' => $department->id, 'position_title' => 'Calendar Officer', 'employment_status' => 'active']);
+
         return $user->fresh('employee.department');
     }
 }
