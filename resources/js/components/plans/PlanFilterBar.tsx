@@ -16,7 +16,7 @@ type Props = {
     onChange: (filters: PlanFilters) => void;
 };
 
-const fieldClass = 'min-h-11 min-w-0 rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-800 outline-none focus:border-emerald-600 dark:border-slate-700 dark:bg-[#142236] dark:text-slate-100';
+const fieldClass = 'min-h-11 min-w-0 rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 text-sm text-[var(--municipal-text)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--municipal-focus)]';
 
 export default function PlanFilterBar({ filters, leadOffices, resultCount, onChange }: Props) {
     const hasFilters = filters.query !== '' || filters.status !== 'All' || filters.horizon !== 'All' || filters.leadOffice !== 'All';
