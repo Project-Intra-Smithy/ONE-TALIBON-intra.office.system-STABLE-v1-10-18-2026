@@ -235,6 +235,12 @@ class CorrespondenceAccessDecider
     }
 
     /** @return array<int, string> */
+    public function visibleClassificationValuesForVerifiedActor(VerifiedMunicipalActor $verified): array
+    {
+        return $this->classificationValuesForActiveActor($verified->user());
+    }
+
+    /** @return array<int, string> */
     private function classificationValuesForActiveActor(User $actor): array
     {
         if (in_array($actor->role, self::RESTRICTED_VIEW_ROLES, true)) {

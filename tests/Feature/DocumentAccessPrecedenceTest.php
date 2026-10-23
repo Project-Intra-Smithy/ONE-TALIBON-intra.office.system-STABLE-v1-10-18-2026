@@ -163,9 +163,14 @@ class DocumentAccessPrecedenceTest extends TestCase
         $actor->employee->update(['employment_status' => 'inactive']);
         // Deliberately keep the original actor with cached active relations.
         $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
-        $this->actingAs($actor)
+        $response = $this->actingAs($actor)
             ->get('/documents/'.$document->public_id.'/download')
-            ->assertForbidden();
+            ->assertRedirect(route('login'))
+            ->assertSessionHasErrors([
+                'email' => 'This session is no longer active. Please sign in again or contact an administrator.',
+            ]);
+        $response->assertHeaderMissing('Content-Disposition');
+        $response->assertDontSee('%PDF-1.7 test', false);
     }
 
     public function test_orphaned_higher_priority_event_link_does_not_downgrade_to_transaction(): void
@@ -201,6 +206,7 @@ class DocumentAccessPrecedenceTest extends TestCase
             $office = $this->department('CONTEXT-'.$order);
             $other = $this->department('HIDDEN-'.$order);
             $actor = $this->human($office);
+            $this->actingAs($actor);
             $denied = $this->restrictedCorrespondence($other);
             $allowed = $this->restrictedCorrespondence($office);
             $allowed->update(['subject' => 'Authorized correspondence context']);
@@ -371,8 +377,13 @@ class DocumentAccessPrecedenceTest extends TestCase
         $archive = app(DocumentArchiveQuery::class)->workspace($actor, [
             'document' => $document->public_id,
         ]);
-        $this->assertSame('Authorized SQL archive source', $archive['selected']['relatedTitle']);
+        $this->assertNull($archive['selected']);
+        $this->assertSame(0, $archive['records']->total());
+        $this->assertSame(0, $archive['counts']['all']);
         $serialized = json_encode($archive);
+        $this->assertStringNotContainsString($allowed->subject, $serialized);
+        $this->assertStringNotContainsString($allowed->municipal_reference_no, $serialized);
+        $this->assertStringNotContainsString($allowed->public_id, $serialized);
         $this->assertStringNotContainsString($denied->subject, $serialized);
         $this->assertStringNotContainsString($denied->municipal_reference_no, $serialized);
         $this->assertStringNotContainsString($denied->public_id, $serialized);

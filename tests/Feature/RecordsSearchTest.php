@@ -188,9 +188,30 @@ class RecordsSearchTest extends TestCase
             workflow: $workflow,
         );
 
-        $this->actingAs($actor)->get('/records?record_type=transaction&search='.urlencode($origin->code))
+        // Origin-office membership does not override linked source authorization.
+        $originResponse = $this->actingAs($actor)
+            ->get('/records?record_type=transaction&search='.urlencode($origin->code))
             ->assertOk()
-            ->assertInertia(fn (Assert $page) => $page->where('records.total', 1));
+            ->assertInertia(fn (Assert $page) => $page
+                ->where('records.total', 0));
+
+        $originResponse->assertDontSee($workflow->title);
+        $originResponse->assertDontSee($correspondence->subject);
+
+        // Standalone authorized office work must remain searchable.
+        $standalone = $this->transaction(
+            'Independent operational request',
+            $origin,
+            $origin,
+            $actor,
+        );
+
+        $this->actingAs($actor)
+            ->get('/records?record_type=transaction&search='.urlencode($origin->code))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->where('records.total', 1)
+                ->where('records.data.0.title', $standalone->title));
 
         $this->actingAs($recipient)->get('/records?search='.urlencode($current->code))
             ->assertOk()

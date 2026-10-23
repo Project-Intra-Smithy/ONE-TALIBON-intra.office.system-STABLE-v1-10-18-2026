@@ -40,10 +40,20 @@ final class TransactionVisibilityQuery
     {
         $actor = $verified->user();
 
-        return $this->visibleForEligibleActor($actor, $actor->role, (int) $actor->employee->department_id);
+        return $this->visibleForEligibleActor(
+            $actor,
+            $actor->role,
+            (int) $actor->employee->department_id,
+            $verified,
+        );
     }
 
-    private function visibleForEligibleActor(User $actor, ?string $role, int $departmentId): Builder
+    private function visibleForEligibleActor(
+        User $actor,
+        ?string $role,
+        int $departmentId,
+        ?VerifiedMunicipalActor $verified = null,
+    ): Builder
     {
         $query = WorkflowTransaction::query();
 
@@ -58,9 +68,12 @@ final class TransactionVisibilityQuery
         // A linked transaction is excluded if ANY originating Correspondence
         // record is outside the actor's source-specific authorization scope.
         // This also prevents one visible child from overriding a restricted one.
-        $readableSourceIds = $this->correspondenceAccess
-            ->scopeVisibleTo(CorrespondenceRecord::query(), $actor)
-            ->select('id');
+        $readableSourceIds = ($verified === null
+            ? $this->correspondenceAccess->scopeVisibleTo(CorrespondenceRecord::query(), $actor)
+            : $this->correspondenceAccess->scopeVisibleToVerifiedActor(
+                CorrespondenceRecord::query(),
+                $verified,
+            ))->select('id');
         $deniedTransactions = CorrespondenceRecord::query()
             ->whereNotNull('workflow_transaction_id')
             ->whereNotIn('id', $readableSourceIds)
