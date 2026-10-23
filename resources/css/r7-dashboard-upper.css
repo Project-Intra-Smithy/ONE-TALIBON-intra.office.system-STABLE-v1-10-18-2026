@@ -1,0 +1,25 @@
+/* R7 / Reference A — dashboard body only. Does not modify the app shell. */
+.ot-reference-dashboard.r7-dashboard { gap: 14px; max-width: 1480px; }
+.r7-dashboard .ot-dashboard-hero { min-height: 142px; border-radius: 4px; border-left: 5px solid #d2ad45; background-color: #edf8f4 !important; background-image: linear-gradient(90deg,rgba(242,250,247,.99) 0%,rgba(241,250,247,.98) 54%,rgba(208,235,224,.76) 100%) !important; color: #163027; box-shadow:none; padding: 20px 25px; }
+.r7-dashboard .ot-dashboard-hero-eyebrow { color:#385c4b; letter-spacing:.25em; font-size:.69rem; }
+.r7-dashboard .ot-dashboard-hero h1 { color:#101b17; font-size:clamp(1.5rem,2.5vw,2.25rem); }
+.r7-dashboard .ot-dashboard-hero-description { color:#526c5e; font-style:italic; }
+.r7-dashboard .ot-dashboard-hero-context { color:#315c48; }
+.r7-dashboard .ot-dashboard-hero-motto { color:#145239; font-size:1rem; letter-spacing:.02em; }
+.r7-upper { min-width:0; }
+.r7-upper-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; align-items:stretch; }
+.r7-panel { min-width:0; display:flex; flex-direction:column; overflow:hidden; border:1px solid var(--municipal-border,#d9e2dc); border-radius:6px; background:var(--municipal-surface,#fff); box-shadow:0 1px 4px rgba(13,56,35,.06); }
+.r7-section-kicker { display:flex; align-items:center; gap:9px; min-height:44px; padding:10px 14px; background:#0b553b; color:#fff; font-weight:750; text-transform:uppercase; font-size:.84rem; letter-spacing:.02em; }
+.r7-panel > .municipal-panel, .r7-panel > section.municipal-panel { flex:1; min-width:0; border:0 !important; border-radius:0 !important; box-shadow:none !important; }
+.r7-panel .ot-dashboard-panel-heading { background:transparent !important; border-color:var(--municipal-border,#d9e2dc) !important; min-height:36px; color:var(--municipal-text,#163027) !important; }
+.r7-panel .ot-dashboard-panel-heading :where(h2,svg), .r7-panel .ot-dashboard-panel-heading .municipal-panel-title { color:var(--municipal-text,#163027) !important; }
+.r7-panel .ot-dashboard-scroll-region { max-height:275px; overflow:auto; }
+.r7-panel .ot-dashboard-work-row { align-items:start; }
+.r7-panel .ot-dashboard-work-side { flex:0 0 auto; max-width:37%; }
+.r7-panel .workspace-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.r7-empty { padding:18px; color:var(--municipal-muted,#64736c); }
+.dark .r7-dashboard .ot-dashboard-hero { background-image:linear-gradient(90deg,#152d23 0%,#1e3f30 100%) !important; color:#edf6f0; }
+.dark .r7-dashboard .ot-dashboard-hero :where(h1,.ot-dashboard-hero-eyebrow,.ot-dashboard-hero-description,.ot-dashboard-hero-context,.ot-dashboard-hero-motto) { color:#e0f4e7; }
+.dark .r7-section-kicker { background:#124e38; }
+@media (max-width:1199px) { .r7-upper-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .r7-top-summary { grid-column:1/-1; } }
+@media (max-width:767px) { .r7-upper-grid { grid-template-columns:minmax(0,1fr); } .r7-top-summary { grid-column:auto; } .r7-dashboard .ot-dashboard-hero { padding:17px; min-height:120px; } .r7-dashboard .ot-dashboard-hero-eyebrow { letter-spacing:.1em; } }
