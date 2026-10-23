@@ -1,10 +1,10 @@
 import { usePage } from '@inertiajs/react';
 import { ChevronDown, ChevronUp, ListChecks, RefreshCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import type { SharedProps } from '../../../types';
-import PersonalTaskMutationPanel from '../../tasks/PersonalTaskMutationPanel';
-import PersonalTaskWorkspace from '../../tasks/PersonalTaskWorkspace';
-import { getPersonalTasks, type IndividualTask, type ReadError } from '../../tasks/taskReadApi';
+import type { SharedProps } from '../../../../types';
+import PersonalTaskMutationPanel from '../../../tasks/PersonalTaskMutationPanel';
+import PersonalTaskWorkspace from '../../../tasks/PersonalTaskWorkspace';
+import { getPersonalTasks, type IndividualTask, type ReadError } from '../../../tasks/taskReadApi';
 
 const TASK_SYNC_EVENT = 'one-talibon:personal-task-confirmed';
 
