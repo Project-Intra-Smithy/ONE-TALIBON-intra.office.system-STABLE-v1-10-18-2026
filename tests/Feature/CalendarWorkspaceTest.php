@@ -266,7 +266,7 @@ final class CalendarWorkspaceTest extends TestCase
         $this->actingAs($viewer);
         $events = collect(app(CalendarWorkspaceQueryService::class)
             ->workspace($viewer, 'day', '2026-09-25')['events'])->keyBy('event_key');
-        $this->assertSameCanonicalizing([$valid->event_key, $ordinary->event_key], $events->keys()->all());
+        $this->assertEqualsCanonicalizing([$valid->event_key, $ordinary->event_key], $events->keys()->all());
         $this->assertSame('/transactions/'.$allowed->id, $events[$valid->event_key]['action_url']);
         $this->assertFalse($events[$valid->event_key]['can_manage']);
         $this->assertFalse($events[$ordinary->event_key]['can_manage']);
