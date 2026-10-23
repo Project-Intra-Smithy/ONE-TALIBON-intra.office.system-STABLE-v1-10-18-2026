@@ -204,9 +204,22 @@ final readonly class AuthorizedArchiveSql
         $correspondenceTypes = $this->morphTypes(CorrespondenceRecord::class, CorrespondenceEvent::class);
         $travelTypes = $this->morphTypes(TravelOrder::class, TravelOrderEvent::class);
         $transactionTypes = $this->morphTypes(WorkflowTransaction::class, TransactionEvent::class);
+        $supportedTypes = array_values(array_unique(array_merge(
+            $correspondenceTypes,
+            $travelTypes,
+            $transactionTypes,
+        )));
 
         return DB::table('documents as d')
             ->whereIn('d.classification', $allowedClassifications)
+            // Unknown or malformed polymorphic parents have no reviewed
+            // authorization rule, so they conceal the whole document.
+            ->whereNotExists(function (Builder $unknown) use ($supportedTypes): void {
+                $unknown->selectRaw('1')
+                    ->from('document_links as unsupported_link')
+                    ->whereColumn('unsupported_link.document_id', 'd.id')
+                    ->whereNotIn('unsupported_link.linkable_type', $supportedTypes);
+            })
             ->joinSub($ranked, 'source', function (JoinClause $join): void {
                 $join->on('source.document_id', '=', 'd.id')->where('source.source_position', '=', 1);
             })

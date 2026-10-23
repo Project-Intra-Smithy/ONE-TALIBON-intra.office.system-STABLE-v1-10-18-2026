@@ -64,6 +64,9 @@ final class DocumentAccessService
         foreach ($links as $link) {
             $model = Relation::getMorphedModel($link->linkable_type) ?? $link->linkable_type;
             $id = (int) $link->linkable_id;
+            if ($id <= 0) {
+                return false;
+            }
             switch ($model) {
                 case CorrespondenceRecord::class:
                     $families['correspondence']['direct'][] = $id;
@@ -83,6 +86,10 @@ final class DocumentAccessService
                 case TransactionEvent::class:
                     $families['transaction']['events'][] = $id;
                     break;
+                default:
+                    // A protected document cannot discard an unproved parent
+                    // and inherit authority from another recognized link.
+                    return false;
             }
         }
 

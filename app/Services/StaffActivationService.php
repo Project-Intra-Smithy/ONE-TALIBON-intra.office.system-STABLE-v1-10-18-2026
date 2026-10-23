@@ -29,12 +29,7 @@ final class StaffActivationService
 
     public function authorizeAdministrator(User $actor): void
     {
-        $employee = $actor->employee()->with('department')->first();
-        if (! $actor->is_active || ! $actor->isRole('system_admin')
-            || ! $employee || $employee->employment_status !== 'active'
-            || ! $employee->department?->is_active) {
-            throw new AuthorizationException('Administrator authorization required.');
-        }
+        $this->currentAdministrator($actor);
     }
 
     /**
@@ -48,6 +43,7 @@ final class StaffActivationService
         }
 
         return DB::transaction(function () use ($actor, $employeeId, $departmentId, $role): array {
+            $administrator = $this->currentAdministrator($actor, true);
             $employee = Employee::query()->whereKey($employeeId)->lockForUpdate()->first();
             if (! $employee || $employee->employment_status !== 'active'
                 || $employee->separation_date !== null
@@ -100,12 +96,12 @@ final class StaffActivationService
             $invitation = StaffActivationInvitation::query()->create([
                 'employee_id' => $employee->id, 'user_id' => $existing->id,
                 'department_id' => $department->id,
-                'created_by_user_id' => $actor->id,
+                'created_by_user_id' => $administrator->id,
                 'email' => $email, 'role' => $role,
                 'token_hash' => hash('sha256', $token),
                 'expires_at' => now()->addHours(24),
             ]);
-            $this->audit->record($actor, 'identity.invitation.created',
+            $this->audit->record($administrator, 'identity.invitation.created',
                 'Controlled employee activation invitation issued; secret omitted.',
                 'allowed', StaffActivationInvitation::class, $invitation->id);
 
@@ -174,17 +170,55 @@ final class StaffActivationService
     {
         $this->authorizeAdministrator($actor);
         DB::transaction(function () use ($actor, $id): void {
+            $administrator = $this->currentAdministrator($actor, true);
             $candidate = StaffActivationInvitation::query()->findOrFail($id);
             $employee = Employee::query()->whereKey($candidate->employee_id)->lockForUpdate()->first();
             if (! $employee) return;
             $invitation = StaffActivationInvitation::query()->whereKey($id)->lockForUpdate()->firstOrFail();
             if (! $invitation->consumed_at && ! $invitation->revoked_at) {
                 $invitation->forceFill(['revoked_at' => now()])->save();
-                $this->audit->record($actor, 'identity.invitation.revoked',
+                $this->audit->record($administrator, 'identity.invitation.revoked',
                     'Pending employee invitation revoked; secret omitted.',
                     'allowed', StaffActivationInvitation::class, $invitation->id);
             }
         }, 3);
+    }
+
+    private function currentAdministrator(User $claimed, bool $lockForUpdate = false): User
+    {
+        if ($claimed->getKey() === null) {
+            throw new AuthorizationException('Administrator authorization required.');
+        }
+
+        $userQuery = User::query()->whereKey($claimed->getKey());
+        if ($lockForUpdate) {
+            $userQuery->lockForUpdate();
+        }
+        $current = $userQuery->first();
+
+        $employeeQuery = Employee::query()->where('user_id', $claimed->getKey());
+        if ($lockForUpdate) {
+            $employeeQuery->lockForUpdate();
+        }
+        $employee = $employeeQuery->first();
+
+        $department = null;
+        if ($employee?->department_id !== null) {
+            $departmentQuery = Department::query()->whereKey($employee->department_id);
+            if ($lockForUpdate) {
+                $departmentQuery->lockForUpdate();
+            }
+            $department = $departmentQuery->first();
+        }
+
+        if (! $current || ! $current->is_active || ! $current->isRole('system_admin')
+            || ! $employee || $employee->employment_status !== 'active'
+            || $employee->separation_date !== null
+            || ! $department?->is_active) {
+            throw new AuthorizationException('Administrator authorization required.');
+        }
+
+        return $current;
     }
 
     private function matches(

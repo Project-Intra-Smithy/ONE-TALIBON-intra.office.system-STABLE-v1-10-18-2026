@@ -8,6 +8,7 @@ use App\Models\StaffActivationInvitation;
 use App\Models\User;
 use App\Services\AuthenticationAssurance;
 use App\Services\StaffActivationService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -85,6 +86,63 @@ final class StaffActivationTest extends TestCase
         $this->post('/admin/invitations', $payload)->assertRedirect();
         $this->actingAs($staff)->post('/admin/invitations', $payload)->assertForbidden();
         $this->assertDatabaseCount('staff_activation_invitations', 0);
+    }
+
+    public function test_stale_demoted_or_deactivated_administrator_cannot_issue_invitation(): void
+    {
+        foreach ([['role' => 'department_staff'], ['is_active' => false]] as $revocation) {
+            $office = $this->office('STALE-ISSUE');
+            $admin = $this->administrator($office);
+            $employee = $this->employee($office);
+            User::query()->whereKey($admin->id)->update($revocation);
+
+            try {
+                app(StaffActivationService::class)->issue(
+                    $admin, $employee->id, $office->id, 'department_staff'
+                );
+                $this->fail('Stale administrator authority issued an invitation.');
+            } catch (AuthorizationException) {
+                $this->assertDatabaseCount('staff_activation_invitations', 0);
+                $this->assertDatabaseMissing('audit_logs', [
+                    'action' => 'identity.invitation.created',
+                    'actor_user_id' => $admin->id,
+                ]);
+            }
+        }
+    }
+
+    public function test_stale_demoted_administrator_cannot_revoke_invitation(): void
+    {
+        [$office, $admin, $employee, $issued] = $this->provision();
+        User::query()->whereKey($admin->id)->update(['role' => 'department_staff']);
+
+        try {
+            app(StaffActivationService::class)->revoke($admin, $issued['invitation']->id);
+            $this->fail('Stale administrator authority revoked an invitation.');
+        } catch (AuthorizationException) {
+            $this->assertNull($issued['invitation']->fresh()->revoked_at);
+            $this->assertDatabaseMissing('audit_logs', [
+                'action' => 'identity.invitation.revoked',
+                'actor_user_id' => $admin->id,
+            ]);
+        }
+    }
+
+    public function test_current_administrator_can_issue_and_revoke_invitation(): void
+    {
+        [$office, $admin, $employee, $issued] = $this->provision();
+
+        app(StaffActivationService::class)->revoke($admin, $issued['invitation']->id);
+
+        $this->assertNotNull($issued['invitation']->fresh()->revoked_at);
+        $this->assertDatabaseHas('audit_logs', [
+            'action' => 'identity.invitation.created',
+            'actor_user_id' => $admin->id,
+        ]);
+        $this->assertDatabaseHas('audit_logs', [
+            'action' => 'identity.invitation.revoked',
+            'actor_user_id' => $admin->id,
+        ]);
     }
 
     public function test_office_and_role_escalation_are_denied(): void

@@ -264,6 +264,62 @@ class DocumentAccessPrecedenceTest extends TestCase
             ->get('/documents/'.$document->public_id.'/download')->assertOk();
     }
 
+    public function test_unknown_parent_conceals_document_in_both_link_orders_and_known_parent_remains_accessible(): void
+    {
+        $office = $this->department('UNKNOWN-PARENT');
+        $actor = $this->human($office);
+        $transaction = $this->transaction($actor, $office);
+        $this->actingAs($actor);
+
+        foreach (['unknown_first', 'unknown_last'] as $order) {
+            $document = $this->document($actor, $office, 'Unknown parent '.$order);
+            $links = [
+                ['type' => 'Unknown\\RestrictedSource', 'id' => 123456789],
+                ['type' => $transaction->getMorphClass(), 'id' => $transaction->id],
+            ];
+            if ($order === 'unknown_last') {
+                $links = array_reverse($links);
+            }
+            foreach ($links as $index => $link) {
+                DocumentLink::query()->create([
+                    'document_id' => $document->id,
+                    'linkable_type' => $link['type'],
+                    'linkable_id' => $link['id'],
+                    'relationship' => 'source_'.($index + 1),
+                ]);
+            }
+
+            $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
+            $archive = app(DocumentArchiveQuery::class)->workspace($actor, [
+                'document' => $document->public_id,
+                'archive_search' => $document->title,
+            ]);
+            $this->assertSame(0, $archive['records']->total());
+            $this->assertSame(0, $archive['counts']['all']);
+            $this->assertNull($archive['selected']);
+            $this->actingAs($actor)->get('/documents/'.$document->public_id.'/download')
+                ->assertForbidden();
+        }
+
+        $known = $this->document($actor, $office, 'Known parent remains visible');
+        DocumentLink::query()->create([
+            'document_id' => $known->id,
+            'linkable_type' => $transaction->getMorphClass(),
+            'linkable_id' => $transaction->id,
+            'relationship' => 'supporting_document',
+        ]);
+
+        $this->assertTrue(app(DocumentAccessService::class)->canDownload($actor, $known));
+        $archive = app(DocumentArchiveQuery::class)->workspace($actor, [
+            'document' => $known->public_id,
+            'archive_search' => $known->title,
+        ]);
+        $this->assertSame(1, $archive['records']->total());
+        $this->assertSame(1, $archive['counts']['all']);
+        $this->assertSame($known->public_id, $archive['selected']['publicId']);
+        $this->actingAs($actor)->get('/documents/'.$known->public_id.'/download')->assertOk();
+    }
+
     public function test_sql_archive_zero_one_and_one_thousand_documents_keep_stable_pages_and_counts(): void
     {
         $office = $this->department('SQL-BULK');
