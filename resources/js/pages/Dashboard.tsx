@@ -1,19 +1,18 @@
-import ActivityRail from '../components/dashboard/ActivityRail';
 import CorrespondenceOverview from '../components/dashboard/CorrespondenceOverview';
 import DashboardHeader from '../components/dashboard/DashboardHeader';
 import ExecutiveOverview from '../components/dashboard/ExecutiveOverview';
 import MetricGroup from '../components/dashboard/MetricGroup';
+import R7UpperRegion from '../components/dashboard/r7/R7UpperRegion';
+import R7LowerRegion from '../components/dashboard/r7/R7LowerRegion';
 import MunicipalContext from '../components/dashboard/MunicipalContext';
 import OfficeOverview from '../components/dashboard/OfficeOverview';
-import QuickActions from '../components/dashboard/QuickActions';
-import RecentWorkList from '../components/dashboard/RecentWorkList';
 import SystemOverview from '../components/dashboard/SystemOverview';
 import type { DashboardProps } from '../components/dashboard/types';
-import PersonalTaskMutationPanel from '../components/tasks/PersonalTaskMutationPanel';
-import PersonalTaskWorkspace from '../components/tasks/PersonalTaskWorkspace';
 import AppLayout from '../layouts/AppLayout';
 import WorkspaceUnavailable from '../components/WorkspaceUnavailable';
 import '../../css/ot-reference-dashboard.css';
+import '../../css/r7-dashboard-upper.css';
+import '../../css/r7-dashboard-lower.css';
 
 export default function Dashboard({ experience, metricGroups, correspondenceOverview, recentWork, officeOverview, executiveOverview, systemOverview }: DashboardProps) {
     if (!experience?.department || !Array.isArray(experience.quickActions)
@@ -29,9 +28,8 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
     const isAdmin = experience.key === 'system_administration';
 
     return <AppLayout workspaceRefinement title="Dashboard">
-        <div className="ot-reference-dashboard mx-auto max-w-[1480px]">
+        <div className="ot-reference-dashboard r7-dashboard mx-auto max-w-[1480px]">
             <DashboardHeader experience={experience} />
-            <QuickActions actions={experience.quickActions} />
             <div className="ot-dashboard-toolbar">
                 <nav className="ot-dashboard-jumps workspace-shortcuts" aria-label="Jump to work section">
                     <a href="#work-overview">Work overview</a>
@@ -40,17 +38,7 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
                 </nav>
                 <div className="ot-dashboard-municipal-context"><MunicipalContext /></div>
             </div>
-            <div id="work-overview" tabIndex={-1} className="ot-dashboard-work workspace-section-target">
-                <section aria-label="Recent operational work" className="ot-dashboard-lead">
-                    <RecentWorkList compact title={isHead ? 'My recent work' : 'Recent work'} description="Recently updated authorized work." items={recentWork} emptyMessage="No recent work to show." />
-                </section>
-                <section aria-label="Activity and notifications" className="ot-dashboard-activity">
-                    <ActivityRail system={isAdmin ? systemOverview : undefined} />
-                </section>
-                <div className="ot-dashboard-metrics">
-                    {primaryGroups.map((group) => <MetricGroup key={group.key} group={group} />)}
-                </div>
-            </div>
+            <R7UpperRegion recentWork={recentWork} groups={primaryGroups} system={isAdmin ? systemOverview : undefined} head={isHead} />
             {(isEmployee || isHead) && correspondenceOverview && <div className="ot-dashboard-section">
                 <CorrespondenceOverview overview={correspondenceOverview} />
             </div>}
@@ -66,10 +54,7 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
             {secondaryGroups.length > 0 && <div className="ot-dashboard-section ot-dashboard-secondary-metrics">
                 {secondaryGroups.map((group) => <MetricGroup key={group.key} group={group} />)}
             </div>}
-            <div id="personal-tasks" tabIndex={-1} className="ot-dashboard-section workspace-section-target space-y-4">
-                <PersonalTaskWorkspace />
-                <PersonalTaskMutationPanel />
-            </div>
+            <R7LowerRegion actions={experience.quickActions} />
         </div>
     </AppLayout>;
 }
