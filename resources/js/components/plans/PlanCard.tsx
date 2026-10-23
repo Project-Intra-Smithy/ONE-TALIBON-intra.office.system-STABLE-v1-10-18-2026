@@ -13,10 +13,10 @@ export default function PlanCard({ plan, selected, onSelect }: Props) {
 
     return (
         <article className="municipal-panel flex min-w-0 flex-col rounded-lg p-3" aria-label={plan.code}>
-            <div aria-hidden="true" className="relative flex min-h-28 w-full flex-col justify-between overflow-hidden rounded border border-[var(--municipal-border)] bg-[var(--municipal-brand-soft)] p-3 text-[var(--municipal-brand)]">
+            <div aria-hidden="true" className="relative flex min-h-24 w-full flex-col justify-between overflow-hidden rounded border border-[var(--municipal-border)] bg-[var(--municipal-brand-soft)] p-3 text-[var(--municipal-brand)]">
                 <Map size={100} strokeWidth={1} className="pointer-events-none absolute -right-2 top-2 opacity-15" />
                 <span className="relative flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wide"><BookOpen size={16} /> Municipality of Talibon</span>
-                <span className="relative break-words text-2xl font-bold leading-7">{identity}</span>
+                <span className="relative break-words text-xl font-bold leading-6">{identity}</span>
                 <span className="relative text-[10px]">Library graphic / Plan reference</span>
             </div>
             <div className="mt-2 flex flex-1 flex-col gap-1">
