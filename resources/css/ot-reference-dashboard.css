@@ -101,3 +101,87 @@
 @media (prefers-contrast:more) {
   .ot-reference-dashboard .ot-dashboard-panel-heading { background:#06412c; }
 }
+
+/* R5 — a bounded, keyboard-accessible native scroll viewport inside operational cards.
+   Headers and explanatory footers remain visible outside the viewport. */
+.ot-reference-dashboard .ot-dashboard-work .municipal-panel {
+  border:1px solid var(--municipal-border,#d9e2dc);
+  border-radius:9px;
+  box-shadow:0 2px 8px rgba(16,57,38,.045);
+}
+.ot-reference-dashboard .ot-dashboard-scroll-region {
+  min-width:0;
+  min-height:0;
+}
+.ot-reference-dashboard .ot-dashboard-panel-count {
+  display:inline-flex;
+  margin-left:auto;
+  align-items:center;
+  justify-content:center;
+  min-width:25px;
+  height:22px;
+  padding:0 7px;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:999px;
+  background:rgba(255,255,255,.16);
+  color:#fff;
+  font-size:.72rem;
+  font-weight:700;
+  font-variant-numeric:tabular-nums;
+  line-height:1;
+}
+.ot-reference-dashboard .ot-dashboard-scroll-region:focus-visible {
+  outline:3px solid var(--municipal-brand,#19754b);
+  outline-offset:-3px;
+}
+@media (min-width:768px) {
+  .ot-reference-dashboard :is(.ot-dashboard-lead,.ot-dashboard-activity,.ot-dashboard-metrics) > .municipal-panel {
+    display:flex;
+    flex-direction:column;
+    min-height:238px;
+    height:100%;
+  }
+  .ot-reference-dashboard :is(.ot-dashboard-lead,.ot-dashboard-activity,.ot-dashboard-metrics) .ot-dashboard-scroll-region,
+  .ot-reference-dashboard .ot-dashboard-correspondence .ot-dashboard-scroll-region {
+    max-height:clamp(210px,31vh,340px);
+    overflow-x:hidden;
+    overflow-y:auto;
+    scrollbar-width:thin;
+    scrollbar-color:#9fb9aa transparent;
+    scrollbar-gutter:stable;
+  }
+  .ot-reference-dashboard .ot-dashboard-scroll-region::-webkit-scrollbar { width:7px; }
+  .ot-reference-dashboard .ot-dashboard-scroll-region::-webkit-scrollbar-track { background:transparent; }
+  .ot-reference-dashboard .ot-dashboard-scroll-region::-webkit-scrollbar-thumb {
+    background-color:#9fb9aa;
+    border-radius:12px;
+    border:1px solid transparent;
+    background-clip:padding-box;
+  }
+  .ot-reference-dashboard .ot-dashboard-scroll-region::-webkit-scrollbar-thumb:hover { background-color:#5a9075; }
+  .ot-reference-dashboard .ot-dashboard-lead .ot-dashboard-scroll-region,
+  .ot-reference-dashboard .ot-dashboard-activity .ot-dashboard-scroll-region { flex:1 1 auto; }
+  .ot-reference-dashboard .ot-dashboard-empty-state { min-height:136px; display:grid; place-items:center; }
+}
+@media (max-width:767px) {
+  /* A mobile user scrolls the page, not multiple competing nested panels. */
+  .ot-reference-dashboard .ot-dashboard-scroll-region {
+    max-height:none;
+    overflow:visible;
+    scrollbar-gutter:auto;
+  }
+}
+.dark .ot-reference-dashboard .ot-dashboard-work .municipal-panel { box-shadow:none; }
+.dark .ot-reference-dashboard .ot-dashboard-scroll-region { scrollbar-color:#5b8170 transparent; }
+@media (forced-colors:active) {
+  .ot-reference-dashboard .ot-dashboard-panel-count { border:1px solid CanvasText; color:CanvasText; background:Canvas; }
+  .ot-reference-dashboard .ot-dashboard-scroll-region:focus-visible { outline-color:Highlight; }
+}
+
+.ot-reference-dashboard .ot-dashboard-lead .ot-dashboard-panel-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+.ot-reference-dashboard .ot-dashboard-lead .ot-dashboard-panel-heading > h2 { flex:1 1 auto; min-width:0; }
