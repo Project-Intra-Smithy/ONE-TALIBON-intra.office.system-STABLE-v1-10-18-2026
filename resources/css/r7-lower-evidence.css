@@ -1,0 +1,31 @@
+/* Worker A3: compact empty states for the source-safe Events and Documents cards. */
+.r7-evidence-card .r7-evidence-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 116px;
+    padding: 16px;
+    overflow-wrap: anywhere;
+}
+.r7-evidence-card .r7-evidence-empty {
+    margin: 0;
+    color: var(--municipal-text, #163027);
+    font-size: .875rem;
+    line-height: 1.5;
+    font-weight: 600;
+}
+.r7-evidence-card .r7-evidence-hint {
+    margin: 0;
+    color: var(--municipal-muted, #566b60);
+    font-size: .8125rem;
+    line-height: 1.5;
+}
+.dark .r7-evidence-card .r7-evidence-empty {
+    color: var(--municipal-text, #edf6f0);
+}
+.dark .r7-evidence-card .r7-evidence-hint {
+    color: #c8d8ce;
+}
+@media (max-width: 390px) {
+    .r7-evidence-card .r7-evidence-body { padding: 14px; min-height: 0; }
+}
