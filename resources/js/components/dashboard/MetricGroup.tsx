@@ -8,7 +8,7 @@ export default function MetricGroup({ group }: { group: MetricGroupData }) {
     // Counts may overlap: compare magnitude, never imply a completion percentage.
     const maximum = Math.max(1, ...group.metrics.map(metric => Math.max(0, metric.value)));
     return <section className="municipal-panel overflow-hidden" aria-labelledby={'dashboard-' + group.key + '-metrics'}>
-        <header className="border-b border-slate-200 px-4 py-3 dark:border-slate-700 sm:px-5">
+        <header className="ot-dashboard-panel-heading border-b border-slate-200 px-4 py-3 dark:border-slate-700 sm:px-5">
             <h2 id={'dashboard-' + group.key + '-metrics'} className="text-base font-bold sm:text-lg">{title}</h2>
         </header>
         <div className="workspace-metrics">

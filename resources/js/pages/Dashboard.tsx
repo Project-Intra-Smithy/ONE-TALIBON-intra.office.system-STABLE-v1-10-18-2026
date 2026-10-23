@@ -32,12 +32,14 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
         <div className="ot-reference-dashboard mx-auto max-w-[1480px]">
             <DashboardHeader experience={experience} />
             <QuickActions actions={experience.quickActions} />
-            <div className="ot-dashboard-municipal-context"><MunicipalContext /></div>
-            <nav className="ot-dashboard-jumps workspace-shortcuts" aria-label="Jump to work section">
-                <a href="#work-overview">Work overview</a>
-                {(isEmployee || isHead) && correspondenceOverview && <a href="#dashboard-correspondence">Correspondence</a>}
-                <a href="#personal-tasks">Personal tasks</a>
-            </nav>
+            <div className="ot-dashboard-toolbar">
+                <nav className="ot-dashboard-jumps workspace-shortcuts" aria-label="Jump to work section">
+                    <a href="#work-overview">Work overview</a>
+                    {(isEmployee || isHead) && correspondenceOverview && <a href="#dashboard-correspondence">Correspondence</a>}
+                    <a href="#personal-tasks">Personal tasks</a>
+                </nav>
+                <div className="ot-dashboard-municipal-context"><MunicipalContext /></div>
+            </div>
             <div id="work-overview" tabIndex={-1} className="ot-dashboard-work workspace-section-target">
                 <section aria-label="Recent operational work" className="ot-dashboard-lead">
                     <RecentWorkList compact title={isHead ? 'My recent work' : 'Recent work'} description="Recently updated authorized work." items={recentWork} emptyMessage="No recent work to show." />

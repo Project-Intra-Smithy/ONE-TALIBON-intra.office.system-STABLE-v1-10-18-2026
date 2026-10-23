@@ -13,7 +13,7 @@ export default function ActivityRail({ system }: Props) {
         : notificationState === 'expired' ? 'Session expired or access unavailable. Sign in again to refresh.'
         : notificationState === 'unavailable' ? 'Notifications unavailable. Retrying automatically.' : null;
     return <section className="municipal-panel min-w-0 overflow-hidden" aria-labelledby="dashboard-activity">
-            <h2 id="dashboard-activity" className="municipal-panel-title border-b border-slate-100 px-4 py-4 dark:border-slate-700">{system ? <ShieldCheck size={18} className="text-blue-600 dark:text-blue-300" /> : <Bell size={18} className="text-blue-600 dark:text-blue-300" />}{system ? 'Security activity' : 'Recent activity'}</h2>
+            <h2 id="dashboard-activity" className="ot-dashboard-panel-heading municipal-panel-title border-b border-slate-100 px-4 py-4 dark:border-slate-700">{system ? <ShieldCheck size={18} className="text-blue-600 dark:text-blue-300" /> : <Bell size={18} className="text-blue-600 dark:text-blue-300" />}{system ? 'Security activity' : 'Recent activity'}</h2>
             <div className="divide-y divide-slate-100 dark:divide-slate-700">
                 {!system && feedMessage && <p role="status" className="px-4 py-4 text-base">{feedMessage}{notifications.length > 0 && ' Showing last received items.'}</p>}
                 {system ? system.security.recentEvents.map((event, index) => <article key={`${event.action}-${index}`} className="px-4 py-3">

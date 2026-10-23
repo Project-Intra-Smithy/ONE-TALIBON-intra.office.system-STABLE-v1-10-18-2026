@@ -7,7 +7,7 @@ type Props = { title: string; description: string; items: DashboardWork[]; empty
 
 export default function RecentWorkList({ title, description, items, emptyMessage = 'No work currently requires attention in this view.', compact = false }: Props) {
     return <section className={`municipal-panel overflow-hidden ${compact ? 'ot-dashboard-recent' : ''}`} aria-label={title}>
-        <div className="border-b border-slate-100 px-4 py-3 dark:border-slate-700">
+        <div className={`${compact ? 'ot-dashboard-panel-heading ' : ''}border-b border-slate-100 px-4 py-3 dark:border-slate-700`}>
             <h2 className="municipal-panel-title"><FileText size={17} className="shrink-0 text-emerald-700 dark:text-emerald-300" />{title}</h2>
             {!compact && <p className="mt-1 text-sm leading-6 text-slate-500 dark:text-slate-400">{description}</p>}
         </div>
