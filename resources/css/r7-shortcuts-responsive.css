@@ -1,0 +1,163 @@
+/* R7 B2 — dashboard-body-only layout and permission-scoped Quick Links.
+ * B3 imports this stylesheet after the other R7 worker stylesheets. */
+.r7-dashboard .r7-upper-grid,
+.r7-dashboard .r7-lower-grid {
+    min-width: 0;
+    align-items: stretch;
+}
+.r7-dashboard .r7-upper-grid > *,
+.r7-dashboard .r7-lower-grid > * {
+    min-width: 0;
+    max-width: 100%;
+}
+.r7-dashboard .r7-lower-card {
+    min-width: 0;
+    overflow-wrap: break-word;
+}
+
+/* Base single-column flow: accommodate a narrow dashboard canvas, not viewport width. */
+.r7-dashboard .r7-lower-grid {
+    grid-template-columns: minmax(0, 1fr);
+}
+.r7-dashboard .r7-lower-grid > .r7-lower-card {
+    grid-column: auto;
+}
+
+/* A tablet-sized content region has two coherent columns. */
+@container r7lower (min-width: 650px) {
+    .r7-dashboard .r7-lower-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .r7-dashboard .r7-lower-grid > .r7-lower-card {
+        grid-column: auto;
+    }
+}
+
+/* With sufficient body width, all four lower modules remain in one row. */
+@container r7lower (min-width: 1000px) {
+    .r7-dashboard .r7-lower-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+    }
+    .r7-dashboard .r7-lower-grid > .r7-lower-card {
+        grid-column: auto;
+    }
+}
+
+/* The third upper panel joins its peers once each can retain useful content width. */
+@container ot-dashboard (min-width: 960px) {
+    .r7-dashboard .r7-upper-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .r7-dashboard .r7-top-summary {
+        grid-column: auto;
+    }
+}
+
+/* Quick Links uses the same scoped R7 card header as the other lower modules. */
+.r7-dashboard .r7-links-content {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 12px;
+    container: r7links / inline-size;
+}
+.r7-dashboard .r7-links-tiles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.r7-dashboard .r7-links-tiles > li {
+    min-width: 0;
+}
+.r7-dashboard .r7-links-tile {
+    display: flex;
+    min-width: 0;
+    min-height: 88px;
+    height: 100%;
+    padding: 10px 7px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    border: 1px solid var(--municipal-border, #d9e2dc);
+    border-radius: 8px;
+    background: var(--municipal-brand-soft, #e9f2ec);
+    color: var(--municipal-text, #163027);
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 140ms ease, border-color 140ms ease;
+}
+.r7-dashboard .r7-links-icon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    color: var(--municipal-brand, #12613f);
+}
+.r7-dashboard .r7-links-label {
+    min-width: 0;
+    max-width: 100%;
+    font-size: .76rem;
+    line-height: 1.3;
+    font-weight: 690;
+    overflow-wrap: anywhere;
+}
+.r7-dashboard .r7-links-tile:hover {
+    background: var(--municipal-hover, #f0f5f1);
+    border-color: var(--municipal-brand, #12613f);
+}
+.r7-dashboard .r7-links-tile:focus-visible {
+    position: relative;
+    z-index: 1;
+    outline: 3px solid var(--municipal-focus, #19754b);
+    outline-offset: 3px;
+}
+.r7-dashboard .r7-links-content .r7-no-links {
+    margin: 0;
+    padding: 8px 2px;
+}
+@container r7links (min-width: 330px) {
+    .r7-dashboard .r7-links-tiles {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+@container ot-dashboard (max-width: 440px) {
+    .r7-dashboard :is(.r7-section-kicker, .r7-lower-title) {
+        gap: 8px;
+        overflow-wrap: break-word;
+    }
+    .r7-dashboard .r7-lower-grid {
+        gap: 12px;
+    }
+    .r7-dashboard .r7-links-content {
+        padding: 10px;
+    }
+}
+.dark .r7-dashboard .r7-links-tile {
+    color: var(--municipal-text, #edf6f0);
+    border-color: var(--municipal-border, #395748);
+    background: var(--municipal-brand-soft, #173326);
+}
+.dark .r7-dashboard .r7-links-icon {
+    color: var(--municipal-brand-active, #8bd7a8);
+}
+.dark .r7-dashboard .r7-links-tile:hover {
+    background: var(--municipal-hover, #1b3327);
+}
+@media (prefers-reduced-motion: reduce) {
+    .r7-dashboard .r7-links-tile { transition: none; }
+}
+@media (prefers-contrast: more) {
+    .r7-dashboard .r7-links-tile { border-width: 2px; }
+}
+@media (forced-colors: active) {
+    .r7-dashboard .r7-links-tile {
+        background: Canvas;
+        color: LinkText;
+        border-color: CanvasText;
+    }
+    .r7-dashboard .r7-links-icon { color: LinkText; }
+    .r7-dashboard .r7-links-tile:focus-visible { outline-color: Highlight; }
+}
