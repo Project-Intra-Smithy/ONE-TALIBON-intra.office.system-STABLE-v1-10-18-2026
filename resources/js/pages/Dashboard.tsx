@@ -3,6 +3,7 @@ import CorrespondenceOverview from '../components/dashboard/CorrespondenceOvervi
 import DashboardHeader from '../components/dashboard/DashboardHeader';
 import ExecutiveOverview from '../components/dashboard/ExecutiveOverview';
 import MetricGroup from '../components/dashboard/MetricGroup';
+import MunicipalContext from '../components/dashboard/MunicipalContext';
 import OfficeOverview from '../components/dashboard/OfficeOverview';
 import QuickActions from '../components/dashboard/QuickActions';
 import RecentWorkList from '../components/dashboard/RecentWorkList';
@@ -31,6 +32,7 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
         <div className="ot-reference-dashboard mx-auto max-w-[1480px]">
             <DashboardHeader experience={experience} />
             <QuickActions actions={experience.quickActions} />
+            <div className="ot-dashboard-municipal-context"><MunicipalContext /></div>
             <nav className="ot-dashboard-jumps workspace-shortcuts" aria-label="Jump to work section">
                 <a href="#work-overview">Work overview</a>
                 {(isEmployee || isHead) && correspondenceOverview && <a href="#dashboard-correspondence">Correspondence</a>}
