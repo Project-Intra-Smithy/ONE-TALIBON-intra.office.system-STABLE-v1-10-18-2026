@@ -1,11 +1,19 @@
+import { usePage } from '@inertiajs/react';
 import { CalendarDays, FileText, LayoutGrid, ListTodo } from 'lucide-react';
 import PersonalTaskWorkspace from '../../tasks/PersonalTaskWorkspace';
 import PersonalTaskMutationPanel from '../../tasks/PersonalTaskMutationPanel';
 import QuickActions from '../QuickActions';
+import { selectDashboardShortcuts } from '../dashboardShortcuts';
+import { buildPortalNavigation } from '../../../navigation/portalNavigation';
+import { isStagedInertiaPath } from '../../../navigation/stagedRoutes';
+import type { SharedProps } from '../../../types';
 import type { DashboardExperience } from '../types';
 
 /** Reference A's lower modules, with the real Task workspace allocated readable width. */
 export default function R7LowerRegion({ actions }: { actions: DashboardExperience['quickActions'] }) {
+    const page = usePage<SharedProps>().props;
+    const permitted = buildPortalNavigation(page.workspaceExperience, page.permissions?.navigation ?? {} as SharedProps['permissions']['navigation']).flatMap(group => group.items);
+    const hasQuickLinks = selectDashboardShortcuts(actions.filter(action => isStagedInertiaPath(action.url)), permitted).length > 0;
     return <section className="r7-lower" aria-label="Personal workspace and shortcuts">
         <div className="r7-lower-grid">
             <section className="r7-lower-card r7-lower-events" aria-labelledby="r7-calendar-title">
@@ -45,8 +53,8 @@ export default function R7LowerRegion({ actions }: { actions: DashboardExperienc
                 <h2 className="r7-lower-title" id="r7-links-title">
                     <LayoutGrid size={18} aria-hidden="true" /> Quick links
                 </h2>
-                <QuickActions actions={actions} />
-                <p className="r7-links-note">Only destinations available to your account appear here.</p>
+                {hasQuickLinks ? <QuickActions actions={actions} /> : <p className="r7-links-note r7-no-links">No quick links are available to this account.</p>}
+                {hasQuickLinks && <p className="r7-links-note">Only destinations available to your account appear here.</p>}
             </section>
         </div>
     </section>;
