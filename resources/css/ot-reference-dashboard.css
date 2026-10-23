@@ -1,25 +1,27 @@
 /* Source-backed dashboard reference composition. Scoped to /dashboard only. */
-.ot-reference-dashboard { display:grid; gap:14px; min-width:0; }
+.ot-reference-dashboard { display:grid; gap:10px; min-width:0; }
 .ot-reference-dashboard * { min-width:0; }
-.ot-dashboard-hero { display:flex; justify-content:space-between; align-items:center; gap:24px; min-height:155px; padding:20px 28px; border-radius:10px; color:#fff; background-color:#0b442d; background-position: right center; background-size:cover; overflow:hidden; }
-.ot-dashboard-hero-copy { max-width:70%; }
+.ot-dashboard-hero { display:flex; justify-content:space-between; align-items:center; gap:24px; min-height:126px; padding:14px 22px; border-radius:10px; color:#fff; background-color:#0b442d; background-position:center,right 42%; background-size:cover, 58% auto; background-repeat:no-repeat; overflow:hidden; }
+.ot-dashboard-hero-copy { max-width:74%; }
 .ot-dashboard-hero-eyebrow { font-size:.78rem; line-height:1.4; letter-spacing:.07em; font-weight:750; color:#d9eee3; }
-.ot-dashboard-hero h1 { margin-top:4px; font-size:clamp(1.6rem,2.5vw,2.2rem); font-weight:780; letter-spacing:-.03em; line-height:1.2; overflow-wrap:anywhere; }
-.ot-dashboard-hero-description { margin-top:7px; font-size:.95rem; line-height:1.45; }
-.ot-dashboard-hero-context { margin-top:8px; color:#d9eee3; font-size:.83rem; font-weight:600; overflow-wrap:anywhere; }
+.ot-dashboard-hero h1 { margin-top:3px; font-size:clamp(1.45rem,2.3vw,2rem); font-weight:780; letter-spacing:-.03em; line-height:1.2; overflow-wrap:anywhere; }
+.ot-dashboard-hero-description { margin-top:4px; font-size:.85rem; line-height:1.45; }
+.ot-dashboard-hero-context { margin-top:5px; color:#d9eee3; font-size:.83rem; font-weight:600; overflow-wrap:anywhere; }
 .ot-dashboard-hero-motto { flex-shrink:0; border-left:2px solid #d2ad45; padding-left:18px; text-align:right; font-family:Georgia,serif; font-size:1.3rem; font-style:italic; line-height:1.2; }
-.ot-dashboard-quick { padding:14px 16px 16px; border:1px solid var(--municipal-border,#d9e2dc); border-radius:10px; background:var(--municipal-surface,#fff); }
-.ot-dashboard-quick h2 { display:flex; align-items:center; gap:8px; font-weight:750; font-size:1rem; margin-bottom:10px; }
+.ot-dashboard-quick { padding:9px 12px 10px; border:1px solid var(--municipal-border,#d9e2dc); border-radius:10px; background:var(--municipal-surface,#fff); }
+.ot-dashboard-quick-heading { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:5px 10px; margin-bottom:7px; }
+.ot-dashboard-quick h2 { display:flex; align-items:center; gap:7px; font-weight:750; font-size:.91rem; }
+.ot-dashboard-quick-note { font-size:.7rem; font-weight:550; color:var(--municipal-muted,#64736c); }
 .ot-dashboard-quick h2 svg { color:#12613f; }
-.ot-dashboard-tiles { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
-.ot-dashboard-tile { display:flex; flex-direction:column; gap:7px; align-items:center; justify-content:center; min-height:92px; padding:9px 6px; border:1px solid var(--municipal-border,#d9e2dc); border-radius:8px; background:var(--municipal-surface,#fff); text-align:center; transition:border-color .15s,background-color .15s; }
+.ot-dashboard-tiles { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:7px; }
+.ot-dashboard-tile { display:flex; flex-direction:column; gap:5px; align-items:center; justify-content:center; min-height:76px; padding:7px 4px; border:1px solid var(--municipal-border,#d9e2dc); border-radius:8px; background:var(--municipal-surface,#fff); text-align:center; transition:border-color .15s,background-color .15s; }
 .ot-dashboard-tile:hover { background:var(--municipal-hover,#f0f5f1); border-color:#19754b; }
 .ot-dashboard-tile:focus-visible { outline:3px solid #19754b; outline-offset:2px; }
-.ot-dashboard-tile-icon { display:grid; place-items:center; width:41px; height:41px; border-radius:9px; }
-.ot-dashboard-tile-label { font-weight:680; font-size:.83rem; line-height:1.2; overflow-wrap:anywhere; }
-.ot-dashboard-jumps { gap:6px; }
-.ot-reference-dashboard .ot-dashboard-jumps a { min-height:36px; padding:6px 12px; font-size:.82rem; }
-.ot-dashboard-work { display:grid; grid-template-columns:minmax(0,1fr); gap:12px; align-items:start; }
+.ot-dashboard-tile-icon { display:grid; place-items:center; width:31px; height:31px; border-radius:7px; }
+.ot-dashboard-tile-label { font-weight:680; font-size:.76rem; line-height:1.2; overflow-wrap:anywhere; }
+.ot-dashboard-jumps { gap:5px; }
+.ot-reference-dashboard .ot-dashboard-jumps a { min-height:32px; padding:4px 10px; font-size:.77rem; }
+.ot-dashboard-work { display:grid; grid-template-columns:minmax(0,1fr); gap:9px; align-items:start; }
 .ot-dashboard-work > * { min-width:0; }
 .ot-dashboard-lead, .ot-dashboard-activity, .ot-dashboard-metrics { min-width:0; }
 .ot-dashboard-work .municipal-panel { background:var(--municipal-surface,#fff); }
@@ -46,7 +48,7 @@
 .ot-dashboard-metrics .municipal-panel header { padding:10px 13px; }
 .ot-dashboard-metrics .municipal-panel header h2 { font-size:1rem; }
 .ot-dashboard-section { min-width:0; }
-.ot-dashboard-secondary-metrics { display:grid; gap:12px; }
+.ot-dashboard-secondary-metrics { display:grid; gap:9px; }
 .ot-reference-dashboard :where(#work-overview,#personal-tasks,#department-overview) { scroll-margin-top:108px; }
 .dark .ot-dashboard-quick, .dark .ot-dashboard-tile, .dark .ot-dashboard-work .municipal-panel { background:var(--municipal-surface,#142236); }
 .dark .ot-dashboard-tile { color:var(--municipal-text,#edf6f0); border-color:var(--municipal-border,#42574c); }
@@ -54,7 +56,17 @@
 .dark .ot-dashboard-hero { background-color:#0b442d; }
 @media (min-width:768px) { .ot-dashboard-tiles { grid-template-columns:repeat(6,minmax(0,1fr)); } .ot-dashboard-secondary-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media (min-width:1200px) { .ot-dashboard-tiles { grid-template-columns:repeat(8,minmax(0,1fr)); } .ot-dashboard-work { grid-template-columns:minmax(0,1.12fr) minmax(0,.95fr) minmax(0,.88fr); } }
-@media (max-width:767px) { .ot-reference-dashboard { gap:12px; } .ot-dashboard-hero { padding:18px; min-height:145px; } .ot-dashboard-hero-copy { max-width:100%; } .ot-dashboard-hero-motto { display:none; } .ot-dashboard-tiles { grid-template-columns:repeat(2,minmax(0,1fr)); } .ot-dashboard-tile { min-height:88px; } .ot-dashboard-jumps { overflow-x:auto; flex-wrap:nowrap; } .ot-dashboard-jumps a { flex-shrink:0; } .ot-dashboard-work-side { max-width:35%; } }
+@media (max-width:767px) { .ot-reference-dashboard { gap:12px; } .ot-dashboard-hero { padding:16px; min-height:126px; background-size:cover, 115% auto; background-position:center, right center; } .ot-dashboard-hero-copy { max-width:100%; } .ot-dashboard-hero-motto { display:none; } .ot-dashboard-tiles { grid-template-columns:repeat(2,minmax(0,1fr)); } .ot-dashboard-tile { min-height:80px; } .ot-dashboard-jumps { overflow-x:auto; flex-wrap:nowrap; } .ot-dashboard-jumps a { flex-shrink:0; } .ot-dashboard-work-side { max-width:35%; } }
 @media (min-width:480px) and (max-width:767px) { .ot-dashboard-tiles { grid-template-columns:repeat(4,minmax(0,1fr)); } }
 @media (min-width:768px) and (max-width:1199px) { .ot-dashboard-work { grid-template-columns:repeat(2,minmax(0,1fr)); } .ot-dashboard-metrics { grid-column:1/-1; } }
 @media (prefers-reduced-motion:reduce) { .ot-dashboard-tile { transition:none; } }
+
+/* The desktop photographic treatment uses the municipal hall photo already bundled in the product.
+   Its status remains provisional pending LGU artwork acceptance. */
+@media (max-width:479px) {
+  .ot-dashboard-quick-note { display:none; }
+  .ot-dashboard-hero h1 { font-size:1.45rem; }
+  .ot-dashboard-hero-description { font-size:.82rem; }
+  .ot-dashboard-tiles { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .ot-dashboard-tile { min-height:76px; }
+}
