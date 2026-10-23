@@ -22,7 +22,7 @@ export default function PlanFilterBar({ filters, leadOffices, resultCount, onCha
     const hasFilters = filters.query !== '' || filters.status !== 'All' || filters.horizon !== 'All' || filters.leadOffice !== 'All';
 
     return (
-        <section aria-label="Plan register filters" className="municipal-panel p-3">
+        <section aria-label="Plan register filters" className="municipal-panel ot-r6-filter-panel p-3">
             <div className="grid gap-x-3 gap-y-2 sm:grid-cols-2 xl:grid-cols-4 xl:items-end">
                 <label className="min-w-0 text-xs font-semibold text-slate-600 dark:text-slate-300">
                     Search plans
