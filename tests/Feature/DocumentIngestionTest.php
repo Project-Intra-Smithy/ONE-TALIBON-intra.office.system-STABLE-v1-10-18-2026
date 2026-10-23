@@ -287,6 +287,41 @@ class DocumentIngestionTest extends TestCase
         return app(DocumentIngestionService::class);
     }
 
+    public function test_import_revision_supplies_custody_version_without_inventing_metadata(): void
+    {
+        [$actor, $record] = $this->context();
+        $this->permit();
+        $first = $this->service()->ingest($actor, $record, $this->file('v1'), $this->intent());
+        $second = $this->service()->ingest($actor, $record, $this->file('v2'), $this->intent(revision: 'r2', previous: $first->id));
+        $resolver = app(\App\Services\DocumentEvidenceVersion::class);
+        $this->assertArrayNotHasKey('version', $first->document->metadata);
+        $this->assertSame(1, $resolver->resolve($first->document, $record));
+        $this->assertSame(2, $resolver->resolve($second->document, $record));
+        [, $foreign] = $this->context();
+        $this->assertNull($resolver->resolve($first->document, $foreign));
+        $document = $second->document;
+        $document->forceFill(['metadata' => [...$document->metadata, 'version' => 99]])->save();
+        $this->assertNull($resolver->resolve($document, $record));
+    }
+
+    public function test_custody_version_rejects_changed_stored_bytes_and_missing_explicit_version(): void
+    {
+        [$actor, $record] = $this->context();
+        $this->permit();
+        $revision = $this->service()->ingest($actor, $record, $this->file('proof'), $this->intent());
+        $document = $revision->document;
+        $resolver = app(\App\Services\DocumentEvidenceVersion::class);
+        Storage::disk('documents')->put($document->storage_path, 'changed bytes');
+        $this->assertNull($resolver->resolve($document, $record));
+        $legacy = $document->replicate(['public_id']);
+        $legacy->metadata = [];
+        $legacy->save();
+        $this->assertNull($resolver->resolve($legacy, $record));
+        $legacy->metadata = ['version' => '1-forged'];
+        $legacy->save();
+        $this->assertNull($resolver->resolve($legacy, $record));
+    }
+
     private function intent(
         ?string $key = null, string $revision = 'r1', ?int $previous = null, string $classification = 'internal',
     ): DocumentImportIntent {

@@ -32,6 +32,7 @@ final class CorrespondenceCustodyService
         private readonly CustodyPreflight $preflight,
         private readonly CorrespondenceAccessDecider $access,
         private readonly CorrespondenceEventRecorder $events,
+        private readonly DocumentEvidenceVersion $versions,
     ) {
     }
 
@@ -261,10 +262,9 @@ final class CorrespondenceCustodyService
                 ->where('linkable_type', $record->getMorphClass())
                 ->where('linkable_id', $record->id)->exists();
 
-            // The current Document model has NO first-class version column.
-            // An imported/uploaded file without an independently established
-            // immutable metadata.version is NOT acceptable issuance proof.
-            $version = $document?->metadata['version'] ?? null;
+            // Imported revisions use their ledger identity; legacy evidence needs
+            // an explicit version. Both require actual stored-byte integrity.
+            $version = $document === null ? null : $this->versions->resolve($document, $record);
             if (! $linked || $document === null || $version === null ||
                 (int) $version !== $proof->version ||
                 ! is_string($document->checksum_sha256) ||
