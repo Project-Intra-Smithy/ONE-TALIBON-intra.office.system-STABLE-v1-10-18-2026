@@ -30,6 +30,10 @@ export type CalendarEvent = {
     priority: string;
     starts_at: string;
     ends_at?: string | null;
+    start_date: string;
+    end_date?: string | null;
+    start_time?: string | null;
+    end_time?: string | null;
     all_day: boolean;
     location?: string | null;
     action_url?: string | null;
