@@ -45,7 +45,7 @@ export default function Invitations({ employees, roles, invitations, oneTimeLink
                             setConfirmed(false);
                         }}>
                             <option value={0}>Select an approved employee</option>
-                            {employees.map(employee=><option value={employee.id} key={employee.id}>{employee.name} — {employee.office}</option>)}
+                            {employees.map(employee=><option value={employee.id} key={employee.id}>{employee.name} (Record #{employee.id}) — {employee.office}</option>)}
                         </select>
                     </label>
                     {selected && <div className="rounded-lg bg-slate-50 p-3 text-xs dark:bg-slate-900">
