@@ -36,17 +36,16 @@ final class StaffActivationController extends Controller
                 $query->whereNull('user_id')
                     ->orWhereHas('user', fn ($users) => $users->where('is_active', false));
             })->orderBy('full_name')->limit(300)
-            ->get(['id', 'user_id', 'employee_number', 'full_name', 'work_email', 'department_id'])
+            ->get(['id', 'user_id', 'full_name', 'work_email', 'department_id'])
             ->map(fn (Employee $employee) => [
                 'id' => $employee->id,
                 'name' => $employee->full_name,
-                'number' => $employee->employee_number,
                 'office' => $employee->department?->name,
                 'departmentId' => $employee->department_id,
             ])->all();
 
         $invitations = StaffActivationInvitation::query()
-            ->with('employee:id,full_name,employee_number')
+            ->with('employee:id,full_name')
             ->latest('id')->limit(30)->get()
             ->map(fn (StaffActivationInvitation $invitation) => [
                 'id' => $invitation->id,
@@ -115,11 +114,10 @@ final class StaffActivationController extends Controller
     public function claim(Request $request, string $token): RedirectResponse
     {
         $data = $request->validate([
-            'employee_number' => ['required', 'string', 'max:64'],
             'password' => ['required', 'confirmed', Password::min(16)->letters()->numbers(), 'max:128'],
         ]);
 
-        $user = $this->activations->redeem($token, $data['employee_number'], $data['password']);
+        $user = $this->activations->redeem($token, $data['password']);
         Auth::guard('web')->login($user);
         $request->session()->regenerate();
         $this->assurance->clear($request);

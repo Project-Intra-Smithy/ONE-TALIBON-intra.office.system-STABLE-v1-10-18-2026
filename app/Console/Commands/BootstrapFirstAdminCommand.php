@@ -18,7 +18,6 @@ final class BootstrapFirstAdminCommand extends Command
     protected $signature = 'talibon:bootstrap-first-admin
         {--email= : Verified institutional email of the initial administrator}
         {--name= : Full name of the initial administrator}
-        {--employee-number= : Existing authorized employee identifier}
         {--department-code= : Existing active office code}
         {--position= : Official position title}';
 
@@ -38,16 +37,14 @@ final class BootstrapFirstAdminCommand extends Command
 
         $email = mb_strtolower(trim((string) $this->option('email')));
         $name = trim((string) $this->option('name'));
-        $employeeNumber = trim((string) $this->option('employee-number'));
         $code = trim((string) $this->option('department-code'));
         $position = trim((string) $this->option('position'));
 
         if (! filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 255
             || $name === '' || mb_strlen($name) > 255
-            || $employeeNumber === '' || strlen($employeeNumber) > 64
             || $code === '' || strlen($code) > 32
             || $position === '' || mb_strlen($position) > 255) {
-            $this->error('Valid email, name, employee number, office code, and position are required.');
+            $this->error('Valid email, name, office code, and position are required.');
             return self::FAILURE;
         }
 
@@ -77,7 +74,7 @@ final class BootstrapFirstAdminCommand extends Command
         }
 
         try {
-            DB::transaction(function () use ($email, $name, $employeeNumber, $code, $position, $password): void {
+            DB::transaction(function () use ($email, $name, $code, $position, $password): void {
                 // Lock orders every competing bootstrap before its zero-user check.
                 DB::statement('LOCK TABLE users IN EXCLUSIVE MODE');
                 DB::statement('LOCK TABLE initial_admin_bootstraps IN EXCLUSIVE MODE');
@@ -88,7 +85,7 @@ final class BootstrapFirstAdminCommand extends Command
 
                 $department = Department::query()->where('code', $code)
                     ->where('is_active', true)->lockForUpdate()->first();
-                if (! $department || Employee::query()->where('employee_number', $employeeNumber)->exists()) {
+                if (! $department) {
                     throw new \RuntimeException('Department or employee identifier is no longer eligible.');
                 }
 
@@ -97,7 +94,7 @@ final class BootstrapFirstAdminCommand extends Command
                     'password' => $password, 'role' => 'system_admin', 'is_active' => true,
                 ]);
                 Employee::query()->create([
-                    'user_id' => $user->id, 'employee_number' => $employeeNumber,
+                    'user_id' => $user->id,
                     'full_name' => $name, 'work_email' => $email,
                     'department_id' => $department->id, 'position_title' => $position,
                     'employment_status' => 'active',

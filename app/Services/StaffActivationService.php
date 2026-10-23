@@ -128,14 +128,16 @@ final class StaffActivationService
         return $this->matches($invitation, $employee, $user, $office) ? 'valid' : 'revoked';
     }
 
-    public function redeem(string $token, string $employeeNumber, string $password): User
+    public function redeem(string $token, string $password): User
     {
         if (! preg_match('/\A[a-f0-9]{64}\z/D', $token)) {
             throw $this->invalidToken();
         }
 
         $hash = hash('sha256', $token);
-        return DB::transaction(function () use ($hash, $employeeNumber, $password): User {
+        return DB::transaction(function () use ($hash, $password): User {
+            // A private, one-time invitation binds immutable employees.id and users.id.
+            // No official employee number is required or asserted.
             // Consistent employee -> user -> invitation lock order with issue/revoke.
             $candidate = StaffActivationInvitation::query()->where('token_hash', $hash)->first();
             if (! $candidate) throw $this->invalidToken();
@@ -148,8 +150,7 @@ final class StaffActivationService
             if (! $invitation || $invitation->token_hash !== $hash
                 || $invitation->consumed_at || $invitation->revoked_at
                 || $invitation->expires_at->isPast()
-                || ! $this->matches($invitation, $employee, $user, $office)
-                || ! hash_equals((string) $employee->employee_number, trim($employeeNumber))) {
+                || ! $this->matches($invitation, $employee, $user, $office)) {
                 throw $this->invalidToken();
             }
 

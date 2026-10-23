@@ -32,7 +32,6 @@ final class StaffActivationTest extends TestCase
     private function employee(Department $office, ?User $user = null, string $status = 'active'): Employee
     {
         return Employee::query()->create([
-            'employee_number' => 'SYN-'.Str::upper(Str::random(10)),
             'full_name' => 'Synthetic Employee',
             'work_email' => Str::lower(Str::random(10)).'@example.test',
             'department_id' => $office->id,
@@ -170,18 +169,14 @@ final class StaffActivationTest extends TestCase
         app(StaffActivationService::class)->issue($admin, $employee->id, $office->id, 'department_staff');
     }
 
-    public function test_redeem_requires_matching_employee_identity_hashes_password_and_consumes_token(): void
+    public function test_activation_without_employee_number_uses_one_time_invitation_identity(): void
     {
         [$office, $admin, $employee, $issued] = $this->provision();
         $service = app(StaffActivationService::class);
+        $this->assertNull($employee->employee_number);
+        $this->assertSame($employee->id, $issued['invitation']->employee_id);
         $this->assertSame('valid', $service->status($issued['token']));
-        try {
-            $service->redeem($issued['token'], 'WRONG-ID', 'SecureLongPassword2026!');
-            $this->fail('Employee mismatch should fail.');
-        } catch (ValidationException) {
-            $this->assertNull($issued['invitation']->fresh()->consumed_at);
-        }
-        $user = $service->redeem($issued['token'], $employee->employee_number, 'SecureLongPassword2026!');
+        $user = $service->redeem($issued['token'], 'SecureLongPassword2026!');
         $this->assertTrue($user->fresh()->is_active);
         $this->assertTrue(Hash::check('SecureLongPassword2026!', $user->fresh()->password));
         $this->assertNotSame('SecureLongPassword2026!', $user->fresh()->getRawOriginal('password'));
@@ -190,20 +185,29 @@ final class StaffActivationTest extends TestCase
         $this->assertDatabaseHas('audit_logs', ['action'=>'identity.activation.completed', 'actor_user_id'=>$user->id]);
     }
 
+    public function test_legacy_employee_number_is_retained_but_not_required_for_activation(): void
+    {
+        [$office, $admin, $employee, $issued] = $this->provision();
+        $employee->update(['employee_number' => 'LEGACY-0042']);
+        $user = app(StaffActivationService::class)->redeem($issued['token'], 'SecureLongPassword2026!');
+        $this->assertTrue($user->fresh()->is_active);
+        $this->assertSame('LEGACY-0042', $employee->fresh()->employee_number);
+    }
+
     public function test_forged_and_replayed_tokens_are_denied(): void
     {
         [$office, $admin, $employee, $issued] = $this->provision();
         $service = app(StaffActivationService::class);
         $this->assertSame('invalid', $service->status(str_repeat('a', 64)));
         try {
-            $service->redeem(str_repeat('a', 64), $employee->employee_number, 'SecureLongPassword2026!');
+            $service->redeem(str_repeat('a', 64), 'SecureLongPassword2026!');
             $this->fail('Forged token accepted.');
         } catch (ValidationException) {
             $this->assertFalse($employee->fresh()->user->is_active);
         }
-        $service->redeem($issued['token'], $employee->employee_number, 'SecureLongPassword2026!');
+        $service->redeem($issued['token'], 'SecureLongPassword2026!');
         $this->expectException(ValidationException::class);
-        $service->redeem($issued['token'], $employee->employee_number, 'AnotherSecurePassword2026!');
+        $service->redeem($issued['token'], 'AnotherSecurePassword2026!');
     }
 
     public function test_expired_and_revoked_tokens_are_denied(): void
@@ -213,7 +217,7 @@ final class StaffActivationTest extends TestCase
         $issued['invitation']->update(['expires_at'=>now()->subMinute()]);
         $this->assertSame('expired', $service->status($issued['token']));
         try {
-            $service->redeem($issued['token'], $employee->employee_number, 'SecureLongPassword2026!');
+            $service->redeem($issued['token'], 'SecureLongPassword2026!');
             $this->fail('Expired token accepted.');
         } catch (ValidationException) {
             $this->assertFalse($employee->fresh()->user->is_active);
@@ -222,7 +226,7 @@ final class StaffActivationTest extends TestCase
         $service->revoke($admin, $replacement['invitation']->id);
         $this->assertSame('revoked', $service->status($replacement['token']));
         $this->expectException(ValidationException::class);
-        $service->redeem($replacement['token'], $employee->employee_number, 'SecureLongPassword2026!');
+        $service->redeem($replacement['token'], 'SecureLongPassword2026!');
     }
 
     public function test_invitation_rotation_invalidates_previous_token_and_preserves_one_user_link(): void
@@ -242,14 +246,13 @@ final class StaffActivationTest extends TestCase
         $office->update(['is_active'=>false]);
         $this->assertSame('revoked', app(StaffActivationService::class)->status($issued['token']));
         $this->expectException(ValidationException::class);
-        app(StaffActivationService::class)->redeem($issued['token'], $employee->employee_number, 'SecureLongPassword2026!');
+        app(StaffActivationService::class)->redeem($issued['token'], 'SecureLongPassword2026!');
     }
 
     public function test_activation_http_handoff_preserves_privileged_mfa_requirement(): void
     {
         [$office, $admin, $employee, $issued] = $this->provision();
         $this->post('/activate-account/'.$issued['token'], [
-            'employee_number'=>$employee->employee_number,
             'password'=>'SecureLongPassword2026!',
             'password_confirmation'=>'SecureLongPassword2026!',
         ])->assertRedirect(route('mfa.enroll'));
@@ -266,7 +269,7 @@ final class StaffActivationTest extends TestCase
         DB::table('initial_admin_bootstraps')->insert(['id'=>1,'user_id'=>$admin->id,'created_at'=>now()]);
         $admin->delete(); // Marker stays, and no privileged reinitialization is permitted.
         $this->artisan('talibon:bootstrap-first-admin', [
-            '--email'=>'reinit@example.test', '--name'=>'Reinitializer', '--employee-number'=>'R-1',
+            '--email'=>'reinit@example.test', '--name'=>'Reinitializer',
             '--department-code'=>$office->code, '--position'=>'Synthetic',
         ])->assertExitCode(1);
     }
@@ -290,7 +293,7 @@ final class StaffActivationTest extends TestCase
     {
         [$office, $admin, $employee, $issued] = $this->provision();
         $user = app(StaffActivationService::class)->redeem(
-            $issued['token'], $employee->employee_number, 'SecureLongPassword2026!'
+            $issued['token'], 'SecureLongPassword2026!'
         );
         $employee->update(['employment_status'=>'inactive']);
         $this->post('/login', [
@@ -306,7 +309,7 @@ final class StaffActivationTest extends TestCase
         $this->assertSame('revoked', app(StaffActivationService::class)->status($issued['token']));
         $this->expectException(ValidationException::class);
         app(StaffActivationService::class)->redeem(
-            $issued['token'], $employee->employee_number, 'SecureLongPassword2026!'
+            $issued['token'], 'SecureLongPassword2026!'
         );
     }
 

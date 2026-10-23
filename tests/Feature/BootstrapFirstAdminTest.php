@@ -28,7 +28,6 @@ final class BootstrapFirstAdminTest extends TestCase
         return [
             '--email' => 'first-administrator@example.test',
             '--name' => 'First Authorized Tester',
-            '--employee-number' => 'FIRST-EMP-'.Str::upper(Str::random(7)),
             '--department-code' => $office->code,
             '--position' => 'Synthetic Administrator',
         ];
@@ -53,6 +52,8 @@ final class BootstrapFirstAdminTest extends TestCase
         $this->assertNotSame($secret, $user->getRawOriginal('password'));
         $this->assertTrue(password_verify($secret, $user->getRawOriginal('password')));
         $this->assertSame($office->id, Employee::query()->sole()->department_id);
+        $this->assertNull(Employee::query()->sole()->employee_number);
+        $this->assertGreaterThan(0, Employee::query()->sole()->id);
 
         // A second invocation must not mint another privileged principal.
         $this->artisan('talibon:bootstrap-first-admin', $args)->assertExitCode(1);
@@ -77,7 +78,6 @@ final class BootstrapFirstAdminTest extends TestCase
         $args = [
             '--email' => 'first-administrator@example.test',
             '--name' => 'First Authorized Tester',
-            '--employee-number' => 'FIRST-EMP-12345',
             '--department-code' => 'MISSING-OFFICE',
             '--position' => 'Synthetic Administrator',
         ];
