@@ -219,6 +219,9 @@ final class WorkRequestRevocationTest extends TestCase
         $this->seed();
         Storage::fake('documents');
         $admin = $this->user('admin@talibon.demo');
+        $clearedApprover = $this->user('mayor@talibon.demo');
+        $this->assertSame($admin->employee->department_id, $clearedApprover->employee->department_id);
+        $this->assertSame('mayor_approver', $clearedApprover->role);
         $transaction = $this->transaction($admin, $admin->employee->department);
         $secret = 'P1-H-PRIVATE-EVIDENCE-BYTES';
         Storage::disk('documents')->put('p1-h/revoked.txt', $secret);
@@ -243,7 +246,12 @@ final class WorkRequestRevocationTest extends TestCase
 
         $this->actingAs($admin)->get(route('transactions.show', $transaction))->assertOk();
         $this->actingAs($admin)->get(route('transactions.live', $transaction))->assertOk();
-        $this->actingAs($admin)->get(route('documents.download', $document))->assertOk();
+        // Transaction oversight does not grant the system administrator
+        // independent clearance to Internal document contents.
+        $this->actingAs($admin)->get(route('documents.download', $document))->assertForbidden();
+        // A legitimately cleared approver in the current office can read the
+        // same evidence before their employment is revoked.
+        $this->actingAs($clearedApprover)->get(route('documents.download', $document))->assertOk();
 
         $admin->load('employee.department');
         $admin->employee()->update(['employment_status' => 'separated']);
@@ -259,6 +267,17 @@ final class WorkRequestRevocationTest extends TestCase
             $this->assertStringNotContainsString($transaction->title, $response->getContent());
             $this->assertStringNotContainsString($document->title, $response->getContent());
         }
+
+        // The same cleared approver must lose a previously successful
+        // document download after employment separation, even with cached
+        // relations retained on the original user model.
+        $clearedApprover->load('employee.department');
+        $clearedApprover->employee()->update(['employment_status' => 'separated']);
+        $revokedDownload = $this->actingAs($clearedApprover)
+            ->get(route('documents.download', $document))->assertForbidden();
+        $this->assertStringNotContainsString($secret, $revokedDownload->getContent());
+        $this->assertStringNotContainsString($transaction->title, $revokedDownload->getContent());
+        $this->assertStringNotContainsString($document->title, $revokedDownload->getContent());
 
         $this->actingAs($admin)
             ->post(route('transactions.transition', $transaction), [

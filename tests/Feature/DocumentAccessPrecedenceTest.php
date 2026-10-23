@@ -163,9 +163,11 @@ class DocumentAccessPrecedenceTest extends TestCase
         $actor->employee->update(['employment_status' => 'inactive']);
         // Deliberately keep the original actor with cached active relations.
         $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
-        $this->actingAs($actor)
+        $response = $this->actingAs($actor)
             ->get('/documents/'.$document->public_id.'/download')
             ->assertForbidden();
+        $response->assertHeaderMissing('Content-Disposition');
+        $response->assertDontSee('%PDF-1.7 test', false);
     }
 
     public function test_orphaned_higher_priority_event_link_does_not_downgrade_to_transaction(): void
@@ -195,17 +197,50 @@ class DocumentAccessPrecedenceTest extends TestCase
         $this->assertSame(0, $archive['records']->total());
     }
 
-    public function test_archive_uses_authorized_parent_for_relationship_metadata(): void
+    public function test_mixed_correspondence_parents_deny_shared_document_in_both_link_orders(): void
     {
-        $office = $this->department('CONTEXT');
-        $other = $this->department('HIDDEN-CONTEXT');
-        $actor = $this->human($office);
-        $denied = $this->restrictedCorrespondence($other);
-        $allowed = $this->restrictedCorrespondence($office);
-        $allowed->update(['subject' => 'Authorized correspondence context']);
-        $document = $this->document($actor, $office, 'Mixed correspondence context');
+        foreach (['restricted_first', 'visible_first'] as $order) {
+            $office = $this->department('CONTEXT-'.$order);
+            $other = $this->department('HIDDEN-'.$order);
+            $actor = $this->human($office);
+            $this->actingAs($actor);
+            $denied = $this->restrictedCorrespondence($other);
+            $allowed = $this->restrictedCorrespondence($office);
+            $allowed->update(['subject' => 'Authorized correspondence context']);
+            $document = $this->document($actor, $office, 'Mixed correspondence '.$order);
 
-        foreach ([$denied, $allowed] as $index => $record) {
+            $parents = $order === 'restricted_first'
+                ? [$denied, $allowed] : [$allowed, $denied];
+            foreach ($parents as $index => $record) {
+                DocumentLink::query()->create([
+                    'document_id' => $document->id,
+                    'linkable_type' => $record->getMorphClass(),
+                    'linkable_id' => $record->id,
+                    'relationship' => 'correspondence_'.($index + 1),
+                ]);
+            }
+
+            $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
+            $archive = app(DocumentArchiveQuery::class)->workspace($actor, [
+                'document' => $document->public_id,
+            ]);
+            $this->assertSame(0, $archive['records']->total());
+            $this->assertSame(0, $archive['counts']['all']);
+            $this->assertNull($archive['selected']);
+            $this->get('/documents/'.$document->public_id.'/download')->assertForbidden();
+        }
+    }
+
+    public function test_multiple_authorized_correspondence_parents_retain_document_access(): void
+    {
+        $office = $this->department('MULTI-PARENT-ALLOWED');
+        $actor = $this->human($office);
+        $first = $this->restrictedCorrespondence($office);
+        $second = $this->restrictedCorrespondence($office);
+        $second->update(['subject' => 'Second allowed correspondence']);
+        $document = $this->document($actor, $office, 'Both sources authorized');
+
+        foreach ([$first, $second] as $index => $record) {
             DocumentLink::query()->create([
                 'document_id' => $document->id,
                 'linkable_type' => $record->getMorphClass(),
@@ -219,9 +254,66 @@ class DocumentAccessPrecedenceTest extends TestCase
             'document' => $document->public_id,
         ]);
         $this->assertSame(1, $archive['records']->total());
-        $this->assertSame('Authorized correspondence context', $archive['selected']['relatedTitle']);
-        $this->assertSame('Authorized correspondence context', $archive['records']->items()[0]['relatedTitle']);
-        $this->assertNotSame($denied->subject, $archive['selected']['relatedTitle']);
+        $this->assertSame(1, $archive['counts']['all']);
+        $this->assertSame($document->public_id, $archive['selected']['publicId']);
+        $this->actingAs($actor)
+            ->get('/documents/'.$document->public_id.'/download')->assertOk();
+    }
+
+    public function test_unknown_parent_conceals_document_in_both_link_orders_and_known_parent_remains_accessible(): void
+    {
+        $office = $this->department('UNKNOWN-PARENT');
+        $actor = $this->human($office);
+        $transaction = $this->transaction($actor, $office);
+        $this->actingAs($actor);
+
+        foreach (['unknown_first', 'unknown_last'] as $order) {
+            $document = $this->document($actor, $office, 'Unknown parent '.$order);
+            $links = [
+                ['type' => 'Unknown\\RestrictedSource', 'id' => 123456789],
+                ['type' => $transaction->getMorphClass(), 'id' => $transaction->id],
+            ];
+            if ($order === 'unknown_last') {
+                $links = array_reverse($links);
+            }
+            foreach ($links as $index => $link) {
+                DocumentLink::query()->create([
+                    'document_id' => $document->id,
+                    'linkable_type' => $link['type'],
+                    'linkable_id' => $link['id'],
+                    'relationship' => 'source_'.($index + 1),
+                ]);
+            }
+
+            $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
+            $archive = app(DocumentArchiveQuery::class)->workspace($actor, [
+                'document' => $document->public_id,
+                'archive_search' => $document->title,
+            ]);
+            $this->assertSame(0, $archive['records']->total());
+            $this->assertSame(0, $archive['counts']['all']);
+            $this->assertNull($archive['selected']);
+            $this->actingAs($actor)->get('/documents/'.$document->public_id.'/download')
+                ->assertForbidden();
+        }
+
+        $known = $this->document($actor, $office, 'Known parent remains visible');
+        DocumentLink::query()->create([
+            'document_id' => $known->id,
+            'linkable_type' => $transaction->getMorphClass(),
+            'linkable_id' => $transaction->id,
+            'relationship' => 'supporting_document',
+        ]);
+
+        $this->assertTrue(app(DocumentAccessService::class)->canDownload($actor, $known));
+        $archive = app(DocumentArchiveQuery::class)->workspace($actor, [
+            'document' => $known->public_id,
+            'archive_search' => $known->title,
+        ]);
+        $this->assertSame(1, $archive['records']->total());
+        $this->assertSame(1, $archive['counts']['all']);
+        $this->assertSame($known->public_id, $archive['selected']['publicId']);
+        $this->actingAs($actor)->get('/documents/'.$known->public_id.'/download')->assertOk();
     }
 
     public function test_sql_archive_zero_one_and_one_thousand_documents_keep_stable_pages_and_counts(): void
@@ -302,6 +394,10 @@ class DocumentAccessPrecedenceTest extends TestCase
             DB::flushQueryLog();
         }
 
+        fwrite(STDERR, 'DOCUMENT_ARCHIVE_QUERY_OBSERVATION '.json_encode([
+            'three_pages_and_search' => $queryCount,
+        ]).PHP_EOL);
+
         $this->assertSame(1001, $first['records']->total());
         $this->assertSame(1001, $first['counts']['all']);
         $this->assertSame(1000, $searched['records']->total());
@@ -337,13 +433,24 @@ class DocumentAccessPrecedenceTest extends TestCase
         $archive = app(DocumentArchiveQuery::class)->workspace($actor, [
             'document' => $document->public_id,
         ]);
-        $this->assertSame('Authorized SQL archive source', $archive['selected']['relatedTitle']);
+        // One denied parent within the controlling correspondence family
+        // excludes the entire document, including otherwise allowed metadata.
+        $this->assertNull($archive['selected']);
+        $this->assertSame(0, $archive['records']->total());
+        $this->assertSame(0, $archive['counts']['all']);
         $serialized = json_encode($archive);
+        $this->assertStringNotContainsString($allowed->subject, $serialized);
+        $this->assertStringNotContainsString($allowed->municipal_reference_no, $serialized);
+        $this->assertStringNotContainsString($allowed->public_id, $serialized);
         $this->assertStringNotContainsString($denied->subject, $serialized);
         $this->assertStringNotContainsString($denied->municipal_reference_no, $serialized);
         $this->assertStringNotContainsString($denied->public_id, $serialized);
+        $this->assertStringNotContainsString($allowed->subject, $serialized);
         $this->assertSame(0, app(DocumentArchiveQuery::class)->workspace($actor, [
             'archive_search' => $denied->subject,
+        ])['records']->total());
+        $this->assertSame(0, app(DocumentArchiveQuery::class)->workspace($actor, [
+            'archive_search' => $allowed->subject,
         ])['records']->total());
     }
 
@@ -438,6 +545,11 @@ class DocumentAccessPrecedenceTest extends TestCase
         $this->assertFalse($deniedDownload);
         $this->assertNull($archive['selected']);
         $this->assertSame(0, $archive['records']->total());
+        fwrite(STDERR, 'DOCUMENT_DOWNLOAD_QUERY_OBSERVATION '.json_encode([
+            'allowed_1000_links' => $allowQueries,
+            'denied_1001_links' => $downloadQueries,
+            'denied_archive' => $archiveQueries,
+        ]).PHP_EOL);
         $this->assertLessThanOrEqual(10, $downloadQueries);
         $this->assertLessThanOrEqual(14, $archiveQueries);
     }
@@ -713,6 +825,81 @@ class DocumentAccessPrecedenceTest extends TestCase
         $this->assertSame(0, $search['records']->total());
         $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
         $this->actingAs($actor)->get('/documents/'.$document->public_id.'/download')->assertForbidden();
+    }
+
+    public function test_restricted_file_under_visible_work_request_requires_independent_document_clearance(): void
+    {
+        $office = $this->department('DOC-CLEARANCE');
+        $head = $this->human($office);
+        $staff = $this->human($office);
+        $staff->update(['role' => 'department_staff']);
+        $staff = $staff->fresh('employee.department');
+        $transaction = $this->transaction($head, $office);
+        $marker = 'RESTRICTED-ATTACHMENT-'.Str::upper(Str::random(10));
+        $document = $this->document($head, $office, $marker);
+
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => $transaction->getMorphClass(),
+            'linkable_id' => $transaction->id,
+            'relationship' => 'transaction_evidence',
+        ]);
+
+        $this->actingAs($staff);
+        $this->assertTrue($staff->can('view', $transaction));
+        $this->assertFalse(app(DocumentAccessService::class)->canDownload($staff, $document));
+        $hidden = app(DocumentArchiveQuery::class)->workspace($staff, ['document' => $document->public_id]);
+        $this->assertSame(0, $hidden['records']->total());
+        $this->assertSame(0, $hidden['counts']['all']);
+        $this->assertNull($hidden['selected']);
+        $this->assertStringNotContainsString($marker, json_encode($hidden));
+        $this->get('/transactions/'.$transaction->id)
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->where('evidence.record', []));
+        $this->get('/documents/'.$document->public_id.'/download')->assertForbidden();
+
+        $this->actingAs($head);
+        $this->assertTrue(app(DocumentAccessService::class)->canDownload($head, $document));
+        $this->assertSame(1, app(DocumentArchiveQuery::class)->workspace($head, [])['records']->total());
+        $this->get('/transactions/'.$transaction->id)
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->where('evidence.record.0.publicId', $document->public_id));
+        $this->get('/documents/'.$document->public_id.'/download')->assertOk();
+    }
+
+    public function test_unknown_document_classification_fails_closed_on_download_metadata_and_archive(): void
+    {
+        $office = $this->department('UNKNOWN-CLEARANCE');
+        $head = $this->human($office);
+        $transaction = $this->transaction($head, $office);
+        $document = $this->document($head, $office, 'Invalid classification evidence');
+
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => $transaction->getMorphClass(),
+            'linkable_id' => $transaction->id,
+            'relationship' => 'supporting_document',
+        ]);
+
+        $this->actingAs($head);
+        $this->assertTrue(app(DocumentAccessService::class)->canDownload($head, $document));
+
+        // Simulate a malformed legacy classification without altering the
+        // application schema or production records.
+        $document->update(['classification' => 'unrecognized_level']);
+
+        $this->assertFalse(app(DocumentAccessService::class)
+            ->canDownload($head, $document->fresh()));
+        $archive = app(DocumentArchiveQuery::class)->workspace($head, [
+            'document' => $document->public_id,
+        ]);
+        $this->assertSame(0, $archive['records']->total());
+        $this->assertSame(0, $archive['counts']['all']);
+        $this->assertNull($archive['selected']);
+        $this->get('/documents/'.$document->public_id.'/download')->assertForbidden();
+        $this->get('/transactions/'.$transaction->id)
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->where('evidence.record', []));
     }
 
     private function department(string $name): Department

@@ -5,10 +5,13 @@ namespace App\Domain\Workflow\Listeners;
 use App\Domain\Workflow\Events\WorkflowTransactionCreated;
 use App\Domain\Workflow\Events\WorkflowTransactionTransitioned;
 use App\Domain\Workflow\WorkflowDefinitionResolver;
+use App\Models\CorrespondenceRecord;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\TransactionEvent;
+use App\Models\User;
 use App\Models\WorkflowTransaction;
+use App\Services\CorrespondenceAccessDecider;
 use App\Services\PlatformNotificationService;
 
 final readonly class NotifyWorkflowTransactionMutation
@@ -16,6 +19,7 @@ final readonly class NotifyWorkflowTransactionMutation
     public function __construct(
         private PlatformNotificationService $notifications,
         private WorkflowDefinitionResolver $definitions,
+        private CorrespondenceAccessDecider $correspondenceAccess,
     ) {
     }
 
@@ -38,6 +42,12 @@ final readonly class NotifyWorkflowTransactionMutation
         WorkflowTransaction $transaction,
         TransactionEvent $event,
     ): void {
+        // The source link is not saved when the created event is dispatched.
+        // Do not notify even generically until source-specific access exists.
+        if ($transaction->transaction_type === 'document_review') {
+            return;
+        }
+
         $office = $this->activeOffice($transaction->current_department_id);
 
         if ($office) {
@@ -78,7 +88,7 @@ final readonly class NotifyWorkflowTransactionMutation
         int $assignmentId,
     ): void {
         $assigned = Employee::query()->with('user')->find($assignmentId);
-        if (! $assigned?->user) {
+        if (! $assigned?->user || ! $this->canReceive($assigned->user, $transaction)) {
             return;
         }
 
@@ -101,7 +111,7 @@ final readonly class NotifyWorkflowTransactionMutation
         TransactionEvent $event,
         bool $initialReceipt = false,
     ): void {
-        $this->notifications->notifyDepartment($office, [
+        $this->dispatchOffice($office, $transaction, [
             'event_key' => 'transaction-event-'.$event->id,
             'source_domain' => 'transaction',
             'source_type' => WorkflowTransaction::class,
@@ -123,7 +133,7 @@ final readonly class NotifyWorkflowTransactionMutation
             return;
         }
 
-        $this->notifications->notifyDepartment($office, [
+        $this->dispatchOffice($office, $transaction, [
             'event_key' => 'transaction-event-'.$event->id,
             'source_domain' => 'transaction',
             'source_type' => WorkflowTransaction::class,
@@ -133,6 +143,72 @@ final readonly class NotifyWorkflowTransactionMutation
             'message' => $transaction->reference_no.' · '.$transaction->title,
             'action_url' => '/transactions/'.$transaction->id,
         ]);
+    }
+
+    /**
+     * Scope notice delivery to users who can view the originating document.
+     *
+     * @param array<string, mixed> $payload
+     */
+    private function dispatchOffice(Department $office, WorkflowTransaction $transaction, array $payload): void
+    {
+        $sources = $this->linkedCorrespondence($transaction);
+        if ($sources->isEmpty()) {
+            // A document_review may be in its pre-link creation window.
+            // Do not send title-bearing office notices without source proof.
+            if ($transaction->transaction_type !== 'document_review') {
+                $this->notifications->notifyDepartment($office, $payload);
+            }
+
+            return;
+        }
+
+        $recipients = User::query()
+            ->where('is_active', true)
+            ->whereHas('employee', fn ($employee) => $employee
+                ->where('department_id', $office->id)
+                ->where('employment_status', 'active'))
+            ->with('employee')
+            ->get();
+
+        foreach ($recipients as $recipient) {
+            if ($this->canViewEverySource($recipient, $sources)) {
+                $this->notifications->notifyUser(
+                    $recipient,
+                    $payload + ['department_id' => $office->id],
+                );
+            }
+        }
+    }
+
+    private function canReceive(User $recipient, WorkflowTransaction $transaction): bool
+    {
+        $sources = $this->linkedCorrespondence($transaction);
+        if ($sources->isEmpty()) {
+            // Preserve ordinary workflow assignments. A source-less
+            // document_review has no verifiable correspondence provenance.
+            return $transaction->transaction_type !== 'document_review';
+        }
+
+        return $this->canViewEverySource($recipient, $sources);
+    }
+
+    /** @return \Illuminate\Database\Eloquent\Collection<int, CorrespondenceRecord> */
+    private function linkedCorrespondence(WorkflowTransaction $transaction): \Illuminate\Database\Eloquent\Collection
+    {
+        // Check all linked sources, including malformed legacy transaction
+        // types. The order in which sources were created must never matter.
+        return CorrespondenceRecord::query()
+            ->where('workflow_transaction_id', $transaction->id)
+            ->get();
+    }
+
+    /** @param \Illuminate\Database\Eloquent\Collection<int, CorrespondenceRecord> $sources */
+    private function canViewEverySource(User $recipient, \Illuminate\Database\Eloquent\Collection $sources): bool
+    {
+        return $sources->isNotEmpty()
+            && $sources->every(fn (CorrespondenceRecord $source): bool =>
+                $this->correspondenceAccess->canView($recipient, $source));
     }
 
     private function activeOffice(?int $officeId): ?Department

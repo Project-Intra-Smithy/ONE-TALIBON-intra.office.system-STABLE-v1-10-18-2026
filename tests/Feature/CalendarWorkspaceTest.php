@@ -6,6 +6,7 @@ use App\Models\CalendarEvent;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\User;
+use App\Models\WorkflowTransaction;
 use App\Services\CalendarWorkspaceQueryService;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -70,6 +71,57 @@ final class CalendarWorkspaceTest extends TestCase
     {
         $actor = $this->human($this->department('ROUTE'));
         $this->actingAs($actor)->get('/calendar?view=week&date=2026-09-25')->assertOk()->assertInertia(fn (Assert $page) => $page->component('Calendar/Index')->where('calendar.view', 'week')->where('calendar.anchor_date', '2026-09-25')->where('calendar.timezone', 'Asia/Manila')->has('events'));
+    }
+
+    public function test_malformed_workflow_deadline_never_uses_general_calendar_visibility(): void
+    {
+        $office = $this->department('LEGACY');
+        $staff = $this->human($office);
+        $at = CarbonImmutable::parse('2026-09-25 09:00', 'Asia/Manila');
+        $legacy = $this->event('legacy-restricted-deadline', $at, department: $office);
+        $legacy->update([
+            'event_type' => 'workflow_deadline',
+            'title' => 'RESTRICTED-LEGACY-CANARY',
+            'source_domain' => 'work_request',
+            'source_type' => null,
+            'source_id' => null,
+            'action_url' => null,
+        ]);
+
+        $this->actingAs($staff);
+        $query = app(CalendarWorkspaceQueryService::class);
+        $keys = collect($query->workspace($staff, 'day', '2026-09-25')['events'])
+            ->pluck('event_key')->all();
+        $this->assertNotContains('legacy-restricted-deadline', $keys);
+        $this->get('/calendar?view=day&date=2026-09-25')
+            ->assertOk()
+            ->assertDontSee('RESTRICTED-LEGACY-CANARY');
+
+        $ordinary = $this->event('ordinary-calendar-visible', $at->addHour(), department: $office);
+        $transaction = WorkflowTransaction::query()->create([
+            'reference_no' => 'CAL-TX-'.Str::upper(Str::random(10)),
+            'transaction_type' => 'internal_request',
+            'title' => 'Authorized Work Request',
+            'priority' => 'normal',
+            'origin_department_id' => $office->id,
+            'current_department_id' => $office->id,
+            'created_by_user_id' => $staff->id,
+            'status' => 'submitted',
+        ]);
+        $deadline = $this->event('authorized-deadline', $at->addHours(2), department: $office);
+        $deadline->update([
+            'event_type' => 'workflow_deadline',
+            'source_domain' => 'transaction',
+            'source_type' => WorkflowTransaction::class,
+            'source_id' => $transaction->id,
+            'action_url' => '/transactions/'.$transaction->id,
+        ]);
+
+        $keys = collect($query->workspace($staff, 'day', '2026-09-25')['events'])
+            ->pluck('event_key')->all();
+        $this->assertContains($ordinary->event_key, $keys);
+        $this->assertContains($deadline->event_key, $keys);
+        $this->assertNotContains($legacy->event_key, $keys);
     }
 
     private function event(string $key, CarbonImmutable $start, ?CarbonImmutable $end = null, bool $allDay = false, string $scope = 'department', ?Department $department = null, ?User $user = null): CalendarEvent

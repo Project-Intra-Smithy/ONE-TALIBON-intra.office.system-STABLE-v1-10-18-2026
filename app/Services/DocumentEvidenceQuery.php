@@ -9,44 +9,54 @@ use App\Models\TransactionEvent;
 use App\Models\TravelOrder;
 use App\Models\TravelOrderEvent;
 use App\Models\WorkflowTransaction;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 final class DocumentEvidenceQuery
 {
+    public function __construct(private readonly DocumentAccessService $access) {}
     /** @return array{record:array<int,array<string,mixed>>,events:array<string,array<int,array<string,mixed>>>} */
-    public function forTransaction(WorkflowTransaction $transaction): array
+    public function forTransaction(WorkflowTransaction $transaction, ?User $actor = null): array
     {
         $eventIds = $transaction->relationLoaded('events')
             ? $transaction->events->pluck('id')->map(fn ($id): int => (int) $id)->all()
             : $transaction->events()->pluck('id')->map(fn ($id): int => (int) $id)->all();
 
-        return $this->forParentAndEvents($transaction, (new TransactionEvent())->getMorphClass(), $eventIds);
+        return $this->forParentAndEvents($transaction, (new TransactionEvent())->getMorphClass(), $eventIds, $actor);
     }
 
     /** @return array{record:array<int,array<string,mixed>>,events:array<string,array<int,array<string,mixed>>>} */
-    public function forCorrespondence(CorrespondenceRecord $record): array
+    public function forCorrespondence(CorrespondenceRecord $record, ?User $actor = null): array
     {
         $eventIds = $record->events()->pluck('id')->map(fn ($id): int => (int) $id)->all();
 
-        return $this->forParentAndEvents($record, (new CorrespondenceEvent())->getMorphClass(), $eventIds);
+        return $this->forParentAndEvents($record, (new CorrespondenceEvent())->getMorphClass(), $eventIds, $actor);
     }
 
     /** @return array{record:array<int,array<string,mixed>>,events:array<string,array<int,array<string,mixed>>>} */
-    public function forTravelOrder(TravelOrder $travelOrder): array
+    public function forTravelOrder(TravelOrder $travelOrder, ?User $actor = null): array
     {
         $eventIds = $travelOrder->relationLoaded('events')
             ? $travelOrder->events->pluck('id')->map(fn ($id): int => (int) $id)->all()
             : $travelOrder->events()->pluck('id')->map(fn ($id): int => (int) $id)->all();
 
-        return $this->forParentAndEvents($travelOrder, (new TravelOrderEvent())->getMorphClass(), $eventIds);
+        return $this->forParentAndEvents($travelOrder, (new TravelOrderEvent())->getMorphClass(), $eventIds, $actor);
     }
 
     /**
      * @param array<int, int> $eventIds
      * @return array{record:array<int,array<string,mixed>>,events:array<string,array<int,array<string,mixed>>>}
      */
-    private function forParentAndEvents(Model $parent, string $eventType, array $eventIds): array
+    private function forParentAndEvents(Model $parent, string $eventType, array $eventIds, ?User $actor): array
     {
+        // Retain backwards-compatible method signatures for existing callers,
+        // but never project filenames if the request actor is unauthenticated.
+        $actor ??= Auth::user();
+        if (! $actor instanceof User) {
+            return ['record' => [], 'events' => []];
+        }
+
         $parentType = $parent->getMorphClass();
         $links = DocumentLink::query()
             ->with(['document.uploader:id,name'])
@@ -70,7 +80,9 @@ final class DocumentEvidenceQuery
         $events = [];
 
         foreach ($links as $link) {
-            if (! $link->document) {
+            // Metadata, filenames and download URLs use the same fresh
+            // parent-precedence + document-clearance gate as direct download.
+            if (! $link->document || ! $this->access->canDownload($actor, $link->document)) {
                 continue;
             }
 

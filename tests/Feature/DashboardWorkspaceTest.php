@@ -228,6 +228,11 @@ class DashboardWorkspaceTest extends TestCase
 
         $expanded = $this->dashboardQueryCount($head->fresh());
 
+        fwrite(STDERR, 'DEPARTMENT_DASHBOARD_QUERY_OBSERVATION '.json_encode([
+            'baseline' => $baseline,
+            'expanded' => $expanded,
+        ]).PHP_EOL);
+
         $this->assertLessThanOrEqual($baseline + 1, $expanded);
         $this->assertLessThanOrEqual(35, $expanded);
     }

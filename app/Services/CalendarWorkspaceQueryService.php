@@ -59,6 +59,10 @@ final class CalendarWorkspaceQueryService
             // retain their existing independent scope and lifecycle.
             ->where(function (Builder $source) use ($user): void {
                 $source->where(function (Builder $other): void {
+                    // Workflow deadlines with missing or malformed source tuples
+                    // must not fall back to generic calendar-event visibility.
+                    // Old cached classified titles could otherwise leak.
+                    $other->where('event_type', '<>', 'workflow_deadline');
                     // Unrelated calendar sources keep their existing scope,
                     // but no malformed/legacy tuple or cached transaction
                     // link may impersonate an authorized Work Request.

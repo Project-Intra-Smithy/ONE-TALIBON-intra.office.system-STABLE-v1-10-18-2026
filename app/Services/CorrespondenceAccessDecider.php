@@ -234,6 +234,32 @@ class CorrespondenceAccessDecider
         return $this->classificationValuesForActiveActor($actor);
     }
 
+    /**
+     * Use clearance from this operation's already verified, session-bound actor.
+     * Ordinary public clearance lookups keep independent live verification.
+     *
+     * @return array<int, string>
+     */
+    public function visibleClassificationValuesForVerifiedActor(VerifiedMunicipalActor $verified): array
+    {
+        return $this->classificationValuesForActiveActor($verified->user());
+    }
+
+    /**
+     * A verified actor may read ordinary document evidence only when its
+     * source parent also authorizes the read. Higher classifications retain
+     * the independent role clearance below.
+     *
+     * @return array<int, string>
+     */
+    public function visibleDocumentClassificationValuesForVerifiedActor(VerifiedMunicipalActor $verified): array
+    {
+        return array_values(array_unique(array_merge(
+            [CorrespondenceClassification::Public->value, CorrespondenceClassification::Internal->value],
+            $this->classificationValuesForActiveActor($verified->user()),
+        )));
+    }
+
     /** @return array<int, string> */
     private function classificationValuesForActiveActor(User $actor): array
     {

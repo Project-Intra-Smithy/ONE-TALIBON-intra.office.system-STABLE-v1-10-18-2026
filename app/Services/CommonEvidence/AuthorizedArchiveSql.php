@@ -35,6 +35,7 @@ final readonly class AuthorizedArchiveSql
         private CorrespondenceEvidenceScope $correspondenceScope,
         private TravelOrderAccess $travelOrderAccess,
         private TransactionVisibilityQuery $transactionVisibility,
+        private CorrespondenceAccessDecider $classificationAccess,
     ) {}
 
     /** @param array<string, mixed> $filters */
@@ -193,9 +194,59 @@ final readonly class AuthorizedArchiveSql
         $actorId = (int) $actor->id;
         $officeId = (int) $actor->employee->department_id;
         $employeeId = (int) $actor->employee->id;
+        // Apply document-level clearance before pagination, counts, search,
+        // selected-document lookup and activity. Parent-source authorization
+        // from authorizedLinks() remains an independent required condition.
+        $allowedClassifications = $this->classificationAccess
+            ->visibleDocumentClassificationValuesForVerifiedActor($verified);
+        $eligibleLinkIds = DB::query()->fromSub(clone $links, 'visible_links')
+            ->select('link_id');
+        $correspondenceTypes = $this->morphTypes(CorrespondenceRecord::class, CorrespondenceEvent::class);
+        $travelTypes = $this->morphTypes(TravelOrder::class, TravelOrderEvent::class);
+        $transactionTypes = $this->morphTypes(WorkflowTransaction::class, TransactionEvent::class);
+        $supportedTypes = array_values(array_unique(array_merge(
+            $correspondenceTypes,
+            $travelTypes,
+            $transactionTypes,
+        )));
+
         return DB::table('documents as d')
+            ->whereIn('d.classification', $allowedClassifications)
+            // Unknown or malformed polymorphic parents have no reviewed
+            // authorization rule, so they conceal the whole document.
+            ->whereNotExists(function (Builder $unknown) use ($supportedTypes): void {
+                $unknown->selectRaw('1')
+                    ->from('document_links as unsupported_link')
+                    ->whereColumn('unsupported_link.document_id', 'd.id')
+                    ->whereNotIn('unsupported_link.linkable_type', $supportedTypes);
+            })
             ->joinSub($ranked, 'source', function (JoinClause $join): void {
                 $join->on('source.document_id', '=', 'd.id')->where('source.source_position', '=', 1);
+            })
+            // A displayed link is insufficient when another parent of the
+            // controlling family is restricted, missing or unauthorized.
+            // Apply this SQL denial before page totals, search and activity.
+            ->whereNotExists(function (Builder $blocked) use (
+                $eligibleLinkIds, $correspondenceTypes, $travelTypes, $transactionTypes
+            ): void {
+                $blocked->selectRaw('1')
+                    ->from('document_links as other_link')
+                    ->whereColumn('other_link.document_id', 'd.id')
+                    ->where(function (Builder $family) use (
+                        $correspondenceTypes, $travelTypes, $transactionTypes
+                    ): void {
+                        $family->where(function (Builder $corr) use ($correspondenceTypes): void {
+                            $corr->where('source.family_priority', 1)
+                                ->whereIn('other_link.linkable_type', $correspondenceTypes);
+                        })->orWhere(function (Builder $travel) use ($travelTypes): void {
+                            $travel->where('source.family_priority', 2)
+                                ->whereIn('other_link.linkable_type', $travelTypes);
+                        })->orWhere(function (Builder $tx) use ($transactionTypes): void {
+                            $tx->where('source.family_priority', 3)
+                                ->whereIn('other_link.linkable_type', $transactionTypes);
+                        });
+                    })
+                    ->whereNotIn('other_link.id', clone $eligibleLinkIds);
             })
             ->leftJoin('users as u', 'u.id', '=', 'd.uploaded_by_user_id')
             ->leftJoin('departments as own', 'own.id', '=', 'd.owner_department_id')

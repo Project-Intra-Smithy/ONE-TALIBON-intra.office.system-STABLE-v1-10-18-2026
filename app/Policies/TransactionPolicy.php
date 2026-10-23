@@ -4,6 +4,8 @@ namespace App\Policies;
 
 use App\Domain\Workflow\Authorization\TransactionAccessDecider;
 use App\Domain\Workflow\Authorization\TransactionAuthorizationContextFactory;
+use App\Services\CorrespondenceAccessDecider;
+use App\Models\CorrespondenceRecord;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
 
@@ -12,6 +14,7 @@ final readonly class TransactionPolicy
     public function __construct(
         private TransactionAuthorizationContextFactory $contexts,
         private TransactionAccessDecider $access,
+        private CorrespondenceAccessDecider $correspondenceAccess,
     ) {
     }
 
@@ -50,6 +53,24 @@ final readonly class TransactionPolicy
         string $action,
         ?WorkflowTransaction $transaction = null,
     ): bool {
+        // Source-authority precedence: office-wide transaction authority does
+        // not grant access to the underlying classified correspondence.
+        // Standalone document_review requests are valid and must retain their
+        // ordinary workflow access. When a Correspondence source is linked,
+        // however, ALL linked sources must grant access; one less-classified
+        // source must not downgrade another.
+        if ($transaction !== null) {
+            $sources = CorrespondenceRecord::query()
+                ->where('workflow_transaction_id', $transaction->getKey())
+                ->get();
+
+            foreach ($sources as $source) {
+                if (! $this->correspondenceAccess->canView($user, $source)) {
+                    return false;
+                }
+            }
+        }
+
         return $this->access->allows(
             $this->contexts->make($user, $action, $transaction),
         );
