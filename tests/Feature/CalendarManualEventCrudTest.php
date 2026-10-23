@@ -227,9 +227,20 @@ final class CalendarManualEventCrudTest extends TestCase
             ->assertForbidden();
         $head->update(['role' => 'department_head']);
         $head->employee->update(['employment_status' => 'separated']);
-        $this->actingAs($head)->put('/calendar/events/'.$event->id, $this->payload('office'))
-            ->assertForbidden();
+        $this->actingAs($head)
+            ->put('/calendar/events/'.$event->id, $this->payload('office'))
+            ->assertRedirect(route('login'))
+            ->assertSessionHasErrors([
+                'email' => 'This session is no longer active. Please sign in again or contact an administrator.',
+            ]);
+        $this->assertGuest();
+
         $this->assertSame(1, $event->fresh()->manual_version);
+        $this->assertSame('scheduled', $event->fresh()->status);
+        $this->assertDatabaseMissing('audit_logs', [
+            'action' => 'calendar.manual.updated',
+            'entity_id' => $event->id,
+        ]);
     }
 
     public function test_malformed_manual_source_and_client_forged_office_are_not_authority(): void
