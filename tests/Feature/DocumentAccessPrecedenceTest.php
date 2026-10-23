@@ -10,6 +10,7 @@ use App\Models\Department;
 use App\Models\Document;
 use App\Models\DocumentLink;
 use App\Models\Employee;
+use App\Models\TravelOrder;
 use App\Models\TravelOrderEvent;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
@@ -314,6 +315,89 @@ class DocumentAccessPrecedenceTest extends TestCase
         $this->assertSame(1, $archive['counts']['all']);
         $this->assertSame($known->public_id, $archive['selected']['publicId']);
         $this->actingAs($actor)->get('/documents/'.$known->public_id.'/download')->assertOk();
+    }
+
+    public function test_zero_id_lower_priority_parent_conceals_archive_download_and_activity_in_both_link_orders(): void
+    {
+        $office = $this->department('ZERO-LOWER-PARENT');
+        $actor = $this->human($office);
+        $uploader = $this->human($office);
+        $source = $this->restrictedCorrespondence($office);
+        $this->actingAs($actor);
+        $archive = app(DocumentArchiveQuery::class);
+        $observations = [];
+
+        foreach ([WorkflowTransaction::class, TravelOrder::class] as $lowerType) {
+            foreach (['valid_first', 'invalid_first'] as $order) {
+                $document = $this->document($actor, $office, 'Malformed lower parent '.class_basename($lowerType).' '.$order);
+                $document->update(['uploaded_by_user_id' => $uploader->id]);
+                $links = [
+                    ['type' => $source->getMorphClass(), 'id' => $source->id],
+                    ['type' => $lowerType, 'id' => 0],
+                ];
+                if ($order === 'invalid_first') {
+                    $links = array_reverse($links);
+                }
+                foreach ($links as $index => $link) {
+                    DocumentLink::query()->create([
+                        'document_id' => $document->id,
+                        'linkable_type' => $link['type'],
+                        'linkable_id' => $link['id'],
+                        'relationship' => 'source_'.($index + 1),
+                    ]);
+                }
+
+                $workspace = $archive->workspace($actor, [
+                    'archive_search' => $document->title,
+                    'document' => $document->public_id,
+                ]);
+                $activity = $archive->activity($actor);
+                $observations[] = [
+                    'type' => class_basename($lowerType),
+                    'order' => $order,
+                    'download' => app(DocumentAccessService::class)->canDownload($actor, $document),
+                    'search_total' => $workspace['records']->total(),
+                    'archive_count' => $workspace['counts']['all'],
+                    'selected' => $workspace['selected'] !== null,
+                    'received_activity' => $activity['receivedCount'],
+                    'recent_activity_contains_document' => collect($activity['recentReceived'])
+                        ->contains('publicId', $document->public_id),
+                ];
+            }
+        }
+
+        fwrite(STDERR, 'LOWER_PARENT_PARITY_OBSERVATION '.json_encode($observations).PHP_EOL);
+        foreach ($observations as $observation) {
+            $this->assertFalse($observation['download']);
+            $this->assertSame(0, $observation['search_total']);
+            $this->assertSame(0, $observation['archive_count']);
+            $this->assertFalse($observation['selected']);
+            $this->assertSame(0, $observation['received_activity']);
+            $this->assertFalse($observation['recent_activity_contains_document']);
+        }
+
+        $validTransaction = $this->transaction($actor, $office);
+        $validDocument = $this->document($actor, $office, 'Valid lower parent remains visible');
+        $validDocument->update(['uploaded_by_user_id' => $uploader->id]);
+        foreach ([$source, $validTransaction] as $parent) {
+            DocumentLink::query()->create([
+                'document_id' => $validDocument->id,
+                'linkable_type' => $parent->getMorphClass(),
+                'linkable_id' => $parent->id,
+                'relationship' => 'valid_source',
+            ]);
+        }
+
+        $this->assertTrue(app(DocumentAccessService::class)->canDownload($actor, $validDocument));
+        $visible = $archive->workspace($actor, [
+            'archive_search' => $validDocument->title,
+            'document' => $validDocument->public_id,
+        ]);
+        $this->assertSame(1, $visible['records']->total());
+        $this->assertSame(1, $visible['counts']['all']);
+        $this->assertSame($validDocument->public_id, $visible['selected']['publicId']);
+        $this->assertSame(1, $archive->activity($actor)['receivedCount']);
+        $this->get('/documents/'.$validDocument->public_id.'/download')->assertOk();
     }
 
     public function test_sql_archive_zero_one_and_one_thousand_documents_keep_stable_pages_and_counts(): void

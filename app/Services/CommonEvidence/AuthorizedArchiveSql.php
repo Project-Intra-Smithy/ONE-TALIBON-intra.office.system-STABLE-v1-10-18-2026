@@ -220,6 +220,15 @@ final readonly class AuthorizedArchiveSql
                     ->whereColumn('unsupported_link.document_id', 'd.id')
                     ->whereNotIn('unsupported_link.linkable_type', $supportedTypes);
             })
+            // Download rejects every nonpositive parent ID, including a
+            // recognized link in a lower-priority family. Keep archive,
+            // counts, selection and activity at the same fail-closed boundary.
+            ->whereNotExists(function (Builder $invalid): void {
+                $invalid->selectRaw('1')
+                    ->from('document_links as invalid_link')
+                    ->whereColumn('invalid_link.document_id', 'd.id')
+                    ->where('invalid_link.linkable_id', '<=', 0);
+            })
             ->joinSub($ranked, 'source', function (JoinClause $join): void {
                 $join->on('source.document_id', '=', 'd.id')->where('source.source_position', '=', 1);
             })
