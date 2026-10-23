@@ -254,10 +254,16 @@ class CorrespondenceAccessDecider
      */
     public function visibleDocumentClassificationValuesForVerifiedActor(VerifiedMunicipalActor $verified): array
     {
-        return array_values(array_unique(array_merge(
-            [CorrespondenceClassification::Public->value, CorrespondenceClassification::Internal->value],
-            $this->classificationValuesForActiveActor($verified->user()),
-        )));
+        $allowed = $this->classificationValuesForActiveActor($verified->user());
+
+        // An ordinary employee may read Public/Internal evidence only after
+        // the independent source-parent check. System administration alone
+        // never grants file clearance; higher classifications stay role-gated.
+        if ($verified->user()->role === 'employee') {
+            return [CorrespondenceClassification::Public->value, CorrespondenceClassification::Internal->value];
+        }
+
+        return $allowed;
     }
 
     /** @return array<int, string> */
