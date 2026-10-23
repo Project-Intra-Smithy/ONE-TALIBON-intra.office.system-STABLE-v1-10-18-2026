@@ -81,7 +81,7 @@ export default function Index({ departments, summary, directoryEntries, director
         <PageFrame>
             <PageHeader eyebrow="One Talibon · Reference directory" title="Office Directory"
                 description="Find offices, units, agencies and community partners in the stakeholder reference catalog. Names and groups remain subject to LGU validation; listing does not grant records access." icon={Building2}/>
-            <section className="municipal-panel space-y-4 p-4" aria-label="Office directory search and groups">
+            <section className="municipal-panel space-y-3 rounded-lg p-3 sm:p-4" aria-label="Office directory search and groups">
                 <div className="grid gap-3 sm:grid-cols-2">
                     <label className="block text-sm font-semibold">Search offices
                         <input aria-label="Search offices" type="search" value={search} onChange={e => setSearch(e.target.value)}
@@ -109,7 +109,7 @@ export default function Index({ departments, summary, directoryEntries, director
             ) : (
                 <div className="min-w-0 space-y-5" aria-label="Office directory grouped results">
                     {groupedVisible.map(({ groupName, entries }, index) => (
-                        <section key={groupName} className="min-w-0 space-y-3" aria-labelledby={`office-directory-group-${index}`}>
+                        <section key={groupName} className="min-w-0 space-y-2 rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-3" aria-labelledby={`office-directory-group-${index}`}>
                             <h2 id={`office-directory-group-${index}`} className="break-words border-l-4 border-[#145A43] pl-3 text-lg font-bold text-slate-950 dark:text-slate-100">
                                 {groupName} <span className="text-sm font-medium text-slate-600 dark:text-slate-300">({entries.length})</span>
                             </h2>
@@ -117,7 +117,7 @@ export default function Index({ departments, summary, directoryEntries, director
                                 {entries.map((entry) => {
                                     const recordsHref = safeRecordsHref(entry);
                                     return (
-                                        <article key={entry.key} className="min-w-0 space-y-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-5">
+                                        <article key={entry.key} className="min-w-0 space-y-2 rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] p-3">
                                             <div className="flex flex-wrap items-center gap-2">
                                                 <OfficeLogo officeCode={entry.backingDepartmentCode} directoryKey={entry.key} officeName={entry.name} />
                                                 <span className="min-w-0 break-words text-sm font-semibold text-[#145A43] dark:text-emerald-300">{entry.shortName}</span>
@@ -145,9 +145,9 @@ export default function Index({ departments, summary, directoryEntries, director
     const legislative = departments.filter((office) => office.branch === 'legislative');
 
     const officeCard = (office: Office) => (
-        <article key={office.id} className="municipal-panel min-w-0 p-4 transition-colors hover:border-blue-200 dark:hover:border-blue-800 sm:p-5">
+        <article key={office.id} className="municipal-panel min-w-0 p-4 transition-colors hover:border-[var(--municipal-brand)] sm:p-5">
             <div className="flex items-start gap-3">
-                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${office.is_executive ? 'bg-blue-900 text-white' : office.is_legislative ? 'bg-indigo-50 text-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-200' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200'}`}>
+                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${office.is_executive ? 'bg-[var(--municipal-brand)] text-white' : office.is_legislative ? 'bg-indigo-50 text-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-200' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200'}`}>
                     {office.is_executive ? <Crown size={17} aria-hidden="true" /> : office.is_legislative ? <Gavel size={17} aria-hidden="true" /> : <Building2 size={17} aria-hidden="true" />}
                 </div>
                 <div className="min-w-0 flex-1">
@@ -186,7 +186,7 @@ export default function Index({ departments, summary, directoryEntries, director
             <section aria-label="Municipal office summary" className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
                 {summaryItems.map(({ label, value, icon: Icon }) => (
                     <div key={label} className="municipal-stat">
-                        <Icon className="text-blue-800 dark:text-blue-300" size={17} aria-hidden="true" />
+                        <Icon className="text-[var(--municipal-brand)]" size={17} aria-hidden="true" />
                         <div className="mt-2 text-xl font-bold text-slate-950 dark:text-slate-100 sm:text-2xl">{value}</div>
                         <div className="mt-0.5 break-words text-xs font-semibold leading-4 text-slate-500 dark:text-slate-400 sm:text-xs">{label}</div>
                     </div>
@@ -195,7 +195,7 @@ export default function Index({ departments, summary, directoryEntries, director
 
             <section className="space-y-3" aria-labelledby="executive-offices-heading">
                 <div>
-                    <div className="text-xs font-bold uppercase tracking-wider text-blue-700 dark:text-blue-300">Executive and administrative branch</div>
+                    <div className="text-xs font-bold uppercase tracking-wider text-[var(--municipal-brand)]">Executive and administrative branch</div>
                     <h2 id="executive-offices-heading" className="mt-1 text-lg font-bold text-slate-950 dark:text-slate-100">Offices supporting municipal operations</h2>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{executive.map(officeCard)}</div>
@@ -203,7 +203,7 @@ export default function Index({ departments, summary, directoryEntries, director
 
             <section className="space-y-3" aria-labelledby="legislative-offices-heading">
                 <div>
-                    <div className="text-xs font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-300">Legislative branch</div>
+                    <div className="text-xs font-bold uppercase tracking-wider text-[var(--municipal-brand)]">Legislative branch</div>
                     <h2 id="legislative-offices-heading" className="mt-1 break-words text-lg font-bold text-slate-950 dark:text-slate-100">Vice Mayor, Sangguniang Bayan, and legislative support</h2>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{legislative.map(officeCard)}</div>
