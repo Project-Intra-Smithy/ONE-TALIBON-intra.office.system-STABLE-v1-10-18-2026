@@ -21,7 +21,7 @@ export default function QuickActions({ actions }: { actions: DashboardExperience
 
     return <section className="ot-dashboard-quick" aria-labelledby="dashboard-quick-actions">
         <div className="ot-dashboard-quick-heading">
-            <h2 id="dashboard-quick-actions"><LayoutGrid size={17} aria-hidden="true" /> Portal modules</h2>
+            <h2 id="dashboard-quick-actions"><LayoutGrid size={17} aria-hidden="true" /> Quick Access</h2>
             <span className="ot-dashboard-quick-note">Available to your account</span>
         </div>
         <div className="ot-dashboard-tiles">
