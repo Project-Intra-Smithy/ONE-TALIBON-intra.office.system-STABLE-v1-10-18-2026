@@ -13,13 +13,20 @@ const profileCopy = {
 export default function DashboardHeader({ experience }: { experience: DashboardExperience }) {
     const { auth } = usePage<SharedProps>().props;
     const name = auth.user?.name?.trim();
-    return <header className="ot-dashboard-hero" style={{ backgroundImage: `linear-gradient(90deg, rgba(11,68,45,.98) 0%, rgba(11,68,45,.94) 43%, rgba(11,68,45,.42) 75%, rgba(11,68,45,.18)), url("/images/municipality/talibon-homepage-hero.jpg")` }}>
+    const office = experience.department.shortName || experience.department.name;
+
+    return <header className="ot-dashboard-hero" aria-label="Dashboard welcome">
         <div className="ot-dashboard-hero-copy">
-            <p className="ot-dashboard-hero-eyebrow">ONE TALIBON · LGU INTRA-OFFICE PORTAL</p>
-            <h1>Welcome{name ? `, ${name}` : ''}</h1>
+            <p className="ot-dashboard-hero-eyebrow">LGU TALIBON INTRA-OFFICE PORTAL</p>
+            <h1>Welcome{name ? ', ' + name : ''}</h1>
             <p className="ot-dashboard-hero-description">{profileCopy[experience.key]}</p>
-            <p className="ot-dashboard-hero-context">{dashboardRoleLabel(experience)} · {experience.department.shortName || experience.department.name}</p>
+            <p className="ot-dashboard-hero-context">{dashboardRoleLabel(experience)} · {office}</p>
         </div>
-        <span className="ot-dashboard-hero-motto" aria-hidden="true">One LGU.<br />One Portal.<br />One Talibon.</span>
+        <div className="ot-dashboard-hero-motto" aria-hidden="true">
+            <span>People</span>
+            <span>Plans</span>
+            <span>Progress</span>
+            <strong>One Talibon</strong>
+        </div>
     </header>;
 }

@@ -1,25 +1,380 @@
-/* R7 / Reference A — dashboard body only. Does not modify the app shell. */
-.ot-reference-dashboard.r7-dashboard { gap: 14px; max-width: 1480px; }
-.r7-dashboard .ot-dashboard-hero { min-height: 142px; border-radius: 4px; border-left: 5px solid #d2ad45; background-color: #edf8f4 !important; background-image: linear-gradient(90deg,rgba(242,250,247,.99) 0%,rgba(241,250,247,.98) 54%,rgba(208,235,224,.76) 100%) !important; color: #163027; box-shadow:none; padding: 20px 25px; }
-.r7-dashboard .ot-dashboard-hero-eyebrow { color:#385c4b; letter-spacing:.25em; font-size:.69rem; }
-.r7-dashboard .ot-dashboard-hero h1 { color:#101b17; font-size:clamp(1.5rem,2.5vw,2.25rem); }
-.r7-dashboard .ot-dashboard-hero-description { color:#526c5e; font-style:italic; }
-.r7-dashboard .ot-dashboard-hero-context { color:#315c48; }
-.r7-dashboard .ot-dashboard-hero-motto { color:#145239; font-size:1rem; letter-spacing:.02em; }
-.r7-upper { min-width:0; }
-.r7-upper-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; align-items:stretch; }
-.r7-panel { min-width:0; display:flex; flex-direction:column; overflow:hidden; border:1px solid var(--municipal-border,#d9e2dc); border-radius:6px; background:var(--municipal-surface,#fff); box-shadow:0 1px 4px rgba(13,56,35,.06); }
-.r7-section-kicker { display:flex; align-items:center; gap:9px; min-height:44px; padding:10px 14px; background:#0b553b; color:#fff; font-weight:750; text-transform:uppercase; font-size:.84rem; letter-spacing:.02em; }
-.r7-panel > .municipal-panel, .r7-panel > section.municipal-panel { flex:1; min-width:0; border:0 !important; border-radius:0 !important; box-shadow:none !important; }
-.r7-panel .ot-dashboard-panel-heading { background:transparent !important; border-color:var(--municipal-border,#d9e2dc) !important; min-height:36px; color:var(--municipal-text,#163027) !important; }
-.r7-panel .ot-dashboard-panel-heading :where(h2,svg), .r7-panel .ot-dashboard-panel-heading .municipal-panel-title { color:var(--municipal-text,#163027) !important; }
-.r7-panel .ot-dashboard-scroll-region { max-height:275px; overflow:auto; }
-.r7-panel .ot-dashboard-work-row { align-items:start; }
-.r7-panel .ot-dashboard-work-side { flex:0 0 auto; max-width:37%; }
-.r7-panel .workspace-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
-.r7-empty { padding:18px; color:var(--municipal-muted,#64736c); }
-.dark .r7-dashboard .ot-dashboard-hero { background-image:linear-gradient(90deg,#152d23 0%,#1e3f30 100%) !important; color:#edf6f0; }
-.dark .r7-dashboard .ot-dashboard-hero :where(h1,.ot-dashboard-hero-eyebrow,.ot-dashboard-hero-description,.ot-dashboard-hero-context,.ot-dashboard-hero-motto) { color:#e0f4e7; }
-.dark .r7-section-kicker { background:#124e38; }
-@media (max-width:1199px) { .r7-upper-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .r7-top-summary { grid-column:1/-1; } }
-@media (max-width:767px) { .r7-upper-grid { grid-template-columns:minmax(0,1fr); } .r7-top-summary { grid-column:auto; } .r7-dashboard .ot-dashboard-hero { padding:17px; min-height:120px; } .r7-dashboard .ot-dashboard-hero-eyebrow { letter-spacing:.1em; } }
+/* R7 W01 — Reference A governs the dashboard BODY only.
+ * The global shell, data projections, and lower dashboard remain untouched. */
+.ot-reference-dashboard.r7-dashboard {
+    row-gap: 12px;
+    max-width: 1480px;
+}
+
+/* Reference A: a quiet civic welcome strip with a gold rule, not a photo hero. */
+.r7-dashboard .ot-dashboard-hero {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 142px;
+    padding: 20px 30px 20px 36px;
+    overflow: hidden;
+    border: 1px solid #d7e9df;
+    border-radius: 3px;
+    background: #eaf7f2 !important;
+    background-image: linear-gradient(110deg, #f2faf6 0%, #e9f8f2 54%, #d6eee5 100%) !important;
+    background-size: cover !important;
+    color: #163027;
+    box-shadow: none;
+}
+.r7-dashboard .ot-dashboard-hero::before {
+    position: absolute;
+    inset: 19px auto 19px 15px;
+    width: 4px;
+    border-radius: 2px;
+    background: #bd9938;
+    content: "";
+    z-index: 1;
+}
+.r7-dashboard .ot-dashboard-hero::after {
+    position: absolute;
+    inset: 0 0 0 48%;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 70% 68% at 68% 96%, rgba(69,158,125,.14) 0 98%, transparent 100%),
+        radial-gradient(ellipse 73% 70% at 14% 117%, rgba(47,143,107,.11) 0 98%, transparent 100%);
+    content: "";
+}
+.r7-dashboard .ot-dashboard-hero-copy {
+    position: relative;
+    z-index: 1;
+    flex: 1 1 auto;
+    max-width: calc(100% - 200px);
+}
+.r7-dashboard .ot-dashboard-hero-eyebrow {
+    margin: 0 0 8px;
+    font-size: .69rem;
+    line-height: 1.35;
+    font-weight: 760;
+    letter-spacing: .29em;
+    color: #315b48;
+}
+.r7-dashboard .ot-dashboard-hero h1 {
+    margin: 0;
+    font-size: clamp(1.65rem, 2.35vw, 2.35rem);
+    font-weight: 780;
+    letter-spacing: -.038em;
+    line-height: 1.13;
+    color: #13271d;
+    overflow-wrap: anywhere;
+}
+.r7-dashboard .ot-dashboard-hero-description {
+    margin-top: 8px;
+    font-size: .84rem;
+    line-height: 1.4;
+    font-style: italic;
+    color: #4b6558;
+}
+.r7-dashboard .ot-dashboard-hero-context {
+    margin-top: 5px;
+    font-size: .75rem;
+    font-weight: 670;
+    line-height: 1.35;
+    color: #315c48;
+}
+.r7-dashboard .ot-dashboard-hero-motto {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1px;
+    flex: 0 0 auto;
+    min-width: 120px;
+    max-width: 175px;
+    padding: 0 0 7px;
+    border: 0;
+    text-align: left;
+    font-family: inherit;
+    font-style: normal;
+    font-size: .7rem;
+    line-height: 1.24;
+    font-weight: 800;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: #184633;
+}
+.r7-dashboard .ot-dashboard-hero-motto::after {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: #bd9938;
+    content: "";
+}
+.r7-dashboard .ot-dashboard-hero-motto strong {
+    font-weight: 830;
+}
+
+/* Reference A: equal-weight green title bars and three dense white panels. */
+.r7-dashboard .r7-upper,
+.r7-dashboard .r7-upper-grid,
+.r7-dashboard .r7-panel {
+    min-width: 0;
+}
+.r7-dashboard .r7-upper-grid {
+    display: grid;
+    grid-template-columns: minmax(0,1fr);
+    gap: 12px;
+    align-items: stretch;
+}
+.r7-dashboard .r7-panel {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--municipal-border, #d9e2dc);
+    border-radius: 5px;
+    background: var(--municipal-surface, #fff);
+    box-shadow: 0 1px 5px rgba(18,57,37,.055);
+}
+.r7-dashboard .r7-section-kicker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 49px;
+    padding: 10px 15px;
+    background: #0d543a;
+    color: #fff;
+    font-size: .84rem;
+    line-height: 1.3;
+    font-weight: 760;
+    letter-spacing: .015em;
+    text-transform: uppercase;
+}
+.r7-dashboard .r7-section-kicker svg {
+    flex: 0 0 auto;
+    color: #ecf8ef;
+}
+.r7-dashboard .r7-panel > .municipal-panel,
+.r7-dashboard .r7-panel > section.municipal-panel {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: var(--municipal-surface, #fff);
+    box-shadow: none !important;
+}
+/* The source components retain their own heading and count semantics.
+ * Render their inner headings as quiet contextual lines, not a second green bar. */
+.r7-dashboard .r7-panel .ot-dashboard-panel-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 34px;
+    padding: 7px 13px;
+    background: var(--municipal-surface-subtle, #f7f9f6) !important;
+    border: 0;
+    border-bottom: 1px solid var(--municipal-border, #d9e2dc);
+    color: var(--municipal-muted, #64736c) !important;
+}
+.r7-dashboard .r7-panel .ot-dashboard-panel-heading :is(h2,svg),
+.r7-dashboard .r7-panel .ot-dashboard-panel-heading.municipal-panel-title,
+.r7-dashboard .r7-panel .ot-dashboard-panel-heading .municipal-panel-title {
+    margin: 0;
+    font-size: .74rem;
+    line-height: 1.3;
+    font-weight: 680;
+    color: var(--municipal-text, #163027) !important;
+}
+.r7-dashboard .r7-panel .ot-dashboard-panel-heading svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+}
+.r7-dashboard .r7-panel .ot-dashboard-panel-count {
+    margin-left: auto;
+    height: 21px;
+    min-width: 23px;
+    padding: 0 7px;
+    border: 1px solid var(--municipal-border, #d9e2dc);
+    background: var(--municipal-brand-soft, #e9f2ec);
+    color: var(--municipal-brand-deep, #0b442d);
+    font-size: .69rem;
+}
+.r7-dashboard .r7-panel .ot-dashboard-scroll-region {
+    flex: 1 1 auto;
+    max-height: none;
+    min-height: 0;
+    overflow: visible;
+}
+.r7-dashboard .r7-top-work .ot-dashboard-work-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-height: 73px;
+    padding: 12px 13px;
+}
+.r7-dashboard .r7-top-work .ot-dashboard-work-main {
+    gap: 3px;
+    flex: 1 1 0;
+}
+.r7-dashboard .r7-top-work .ot-dashboard-work-ref {
+    font-size: .69rem;
+    line-height: 1.33;
+}
+.r7-dashboard .r7-top-work .ot-dashboard-work-title {
+    font-size: .84rem;
+    line-height: 1.3;
+    font-weight: 720;
+}
+.r7-dashboard .r7-top-work .ot-dashboard-work-meta {
+    font-size: .71rem;
+    line-height: 1.35;
+}
+.r7-dashboard .r7-top-work .ot-dashboard-work-side {
+    max-width: 35%;
+    font-size: .7rem;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+.r7-dashboard .r7-top-work .ot-dashboard-work-side small {
+    font-size: .67rem;
+}
+.r7-dashboard .r7-top-activity .ot-dashboard-scroll-region > :is(a,article) {
+    padding: 11px 13px;
+}
+.r7-dashboard .r7-top-activity .ot-dashboard-scroll-region :is(a,article) :is(p,div) {
+    overflow-wrap: anywhere;
+}
+.r7-dashboard .r7-top-activity .ot-dashboard-scroll-region :is(a,article) :is(div.font-semibold,p) {
+    font-size: .82rem;
+    line-height: 1.4;
+}
+.r7-dashboard .r7-top-activity .ot-dashboard-scroll-region :is(a,article) .text-sm {
+    font-size: .7rem;
+    line-height: 1.35;
+}
+.r7-dashboard .r7-top-summary .workspace-metrics {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 9px;
+    padding: 12px;
+}
+.r7-dashboard .r7-top-summary .workspace-metric {
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--municipal-border, #d9e2dc);
+    border-radius: 5px;
+    background: var(--municipal-surface-subtle, #f7f9f6);
+}
+.r7-dashboard .r7-top-summary .workspace-metric > div:first-child {
+    font-size: 1.45rem;
+    line-height: 1.15;
+    font-weight: 780;
+}
+.r7-dashboard .r7-top-summary .workspace-metric > div:nth-child(2) {
+    margin-top: 6px;
+    padding-right: 5px;
+    font-size: .75rem;
+    line-height: 1.3;
+}
+.r7-dashboard .r7-top-summary .workspace-count-track {
+    height: 4px;
+    margin-top: 9px;
+}
+.r7-dashboard .r7-top-summary .municipal-panel > p {
+    padding: 3px 12px 12px;
+    font-size: .71rem;
+    line-height: 1.4;
+}
+.r7-dashboard .r7-empty {
+    padding: 21px 14px;
+    font-size: .83rem;
+    line-height: 1.5;
+    color: var(--municipal-muted, #64736c);
+}
+.r7-dashboard .r7-upper :is(a,button,[tabindex="0"]):focus-visible {
+    outline: 3px solid var(--municipal-focus, #19754b);
+    outline-offset: -2px;
+}
+
+/* The already-established dashboard container, rather than viewport width,
+ * controls columns so a 1024px window with a sidebar cannot overflow. */
+@container ot-dashboard (min-width: 740px) {
+    .r7-dashboard .r7-upper-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .r7-dashboard .r7-top-summary { grid-column: 1 / -1; }
+}
+@container ot-dashboard (min-width: 1020px) {
+    .r7-dashboard .r7-upper-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+    .r7-dashboard .r7-top-summary { grid-column: auto; }
+}
+@container ot-dashboard (min-width: 740px) {
+    .r7-dashboard .r7-panel { min-height: 324px; }
+    .r7-dashboard .r7-panel .ot-dashboard-scroll-region {
+        max-height: 270px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #9fb9aa transparent;
+        scrollbar-gutter: stable;
+    }
+}
+@container ot-dashboard (max-width: 739px) {
+    .r7-dashboard .r7-panel { min-height: 0; }
+    .r7-dashboard .r7-panel .ot-dashboard-scroll-region {
+        max-height: none;
+        overflow: visible;
+        scrollbar-gutter: auto;
+    }
+    .r7-dashboard .ot-dashboard-hero {
+        min-height: 125px;
+        padding: 18px 16px 18px 27px;
+    }
+    .r7-dashboard .ot-dashboard-hero::before { left: 12px; inset-block: 16px; }
+    .r7-dashboard .ot-dashboard-hero-copy { max-width: 100%; }
+    .r7-dashboard .ot-dashboard-hero-motto { display: none; }
+    .r7-dashboard .ot-dashboard-hero-eyebrow { letter-spacing: .13em; font-size: .62rem; }
+    .r7-dashboard .ot-dashboard-hero h1 { font-size: clamp(1.35rem, 5.3vw, 1.75rem); }
+}
+.dark .r7-dashboard .ot-dashboard-hero {
+    border-color: #395748;
+    background: #183529 !important;
+    background-image: linear-gradient(110deg, #162f25 0%, #1a392b 58%, #254c38 100%) !important;
+    color: #edf6f0;
+}
+.dark .r7-dashboard .ot-dashboard-hero::after {
+    opacity: .18;
+}
+.dark .r7-dashboard .ot-dashboard-hero :is(h1,.ot-dashboard-hero-eyebrow,.ot-dashboard-hero-description,.ot-dashboard-hero-context,.ot-dashboard-hero-motto) {
+    color: #eaf7ed;
+}
+.dark .r7-dashboard .r7-panel {
+    background: var(--municipal-surface, #13241c);
+    border-color: var(--municipal-border, #395748);
+    box-shadow: none;
+}
+.dark .r7-dashboard .r7-section-kicker {
+    background: #0b3e2e;
+    color: #f1f8f4;
+}
+.dark .r7-dashboard .r7-panel .ot-dashboard-panel-heading {
+    background: var(--municipal-surface-subtle, #172b21) !important;
+    border-color: var(--municipal-border, #395748);
+}
+.dark .r7-dashboard .r7-panel .ot-dashboard-panel-count {
+    background: #214836;
+    color: #e8f7ec;
+}
+.dark .r7-dashboard .r7-top-summary .workspace-metric {
+    background: var(--municipal-surface-subtle, #172b21);
+}
+@media (prefers-reduced-motion: reduce) {
+    .r7-dashboard .r7-upper * { scroll-behavior: auto; transition: none; }
+}
+@media (forced-colors: active) {
+    .r7-dashboard .r7-panel { border: 1px solid CanvasText; }
+    .r7-dashboard .r7-section-kicker { border-bottom: 2px solid CanvasText; }
+    .r7-dashboard .r7-panel .ot-dashboard-panel-count { color: CanvasText; background: Canvas; border-color: CanvasText; }
+    .r7-dashboard .r7-upper :is(a,button,[tabindex="0"]):focus-visible { outline-color: Highlight; }
+}
