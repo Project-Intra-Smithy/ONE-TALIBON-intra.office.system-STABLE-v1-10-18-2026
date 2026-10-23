@@ -1,0 +1,92 @@
+/* R6 shared presentation primitives: opt-in classes only; municipal tokens are authoritative. */
+.ot-ui-panel {
+    min-width: 0;
+    border: 1px solid var(--municipal-border);
+    border-radius: var(--municipal-radius-surface, 8px);
+    background: var(--municipal-surface);
+    color: var(--municipal-text);
+    overflow-wrap: anywhere;
+}
+.ot-ui-panel__header, .ot-ui-panel__footer { min-width: 0; padding: 11px 16px; }
+.ot-ui-panel__header { border-bottom: 1px solid var(--municipal-border); }
+.ot-ui-panel__footer { border-top: 1px solid var(--municipal-border); }
+.ot-ui-panel__body { min-width: 0; padding: 16px; }
+.ot-ui-panel--compact > .ot-ui-panel__header, .ot-ui-panel--compact > .ot-ui-panel__footer { padding: 8px 12px; }
+.ot-ui-panel--compact > .ot-ui-panel__body { padding: 12px; }
+
+.ot-ui-panel-heading { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 8px 12px; flex-wrap: wrap; }
+.ot-ui-panel-heading__identity { display: flex; align-items: flex-start; gap: 8px; min-width: 0; flex: 1 1 12rem; }
+.ot-ui-panel-heading__icon { flex: 0 0 auto; margin-top: 1px; color: var(--municipal-muted); }
+.ot-ui-panel-heading--municipal .ot-ui-panel-heading__icon { color: var(--municipal-brand); }
+.ot-ui-panel-heading__title { min-width: 0; flex: 0 1 auto; font-size: .93rem; font-weight: 750; line-height: 1.4; overflow-wrap: anywhere; }
+.ot-ui-panel-heading__count { flex: 0 0 auto; align-self: flex-start; padding: 1px 7px; border-radius: 999px; background: var(--municipal-brand-soft); color: var(--municipal-brand); font-size: .74rem; font-weight: 750; font-variant-numeric: tabular-nums; }
+.ot-ui-panel-heading__actions { display: flex; min-width: 0; max-width: 100%; align-items: center; flex-wrap: wrap; gap: 8px; }
+
+.ot-ui-scroll-area { min-width: 0; max-width: 100%; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--municipal-border-strong) transparent; }
+.ot-ui-scroll-area::-webkit-scrollbar { width: 8px; height: 8px; }
+.ot-ui-scroll-area::-webkit-scrollbar-thumb { background-color: var(--municipal-border-strong); border: 2px solid var(--municipal-surface); border-radius: 8px; }
+.ot-ui-scroll-area:focus-visible { outline: 2px solid var(--municipal-focus); outline-offset: -2px; }
+
+.ot-ui-empty { display: flex; min-width: 0; flex-direction: column; align-items: center; justify-content: center; gap: 7px; padding: 24px 16px; color: var(--municipal-muted); text-align: center; }
+.ot-ui-empty__icon { flex: 0 0 auto; color: var(--municipal-muted); }
+.ot-ui-empty__title { font-size: .9rem; line-height: 1.35; font-weight: 750; color: var(--municipal-text); overflow-wrap: anywhere; }
+.ot-ui-empty__description { max-width: 48ch; font-size: .83rem; line-height: 1.55; overflow-wrap: anywhere; }
+.ot-ui-empty__action { display: flex; justify-content: center; flex-wrap: wrap; margin-top: 7px; gap: 8px; }
+.ot-ui-empty--unauthorized .ot-ui-empty__icon { color: var(--municipal-danger); }
+.ot-ui-empty--unavailable .ot-ui-empty__icon { color: var(--municipal-warning); }
+.ot-ui-empty--pending-authority .ot-ui-empty__icon { color: var(--municipal-info); }
+
+.ot-ui-loading { min-width: 0; padding: 8px 0; }
+.ot-ui-loading__label { display: block; font-size: .83rem; color: var(--municipal-muted); margin-bottom: 10px; }
+.ot-ui-loading__rows { display: grid; gap: 11px; }
+.ot-ui-loading__row { display: flex; align-items: center; gap: 10px; min-height: 32px; }
+.ot-ui-loading__square, .ot-ui-loading__line { display: block; background: var(--municipal-border); border-radius: 5px; }
+.ot-ui-loading__square { flex: 0 0 28px; height: 28px; }
+.ot-ui-loading__line { width: 72%; max-width: 420px; height: 12px; }
+.ot-ui-loading__row:nth-child(2n) .ot-ui-loading__line { width: 54%; }
+
+.ot-ui-filters { min-width: 0; padding: 12px; border: 1px solid var(--municipal-border); border-radius: var(--municipal-radius-surface, 8px); background: var(--municipal-surface-subtle); }
+.ot-ui-filters__main { display: flex; align-items: end; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+.ot-ui-filters__controls { display: flex; min-width: 0; flex: 1 1 320px; flex-wrap: wrap; align-items: end; gap: 10px; }
+.ot-ui-filters__actions { display: flex; flex-wrap: wrap; align-items: end; gap: 8px; }
+.ot-ui-filters__active { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 10px; }
+
+.ot-ui-data > .ot-ui-panel__body { padding: 0; }
+.ot-ui-data__filters { padding: 12px; border-bottom: 1px solid var(--municipal-border); }
+.ot-ui-data__viewport { min-width: 0; max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: var(--municipal-border-strong) transparent; }
+.ot-ui-data__viewport:focus-visible { outline: 2px solid var(--municipal-focus); outline-offset: -2px; }
+.ot-ui-data__viewport > table { width: 100%; }
+.ot-ui-data > .ot-ui-panel__body > .ot-ui-empty, .ot-ui-data > .ot-ui-panel__body > .ot-ui-loading { padding: 20px 14px; }
+
+.ot-ui-action { display: inline-flex; justify-content: center; align-items: center; gap: 8px; min-height: var(--municipal-control-height, 44px); min-width: 44px; max-width: 100%; padding: 9px 14px; border: 1px solid transparent; border-radius: var(--municipal-radius-surface, 8px); font-size: .875rem; font-weight: 700; line-height: 1.35; text-align: center; text-decoration: none; cursor: pointer; overflow-wrap: anywhere; transition: background-color .16s, border-color .16s; }
+.ot-ui-action--primary { background: var(--municipal-action-bg); color: var(--municipal-action-text, #fff); }
+.ot-ui-action--primary:hover:not(:disabled):not([aria-disabled="true"]) { background: var(--municipal-action-hover); }
+.ot-ui-action--secondary { border-color: var(--municipal-border-strong); background: var(--municipal-surface); color: var(--municipal-text); }
+.ot-ui-action--secondary:hover:not(:disabled):not([aria-disabled="true"]) { background: var(--municipal-hover); }
+.ot-ui-action--danger { background: var(--municipal-action-danger-bg); color: #fff; }
+.ot-ui-action--danger:hover:not(:disabled):not([aria-disabled="true"]) { background: var(--municipal-action-danger-hover); }
+.ot-ui-action:focus-visible { outline: 3px solid var(--municipal-focus); outline-offset: 3px; }
+.ot-ui-action:disabled, .ot-ui-action[aria-disabled="true"] { cursor: not-allowed; opacity: .6; }
+.ot-ui-action__loading { flex-shrink: 0; animation: ot-ui-spin 1s linear infinite; }
+@keyframes ot-ui-spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 767px) {
+    .ot-ui-scroll-area { max-height: none !important; overflow-y: visible; overscroll-behavior-y: auto; }
+    .ot-ui-panel__body { padding: 12px; }
+    .ot-ui-panel-heading__actions { width: 100%; }
+    .ot-ui-filters__controls { flex-basis: 100%; }
+    .ot-ui-filters__actions { width: 100%; }
+    .ot-ui-data__viewport { -webkit-overflow-scrolling: touch; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .ot-ui-action { transition: none; }
+    .ot-ui-action__loading { animation: none; }
+    .ot-ui-scroll-area, .ot-ui-data__viewport { scroll-behavior: auto; }
+}
+@media (forced-colors: active) {
+    .ot-ui-panel, .ot-ui-filters, .ot-ui-action { border-color: CanvasText; }
+    .ot-ui-panel-heading__count, .ot-ui-action { forced-color-adjust: auto; }
+    .ot-ui-empty__icon, .ot-ui-panel-heading__icon { color: CanvasText; }
+    .ot-ui-scroll-area:focus-visible, .ot-ui-data__viewport:focus-visible, .ot-ui-action:focus-visible { outline-color: Highlight; }
+    .ot-ui-loading__square, .ot-ui-loading__line { background: GrayText; }
+}
