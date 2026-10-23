@@ -26,5 +26,5 @@ test('Base32 decoder uses RFC 4648 alphabet and known RFC 6238 TOTP vector', () 
     const offset = digest[digest.length - 1] & 15;
     const sixDigits = String((digest.readUInt32BE(offset) & 0x7fffffff) % 1000000).padStart(6, '0');
     assert.equal(sixDigits, '287082');
-    assert.throws(() => decodeBase32('INVALID-!'), /not equal/i);
+    assert.throws(() => decodeBase32('INVALID-!'), { code: 'ERR_ASSERTION' });
 });
