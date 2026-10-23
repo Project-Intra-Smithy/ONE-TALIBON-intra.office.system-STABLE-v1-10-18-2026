@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Services\AuditLogger;
+use App\Services\EmploymentAccountEligibility;
 use App\Services\AuthenticationAssurance;
 use App\Services\AuthenticationAttemptLimiter;
 use Illuminate\Http\RedirectResponse;
@@ -20,6 +21,7 @@ class AuthenticatedSessionController extends Controller
         private readonly AuthenticationAssurance $assurance,
         private readonly AuthenticationAttemptLimiter $limiter,
         private readonly AuditLogger $audit,
+        private readonly EmploymentAccountEligibility $employment,
     ) {}
 
     public function create(): Response
@@ -37,6 +39,11 @@ class AuthenticatedSessionController extends Controller
         $this->rejectLimitedLogin($request);
 
         if (! Auth::attempt([...$credentials, 'is_active' => true], $request->boolean('remember'))) {
+            $this->recordFailedLogin($request);
+        }
+
+        if (! $this->employment->allowed($request->user())) {
+            Auth::guard('web')->logout();
             $this->recordFailedLogin($request);
         }
 

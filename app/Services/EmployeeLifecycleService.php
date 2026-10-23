@@ -168,7 +168,7 @@ class EmployeeLifecycleService
             $this->audit->record(
                 $actor,
                 'hr.onboarding.started',
-                'Started onboarding for '.$employee->employee_number.' · '.$employee->full_name.'.',
+                'Started onboarding for '.($employee->employee_number ?? 'record #'.$employee->id).' · '.$employee->full_name.'.',
                 'allowed',
                 OnboardingCase::class,
                 $case->id,
@@ -233,7 +233,7 @@ class EmployeeLifecycleService
             $this->audit->record(
                 $actor,
                 'hr.onboarding.task_completed',
-                'Completed onboarding task '.$locked->task_key.' for '.$employee->employee_number.'.',
+                'Completed onboarding task '.$locked->task_key.' for '.($employee->employee_number ?? 'record #'.$employee->id).'.',
                 'allowed',
                 OnboardingTask::class,
                 $locked->id,
@@ -297,7 +297,7 @@ class EmployeeLifecycleService
             $this->audit->record(
                 $actor,
                 'hr.onboarding.completed',
-                'Completed onboarding and activated '.$employee->employee_number.' · '.$employee->full_name.'.',
+                'Completed onboarding and activated '.($employee->employee_number ?? 'record #'.$employee->id).' · '.$employee->full_name.'.',
                 'allowed',
                 OnboardingCase::class,
                 $locked->id,
@@ -446,7 +446,7 @@ class EmployeeLifecycleService
             $this->audit->record(
                 $actor,
                 'hr.employee.movement_applied',
-                'Applied '.$movement->movement_type.' for '.$lockedEmployee->employee_number.' from office '.($oldOffice?->code ?? 'none').' to '.$targetDepartment->code.'.',
+                'Applied '.$movement->movement_type.' for '.($lockedEmployee->employee_number ?? 'record #'.$lockedEmployee->id).' from office '.($oldOffice?->code ?? 'none').' to '.$targetDepartment->code.'.',
                 'allowed',
                 EmployeeMovement::class,
                 $movement->id,

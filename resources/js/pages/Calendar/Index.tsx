@@ -10,6 +10,7 @@ import {
     X,
 } from 'lucide-react';
 import { useState, useId, useEffect, useRef } from 'react';
+import CalendarManualEventPanel from '../../components/calendar/CalendarManualEventPanel';
 import PageFrame from '../../components/PageFrame';
 import PageHeader from '../../components/PageHeader';
 import { calendarAnchor } from '../../compat/uiContracts';
@@ -19,6 +20,9 @@ import WorkspaceUnavailable from '../../components/WorkspaceUnavailable';
 
 export type CalendarEvent = {
     id: number;
+    manual_version: number;
+    can_manage?: boolean;
+    calendar_bucket?: 'personal' | 'office' | 'municipality';
     event_key: string;
     event_type: string;
     title: string;
@@ -26,6 +30,10 @@ export type CalendarEvent = {
     priority: string;
     starts_at: string;
     ends_at?: string | null;
+    start_date: string;
+    end_date?: string | null;
+    start_time?: string | null;
+    end_time?: string | null;
     all_day: boolean;
     location?: string | null;
     action_url?: string | null;
@@ -125,19 +133,26 @@ function EventButton({
     </div>;
 }
 
+export type CalendarPermissions = { personal: boolean; office: boolean; municipality: boolean };
+
 export default function CalendarIndex({
     events,
     calendar,
+    calendarPermissions,
 }: {
     events: CalendarEvent[];
     calendar: Calendar;
+    calendarPermissions?: CalendarPermissions;
 }) {
     if (!Array.isArray(events) || !calendar) return <WorkspaceUnavailable title="Calendar" />;
 
-    return <CalendarWorkspace events={events} calendar={calendar} />;
+    return <CalendarWorkspace events={events} calendar={calendar}
+        calendarPermissions={calendarPermissions ?? { personal: false, office: false, municipality: false }} />;
 }
 
-function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; calendar: Calendar }) {
+function CalendarWorkspace({ events, calendar, calendarPermissions }: {
+    events: CalendarEvent[]; calendar: Calendar; calendarPermissions: CalendarPermissions;
+}) {
     const view = ['month', 'week', 'day', 'schedule'].includes(calendar?.view)
         ? calendar.view
         : 'month';
@@ -257,6 +272,8 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
                     description="A single operational view of visible office events, routed-work deadlines, and schedules available within your current access."
                     icon={CalendarDays}
                 />
+
+                <CalendarManualEventPanel events={safeEvents} permissions={calendarPermissions} />
 
                 {/* Range summary */}
                 <section aria-label="Calendar range" className="municipal-panel p-4 sm:p-5">

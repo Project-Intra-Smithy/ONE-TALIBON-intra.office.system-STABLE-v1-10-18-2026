@@ -102,7 +102,7 @@ class EmployeeOffboardingService
                 ]);
             }
 
-            $this->audit->record($actor, 'hr.offboarding.started', 'Started offboarding for '.$locked->employee_number.' · '.$locked->full_name.'.', 'allowed', OffboardingCase::class, $case->id);
+            $this->audit->record($actor, 'hr.offboarding.started', 'Started offboarding for '.($locked->employee_number ?? 'record #'.$locked->id).' · '.$locked->full_name.'.', 'allowed', OffboardingCase::class, $case->id);
 
             return $case->fresh(['employee.department', 'tasks.ownerDepartment']);
         });
@@ -199,7 +199,7 @@ class EmployeeOffboardingService
                 'archived_at' => $now,
             ]);
 
-            $this->audit->record($actor, 'hr.offboarding.completed', 'Completed offboarding for '.$employee->employee_number.' · '.$employee->full_name.'; access deactivated and employment archived.', 'allowed', OffboardingCase::class, $locked->id);
+            $this->audit->record($actor, 'hr.offboarding.completed', 'Completed offboarding for '.($employee->employee_number ?? 'record #'.$employee->id).' · '.$employee->full_name.'; access deactivated and employment archived.', 'allowed', OffboardingCase::class, $locked->id);
 
             return $locked->fresh(['employee.user', 'employee.department', 'tasks.ownerDepartment']);
         });

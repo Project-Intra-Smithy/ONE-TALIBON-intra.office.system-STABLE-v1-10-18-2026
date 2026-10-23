@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\StaffActivationController;
 use App\Http\Controllers\AuditController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\MfaChallengeController;
 use App\Http\Controllers\Auth\MfaEnrollmentController;
 use App\Http\Controllers\Auth\MfaSecurityController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\CalendarManualEventController;
 use App\Http\Controllers\CorrespondenceLifecycleController;
 use App\Http\Controllers\CorrespondenceWorkspaceActionController;
 use App\Http\Controllers\CorrespondenceWorkspaceController;
@@ -58,6 +60,8 @@ Route::get('/', [PublicPortalController::class, 'home'])->name('public.home');
 
 Route::middleware('guest')->group(function (): void {
     Route::get('/activate-account', [PublicPortalController::class, 'activation'])->name('public.activate-account');
+    Route::get('/activate-account/{token}', [StaffActivationController::class, 'show'])->where('token', '[a-f0-9]{64}')->name('staff.activation.show');
+    Route::post('/activate-account/{token}', [StaffActivationController::class, 'claim'])->where('token', '[a-f0-9]{64}')->middleware('throttle:5,1')->name('staff.activation.claim');
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login.store');
 });
@@ -83,6 +87,11 @@ Route::middleware(['auth', 'active', 'mfa.subject', 'mfa.assured'])->group(funct
 
 Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
     Route::get('/admin', AdminDashboardController::class)->name('admin.index');
+    Route::prefix('admin/invitations')->name('admin.invitations.')->middleware('throttle:10,1')->group(function (): void {
+        Route::get('/', [StaffActivationController::class, 'index'])->name('index');
+        Route::post('/', [StaffActivationController::class, 'store'])->name('store');
+        Route::post('/{invitation}/revoke', [StaffActivationController::class, 'revoke'])->whereNumber('invitation')->name('revoke');
+    });
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::get('/portal-search', PortalSearchController::class)->name('portal-search.index');
     Route::get('/documents', DocumentCenterController::class)->name('document-center.index');
@@ -90,6 +99,11 @@ Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
     Route::get('/employees', EmployeeDirectoryController::class)->name('employees.index');
     Route::get('/employees/{employee}', EmployeeDirectoryProfileController::class)->name('employees.show');
     Route::get('/calendar', CalendarController::class)->name('calendar.index');
+    Route::prefix('calendar/events')->middleware('throttle:30,1')->group(function (): void {
+        Route::post('/', [CalendarManualEventController::class, 'store'])->name('calendar.events.store');
+        Route::put('/{event}', [CalendarManualEventController::class, 'update'])->whereNumber('event')->name('calendar.events.update');
+        Route::delete('/{event}', [CalendarManualEventController::class, 'destroy'])->whereNumber('event')->name('calendar.events.destroy');
+    });
 
     // W03: same-origin session-authenticated *individual* Task JSON surface.
     // This group already enforces auth, active account and MFA assurance.
