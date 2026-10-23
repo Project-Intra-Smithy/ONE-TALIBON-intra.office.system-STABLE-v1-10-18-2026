@@ -39,6 +39,7 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
                 <div className="ot-dashboard-municipal-context"><MunicipalContext /></div>
             </div>
             <R7UpperRegion recentWork={recentWork} groups={primaryGroups} system={isAdmin ? systemOverview : undefined} head={isHead} />
+            <R7LowerRegion actions={experience.quickActions} />
             {(isEmployee || isHead) && correspondenceOverview && <div className="ot-dashboard-section">
                 <CorrespondenceOverview overview={correspondenceOverview} />
             </div>}
@@ -54,7 +55,6 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
             {secondaryGroups.length > 0 && <div className="ot-dashboard-section ot-dashboard-secondary-metrics">
                 {secondaryGroups.map((group) => <MetricGroup key={group.key} group={group} />)}
             </div>}
-            <R7LowerRegion actions={experience.quickActions} />
         </div>
     </AppLayout>;
 }
