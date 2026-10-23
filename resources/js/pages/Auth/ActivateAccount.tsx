@@ -11,7 +11,7 @@ const messages = {
 };
 const field = 'mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500';
 export default function ActivateAccount({token,status}:Props) {
-    const form=useForm({employee_number:'',password:'',password_confirmation:''});
+    const form=useForm({password:'',password_confirmation:''});
     const submit=(event:FormEvent)=>{
         event.preventDefault();
         if (status!=='valid'||!token) return;
@@ -29,11 +29,8 @@ export default function ActivateAccount({token,status}:Props) {
                 </div>
                 <div className="space-y-5 p-6">
                     {status==='valid' && token ? <>
-                        <p className="text-sm leading-6 text-slate-700">Confirm the employee number on your authorized invitation and set a new password. Your office and role are already assigned by the administrator. Privileged users must complete MFA enrollment after activation.</p>
+                        <p className="text-sm leading-6 text-slate-700">Use your administrator-issued private, one-time link to set a new password. No employee number is required. Your office and role are already assigned by the administrator. Privileged users must complete MFA enrollment after activation.</p>
                         <form onSubmit={submit} className="space-y-4" aria-label="Activate employee account">
-                            <label className="block text-xs font-bold text-slate-700">Registered employee number
-                                <input required autoComplete="off" maxLength={64} value={form.data.employee_number} onChange={event=>form.setData('employee_number',event.target.value)} className={field}/>
-                            </label>
                             <label className="block text-xs font-bold text-slate-700">New password (minimum 16 characters, letters and numbers)
                                 <input required minLength={16} maxLength={128} type="password" autoComplete="new-password" value={form.data.password} onChange={event=>form.setData('password',event.target.value)} className={field}/>
                             </label>

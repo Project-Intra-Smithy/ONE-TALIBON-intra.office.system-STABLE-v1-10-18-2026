@@ -5,7 +5,7 @@ import PageFrame from '../../components/PageFrame';
 import PageHeader from '../../components/PageHeader';
 import { ShieldCheck } from 'lucide-react';
 
-type Employee = { id:number; number:string; name:string; office:string|null; departmentId:number };
+type Employee = { id:number; name:string; office:string|null; departmentId:number };
 type Invitation = { id:number; employee:string|null; status:string; expiresAt:string };
 type Props = { employees:Employee[]; roles:string[]; invitations:Invitation[]; oneTimeLink:string|null };
 const field = 'mt-1 w-full rounded-lg border border-slate-300 bg-white p-3 text-sm text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100';
@@ -45,11 +45,11 @@ export default function Invitations({ employees, roles, invitations, oneTimeLink
                             setConfirmed(false);
                         }}>
                             <option value={0}>Select an approved employee</option>
-                            {employees.map(employee=><option value={employee.id} key={employee.id}>{employee.name} ({employee.number}) — {employee.office}</option>)}
+                            {employees.map(employee=><option value={employee.id} key={employee.id}>{employee.name} — {employee.office}</option>)}
                         </select>
                     </label>
                     {selected && <div className="rounded-lg bg-slate-50 p-3 text-xs dark:bg-slate-900">
-                        <div>Office: <strong>{selected.office}</strong></div><div>Employee ID: {selected.number}</div>
+                        <div>Office: <strong>{selected.office}</strong></div><div>Internal employee record: #{selected.id}</div>
                         <p className="mt-1">Official email is taken from the registered employee record; it cannot be edited here.</p>
                     </div>}
                     <label className="block text-xs font-bold">Approved portal role

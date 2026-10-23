@@ -20,6 +20,7 @@ import WorkspaceUnavailable from '../../components/WorkspaceUnavailable';
 
 export type CalendarEvent = {
     id: number;
+    manual_version: number;
     can_manage?: boolean;
     calendar_bucket?: 'personal' | 'office' | 'municipality';
     event_key: string;
