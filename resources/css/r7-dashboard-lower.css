@@ -131,19 +131,6 @@
 .dark .r7-supporting,
 .dark .r7-task-intro,
 .dark .r7-links-note { color: #c8d8ce; }
-@container r7lower (min-width: 720px) {
-    .r7-lower-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); }
-    .r7-lower-events, .r7-lower-tasks { grid-column: 1 / -1; }
-    .r7-lower-documents, .r7-lower-links { grid-column: span 6; }
-    .r7-lower-links .ot-dashboard-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@container r7lower (min-width: 1080px) {
-    .r7-lower-events { grid-column: span 3; }
-    .r7-lower-tasks { grid-column: span 9; }
-    .r7-lower-documents { grid-column: span 5; }
-    .r7-lower-links { grid-column: span 7; }
-    .r7-lower-links .ot-dashboard-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
 @container r7lower (max-width: 540px) {
     .r7-embedded-task { padding: 10px; }
     .r7-embedded-task form { display: flex; flex-direction: column; }
@@ -159,4 +146,25 @@
 @media (forced-colors: active) {
     .r7-lower-title { background: Canvas; color: CanvasText; border-bottom: 2px solid CanvasText; }
     .r7-lower :where(a,button,input):focus-visible { outline-color: Highlight; }
+}
+
+/* B3: space the four independently owned cards in one desktop row.
+   The B2 responsive stylesheet, loaded last, controls the 1/2/4 columns. */
+.r7-dashboard .r7-lower-grid { align-items: stretch; }
+.r7-dashboard .r7-lower-grid > .r7-lower-card { height: 100%; }
+.r7-dashboard .r7-lower-tasks:has(.r7-task-manager) { height: auto; }
+@container r7lower (min-width: 650px) {
+    .r7-dashboard .r7-lower-grid > .r7-lower-tasks:has(.r7-task-manager) {
+        grid-column: 1 / -1;
+    }
+}
+.r7-dashboard .r7-task-manager { min-width: 0; }
+@container r7lower (min-width: 850px) {
+    .r7-dashboard .r7-task-manager {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+        gap: 16px;
+    }
+    .r7-dashboard .r7-task-manager > * { min-width: 0; }
 }

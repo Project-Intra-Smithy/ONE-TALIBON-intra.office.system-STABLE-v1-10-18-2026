@@ -13,6 +13,10 @@ import WorkspaceUnavailable from '../components/WorkspaceUnavailable';
 import '../../css/ot-reference-dashboard.css';
 import '../../css/r7-dashboard-upper.css';
 import '../../css/r7-dashboard-lower.css';
+import '../../css/r7-hero-fidelity.css';
+import '../../css/r7-lower-evidence.css';
+import '../../css/r7-task-panel.css';
+import '../../css/r7-shortcuts-responsive.css';
 
 export default function Dashboard({ experience, metricGroups, correspondenceOverview, recentWork, officeOverview, executiveOverview, systemOverview }: DashboardProps) {
     if (!experience?.department || !Array.isArray(experience.quickActions)
