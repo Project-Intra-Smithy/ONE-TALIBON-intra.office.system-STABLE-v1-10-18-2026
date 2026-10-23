@@ -63,7 +63,7 @@ function TaskSummary({ userId }: { userId: number }) {
     }, [userId]);
 
     return (
-        <section className="r7-lower-card r7-lower-tasks" id="personal-tasks" aria-labelledby="r7-task-heading">
+        <section className="r7-lower-card r7-lower-tasks" id="personal-tasks" tabIndex={-1} aria-labelledby="r7-task-heading">
             <header className="r7-lower-title r7-task-heading">
                 <ListChecks size={17} aria-hidden="true" />
                 <h2 id="r7-task-heading">My Tasks</h2>
@@ -120,7 +120,7 @@ function TaskSummary({ userId }: { userId: number }) {
 export default function R7TaskPanel() {
     const userId = usePage<SharedProps>().props.auth?.user?.id;
     return typeof userId === 'number' ? <TaskSummary key={userId} userId={userId} /> :
-        <section className="r7-lower-card r7-lower-tasks" id="personal-tasks" aria-labelledby="r7-task-heading">
+        <section className="r7-lower-card r7-lower-tasks" id="personal-tasks" tabIndex={-1} aria-labelledby="r7-task-heading">
             <header className="r7-lower-title r7-task-heading"><h2 id="r7-task-heading">My Tasks</h2></header>
             <p className="r7-task-state" role="status">Sign in to access personal Tasks.</p>
         </section>;

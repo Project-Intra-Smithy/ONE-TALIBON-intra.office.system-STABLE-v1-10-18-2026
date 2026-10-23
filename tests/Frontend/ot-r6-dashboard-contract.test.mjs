@@ -6,6 +6,8 @@ import { selectDashboardShortcuts } from '../../resources/js/components/dashboar
 const source = (path) => readFileSync(new URL('../../' + path, import.meta.url), 'utf8');
 const dashboard = source('resources/js/pages/Dashboard.tsx');
 const header = source('resources/js/components/dashboard/DashboardHeader.tsx');
+const upper = source('resources/js/components/dashboard/r7/R7UpperRegion.tsx');
+const taskPanel = source('resources/js/components/dashboard/r7/lower/R7TaskPanel.tsx');
 const quick = source('resources/js/components/dashboard/QuickActions.tsx');
 const recent = source('resources/js/components/dashboard/RecentWorkList.tsx');
 const activity = source('resources/js/components/dashboard/ActivityRail.tsx');
@@ -17,10 +19,14 @@ test('R6 retains all four backend-role variants and role-scoped operational sect
     for (const role of ['employee', 'department_head', 'executive_oversight', 'system_administration']) {
         assert.ok(dashboard.includes(`${role}:`), `Missing role mapping ${role}`);
     }
-    for (const component of ['RecentWorkList', 'ActivityRail', 'OfficeOverview', 'ExecutiveOverview', 'SystemOverview', 'CorrespondenceOverview', 'PersonalTaskWorkspace']) {
+    for (const component of ['OfficeOverview', 'ExecutiveOverview', 'SystemOverview', 'CorrespondenceOverview']) {
         assert.ok(dashboard.includes(`<${component}`), `Missing ${component}`);
     }
-    assert.match(dashboard, /primaryGroups\.map\(/);
+    for (const component of ['RecentWorkList', 'ActivityRail']) {
+        assert.ok(upper.includes(`<${component}`), `Missing ${component}`);
+    }
+    assert.match(taskPanel, /<PersonalTaskWorkspace\s*\/>/);
+    assert.match(upper, /groups\.map\(/);
     assert.match(dashboard, /secondaryGroups\.map\(/);
     assert.match(dashboard, /!experience\?\.department/);
 });

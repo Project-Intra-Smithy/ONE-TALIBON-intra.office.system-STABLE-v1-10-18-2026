@@ -4,6 +4,7 @@ import test from 'node:test';
 
 const source = (path) => readFileSync(new URL('../../' + path, import.meta.url), 'utf8');
 const dashboard = source('resources/js/pages/Dashboard.tsx');
+const upper = source('resources/js/components/dashboard/r7/R7UpperRegion.tsx');
 const recentWork = source('resources/js/components/dashboard/RecentWorkList.tsx');
 const activity = source('resources/js/components/dashboard/ActivityRail.tsx');
 const metrics = source('resources/js/components/dashboard/MetricGroup.tsx');
@@ -22,9 +23,9 @@ test('R4 panel treatment is explicitly scoped to dashboard and does not alter so
     assert.match(css, /\.ot-reference-dashboard \.ot-dashboard-panel-heading/);
     assert.match(css, /\.ot-reference-dashboard \.ot-dashboard-metrics \.workspace-metric/);
     assert.doesNotMatch(css, /(?:^|\n)\s*(?:body|html|:root|\*|\.municipal-panel)\s*\{/);
-    assert.match(dashboard, /<RecentWorkList compact /);
-    assert.match(dashboard, /<ActivityRail system=/);
-    assert.match(dashboard, /primaryGroups\.map\(/);
+    assert.match(upper, /<RecentWorkList\s+compact/);
+    assert.match(upper, /<ActivityRail system=/);
+    assert.match(upper, /groups\.map\(/);
     assert.match(dashboard, /secondaryGroups\.map\(/);
 });
 

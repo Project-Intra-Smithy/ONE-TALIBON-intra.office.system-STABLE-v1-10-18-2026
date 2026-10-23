@@ -24,6 +24,7 @@ export default function DashboardHeader({ experience }: { experience: DashboardE
             {context && <p className="ot-dashboard-hero-context">{context}</p>}
         </div>
         <div className="r7-civic-hero__art" aria-hidden="true">
+            <img src="/images/municipality/talibon-homepage-hero.jpg" alt="" />
             <span className="r7-civic-hero__ring r7-civic-hero__ring--outer" />
             <span className="r7-civic-hero__ring r7-civic-hero__ring--inner" />
             <span className="r7-civic-hero__art-line" />
