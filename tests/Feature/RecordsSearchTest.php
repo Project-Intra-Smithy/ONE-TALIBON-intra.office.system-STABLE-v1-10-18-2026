@@ -429,6 +429,21 @@ class RecordsSearchTest extends TestCase
         }
     }
 
+    public function test_document_center_sorts_authorized_records_before_pagination(): void
+    {
+        $office = $this->department('SORT');
+        $actor = $this->human('department_head', $office);
+        $this->correspondence('Oldest visible', $office, receivedAt: now()->subDays(10));
+        $this->correspondence('Newest visible', $office, receivedAt: now());
+        $this->actingAs($actor)->get('/documents?mode=records&sort=oldest')
+            ->assertOk()->assertInertia(fn (Assert $page) => $page
+                ->component('Documents/Index')->where('filters.sort', 'oldest')
+                ->where('records.data.0.title', 'Oldest visible'));
+        $this->get('/documents?mode=records&sort=newest')
+            ->assertOk()->assertInertia(fn (Assert $page) => $page->where('records.data.0.title', 'Newest visible'));
+        $this->getJson('/documents?sort=untrusted-column')->assertUnprocessable();
+    }
+
     private function department(string $suffix): Department
     {
         return Department::query()->create([

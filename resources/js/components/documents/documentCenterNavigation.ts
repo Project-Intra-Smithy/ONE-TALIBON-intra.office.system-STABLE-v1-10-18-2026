@@ -1,6 +1,7 @@
 import type { DocumentFilters } from './documentCenterPresentation';
 
 type FileSearch = {
+    sort?: 'newest' | 'oldest';
     archive_scope: string;
     archive_search: string;
     document_type: string;
@@ -30,6 +31,7 @@ export function recordFiltersQuery(filters: DocumentFilters): Record<string, str
         mode: 'records',
         record_type: filters.record_type || 'all',
     };
+    if (filters.sort === 'oldest') parameters.sort = 'oldest';
     if (filters.search.trim()) parameters.search = filters.search.trim();
     if (filters.state) parameters.state = filters.state;
     if (typeof filters.office_id === 'number' && filters.office_id > 0) parameters.office_id = filters.office_id;
@@ -62,6 +64,7 @@ export function fileCatalogQuery(
         archive_scope: applied.archive_scope || 'all',
         page: Math.max(1, Math.floor(page)),
     };
+    if (applied.sort === 'oldest') params.sort = 'oldest';
     if (draft.search.trim()) params.archive_search = draft.search.trim();
     if (draft.documentType) params.document_type = draft.documentType;
     if (draft.classification) params.classification = draft.classification;

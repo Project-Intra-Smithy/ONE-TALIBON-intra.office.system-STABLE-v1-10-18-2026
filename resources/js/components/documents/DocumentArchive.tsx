@@ -58,6 +58,7 @@ export type ArchiveWorkspace = {
         my_uploads: number;
     };
     filters: {
+        sort?: 'newest' | 'oldest';
         archive_scope: string;
         archive_search: string;
         document_type: string;
@@ -106,6 +107,7 @@ export default function DocumentArchive({ archive }: { archive: ArchiveWorkspace
     const [classification, setClassification] = useState(archive.filters.classification);
     const [officeId, setOfficeId] = useState(archive.filters.archive_office_id ? String(archive.filters.archive_office_id) : '');
     const [year, setYear] = useState(archive.filters.archive_year);
+    const [sort, setSort] = useState<'newest' | 'oldest'>(archive.filters.sort ?? 'newest');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -115,13 +117,14 @@ export default function DocumentArchive({ archive }: { archive: ArchiveWorkspace
         setClassification(archive.filters.classification);
         setOfficeId(archive.filters.archive_office_id ? String(archive.filters.archive_office_id) : '');
         setYear(archive.filters.archive_year);
+        setSort(archive.filters.sort ?? 'newest');
     }, [archive.filters]);
 
     type Navigation = { archive_scope?: string; page?: number; document?: string | null };
     type Draft = { search: string; documentType: string; classification: string; officeId: string; year: string };
     const navigate = (overrides: Navigation = {}, nextDraft?: Draft) => {
         const values = nextDraft ?? { search, documentType, classification, officeId, year };
-        const scoped = { ...archive.filters, archive_scope: overrides.archive_scope ?? archive.filters.archive_scope };
+        const scoped = { ...archive.filters, sort, archive_scope: overrides.archive_scope ?? archive.filters.archive_scope };
         const page = overrides.page ?? archive.records.current_page;
         const document = overrides.document === undefined ? archive.filters.document : overrides.document;
         setError(null);
@@ -131,6 +134,8 @@ export default function DocumentArchive({ archive }: { archive: ArchiveWorkspace
             replace: true,
             onStart: () => setLoading(true),
             onError: () => setError('The file catalog could not be loaded. Current results have been retained.'),
+            onHttpException: () => { setError('The server could not load this view. Retry the request.'); return false; },
+            onNetworkError: () => { setError('Connection interrupted. Retry when you are online.'); return false; },
             onFinish: () => setLoading(false),
         });
     };
@@ -222,6 +227,11 @@ export default function DocumentArchive({ archive }: { archive: ArchiveWorkspace
                         </select>
                     </label>
 
+                    <label className="block text-xs">File sort order
+                        <select aria-label="File sort order" value={sort} onChange={(event) => setSort(event.target.value as 'newest' | 'oldest')} className="municipal-field">
+                            <option value="newest">Newest first</option><option value="oldest">Oldest first</option>
+                        </select>
+                    </label>
                     <label className="block min-w-0">
                         <span className="mb-1 block text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Year</span>
                         <select value={year} onChange={(event) => setYear(event.target.value)} className="min-h-10 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2 text-xs">

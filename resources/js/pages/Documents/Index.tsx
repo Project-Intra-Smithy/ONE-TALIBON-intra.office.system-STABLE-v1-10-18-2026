@@ -54,6 +54,8 @@ export default function DocumentCenter({ records, filters, filterOptions, mode, 
             replace: true,
             onStart: () => setLoading(true),
             onError: () => setError('Records could not be loaded. Your current results have been retained. Retry the search.'),
+            onHttpException: () => { setError('The server could not load this view. Retry the request.'); return false; },
+            onNetworkError: () => { setError('Connection interrupted. Retry when you are online.'); return false; },
             onFinish: () => setLoading(false),
         });
     };
@@ -66,6 +68,8 @@ export default function DocumentCenter({ records, filters, filterOptions, mode, 
             preserveScroll: true,
             onStart: () => setLoading(true),
             onError: () => setError('The requested records page could not be loaded.'),
+            onHttpException: () => { setError('The server could not load this view. Retry the request.'); return false; },
+            onNetworkError: () => { setError('Connection interrupted. Retry when you are online.'); return false; },
             onFinish: () => setLoading(false),
         });
     };
@@ -119,6 +123,9 @@ export default function DocumentCenter({ records, filters, filterOptions, mode, 
                             <option value="">All statuses</option>
                             {filterOptions.states.map((state) => <option key={state.value} value={state.value}>{state.label}</option>)}
                         </select>
+                        <select aria-label="Record sort order" className="municipal-field" value={draft.sort ?? 'newest'} onChange={(event) => setDraft({ ...draft, sort: event.target.value as 'newest' | 'oldest' })}>
+                            <option value="newest">Newest first</option><option value="oldest">Oldest first</option>
+                        </select>
                         <button type="submit" disabled={loading} className="municipal-action municipal-action--primary">Search</button>
                         <button type="button" onClick={reset} disabled={loading} className="municipal-action municipal-action--quiet">Reset</button>
                     </div>
@@ -137,7 +144,7 @@ export default function DocumentCenter({ records, filters, filterOptions, mode, 
                     {loading ? 'Loading authorized records…' : records.total + ' authorized record' + (records.total === 1 ? '' : 's') + ' found'}
                 </div>
                 {error && <div role="alert" className="mb-2 rounded-md border border-[var(--municipal-border)] p-3 text-xs text-[var(--municipal-text)]">{error} <button type="button" onClick={() => navigate(draft)} className="ml-2 font-bold text-[var(--municipal-brand)]">Retry</button></div>}
-                <div className="dc-context"><span>{collectionLabels[filters.record_type] || 'Authorized records'}</span><span>Newest record dates first</span></div>
+                <div className="dc-context"><span>{collectionLabels[filters.record_type] || 'Authorized records'}</span><span>{filters.sort === 'oldest' ? 'Oldest' : 'Newest'} record dates first</span></div>
                 <div className="dc-register-group">
                     <div className="min-w-0 space-y-3">
                         <DocumentRegister records={records.data} total={records.total} selectedUrl={selected?.detailUrl || null} onSelect={(record) => setSelectedUrl(record?.detailUrl || null)} />

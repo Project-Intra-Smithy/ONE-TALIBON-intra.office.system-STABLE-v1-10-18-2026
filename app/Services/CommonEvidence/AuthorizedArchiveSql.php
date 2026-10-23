@@ -82,8 +82,8 @@ final readonly class AuthorizedArchiveSql
         }
 
         $paginator = (clone $filtered)
-            ->orderByDesc('uploaded_at')
-            ->orderByDesc('doc_id')
+            ->orderBy('uploaded_at', ($filters['sort'] ?? 'newest') === 'oldest' ? 'asc' : 'desc')
+            ->orderBy('doc_id', ($filters['sort'] ?? 'newest') === 'oldest' ? 'asc' : 'desc')
             ->paginate(20, ['*'], 'page', $page);
 
         $records = new LengthAwarePaginator(
@@ -140,6 +140,7 @@ final readonly class AuthorizedArchiveSql
                 'my_uploads' => (int) ($counts->uploads ?? 0),
             ],
             'filters' => [
+                'sort' => (string) ($filters['sort'] ?? 'newest'),
                 'archive_scope' => $scope,
                 'archive_search' => (string) ($filters['archive_search'] ?? ''),
                 'document_type' => $type,

@@ -47,13 +47,13 @@ final class RecordsSearchQuery
         $this->applyTransactionFilters($transactions, $filters);
         $this->applyTravelOrderFilters($travelOrders, $filters);
 
-        $recordsPage = $this->paginate($recordType, $correspondence, $transactions, $travelOrders);
+        $recordsPage = $this->paginate($recordType, $correspondence, $transactions, $travelOrders, sort: (string) ($filters['sort'] ?? 'newest'));
 
         // On the unfiltered all-source first page the primary 25-item
         // result is the same authorized, ordered list as overview's first 6.
         // All other requests retain an independently unfiltered overview;
         // filtered lists or later pages must never change overview content.
-        $canReuseOverview = $recordType === 'all'
+        $canReuseOverview = ($filters['sort'] ?? 'newest') === 'newest' && $recordType === 'all'
             && (int) ($filters['page'] ?? 1) === 1
             && ! array_filter(
                 [
@@ -88,6 +88,7 @@ final class RecordsSearchQuery
             ],
             'filters' => [
                 'view' => $view,
+                'sort' => (string) ($filters['sort'] ?? 'newest'),
                 'search' => (string) ($filters['search'] ?? ''),
                 'record_type' => $recordType,
                 'state' => (string) ($filters['state'] ?? ''),
@@ -301,6 +302,7 @@ final class RecordsSearchQuery
         Builder $travelOrders,
         int $perPage = 25,
         ?int $page = null,
+        string $sort = 'newest',
     ): LengthAwarePaginator {
         $sources = [];
 
@@ -329,8 +331,9 @@ final class RecordsSearchQuery
 
         $paginator = DB::query()
             ->fromSub($union->toBase(), 'records_registry')
-            ->orderByDesc('record_date')
-            ->orderByDesc('sort_id')
+            ->orderBy('record_date', $sort === 'oldest' ? 'asc' : 'desc')
+            ->orderBy('sort_id', $sort === 'oldest' ? 'asc' : 'desc')
+            ->orderBy('record_type')
             ->paginate($perPage, ['*'], 'page', $page)
             ->withQueryString();
 
