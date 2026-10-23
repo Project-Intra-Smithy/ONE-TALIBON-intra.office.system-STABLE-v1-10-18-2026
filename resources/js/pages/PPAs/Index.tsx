@@ -40,8 +40,12 @@ export default function Index() {
                 aside={<div className="text-right text-xs text-[var(--municipal-muted)]"><strong className="text-[var(--municipal-text)]">{records.length}</strong> of {ppaRecords.length} records</div>}
             />
             <PortalWorkspaceNav current="ppas" destinations={['ppas', 'projectMonitoring', 'developmentPlans']} />
+            <p role="note" className="text-xs leading-5 text-[var(--municipal-muted)]">Reference register · Statuses and counts do not represent verified live project progress.</p>
             <PPAFilters filters={filters} onChange={(next) => { setFilters(next); setSelected(null); }} />
-            <PPARegister records={records} selectedId={selected?.id} onSelect={setSelected} />
+            <section aria-label="PPA register results" className="min-w-0 space-y-2">
+                <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--municipal-muted)]"><h2 className="font-semibold text-[var(--municipal-text)]">PPA register</h2><span role="status" aria-live="polite">{records.length} matching reference {records.length === 1 ? 'record' : 'records'}</span></div>
+                <PPARegister records={records} selectedId={selected?.id} onSelect={setSelected} />
+            </section>
             {selected ? <PPADetailPanel record={selected} onClose={() => setSelected(null)} /> : null}
             <details className="group municipal-panel">
                 <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-xs font-semibold marker:hidden">
