@@ -1,0 +1,11 @@
+{
+  "results": [
+    "real password + TOTP login",
+    "27 real records: server pagination, sorting, metadata",
+    "empty search",
+    "selected file metadata + protected download bytes",
+    "mobile files, server sort and no horizontal overflow",
+    "network failure surfaced and retry recovered"
+  ],
+  "errors": []
+}

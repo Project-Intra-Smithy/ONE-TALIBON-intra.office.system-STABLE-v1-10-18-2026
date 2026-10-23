@@ -1,0 +1,46 @@
+{
+  "final-regressions.xml": {
+    "sha256": "73ca40f957c728154486f73c6382e0d099e676c9dc7d0feea79795d7dcbc8c49",
+    "bytes": 103783
+  },
+  "final-build.log": {
+    "sha256": "4ab91d340faf317370865eb80a08505df1708d01213821b75fdbc364dd975d25",
+    "bytes": 24536
+  },
+  "final-types.log": {
+    "sha256": "82962651e47f564de653ad2883f8fd34e7dae4b4468e4ac459cb3331962a3879",
+    "bytes": 72
+  },
+  "final-frontend.log": {
+    "sha256": "a624b76d3a0469481899150096a9041b925ac458c5e6bcebaae8f0f0125f65cd",
+    "bytes": 15604
+  },
+  "final-lint.log": {
+    "sha256": "40038a32feb9f96c7be0fec7737b01a15ffd964ac09f997bf3006e0b8fcc111d",
+    "bytes": 2014
+  },
+  "final-race.log": {
+    "sha256": "2222ba4b5dde2d391e3247448f88e532743bba6d36ef8551cad7a798666af21f",
+    "bytes": 256
+  },
+  "final-rollback.log": {
+    "sha256": "80d8801da09d05e4301c8dca2f583b1786c7756685a7fa3b8c80b8577a722bcc",
+    "bytes": 568
+  },
+  "final-migrate.log": {
+    "sha256": "cc7bc9b0934658c5245d18258aa90c9f49d57dc4a8cc2ef6725ab53cb0bf549a",
+    "bytes": 558
+  },
+  "browser/results.json": {
+    "sha256": "58ace2bc5cbdce9e979a3823cd5b7999108f9871b6b3445fd8f7706218303fdd",
+    "bytes": 321
+  },
+  "browser/records-desktop.png": {
+    "sha256": "ee437d4e0a929444c9c936366a0b19a454c5aa0d2a8c22ded18dcbb59c454933",
+    "bytes": 192201
+  },
+  "browser/files-mobile.png": {
+    "sha256": "77e8a3a3f3579f4037e3fd70749c6ea2f4805683a48a7fb07bb20f6708d4373c",
+    "bytes": 232067
+  }
+}
