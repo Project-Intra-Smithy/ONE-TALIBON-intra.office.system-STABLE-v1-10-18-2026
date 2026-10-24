@@ -22,7 +22,11 @@ test('B2 status badges are restricted to five PPA domain status values', () => {
   assert.doesNotMatch(register, /percentComplete|completionPercent|progressBar|<progress/i);
 });
 test('B2 preserves mobile cards, desktop register and detail focus restoration', () => {
-  assert.match(register, /lg:hidden/); assert.match(register, /lg:block/);
+  // The 860px desktop table cannot fit alongside the 248px application shell at 1024px.
+  // Cards must remain active through 1279px; the table starts at Tailwind's xl (1280px).
+  assert.match(register, /r8-ppas-cards space-y-2 xl:hidden/);
+  assert.match(register, /r8-ppas-table-panel hidden overflow-hidden xl:block/);
+  assert.doesNotMatch(register, /lg:hidden|lg:block/);
   assert.match(register, /<table/); assert.match(register, /overflow-x-auto/);
   assert.match(register, /aria-selected=\{selectedId === record\.id\}/);
   assert.match(register, /aria-expanded=\{selectedId === record\.id\}/);
