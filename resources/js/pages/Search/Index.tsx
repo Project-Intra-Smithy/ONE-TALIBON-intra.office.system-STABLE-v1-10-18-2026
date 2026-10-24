@@ -1,4 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
+import '../../../css/r8-search.css';
 import {
     ArrowUpRight,
     BookOpen,
@@ -117,8 +118,18 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
     const [year, setYear] = useState('');
     const [status, setStatus] = useState('');
     const [filtersOpen, setFiltersOpen] = useState(false);
+    const documentsAllowed = destinations.some((item) => item.key === 'documentCenter');
 
     useEffect(() => { setQuery(urlQuery); }, [urlQuery]);
+
+    // Keep the existing q contract shareable without invoking a new search endpoint.
+    useEffect(() => {
+        const current = new URL(window.location.href);
+        if ((current.searchParams.get('q') || '') === query) return;
+        if (query.trim()) current.searchParams.set('q', query);
+        else current.searchParams.delete('q');
+        window.history.replaceState(window.history.state, '', `${current.pathname}${current.search}${current.hash}`);
+    }, [query]);
 
     const results = useMemo<Result[]>(() => [
         ...destinations
@@ -214,24 +225,29 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
 
     return (
         <AppLayout title="Search Portal">
-            <PageFrame className="max-w-[1440px]" density="compact">
+            <PageFrame className="r8-search max-w-[1440px]" density="compact">
                 <PageHeader
                     eyebrow="ONE TALIBON discovery"
-                    title="Universal Search"
-                    description="Search portal destinations, development plans and PPA references. Authorized records remain in Records Search."
+                    title="Search ONE TALIBON"
+                    description="Discover available portal workspaces and local planning references. Official records are searched separately under your existing permissions."
                     icon={Search}
                 />
 
-                <section className="municipal-panel p-3" aria-label="Universal search">
+                <section className="r8-search-console" aria-label="Portal and reference search">
+                    <div className="mb-4">
+                        <p className="r8-search-kicker">Portal discovery</p>
+                        <h2 className="mt-1 text-lg font-bold text-[var(--municipal-text)]">Find a workspace or reference</h2>
+                        <p className="mt-1 text-xs text-[var(--municipal-muted)]">Results below are portal links and prototype Plans/PPA references, not searchable document files.</p>
+                    </div>
                     <label className="relative block">
-                        <span className="sr-only">Search portal</span>
+                        <span className="sr-only">Search portal destinations and planning references</span>
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--municipal-brand)]" size={19} aria-hidden="true" />
                         <input
                             type="search"
                             value={query}
                             onChange={(event) => setQuery(event.target.value)}
-                            placeholder="Search plans, PPAs, offices or portal destinations..."
-                            className="min-h-12 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] pl-10 pr-10 text-[15px] text-[var(--municipal-text)] outline-none focus:border-[var(--municipal-focus)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20"
+                            placeholder="Search a workspace, plan, PPA or office..."
+                            className="r8-search-input"
                         />
                         {query ? (
                             <button
@@ -246,14 +262,14 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
                     </label>
 
                     <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-                        <div className="flex flex-wrap gap-1.5" aria-label="Search result type">
+                        <div className="flex flex-wrap gap-1.5" aria-label="Filter by reference type">
                             {scopeOptions.map((option) => (
                                 <button
                                     key={option.key}
                                     type="button"
                                     onClick={() => setScope(option.key)}
                                     aria-pressed={scope === option.key}
-                                    className={`inline-flex min-h-9 items-center gap-1.5 rounded-md px-3 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] ${scope === option.key ? 'bg-[var(--municipal-brand)] text-white' : 'bg-[var(--municipal-surface-subtle)] text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
+                                    className={`inline-flex min-h-11 items-center gap-1.5 rounded-md px-3 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] ${scope === option.key ? 'bg-[var(--municipal-brand)] text-white' : 'bg-[var(--municipal-surface-subtle)] text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
                                 >
                                     {option.label}
                                     <span className={`rounded-full px-1.5 py-0.5 text-[9px] leading-none ${scope === option.key ? 'bg-white/20 text-white' : 'bg-white text-[var(--municipal-muted)]'}`}>{option.count}</span>
@@ -265,15 +281,16 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
                             type="button"
                             onClick={() => setFiltersOpen((value) => !value)}
                             aria-expanded={filtersOpen}
-                            className={`inline-flex min-h-9 items-center gap-1.5 rounded-md border px-3 text-xs font-semibold ${filtersOpen || hasAdvancedFilters ? 'border-[var(--municipal-selected-border)] bg-[var(--municipal-selected-bg)] text-[var(--municipal-brand)]' : 'border-[var(--municipal-border)] bg-[var(--municipal-surface)] text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
+                            aria-controls="r8-search-filters"
+                            className={`inline-flex min-h-11 items-center gap-1.5 rounded-md border px-3 text-xs font-semibold ${filtersOpen || hasAdvancedFilters ? 'border-[var(--municipal-selected-border)] bg-[var(--municipal-selected-bg)] text-[var(--municipal-brand)]' : 'border-[var(--municipal-border)] bg-[var(--municipal-surface)] text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
                         >
                             <SlidersHorizontal size={14} aria-hidden="true" />
-                            Filters{hasAdvancedFilters ? ` · ${[office, year, status].filter(Boolean).length}` : ''}
+                            More filters{hasAdvancedFilters ? ` · ${[office, year, status].filter(Boolean).length}` : ''}
                         </button>
                     </div>
 
                     {filtersOpen ? (
-                        <div className="mt-2 grid gap-2 border-t border-[var(--municipal-border)] pt-2 sm:grid-cols-3">
+                        <div id="r8-search-filters" className="mt-3 grid gap-3 border-t border-[var(--municipal-border)] pt-2 sm:grid-cols-3">
                             <label className="min-w-0 text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">
                                 Office
                                 <select className={`${field} mt-1`} value={office} onChange={(event) => setOffice(event.target.value)}>
@@ -300,8 +317,8 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
 
                     {(query || scope !== 'all' || hasAdvancedFilters) ? (
                         <div className="mt-2 flex items-center justify-between gap-2 border-t border-[var(--municipal-border)] pt-2">
-                            <p className="text-[10px] text-[var(--municipal-muted)]">Searching authorized portal destinations plus current Plan and PPA reference data.</p>
-                            <button type="button" onClick={reset} className="min-h-9 shrink-0 rounded-md px-2.5 text-[11px] font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]">Reset</button>
+                            <p className="text-[10px] text-[var(--municipal-muted)]">Only permitted portal destinations and locally defined planning references are included.</p>
+                            <button type="button" onClick={reset} className="min-h-11 shrink-0 rounded-md px-2.5 text-[11px] font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]">Reset</button>
                         </div>
                     ) : null}
                 </section>
@@ -310,8 +327,8 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
                     <>
                         <section aria-labelledby="search-scope-summary">
                             <div className="mb-1.5 flex items-center justify-between gap-3">
-                                <h2 id="search-scope-summary" className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Search across ONE TALIBON</h2>
-                                <span className="text-[9px] text-[var(--municipal-muted)]">{counts.all} searchable references</span>
+                                <h2 id="search-scope-summary" className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Browse searchable categories</h2>
+                                <span className="text-[9px] text-[var(--municipal-muted)]">{counts.all} available entries</span>
                             </div>
 
                             <div className="grid gap-2 sm:grid-cols-3">
@@ -320,7 +337,7 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
                                     ['plan', 'Development Plans', counts.plan, BookOpen, 'bg-[#eef5ff] text-[#265fa8]'],
                                     ['ppa', 'PPAs', counts.ppa, ListChecks, 'bg-[#fff8e8] text-[#9a6a08]'],
                                 ] as const).map(([key, label, count, Icon, tone]) => (
-                                    <button key={key} type="button" onClick={() => setScope(key)} className={`min-h-[88px] rounded-lg border border-[var(--municipal-border)] p-3 text-left transition hover:-translate-y-px ${tone}`}>
+                                    <button key={key} type="button" onClick={() => setScope(key)} className={`min-h-[96px] rounded-lg border border-[var(--municipal-border)] p-3 text-left transition hover:-translate-y-px ${tone}`}>
                                         <div className="flex items-start justify-between gap-3">
                                             <Icon size={19} aria-hidden="true" />
                                             <strong className="text-2xl leading-none">{count}</strong>
@@ -335,7 +352,7 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
                         <section aria-labelledby="archive-activity-heading">
                             <div className="mb-1.5 flex items-center justify-between gap-3">
                                 <h2 id="archive-activity-heading" className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">My archive activity</h2>
-                                <Link href="/documents" className="text-[9px] font-semibold text-[var(--municipal-brand)]">Open Document Center →</Link>
+                                {documentsAllowed ? <Link href="/documents" className="text-xs font-semibold text-[var(--municipal-brand)]">Open Document Center →</Link> : null}
                             </div>
 
                             <div className="grid gap-2 lg:grid-cols-2">
@@ -352,10 +369,10 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
                                                     <p className="text-[9px] text-[var(--municipal-muted)]">{count} archived file{count === 1 ? '' : 's'}</p>
                                                 </div>
                                             </div>
-                                            <Link href={`/documents?mode=files&archive_scope=${scopeKey}`} className="shrink-0 text-[9px] font-bold text-[var(--municipal-brand)]">View archive</Link>
+                                            {documentsAllowed ? <Link href={`/documents?mode=files&archive_scope=${scopeKey}`} className="shrink-0 text-xs font-bold text-[var(--municipal-brand)]">View archive</Link> : null}
                                         </header>
                                         <div className="divide-y divide-[var(--municipal-border)]">
-                                            {items.map((item) => (
+                                            {documentsAllowed ? items.map((item) => (
                                                 <Link
                                                     key={item.publicId}
                                                     href={`/documents?mode=files&archive_scope=${scopeKey}&document=${encodeURIComponent(item.publicId)}`}
@@ -372,7 +389,7 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
                                                     </div>
                                                     <ArrowUpRight size={12} className="shrink-0 text-[var(--municipal-muted)]" aria-hidden="true" />
                                                 </Link>
-                                            ))}
+                                            )) : null}
                                             {!items.length ? <p className="px-3 py-3 text-[10px] text-[var(--municipal-muted)]">No {scopeKey === 'my_sent' ? 'sent' : 'received'} files in your authorized archive yet.</p> : null}
                                         </div>
                                     </div>
@@ -430,26 +447,26 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
                             ) : null}
                         </div>
 
-                        <section className="municipal-panel divide-y divide-[var(--municipal-border)] overflow-hidden" aria-label="Search results">
+                        <section className="r8-search-results" aria-label="Portal and reference results">
                             {visible.map((item) => {
                                 const tone = resultTone[item.kind];
                                 const Icon = tone.icon;
 
                                 return (
-                                    <article key={`${item.kind}:${item.id}`} className="flex min-w-0 items-center gap-2.5 px-3 py-2 hover:bg-[var(--municipal-hover)]">
+                                    <article key={`${item.kind}:${item.id}`} className="r8-search-result">
                                         <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md ${tone.shell}`}><Icon size={15} aria-hidden="true" /></div>
                                         <div className="min-w-0 flex-1">
-                                            <Link href={item.href} className="block truncate text-xs font-semibold leading-4 text-[var(--municipal-text)] hover:underline">{item.title}</Link>
-                                            <div className="mt-0.5 flex flex-wrap gap-x-2 gap-y-0.5 text-[10px] leading-4 text-[var(--municipal-muted)]">
+                                            <Link href={item.href} className="r8-search-result-title block text-[var(--municipal-text)] hover:underline">{item.title}</Link>
+                                            <div className="r8-search-result-meta mt-1">
                                                 <span className="font-semibold text-[var(--municipal-brand)]">{tone.label}</span>
                                                 {item.office ? <span>{item.office}</span> : null}
                                                 <span>{item.status}</span>
                                                 {item.year ? <span>{item.year}</span> : null}
                                                 {item.date ? <span>Updated {item.date}</span> : null}
                                             </div>
-                                            <div className="truncate text-[9px] leading-3.5 text-[var(--municipal-muted)]">{item.reference}</div>
+                                            <div className="r8-search-ref mt-1">{item.reference}</div>
                                         </div>
-                                        <Link href={item.href} aria-label={`Open ${item.title}`} className="inline-flex min-h-10 min-w-10 shrink-0 items-center justify-center rounded-md text-[var(--municipal-brand)] hover:bg-[var(--municipal-brand-soft)]"><ArrowUpRight size={15} /></Link>
+                                        <Link href={item.href} aria-label={`Open ${item.title}`} className="r8-search-action inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-[var(--municipal-brand)] hover:bg-[var(--municipal-brand-soft)]"><span className="sr-only">Open result</span><ArrowUpRight size={15} /></Link>
                                     </article>
                                 );
                             })}
@@ -464,7 +481,7 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
                             ) : null}
                         </section>
 
-                        <p className="text-[10px] text-[var(--municipal-muted)]">Plan and PPA results use current prototype reference data. Downloads and authoritative record actions remain in their source workspaces.</p>
+                        <p className="text-[10px] text-[var(--municipal-muted)]">Plans and PPAs are prototype reference entries, not validated municipal approvals or downloadable files. Use Records Search or the Document Center for authorized records and files.</p>
                     </>
                 )}
             </PageFrame>
