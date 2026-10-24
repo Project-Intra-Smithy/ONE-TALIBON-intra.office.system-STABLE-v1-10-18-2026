@@ -1,4 +1,5 @@
 import '../../../css/ot-r6-modules.css';
+import '../../../css/r8-ppas.css';
 import PortalWorkspaceNav from '../../components/portal/PortalWorkspaceNav';
 import { ClipboardList } from 'lucide-react';
 import { useMemo, useState } from 'react';
@@ -32,7 +33,7 @@ export default function Index() {
     }, [filters]);
 
     return <AppLayout title="Programs, Projects and Activities">
-        <PageFrame className="ot-r6-modules ot-r6-ppas max-w-[1480px]" density="compact">
+        <PageFrame className="ot-r6-modules ot-r6-ppas r8-ppas max-w-[1480px]" density="compact">
             <PageHeader
                 eyebrow="Planning and implementation register"
                 title="Programs, Projects and Activities"
@@ -45,7 +46,7 @@ export default function Index() {
             <PPAFilters filters={filters} onChange={(next) => { setFilters(next); setSelected(null); }} />
             <div className={`ot-r6-ppa-layout ${selected ? 'ot-r6-ppa-layout--selected' : ''}`}>
                 <section aria-label="PPA register results" className="ot-r6-ppa-register min-w-0 space-y-2">
-                    <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--municipal-muted)]"><h2 className="font-semibold text-[var(--municipal-text)]">PPA register</h2><span role="status" aria-live="polite">{records.length} matching reference {records.length === 1 ? 'record' : 'records'}</span></div>
+                    <div className="r8-ppas-register-heading flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--municipal-muted)]"><h2 className="font-semibold text-[var(--municipal-text)]">PPA register</h2><span role="status" aria-live="polite">{records.length} matching reference {records.length === 1 ? 'record' : 'records'}</span></div>
                     <PPARegister records={records} selectedId={selected?.id} onSelect={setSelected} />
                 </section>
                 {selected ? <PPADetailPanel record={selected} onClose={() => {
