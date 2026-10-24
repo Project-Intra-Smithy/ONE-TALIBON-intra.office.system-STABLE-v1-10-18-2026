@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import '../../css/r8-search.css';
+import '../../../css/r8-search.css';
 import {
     ArrowUpRight,
     BookOpen,
