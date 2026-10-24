@@ -77,14 +77,14 @@
     background: #205c3e;
     color: #ffffff;
 }
-[data-workspace-shell] .portal-sidebar [aria-label="Appearance"] {
+[data-workspace-shell] .portal-sidebar [aria-label="Appearance preference"] {
     background: #134f35;
     border-color: #39634c;
 }
-[data-workspace-shell] .portal-sidebar [aria-label="Appearance"] button {
+[data-workspace-shell] .portal-sidebar [aria-label="Appearance preference"] button {
     color: #e4f2e9;
 }
-[data-workspace-shell] .portal-sidebar [aria-label="Appearance"] button[aria-pressed="true"] {
+[data-workspace-shell] .portal-sidebar [aria-label="Appearance preference"] button[aria-pressed="true"] {
     background: #dcefe3;
     color: #0b442d;
 }

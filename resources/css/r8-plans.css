@@ -12,7 +12,7 @@
 .r8-plans .r8-plans-lead { display: flex; align-items: flex-start; gap: .4rem; margin-top: auto; padding-top: .45rem; }
 .r8-plans .r8-plans-card button { justify-content: space-between; padding-inline: .25rem; }
 .r8-plans .r8-plans-card button:focus-visible,
-.r8-plans .r8-plans-dialog :is(button, a):focus-visible { outline: 3px solid var(--municipal-focus); outline-offset: 3px; }
+.r8-plans-dialog :is(button, a):focus-visible { outline: 3px solid var(--municipal-focus); outline-offset: 3px; }
 .r8-plans-dialog { scrollbar-gutter: stable; overscroll-behavior: contain; }
 @media (max-width: 639px) {
   .r8-plans .r8-plans-card { padding: .65rem; }

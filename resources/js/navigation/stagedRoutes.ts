@@ -2,6 +2,11 @@
 // This is a link safety check, not a permission or backend route policy.
 const stagedPaths = [
     /^\/dashboard\/?$/,
+    /^\/portal-search\/?$/,
+    /^\/documents\/?$/,
+    /^\/development-plans\/?$/,
+    /^\/ppas\/?$/,
+    /^\/admin\/?$/,
     /^\/transactions(?:\/create|\/\d+)?\/?$/,
     /^\/correspondence(?:\/[^/]+\/workspace)?\/?$/,
     /^\/records\/?$/,
