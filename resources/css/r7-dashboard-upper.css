@@ -363,3 +363,52 @@
     .r7-dashboard .r7-panel .ot-dashboard-panel-count { color: CanvasText; background: Canvas; border-color: CanvasText; }
     .r7-dashboard .r7-upper :is(a,button,[tabindex="0"]):focus-visible { outline-color: Highlight; }
 }
+
+/* R7 P1: six Work Summary metrics must remain visible above the explanatory footer.
+ * Keep the shared upper-card height and all live metric/link semantics unchanged.
+ * If a role supplies more metrics, the existing keyboard-accessible scroll
+ * region continues to scroll rather than hiding excess content. */
+@container ot-dashboard (min-width: 740px) {
+    .r7-dashboard .r7-top-summary .workspace-metrics {
+        box-sizing: border-box;
+        height: 100%;
+        min-height: 0;
+        grid-auto-rows: minmax(60px, 1fr);
+        gap: 6px;
+        padding: 7px;
+    }
+    .r7-dashboard .r7-top-summary .workspace-metric {
+        display: grid;
+        grid-template-columns: max-content minmax(0, 1fr);
+        grid-template-rows: minmax(0, 1fr) auto;
+        align-items: center;
+        column-gap: 7px;
+        padding: 6px 8px;
+    }
+    .r7-dashboard .r7-top-summary .workspace-metric > div:first-child {
+        grid-column: 1;
+        grid-row: 1;
+        font-size: 1.12rem;
+        line-height: 1.15;
+    }
+    .r7-dashboard .r7-top-summary .workspace-metric > div:nth-child(2) {
+        grid-column: 2;
+        grid-row: 1;
+        min-width: 0;
+        margin-top: 0;
+        padding-right: 10px;
+        font-size: .71rem;
+        line-height: 1.2;
+        overflow-wrap: anywhere;
+    }
+    .r7-dashboard .r7-top-summary .workspace-count-track {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        height: 3px;
+        margin-top: 4px;
+    }
+    .r7-dashboard .r7-top-summary .municipal-panel > p {
+        padding: 3px 10px 7px;
+        line-height: 1.25;
+    }
+}
