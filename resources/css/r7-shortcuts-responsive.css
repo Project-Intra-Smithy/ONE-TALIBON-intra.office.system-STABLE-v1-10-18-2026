@@ -118,9 +118,16 @@
     margin: 0;
     padding: 8px 2px;
 }
-@container r7links (min-width: 330px) {
+/* A wide four-card dashboard band still gives this card enough room for
+ * Reference A's 3-by-2 shortcut rhythm. Keep two columns below the minimum
+ * width needed for wrapped labels and 44px interaction targets. */
+@container r7links (min-width: 240px) {
     .r7-dashboard .r7-links-tiles {
         grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .r7-dashboard .r7-links-tile {
+        min-height: 78px;
+        padding-inline: 5px;
     }
 }
 @container ot-dashboard (max-width: 440px) {

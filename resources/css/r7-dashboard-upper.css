@@ -371,11 +371,12 @@
 @container ot-dashboard (min-width: 740px) {
     .r7-dashboard .r7-top-summary .workspace-metrics {
         box-sizing: border-box;
-        height: 100%;
+        height: auto;
+        flex: 1 1 auto;
         min-height: 0;
-        grid-auto-rows: minmax(60px, 1fr);
-        gap: 6px;
-        padding: 7px;
+        grid-auto-rows: minmax(51px, 1fr);
+        gap: 5px;
+        padding: 6px;
     }
     .r7-dashboard .r7-top-summary .workspace-metric {
         display: grid;
