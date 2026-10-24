@@ -68,8 +68,8 @@ test('PPA filter predicates and static reference-data boundaries stay unchanged'
 });
 
 test('PPA register and detail are responsive, keyboard reachable and preserve selection', () => {
-    assert.match(register, /lg:hidden/);
-    assert.match(register, /lg:block/);
+    assert.match(register, /r8-ppas-cards space-y-2 xl:hidden/);
+    assert.match(register, /r8-ppas-table-panel hidden overflow-hidden xl:block/);
     assert.match(register, /overflow-x-auto/);
     assert.match(register, /<table/);
     assert.match(register, /<th /);
