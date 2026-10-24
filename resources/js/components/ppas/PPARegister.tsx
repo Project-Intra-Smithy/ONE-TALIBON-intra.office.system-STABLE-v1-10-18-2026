@@ -19,7 +19,7 @@ export default function PPARegister({ records, selectedId, onSelect }: Props) {
     if (!records.length) return <div className="municipal-panel border-dashed p-8 text-center"><FolderKanban className="mx-auto text-[var(--municipal-muted)]" aria-hidden="true" /><h2 className="mt-3 font-bold">No PPAs match the current filters</h2><p className="mt-1 text-sm text-[var(--municipal-muted)]">Adjust the search or filter criteria to return records.</p></div>;
 
     return <>
-        <div className="r8-ppas-cards space-y-2 lg:hidden" aria-label="PPA register">
+        <div className="r8-ppas-cards space-y-2 xl:hidden" aria-label="PPA register">
             {records.map((record) => {
                 const active = selectedId === record.id;
                 return <article key={record.id} className={`municipal-panel r8-ppas-card p-3 ${active ? 'border-[var(--municipal-selected-border)] bg-[var(--municipal-selected-bg)]' : ''}`}>
@@ -35,7 +35,7 @@ export default function PPARegister({ records, selectedId, onSelect }: Props) {
             })}
         </div>
 
-        <div className="municipal-panel r8-ppas-table-panel hidden overflow-hidden lg:block">
+        <div className="municipal-panel r8-ppas-table-panel hidden overflow-hidden xl:block">
             <div className="overflow-x-auto">
                 <table className="r8-ppas-table w-full min-w-[860px] table-fixed text-left text-sm">
                     <thead className="bg-[var(--municipal-surface-subtle)] text-[11px] uppercase tracking-wide text-[var(--municipal-muted)]"><tr><th scope="col" className="w-[38%] px-3 py-2">PPA / reference</th><th scope="col" className="w-[24%] px-3 py-2">Responsible office</th><th scope="col" className="w-[16%] px-3 py-2">Reference status</th><th scope="col" className="w-[10%] px-3 py-2 text-right">Projects</th><th scope="col" className="w-[12%] px-3 py-2"><span className="sr-only">Open</span></th></tr></thead>
