@@ -7,9 +7,11 @@ const read = (path) => readFileSync(fileURLToPath(new URL(path, import.meta.url)
 
 test('AJ PR44 presentation preserves canonical Task write controls and mutation-to-read refresh', () => {
     const dashboard = read('../../resources/js/pages/Dashboard.tsx');
+    const taskPanel = read('../../resources/js/components/dashboard/r7/lower/R7TaskPanel.tsx');
     const workspace = read('../../resources/js/components/tasks/PersonalTaskWorkspace.tsx');
-    assert.match(dashboard, /<PersonalTaskWorkspace\s*\/>/);
-    assert.match(dashboard, /<PersonalTaskMutationPanel\s*\/>/);
+    assert.match(dashboard, /<R7LowerRegion actions=\{experience\.quickActions\}\s*\/>/);
+    assert.match(taskPanel, /<PersonalTaskWorkspace\s*\/>/);
+    assert.match(taskPanel, /<PersonalTaskMutationPanel\s*\/>/);
     assert.match(workspace, /one-talibon:personal-task-confirmed/);
     assert.match(workspace, /window\.addEventListener\(TASK_SYNC_EVENT,synchronize\)/);
     assert.match(workspace, /detail\.userId!==userId/);

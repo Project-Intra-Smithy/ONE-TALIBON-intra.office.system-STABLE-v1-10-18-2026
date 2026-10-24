@@ -1,4 +1,5 @@
 import '../../../css/document-center.css';
+import '../../../css/r8-documents.css';
 import { Link, router, usePage } from '@inertiajs/react';
 import { FileArchive, LibraryBig } from 'lucide-react';
 import { useEffect, useState, type FormEvent } from 'react';
@@ -29,7 +30,7 @@ export default function DocumentCenter({ records, filters, filterOptions, mode, 
     const [draft, setDraft] = useState(filters);
     const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
     const selected = records.data.find((record) => record.detailUrl === selectedUrl) || null;
-    useEffect(() => { setDraft(filters); setSelectedUrl(null); }, [filters]);
+    useEffect(() => { setDraft(filters); setSelectedUrl(null); }, [filters, mode]);
     const navigate = (next: DocumentFilters) => {
         setDraft(next);
         setSelectedUrl(null);
@@ -59,7 +60,7 @@ export default function DocumentCenter({ records, filters, filterOptions, mode, 
             icon={LibraryBig}
         />
 
-        <nav className="municipal-panel flex w-fit items-center gap-1 p-1" aria-label="Document Center mode">
+        <nav className="r8-documents-modes municipal-panel flex w-fit items-center gap-1 p-1" aria-label="Document Center mode">
             <Link
                 href="/documents?mode=records"
                 className={`inline-flex min-h-9 items-center gap-1.5 rounded-md px-3 text-xs font-bold ${mode === 'records' ? 'bg-[var(--municipal-brand)] text-white' : 'text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
@@ -74,7 +75,7 @@ export default function DocumentCenter({ records, filters, filterOptions, mode, 
             </Link>
         </nav>
 
-        {mode === 'files' ? <DocumentArchive archive={archive} /> : <div className="dc-workspace">
+        {mode === 'files' ? <DocumentArchive archive={archive} /> : <div className="r8-documents dc-workspace">
             <DocumentCollectionNav collections={filterOptions.recordTypes} current={filters.record_type} onSelect={changeCollection} workspaces={workspaces} />
             <div className="dc-main">
                 <form onSubmit={submit} className="dc-toolbar" aria-label="Document search and filters">
@@ -91,9 +92,9 @@ export default function DocumentCenter({ records, filters, filterOptions, mode, 
                         <DocumentRegister records={records.data} total={records.total} selectedUrl={selected?.detailUrl || null} onSelect={(record) => setSelectedUrl(record?.detailUrl || null)} />
                         {records.last_page > 1 && <nav aria-label="Document pages" className="flex flex-wrap items-center justify-between gap-2 text-xs"><span>Page {records.current_page} of {records.last_page}</span><div className="flex flex-wrap gap-2">{records.prev_page_url && <Link href={pageHref(records.prev_page_url)} onClick={() => setSelectedUrl(null)} className="municipal-action municipal-action--secondary">Previous</Link>}{records.next_page_url && <Link href={pageHref(records.next_page_url)} onClick={() => setSelectedUrl(null)} className="municipal-action municipal-action--secondary">Next</Link>}</div></nav>}
                     </div>
-                    {records.data.length > 0 && <div className="dc-below-metadata"><DocumentMetadataPanel record={selected} onClose={() => setSelectedUrl(null)} /></div>}
                 </div>
             </div>
+            <div className="r8-documents-details" aria-live="polite"><DocumentMetadataPanel record={selected} onClose={() => setSelectedUrl(null)} /></div>
         </div>}
     </PageFrame></AppLayout>;
 }

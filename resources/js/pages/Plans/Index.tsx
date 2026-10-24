@@ -1,3 +1,5 @@
+import '../../../css/ot-r6-modules.css';
+import '../../../css/r8-plans.css';
 import { ClipboardList } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import PageFrame from '../../components/PageFrame';
@@ -93,16 +95,17 @@ export default function PlansIndex() {
 
     return (
         <AppLayout title="LGU Plans Library">
-            <PageFrame width="standard" density="compact">
-                <PageHeader eyebrow="Municipality of Talibon" title="LGU Plans Library" description="Municipal development plans · Prototype reference data" icon={ClipboardList} />
+            <PageFrame width="wide" density="compact" className="ot-r6-modules ot-r6-plans r8-plans">
+                <PageHeader eyebrow="Municipality of Talibon · Planning references" title="LGU Plans Library" description="Browse planning references by code, coverage, status, and lead office." icon={ClipboardList} />
+                <div className="r8-plans-notice" role="note"><strong>Reference library only.</strong> Records shown here are not validated live municipal approvals. Covers are illustrative graphics, not scanned or certified documents.</div>
                 <PlanFilterBar filters={filters} leadOffices={leadOffices} resultCount={filteredPlans.length} onChange={(nextFilters) => { setFilters(nextFilters); setSelectedPlanId(null); }} />
-                <section aria-label="Plans library" className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                <section aria-label="Plans library" className="ot-r6-plan-grid r8-plans-grid grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                     {filteredPlans.map((plan) => <PlanCard key={plan.id} plan={plan} selected={selectedPlanId === plan.id} onSelect={() => setSelectedPlanId(plan.id)} />)}
-                    {filteredPlans.length === 0 && <p role="status" className="py-3 text-sm text-[var(--municipal-muted)] sm:col-span-2 xl:col-span-3">No plans match the current filters.</p>}
+                    {filteredPlans.length === 0 && <div role="status" className="municipal-panel border-dashed p-8 text-center text-sm text-[var(--municipal-muted)] sm:col-span-2 xl:col-span-3"><strong className="block text-[var(--municipal-text)]">No matching plans</strong><span className="mt-1 block">Change the search or clear the filters to see the reference library.</span></div>}
                 </section>
-                <details className="group min-w-0 border-t border-[var(--municipal-border)] text-[var(--municipal-muted)]">
+                <details className="group municipal-panel min-w-0 rounded-lg text-[var(--municipal-muted)]">
                     <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-[13px] font-semibold marker:hidden">
-                        <span>Planning context</span>
+                        <span>Planning context · filtered reference records</span>
                         <span className="text-xs text-[var(--municipal-brand)] group-open:hidden">Show</span>
                         <span className="hidden text-xs text-[var(--municipal-brand)] group-open:inline">Hide</span>
                     </summary>
@@ -115,7 +118,7 @@ export default function PlansIndex() {
             </PageFrame>
 
             {selectedPlan && (
-                <div className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/45 p-3 sm:p-5" onMouseDown={(event) => { if (event.currentTarget === event.target) closePlanDetails(); }}>
+                <div className="r8-plans-dialog-backdrop fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/45 p-3 sm:p-5" onMouseDown={(event) => { if (event.currentTarget === event.target) closePlanDetails(); }}>
                     <div
                         id="selected-plan-details"
                         ref={dialogRef}
@@ -124,13 +127,13 @@ export default function PlansIndex() {
                         aria-labelledby="selected-plan-title"
                         aria-describedby="selected-plan-description"
                         tabIndex={-1}
-                        className="municipal-panel max-h-[calc(100vh-1.5rem)] w-full max-w-3xl overflow-y-auto rounded-[var(--municipal-radius-overlay)] border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] shadow-2xl sm:max-h-[calc(100vh-2.5rem)]"
+                        className="municipal-panel ot-r6-plan-dialog r8-plans-dialog max-h-[calc(100dvh-1.5rem)] w-full max-w-3xl overflow-y-auto rounded-[var(--municipal-radius-overlay)] border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] shadow-2xl sm:max-h-[calc(100vh-2.5rem)]"
                     >
                         <header className="sticky top-0 z-10 flex items-start justify-between gap-3 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 py-2.5 sm:px-4">
                             <div className="min-w-0">
                                 <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--municipal-brand)]">{selectedPlan.code}</p>
                                 <h2 id="selected-plan-title" className="mt-0.5 break-words text-base font-bold leading-6 text-[var(--municipal-text)]">{selectedPlan.title}</h2>
-                                <p id="selected-plan-description" className="mt-0.5 text-[11px] text-[var(--municipal-muted)]">Plan reference details</p>
+                                <p id="selected-plan-description" className="mt-0.5 text-[11px] text-[var(--municipal-muted)]">Reference data only · Not a validated live municipal approval or certified document.</p>
                             </div>
                             <button ref={closeButtonRef} type="button" onClick={closePlanDetails} className="min-h-11 shrink-0 rounded-md px-3 text-xs font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" aria-label={`Close details for ${selectedPlan.code}`}>Close</button>
                         </header>
