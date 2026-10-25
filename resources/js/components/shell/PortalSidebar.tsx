@@ -37,6 +37,7 @@ export default function PortalSidebar({
     user,
 }: Props) {
     const [hash, setHash] = useState(() => typeof window === 'undefined' ? '' : window.location.hash);
+    const [compactTooltip, setCompactTooltip] = useState<{ label: string; left: number; top: number } | null>(null);
     useEffect(() => {
         const update = () => setHash(window.location.hash);
         window.addEventListener('hashchange', update);
@@ -50,22 +51,30 @@ export default function PortalSidebar({
     const secondaryIdentity = position || department;
     const identityTitle = [user?.name, position, department].filter(Boolean).join(' · ');
 
+    // The tooltip lives outside the scrolling nav so compact labels remain visible at its edges.
+    // Navigation groups and destinations continue to come exclusively from the parent.
+    const showCompactTooltip = (element: HTMLElement, label: string) => {
+        if (!compact) return;
+        const rect = element.getBoundingClientRect();
+        setCompactTooltip({ label, left: rect.right + 12, top: Math.max(44, Math.min(rect.top + rect.height / 2, window.innerHeight - 44)) });
+    };
+
     return (
-        <div className="portal-sidebar flex h-full flex-col bg-white text-slate-800">
-            <div className={`border-b border-slate-200 ${compact ? 'px-2 py-4' : 'px-5 py-5'}`}>
+        <div className={`portal-sidebar flex h-full flex-col bg-white text-slate-800 ${compact ? 'portal-sidebar--compact' : 'portal-sidebar--expanded'} ${mobile ? 'portal-sidebar--mobile' : ''}`}>
+            <div className={`portal-sidebar-header border-b border-slate-200 ${compact ? 'px-2 py-3' : 'px-4 py-4'}`}>
                 <div className={compact ? 'flex justify-center' : undefined}>
                     <MunicipalBrand compact iconOnly={compact} />
                 </div>
 
                 {mobile ? (
-                    <div className="mt-3 text-xs text-slate-600">Intra-office workspace</div>
+                    <div className="portal-sidebar-subtitle mt-3 text-xs text-slate-600">Intra-office workspace</div>
                 ) : (
                     <div className={`mt-3 flex items-center ${compact ? 'justify-center' : 'justify-between gap-3'}`}>
-                        {!compact && <div className="text-xs text-slate-600">Intra-office workspace</div>}
+                        {!compact && <div className="portal-sidebar-subtitle text-xs text-slate-600">Intra-office workspace</div>}
                         <button
                             type="button"
                             onClick={onToggleCollapsed}
-                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
+                            className="portal-sidebar-toggle flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-slate-200 text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
                             aria-label={compact ? 'Expand navigation' : 'Collapse navigation'}
                             aria-expanded={!compact}
                             title={compact ? 'Expand navigation' : 'Collapse navigation'}
@@ -79,17 +88,19 @@ export default function PortalSidebar({
             </div>
 
             <nav
-                className={`min-h-0 flex-1 overflow-x-hidden overflow-y-auto ${compact ? 'px-2 py-3' : 'px-3 py-4'}`}
+                className={`portal-sidebar-navigation min-h-0 flex-1 overflow-x-hidden overflow-y-auto ${compact ? 'px-2 py-3' : 'px-3 py-4'}`}
+                onScroll={() => setCompactTooltip(null)}
                 aria-label="Primary navigation"
             >
-                <div className={compact ? 'space-y-3' : 'space-y-4'}>
+                <div className={compact ? 'space-y-3' : 'space-y-5'}>
                     {navigationGroups.map((group) => {
                         const groupActive = group.items.some((item) => isPortalPathActive(navigationUrl, item.href));
 
                         return (
-                            <section key={group.label} aria-label={group.label}>
+                            <section key={group.key} aria-label={group.label} className="portal-sidebar-section">
+                                {compact && <div aria-hidden="true" className={`portal-sidebar-group-divider ${groupActive ? 'portal-sidebar-group-divider--active' : ''}`} />}
                                 {!compact && (
-                                    <div className={`px-2 text-xs font-bold uppercase tracking-[0.08em] ${groupActive ? 'text-[#145a43]' : 'text-slate-600'}`}>
+                                    <div className={`portal-sidebar-section-title flex min-w-0 items-center gap-2 px-2 text-xs font-bold uppercase tracking-[0.08em] ${groupActive ? 'text-[#145a43]' : 'text-slate-600'}`}>
                                         {group.label}
                                     </div>
                                 )}
@@ -116,8 +127,12 @@ export default function PortalSidebar({
                                                 }}
                                                 aria-current={active ? 'page' : undefined}
                                                 aria-label={compact ? accessibleLabel : undefined}
-                                                title={compact ? accessibleLabel : undefined}
-                                                className={`relative flex min-h-11 items-center rounded-lg py-2 text-base font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-1 focus-visible:ring-offset-white ${
+                                                aria-describedby={compact && compactTooltip?.label === `${group.label} · ${accessibleLabel}` ? 'portal-sidebar-link-hint' : undefined}
+                                                onMouseEnter={(event) => showCompactTooltip(event.currentTarget, `${group.label} · ${accessibleLabel}`)}
+                                                onMouseLeave={(event) => { if (document.activeElement !== event.currentTarget) setCompactTooltip(null); }}
+                                                onFocus={(event) => showCompactTooltip(event.currentTarget, `${group.label} · ${accessibleLabel}`)}
+                                                onBlur={() => setCompactTooltip(null)}
+                                                className={`portal-sidebar-nav-link relative flex min-h-11 items-center rounded-xl py-2 text-sm font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-1 focus-visible:ring-offset-white ${
                                                     compact ? 'justify-center px-2' : 'gap-3 px-3'
                                                 } ${
                                                     active
@@ -125,9 +140,9 @@ export default function PortalSidebar({
                                                         : 'text-slate-700 hover:bg-slate-100 hover:text-slate-950'
                                                 }`}
                                             >
-                                                <Icon size={18} aria-hidden="true" className="shrink-0" />
+                                                <Icon size={18} aria-hidden="true" className="portal-sidebar-nav-icon shrink-0" />
 
-                                                {!compact && <span className="min-w-0 flex-1 truncate">{label}</span>}
+                                                {!compact && <span className="portal-sidebar-nav-label min-w-0 flex-1">{label}</span>}
 
                                                 {hasMemoCount && (
                                                     compact ? (
@@ -172,8 +187,12 @@ export default function PortalSidebar({
                                                         }}
                                                         aria-current={tasksActive ? 'page' : undefined}
                                                         aria-label={compact ? 'Tasks' : undefined}
-                                                        title={compact ? 'Tasks' : undefined}
-                                                        className={`relative flex min-h-11 items-center rounded-lg py-2 text-base font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-1 focus-visible:ring-offset-white ${
+                                                        aria-describedby={compact && compactTooltip?.label === `${group.label} · Tasks` ? 'portal-sidebar-link-hint' : undefined}
+                                                        onMouseEnter={(event) => showCompactTooltip(event.currentTarget, `${group.label} · Tasks`)}
+                                                        onMouseLeave={(event) => { if (document.activeElement !== event.currentTarget) setCompactTooltip(null); }}
+                                                        onFocus={(event) => showCompactTooltip(event.currentTarget, `${group.label} · Tasks`)}
+                                                        onBlur={() => setCompactTooltip(null)}
+                                                        className={`portal-sidebar-nav-link relative flex min-h-11 items-center rounded-xl py-2 text-sm font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-1 focus-visible:ring-offset-white ${
                                                             compact ? 'justify-center px-2' : 'gap-3 px-3'
                                                         } ${
                                                             tasksActive
@@ -181,8 +200,8 @@ export default function PortalSidebar({
                                                                 : 'text-slate-700 hover:bg-slate-100 hover:text-slate-950'
                                                         }`}
                                                     >
-                                                        <ListChecks size={18} aria-hidden="true" className="shrink-0" />
-                                                        {!compact && <span className="min-w-0 flex-1 truncate">Tasks</span>}
+                                                        <ListChecks size={18} aria-hidden="true" className="portal-sidebar-nav-icon shrink-0" />
+                                                        {!compact && <span className="portal-sidebar-nav-label min-w-0 flex-1">Tasks</span>}
                                                     </a>
                                                 </div>
                                             );
@@ -197,7 +216,18 @@ export default function PortalSidebar({
                 </div>
             </nav>
 
-            <div className={`relative shrink-0 border-t border-slate-200 ${compact ? 'p-2' : 'p-3 sm:p-4'}`}>
+            {compact && compactTooltip && (
+                <div
+                    id="portal-sidebar-link-hint"
+                    role="tooltip"
+                    className="portal-sidebar-tooltip"
+                    style={{ left: compactTooltip.left, top: compactTooltip.top }}
+                >
+                    {compactTooltip.label}
+                </div>
+            )}
+
+            <div className={`portal-sidebar-footer relative shrink-0 border-t border-slate-200 ${compact ? 'p-2' : 'p-3 sm:p-4'}`}>
                 {compact ? (
                     <div className="relative flex flex-col items-center gap-3">
                         <div
@@ -214,7 +244,7 @@ export default function PortalSidebar({
                         <button
                             type="button"
                             onClick={() => router.post('/logout')}
-                            className="flex h-10 w-10 items-center justify-center rounded-lg text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
+                            className="portal-sidebar-signout flex h-11 w-11 items-center justify-center rounded-xl text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
                             aria-label="Sign out"
                             title="Sign out"
                         >
@@ -245,7 +275,7 @@ export default function PortalSidebar({
                             <button
                                 type="button"
                                 onClick={() => router.post('/logout')}
-                                className="mt-2 flex min-h-10 w-full items-center gap-2 rounded-lg px-2 text-[13px] text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 sm:mt-3 sm:text-sm"
+                                className="portal-sidebar-signout mt-2 flex min-h-11 w-full items-center gap-2 rounded-xl px-2 text-[13px] text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 sm:mt-3 sm:text-sm"
                             >
                                 <LogOut size={15} aria-hidden="true" />
                                 <span>Sign out</span>
