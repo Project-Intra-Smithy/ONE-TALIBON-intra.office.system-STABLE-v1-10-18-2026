@@ -22,7 +22,7 @@ export default function PlanCard({ plan, selected, onSelect }: Props) {
             <div className="r8-plans-card-body mt-2 flex flex-1 flex-col gap-1">
                 <h2 className="break-words text-[11px] font-bold uppercase tracking-wide text-[var(--municipal-brand)]">{plan.code}</h2>
                 <p className="break-words text-[13px] font-medium leading-5 text-[var(--municipal-text)]">{plan.title}</p>
-                <div className="flex flex-wrap items-center gap-2 text-xs text-[var(--municipal-muted)]"><span>{coverage}</span><span className="ot-r6-plan-status rounded border border-[var(--municipal-border)] px-2 py-0.5 text-[11px] font-semibold">{plan.status}</span><span>{plan.horizon}</span></div>
+                <div className="flex flex-wrap items-center gap-2 text-xs text-[var(--municipal-muted)]"><span>{coverage}</span><span className="ot-r6-plan-status rounded border border-[var(--municipal-border)] px-2 py-0.5 text-[11px] font-semibold">Example: {plan.status}</span><span>{plan.horizon}</span></div>
                 <p className="r8-plans-lead break-words text-[11px] leading-4 text-[var(--municipal-muted)]"><Building2 size={14} aria-hidden="true" className="shrink-0" /><span>{plan.leadOffice}</span></p>
             </div>
             <button
