@@ -33,7 +33,7 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
     const [priority, setPriority] = useState(filters.priority);
     const [officeId, setOfficeId] = useState(filters.office_id ? String(filters.office_id) : '');
     const currentQueue = scopeGroups.flatMap((group) => group.views).find((view) => view.key === currentView);
-    const currentTitle = currentQueue?.label || 'My Work';
+    const currentTitle = currentQueue?.label || 'Work Requests';
 
     useEffect(() => {
         setSearch(filters.search);
@@ -81,12 +81,12 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
     ].filter(Boolean);
 
     return (
-        <AppLayout title="My Work">
+        <AppLayout title="Work Requests">
             <PageFrame>
                 <PageHeader
                     eyebrow="Daily work queues"
-                    title="My Work"
-                    description="Review your assignments, deadlines and work requiring action."
+                    title="Work Requests"
+                    description="Manage formal inter-office Work Requests, their assignments and deadlines. Personal Tasks are separate."
                     icon={BriefcaseBusiness}
                     aside={(
                         <Link
@@ -103,7 +103,14 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
                     <span><span className="font-semibold text-slate-700 dark:text-slate-200">{currentTitle}</span> · {currentQueue?.count ?? records.total} item{(currentQueue?.count ?? records.total) === 1 ? '' : 's'}</span>
                 </div>
 
-                <PersonalTaskWorkspace />
+                <details className="mb-4 rounded-xl border border-slate-200 bg-white px-4 py-3 dark:border-slate-700 dark:bg-[#142236]">
+                    <summary className="cursor-pointer text-sm font-semibold text-slate-800 dark:text-slate-100">
+                        Personal Tasks — separate from Work Requests (expand to manage)
+                    </summary>
+                    <div className="mt-3 border-t border-slate-200 pt-3 dark:border-slate-700">
+                        <PersonalTaskWorkspace />
+                    </div>
+                </details>
                 <h2 className="mt-5 text-base font-bold text-slate-900 dark:text-white">Work Requests</h2>
                 <WorkScopeTabs groups={scopeGroups} currentView={currentView} onSelect={selectView} />
 
