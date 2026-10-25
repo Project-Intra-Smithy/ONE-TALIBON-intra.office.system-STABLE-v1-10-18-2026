@@ -166,12 +166,23 @@ test('personal Task selection, keyboard back action and denied reads', async () 
     try {
         await page.route(/\/tasks(?:\/|\?|$)/, route => {
             methods.push(route.request().method());
-            return route.fulfill({ status: denied ? 403 : 200, contentType: 'application/json', body: JSON.stringify(denied ? { message: 'Forbidden' } : route.request().url().includes('/tasks/7') ? { data: task } : { data: [task], meta: { page: 1, per_page: 10, last_page: 1, total: 1 } }) });
+            const url = new URL(route.request().url());
+            const requestedState = url.searchParams.get('state');
+            const matchesState = !requestedState || requestedState === task.state;
+            const visible = matchesState ? [task] : [];
+            return route.fulfill({
+                status: denied ? 403 : 200,
+                contentType: 'application/json',
+                body: JSON.stringify(denied ? { message: 'Forbidden' } : url.pathname === '/tasks/7'
+                    ? { data: task }
+                    : { data: visible, meta: { page: 1, per_page: 10, last_page: 1, total: visible.length } }),
+            });
         });
         await page.getByRole('button', { name: 'Manage my tasks' }).click();
         await page.getByRole('region', { name: 'My Tasks board' })
             .getByRole('button', { name: 'Refresh To do Tasks', exact: true }).click();
-        const row = page.getByRole('button', { name: /Synthetic Task/ }); await row.waitFor();
+        const row = page.getByRole('list', { name: 'Open personal Tasks' })
+            .getByRole('button', { name: /Synthetic Task/ }); await row.waitFor();
         await row.focus(); await page.keyboard.press('Enter');
         await page.getByRole('region', { name: 'Personal Task detail' }).waitFor();
         const back = page.getByRole('button', { name: 'Back to tasks' }); await back.focus(); await page.keyboard.press('Enter');
