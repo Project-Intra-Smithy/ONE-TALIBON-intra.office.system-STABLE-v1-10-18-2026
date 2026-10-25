@@ -1,0 +1,92 @@
+# Disposable, frontend-only CI for the exact integrated Catz+Akien source.
+# No environment secrets, production DB, staging endpoints, deployment, or backend tests.
+name: R13 Catz Akien Frontend Integration QA
+
+on:
+  push:
+    branches:
+      - integration/r13-catz-akien-frontend-20261026-r1
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: r13-catz-akien-frontend-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout candidate without persistent credentials
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Confirm bounded R13 source and exact checked-out head
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$GITHUB_REPOSITORY" = "Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026"
+          test "$GITHUB_REF" = "refs/heads/integration/r13-catz-akien-frontend-20261026-r1"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          STAGED="04e188422bbbcb97a13a25426fab8c5d9ae13c4c"
+          git merge-base --is-ancestor "$STAGED" HEAD
+          changed="$(git diff --name-only "$STAGED" HEAD)"
+          printf '%s\n' "$changed"
+          if printf '%s\n' "$changed" | grep -E '^(app/|routes/|database/|config/|bootstrap/|composer\.(json|lock)$|package(-lock)?\.json$)'; then
+            echo "HOLD: unexpected backend, dependency or configuration change" >&2
+            exit 1
+          fi
+          echo "R13_QA_CHECKED_SHA=$GITHUB_SHA"
+
+      - name: Setup exact Node runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install locked frontend dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: TypeScript check
+        run: npm run types:check
+
+      - name: Production Vite build
+        run: npm run build
+
+      - name: Frontend contract regression tests
+        run: npm run test:contracts
+
+      - name: Synthetic UX regression tests
+        run: npm run test:ux
+
+      - name: Login MFA synthetic regression
+        run: npm run test:aj-home-auth
+
+      - name: Install disposable Chromium for localhost-only fixtures
+        run: npx playwright install --with-deps chromium
+
+      - name: Task board browser fixture
+        run: node tests/Browser/ui-reference-task-board.mjs
+
+      - name: Document Center browser fixture
+        run: node tests/Browser/ui-reference-documents.mjs
+
+      - name: Sidebar browser fixture
+        run: node tests/Browser/ui-reference-sidebar.mjs
+
+      - name: Confirm no tracked source mutation
+        run: git diff --exit-code
+
+      - name: Upload synthetic-only browser artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r13-catz-akien-synthetic-browser-evidence
+          path: storage/app/ui-preview/
+          if-no-files-found: ignore
+          retention-days: 7
