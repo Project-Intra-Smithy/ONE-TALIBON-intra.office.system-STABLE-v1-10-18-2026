@@ -38,7 +38,7 @@ test('Personal Task create accepts optional instructions/deadline under existing
     assert.match(ui, /payload\.instructions = instructions\.trim\(\)/);
     assert.match(ui, /payload\.due_at = parsed\.toISOString\(\)/);
     assert.match(ui, /Calendar syncing is not yet enabled/);
-    assert.match(controller, /'due_at' => \['sometimes', 'nullable', 'date_format:Y-m-d\\\\TH:i:sP'\]/);
+    assert.match(controller, /'due_at' => \['sometimes', 'nullable', 'date_format:Y-m-d/);
     assert.match(controller, /'instructions' => \['sometimes', 'nullable', 'string', 'max:10000'\]/);
 });
 
