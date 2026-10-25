@@ -147,7 +147,7 @@ function TaskSession({userId, state, onAccessBoundary}:{userId:number;state:Task
                         {list.meta.total===0?'No individual Tasks in this state.':'No Tasks returned for this page.'}</div>:
                     <ul aria-label={labels[state]+' personal Tasks'} className="task-rows space-y-2">
                         {list.data.map(task=><li key={task.id}><button type="button" aria-pressed={selected===task.id} id={"task-row-"+task.id} onClick={()=>setSelected(task.id)}
-                            className={'task-row w-full rounded-lg border p-4 text-left motion-reduce:transition-none '+(selected===task.id?'border-blue-500 bg-blue-50 dark:bg-blue-950/40':'border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800/50')}>
+                            className={'task-row w-full rounded-lg border p-4 text-left motion-reduce:transition-none '+(selected===task.id?'border-emerald-700 bg-emerald-50 dark:border-emerald-400 dark:bg-emerald-950/40':'border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800/50')}>
                             <span className="block break-words text-lg font-bold text-slate-900 dark:text-white">{task.title}</span>
                             <span className="task-row-meta mt-2 flex flex-wrap items-center gap-x-4 gap-y-2">
                                 <Status value={task.state}/>
