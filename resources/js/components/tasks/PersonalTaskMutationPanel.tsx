@@ -20,6 +20,8 @@ async function jsonBody(response: Response): Promise<unknown> {
 function TaskActions({ userId }: { userId: number }) {
     const [tasks, setTasks] = useState<IndividualTask[]>([]);
     const [title, setTitle] = useState('');
+    const [instructions, setInstructions] = useState('');
+    const [dueAt, setDueAt] = useState('');
     const [loading, setLoading] = useState(true);
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -133,7 +135,11 @@ function TaskActions({ userId }: { userId: number }) {
 
             setUnknownOutcome(true);
             if (await refresh(undefined, { id: task.id, state: expectedState })) {
-                if (expectedState === 'open') setTitle('');
+                if (expectedState === 'open') {
+                    setTitle('');
+                    setInstructions('');
+                    setDueAt('');
+                }
                 window.dispatchEvent(new CustomEvent(TASK_SYNC_EVENT, {
                     detail: { userId, taskId: task.id, state: expectedState },
                 }));
@@ -157,7 +163,22 @@ function TaskActions({ userId }: { userId: number }) {
             setError('Enter a Task title of 1–255 characters.');
             return;
         }
-        void mutate('/tasks', { title: cleaned }, 'open');
+        if (instructions.length > 10000) {
+            setError('Instructions must be 10,000 characters or fewer.');
+            return;
+        }
+        const payload: Record<string, string> = { title: cleaned };
+        if (instructions.trim()) payload.instructions = instructions.trim();
+        if (dueAt) {
+            const parsed = new Date(dueAt);
+            if (!Number.isFinite(parsed.getTime())) {
+                setError('Enter a valid Task deadline.');
+                return;
+            }
+            // Controller requires Y-m-dTH:i:sP with an explicit timezone offset.
+            payload.due_at = parsed.toISOString().replace(/\.\d{3}Z$/, '+00:00');
+        }
+        void mutate('/tasks', payload, 'open');
     };
 
     return <section aria-labelledby="task-action-heading" className="municipal-panel p-4 sm:p-5">
@@ -167,7 +188,7 @@ function TaskActions({ userId }: { userId: number }) {
                 Create, start and complete your personal tasks. Work Requests remain separate.
             </p>
         </header>
-        <form onSubmit={create} className="flex flex-col gap-2 sm:flex-row">
+        <form onSubmit={create} className="grid min-w-0 gap-3 sm:grid-cols-2">
             <label className="flex-1 text-xs font-semibold text-slate-700 dark:text-slate-200">
                 Task title
                 <input aria-label="New personal Task title" maxLength={255} value={title}
@@ -175,6 +196,22 @@ function TaskActions({ userId }: { userId: number }) {
                     placeholder="Enter a personal Task"
                     className="mt-1 block min-h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white"/>
             </label>
+            <label className="min-w-0 text-xs font-semibold text-slate-700 dark:text-slate-200">
+                Deadline (optional)
+                <input type="datetime-local" aria-label="New personal Task deadline" value={dueAt}
+                    onChange={(event) => setDueAt(event.target.value)}
+                    className="mt-1 block min-h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white"/>
+            </label>
+            <label className="min-w-0 text-xs font-semibold text-slate-700 dark:text-slate-200 sm:col-span-2">
+                Instructions (optional)
+                <textarea aria-label="New personal Task instructions" maxLength={10000} rows={2}
+                    value={instructions} onChange={(event) => setInstructions(event.target.value)}
+                    placeholder="What needs to be done?"
+                    className="mt-1 block min-h-10 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white"/>
+            </label>
+            <p className="text-xs text-slate-600 dark:text-slate-300 sm:col-span-2">
+                Task deadlines appear in My Tasks. Calendar syncing is not yet enabled for personal Tasks.
+            </p>
             <button type="submit" disabled={busy || loading || unknownOutcome || accessDenied}
                 className="self-end rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-50">
                 Create Task
