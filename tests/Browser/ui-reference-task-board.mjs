@@ -60,6 +60,8 @@ try {
  await page.addInitScript(m=>localStorage.setItem('talibon.appearance',m),mode);
  await mock(page);
  await page.goto(`http://127.0.0.1:${server.address().port}/transactions`,{waitUntil:'networkidle'});
+ // The Work Requests page deliberately keeps Personal Tasks collapsed by default.
+ await page.getByText('Personal Tasks — separate from Work Requests (expand to manage)',{exact:true}).click();
  await page.locator('.personal-task-board .task-row').first().waitFor();
  const board=page.locator('.personal-task-board');
  const row={width,mode,columns:await board.locator('.task-board-column').count(),cards:await board.locator('.task-row').count(),overflow:await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),errors};
