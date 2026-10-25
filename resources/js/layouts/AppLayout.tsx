@@ -8,7 +8,7 @@ import MobileNavigation from '../components/shell/MobileNavigation';
 import PortalSidebar from '../components/shell/PortalSidebar';
 import { PortalIdentity, PortalLauncher, RecordsSearch } from '../components/shell/PortalTools';
 import { useVisiblePolling } from '../hooks/useVisiblePolling';
-import { buildPortalNavigation } from '../navigation/portalNavigation';
+import { buildPortalNavigation, isPortalPathActive } from '../navigation/portalNavigation';
 import type { LiveNotification, NotificationFeed, SharedProps } from '../types';
 
 type Presentation = 'standard' | 'portal-dashboard';
@@ -45,11 +45,34 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
         return () => window.removeEventListener('hashchange', update);
     }, [page.url]);
     const currentUrl = page.url.split('#')[0] + hash;
+    useEffect(() => {
+        if (hash !== '#personal-tasks' || page.url.split(/[?#]/, 1)[0] !== '/dashboard') return;
+        // A Tasks link can reload the dashboard when removing a query string.
+        // Restore its anchor focus after the destination has mounted as well.
+        const frame = requestAnimationFrame(() => document.getElementById('personal-tasks')?.focus({ preventScroll: true }));
+        return () => cancelAnimationFrame(frame);
+    }, [hash, page.url]);
     const pageProps = page.props;
     const { auth, flash } = pageProps;
     const [feed, setFeed] = useState<NotificationFeed>(emptyNotificationFeed);
     const [feedState, setFeedState] = useState<'loading' | 'current' | 'unavailable' | 'expired'>('loading');
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [editingField, setEditingField] = useState(false);
+    useEffect(() => {
+        // Keep fixed navigation out of the way of form fields and on-screen keyboards.
+        const isEditable = (target: EventTarget | null) => target instanceof HTMLElement && Boolean(target.closest(
+            'textarea, input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="hidden"]), [contenteditable]:not([contenteditable="false"])',
+        ));
+        const onFocus = (event: FocusEvent) => setEditingField(isEditable(event.target));
+        const onBlur = (event: FocusEvent) => setEditingField(isEditable(event.relatedTarget));
+        setEditingField(isEditable(document.activeElement));
+        document.addEventListener('focusin', onFocus);
+        document.addEventListener('focusout', onBlur);
+        return () => {
+            document.removeEventListener('focusin', onFocus);
+            document.removeEventListener('focusout', onBlur);
+        };
+    }, []);
     const [desktopCollapsed, setDesktopCollapsed] = useState(false);
     const [notificationsOpen, setNotificationsOpen] = useState(false);
     const [dismissedMemoId, setDismissedMemoId] = useState<number | null>(null);
@@ -68,6 +91,19 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
         navigation,
         canViewReports,
     );
+    const mobileDestinations = navigationGroups.flatMap(group => group.items)
+        .filter(item => ['home', 'myWork', 'calendar'].includes(item.key))
+        .flatMap(item => item.key === 'home'
+            ? [{ ...item, label: 'Home' }, { ...item, key: 'personalTasks', label: 'Tasks', href: '/dashboard#personal-tasks', icon: ListChecks }]
+            : [{ ...item, label: item.key === 'myWork' ? 'Work' : item.label }])
+        .slice(0, 4);
+    const isMobileDestinationActive = (item: { key: string; href: string }) =>
+        isPortalPathActive(currentUrl, item.href) && !(item.key === 'home' && hash === '#personal-tasks');
+    const moreActive = !mobileDestinations.some(isMobileDestinationActive)
+        && navigationGroups.some(group => group.items.some(item => isPortalPathActive(currentUrl, item.href)));
+    const mobileItemClass = (active: boolean) => `flex min-h-14 min-w-0 flex-col items-center justify-center gap-1 rounded-lg px-1 py-1 text-xs font-semibold transition-colors duration-200 motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-emerald-700 dark:focus-visible:outline-emerald-300 ${active
+        ? 'bg-emerald-50 text-[#145a43] dark:bg-[#294b3a] dark:text-[#d2f7df]'
+        : 'text-slate-600 hover:bg-slate-100 hover:text-[#145a43] dark:text-slate-200 dark:hover:bg-[#294b3a] dark:hover:text-[#d2f7df]'}`;
 
     // Presence is evidence from this authenticated, visible browser session. Hidden tabs
     // must not keep an employee online, and CSRF remains enforced by Laravel.
@@ -241,10 +277,10 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
                     </MobileNavigation>
                 )}
 
-                <main className="min-w-0 pb-20 md:pb-6">
+                <main className="min-w-0 pb-[calc(4.5rem+env(safe-area-inset-bottom,0px))] md:pb-6">
                     <header className="sticky top-0 z-20 flex min-h-[72px] sm:min-h-[76px] items-center justify-between gap-2 border-b border-slate-200/80 bg-white/95 px-3 shadow-sm shadow-slate-900/5 backdrop-blur-md transition-colors dark:border-slate-700/80 dark:bg-[#142236]/95 sm:px-6">
                         <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
-                            <button onClick={() => setMobileOpen(true)} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800 lg:hidden" aria-label="Open navigation">
+                            <button onClick={() => setMobileOpen(true)} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800 lg:hidden" aria-label="Open navigation" aria-expanded={mobileOpen} aria-controls={mobileOpen ? 'portal-mobile-navigation' : undefined} aria-haspopup="dialog">
                                 <Menu size={20} />
                             </button>
                             <div className="min-w-0 flex-1">
@@ -314,21 +350,24 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
                     <footer className="mx-3 flex flex-wrap justify-between gap-2 border-t border-slate-200 py-4 text-xs text-slate-500 dark:border-slate-700 dark:text-slate-400 sm:mx-5"><span>Municipality of Talibon · Province of Bohol</span><span>One Talibon · Intra-Office Portal</span></footer>
 
                     <nav aria-label="Mobile workspace navigation"
-                        className="fixed bottom-0 inset-x-0 z-30 flex items-center justify-around border-t border-slate-200 bg-white/95 px-1 pt-1 backdrop-blur-md dark:border-slate-700 dark:bg-[#142236]/95 md:hidden"
-                        style={{ paddingBottom: 'max(4px, env(safe-area-inset-bottom, 0px))' }}>
-                        {navigationGroups.flatMap(group => group.items).filter(item => ['home', 'myWork', 'calendar'].includes(item.key)).flatMap(item => item.key === 'home'
-                            ? [{ ...item, label: 'Home' }, { ...item, key: 'personalTasks', label: 'Tasks', href: '/dashboard#personal-tasks', icon: ListChecks }]
-                            : [{ ...item, label: item.key === 'myWork' ? 'Work' : item.label }]).map(({ key, label, href, icon: Icon }) => {
-                            const active = key === 'personalTasks' ? currentUrl === href : key === 'home' ? currentUrl === '/dashboard' : page.url.split('?')[0] === href;
+                        className={`fixed bottom-0 inset-x-0 z-30 ${editingField ? 'hidden' : 'grid'} gap-1 border-t border-slate-200 bg-white px-1 pt-1 dark:border-slate-700 dark:bg-[#102c21] md:hidden`}
+                        style={{ gridTemplateColumns: `repeat(${mobileDestinations.length + 1}, minmax(0, 1fr))`, paddingBottom: 'max(4px, env(safe-area-inset-bottom, 0px))', paddingLeft: 'max(4px, env(safe-area-inset-left, 0px))', paddingRight: 'max(4px, env(safe-area-inset-right, 0px))' }}>
+                        {mobileDestinations.map(({ key, label, href, icon: Icon }) => {
+                            const active = isMobileDestinationActive({ key, href });
                             return <a key={key} href={href} aria-current={active ? 'page' : undefined}
-                                onClick={() => { if (key === 'personalTasks') document.getElementById('personal-tasks')?.focus(); }}
-                                className={`flex min-h-12 min-w-11 flex-col items-center justify-center rounded-lg px-2 text-[11px] font-bold focus-visible:ring-2 focus-visible:ring-emerald-700 ${active ? 'bg-emerald-50 text-[#145a43]' : 'text-slate-600 dark:text-slate-200'}`}>
-                                <Icon size={20} aria-hidden="true" /><span>{label}</span>
+                                onClick={(event) => {
+                                    if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+                                    if (key === 'personalTasks' && window.location.pathname === '/dashboard') {
+                                        requestAnimationFrame(() => document.getElementById('personal-tasks')?.focus({ preventScroll: true }));
+                                    }
+                                }}
+                                className={mobileItemClass(active)}>
+                                <Icon size={20} aria-hidden="true" /><span className="text-xs font-semibold leading-4">{label}</span>
                             </a>;
                         })}
-                        <button type="button" onClick={() => setMobileOpen(true)} aria-label="Open more navigation options" aria-expanded={mobileOpen}
-                            className="flex min-h-12 min-w-11 flex-col items-center justify-center rounded-lg px-2 text-[11px] font-bold focus-visible:ring-2 focus-visible:ring-emerald-700">
-                            <Menu size={20} aria-hidden="true" /><span>More</span>
+                        <button type="button" onClick={() => setMobileOpen(true)} aria-label="Open more navigation options" aria-description={moreActive ? 'Current section is in More' : undefined} aria-expanded={mobileOpen} aria-controls={mobileOpen ? 'portal-mobile-navigation' : undefined} aria-haspopup="dialog"
+                            className={mobileItemClass(moreActive || mobileOpen)}>
+                            <Menu size={20} aria-hidden="true" /><span className="text-xs font-semibold leading-4">More</span>
                         </button>
                     </nav>
                 </main>
