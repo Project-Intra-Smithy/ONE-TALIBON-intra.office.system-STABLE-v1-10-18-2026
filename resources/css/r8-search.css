@@ -1,0 +1,18 @@
+/* R8-A A1: Search workspace only; no shell or cross-module selectors. */
+.r8-search { --r8-search-border: var(--municipal-border); min-width: 0; }
+.r8-search .r8-search-console { border: 1px solid var(--r8-search-border); border-radius: 14px; background: var(--municipal-surface); padding: clamp(14px, 2vw, 24px); }
+.r8-search .r8-search-input { min-height: 58px; width: 100%; border: 1px solid var(--municipal-border-strong, var(--municipal-border)); border-radius: 10px; background: var(--municipal-surface); color: var(--municipal-text); padding: 12px 48px; font-size: clamp(15px, 1.5vw, 18px); }
+.r8-search .r8-search-input:focus-visible, .r8-search .r8-search-action:focus-visible { outline: 3px solid var(--municipal-focus); outline-offset: 2px; }
+.r8-search .r8-search-heading { font-size: 13px; font-weight: 750; letter-spacing: .02em; color: var(--municipal-text); }
+.r8-search .r8-search-kicker { font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--municipal-muted); }
+.r8-search .r8-search-results { border: 1px solid var(--r8-search-border); border-radius: 12px; background: var(--municipal-surface); overflow: hidden; }
+.r8-search .r8-search-result { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 12px; min-width: 0; padding: 14px 16px; }
+.r8-search .r8-search-result + .r8-search-result { border-top: 1px solid var(--r8-search-border); }
+.r8-search .r8-search-result:hover { background: var(--municipal-hover); }
+.r8-search .r8-search-result-title { overflow-wrap: anywhere; font-size: 14px; font-weight: 700; line-height: 1.4; }
+.r8-search .r8-search-result-meta { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 11px; line-height: 1.5; color: var(--municipal-muted); }
+.r8-search .r8-search-ref { overflow-wrap: anywhere; font-size: 11px; color: var(--municipal-muted); }
+.r8-search .r8-search-action { min-height: 44px; min-width: 44px; }
+@media(max-width: 420px) { .r8-search .r8-search-result { grid-template-columns: 36px minmax(0, 1fr); gap: 9px; padding: 12px; } .r8-search .r8-search-result .r8-search-action { grid-column: 2; justify-self: start; min-width: 0; padding: 0 10px; } .r8-search .r8-search-console { padding: 12px; } }
+@media(prefers-reduced-motion: reduce) { .r8-search *, .r8-search *::before, .r8-search *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+@media(forced-colors: active) { .r8-search .r8-search-result, .r8-search .r8-search-console, .r8-search .r8-search-results { border: 1px solid CanvasText; } }

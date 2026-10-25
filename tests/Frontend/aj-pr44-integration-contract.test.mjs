@@ -7,14 +7,21 @@ const read = (path) => readFileSync(fileURLToPath(new URL(path, import.meta.url)
 
 test('AJ PR44 presentation preserves canonical Task write controls and mutation-to-read refresh', () => {
     const dashboard = read('../../resources/js/pages/Dashboard.tsx');
+    const taskPanel = read('../../resources/js/components/dashboard/r7/lower/R7TaskPanel.tsx');
     const workspace = read('../../resources/js/components/tasks/PersonalTaskWorkspace.tsx');
-    assert.match(dashboard, /<PersonalTaskWorkspace\s*\/>/);
-    assert.match(dashboard, /<PersonalTaskMutationPanel\s*\/>/);
+    const transactions = read('../../resources/js/pages/Transactions/Index.tsx');
+    assert.match(dashboard, /<R7TaskPanel\s*\/>/);
+    assert.match(taskPanel, /<PersonalTaskWorkspace\s*\/>/);
+    assert.match(transactions, /<PersonalTaskWorkspace\s*\/>/);
+    // The shared board owns one mutation surface in either workspace.
+    assert.doesNotMatch(taskPanel, /<PersonalTaskMutationPanel/);
+    assert.equal((workspace.match(/<PersonalTaskMutationPanel\s*\/>/g) || []).length, 1);
     assert.match(workspace, /one-talibon:personal-task-confirmed/);
     assert.match(workspace, /window\.addEventListener\(TASK_SYNC_EVENT,synchronize\)/);
     assert.match(workspace, /detail\.userId!==userId/);
     assert.match(workspace, /setRefresh\(value=>value\+1\)/);
-    assert.match(workspace, /TaskSession key=\{id\} userId=\{id\}/);
+    assert.match(workspace, /TaskBoard key=\{id\} userId=\{id\}/);
+    assert.match(workspace, /TASK_STATES\.map\(state=><TaskSession/);
     assert.match(workspace, /Due within 48 hours/);
     assert.match(workspace, /Overdue/);
 });

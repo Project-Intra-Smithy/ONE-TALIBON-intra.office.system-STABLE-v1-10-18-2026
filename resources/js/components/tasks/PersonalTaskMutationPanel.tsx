@@ -162,9 +162,9 @@ function TaskActions({ userId }: { userId: number }) {
 
     return <section aria-labelledby="task-action-heading" className="municipal-panel p-4 sm:p-5">
         <header className="mb-4">
-            <h2 id="task-action-heading" className="text-base font-extrabold text-slate-900 dark:text-white">Personal Task actions</h2>
+            <h2 id="task-action-heading" tabIndex={-1} className="text-base font-extrabold text-slate-900 dark:text-white">Personal Task actions</h2>
             <p className="mt-1 text-xs text-slate-600 dark:text-slate-300">
-                Minimal live Laravel integration: create, start and complete your own Tasks. Work Requests remain separate.
+                Create, start and complete your personal tasks. Work Requests remain separate.
             </p>
         </header>
         <form onSubmit={create} className="flex flex-col gap-2 sm:flex-row">

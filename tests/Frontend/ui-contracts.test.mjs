@@ -43,6 +43,6 @@ test('correspondence overview counts are separate from intentionally empty list'
 });
 
 test('staged page links exclude missing backend-rendered components', () => {
-    for (const path of ['/dashboard', '/calendar?view=day', '/transactions/1', '/memoranda/create', '/correspondence/a/workspace', '/employees']) assert.equal(isStagedInertiaPath(path), true, path);
-    for (const path of ['/', '/activate-account', '/admin', '/audit', '/mayor-office', '/travel-orders', '/reports', '/departments/1/workspace', 'https://example.com']) assert.equal(isStagedInertiaPath(path), false, path);
+    for (const path of ['/dashboard', '/calendar?view=day', '/transactions/1', '/memoranda/create', '/correspondence/a/workspace', '/employees', '/portal-search?q=plan', '/documents?mode=files', '/development-plans', '/ppas', '/admin']) assert.equal(isStagedInertiaPath(path), true, path);
+    for (const path of ['/', '/activate-account', '/messages', '/audit', '/mayor-office', '/travel-orders', '/reports', '/departments/1/workspace', 'https://example.com']) assert.equal(isStagedInertiaPath(path), false, path);
 });

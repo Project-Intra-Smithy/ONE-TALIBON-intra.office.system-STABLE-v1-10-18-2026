@@ -1,0 +1,170 @@
+/* R7 lower region: Reference A's civic cards; only existing authorized Task/QuickActions data. */
+.r7-lower {
+    min-width: 0;
+    container: r7lower / inline-size;
+}
+.r7-lower-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 14px;
+    min-width: 0;
+}
+.r7-lower-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    max-width: 100%;
+    background: var(--municipal-surface, #fff);
+    color: var(--municipal-text, #163027);
+    border: 1px solid var(--municipal-border, #d9e2dc);
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgb(13 56 35 / 6%);
+}
+.r7-lower-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    margin: 0;
+    padding: 12px 16px;
+    border-radius: 7px 7px 0 0;
+    background: #0b553b;
+    color: #fff;
+    font-size: .9375rem;
+    line-height: 1.4;
+    font-weight: 750;
+    letter-spacing: .012em;
+    text-transform: uppercase;
+}
+.r7-lower-title svg { flex: none; color: currentColor; }
+.r7-lower-body {
+    display: grid;
+    gap: 12px;
+    padding: 18px 16px;
+    color: var(--municipal-text, #163027);
+    font-size: .9375rem;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+}
+.r7-supporting,
+.r7-links-note {
+    color: var(--municipal-muted, #566b60);
+    font-size: .875rem;
+    line-height: 1.5;
+}
+.r7-task-intro {
+    padding: 12px 16px 0;
+    color: var(--municipal-muted, #566b60);
+    font-size: .9375rem;
+    line-height: 1.5;
+}
+/* Keep both authentic Task modules mounted, with complete list, detail and action forms. */
+.r7-embedded-task {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 14px;
+    min-width: 0;
+    padding: 14px;
+}
+.r7-embedded-task :is(.r7-task-reading, .r7-task-writing, .municipal-panel, .task-workspace-body) {
+    min-width: 0;
+    max-width: 100%;
+}
+.r7-embedded-task .municipal-panel {
+    border-radius: 6px;
+    box-shadow: none;
+}
+.r7-embedded-task .task-workspace {
+    overflow: visible;
+}
+/* The detail view may not depend on a viewport-width breakpoint inside a narrow container. */
+.r7-dashboard .r7-embedded-task .task-workspace-body.task-workspace-selected {
+    grid-template-columns: minmax(0, 1fr);
+}
+.r7-embedded-task .task-row {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+.r7-embedded-task form {
+    max-width: 100%;
+    flex-wrap: wrap;
+}
+.r7-embedded-task form > label { min-width: min(100%, 16rem); }
+.r7-embedded-task form input { max-width: 100%; }
+.r7-embedded-task form button[type="submit"] { min-height: 44px; }
+.r7-embedded-task :where(button, a) { overflow-wrap: anywhere; }
+/* QuickActions retains its existing permission-filtered Inertia links unchanged. */
+.r7-lower-links .ot-dashboard-quick {
+    min-width: 0;
+    padding: 14px;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+.r7-lower-links .ot-dashboard-quick-heading { display: none; }
+.r7-lower-links .ot-dashboard-tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+.r7-lower-links .ot-dashboard-tile {
+    min-width: 0;
+    min-height: 86px;
+    padding: 10px 8px;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+.r7-links-note { padding: 0 14px 14px; }
+.r7-lower :where(a, button, input, select, textarea):focus-visible,
+.r7-lower-card:focus-visible {
+    outline: 3px solid var(--municipal-focus, #19754b);
+    outline-offset: 3px;
+}
+.dark .r7-lower-card {
+    background: var(--municipal-surface, #142236);
+    border-color: var(--municipal-border, #42574c);
+    color: var(--municipal-text, #edf6f0);
+}
+.dark .r7-lower-title { background: #124e38; color: #fff; }
+.dark .r7-supporting,
+.dark .r7-task-intro,
+.dark .r7-links-note { color: #c8d8ce; }
+@container r7lower (max-width: 540px) {
+    .r7-embedded-task { padding: 10px; }
+    .r7-embedded-task form { display: flex; flex-direction: column; }
+    .r7-embedded-task form > label,
+    .r7-embedded-task form > button { width: 100%; align-self: stretch; }
+    .r7-lower-body { padding: 14px; }
+    .r7-lower-links .ot-dashboard-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (prefers-contrast: more) {
+    .r7-lower-title { background: #06412c; }
+    .r7-lower-card { border-width: 2px; }
+}
+@media (forced-colors: active) {
+    .r7-lower-title { background: Canvas; color: CanvasText; border-bottom: 2px solid CanvasText; }
+    .r7-lower :where(a,button,input):focus-visible { outline-color: Highlight; }
+}
+
+/* B3: space the four independently owned cards in one desktop row.
+   The B2 responsive stylesheet, loaded last, controls the 1/2/4 columns. */
+.r7-dashboard .r7-lower-grid { align-items: stretch; }
+.r7-dashboard .r7-lower-grid > .r7-lower-card { height: 100%; }
+.r7-dashboard .r7-lower-tasks:has(.r7-task-manager) { height: auto; }
+@container r7lower (min-width: 650px) {
+    .r7-dashboard .r7-lower-grid > .r7-lower-tasks:has(.r7-task-manager) {
+        grid-column: 1 / -1;
+    }
+}
+.r7-dashboard .r7-task-manager { min-width: 0; }
+@container r7lower (min-width: 850px) {
+    .r7-dashboard .r7-task-manager {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+        gap: 16px;
+    }
+    .r7-dashboard .r7-task-manager > * { min-width: 0; }
+}

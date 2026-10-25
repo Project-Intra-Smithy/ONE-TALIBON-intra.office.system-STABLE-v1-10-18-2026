@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { ArrowRight, Inbox } from 'lucide-react';
 import { formatDate, humanize } from './format';
+import DashboardScrollRegion from './DashboardScrollRegion';
 import type { CorrespondenceItem, CorrespondenceOverviewData } from './types';
 
 function CorrespondenceList({ title, items, dateKey }: {
@@ -13,7 +14,7 @@ function CorrespondenceList({ title, items, dateKey }: {
             <div className="border-b border-slate-100 px-4 py-3 dark:border-slate-700 sm:px-5">
                 <h3 className="text-base font-bold text-slate-950 dark:text-slate-100">{title}</h3>
             </div>
-            <div className="divide-y divide-slate-100 dark:divide-slate-700">
+            <DashboardScrollRegion label={`${title} correspondence`} itemCount={items.length} className="divide-y divide-slate-100 dark:divide-slate-700">
                 {items.map((item) => (
                     <Link key={item.detailUrl} href={item.detailUrl} className="block px-4 py-3.5 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 dark:hover:bg-slate-800/50 sm:px-5">
                         <div className="flex flex-wrap items-start justify-between gap-3">
@@ -32,14 +33,14 @@ function CorrespondenceList({ title, items, dateKey }: {
                     </Link>
                 ))}
                 {items.length === 0 ? <div className="px-5 py-7 text-center text-sm text-slate-500 dark:text-slate-400">No recent correspondence.</div> : null}
-            </div>
+            </DashboardScrollRegion>
         </div>
     );
 }
 
 export default function CorrespondenceOverview({ overview }: { overview: CorrespondenceOverviewData }) {
     return (
-        <section className="@container municipal-panel overflow-hidden" aria-labelledby="dashboard-correspondence">
+        <section className="@container municipal-panel overflow-hidden ot-dashboard-correspondence" aria-labelledby="dashboard-correspondence">
             <header className="flex flex-col gap-2 border-b border-slate-200 px-4 py-4 dark:border-slate-700 sm:flex-row sm:items-center sm:justify-between sm:px-5">
                 <div>
                     <div className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-blue-700 dark:text-blue-300 sm:text-sm"><Inbox size={15} aria-hidden="true" /> Correspondence attention</div>

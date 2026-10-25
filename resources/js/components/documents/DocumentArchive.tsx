@@ -163,7 +163,7 @@ export default function DocumentArchive({ archive }: { archive: ArchiveWorkspace
     const selected = archive.selected;
 
     return (
-        <div className="space-y-3">
+        <div className="document-center-files space-y-3">
             <section aria-labelledby="archive-scope-heading">
                 <div className="mb-1.5 flex items-center justify-between gap-3">
                     <h2 id="archive-scope-heading" className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Archive scope</h2>
@@ -195,7 +195,7 @@ export default function DocumentArchive({ archive }: { archive: ArchiveWorkspace
             </section>
 
             <form onSubmit={submit} className="municipal-panel p-2.5" aria-label="Archive filters">
-                <div className="grid gap-2 lg:grid-cols-[minmax(260px,2fr)_repeat(4,minmax(120px,1fr))_auto] lg:items-end">
+                <div className="grid gap-2 xl:grid-cols-[minmax(260px,2fr)_repeat(4,minmax(120px,1fr))_auto] xl:items-end">
                     <label className="block min-w-0">
                         <span className="mb-1 block text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Search files</span>
                         <div className="relative">
@@ -244,7 +244,7 @@ export default function DocumentArchive({ archive }: { archive: ArchiveWorkspace
             </form>
 
             <div className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1.55fr)_minmax(320px,.65fr)]">
-                <section className="municipal-panel overflow-hidden" aria-label="Document archive">
+                <section className="municipal-panel document-center-file-list overflow-hidden" aria-label="Document archive">
                     <header className="flex min-h-10 items-center justify-between gap-3 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-3 py-2">
                         <div>
                             <h2 className="text-xs font-bold text-[var(--municipal-text)]">Files</h2>
@@ -253,7 +253,7 @@ export default function DocumentArchive({ archive }: { archive: ArchiveWorkspace
                         <span className="text-[10px] text-[var(--municipal-muted)]">{archive.records.total} file{archive.records.total === 1 ? '' : 's'}</span>
                     </header>
 
-                    <div className="hidden grid-cols-[minmax(0,2fr)_minmax(120px,.8fr)_minmax(120px,1fr)_90px] gap-3 border-b border-[var(--municipal-border)] px-3 py-2 text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)] lg:grid">
+                    <div className="document-center-file-column-labels hidden grid-cols-[minmax(0,2fr)_minmax(120px,.8fr)_minmax(120px,1fr)_90px] gap-3 border-b border-[var(--municipal-border)] px-3 py-2 text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)] lg:grid">
                         <span>File / related record</span><span>Direction</span><span>Archive metadata</span><span>Action</span>
                     </div>
 
@@ -281,6 +281,7 @@ export default function DocumentArchive({ archive }: { archive: ArchiveWorkspace
                                     </div>
                                     <div className="flex items-center justify-end gap-1">
                                         <button type="button" onClick={() => navigate({ document: item.publicId })} className="inline-flex min-h-9 items-center px-2 text-[10px] font-bold text-[var(--municipal-brand)]">Details</button>
+                                        <a href={item.downloadUrl} className="document-center-download">Download <Download size={13} aria-hidden="true" /></a>
                                     </div>
                                 </article>
                             );

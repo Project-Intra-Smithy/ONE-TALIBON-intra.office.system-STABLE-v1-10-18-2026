@@ -504,3 +504,19 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 
 - **AJ scope approval:** [issue receipt](https://github.com/Project-Intra-Smithy/engineering-hub/issues/148#issuecomment-6400580171). AJ explicitly approved navigation-only `resources/js/layouts/AppLayout.tsx` edits for bottom-bar active states, safe-area content padding and keyboard behavior while preserving server-derived links/routes. This resolves the preceding scope hold, not runtime/QA/acceptance gates. Original two-file allowlist remains; no additional component, backend, auth, DB or #149 environment writes.
 - **START remains synchronized:** prior canonical checkpoint `3e08dff0b38795b1fbcb23931f7cd485fb2d12cb`; resume exact source `d2806ac614ba840a6cf677d9955cff27b9ddd04c`, target `04e188422bbbcb97a13a25426fab8c5d9ae13c4c`, draft implementation PR #10. **NEXT / AJ with Codex assistance:** after canonical memory publication/crosslink, implement the approved navigation changes, rerun affected frontend checks and update draft PR #10. No implementation merge/deploy or acceptance; real-device and authenticated environment checks remain separate.
+
+## Provisional UI reference refinement / 2026-10-26
+
+- Work ID: `OT-UI-REFERENCE-REFINEMENT-20261026`; [owning issue #1 START reconciliation](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/issues/1#issuecomment-6401300568).
+- Human candidate owner/configured Git author: Caturza Jayr; connected publisher catzdevw; Codex assisted. Kirch retains integration and acceptance authority.
+- State: **PROVISIONAL_IMPLEMENTATION / DRAFT_REVIEW_ONLY / SYNC_REQUIRED / HOLD**. Code predates paired START reconciliation; canonical-main memory publication is not verified. This candidate-only entry is not START_SYNCED and is not a CLOSE.
+- Source: `ui/refine--stable` from `fc88724e3fda16e59d60d2d73c37edd0d3cd2e32`; live main fetched at `923e19f81692b816c9156475d94020d6ae76f6a6`. Preserve and disclose the inherited 78-path R7/R8 baseline and 8-ahead/7-behind divergence.
+- Scope, evidence, exclusions and next owner: [UI-REFINEMENT-2026-10-26.md](UI-REFINEMENT-2026-10-26.md). NEXT: publish the draft candidate and exact memory commit crosslink; Kirch/maintainer owns canonical START synchronization and source-integration decision before further execution/release.
+
+## PR #14 memory conflict resolution / 2026-10-26
+
+- Continuation of `OT-UI-REFERENCE-REFINEMENT-20261026`, owning issue #1 and PR #14. The user requested resolution of the displayed register conflict.
+- Source: PR head `d6add77aee2224b672e8e738a310ccc243421218`; incoming main `923e19f81692b816c9156475d94020d6ae76f6a6`. Main-only changes are confined to this register.
+- Resolution preserves the complete incoming main register and the existing provisional UI entry. AJ's #149 isolation record, #148/#7 ownership, START verification, evidence, scope and holds are retained without promotion or reinterpretation.
+- Validation: both branches' nonempty register lines preserved; no conflict markers; only this Markdown file differs from the prior PR head. Executable source is unchanged; no new runtime/CI/QA PASS is claimed.
+- State remains `SYNC_REQUIRED / HOLD` for canonical START publication and human integration/acceptance. Resolving a Git conflict does not award those gates. NEXT: publish the merge commit to the PR branch and crosslink the exact SHA on issue #1 / PR #14; Kirch/maintainer retains the next authority decision. No CLOSE, main update or deployment.
