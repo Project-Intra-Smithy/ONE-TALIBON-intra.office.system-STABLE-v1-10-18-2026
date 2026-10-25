@@ -69,10 +69,10 @@ test('R6 retains real records, empty states, notification state distinctions and
     assert.match(css, /\.dark \.ot-reference-dashboard \.ot-dashboard-tile-icon/);
 });
 
-test('Hero uses local municipality image and authenticated identity without invented activity', () => {
+test('Hero uses local municipal seal and authenticated identity without invented activity', () => {
     assert.match(header, /usePage<SharedProps>\(\)\.props/);
     assert.match(header, /auth\.user\?\.name\?\.trim\(\)/);
     assert.match(header, /experience\.department\.shortName \|\| experience\.department\.name/);
-    assert.match(header, /\/images\/municipality\/talibon-homepage-hero\.jpg/);
+    assert.match(header, /\/brand\/municipal\.logo\.png/);
     assert.doesNotMatch(dashboard + header + quick, /(?:sampleUnreadCount|fakePending|mockEmployeeData)/);
 });

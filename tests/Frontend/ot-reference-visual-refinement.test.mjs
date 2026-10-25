@@ -47,8 +47,8 @@ test('the dashboard inventory is sourced from permission-aware sidebar navigatio
     assert.doesNotMatch(shortcutsComponent, /\b(?:fetch|axios|XMLHttpRequest)\(/);
 });
 
-test('municipal hall artwork is reused locally and composition is compact/responsive', () => {
-    assert.match(header, /\/images\/municipality\/talibon-homepage-hero\.jpg/);
+test('municipal identity artwork is reused locally and composition is compact/responsive', () => {
+    assert.match(header, /\/brand\/municipal\.logo\.png/);
     assert.match(css, /background-size:cover, 58% auto/);
     assert.match(css, /@media \(max-width:479px\)/);
     assert.match(css, /\.ot-dashboard-tiles \{ grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);

@@ -469,3 +469,11 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 - **Existing observed local evidence, not combined acceptance:** 82 focused security PASS, 100 performance PASS, 590 configured Feature PASS with one skip. Complete Feature-directory regression including specialized files, exact-main failure comparison, frontend checks, authenticated Chromium, and final Siris/Kirch decisions remain outstanding.
 - **Holds:** no application `main` merge, PR #5 merge, UAT, production, retained database mutation, or restricted capability activation. No test result or human QA disposition is awarded by this START.
 - **NEXT:** Maintainer publishes this one-file documentation PR and crosslinks its exact canonical-main memory SHA on Issue #1; then Siris verifies the pair and runs the isolated QA workflow on the pinned candidate.
+
+## Provisional UI reference refinement / 2026-10-26
+
+- Work ID: `OT-UI-REFERENCE-REFINEMENT-20261026`; [owning issue #1 START reconciliation](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/issues/1#issuecomment-6401300568).
+- Human candidate owner/configured Git author: Caturza Jayr; connected publisher catzdevw; Codex assisted. Kirch retains integration and acceptance authority.
+- State: **PROVISIONAL_IMPLEMENTATION / DRAFT_REVIEW_ONLY / SYNC_REQUIRED / HOLD**. Code predates paired START reconciliation; canonical-main memory publication is not verified. This candidate-only entry is not START_SYNCED and is not a CLOSE.
+- Source: `ui/refine--stable` from `fc88724e3fda16e59d60d2d73c37edd0d3cd2e32`; live main fetched at `923e19f81692b816c9156475d94020d6ae76f6a6`. Preserve and disclose the inherited 78-path R7/R8 baseline and 8-ahead/7-behind divergence.
+- Scope, evidence, exclusions and next owner: [UI-REFINEMENT-2026-10-26.md](UI-REFINEMENT-2026-10-26.md). NEXT: publish the draft candidate and exact memory commit crosslink; Kirch/maintainer owns canonical START synchronization and source-integration decision before further execution/release.

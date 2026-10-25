@@ -2,6 +2,7 @@ import { usePage } from '@inertiajs/react';
 import type { SharedProps } from '../../types';
 import { dashboardRoleLabel } from './rolePresentation';
 import type { DashboardExperience } from './types';
+import MunicipalContext from './MunicipalContext';
 
 const profileCopy = {
     employee: 'Your work and office updates in one place.',
@@ -17,18 +18,21 @@ export default function DashboardHeader({ experience }: { experience: DashboardE
     const context = [dashboardRoleLabel(experience), office].filter(Boolean).join(' · ');
 
     return <header className="ot-dashboard-hero r7-civic-hero" aria-label="Dashboard welcome">
-        <div className="ot-dashboard-hero-copy r7-civic-hero__copy">
-            <p className="ot-dashboard-hero-eyebrow">LGU TALIBON <span aria-hidden="true">/</span> INTRA-OFFICE PORTAL</p>
-            <h1>Welcome{name ? `, ${name}` : ''}</h1>
-            <p className="ot-dashboard-hero-description">{profileCopy[experience.key]}</p>
-            {context && <p className="ot-dashboard-hero-context">{context}</p>}
+        <div className="dashboard-civic-identity">
+            <img className="dashboard-municipal-seal" src="/brand/municipal.logo.png" alt="Municipality of Talibon seal" />
+            <div className="ot-dashboard-hero-copy r7-civic-hero__copy">
+                <p className="ot-dashboard-hero-eyebrow">Municipality of Talibon · Bohol</p>
+                <h1>One <span>Talibon</span></h1>
+                <p className="dashboard-portal-subtitle">Intra-Office Portal</p>
+                <p className="ot-dashboard-hero-description">{profileCopy[experience.key]}</p>
+            </div>
         </div>
-        <div className="r7-civic-hero__art" aria-hidden="true">
-            <img src="/images/municipality/talibon-homepage-hero.jpg" alt="" />
-            <span className="r7-civic-hero__ring r7-civic-hero__ring--outer" />
-            <span className="r7-civic-hero__ring r7-civic-hero__ring--inner" />
-            <span className="r7-civic-hero__art-line" />
-            <span className="r7-civic-hero__art-label">ONE TALIBON</span>
+        <div className="dashboard-civic-footer">
+            <div>
+                <p>Welcome{name ? `, ${name}` : ''}</p>
+                {context && <p className="ot-dashboard-hero-context">{context}</p>}
+            </div>
+            <MunicipalContext />
         </div>
     </header>;
 }

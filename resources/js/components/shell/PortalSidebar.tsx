@@ -67,10 +67,10 @@ export default function PortalSidebar({
                 </div>
 
                 {mobile ? (
-                    <div className="portal-sidebar-subtitle mt-3 text-xs text-slate-600">Intra-office workspace</div>
+                    <div className="portal-sidebar-subtitle mt-3 text-xs text-slate-600">Workspace</div>
                 ) : (
                     <div className={`mt-3 flex items-center ${compact ? 'justify-center' : 'justify-between gap-3'}`}>
-                        {!compact && <div className="portal-sidebar-subtitle text-xs text-slate-600">Intra-office workspace</div>}
+                        {!compact && <div className="portal-sidebar-subtitle text-xs text-slate-600">Workspace</div>}
                         <button
                             type="button"
                             onClick={onToggleCollapsed}
@@ -214,6 +214,10 @@ export default function PortalSidebar({
                         );
                     })}
                 </div>
+                {!compact && <div className="portal-sidebar-civic-note">
+                    {user?.employee?.department?.code && <span className="portal-sidebar-office-badge">{user.employee.department.code}</span>}
+                    <p>Smart Planning.<br />Strong Coordination.<br /><strong>One Talibon.</strong></p>
+                </div>}
             </nav>
 
             {compact && compactTooltip && (
@@ -253,7 +257,7 @@ export default function PortalSidebar({
                     </div>
                 ) : (
                     <div className="relative">
-                        <AppearanceControl />
+                        <AppearanceControl iconOnly />
 
                         <div className="mt-3 border-t border-slate-200 pt-3">
                             <div

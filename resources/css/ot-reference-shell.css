@@ -148,3 +148,163 @@
         outline-color: Highlight;
     }
 }
+
+/* Sidebar reference: presentation only; keep permission-filtered destinations. */
+[data-workspace-shell] .portal-sidebar {
+    --sidebar-canvas: #0c3028;
+    --sidebar-text: #e1efeb;
+    --sidebar-muted: #a8cbc6;
+    --sidebar-hover: #19473d;
+    --sidebar-selected: #28584b;
+    --sidebar-gold: #efd58e;
+    background: var(--sidebar-canvas);
+    color: var(--sidebar-text);
+    border-right-color: #244b41;
+    scrollbar-color: #6c9285 var(--sidebar-canvas);
+    scrollbar-width: thin;
+}
+[data-workspace-shell] .portal-sidebar .portal-sidebar-header {
+    padding: 28px 20px 12px;
+    border-bottom: 0;
+}
+[data-workspace-shell] .portal-sidebar .municipal-brand { gap: 10px; }
+[data-workspace-shell] .portal-sidebar--expanded .municipal-brand > img {
+    width: 60px;
+    height: 60px;
+}
+[data-workspace-shell] .portal-sidebar--expanded .municipal-brand > div > div:first-child {
+    white-space: normal;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 750;
+    letter-spacing: .01em;
+    line-height: 1.3;
+}
+[data-workspace-shell] .portal-sidebar--expanded .municipal-brand > div > div:last-child {
+    color: #dbece6;
+    font-size: 10px;
+    letter-spacing: .12em;
+    line-height: 1.5;
+}
+[data-workspace-shell] .portal-sidebar .portal-sidebar-subtitle {
+    padding-left: 12px;
+    color: var(--sidebar-muted);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+}
+[data-workspace-shell] .portal-sidebar .portal-sidebar-toggle {
+    width: 36px;
+    height: 44px;
+    border-color: transparent;
+    color: var(--sidebar-muted);
+}
+[data-workspace-shell] .portal-sidebar .portal-sidebar-toggle:hover { background: var(--sidebar-hover); color: #fff; }
+[data-workspace-shell] .portal-sidebar--expanded .portal-sidebar-navigation { padding: 0 20px 20px; }
+[data-workspace-shell] .portal-sidebar--expanded .portal-sidebar-navigation > div:first-child { display: grid; gap: 0; }
+[data-workspace-shell] .portal-sidebar--expanded .portal-sidebar-section { margin: 0; }
+/* Keep the permission-filtered navigation groups visible in expanded mode. */
+[data-workspace-shell] .portal-sidebar--expanded .portal-sidebar-section-title {
+    margin: 18px 0 6px;
+    padding: 0 8px;
+    color: var(--sidebar-muted);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+[data-workspace-shell] .portal-sidebar--expanded .portal-sidebar-section > div:last-child {
+    margin-top: 0;
+}
+[data-workspace-shell] .portal-sidebar .portal-sidebar-nav-link {
+    min-height: 50px;
+    border-radius: 6px;
+    color: var(--sidebar-text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+[data-workspace-shell] .portal-sidebar--expanded .portal-sidebar-nav-link {
+    gap: 16px;
+    padding: 12px 14px;
+}
+[data-workspace-shell] .portal-sidebar .portal-sidebar-nav-icon {
+    color: #a8d5d5;
+    width: 18px;
+    height: 18px;
+    stroke-width: 1.6;
+}
+[data-workspace-shell] .portal-sidebar .portal-sidebar-nav-label { overflow-wrap: anywhere; }
+[data-workspace-shell] .portal-sidebar nav a:hover {
+    background: var(--sidebar-hover);
+    color: #fff;
+}
+[data-workspace-shell] .portal-sidebar .portal-sidebar-navigation a[aria-current="page"],
+[data-workspace-shell] .portal-sidebar .portal-sidebar-navigation a[aria-current="page"]:hover {
+    background: var(--sidebar-selected);
+    color: #fff;
+    font-weight: 500;
+}
+[data-workspace-shell] .portal-sidebar nav a[aria-current="page"]::before {
+    inset-block: 0;
+    left: 0;
+    width: 3px;
+    border-radius: 6px 0 0 6px;
+    background: var(--sidebar-gold);
+}
+[data-workspace-shell] .portal-sidebar nav a[aria-current="page"] .portal-sidebar-nav-icon { color: #fff; }
+[data-workspace-shell] .portal-sidebar .portal-sidebar-civic-note {
+    margin-top: 28px;
+    padding: 0 12px 8px;
+    color: var(--sidebar-muted);
+    font-size: 13px;
+    line-height: 1.65;
+}
+[data-workspace-shell] .portal-sidebar .portal-sidebar-office-badge {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 6px;
+    padding: 4px 10px;
+    overflow-wrap: anywhere;
+    border: 1px solid #5d8074;
+    border-radius: 3px;
+    color: #b8d6d3;
+    font-size: 11px;
+    letter-spacing: .18em;
+}
+[data-workspace-shell] .portal-sidebar .portal-sidebar-civic-note strong { color: var(--sidebar-gold); font-weight: 700; }
+[data-workspace-shell] .portal-sidebar .portal-sidebar-footer {
+    border-top-color: #294c41;
+    background: var(--sidebar-canvas);
+}
+[data-workspace-shell] .portal-sidebar [aria-label="Appearance preference"] {
+    border-color: #365b4d;
+    background: #123c31;
+}
+[data-workspace-shell] .portal-sidebar [aria-label="Appearance preference"] button[aria-pressed="true"] {
+    background: var(--sidebar-selected);
+    color: #fff;
+    box-shadow: inset 0 -2px var(--sidebar-gold);
+}
+[data-workspace-shell] .portal-sidebar .portal-sidebar-signout:hover { background: var(--sidebar-hover); }
+[data-workspace-shell] .portal-sidebar--compact .portal-sidebar-header { padding: 16px 8px 8px; }
+[data-workspace-shell] .portal-sidebar--compact .portal-sidebar-group-divider { border-color: #365b4d; }
+[data-workspace-shell] .portal-sidebar :where(button, a):focus-visible {
+    outline: 3px solid var(--sidebar-gold);
+    outline-offset: 2px;
+    box-shadow: none;
+}
+@media (forced-colors: active) {
+    [data-workspace-shell] .portal-sidebar {
+        --sidebar-canvas: Canvas;
+        --sidebar-text: CanvasText;
+        --sidebar-muted: CanvasText;
+        --sidebar-hover: Canvas;
+        --sidebar-selected: Canvas;
+        --sidebar-gold: Highlight;
+    }
+    [data-workspace-shell] .portal-sidebar nav a[aria-current="page"] { color: LinkText; outline: 2px solid Highlight; outline-offset: -2px; }
+    [data-workspace-shell] .portal-sidebar .portal-sidebar-nav-icon { color: LinkText; }
+}

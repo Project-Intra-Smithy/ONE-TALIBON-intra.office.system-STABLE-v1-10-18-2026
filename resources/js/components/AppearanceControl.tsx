@@ -11,12 +11,14 @@ const choices: Array<{ value: AppearancePreference; label: string; icon: typeof 
 type Props = {
     publicSurface?: boolean;
     compact?: boolean;
+    iconOnly?: boolean;
 };
 
-export default function AppearanceControl({ publicSurface = false, compact = false }: Props) {
+export default function AppearanceControl({ publicSurface = false, compact = false, iconOnly = false }: Props) {
     const { appearance, choose } = useAppearance();
+    const iconsOnly = compact || iconOnly;
     return <div className={compact ? 'w-11' : undefined}>
-        {!publicSurface && !compact && <div className="mb-2 text-xs font-semibold text-blue-300">Appearance</div>}
+        {!publicSurface && !iconsOnly && <div className="mb-2 text-xs font-semibold text-blue-300">Appearance</div>}
         <div
             className={`grid gap-1 rounded-lg border p-1 ${compact ? 'grid-cols-1' : 'grid-cols-3'} ${publicSurface ? 'public-appearance-options' : 'border-white/10 bg-white/5'}`}
             role="group"
@@ -29,13 +31,13 @@ export default function AppearanceControl({ publicSurface = false, compact = fal
                     key={value}
                     type="button"
                     onClick={() => choose(value)}
-                    aria-label={compact ? label : undefined}
+                    aria-label={iconsOnly ? label : undefined}
                     aria-pressed={appearance === value}
-                    title={compact ? label : undefined}
+                    title={iconsOnly ? label : undefined}
                     className={`flex ${publicSurface ? 'public-appearance-choice min-h-11' : 'min-h-10 focus-visible:outline-none focus-visible:ring-2'} items-center justify-center gap-1.5 rounded-md px-2 text-xs font-semibold transition-colors duration-150 ${publicSurface ? '' : internalState}`}
                 >
-                    <Icon size={compact ? 16 : 14} aria-hidden="true" />
-                    {!compact && <span>{label}</span>}
+                    <Icon size={iconsOnly ? 16 : 14} aria-hidden="true" />
+                    {!iconsOnly && <span>{label}</span>}
                 </button>;
             })}
         </div>

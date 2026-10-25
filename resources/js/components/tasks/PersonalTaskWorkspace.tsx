@@ -1,10 +1,13 @@
 import { usePage } from '@inertiajs/react';
 import { AlertCircle, ArrowLeft, ChevronLeft, ChevronRight, ListChecks, RefreshCcw } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import PersonalTaskMutationPanel from './PersonalTaskMutationPanel';
+import '../../../css/personal-task-board.css';
 import type { SharedProps } from '../../types';
 import { getPersonalTask, getPersonalTasks, isTaskAccessBoundary, TASK_STATES, type IndividualTask, type ReadError, type TaskPage, type TaskState } from './taskReadApi';
 
 const labels: Record<TaskState,string> = {open:'Open',in_progress:'In Progress',completed:'Completed'};
+const columnLabels: Record<TaskState,string> = {open:'To do',in_progress:'In progress',completed:'Done'};
 const colors: Record<TaskState,string> = {
     open:'bg-sky-50 text-sky-800 dark:bg-sky-950 dark:text-sky-200',
     in_progress:'bg-amber-50 text-amber-800 dark:bg-amber-950 dark:text-amber-200',
@@ -69,8 +72,7 @@ function Detail({task,back}:{task:IndividualTask;back:()=>void}) {
         </p>
     </section>;
 }
-function TaskSession({userId}:{userId:number}) {
-    const [state,setState]=useState<TaskState>('open');
+function TaskSession({userId, state, onAccessBoundary}:{userId:number;state:TaskState;onAccessBoundary:(error:ReadError)=>void}) {
     const [page,setPage]=useState(1);
     const [refresh,setRefresh]=useState(0);
     const [list,setList]=useState<TaskPage|null>(null);
@@ -88,11 +90,11 @@ function TaskSession({userId}:{userId:number}) {
         getPersonalTasks(state,page,control.signal).then(r=>{
             if (!active) return;
             if(r.ok) setList(r.data);
-            else { setListError(r.error); if(isTaskAccessBoundary(r.error)) setSelected(null); }
+            else { setListError(r.error); if(isTaskAccessBoundary(r.error)) {setSelected(null);onAccessBoundary(r.error);} }
         }).catch(()=>{if(active)setListError({status:null,code:null,message:'Unable to retrieve the Task list.',nextUrl:null,requestId:null});})
         .finally(()=>{if(active)setListLoading(false);});
         return ()=>{active=false;control.abort();};
-    },[state,page,refresh]);
+    },[state,page,refresh,onAccessBoundary]);
     useEffect(()=>{
         if(selected===null){setDetail(null);setDetailError(null);setDetailLoading(false);return;}
         const control=new AbortController();let active=true;
@@ -105,6 +107,7 @@ function TaskSession({userId}:{userId:number}) {
                     setList(null);
                     setListError(r.error);
                     setSelected(null);
+                    onAccessBoundary(r.error);
                 } else setDetailError(r.error);
             }
             else if(r.data.id!==selected)setDetailError({status:null,code:'INVALID_RESPONSE',message:'The Task service returned an unexpected record.',requestId:null,nextUrl:null});
@@ -112,7 +115,7 @@ function TaskSession({userId}:{userId:number}) {
         }).catch(()=>{if(active)setDetailError({status:null,code:null,message:'Unable to retrieve Task details.',requestId:null,nextUrl:null});})
         .finally(()=>{if(active)setDetailLoading(false);});
         return ()=>{active=false;control.abort();};
-    },[selected,detailRefresh]);
+    },[selected,detailRefresh,onAccessBoundary]);
     useEffect(()=>{if(detail)focusTitle.current?.focus();},[detail]);
     useEffect(()=>{
         const synchronize=(event:Event)=>{
@@ -121,26 +124,20 @@ function TaskSession({userId}:{userId:number}) {
             setSelected(null);
             setDetail(null);
             setDetailError(null);
-            setState(detail.state);
             setPage(1);
             setRefresh(value=>value+1);
         };
         window.addEventListener(TASK_SYNC_EVENT,synchronize);
         return()=>window.removeEventListener(TASK_SYNC_EVENT,synchronize);
     },[userId]);
-    const chooseState=(value:TaskState)=>{if(value===state)return;setState(value);setPage(1);setSelected(null);};
     const choosePage=(value:number)=>{if(!list||value<1||value>list.meta.last_page||value>10000)return;setPage(value);setSelected(null);};
-    return <section className="municipal-panel task-workspace overflow-hidden" aria-labelledby="personal-task-heading">
+    return <section className="municipal-panel task-workspace task-board-column overflow-hidden" aria-labelledby={'personal-task-heading-'+state}>
         <header className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-4 py-4 dark:border-slate-700 sm:px-5">
-            <div><h2 id="personal-task-heading" className="flex items-center gap-2 text-xl font-extrabold text-slate-900 dark:text-slate-100"><ListChecks size={19} className="text-blue-700 dark:text-blue-300" aria-hidden="true"/> My Tasks</h2>
-                <p className="mt-1 text-sm leading-6 text-slate-500 dark:text-slate-400">Review your tasks by status, check deadlines, and select a task for full details.</p></div>
+            <h3 id={'personal-task-heading-'+state} className="task-board-column-title">{columnLabels[state]} <span aria-label={list&&!listLoading?`${list.meta.total} Tasks`:'Count unavailable'}>{!listLoading&&list?list.meta.total:'—'}</span></h3>
             <button type="button" onClick={()=>{setRefresh(n=>n+1);if(selected!==null)setDetailRefresh(n=>n+1);}}
-                className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-slate-300 px-3 text-sm font-semibold dark:border-slate-600"><RefreshCcw size={14} aria-hidden="true"/> Refresh</button>
+                aria-label={'Refresh '+columnLabels[state]+' Tasks'} title="Refresh"
+                className="task-board-refresh inline-flex min-h-10 items-center gap-2 rounded-lg border border-slate-300 px-3 text-sm font-semibold dark:border-slate-600"><RefreshCcw size={14} aria-hidden="true"/></button>
         </header>
-        <div role="group" aria-label="Task state filter" className="flex flex-wrap border-b border-slate-200 px-2 dark:border-slate-700 sm:px-4">
-            {TASK_STATES.map(value=><button type="button" key={value} aria-pressed={state===value} onClick={()=>chooseState(value)}
-                className={'min-h-11 shrink-0 border-b-[3px] px-3 py-2 text-sm font-bold sm:px-5 '+(state===value?'border-blue-700 text-blue-800 dark:border-blue-300 dark:text-blue-200':'border-transparent text-slate-500 hover:text-blue-700 dark:text-slate-400')}>{labels[value]}</button>)}
-        </div>
         <div className={'task-workspace-body grid min-w-0 gap-4 p-4 sm:p-5 '+(selected!==null?'task-workspace-selected':'')}>
             <div className="min-w-0">
                 {listLoading&&<Loading label="Loading personal Tasks"/>}
@@ -161,11 +158,11 @@ function TaskSession({userId}:{userId:number}) {
                             <span className="task-row-action mt-2 block text-sm font-semibold">{selected===task.id?'Viewing task':'View details'}</span>
                         </button></li>)}
                     </ul>)}
-                {!listLoading&&list&&<nav aria-label="Server Task pagination" className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                {!listLoading&&list&&<nav aria-label={columnLabels[state]+' server Task pagination'} className="mt-4 flex flex-wrap items-center justify-between gap-3">
                     <p className="text-sm text-slate-600 dark:text-slate-300">Page {list.meta.page} of {list.meta.last_page} · {list.meta.total} Tasks</p>
                     <div className="flex gap-2">
-                        <button type="button" aria-label="Previous Task page" disabled={list.meta.page<=1} onClick={()=>choosePage(list.meta.page-1)} className="min-h-10 rounded-lg border border-slate-300 px-3 disabled:opacity-40 dark:border-slate-600"><ChevronLeft size={17}/></button>
-                        <button type="button" aria-label="Next Task page" disabled={list.meta.page>=list.meta.last_page||list.meta.page>=10000} onClick={()=>choosePage(list.meta.page+1)} className="min-h-10 rounded-lg border border-slate-300 px-3 disabled:opacity-40 dark:border-slate-600"><ChevronRight size={17}/></button>
+                        <button type="button" aria-label={'Previous '+columnLabels[state]+' Task page'} disabled={list.meta.page<=1} onClick={()=>choosePage(list.meta.page-1)} className="min-h-10 rounded-lg border border-slate-300 px-3 disabled:opacity-40 dark:border-slate-600"><ChevronLeft size={17}/></button>
+                        <button type="button" aria-label={'Next '+columnLabels[state]+' Task page'} disabled={list.meta.page>=list.meta.last_page||list.meta.page>=10000} onClick={()=>choosePage(list.meta.page+1)} className="min-h-10 rounded-lg border border-slate-300 px-3 disabled:opacity-40 dark:border-slate-600"><ChevronRight size={17}/></button>
                     </div></nav>}
             </div>
             <div className={selected===null?'sr-only':'min-w-0'} aria-live="polite">
@@ -178,7 +175,26 @@ function TaskSession({userId}:{userId:number}) {
     </section>;
 }
 /** Key component state by logged-in user; never show one account's cached Task data to another. */
+function TaskBoard({userId}:{userId:number}) {
+    const [boundary,setBoundary]=useState<ReadError|null>(null);
+    const [generation,setGeneration]=useState(0);
+    const revoke=useCallback((error:ReadError)=>setBoundary(error),[]);
+    return <section className="personal-task-board" aria-label="My Tasks board">
+        <header className="personal-task-board-heading">
+            <div><p className="task-board-eyebrow">Your office, connected</p>
+                <h2><ListChecks size={22} aria-hidden="true"/> My Tasks</h2>
+                <p>Organize responsibilities, deadlines and next actions.</p></div>
+            {!boundary&&<a href="#task-action-heading" className="task-board-add" onClick={()=>requestAnimationFrame(()=>document.getElementById('task-action-heading')?.focus())}>+ Add task</a>}
+        </header>
+        {boundary?<ErrorPanel error={boundary} retry={()=>{setBoundary(null);setGeneration(n=>n+1);}}/>:<>
+            <div className="personal-task-board-columns">
+                {TASK_STATES.map(state=><TaskSession key={state+'-'+generation} userId={userId} state={state} onAccessBoundary={revoke}/>)}
+            </div>
+            <PersonalTaskMutationPanel />
+        </>}
+    </section>;
+}
 export default function PersonalTaskWorkspace(){
     const id=usePage<SharedProps>().props.auth?.user?.id;
-    return typeof id==='number'?<TaskSession key={id} userId={id}/>:null;
+    return typeof id==='number'?<TaskBoard key={id} userId={id}/>:null;
 }

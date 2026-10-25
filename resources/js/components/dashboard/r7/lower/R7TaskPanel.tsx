@@ -2,7 +2,6 @@ import { usePage } from '@inertiajs/react';
 import { ChevronDown, ChevronUp, ListChecks, RefreshCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { SharedProps } from '../../../../types';
-import PersonalTaskMutationPanel from '../../../tasks/PersonalTaskMutationPanel';
 import PersonalTaskWorkspace from '../../../tasks/PersonalTaskWorkspace';
 import { getPersonalTasks, type IndividualTask, type ReadError } from '../../../tasks/taskReadApi';
 
@@ -110,7 +109,6 @@ function TaskSummary({ userId }: { userId: number }) {
             </div>
             {expanded && <div id="r7-task-manager" className="r7-task-manager">
                 <PersonalTaskWorkspace />
-                <PersonalTaskMutationPanel />
             </div>}
         </section>
     );
