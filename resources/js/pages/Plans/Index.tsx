@@ -97,7 +97,7 @@ export default function PlansIndex() {
         <AppLayout title="LGU Plans Library">
             <PageFrame width="wide" density="compact" className="ot-r6-modules ot-r6-plans r8-plans">
                 <PageHeader eyebrow="Municipality of Talibon · Planning references" title="LGU Plans Library" description="Browse planning references by code, coverage, status, and lead office." icon={ClipboardList} />
-                <div className="r8-plans-notice" role="note"><strong>Presentation reference catalog, not certified plans.</strong> These examples do not establish municipal adoption, official status or signed PDFs. Select a plan to inspect its sample metadata; actual document versions and PDF viewing are unavailable until authorized files are registered.</div>
+                <div className="r8-plans-notice" role="note"><strong>Presentation reference catalog, not certified plans.</strong> These are not validated live municipal approvals. The examples do not establish municipal adoption, official status or signed PDFs. Select a plan to inspect its sample metadata; actual document versions and PDF viewing are unavailable until authorized files are registered.</div>
                 <PlanFilterBar filters={filters} leadOffices={leadOffices} resultCount={filteredPlans.length} onChange={(nextFilters) => { setFilters(nextFilters); setSelectedPlanId(null); }} />
                 <section aria-label="Plans library" className="ot-r6-plan-grid r8-plans-grid grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                     {filteredPlans.map((plan) => <PlanCard key={plan.id} plan={plan} selected={selectedPlanId === plan.id} onSelect={() => setSelectedPlanId(plan.id)} />)}
