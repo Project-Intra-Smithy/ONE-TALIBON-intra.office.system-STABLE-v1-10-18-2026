@@ -94,12 +94,16 @@ for (const width of [320, 390, 768, 1024, 1440]) {
                 assert.equal(await bottom.isVisible(), width < 768);
                 if (screen === 'dashboard') {
                     await page.getByRole('button', { name: 'Manage my tasks' }).click();
-                    const filters = page.getByRole('group', { name: 'Task state filter' });
-                    for (const label of ['Open', 'In Progress', 'Completed']) {
-                        const tab = filters.getByRole('button', { name: new RegExp(label, 'i') });
-                        await tab.focus(); await page.keyboard.press('Enter');
-                        assert.equal(await tab.getAttribute('aria-pressed'), 'true');
-                        assert.equal(await filters.locator('[aria-pressed="true"]').count(), 1);
+                    // The integrated Task manager is a three-column board, not the
+                    // retired mutually exclusive Task-state tab filter.
+                    const board = page.getByRole('region', { name: 'My Tasks board' });
+                    await board.waitFor();
+                    assert.equal(await board.locator('.task-board-column').count(), 3);
+                    for (const label of ['To do', 'In progress', 'Done']) {
+                        const refresh = board.getByRole('button', { name: `Refresh ${label} Tasks`, exact: true });
+                        await refresh.focus();
+                        assert.equal(await refresh.evaluate(el => el === document.activeElement), true);
+                        await page.keyboard.press('Enter');
                     }
                     if (width < 768) {
                         await bottom.getByRole('link', { name: 'Tasks', exact: true }).click();
@@ -165,14 +169,16 @@ test('personal Task selection, keyboard back action and denied reads', async () 
             return route.fulfill({ status: denied ? 403 : 200, contentType: 'application/json', body: JSON.stringify(denied ? { message: 'Forbidden' } : route.request().url().includes('/tasks/7') ? { data: task } : { data: [task], meta: { page: 1, per_page: 10, last_page: 1, total: 1 } }) });
         });
         await page.getByRole('button', { name: 'Manage my tasks' }).click();
-        await page.getByRole('button', { name: 'Refresh', exact: true }).click();
+        await page.getByRole('region', { name: 'My Tasks board' })
+            .getByRole('button', { name: 'Refresh To do Tasks', exact: true }).click();
         const row = page.getByRole('button', { name: /Synthetic Task/ }); await row.waitFor();
         await row.focus(); await page.keyboard.press('Enter');
         await page.getByRole('region', { name: 'Personal Task detail' }).waitFor();
         const back = page.getByRole('button', { name: 'Back to tasks' }); await back.focus(); await page.keyboard.press('Enter');
         assert.equal(await page.getByRole('region', { name: 'Personal Task detail' }).count(), 0);
         denied = true;
-        await page.getByRole('button', { name: 'Refresh', exact: true }).click();
+        await page.getByRole('region', { name: 'My Tasks board' })
+            .getByRole('button', { name: 'Refresh To do Tasks', exact: true }).click();
         await page.getByRole('alert').filter({ hasText: 'Personal Tasks unavailable' }).waitFor();
         assert.equal(await page.getByRole('button', { name: /Synthetic Task/ }).count(), 0);
         assert.ok(methods.length >= 3 && methods.every(method => method === 'GET'));
