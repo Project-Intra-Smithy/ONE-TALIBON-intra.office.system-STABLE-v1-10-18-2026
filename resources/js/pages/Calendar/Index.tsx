@@ -254,7 +254,7 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
                 <PageHeader
                     eyebrow="Shared municipal calendar"
                     title="Events, deadlines & schedules"
-                    description="A single operational view of visible office events, routed-work deadlines, and schedules available within your current access."
+                    description="Shows calendar events synchronized from available office workflows. A Task or Work Request due date may not appear until its source workflow publishes a Calendar event; check the source queue for all deadlines."
                     icon={CalendarDays}
                 />
 
