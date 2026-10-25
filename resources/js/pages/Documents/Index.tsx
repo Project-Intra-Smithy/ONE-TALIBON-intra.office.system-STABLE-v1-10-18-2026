@@ -57,7 +57,7 @@ export default function DocumentCenter({ records, filters, filterOptions, mode, 
         <PageHeader
             eyebrow="Organized municipal records"
             title="Document Center"
-            description="Browse authorized municipal records by category, office, status and date. Attached files remain available as a secondary archive."
+            description="Search the authorized record index here. Open Attached Files to retrieve uploaded documents; record metadata is not itself a PDF."
             icon={LibraryBig}
         />
 
@@ -77,7 +77,7 @@ export default function DocumentCenter({ records, filters, filterOptions, mode, 
         </nav>
 
         {mode === 'files' ? <DocumentArchive archive={archive} /> : <div className="r8-documents dc-workspace">
-            <details className="document-center-collections"><summary>Collections &amp; workspaces</summary><DocumentCollectionNav collections={filterOptions.recordTypes} current={filters.record_type} onSelect={changeCollection} workspaces={workspaces} /></details>
+            <details className="document-center-collections"><summary>Record filters and related workspaces</summary><DocumentCollectionNav collections={filterOptions.recordTypes} current={filters.record_type} onSelect={changeCollection} workspaces={workspaces} /></details>
             <div className="dc-main">
                 <form onSubmit={submit} className="dc-toolbar" aria-label="Document search and filters">
                     <div className="dc-toolbar-row"><PortalSearchField label="Search authorized records" placeholder="Search reference, title, office or person" maxLength={160} value={draft.search} onChange={(event) => setDraft({ ...draft, search: event.target.value })} onClear={draft.search ? () => setDraft({ ...draft, search: '' }) : undefined} />
