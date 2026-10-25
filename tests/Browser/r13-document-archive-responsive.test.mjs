@@ -14,10 +14,16 @@ test('archive toolbar stays single-column at 1024px alongside the expanded sideb
     assert.equal(columnToken, 'xl:grid-cols-[minmax(260px,2fr)_repeat(4,minmax(120px,1fr))_auto]');
     assert.equal(alignmentToken, 'xl:items-end');
     assert.doesNotMatch(toolbar, /(?:^|\s)lg:(?:grid-cols-|items-end)/);
-    for (const width of [390, 768, 1024, 1280, 1440]) {
-        const wideToolbarEnabled = width >= 1280; // Tailwind xl breakpoint
-        assert.equal(width >= 1280, wideToolbarEnabled);
-        if (width === 1024) assert.ok(!wideToolbarEnabled, 'six columns may not start at 1024');
+    const breakpoints = { sm: 640, md: 768, lg: 1024, xl: 1280, '2xl': 1536 };
+    const activeAt = (token, width) => {
+        const prefix = token.split(':', 1)[0];
+        assert.ok(Object.hasOwn(breakpoints, prefix), 'unknown responsive prefix: ' + prefix);
+        return width >= breakpoints[prefix];
+    };
+    const expected = new Map([[390, false], [768, false], [1024, false], [1280, true], [1440, true]]);
+    for (const [width, expectedWide] of expected) {
+        assert.equal(activeAt(columnToken, width), expectedWide, 'grid width ' + width);
+        assert.equal(activeAt(alignmentToken, width), expectedWide, 'alignment width ' + width);
     }
 });
 
