@@ -46,6 +46,14 @@ export default function PortalSidebar({
     }, [currentUrl]);
     const navigationUrl = currentUrl.split('#')[0] + hash;
     const compact = !mobile && collapsed;
+    useEffect(() => {
+        setCompactTooltip(null);
+    }, [compact, currentUrl]);
+    useEffect(() => {
+        const dismiss = () => setCompactTooltip(null);
+        window.addEventListener('resize', dismiss);
+        return () => window.removeEventListener('resize', dismiss);
+    }, []);
     const position = user?.employee?.position;
     const department = user?.employee?.department?.name;
     const secondaryIdentity = position || department;
@@ -60,17 +68,20 @@ export default function PortalSidebar({
     };
 
     return (
-        <div className={`portal-sidebar flex h-full flex-col bg-white text-slate-800 ${compact ? 'portal-sidebar--compact' : 'portal-sidebar--expanded'} ${mobile ? 'portal-sidebar--mobile' : ''}`}>
+        <div
+            className={`portal-sidebar flex h-full flex-col bg-white text-slate-800 ${compact ? 'portal-sidebar--compact' : 'portal-sidebar--expanded'} ${mobile ? 'portal-sidebar--mobile' : ''}`}
+            onKeyDown={(event) => { if (event.key === 'Escape') setCompactTooltip(null); }}
+        >
             <div className={`portal-sidebar-header border-b border-slate-200 ${compact ? 'px-2 py-3' : 'px-4 py-4'}`}>
                 <div className={compact ? 'flex justify-center' : undefined}>
                     <MunicipalBrand compact iconOnly={compact} />
                 </div>
 
                 {mobile ? (
-                    <div className="portal-sidebar-subtitle mt-3 text-xs text-slate-600">Workspace</div>
+                    <div className="portal-sidebar-subtitle mt-3 text-xs text-slate-600">Intra-office workspace</div>
                 ) : (
                     <div className={`mt-3 flex items-center ${compact ? 'justify-center' : 'justify-between gap-3'}`}>
-                        {!compact && <div className="portal-sidebar-subtitle text-xs text-slate-600">Workspace</div>}
+                        {!compact && <div className="portal-sidebar-subtitle text-xs text-slate-600">Intra-office workspace</div>}
                         <button
                             type="button"
                             onClick={onToggleCollapsed}
@@ -181,7 +192,7 @@ export default function PortalSidebar({
                                                             onNavigate?.();
                                                             if (typeof window !== 'undefined' && window.location.pathname === '/dashboard') {
                                                                 const el = document.getElementById('personal-tasks');
-                                                                el?.scrollIntoView({ behavior: 'smooth' });
+                                                                el?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
                                                                 el?.focus();
                                                             }
                                                         }}
@@ -214,12 +225,12 @@ export default function PortalSidebar({
                         );
                     })}
                 </div>
+            </nav>
+
                 {!compact && <div className="portal-sidebar-civic-note">
                     {user?.employee?.department?.code && <span className="portal-sidebar-office-badge">{user.employee.department.code}</span>}
                     <p>Smart Planning.<br />Strong Coordination.<br /><strong>One Talibon.</strong></p>
                 </div>}
-            </nav>
-
             {compact && compactTooltip && (
                 <div
                     id="portal-sidebar-link-hint"
