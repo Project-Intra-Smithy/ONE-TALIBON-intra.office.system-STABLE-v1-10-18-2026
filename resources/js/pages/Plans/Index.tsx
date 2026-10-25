@@ -97,7 +97,7 @@ export default function PlansIndex() {
         <AppLayout title="LGU Plans Library">
             <PageFrame width="wide" density="compact" className="ot-r6-modules ot-r6-plans r8-plans">
                 <PageHeader eyebrow="Municipality of Talibon · Planning references" title="LGU Plans Library" description="Browse planning references by code, coverage, status, and lead office." icon={ClipboardList} />
-                <div className="r8-plans-notice" role="note"><strong>Reference library only.</strong> Records shown here are not validated live municipal approvals. Covers are illustrative graphics, not scanned or certified documents.</div>
+                <div className="r8-plans-notice" role="note"><strong>Presentation reference catalog, not certified plans.</strong> These examples do not establish municipal adoption, official status or signed PDFs. Select a plan to inspect its sample metadata; actual document versions and PDF viewing are unavailable until authorized files are registered.</div>
                 <PlanFilterBar filters={filters} leadOffices={leadOffices} resultCount={filteredPlans.length} onChange={(nextFilters) => { setFilters(nextFilters); setSelectedPlanId(null); }} />
                 <section aria-label="Plans library" className="ot-r6-plan-grid r8-plans-grid grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                     {filteredPlans.map((plan) => <PlanCard key={plan.id} plan={plan} selected={selectedPlanId === plan.id} onSelect={() => setSelectedPlanId(plan.id)} />)}
@@ -138,14 +138,19 @@ export default function PlansIndex() {
                             <button ref={closeButtonRef} type="button" onClick={closePlanDetails} className="min-h-11 shrink-0 rounded-md px-3 text-xs font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" aria-label={`Close details for ${selectedPlan.code}`}>Close</button>
                         </header>
 
+                        <section aria-label="Plan document availability" className="m-3 rounded-lg border border-amber-300 bg-amber-50 p-3 text-xs leading-5 text-amber-950 dark:border-amber-700 dark:bg-amber-950/30 dark:text-amber-100 sm:m-4">
+                            <strong className="block">No verified PDF or edition history is attached to this sample.</strong>
+                            A planning reference number does not confirm a stored file, adoption, or approval. Do not use this sample as an official municipal record.
+                            <a href="/documents?mode=files" className="mt-2 block w-fit font-semibold underline underline-offset-2">Browse authorized attached files (separate search)</a>
+                        </section>
                         <dl className="grid gap-x-5 gap-y-2.5 p-3 text-[13px] leading-5 sm:grid-cols-2 sm:p-4">
                             {[
                                 ['Planning horizon', selectedPlan.horizon],
                                 ['Lead office', selectedPlan.leadOffice],
                                 ['Coverage', selectedPlan.coverageStart === selectedPlan.coverageEnd ? String(selectedPlan.coverageStart) : `${selectedPlan.coverageStart} - ${selectedPlan.coverageEnd}`],
-                                ['Recorded status', selectedPlan.status],
+                                ['Illustrative status (unverified)', selectedPlan.status],
                                 ['Document reference', selectedPlan.documentRef],
-                                ['Authority / adoption', selectedPlan.authority],
+                                ['Example authority note (not validated)', selectedPlan.authority],
                                 ['Next milestone', `${selectedPlan.nextMilestone} / ${selectedPlan.nextMilestoneDate}`],
                                 ['Required action', selectedPlan.requiredAction],
                                 ['Coordinating offices', selectedPlan.coordinatingOffices.join('; ')],
