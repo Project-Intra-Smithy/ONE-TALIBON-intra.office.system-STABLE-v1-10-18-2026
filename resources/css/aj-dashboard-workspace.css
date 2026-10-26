@@ -1,0 +1,190 @@
+/* #17: presentation scoped to this Dashboard; shell and task internals stay owned
+ * by their existing packages. Loaded after the historical R7 composition. */
+.aj-dashboard.ot-reference-dashboard.r7-dashboard {
+    gap: 28px;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+.aj-dashboard.r7-dashboard .r7-civic-hero.ot-dashboard-hero {
+    padding: 32px;
+    min-height: 200px;
+    border: 1px solid var(--municipal-border);
+    border-radius: 16px;
+    background: var(--municipal-surface, #fff) !important;
+    box-shadow: 0 8px 32px -20px rgb(20 63 45 / 25%);
+}
+.aj-dashboard.r7-dashboard .ot-dashboard-hero::before,
+.aj-dashboard.r7-dashboard .ot-dashboard-hero::after { content: none; }
+.aj-dashboard.r7-dashboard .ot-dashboard-hero-copy { max-width: 70%; }
+.aj-dashboard.r7-dashboard .ot-dashboard-hero h1 {
+    color: var(--municipal-text);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    line-height: 1.2;
+}
+.aj-dashboard.r7-dashboard .ot-dashboard-hero :is(.ot-dashboard-hero-description, .ot-dashboard-hero-context, .ot-dashboard-hero-eyebrow) {
+    color: var(--municipal-muted);
+    font-size: .9375rem;
+    line-height: 1.6;
+    font-style: normal;
+    letter-spacing: normal;
+    margin-top: 12px;
+}
+.aj-dashboard.r7-dashboard .ot-dashboard-toolbar {
+    gap: 20px;
+    flex-wrap: wrap;
+    padding-block: 4px;
+}
+.aj-dashboard.r7-dashboard .ot-dashboard-jumps a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 16px;
+    font-size: .9375rem;
+    white-space: normal;
+}
+.aj-dashboard.r7-dashboard .r7-upper-grid,
+.aj-dashboard.r7-dashboard .r7-lower-grid,
+.aj-dashboard.r7-dashboard .ot-dashboard-secondary-metrics {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+}
+.aj-dashboard.r7-dashboard .r7-panel {
+    height: auto;
+    min-height: 0;
+    grid-column: 1;
+    border-radius: 14px;
+    border-color: var(--municipal-border);
+    box-shadow: 0 4px 24px -16px rgb(20 63 45 / 25%);
+}
+.aj-dashboard.r7-dashboard .r7-section-kicker {
+    padding: 24px 28px 16px;
+    background: var(--municipal-surface);
+    color: var(--municipal-text);
+    font-size: 1.25rem;
+    line-height: 1.4;
+    text-transform: none;
+    letter-spacing: normal;
+}
+.aj-dashboard.r7-dashboard .r7-section-kicker svg { color: var(--municipal-brand); }
+.aj-dashboard.r7-dashboard .r7-panel .ot-dashboard-scroll-region {
+    max-height: none;
+    overflow: visible;
+    scrollbar-gutter: auto;
+}
+.aj-dashboard.r7-dashboard .r7-top-summary .workspace-metrics {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: auto;
+    gap: 0;
+    padding: 0 28px;
+}
+.aj-dashboard.r7-dashboard .r7-top-summary .workspace-metric {
+    display: grid;
+    grid-template-columns: 6rem minmax(0, 1fr);
+    align-items: center;
+    gap: 12px 24px;
+    padding: 24px 0;
+    border: 0;
+    border-bottom: 1px solid var(--municipal-border);
+    border-radius: 0;
+    background: transparent;
+}
+.aj-dashboard.r7-dashboard .r7-top-summary .workspace-metric > div:first-child {
+    grid-area: auto;
+    font-size: 2rem;
+    line-height: 1.2;
+}
+.aj-dashboard.r7-dashboard .r7-top-summary .workspace-metric > div:nth-child(2) {
+    grid-area: auto;
+    margin: 0;
+    padding-right: 24px;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+.aj-dashboard.r7-dashboard .r7-top-summary .workspace-count-track {
+    grid-column: 2;
+    grid-row: auto;
+    height: 8px;
+    margin: 0;
+}
+.aj-dashboard.r7-dashboard .r7-top-summary .municipal-panel > p {
+    padding: 20px 28px 28px;
+    font-size: .9375rem;
+    line-height: 1.6;
+}
+.aj-dashboard.r7-dashboard .r7-top-work .municipal-panel > div:first-child {
+    padding: 0 28px 16px;
+    border: 0;
+}
+/* Outer heading supplies the title; keep the explanatory text visible. */
+.aj-dashboard.r7-dashboard .r7-top-work .municipal-panel > div:first-child h2 { display: none; }
+.aj-dashboard.r7-dashboard .r7-top-work article,
+.aj-dashboard.r7-dashboard .r7-top-activity .ot-dashboard-scroll-region > :is(a, article, p) {
+    padding: 24px 28px;
+}
+.aj-dashboard.r7-dashboard .r7-top-activity .ot-dashboard-scroll-region :is(a, article) :is(div.font-semibold, p) {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+.aj-dashboard.r7-dashboard .r7-top-activity .ot-dashboard-scroll-region :is(a, article) .text-sm {
+    font-size: .875rem;
+    line-height: 1.6;
+}
+.aj-dashboard.r7-dashboard .r7-lower-grid > * { grid-column: 1; grid-row: auto; }
+.aj-dashboard.r7-dashboard .r7-lower-card:not(.r7-lower-tasks) {
+    border-radius: 14px;
+}
+.aj-dashboard.r7-dashboard .r7-evidence-card .r7-lower-title,
+.aj-dashboard.r7-dashboard .r7-lower-links .r7-lower-title {
+    padding: 24px 28px 16px;
+    font-size: 1.25rem;
+    text-transform: none;
+    background: var(--municipal-surface);
+    color: var(--municipal-text);
+}
+.aj-dashboard.r7-dashboard .r7-evidence-body { padding: 16px 28px 28px; }
+.aj-dashboard.r7-dashboard .r7-evidence-body :is(p, span) { font-size: 1rem; line-height: 1.6; }
+.aj-dashboard.r7-dashboard .r7-lower-links .r7-links-tiles {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 16px;
+}
+.aj-dashboard.r7-dashboard .r7-lower-links .r7-links-tile { padding: 20px; min-height: 100px; }
+.aj-dashboard.r7-dashboard .r7-lower-links .r7-links-tile .r7-links-label { font-size: 1rem; }
+.aj-dashboard.r7-dashboard .r7-upper :is(a, button):focus-visible {
+    outline: 3px solid var(--municipal-focus);
+    outline-offset: -3px;
+}
+.aj-dashboard.r7-dashboard .r7-upper a { transition: background-color 180ms ease; }
+@supports (backdrop-filter: blur(12px)) {
+    .aj-dashboard.r7-dashboard .r7-civic-hero.ot-dashboard-hero {
+        background: color-mix(in srgb, var(--municipal-surface) 94%, transparent) !important;
+        backdrop-filter: blur(12px);
+    }
+}
+@media (max-width: 640px) {
+    .aj-dashboard.r7-dashboard { gap: 20px; }
+    .aj-dashboard.r7-dashboard .r7-civic-hero.ot-dashboard-hero { padding: 24px; }
+    .aj-dashboard.r7-dashboard .ot-dashboard-hero-copy { max-width: 100%; }
+    .aj-dashboard.r7-dashboard .r7-section-kicker { padding: 24px 20px 12px; }
+    .aj-dashboard.r7-dashboard .r7-top-summary .workspace-metrics { padding-inline: 20px; }
+    .aj-dashboard.r7-dashboard .r7-top-summary .workspace-metric { grid-template-columns: 4rem minmax(0, 1fr); gap: 12px; }
+    .aj-dashboard.r7-dashboard .r7-top-work article,
+    .aj-dashboard.r7-dashboard .r7-top-activity .ot-dashboard-scroll-region > :is(a, article, p) { padding: 24px 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .aj-dashboard.r7-dashboard .r7-upper a { transition: none; }
+}
+@media (forced-colors: active) {
+    .aj-dashboard.r7-dashboard .r7-panel { border-color: CanvasText; }
+    .aj-dashboard.r7-dashboard .r7-upper :is(a, button):focus-visible { outline-color: Highlight; }
+}
+
+.aj-dashboard.r7-dashboard .ot-dashboard-jumps { flex-wrap: wrap; overflow: visible; gap: 10px; }
+.aj-dashboard.r7-dashboard .r7-links-content { padding: 12px 24px 24px; }
+.aj-dashboard.r7-dashboard .workspace-count-track { background: var(--municipal-border); }
+.aj-dashboard.r7-dashboard .r7-civic-hero__ring,
+.aj-dashboard.r7-dashboard .r7-civic-hero__art-line { display: none; }
+.aj-dashboard.r7-dashboard .ot-dashboard-correspondence > .grid { grid-template-columns: minmax(0, 1fr); }
+.aj-dashboard.r7-dashboard .ot-dashboard-correspondence a { min-height: 44px; }
+.aj-dashboard.r7-dashboard .ot-dashboard-correspondence .truncate { white-space: normal; overflow: visible; }

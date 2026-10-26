@@ -163,7 +163,7 @@ export default function DocumentArchive({ archive }: { archive: ArchiveWorkspace
     const selected = archive.selected;
 
     return (
-        <div className="space-y-3">
+        <div className="r8-document-archive space-y-3">
             <section aria-labelledby="archive-scope-heading">
                 <div className="mb-1.5 flex items-center justify-between gap-3">
                     <h2 id="archive-scope-heading" className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Archive scope</h2>

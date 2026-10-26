@@ -1,3 +1,4 @@
+import '../../../css/aj-page-workspace.css';
 import { Link, router } from '@inertiajs/react';
 import { BriefcaseBusiness, Plus, Search, X } from 'lucide-react';
 import { type FormEvent, useEffect, useState } from 'react';
@@ -82,7 +83,7 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
 
     return (
         <AppLayout title="My Work">
-            <PageFrame>
+            <PageFrame className="aj-page-workspace" density="comfortable">
                 <PageHeader
                     eyebrow="Daily work queues"
                     title="My Work"
@@ -103,7 +104,7 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
                     <span><span className="font-semibold text-slate-700 dark:text-slate-200">{currentTitle}</span> · {currentQueue?.count ?? records.total} item{(currentQueue?.count ?? records.total) === 1 ? '' : 's'}</span>
                 </div>
 
-                <PersonalTaskWorkspace />
+                <div className="aj-preserved-task"><PersonalTaskWorkspace /></div>
                 <h2 className="mt-5 text-base font-bold text-slate-900 dark:text-white">Work Requests</h2>
                 <WorkScopeTabs groups={scopeGroups} currentView={currentView} onSelect={selectView} />
 

@@ -1,3 +1,4 @@
+import '../../../css/aj-document-workspace.css';
 import '../../../css/document-center.css';
 import '../../../css/r8-documents.css';
 import { Link, router, usePage } from '@inertiajs/react';
@@ -52,7 +53,7 @@ export default function DocumentCenter({ records, filters, filterOptions, mode, 
         filters.date_to ? 'To: ' + filters.date_to : '',
     ].filter(Boolean);
 
-    return <AppLayout title="Document Center"><PageFrame width="wide" density="compact">
+    return <AppLayout title="Document Center"><PageFrame width="wide" density="comfortable" className="aj-documents">
         <PageHeader
             eyebrow="Organized municipal records"
             title="Document Center"
@@ -63,12 +64,14 @@ export default function DocumentCenter({ records, filters, filterOptions, mode, 
         <nav className="r8-documents-modes municipal-panel flex w-fit items-center gap-1 p-1" aria-label="Document Center mode">
             <Link
                 href="/documents?mode=records"
+                aria-current={mode === 'records' ? 'page' : undefined}
                 className={`inline-flex min-h-9 items-center gap-1.5 rounded-md px-3 text-xs font-bold ${mode === 'records' ? 'bg-[var(--municipal-brand)] text-white' : 'text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
             >
                 <LibraryBig size={14} aria-hidden="true" /> Archive Overview
             </Link>
             <Link
                 href="/documents?mode=files"
+                aria-current={mode === 'files' ? 'page' : undefined}
                 className={`inline-flex min-h-9 items-center gap-1.5 rounded-md px-3 text-xs font-bold ${mode === 'files' ? 'bg-[var(--municipal-brand)] text-white' : 'text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
             >
                 <FileArchive size={14} aria-hidden="true" /> Attached Files

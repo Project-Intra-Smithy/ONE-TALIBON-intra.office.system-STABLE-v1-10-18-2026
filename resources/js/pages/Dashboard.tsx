@@ -17,6 +17,7 @@ import '../../css/r7-hero-fidelity.css';
 import '../../css/r7-lower-evidence.css';
 import '../../css/r7-task-panel.css';
 import '../../css/r7-shortcuts-responsive.css';
+import '../../css/aj-dashboard-workspace.css';
 
 export default function Dashboard({ experience, metricGroups, correspondenceOverview, recentWork, officeOverview, executiveOverview, systemOverview }: DashboardProps) {
     if (!experience?.department || !Array.isArray(experience.quickActions)
@@ -32,7 +33,7 @@ export default function Dashboard({ experience, metricGroups, correspondenceOver
     const isAdmin = experience.key === 'system_administration';
 
     return <AppLayout workspaceRefinement title="Dashboard">
-        <div className="ot-reference-dashboard r7-dashboard mx-auto max-w-[1480px]">
+        <div className="aj-dashboard ot-reference-dashboard r7-dashboard mx-auto max-w-[1480px]">
             <DashboardHeader experience={experience} />
             <div className="ot-dashboard-toolbar">
                 <nav className="ot-dashboard-jumps workspace-shortcuts" aria-label="Jump to work section">

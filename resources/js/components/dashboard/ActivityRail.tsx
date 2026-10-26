@@ -23,9 +23,20 @@ export default function ActivityRail({ system }: Props) {
                     <p className="mt-1 text-base leading-6 text-slate-600 dark:text-slate-300">{event.summary}</p>
                     <div className="mt-2 text-sm text-slate-500 dark:text-slate-400">{event.actor || 'System'} · {humanize(event.outcome)}</div>
                     <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">{formatDate(event.createdAt)}</div>
-                </article>) : notifications.map((item) => <Link key={item.key} href={item.url} className="flex gap-3 px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800">
-                    <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${item.urgent ? 'bg-rose-500' : 'bg-blue-500'}`} aria-hidden="true" />
-                    <div className="min-w-0"><div className="text-base font-semibold">{item.title}</div><p className="mt-1 break-words text-base leading-6 text-slate-600 dark:text-slate-300">{item.message}</p><div className="mt-2 text-sm text-slate-500 dark:text-slate-400">{item.urgent && <span className="mr-2 font-semibold text-rose-700 dark:text-rose-300">For action</span>}{formatDate(item.created_at)}</div></div>
+                </article>) : notifications.map((item) => <Link key={item.key} href={item.url} className="aj-activity-row flex gap-3 px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800">
+                    <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${item.urgent ? 'bg-rose-500' : 'bg-emerald-600'}`} aria-hidden="true" />
+                    <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                            <h3 className="text-base font-semibold">{item.title}</h3>
+                            {item.read_url && <span className="text-sm font-semibold text-emerald-800 dark:text-emerald-200">Unread</span>}
+                        </div>
+                        <p className="mt-3 break-words text-base leading-7 text-slate-600 dark:text-slate-300">{item.message}</p>
+                        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-600 dark:text-slate-300">
+                            {item.requires_acknowledgement ? <span className="font-semibold">Acknowledgement required</span> : item.urgent && <span className="font-semibold text-rose-700 dark:text-rose-300">For action</span>}
+                            <time dateTime={item.created_at || undefined}>{formatDate(item.created_at)}</time>
+                            <span className="font-semibold text-emerald-800 dark:text-emerald-200">Open record <span aria-hidden="true">&rarr;</span></span>
+                        </div>
+                    </div>
                 </Link>)}
                 {(system ? system.security.recentEvents.length === 0 : notificationState === 'current' && notifications.length === 0) && <p className="px-4 py-7 text-center text-base leading-6 text-slate-500 dark:text-slate-400">{system ? 'No recent security events.' : 'No recent notifications.'}</p>}
             </DashboardScrollRegion>

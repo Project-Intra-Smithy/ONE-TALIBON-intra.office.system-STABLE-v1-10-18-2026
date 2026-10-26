@@ -1,3 +1,5 @@
+import '../../../css/aj-page-workspace.css';
+import '../../../css/aj-registry-workspace.css';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ArrowRight, CalendarDays, FileCheck2, MapPin, Plus, Search, Users, X } from 'lucide-react';
 import { type FormEvent, useEffect, useState } from 'react';
@@ -90,7 +92,7 @@ export default function Index({ travelOrders, filters, filterOptions, canRecordA
 
     return (
         <AppLayout title="Approved Travel Orders">
-            <div className="mx-auto max-w-7xl space-y-4 sm:space-y-6">
+            <div className="aj-page-workspace aj-registry-workspace mx-auto max-w-7xl space-y-4 sm:space-y-6">
                 <PageHeader eyebrow="Official post-approval registry" title="Approved Travel Orders" icon={FileCheck2}
                     description="Locate official approved travel records you are authorized to see."
                     aside={canRecordApproved && (
@@ -139,7 +141,7 @@ export default function Index({ travelOrders, filters, filterOptions, canRecordA
                     </div>
                     <div className="divide-y divide-slate-100 dark:divide-slate-700">
                         {travelOrders.data.map((order) => (
-                            <article key={order.publicId} className="px-4 py-4 sm:px-5">
+                            <article key={order.publicId} className="aj-registry-row px-4 py-4 sm:px-5">
                                 <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(460px,1fr)_auto] lg:items-start">
                                     <div className="min-w-0">
                                         <div className="flex flex-wrap items-center gap-2">

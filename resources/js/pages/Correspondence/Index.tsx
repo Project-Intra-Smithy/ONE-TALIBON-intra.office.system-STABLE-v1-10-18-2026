@@ -1,3 +1,4 @@
+import '../../../css/aj-page-workspace.css';
 import { Link, router } from '@inertiajs/react';
 import { AlertTriangle, ArrowRight, Building2, Clock3, Inbox, Search, UserRound, X } from 'lucide-react';
 import { type FormEvent, useState } from 'react';
@@ -104,7 +105,7 @@ export default function CorrespondenceIndex({ records, filters, filterOptions, w
 
     return (
         <AppLayout title="Correspondence">
-            <PageFrame>
+            <PageFrame className="aj-page-workspace" density="comfortable">
                 <PageHeader
                     eyebrow="Municipal inbox and routing"
                     title="Correspondence"

@@ -23,7 +23,9 @@ test('R4 panel treatment is explicitly scoped to dashboard and does not alter so
     assert.match(css, /\.ot-reference-dashboard \.ot-dashboard-panel-heading/);
     assert.match(css, /\.ot-reference-dashboard \.ot-dashboard-metrics \.workspace-metric/);
     assert.doesNotMatch(css, /(?:^|\n)\s*(?:body|html|:root|\*|\.municipal-panel)\s*\{/);
-    assert.match(upper, /<RecentWorkList\s+compact/);
+    // #17 deliberately uses the existing expanded variant, preserving all work metadata.
+    assert.match(upper, /<RecentWorkList\s+title=/);
+    assert.match(upper, /items=\{recentWork\}/);
     assert.match(upper, /<ActivityRail system=/);
     assert.match(upper, /groups\.map\(/);
     assert.match(dashboard, /secondaryGroups\.map\(/);
