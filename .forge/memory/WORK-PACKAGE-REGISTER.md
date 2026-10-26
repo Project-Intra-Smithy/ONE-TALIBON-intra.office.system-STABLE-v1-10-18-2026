@@ -472,6 +472,8 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 
 ## START PROPOSAL / OT-AJ-FULL-UI-20261026 / 2026-10-26
 
+**Resumed page-batch checkpoint (2026-10-26):** Preserved Dashboard e30523a, receiving-office 2e6aa64, notifications 75617a6, Calendar 35824be and Document Center 1961f70. AJ/Codex continued the five Work Requests/Correspondence/Memoranda/Employee/Office directory consumers and Municipal Offices row/branch design on the same feature branch and draft PR18. [Implementation and evidence](../../docs/engineering/OT-AJ-FULL-UI-IMPLEMENTATION.md). Notification actor/action projection dependency remains backend-owned; remaining page batches and HRIS/auth/public ownership gates remain open. Next owner AJ: review this exact draft candidate, then the next bounded page batch. No CLOSE, independent CI/QA, Kirch acceptance, merge or deployment.
+
 **2026-10-26 checkpoint:** Historical proposal HOLD below is superseded by canonical START `825c814d2995a58a997123cbf5ada04646b05827` and [issue17 crosslink](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/issues/17#issuecomment-6411666979). Dashboard implementation/checks: [batch report](../../docs/engineering/OT-AJ-FULL-UI-IMPLEMENTATION.md). AJ remains human owner; next action Calendar then Document Center on existing feature branch/PR18. No CI/QA/Kirch acceptance, merge or deployment.
 
 - Owner: AJ Rienze (@azinamouto), Codex-assisted; Kirch acceptance. [Owning START issue #17](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/issues/17).

@@ -34,7 +34,7 @@ export default function ActivityRail({ system }: Props) {
                         <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-600 dark:text-slate-300">
                             {item.requires_acknowledgement ? <span className="font-semibold">Acknowledgement required</span> : item.urgent && <span className="font-semibold text-rose-700 dark:text-rose-300">For action</span>}
                             <time dateTime={item.created_at || undefined}>{formatDate(item.created_at)}</time>
-                            <span className="font-semibold text-emerald-800 dark:text-emerald-200">Open record <span aria-hidden="true">?</span></span>
+                            <span className="font-semibold text-emerald-800 dark:text-emerald-200">Open record <span aria-hidden="true">&rarr;</span></span>
                         </div>
                     </div>
                 </Link>)}

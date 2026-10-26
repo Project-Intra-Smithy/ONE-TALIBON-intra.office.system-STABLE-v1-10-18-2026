@@ -1,3 +1,4 @@
+import '../../../css/aj-page-workspace.css';
 import '../../../css/ot-r6-modules.css';
 import '../../../css/r8-directory.css';
 import { useState } from 'react';
@@ -80,7 +81,7 @@ export default function Index({ departments, summary, directoryEntries, director
     const visible = filterDirectoryEntries(entries, search, group);
     const groupedVisible = groupDirectoryEntries(visible, groups);
     if (directoryEntries != null) return <AppLayout title="Office Directory">
-        <PageFrame className="ot-r6-modules ot-r6-departments r8-directory" density="compact">
+        <PageFrame className="ot-r6-modules ot-r6-departments r8-directory aj-page-workspace" density="comfortable">
             <PageHeader eyebrow="One Talibon · Reference directory" title="Office Directory"
                 description="Browse the supplied municipal office reference catalog by office, responsibility or group. Entries remain subject to LGU validation." icon={Building2}/>
             <section className="r8-directory-intro" aria-label="Directory scope">
@@ -161,23 +162,20 @@ export default function Index({ departments, summary, directoryEntries, director
     const legislative = departments.filter((office) => office.branch === 'legislative');
 
     const officeCard = (office: Office) => (
-        <article key={office.id} className="municipal-panel ot-r6-live-office-card r8-directory-live-card min-w-0 p-3 transition-colors hover:border-[var(--municipal-brand)] sm:p-4">
-            <div className="flex items-start gap-3">
-                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${office.is_executive ? 'bg-[var(--municipal-brand)] text-white' : office.is_legislative ? 'bg-indigo-50 text-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-200' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200'}`}>
-                    {office.is_executive ? <Crown size={17} aria-hidden="true" /> : office.is_legislative ? <Gavel size={17} aria-hidden="true" /> : <Building2 size={17} aria-hidden="true" />}
-                </div>
-                <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                        <span className="rounded-md bg-slate-100 px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-slate-600 dark:bg-slate-800 dark:text-slate-200">{office.code}</span>
-                        <span className="break-words text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-400">{officeTypeLabel(office.office_type)}</span>
-                    </div>
-                    <h2 className="mt-2 break-words text-sm font-bold leading-5 text-slate-950 dark:text-slate-100 sm:text-base">{office.name}</h2>
-                    {office.short_name && office.short_name !== office.name ? <div className="mt-0.5 break-words text-xs text-slate-500 dark:text-slate-400 sm:text-xs">{office.short_name}</div> : null}
+        <article key={office.id} className="aj-office-row ot-r6-live-office-card">
+            <div className="aj-office-identity">
+                <span className="aj-office-mark" aria-hidden="true">
+                    {office.is_executive ? <Crown size={24} /> : office.is_legislative ? <Gavel size={24} /> : <Building2 size={24} />}
+                </span>
+                <div className="min-w-0">
+                    <p className="aj-office-kind">{office.code} <span aria-hidden="true">/</span> {officeTypeLabel(office.office_type)}</p>
+                    <h3>{office.name}</h3>
+                    {office.short_name && office.short_name !== office.name && <p className="aj-office-short-name">{office.short_name}</p>}
                 </div>
             </div>
-            <dl className="mt-4 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3 dark:border-slate-700">
-                <div><dt className="text-xs font-bold uppercase tracking-wide text-slate-400 dark:text-slate-400">Active employees</dt><dd className="mt-1 text-lg font-bold text-slate-950 dark:text-slate-100">{office.active_employees_count}</dd></div>
-                <div><dt className="text-xs font-bold uppercase tracking-wide text-slate-400 dark:text-slate-400">Active work</dt><dd className="mt-1 text-lg font-bold text-slate-950 dark:text-slate-100">{office.active_transactions_count}</dd></div>
+            <dl className="aj-office-counts">
+                <div><dt>Active employees</dt><dd>{office.active_employees_count}</dd></div>
+                <div><dt>Active work</dt><dd>{office.active_transactions_count}</dd></div>
             </dl>
         </article>
     );
@@ -191,7 +189,7 @@ export default function Index({ departments, summary, directoryEntries, director
     ];
 
     return <AppLayout title="Municipal Offices">
-        <PageFrame className="ot-r6-modules ot-r6-departments r8-directory" density="compact">
+        <PageFrame className="ot-r6-modules ot-r6-departments r8-directory aj-page-workspace" density="comfortable">
             <PageHeader
                 eyebrow="Municipal operating structure"
                 title="Municipal Offices"
@@ -199,30 +197,26 @@ export default function Index({ departments, summary, directoryEntries, director
                 icon={Building2}
             />
 
-            <section aria-label="Municipal office summary" className="r8-directory-summary grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
-                {summaryItems.map(({ label, value, icon: Icon }) => (
-                    <div key={label} className="municipal-stat r8-directory-stat">
-                        <Icon className="text-[var(--municipal-brand)]" size={17} aria-hidden="true" />
-                        <div className="mt-2 text-xl font-bold text-slate-950 dark:text-slate-100 sm:text-2xl">{value}</div>
-                        <div className="mt-0.5 break-words text-xs font-semibold leading-4 text-slate-500 dark:text-slate-400 sm:text-xs">{label}</div>
-                    </div>
+            <dl aria-label="Municipal office summary" className="aj-office-statistics">
+                {summaryItems.map(({ label, value }) => (
+                    <div key={label}><dt>{label}</dt><dd>{value.toLocaleString()}</dd></div>
                 ))}
-            </section>
+            </dl>
 
-            <section className="r8-directory-live-group space-y-3" aria-labelledby="executive-offices-heading">
+            <section className="r8-directory-live-group aj-office-branch" aria-labelledby="executive-offices-heading">
                 <div>
                     <div className="text-xs font-bold uppercase tracking-wider text-[var(--municipal-brand)]">Executive and administrative branch</div>
                     <h2 id="executive-offices-heading" className="mt-1 text-lg font-bold text-slate-950 dark:text-slate-100">Offices supporting municipal operations</h2>
                 </div>
-                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{executive.map(officeCard)}</div>
+                <div className="aj-office-list">{executive.map(officeCard)}{executive.length === 0 && <p className="aj-office-empty">No executive or administrative offices supplied.</p>}</div>
             </section>
 
-            <section className="r8-directory-live-group space-y-3" aria-labelledby="legislative-offices-heading">
+            <section className="r8-directory-live-group aj-office-branch" aria-labelledby="legislative-offices-heading">
                 <div>
                     <div className="text-xs font-bold uppercase tracking-wider text-[var(--municipal-brand)]">Legislative branch</div>
                     <h2 id="legislative-offices-heading" className="mt-1 break-words text-lg font-bold text-slate-950 dark:text-slate-100">Vice Mayor, Sangguniang Bayan, and legislative support</h2>
                 </div>
-                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{legislative.map(officeCard)}</div>
+                <div className="aj-office-list">{legislative.map(officeCard)}{legislative.length === 0 && <p className="aj-office-empty">No legislative offices supplied.</p>}</div>
             </section>
 
             <div className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-[13px] leading-5 text-slate-600 transition-colors dark:border-slate-700 dark:bg-[#142236] dark:text-slate-300 sm:text-xs">
