@@ -122,13 +122,41 @@ for (const width of [390, 768, 1024, 1280, 1440]) {
                 await page.getByLabel('Target Completion').fill('2026-11-01');
                 await page.getByLabel('Subject').fill('Synthetic request');
                 let payload;
-                await page.route('**/transactions', async route => { payload = route.request().postData(); await route.fulfill({ status: 422, contentType: 'application/json', body: '{}' }); });
+                await page.route('**/transactions', async route => { payload = route.request().postData(); await route.fulfill({ status: 200, contentType: 'application/json', headers: { 'X-Inertia': 'true' }, body: JSON.stringify(pages.get('/transactions/create')) }); });
                 await page.getByRole('button', { name: 'Submit Work Request' }).click();
                 await page.waitForTimeout(200);
                 assert.match(payload, /name="target_department_id"\r\n\r\n27/);
                 assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
                 await combo.fill('office');
+                await page.evaluate(() => window.scrollTo(0, 0));
                 await page.screenshot({ path: `${out}/receiving-office-${width}-${mode}.png`, fullPage: true });
+                assert.deepEqual(errors, []);
+            } finally { await page.close(); }
+        });
+    }
+}
+
+for (const width of [390, 768, 1024, 1280, 1440]) {
+    for (const mode of ['light', 'dark']) {
+        test(`Notification presentation ${width} ${mode}`, async () => {
+            const { page, errors } = await mount(install('dashboard'), width);
+            try {
+                await page.route('**/notifications/feed', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify({
+                    notifications: [
+                        { key: 'platform-1', type: 'transaction', title: 'Transaction approved', message: 'SYNTHETIC-001 ? Coordination request', url: '/transactions/1', read_url: '/notifications/1/read', urgent: true, created_at: '2026-10-26T10:35:00+08:00' },
+                        { key: 'event-2', type: 'transaction', title: 'Transaction routed to your office', message: 'SYNTHETIC-002 ? Supporting documents', url: '/transactions/2', urgent: false, created_at: null },
+                    ], unreadMemoCount: 0, pendingMemo: null,
+                }) }));
+                await page.reload();
+                const rail = page.locator('.r7-top-activity');
+                await rail.getByRole('heading', { name: 'Transaction approved' }).waitFor();
+                await page.evaluate(mode => document.documentElement.classList.toggle('dark', mode === 'dark'), mode);
+                assert.equal(await rail.getByText('Unread', { exact: true }).count(), 1);
+                assert.equal(await rail.locator('a[href="/transactions/1"]').count(), 1);
+                await rail.getByText('SYNTHETIC-001 ? Coordination request').waitFor();
+                await rail.getByText('Not recorded', { exact: true }).waitFor();
+                assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+                await rail.screenshot({ path: `${out}/notifications-${width}-${mode}.png` });
                 assert.deepEqual(errors, []);
             } finally { await page.close(); }
         });
