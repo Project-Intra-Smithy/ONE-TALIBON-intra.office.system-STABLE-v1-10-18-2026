@@ -472,6 +472,8 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 
 ## START PROPOSAL / OT-AJ-FULL-UI-20261026 / 2026-10-26
 
+**2026-10-26 checkpoint:** Historical proposal HOLD below is superseded by canonical START `825c814d2995a58a997123cbf5ada04646b05827` and [issue17 crosslink](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/issues/17#issuecomment-6411666979). Dashboard implementation/checks: [batch report](../../docs/engineering/OT-AJ-FULL-UI-IMPLEMENTATION.md). AJ remains human owner; next action Calendar then Document Center on existing feature branch/PR18. No CI/QA/Kirch acceptance, merge or deployment.
+
 - Owner: AJ Rienze (@azinamouto), Codex-assisted; Kirch acceptance. [Owning START issue #17](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/issues/17).
 - State: SYNC_REQUIRED / HOLD. Branch-only proposal; canonical publication and overlap approval pending. No application code changed.
 - Source: candidate/r8a-r13-w02-w03-integration-preflight-r1@04e188422bbbcb97a13a25426fab8c5d9ae13c4c; verified main 923e19f81692b816c9156475d94020d6ae76f6a6. New isolated branch feat/aj-full-ui-refinement-20261026.
