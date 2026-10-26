@@ -29,3 +29,9 @@ TypeScript, 100 contracts, production browser build and 10 notification browser 
 ## Calendar batch
 
 Preserved the interrupted Calendar edits. Page-scoped spacing, 44px controls, 14px minimum secondary text, wrapped event labels, width-aware existing month agenda/grid and stacked week days at narrow widths. No changes to range/event logic, forms, scheduling or navigation contracts. Dark event contrast corrected after screenshot review. Calendar 10/10 matrix tests PASS: 40 width/theme/view combinations, long titles, focus return, touch controls and overflow. Existing UX rerun sequentially 9/9 PASS; the earlier simultaneous-build asset error is superseded. TypeScript/contracts PASS and production build PASS through browser hooks. No independent QA acceptance.
+
+## Document Center batch
+
+Consumer-only stylesheet and root classes; current Records/Files mode now has aria-current. Search-first toolbar, larger typography/targets, wide rows, inline full metadata, untruncated file names and themed file scope controls. All record/filter/pagination/download logic remains unchanged, including #136-related contracts. No new folder, preview renderer, bulk operation or context-menu capability invented.
+
+10/10 browser matrix PASS (20 records/files width/theme combinations), existing UX 9/9 PASS. Tests verify record selection/deselection, actual GET search keys, unchanged download href, touch target heights and viewport overflow. Screenshot review repaired the historical metadata scroll cap; all fields remain readable. Build passes through browser hooks. Synthetic HTTP evidence does not certify real protected downloads.
