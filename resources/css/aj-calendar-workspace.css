@@ -1,0 +1,56 @@
+/* #17 Calendar-only presentation. Date ranges, views and event actions stay server-owned. */
+.aj-calendar { container: aj-calendar / inline-size; font-size: 1rem; line-height: 1.6; }
+.aj-calendar > .municipal-panel {
+    border-radius: 14px;
+    box-shadow: 0 6px 28px -20px rgb(20 63 45 / 25%);
+}
+.aj-calendar :is(.text-xs, .text-\[11px\], .text-\[10px\]),
+.aj-calendar-dialog .text-xs { font-size: .875rem; line-height: 1.5; }
+#portal-content .aj-calendar :is(button, input, select, a),
+.aj-calendar-dialog :is(button, a) { min-height: 44px; }
+.aj-calendar :is(input, select) { max-width: 100%; font-size: 1rem; }
+.aj-calendar :is(button, a) { transition: background-color 180ms ease, color 180ms ease; }
+.aj-calendar :is(button, a, input, [role="button"]):focus-visible,
+.aj-calendar-dialog :is(button, a):focus-visible { outline: 3px solid var(--municipal-focus); outline-offset: -3px; }
+.aj-calendar :is(h2, h3) { line-height: 1.4; }
+.aj-calendar section[aria-label="Calendar range"] { padding: 24px; }
+.aj-calendar section[aria-label="Calendar schedule"] > div:first-child { padding: 24px 28px; }
+.aj-calendar section[aria-label="Calendar schedule"] h2 { font-size: 1.25rem; }
+.aj-calendar section[aria-label="Calendar schedule"] article { padding: 24px 28px; gap: 24px; }
+.aj-calendar section[aria-label="Calendar schedule"] article > div { overflow-wrap: anywhere; }
+.aj-calendar .aj-calendar-month-grid { display: none; }
+.aj-calendar .aj-calendar-month-agenda { display: block; }
+.aj-calendar .aj-calendar-month-grid [role="button"] { min-height: 152px; padding: 12px; }
+.aj-calendar .aj-calendar-month-grid button {
+    white-space: normal;
+    overflow: visible;
+    overflow-wrap: anywhere;
+    padding: 8px;
+    line-height: 1.5;
+}
+.aj-calendar .aj-calendar-event { padding: 16px; border-radius: 8px; }
+.aj-calendar .aj-calendar-event button { overflow-wrap: anywhere; }
+.aj-calendar .aj-calendar-event button > span:first-child { font-size: 1rem; }
+.dark .aj-calendar .aj-calendar-month-grid button,
+.dark .aj-calendar .aj-calendar-event { background: #183d30; color: #ecfdf5; }
+.dark .aj-calendar .aj-calendar-month-grid button:hover,
+.dark .aj-calendar .aj-calendar-event:hover { background: #245640; color: #fff; }
+.aj-calendar [data-calendar-view="week"] { overflow: visible; }
+.aj-calendar [data-calendar-view="week"] > .grid { min-width: 0; grid-template-columns: minmax(0, 1fr); }
+.aj-calendar [data-calendar-view="week"] > .grid > section { padding: 16px; border-bottom: 1px solid var(--municipal-border); }
+.aj-calendar-dialog :is(h2, p, div) { overflow-wrap: anywhere; }
+.aj-calendar-dialog button[aria-label="Close"] { min-width: 44px; }
+@container aj-calendar (min-width: 960px) {
+    .aj-calendar .aj-calendar-month-grid { display: block; }
+    .aj-calendar .aj-calendar-month-agenda { display: none; }
+    .aj-calendar [data-calendar-view="week"] > .grid { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+    .aj-calendar [data-calendar-view="week"] > .grid > section { padding: 4px; }
+    .aj-calendar [data-calendar-view="week"] .aj-calendar-event { padding: 8px; }
+}
+@media (max-width: 640px) {
+    .aj-calendar section[aria-label="Calendar schedule"] article,
+    .aj-calendar section[aria-label="Calendar schedule"] > div:first-child { padding: 24px 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .aj-calendar :is(button, a), .aj-calendar-dialog :is(button, a) { transition: none; }
+}

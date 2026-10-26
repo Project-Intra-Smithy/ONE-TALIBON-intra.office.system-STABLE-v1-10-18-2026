@@ -109,7 +109,39 @@ for (const width of [390, 768, 1024, 1280, 1440]) {
                     const jump = page.locator('a[href="#work-overview"]');
                     await jump.focus();
                     assert.ok(await jump.evaluate(el => el === document.activeElement && getComputedStyle(el).outlineStyle !== 'none'));
+                    await page.evaluate(() => window.scrollTo(0, 0));
                     await page.screenshot({ path: `${out}/dashboard-${role}-${width}-${mode}.png`, fullPage: true });
+                    assert.deepEqual(errors, []);
+                } finally { await page.close(); }
+            }
+        });
+    }
+}
+
+for (const width of [390, 768, 1024, 1280, 1440]) {
+    for (const mode of ['light', 'dark']) {
+        test(`Calendar views ${width}px ${mode}`, async () => {
+            for (const view of ['month', 'week', 'day', 'schedule']) {
+                const { page, errors } = await mount(install('calendar', 'employee', props => {
+                    props.calendar.view = view;
+                    if (view === 'week') {
+                        props.calendar.range_start = '2026-10-04T00:00:00+08:00';
+                        props.calendar.range_end = '2026-10-10T23:59:59+08:00';
+                    }
+                    props.events[0].title = 'Sample office coordination with a long descriptive event title';
+                }), width);
+                try {
+                    await page.evaluate(mode => document.documentElement.classList.toggle('dark', mode === 'dark'), mode);
+                    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'No viewport overflow');
+                    const trigger = page.getByRole('button', { name: /Sample office coordination/ }).first();
+                    await trigger.click();
+                    await page.getByRole('dialog').waitFor();
+                    await page.keyboard.press('Escape');
+                    assert.ok(await trigger.evaluate(el => el === document.activeElement), 'Focus returns to event');
+                    const smallControls = await page.locator('.aj-calendar button, .aj-calendar input, .aj-calendar a').evaluateAll(els => els.filter(el => el.getBoundingClientRect().width > 0 && el.getBoundingClientRect().height < 43).map(el => el.textContent));
+                    assert.deepEqual(smallControls, [], 'Calendar touch targets');
+                    await page.evaluate(() => window.scrollTo(0, 0));
+                    await page.screenshot({ path: `${out}/calendar-${view}-${width}-${mode}.png`, fullPage: true });
                     assert.deepEqual(errors, []);
                 } finally { await page.close(); }
             }
