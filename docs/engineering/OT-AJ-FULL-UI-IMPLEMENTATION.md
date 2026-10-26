@@ -11,3 +11,9 @@ Validation: TypeScript PASS; frontend contracts 100/100 PASS; existing UX 9/9 PA
 Evidence: `storage/app/qa/full-ui/`; representative screenshots and logs in `docs/evidence/full-ui/`. Browser tests use the real application entry with synthetic HTTP props, not authenticated Laravel evidence. Matrix checks section order/width, overflow, metric font size, keyboard focus and JavaScript errors. Mobile light and desktop dark visual inspection caught jump clipping and quick-link density, both repaired and retested.
 
 Authenticated backend acceptance, independent CI/QA, exhaustive contrast and every content/state combination remain unawarded. No merge, deployment or CLOSE. Next: Calendar, then Document Center.
+
+## Priority update: Receiving Office
+
+User's issues-first directive authorizes the Transactions/Create receiving-office control and a new page-consumed OfficeCombobox. Supplied department IDs/names remain authoritative; no backend changes. Case-insensitive partial name/short-name filtering, arrow keys, Enter, Escape, selected-office text, empty results and scrollable 44px options. Existing form submission and assigned-person reset preserved.
+
+TypeScript PASS, contracts 100/100 PASS, focused browser 10/10 PASS across all requested widths/themes, including actual intercepted multipart target ID and assignee reset. Browser build PASS. Calendar edits retained separately. Synthetic evidence only; no human acceptance.
