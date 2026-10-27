@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Document;
 use App\Models\DocumentLink;
+use App\Models\PlanEdition;
+use App\Models\PlanFamily;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
@@ -176,6 +178,10 @@ final class DocumentAttachmentService
     public function cleanupDocuments(iterable $documents): void
     {
         foreach ($documents as $document) {
+            if (PlanDocumentOriginGuard::isProtected($document)) {
+                throw new RuntimeException('Protected Plan files require dedicated retention custody.');
+            }
+
             if ($document->storage_path && $document->storage_disk) {
                 Storage::disk($document->storage_disk)->delete($document->storage_path);
             }
@@ -192,6 +198,10 @@ final class DocumentAttachmentService
         foreach ($links as $link) {
             if (! isset($link['model'], $link['relationship']) || ! $link['model'] instanceof Model) {
                 throw new RuntimeException('Evidence parent link is invalid.');
+            }
+
+            if ($link['model'] instanceof PlanEdition || $link['model'] instanceof PlanFamily) {
+                throw new RuntimeException('Plan catalog records cannot use generic document links.');
             }
 
             if (! in_array($link['relationship'], self::RELATIONSHIPS, true)) {

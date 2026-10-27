@@ -34,6 +34,10 @@ final class DocumentAccessService
             return false;
         }
 
+        if (PlanDocumentOriginGuard::isProtected($document)) {
+            return false;
+        }
+
         if ($document->storage_disk !== (string) config('documents.disk', 'documents')
             || ! $document->storage_path) {
             return false;

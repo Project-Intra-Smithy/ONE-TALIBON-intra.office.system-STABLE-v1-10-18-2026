@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Document;
 use App\Services\AuditLogger;
 use App\Services\DocumentAccessService;
+use App\Services\PlanDocumentOriginGuard;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -19,6 +20,13 @@ final class DocumentController extends Controller
         AuditLogger $audit,
     ): StreamedResponse {
         $actor = $request->user()->loadMissing('employee');
+
+        // A known protected Plan must be indistinguishable from a missing UUID
+        // at this legacy download endpoint. No Plan bytes are served here.
+        if (PlanDocumentOriginGuard::isProtected($document)) {
+            $audit->record($actor, 'document.download', 'Denied evidence retrieval.', outcome: 'denied');
+            abort(404);
+        }
 
         if (! $access->canDownload($actor, $document)) {
             $audit->record(
