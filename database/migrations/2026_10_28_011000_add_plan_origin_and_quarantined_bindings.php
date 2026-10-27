@@ -45,7 +45,7 @@ return new class extends Migration {
         DB::statement("ALTER TABLE plan_document_bindings ADD CONSTRAINT plan_bindings_quarantine_check CHECK (binding_state = 'QUARANTINED')");
 
         DB::unprepared(<<<'SQL'
-CREATE FUNCTION kirion_plan_document_guard() RETURNS trigger
+CREATE OR REPLACE FUNCTION kirion_plan_document_guard() RETURNS trigger
 LANGUAGE plpgsql SET search_path = pg_catalog, public AS $$
 BEGIN
     IF TG_OP = 'DELETE' THEN
@@ -78,7 +78,7 @@ CREATE TRIGGER kirion_plan_document_guard_trigger
 BEFORE INSERT OR UPDATE OR DELETE ON public.documents
 FOR EACH ROW EXECUTE FUNCTION kirion_plan_document_guard();
 
-CREATE FUNCTION kirion_plan_origin_receipt_guard() RETURNS trigger
+CREATE OR REPLACE FUNCTION kirion_plan_origin_receipt_guard() RETURNS trigger
 LANGUAGE plpgsql SET search_path = pg_catalog, public AS $$
 DECLARE
     domain_value text;
@@ -101,7 +101,7 @@ CREATE TRIGGER kirion_plan_receipt_guard_trigger
 BEFORE INSERT OR UPDATE OR DELETE ON public.plan_document_origin_receipts
 FOR EACH ROW EXECUTE FUNCTION kirion_plan_origin_receipt_guard();
 
-CREATE FUNCTION kirion_plan_stamp_origin() RETURNS trigger
+CREATE OR REPLACE FUNCTION kirion_plan_stamp_origin() RETURNS trigger
 LANGUAGE plpgsql SET search_path = pg_catalog, public AS $$
 BEGIN
     IF NEW.security_domain = 'EVER_PLAN' THEN
@@ -116,7 +116,7 @@ CREATE TRIGGER kirion_plan_stamp_origin_trigger
 AFTER INSERT OR UPDATE OF security_domain ON public.documents
 FOR EACH ROW EXECUTE FUNCTION kirion_plan_stamp_origin();
 
-CREATE FUNCTION kirion_plan_generic_link_guard() RETURNS trigger
+CREATE OR REPLACE FUNCTION kirion_plan_generic_link_guard() RETURNS trigger
 LANGUAGE plpgsql SET search_path = pg_catalog, public AS $$
 DECLARE
     affected_id bigint;
@@ -158,7 +158,7 @@ CREATE TRIGGER kirion_plan_generic_link_guard_trigger
 BEFORE INSERT OR UPDATE OR DELETE ON public.document_links
 FOR EACH ROW EXECUTE FUNCTION kirion_plan_generic_link_guard();
 
-CREATE FUNCTION kirion_plan_typed_binding_guard() RETURNS trigger
+CREATE OR REPLACE FUNCTION kirion_plan_typed_binding_guard() RETURNS trigger
 LANGUAGE plpgsql SET search_path = pg_catalog, public AS $$
 DECLARE
     domain_value text;
