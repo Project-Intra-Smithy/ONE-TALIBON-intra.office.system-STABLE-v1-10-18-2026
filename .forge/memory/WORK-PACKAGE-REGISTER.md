@@ -514,3 +514,13 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 - **Prohibited:** no changes to #148 sidebar, navigation, AppLayout, shared workspace-refinement.css or Tasks internals; no backend, routes, DB, auth, data/custody gates, unrelated branches, merge or deployment. HRIS/privileged, Auth and public batches need additional approval.
 - **Verification:** `git diff --check`, TypeScript, frontend contracts/UX, build, screenshot/keyboard/light-dark/mobile matrix at 390/768/1024/1280/1440; role/authenticated/independent tests must be accurately reported as PASS/FAIL/NOT_RUN. None claimed here.
 - **Gates/next:** canonical START publication plus issue crosslink before writing app code; verify source/collisions, then implement Dashboard batch in isolated branch. Kirch/CI/independent QA acceptance remain separate and unawarded.
+
+
+## START / OT-AJ-PORTAL-VISUAL-REDESIGN-R1 / 2026-10-27
+
+- **Issue/owner:** [#19](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/issues/19), AJ (azinamouto), Codex-assisted. AJ authorized this documentation-only canonical publication; Kirch retains acceptance.
+- **Source/strategy:** verified full-UI 5786359a964e2ff926fd611317f02d105c475ea9; new isolated feat/aj-portal-visual-redesign-r1. Preserve PR #18, all existing branches and dirty worktrees. Canonical publication parent 825c814d2995a58a997123cbf5ada04646b05827.
+- **Scope:** screenshot-inspired Dashboard and existing nonprivileged page presentation: municipal banner, forest-green sections, mint accents, readable spacious rows, light/dark. Preserve real data and behaviors; Document Center navigation/actions and Calendar contracts. No invented modules/data/links.
+- **Protected:** Sidebar/AppLayout/mobile/navigation/shared sidebar CSS, Tasks internals, backend/APIs/auth/database. Existing HRIS/auth/public/privileged ownership gates retained. No PR creation/update, application merge, deployment or human acceptance claims.
+- **Validation:** five widths 390/768/1024/1280/1440; light/dark, keyboard/reduced motion, TypeScript/contracts/UX/build/browser screenshots. Tests NOT_RUN at START. Synthetic evidence distinct from authenticated/independent acceptance.
+- **State/NEXT:** canonical START published; crosslink exact commit on #19 and verify to establish START_SYNCED, then AJ implements in new isolated worktree. Human CI/QA/Kirch gates remain separate.
