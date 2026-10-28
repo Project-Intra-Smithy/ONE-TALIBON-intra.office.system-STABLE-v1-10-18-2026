@@ -43,21 +43,19 @@ final class PlanDocumentOriginGuard
                 return false;
             }
 
-            // Re-read the persisted security domain. The incoming Eloquent
-            // instance may predate a concurrent EVER_PLAN origin promotion.
-            $persisted = DB::table('documents')
-                ->where('id', $document->getKey())
-                ->first(['security_domain']);
+            // A single SQL statement reads both current document provenance
+            // and the append-only origin receipt from one database snapshot.
+            // Never trust a previously loaded Eloquent model for legacy access.
+            $persisted = DB::table('documents as d')
+                ->leftJoin('plan_document_origin_receipts as r', 'r.document_id', '=', 'd.id')
+                ->where('d.id', $document->getKey())
+                ->first(['d.security_domain', 'r.document_id as origin_receipt_id']);
 
-            if ($persisted === null || $persisted->security_domain === 'EVER_PLAN') {
-                return true;
-            }
-
-            // A receipt is permanent Plan evidence even if document metadata
-            // is stale, inconsistent or claims LEGACY_CTW.
-            return DB::table('plan_document_origin_receipts')
-                ->where('document_id', $document->getKey())
-                ->exists();
+            // A deleted document, a current Plan origin, or any permanent Plan
+            // receipt excludes the document from legacy bytes and cleanup.
+            return $persisted === null
+                || $persisted->security_domain === 'EVER_PLAN'
+                || $persisted->origin_receipt_id !== null;
         } catch (Throwable) {
             // Unknown schema/DB state always denies legacy byte retrieval.
             return true;

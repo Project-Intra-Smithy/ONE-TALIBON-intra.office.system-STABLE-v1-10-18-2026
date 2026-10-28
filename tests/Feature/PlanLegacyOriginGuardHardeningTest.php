@@ -75,4 +75,27 @@ final class PlanLegacyOriginGuardHardeningTest extends TestCase
 
         $this->assertFalse(PlanDocumentOriginGuard::isProtected($document));
     }
+
+    public function test_persisted_legacy_check_reads_domain_and_receipt_in_one_sql_statement(): void
+    {
+        $document = Document::query()->create(['title' => 'Synthetic ordinary legacy']);
+
+        DB::connection()->enableQueryLog();
+        DB::connection()->flushQueryLog();
+        try {
+            $this->assertFalse(PlanDocumentOriginGuard::isProtected($document));
+            $queries = DB::connection()->getQueryLog();
+        } finally {
+            DB::connection()->disableQueryLog();
+            DB::connection()->flushQueryLog();
+        }
+
+        // Two dynamic schema checks plus one consistent provenance/receipt
+        // query. No per-request cache or stale positive classification.
+        $this->assertCount(3, $queries);
+        $this->assertCount(1, array_filter(
+            $queries,
+            static fn (array $query): bool => str_contains(strtolower($query['query']), 'join "plan_document_origin_receipts"'),
+        ));
+    }
 }
