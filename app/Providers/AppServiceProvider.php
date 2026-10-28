@@ -8,6 +8,14 @@ use App\Domain\Workflow\Listeners\AuditWorkflowTransactionMutation;
 use App\Domain\Workflow\Listeners\NotifyWorkflowTransactionMutation;
 use App\Domain\Workflow\Listeners\SyncWorkflowTransactionCalendar;
 use App\Models\WorkflowTransaction;
+use App\PlanCustody\Contracts\CustodySecurityGate;
+use App\PlanCustody\Contracts\GenerationIdSource;
+use App\PlanCustody\Contracts\ImmutableObjectStore;
+use App\PlanCustody\Contracts\ScannerEvidenceVerifier;
+use App\PlanCustody\DenyAllCustodySecurityGate;
+use App\PlanCustody\DenyAllScannerEvidenceVerifier;
+use App\PlanCustody\LocalImmutableObjectStore;
+use App\PlanCustody\RandomGenerationIdSource;
 use App\Policies\TransactionPolicy;
 use App\Support\ViteHotFileGuard;
 use Illuminate\Support\Facades\Event;
@@ -21,6 +29,10 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->app->bind(ImmutableObjectStore::class, LocalImmutableObjectStore::class);
+        $this->app->bind(GenerationIdSource::class, RandomGenerationIdSource::class);
+        $this->app->bind(ScannerEvidenceVerifier::class, DenyAllScannerEvidenceVerifier::class);
+        $this->app->bind(CustodySecurityGate::class, DenyAllCustodySecurityGate::class);
     }
 
     public function boot(): void

@@ -76,16 +76,23 @@ ALTER FUNCTION public.kirion_plan_origin_receipt_guard() OWNER TO kirion_g1b_own
 ALTER FUNCTION public.kirion_plan_stamp_origin() OWNER TO kirion_g1b_owner;
 ALTER FUNCTION public.kirion_plan_generic_link_guard() OWNER TO kirion_g1b_owner;
 ALTER FUNCTION public.kirion_plan_typed_binding_guard() OWNER TO kirion_g1b_owner;
+ALTER FUNCTION public.kirion_plan_custody_generation_guard() OWNER TO kirion_g1b_owner;
+ALTER FUNCTION public.kirion_plan_custody_append_only_guard() OWNER TO kirion_g1b_owner;
+ALTER FUNCTION public.kirion_plan_custody_scan_guard() OWNER TO kirion_g1b_owner;
 
 -- PostgreSQL's built-in PUBLIC function EXECUTE default is global. A per-schema
 -- REVOKE does not override that global default, so this creator default is global.
 ALTER DEFAULT PRIVILEGES FOR ROLE kirion_g1b_owner REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC;
 REVOKE EXECUTE ON FUNCTION public.kirion_plan_document_guard(),
   public.kirion_plan_origin_receipt_guard(), public.kirion_plan_stamp_origin(),
-  public.kirion_plan_generic_link_guard(), public.kirion_plan_typed_binding_guard() FROM PUBLIC;
+  public.kirion_plan_generic_link_guard(), public.kirion_plan_typed_binding_guard(),
+  public.kirion_plan_custody_generation_guard(), public.kirion_plan_custody_append_only_guard(),
+  public.kirion_plan_custody_scan_guard() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION public.kirion_plan_document_guard(),
   public.kirion_plan_origin_receipt_guard(), public.kirion_plan_stamp_origin(),
-  public.kirion_plan_generic_link_guard(), public.kirion_plan_typed_binding_guard() TO kirion_g1b_owner;
+  public.kirion_plan_generic_link_guard(), public.kirion_plan_typed_binding_guard(),
+  public.kirion_plan_custody_generation_guard(), public.kirion_plan_custody_append_only_guard(),
+  public.kirion_plan_custody_scan_guard() TO kirion_g1b_owner;
 
 -- Current legacy application tables remain operational. Protected tables and the
 -- documents column boundary are excluded and granted explicitly below.
@@ -95,13 +102,15 @@ BEGIN
   FOR table_name IN SELECT tablename FROM pg_tables
     WHERE schemaname = 'public' AND tablename NOT IN
       ('migrations','documents','plan_families','plan_editions',
-       'plan_document_origin_receipts','plan_document_bindings')
+       'plan_document_origin_receipts','plan_document_bindings',
+       'plan_custody_generations','plan_custody_scan_evidence','plan_custody_events')
   LOOP
     EXECUTE format('GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.%I TO kirion_g1b_app', table_name);
   END LOOP;
   FOR sequence_name IN SELECT sequencename FROM pg_sequences
     WHERE schemaname = 'public' AND sequencename NOT IN
       ('plan_families_id_seq','plan_editions_id_seq','plan_document_bindings_id_seq')
+      AND sequencename NOT LIKE 'plan_custody_%'
   LOOP
     EXECUTE format('GRANT USAGE, SELECT ON SEQUENCE public.%I TO kirion_g1b_app', sequence_name);
   END LOOP;
