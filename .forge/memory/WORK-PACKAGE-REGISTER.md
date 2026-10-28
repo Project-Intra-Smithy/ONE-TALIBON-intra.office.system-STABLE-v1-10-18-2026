@@ -525,3 +525,13 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 - **Protected:** Sidebar/AppLayout/mobile/navigation/shared sidebar CSS, Tasks internals, backend/APIs/auth/database. Existing HRIS/auth/public/privileged ownership gates retained. No PR creation/update, application merge, deployment or human acceptance claims.
 - **Validation:** five widths 390/768/1024/1280/1440; light/dark, keyboard/reduced motion, TypeScript/contracts/UX/build/browser screenshots. Tests NOT_RUN at START. Synthetic evidence distinct from authenticated/independent acceptance.
 - **State/NEXT:** canonical START published; crosslink exact commit on #19 and verify to establish START_SYNCED, then AJ implements in new isolated worktree. Human CI/QA/Kirch gates remain separate.
+
+
+## START / OT-OPS-WINDOWS-TO-UBUNTU-EVIDENCE-PRESERVATION-R1 / 2026-10-28
+
+- **Issue/owner:** [Engineering Hub #158](https://github.com/Project-Intra-Smithy/engineering-hub/issues/158), Kirch Ivan Balite; Codex is the local Windows preservation executor. [Issue START](https://github.com/Project-Intra-Smithy/engineering-hub/issues/158#issuecomment-6472080292).
+- **Source/strategy:** canonical `main@97da66b6152bec05e4288d2f1f4655a8060dfec9`; this documentation-only START entry is published separately from all application candidates. Preservation artifacts and reports remain outside application source.
+- **Scope/success:** inventory `C:\dev\TAL` and prepared Desktop artifacts; preserve local-only Git, `.forge`, evidence and sensitive configuration to a verified encrypted destination; verify manifests, Git bundles and representative restores; produce Ubuntu restore and Hostinger-boundary runbooks. Target disposition is `BACKUP_VERIFIED / RESTORE_SMOKE_VERIFIED / WINDOWS_NOT_ERASED`.
+- **Restrictions:** no application/runtime changes, destructive cleanup, overwrite, history rewrite, database access, deployment, VPS upload, secret publication, municipal data transfer, OS wipe or partition operations. Existing G2 and security acceptance states remain unchanged.
+- **Open gates:** prepared archive integrity/completeness and encrypted destination are unverified. Independent repository/worktree mapping, copy verification, representative restore tests and sanitized evidence publication remain required; no Windows-removal approval exists.
+- **State/NEXT:** `START_SYNC_PENDING / HOLD` until this entry is merged to canonical `main` and crosslinked on #158. Then complete read-only inventory before any backup copy; preservation remains held unless an adequate encrypted destination is verified.
