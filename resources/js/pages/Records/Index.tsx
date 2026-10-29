@@ -1,5 +1,6 @@
 import '../../../css/aj-page-workspace.css';
 import '../../../css/aj-registry-workspace.css';
+import '../../../css/portal-visual-redesign.css';
 import { Link, router } from '@inertiajs/react';
 import { ArrowRight, Building2, CalendarDays, FileSearch, Search, UserRound, X } from 'lucide-react';
 import { type FormEvent, useEffect, useState } from 'react';
@@ -153,7 +154,7 @@ export default function Index({ records, filters, filterOptions }: Props) {
 
     return (
         <AppLayout title="Records">
-            <div className="aj-page-workspace aj-registry-workspace mx-auto max-w-7xl space-y-4 sm:space-y-6">
+            <div className="civic-page aj-page-workspace aj-registry-workspace mx-auto max-w-7xl space-y-4 sm:space-y-6">
                 <PageHeader eyebrow="Authorized records registry" title="Records" icon={FileSearch} description="Search authorized correspondence, inter-office transactions, and approved Travel Orders." />
 
                 <form onSubmit={submit}>

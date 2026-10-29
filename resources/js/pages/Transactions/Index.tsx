@@ -1,4 +1,5 @@
 import '../../../css/aj-page-workspace.css';
+import '../../../css/portal-visual-redesign.css';
 import { Link, router } from '@inertiajs/react';
 import { BriefcaseBusiness, Plus, Search, X } from 'lucide-react';
 import { type FormEvent, useEffect, useState } from 'react';
@@ -83,7 +84,7 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
 
     return (
         <AppLayout title="My Work">
-            <PageFrame className="aj-page-workspace" density="comfortable">
+            <PageFrame className="civic-page aj-page-workspace" density="comfortable">
                 <PageHeader
                     eyebrow="Daily work queues"
                     title="My Work"

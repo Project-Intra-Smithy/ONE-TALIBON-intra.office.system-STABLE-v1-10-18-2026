@@ -39,7 +39,7 @@ test('authorized Records and Document Center remain separate', () => {
 });
 
 test('responsive and accessible controls use page-root CSS', () => {
-    assert.match(page, /className="r8-search max-w/);
+    assert.match(page, /className="[^"]*\br8-search max-w/);
     assert.match(page, /\.\.\/\.\.\/\.\.\/css\/r8-search\.css/);
     assert.match(page, /aria-controls="r8-search-filters"/);
     assert.match(page, /aria-pressed=\{scope === option\.key\}/);

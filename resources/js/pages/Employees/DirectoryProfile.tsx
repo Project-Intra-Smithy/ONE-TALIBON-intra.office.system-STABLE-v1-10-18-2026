@@ -1,3 +1,4 @@
+import '../../../css/portal-visual-redesign.css';
 import { Link } from '@inertiajs/react';
 import { UserRound } from 'lucide-react';
 import AppLayout from '../../layouts/AppLayout';
@@ -5,7 +6,7 @@ import PageFrame from '../../components/PageFrame';
 
 type Profile = { id: number; number: string; name: string | null; email: string | null; position: string; office: string | null; presence: 'online' | 'offline' };
 export default function DirectoryProfile({ employee, isSelf }: { employee: Profile; isSelf: boolean }) {
-    return <AppLayout title="Employee Profile"><PageFrame>
+    return <AppLayout title="Employee Profile"><PageFrame className="civic-page">
         <section className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-[#142236]">
             <Link href="/employees" className="text-sm font-semibold text-blue-700 dark:text-blue-300">← Employee Directory</Link>
             <div className="mt-5 flex items-center gap-3"><UserRound size={27} /><h1 className="text-2xl font-bold">{employee.name || 'Employee'}</h1></div>

@@ -1,5 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
 import '../../../css/r8-search.css';
+import '../../../css/portal-visual-redesign.css';
 import {
     ArrowUpRight,
     BookOpen,
@@ -225,7 +226,7 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
 
     return (
         <AppLayout title="Search Portal">
-            <PageFrame className="r8-search max-w-[1440px]" density="compact">
+            <PageFrame className="civic-page r8-search max-w-[1440px]" density="compact">
                 <PageHeader
                     eyebrow="ONE TALIBON discovery"
                     title="Search ONE TALIBON"

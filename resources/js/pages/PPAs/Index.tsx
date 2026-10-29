@@ -1,5 +1,6 @@
 import '../../../css/ot-r6-modules.css';
 import '../../../css/r8-ppas.css';
+import '../../../css/portal-visual-redesign.css';
 import PortalWorkspaceNav from '../../components/portal/PortalWorkspaceNav';
 import { ClipboardList } from 'lucide-react';
 import { useMemo, useState } from 'react';
@@ -33,7 +34,7 @@ export default function Index() {
     }, [filters]);
 
     return <AppLayout title="Programs, Projects and Activities">
-        <PageFrame className="ot-r6-modules ot-r6-ppas r8-ppas max-w-[1480px]" density="compact">
+        <PageFrame className="civic-page ot-r6-modules ot-r6-ppas r8-ppas max-w-[1480px]" density="compact">
             <PageHeader
                 eyebrow="Planning and implementation register"
                 title="Programs, Projects and Activities"

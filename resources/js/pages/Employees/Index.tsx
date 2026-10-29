@@ -1,4 +1,5 @@
 import '../../../css/aj-page-workspace.css';
+import '../../../css/portal-visual-redesign.css';
 import { Link, router } from '@inertiajs/react';
 import { Building2, Search, UserRoundCheck, UsersRound } from 'lucide-react';
 import { FormEvent, useEffect, useState } from 'react';
@@ -24,7 +25,7 @@ export default function EmployeeDirectory({ employees, departments, filters, sum
     }, []);
     const summaryCard = 'municipal-stat';
 
-    return <AppLayout title="Employee Directory"><PageFrame className="aj-page-workspace" density="comfortable">
+    return <AppLayout title="Employee Directory"><PageFrame className="civic-page aj-page-workspace" density="comfortable">
         <PageHeader eyebrow="Municipal workforce" title="Employee Directory" description="Search municipal personnel by office and position. Presence reflects portal activity, not physical attendance." icon={UsersRound} aside={<Link href="/hris/attendance" className="rounded-xl bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-800 dark:bg-blue-950/40 dark:text-blue-200">My attendance</Link>} />
 
         <section aria-label="Employee directory summary" className="grid grid-cols-3 gap-2.5 sm:gap-4">

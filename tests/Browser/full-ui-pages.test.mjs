@@ -25,9 +25,12 @@ function install(screen, role = 'employee', change = () => {}) {
 }
 
 before(async () => {
-    const { stdout, stderr } = await promisify(execFile)(process.execPath, ['node_modules/vite/bin/vite.js', 'build']);
     await mkdir(out, { recursive: true });
-    await import('node:fs/promises').then(fs => fs.writeFile(`${out}/entry-build.log`, stdout + stderr));
+    // Reuse only when the caller has just built this exact worktree.
+    if (process.env.REDESIGN_USE_EXISTING_BUILD !== '1') {
+        const { stdout, stderr } = await promisify(execFile)(process.execPath, ['node_modules/vite/bin/vite.js', 'build']);
+        await import('node:fs/promises').then(fs => fs.writeFile(`${out}/entry-build.log`, stdout + stderr));
+    }
     manifest = JSON.parse(await readFile('public/build/manifest.json', 'utf8'));
     try { browser = await chromium.launch({ channel: 'chrome' }); }
     catch { browser = await chromium.launch(); }
@@ -104,6 +107,7 @@ for (const width of [390, 768, 1024, 1280, 1440]) {
                     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${screen} viewport overflow`);
                     const root = page.locator('.aj-page-workspace');
                     assert.ok(await root.isVisible(), screen + ' page scope');
+                    assert.ok(await page.locator('.civic-page').isVisible(), screen + ' redesign scope');
                     if (screen === 'employees') {
                         await page.getByLabel('Search employees').fill('Planning');
                         await page.getByRole('form', { name: 'Employee directory filters' }).getByRole('button', { name: 'Search', exact: true }).click();

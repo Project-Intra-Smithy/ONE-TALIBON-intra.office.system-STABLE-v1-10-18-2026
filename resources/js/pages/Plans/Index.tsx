@@ -1,5 +1,6 @@
 import '../../../css/ot-r6-modules.css';
 import '../../../css/r8-plans.css';
+import '../../../css/portal-visual-redesign.css';
 import { ClipboardList } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import PageFrame from '../../components/PageFrame';
@@ -95,7 +96,7 @@ export default function PlansIndex() {
 
     return (
         <AppLayout title="LGU Plans Library">
-            <PageFrame width="wide" density="compact" className="ot-r6-modules ot-r6-plans r8-plans">
+            <PageFrame width="wide" density="compact" className="civic-page ot-r6-modules ot-r6-plans r8-plans">
                 <PageHeader eyebrow="Municipality of Talibon · Planning references" title="LGU Plans Library" description="Browse planning references by code, coverage, status, and lead office." icon={ClipboardList} />
                 <div className="r8-plans-notice" role="note"><strong>Reference library only.</strong> Records shown here are not validated live municipal approvals. Covers are illustrative graphics, not scanned or certified documents.</div>
                 <PlanFilterBar filters={filters} leadOffices={leadOffices} resultCount={filteredPlans.length} onChange={(nextFilters) => { setFilters(nextFilters); setSelectedPlanId(null); }} />

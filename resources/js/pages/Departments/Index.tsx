@@ -1,6 +1,7 @@
 import '../../../css/aj-page-workspace.css';
 import '../../../css/ot-r6-modules.css';
 import '../../../css/r8-directory.css';
+import '../../../css/portal-visual-redesign.css';
 import { useState } from 'react';
 import { Building2, Crown, Gavel, Network, Search, Users } from 'lucide-react';
 import PageFrame from '../../components/PageFrame';
@@ -81,7 +82,7 @@ export default function Index({ departments, summary, directoryEntries, director
     const visible = filterDirectoryEntries(entries, search, group);
     const groupedVisible = groupDirectoryEntries(visible, groups);
     if (directoryEntries != null) return <AppLayout title="Office Directory">
-        <PageFrame className="ot-r6-modules ot-r6-departments r8-directory aj-page-workspace" density="comfortable">
+        <PageFrame className="civic-page ot-r6-modules ot-r6-departments r8-directory aj-page-workspace" density="comfortable">
             <PageHeader eyebrow="One Talibon · Reference directory" title="Office Directory"
                 description="Browse the supplied municipal office reference catalog by office, responsibility or group. Entries remain subject to LGU validation." icon={Building2}/>
             <section className="r8-directory-intro" aria-label="Directory scope">
@@ -189,7 +190,7 @@ export default function Index({ departments, summary, directoryEntries, director
     ];
 
     return <AppLayout title="Municipal Offices">
-        <PageFrame className="ot-r6-modules ot-r6-departments r8-directory aj-page-workspace" density="comfortable">
+        <PageFrame className="civic-page ot-r6-modules ot-r6-departments r8-directory aj-page-workspace" density="comfortable">
             <PageHeader
                 eyebrow="Municipal operating structure"
                 title="Municipal Offices"

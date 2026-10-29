@@ -1,5 +1,6 @@
 import '../../../css/aj-page-workspace.css';
 import '../../../css/aj-registry-workspace.css';
+import '../../../css/portal-visual-redesign.css';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ArrowRight, CalendarDays, FileCheck2, MapPin, Plus, Search, Users, X } from 'lucide-react';
 import { type FormEvent, useEffect, useState } from 'react';
@@ -92,7 +93,7 @@ export default function Index({ travelOrders, filters, filterOptions, canRecordA
 
     return (
         <AppLayout title="Approved Travel Orders">
-            <div className="aj-page-workspace aj-registry-workspace mx-auto max-w-7xl space-y-4 sm:space-y-6">
+            <div className="civic-page aj-page-workspace aj-registry-workspace mx-auto max-w-7xl space-y-4 sm:space-y-6">
                 <PageHeader eyebrow="Official post-approval registry" title="Approved Travel Orders" icon={FileCheck2}
                     description="Locate official approved travel records you are authorized to see."
                     aside={canRecordApproved && (

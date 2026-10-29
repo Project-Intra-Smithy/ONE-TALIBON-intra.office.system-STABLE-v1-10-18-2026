@@ -1,3 +1,4 @@
+import '../../../css/portal-visual-redesign.css';
 import OfficeCombobox from '../../components/portal/OfficeCombobox';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowRight, Building2, Paperclip } from 'lucide-react';
@@ -74,7 +75,7 @@ export default function Create({ departments, assignableEmployees, requestCatego
     return (
         <AppLayout title="Create Work Request">
             <Head title="Create Work Request" />
-            <div className="mx-auto max-w-4xl space-y-3">
+            <div className="civic-page mx-auto max-w-4xl space-y-3">
                 <header className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                     <div className="min-w-0">
                         <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-blue-700 dark:text-blue-300">Work Queue · New request</div>

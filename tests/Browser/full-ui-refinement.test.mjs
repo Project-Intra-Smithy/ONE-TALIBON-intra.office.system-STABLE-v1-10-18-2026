@@ -25,9 +25,11 @@ function install(screen, role = 'employee', change = () => {}) {
 }
 
 before(async () => {
-    const { stdout, stderr } = await promisify(execFile)(process.execPath, ['node_modules/vite/bin/vite.js', 'build']);
     await mkdir(out, { recursive: true });
-    await import('node:fs/promises').then(fs => fs.writeFile(`${out}/entry-build.log`, stdout + stderr));
+    if (process.env.REDESIGN_USE_EXISTING_BUILD !== '1') {
+        const { stdout, stderr } = await promisify(execFile)(process.execPath, ['node_modules/vite/bin/vite.js', 'build']);
+        await import('node:fs/promises').then(fs => fs.writeFile(`${out}/entry-build.log`, stdout + stderr));
+    }
     manifest = JSON.parse(await readFile('public/build/manifest.json', 'utf8'));
     try { browser = await chromium.launch({ channel: 'chrome' }); }
     catch { browser = await chromium.launch(); }
@@ -100,8 +102,18 @@ for (const width of [390, 768, 1024, 1280, 1440]) {
                     const work = page.locator('.r7-top-work');
                     const activity = page.locator('.r7-top-activity');
                     const a = await summary.boundingBox(), b = await work.boundingBox(), c = await activity.boundingBox();
-                    assert.ok(a.y + a.height <= b.y && b.y + b.height <= c.y, 'Summary, work and activity must be separate wide sections');
-                    assert.ok(Math.abs(a.width - b.width) < 2);
+                    const available = (await page.locator('.aj-dashboard').boundingBox()).width;
+                    if (available >= 980) {
+                        assert.ok(Math.abs(a.y - b.y) < 2 && Math.abs(b.y - c.y) < 2, 'Three reference sections share the upper band');
+                        assert.ok(a.x + a.width <= b.x && b.x + b.width <= c.x, 'Sections do not overlap');
+                    } else if (available >= 700) {
+                        assert.ok(Math.abs(a.y - b.y) < 2 && c.y >= Math.max(a.y + a.height, b.y + b.height), 'Two-column tablet composition');
+                    } else {
+                        assert.ok(a.y + a.height <= b.y && b.y + b.height <= c.y, 'Narrow screens retain reading order');
+                    }
+                    const heading = summary.locator('.r7-section-kicker');
+                    assert.equal(await heading.evaluate(el => getComputedStyle(el).color), 'rgb(255, 255, 255)');
+                    assert.ok(await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches));
                     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'No viewport overflow');
                     for (const metric of await summary.locator('.workspace-metric').all()) {
                         assert.ok(await metric.evaluate(el => parseFloat(getComputedStyle(el.children[1]).fontSize) >= 16));
@@ -109,6 +121,8 @@ for (const width of [390, 768, 1024, 1280, 1440]) {
                     const jump = page.locator('a[href="#work-overview"]');
                     await jump.focus();
                     assert.ok(await jump.evaluate(el => el === document.activeElement && getComputedStyle(el).outlineStyle !== 'none'));
+                    await page.keyboard.press('Tab');
+                    assert.ok(await page.evaluate(() => document.activeElement?.tagName === 'A' || document.activeElement?.tagName === 'BUTTON'));
                     await page.evaluate(() => window.scrollTo(0, 0));
                     await page.screenshot({ path: `${out}/dashboard-${role}-${width}-${mode}.png`, fullPage: true });
                     assert.deepEqual(errors, []);

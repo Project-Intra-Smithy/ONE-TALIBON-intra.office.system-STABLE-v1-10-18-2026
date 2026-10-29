@@ -1,6 +1,7 @@
 import '../../../css/aj-document-workspace.css';
 import '../../../css/document-center.css';
 import '../../../css/r8-documents.css';
+import '../../../css/portal-visual-redesign.css';
 import { Link, router, usePage } from '@inertiajs/react';
 import { FileArchive, LibraryBig } from 'lucide-react';
 import { useEffect, useState, type FormEvent } from 'react';
@@ -53,7 +54,7 @@ export default function DocumentCenter({ records, filters, filterOptions, mode, 
         filters.date_to ? 'To: ' + filters.date_to : '',
     ].filter(Boolean);
 
-    return <AppLayout title="Document Center"><PageFrame width="wide" density="comfortable" className="aj-documents">
+    return <AppLayout title="Document Center"><PageFrame width="wide" density="comfortable" className="civic-page aj-documents">
         <PageHeader
             eyebrow="Organized municipal records"
             title="Document Center"

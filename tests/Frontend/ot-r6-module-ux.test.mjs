@@ -16,7 +16,7 @@ const css = source('resources/css/ot-r6-modules.css');
 test('Worker 03 styling is page-scoped with no app-wide CSS or new UI dependency', () => {
     for (const page of [directory, plans, ppas]) {
         assert.match(page, /import '\.\.\/\.\.\/\.\.\/css\/ot-r6-modules\.css'/);
-        assert.match(page, /className="ot-r6-modules|className="ot-r6-modules /);
+        assert.match(page, /className="[^"]*\bot-r6-modules\b/);
     }
     assert.match(css, /\.ot-r6-modules/);
     assert.doesNotMatch(css, /(?:^|\n)\s*(?:body|html|:root|\.municipal-panel)\s*\{/);

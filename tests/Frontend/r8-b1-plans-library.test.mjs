@@ -28,7 +28,7 @@ test('B1 dialog retains Escape, Tab cycle, focus restoration and scroll lock', (
   assert.doesNotMatch(page, /router\.post|fetch\(|approvePlan|uploadPlan/);
 });
 test('B1 styling is rooted and includes compact mobile, reduced-motion and high-contrast accommodations', () => {
-  assert.match(page, /className="ot-r6-modules ot-r6-plans r8-plans"/);
+  assert.match(page, /className="[^"]*\bot-r6-modules ot-r6-plans r8-plans"/);
   assert.match(css, /@media \(max-width: 639px\)/);
   assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
   assert.match(css, /@media \(forced-colors: active\)/);
