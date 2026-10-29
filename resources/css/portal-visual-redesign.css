@@ -1,0 +1,87 @@
+/* #19: opt-in page presentation only; never shell, navigation or Task interiors. */
+.civic-page.civic-page {
+    --civic-ink: #123e30;
+    --civic-mint: #edf6f1;
+    --civic-line: #d9e7df;
+    --civic-muted: #526b5f;
+    font-size: 1rem;
+    line-height: 1.65;
+}
+.dark .civic-page.civic-page {
+    --civic-ink: #d7f3e4;
+    --civic-mint: #18372b;
+    --civic-line: #345044;
+    --civic-muted: #bed1c7;
+}
+.civic-page.civic-page > header {
+    padding: clamp(22px, 3vw, 36px);
+    border: 1px solid var(--civic-line);
+    border-left: 4px solid #b89b48;
+    border-radius: 8px;
+    background: linear-gradient(115deg, var(--municipal-surface), var(--civic-mint));
+}
+.civic-page.civic-page h1 {
+    color: var(--civic-ink);
+    font-size: clamp(1.8rem, 2.8vw, 2.5rem);
+    line-height: 1.2;
+    letter-spacing: -.035em;
+    overflow-wrap: anywhere;
+}
+.civic-page.civic-page > header p { font-size: 1rem; line-height: 1.65; max-width: 68ch; }
+.civic-page.civic-page :is(.text-xs, .text-\[9px\], .text-\[10px\], .text-\[11px\], .text-\[12px\], .text-\[13px\]):not(.aj-preserved-task *) {
+    font-size: .875rem; line-height: 1.6;
+}
+.civic-page.civic-page :is(h2, h3):not(.aj-preserved-task *) { line-height: 1.4; }
+.civic-page.civic-page :is(p, dd):not(.aj-preserved-task *) { overflow-wrap: anywhere; }
+.civic-page.civic-page > :is(section, form, .municipal-panel) {
+    border-radius: 10px;
+    box-shadow: 0 4px 18px -12px rgb(15 60 42 / 20%);
+}
+.civic-page.civic-page :is(input:not([type=checkbox]):not([type=radio]), select, textarea):not(.aj-preserved-task *) {
+    font-size: 1rem; min-height: 44px; max-width: 100%;
+}
+.civic-page.civic-page :is(button, summary):not(.aj-preserved-task *) { min-height: 44px; }
+.civic-page.civic-page :is(a, button, input, select, textarea, summary):not(.aj-preserved-task *):focus-visible {
+    outline: 3px solid var(--municipal-focus, #27835d); outline-offset: 3px;
+}
+.civic-page.civic-page .municipal-table :is(th, td) { padding: 20px 24px; font-size: .9375rem; }
+.civic-page.civic-page .municipal-table th { background: var(--civic-mint); color: var(--civic-ink); }
+.civic-page.civic-page :is(.aj-office-branch-heading, .dc-register-caption) {
+    border-bottom: 1px solid var(--civic-line);
+}
+.civic-page.civic-page .aj-office-branch-heading h2 { color: var(--civic-ink); }
+.civic-page.civic-page .dc-register-caption { background: #10563f; color: #fff; }
+.civic-page.civic-page .dc-register-caption :is(h2, p, span) { color: inherit; }
+.civic-page.civic-page .dc-rail { background: var(--civic-mint); }
+.civic-page.civic-page .dc-record-grid { padding-block: 22px; }
+.civic-page.civic-page .dc-record-title button { font-weight: 650; }
+.civic-page.civic-page .dc-record-grid:hover { background: var(--civic-mint); }
+.civic-page.civic-page .aj-office-row { padding-block: 30px; }
+.civic-page.civic-page .aj-office-mark {
+    display: grid; place-items: center; width: 44px; height: 44px;
+    padding: 0; border-radius: 8px; background: var(--civic-mint);
+}
+.civic-page.civic-page > form { padding: clamp(20px, 3vw, 32px); }
+.civic-page.civic-page > form :is(label, fieldset) { line-height: 1.65; }
+.civic-page.civic-page > form > .grid { gap: 24px; }
+.civic-page.civic-page > form :is(input, select, textarea) { margin-top: 4px; }
+@media (prefers-reduced-motion: reduce) {
+    .civic-page.civic-page :is(a, button):not(.aj-preserved-task *) { transition: none; animation: none; }
+}
+@media (forced-colors: active) {
+    .civic-page.civic-page > header { border-color: CanvasText; }
+}
+
+/* Keep long category names intact beside their folder and external-link icons. */
+.civic-page.civic-page .dc-category { word-break: normal; overflow-wrap: normal; }
+@container aj-documents (min-width: 900px) {
+    .civic-page.aj-documents.aj-documents .r8-documents.dc-workspace { grid-template-columns: 270px minmax(0, 1fr); }
+}
+
+.civic-page.civic-page :is(.text-slate-400, .text-slate-500):not(.aj-preserved-task *) { color: var(--civic-muted); }
+
+/* Discovery families use the same readable mint surface in both themes. */
+.civic-page.r8-search section[aria-labelledby="search-scope-summary"] button {
+    background: var(--civic-mint); color: var(--civic-ink);
+}
+.civic-page.r8-search section[aria-labelledby="search-scope-summary"] .opacity-75 { opacity: 1; }

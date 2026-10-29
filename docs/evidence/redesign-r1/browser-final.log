@@ -1,0 +1,502 @@
+TAP version 13
+# (node:12388) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Document Center 390 light
+ok 1 - Document Center 390 light
+  ---
+  duration_ms: 3217.2343
+  type: 'test'
+  ...
+# Subtest: Document Center 390 dark
+ok 2 - Document Center 390 dark
+  ---
+  duration_ms: 2245.8568
+  type: 'test'
+  ...
+# Subtest: Document Center 768 light
+ok 3 - Document Center 768 light
+  ---
+  duration_ms: 2327.861
+  type: 'test'
+  ...
+# Subtest: Document Center 768 dark
+ok 4 - Document Center 768 dark
+  ---
+  duration_ms: 2208.5623
+  type: 'test'
+  ...
+# Subtest: Document Center 1024 light
+ok 5 - Document Center 1024 light
+  ---
+  duration_ms: 2401.7028
+  type: 'test'
+  ...
+# Subtest: Document Center 1024 dark
+ok 6 - Document Center 1024 dark
+  ---
+  duration_ms: 2367.7895
+  type: 'test'
+  ...
+# Subtest: Document Center 1280 light
+ok 7 - Document Center 1280 light
+  ---
+  duration_ms: 2384.0867
+  type: 'test'
+  ...
+# Subtest: Document Center 1280 dark
+ok 8 - Document Center 1280 dark
+  ---
+  duration_ms: 2393.2962
+  type: 'test'
+  ...
+# Subtest: Document Center 1440 light
+ok 9 - Document Center 1440 light
+  ---
+  duration_ms: 2355.5153
+  type: 'test'
+  ...
+# Subtest: Document Center 1440 dark
+ok 10 - Document Center 1440 dark
+  ---
+  duration_ms: 2563.2258
+  type: 'test'
+  ...
+# (node:23124) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Work and directories 390 light
+ok 11 - Work and directories 390 light
+  ---
+  duration_ms: 5389.4365
+  type: 'test'
+  ...
+# Subtest: Work and directories 390 dark
+ok 12 - Work and directories 390 dark
+  ---
+  duration_ms: 4095.3898
+  type: 'test'
+  ...
+# Subtest: Work and directories 768 light
+ok 13 - Work and directories 768 light
+  ---
+  duration_ms: 4062.153
+  type: 'test'
+  ...
+# Subtest: Work and directories 768 dark
+ok 14 - Work and directories 768 dark
+  ---
+  duration_ms: 4131.1042
+  type: 'test'
+  ...
+# Subtest: Work and directories 1024 light
+ok 15 - Work and directories 1024 light
+  ---
+  duration_ms: 4290.4681
+  type: 'test'
+  ...
+# Subtest: Work and directories 1024 dark
+ok 16 - Work and directories 1024 dark
+  ---
+  duration_ms: 4466.4219
+  type: 'test'
+  ...
+# Subtest: Work and directories 1280 light
+ok 17 - Work and directories 1280 light
+  ---
+  duration_ms: 4691.3432
+  type: 'test'
+  ...
+# Subtest: Work and directories 1280 dark
+ok 18 - Work and directories 1280 dark
+  ---
+  duration_ms: 4588.969
+  type: 'test'
+  ...
+# Subtest: Work and directories 1440 light
+ok 19 - Work and directories 1440 light
+  ---
+  duration_ms: 4464.2932
+  type: 'test'
+  ...
+# Subtest: Work and directories 1440 dark
+ok 20 - Work and directories 1440 dark
+  ---
+  duration_ms: 4579.7494
+  type: 'test'
+  ...
+# (node:20508) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Receiving office search 390 light
+ok 21 - Receiving office search 390 light
+  ---
+  duration_ms: 2312.5144
+  type: 'test'
+  ...
+# Subtest: Receiving office search 390 dark
+ok 22 - Receiving office search 390 dark
+  ---
+  duration_ms: 1565.8252
+  type: 'test'
+  ...
+# Subtest: Receiving office search 768 light
+ok 23 - Receiving office search 768 light
+  ---
+  duration_ms: 1563.4661
+  type: 'test'
+  ...
+# Subtest: Receiving office search 768 dark
+ok 24 - Receiving office search 768 dark
+  ---
+  duration_ms: 1498.0036
+  type: 'test'
+  ...
+# Subtest: Receiving office search 1024 light
+ok 25 - Receiving office search 1024 light
+  ---
+  duration_ms: 1594.9533
+  type: 'test'
+  ...
+# Subtest: Receiving office search 1024 dark
+ok 26 - Receiving office search 1024 dark
+  ---
+  duration_ms: 1580.6221
+  type: 'test'
+  ...
+# Subtest: Receiving office search 1280 light
+ok 27 - Receiving office search 1280 light
+  ---
+  duration_ms: 1608.5343
+  type: 'test'
+  ...
+# Subtest: Receiving office search 1280 dark
+ok 28 - Receiving office search 1280 dark
+  ---
+  duration_ms: 1485.9545
+  type: 'test'
+  ...
+# Subtest: Receiving office search 1440 light
+ok 29 - Receiving office search 1440 light
+  ---
+  duration_ms: 1539.667
+  type: 'test'
+  ...
+# Subtest: Receiving office search 1440 dark
+ok 30 - Receiving office search 1440 dark
+  ---
+  duration_ms: 1559.6462
+  type: 'test'
+  ...
+# Subtest: Notification presentation 390 light
+ok 31 - Notification presentation 390 light
+  ---
+  duration_ms: 1176.85
+  type: 'test'
+  ...
+# Subtest: Notification presentation 390 dark
+ok 32 - Notification presentation 390 dark
+  ---
+  duration_ms: 1229.4106
+  type: 'test'
+  ...
+# Subtest: Notification presentation 768 light
+ok 33 - Notification presentation 768 light
+  ---
+  duration_ms: 1103.0321
+  type: 'test'
+  ...
+# Subtest: Notification presentation 768 dark
+ok 34 - Notification presentation 768 dark
+  ---
+  duration_ms: 1061.625
+  type: 'test'
+  ...
+# Subtest: Notification presentation 1024 light
+ok 35 - Notification presentation 1024 light
+  ---
+  duration_ms: 1359.4028
+  type: 'test'
+  ...
+# Subtest: Notification presentation 1024 dark
+ok 36 - Notification presentation 1024 dark
+  ---
+  duration_ms: 1286.0908
+  type: 'test'
+  ...
+# Subtest: Notification presentation 1280 light
+ok 37 - Notification presentation 1280 light
+  ---
+  duration_ms: 1270.2976
+  type: 'test'
+  ...
+# Subtest: Notification presentation 1280 dark
+ok 38 - Notification presentation 1280 dark
+  ---
+  duration_ms: 1411.5331
+  type: 'test'
+  ...
+# Subtest: Notification presentation 1440 light
+ok 39 - Notification presentation 1440 light
+  ---
+  duration_ms: 1278.7662
+  type: 'test'
+  ...
+# Subtest: Notification presentation 1440 dark
+ok 40 - Notification presentation 1440 dark
+  ---
+  duration_ms: 1378.1242
+  type: 'test'
+  ...
+# (node:24436) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Dashboard readable layout 390px light
+ok 41 - Dashboard readable layout 390px light
+  ---
+  duration_ms: 5167.7511
+  type: 'test'
+  ...
+# Subtest: Dashboard readable layout 390px dark
+ok 42 - Dashboard readable layout 390px dark
+  ---
+  duration_ms: 4339.765
+  type: 'test'
+  ...
+# Subtest: Dashboard readable layout 768px light
+ok 43 - Dashboard readable layout 768px light
+  ---
+  duration_ms: 4972.8905
+  type: 'test'
+  ...
+# Subtest: Dashboard readable layout 768px dark
+ok 44 - Dashboard readable layout 768px dark
+  ---
+  duration_ms: 4732.9686
+  type: 'test'
+  ...
+# Subtest: Dashboard readable layout 1024px light
+ok 45 - Dashboard readable layout 1024px light
+  ---
+  duration_ms: 4781.3844
+  type: 'test'
+  ...
+# Subtest: Dashboard readable layout 1024px dark
+ok 46 - Dashboard readable layout 1024px dark
+  ---
+  duration_ms: 4758.3939
+  type: 'test'
+  ...
+# Subtest: Dashboard readable layout 1280px light
+ok 47 - Dashboard readable layout 1280px light
+  ---
+  duration_ms: 5575.0289
+  type: 'test'
+  ...
+# Subtest: Dashboard readable layout 1280px dark
+ok 48 - Dashboard readable layout 1280px dark
+  ---
+  duration_ms: 5304.6464
+  type: 'test'
+  ...
+# Subtest: Dashboard readable layout 1440px light
+ok 49 - Dashboard readable layout 1440px light
+  ---
+  duration_ms: 4873.2043
+  type: 'test'
+  ...
+# Subtest: Dashboard readable layout 1440px dark
+ok 50 - Dashboard readable layout 1440px dark
+  ---
+  duration_ms: 5312.1844
+  type: 'test'
+  ...
+# Subtest: Calendar views 390px light
+ok 51 - Calendar views 390px light
+  ---
+  duration_ms: 4102.8424
+  type: 'test'
+  ...
+# Subtest: Calendar views 390px dark
+ok 52 - Calendar views 390px dark
+  ---
+  duration_ms: 3954.573
+  type: 'test'
+  ...
+# Subtest: Calendar views 768px light
+ok 53 - Calendar views 768px light
+  ---
+  duration_ms: 3482.157
+  type: 'test'
+  ...
+# Subtest: Calendar views 768px dark
+ok 54 - Calendar views 768px dark
+  ---
+  duration_ms: 3708.8984
+  type: 'test'
+  ...
+# Subtest: Calendar views 1024px light
+ok 55 - Calendar views 1024px light
+  ---
+  duration_ms: 4097.759
+  type: 'test'
+  ...
+# Subtest: Calendar views 1024px dark
+ok 56 - Calendar views 1024px dark
+  ---
+  duration_ms: 4080.7782
+  type: 'test'
+  ...
+# Subtest: Calendar views 1280px light
+ok 57 - Calendar views 1280px light
+  ---
+  duration_ms: 4206.852
+  type: 'test'
+  ...
+# Subtest: Calendar views 1280px dark
+ok 58 - Calendar views 1280px dark
+  ---
+  duration_ms: 4034.247
+  type: 'test'
+  ...
+# Subtest: Calendar views 1440px light
+ok 59 - Calendar views 1440px light
+  ---
+  duration_ms: 3959.2955
+  type: 'test'
+  ...
+# Subtest: Calendar views 1440px dark
+ok 60 - Calendar views 1440px dark
+  ---
+  duration_ms: 4118.5675
+  type: 'test'
+  ...
+# (node:24448) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Registries 390 light
+ok 61 - Registries 390 light
+  ---
+  duration_ms: 2905.6034
+  type: 'test'
+  ...
+# Subtest: Registries 390 dark
+ok 62 - Registries 390 dark
+  ---
+  duration_ms: 2130.4545
+  type: 'test'
+  ...
+# Subtest: Registries 768 light
+ok 63 - Registries 768 light
+  ---
+  duration_ms: 2105.1885
+  type: 'test'
+  ...
+# Subtest: Registries 768 dark
+ok 64 - Registries 768 dark
+  ---
+  duration_ms: 2094.5699
+  type: 'test'
+  ...
+# Subtest: Registries 1024 light
+ok 65 - Registries 1024 light
+  ---
+  duration_ms: 2221.4234
+  type: 'test'
+  ...
+# Subtest: Registries 1024 dark
+ok 66 - Registries 1024 dark
+  ---
+  duration_ms: 2180.8172
+  type: 'test'
+  ...
+# Subtest: Registries 1280 light
+ok 67 - Registries 1280 light
+  ---
+  duration_ms: 2111.8596
+  type: 'test'
+  ...
+# Subtest: Registries 1280 dark
+ok 68 - Registries 1280 dark
+  ---
+  duration_ms: 2159.9039
+  type: 'test'
+  ...
+# Subtest: Registries 1440 light
+ok 69 - Registries 1440 light
+  ---
+  duration_ms: 2352.9178
+  type: 'test'
+  ...
+# Subtest: Registries 1440 dark
+ok 70 - Registries 1440 dark
+  ---
+  duration_ms: 2525.1573
+  type: 'test'
+  ...
+# (node:2980) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Reference presentation surfaces 390 light
+ok 71 - Reference presentation surfaces 390 light
+  ---
+  duration_ms: 9828.8541
+  type: 'test'
+  ...
+# Subtest: Reference presentation surfaces 390 dark
+ok 72 - Reference presentation surfaces 390 dark
+  ---
+  duration_ms: 9636.2918
+  type: 'test'
+  ...
+# Subtest: Reference presentation surfaces 768 light
+ok 73 - Reference presentation surfaces 768 light
+  ---
+  duration_ms: 9389.7445
+  type: 'test'
+  ...
+# Subtest: Reference presentation surfaces 768 dark
+ok 74 - Reference presentation surfaces 768 dark
+  ---
+  duration_ms: 9541.8513
+  type: 'test'
+  ...
+# Subtest: Reference presentation surfaces 1024 light
+ok 75 - Reference presentation surfaces 1024 light
+  ---
+  duration_ms: 10210.4158
+  type: 'test'
+  ...
+# Subtest: Reference presentation surfaces 1024 dark
+ok 76 - Reference presentation surfaces 1024 dark
+  ---
+  duration_ms: 9332.4006
+  type: 'test'
+  ...
+# Subtest: Reference presentation surfaces 1280 light
+ok 77 - Reference presentation surfaces 1280 light
+  ---
+  duration_ms: 8065.7149
+  type: 'test'
+  ...
+# Subtest: Reference presentation surfaces 1280 dark
+ok 78 - Reference presentation surfaces 1280 dark
+  ---
+  duration_ms: 9455.9257
+  type: 'test'
+  ...
+# Subtest: Reference presentation surfaces 1440 light
+ok 79 - Reference presentation surfaces 1440 light
+  ---
+  duration_ms: 12725.4122
+  type: 'test'
+  ...
+# Subtest: Reference presentation surfaces 1440 dark
+ok 80 - Reference presentation surfaces 1440 dark
+  ---
+  duration_ms: 13447.9006
+  type: 'test'
+  ...
+1..80
+# tests 80
+# suites 0
+# pass 80
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 184755.8917

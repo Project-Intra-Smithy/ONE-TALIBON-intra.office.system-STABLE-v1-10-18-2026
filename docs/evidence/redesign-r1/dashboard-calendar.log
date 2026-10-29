@@ -1,0 +1,132 @@
+TAP version 13
+# (node:21124) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Dashboard readable layout 390px light
+ok 1 - Dashboard readable layout 390px light
+  ---
+  duration_ms: 18623.6863
+  type: 'test'
+  ...
+# Subtest: Dashboard readable layout 390px dark
+ok 2 - Dashboard readable layout 390px dark
+  ---
+  duration_ms: 8896.4839
+  type: 'test'
+  ...
+# Subtest: Dashboard readable layout 768px light
+ok 3 - Dashboard readable layout 768px light
+  ---
+  duration_ms: 9485.5667
+  type: 'test'
+  ...
+# Subtest: Dashboard readable layout 768px dark
+ok 4 - Dashboard readable layout 768px dark
+  ---
+  duration_ms: 9365.533
+  type: 'test'
+  ...
+# Subtest: Dashboard readable layout 1024px light
+ok 5 - Dashboard readable layout 1024px light
+  ---
+  duration_ms: 10323.7944
+  type: 'test'
+  ...
+# Subtest: Dashboard readable layout 1024px dark
+ok 6 - Dashboard readable layout 1024px dark
+  ---
+  duration_ms: 10217.8054
+  type: 'test'
+  ...
+# Subtest: Dashboard readable layout 1280px light
+ok 7 - Dashboard readable layout 1280px light
+  ---
+  duration_ms: 10740.4148
+  type: 'test'
+  ...
+# Subtest: Dashboard readable layout 1280px dark
+ok 8 - Dashboard readable layout 1280px dark
+  ---
+  duration_ms: 12216.9406
+  type: 'test'
+  ...
+# Subtest: Dashboard readable layout 1440px light
+ok 9 - Dashboard readable layout 1440px light
+  ---
+  duration_ms: 11948.5553
+  type: 'test'
+  ...
+# Subtest: Dashboard readable layout 1440px dark
+ok 10 - Dashboard readable layout 1440px dark
+  ---
+  duration_ms: 12335.1485
+  type: 'test'
+  ...
+# Subtest: Calendar views 390px light
+ok 11 - Calendar views 390px light
+  ---
+  duration_ms: 8249.1719
+  type: 'test'
+  ...
+# Subtest: Calendar views 390px dark
+ok 12 - Calendar views 390px dark
+  ---
+  duration_ms: 8893.7552
+  type: 'test'
+  ...
+# Subtest: Calendar views 768px light
+ok 13 - Calendar views 768px light
+  ---
+  duration_ms: 8716.1574
+  type: 'test'
+  ...
+# Subtest: Calendar views 768px dark
+ok 14 - Calendar views 768px dark
+  ---
+  duration_ms: 8730.6132
+  type: 'test'
+  ...
+# Subtest: Calendar views 1024px light
+ok 15 - Calendar views 1024px light
+  ---
+  duration_ms: 9240.7129
+  type: 'test'
+  ...
+# Subtest: Calendar views 1024px dark
+ok 16 - Calendar views 1024px dark
+  ---
+  duration_ms: 10024.4769
+  type: 'test'
+  ...
+# Subtest: Calendar views 1280px light
+ok 17 - Calendar views 1280px light
+  ---
+  duration_ms: 9623.6255
+  type: 'test'
+  ...
+# Subtest: Calendar views 1280px dark
+ok 18 - Calendar views 1280px dark
+  ---
+  duration_ms: 9920.5437
+  type: 'test'
+  ...
+# Subtest: Calendar views 1440px light
+ok 19 - Calendar views 1440px light
+  ---
+  duration_ms: 13126.4257
+  type: 'test'
+  ...
+# Subtest: Calendar views 1440px dark
+ok 20 - Calendar views 1440px dark
+  ---
+  duration_ms: 11516.6995
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 215657.3063

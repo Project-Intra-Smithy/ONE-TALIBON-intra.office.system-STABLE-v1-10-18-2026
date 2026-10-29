@@ -1,5 +1,9 @@
+import '../../../css/aj-page-workspace.css';
+import '../../../css/ot-r6-modules.css';
+import '../../../css/r8-directory.css';
+import '../../../css/portal-visual-redesign.css';
 import { useState } from 'react';
-import { Building2, Crown, Gavel, Network, Users } from 'lucide-react';
+import { Building2, Crown, Gavel, Network, Search, Users } from 'lucide-react';
 import PageFrame from '../../components/PageFrame';
 import PageHeader from '../../components/PageHeader';
 import AppLayout from '../../layouts/AppLayout';
@@ -78,12 +82,23 @@ export default function Index({ departments, summary, directoryEntries, director
     const visible = filterDirectoryEntries(entries, search, group);
     const groupedVisible = groupDirectoryEntries(visible, groups);
     if (directoryEntries != null) return <AppLayout title="Office Directory">
-        <PageFrame>
+        <PageFrame className="civic-page ot-r6-modules ot-r6-departments r8-directory aj-page-workspace" density="comfortable">
             <PageHeader eyebrow="One Talibon · Reference directory" title="Office Directory"
-                description="Find offices, units, agencies and community partners in the stakeholder reference catalog. Names and groups remain subject to LGU validation; listing does not grant records access." icon={Building2}/>
-            <section className="municipal-panel space-y-4 p-4" aria-label="Office directory search and groups">
-                <div className="grid gap-3 sm:grid-cols-2">
-                    <label className="block text-sm font-semibold">Search offices
+                description="Browse the supplied municipal office reference catalog by office, responsibility or group. Entries remain subject to LGU validation." icon={Building2}/>
+            <section className="r8-directory-intro" aria-label="Directory scope">
+                <div className="r8-directory-intro__icon"><Building2 size={23} aria-hidden="true" /></div>
+                <div className="r8-directory-intro__copy">
+                    <p className="r8-directory-kicker">Municipal office reference</p>
+                    <h2>Find the right office</h2>
+                    <p>Explore office responsibilities and available records access. Reference entries are not verified departmental workspaces.</p>
+                </div>
+                <div className="r8-directory-intro__count" aria-label={`${entries.length} supplied reference entries`}>
+                    <strong>{entries.length}</strong><span>Catalog entries</span>
+                </div>
+            </section>
+            <section className="municipal-panel ot-r6-filter-panel r8-directory-controls space-y-3 rounded-lg p-3 sm:p-4" aria-label="Office directory search and groups">
+                <div className="r8-directory-controls__fields grid gap-3 sm:grid-cols-2">
+                    <label className="block text-sm font-semibold"><span className="r8-directory-field-label"><Search size={15} aria-hidden="true" />Search offices</span>
                         <input aria-label="Search offices" type="search" value={search} onChange={e => setSearch(e.target.value)}
                             placeholder="Office, code or service" className="mt-1 min-h-11 w-full min-w-0 rounded-md border border-slate-300 bg-white p-3 text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#145A43] dark:border-slate-600 dark:bg-slate-900 dark:text-white" />
                     </label>
@@ -95,41 +110,44 @@ export default function Index({ departments, summary, directoryEntries, director
                         </select>
                     </label>
                 </div>
-                <p role="status" aria-live="polite" className="text-sm text-slate-600 dark:text-slate-300">{visible.length} matching entries · {entries.length} reference entries · {groups.length} groups</p>
+                <div className="r8-directory-results flex flex-wrap items-center justify-between gap-2 border-t border-[var(--municipal-border)] pt-2">
+                    <p role="status" aria-live="polite" className="text-xs font-semibold text-[var(--municipal-muted)]">{visible.length} of {entries.length} reference entries · {groups.length} groups</p>
+                    {(search || group) && <button type="button" onClick={() => { setSearch(''); setGroup(''); }} className="ot-r6-reset min-h-11 rounded-md px-3 text-xs font-semibold text-[var(--municipal-brand)]">Clear filters</button>}
+                </div>
             </section>
             {visible.length === 0 ? (
                 <section role="status" aria-live="polite" className="municipal-panel p-8 text-center">
                     <h2 className="text-lg font-bold">{entries.length ? 'No matching offices' : 'No directory entries available'}</h2>
-                    <p className="mt-2 text-sm">Try another search or choose All office groups.</p>
+                    <p className="mt-2 text-sm">{entries.length ? 'Try another search or choose All office groups.' : 'No reference catalog entries were supplied for this directory.'}</p>
                     <button type="button" onClick={() => { setSearch(''); setGroup(''); }}
                         className="mt-3 min-h-11 rounded-lg border border-emerald-800 px-4 py-2 font-semibold text-[#145A43] focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-800">
                         Clear filters
                     </button>
                 </section>
             ) : (
-                <div className="min-w-0 space-y-5" aria-label="Office directory grouped results">
+                <div className="r8-directory-groups min-w-0 space-y-4" aria-label="Office directory grouped results">
                     {groupedVisible.map(({ groupName, entries }, index) => (
-                        <section key={groupName} className="min-w-0 space-y-3" aria-labelledby={`office-directory-group-${index}`}>
+                        <section key={groupName} className="ot-r6-office-group r8-directory-group min-w-0 space-y-2 rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-3" aria-labelledby={`office-directory-group-${index}`}>
                             <h2 id={`office-directory-group-${index}`} className="break-words border-l-4 border-[#145A43] pl-3 text-lg font-bold text-slate-950 dark:text-slate-100">
-                                {groupName} <span className="text-sm font-medium text-slate-600 dark:text-slate-300">({entries.length})</span>
+                                {groupName} <span className="r8-directory-group__count text-sm font-medium text-slate-600 dark:text-slate-300">{entries.length} {entries.length === 1 ? 'office' : 'offices'} shown</span>
                             </h2>
-                            <div className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                            <div className="ot-r6-office-grid grid min-w-0 gap-2 sm:grid-cols-2 xl:grid-cols-3">
                                 {entries.map((entry) => {
                                     const recordsHref = safeRecordsHref(entry);
                                     return (
-                                        <article key={entry.key} className="min-w-0 space-y-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-5">
+                                        <article key={entry.key} className="ot-r6-office-card r8-directory-card min-w-0 rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] p-3">
                                             <div className="flex flex-wrap items-center gap-2">
                                                 <OfficeLogo officeCode={entry.backingDepartmentCode} directoryKey={entry.key} officeName={entry.name} />
                                                 <span className="min-w-0 break-words text-sm font-semibold text-[#145A43] dark:text-emerald-300">{entry.shortName}</span>
                                             </div>
-                                            <h3 className="break-words text-base font-bold text-slate-950 dark:text-slate-100">{entry.name}</h3>
-                                            <p className="break-words text-sm text-slate-700 dark:text-slate-300">{entry.responsibility}</p>
+                                            <h3 className="mt-2 break-words text-[13px] font-bold leading-5 text-[var(--municipal-text)]">{entry.name}</h3>
+                                            <p className="mt-1 break-words text-xs leading-5 text-[var(--municipal-muted)]">{entry.responsibility}</p>
                                             {recordsHref ? (
-                                                <a className="inline-flex min-h-11 max-w-full items-center text-sm font-semibold text-[#145A43] underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800 dark:text-emerald-300" href={recordsHref}>
+                                                <a className="ot-r6-office-action r8-directory-card__link mt-2 inline-flex min-h-11 max-w-full items-center text-xs font-semibold text-[#145A43] underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800 dark:text-emerald-300" href={recordsHref}>
                                                     Open authorized office records
                                                 </a>
                                             ) : (
-                                                <p className="text-xs text-slate-600 dark:text-slate-400">Records access unavailable — authority pending</p>
+                                                <p className="ot-r6-office-action r8-directory-card__pending mt-2 text-xs text-[var(--municipal-muted)]">Records access unavailable — authority pending</p>
                                             )}
                                         </article>
                                     );
@@ -145,23 +163,20 @@ export default function Index({ departments, summary, directoryEntries, director
     const legislative = departments.filter((office) => office.branch === 'legislative');
 
     const officeCard = (office: Office) => (
-        <article key={office.id} className="municipal-panel min-w-0 p-4 transition-colors hover:border-blue-200 dark:hover:border-blue-800 sm:p-5">
-            <div className="flex items-start gap-3">
-                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${office.is_executive ? 'bg-blue-900 text-white' : office.is_legislative ? 'bg-indigo-50 text-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-200' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200'}`}>
-                    {office.is_executive ? <Crown size={17} aria-hidden="true" /> : office.is_legislative ? <Gavel size={17} aria-hidden="true" /> : <Building2 size={17} aria-hidden="true" />}
-                </div>
-                <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                        <span className="rounded-md bg-slate-100 px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-slate-600 dark:bg-slate-800 dark:text-slate-200">{office.code}</span>
-                        <span className="break-words text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-400">{officeTypeLabel(office.office_type)}</span>
-                    </div>
-                    <h2 className="mt-2 break-words text-sm font-bold leading-5 text-slate-950 dark:text-slate-100 sm:text-base">{office.name}</h2>
-                    {office.short_name && office.short_name !== office.name ? <div className="mt-0.5 break-words text-xs text-slate-500 dark:text-slate-400 sm:text-xs">{office.short_name}</div> : null}
+        <article key={office.id} className="aj-office-row ot-r6-live-office-card">
+            <div className="aj-office-identity">
+                <span className="aj-office-mark" aria-hidden="true">
+                    {office.is_executive ? <Crown size={24} /> : office.is_legislative ? <Gavel size={24} /> : <Building2 size={24} />}
+                </span>
+                <div className="min-w-0">
+                    <p className="aj-office-kind">{office.code} <span aria-hidden="true">/</span> {officeTypeLabel(office.office_type)}</p>
+                    <h3>{office.name}</h3>
+                    {office.short_name && office.short_name !== office.name && <p className="aj-office-short-name">{office.short_name}</p>}
                 </div>
             </div>
-            <dl className="mt-4 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3 dark:border-slate-700">
-                <div><dt className="text-xs font-bold uppercase tracking-wide text-slate-400 dark:text-slate-400">Active employees</dt><dd className="mt-1 text-lg font-bold text-slate-950 dark:text-slate-100">{office.active_employees_count}</dd></div>
-                <div><dt className="text-xs font-bold uppercase tracking-wide text-slate-400 dark:text-slate-400">Active work</dt><dd className="mt-1 text-lg font-bold text-slate-950 dark:text-slate-100">{office.active_transactions_count}</dd></div>
+            <dl className="aj-office-counts">
+                <div><dt>Active employees</dt><dd>{office.active_employees_count}</dd></div>
+                <div><dt>Active work</dt><dd>{office.active_transactions_count}</dd></div>
             </dl>
         </article>
     );
@@ -175,38 +190,34 @@ export default function Index({ departments, summary, directoryEntries, director
     ];
 
     return <AppLayout title="Municipal Offices">
-        <PageFrame>
+        <PageFrame className="civic-page ot-r6-modules ot-r6-departments r8-directory aj-page-workspace" density="comfortable">
             <PageHeader
                 eyebrow="Municipal operating structure"
                 title="Municipal Offices"
-                description="Directory of active municipal offices, branch placement, staffing, and current routed workload used across the intra-office portal."
+                description="Explore server-supplied municipal offices, their branch placement and authorized summary counts."
                 icon={Building2}
             />
 
-            <section aria-label="Municipal office summary" className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
-                {summaryItems.map(({ label, value, icon: Icon }) => (
-                    <div key={label} className="municipal-stat">
-                        <Icon className="text-blue-800 dark:text-blue-300" size={17} aria-hidden="true" />
-                        <div className="mt-2 text-xl font-bold text-slate-950 dark:text-slate-100 sm:text-2xl">{value}</div>
-                        <div className="mt-0.5 break-words text-xs font-semibold leading-4 text-slate-500 dark:text-slate-400 sm:text-xs">{label}</div>
-                    </div>
+            <dl aria-label="Municipal office summary" className="aj-office-statistics">
+                {summaryItems.map(({ label, value }) => (
+                    <div key={label}><dt>{label}</dt><dd>{value.toLocaleString()}</dd></div>
                 ))}
-            </section>
+            </dl>
 
-            <section className="space-y-3" aria-labelledby="executive-offices-heading">
+            <section className="r8-directory-live-group aj-office-branch" aria-labelledby="executive-offices-heading">
                 <div>
-                    <div className="text-xs font-bold uppercase tracking-wider text-blue-700 dark:text-blue-300">Executive and administrative branch</div>
+                    <div className="text-xs font-bold uppercase tracking-wider text-[var(--municipal-brand)]">Executive and administrative branch</div>
                     <h2 id="executive-offices-heading" className="mt-1 text-lg font-bold text-slate-950 dark:text-slate-100">Offices supporting municipal operations</h2>
                 </div>
-                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{executive.map(officeCard)}</div>
+                <div className="aj-office-list">{executive.map(officeCard)}{executive.length === 0 && <p className="aj-office-empty">No executive or administrative offices supplied.</p>}</div>
             </section>
 
-            <section className="space-y-3" aria-labelledby="legislative-offices-heading">
+            <section className="r8-directory-live-group aj-office-branch" aria-labelledby="legislative-offices-heading">
                 <div>
-                    <div className="text-xs font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-300">Legislative branch</div>
+                    <div className="text-xs font-bold uppercase tracking-wider text-[var(--municipal-brand)]">Legislative branch</div>
                     <h2 id="legislative-offices-heading" className="mt-1 break-words text-lg font-bold text-slate-950 dark:text-slate-100">Vice Mayor, Sangguniang Bayan, and legislative support</h2>
                 </div>
-                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{legislative.map(officeCard)}</div>
+                <div className="aj-office-list">{legislative.map(officeCard)}{legislative.length === 0 && <p className="aj-office-empty">No legislative offices supplied.</p>}</div>
             </section>
 
             <div className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-[13px] leading-5 text-slate-600 transition-colors dark:border-slate-700 dark:bg-[#142236] dark:text-slate-300 sm:text-xs">

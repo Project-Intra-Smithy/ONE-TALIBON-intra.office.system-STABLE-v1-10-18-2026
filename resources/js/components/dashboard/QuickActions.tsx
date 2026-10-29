@@ -1,20 +1,37 @@
-import { Link } from '@inertiajs/react';
-import { LayoutGrid, ShieldCheck } from 'lucide-react';
-import { portalDestinations } from '../../navigation/portalNavigation';
+import { Link, usePage } from '@inertiajs/react';
+import { LayoutGrid } from 'lucide-react';
+import { buildPortalNavigation, portalDestinations } from '../../navigation/portalNavigation';
 import { isStagedInertiaPath } from '../../navigation/stagedRoutes';
+import type { SharedProps } from '../../types';
+import { selectDashboardShortcuts } from './dashboardShortcuts';
 import type { DashboardExperience } from './types';
 
 export default function QuickActions({ actions }: { actions: DashboardExperience['quickActions'] }) {
-    const available = actions.filter((action) => isStagedInertiaPath(action.url));
+    const page = usePage<SharedProps>().props;
+    // Build from the same permission-filtered route inventory as the authenticated sidebar.
+    // This does not activate the staged/authority-pending catalog destinations.
+    const permitted = buildPortalNavigation(page.workspaceExperience, page.permissions?.navigation ?? {} as SharedProps['permissions']['navigation'])
+        .flatMap((group) => group.items);
+    const safeActions = actions.filter((action) => isStagedInertiaPath(action.url));
+    const available = selectDashboardShortcuts(safeActions, permitted);
     if (!available.length) return null;
-    return <section className="municipal-panel p-4" aria-labelledby="dashboard-quick-actions">
-        <h2 id="dashboard-quick-actions" className="municipal-panel-title"><LayoutGrid size={17} className="text-blue-800 dark:text-blue-300" />Quick Access</h2>
-        <div className="workspace-action-grid mt-4">
-            {available.map((action) => {
-                const Icon = Object.values(portalDestinations).find((item) => action.url.split('?')[0] === item.href)?.icon || ShieldCheck;
-                return <Link key={action.url} href={action.url} className="flex min-h-16 min-w-0 items-center gap-3 rounded-lg border border-slate-200 px-4 py-4 transition-colors duration-150 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800">
-                    <Icon size={20} className="shrink-0 text-[#1769aa] dark:text-blue-300" strokeWidth={1.8} aria-hidden="true" />
-                    <div className="text-base font-semibold leading-6 text-slate-900 dark:text-slate-100">{action.label}</div>
+
+    return <section className="ot-dashboard-quick" aria-labelledby="dashboard-quick-actions">
+        <div className="ot-dashboard-quick-heading">
+            <h2 id="dashboard-quick-actions"><LayoutGrid size={17} aria-hidden="true" /> Quick Access</h2>
+            <span className="ot-dashboard-quick-note">Available to your account</span>
+        </div>
+        <div className="ot-dashboard-tiles">
+            {available.map((shortcut) => {
+                const destination = shortcut.key
+                    ? portalDestinations[shortcut.key as keyof typeof portalDestinations]
+                    : Object.values(portalDestinations).find((item) => shortcut.href.split('?')[0] === item.href);
+                const Icon = destination?.icon || LayoutGrid;
+                return <Link key={shortcut.href} href={shortcut.href} className="ot-dashboard-tile" aria-label={`Open ${shortcut.label}`}>
+                    <span className="ot-dashboard-tile-icon">
+                        <Icon size={22} strokeWidth={1.8} aria-hidden="true" />
+                    </span>
+                    <span className="ot-dashboard-tile-label">{shortcut.label}</span>
                 </Link>;
             })}
         </div>

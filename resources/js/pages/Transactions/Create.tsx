@@ -1,3 +1,5 @@
+import '../../../css/portal-visual-redesign.css';
+import OfficeCombobox from '../../components/portal/OfficeCombobox';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowRight, Building2, Paperclip } from 'lucide-react';
 import EvidenceFields from '../../components/documents/EvidenceFields';
@@ -47,8 +49,6 @@ const labelClass = 'block text-xs font-semibold text-slate-700 dark:text-slate-3
 const labelTextClass = 'mb-1.5 block';
 
 export default function Create({ departments, assignableEmployees, requestCategories, actionOptions }: Props) {
-    const executive = departments.filter((department) => department.branch !== 'legislative');
-    const legislative = departments.filter((department) => department.branch === 'legislative');
     const categoryNames = Object.keys(requestCategories);
     const initialCategory = categoryNames[0] ?? '';
     const initialTargetDepartment = departments[0]?.id ?? '';
@@ -75,7 +75,7 @@ export default function Create({ departments, assignableEmployees, requestCatego
     return (
         <AppLayout title="Create Work Request">
             <Head title="Create Work Request" />
-            <div className="mx-auto max-w-4xl space-y-3">
+            <div className="civic-page mx-auto max-w-4xl space-y-3">
                 <header className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                     <div className="min-w-0">
                         <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-blue-700 dark:text-blue-300">Work Queue · New request</div>
@@ -131,17 +131,12 @@ export default function Create({ departments, assignableEmployees, requestCatego
                     </label>
 
                     <div className="grid gap-3 sm:grid-cols-2">
-                        <label className={labelClass}>
-                            <span className={labelTextClass}>Receiving Office</span>
-                            <select value={data.target_department_id} onChange={(event) => {
-                                setData('target_department_id', Number(event.target.value));
+                        <OfficeCombobox offices={departments} value={data.target_department_id}
+                            disabled={processing} error={errors.target_department_id}
+                            onChange={(id) => {
+                                setData('target_department_id', id);
                                 setData('assigned_employee_id', '');
-                            }} className={fieldClass} required>
-                                {executive.length > 0 && <optgroup label="Executive / Administrative">{executive.map((department) => <option key={department.id} value={department.id}>{department.name}</option>)}</optgroup>}
-                                {legislative.length > 0 && <optgroup label="Legislative Branch">{legislative.map((department) => <option key={department.id} value={department.id}>{department.name}</option>)}</optgroup>}
-                            </select>
-                            {errors.target_department_id && <span className="mt-1 block text-xs text-red-600">{errors.target_department_id}</span>}
-                        </label>
+                            }} />
 
                         <label className={labelClass}>
                             <span className={labelTextClass}>Assigned Person <span className="font-normal text-slate-400">optional</span></span>

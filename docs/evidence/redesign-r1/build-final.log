@@ -1,0 +1,167 @@
+
+> build
+> vite build
+
+vite v8.3.3 building client environment for production...
+transforming...
+node.exe : 
+At C:\Program Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+/images/talibon/municipality-of-talibon.jpg referenced in /images/talibon/municipality-of-talibon.jpg didn't resolve 
+at build time, it will remain unchanged to be resolved at runtime
+✓ 2352 modules transformed.
+rendering chunks...
+computing gzip size...
+public/build/manifest.json                                43.47 kB │ gzip:   4.58 kB
+public/build/assets/Index-DuORjuNh.css                     2.08 kB │ gzip:   0.78 kB
+public/build/assets/ot-r6-modules-BHGPruQS.css             2.13 kB │ gzip:   0.77 kB
+public/build/assets/Index-C3ypBJVH.css                     2.23 kB │ gzip:   0.82 kB
+public/build/assets/Index-DWfgqlpB.css                     2.28 kB │ gzip:   0.71 kB
+public/build/assets/MfaChallenge-DlOsZS78.css              2.46 kB │ gzip:   1.00 kB
+public/build/assets/aj-registry-workspace-ByMn2iKP.css     2.62 kB │ gzip:   0.69 kB
+public/build/assets/Index-B9y8XzWn.css                     2.92 kB │ gzip:   0.84 kB
+public/build/assets/portal-visual-redesign-DL0ckFPX.css    3.55 kB │ gzip:   1.15 kB
+public/build/assets/Index-iQ1BzLDU.css                     3.75 kB │ gzip:   1.04 kB
+public/build/assets/AppLayout--O8TC4dV.css                 4.22 kB │ gzip:   1.03 kB
+public/build/assets/aj-page-workspace-CChXiEkQ.css         5.69 kB │ gzip:   1.40 kB
+public/build/assets/Login-BUDAo5_s.css                     6.30 kB │ gzip:   2.01 kB
+public/build/assets/app-CAUlIcSk.css                       9.47 kB │ gzip:   2.42 kB
+public/build/assets/Home-BIJ42z17.css                     10.27 kB │ gzip:   2.63 kB
+public/build/assets/Index-BqO7U65J.css                    18.36 kB │ gzip:   3.27 kB
+public/build/assets/Dashboard-vlXQB_lm.css                45.67 kB │ gzip:   7.71 kB
+public/build/assets/app-BqszFke9.css                     194.09 kB │ gzip:  29.77 kB
+public/build/assets/chevron-left-7DaS-FXV.js               0.12 kB │ gzip:   0.14 kB
+public/build/assets/chevron-right-fIQM-k-C.js              0.12 kB │ gzip:   0.14 kB
+public/build/assets/plus-BwoCBsTc.js                       0.15 kB │ gzip:   0.15 kB
+public/build/assets/arrow-left-CqBHpRv8.js                 0.16 kB │ gzip:   0.16 kB
+public/build/assets/arrow-right-BI6sN4rK.js                0.16 kB │ gzip:   0.16 kB
+public/build/assets/arrow-up-right-D5GkFwR4.js             0.16 kB │ gzip:   0.15 kB
+public/build/assets/circle-check-CCrW-B3j.js               0.17 kB │ gzip:   0.16 kB
+public/build/assets/user-round-F6kZnotn.js                 0.18 kB │ gzip:   0.17 kB
+public/build/assets/clock-3-CSUe3inD.js                    0.18 kB │ gzip:   0.17 kB
+public/build/assets/rotate-ccw-CDEOlJja.js                 0.19 kB │ gzip:   0.18 kB
+public/build/assets/user-round-check-C5UOUebj.js           0.23 kB │ gzip:   0.20 kB
+public/build/assets/activity-CO9lmSZL.js                   0.23 kB │ gzip:   0.19 kB
+public/build/assets/link-2-BZMsXfs6.js                     0.24 kB │ gzip:   0.20 kB
+public/build/assets/banknote-C9S2QB10.js                   0.24 kB │ gzip:   0.20 kB
+public/build/assets/users-round-m0VPZher.js                0.25 kB │ gzip:   0.21 kB
+public/build/assets/lock-keyhole-CBPGiZ7v.js               0.25 kB │ gzip:   0.22 kB
+public/build/assets/file-check-2-DElPMCqh.js               0.25 kB │ gzip:   0.20 kB
+public/build/assets/message-square-text-CsUuVP6v.js        0.25 kB │ gzip:   0.19 kB
+public/build/assets/log-out-CvK-_emy.js                    0.25 kB │ gzip:   0.22 kB
+public/build/assets/map-pin-LT3C0kRc.js                    0.25 kB │ gzip:   0.22 kB
+public/build/assets/download-CvwGMLS9.js                   0.26 kB │ gzip:   0.21 kB
+public/build/assets/triangle-alert-D7Qn2hQG.js             0.26 kB │ gzip:   0.21 kB
+public/build/assets/award-Ih5zWHbv.js                      0.27 kB │ gzip:   0.22 kB
+public/build/assets/git-branch-ChkW9vE-.js                 0.27 kB │ gzip:   0.22 kB
+public/build/assets/send-DX4d34at.js                       0.29 kB │ gzip:   0.23 kB
+public/build/assets/gavel-hMwaFIS3.js                      0.30 kB │ gzip:   0.21 kB
+public/build/assets/clipboard-check-BGhTH3pH.js            0.30 kB │ gzip:   0.23 kB
+public/build/assets/shield-check-D05HXEbT.js               0.31 kB │ gzip:   0.24 kB
+public/build/assets/briefcase-business-N8g6CKZe.js         0.32 kB │ gzip:   0.24 kB
+public/build/assets/graduation-cap-CoHCR7cR.js             0.33 kB │ gzip:   0.24 kB
+public/build/assets/shield-alert-hCzhjs85.js               0.35 kB │ gzip:   0.26 kB
+public/build/assets/key-round-BrulAdzR.js                  0.35 kB │ gzip:   0.26 kB
+public/build/assets/PageFrame-BM3UCfV5.js                  0.38 kB │ gzip:   0.27 kB
+public/build/assets/clipboard-list-DhPsIbli.js             0.41 kB │ gzip:   0.26 kB
+public/build/assets/layers-B1N4fGe_.js                     0.42 kB │ gzip:   0.24 kB
+public/build/assets/map-Byd2W2HT.js                        0.42 kB │ gzip:   0.26 kB
+public/build/assets/building-2-CuwcO_iR.js                 0.43 kB │ gzip:   0.24 kB
+public/build/assets/uiContracts-BEtMDG4o.js                0.46 kB │ gzip:   0.31 kB
+public/build/assets/sliders-horizontal-PtR6eWws.js         0.58 kB │ gzip:   0.26 kB
+public/build/assets/LegislativeRecordStatus-BwmIMcUk.js    0.59 kB │ gzip:   0.35 kB
+public/build/assets/fingerprint-CVUzQa8h.js                0.60 kB │ gzip:   0.34 kB
+public/build/assets/WorkspaceUnavailable-BRaKo_rE.js       0.66 kB │ gzip:   0.40 kB
+public/build/assets/Index-BTw9TIk2.js                      0.74 kB │ gzip:   0.45 kB
+public/build/assets/Index-RvxJv6GO.js                      0.77 kB │ gzip:   0.47 kB
+public/build/assets/Index-CB9wyk84.js                      0.82 kB │ gzip:   0.47 kB
+public/build/assets/Index-Df4yKcYs.js                      0.88 kB │ gzip:   0.54 kB
+public/build/assets/createLucideIcon-CkuYsiq4.js           0.90 kB │ gzip:   0.54 kB
+public/build/assets/returnContext-DZ1i872v.js              0.99 kB │ gzip:   0.49 kB
+public/build/assets/PageHeader-F37Y1uB6.js                 1.00 kB │ gzip:   0.54 kB
+public/build/assets/Workspace-joJaGaS0.js                  1.09 kB │ gzip:   0.63 kB
+public/build/assets/AuthorityPendingSurface-MyVMn1Be.js    1.41 kB │ gzip:   0.52 kB
+public/build/assets/talibonAssets-DXVsP1qv.js              1.45 kB │ gzip:   0.61 kB
+public/build/assets/EvidenceList-0WiwHuKG.js               1.45 kB │ gzip:   0.70 kB
+public/build/assets/Attendance-CpMEu53n.js                 1.55 kB │ gzip:   0.75 kB
+public/build/assets/LegislativePager-C9GLgmNE.js           1.65 kB │ gzip:   0.67 kB
+public/build/assets/DirectoryProfile-DvBZZdMS.js           1.85 kB │ gzip:   0.75 kB
+public/build/assets/MfaRecoveryCodes-DVMQDB82.js           2.06 kB │ gzip:   0.90 kB
+public/build/assets/EvidenceFields-BecoGEQH.js             2.22 kB │ gzip:   1.11 kB
+public/build/assets/403-864CiZRN.js                        2.40 kB │ gzip:   1.06 kB
+public/build/assets/Status-chCIQYGC.js                     2.66 kB │ gzip:   1.01 kB
+public/build/assets/Index-DKRvRh7C.js                      2.91 kB │ gzip:   1.26 kB
+public/build/assets/ProgressiveFilterBar-BCDH0H59.js       3.20 kB │ gzip:   1.25 kB
+public/build/assets/RelatedWorkPanel-PXlGBnBy.js           3.25 kB │ gzip:   1.19 kB
+public/build/assets/MfaChallenge-DYfiFyCD.js               3.41 kB │ gzip:   1.17 kB
+public/build/assets/MfaEnrollment-8Vgiy1t0.js              3.42 kB │ gzip:   1.37 kB
+public/build/assets/Show-DW7Kv6aS.js                       3.63 kB │ gzip:   1.35 kB
+public/build/assets/MfaSettings-O60Cc_aB.js                3.82 kB │ gzip:   1.36 kB
+public/build/assets/ActivateAccount-DBO2Zid1.js            4.19 kB │ gzip:   1.45 kB
+public/build/assets/Show-BwLywPXD.js                       4.56 kB │ gzip:   1.38 kB
+public/build/assets/Admin-Cj-hb-i_.js                      4.74 kB │ gzip:   1.39 kB
+public/build/assets/Login-Z7LSlJe-.js                      4.84 kB │ gzip:   1.60 kB
+public/build/assets/Index-BPo-R5oh.js                      5.09 kB │ gzip:   1.61 kB
+public/build/assets/Show-CZ6eghFe.js                       5.13 kB │ gzip:   1.57 kB
+public/build/assets/Create-C2YYIvvI.js                     5.26 kB │ gzip:   1.24 kB
+public/build/assets/HealthAccess-BIf8zhuO.js               6.25 kB │ gzip:   2.04 kB
+public/build/assets/Show-DtygC_WC.js                       6.31 kB │ gzip:   2.10 kB
+public/build/assets/Create-BHp41qZG.js                     6.71 kB │ gzip:   1.68 kB
+public/build/assets/MayorOffice-Dcbf8mFt.js                6.83 kB │ gzip:   1.94 kB
+public/build/assets/ppas-BlaUyiaF.js                       7.00 kB │ gzip:   2.01 kB
+public/build/assets/Index-qIMjOGzj.js                      7.05 kB │ gzip:   2.11 kB
+public/build/assets/Create-CPX3Nnmk.js                     7.11 kB │ gzip:   1.93 kB
+public/build/assets/HealthVault-FOdyFqal.js                7.12 kB │ gzip:   2.12 kB
+public/build/assets/Index-Bg9DXSs8.js                      8.20 kB │ gzip:   2.26 kB
+public/build/assets/Development-BkMbzEpy.js                8.80 kB │ gzip:   2.16 kB
+public/build/assets/Index-BOAbdWFO.js                      8.87 kB │ gzip:   2.47 kB
+public/build/assets/Home-DXBQJmtA.js                       9.11 kB │ gzip:   2.70 kB
+public/build/assets/plans-DlhnxYfB.js                      9.40 kB │ gzip:   2.49 kB
+public/build/assets/Lifecycle-B11KUUc7.js                  9.58 kB │ gzip:   2.36 kB
+public/build/assets/Dashboard-CJCrHKF6.js                 10.14 kB │ gzip:   2.53 kB
+public/build/assets/Payroll-BIzqidJO.js                   10.47 kB │ gzip:   2.35 kB
+public/build/assets/Show-D4t4oVrm.js                      10.80 kB │ gzip:   2.81 kB
+public/build/assets/Dtr-CvGEY_bx.js                       10.85 kB │ gzip:   3.10 kB
+public/build/assets/Index-BqnHfIaI.js                     11.45 kB │ gzip:   2.92 kB
+public/build/assets/Create-FYMVtKFV.js                    11.65 kB │ gzip:   3.55 kB
+public/build/assets/Index-Cz5mv-jY.js                     12.06 kB │ gzip:   3.69 kB
+public/build/assets/Show-CwT45llA.js                      12.27 kB │ gzip:   2.83 kB
+public/build/assets/Index-CG5SEgQG.js                     12.47 kB │ gzip:   3.13 kB
+public/build/assets/Index-BsA-2xJV.js                     13.29 kB │ gzip:   3.81 kB
+public/build/assets/Index-DV9BGsca.js                     13.76 kB │ gzip:   2.74 kB
+public/build/assets/Index-Dha47sWz.js                     13.81 kB │ gzip:   3.77 kB
+public/build/assets/Index-CwtlODU5.js                     13.83 kB │ gzip:   4.23 kB
+public/build/assets/Show-BJr07CqN.js                      15.21 kB │ gzip:   3.97 kB
+public/build/assets/PersonalTaskWorkspace-Bvw7ISfJ.js     15.60 kB │ gzip:   5.36 kB
+public/build/assets/Index-Ch6pi8Sp.js                     15.96 kB │ gzip:   4.23 kB
+public/build/assets/Index-B_Qe1ahh.js                     16.13 kB │ gzip:   4.66 kB
+public/build/assets/Workspace-CO04mvTU.js                 16.33 kB │ gzip:   3.55 kB
+public/build/assets/Index-DIuAspE9.js                     16.52 kB │ gzip:   3.99 kB
+public/build/assets/Index-ChXsVPLc.js                     16.90 kB │ gzip:   3.99 kB
+public/build/assets/Index-fwVYmaO6.js                     18.30 kB │ gzip:   5.16 kB
+public/build/assets/Index-5aUrr8AZ.js                     18.60 kB │ gzip:   4.57 kB
+public/build/assets/Show-BLkI_7gA.js                      20.52 kB │ gzip:   4.95 kB
+public/build/assets/Index-B3U2wvVk.js                     22.88 kB │ gzip:   6.52 kB
+public/build/assets/Index-Dz8YWVuL.js                     26.04 kB │ gzip:   6.45 kB
+public/build/assets/Index-D5gRnzHs.js                     31.83 kB │ gzip:   7.69 kB
+public/build/assets/AppLayout-BTWDF_uG.js                 43.31 kB │ gzip:  12.39 kB
+public/build/assets/Dashboard-DP5VIhhN.js                 44.44 kB │ gzip:  10.71 kB
+public/build/assets/app-C1QcutxL.js                      358.71 kB │ gzip: 112.83 kB
+public/build/assets/Index-BZ9XEVds.js                    432.83 kB │ gzip:  72.47 kB
+
+✓ built in 28.61s
+[33m[PLUGIN_TIMINGS] [0mJavaScript callbacks ran for 13.2s of this 28.6s build (46%).
+The slowest callbacks, timed inside each callback (the wait before a callback starts is excluded, the time it awaits 
+is included):
+  - plugin @tailwindcss/vite:generate:build transform (32%, 9.2s, 26 calls)
+Additional callback time came from the callbacks below and from callbacks under 1s.
+2 callbacks are listed without a time. Their calls overlapped, so the time inside one call includes work from other 
+calls. To find their cost, profile the build with `node --cpu-prof`:
+  - plugin vite:css-post renderChunk (123 calls)
+  - plugin vite:css transform (26 calls)
+See https://rolldown.rs/reference/InputOptions.checks#bundlertimings for more details.
+

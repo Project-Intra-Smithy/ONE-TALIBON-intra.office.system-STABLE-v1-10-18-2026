@@ -38,14 +38,14 @@ test('catalog exactly preserves canonical 24 identity, group, and readiness rela
     const catalog = [...nav.plannedPortalDestinations];
     assert.equal(catalog.length, 24);
     assert.equal(new Set(catalog.map((item) => item.key)).size, 24);
-    assert.equal(nav.wiredPortalDestinations.length, 13);
-    assert.equal(nav.integrationPendingPortalDestinations.length, 11);
+    assert.equal(nav.wiredPortalDestinations.length, 15);
+    assert.equal(nav.integrationPendingPortalDestinations.length, 9);
     assert.deepEqual([...new Set(catalog.map((item) => item.group))].sort(),
         ['home','work','files','communication','schedule','people','organization','planning','administration','systems'].sort());
     assert.equal(catalog.some((item) => item.group === 'navigation'), false);
     assert.equal(catalog.some((item) => ['dashboard', 'transactions', 'audit'].includes(item.key)), false);
     assert.deepEqual([...nav.integrationPendingPortalDestinations].map((item) => item.key).sort(),
-        ['procurementTracking','announcements','meetings','legislative','localSpecialBodies','developmentPlans','ppas','projectMonitoring','users','adminDepartments','municipalSystems'].sort());
+        ['procurementTracking','announcements','meetings','legislative','localSpecialBodies','projectMonitoring','users','adminDepartments','municipalSystems'].sort());
 });
 
 test('canonical paths and permission associations are not synthetic', () => {
@@ -66,12 +66,12 @@ test('canonical paths and permission associations are not synthetic', () => {
 });
 
 test('permission denial, optional third builder argument and absent routes remain guarded', () => {
-    assert.deepEqual(visible(false).map((item) => item.key).sort(), ['calendar','employeeDirectory'].sort());
+    assert.deepEqual(visible(false).map((item) => item.key).sort(), ['calendar','employeeDirectory','portalSearch','developmentPlans','ppas'].sort());
     const allowed = visible(true);
     assert.deepEqual(allowed.map((item) => item.key).sort(),
-        ['home','myWork','correspondence','employeeDirectory','records','memoranda','calendar','executiveDepartments'].sort());
+        ['home','myWork','correspondence','employeeDirectory','records','memoranda','calendar','executiveDepartments','portalSearch','documentCenter','developmentPlans','ppas','systemAdministration'].sort());
     assert.ok(allowed.every((item) => item.readiness === 'wired' && staged.isStagedInertiaPath(item.href)));
-    assert.ok(!allowed.some((item) => ['/admin','/documents','/messages','/portal-search'].includes(item.href)));
+    assert.ok(!allowed.some((item) => item.href === '/messages'));
     assert.equal(JSON.stringify(nav.buildPortalNavigation('employee', permissions(true))),
         JSON.stringify(nav.buildPortalNavigation('employee', permissions(true), true)));
     assert.equal(nav.isPortalPathActive('/records?view=all', '/records'), true);

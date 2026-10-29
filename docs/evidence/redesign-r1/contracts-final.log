@@ -1,0 +1,624 @@
+
+> test:contracts
+> node --experimental-strip-types --test tests/Frontend/*.test.mjs
+
+TAP version 13
+# Subtest: AJ PR44 presentation preserves canonical Task write controls and mutation-to-read refresh
+ok 1 - AJ PR44 presentation preserves canonical Task write controls and mutation-to-read refresh
+  ---
+  duration_ms: 5.6314
+  type: 'test'
+  ...
+# Subtest: Department overview is a dashboard anchor, not an invented route or authority
+ok 2 - Department overview is a dashboard anchor, not an invented route or authority
+  ---
+  duration_ms: 1.7089
+  type: 'test'
+  ...
+# Subtest: visible appearance controls persist and apply light dark and system preferences
+ok 3 - visible appearance controls persist and apply light dark and system preferences
+  ---
+  duration_ms: 0.8379
+  type: 'test'
+  ...
+# Subtest: saved light preference survives initial load with systemDark=false
+ok 4 - saved light preference survives initial load with systemDark=false
+  ---
+  duration_ms: 5.4547
+  type: 'test'
+  ...
+# Subtest: saved light preference survives initial load with systemDark=true
+ok 5 - saved light preference survives initial load with systemDark=true
+  ---
+  duration_ms: 1.3908
+  type: 'test'
+  ...
+# Subtest: saved dark preference survives initial load with systemDark=false
+ok 6 - saved dark preference survives initial load with systemDark=false
+  ---
+  duration_ms: 2.4197
+  type: 'test'
+  ...
+# Subtest: saved dark preference survives initial load with systemDark=true
+ok 7 - saved dark preference survives initial load with systemDark=true
+  ---
+  duration_ms: 1.7077
+  type: 'test'
+  ...
+# Subtest: saved system preference survives initial load with systemDark=false
+ok 8 - saved system preference survives initial load with systemDark=false
+  ---
+  duration_ms: 1.8097
+  type: 'test'
+  ...
+# Subtest: saved system preference survives initial load with systemDark=true
+ok 9 - saved system preference survives initial load with systemDark=true
+  ---
+  duration_ms: 1.39
+  type: 'test'
+  ...
+# Subtest: missing or invalid stored preference falls back to system without mutating storage
+ok 10 - missing or invalid stored preference falls back to system without mutating storage
+  ---
+  duration_ms: 4.6286
+  type: 'test'
+  ...
+# Subtest: storage read failure falls back to system without blocking initial theme
+ok 11 - storage read failure falls back to system without blocking initial theme
+  ---
+  duration_ms: 2.6258
+  type: 'test'
+  ...
+# Subtest: system preference reflects OS changes on a subsequent page load
+ok 12 - system preference reflects OS changes on a subsequent page load
+  ---
+  duration_ms: 4.1652
+  type: 'test'
+  ...
+# Subtest: Blade keeps Inertia entry, CSRF and Vite anchors used by login and MFA
+ok 13 - Blade keeps Inertia entry, CSRF and Vite anchors used by login and MFA
+  ---
+  duration_ms: 1.1621
+  type: 'test'
+  ...
+# Subtest: calendar has four distinct view regions
+ok 14 - calendar has four distinct view regions
+  ---
+  duration_ms: 2.1581
+  type: 'test'
+  ...
+# Subtest: week is server-windowed and separates all-day from timed events
+ok 15 - week is server-windowed and separates all-day from timed events
+  ---
+  duration_ms: 0.536
+  type: 'test'
+  ...
+# Subtest: day and schedule use accessible view-specific organization
+ok 16 - day and schedule use accessible view-specific organization
+  ---
+  duration_ms: 0.4337
+  type: 'test'
+  ...
+# Subtest: schedule navigation advances the backend rolling window
+ok 17 - schedule navigation advances the backend rolling window
+  ---
+  duration_ms: 0.4368
+  type: 'test'
+  ...
+# Subtest: catalog exactly preserves canonical 24 identity, group, and readiness relationships
+ok 18 - catalog exactly preserves canonical 24 identity, group, and readiness relationships
+  ---
+  duration_ms: 1.8634
+  type: 'test'
+  ...
+# Subtest: canonical paths and permission associations are not synthetic
+ok 19 - canonical paths and permission associations are not synthetic
+  ---
+  duration_ms: 0.3556
+  type: 'test'
+  ...
+# Subtest: permission denial, optional third builder argument and absent routes remain guarded
+ok 20 - permission denial, optional third builder argument and absent routes remain guarded
+  ---
+  duration_ms: 1.5422
+  type: 'test'
+  ...
+# Subtest: already corrected dashboard and density presentation contracts remain intact
+ok 21 - already corrected dashboard and density presentation contracts remain intact
+  ---
+  duration_ms: 0.9744
+  type: 'test'
+  ...
+# Subtest: PR44 My Department remains head-only and canonical Personal Tasks navigation stays present
+ok 22 - PR44 My Department remains head-only and canonical Personal Tasks navigation stays present
+  ---
+  duration_ms: 0.9049
+  type: 'test'
+  ...
+# (node:22576) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: R6 retains all four backend-role variants and role-scoped operational sections
+ok 23 - R6 retains all four backend-role variants and role-scoped operational sections
+  ---
+  duration_ms: 2.1691
+  type: 'test'
+  ...
+# Subtest: Quick Access is still permission-derived, deduplicated and uses destination icons
+ok 24 - Quick Access is still permission-derived, deduplicated and uses destination icons
+  ---
+  duration_ms: 2.0265
+  type: 'test'
+  ...
+# Subtest: R6 grid breakpoints are based on usable dashboard width, not the window alone
+ok 25 - R6 grid breakpoints are based on usable dashboard width, not the window alone
+  ---
+  duration_ms: 0.715
+  type: 'test'
+  ...
+# Subtest: R6 retains real records, empty states, notification state distinctions and focusable scrolls
+ok 26 - R6 retains real records, empty states, notification state distinctions and focusable scrolls
+  ---
+  duration_ms: 0.3886
+  type: 'test'
+  ...
+# Subtest: Hero uses local municipality image and authenticated identity without invented activity
+ok 27 - Hero uses local municipality image and authenticated identity without invented activity
+  ---
+  duration_ms: 0.6847
+  type: 'test'
+  ...
+# Subtest: Worker 03 styling is page-scoped with no app-wide CSS or new UI dependency
+ok 28 - Worker 03 styling is page-scoped with no app-wide CSS or new UI dependency
+  ---
+  duration_ms: 4.37
+  type: 'test'
+  ...
+# Subtest: office grouping, search, permitted Records route and reference disclosure are retained
+ok 29 - office grouping, search, permitted Records route and reference disclosure are retained
+  ---
+  duration_ms: 0.4358
+  type: 'test'
+  ...
+# Subtest: plan filter behavior and safe detail focus restoration are preserved
+ok 30 - plan filter behavior and safe detail focus restoration are preserved
+  ---
+  duration_ms: 0.5105
+  type: 'test'
+  ...
+# Subtest: PPA filter predicates and static reference-data boundaries stay unchanged
+ok 31 - PPA filter predicates and static reference-data boundaries stay unchanged
+  ---
+  duration_ms: 0.5282
+  type: 'test'
+  ...
+# Subtest: PPA register and detail are responsive, keyboard reachable and preserve selection
+ok 32 - PPA register and detail are responsive, keyboard reachable and preserve selection
+  ---
+  duration_ms: 0.5298
+  type: 'test'
+  ...
+# Subtest: all eight primitives compile to JSX and explicitly load the scoped stylesheet
+ok 33 - all eight primitives compile to JSX and explicitly load the scoped stylesheet
+  ---
+  duration_ms: 289.3147
+  type: 'test'
+  ...
+# Subtest: panel composes header, body and footer without forcing a height
+ok 34 - panel composes header, body and footer without forcing a height
+  ---
+  duration_ms: 1.4897
+  type: 'test'
+  ...
+# Subtest: heading supports IDs, zero count, long titles, icons and action slots
+ok 35 - heading supports IDs, zero count, long titles, icons and action slots
+  ---
+  duration_ms: 26.5987
+  type: 'test'
+  ...
+# Subtest: scroll area is natively focusable, named and expands on narrow screens
+ok 36 - scroll area is natively focusable, named and expands on narrow screens
+  ---
+  duration_ms: 0.7323
+  type: 'test'
+  ...
+# Subtest: unauthorized and authority-pending states remain distinct from ordinary emptiness
+ok 37 - unauthorized and authority-pending states remain distinct from ordinary emptiness
+  ---
+  duration_ms: 0.6862
+  type: 'test'
+  ...
+# Subtest: loading skeleton is bounded, announced, and hidden after session expiry
+ok 38 - loading skeleton is bounded, announced, and hidden after session expiry
+  ---
+  duration_ms: 1.7097
+  type: 'test'
+  ...
+# Subtest: filters are presentation only, with named group and caller-owned controls
+ok 39 - filters are presentation only, with named group and caller-owned controls
+  ---
+  duration_ms: 0.9664
+  type: 'test'
+  ...
+# Subtest: data region supplies accessible headings, loading and denial gates
+ok 40 - data region supplies accessible headings, loading and denial gates
+  ---
+  duration_ms: 0.9971
+  type: 'test'
+  ...
+# Subtest: actions respect handlers, keyboard geometry, pending and disabled states
+ok 41 - actions respect handlers, keyboard geometry, pending and disabled states
+  ---
+  duration_ms: 0.9453
+  type: 'test'
+  ...
+# Subtest: exports are additive and primitives have no data access or authorization decisions
+ok 42 - exports are additive and primitives have no data access or authorization decisions
+  ---
+  duration_ms: 2.4533
+  type: 'test'
+  ...
+# Subtest: one compact municipal toolbar retains all valid in-page jump destinations
+ok 43 - one compact municipal toolbar retains all valid in-page jump destinations
+  ---
+  duration_ms: 1.9479
+  type: 'test'
+  ...
+# Subtest: R4 panel treatment is explicitly scoped to dashboard and does not alter source data
+ok 44 - R4 panel treatment is explicitly scoped to dashboard and does not alter source data
+  ---
+  duration_ms: 0.7065
+  type: 'test'
+  ...
+# Subtest: compact header does not change the expanded recent-work variant used by other pages
+ok 45 - compact header does not change the expanded recent-work variant used by other pages
+  ---
+  duration_ms: 0.311
+  type: 'test'
+  ...
+# Subtest: activity and metrics render underlying authorized projections without synthetic data
+ok 46 - activity and metrics render underlying authorized projections without synthetic data
+  ---
+  duration_ms: 0.3149
+  type: 'test'
+  ...
+# Subtest: responsive and accessible theme variants are present
+ok 47 - responsive and accessible theme variants are present
+  ---
+  duration_ms: 0.3102
+  type: 'test'
+  ...
+# Subtest: R5 uses native bounded scroll regions, named and keyboard-accessible for longer lists
+ok 48 - R5 uses native bounded scroll regions, named and keyboard-accessible for longer lists
+  ---
+  duration_ms: 2.0915
+  type: 'test'
+  ...
+# Subtest: operational work and notification rows keep their actual data, links and server state
+ok 49 - operational work and notification rows keep their actual data, links and server state
+  ---
+  duration_ms: 0.4376
+  type: 'test'
+  ...
+# Subtest: panel chrome has readable counts and remains scoped to dashboard only
+ok 50 - panel chrome has readable counts and remains scoped to dashboard only
+  ---
+  duration_ms: 0.5283
+  type: 'test'
+  ...
+# Subtest: R5 does not bring in unverified UI packages or change application dependencies
+ok 51 - R5 does not bring in unverified UI packages or change application dependencies
+  ---
+  duration_ms: 0.3012
+  type: 'test'
+  ...
+# Subtest: reference stylesheet is activated only through the authenticated shell
+ok 52 - reference stylesheet is activated only through the authenticated shell
+  ---
+  duration_ms: 2.1579
+  type: 'test'
+  ...
+# Subtest: permission-aware navigation and current-route semantics remain in place
+ok 53 - permission-aware navigation and current-route semantics remain in place
+  ---
+  duration_ms: 0.3504
+  type: 'test'
+  ...
+# Subtest: collapsible navigation and preference persistence remain connected
+ok 54 - collapsible navigation and preference persistence remain connected
+  ---
+  duration_ms: 0.2874
+  type: 'test'
+  ...
+# Subtest: mobile dialog retains focus trap, escape, scroll lock and focus return
+ok 55 - mobile dialog retains focus trap, escape, scroll lock and focus return
+  ---
+  duration_ms: 0.2936
+  type: 'test'
+  ...
+# Subtest: live shell controls and semantic colors are not replaced by mock controls
+ok 56 - live shell controls and semantic colors are not replaced by mock controls
+  ---
+  duration_ms: 0.4013
+  type: 'test'
+  ...
+# (node:16816) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: authorized role actions remain first and are not overwritten by module shortcuts
+ok 57 - authorized role actions remain first and are not overwritten by module shortcuts
+  ---
+  duration_ms: 3.4763
+  type: 'test'
+  ...
+# Subtest: never invent shortcuts for missing or staged destinations
+ok 58 - never invent shortcuts for missing or staged destinations
+  ---
+  duration_ms: 0.6392
+  type: 'test'
+  ...
+# Subtest: bounded, distinct destinations reject arbitrary absolute or protocol-relative routes
+ok 59 - bounded, distinct destinations reject arbitrary absolute or protocol-relative routes
+  ---
+  duration_ms: 0.4048
+  type: 'test'
+  ...
+# Subtest: the dashboard inventory is sourced from permission-aware sidebar navigation
+ok 60 - the dashboard inventory is sourced from permission-aware sidebar navigation
+  ---
+  duration_ms: 0.5348
+  type: 'test'
+  ...
+# Subtest: municipal hall artwork is reused locally and composition is compact/responsive
+ok 61 - municipal hall artwork is reused locally and composition is compact/responsive
+  ---
+  duration_ms: 0.4941
+  type: 'test'
+  ...
+# Subtest: uses permission-filtered destinations and preserves portal q
+ok 62 - uses permission-filtered destinations and preserves portal q
+  ---
+  duration_ms: 2.8718
+  type: 'test'
+  ...
+# Subtest: all type, office, year and status filters constrain local results
+ok 63 - all type, office, year and status filters constrain local results
+  ---
+  duration_ms: 0.6085
+  type: 'test'
+  ...
+# Subtest: planning references retain source provenance; no fabricated document downloads
+ok 64 - planning references retain source provenance; no fabricated document downloads
+  ---
+  duration_ms: 0.811
+  type: 'test'
+  ...
+# Subtest: authorized Records and Document Center remain separate
+ok 65 - authorized Records and Document Center remain separate
+  ---
+  duration_ms: 0.3327
+  type: 'test'
+  ...
+# Subtest: responsive and accessible controls use page-root CSS
+ok 66 - responsive and accessible controls use page-root CSS
+  ---
+  duration_ms: 0.5714
+  type: 'test'
+  ...
+# Subtest: server-backed records and files remain distinct modes
+ok 67 - server-backed records and files remain distinct modes
+  ---
+  duration_ms: 3.3495
+  type: 'test'
+  ...
+# Subtest: selected authorized record metadata has a dedicated desktop pane and mobile inline disclosure
+ok 68 - selected authorized record metadata has a dedicated desktop pane and mobile inline disclosure
+  ---
+  duration_ms: 0.6594
+  type: 'test'
+  ...
+# Subtest: pagination, server filters and legitimate empty state are retained
+ok 69 - pagination, server filters and legitimate empty state are retained
+  ---
+  duration_ms: 0.3067
+  type: 'test'
+  ...
+# Subtest: classification and file actions remain tied to server projection
+ok 70 - classification and file actions remain tied to server projection
+  ---
+  duration_ms: 0.6945
+  type: 'test'
+  ...
+# Subtest: A3 preserves server supplied directory and office counts without synthetic KPIs
+ok 71 - A3 preserves server supplied directory and office counts without synthetic KPIs
+  ---
+  duration_ms: 4.1784
+  type: 'test'
+  ...
+# Subtest: A3 retains real office grouping and normalized search
+ok 72 - A3 retains real office grouping and normalized search
+  ---
+  duration_ms: 0.4191
+  type: 'test'
+  ...
+# Subtest: A3 retains guarded Records access and authority boundary
+ok 73 - A3 retains guarded Records access and authority boundary
+  ---
+  duration_ms: 0.4329
+  type: 'test'
+  ...
+# Subtest: A3 styling is page-scoped, responsive and accessibility-aware
+ok 74 - A3 styling is page-scoped, responsive and accessibility-aware
+  ---
+  duration_ms: 0.3933
+  type: 'test'
+  ...
+# Subtest: B1 cover grid uses source-owned plan fields and explicit illustrative label
+ok 75 - B1 cover grid uses source-owned plan fields and explicit illustrative label
+  ---
+  duration_ms: 2.3756
+  type: 'test'
+  ...
+# Subtest: B1 filters preserve dataset-backed predicates and reset
+ok 76 - B1 filters preserve dataset-backed predicates and reset
+  ---
+  duration_ms: 1.7497
+  type: 'test'
+  ...
+# Subtest: B1 dialog retains Escape, Tab cycle, focus restoration and scroll lock
+ok 77 - B1 dialog retains Escape, Tab cycle, focus restoration and scroll lock
+  ---
+  duration_ms: 0.7956
+  type: 'test'
+  ...
+# Subtest: B1 styling is rooted and includes compact mobile, reduced-motion and high-contrast accommodations
+ok 78 - B1 styling is rooted and includes compact mobile, reduced-motion and high-contrast accommodations
+  ---
+  duration_ms: 0.4323
+  type: 'test'
+  ...
+# Subtest: B2 retains all seven reference-data filter predicates and reset
+ok 79 - B2 retains all seven reference-data filter predicates and reset
+  ---
+  duration_ms: 4.2052
+  type: 'test'
+  ...
+# Subtest: B2 status badges are restricted to five PPA domain status values
+ok 80 - B2 status badges are restricted to five PPA domain status values
+  ---
+  duration_ms: 0.6569
+  type: 'test'
+  ...
+# Subtest: B2 preserves mobile cards, desktop register and detail focus restoration
+ok 81 - B2 preserves mobile cards, desktop register and detail focus restoration
+  ---
+  duration_ms: 0.4353
+  type: 'test'
+  ...
+# Subtest: B2 preserves reference disclosures and adds no monitoring or CRUD surface
+ok 82 - B2 preserves reference disclosures and adds no monitoring or CRUD surface
+  ---
+  duration_ms: 0.5302
+  type: 'test'
+  ...
+# (node:22944) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: schedule dates respect municipal timezone, date-only values and leap years
+ok 83 - schedule dates respect municipal timezone, date-only values and leap years
+  ---
+  duration_ms: 54.0589
+  type: 'test'
+  ...
+# Subtest: timeline clips real durations and rejects missing, reversed or out-of-range intervals
+ok 84 - timeline clips real durations and rejects missing, reversed or out-of-range intervals
+  ---
+  duration_ms: 2.0024
+  type: 'test'
+  ...
+# (node:21676) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: contract Task serializer does not grant authority from owning department snapshot
+ok 85 - contract Task serializer does not grant authority from owning department snapshot
+  ---
+  duration_ms: 3.9862
+  type: 'test'
+  ...
+# Subtest: C1 timestamp guard requires real calendar date, seconds and explicit timezone on all fields
+ok 86 - C1 timestamp guard requires real calendar date, seconds and explicit timezone on all fields
+  ---
+  duration_ms: 0.9482
+  type: 'test'
+  ...
+# Subtest: malformed 200 timestamp values fail both list and detail envelopes
+ok 87 - malformed 200 timestamp values fail both list and detail envelopes
+  ---
+  duration_ms: 57.9463
+  type: 'test'
+  ...
+# Subtest: list uses authoritative server meta and rejects malformed result
+ok 88 - list uses authoritative server meta and rejects malformed result
+  ---
+  duration_ms: 0.3019
+  type: 'test'
+  ...
+# Subtest: only released Task GETs: same-origin credentials, no Inertia header or invented filters
+ok 89 - only released Task GETs: same-origin credentials, no Inertia header or invented filters
+  ---
+  duration_ms: 4.1134
+  type: 'test'
+  ...
+# Subtest: 401 inactive session and 419 expiration require fresh authentication
+ok 90 - 401 inactive session and 419 expiration require fresh authentication
+  ---
+  duration_ms: 1.7229
+  type: 'test'
+  ...
+# Subtest: 403 MFA uses validated server next_url, never arbitrary redirect
+ok 91 - 403 MFA uses validated server next_url, never arbitrary redirect
+  ---
+  duration_ms: 1.4125
+  type: 'test'
+  ...
+# Subtest: authorization-boundary classifier distinguishes session loss from ordinary read failures
+ok 92 - authorization-boundary classifier distinguishes session loss from ordinary read failures
+  ---
+  duration_ms: 0.3714
+  type: 'test'
+  ...
+# Subtest: masked 404, validation 422, throttle 429 and 503 keep correct read error semantics
+ok 93 - masked 404, validation 422, throttle 429 and 503 keep correct read error semantics
+  ---
+  duration_ms: 2.8806
+  type: 'test'
+  ...
+# Subtest: invalid 200 payload and HTML never render as authorized Tasks
+ok 94 - invalid 200 payload and HTML never render as authorized Tasks
+  ---
+  duration_ms: 1.9388
+  type: 'test'
+  ...
+# Subtest: aborted stale fetch is not turned into another account error response
+ok 95 - aborted stale fetch is not turned into another account error response
+  ---
+  duration_ms: 0.7812
+  type: 'test'
+  ...
+# (node:16408) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: canonical shared props omit notifications and the initial feed is safe
+ok 96 - canonical shared props omit notifications and the initial feed is safe
+  ---
+  duration_ms: 3.5327
+  type: 'test'
+  ...
+# Subtest: calendar producer date fallback rejects rollover and supports its four views
+ok 97 - calendar producer date fallback rejects rollover and supports its four views
+  ---
+  duration_ms: 3.3495
+  type: 'test'
+  ...
+# Subtest: memo audiences reflect server authority, including recipient-only
+ok 98 - memo audiences reflect server authority, including recipient-only
+  ---
+  duration_ms: 1.2531
+  type: 'test'
+  ...
+# Subtest: correspondence overview counts are separate from intentionally empty list
+ok 99 - correspondence overview counts are separate from intentionally empty list
+  ---
+  duration_ms: 0.4336
+  type: 'test'
+  ...
+# Subtest: staged page links exclude missing backend-rendered components
+ok 100 - staged page links exclude missing backend-rendered components
+  ---
+  duration_ms: 1.4991
+  type: 'test'
+  ...
+1..100
+# tests 100
+# suites 0
+# pass 100
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1276.5954

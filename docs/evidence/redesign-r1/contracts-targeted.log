@@ -1,0 +1,94 @@
+TAP version 13
+# Subtest: Worker 03 styling is page-scoped with no app-wide CSS or new UI dependency
+ok 1 - Worker 03 styling is page-scoped with no app-wide CSS or new UI dependency
+  ---
+  duration_ms: 6.1983
+  type: 'test'
+  ...
+# Subtest: office grouping, search, permitted Records route and reference disclosure are retained
+ok 2 - office grouping, search, permitted Records route and reference disclosure are retained
+  ---
+  duration_ms: 1.0901
+  type: 'test'
+  ...
+# Subtest: plan filter behavior and safe detail focus restoration are preserved
+ok 3 - plan filter behavior and safe detail focus restoration are preserved
+  ---
+  duration_ms: 1.3374
+  type: 'test'
+  ...
+# Subtest: PPA filter predicates and static reference-data boundaries stay unchanged
+ok 4 - PPA filter predicates and static reference-data boundaries stay unchanged
+  ---
+  duration_ms: 1.9912
+  type: 'test'
+  ...
+# Subtest: PPA register and detail are responsive, keyboard reachable and preserve selection
+ok 5 - PPA register and detail are responsive, keyboard reachable and preserve selection
+  ---
+  duration_ms: 2.0543
+  type: 'test'
+  ...
+# Subtest: uses permission-filtered destinations and preserves portal q
+ok 6 - uses permission-filtered destinations and preserves portal q
+  ---
+  duration_ms: 5.2107
+  type: 'test'
+  ...
+# Subtest: all type, office, year and status filters constrain local results
+ok 7 - all type, office, year and status filters constrain local results
+  ---
+  duration_ms: 1.5255
+  type: 'test'
+  ...
+# Subtest: planning references retain source provenance; no fabricated document downloads
+ok 8 - planning references retain source provenance; no fabricated document downloads
+  ---
+  duration_ms: 1.2369
+  type: 'test'
+  ...
+# Subtest: authorized Records and Document Center remain separate
+ok 9 - authorized Records and Document Center remain separate
+  ---
+  duration_ms: 0.3541
+  type: 'test'
+  ...
+# Subtest: responsive and accessible controls use page-root CSS
+ok 10 - responsive and accessible controls use page-root CSS
+  ---
+  duration_ms: 1.1733
+  type: 'test'
+  ...
+# Subtest: B1 cover grid uses source-owned plan fields and explicit illustrative label
+ok 11 - B1 cover grid uses source-owned plan fields and explicit illustrative label
+  ---
+  duration_ms: 4.8337
+  type: 'test'
+  ...
+# Subtest: B1 filters preserve dataset-backed predicates and reset
+ok 12 - B1 filters preserve dataset-backed predicates and reset
+  ---
+  duration_ms: 4.4916
+  type: 'test'
+  ...
+# Subtest: B1 dialog retains Escape, Tab cycle, focus restoration and scroll lock
+ok 13 - B1 dialog retains Escape, Tab cycle, focus restoration and scroll lock
+  ---
+  duration_ms: 1.291
+  type: 'test'
+  ...
+# Subtest: B1 styling is rooted and includes compact mobile, reduced-motion and high-contrast accommodations
+ok 14 - B1 styling is rooted and includes compact mobile, reduced-motion and high-contrast accommodations
+  ---
+  duration_ms: 1.3586
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 606.358

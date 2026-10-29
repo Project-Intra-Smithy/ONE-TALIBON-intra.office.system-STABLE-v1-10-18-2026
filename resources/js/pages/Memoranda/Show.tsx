@@ -1,3 +1,4 @@
+import '../../../css/portal-visual-redesign.css';
 import { Link, useForm } from '@inertiajs/react';
 import { CheckCircle2, FileText, Landmark, MailCheck, Users } from 'lucide-react';
 import { useRef, useState } from 'react';
@@ -84,7 +85,7 @@ export default function Show({
 
     return (
         <AppLayout title={memo.memo_number}>
-            <PageFrame width="standard" density="compact">
+            <PageFrame width="standard" density="compact" className="civic-page">
                 <PageHeader
                     eyebrow={memo.memo_number}
                     title={memo.title}

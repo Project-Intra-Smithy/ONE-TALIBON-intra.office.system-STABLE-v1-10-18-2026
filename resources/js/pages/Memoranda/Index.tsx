@@ -1,3 +1,5 @@
+import '../../../css/aj-page-workspace.css';
+import '../../../css/portal-visual-redesign.css';
 import { Link } from '@inertiajs/react';
 import { ArrowRight, FileText, Plus } from 'lucide-react';
 import PageFrame from '../../components/PageFrame';
@@ -8,7 +10,7 @@ type Memo = { id: number; memo_number: string; title: string; classification: st
 
 export default function Index({ memoranda = [], authority, view = 'overview' }: { memoranda: Memo[]; authority: { canPublish: boolean }; view: string }) {
     const canPublish = authority?.canPublish === true;
-    return <AppLayout title="Memoranda"><PageFrame width="standard">
+    return <AppLayout title="Memoranda"><PageFrame width="standard" className="civic-page aj-page-workspace" density="comfortable">
         <PageHeader eyebrow="Central issuance" title="Memoranda" icon={FileText}
             description="Municipal memoranda delivered to the appropriate employees and offices."
             aside={canPublish && <Link href="/memoranda/create" className="municipal-action"><Plus size={17} />Publish memorandum</Link>}
