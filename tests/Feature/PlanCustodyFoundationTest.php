@@ -14,6 +14,7 @@ use App\PlanCustody\DenyAllCustodySecurityGate;
 use App\PlanCustody\Exceptions\CustodyViolation;
 use App\PlanCustody\Exceptions\ObjectCollision;
 use App\PlanCustody\Exceptions\OrphanedCustodyObject;
+use App\PlanCustody\LocalImmutableObjectStore;
 use App\PlanCustody\PlanCustodyService;
 use DateTimeImmutable;
 use Illuminate\Database\QueryException;
@@ -35,6 +36,7 @@ final class PlanCustodyFoundationTest extends TestCase
     {
         parent::setUp();
         Storage::fake('plan_custody');
+        config()->set('plan_custody.approved_root', config('filesystems.disks.plan_custody.root'));
         $this->allowSecurity();
     }
 
@@ -119,6 +121,173 @@ final class PlanCustodyFoundationTest extends TestCase
         } finally {
             $this->assertDatabaseCount('plan_custody_generations', 1);
             $this->assertCount(1, Storage::disk('plan_custody')->allFiles());
+        }
+    }
+
+    public function test_idempotency_retry_requires_identical_actor_office_and_service_context(): void
+    {
+        $path = $this->pdf('context-bound');
+        $key = 'context-bound-idempotency-key';
+        $service = app(PlanCustodyService::class);
+        $original = $this->requestFor($path, $key, 'actor-a', 'office-a', 'service-a');
+
+        $first = $service->stage($original);
+        $this->assertSame($first->id, $service->stage($original)->id);
+
+        foreach ([
+            $this->requestFor($path, $key, 'actor-b', 'office-a', 'service-a'),
+            $this->requestFor($path, $key, 'actor-a', 'office-b', 'service-a'),
+            $this->requestFor($path, $key, 'actor-a', 'office-a', 'service-b'),
+        ] as $crossContext) {
+            try {
+                $service->stage($crossContext);
+                $this->fail('Cross-context idempotency retry was accepted.');
+            } catch (CustodyViolation $exception) {
+                $this->assertSame(
+                    'The idempotency request does not match an existing custody request.',
+                    $exception->getMessage(),
+                );
+            }
+        }
+
+        $this->assertDatabaseCount('plan_custody_generations', 1);
+        $this->assertDatabaseCount('plan_custody_events', 1);
+        $this->assertCount(1, Storage::disk('plan_custody')->allFiles());
+    }
+
+    public function test_uniqueness_race_fallback_enforces_the_same_context_match(): void
+    {
+        $path = $this->pdf('race-fallback');
+        $request = $this->requestFor(
+            $path,
+            'race-fallback-idempotency-key',
+            'actor-a',
+            'office-a',
+            'service-a',
+        );
+        $source = file_get_contents($path);
+        $existingLocator = 'quarantine/aa/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.pdf';
+
+        $this->app->instance(ImmutableObjectStore::class, new class($request, $source, $existingLocator) implements ImmutableObjectStore
+        {
+            private bool $seeded = false;
+
+            public function __construct(
+                private readonly StageGeneration $request,
+                private readonly string $source,
+                private readonly string $existingLocator,
+            ) {}
+
+            public function putIfAbsent(string $locator, $stream): void
+            {
+                Storage::disk('plan_custody')->put($locator, stream_get_contents($stream));
+                if ($this->seeded) {
+                    return;
+                }
+                $this->seeded = true;
+                Storage::disk('plan_custody')->put($this->existingLocator, $this->source);
+                PlanCustodyGeneration::query()->create([
+                    'generation_id' => 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+                    'storage_disk' => 'plan_custody',
+                    'storage_locator' => $this->existingLocator,
+                    'sha256' => hash('sha256', $this->source),
+                    'size_bytes' => strlen($this->source),
+                    'media_type' => 'application/pdf',
+                    'custody_state' => 'QUARANTINED',
+                    'integrity_status' => 'VERIFIED',
+                    'idempotency_key_hash' => hash('sha256', $this->request->idempotencyKey),
+                    'actor_id' => $this->request->security->actorId,
+                    'office_id' => $this->request->security->officeId,
+                    'service_identity' => $this->request->serviceIdentity,
+                ]);
+            }
+
+            public function openForVerification(string $locator)
+            {
+                return Storage::disk('plan_custody')->readStream($locator);
+            }
+
+            public function deleteUncommitted(string $locator): void
+            {
+                Storage::disk('plan_custody')->delete($locator);
+            }
+
+            public function exists(string $locator): bool
+            {
+                return Storage::disk('plan_custody')->exists($locator);
+            }
+        });
+
+        $generation = app(PlanCustodyService::class)->stage($request);
+
+        $this->assertSame('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', $generation->generation_id);
+        $this->assertDatabaseCount('plan_custody_generations', 1);
+        $this->assertSame([$existingLocator], Storage::disk('plan_custody')->allFiles());
+    }
+
+    public function test_only_the_approved_private_non_serving_custody_disk_is_accepted(): void
+    {
+        $path = $this->pdf('disk-policy');
+        $approved = config('filesystems.disks.plan_custody');
+        $badCases = [
+            function (): void {
+                config()->set('plan_custody.disk', 'public');
+            },
+            function (): void {
+                config()->set('plan_custody.disk', 'local');
+            },
+            function (): void {
+                config()->set('plan_custody.disk', 'missing-custody-disk');
+            },
+            function () use ($approved): void {
+                config()->set('filesystems.disks.plan_custody', array_merge($approved, ['serve' => true]));
+            },
+            function () use ($approved): void {
+                config()->set('filesystems.disks.plan_custody', array_merge($approved, ['root' => storage_path('app/private')]));
+            },
+        ];
+
+        foreach ($badCases as $index => $configureBadDisk) {
+            config()->set('plan_custody.disk', 'plan_custody');
+            config()->set('filesystems.disks.plan_custody', $approved);
+            $configureBadDisk();
+            try {
+                app(PlanCustodyService::class)->stage($this->request($path, "bad-disk-idempotency-{$index}"));
+                $this->fail('An unapproved custody disk was accepted.');
+            } catch (CustodyViolation) {
+                $this->addToAssertionCount(1);
+            }
+            $this->assertDatabaseCount('plan_custody_generations', 0);
+            $this->assertSame([], Storage::disk('plan_custody')->allFiles());
+        }
+
+        config()->set('plan_custody.disk', 'plan_custody');
+        config()->set('filesystems.disks.plan_custody', $approved);
+        $generation = app(PlanCustodyService::class)
+            ->stage($this->request($path, 'approved-disk-idempotency'));
+        Storage::disk('plan_custody')->assertExists($generation->storage_locator);
+    }
+
+    public function test_unapproved_disk_fails_closed_for_verify_delete_and_exists_without_touching_material(): void
+    {
+        $locator = 'quarantine/aa/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.pdf';
+        Storage::disk('plan_custody')->put($locator, 'unrelated-material');
+        config()->set('filesystems.disks.plan_custody.serve', true);
+        $store = new LocalImmutableObjectStore;
+
+        foreach ([
+            fn () => $store->openForVerification($locator),
+            fn () => $store->deleteUncommitted($locator),
+            fn () => $store->exists($locator),
+        ] as $operation) {
+            try {
+                $operation();
+                $this->fail('An unapproved disk operation was accepted.');
+            } catch (CustodyViolation) {
+                $this->addToAssertionCount(1);
+            }
+            Storage::disk('plan_custody')->assertExists($locator);
+            $this->assertSame('unrelated-material', Storage::disk('plan_custody')->get($locator));
         }
     }
 
@@ -319,6 +488,73 @@ SQL);
         $this->assertDatabaseCount('plan_document_bindings', 0);
     }
 
+    public function test_scanner_evidence_id_replay_requires_full_canonical_payload_identity(): void
+    {
+        $generation = app(PlanCustodyService::class)
+            ->stage($this->request($this->pdf('scan-replay'), 'scan-replay-evidence-key'));
+        $this->allowScanner();
+        $timestamp = new DateTimeImmutable('now');
+        $base = new ScanEvidence(
+            (string) Str::uuid(),
+            'CLEAN',
+            'scanner-a',
+            'engine-1',
+            'signatures-1',
+            $generation->sha256,
+            (int) $generation->size_bytes,
+            'signature-a',
+            $timestamp,
+        );
+        $service = app(PlanCustodyService::class);
+        $first = $service->recordTrustedScan($generation, $base, 'scanner-service');
+        $this->assertSame($first->id, $service->recordTrustedScan($generation, $base, 'scanner-service')->id);
+
+        $mutations = [
+            new ScanEvidence($base->evidenceId, 'REJECTED', $base->scannerIdentity, $base->engineVersion, $base->signatureVersion, $base->scannedSha256, $base->scannedSizeBytes, $base->signature, $base->scannedAt),
+            new ScanEvidence($base->evidenceId, $base->decision, 'scanner-b', $base->engineVersion, $base->signatureVersion, $base->scannedSha256, $base->scannedSizeBytes, $base->signature, $base->scannedAt),
+            new ScanEvidence($base->evidenceId, $base->decision, $base->scannerIdentity, 'engine-2', $base->signatureVersion, $base->scannedSha256, $base->scannedSizeBytes, $base->signature, $base->scannedAt),
+            new ScanEvidence($base->evidenceId, $base->decision, $base->scannerIdentity, $base->engineVersion, 'signatures-2', $base->scannedSha256, $base->scannedSizeBytes, $base->signature, $base->scannedAt),
+            new ScanEvidence($base->evidenceId, $base->decision, $base->scannerIdentity, $base->engineVersion, $base->signatureVersion, str_repeat('0', 64), $base->scannedSizeBytes, $base->signature, $base->scannedAt),
+            new ScanEvidence($base->evidenceId, $base->decision, $base->scannerIdentity, $base->engineVersion, $base->signatureVersion, $base->scannedSha256, $base->scannedSizeBytes + 1, $base->signature, $base->scannedAt),
+            new ScanEvidence($base->evidenceId, $base->decision, $base->scannerIdentity, $base->engineVersion, $base->signatureVersion, $base->scannedSha256, $base->scannedSizeBytes, 'signature-b', $base->scannedAt),
+            new ScanEvidence($base->evidenceId, $base->decision, $base->scannerIdentity, $base->engineVersion, $base->signatureVersion, $base->scannedSha256, $base->scannedSizeBytes, $base->signature, $base->scannedAt->modify('-1 second')),
+        ];
+
+        foreach ($mutations as $mutation) {
+            try {
+                $service->recordTrustedScan($generation, $mutation, 'scanner-service');
+                $this->fail('Altered scanner evidence replay was accepted.');
+            } catch (CustodyViolation) {
+                $this->addToAssertionCount(1);
+            }
+        }
+
+        $secondGeneration = $service->stage($this->request(
+            $this->pdf('scan-replay'),
+            'scan-replay-second-generation-key',
+        ));
+        try {
+            $service->recordTrustedScan($secondGeneration, new ScanEvidence(
+                $base->evidenceId,
+                $base->decision,
+                $base->scannerIdentity,
+                $base->engineVersion,
+                $base->signatureVersion,
+                $secondGeneration->sha256,
+                (int) $secondGeneration->size_bytes,
+                $base->signature,
+                $base->scannedAt,
+            ), 'scanner-service');
+            $this->fail('Scanner evidence identifier was accepted for another generation.');
+        } catch (CustodyViolation) {
+            $this->addToAssertionCount(1);
+        }
+
+        $this->assertDatabaseCount('plan_custody_scan_evidence', 1);
+        $this->assertDatabaseCount('plan_custody_events', 3);
+        $this->assertSame('QUARANTINED', $generation->fresh()->custody_state);
+    }
+
     public function test_generation_scan_and_event_rows_reject_update_and_delete_with_23514(): void
     {
         $generation = app(PlanCustodyService::class)
@@ -394,14 +630,30 @@ SQL);
 
     private function request(string $path, string $key = 'synthetic-idempotency-key'): StageGeneration
     {
+        return $this->requestFor(
+            $path,
+            $key,
+            'synthetic-actor',
+            'synthetic-office',
+            'custody-service',
+        );
+    }
+
+    private function requestFor(
+        string $path,
+        string $key,
+        string $actor,
+        string $office,
+        string $service,
+    ): StageGeneration {
         return new StageGeneration(
             $path,
             'application/pdf',
             filesize($path),
             hash_file('sha256', $path),
             $key,
-            'custody-service',
-            $this->security(),
+            $service,
+            new CustodySecurityContext($actor, $office, 1, 1, 'synthetic-fence'),
         );
     }
 

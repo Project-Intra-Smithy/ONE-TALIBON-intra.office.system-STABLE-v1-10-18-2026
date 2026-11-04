@@ -45,7 +45,7 @@ final class PlanCustodyService
             ->where('idempotency_key_hash', $idempotencyHash)
             ->first();
         if ($existing !== null) {
-            return $this->assertIdempotentMatch($existing, $source);
+            return $this->assertIdempotentMatch($existing, $source, $request);
         }
 
         $generationId = Str::lower($this->ids->next());
@@ -111,7 +111,7 @@ final class PlanCustodyService
                 ->first();
             $this->cleanupUncommitted($locator, $exception);
             if ($existing !== null) {
-                return $this->assertIdempotentMatch($existing, $source);
+                return $this->assertIdempotentMatch($existing, $source, $request);
             }
             throw $exception;
         } catch (Throwable $exception) {
@@ -147,58 +147,59 @@ final class PlanCustodyService
 
         $this->assertIdentity($serviceIdentity, 'scanner service');
 
-        return DB::transaction(function () use ($generation, $evidence, $serviceIdentity): PlanCustodyScanEvidence {
-            // Generation rows are protected by an UPDATE/DELETE rejecting trigger,
-            // so custody needs SELECT rather than an otherwise excessive lock grant.
-            $locked = PlanCustodyGeneration::query()->findOrFail($generation->id);
-            if ($locked->custody_state !== 'QUARANTINED'
-                || ! hash_equals($locked->sha256, Str::lower($evidence->scannedSha256))
-                || (int) $locked->size_bytes !== $evidence->scannedSizeBytes) {
-                throw new CustodyViolation('Scanner evidence does not pin the quarantined generation.');
-            }
+        try {
+            return DB::transaction(function () use ($generation, $evidence, $serviceIdentity, $scannedAt): PlanCustodyScanEvidence {
+                // Generation rows are protected by an UPDATE/DELETE rejecting trigger,
+                // so custody needs SELECT rather than an otherwise excessive lock grant.
+                $locked = $this->assertScanPinsGeneration($generation, $evidence);
 
+                $existing = PlanCustodyScanEvidence::query()
+                    ->where('evidence_id', $evidence->evidenceId)
+                    ->first();
+                if ($existing !== null) {
+                    return $this->assertScanReplayMatch($existing, $locked, $evidence, $scannedAt);
+                }
+
+                $scan = PlanCustodyScanEvidence::query()->create([
+                    'plan_custody_generation_id' => $locked->id,
+                    'evidence_id' => $evidence->evidenceId,
+                    'decision' => $evidence->decision,
+                    'scanner_identity' => $evidence->scannerIdentity,
+                    'engine_version' => $evidence->engineVersion,
+                    'signature_version' => $evidence->signatureVersion,
+                    'scanned_sha256' => Str::lower($evidence->scannedSha256),
+                    'scanned_size_bytes' => $evidence->scannedSizeBytes,
+                    'evidence_signature_hash' => hash('sha256', $evidence->signature),
+                    'trusted' => true,
+                    'scanned_at' => $scannedAt->setTimezone((string) config('app.timezone', 'UTC')),
+                ]);
+
+                PlanCustodyEvent::query()->create([
+                    'plan_custody_generation_id' => $locked->id,
+                    'event_id' => (string) Str::uuid(),
+                    'event_type' => 'SCANNER_'.$evidence->decision,
+                    'actor_id' => 'scanner:'.$evidence->scannerIdentity,
+                    'office_id' => 'service',
+                    'service_identity' => $serviceIdentity,
+                    'details' => [
+                        'evidence_id' => $evidence->evidenceId,
+                        'publication_authorized' => false,
+                    ],
+                ]);
+
+                return $scan->fresh();
+            });
+        } catch (QueryException $exception) {
+            $locked = $this->assertScanPinsGeneration($generation, $evidence);
             $existing = PlanCustodyScanEvidence::query()
                 ->where('evidence_id', $evidence->evidenceId)
                 ->first();
             if ($existing !== null) {
-                if ((int) $existing->plan_custody_generation_id !== (int) $locked->id
-                    || $existing->decision !== $evidence->decision
-                    || ! hash_equals($existing->scanned_sha256, Str::lower($evidence->scannedSha256))) {
-                    throw new CustodyViolation('Scanner evidence identifier was reused with different content.');
-                }
-
-                return $existing;
+                return $this->assertScanReplayMatch($existing, $locked, $evidence, $scannedAt);
             }
 
-            $scan = PlanCustodyScanEvidence::query()->create([
-                'plan_custody_generation_id' => $locked->id,
-                'evidence_id' => $evidence->evidenceId,
-                'decision' => $evidence->decision,
-                'scanner_identity' => $evidence->scannerIdentity,
-                'engine_version' => $evidence->engineVersion,
-                'signature_version' => $evidence->signatureVersion,
-                'scanned_sha256' => Str::lower($evidence->scannedSha256),
-                'scanned_size_bytes' => $evidence->scannedSizeBytes,
-                'evidence_signature_hash' => hash('sha256', $evidence->signature),
-                'trusted' => true,
-                'scanned_at' => $evidence->scannedAt,
-            ]);
-
-            PlanCustodyEvent::query()->create([
-                'plan_custody_generation_id' => $locked->id,
-                'event_id' => (string) Str::uuid(),
-                'event_type' => 'SCANNER_'.$evidence->decision,
-                'actor_id' => 'scanner:'.$evidence->scannerIdentity,
-                'office_id' => 'service',
-                'service_identity' => $serviceIdentity,
-                'details' => [
-                    'evidence_id' => $evidence->evidenceId,
-                    'publication_authorized' => false,
-                ],
-            ]);
-
-            return $scan->fresh();
-        });
+            throw $exception;
+        }
     }
 
     /** @return array{sha256:string,size:int} */
@@ -275,13 +276,19 @@ final class PlanCustodyService
     }
 
     /** @param array{sha256:string,size:int} $source */
-    private function assertIdempotentMatch(PlanCustodyGeneration $existing, array $source): PlanCustodyGeneration
-    {
+    private function assertIdempotentMatch(
+        PlanCustodyGeneration $existing,
+        array $source,
+        StageGeneration $request,
+    ): PlanCustodyGeneration {
         if ($existing->media_type !== 'application/pdf'
             || (int) $existing->size_bytes !== $source['size']
             || ! hash_equals($existing->sha256, $source['sha256'])
-            || $existing->custody_state !== 'QUARANTINED') {
-            throw new CustodyViolation('The idempotency key was reused for different custody content.');
+            || $existing->custody_state !== 'QUARANTINED'
+            || $existing->actor_id !== $request->security->actorId
+            || $existing->office_id !== $request->security->officeId
+            || $existing->service_identity !== $request->serviceIdentity) {
+            throw new CustodyViolation('The idempotency request does not match an existing custody request.');
         }
 
         $this->assertStoredIntegrity($existing->storage_locator, $source);
@@ -296,6 +303,41 @@ final class PlanCustodyService
         } catch (Throwable $cleanupFailure) {
             throw new OrphanedCustodyObject($locator, $cause, $cleanupFailure);
         }
+    }
+
+    private function assertScanPinsGeneration(
+        PlanCustodyGeneration $generation,
+        ScanEvidence $evidence,
+    ): PlanCustodyGeneration {
+        $locked = PlanCustodyGeneration::query()->findOrFail($generation->id);
+        if ($locked->custody_state !== 'QUARANTINED'
+            || ! hash_equals($locked->sha256, Str::lower($evidence->scannedSha256))
+            || (int) $locked->size_bytes !== $evidence->scannedSizeBytes) {
+            throw new CustodyViolation('Scanner evidence does not pin the quarantined generation.');
+        }
+
+        return $locked;
+    }
+
+    private function assertScanReplayMatch(
+        PlanCustodyScanEvidence $existing,
+        PlanCustodyGeneration $generation,
+        ScanEvidence $evidence,
+        CarbonImmutable $scannedAt,
+    ): PlanCustodyScanEvidence {
+        if ((int) $existing->plan_custody_generation_id !== (int) $generation->id
+            || $existing->decision !== $evidence->decision
+            || ! hash_equals($existing->scanned_sha256, Str::lower($evidence->scannedSha256))
+            || (int) $existing->scanned_size_bytes !== $evidence->scannedSizeBytes
+            || $existing->scanner_identity !== $evidence->scannerIdentity
+            || $existing->engine_version !== $evidence->engineVersion
+            || $existing->signature_version !== $evidence->signatureVersion
+            || ! hash_equals($existing->evidence_signature_hash, hash('sha256', $evidence->signature))
+            || $existing->scanned_at->getTimestamp() !== $scannedAt->getTimestamp()) {
+            throw new CustodyViolation('Scanner evidence identifier was reused with different content.');
+        }
+
+        return $existing;
     }
 
     private function idempotencyHash(string $key): string

@@ -16,7 +16,26 @@ final class LocalImmutableObjectStore implements ImmutableObjectStore
 {
     private function disk(): string
     {
-        return (string) config('plan_custody.disk', 'plan_custody');
+        $disk = (string) config('plan_custody.disk');
+        $approvedDisk = 'plan_custody';
+        $configuration = config("filesystems.disks.{$approvedDisk}");
+        $approvedRoot = (string) config('plan_custody.approved_root');
+
+        if ($disk !== $approvedDisk
+            || ! is_array($configuration)
+            || ($configuration['driver'] ?? null) !== 'local'
+            || ($configuration['visibility'] ?? null) !== 'private'
+            || ($configuration['serve'] ?? null) !== false
+            || ($configuration['throw'] ?? null) !== true
+            || isset($configuration['url'])
+            || ! is_string($configuration['root'] ?? null)
+            || ! $this->samePath($configuration['root'], $approvedRoot)
+            || $this->isPubliclyExposed($approvedRoot)
+            || $this->hasSymlinkComponent($approvedRoot)) {
+            throw new CustodyViolation('The isolated private custody disk configuration is not approved.');
+        }
+
+        return $approvedDisk;
     }
 
     public function putIfAbsent(string $locator, $stream): void
@@ -85,5 +104,64 @@ final class LocalImmutableObjectStore implements ImmutableObjectStore
             || str_contains($locator, '..')) {
             throw new CustodyViolation('The custody locator is invalid.');
         }
+    }
+
+    private function samePath(string $left, string $right): bool
+    {
+        if ($left === '' || $right === '') {
+            return false;
+        }
+
+        $normalizedLeft = $this->normalizePath($left);
+        $normalizedRight = $this->normalizePath($right);
+
+        return DIRECTORY_SEPARATOR === '\\'
+            ? strcasecmp($normalizedLeft, $normalizedRight) === 0
+            : hash_equals($normalizedLeft, $normalizedRight);
+    }
+
+    private function isPubliclyExposed(string $root): bool
+    {
+        $normalizedRoot = $this->normalizePath($root);
+        $publicRoot = $this->normalizePath(public_path());
+        if ($normalizedRoot === $publicRoot || str_starts_with($normalizedRoot, $publicRoot.DIRECTORY_SEPARATOR)) {
+            return true;
+        }
+
+        foreach ((array) config('filesystems.links', []) as $link => $target) {
+            if (! is_string($link) || ! is_string($target)) {
+                return true;
+            }
+            $normalizedLink = $this->normalizePath($link);
+            $normalizedTarget = $this->normalizePath($target);
+            if ($normalizedRoot === $normalizedLink
+                || str_starts_with($normalizedRoot, $normalizedLink.DIRECTORY_SEPARATOR)
+                || str_starts_with($normalizedLink, $normalizedRoot.DIRECTORY_SEPARATOR)
+                || $normalizedRoot === $normalizedTarget
+                || str_starts_with($normalizedRoot, $normalizedTarget.DIRECTORY_SEPARATOR)
+                || str_starts_with($normalizedTarget, $normalizedRoot.DIRECTORY_SEPARATOR)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function hasSymlinkComponent(string $path): bool
+    {
+        $current = $this->normalizePath($path);
+        while ($current !== dirname($current)) {
+            if (file_exists($current) && is_link($current)) {
+                return true;
+            }
+            $current = dirname($current);
+        }
+
+        return file_exists($current) && is_link($current);
+    }
+
+    private function normalizePath(string $path): string
+    {
+        return rtrim(str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path), DIRECTORY_SEPARATOR);
     }
 }
