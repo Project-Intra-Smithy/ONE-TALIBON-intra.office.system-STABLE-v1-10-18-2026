@@ -20,6 +20,7 @@ use DateTimeImmutable;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use RuntimeException;
@@ -32,11 +33,19 @@ final class PlanCustodyFoundationTest extends TestCase
     /** @var array<int, string> */
     private array $temporaryFiles = [];
 
+    private string $originalStoragePath;
+
+    private string $isolatedStoragePath;
+
     protected function setUp(): void
     {
         parent::setUp();
-        Storage::fake('plan_custody');
-        config()->set('plan_custody.approved_root', config('filesystems.disks.plan_custody.root'));
+        $this->originalStoragePath = $this->app->storagePath();
+        $this->isolatedStoragePath = sys_get_temp_dir().DIRECTORY_SEPARATOR.'g2-custody-'.Str::uuid();
+        File::makeDirectory($this->isolatedStoragePath, 0700, true);
+        $this->app->useStoragePath($this->isolatedStoragePath);
+        config()->set('filesystems.disks.plan_custody.root', storage_path('app/plan-custody-quarantine'));
+        Storage::forgetDisk('plan_custody');
         $this->allowSecurity();
     }
 
@@ -45,6 +54,9 @@ final class PlanCustodyFoundationTest extends TestCase
         foreach ($this->temporaryFiles as $path) {
             @unlink($path);
         }
+        Storage::forgetDisk('plan_custody');
+        File::deleteDirectory($this->isolatedStoragePath);
+        $this->app->useStoragePath($this->originalStoragePath);
         parent::tearDown();
     }
 
@@ -245,6 +257,23 @@ final class PlanCustodyFoundationTest extends TestCase
             function () use ($approved): void {
                 config()->set('filesystems.disks.plan_custody', array_merge($approved, ['root' => storage_path('app/private')]));
             },
+            function () use ($approved): void {
+                config()->set('filesystems.disks.plan_custody', array_merge($approved, ['visibility' => 'public']));
+            },
+            function () use ($approved): void {
+                config()->set('filesystems.disks.plan_custody', array_merge($approved, ['throw' => false]));
+            },
+            function () use ($approved): void {
+                config()->set('filesystems.disks.plan_custody', array_merge($approved, ['url' => '/custody']));
+            },
+            function () use ($approved): void {
+                config()->set('filesystems.disks.plan_custody', array_merge($approved, ['driver' => 'custom']));
+            },
+            function () use ($approved): void {
+                config()->set('filesystems.disks.plan_custody', array_merge($approved, [
+                    'root' => storage_path('app/plan-custody-quarantine/../public'),
+                ]));
+            },
         ];
 
         foreach ($badCases as $index => $configureBadDisk) {
@@ -266,6 +295,65 @@ final class PlanCustodyFoundationTest extends TestCase
         $generation = app(PlanCustodyService::class)
             ->stage($this->request($path, 'approved-disk-idempotency'));
         Storage::disk('plan_custody')->assertExists($generation->storage_locator);
+    }
+
+    public function test_second_serving_or_public_disk_aliasing_custody_root_is_rejected(): void
+    {
+        $root = storage_path('app/plan-custody-quarantine');
+        $path = $this->pdf('same-root-alias');
+        foreach ([
+            ['driver' => 'local', 'root' => $root, 'visibility' => 'public', 'serve' => true, 'throw' => false, 'url' => '/exposed'],
+            ['driver' => 'local', 'root' => dirname($root), 'visibility' => 'private', 'serve' => false, 'throw' => true],
+            ['driver' => 'local', 'root' => $root.DIRECTORY_SEPARATOR.'nested', 'visibility' => 'private', 'serve' => false, 'throw' => true],
+        ] as $index => $alias) {
+            config()->set('filesystems.disks.exposed_alias', $alias);
+            try {
+                app(PlanCustodyService::class)->stage($this->request($path, "same-root-alias-key-{$index}"));
+                $this->fail('An overlapping custody disk alias was accepted.');
+            } catch (CustodyViolation) {
+                $this->addToAssertionCount(1);
+            }
+            $this->assertDatabaseCount('plan_custody_generations', 0);
+            $this->assertSame([], Storage::disk('plan_custody')->allFiles());
+            $disks = config('filesystems.disks');
+            unset($disks['exposed_alias']);
+            config()->set('filesystems.disks', $disks);
+        }
+    }
+
+    public function test_coupled_disk_and_obsolete_approved_root_redirection_is_rejected(): void
+    {
+        $redirected = storage_path('app/private');
+        config()->set('plan_custody.approved_root', $redirected);
+        config()->set('filesystems.disks.plan_custody.root', $redirected);
+
+        try {
+            (new LocalImmutableObjectStore)->exists('quarantine/aa/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.pdf');
+            $this->fail('Coupled custody root and obsolete trust-anchor redirection was accepted.');
+        } catch (CustodyViolation) {
+            $this->addToAssertionCount(1);
+        }
+
+        $this->assertDatabaseCount('plan_custody_generations', 0);
+        $this->assertFalse(File::exists($redirected.DIRECTORY_SEPARATOR.'quarantine'));
+    }
+
+    public function test_existing_symbolic_alias_for_custody_root_is_rejected_when_platform_supports_it(): void
+    {
+        $trusted = storage_path('app/plan-custody-quarantine');
+        File::makeDirectory($trusted, 0700, true);
+        $alias = $this->isolatedStoragePath.DIRECTORY_SEPARATOR.'custody-symlink';
+        if (! @symlink($trusted, $alias)) {
+            $this->markTestSkipped('Symbolic-link creation is unavailable on this platform/runtime.');
+        }
+        config()->set('filesystems.disks.plan_custody.root', $alias);
+
+        try {
+            (new LocalImmutableObjectStore)->exists('quarantine/aa/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.pdf');
+            $this->fail('A symbolic custody root alias was accepted.');
+        } catch (CustodyViolation) {
+            $this->addToAssertionCount(1);
+        }
     }
 
     public function test_unapproved_disk_fails_closed_for_verify_delete_and_exists_without_touching_material(): void

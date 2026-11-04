@@ -19,7 +19,7 @@ final class LocalImmutableObjectStore implements ImmutableObjectStore
         $disk = (string) config('plan_custody.disk');
         $approvedDisk = 'plan_custody';
         $configuration = config("filesystems.disks.{$approvedDisk}");
-        $approvedRoot = (string) config('plan_custody.approved_root');
+        $trustedRoot = $this->canonicalPath(storage_path('app/plan-custody-quarantine'));
 
         if ($disk !== $approvedDisk
             || ! is_array($configuration)
@@ -29,9 +29,9 @@ final class LocalImmutableObjectStore implements ImmutableObjectStore
             || ($configuration['throw'] ?? null) !== true
             || isset($configuration['url'])
             || ! is_string($configuration['root'] ?? null)
-            || ! $this->samePath($configuration['root'], $approvedRoot)
-            || $this->isPubliclyExposed($approvedRoot)
-            || $this->hasSymlinkComponent($approvedRoot)) {
+            || ! $this->samePath($this->canonicalPath($configuration['root']), $trustedRoot)
+            || $this->isPubliclyExposed($trustedRoot)
+            || $this->hasOverlappingDiskAlias($trustedRoot, $approvedDisk)) {
             throw new CustodyViolation('The isolated private custody disk configuration is not approved.');
         }
 
@@ -112,19 +112,15 @@ final class LocalImmutableObjectStore implements ImmutableObjectStore
             return false;
         }
 
-        $normalizedLeft = $this->normalizePath($left);
-        $normalizedRight = $this->normalizePath($right);
-
         return DIRECTORY_SEPARATOR === '\\'
-            ? strcasecmp($normalizedLeft, $normalizedRight) === 0
-            : hash_equals($normalizedLeft, $normalizedRight);
+            ? strcasecmp($left, $right) === 0
+            : hash_equals($left, $right);
     }
 
     private function isPubliclyExposed(string $root): bool
     {
-        $normalizedRoot = $this->normalizePath($root);
-        $publicRoot = $this->normalizePath(public_path());
-        if ($normalizedRoot === $publicRoot || str_starts_with($normalizedRoot, $publicRoot.DIRECTORY_SEPARATOR)) {
+        $publicRoot = $this->canonicalPath(public_path());
+        if ($this->pathsOverlap($root, $publicRoot)) {
             return true;
         }
 
@@ -132,14 +128,8 @@ final class LocalImmutableObjectStore implements ImmutableObjectStore
             if (! is_string($link) || ! is_string($target)) {
                 return true;
             }
-            $normalizedLink = $this->normalizePath($link);
-            $normalizedTarget = $this->normalizePath($target);
-            if ($normalizedRoot === $normalizedLink
-                || str_starts_with($normalizedRoot, $normalizedLink.DIRECTORY_SEPARATOR)
-                || str_starts_with($normalizedLink, $normalizedRoot.DIRECTORY_SEPARATOR)
-                || $normalizedRoot === $normalizedTarget
-                || str_starts_with($normalizedRoot, $normalizedTarget.DIRECTORY_SEPARATOR)
-                || str_starts_with($normalizedTarget, $normalizedRoot.DIRECTORY_SEPARATOR)) {
+            if ($this->pathsOverlap($root, $this->canonicalPath($link))
+                || $this->pathsOverlap($root, $this->canonicalPath($target))) {
                 return true;
             }
         }
@@ -147,21 +137,101 @@ final class LocalImmutableObjectStore implements ImmutableObjectStore
         return false;
     }
 
+    private function hasOverlappingDiskAlias(string $trustedRoot, string $approvedDisk): bool
+    {
+        foreach ((array) config('filesystems.disks', []) as $name => $configuration) {
+            if ($name === $approvedDisk) {
+                continue;
+            }
+            if (! is_array($configuration)) {
+                return true;
+            }
+            $root = $configuration['root'] ?? null;
+            if ($root === null) {
+                if (($configuration['driver'] ?? null) === 'local') {
+                    return true;
+                }
+
+                continue;
+            }
+            if (! is_string($root) || $this->pathsOverlap($trustedRoot, $this->canonicalPath($root))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function pathsOverlap(string $left, string $right): bool
+    {
+        if ($this->samePath($left, $right)) {
+            return true;
+        }
+
+        $leftPrefix = rtrim($left, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+        $rightPrefix = rtrim($right, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+
+        return DIRECTORY_SEPARATOR === '\\'
+            ? str_starts_with(strtolower($left), strtolower($rightPrefix))
+                || str_starts_with(strtolower($right), strtolower($leftPrefix))
+            : str_starts_with($left, $rightPrefix) || str_starts_with($right, $leftPrefix);
+    }
+
+    private function canonicalPath(string $path): string
+    {
+        if ($path === '' || str_contains($path, "\0") || ! $this->isAbsolutePath($path)) {
+            throw new CustodyViolation('The isolated private custody path is invalid.');
+        }
+
+        $normalized = rtrim(str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path), DIRECTORY_SEPARATOR);
+        $parts = preg_split('#[\\\\/]+#', $normalized);
+        if ($parts === false || in_array('.', $parts, true) || in_array('..', $parts, true)) {
+            throw new CustodyViolation('The isolated private custody path is invalid.');
+        }
+
+        $current = $normalized;
+        $missing = [];
+        while (! file_exists($current) && ! is_link($current)) {
+            $parent = dirname($current);
+            if ($parent === $current) {
+                throw new CustodyViolation('The isolated private custody path cannot be resolved.');
+            }
+            array_unshift($missing, basename($current));
+            $current = $parent;
+        }
+
+        if ($this->hasSymlinkComponent($current)) {
+            throw new CustodyViolation('The isolated private custody path cannot use a symbolic alias.');
+        }
+        $canonical = realpath($current);
+        if ($canonical === false || (file_exists($normalized) && ! is_dir($normalized))) {
+            throw new CustodyViolation('The isolated private custody path cannot be resolved.');
+        }
+
+        foreach ($missing as $segment) {
+            $canonical .= DIRECTORY_SEPARATOR.$segment;
+        }
+
+        return rtrim(str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $canonical), DIRECTORY_SEPARATOR);
+    }
+
     private function hasSymlinkComponent(string $path): bool
     {
-        $current = $this->normalizePath($path);
+        $current = $path;
         while ($current !== dirname($current)) {
-            if (file_exists($current) && is_link($current)) {
+            if (is_link($current)) {
                 return true;
             }
             $current = dirname($current);
         }
 
-        return file_exists($current) && is_link($current);
+        return is_link($current);
     }
 
-    private function normalizePath(string $path): string
+    private function isAbsolutePath(string $path): bool
     {
-        return rtrim(str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path), DIRECTORY_SEPARATOR);
+        return DIRECTORY_SEPARATOR === '\\'
+            ? preg_match('#^(?:[A-Za-z]:[\\\\/]|\\\\\\\\[^\\\\/]+[\\\\/][^\\\\/]+)#D', $path) === 1
+            : str_starts_with($path, '/');
     }
 }
