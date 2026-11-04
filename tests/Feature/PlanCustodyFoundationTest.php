@@ -356,6 +356,112 @@ final class PlanCustodyFoundationTest extends TestCase
         }
     }
 
+    public function test_nested_symbolic_directory_cannot_escape_any_custody_operation(): void
+    {
+        $root = storage_path('app/plan-custody-quarantine');
+        $outside = $this->isolatedStoragePath.DIRECTORY_SEPARATOR.'outside-sentinel';
+        File::makeDirectory($root.DIRECTORY_SEPARATOR.'quarantine', 0700, true);
+        File::makeDirectory($outside, 0700, true);
+        $alias = $root.DIRECTORY_SEPARATOR.'quarantine'.DIRECTORY_SEPARATOR.'aa';
+        if (! @symlink($outside, $alias)) {
+            $this->markTestSkipped('Symbolic-link creation is unavailable on this platform/runtime.');
+        }
+
+        $locator = 'quarantine/aa/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.pdf';
+        $outsideObject = $outside.DIRECTORY_SEPARATOR.'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.pdf';
+        file_put_contents($outsideObject, 'outside-sentinel-bytes');
+        $store = new LocalImmutableObjectStore;
+
+        foreach ([
+            function () use ($store, $locator): void {
+                $stream = fopen('php://temp', 'w+b');
+                fwrite($stream, 'forbidden-write');
+                rewind($stream);
+                try {
+                    $store->putIfAbsent($locator, $stream);
+                } finally {
+                    fclose($stream);
+                }
+            },
+            fn () => $store->openForVerification($locator),
+            fn () => $store->exists($locator),
+            fn () => $store->deleteUncommitted($locator),
+        ] as $operation) {
+            try {
+                $operation();
+                $this->fail('A nested symbolic custody alias was accepted.');
+            } catch (CustodyViolation) {
+                $this->addToAssertionCount(1);
+            }
+            $this->assertSame('outside-sentinel-bytes', file_get_contents($outsideObject));
+        }
+
+        $this->assertDatabaseCount('plan_custody_generations', 0);
+        $this->assertDatabaseCount('plan_custody_events', 0);
+    }
+
+    public function test_cached_laravel_adapter_root_mismatch_is_rejected(): void
+    {
+        $trusted = storage_path('app/plan-custody-quarantine');
+        $alternate = storage_path('app/cached-alternate-root');
+        File::makeDirectory($alternate, 0700, true);
+        config()->set('filesystems.disks.plan_custody.root', $alternate);
+        Storage::forgetDisk('plan_custody');
+        Storage::disk('plan_custody');
+        config()->set('filesystems.disks.plan_custody.root', $trusted);
+
+        try {
+            (new LocalImmutableObjectStore)->exists('quarantine/aa/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.pdf');
+            $this->fail('A cached Laravel adapter bound to an alternate root was accepted.');
+        } catch (CustodyViolation) {
+            $this->addToAssertionCount(1);
+        } finally {
+            Storage::forgetDisk('plan_custody');
+        }
+    }
+
+    public function test_final_file_and_inside_root_parent_symlinks_are_rejected(): void
+    {
+        $root = storage_path('app/plan-custody-quarantine');
+        $quarantine = $root.DIRECTORY_SEPARATOR.'quarantine';
+        $outside = $this->isolatedStoragePath.DIRECTORY_SEPARATOR.'outside-final.pdf';
+        File::makeDirectory($quarantine.DIRECTORY_SEPARATOR.'aa', 0700, true);
+        file_put_contents($outside, 'outside-final-sentinel');
+        $finalAlias = $quarantine.DIRECTORY_SEPARATOR.'aa'.DIRECTORY_SEPARATOR.'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.pdf';
+        if (! @symlink($outside, $finalAlias)) {
+            $this->markTestSkipped('Symbolic-link creation is unavailable on this platform/runtime.');
+        }
+
+        $insideTarget = $quarantine.DIRECTORY_SEPARATOR.'inside-target';
+        File::makeDirectory($insideTarget, 0700, true);
+        $insideAlias = $quarantine.DIRECTORY_SEPARATOR.'bb';
+        if (! @symlink($insideTarget, $insideAlias)) {
+            $this->markTestSkipped('Directory symbolic-link creation is unavailable on this platform/runtime.');
+        }
+
+        $store = new LocalImmutableObjectStore;
+        foreach ([
+            'quarantine/aa/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.pdf',
+            'quarantine/bb/bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb.pdf',
+        ] as $locator) {
+            foreach ([
+                fn () => $store->openForVerification($locator),
+                fn () => $store->exists($locator),
+                fn () => $store->deleteUncommitted($locator),
+            ] as $operation) {
+                try {
+                    $operation();
+                    $this->fail('A final-file or inside-root symbolic alias was accepted.');
+                } catch (CustodyViolation) {
+                    $this->addToAssertionCount(1);
+                }
+            }
+        }
+
+        $this->assertSame('outside-final-sentinel', file_get_contents($outside));
+        $this->assertSame([], File::files($insideTarget));
+    }
+
     public function test_unapproved_disk_fails_closed_for_verify_delete_and_exists_without_touching_material(): void
     {
         $locator = 'quarantine/aa/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.pdf';

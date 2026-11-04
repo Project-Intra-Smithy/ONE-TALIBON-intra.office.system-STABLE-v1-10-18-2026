@@ -5,6 +5,7 @@ namespace App\PlanCustody;
 use App\PlanCustody\Contracts\ImmutableObjectStore;
 use App\PlanCustody\Exceptions\CustodyViolation;
 use App\PlanCustody\Exceptions\ObjectCollision;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
 use RuntimeException;
 
@@ -14,7 +15,7 @@ use RuntimeException;
  */
 final class LocalImmutableObjectStore implements ImmutableObjectStore
 {
-    private function disk(): string
+    private function disk(): FilesystemAdapter
     {
         $disk = (string) config('plan_custody.disk');
         $approvedDisk = 'plan_custody';
@@ -35,18 +36,21 @@ final class LocalImmutableObjectStore implements ImmutableObjectStore
             throw new CustodyViolation('The isolated private custody disk configuration is not approved.');
         }
 
-        return $approvedDisk;
+        $adapter = Storage::disk($approvedDisk);
+        if (! $this->samePath($this->canonicalPath($adapter->path('')), $trustedRoot)) {
+            throw new CustodyViolation('The isolated private custody disk configuration is not approved.');
+        }
+
+        return $adapter;
     }
 
     public function putIfAbsent(string $locator, $stream): void
     {
         $this->assertLocator($locator);
-        $path = Storage::disk($this->disk())->path($locator);
-        $directory = dirname($path);
-
-        if (! is_dir($directory) && ! mkdir($directory, 0700, true) && ! is_dir($directory)) {
-            throw new RuntimeException('Unable to create the private custody directory.');
-        }
+        $disk = $this->disk();
+        $path = $this->objectPath($disk, $locator);
+        $this->createObjectDirectory($disk, $locator);
+        $path = $this->objectPath($disk, $locator);
 
         $destination = @fopen($path, 'xb');
         if ($destination === false) {
@@ -64,7 +68,10 @@ final class LocalImmutableObjectStore implements ImmutableObjectStore
             @chmod($path, 0600);
         } catch (\Throwable $exception) {
             fclose($destination);
-            @unlink($path);
+            $safeCleanupPath = $this->objectPath($disk, $locator);
+            if (is_file($safeCleanupPath) && ! @unlink($safeCleanupPath)) {
+                throw new RuntimeException('Unable to remove the incomplete private custody object.', 0, $exception);
+            }
             throw $exception;
         }
 
@@ -74,7 +81,8 @@ final class LocalImmutableObjectStore implements ImmutableObjectStore
     public function openForVerification(string $locator)
     {
         $this->assertLocator($locator);
-        $stream = Storage::disk($this->disk())->readStream($locator);
+        $path = $this->objectPath($this->disk(), $locator);
+        $stream = @fopen($path, 'rb');
         if (! is_resource($stream)) {
             throw new CustodyViolation('The staged custody object cannot be independently verified.');
         }
@@ -85,8 +93,8 @@ final class LocalImmutableObjectStore implements ImmutableObjectStore
     public function deleteUncommitted(string $locator): void
     {
         $this->assertLocator($locator);
-        if (Storage::disk($this->disk())->exists($locator)
-            && ! Storage::disk($this->disk())->delete($locator)) {
+        $path = $this->objectPath($this->disk(), $locator);
+        if (is_file($path) && ! @unlink($path)) {
             throw new RuntimeException('Unable to remove the uncommitted custody object.');
         }
     }
@@ -95,7 +103,53 @@ final class LocalImmutableObjectStore implements ImmutableObjectStore
     {
         $this->assertLocator($locator);
 
-        return Storage::disk($this->disk())->exists($locator);
+        return is_file($this->objectPath($this->disk(), $locator));
+    }
+
+    private function objectPath(FilesystemAdapter $disk, string $locator): string
+    {
+        $trustedRoot = $this->canonicalPath(storage_path('app/plan-custody-quarantine'));
+        $actualRoot = $this->canonicalPath($disk->path(''));
+        $actualPath = $this->canonicalPath($disk->path($locator), true);
+        $expectedPath = $trustedRoot.DIRECTORY_SEPARATOR.str_replace('/', DIRECTORY_SEPARATOR, $locator);
+
+        if (! $this->samePath($actualRoot, $trustedRoot)
+            || ! $this->samePath($actualPath, $expectedPath)
+            || ! $this->isStrictDescendant($actualPath, $trustedRoot)) {
+            throw new CustodyViolation('The private custody object path is not approved.');
+        }
+
+        return $actualPath;
+    }
+
+    private function createObjectDirectory(FilesystemAdapter $disk, string $locator): void
+    {
+        $root = $this->canonicalPath($disk->path(''));
+        $segments = explode('/', dirname($locator));
+        $current = $root;
+
+        foreach ($segments as $segment) {
+            $current .= DIRECTORY_SEPARATOR.$segment;
+            if (is_link($current) || (file_exists($current) && ! is_dir($current))) {
+                throw new CustodyViolation('The private custody object path is not approved.');
+            }
+            if (! is_dir($current) && ! @mkdir($current, 0700) && ! is_dir($current)) {
+                throw new RuntimeException('Unable to create the private custody directory.');
+            }
+            if (! $this->samePath($this->canonicalPath($current), $current)
+                || ! $this->isStrictDescendant($current, $root)) {
+                throw new CustodyViolation('The private custody object path is not approved.');
+            }
+        }
+    }
+
+    private function isStrictDescendant(string $path, string $root): bool
+    {
+        $prefix = rtrim($root, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+
+        return DIRECTORY_SEPARATOR === '\\'
+            ? str_starts_with(strtolower($path), strtolower($prefix))
+            : str_starts_with($path, $prefix);
     }
 
     private function assertLocator(string $locator): void
@@ -177,7 +231,7 @@ final class LocalImmutableObjectStore implements ImmutableObjectStore
             : str_starts_with($left, $rightPrefix) || str_starts_with($right, $leftPrefix);
     }
 
-    private function canonicalPath(string $path): string
+    private function canonicalPath(string $path, bool $allowFile = false): string
     {
         if ($path === '' || str_contains($path, "\0") || ! $this->isAbsolutePath($path)) {
             throw new CustodyViolation('The isolated private custody path is invalid.');
@@ -204,7 +258,8 @@ final class LocalImmutableObjectStore implements ImmutableObjectStore
             throw new CustodyViolation('The isolated private custody path cannot use a symbolic alias.');
         }
         $canonical = realpath($current);
-        if ($canonical === false || (file_exists($normalized) && ! is_dir($normalized))) {
+        if ($canonical === false
+            || (file_exists($normalized) && ($allowFile ? ! is_file($normalized) : ! is_dir($normalized)))) {
             throw new CustodyViolation('The isolated private custody path cannot be resolved.');
         }
 
