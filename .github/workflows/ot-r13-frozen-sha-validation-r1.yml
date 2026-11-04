@@ -1,0 +1,226 @@
+# CI-only evidence wrapper; NEVER MERGE into main or the frozen integration branch.
+# All test jobs detach and execute the exact accepted application SHA.
+name: OT R13 Frozen Source Validation (Non-Merging)
+on:
+  push:
+    branches:
+      - ci/ot-r13-frozen-sha-validation-r1
+permissions:
+  contents: read
+concurrency:
+  group: ot-r13-frozen-sha-validation-r1
+  cancel-in-progress: false
+env:
+  ACCEPTED_SHA: 6354105f36c50d4094ee7be2ac495af2b53b481a
+  BASE_SHA: dda8e9f4d4760dc41555d6afdcaeeec8c8a65cee
+  CI_BRANCH: ci/ot-r13-frozen-sha-validation-r1
+  CI_FILE: .github/workflows/ot-r13-frozen-sha-validation-r1.yml
+
+jobs:
+  source-attestation:
+    name: Verify exact accepted source and one-file CI wrapper
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - name: Checkout CI wrapper commit
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 3
+      - name: Enforce source lineage, no application changes and exact SHA
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$GITHUB_REPOSITORY" = Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026
+          test "$GITHUB_REF" = "refs/heads/$CI_BRANCH"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git rev-parse HEAD^)" = "$ACCEPTED_SHA"
+          test "$(git rev-parse "$ACCEPTED_SHA^")" = "$BASE_SHA"
+          test "$(git diff --name-only "$ACCEPTED_SHA" HEAD)" = "$CI_FILE"
+          test "$(git diff --name-only "$BASE_SHA" "$ACCEPTED_SHA" | wc -l | tr -d ' ')" = 151
+          git checkout --detach "$ACCEPTED_SHA"
+          test "$(git rev-parse HEAD)" = "$ACCEPTED_SHA"
+          test -z "$(git status --porcelain)"
+          echo "TESTED_APPLICATION_SHA=$ACCEPTED_SHA"
+          echo "WORKFLOW_WRAPPER_SHA=$GITHUB_SHA"
+          echo "PARENT_SHA=$BASE_SHA"
+          echo "WRAPPER_ONLY_CHANGED_PATH=$CI_FILE"
+
+  frontend:
+    name: Frozen-source TypeScript, contracts, UX, build, serial Chromium
+    needs: source-attestation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Checkout wrapper commit
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 3
+      - name: Execute only accepted application source
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$(git rev-parse HEAD^)" = "$ACCEPTED_SHA"
+          test "$(git diff --name-only "$ACCEPTED_SHA" HEAD)" = "$CI_FILE"
+          git checkout --detach "$ACCEPTED_SHA"
+          test "$(git rev-parse HEAD)" = "$ACCEPTED_SHA"
+      - name: Set up reviewer-compatible pinned Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24.22.1'
+          cache: npm
+      - name: Install locked frontend dependencies
+        run: npm ci --no-audit --no-fund
+      - name: TypeScript, contracts, production build
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          npm run types:check
+          npm run test:contracts
+          npm run build
+      - name: Install disposable Chromium
+        run: npx playwright install --with-deps chromium
+      - name: UX and serial Chromium browser tests (do not parallelize Vite output)
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          npm run test:ux
+          for file in \
+            tests/Browser/portal-redesign.test.mjs \
+            tests/Browser/full-ui-refinement.test.mjs \
+            tests/Browser/full-ui-registries.test.mjs \
+            tests/Browser/full-ui-documents.test.mjs \
+            tests/Browser/full-ui-pages.test.mjs \
+            tests/Browser/full-ui-priorities.test.mjs \
+            tests/Browser/aj-home-auth.test.mjs \
+            tests/Browser/r13-document-archive-responsive.test.mjs
+          do
+            echo "SERIAL_BROWSER_FILE=$file"
+            REDESIGN_USE_EXISTING_BUILD=1 node --test "$file"
+          done
+      - name: Print actual detached source SHA
+        if: always()
+        run: git rev-parse HEAD
+
+  laravel-posix-pg16:
+    name: Frozen-source PHP 8.4 PostgreSQL 16 custody/origin tests
+    needs: source-attestation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_PASSWORD: R13_Only_Disposable_2026
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d talibon_portal_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: postgres
+      DB_PASSWORD: R13_Only_Disposable_2026
+      CACHE_STORE: array
+      SESSION_DRIVER: array
+      QUEUE_CONNECTION: sync
+    steps:
+      - name: Checkout wrapper commit
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 3
+      - name: Execute only accepted application source
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$(git rev-parse HEAD^)" = "$ACCEPTED_SHA"
+          test "$(git diff --name-only "$ACCEPTED_SHA" HEAD)" = "$CI_FILE"
+          git checkout --detach "$ACCEPTED_SHA"
+          test "$(git rev-parse HEAD)" = "$ACCEPTED_SHA"
+      - name: Set up PHP 8.4
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, mbstring, dom, fileinfo, zip
+          tools: composer:v2
+          coverage: none
+      - name: Install locked dependencies and initialize disposable DB
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+          cp .env.example .env
+          php artisan key:generate
+          php artisan optimize:clear
+          php artisan migrate:fresh --force
+      - name: Genuine Laravel PG16 custody and origin tests, retaining actual exits
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          php artisan test \
+            tests/Feature/PlanCustodyFoundationTest.php \
+            tests/Feature/PlanCatalogFoundationTest.php \
+            tests/Feature/PlanDocumentOriginIsolationTest.php \
+            tests/Feature/PlanLegacyCallerBoundaryTest.php \
+            tests/Feature/PlanLegacyOriginGuardHardeningTest.php \
+            tests/Feature/DocumentAccessPrecedenceTest.php \
+            tests/Feature/CoreDocumentAttachmentsTest.php
+      - name: Print actual detached source SHA
+        if: always()
+        run: git rev-parse HEAD
+
+  pint-known-debt:
+    name: Pint inherited formatting debt (NONZERO remains failure)
+    needs: source-attestation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout wrapper commit
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 3
+      - name: Execute only accepted application source
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$(git rev-parse HEAD^)" = "$ACCEPTED_SHA"
+          test "$(git diff --name-only "$ACCEPTED_SHA" HEAD)" = "$CI_FILE"
+          git checkout --detach "$ACCEPTED_SHA"
+          test "$(git rev-parse HEAD)" = "$ACCEPTED_SHA"
+      - name: Set up PHP 8.4
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, mbstring, dom, fileinfo, zip
+          tools: composer:v2
+          coverage: none
+      - name: Scoped Pint on exact 42 changed PHP files; never suppress exit 1
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+          php_count="$(git diff --name-only "$BASE_SHA" "$ACCEPTED_SHA" -- '*.php' | wc -l | tr -d ' ')"
+          test "$php_count" = 42
+          git diff --name-only -z "$BASE_SHA" "$ACCEPTED_SHA" -- '*.php' | xargs -0 -r -n 1 php -l
+          echo "PINT_SCOPE_PHP_PATHS=$php_count"
+          set +e
+          git diff --name-only -z "$BASE_SHA" "$ACCEPTED_SHA" -- '*.php' | xargs -0 -r vendor/bin/pint --test --format=json > "$RUNNER_TEMP/r13-pint-result.json" 2>&1
+          pint_exit=$?
+          set -e
+          cat "$RUNNER_TEMP/r13-pint-result.json"
+          echo "PINT_ACTUAL_EXIT=$pint_exit"
+          echo "OWNER_EXCEPTION=EXACT_SHA_ONLY_NOT_A_TEST_PASS"
+          echo "DEBT_TRACKER=ISSUE_26"
+          exit "$pint_exit"
