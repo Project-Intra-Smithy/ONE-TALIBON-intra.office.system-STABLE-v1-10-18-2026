@@ -1,3 +1,4 @@
+import '../../css/ot-reference-shell.css';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { Bell, ListChecks, Menu, X } from 'lucide-react';
 import { type PropsWithChildren, useEffect, useRef, useState } from 'react';
@@ -247,7 +248,7 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
                                 <Menu size={20} />
                             </button>
                             <div className="min-w-0 flex-1">
-                                <div className="truncate text-base font-extrabold tracking-tight text-[#0b2852] dark:text-white sm:text-xl">One <span className="text-[#1769aa] dark:text-blue-400">Talibon</span></div>
+                                <div className="truncate text-base font-extrabold tracking-tight text-[#0b442d] dark:text-white sm:text-xl">One <span className="text-[#19754b] dark:text-emerald-300">Talibon</span></div>
                                 <div className="hidden text-[10px] font-semibold uppercase tracking-wider sm:block">LGU Intra-Office Portal</div>
                                 <div className="mt-0.5 truncate text-xs font-medium text-slate-500 dark:text-slate-400">{title}</div>
                             </div>

@@ -8,16 +8,22 @@
     <script>
         (() => {
             const root = document.documentElement;
-
-            root.classList.remove('dark');
-            root.dataset.appearance = 'light';
-            root.style.colorScheme = 'light';
+            let preference = 'system';
 
             try {
-                window.localStorage.setItem('talibon.appearance', 'light');
+                const stored = window.localStorage.getItem('talibon.appearance');
+                if (stored === 'light' || stored === 'dark' || stored === 'system') {
+                    preference = stored;
+                }
             } catch {
-                // The showcase remains light even when storage is unavailable.
+                // Storage may be blocked; use the system preference without interrupting bootstrap.
             }
+
+            const dark = preference === 'dark'
+                || (preference === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            root.classList.toggle('dark', dark);
+            root.dataset.appearance = preference;
+            root.style.colorScheme = dark ? 'dark' : 'light';
         })();
     </script>
     @viteReactRefresh

@@ -1,3 +1,4 @@
+import '../../../css/portal-visual-redesign.css';
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowLeft, Building2, CalendarClock, FileText, GitBranch, UserRound } from 'lucide-react';
 import CorrespondenceActionPanel, { type CorrespondenceCapabilities, type CorrespondenceRouteOption } from '../../components/correspondence/CorrespondenceActionPanel';
@@ -112,7 +113,7 @@ export default function CorrespondenceShow({ correspondence, timeline, capabilit
 
     return (
         <AppLayout title={`Correspondence · ${correspondence.reference}`}>
-            <div className="mx-auto max-w-7xl space-y-3">
+            <div className="civic-page mx-auto max-w-7xl space-y-3">
                 <div className="flex items-center justify-between gap-3">
                     <Link href={returnTarget} className="inline-flex items-center gap-2 text-xs font-semibold text-blue-700 hover:text-blue-900 dark:text-blue-300">
                         <ArrowLeft size={15} /> Back to Inbox & Routing

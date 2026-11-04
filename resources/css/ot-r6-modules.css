@@ -1,0 +1,42 @@
+/* Worker 03: module-only density, access and detail presentation. No shared UI overrides. */
+.ot-r6-modules {
+    --ot-r6-accent: var(--municipal-brand, #12613f);
+    --ot-r6-line: var(--municipal-border, #d9e2dc);
+    min-width: 0;
+}
+.ot-r6-modules :is(h1, h2, h3, dd, td, p) { overflow-wrap: anywhere; }
+.ot-r6-modules .ot-r6-filter-panel { border-color: var(--ot-r6-line); }
+.ot-r6-modules .ot-r6-reset:hover, .ot-r6-modules .ot-r6-office-action:hover { background: var(--municipal-hover); }
+.ot-r6-modules :is(button, a, input, select, summary):focus-visible,
+.ot-r6-plan-dialog :is(button, a):focus-visible { outline: 3px solid var(--municipal-focus, #19754b); outline-offset: 2px; }
+.ot-r6-modules .ot-r6-office-group { min-width: 0; }
+.ot-r6-modules .ot-r6-office-card { display: flex; flex-direction: column; min-width: 0; }
+.ot-r6-modules .ot-r6-office-action { margin-top: auto; padding-top: .65rem; }
+.ot-r6-modules .ot-r6-live-office-card { min-height: 100%; }
+.ot-r6-modules .ot-r6-plan-card { height: 100%; border-color: var(--ot-r6-line); }
+.ot-r6-modules .ot-r6-plan-card:hover { border-color: var(--ot-r6-accent); }
+.ot-r6-modules .ot-r6-plan-cover { min-height: 106px; aspect-ratio: 2.65 / 1; }
+.ot-r6-modules .ot-r6-plan-status { color: var(--municipal-text); }
+.ot-r6-modules .ot-r6-plan-grid > * { min-width: 0; }
+.ot-r6-plan-dialog { overscroll-behavior: contain; scrollbar-gutter: stable; }
+.ot-r6-ppa-layout { display: grid; gap: .85rem; min-width: 0; align-items: start; }
+.ot-r6-ppa-register { min-width: 0; }
+.ot-r6-ppa-detail { order: -1; min-width: 0; scroll-margin-top: 94px; }
+.ot-r6-ppa-detail:focus { outline: 2px solid var(--municipal-focus); outline-offset: 2px; }
+.ot-r6-ppa-detail dt { overflow-wrap: anywhere; }
+.ot-r6-ppa-detail dd { overflow-wrap: anywhere; }
+@media (min-width: 1536px) {
+    .ot-r6-ppa-layout--selected { grid-template-columns: minmax(0, 1fr) minmax(290px, 340px); }
+    .ot-r6-ppa-detail { order: 0; position: sticky; top: 91px; max-height: calc(100dvh - 110px); overflow-y: auto; overscroll-behavior: contain; }
+}
+@media (max-width: 639px) {
+    .ot-r6-modules .ot-r6-office-grid { grid-template-columns: minmax(0, 1fr); }
+    .ot-r6-modules .ot-r6-plan-cover { min-height: 92px; }
+    .ot-r6-ppa-detail { scroll-margin-top: 83px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .ot-r6-modules :is(button, a, article) { transition: none; }
+}
+@media (forced-colors: active) {
+    .ot-r6-modules [aria-selected="true"], .ot-r6-modules [aria-expanded="true"] { outline: 1px solid Highlight; }
+}

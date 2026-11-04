@@ -1,3 +1,4 @@
+import '../../../css/portal-visual-redesign.css';
 import { Link, useForm } from '@inertiajs/react';
 import { ArrowLeft, FileCheck2 } from 'lucide-react';
 import { type FormEvent } from 'react';
@@ -22,7 +23,7 @@ export default function Create({ departments }: Props) {
 
     return (
         <AppLayout title="Record Approved Travel Order">
-            <div className="mx-auto max-w-3xl space-y-4 sm:space-y-6">
+            <div className="civic-page mx-auto max-w-3xl space-y-4 sm:space-y-6">
                 <header><Link href="/travel-orders" className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-blue-700 sm:text-xs"><ArrowLeft size={14} /> Approved Travel Orders</Link><div className="mt-4 text-[10px] font-bold uppercase tracking-[0.18em] text-blue-700 sm:text-xs">Authorized MAYOR approver · post-approval record</div><h1 className="mt-1.5 text-2xl font-bold text-slate-950 sm:text-3xl dark:text-slate-100">Record approved Travel Order</h1><p className="mt-1.5 text-[11px] leading-5 text-slate-500 sm:text-sm dark:text-slate-400">Enter an order that has already been officially approved. This does not submit or route a travel request.</p></header>
                 <form onSubmit={submit} className="space-y-4">
                     <section className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:grid-cols-2 sm:rounded-3xl sm:p-6 dark:bg-[#142236] dark:border-slate-700">

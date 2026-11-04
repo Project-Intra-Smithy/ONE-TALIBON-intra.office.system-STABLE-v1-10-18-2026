@@ -11,8 +11,8 @@ export default function PPAFilters({ filters, onChange }: Props) {
     const reset = () => onChange({ query: '', sector: '', office: '', year: '', plan: '', fundingSource: '', status: '' });
     const hasFilters = Object.values(filters).some(Boolean);
 
-    return <section className="municipal-panel p-3" aria-label="PPA filters">
-        <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-[minmax(280px,1.4fr)_1fr_150px_1fr]">
+    return <section className="municipal-panel ot-r6-filter-panel r8-ppas-filters p-3" aria-label="PPA filters">
+        <div className="r8-ppas-filter-grid grid gap-2 md:grid-cols-2 xl:grid-cols-[minmax(280px,1.4fr)_1fr_150px_1fr]">
             <label className="relative">
                 <span className="sr-only">Search PPAs</span>
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--municipal-muted)]" size={16} aria-hidden="true" />

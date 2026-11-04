@@ -1,0 +1,37 @@
+/* R8-A3 Office Directory only. No global shell or shared-module overrides. */
+.r8-directory { --r8-directory-accent: var(--municipal-brand, #12613f); --r8-directory-border: var(--municipal-border, #d9e2dc); min-width: 0; }
+.r8-directory .r8-directory-intro { display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:1rem; align-items:center; padding:1.2rem 1.35rem; border:1px solid var(--r8-directory-border); border-radius:1rem; background:var(--municipal-surface, #fff); }
+.r8-directory .r8-directory-intro__icon { width:3rem; height:3rem; display:grid; place-items:center; color:var(--r8-directory-accent); background:var(--municipal-brand-soft,#e9f2ec); border-radius:.8rem; }
+.r8-directory .r8-directory-kicker { font-size:.72rem; text-transform:uppercase; letter-spacing:.1em; font-weight:750; color:var(--r8-directory-accent); }
+.r8-directory .r8-directory-intro__copy h2 { margin:.15rem 0; font-size:clamp(1.08rem,1.8vw,1.4rem); line-height:1.3; font-weight:750; color:var(--municipal-text); }
+.r8-directory .r8-directory-intro__copy p:last-child { max-width:58ch; font-size:.84rem; line-height:1.55; color:var(--municipal-muted); }
+.r8-directory .r8-directory-intro__count { display:flex; flex-direction:column; align-items:center; gap:.1rem; padding:.6rem 1rem; border-left:1px solid var(--r8-directory-border); white-space:nowrap; }
+.r8-directory .r8-directory-intro__count strong { font-size:1.8rem; line-height:1; font-variant-numeric:tabular-nums; color:var(--r8-directory-accent); }
+.r8-directory .r8-directory-intro__count span { font-size:.72rem; font-weight:650; color:var(--municipal-muted); }
+.r8-directory .r8-directory-controls { border-color:var(--r8-directory-border); }
+.r8-directory .r8-directory-field-label { display:inline-flex; align-items:center; gap:.4rem; }
+.r8-directory .r8-directory-results { min-height:2.5rem; }
+.r8-directory .r8-directory-group { padding:1rem; border-radius:.9rem; }
+.r8-directory .r8-directory-group h2 { display:flex; flex-wrap:wrap; gap:.6rem; align-items:baseline; }
+.r8-directory .r8-directory-group__count { font-variant-numeric:tabular-nums; }
+.r8-directory .r8-directory-card { min-height:12rem; padding:1rem; border-radius:.8rem; transition:border-color .15s ease, background-color .15s ease; }
+.r8-directory .r8-directory-card:hover { border-color:var(--r8-directory-accent); }
+.r8-directory .r8-directory-card__link { align-self:flex-start; text-underline-offset:3px; }
+.r8-directory .r8-directory-card__pending { line-height:1.45; }
+.r8-directory .r8-directory-summary { margin-bottom:.35rem; }
+.r8-directory .r8-directory-stat { min-width:0; border:1px solid var(--r8-directory-border); border-radius:.85rem; }
+.r8-directory .r8-directory-live-group { min-width:0; padding-top:.4rem; }
+.r8-directory .r8-directory-live-card { border-radius:.85rem; }
+.r8-directory :is(input,select,a,button):focus-visible { outline:3px solid var(--municipal-focus,#19754b); outline-offset:2px; }
+@media (max-width:767px) {
+ .r8-directory .r8-directory-intro { grid-template-columns:auto minmax(0,1fr); padding:1rem; gap:.75rem; align-items:start; }
+ .r8-directory .r8-directory-intro__icon { width:2.55rem; height:2.55rem; }
+ .r8-directory .r8-directory-intro__count { grid-column:1 / -1; flex-direction:row; justify-content:flex-start; gap:.6rem; padding:.65rem 0 0; border-left:0; border-top:1px solid var(--r8-directory-border); }
+ .r8-directory .r8-directory-intro__count strong { font-size:1.35rem; }
+ .r8-directory .r8-directory-group { padding:.75rem; }
+ .r8-directory .r8-directory-card { min-height:0; padding:.85rem; }
+ .r8-directory .r8-directory-group h2 { font-size:1rem; }
+}
+@media (max-width:390px) { .r8-directory .r8-directory-controls__fields { grid-template-columns:minmax(0,1fr); } .r8-directory .r8-directory-results { align-items:flex-start; } }
+@media (prefers-reduced-motion: reduce) { .r8-directory .r8-directory-card { transition:none; } }
+@media (forced-colors: active) { .r8-directory .r8-directory-card:hover { outline:1px solid Highlight; } .r8-directory :is(a,button,input,select):focus-visible { outline:2px solid Highlight; } }

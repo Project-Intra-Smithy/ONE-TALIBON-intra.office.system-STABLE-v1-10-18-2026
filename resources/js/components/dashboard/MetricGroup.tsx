@@ -2,16 +2,18 @@ import { Link } from '@inertiajs/react';
 import { ArrowUpRight } from 'lucide-react';
 import { isStagedInertiaPath } from '../../navigation/stagedRoutes';
 import type { MetricGroupData } from './types';
+import DashboardScrollRegion from './DashboardScrollRegion';
 
 export default function MetricGroup({ group }: { group: MetricGroupData }) {
     const title = ({ personal: 'My work', office: 'Office workload', executive: 'Municipal workload', system: 'Accounts and security' } as Record<string, string>)[group.key] || group.title;
     // Counts may overlap: compare magnitude, never imply a completion percentage.
     const maximum = Math.max(1, ...group.metrics.map(metric => Math.max(0, metric.value)));
     return <section className="municipal-panel overflow-hidden" aria-labelledby={'dashboard-' + group.key + '-metrics'}>
-        <header className="border-b border-slate-200 px-4 py-3 dark:border-slate-700 sm:px-5">
+        <header className="ot-dashboard-panel-heading border-b border-slate-200 px-4 py-3 dark:border-slate-700 sm:px-5">
             <h2 id={'dashboard-' + group.key + '-metrics'} className="text-base font-bold sm:text-lg">{title}</h2>
         </header>
-        <div className="workspace-metrics">
+        <DashboardScrollRegion label={`${title} metric cards`} itemCount={group.metrics.length}>
+            <div className="workspace-metrics">
             {group.metrics.map((metric) => {
                 const className = 'workspace-metric group relative min-w-0 p-5';
                 const content = <>
@@ -24,7 +26,8 @@ export default function MetricGroup({ group }: { group: MetricGroupData }) {
                     ? <Link key={metric.label} href={metric.link} aria-label={metric.label + ': ' + metric.value + '. Open related work.'} className={`${className} transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/40`}>{content}</Link>
                     : <div key={metric.label} className={className}>{content}</div>;
             })}
-        </div>
+            </div>
+        </DashboardScrollRegion>
         <p className="px-5 pb-5 text-base text-slate-600 dark:text-slate-300">Bars compare counts in this section. Categories may overlap.</p>
     </section>;
 }

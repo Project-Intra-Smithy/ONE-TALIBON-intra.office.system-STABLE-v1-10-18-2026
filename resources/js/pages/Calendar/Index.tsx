@@ -1,3 +1,4 @@
+import '../../../css/aj-calendar-workspace.css';
 import { Link, router } from '@inertiajs/react';
 import {
     CalendarDays,
@@ -103,7 +104,7 @@ function EventButton({
     chipClass: string;
     compact?: boolean;
 }) {
-    return <div className={`rounded-lg border px-3 py-2 ${chipClass}`}>
+    return <div className={`aj-calendar-event rounded-lg border px-3 py-2 ${chipClass}`}>
         <button
             type="button"
             onClick={() => onOpen(event)}
@@ -250,7 +251,7 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
 
     return (
         <AppLayout workspaceRefinement title="Calendar">
-            <PageFrame width="standard">
+            <PageFrame width="wide" density="comfortable" className="aj-calendar">
                 <PageHeader
                     eyebrow="Shared municipal calendar"
                     title="Events, deadlines & schedules"
@@ -361,7 +362,7 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
                     {view === 'month' && (
                         <div className="p-3 sm:p-5">
                             {/* Desktop 7-Column Grid */}
-                            <div className="hidden sm:block">
+                            <div className="aj-calendar-month-grid hidden sm:block">
                                 <div className="grid grid-cols-7 border-b border-slate-200 text-center text-xs font-bold uppercase tracking-wider text-slate-500 dark:border-slate-700 dark:text-slate-400">
                                     {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
                                         <div key={day} className="py-2.5">
@@ -452,7 +453,7 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
                             </div>
 
                             {/* Mobile Agenda / Date Picker (< 768px) */}
-                            <div className="block sm:hidden">
+                            <div className="aj-calendar-month-agenda block sm:hidden">
                                 <label className="block text-sm font-bold text-slate-700 dark:text-slate-200">
                                     Jump to date
                                     <input
@@ -733,7 +734,7 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
                     role="dialog"
                     aria-modal="true"
                     aria-labelledby={`${modalId}-title`}
-                    className="fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-2xl border-0 bg-transparent p-0 backdrop:bg-slate-950/60"
+                    className="aj-calendar-dialog fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-2xl border-0 bg-transparent p-0 backdrop:bg-slate-950/60"
                 >
                     <div
                         className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-700 dark:bg-[#142236]"

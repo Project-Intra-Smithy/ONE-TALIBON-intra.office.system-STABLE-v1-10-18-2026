@@ -1,0 +1,276 @@
+/* Source-backed dashboard reference composition. Scoped to /dashboard only. */
+.ot-reference-dashboard { display:grid; gap:10px; min-width:0; }
+.ot-reference-dashboard * { min-width:0; }
+.ot-dashboard-hero { display:flex; justify-content:space-between; align-items:center; gap:24px; min-height:126px; padding:14px 22px; border-radius:10px; color:#fff; background-color:#0b442d; background-position:center,right 42%; background-size:cover, 58% auto; background-repeat:no-repeat; overflow:hidden; }
+.ot-dashboard-hero-copy { max-width:74%; }
+.ot-dashboard-hero-eyebrow { font-size:.78rem; line-height:1.4; letter-spacing:.07em; font-weight:750; color:#d9eee3; }
+.ot-dashboard-hero h1 { margin-top:3px; font-size:clamp(1.45rem,2.3vw,2rem); font-weight:780; letter-spacing:-.03em; line-height:1.2; overflow-wrap:anywhere; }
+.ot-dashboard-hero-description { margin-top:4px; font-size:.85rem; line-height:1.45; }
+.ot-dashboard-hero-context { margin-top:5px; color:#d9eee3; font-size:.83rem; font-weight:600; overflow-wrap:anywhere; }
+.ot-dashboard-hero-motto { flex-shrink:0; border-left:2px solid #d2ad45; padding-left:18px; text-align:right; font-family:Georgia,serif; font-size:1.3rem; font-style:italic; line-height:1.2; }
+.ot-dashboard-quick { padding:9px 12px 10px; border:1px solid var(--municipal-border,#d9e2dc); border-radius:10px; background:var(--municipal-surface,#fff); }
+.ot-dashboard-quick-heading { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:5px 10px; margin-bottom:7px; }
+.ot-dashboard-quick h2 { display:flex; align-items:center; gap:7px; font-weight:750; font-size:.91rem; }
+.ot-dashboard-quick-note { font-size:.7rem; font-weight:550; color:var(--municipal-muted,#64736c); }
+.ot-dashboard-quick h2 svg { color:#12613f; }
+.ot-dashboard-tiles { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:7px; }
+.ot-dashboard-tile { display:flex; flex-direction:column; gap:5px; align-items:center; justify-content:center; min-height:76px; padding:7px 4px; border:1px solid var(--municipal-border,#d9e2dc); border-radius:8px; background:var(--municipal-surface,#fff); text-align:center; transition:border-color .15s,background-color .15s; }
+.ot-dashboard-tile:hover { background:var(--municipal-hover,#f0f5f1); border-color:#19754b; }
+.ot-dashboard-tile:focus-visible { outline:3px solid #19754b; outline-offset:2px; }
+.ot-dashboard-tile-icon { display:grid; place-items:center; width:31px; height:31px; border-radius:7px; }
+.ot-dashboard-tile-label { font-weight:680; font-size:.76rem; line-height:1.2; overflow-wrap:anywhere; }
+.ot-dashboard-jumps { gap:5px; }
+.ot-reference-dashboard .ot-dashboard-jumps a { min-height:32px; padding:4px 10px; font-size:.77rem; }
+.ot-dashboard-work { display:grid; grid-template-columns:minmax(0,1fr); gap:9px; align-items:start; }
+.ot-dashboard-work > * { min-width:0; }
+.ot-dashboard-lead, .ot-dashboard-activity, .ot-dashboard-metrics { min-width:0; }
+.ot-dashboard-work .municipal-panel { background:var(--municipal-surface,#fff); }
+.ot-dashboard-work .municipal-panel-title { font-size:1rem; line-height:1.35; display:flex; align-items:center; gap:8px; }
+.ot-dashboard-work-row { display:flex; justify-content:space-between; align-items:center; gap:12px; min-height:61px; padding:9px 13px; text-decoration:none; }
+.ot-dashboard-work-row:hover { background:var(--municipal-hover,#f0f5f1); }
+.ot-dashboard-work-main { display:grid; gap:2px; flex:1; }
+.ot-dashboard-work-ref { font-size:.73rem; line-height:1.3; color:var(--municipal-muted,#64736c); overflow-wrap:anywhere; }
+.ot-dashboard-work-title { font-size:.91rem; font-weight:690; line-height:1.3; overflow-wrap:anywhere; }
+.ot-dashboard-work-meta { font-size:.75rem; line-height:1.35; color:var(--municipal-muted,#64736c); }
+.ot-dashboard-work-side { display:grid; justify-items:end; gap:5px; flex-shrink:0; text-align:right; font-size:.75rem; }
+.ot-dashboard-work-side small { font-size:.71rem; color:var(--municipal-muted,#64736c); }
+.ot-dashboard-activity .municipal-panel > h2 { padding:11px 13px; }
+.ot-dashboard-activity .municipal-panel > div > article, .ot-dashboard-activity .municipal-panel > div > a { padding:9px 13px; }
+.ot-dashboard-activity .municipal-panel > div > a > div > div, .ot-dashboard-activity .municipal-panel > div > article > div:first-child { font-size:.86rem; line-height:1.35; }
+.ot-dashboard-activity .municipal-panel > div > a p, .ot-dashboard-activity .municipal-panel > div > article p { font-size:.8rem; line-height:1.45; margin-top:3px; }
+.ot-dashboard-activity .municipal-panel > div > a div:last-child, .ot-dashboard-activity .municipal-panel > div > article div:last-child { font-size:.75rem; }
+.ot-dashboard-metrics .workspace-metrics { padding:9px; gap:8px; grid-template-columns:repeat(2,minmax(0,1fr)); }
+.ot-dashboard-metrics .workspace-metric { padding:11px; }
+.ot-dashboard-metrics .workspace-metric > div:first-child { font-size:1.6rem; }
+.ot-dashboard-metrics .workspace-metric > div:nth-child(2) { font-size:.83rem; line-height:1.4; margin-top:3px; }
+.ot-dashboard-metrics .workspace-count-track { height:5px; margin-top:9px; }
+.ot-dashboard-metrics .municipal-panel > p { padding:0 11px 10px; font-size:.78rem; line-height:1.4; }
+.ot-dashboard-metrics .municipal-panel header { padding:10px 13px; }
+.ot-dashboard-metrics .municipal-panel header h2 { font-size:1rem; }
+.ot-dashboard-section { min-width:0; }
+.ot-dashboard-secondary-metrics { display:grid; gap:9px; }
+.ot-reference-dashboard :where(#work-overview,#personal-tasks,#department-overview) { scroll-margin-top:108px; }
+.dark .ot-dashboard-quick, .dark .ot-dashboard-tile, .dark .ot-dashboard-work .municipal-panel { background:var(--municipal-surface,#142236); }
+.dark .ot-dashboard-tile { color:var(--municipal-text,#edf6f0); border-color:var(--municipal-border,#42574c); }
+.dark .ot-dashboard-tile:hover { background:var(--municipal-hover,#1b3327); }
+.dark .ot-dashboard-hero { background-color:#0b442d; }
+@media (min-width:768px) { .ot-dashboard-tiles { grid-template-columns:repeat(6,minmax(0,1fr)); } .ot-dashboard-secondary-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (min-width:1200px) { .ot-dashboard-tiles { grid-template-columns:repeat(8,minmax(0,1fr)); } .ot-dashboard-work { grid-template-columns:minmax(0,1.12fr) minmax(0,.95fr) minmax(0,.88fr); } }
+@media (max-width:767px) { .ot-reference-dashboard { gap:12px; } .ot-dashboard-hero { padding:16px; min-height:126px; background-size:cover, 115% auto; background-position:center, right center; } .ot-dashboard-hero-copy { max-width:100%; } .ot-dashboard-hero-motto { display:none; } .ot-dashboard-tiles { grid-template-columns:repeat(2,minmax(0,1fr)); } .ot-dashboard-tile { min-height:80px; } .ot-dashboard-jumps { overflow-x:auto; flex-wrap:nowrap; } .ot-dashboard-jumps a { flex-shrink:0; } .ot-dashboard-work-side { max-width:35%; } }
+@media (min-width:480px) and (max-width:767px) { .ot-dashboard-tiles { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+@media (min-width:768px) and (max-width:1199px) { .ot-dashboard-work { grid-template-columns:repeat(2,minmax(0,1fr)); } .ot-dashboard-metrics { grid-column:1/-1; } }
+@media (prefers-reduced-motion:reduce) { .ot-dashboard-tile { transition:none; } }
+
+/* The desktop photographic treatment uses the municipal hall photo already bundled in the product.
+   Its status remains provisional pending LGU artwork acceptance. */
+@media (max-width:479px) {
+  .ot-dashboard-quick-note { display:none; }
+  .ot-dashboard-hero h1 { font-size:1.45rem; }
+  .ot-dashboard-hero-description { font-size:.82rem; }
+  .ot-dashboard-tiles { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .ot-dashboard-tile { min-height:76px; }
+}
+
+/* R4: reference-equivalent compact panels; no fabricated dashboard data. */
+.ot-dashboard-toolbar { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:6px 12px; min-width:0; }
+.ot-dashboard-toolbar .ot-dashboard-jumps { min-width:0; }
+.ot-dashboard-toolbar .ot-dashboard-municipal-context { flex:1 1 auto; min-width:0; }
+.ot-dashboard-toolbar .ot-dashboard-municipal-context aside { justify-content:flex-end; gap:3px 10px; font-size:.75rem; line-height:1.4; }
+.ot-reference-dashboard .ot-dashboard-panel-heading { background:#0b553b; border-color:#0b553b; color:#fff; min-height:38px; padding:9px 12px; }
+.ot-reference-dashboard .ot-dashboard-panel-heading :where(h2,svg),
+.ot-reference-dashboard .ot-dashboard-panel-heading .municipal-panel-title { color:#fff; }
+.ot-reference-dashboard .ot-dashboard-lead .ot-dashboard-panel-heading .municipal-panel-title,
+.ot-reference-dashboard .ot-dashboard-activity .ot-dashboard-panel-heading,
+.ot-reference-dashboard .ot-dashboard-metrics .ot-dashboard-panel-heading h2 { font-size:.88rem; line-height:1.35; font-weight:750; }
+.ot-reference-dashboard .ot-dashboard-metrics .workspace-metrics { padding:8px; gap:7px; }
+.ot-reference-dashboard .ot-dashboard-metrics .workspace-metric { border-radius:6px; padding:9px; }
+.ot-reference-dashboard .ot-dashboard-metrics .workspace-metric > div:first-child { font-size:1.4rem; line-height:1.1; }
+.ot-reference-dashboard .ot-dashboard-metrics .workspace-metric > div:nth-child(2) { font-size:.73rem; line-height:1.3; margin-top:4px; padding-right:8px; }
+.ot-reference-dashboard .ot-dashboard-metrics .workspace-count-track { margin-top:7px; height:4px; }
+.ot-reference-dashboard .ot-dashboard-metrics .municipal-panel > p { padding:2px 10px 10px; font-size:.71rem; line-height:1.35; }
+.ot-reference-dashboard .ot-dashboard-lead .ot-dashboard-recent > div:last-child > div { padding:15px 12px; font-size:.83rem; line-height:1.35; }
+.ot-reference-dashboard .ot-dashboard-activity .municipal-panel > div > p { padding:13px 12px; font-size:.83rem; line-height:1.35; }
+.dark .ot-reference-dashboard .ot-dashboard-panel-heading { background:#124e38; border-color:#386650; color:#fff; }
+.dark .ot-reference-dashboard .ot-dashboard-panel-heading :where(h2,svg),
+.dark .ot-reference-dashboard .ot-dashboard-panel-heading .municipal-panel-title { color:#fff; }
+@media (max-width:767px) {
+  .ot-dashboard-toolbar { display:grid; gap:7px; }
+  .ot-dashboard-toolbar .ot-dashboard-municipal-context aside { justify-content:space-between; }
+  .ot-reference-dashboard .ot-dashboard-panel-heading { min-height:42px; padding:10px 12px; }
+}
+@media (prefers-contrast:more) {
+  .ot-reference-dashboard .ot-dashboard-panel-heading { background:#06412c; }
+}
+
+/* R5 — a bounded, keyboard-accessible native scroll viewport inside operational cards.
+   Headers and explanatory footers remain visible outside the viewport. */
+.ot-reference-dashboard .ot-dashboard-work .municipal-panel {
+  border:1px solid var(--municipal-border,#d9e2dc);
+  border-radius:9px;
+  box-shadow:0 2px 8px rgba(16,57,38,.045);
+}
+.ot-reference-dashboard .ot-dashboard-scroll-region {
+  min-width:0;
+  min-height:0;
+}
+.ot-reference-dashboard .ot-dashboard-panel-count {
+  display:inline-flex;
+  margin-left:auto;
+  align-items:center;
+  justify-content:center;
+  min-width:25px;
+  height:22px;
+  padding:0 7px;
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:999px;
+  background:rgba(255,255,255,.16);
+  color:#fff;
+  font-size:.72rem;
+  font-weight:700;
+  font-variant-numeric:tabular-nums;
+  line-height:1;
+}
+.ot-reference-dashboard .ot-dashboard-scroll-region:focus-visible {
+  outline:3px solid var(--municipal-brand,#19754b);
+  outline-offset:-3px;
+}
+@media (min-width:768px) {
+  .ot-reference-dashboard :is(.ot-dashboard-lead,.ot-dashboard-activity,.ot-dashboard-metrics) > .municipal-panel {
+    display:flex;
+    flex-direction:column;
+    min-height:238px;
+    height:100%;
+  }
+  .ot-reference-dashboard :is(.ot-dashboard-lead,.ot-dashboard-activity,.ot-dashboard-metrics) .ot-dashboard-scroll-region,
+  .ot-reference-dashboard .ot-dashboard-correspondence .ot-dashboard-scroll-region {
+    max-height:clamp(210px,31vh,340px);
+    overflow-x:hidden;
+    overflow-y:auto;
+    scrollbar-width:thin;
+    scrollbar-color:#9fb9aa transparent;
+    scrollbar-gutter:stable;
+  }
+  .ot-reference-dashboard .ot-dashboard-scroll-region::-webkit-scrollbar { width:7px; }
+  .ot-reference-dashboard .ot-dashboard-scroll-region::-webkit-scrollbar-track { background:transparent; }
+  .ot-reference-dashboard .ot-dashboard-scroll-region::-webkit-scrollbar-thumb {
+    background-color:#9fb9aa;
+    border-radius:12px;
+    border:1px solid transparent;
+    background-clip:padding-box;
+  }
+  .ot-reference-dashboard .ot-dashboard-scroll-region::-webkit-scrollbar-thumb:hover { background-color:#5a9075; }
+  .ot-reference-dashboard .ot-dashboard-lead .ot-dashboard-scroll-region,
+  .ot-reference-dashboard .ot-dashboard-activity .ot-dashboard-scroll-region { flex:1 1 auto; }
+  .ot-reference-dashboard .ot-dashboard-empty-state { min-height:136px; display:grid; place-items:center; }
+}
+@media (max-width:767px) {
+  /* A mobile user scrolls the page, not multiple competing nested panels. */
+  .ot-reference-dashboard .ot-dashboard-scroll-region {
+    max-height:none;
+    overflow:visible;
+    scrollbar-gutter:auto;
+  }
+}
+.dark .ot-reference-dashboard .ot-dashboard-work .municipal-panel { box-shadow:none; }
+.dark .ot-reference-dashboard .ot-dashboard-scroll-region { scrollbar-color:#5b8170 transparent; }
+@media (forced-colors:active) {
+  .ot-reference-dashboard .ot-dashboard-panel-count { border:1px solid CanvasText; color:CanvasText; background:Canvas; }
+  .ot-reference-dashboard .ot-dashboard-scroll-region:focus-visible { outline-color:Highlight; }
+}
+
+.ot-reference-dashboard .ot-dashboard-lead .ot-dashboard-panel-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+.ot-reference-dashboard .ot-dashboard-lead .ot-dashboard-panel-heading > h2 { flex:1 1 auto; min-width:0; }
+
+/* R6: available Dashboard width, not the window width, determines density.
+   The shell sidebar and user zoom can make a 1280px viewport much narrower. */
+.ot-reference-dashboard {
+  container: ot-dashboard / inline-size;
+}
+.ot-reference-dashboard .ot-dashboard-tiles {
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+.ot-reference-dashboard .ot-dashboard-tile {
+  min-height:82px;
+  padding:9px 7px;
+}
+.ot-reference-dashboard .ot-dashboard-tile-icon {
+  color:var(--municipal-brand,#12613f);
+  background:var(--municipal-brand-soft,#e9f2ec);
+}
+.dark .ot-reference-dashboard .ot-dashboard-tile-icon {
+  color:var(--municipal-brand-active,#8bd7a8);
+  background:var(--municipal-brand-soft,#173326);
+}
+.ot-reference-dashboard .ot-dashboard-work {
+  grid-template-columns:minmax(0,1fr);
+  align-items:stretch;
+}
+.ot-reference-dashboard .ot-dashboard-work .ot-dashboard-panel-heading {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-height:44px;
+  padding:10px 13px;
+}
+.ot-reference-dashboard .ot-dashboard-work .ot-dashboard-panel-heading svg {
+  color:currentColor;
+}
+.ot-reference-dashboard .ot-dashboard-work .ot-dashboard-panel-heading h2 {
+  min-width:0;
+}
+.ot-reference-dashboard .ot-dashboard-work :is(.ot-dashboard-lead,.ot-dashboard-activity,.ot-dashboard-metrics) {
+  min-width:0;
+}
+.ot-reference-dashboard .ot-dashboard-scroll-region :is(a,button):focus-visible {
+  position:relative;
+  z-index:1;
+  outline:2px solid var(--municipal-focus,#19754b);
+  outline-offset:-2px;
+}
+.ot-reference-dashboard .ot-dashboard-metrics .workspace-metric > div:nth-child(2) {
+  font-size:.8rem;
+  line-height:1.4;
+}
+.ot-reference-dashboard .ot-dashboard-scroll-region {
+  scrollbar-gutter:auto;
+}
+@container ot-dashboard (min-width:520px) {
+  .ot-reference-dashboard .ot-dashboard-tiles { grid-template-columns:repeat(4,minmax(0,1fr)); }
+}
+@container ot-dashboard (min-width:730px) {
+  .ot-reference-dashboard .ot-dashboard-tiles { grid-template-columns:repeat(6,minmax(0,1fr)); }
+  .ot-reference-dashboard .ot-dashboard-work { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .ot-reference-dashboard .ot-dashboard-metrics { grid-column:1/-1; }
+  .ot-reference-dashboard .ot-dashboard-metrics .workspace-metrics { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+@container ot-dashboard (min-width:1080px) {
+  .ot-reference-dashboard .ot-dashboard-tiles { grid-template-columns:repeat(8,minmax(0,1fr)); }
+  .ot-reference-dashboard .ot-dashboard-work { grid-template-columns:minmax(0,1.12fr) minmax(0,.95fr) minmax(0,.88fr); }
+  .ot-reference-dashboard .ot-dashboard-metrics { grid-column:auto; }
+  .ot-reference-dashboard .ot-dashboard-metrics .workspace-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@container ot-dashboard (max-width:850px) {
+  .ot-reference-dashboard .ot-dashboard-hero-copy { max-width:100%; }
+  .ot-reference-dashboard .ot-dashboard-hero-motto { display:none; }
+  .ot-reference-dashboard .ot-dashboard-hero { background-size:cover,auto 150%; background-position:center,right center; }
+}
+/* Do not impose a nested scrolling region where the actual work canvas is narrow. */
+@container ot-dashboard (max-width:729px) {
+  .ot-reference-dashboard .ot-dashboard-scroll-region {
+    max-height:none;
+    overflow-y:visible;
+    scrollbar-gutter:auto;
+  }
+}
+@media (max-width:767px) {
+  .ot-reference-dashboard .ot-dashboard-scroll-region { max-height:none; overflow:visible; }
+}
+@media (forced-colors:active) {
+  .ot-reference-dashboard .ot-dashboard-tile-icon { color:ButtonText; background:ButtonFace; outline:1px solid CanvasText; }
+  .ot-reference-dashboard .ot-dashboard-scroll-region :is(a,button):focus-visible { outline-color:Highlight; }
+}
