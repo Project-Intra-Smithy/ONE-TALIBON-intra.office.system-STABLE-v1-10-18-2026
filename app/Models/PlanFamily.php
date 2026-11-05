@@ -15,7 +15,7 @@ final class PlanFamily extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (self $family): void {
+        self::creating(function (self $family): void {
             $family->public_id ??= (string) Str::uuid();
         });
     }

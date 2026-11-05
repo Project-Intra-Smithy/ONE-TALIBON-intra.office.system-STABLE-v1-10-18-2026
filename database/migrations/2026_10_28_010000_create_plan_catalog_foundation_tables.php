@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Schema;
  * Synthetic-only metadata schema, not an approved municipal records migration.
  * No Document binding, grant, approval state, PDF path or public route.
  */
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('plan_families', function (Blueprint $table): void {

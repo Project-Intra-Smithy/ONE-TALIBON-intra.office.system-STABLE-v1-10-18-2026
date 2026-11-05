@@ -32,9 +32,7 @@ final class DocumentAttachmentService
         'restricted',
     ];
 
-    public function __construct(private readonly AuditLogger $audit)
-    {
-    }
+    public function __construct(private readonly AuditLogger $audit) {}
 
     /** @param array<int, UploadedFile> $files */
     public function assertValidUploads(array $files): void
@@ -66,8 +64,8 @@ final class DocumentAttachmentService
     }
 
     /**
-     * @param array<int, UploadedFile> $files
-     * @param array<int, array{model:Model,relationship:string}> $links
+     * @param  array<int, UploadedFile>  $files
+     * @param  array<int, array{model:Model,relationship:string}>  $links
      * @return array<int, Document>
      */
     public function attach(
