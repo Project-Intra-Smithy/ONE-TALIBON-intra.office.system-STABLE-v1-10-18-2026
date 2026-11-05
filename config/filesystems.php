@@ -16,6 +16,13 @@ return [
             'serve' => false,
             'throw' => true,
         ],
+        'plan_custody' => [
+            'driver' => 'local',
+            'root' => storage_path('app/plan-custody-quarantine'),
+            'visibility' => 'private',
+            'serve' => false,
+            'throw' => true,
+        ],
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

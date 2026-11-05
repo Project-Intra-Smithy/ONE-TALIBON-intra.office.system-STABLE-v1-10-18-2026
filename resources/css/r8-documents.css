@@ -1,0 +1,64 @@
+/* R8-A2 document register: page-root scoped, preserves server-driven records/files modes. */
+.r8-documents {min-width:0;align-items:stretch}
+.r8-documents .dc-rail {background:var(--municipal-surface-subtle)}
+.r8-documents .dc-rail-heading {font-size:13px;letter-spacing:.02em;padding:8px 10px 12px}
+.r8-documents .dc-category {min-height:36px;padding:8px 10px;border-radius:7px;gap:9px}
+.r8-documents .dc-collections .dc-category[aria-pressed="true"] {background:var(--municipal-brand-soft);color:var(--municipal-brand);font-weight:750;box-shadow:inset 3px 0 var(--municipal-brand)}
+.r8-documents .dc-main {padding:16px;min-width:0}
+.r8-documents .dc-register-group {border-radius:9px;overflow:hidden}
+.r8-documents .dc-register-caption {padding:12px 14px;align-items:center}
+.r8-documents .dc-register-caption h2 {font-size:14px;font-weight:750}
+.r8-documents .dc-register-head {font-size:10px;letter-spacing:.03em;text-transform:uppercase}
+.r8-documents .dc-record-grid {min-height:60px}
+.r8-documents .dc-record-title small,.r8-documents .dc-record-type small {overflow-wrap:anywhere}
+.r8-documents .dc-register-body {max-height:min(62vh,650px);overflow-y:auto}
+.r8-documents .dc-record:focus-within {outline:2px solid var(--municipal-focus);outline-offset:-2px}
+.r8-documents .r8-documents-details {border-left:1px solid var(--municipal-border);background:var(--municipal-surface);min-width:0}
+.r8-documents .r8-documents-details .dc-metadata {border-top:0}
+.r8-documents .r8-documents-details .dc-metadata-header {padding:12px 16px;min-height:48px;border-bottom:1px solid var(--municipal-border)}
+.r8-documents .r8-documents-details .dc-metadata-header h2 {font-size:13px}
+.r8-documents .r8-documents-details .dc-metadata-content {display:flex;flex-direction:column;padding:16px;gap:22px}
+.r8-documents .r8-documents-details .dc-document-identity {flex-direction:column;gap:12px}
+.r8-documents .r8-documents-details .dc-metadata-grid {display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.r8-documents .r8-documents-details .dc-metadata-grid div {padding-bottom:10px;border-bottom:1px solid var(--municipal-border)}
+.r8-documents .r8-documents-details .dc-metadata-grid dt {text-transform:uppercase;letter-spacing:.025em}
+.r8-documents .r8-documents-details .dc-metadata-grid dd {margin-top:4px;font-size:12px}
+.r8-documents .r8-documents-details .dc-metadata-empty {padding:20px 16px;line-height:1.6}
+@media (min-width:1280px) {
+ .r8-documents.dc-workspace {grid-template-columns:minmax(175px,205px) minmax(0,1fr) minmax(225px,265px)}
+ .r8-documents .dc-register-head,.r8-documents .dc-record-grid {grid-template-columns:minmax(0,2fr) 76px minmax(0,1fr) 90px 48px;gap:6px}
+ .r8-documents .dc-toolbar-row {grid-template-columns:minmax(0,1fr) minmax(100px,.6fr) minmax(100px,.6fr) auto auto}
+ .r8-documents .dc-toolbar-row>.municipal-search-field {grid-column:auto}
+}
+@media (max-width:1279px) {
+ .r8-documents .r8-documents-details {display:none}
+ .r8-documents .dc-inline-metadata {display:block;padding:0 12px 12px}
+ .r8-documents .dc-inline-metadata .dc-metadata-content {display:block}
+ .r8-documents .dc-inline-metadata .dc-metadata-grid {grid-template-columns:repeat(2,minmax(0,1fr))}
+ .r8-documents .dc-record-actions .dc-mobile-preview {display:inline-flex;align-items:center;min-height:44px}
+ .r8-documents .dc-register-body {max-height:none;overflow:visible}
+}
+@media (max-width:1023px) {
+ .r8-documents .dc-main {padding:12px}
+ .r8-documents .dc-rail {padding:12px}
+ .r8-documents .dc-mobile-collection,.r8-documents .dc-mobile-categories {display:block}
+ .r8-documents .dc-record-grid {display:flex;flex-direction:column;align-items:stretch}
+ .r8-documents .dc-register-head {display:none}
+ .r8-documents .dc-record-actions {justify-content:flex-start}
+}
+@media (max-width:639px) {
+ .r8-documents .dc-main {padding:8px}
+ .r8-documents .dc-toolbar-row {grid-template-columns:repeat(2,minmax(0,1fr))}
+ .r8-documents .dc-toolbar-row>.municipal-search-field {grid-column:1/-1}
+ .r8-documents .dc-toolbar-row .municipal-action {min-height:44px}
+ .r8-documents .dc-inline-metadata .dc-metadata-grid {grid-template-columns:minmax(0,1fr)}
+ .r8-documents-modes {max-width:100%;width:100%;flex-wrap:wrap}
+ .r8-documents-modes a {flex:1 1 140px;min-height:44px;justify-content:center}
+}
+@media (forced-colors:active) {
+ .r8-documents .dc-collections .dc-category[aria-pressed="true"] {outline:2px solid Highlight;outline-offset:-2px}
+ .r8-documents .dc-record.dc-record-selected {outline:2px solid Highlight;outline-offset:-2px}
+}
+@media (prefers-reduced-motion:reduce) {
+ .r8-documents * {scroll-behavior:auto;transition:none}
+}

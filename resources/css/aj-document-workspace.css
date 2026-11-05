@@ -1,0 +1,80 @@
+/* #17: records/files consumers only. All queries, selection and downloads retain
+ * their existing contracts. No shared navigation or task styling. */
+.aj-documents.aj-documents { container: aj-documents / inline-size; font-size: 1rem; line-height: 1.6; }
+.aj-documents.aj-documents .r8-documents.dc-workspace { grid-template-columns: minmax(0, 1fr); border-radius: 14px; }
+.aj-documents.aj-documents .dc-rail { padding: 20px; border-right: 0; border-bottom: 1px solid var(--municipal-border); }
+.aj-documents.aj-documents .dc-main { padding: 24px; }
+.aj-documents.aj-documents .dc-toolbar-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.aj-documents.aj-documents .dc-toolbar-row > .municipal-search-field { grid-column: 1 / -1; }
+.aj-documents.aj-documents .dc-context { padding-block: 20px; gap: 16px; }
+.aj-documents.aj-documents .dc-register-caption { padding: 24px; flex-wrap: wrap; }
+.aj-documents.aj-documents .dc-register-caption h2 { font-size: 1.25rem; }
+.aj-documents.aj-documents .dc-register-body { max-height: none; overflow: visible; }
+.aj-documents.aj-documents .dc-record-grid { display: flex; flex-direction: column; align-items: stretch; padding: 24px; gap: 12px; }
+.aj-documents.aj-documents .dc-register-head { display: none; }
+.aj-documents.aj-documents .dc-record-title small,
+.aj-documents.aj-documents .dc-record-type small { font-size: .875rem; line-height: 1.6; margin-top: 6px; }
+.aj-documents.aj-documents :is(.dc-record-date, .dc-record-type, .dc-open, .dc-filter-help, .dc-context, .dc-register-caption, .dc-filters summary, .dc-mobile-preview, .dc-rail-heading, .dc-metadata-empty) { font-size: .875rem; line-height: 1.6; }
+#portal-content .aj-documents.aj-documents .dc-record-title button { font-size: 1rem; line-height: 1.6; gap: 12px; }
+#portal-content .aj-documents.aj-documents :is(button, input, select, .dc-open, .dc-category, summary, nav a) { min-height: 44px; }
+#portal-content .aj-documents.aj-documents .dc-category { font-size: .9375rem; line-height: 1.5; padding: 12px; gap: 12px; }
+.aj-documents.aj-documents .dc-record-title svg { width: 24px; height: 24px; }
+.aj-documents.aj-documents .dc-record-actions { justify-content: flex-start; gap: 24px; }
+.aj-documents.aj-documents .dc-mobile-label { display: inline; }
+.aj-documents.aj-documents .dc-record-actions .dc-mobile-preview { display: inline-flex; align-items: center; }
+.aj-documents.aj-documents .r8-documents-details { display: none; }
+.aj-documents.aj-documents .dc-inline-metadata { display: block; padding: 0 24px 24px; }
+.aj-documents.aj-documents .dc-inline-metadata .dc-metadata-content { display: grid; grid-template-columns: minmax(0, 1fr); padding: 24px 0; gap: 24px; }
+.aj-documents.aj-documents .dc-inline-metadata .dc-metadata-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+.aj-documents.aj-documents .dc-metadata-grid dt { font-size: .875rem; line-height: 1.6; }
+.aj-documents.aj-documents .dc-metadata-grid dd { margin-top: 6px; font-size: 1rem; line-height: 1.6; overflow-wrap: anywhere; }
+.aj-documents.aj-documents .dc-document-identity h3 { font-size: 1.125rem; line-height: 1.5; }
+.aj-documents.aj-documents .dc-metadata-header { padding-block: 16px; gap: 16px; }
+.aj-documents.aj-documents .dc-metadata-header h2 { font-size: 1rem; }
+.aj-documents.aj-documents :is(.text-xs, .text-\[9px\], .text-\[10px\], .text-\[11px\], .text-\[12px\]) { font-size: .875rem; line-height: 1.6; }
+.aj-documents.aj-documents :is(input, select) { font-size: 1rem; max-width: 100%; }
+.aj-documents.aj-documents :is(.dc-record-status span, .dc-document-identity span) { font-size: .875rem; }
+.aj-documents.aj-documents .truncate { white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; }
+.aj-documents.aj-documents .dc-filters { margin-top: 16px; }
+.aj-documents.aj-documents .dc-filters summary { display: flex; align-items: center; }
+.aj-documents.aj-documents .r8-documents-modes a { font-size: 1rem; padding: 12px 20px; }
+.aj-documents.aj-documents :is(a, button, input, select, summary):focus-visible { outline: 3px solid var(--municipal-focus); outline-offset: -3px; }
+.aj-documents.aj-documents :is(a, button) { transition: background-color 180ms ease; }
+/* Files: widen the listing and place full metadata beneath it rather than
+ * squeezing two panels and a multi-column toolbar into the remaining width. */
+.aj-documents.aj-documents .r8-document-archive { display: grid; gap: 24px; }
+.aj-documents.aj-documents .r8-document-archive > .grid { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+.aj-documents.aj-documents .r8-document-archive > section,
+.aj-documents.aj-documents .r8-document-archive > form { padding: 24px; border-radius: 14px; }
+.aj-documents.aj-documents form[aria-label="Archive filters"] > .grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.aj-documents.aj-documents section[aria-label="Document archive"] > header { padding: 24px; }
+.aj-documents.aj-documents section[aria-label="Document archive"] > header h2 { font-size: 1.25rem; }
+.aj-documents.aj-documents section[aria-label="Document archive"] > .hidden { display: none; }
+.aj-documents.aj-documents section[aria-label="Document archive"] article { grid-template-columns: minmax(0, 1fr); padding: 24px; gap: 16px; }
+.aj-documents.aj-documents section[aria-label="Document archive"] article > button { font-size: 1rem; }
+.aj-documents.aj-documents .r8-document-archive aside { padding: 24px; }
+.aj-documents.aj-documents .r8-document-archive aside dl { gap: 24px; grid-template-columns: minmax(0, 1fr); }
+.aj-documents.aj-documents .r8-document-archive aside dd { font-size: 1rem; overflow-wrap: anywhere; }
+.dark .aj-documents.aj-documents section[aria-labelledby="archive-scope-heading"] button { background: #17382c; color: #d1fae5; }
+.dark .aj-documents.aj-documents section[aria-labelledby="archive-scope-heading"] button[aria-pressed="true"] { background: #245640; color: #fff; }
+@container aj-documents (min-width: 900px) {
+    .aj-documents.aj-documents .r8-documents.dc-workspace { grid-template-columns: 220px minmax(0, 1fr); }
+    .aj-documents.aj-documents .dc-rail { border-right: 1px solid var(--municipal-border); border-bottom: 0; }
+    .aj-documents.aj-documents .dc-register-head, .aj-documents.aj-documents .dc-record-grid { display: grid; grid-template-columns: minmax(0, 2fr) 100px minmax(0, 1fr) 100px; gap: 16px; }
+    .aj-documents.aj-documents .dc-register-head { padding: 16px 24px; font-size: .875rem; }
+    .aj-documents.aj-documents .dc-register-head > :last-child { display: none; }
+    .aj-documents.aj-documents .dc-record-actions { grid-column: 1 / -1; }
+    .aj-documents.aj-documents .dc-mobile-label { display: none; }
+    .aj-documents.aj-documents .dc-inline-metadata .dc-metadata-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .aj-documents.aj-documents form[aria-label="Archive filters"] > .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .aj-documents.aj-documents form[aria-label="Archive filters"] > .grid > label:first-child { grid-column: 1 / -1; }
+    .aj-documents.aj-documents section[aria-label="Document archive"] > .hidden,
+    .aj-documents.aj-documents section[aria-label="Document archive"] article { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr) 80px; gap: 24px; }
+    .aj-documents.aj-documents .r8-document-archive aside dl { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+    .aj-documents.aj-documents .dc-main { padding: 16px; }
+    .aj-documents.aj-documents .dc-record-grid { padding: 20px; }
+    .aj-documents.aj-documents .dc-toolbar-row { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { .aj-documents.aj-documents :is(a, button) { transition: none; transform: none; } }

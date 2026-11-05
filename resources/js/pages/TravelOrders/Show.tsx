@@ -1,3 +1,4 @@
+import '../../../css/portal-visual-redesign.css';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { ArrowLeft, Building2, CalendarDays, MapPin, Users } from 'lucide-react';
 import { type FormEvent } from 'react';
@@ -38,7 +39,7 @@ export default function Show({ travelOrder, evidence, capabilities }: Props) {
 
     return (
         <AppLayout title={`Travel Order ${travelOrder.referenceNumber}`}>
-            <div className="mx-auto max-w-7xl space-y-3">
+            <div className="civic-page mx-auto max-w-7xl space-y-3">
                 <div className="flex items-center justify-between gap-3">
                     <Link href={returnTarget} className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700 dark:text-blue-300"><ArrowLeft size={14} /> Back to travel orders</Link>
                     <div className="text-[11px] text-slate-500 dark:text-slate-400">Review workspace</div>

@@ -1,3 +1,6 @@
+import '../../../css/aj-page-workspace.css';
+import '../../../css/aj-registry-workspace.css';
+import '../../../css/portal-visual-redesign.css';
 import { Link, router } from '@inertiajs/react';
 import { ArrowRight, Building2, CalendarDays, FileSearch, Search, UserRound, X } from 'lucide-react';
 import { type FormEvent, useEffect, useState } from 'react';
@@ -151,7 +154,7 @@ export default function Index({ records, filters, filterOptions }: Props) {
 
     return (
         <AppLayout title="Records">
-            <div className="mx-auto max-w-7xl space-y-4 sm:space-y-6">
+            <div className="civic-page aj-page-workspace aj-registry-workspace mx-auto max-w-7xl space-y-4 sm:space-y-6">
                 <PageHeader eyebrow="Authorized records registry" title="Records" icon={FileSearch} description="Search authorized correspondence, inter-office transactions, and approved Travel Orders." />
 
                 <form onSubmit={submit}>
@@ -239,7 +242,7 @@ export default function Index({ records, filters, filterOptions }: Props) {
 
                     <div className="divide-y divide-slate-100 dark:divide-slate-700">
                         {records.data.map((record) => (
-                            <article key={`${record.recordType}:${record.detailUrl}`} className="px-4 py-4 sm:px-5">
+                            <article key={`${record.recordType}:${record.detailUrl}`} className="aj-registry-row px-4 py-4 sm:px-5">
                                 <div className="grid gap-4 lg:grid-cols-[minmax(0,1.25fr)_minmax(420px,1fr)_auto] lg:items-start">
                                     <div className="min-w-0">
                                         <div className="flex flex-wrap items-center gap-1.5">

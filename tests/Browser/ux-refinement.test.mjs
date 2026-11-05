@@ -93,6 +93,7 @@ for (const width of [320, 390, 768, 1024, 1440]) {
                 const bottom = page.getByRole('navigation', { name: 'Mobile workspace navigation' });
                 assert.equal(await bottom.isVisible(), width < 768);
                 if (screen === 'dashboard') {
+                    await page.getByRole('button', { name: 'Manage my tasks' }).click();
                     const filters = page.getByRole('group', { name: 'Task state filter' });
                     for (const label of ['Open', 'In Progress', 'Completed']) {
                         const tab = filters.getByRole('button', { name: new RegExp(label, 'i') });
@@ -163,6 +164,7 @@ test('personal Task selection, keyboard back action and denied reads', async () 
             methods.push(route.request().method());
             return route.fulfill({ status: denied ? 403 : 200, contentType: 'application/json', body: JSON.stringify(denied ? { message: 'Forbidden' } : route.request().url().includes('/tasks/7') ? { data: task } : { data: [task], meta: { page: 1, per_page: 10, last_page: 1, total: 1 } }) });
         });
+        await page.getByRole('button', { name: 'Manage my tasks' }).click();
         await page.getByRole('button', { name: 'Refresh', exact: true }).click();
         const row = page.getByRole('button', { name: /Synthetic Task/ }); await row.waitFor();
         await row.focus(); await page.keyboard.press('Enter');
@@ -211,11 +213,13 @@ test('server-confirmed Task mutations refresh the read workspace without optimis
             return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ data, meta: { page: 1, per_page: 20, last_page: 1, total: data.length } }) });
         });
 
+        await page.getByRole('button', { name: 'Manage my tasks' }).click();
         const actions = page.getByRole('region', { name: 'Personal Task actions' });
         await page.getByLabel('New personal Task title').fill('Synchronized Task');
         await page.getByRole('button', { name: 'Create Task' }).click();
         await actions.getByText(/Server confirmed: Synchronized Task — open/).waitFor();
-        await page.getByRole('list', { name: 'Open personal Tasks' }).getByText('Synchronized Task').waitFor();
+        await page.getByRole('list', { name: 'Open personal Tasks' })
+            .getByRole('button', { name: /Synchronized Task/ }).waitFor();
 
         await page.getByRole('button', { name: /Synchronized Task/ }).first().click();
         await page.getByRole('region', { name: 'Personal Task detail' }).waitFor();
@@ -232,9 +236,11 @@ test('server-confirmed Task mutations refresh the read workspace without optimis
         await page.getByRole('button', { name: 'Create Task' }).click();
         await actions.getByText(/Server confirmed: Rejected Task — open/).waitFor();
         rejectNextStart = true;
-        await page.getByRole('list', { name: 'Open personal Tasks' }).getByText('Rejected Task').waitFor();
+        await page.getByRole('list', { name: 'Open personal Tasks' })
+            .getByRole('button', { name: /Rejected Task/ }).waitFor();
         await actions.getByRole('button', { name: 'Start' }).click();
         await actions.getByRole('alert').filter({ hasText: 'rejected (422)' }).waitFor();
-        await page.getByRole('list', { name: 'Open personal Tasks' }).getByText('Rejected Task').waitFor();
+        await page.getByRole('list', { name: 'Open personal Tasks' })
+            .getByRole('button', { name: /Rejected Task/ }).waitFor();
     } finally { await page.close(); }
 });

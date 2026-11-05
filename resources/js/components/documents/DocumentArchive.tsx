@@ -163,7 +163,7 @@ export default function DocumentArchive({ archive }: { archive: ArchiveWorkspace
     const selected = archive.selected;
 
     return (
-        <div className="space-y-3">
+        <div className="r8-document-archive space-y-3">
             <section aria-labelledby="archive-scope-heading">
                 <div className="mb-1.5 flex items-center justify-between gap-3">
                     <h2 id="archive-scope-heading" className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Archive scope</h2>
@@ -195,7 +195,7 @@ export default function DocumentArchive({ archive }: { archive: ArchiveWorkspace
             </section>
 
             <form onSubmit={submit} className="municipal-panel p-2.5" aria-label="Archive filters">
-                <div className="grid gap-2 lg:grid-cols-[minmax(260px,2fr)_repeat(4,minmax(120px,1fr))_auto] lg:items-end">
+                <div className="grid gap-2 xl:grid-cols-[minmax(260px,2fr)_repeat(4,minmax(120px,1fr))_auto] xl:items-end">
                     <label className="block min-w-0">
                         <span className="mb-1 block text-[9px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Search files</span>
                         <div className="relative">

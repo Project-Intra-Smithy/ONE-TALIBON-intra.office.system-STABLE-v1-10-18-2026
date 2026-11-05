@@ -5,9 +5,9 @@
 .portal-sidebar { background: #fff; color: #263b31; border-right: 1px solid #e0e6e3; }
 .portal-sidebar .municipal-brand, .portal-sidebar .municipal-brand span { color: #183e30; }
 .portal-sidebar :where(.text-blue-100, .text-blue-200, .text-blue-300) { color: #526459; }
-.portal-sidebar [aria-label="Appearance"] { background: #f4f6f5; border-color: #e0e6e3; }
-.portal-sidebar [aria-label="Appearance"] button { color: #33483c; min-height: 44px; }
-.portal-sidebar [aria-label="Appearance"] button[aria-pressed="true"] { background: #e3efe7; color: #145a43; }
+.portal-sidebar [aria-label="Appearance preference"] { background: #f4f6f5; border-color: #e0e6e3; }
+.portal-sidebar [aria-label="Appearance preference"] button { color: #33483c; min-height: 44px; }
+.portal-sidebar [aria-label="Appearance preference"] button[aria-pressed="true"] { background: #e3efe7; color: #145a43; }
 .portal-sidebar :where(a, button):focus-visible { outline: 3px solid #145a43; outline-offset: 2px; }
 .portal-sidebar a[aria-current="page"] { background: #edf5ef; color: #145a43; }
 .portal-sidebar a:hover { background: #f0f4f1; color: #145a43; }
@@ -124,9 +124,9 @@
 .dark .portal-sidebar :where(.text-slate-600, .text-slate-700, .text-slate-800) { color: var(--municipal-muted); }
 .dark .portal-sidebar .municipal-brand, .dark .portal-sidebar .municipal-brand span { color: var(--municipal-text); }
 .dark .portal-sidebar a[aria-current="page"], .dark .portal-sidebar a:hover { background: #17372c; color: #a5dfc0; }
-.dark .portal-sidebar [aria-label="Appearance"] { background: var(--municipal-canvas); border-color: var(--municipal-border); }
-.dark .portal-sidebar [aria-label="Appearance"] button { color: #cbd5e1; }
-.dark .portal-sidebar [aria-label="Appearance"] button[aria-pressed="true"] { background: #17372c; color: #a5dfc0; }
+.dark .portal-sidebar [aria-label="Appearance preference"] { background: var(--municipal-canvas); border-color: var(--municipal-border); }
+.dark .portal-sidebar [aria-label="Appearance preference"] button { color: #cbd5e1; }
+.dark .portal-sidebar [aria-label="Appearance preference"] button[aria-pressed="true"] { background: #17372c; color: #a5dfc0; }
 .dark .portal-sidebar :where(a, button):focus-visible { outline-color: #a5dfc0; }
 .dark .portal-sidebar nav section > div:first-child { color: var(--municipal-muted); }
-.dark .portal-sidebar [aria-label="Appearance"] > span { color: var(--municipal-muted); }
+.dark .portal-sidebar [aria-label="Appearance preference"] > span { color: var(--municipal-muted); }

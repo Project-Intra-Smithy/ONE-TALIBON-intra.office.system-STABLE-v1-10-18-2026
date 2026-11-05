@@ -1,3 +1,6 @@
+import '../../../css/ot-r6-modules.css';
+import '../../../css/r8-ppas.css';
+import '../../../css/portal-visual-redesign.css';
 import PortalWorkspaceNav from '../../components/portal/PortalWorkspaceNav';
 import { ClipboardList } from 'lucide-react';
 import { useMemo, useState } from 'react';
@@ -31,7 +34,7 @@ export default function Index() {
     }, [filters]);
 
     return <AppLayout title="Programs, Projects and Activities">
-        <PageFrame className="max-w-[1480px]" density="compact">
+        <PageFrame className="civic-page ot-r6-modules ot-r6-ppas r8-ppas max-w-[1480px]" density="compact">
             <PageHeader
                 eyebrow="Planning and implementation register"
                 title="Programs, Projects and Activities"
@@ -40,9 +43,23 @@ export default function Index() {
                 aside={<div className="text-right text-xs text-[var(--municipal-muted)]"><strong className="text-[var(--municipal-text)]">{records.length}</strong> of {ppaRecords.length} records</div>}
             />
             <PortalWorkspaceNav current="ppas" destinations={['ppas', 'projectMonitoring', 'developmentPlans']} />
+            <p role="note" className="text-xs leading-5 text-[var(--municipal-muted)]">Reference register · Statuses and counts do not represent verified live project progress.</p>
             <PPAFilters filters={filters} onChange={(next) => { setFilters(next); setSelected(null); }} />
-            <PPARegister records={records} selectedId={selected?.id} onSelect={setSelected} />
-            {selected ? <PPADetailPanel record={selected} onClose={() => setSelected(null)} /> : null}
+            <div className={`ot-r6-ppa-layout ${selected ? 'ot-r6-ppa-layout--selected' : ''}`}>
+                <section aria-label="PPA register results" className="ot-r6-ppa-register min-w-0 space-y-2">
+                    <div className="r8-ppas-register-heading flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--municipal-muted)]"><h2 className="font-semibold text-[var(--municipal-text)]">PPA register</h2><span role="status" aria-live="polite">{records.length} matching reference {records.length === 1 ? 'record' : 'records'}</span></div>
+                    <PPARegister records={records} selectedId={selected?.id} onSelect={setSelected} />
+                </section>
+                {selected ? <PPADetailPanel record={selected} onClose={() => {
+                    const id = selected.id;
+                    setSelected(null);
+                    window.requestAnimationFrame(() => {
+                        const trigger = Array.from(document.querySelectorAll<HTMLElement>('[data-ppa-trigger]'))
+                            .find((element) => element.dataset.ppaTrigger === id && element.getClientRects().length > 0);
+                        trigger?.focus();
+                    });
+                }} /> : null}
+            </div>
             <details className="group municipal-panel">
                 <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-xs font-semibold marker:hidden">
                     <span>PPA summary</span>
