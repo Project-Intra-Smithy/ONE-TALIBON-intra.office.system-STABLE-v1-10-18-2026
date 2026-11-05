@@ -1,0 +1,420 @@
+TAP version 13
+# (node:22456) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Document Center 390 light
+ok 1 - Document Center 390 light
+  ---
+  duration_ms: 6770.2651
+  type: 'test'
+  ...
+# Subtest: Document Center 390 dark
+ok 2 - Document Center 390 dark
+  ---
+  duration_ms: 4728.3931
+  type: 'test'
+  ...
+# Subtest: Document Center 768 light
+ok 3 - Document Center 768 light
+  ---
+  duration_ms: 5174.7222
+  type: 'test'
+  ...
+# Subtest: Document Center 768 dark
+ok 4 - Document Center 768 dark
+  ---
+  duration_ms: 4858.8926
+  type: 'test'
+  ...
+# Subtest: Document Center 1024 light
+ok 5 - Document Center 1024 light
+  ---
+  duration_ms: 5342.7212
+  type: 'test'
+  ...
+# Subtest: Document Center 1024 dark
+ok 6 - Document Center 1024 dark
+  ---
+  duration_ms: 5578.3638
+  type: 'test'
+  ...
+# Subtest: Document Center 1280 light
+ok 7 - Document Center 1280 light
+  ---
+  duration_ms: 5738.4527
+  type: 'test'
+  ...
+# Subtest: Document Center 1280 dark
+ok 8 - Document Center 1280 dark
+  ---
+  duration_ms: 5286.9949
+  type: 'test'
+  ...
+# Subtest: Document Center 1440 light
+ok 9 - Document Center 1440 light
+  ---
+  duration_ms: 5218.5149
+  type: 'test'
+  ...
+# Subtest: Document Center 1440 dark
+ok 10 - Document Center 1440 dark
+  ---
+  duration_ms: 6107.5413
+  type: 'test'
+  ...
+# (node:24396) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Work and directories 390 light
+ok 11 - Work and directories 390 light
+  ---
+  duration_ms: 11155.4377
+  type: 'test'
+  ...
+# Subtest: Work and directories 390 dark
+ok 12 - Work and directories 390 dark
+  ---
+  duration_ms: 8529.1116
+  type: 'test'
+  ...
+# Subtest: Work and directories 768 light
+ok 13 - Work and directories 768 light
+  ---
+  duration_ms: 9324.6535
+  type: 'test'
+  ...
+# Subtest: Work and directories 768 dark
+ok 14 - Work and directories 768 dark
+  ---
+  duration_ms: 9487.29
+  type: 'test'
+  ...
+# Subtest: Work and directories 1024 light
+ok 15 - Work and directories 1024 light
+  ---
+  duration_ms: 10249.7918
+  type: 'test'
+  ...
+# Subtest: Work and directories 1024 dark
+ok 16 - Work and directories 1024 dark
+  ---
+  duration_ms: 11576.0149
+  type: 'test'
+  ...
+# Subtest: Work and directories 1280 light
+ok 17 - Work and directories 1280 light
+  ---
+  duration_ms: 12404.8624
+  type: 'test'
+  ...
+# Subtest: Work and directories 1280 dark
+ok 18 - Work and directories 1280 dark
+  ---
+  duration_ms: 9527.1651
+  type: 'test'
+  ...
+# Subtest: Work and directories 1440 light
+ok 19 - Work and directories 1440 light
+  ---
+  duration_ms: 8957.5717
+  type: 'test'
+  ...
+# Subtest: Work and directories 1440 dark
+ok 20 - Work and directories 1440 dark
+  ---
+  duration_ms: 9487.4476
+  type: 'test'
+  ...
+# (node:7836) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Receiving office search 390 light
+ok 21 - Receiving office search 390 light
+  ---
+  duration_ms: 4361.4065
+  type: 'test'
+  ...
+# Subtest: Receiving office search 390 dark
+ok 22 - Receiving office search 390 dark
+  ---
+  duration_ms: 2814.943
+  type: 'test'
+  ...
+# Subtest: Receiving office search 768 light
+ok 23 - Receiving office search 768 light
+  ---
+  duration_ms: 2879.3427
+  type: 'test'
+  ...
+# Subtest: Receiving office search 768 dark
+ok 24 - Receiving office search 768 dark
+  ---
+  duration_ms: 2696.0443
+  type: 'test'
+  ...
+# Subtest: Receiving office search 1024 light
+ok 25 - Receiving office search 1024 light
+  ---
+  duration_ms: 3044.8223
+  type: 'test'
+  ...
+# Subtest: Receiving office search 1024 dark
+ok 26 - Receiving office search 1024 dark
+  ---
+  duration_ms: 3109.9984
+  type: 'test'
+  ...
+# Subtest: Receiving office search 1280 light
+ok 27 - Receiving office search 1280 light
+  ---
+  duration_ms: 2439.6853
+  type: 'test'
+  ...
+# Subtest: Receiving office search 1280 dark
+ok 28 - Receiving office search 1280 dark
+  ---
+  duration_ms: 2688.7274
+  type: 'test'
+  ...
+# Subtest: Receiving office search 1440 light
+ok 29 - Receiving office search 1440 light
+  ---
+  duration_ms: 3058.3444
+  type: 'test'
+  ...
+# Subtest: Receiving office search 1440 dark
+ok 30 - Receiving office search 1440 dark
+  ---
+  duration_ms: 2896.307
+  type: 'test'
+  ...
+# Subtest: Notification presentation 390 light
+ok 31 - Notification presentation 390 light
+  ---
+  duration_ms: 2263.1933
+  type: 'test'
+  ...
+# Subtest: Notification presentation 390 dark
+ok 32 - Notification presentation 390 dark
+  ---
+  duration_ms: 2236.1911
+  type: 'test'
+  ...
+# Subtest: Notification presentation 768 light
+ok 33 - Notification presentation 768 light
+  ---
+  duration_ms: 2206.608
+  type: 'test'
+  ...
+# Subtest: Notification presentation 768 dark
+ok 34 - Notification presentation 768 dark
+  ---
+  duration_ms: 2329.3272
+  type: 'test'
+  ...
+# Subtest: Notification presentation 1024 light
+ok 35 - Notification presentation 1024 light
+  ---
+  duration_ms: 2770.3931
+  type: 'test'
+  ...
+# Subtest: Notification presentation 1024 dark
+ok 36 - Notification presentation 1024 dark
+  ---
+  duration_ms: 2634.2948
+  type: 'test'
+  ...
+# Subtest: Notification presentation 1280 light
+ok 37 - Notification presentation 1280 light
+  ---
+  duration_ms: 2537.5629
+  type: 'test'
+  ...
+# Subtest: Notification presentation 1280 dark
+ok 38 - Notification presentation 1280 dark
+  ---
+  duration_ms: 2595.6983
+  type: 'test'
+  ...
+# Subtest: Notification presentation 1440 light
+ok 39 - Notification presentation 1440 light
+  ---
+  duration_ms: 2446.3171
+  type: 'test'
+  ...
+# Subtest: Notification presentation 1440 dark
+ok 40 - Notification presentation 1440 dark
+  ---
+  duration_ms: 2558.879
+  type: 'test'
+  ...
+# (node:11968) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Registries 390 light
+ok 41 - Registries 390 light
+  ---
+  duration_ms: 5977.2158
+  type: 'test'
+  ...
+# Subtest: Registries 390 dark
+ok 42 - Registries 390 dark
+  ---
+  duration_ms: 3877.7172
+  type: 'test'
+  ...
+# Subtest: Registries 768 light
+ok 43 - Registries 768 light
+  ---
+  duration_ms: 4069.6433
+  type: 'test'
+  ...
+# Subtest: Registries 768 dark
+ok 44 - Registries 768 dark
+  ---
+  duration_ms: 4187.7953
+  type: 'test'
+  ...
+# Subtest: Registries 1024 light
+ok 45 - Registries 1024 light
+  ---
+  duration_ms: 4214.0246
+  type: 'test'
+  ...
+# Subtest: Registries 1024 dark
+ok 46 - Registries 1024 dark
+  ---
+  duration_ms: 4147.3996
+  type: 'test'
+  ...
+# Subtest: Registries 1280 light
+ok 47 - Registries 1280 light
+  ---
+  duration_ms: 4165.4316
+  type: 'test'
+  ...
+# Subtest: Registries 1280 dark
+ok 48 - Registries 1280 dark
+  ---
+  duration_ms: 4407.3363
+  type: 'test'
+  ...
+# Subtest: Registries 1440 light
+ok 49 - Registries 1440 light
+  ---
+  duration_ms: 4360.4745
+  type: 'test'
+  ...
+# Subtest: Registries 1440 dark
+ok 50 - Registries 1440 dark
+  ---
+  duration_ms: 4656.0151
+  type: 'test'
+  ...
+# (node:22720) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Reference presentation surfaces 390 light
+not ok 51 - Reference presentation surfaces 390 light
+  ---
+  duration_ms: 16656.9868
+  type: 'test'
+  location: 'C:\\Users\\admin\\Documents\\ONE-TALIBON-AJ-REDESIGN-R1\\tests\\Browser\\portal-redesign.test.mjs:109:9'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.waitFor: Timeout 10000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#portal-content h1') to be visible[22m
+    
+    {"errors":[],"text":"APPLICATION RECOVERY\n\nSomething went wrong\n\nWe could not complete this page. You can retry the current page or return to the dashboard.\n\nRetry\nReturn to dashboard","requests":[{"url":"/build/assets/talibonAssets-ZQEKvMZh.js"},{"url":"/build/assets/AppLayout--O8TC4dV.css"},{"url":"/build/assets/log-out-BiFrSv0X.js"},{"url":"/build/assets/arrow-up-right-CFaFCnsH.js"},{"url":"/build/assets/send-D3mSKMoQ.js"},{"url":"/build/assets/sliders-horizontal-Cnu5B3j_.js"},{"url":"/build/assets/PageFrame-gfhvDgj2.js"},{"url":"/build/assets/PageHeader-nGoKmfqk.js"},{"url":"/build/assets/ppas-BlaUyiaF.js"},{"url":"/build/assets/plans-DlhnxYfB.js"},{"url":"/build/assets/Index-DWfgqlpB.css"},{"url":"/build/assets/portal-visual-redesign-DboWtDmu.css"}]}
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    mount (file:///C:/Users/admin/Documents/ONE-TALIBON-AJ-REDESIGN-R1/tests/Browser/portal-redesign.test.mjs:85:15)
+    async TestContext.<anonymous> (file:///C:/Users/admin/Documents/ONE-TALIBON-AJ-REDESIGN-R1/tests/Browser/portal-redesign.test.mjs:116:42)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: Reference presentation surfaces 390 dark
+not ok 52 - Reference presentation surfaces 390 dark
+  ---
+  duration_ms: 13258.8585
+  type: 'test'
+  location: 'C:\\Users\\admin\\Documents\\ONE-TALIBON-AJ-REDESIGN-R1\\tests\\Browser\\portal-redesign.test.mjs:109:9'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.waitFor: Timeout 10000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#portal-content h1') to be visible[22m
+    
+    {"errors":[],"text":"APPLICATION RECOVERY\n\nSomething went wrong\n\nWe could not complete this page. You can retry the current page or return to the dashboard.\n\nRetry\nReturn to dashboard","requests":[{"url":"/build/assets/talibonAssets-ZQEKvMZh.js"},{"url":"/build/assets/log-out-BiFrSv0X.js"},{"url":"/build/assets/AppLayout--O8TC4dV.css"},{"url":"/build/assets/arrow-up-right-CFaFCnsH.js"},{"url":"/build/assets/send-D3mSKMoQ.js"},{"url":"/build/assets/sliders-horizontal-Cnu5B3j_.js"},{"url":"/build/assets/PageFrame-gfhvDgj2.js"},{"url":"/build/assets/PageHeader-nGoKmfqk.js"},{"url":"/build/assets/ppas-BlaUyiaF.js"},{"url":"/build/assets/plans-DlhnxYfB.js"},{"url":"/build/assets/Index-DWfgqlpB.css"},{"url":"/build/assets/portal-visual-redesign-DboWtDmu.css"}]}
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    mount (file:///C:/Users/admin/Documents/ONE-TALIBON-AJ-REDESIGN-R1/tests/Browser/portal-redesign.test.mjs:85:15)
+    async TestContext.<anonymous> (file:///C:/Users/admin/Documents/ONE-TALIBON-AJ-REDESIGN-R1/tests/Browser/portal-redesign.test.mjs:116:42)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Reference presentation surfaces 768 light
+not ok 53 - Reference presentation surfaces 768 light
+  ---
+  duration_ms: 14134.5199
+  type: 'test'
+  location: 'C:\\Users\\admin\\Documents\\ONE-TALIBON-AJ-REDESIGN-R1\\tests\\Browser\\portal-redesign.test.mjs:109:9'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.waitFor: Timeout 10000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#portal-content h1') to be visible[22m
+    
+    {"errors":[],"text":"APPLICATION RECOVERY\n\nSomething went wrong\n\nWe could not complete this page. You can retry the current page or return to the dashboard.\n\nRetry\nReturn to dashboard","requests":[{"url":"/build/assets/talibonAssets-ZQEKvMZh.js"},{"url":"/build/assets/AppLayout--O8TC4dV.css"},{"url":"/build/assets/Index-DWfgqlpB.css"},{"url":"/build/assets/portal-visual-redesign-DboWtDmu.css"},{"url":"/build/assets/log-out-BiFrSv0X.js"},{"url":"/build/assets/arrow-up-right-CFaFCnsH.js"},{"url":"/build/assets/send-D3mSKMoQ.js"},{"url":"/build/assets/sliders-horizontal-Cnu5B3j_.js"},{"url":"/build/assets/PageFrame-gfhvDgj2.js"},{"url":"/build/assets/PageHeader-nGoKmfqk.js"},{"url":"/build/assets/ppas-BlaUyiaF.js"},{"url":"/build/assets/plans-DlhnxYfB.js"}]}
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    mount (file:///C:/Users/admin/Documents/ONE-TALIBON-AJ-REDESIGN-R1/tests/Browser/portal-redesign.test.mjs:85:15)
+    async TestContext.<anonymous> (file:///C:/Users/admin/Documents/ONE-TALIBON-AJ-REDESIGN-R1/tests/Browser/portal-redesign.test.mjs:116:42)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Reference presentation surfaces 768 dark
+not ok 54 - Reference presentation surfaces 768 dark
+  ---
+  duration_ms: 13218.9865
+  type: 'test'
+  location: 'C:\\Users\\admin\\Documents\\ONE-TALIBON-AJ-REDESIGN-R1\\tests\\Browser\\portal-redesign.test.mjs:109:9'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.waitFor: Timeout 10000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#portal-content h1') to be visible[22m
+    
+    {"errors":[],"text":"APPLICATION RECOVERY\n\nSomething went wrong\n\nWe could not complete this page. You can retry the current page or return to the dashboard.\n\nRetry\nReturn to dashboard","requests":[{"url":"/build/assets/AppLayout--O8TC4dV.css"},{"url":"/build/assets/talibonAssets-ZQEKvMZh.js"},{"url":"/build/assets/log-out-BiFrSv0X.js"},{"url":"/build/assets/arrow-up-right-CFaFCnsH.js"},{"url":"/build/assets/send-D3mSKMoQ.js"},{"url":"/build/assets/sliders-horizontal-Cnu5B3j_.js"},{"url":"/build/assets/PageFrame-gfhvDgj2.js"},{"url":"/build/assets/PageHeader-nGoKmfqk.js"},{"url":"/build/assets/ppas-BlaUyiaF.js"},{"url":"/build/assets/plans-DlhnxYfB.js"},{"url":"/build/assets/Index-DWfgqlpB.css"},{"url":"/build/assets/portal-visual-redesign-DboWtDmu.css"}]}
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    mount (file:///C:/Users/admin/Documents/ONE-TALIBON-AJ-REDESIGN-R1/tests/Browser/portal-redesign.test.mjs:85:15)
+    async TestContext.<anonymous> (file:///C:/Users/admin/Documents/ONE-TALIBON-AJ-REDESIGN-R1/tests/Browser/portal-redesign.test.mjs:116:42)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Reference presentation surfaces 1024 light
+not ok 55 - Reference presentation surfaces 1024 light
+  ---
+  duration_ms: 13254.6597
+  type: 'test'
+  location: 'C:\\Users\\admin\\Documents\\ONE-TALIBON-AJ-REDESIGN-R1\\tests\\Browser\\portal-redesign.test.mjs:109:9'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.waitFor: Timeout 10000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#portal-content h1') to be visible[22m
+    
+    {"errors":[],"text":"APPLICATION RECOVERY\n\nSomething went wrong\n\nWe could not complete this page. You can retry the current page or return to the dashboard.\n\nRetry\nReturn to dashboard","requests":[{"url":"/build/assets/talibonAssets-ZQEKvMZh.js"},{"url":"/build/assets/log-out-BiFrSv0X.js"},{"url":"/build/assets/AppLayout--O8TC4dV.css"},{"url":"/build/assets/arrow-up-right-CFaFCnsH.js"},{"url":"/build/assets/send-D3mSKMoQ.js"},{"url":"/build/assets/sliders-horizontal-Cnu5B3j_.js"},{"url":"/build/assets/PageFrame-gfhvDgj2.js"},{"url":"/build/assets/PageHeader-nGoKmfqk.js"},{"url":"/build/assets/ppas-BlaUyiaF.js"},{"url":"/build/assets/Index-DWfgqlpB.css"},{"url":"/build/assets/plans-DlhnxYfB.js"},{"url":"/build/assets/portal-visual-redesign-DboWtDmu.css"}]}
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    mount (file:///C:/Users/admin/Documents/ONE-TALIBON-AJ-REDESIGN-R1/tests/Browser/portal-redesign.test.mjs:85:15)
+    async TestContext.<anonymous> (file:///C:/Users/admin/Documents/ONE-TALIBON-AJ-REDESIGN-R1/tests/Browser/portal-redesign.test.mjs:116:42)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..55
+# tests 55
+# suites 0
+# pass 50
+# fail 5
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 351583.0682

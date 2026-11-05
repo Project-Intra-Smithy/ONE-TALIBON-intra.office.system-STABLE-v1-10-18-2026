@@ -1,0 +1,70 @@
+
+> test:ux
+> node --experimental-strip-types --test tests/Browser/ux-refinement.test.mjs
+
+TAP version 13
+# (node:7160) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: workspace responsive controls at 320px
+ok 1 - workspace responsive controls at 320px
+  ---
+  duration_ms: 23000.3854
+  type: 'test'
+  ...
+# Subtest: workspace responsive controls at 390px
+ok 2 - workspace responsive controls at 390px
+  ---
+  duration_ms: 6670.666
+  type: 'test'
+  ...
+# Subtest: workspace responsive controls at 768px
+ok 3 - workspace responsive controls at 768px
+  ---
+  duration_ms: 6390.0966
+  type: 'test'
+  ...
+# Subtest: workspace responsive controls at 1024px
+ok 4 - workspace responsive controls at 1024px
+  ---
+  duration_ms: 6642.7458
+  type: 'test'
+  ...
+# Subtest: workspace responsive controls at 1440px
+ok 5 - workspace responsive controls at 1440px
+  ---
+  duration_ms: 7415.551
+  type: 'test'
+  ...
+# Subtest: navigation respects supplied permissions for all four experiences
+ok 6 - navigation respects supplied permissions for all four experiences
+  ---
+  duration_ms: 6167.6031
+  type: 'test'
+  ...
+# Subtest: Calendar dialog traps focus, closes with Escape and restores trigger focus
+ok 7 - Calendar dialog traps focus, closes with Escape and restores trigger focus
+  ---
+  duration_ms: 1630.712
+  type: 'test'
+  ...
+# Subtest: personal Task selection, keyboard back action and denied reads
+ok 8 - personal Task selection, keyboard back action and denied reads
+  ---
+  duration_ms: 1998.3194
+  type: 'test'
+  ...
+# Subtest: server-confirmed Task mutations refresh the read workspace without optimistic state
+ok 9 - server-confirmed Task mutations refresh the read workspace without optimistic state
+  ---
+  duration_ms: 2864.1449
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 66191.5909

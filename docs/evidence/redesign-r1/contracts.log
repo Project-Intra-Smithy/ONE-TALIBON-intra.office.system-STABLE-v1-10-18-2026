@@ -1,0 +1,2049 @@
+
+> test:contracts
+> node --experimental-strip-types --test tests/Frontend/*.test.mjs
+
+TAP version 13
+# Subtest: AJ PR44 presentation preserves canonical Task write controls and mutation-to-read refresh
+ok 1 - AJ PR44 presentation preserves canonical Task write controls and mutation-to-read refresh
+  ---
+  duration_ms: 61.7505
+  type: 'test'
+  ...
+# Subtest: Department overview is a dashboard anchor, not an invented route or authority
+ok 2 - Department overview is a dashboard anchor, not an invented route or authority
+  ---
+  duration_ms: 26.6082
+  type: 'test'
+  ...
+# Subtest: visible appearance controls persist and apply light dark and system preferences
+ok 3 - visible appearance controls persist and apply light dark and system preferences
+  ---
+  duration_ms: 2.4623
+  type: 'test'
+  ...
+# Subtest: saved light preference survives initial load with systemDark=false
+ok 4 - saved light preference survives initial load with systemDark=false
+  ---
+  duration_ms: 12.0899
+  type: 'test'
+  ...
+# Subtest: saved light preference survives initial load with systemDark=true
+ok 5 - saved light preference survives initial load with systemDark=true
+  ---
+  duration_ms: 4.998
+  type: 'test'
+  ...
+# Subtest: saved dark preference survives initial load with systemDark=false
+ok 6 - saved dark preference survives initial load with systemDark=false
+  ---
+  duration_ms: 6.3546
+  type: 'test'
+  ...
+# Subtest: saved dark preference survives initial load with systemDark=true
+ok 7 - saved dark preference survives initial load with systemDark=true
+  ---
+  duration_ms: 3.1737
+  type: 'test'
+  ...
+# Subtest: saved system preference survives initial load with systemDark=false
+ok 8 - saved system preference survives initial load with systemDark=false
+  ---
+  duration_ms: 4.1148
+  type: 'test'
+  ...
+# Subtest: saved system preference survives initial load with systemDark=true
+ok 9 - saved system preference survives initial load with systemDark=true
+  ---
+  duration_ms: 4.3595
+  type: 'test'
+  ...
+# Subtest: missing or invalid stored preference falls back to system without mutating storage
+ok 10 - missing or invalid stored preference falls back to system without mutating storage
+  ---
+  duration_ms: 12.937
+  type: 'test'
+  ...
+# Subtest: storage read failure falls back to system without blocking initial theme
+ok 11 - storage read failure falls back to system without blocking initial theme
+  ---
+  duration_ms: 3.4145
+  type: 'test'
+  ...
+# Subtest: system preference reflects OS changes on a subsequent page load
+ok 12 - system preference reflects OS changes on a subsequent page load
+  ---
+  duration_ms: 11.0254
+  type: 'test'
+  ...
+# Subtest: Blade keeps Inertia entry, CSRF and Vite anchors used by login and MFA
+ok 13 - Blade keeps Inertia entry, CSRF and Vite anchors used by login and MFA
+  ---
+  duration_ms: 6.4258
+  type: 'test'
+  ...
+# Subtest: calendar has four distinct view regions
+ok 14 - calendar has four distinct view regions
+  ---
+  duration_ms: 24.511
+  type: 'test'
+  ...
+# Subtest: week is server-windowed and separates all-day from timed events
+ok 15 - week is server-windowed and separates all-day from timed events
+  ---
+  duration_ms: 1.1541
+  type: 'test'
+  ...
+# Subtest: day and schedule use accessible view-specific organization
+ok 16 - day and schedule use accessible view-specific organization
+  ---
+  duration_ms: 1.056
+  type: 'test'
+  ...
+# Subtest: schedule navigation advances the backend rolling window
+ok 17 - schedule navigation advances the backend rolling window
+  ---
+  duration_ms: 1.3128
+  type: 'test'
+  ...
+# Subtest: catalog exactly preserves canonical 24 identity, group, and readiness relationships
+ok 18 - catalog exactly preserves canonical 24 identity, group, and readiness relationships
+  ---
+  duration_ms: 7.1905
+  type: 'test'
+  ...
+# Subtest: canonical paths and permission associations are not synthetic
+ok 19 - canonical paths and permission associations are not synthetic
+  ---
+  duration_ms: 0.8047
+  type: 'test'
+  ...
+# Subtest: permission denial, optional third builder argument and absent routes remain guarded
+ok 20 - permission denial, optional third builder argument and absent routes remain guarded
+  ---
+  duration_ms: 6.9855
+  type: 'test'
+  ...
+# Subtest: already corrected dashboard and density presentation contracts remain intact
+ok 21 - already corrected dashboard and density presentation contracts remain intact
+  ---
+  duration_ms: 2.9769
+  type: 'test'
+  ...
+# Subtest: PR44 My Department remains head-only and canonical Personal Tasks navigation stays present
+ok 22 - PR44 My Department remains head-only and canonical Personal Tasks navigation stays present
+  ---
+  duration_ms: 2.6123
+  type: 'test'
+  ...
+# (node:22832) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: R6 retains all four backend-role variants and role-scoped operational sections
+ok 23 - R6 retains all four backend-role variants and role-scoped operational sections
+  ---
+  duration_ms: 6.212
+  type: 'test'
+  ...
+# Subtest: Quick Access is still permission-derived, deduplicated and uses destination icons
+ok 24 - Quick Access is still permission-derived, deduplicated and uses destination icons
+  ---
+  duration_ms: 7.7283
+  type: 'test'
+  ...
+# Subtest: R6 grid breakpoints are based on usable dashboard width, not the window alone
+ok 25 - R6 grid breakpoints are based on usable dashboard width, not the window alone
+  ---
+  duration_ms: 2.024
+  type: 'test'
+  ...
+# Subtest: R6 retains real records, empty states, notification state distinctions and focusable scrolls
+ok 26 - R6 retains real records, empty states, notification state distinctions and focusable scrolls
+  ---
+  duration_ms: 0.9207
+  type: 'test'
+  ...
+# Subtest: Hero uses local municipality image and authenticated identity without invented activity
+ok 27 - Hero uses local municipality image and authenticated identity without invented activity
+  ---
+  duration_ms: 1.1244
+  type: 'test'
+  ...
+# Subtest: Worker 03 styling is page-scoped with no app-wide CSS or new UI dependency
+not ok 28 - Worker 03 styling is page-scoped with no app-wide CSS or new UI dependency
+  ---
+  duration_ms: 20.1152
+  type: 'test'
+  location: 'C:\\Users\\admin\\Documents\\ONE-TALIBON-AJ-REDESIGN-R1\\tests\\Frontend\\ot-r6-module-ux.test.mjs:16:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /className="ot-r6-modules|className="ot-r6-modules /. Input:
+    
+    "import '../../../css/ot-r6-modules.css';\r\n" +
+      "import '../../../css/r8-plans.css';\r\n" +
+      "import '../../../css/portal-visual-redesign.css';\r\n" +
+      "import { ClipboardList } from 'lucide-react';\r\n" +
+      "import { useEffect, useMemo, useRef, useState } from 'react';\r\n" +
+      "import PageFrame from '../../components/PageFrame';\r\n" +
+      "import PageHeader from '../../components/PageHeader';\r\n" +
+      "import PlanCoverageSummary from '../../components/plans/PlanCoverageSummary';\r\n" +
+      "import PlanFilterBar, { type PlanFilters } from '../../components/plans/PlanFilterBar';\r\n" +
+      "import PlanMetricGrid from '../../components/plans/PlanMetricGrid';\r\n" +
+      "import PlanMilestoneQueue from '../../components/plans/PlanMilestoneQueue';\r\n" +
+      "import PlanCard from '../../components/plans/PlanCard';\r\n" +
+      "import { getPlanMetrics, municipalPlans } from '../../data/municipal/plans';\r\n" +
+      "import AppLayout from '../../layouts/AppLayout';\r\n" +
+      '\r\n' +
+      'const initialFilters: PlanFilters = {\r\n' +
+      "    query: '',\r\n" +
+      "    status: 'All',\r\n" +
+      "    horizon: 'All',\r\n" +
+      "    leadOffice: 'All',\r\n" +
+      '};\r\n' +
+      '\r\n' +
+      'export default function PlansIndex() {\r\n' +
+      "    const [filters, setFilters] = useState<PlanFilters>(() => ({ ...initialFilters, query: typeof window === 'undefined' ? '' : new URLSearchParams(window.location.search).get('search') ?? '' }));\r\n" +
+      '    const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);\r\n' +
+      '    const dialogRef = useRef<HTMLDivElement>(null);\r\n' +
+      '    const closeButtonRef = useRef<HTMLButtonElement>(null);\r\n' +
+      '\r\n' +
+      '    const leadOffices = useMemo(\r\n' +
+      '        () => [...new Set(municipalPlans.map((plan) => plan.leadOffice))].sort((a, b) => a.localeCompare(b)),\r\n' +
+      '        [],\r\n' +
+      '    );\r\n' +
+      '\r\n' +
+      '    const filteredPlans = useMemo(() => {\r\n' +
+      '        const query = filters.query.trim().toLowerCase();\r\n' +
+      '        return municipalPlans.filter((plan) => {\r\n' +
+      "            const searchText = [plan.code, plan.title, plan.leadOffice, plan.documentRef, ...plan.coordinatingOffices].join(' ').toLowerCase();\r\n" +
+      '            return (\r\n' +
+      '                (!query || searchText.includes(query)) &&\r\n' +
+      "                (filters.status === 'All' || plan.status === filters.status) &&\r\n" +
+      "                (filters.horizon === 'All' || plan.horizon === filters.horizon) &&\r\n" +
+      "                (filters.leadOffice === 'All' || plan.leadOffice === filters.leadOffice)\r\n" +
+      '            );\r\n' +
+      '        });\r\n' +
+      '    }, [filters]);\r\n' +
+      '\r\n' +
+      '    const selectedPlan = filteredPlans.find((plan) => plan.id === selectedPlanId);\r\n' +
+      '    const metrics = useMemo(() => getPlanMetrics(filteredPlans), [filteredPlans]);\r\n' +
+      '\r\n' +
+      '    const closePlanDetails = () => {\r\n' +
+      '        const planId = selectedPlanId;\r\n' +
+      '        setSelectedPlanId(null);\r\n' +
+      "        if (planId && typeof window !== 'undefined') {\r\n" +
+      '            window.requestAnimationFrame(() => document.getElementById(`plan-trigger-${planId}`)?.focus());\r\n' +
+      '        }\r\n' +
+      '    };\r\n' +
+      '\r\n' +
+      '    useEffect(() => {\r\n' +
+      "        if (!selectedPlanId || typeof document === 'undefined') return;\r\n" +
+      '        const previousOverflow = document.body.style.overflow;\r\n' +
+      "        document.body.style.overflow = 'hidden';\r\n" +
+      '        closeButtonRef.current?.focus();\r\n' +
+      '\r\n' +
+      '        const onKeyDown = (event: KeyboardEvent) => {\r\n' +
+      "            if (event.key === 'Escape') {\r\n" +
+      '                event.preventDefault();\r\n' +
+      '                const planId = selectedPlanId;\r\n' +
+      '                setSelectedPlanId(null);\r\n' +
+      '                window.requestAnimationFrame(() => document.getElementById(`plan-trigger-${planId}`)?.focus());\r\n' +
+      '                return;\r\n' +
+      '            }\r\n' +
+      "            if (event.key !== 'Tab' || !dialogRef.current) return;\r\n" +
+      `            const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'));\r\n` +
+      '            if (focusable.length === 0) {\r\n' +
+      '                event.preventDefault();\r\n' +
+      '                dialogRef.current.focus();\r\n' +
+      '                return;\r\n' +
+      '            }\r\n' +
+      '            const first = focusable[0];\r\n' +
+      '            const last = focusable[focusable.length - 1];\r\n' +
+      '            if (event.shiftKey && document.activeElement === first) {\r\n' +
+      '                event.preventDefault();\r\n' +
+      '                last.focus();\r\n' +
+      '            } else if (!event.shiftKey && document.activeElement === last) {\r\n' +
+      '                event.preventDefault();\r\n' +
+      '                first.focus();\r\n' +
+      '            }\r\n' +
+      '        };\r\n' +
+      '\r\n' +
+      "        document.addEventListener('keydown', onKeyDown);\r\n" +
+      '        return () => {\r\n' +
+      '            document.body.style.overflow = previousOverflow;\r\n' +
+      "            document.removeEventListener('keydown', onKeyDown);\r\n" +
+      '        };\r\n' +
+      '    }, [selectedPlanId]);\r\n' +
+      '\r\n' +
+      '    return (\r\n' +
+      '        <AppLayout title="LGU Plans Library">\r\n' +
+      '            <PageFrame width="wide" density="compact" className="civic-page ot-r6-modules ot-r6-plans r8-plans">\r\n' +
+      '                <PageHeader eyebrow="Municipality of Talibon · Planning references" title="LGU Plans Library" description="Browse planning references by code, coverage, status, and lead office." icon={ClipboardList} />\r\n' +
+      '                <div className="r8-plans-notice" role="note"><strong>Reference library only.</strong> Records shown here are not validated live municipal approvals. Covers are illustrative graphics, not scanned or certified documents.</div>\r\n' +
+      '                <PlanFilterBar filters={filters} leadOffices={leadOffices} resultCount={filteredPlans.length} onChange={(nextFilters) => { setFilters(nextFilters); setSelectedPlanId(null); }} />\r\n' +
+      '                <section aria-label="Plans library" className="ot-r6-plan-grid r8-plans-grid grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-3">\r\n' +
+      '                    {filteredPlans.map((plan) => <PlanCard key={plan.id} plan={plan} selected={selectedPlanId === plan.id} onSelect={() => setSelectedPlanId(plan.id)} />)}\r\n' +
+      '                    {filteredPlans.length === 0 && <div role="status" className="municipal-panel border-dashed p-8 text-center text-sm text-[var(--municipal-muted)] sm:col-span-2 xl:col-span-3"><strong className="block text-[var(--municipal-text)]">No matching plans</strong><span className="mt-1 block">Change the search or clear the filters to see the reference library.</span></div>}\r\n' +
+      '                </section>\r\n' +
+      '                <details className="group municipal-panel min-w-0 rounded-lg text-[var(--municipal-muted)]">\r\n' +
+      '                    <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-[13px] font-semibold marker:hidden">\r\n' +
+      '                        <span>Planning context · filtered reference records</span>\r\n' +
+      '                        <span className="text-xs text-[var(--municipal-brand)] group-open:hidden">Show</span>\r\n' +
+      '                        <span className="hidden text-xs text-[var(--municipal-brand)] group-open:inline">Hide</span>\r\n' +
+      '                    </summary>\r\n' +
+      '                    <div className="space-y-3 border-t border-[var(--municipal-border)] p-3">\r\n' +
+      '                        <PlanMetricGrid metrics={metrics} />\r\n' +
+      '                        <PlanCoverageSummary plans={filteredPlans} />\r\n' +
+      '                        <PlanMilestoneQueue plans={filteredPlans} />\r\n' +
+      '                    </div>\r\n' +
+      '                </details>\r\n' +
+      '            </PageFrame>\r\n' +
+      '\r\n' +
+      '            {selectedPlan && (\r\n' +
+      '                <div className="r8-plans-dialog-backdrop fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/45 p-3 sm:p-5" onMouseDown={(event) => { if (event.currentTarget === event.target) closePlanDetails(); }}>\r\n' +
+      '                    <div\r\n' +
+      '                        id="selected-plan-details"\r\n' +
+      '                        ref={dialogRef}\r\n' +
+      '                        role="dialog"\r\n' +
+      '                        aria-modal="true"\r\n' +
+      '                        aria-labelledby="selected-plan-title"\r\n' +
+      '                        aria-describedby="selected-plan-description"\r\n' +
+      '                        tabIndex={-1}\r\n' +
+      '                        className="municipal-panel ot-r6-plan-dialog r8-plans-dialog max-h-[calc(100dvh-1.5rem)] w-full max-w-3xl overflow-y-auto rounded-[var(--municipal-radius-overlay)] border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] shadow-2xl sm:max-h-[calc(100vh-2.5rem)]"\r\n' +
+      '                    >\r\n' +
+      '                        <header className="sticky top-0 z-10 flex items-start justify-between gap-3 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 py-2.5 sm:px-4">\r\n' +
+      '                            <div className="min-w-0">\r\n' +
+      '                                <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--municipal-brand)]">{selectedPlan.code}</p>\r\n' +
+      '                                <h2 id="selected-plan-title" className="mt-0.5 break-words text-base font-bold leading-6 text-[var(--municipal-text)]">{selectedPlan.title}</h2>\r\n' +
+      '                                <p id="selected-plan-description" className="mt-0.5 text-[11px] text-[var(--municipal-muted)]">Reference data only · Not a validated live municipal approval or certified document.</p>\r\n' +
+      '                            </div>\r\n' +
+      '                            <button ref={closeButtonRef} type="button" onClick={closePlanDetails} className="min-h-11 shrink-0 rounded-md px-3 text-xs font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" aria-label={`Close details for ${selectedPlan.code}`}>Close</button>\r\n' +
+      '                        </header>\r\n' +
+      '\r\n' +
+      '                        <dl className="grid gap-x-5 gap-y-2.5 p-3 text-[13px] leading-5 sm:grid-cols-2 sm:p-4">\r\n' +
+      '                            {[\r\n' +
+      "                                ['Planning horizon', selectedPlan.horizon],\r\n" +
+      "                                ['Lead office', selectedPlan.leadOffice],\r\n" +
+      "                                ['Coverage', selectedPlan.coverageStart === selectedPlan.coverageEnd ? String(selectedPlan.coverageStart) : `${selectedPlan.coverageStart} - ${selectedPlan.coverageEnd}`],\r\n" +
+      "                                ['Recorded status', selectedPlan.status],\r\n" +
+      "                                ['Document reference', selectedPlan.documentRef],\r\n" +
+      "                                ['Authority / adop"... 1151 more characters
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    import '../../../css/ot-r6-modules.css';
+    import '../../../css/r8-plans.css';
+    import '../../../css/portal-visual-redesign.css';
+    import { ClipboardList } from 'lucide-react';
+    import { useEffect, useMemo, useRef, useState } from 'react';
+    import PageFrame from '../../components/PageFrame';
+    import PageHeader from '../../components/PageHeader';
+    import PlanCoverageSummary from '../../components/plans/PlanCoverageSummary';
+    import PlanFilterBar, { type PlanFilters } from '../../components/plans/PlanFilterBar';
+    import PlanMetricGrid from '../../components/plans/PlanMetricGrid';
+    import PlanMilestoneQueue from '../../components/plans/PlanMilestoneQueue';
+    import PlanCard from '../../components/plans/PlanCard';
+    import { getPlanMetrics, municipalPlans } from '../../data/municipal/plans';
+    import AppLayout from '../../layouts/AppLayout';
+    
+    const initialFilters: PlanFilters = {
+        query: '',
+        status: 'All',
+        horizon: 'All',
+        leadOffice: 'All',
+    };
+    
+    export default function PlansIndex() {
+        const [filters, setFilters] = useState<PlanFilters>(() => ({ ...initialFilters, query: typeof window === 'undefined' ? '' : new URLSearchParams(window.location.search).get('search') ?? '' }));
+        const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
+        const dialogRef = useRef<HTMLDivElement>(null);
+        const closeButtonRef = useRef<HTMLButtonElement>(null);
+    
+        const leadOffices = useMemo(
+            () => [...new Set(municipalPlans.map((plan) => plan.leadOffice))].sort((a, b) => a.localeCompare(b)),
+            [],
+        );
+    
+        const filteredPlans = useMemo(() => {
+            const query = filters.query.trim().toLowerCase();
+            return municipalPlans.filter((plan) => {
+                const searchText = [plan.code, plan.title, plan.leadOffice, plan.documentRef, ...plan.coordinatingOffices].join(' ').toLowerCase();
+                return (
+                    (!query || searchText.includes(query)) &&
+                    (filters.status === 'All' || plan.status === filters.status) &&
+                    (filters.horizon === 'All' || plan.horizon === filters.horizon) &&
+                    (filters.leadOffice === 'All' || plan.leadOffice === filters.leadOffice)
+                );
+            });
+        }, [filters]);
+    
+        const selectedPlan = filteredPlans.find((plan) => plan.id === selectedPlanId);
+        const metrics = useMemo(() => getPlanMetrics(filteredPlans), [filteredPlans]);
+    
+        const closePlanDetails = () => {
+            const planId = selectedPlanId;
+            setSelectedPlanId(null);
+            if (planId && typeof window !== 'undefined') {
+                window.requestAnimationFrame(() => document.getElementById(`plan-trigger-${planId}`)?.focus());
+            }
+        };
+    
+        useEffect(() => {
+            if (!selectedPlanId || typeof document === 'undefined') return;
+            const previousOverflow = document.body.style.overflow;
+            document.body.style.overflow = 'hidden';
+            closeButtonRef.current?.focus();
+    
+            const onKeyDown = (event: KeyboardEvent) => {
+                if (event.key === 'Escape') {
+                    event.preventDefault();
+                    const planId = selectedPlanId;
+                    setSelectedPlanId(null);
+                    window.requestAnimationFrame(() => document.getElementById(`plan-trigger-${planId}`)?.focus());
+                    return;
+                }
+                if (event.key !== 'Tab' || !dialogRef.current) return;
+                const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'));
+                if (focusable.length === 0) {
+                    event.preventDefault();
+                    dialogRef.current.focus();
+                    return;
+                }
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                if (event.shiftKey && document.activeElement === first) {
+                    event.preventDefault();
+                    last.focus();
+                } else if (!event.shiftKey && document.activeElement === last) {
+                    event.preventDefault();
+                    first.focus();
+                }
+            };
+    
+            document.addEventListener('keydown', onKeyDown);
+            return () => {
+                document.body.style.overflow = previousOverflow;
+                document.removeEventListener('keydown', onKeyDown);
+            };
+        }, [selectedPlanId]);
+    
+        return (
+            <AppLayout title="LGU Plans Library">
+                <PageFrame width="wide" density="compact" className="civic-page ot-r6-modules ot-r6-plans r8-plans">
+                    <PageHeader eyebrow="Municipality of Talibon · Planning references" title="LGU Plans Library" description="Browse planning references by code, coverage, status, and lead office." icon={ClipboardList} />
+                    <div className="r8-plans-notice" role="note"><strong>Reference library only.</strong> Records shown here are not validated live municipal approvals. Covers are illustrative graphics, not scanned or certified documents.</div>
+                    <PlanFilterBar filters={filters} leadOffices={leadOffices} resultCount={filteredPlans.length} onChange={(nextFilters) => { setFilters(nextFilters); setSelectedPlanId(null); }} />
+                    <section aria-label="Plans library" className="ot-r6-plan-grid r8-plans-grid grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                        {filteredPlans.map((plan) => <PlanCard key={plan.id} plan={plan} selected={selectedPlanId === plan.id} onSelect={() => setSelectedPlanId(plan.id)} />)}
+                        {filteredPlans.length === 0 && <div role="status" className="municipal-panel border-dashed p-8 text-center text-sm text-[var(--municipal-muted)] sm:col-span-2 xl:col-span-3"><strong className="block text-[var(--municipal-text)]">No matching plans</strong><span className="mt-1 block">Change the search or clear the filters to see the reference library.</span></div>}
+                    </section>
+                    <details className="group municipal-panel min-w-0 rounded-lg text-[var(--municipal-muted)]">
+                        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-[13px] font-semibold marker:hidden">
+                            <span>Planning context · filtered reference records</span>
+                            <span className="text-xs text-[var(--municipal-brand)] group-open:hidden">Show</span>
+                            <span className="hidden text-xs text-[var(--municipal-brand)] group-open:inline">Hide</span>
+                        </summary>
+                        <div className="space-y-3 border-t border-[var(--municipal-border)] p-3">
+                            <PlanMetricGrid metrics={metrics} />
+                            <PlanCoverageSummary plans={filteredPlans} />
+                            <PlanMilestoneQueue plans={filteredPlans} />
+                        </div>
+                    </details>
+                </PageFrame>
+    
+                {selectedPlan && (
+                    <div className="r8-plans-dialog-backdrop fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/45 p-3 sm:p-5" onMouseDown={(event) => { if (event.currentTarget === event.target) closePlanDetails(); }}>
+                        <div
+                            id="selected-plan-details"
+                            ref={dialogRef}
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="selected-plan-title"
+                            aria-describedby="selected-plan-description"
+                            tabIndex={-1}
+                            className="municipal-panel ot-r6-plan-dialog r8-plans-dialog max-h-[calc(100dvh-1.5rem)] w-full max-w-3xl overflow-y-auto rounded-[var(--municipal-radius-overlay)] border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] shadow-2xl sm:max-h-[calc(100vh-2.5rem)]"
+                        >
+                            <header className="sticky top-0 z-10 flex items-start justify-between gap-3 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 py-2.5 sm:px-4">
+                                <div className="min-w-0">
+                                    <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--municipal-brand)]">{selectedPlan.code}</p>
+                                    <h2 id="selected-plan-title" className="mt-0.5 break-words text-base font-bold leading-6 text-[var(--municipal-text)]">{selectedPlan.title}</h2>
+                                    <p id="selected-plan-description" className="mt-0.5 text-[11px] text-[var(--municipal-muted)]">Reference data only · Not a validated live municipal approval or certified document.</p>
+                                </div>
+                                <button ref={closeButtonRef} type="button" onClick={closePlanDetails} className="min-h-11 shrink-0 rounded-md px-3 text-xs font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" aria-label={`Close details for ${selectedPlan.code}`}>Close</button>
+                            </header>
+    
+                            <dl className="grid gap-x-5 gap-y-2.5 p-3 text-[13px] leading-5 sm:grid-cols-2 sm:p-4">
+                                {[
+                                    ['Planning horizon', selectedPlan.horizon],
+                                    ['Lead office', selectedPlan.leadOffice],
+                                    ['Coverage', selectedPlan.coverageStart === selectedPlan.coverageEnd ? String(selectedPlan.coverageStart) : `${selectedPlan.coverageStart} - ${selectedPlan.coverageEnd}`],
+                                    ['Recorded status', selectedPlan.status],
+                                    ['Document reference', selectedPlan.documentRef],
+                                    ['Authority / adoption', selectedPlan.authority],
+                                    ['Next milestone', `${selectedPlan.nextMilestone} / ${selectedPlan.nextMilestoneDate}`],
+                                    ['Required action', selectedPlan.requiredAction],
+                                    ['Coordinating offices', selectedPlan.coordinatingOffices.join('; ')],
+                                    ['Last action', `${selectedPlan.lastAction} / ${selectedPlan.lastActionDate}`],
+                                    ['Record completion', `${selectedPlan.sectionsComplete} of ${selectedPlan.sectionsTotal} sections`],
+                                ].map(([label, value]) => (
+                                    <div key={label} className="min-w-0">
+                                        <dt className="text-[11px] font-semibold text-[var(--municipal-text)]">{label}</dt>
+                                        <dd className="break-words text-[var(--municipal-muted)]">{value}</dd>
+                                    </div>
+                                ))}
+                            </dl>
+                        </div>
+                    </div>
+                )}
+            </AppLayout>
+        );
+    }
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/admin/Documents/ONE-TALIBON-AJ-REDESIGN-R1/tests/Frontend/ot-r6-module-ux.test.mjs:19:16)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: office grouping, search, permitted Records route and reference disclosure are retained
+ok 29 - office grouping, search, permitted Records route and reference disclosure are retained
+  ---
+  duration_ms: 1.7923
+  type: 'test'
+  ...
+# Subtest: plan filter behavior and safe detail focus restoration are preserved
+ok 30 - plan filter behavior and safe detail focus restoration are preserved
+  ---
+  duration_ms: 1.8778
+  type: 'test'
+  ...
+# Subtest: PPA filter predicates and static reference-data boundaries stay unchanged
+ok 31 - PPA filter predicates and static reference-data boundaries stay unchanged
+  ---
+  duration_ms: 0.7897
+  type: 'test'
+  ...
+# Subtest: PPA register and detail are responsive, keyboard reachable and preserve selection
+ok 32 - PPA register and detail are responsive, keyboard reachable and preserve selection
+  ---
+  duration_ms: 1.0737
+  type: 'test'
+  ...
+# Subtest: all eight primitives compile to JSX and explicitly load the scoped stylesheet
+ok 33 - all eight primitives compile to JSX and explicitly load the scoped stylesheet
+  ---
+  duration_ms: 873.4623
+  type: 'test'
+  ...
+# Subtest: panel composes header, body and footer without forcing a height
+ok 34 - panel composes header, body and footer without forcing a height
+  ---
+  duration_ms: 3.2714
+  type: 'test'
+  ...
+# Subtest: heading supports IDs, zero count, long titles, icons and action slots
+ok 35 - heading supports IDs, zero count, long titles, icons and action slots
+  ---
+  duration_ms: 94.5378
+  type: 'test'
+  ...
+# Subtest: scroll area is natively focusable, named and expands on narrow screens
+ok 36 - scroll area is natively focusable, named and expands on narrow screens
+  ---
+  duration_ms: 1.2644
+  type: 'test'
+  ...
+# Subtest: unauthorized and authority-pending states remain distinct from ordinary emptiness
+ok 37 - unauthorized and authority-pending states remain distinct from ordinary emptiness
+  ---
+  duration_ms: 1.8065
+  type: 'test'
+  ...
+# Subtest: loading skeleton is bounded, announced, and hidden after session expiry
+ok 38 - loading skeleton is bounded, announced, and hidden after session expiry
+  ---
+  duration_ms: 2.1719
+  type: 'test'
+  ...
+# Subtest: filters are presentation only, with named group and caller-owned controls
+ok 39 - filters are presentation only, with named group and caller-owned controls
+  ---
+  duration_ms: 2.3907
+  type: 'test'
+  ...
+# Subtest: data region supplies accessible headings, loading and denial gates
+ok 40 - data region supplies accessible headings, loading and denial gates
+  ---
+  duration_ms: 3.7875
+  type: 'test'
+  ...
+# Subtest: actions respect handlers, keyboard geometry, pending and disabled states
+ok 41 - actions respect handlers, keyboard geometry, pending and disabled states
+  ---
+  duration_ms: 4.0098
+  type: 'test'
+  ...
+# Subtest: exports are additive and primitives have no data access or authorization decisions
+ok 42 - exports are additive and primitives have no data access or authorization decisions
+  ---
+  duration_ms: 7.0193
+  type: 'test'
+  ...
+# Subtest: one compact municipal toolbar retains all valid in-page jump destinations
+ok 43 - one compact municipal toolbar retains all valid in-page jump destinations
+  ---
+  duration_ms: 4.865
+  type: 'test'
+  ...
+# Subtest: R4 panel treatment is explicitly scoped to dashboard and does not alter source data
+ok 44 - R4 panel treatment is explicitly scoped to dashboard and does not alter source data
+  ---
+  duration_ms: 1.4805
+  type: 'test'
+  ...
+# Subtest: compact header does not change the expanded recent-work variant used by other pages
+ok 45 - compact header does not change the expanded recent-work variant used by other pages
+  ---
+  duration_ms: 0.6646
+  type: 'test'
+  ...
+# Subtest: activity and metrics render underlying authorized projections without synthetic data
+ok 46 - activity and metrics render underlying authorized projections without synthetic data
+  ---
+  duration_ms: 0.7696
+  type: 'test'
+  ...
+# Subtest: responsive and accessible theme variants are present
+ok 47 - responsive and accessible theme variants are present
+  ---
+  duration_ms: 0.753
+  type: 'test'
+  ...
+# Subtest: R5 uses native bounded scroll regions, named and keyboard-accessible for longer lists
+ok 48 - R5 uses native bounded scroll regions, named and keyboard-accessible for longer lists
+  ---
+  duration_ms: 6.0419
+  type: 'test'
+  ...
+# Subtest: operational work and notification rows keep their actual data, links and server state
+ok 49 - operational work and notification rows keep their actual data, links and server state
+  ---
+  duration_ms: 8.0984
+  type: 'test'
+  ...
+# Subtest: panel chrome has readable counts and remains scoped to dashboard only
+ok 50 - panel chrome has readable counts and remains scoped to dashboard only
+  ---
+  duration_ms: 1.571
+  type: 'test'
+  ...
+# Subtest: R5 does not bring in unverified UI packages or change application dependencies
+ok 51 - R5 does not bring in unverified UI packages or change application dependencies
+  ---
+  duration_ms: 0.9063
+  type: 'test'
+  ...
+# Subtest: reference stylesheet is activated only through the authenticated shell
+ok 52 - reference stylesheet is activated only through the authenticated shell
+  ---
+  duration_ms: 17.6455
+  type: 'test'
+  ...
+# Subtest: permission-aware navigation and current-route semantics remain in place
+ok 53 - permission-aware navigation and current-route semantics remain in place
+  ---
+  duration_ms: 2.0895
+  type: 'test'
+  ...
+# Subtest: collapsible navigation and preference persistence remain connected
+ok 54 - collapsible navigation and preference persistence remain connected
+  ---
+  duration_ms: 0.8046
+  type: 'test'
+  ...
+# Subtest: mobile dialog retains focus trap, escape, scroll lock and focus return
+ok 55 - mobile dialog retains focus trap, escape, scroll lock and focus return
+  ---
+  duration_ms: 0.9707
+  type: 'test'
+  ...
+# Subtest: live shell controls and semantic colors are not replaced by mock controls
+ok 56 - live shell controls and semantic colors are not replaced by mock controls
+  ---
+  duration_ms: 1.3275
+  type: 'test'
+  ...
+# (node:19308) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: authorized role actions remain first and are not overwritten by module shortcuts
+ok 57 - authorized role actions remain first and are not overwritten by module shortcuts
+  ---
+  duration_ms: 24.6833
+  type: 'test'
+  ...
+# Subtest: never invent shortcuts for missing or staged destinations
+ok 58 - never invent shortcuts for missing or staged destinations
+  ---
+  duration_ms: 1.3596
+  type: 'test'
+  ...
+# Subtest: bounded, distinct destinations reject arbitrary absolute or protocol-relative routes
+ok 59 - bounded, distinct destinations reject arbitrary absolute or protocol-relative routes
+  ---
+  duration_ms: 1.1732
+  type: 'test'
+  ...
+# Subtest: the dashboard inventory is sourced from permission-aware sidebar navigation
+ok 60 - the dashboard inventory is sourced from permission-aware sidebar navigation
+  ---
+  duration_ms: 1.4395
+  type: 'test'
+  ...
+# Subtest: municipal hall artwork is reused locally and composition is compact/responsive
+ok 61 - municipal hall artwork is reused locally and composition is compact/responsive
+  ---
+  duration_ms: 1.1838
+  type: 'test'
+  ...
+# Subtest: uses permission-filtered destinations and preserves portal q
+ok 62 - uses permission-filtered destinations and preserves portal q
+  ---
+  duration_ms: 3.7554
+  type: 'test'
+  ...
+# Subtest: all type, office, year and status filters constrain local results
+ok 63 - all type, office, year and status filters constrain local results
+  ---
+  duration_ms: 1.0581
+  type: 'test'
+  ...
+# Subtest: planning references retain source provenance; no fabricated document downloads
+ok 64 - planning references retain source provenance; no fabricated document downloads
+  ---
+  duration_ms: 2.026
+  type: 'test'
+  ...
+# Subtest: authorized Records and Document Center remain separate
+ok 65 - authorized Records and Document Center remain separate
+  ---
+  duration_ms: 0.8477
+  type: 'test'
+  ...
+# Subtest: responsive and accessible controls use page-root CSS
+not ok 66 - responsive and accessible controls use page-root CSS
+  ---
+  duration_ms: 8.7166
+  type: 'test'
+  location: 'C:\\Users\\admin\\Documents\\ONE-TALIBON-AJ-REDESIGN-R1\\tests\\Frontend\\r8-a1-search-contract.test.mjs:41:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /className="r8-search max-w/. Input:
+    
+    "import { Link, usePage } from '@inertiajs/react';\r\n" +
+      "import '../../../css/r8-search.css';\r\n" +
+      "import '../../../css/portal-visual-redesign.css';\r\n" +
+      'import {\r\n' +
+      '    ArrowUpRight,\r\n' +
+      '    BookOpen,\r\n' +
+      '    Compass,\r\n' +
+      '    FileText,\r\n' +
+      '    FolderSearch,\r\n' +
+      '    Inbox,\r\n' +
+      '    ListChecks,\r\n' +
+      '    Send,\r\n' +
+      '    Search,\r\n' +
+      '    SlidersHorizontal,\r\n' +
+      '    X,\r\n' +
+      "} from 'lucide-react';\r\n" +
+      "import { useEffect, useMemo, useState } from 'react';\r\n" +
+      "import PageFrame from '../../components/PageFrame';\r\n" +
+      "import PageHeader from '../../components/PageHeader';\r\n" +
+      "import { municipalPlans } from '../../data/municipal/plans';\r\n" +
+      "import { ppaRecords } from '../../data/municipal/ppas';\r\n" +
+      "import AppLayout from '../../layouts/AppLayout';\r\n" +
+      "import { buildPortalNavigation } from '../../navigation/portalNavigation';\r\n" +
+      "import type { SharedProps } from '../../types';\r\n" +
+      '\r\n' +
+      "type SearchKind = 'portal' | 'plan' | 'ppa';\r\n" +
+      "type SearchScope = 'all' | SearchKind;\r\n" +
+      '\r\n' +
+      'type ArchiveActivityItem = {\r\n' +
+      '    publicId: string;\r\n' +
+      '    name: string;\r\n' +
+      '    documentType: string;\r\n' +
+      '    classification: string;\r\n' +
+      '    uploadedAt?: string | null;\r\n' +
+      '    relatedReference?: string | null;\r\n' +
+      '    relatedTitle?: string | null;\r\n' +
+      '    currentOffice?: { name: string; shortName?: string | null } | null;\r\n' +
+      '};\r\n' +
+      '\r\n' +
+      'type ArchiveActivity = {\r\n' +
+      '    sentCount: number;\r\n' +
+      '    receivedCount: number;\r\n' +
+      '    recentSent: ArchiveActivityItem[];\r\n' +
+      '    recentReceived: ArchiveActivityItem[];\r\n' +
+      '};\r\n' +
+      '\r\n' +
+      'type Result = {\r\n' +
+      '    id: string;\r\n' +
+      '    kind: SearchKind;\r\n' +
+      '    title: string;\r\n' +
+      '    type: string;\r\n' +
+      '    office: string;\r\n' +
+      '    year: string;\r\n' +
+      '    status: string;\r\n' +
+      '    href: string;\r\n' +
+      '    reference: string;\r\n' +
+      '    date?: string;\r\n' +
+      '};\r\n' +
+      '\r\n' +
+      "const field = 'min-h-10 min-w-0 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 text-sm text-[var(--municipal-text)] outline-none focus:border-[var(--municipal-focus)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20';\r\n" +
+      '\r\n' +
+      'const resultTone: Record<SearchKind, { icon: typeof Compass; shell: string; label: string }> = {\r\n' +
+      '    portal: {\r\n' +
+      '        icon: Compass,\r\n' +
+      "        shell: 'bg-[#eef8f1] text-[#17633f]',\r\n" +
+      "        label: 'Portal destination',\r\n" +
+      '    },\r\n' +
+      '    plan: {\r\n' +
+      '        icon: BookOpen,\r\n' +
+      "        shell: 'bg-[#eef5ff] text-[#265fa8]',\r\n" +
+      "        label: 'Development plan',\r\n" +
+      '    },\r\n' +
+      '    ppa: {\r\n' +
+      '        icon: ListChecks,\r\n' +
+      "        shell: 'bg-[#fff8e8] text-[#9a6a08]',\r\n" +
+      "        label: 'PPA reference',\r\n" +
+      '    },\r\n' +
+      '};\r\n' +
+      '\r\n' +
+      'function relevanceScore(item: Result, query: string) {\r\n' +
+      '    if (!query) return 0;\r\n' +
+      '\r\n' +
+      '    const title = item.title.toLowerCase();\r\n' +
+      '    const reference = item.reference.toLowerCase();\r\n' +
+      '    const office = item.office.toLowerCase();\r\n' +
+      '    const type = item.type.toLowerCase();\r\n' +
+      '\r\n' +
+      '    if (title === query || reference === query) return 1000;\r\n' +
+      '    if (title.startsWith(query) || reference.startsWith(query)) return 800;\r\n' +
+      '    if (title.includes(query)) return 600;\r\n' +
+      '    if (reference.includes(query)) return 500;\r\n' +
+      '    if (office.includes(query)) return 300;\r\n' +
+      '    if (type.includes(query)) return 200;\r\n' +
+      '\r\n' +
+      '    const terms = query.split(/\\s+/).filter(Boolean);\r\n' +
+      "    const haystack = [title, reference, office, type].join(' ');\r\n" +
+      '    const matches = terms.filter((term) => haystack.includes(term)).length;\r\n' +
+      '\r\n' +
+      '    return matches * 100;\r\n' +
+      '}\r\n' +
+      '\r\n' +
+      'const formatArchiveDate = (value?: string | null) => {\r\n' +
+      "    if (!value) return '';\r\n" +
+      '    const date = new Date(value);\r\n' +
+      '    return Number.isNaN(date.getTime())\r\n' +
+      '        ? value\r\n' +
+      "        : date.toLocaleDateString('en-PH', { month: 'short', day: 'numeric' });\r\n" +
+      '};\r\n' +
+      '\r\n' +
+      'export default function PortalSearch({ archiveActivity }: { archiveActivity: ArchiveActivity }) {\r\n' +
+      '    const { workspaceExperience, permissions } = usePage<SharedProps>().props;\r\n' +
+      '    const { url } = usePage<SharedProps>();\r\n' +
+      '    const destinations = buildPortalNavigation(workspaceExperience, permissions.navigation).flatMap((group) => group.items);\r\n' +
+      "    const urlQuery = new URLSearchParams(url.split('?')[1] || '').get('q') || '';\r\n" +
+      '\r\n' +
+      '    const [query, setQuery] = useState(urlQuery);\r\n' +
+      "    const [scope, setScope] = useState<SearchScope>('all');\r\n" +
+      "    const [office, setOffice] = useState('');\r\n" +
+      "    const [year, setYear] = useState('');\r\n" +
+      "    const [status, setStatus] = useState('');\r\n" +
+      '    const [filtersOpen, setFiltersOpen] = useState(false);\r\n' +
+      "    const documentsAllowed = destinations.some((item) => item.key === 'documentCenter');\r\n" +
+      '\r\n' +
+      '    useEffect(() => { setQuery(urlQuery); }, [urlQuery]);\r\n' +
+      '\r\n' +
+      '    // Keep the existing q contract shareable without invoking a new search endpoint.\r\n' +
+      '    useEffect(() => {\r\n' +
+      '        const current = new URL(window.location.href);\r\n' +
+      "        if ((current.searchParams.get('q') || '') === query) return;\r\n" +
+      "        if (query.trim()) current.searchParams.set('q', query);\r\n" +
+      "        else current.searchParams.delete('q');\r\n" +
+      "        window.history.replaceState(window.history.state, '', `${current.pathname}${current.search}${current.hash}`);\r\n" +
+      '    }, [query]);\r\n' +
+      '\r\n' +
+      '    const results = useMemo<Result[]>(() => [\r\n' +
+      '        ...destinations\r\n' +
+      "            .filter((item) => item.key !== 'portalSearch')\r\n" +
+      '            .map((item) => ({\r\n' +
+      '                id: item.key,\r\n' +
+      "                kind: 'portal' as const,\r\n" +
+      '                title: item.label,\r\n' +
+      "                type: 'Portal destination',\r\n" +
+      "                office: '',\r\n" +
+      "                year: '',\r\n" +
+      "                status: 'Available',\r\n" +
+      '                href: item.href,\r\n' +
+      "                reference: 'ONE TALIBON',\r\n" +
+      '            })),\r\n' +
+      "        ...(destinations.some((item) => item.key === 'developmentPlans')\r\n" +
+      '            ? municipalPlans.map((plan) => ({\r\n' +
+      '                id: plan.id,\r\n' +
+      "                kind: 'plan' as const,\r\n" +
+      '                title: plan.title,\r\n' +
+      "                type: 'Development plan',\r\n" +
+      '                office: plan.leadOffice,\r\n' +
+      '                year: String(plan.coverageStart),\r\n' +
+      '                status: plan.status,\r\n' +
+      '                href: `/development-plans?search=${encodeURIComponent(plan.code)}`,\r\n' +
+      '                reference: plan.documentRef,\r\n' +
+      '                date: plan.lastActionDate,\r\n' +
+      '            }))\r\n' +
+      '            : []),\r\n' +
+      "        ...(destinations.some((item) => item.key === 'ppas')\r\n" +
+      '            ? ppaRecords.map((ppa) => ({\r\n' +
+      '                id: ppa.id,\r\n' +
+      "                kind: 'ppa' as const,\r\n" +
+      '                title: ppa.title,\r\n' +
+      "                type: 'PPA reference',\r\n" +
+      '                office: ppa.responsibleOffice,\r\n' +
+      '                year: String(ppa.year),\r\n' +
+      '                status: ppa.status,\r\n' +
+      '                href: `/ppas?search=${encodeURIComponent(ppa.id)}`,\r\n' +
+      '                reference: ppa.id,\r\n' +
+      '            }))\r\n' +
+      '            : []),\r\n' +
+      '    ], [destinations]);\r\n' +
+      '\r\n' +
+      '    const counts = useMemo(() => ({\r\n' +
+      '        all: results.length,\r\n' +
+      "        portal: results.filter((item) => item.kind === 'portal').length,\r\n" +
+      "        plan: results.filter((item) => item.kind === 'plan').length,\r\n" +
+      "        ppa: results.filter((item) => item.kind === 'ppa').length,\r\n" +
+      '    }), [results]);\r\n' +
+      '\r\n' +
+      "    const options = (key: 'office' | 'year' | 'status') => [...new Set(results.map((item) => item[key]).filter(Boolean))].sort();\r\n" +
+      '\r\n' +
+      '    const normalizedQuery = query.trim().toLowerCase();\r\n' +
+      '    const hasAdvancedFilters = Boolean(office || year || status);\r\n' +
+      "    const isDiscovery = !normalizedQuery && scope === 'all' && !hasAdvancedFilters;\r\n" +
+      '\r\n' +
+      '    const visible = useMemo(() => results\r\n' +
+      '        .filter((item) => {\r\n' +
+      "            const searchable = [item.title, item.reference, item.office, item.type].join(' ').toLowerCase();\r\n" +
+      '            return (!normalizedQuery || searchable.includes(normalizedQuery))\r\n' +
+      "                && (scope === 'all' || item.kind === scope)\r\n" +
+      '                && (!office || item.office === office)\r\n' +
+      '                && (!year || item.year === year)\r\n' +
+      '                && (!status || item.status === status);\r\n' +
+      '        })\r\n' +
+      '        .sort((a, b) => {\r\n' +
+      '            const score = relevanceScore(b, normalizedQuery) - relevanceScore(a, normalizedQuery);\r\n' +
+      '            if (score !== 0) return score;\r\n' +
+      '            return a.title.localeCompare(b.title);\r\n' +
+      '        }), [results, normalizedQuery, scope, office, year, status]);\r\n' +
+      '\r\n' +
+      '    const reset = () => {\r\n' +
+      "        setQuery('');\r\n" +
+      "        setScope('all');\r\n" +
+      "        setOffice('');\r\n" +
+      "        setYear('');\r\n" +
+      "        setStatus('');\r\n" +
+      '        setFiltersOpen(false);\r\n' +
+      '    };\r\n' +
+      '\r\n' +
+      "    const quickAccessKeys = ['documentCenter', 'myWork', 'developmentPlans', 'ppas', 'executiveDepartments', 'calendar'];\r\n" +
+      '    const quickAccess = quickAccessKeys\r\n' +
+      '        .map((key) => destinations.find((item) => item.key === key))\r\n' +
+      '        .filter((item): item is NonNullable<typeof item> => Boolean(item));\r\n' +
+      '\r\n' +
+      '    const scopeOptions: { key: SearchScope; label: string; count: number }[] = [\r\n' +
+      "        { key: 'all', label: 'All', count: counts.all },\r\n" +
+      "        { key: 'portal', label: 'Portal', count: counts.portal },\r\n" +
+      "        { key: 'plan', label: 'Plans', count: counts.plan },\r\n" +
+      "        { key: 'ppa', label: 'PPAs', count: counts.ppa },\r\n" +
+      '    ];\r\n' +
+      '\r\n' +
+      '    return (\r\n' +
+      '        <AppLayout title="Search Portal">\r\n' +
+      '            <PageFrame className="civic-page r8-search max-w-[1440px]" density="compact">\r\n' +
+      '                <PageHeader\r\n' +
+      '                    eyebrow="ONE TALIBON discovery"\r\n' +
+      '                    title="Search ONE TALIBON"\r\n' +
+      '                    description="Discover available portal workspaces and local planning references. Official records are searched separately under your existing permissions."\r\n' +
+      '                    icon={Search}\r\n' +
+      '                />\r\n' +
+      '\r\n' +
+      '                <section className="r8-search-console" aria-label="Portal and reference search">\r\n' +
+      '                    <div className="mb-4">\r\n' +
+      '                        <p className="r8-search-kicker">Portal discovery</p>\r\n' +
+      '                        <h2 className="mt-1 text-lg font-bold text-[var(--municipal-text)]">Find a workspace or reference</h2>\r\n' +
+      '                        <p className="mt-1 text-xs text-[var(--municipal-muted)]">Results below are portal links and prototype Plans/PPA references, not searchable document files.</p>\r\n' +
+      '                    </div>\r\n' +
+      '                    <label className="relative block">\r\n' +
+      '                        <span className="sr-only">Search portal destinations and planning referen'... 20646 more characters
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    import { Link, usePage } from '@inertiajs/react';
+    import '../../../css/r8-search.css';
+    import '../../../css/portal-visual-redesign.css';
+    import {
+        ArrowUpRight,
+        BookOpen,
+        Compass,
+        FileText,
+        FolderSearch,
+        Inbox,
+        ListChecks,
+        Send,
+        Search,
+        SlidersHorizontal,
+        X,
+    } from 'lucide-react';
+    import { useEffect, useMemo, useState } from 'react';
+    import PageFrame from '../../components/PageFrame';
+    import PageHeader from '../../components/PageHeader';
+    import { municipalPlans } from '../../data/municipal/plans';
+    import { ppaRecords } from '../../data/municipal/ppas';
+    import AppLayout from '../../layouts/AppLayout';
+    import { buildPortalNavigation } from '../../navigation/portalNavigation';
+    import type { SharedProps } from '../../types';
+    
+    type SearchKind = 'portal' | 'plan' | 'ppa';
+    type SearchScope = 'all' | SearchKind;
+    
+    type ArchiveActivityItem = {
+        publicId: string;
+        name: string;
+        documentType: string;
+        classification: string;
+        uploadedAt?: string | null;
+        relatedReference?: string | null;
+        relatedTitle?: string | null;
+        currentOffice?: { name: string; shortName?: string | null } | null;
+    };
+    
+    type ArchiveActivity = {
+        sentCount: number;
+        receivedCount: number;
+        recentSent: ArchiveActivityItem[];
+        recentReceived: ArchiveActivityItem[];
+    };
+    
+    type Result = {
+        id: string;
+        kind: SearchKind;
+        title: string;
+        type: string;
+        office: string;
+        year: string;
+        status: string;
+        href: string;
+        reference: string;
+        date?: string;
+    };
+    
+    const field = 'min-h-10 min-w-0 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 text-sm text-[var(--municipal-text)] outline-none focus:border-[var(--municipal-focus)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20';
+    
+    const resultTone: Record<SearchKind, { icon: typeof Compass; shell: string; label: string }> = {
+        portal: {
+            icon: Compass,
+            shell: 'bg-[#eef8f1] text-[#17633f]',
+            label: 'Portal destination',
+        },
+        plan: {
+            icon: BookOpen,
+            shell: 'bg-[#eef5ff] text-[#265fa8]',
+            label: 'Development plan',
+        },
+        ppa: {
+            icon: ListChecks,
+            shell: 'bg-[#fff8e8] text-[#9a6a08]',
+            label: 'PPA reference',
+        },
+    };
+    
+    function relevanceScore(item: Result, query: string) {
+        if (!query) return 0;
+    
+        const title = item.title.toLowerCase();
+        const reference = item.reference.toLowerCase();
+        const office = item.office.toLowerCase();
+        const type = item.type.toLowerCase();
+    
+        if (title === query || reference === query) return 1000;
+        if (title.startsWith(query) || reference.startsWith(query)) return 800;
+        if (title.includes(query)) return 600;
+        if (reference.includes(query)) return 500;
+        if (office.includes(query)) return 300;
+        if (type.includes(query)) return 200;
+    
+        const terms = query.split(/\s+/).filter(Boolean);
+        const haystack = [title, reference, office, type].join(' ');
+        const matches = terms.filter((term) => haystack.includes(term)).length;
+    
+        return matches * 100;
+    }
+    
+    const formatArchiveDate = (value?: string | null) => {
+        if (!value) return '';
+        const date = new Date(value);
+        return Number.isNaN(date.getTime())
+            ? value
+            : date.toLocaleDateString('en-PH', { month: 'short', day: 'numeric' });
+    };
+    
+    export default function PortalSearch({ archiveActivity }: { archiveActivity: ArchiveActivity }) {
+        const { workspaceExperience, permissions } = usePage<SharedProps>().props;
+        const { url } = usePage<SharedProps>();
+        const destinations = buildPortalNavigation(workspaceExperience, permissions.navigation).flatMap((group) => group.items);
+        const urlQuery = new URLSearchParams(url.split('?')[1] || '').get('q') || '';
+    
+        const [query, setQuery] = useState(urlQuery);
+        const [scope, setScope] = useState<SearchScope>('all');
+        const [office, setOffice] = useState('');
+        const [year, setYear] = useState('');
+        const [status, setStatus] = useState('');
+        const [filtersOpen, setFiltersOpen] = useState(false);
+        const documentsAllowed = destinations.some((item) => item.key === 'documentCenter');
+    
+        useEffect(() => { setQuery(urlQuery); }, [urlQuery]);
+    
+        // Keep the existing q contract shareable without invoking a new search endpoint.
+        useEffect(() => {
+            const current = new URL(window.location.href);
+            if ((current.searchParams.get('q') || '') === query) return;
+            if (query.trim()) current.searchParams.set('q', query);
+            else current.searchParams.delete('q');
+            window.history.replaceState(window.history.state, '', `${current.pathname}${current.search}${current.hash}`);
+        }, [query]);
+    
+        const results = useMemo<Result[]>(() => [
+            ...destinations
+                .filter((item) => item.key !== 'portalSearch')
+                .map((item) => ({
+                    id: item.key,
+                    kind: 'portal' as const,
+                    title: item.label,
+                    type: 'Portal destination',
+                    office: '',
+                    year: '',
+                    status: 'Available',
+                    href: item.href,
+                    reference: 'ONE TALIBON',
+                })),
+            ...(destinations.some((item) => item.key === 'developmentPlans')
+                ? municipalPlans.map((plan) => ({
+                    id: plan.id,
+                    kind: 'plan' as const,
+                    title: plan.title,
+                    type: 'Development plan',
+                    office: plan.leadOffice,
+                    year: String(plan.coverageStart),
+                    status: plan.status,
+                    href: `/development-plans?search=${encodeURIComponent(plan.code)}`,
+                    reference: plan.documentRef,
+                    date: plan.lastActionDate,
+                }))
+                : []),
+            ...(destinations.some((item) => item.key === 'ppas')
+                ? ppaRecords.map((ppa) => ({
+                    id: ppa.id,
+                    kind: 'ppa' as const,
+                    title: ppa.title,
+                    type: 'PPA reference',
+                    office: ppa.responsibleOffice,
+                    year: String(ppa.year),
+                    status: ppa.status,
+                    href: `/ppas?search=${encodeURIComponent(ppa.id)}`,
+                    reference: ppa.id,
+                }))
+                : []),
+        ], [destinations]);
+    
+        const counts = useMemo(() => ({
+            all: results.length,
+            portal: results.filter((item) => item.kind === 'portal').length,
+            plan: results.filter((item) => item.kind === 'plan').length,
+            ppa: results.filter((item) => item.kind === 'ppa').length,
+        }), [results]);
+    
+        const options = (key: 'office' | 'year' | 'status') => [...new Set(results.map((item) => item[key]).filter(Boolean))].sort();
+    
+        const normalizedQuery = query.trim().toLowerCase();
+        const hasAdvancedFilters = Boolean(office || year || status);
+        const isDiscovery = !normalizedQuery && scope === 'all' && !hasAdvancedFilters;
+    
+        const visible = useMemo(() => results
+            .filter((item) => {
+                const searchable = [item.title, item.reference, item.office, item.type].join(' ').toLowerCase();
+                return (!normalizedQuery || searchable.includes(normalizedQuery))
+                    && (scope === 'all' || item.kind === scope)
+                    && (!office || item.office === office)
+                    && (!year || item.year === year)
+                    && (!status || item.status === status);
+            })
+            .sort((a, b) => {
+                const score = relevanceScore(b, normalizedQuery) - relevanceScore(a, normalizedQuery);
+                if (score !== 0) return score;
+                return a.title.localeCompare(b.title);
+            }), [results, normalizedQuery, scope, office, year, status]);
+    
+        const reset = () => {
+            setQuery('');
+            setScope('all');
+            setOffice('');
+            setYear('');
+            setStatus('');
+            setFiltersOpen(false);
+        };
+    
+        const quickAccessKeys = ['documentCenter', 'myWork', 'developmentPlans', 'ppas', 'executiveDepartments', 'calendar'];
+        const quickAccess = quickAccessKeys
+            .map((key) => destinations.find((item) => item.key === key))
+            .filter((item): item is NonNullable<typeof item> => Boolean(item));
+    
+        const scopeOptions: { key: SearchScope; label: string; count: number }[] = [
+            { key: 'all', label: 'All', count: counts.all },
+            { key: 'portal', label: 'Portal', count: counts.portal },
+            { key: 'plan', label: 'Plans', count: counts.plan },
+            { key: 'ppa', label: 'PPAs', count: counts.ppa },
+        ];
+    
+        return (
+            <AppLayout title="Search Portal">
+                <PageFrame className="civic-page r8-search max-w-[1440px]" density="compact">
+                    <PageHeader
+                        eyebrow="ONE TALIBON discovery"
+                        title="Search ONE TALIBON"
+                        description="Discover available portal workspaces and local planning references. Official records are searched separately under your existing permissions."
+                        icon={Search}
+                    />
+    
+                    <section className="r8-search-console" aria-label="Portal and reference search">
+                        <div className="mb-4">
+                            <p className="r8-search-kicker">Portal discovery</p>
+                            <h2 className="mt-1 text-lg font-bold text-[var(--municipal-text)]">Find a workspace or reference</h2>
+                            <p className="mt-1 text-xs text-[var(--municipal-muted)]">Results below are portal links and prototype Plans/PPA references, not searchable document files.</p>
+                        </div>
+                        <label className="relative block">
+                            <span className="sr-only">Search portal destinations and planning references</span>
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--municipal-brand)]" size={19} aria-hidden="true" />
+                            <input
+                                type="search"
+                                value={query}
+                                onChange={(event) => setQuery(event.target.value)}
+                                placeholder="Search a workspace, plan, PPA or office..."
+                                className="r8-search-input"
+                            />
+                            {query ? (
+                                <button
+                                    type="button"
+                                    onClick={() => setQuery('')}
+                                    className="absolute right-2 top-1/2 flex min-h-9 min-w-9 -translate-y-1/2 items-center justify-center rounded-md text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]"
+                                    aria-label="Clear search"
+                                >
+                                    <X size={16} aria-hidden="true" />
+                                </button>
+                            ) : null}
+                        </label>
+    
+                        <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
+                            <div className="flex flex-wrap gap-1.5" aria-label="Filter by reference type">
+                                {scopeOptions.map((option) => (
+                                    <button
+                                        key={option.key}
+                                        type="button"
+                                        onClick={() => setScope(option.key)}
+                                        aria-pressed={scope === option.key}
+                                        className={`inline-flex min-h-11 items-center gap-1.5 rounded-md px-3 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] ${scope === option.key ? 'bg-[var(--municipal-brand)] text-white' : 'bg-[var(--municipal-surface-subtle)] text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
+                                    >
+                                        {option.label}
+                                        <span className={`rounded-full px-1.5 py-0.5 text-[9px] leading-none ${scope === option.key ? 'bg-white/20 text-white' : 'bg-white text-[var(--municipal-muted)]'}`}>{option.count}</span>
+                                    </button>
+                                ))}
+                            </div>
+    
+                            <button
+                                type="button"
+                                onClick={() => setFiltersOpen((value) => !value)}
+                                aria-expanded={filtersOpen}
+                                aria-controls="r8-search-filters"
+                                className={`inline-flex min-h-11 items-center gap-1.5 rounded-md border px-3 text-xs font-semibold ${filtersOpen || hasAdvancedFilters ? 'border-[var(--municipal-selected-border)] bg-[var(--municipal-selected-bg)] text-[var(--municipal-brand)]' : 'border-[var(--municipal-border)] bg-[var(--municipal-surface)] text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
+                            >
+                                <SlidersHorizontal size={14} aria-hidden="true" />
+                                More filters{hasAdvancedFilters ? ` · ${[office, year, status].filter(Boolean).length}` : ''}
+                            </button>
+                        </div>
+    
+                        {filtersOpen ? (
+                            <div id="r8-search-filters" className="mt-3 grid gap-3 border-t border-[var(--municipal-border)] pt-2 sm:grid-cols-3">
+                                <label className="min-w-0 text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">
+                                    Office
+                                    <select className={`${field} mt-1`} value={office} onChange={(event) => setOffice(event.target.value)}>
+                                        <option value="">All offices</option>
+                                        {options('office').map((option) => <option key={option}>{option}</option>)}
+                                    </select>
+                                </label>
+                                <label className="min-w-0 text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">
+                                    Year
+                                    <select className={`${field} mt-1`} value={year} onChange={(event) => setYear(event.target.value)}>
+                                        <option value="">All years</option>
+                                        {options('year').map((option) => <option key={option}>{option}</option>)}
+                                    </select>
+                                </label>
+                                <label className="min-w-0 text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">
+                                    Status
+                                    <select className={`${field} mt-1`} value={status} onChange={(event) => setStatus(event.target.value)}>
+                                        <option value="">All statuses</option>
+                                        {options('status').map((option) => <option key={option}>{option}</option>)}
+                                    </select>
+                                </label>
+                            </div>
+                        ) : null}
+    
+                        {(query || scope !== 'all' || hasAdvancedFilters) ? (
+                            <div className="mt-2 flex items-center justify-between gap-2 border-t border-[var(--municipal-border)] pt-2">
+                                <p className="text-[10px] text-[var(--municipal-muted)]">Only permitted portal destinations and locally defined planning references are included.</p>
+                                <button type="button" onClick={reset} className="min-h-11 shrink-0 rounded-md px-2.5 text-[11px] font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]">Reset</button>
+                            </div>
+                        ) : null}
+                    </section>
+    
+                    {isDiscovery ? (
+                        <>
+                            <section aria-labelledby="search-scope-summary">
+                                <div className="mb-1.5 flex items-center justify-between gap-3">
+                                    <h2 id="search-scope-summary" className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Browse searchable categories</h2>
+                                    <span className="text-[9px] text-[var(--municipal-muted)]">{counts.all} available entries</span>
+                                </div>
+    
+                                <div className="grid gap-2 sm:grid-cols-3">
+                                    {([
+                                        ['portal', 'Portal Destinations', counts.portal, Compass, 'bg-[#eef8f1] text-[#17633f]'],
+                                        ['plan', 'Development Plans', counts.plan, BookOpen, 'bg-[#eef5ff] text-[#265fa8]'],
+                                        ['ppa', 'PPAs', counts.ppa, ListChecks, 'bg-[#fff8e8] text-[#9a6a08]'],
+                                    ] as const).map(([key, label, count, Icon, tone]) => (
+                                        <button key={key} type="button" onClick={() => setScope(key)} className={`min-h-[96px] rounded-lg border border-[var(--municipal-border)] p-3 text-left transition hover:-translate-y-px ${tone}`}>
+                                            <div className="flex items-start justify-between gap-3">
+                                                <Icon size={19} aria-hidden="true" />
+                                                <strong className="text-2xl leading-none">{count}</strong>
+                                            </div>
+                                            <div className="mt-2 text-xs font-bold">{label}</div>
+                                            <div className="mt-0.5 text-[10px] opacity-75">Browse this search family</div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </section>
+    
+                            <section aria-labelledby="archive-activity-heading">
+                                <div className="mb-1.5 flex items-center justify-between gap-3">
+                                    <h2 id="archive-activity-heading" className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">My archive activity</h2>
+                                    {documentsAllowed ? <Link href="/documents" className="text-xs font-semibold text-[var(--municipal-brand)]">Open Document Center →</Link> : null}
+                                </div>
+    
+                                <div className="grid gap-2 lg:grid-cols-2">
+                                    {([
+                                        ['my_sent', 'My Sent Files', archiveActivity.sentCount, archiveActivity.recentSent, Send, 'bg-[#f5f0ff] text-[#7150a8]'],
+                                        ['my_received', 'My Received Files', archiveActivity.receivedCount, archiveActivity.recentReceived, Inbox, 'bg-[#eef9f8] text-[#247874]'],
+                                    ] as const).map(([scopeKey, label, count, items, Icon, tone]) => (
+                                        <div key={scopeKey} className="municipal-panel overflow-hidden">
+                                            <header className="flex min-h-10 items-center justify-between gap-3 border-b border-[var(--municipal-border)] px-3 py-2">
+                                                <div className="flex min-w-0 items-center gap-2">
+                                                    <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md ${tone}`}><Icon size={14} aria-hidden="true" /></div>
+                                                    <div>
+                                                        <h3 className="text-[11px] font-bold text-[var(--municipal-text)]">{label}</h3>
+                                                        <p className="text-[9px] text-[var(--municipal-muted)]">{count} archived file{count === 1 ? '' : 's'}</p>
+                                                    </div>
+                                                </div>
+                                                {documentsAllowed ? <Link href={`/documents?mode=files&archive_scope=${scopeKey}`} className="shrink-0 text-xs font-bold text-[var(--municipal-brand)]">View archive</Link> : null}
+                                            </header>
+                                            <div className="divide-y divide-[var(--municipal-border)]">
+                                                {documentsAllowed ? items.map((item) => (
+                                                    <Link
+                                                        key={item.publicId}
+                                                        href={`/documents?mode=files&archive_scope=${scopeKey}&document=${encodeURIComponent(item.publicId)}`}
+                                                        className="flex min-h-11 items-center gap-2.5 px-3 py-1.5 hover:bg-[var(--municipal-hover)]"
+                                                    >
+                                                        <FileText size={14} className="shrink-0 text-[var(--municipal-brand)]" aria-hidden="true" />
+                                                        <div className="min-w-0 flex-1">
+                                                            <div className="truncate text-[10px] font-semibold text-[var(--municipal-text)]">{item.name}</div>
+                                                            <div className="truncate text-[9px] text-[var(--municipal-muted)]">
+                                                                {item.relatedReference || item.relatedTitle || item.documentType}
+                                                                {item.currentOffice ? ` · ${item.currentOffice.shortName || item.currentOffice.name}` : ''}
+                                                                {item.uploadedAt ? ` · ${formatArchiveDate(item.uploadedAt)}` : ''}
+                                                            </div>
+                                                        </div>
+                                                        <ArrowUpRight size={12} className="shrink-0 text-[var(--municipal-muted)]" aria-hidden="true" />
+                                                    </Link>
+                                                )) : null}
+                                                {!items.length ? <p className="px-3 py-3 text-[10px] text-[var(--municipal-muted)]">No {scopeKey === 'my_sent' ? 'sent' : 'received'} files in your authorized archive yet.</p> : null}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+    
+                            <section className="grid gap-3 lg:grid-cols-[minmax(0,1.4fr)_minmax(280px,.6fr)]">
+                                <div className="municipal-panel overflow-hidden">
+                                    <header className="flex min-h-10 items-center justify-between gap-3 border-b border-[var(--municipal-border)] px-3 py-2">
+                                        <div>
+                                            <h2 className="text-[13px] font-bold">Quick access</h2>
+                                            <p className="text-[10px] text-[var(--municipal-muted)]">Common portal destinations available to your account</p>
+                                        </div>
+                                    </header>
+                                    <div className="grid sm:grid-cols-2">
+                                        {quickAccess.map((item) => {
+                                            const Icon = item.icon;
+                                            return (
+                                                <Link key={item.key} href={item.href} className="flex min-h-12 items-center gap-2.5 border-b border-[var(--municipal-border)] px-3 py-2 hover:bg-[var(--municipal-hover)] sm:[&:nth-child(odd)]:border-r">
+                                                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand)]"><Icon size={15} aria-hidden="true" /></div>
+                                                    <span className="min-w-0 flex-1 truncate text-xs font-semibold">{item.label}</span>
+                                                    <ArrowUpRight size={13} className="shrink-0 text-[var(--municipal-muted)]" aria-hidden="true" />
+                                                </Link>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+    
+                                <div className="municipal-panel flex min-h-[150px] flex-col justify-between p-3">
+                                    <div>
+                                        <div className="flex h-9 w-9 items-center justify-center rounded-md bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand)]"><FolderSearch size={17} aria-hidden="true" /></div>
+                                        <h2 className="mt-2 text-[13px] font-bold">Authorized records</h2>
+                                        <p className="mt-1 text-[11px] leading-5 text-[var(--municipal-muted)]">Correspondence, workflow transactions and other authorized records remain in the Records Register.</p>
+                                    </div>
+                                    {permissions.navigation.records ? (
+                                        <Link href="/records" className="mt-3 inline-flex min-h-10 items-center justify-between rounded-md border border-[var(--municipal-border)] px-3 text-xs font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]">
+                                            Search Records Register <ArrowUpRight size={14} aria-hidden="true" />
+                                        </Link>
+                                    ) : null}
+                                </div>
+                            </section>
+                        </>
+                    ) : (
+                        <>
+                            <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+                                <p aria-live="polite">
+                                    <strong className="text-[var(--municipal-text)]">{visible.length}</strong> result{visible.length === 1 ? '' : 's'}
+                                    {query ? ` for “${query}”` : ''}
+                                </p>
+                                {permissions.navigation.records ? (
+                                    <Link href={`/records?search=${encodeURIComponent(query)}`} className="inline-flex min-h-9 items-center gap-1 text-[11px] font-semibold text-[var(--municipal-brand)]">
+                                        Search authorized records <ArrowUpRight size={13} />
+                                    </Link>
+                                ) : null}
+                            </div>
+    
+                            <section className="r8-search-results" aria-label="Portal and reference results">
+                                {visible.map((item) => {
+                                    const tone = resultTone[item.kind];
+                                    const Icon = tone.icon;
+    
+                                    return (
+                                        <article key={`${item.kind}:${item.id}`} className="r8-search-result">
+                                            <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md ${tone.shell}`}><Icon size={15} aria-hidden="true" /></div>
+                                            <div className="min-w-0 flex-1">
+                                                <Link href={item.href} className="r8-search-result-title block text-[var(--municipal-text)] hover:underline">{item.title}</Link>
+                                                <div className="r8-search-result-meta mt-1">
+                                                    <span className="font-semibold text-[var(--municipal-brand)]">{tone.label}</span>
+                                                    {item.office ? <span>{item.office}</span> : null}
+                                                    <span>{item.status}</span>
+                                                    {item.year ? <span>{item.year}</span> : null}
+                                                    {item.date ? <span>Updated {item.date}</span> : null}
+                                                </div>
+                                                <div className="r8-search-ref mt-1">{item.reference}</div>
+                                            </div>
+                                            <Link href={item.href} aria-label={`Open ${item.title}`} className="r8-search-action inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-[var(--municipal-brand)] hover:bg-[var(--municipal-brand-soft)]"><span className="sr-only">Open result</span><ArrowUpRight size={15} /></Link>
+                                        </article>
+                                    );
+                                })}
+    
+                                {!visible.length ? (
+                                    <div className="p-6 text-center">
+                                        <Search className="mx-auto text-[var(--municipal-muted)]" size={22} aria-hidden="true" />
+                                        <h2 className="mt-2 text-sm font-bold">No matching results</h2>
+                                        <p className="mt-1 text-xs text-[var(--municipal-muted)]">Change the search terms, category or filters.</p>
+                                        <button type="button" onClick={reset} className="mt-3 min-h-10 rounded-md px-3 text-xs font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]">Clear search</button>
+                                    </div>
+                                ) : null}
+                            </section>
+    
+                            <p className="text-[10px] text-[var(--municipal-muted)]">Plans and PPAs are prototype reference entries, not validated municipal approvals or downloadable files. Use Records Search or the Document Center for authorized records and files.</p>
+                        </>
+                    )}
+                </PageFrame>
+            </AppLayout>
+        );
+    }
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/admin/Documents/ONE-TALIBON-AJ-REDESIGN-R1/tests/Frontend/r8-a1-search-contract.test.mjs:42:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: server-backed records and files remain distinct modes
+ok 67 - server-backed records and files remain distinct modes
+  ---
+  duration_ms: 11.5847
+  type: 'test'
+  ...
+# Subtest: selected authorized record metadata has a dedicated desktop pane and mobile inline disclosure
+ok 68 - selected authorized record metadata has a dedicated desktop pane and mobile inline disclosure
+  ---
+  duration_ms: 1.0263
+  type: 'test'
+  ...
+# Subtest: pagination, server filters and legitimate empty state are retained
+ok 69 - pagination, server filters and legitimate empty state are retained
+  ---
+  duration_ms: 0.7611
+  type: 'test'
+  ...
+# Subtest: classification and file actions remain tied to server projection
+ok 70 - classification and file actions remain tied to server projection
+  ---
+  duration_ms: 2.0285
+  type: 'test'
+  ...
+# Subtest: A3 preserves server supplied directory and office counts without synthetic KPIs
+ok 71 - A3 preserves server supplied directory and office counts without synthetic KPIs
+  ---
+  duration_ms: 17.8127
+  type: 'test'
+  ...
+# Subtest: A3 retains real office grouping and normalized search
+ok 72 - A3 retains real office grouping and normalized search
+  ---
+  duration_ms: 1.1012
+  type: 'test'
+  ...
+# Subtest: A3 retains guarded Records access and authority boundary
+ok 73 - A3 retains guarded Records access and authority boundary
+  ---
+  duration_ms: 1.0968
+  type: 'test'
+  ...
+# Subtest: A3 styling is page-scoped, responsive and accessibility-aware
+ok 74 - A3 styling is page-scoped, responsive and accessibility-aware
+  ---
+  duration_ms: 1.3948
+  type: 'test'
+  ...
+# Subtest: B1 cover grid uses source-owned plan fields and explicit illustrative label
+ok 75 - B1 cover grid uses source-owned plan fields and explicit illustrative label
+  ---
+  duration_ms: 13.0779
+  type: 'test'
+  ...
+# Subtest: B1 filters preserve dataset-backed predicates and reset
+ok 76 - B1 filters preserve dataset-backed predicates and reset
+  ---
+  duration_ms: 1.067
+  type: 'test'
+  ...
+# Subtest: B1 dialog retains Escape, Tab cycle, focus restoration and scroll lock
+ok 77 - B1 dialog retains Escape, Tab cycle, focus restoration and scroll lock
+  ---
+  duration_ms: 1.5993
+  type: 'test'
+  ...
+# Subtest: B1 styling is rooted and includes compact mobile, reduced-motion and high-contrast accommodations
+not ok 78 - B1 styling is rooted and includes compact mobile, reduced-motion and high-contrast accommodations
+  ---
+  duration_ms: 10.0936
+  type: 'test'
+  location: 'C:\\Users\\admin\\Documents\\ONE-TALIBON-AJ-REDESIGN-R1\\tests\\Frontend\\r8-b1-plans-library.test.mjs:30:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /className="ot-r6-modules ot-r6-plans r8-plans"/. Input:
+    
+    "import '../../../css/ot-r6-modules.css';\r\n" +
+      "import '../../../css/r8-plans.css';\r\n" +
+      "import '../../../css/portal-visual-redesign.css';\r\n" +
+      "import { ClipboardList } from 'lucide-react';\r\n" +
+      "import { useEffect, useMemo, useRef, useState } from 'react';\r\n" +
+      "import PageFrame from '../../components/PageFrame';\r\n" +
+      "import PageHeader from '../../components/PageHeader';\r\n" +
+      "import PlanCoverageSummary from '../../components/plans/PlanCoverageSummary';\r\n" +
+      "import PlanFilterBar, { type PlanFilters } from '../../components/plans/PlanFilterBar';\r\n" +
+      "import PlanMetricGrid from '../../components/plans/PlanMetricGrid';\r\n" +
+      "import PlanMilestoneQueue from '../../components/plans/PlanMilestoneQueue';\r\n" +
+      "import PlanCard from '../../components/plans/PlanCard';\r\n" +
+      "import { getPlanMetrics, municipalPlans } from '../../data/municipal/plans';\r\n" +
+      "import AppLayout from '../../layouts/AppLayout';\r\n" +
+      '\r\n' +
+      'const initialFilters: PlanFilters = {\r\n' +
+      "    query: '',\r\n" +
+      "    status: 'All',\r\n" +
+      "    horizon: 'All',\r\n" +
+      "    leadOffice: 'All',\r\n" +
+      '};\r\n' +
+      '\r\n' +
+      'export default function PlansIndex() {\r\n' +
+      "    const [filters, setFilters] = useState<PlanFilters>(() => ({ ...initialFilters, query: typeof window === 'undefined' ? '' : new URLSearchParams(window.location.search).get('search') ?? '' }));\r\n" +
+      '    const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);\r\n' +
+      '    const dialogRef = useRef<HTMLDivElement>(null);\r\n' +
+      '    const closeButtonRef = useRef<HTMLButtonElement>(null);\r\n' +
+      '\r\n' +
+      '    const leadOffices = useMemo(\r\n' +
+      '        () => [...new Set(municipalPlans.map((plan) => plan.leadOffice))].sort((a, b) => a.localeCompare(b)),\r\n' +
+      '        [],\r\n' +
+      '    );\r\n' +
+      '\r\n' +
+      '    const filteredPlans = useMemo(() => {\r\n' +
+      '        const query = filters.query.trim().toLowerCase();\r\n' +
+      '        return municipalPlans.filter((plan) => {\r\n' +
+      "            const searchText = [plan.code, plan.title, plan.leadOffice, plan.documentRef, ...plan.coordinatingOffices].join(' ').toLowerCase();\r\n" +
+      '            return (\r\n' +
+      '                (!query || searchText.includes(query)) &&\r\n' +
+      "                (filters.status === 'All' || plan.status === filters.status) &&\r\n" +
+      "                (filters.horizon === 'All' || plan.horizon === filters.horizon) &&\r\n" +
+      "                (filters.leadOffice === 'All' || plan.leadOffice === filters.leadOffice)\r\n" +
+      '            );\r\n' +
+      '        });\r\n' +
+      '    }, [filters]);\r\n' +
+      '\r\n' +
+      '    const selectedPlan = filteredPlans.find((plan) => plan.id === selectedPlanId);\r\n' +
+      '    const metrics = useMemo(() => getPlanMetrics(filteredPlans), [filteredPlans]);\r\n' +
+      '\r\n' +
+      '    const closePlanDetails = () => {\r\n' +
+      '        const planId = selectedPlanId;\r\n' +
+      '        setSelectedPlanId(null);\r\n' +
+      "        if (planId && typeof window !== 'undefined') {\r\n" +
+      '            window.requestAnimationFrame(() => document.getElementById(`plan-trigger-${planId}`)?.focus());\r\n' +
+      '        }\r\n' +
+      '    };\r\n' +
+      '\r\n' +
+      '    useEffect(() => {\r\n' +
+      "        if (!selectedPlanId || typeof document === 'undefined') return;\r\n" +
+      '        const previousOverflow = document.body.style.overflow;\r\n' +
+      "        document.body.style.overflow = 'hidden';\r\n" +
+      '        closeButtonRef.current?.focus();\r\n' +
+      '\r\n' +
+      '        const onKeyDown = (event: KeyboardEvent) => {\r\n' +
+      "            if (event.key === 'Escape') {\r\n" +
+      '                event.preventDefault();\r\n' +
+      '                const planId = selectedPlanId;\r\n' +
+      '                setSelectedPlanId(null);\r\n' +
+      '                window.requestAnimationFrame(() => document.getElementById(`plan-trigger-${planId}`)?.focus());\r\n' +
+      '                return;\r\n' +
+      '            }\r\n' +
+      "            if (event.key !== 'Tab' || !dialogRef.current) return;\r\n" +
+      `            const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'));\r\n` +
+      '            if (focusable.length === 0) {\r\n' +
+      '                event.preventDefault();\r\n' +
+      '                dialogRef.current.focus();\r\n' +
+      '                return;\r\n' +
+      '            }\r\n' +
+      '            const first = focusable[0];\r\n' +
+      '            const last = focusable[focusable.length - 1];\r\n' +
+      '            if (event.shiftKey && document.activeElement === first) {\r\n' +
+      '                event.preventDefault();\r\n' +
+      '                last.focus();\r\n' +
+      '            } else if (!event.shiftKey && document.activeElement === last) {\r\n' +
+      '                event.preventDefault();\r\n' +
+      '                first.focus();\r\n' +
+      '            }\r\n' +
+      '        };\r\n' +
+      '\r\n' +
+      "        document.addEventListener('keydown', onKeyDown);\r\n" +
+      '        return () => {\r\n' +
+      '            document.body.style.overflow = previousOverflow;\r\n' +
+      "            document.removeEventListener('keydown', onKeyDown);\r\n" +
+      '        };\r\n' +
+      '    }, [selectedPlanId]);\r\n' +
+      '\r\n' +
+      '    return (\r\n' +
+      '        <AppLayout title="LGU Plans Library">\r\n' +
+      '            <PageFrame width="wide" density="compact" className="civic-page ot-r6-modules ot-r6-plans r8-plans">\r\n' +
+      '                <PageHeader eyebrow="Municipality of Talibon · Planning references" title="LGU Plans Library" description="Browse planning references by code, coverage, status, and lead office." icon={ClipboardList} />\r\n' +
+      '                <div className="r8-plans-notice" role="note"><strong>Reference library only.</strong> Records shown here are not validated live municipal approvals. Covers are illustrative graphics, not scanned or certified documents.</div>\r\n' +
+      '                <PlanFilterBar filters={filters} leadOffices={leadOffices} resultCount={filteredPlans.length} onChange={(nextFilters) => { setFilters(nextFilters); setSelectedPlanId(null); }} />\r\n' +
+      '                <section aria-label="Plans library" className="ot-r6-plan-grid r8-plans-grid grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-3">\r\n' +
+      '                    {filteredPlans.map((plan) => <PlanCard key={plan.id} plan={plan} selected={selectedPlanId === plan.id} onSelect={() => setSelectedPlanId(plan.id)} />)}\r\n' +
+      '                    {filteredPlans.length === 0 && <div role="status" className="municipal-panel border-dashed p-8 text-center text-sm text-[var(--municipal-muted)] sm:col-span-2 xl:col-span-3"><strong className="block text-[var(--municipal-text)]">No matching plans</strong><span className="mt-1 block">Change the search or clear the filters to see the reference library.</span></div>}\r\n' +
+      '                </section>\r\n' +
+      '                <details className="group municipal-panel min-w-0 rounded-lg text-[var(--municipal-muted)]">\r\n' +
+      '                    <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-[13px] font-semibold marker:hidden">\r\n' +
+      '                        <span>Planning context · filtered reference records</span>\r\n' +
+      '                        <span className="text-xs text-[var(--municipal-brand)] group-open:hidden">Show</span>\r\n' +
+      '                        <span className="hidden text-xs text-[var(--municipal-brand)] group-open:inline">Hide</span>\r\n' +
+      '                    </summary>\r\n' +
+      '                    <div className="space-y-3 border-t border-[var(--municipal-border)] p-3">\r\n' +
+      '                        <PlanMetricGrid metrics={metrics} />\r\n' +
+      '                        <PlanCoverageSummary plans={filteredPlans} />\r\n' +
+      '                        <PlanMilestoneQueue plans={filteredPlans} />\r\n' +
+      '                    </div>\r\n' +
+      '                </details>\r\n' +
+      '            </PageFrame>\r\n' +
+      '\r\n' +
+      '            {selectedPlan && (\r\n' +
+      '                <div className="r8-plans-dialog-backdrop fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/45 p-3 sm:p-5" onMouseDown={(event) => { if (event.currentTarget === event.target) closePlanDetails(); }}>\r\n' +
+      '                    <div\r\n' +
+      '                        id="selected-plan-details"\r\n' +
+      '                        ref={dialogRef}\r\n' +
+      '                        role="dialog"\r\n' +
+      '                        aria-modal="true"\r\n' +
+      '                        aria-labelledby="selected-plan-title"\r\n' +
+      '                        aria-describedby="selected-plan-description"\r\n' +
+      '                        tabIndex={-1}\r\n' +
+      '                        className="municipal-panel ot-r6-plan-dialog r8-plans-dialog max-h-[calc(100dvh-1.5rem)] w-full max-w-3xl overflow-y-auto rounded-[var(--municipal-radius-overlay)] border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] shadow-2xl sm:max-h-[calc(100vh-2.5rem)]"\r\n' +
+      '                    >\r\n' +
+      '                        <header className="sticky top-0 z-10 flex items-start justify-between gap-3 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 py-2.5 sm:px-4">\r\n' +
+      '                            <div className="min-w-0">\r\n' +
+      '                                <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--municipal-brand)]">{selectedPlan.code}</p>\r\n' +
+      '                                <h2 id="selected-plan-title" className="mt-0.5 break-words text-base font-bold leading-6 text-[var(--municipal-text)]">{selectedPlan.title}</h2>\r\n' +
+      '                                <p id="selected-plan-description" className="mt-0.5 text-[11px] text-[var(--municipal-muted)]">Reference data only · Not a validated live municipal approval or certified document.</p>\r\n' +
+      '                            </div>\r\n' +
+      '                            <button ref={closeButtonRef} type="button" onClick={closePlanDetails} className="min-h-11 shrink-0 rounded-md px-3 text-xs font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" aria-label={`Close details for ${selectedPlan.code}`}>Close</button>\r\n' +
+      '                        </header>\r\n' +
+      '\r\n' +
+      '                        <dl className="grid gap-x-5 gap-y-2.5 p-3 text-[13px] leading-5 sm:grid-cols-2 sm:p-4">\r\n' +
+      '                            {[\r\n' +
+      "                                ['Planning horizon', selectedPlan.horizon],\r\n" +
+      "                                ['Lead office', selectedPlan.leadOffice],\r\n" +
+      "                                ['Coverage', selectedPlan.coverageStart === selectedPlan.coverageEnd ? String(selectedPlan.coverageStart) : `${selectedPlan.coverageStart} - ${selectedPlan.coverageEnd}`],\r\n" +
+      "                                ['Recorded status', selectedPlan.status],\r\n" +
+      "                                ['Document reference', selectedPlan.documentRef],\r\n" +
+      "                                ['Authority / adop"... 1151 more characters
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    import '../../../css/ot-r6-modules.css';
+    import '../../../css/r8-plans.css';
+    import '../../../css/portal-visual-redesign.css';
+    import { ClipboardList } from 'lucide-react';
+    import { useEffect, useMemo, useRef, useState } from 'react';
+    import PageFrame from '../../components/PageFrame';
+    import PageHeader from '../../components/PageHeader';
+    import PlanCoverageSummary from '../../components/plans/PlanCoverageSummary';
+    import PlanFilterBar, { type PlanFilters } from '../../components/plans/PlanFilterBar';
+    import PlanMetricGrid from '../../components/plans/PlanMetricGrid';
+    import PlanMilestoneQueue from '../../components/plans/PlanMilestoneQueue';
+    import PlanCard from '../../components/plans/PlanCard';
+    import { getPlanMetrics, municipalPlans } from '../../data/municipal/plans';
+    import AppLayout from '../../layouts/AppLayout';
+    
+    const initialFilters: PlanFilters = {
+        query: '',
+        status: 'All',
+        horizon: 'All',
+        leadOffice: 'All',
+    };
+    
+    export default function PlansIndex() {
+        const [filters, setFilters] = useState<PlanFilters>(() => ({ ...initialFilters, query: typeof window === 'undefined' ? '' : new URLSearchParams(window.location.search).get('search') ?? '' }));
+        const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
+        const dialogRef = useRef<HTMLDivElement>(null);
+        const closeButtonRef = useRef<HTMLButtonElement>(null);
+    
+        const leadOffices = useMemo(
+            () => [...new Set(municipalPlans.map((plan) => plan.leadOffice))].sort((a, b) => a.localeCompare(b)),
+            [],
+        );
+    
+        const filteredPlans = useMemo(() => {
+            const query = filters.query.trim().toLowerCase();
+            return municipalPlans.filter((plan) => {
+                const searchText = [plan.code, plan.title, plan.leadOffice, plan.documentRef, ...plan.coordinatingOffices].join(' ').toLowerCase();
+                return (
+                    (!query || searchText.includes(query)) &&
+                    (filters.status === 'All' || plan.status === filters.status) &&
+                    (filters.horizon === 'All' || plan.horizon === filters.horizon) &&
+                    (filters.leadOffice === 'All' || plan.leadOffice === filters.leadOffice)
+                );
+            });
+        }, [filters]);
+    
+        const selectedPlan = filteredPlans.find((plan) => plan.id === selectedPlanId);
+        const metrics = useMemo(() => getPlanMetrics(filteredPlans), [filteredPlans]);
+    
+        const closePlanDetails = () => {
+            const planId = selectedPlanId;
+            setSelectedPlanId(null);
+            if (planId && typeof window !== 'undefined') {
+                window.requestAnimationFrame(() => document.getElementById(`plan-trigger-${planId}`)?.focus());
+            }
+        };
+    
+        useEffect(() => {
+            if (!selectedPlanId || typeof document === 'undefined') return;
+            const previousOverflow = document.body.style.overflow;
+            document.body.style.overflow = 'hidden';
+            closeButtonRef.current?.focus();
+    
+            const onKeyDown = (event: KeyboardEvent) => {
+                if (event.key === 'Escape') {
+                    event.preventDefault();
+                    const planId = selectedPlanId;
+                    setSelectedPlanId(null);
+                    window.requestAnimationFrame(() => document.getElementById(`plan-trigger-${planId}`)?.focus());
+                    return;
+                }
+                if (event.key !== 'Tab' || !dialogRef.current) return;
+                const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'));
+                if (focusable.length === 0) {
+                    event.preventDefault();
+                    dialogRef.current.focus();
+                    return;
+                }
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                if (event.shiftKey && document.activeElement === first) {
+                    event.preventDefault();
+                    last.focus();
+                } else if (!event.shiftKey && document.activeElement === last) {
+                    event.preventDefault();
+                    first.focus();
+                }
+            };
+    
+            document.addEventListener('keydown', onKeyDown);
+            return () => {
+                document.body.style.overflow = previousOverflow;
+                document.removeEventListener('keydown', onKeyDown);
+            };
+        }, [selectedPlanId]);
+    
+        return (
+            <AppLayout title="LGU Plans Library">
+                <PageFrame width="wide" density="compact" className="civic-page ot-r6-modules ot-r6-plans r8-plans">
+                    <PageHeader eyebrow="Municipality of Talibon · Planning references" title="LGU Plans Library" description="Browse planning references by code, coverage, status, and lead office." icon={ClipboardList} />
+                    <div className="r8-plans-notice" role="note"><strong>Reference library only.</strong> Records shown here are not validated live municipal approvals. Covers are illustrative graphics, not scanned or certified documents.</div>
+                    <PlanFilterBar filters={filters} leadOffices={leadOffices} resultCount={filteredPlans.length} onChange={(nextFilters) => { setFilters(nextFilters); setSelectedPlanId(null); }} />
+                    <section aria-label="Plans library" className="ot-r6-plan-grid r8-plans-grid grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                        {filteredPlans.map((plan) => <PlanCard key={plan.id} plan={plan} selected={selectedPlanId === plan.id} onSelect={() => setSelectedPlanId(plan.id)} />)}
+                        {filteredPlans.length === 0 && <div role="status" className="municipal-panel border-dashed p-8 text-center text-sm text-[var(--municipal-muted)] sm:col-span-2 xl:col-span-3"><strong className="block text-[var(--municipal-text)]">No matching plans</strong><span className="mt-1 block">Change the search or clear the filters to see the reference library.</span></div>}
+                    </section>
+                    <details className="group municipal-panel min-w-0 rounded-lg text-[var(--municipal-muted)]">
+                        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-[13px] font-semibold marker:hidden">
+                            <span>Planning context · filtered reference records</span>
+                            <span className="text-xs text-[var(--municipal-brand)] group-open:hidden">Show</span>
+                            <span className="hidden text-xs text-[var(--municipal-brand)] group-open:inline">Hide</span>
+                        </summary>
+                        <div className="space-y-3 border-t border-[var(--municipal-border)] p-3">
+                            <PlanMetricGrid metrics={metrics} />
+                            <PlanCoverageSummary plans={filteredPlans} />
+                            <PlanMilestoneQueue plans={filteredPlans} />
+                        </div>
+                    </details>
+                </PageFrame>
+    
+                {selectedPlan && (
+                    <div className="r8-plans-dialog-backdrop fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/45 p-3 sm:p-5" onMouseDown={(event) => { if (event.currentTarget === event.target) closePlanDetails(); }}>
+                        <div
+                            id="selected-plan-details"
+                            ref={dialogRef}
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="selected-plan-title"
+                            aria-describedby="selected-plan-description"
+                            tabIndex={-1}
+                            className="municipal-panel ot-r6-plan-dialog r8-plans-dialog max-h-[calc(100dvh-1.5rem)] w-full max-w-3xl overflow-y-auto rounded-[var(--municipal-radius-overlay)] border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] shadow-2xl sm:max-h-[calc(100vh-2.5rem)]"
+                        >
+                            <header className="sticky top-0 z-10 flex items-start justify-between gap-3 border-b border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 py-2.5 sm:px-4">
+                                <div className="min-w-0">
+                                    <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--municipal-brand)]">{selectedPlan.code}</p>
+                                    <h2 id="selected-plan-title" className="mt-0.5 break-words text-base font-bold leading-6 text-[var(--municipal-text)]">{selectedPlan.title}</h2>
+                                    <p id="selected-plan-description" className="mt-0.5 text-[11px] text-[var(--municipal-muted)]">Reference data only · Not a validated live municipal approval or certified document.</p>
+                                </div>
+                                <button ref={closeButtonRef} type="button" onClick={closePlanDetails} className="min-h-11 shrink-0 rounded-md px-3 text-xs font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" aria-label={`Close details for ${selectedPlan.code}`}>Close</button>
+                            </header>
+    
+                            <dl className="grid gap-x-5 gap-y-2.5 p-3 text-[13px] leading-5 sm:grid-cols-2 sm:p-4">
+                                {[
+                                    ['Planning horizon', selectedPlan.horizon],
+                                    ['Lead office', selectedPlan.leadOffice],
+                                    ['Coverage', selectedPlan.coverageStart === selectedPlan.coverageEnd ? String(selectedPlan.coverageStart) : `${selectedPlan.coverageStart} - ${selectedPlan.coverageEnd}`],
+                                    ['Recorded status', selectedPlan.status],
+                                    ['Document reference', selectedPlan.documentRef],
+                                    ['Authority / adoption', selectedPlan.authority],
+                                    ['Next milestone', `${selectedPlan.nextMilestone} / ${selectedPlan.nextMilestoneDate}`],
+                                    ['Required action', selectedPlan.requiredAction],
+                                    ['Coordinating offices', selectedPlan.coordinatingOffices.join('; ')],
+                                    ['Last action', `${selectedPlan.lastAction} / ${selectedPlan.lastActionDate}`],
+                                    ['Record completion', `${selectedPlan.sectionsComplete} of ${selectedPlan.sectionsTotal} sections`],
+                                ].map(([label, value]) => (
+                                    <div key={label} className="min-w-0">
+                                        <dt className="text-[11px] font-semibold text-[var(--municipal-text)]">{label}</dt>
+                                        <dd className="break-words text-[var(--municipal-muted)]">{value}</dd>
+                                    </div>
+                                ))}
+                            </dl>
+                        </div>
+                    </div>
+                )}
+            </AppLayout>
+        );
+    }
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/admin/Documents/ONE-TALIBON-AJ-REDESIGN-R1/tests/Frontend/r8-b1-plans-library.test.mjs:31:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: B2 retains all seven reference-data filter predicates and reset
+ok 79 - B2 retains all seven reference-data filter predicates and reset
+  ---
+  duration_ms: 8.681
+  type: 'test'
+  ...
+# Subtest: B2 status badges are restricted to five PPA domain status values
+ok 80 - B2 status badges are restricted to five PPA domain status values
+  ---
+  duration_ms: 1.588
+  type: 'test'
+  ...
+# Subtest: B2 preserves mobile cards, desktop register and detail focus restoration
+ok 81 - B2 preserves mobile cards, desktop register and detail focus restoration
+  ---
+  duration_ms: 1.3267
+  type: 'test'
+  ...
+# Subtest: B2 preserves reference disclosures and adds no monitoring or CRUD surface
+ok 82 - B2 preserves reference disclosures and adds no monitoring or CRUD surface
+  ---
+  duration_ms: 1.3406
+  type: 'test'
+  ...
+# (node:22756) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: schedule dates respect municipal timezone, date-only values and leap years
+ok 83 - schedule dates respect municipal timezone, date-only values and leap years
+  ---
+  duration_ms: 167.1135
+  type: 'test'
+  ...
+# Subtest: timeline clips real durations and rejects missing, reversed or out-of-range intervals
+ok 84 - timeline clips real durations and rejects missing, reversed or out-of-range intervals
+  ---
+  duration_ms: 4.75
+  type: 'test'
+  ...
+# (node:13752) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: contract Task serializer does not grant authority from owning department snapshot
+ok 85 - contract Task serializer does not grant authority from owning department snapshot
+  ---
+  duration_ms: 13.5243
+  type: 'test'
+  ...
+# Subtest: C1 timestamp guard requires real calendar date, seconds and explicit timezone on all fields
+ok 86 - C1 timestamp guard requires real calendar date, seconds and explicit timezone on all fields
+  ---
+  duration_ms: 2.5692
+  type: 'test'
+  ...
+# Subtest: malformed 200 timestamp values fail both list and detail envelopes
+ok 87 - malformed 200 timestamp values fail both list and detail envelopes
+  ---
+  duration_ms: 134.3423
+  type: 'test'
+  ...
+# Subtest: list uses authoritative server meta and rejects malformed result
+ok 88 - list uses authoritative server meta and rejects malformed result
+  ---
+  duration_ms: 0.7267
+  type: 'test'
+  ...
+# Subtest: only released Task GETs: same-origin credentials, no Inertia header or invented filters
+ok 89 - only released Task GETs: same-origin credentials, no Inertia header or invented filters
+  ---
+  duration_ms: 7.1907
+  type: 'test'
+  ...
+# Subtest: 401 inactive session and 419 expiration require fresh authentication
+ok 90 - 401 inactive session and 419 expiration require fresh authentication
+  ---
+  duration_ms: 3.2875
+  type: 'test'
+  ...
+# Subtest: 403 MFA uses validated server next_url, never arbitrary redirect
+ok 91 - 403 MFA uses validated server next_url, never arbitrary redirect
+  ---
+  duration_ms: 3.7937
+  type: 'test'
+  ...
+# Subtest: authorization-boundary classifier distinguishes session loss from ordinary read failures
+ok 92 - authorization-boundary classifier distinguishes session loss from ordinary read failures
+  ---
+  duration_ms: 1.0318
+  type: 'test'
+  ...
+# Subtest: masked 404, validation 422, throttle 429 and 503 keep correct read error semantics
+ok 93 - masked 404, validation 422, throttle 429 and 503 keep correct read error semantics
+  ---
+  duration_ms: 4.5029
+  type: 'test'
+  ...
+# Subtest: invalid 200 payload and HTML never render as authorized Tasks
+ok 94 - invalid 200 payload and HTML never render as authorized Tasks
+  ---
+  duration_ms: 2.6241
+  type: 'test'
+  ...
+# Subtest: aborted stale fetch is not turned into another account error response
+ok 95 - aborted stale fetch is not turned into another account error response
+  ---
+  duration_ms: 1.7171
+  type: 'test'
+  ...
+# (node:22336) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: canonical shared props omit notifications and the initial feed is safe
+ok 96 - canonical shared props omit notifications and the initial feed is safe
+  ---
+  duration_ms: 10.1074
+  type: 'test'
+  ...
+# Subtest: calendar producer date fallback rejects rollover and supports its four views
+ok 97 - calendar producer date fallback rejects rollover and supports its four views
+  ---
+  duration_ms: 8.4517
+  type: 'test'
+  ...
+# Subtest: memo audiences reflect server authority, including recipient-only
+ok 98 - memo audiences reflect server authority, including recipient-only
+  ---
+  duration_ms: 1.6484
+  type: 'test'
+  ...
+# Subtest: correspondence overview counts are separate from intentionally empty list
+ok 99 - correspondence overview counts are separate from intentionally empty list
+  ---
+  duration_ms: 1.0042
+  type: 'test'
+  ...
+# Subtest: staged page links exclude missing backend-rendered components
+ok 100 - staged page links exclude missing backend-rendered components
+  ---
+  duration_ms: 3.5777
+  type: 'test'
+  ...
+1..100
+# tests 100
+# suites 0
+# pass 97
+# fail 3
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3606.4984

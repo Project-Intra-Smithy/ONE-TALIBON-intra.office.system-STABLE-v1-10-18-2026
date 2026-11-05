@@ -1,0 +1,72 @@
+TAP version 13
+# (node:11784) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Reference presentation surfaces 390 light
+ok 1 - Reference presentation surfaces 390 light
+  ---
+  duration_ms: 9990.8762
+  type: 'test'
+  ...
+# Subtest: Reference presentation surfaces 390 dark
+ok 2 - Reference presentation surfaces 390 dark
+  ---
+  duration_ms: 8349.3615
+  type: 'test'
+  ...
+# Subtest: Reference presentation surfaces 768 light
+ok 3 - Reference presentation surfaces 768 light
+  ---
+  duration_ms: 9561.4314
+  type: 'test'
+  ...
+# Subtest: Reference presentation surfaces 768 dark
+ok 4 - Reference presentation surfaces 768 dark
+  ---
+  duration_ms: 7639.5588
+  type: 'test'
+  ...
+# Subtest: Reference presentation surfaces 1024 light
+ok 5 - Reference presentation surfaces 1024 light
+  ---
+  duration_ms: 8406.9082
+  type: 'test'
+  ...
+# Subtest: Reference presentation surfaces 1024 dark
+ok 6 - Reference presentation surfaces 1024 dark
+  ---
+  duration_ms: 8226.5103
+  type: 'test'
+  ...
+# Subtest: Reference presentation surfaces 1280 light
+ok 7 - Reference presentation surfaces 1280 light
+  ---
+  duration_ms: 10853.8881
+  type: 'test'
+  ...
+# Subtest: Reference presentation surfaces 1280 dark
+ok 8 - Reference presentation surfaces 1280 dark
+  ---
+  duration_ms: 9339.4769
+  type: 'test'
+  ...
+# Subtest: Reference presentation surfaces 1440 light
+ok 9 - Reference presentation surfaces 1440 light
+  ---
+  duration_ms: 9323.1984
+  type: 'test'
+  ...
+# Subtest: Reference presentation surfaces 1440 dark
+ok 10 - Reference presentation surfaces 1440 dark
+  ---
+  duration_ms: 9392.6369
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 104704.4322
