@@ -108,9 +108,9 @@ final class DocumentAccessService
     }
 
     /**
-     * @param list<int> $direct
-     * @param list<int> $events
-     * @param class-string $eventClass
+     * @param  list<int>  $direct
+     * @param  list<int>  $events
+     * @param  class-string  $eventClass
      */
     private function anyAuthorizedParent(
         Builder $scope,

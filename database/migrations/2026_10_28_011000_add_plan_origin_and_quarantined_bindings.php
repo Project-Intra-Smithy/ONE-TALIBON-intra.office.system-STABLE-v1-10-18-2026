@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Schema;
  * Forward-only, synthetic-only source draft. Do NOT migrate a retained DB.
  * Binding remains QUARANTINED until G1/DBA/Identity/IT clearance.
  */
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         if (DB::getDriverName() !== 'pgsql') {
@@ -41,7 +42,7 @@ return new class extends Migration {
             $table->unique(['plan_edition_id', 'role', 'revision_no'], 'plan_bindings_edition_role_revision_unique');
         });
         DB::statement("ALTER TABLE plan_document_bindings ADD CONSTRAINT plan_bindings_role_check CHECK (role IN ('master', 'annex'))");
-        DB::statement("ALTER TABLE plan_document_bindings ADD CONSTRAINT plan_bindings_revision_check CHECK (revision_no > 0)");
+        DB::statement('ALTER TABLE plan_document_bindings ADD CONSTRAINT plan_bindings_revision_check CHECK (revision_no > 0)');
         DB::statement("ALTER TABLE plan_document_bindings ADD CONSTRAINT plan_bindings_quarantine_check CHECK (binding_state = 'QUARANTINED')");
 
         DB::unprepared(<<<'SQL'

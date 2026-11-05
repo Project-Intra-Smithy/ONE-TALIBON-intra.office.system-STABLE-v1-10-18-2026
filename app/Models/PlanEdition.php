@@ -16,7 +16,7 @@ final class PlanEdition extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (self $edition): void {
+        self::creating(function (self $edition): void {
             $edition->public_id ??= (string) Str::uuid();
         });
     }
