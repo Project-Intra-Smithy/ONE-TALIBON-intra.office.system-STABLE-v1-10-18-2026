@@ -1,12 +1,5 @@
 # KIRION FORGE — WORK PACKAGE MEMORY REGISTER
 
-## Current leadership takeover / 2026-11-06
-
-| `OT-SIRIS-ACTING-TECH-LEAD-TAKEOVER-20261106-R1` | **OWNER HANDOFF ISSUED / [HUB ISSUE #162](https://github.com/Project-Intra-Smithy/engineering-hub/issues/162) / DOCS-ONLY PR PENDING / CANONICAL_START_SYNC_REQUIRED / SIRIS_ACK_PENDING / NO_RELEASE** | [Siris current takeover memory](SIRIS_ACTING_TECH_LEAD_TAKEOVER_2026-11-06.md); [existing local 4-role QA #161](https://github.com/Project-Intra-Smithy/engineering-hub/issues/161); [client alignment app #35](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/issues/35) | Base app `main@ec17cbfab2a52b55e4f3f45bd5ec199df3858d66`; PR27/34/37 already merged, Nox source review bounded; no verified hosted CI/independent four-role QA/client release. Owner Kirch, acting technical coordination Siris from 2026-11-06, final release Kirch; preserve restrictions. NEXT: independent docs-only PR review and canonical memory/issue crosslink, then Siris exact-SHA readback + QA #161. |
-
----
-
-
 This is the **canonical backend package start/close index**. Governing rules: [WORK-PACKAGE-START-CLOSE-PROTOCOL.md](WORK-PACKAGE-START-CLOSE-PROTOCOL.md) and [Engineering Hub #63](https://github.com/Project-Intra-Smithy/engineering-hub/issues/63). Other repositories maintain their **own** discoverable per-package memory index; this file cannot substitute for frontend or Engineering Hub repository memory.
 
 **Update on every package START, substantive handoff or CLOSE.** Issue comment and repo-memory commit must be crosslinked. Rows are succinct pointers, not duplicated work transcripts. Status is scoped and never auto-awards release/CI/QA. Last independently verified product `main` **before protocol publication**: `7b4ebb838982f6262b9fef65d18ba57488ebf941` (10 October 2026); re-resolve before every future work.
