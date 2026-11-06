@@ -34,3 +34,13 @@ test('B1 styling is rooted and includes compact mobile, reduced-motion and high-
   assert.match(css, /@media \(forced-colors: active\)/);
   assert.doesNotMatch(css, /(?:^|\n)\s*(body|html|:root|\.municipal-panel)\s*\{/);
 });
+
+test('approved planning maps deep link has a truthful focusable empty state', () => {
+  assert.match(page, /id="available-planning-maps"/);
+  assert.match(page, /tabIndex=\{-1\}/);
+  assert.match(page, /No municipality-approved planning maps have been supplied\./);
+  assert.match(page, /Illustrative plan-card artwork is not an official map\./);
+  assert.match(page, /window\.location\.hash !== '#available-planning-maps'/);
+  assert.match(page, /scrollIntoView\(\{ block: 'start' \}\)/);
+  assert.doesNotMatch(page, /mapUrl|mapDownload|fakeMap/);
+});

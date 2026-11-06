@@ -34,11 +34,11 @@ const serverFlags = ['systemAdministration', 'dashboard', 'transactions', 'corre
 const permissions = (grant) => Object.fromEntries(serverFlags.map((key) => [key, grant]));
 const visible = (grant) => [...nav.buildPortalNavigation('employee', permissions(grant))].flatMap((group) => [...group.items]);
 
-test('catalog exactly preserves canonical 24 identity, group, and readiness relationships', () => {
+test('catalog preserves canonical identity, group, and readiness relationships with the approved maps deep link', () => {
     const catalog = [...nav.plannedPortalDestinations];
-    assert.equal(catalog.length, 24);
-    assert.equal(new Set(catalog.map((item) => item.key)).size, 24);
-    assert.equal(nav.wiredPortalDestinations.length, 15);
+    assert.equal(catalog.length, 25);
+    assert.equal(new Set(catalog.map((item) => item.key)).size, 25);
+    assert.equal(nav.wiredPortalDestinations.length, 16);
     assert.equal(nav.integrationPendingPortalDestinations.length, 9);
     assert.deepEqual([...new Set(catalog.map((item) => item.group))].sort(),
         ['home','work','files','communication','schedule','people','organization','planning','administration','systems'].sort());
@@ -63,19 +63,36 @@ test('canonical paths and permission associations are not synthetic', () => {
     assert.equal(d.users.permission, 'systemAdministration');
     assert.equal(d.municipalSystems.readiness, 'integration_pending');
     assert.equal(d.messages.permission, undefined);
+    assert.equal(d.availablePlanningMaps.href, '/development-plans#available-planning-maps');
+    assert.equal(d.availablePlanningMaps.readiness, 'wired');
+    assert.equal(d.availablePlanningMaps.permission, d.developmentPlans.permission);
 });
 
 test('permission denial, optional third builder argument and absent routes remain guarded', () => {
-    assert.deepEqual(visible(false).map((item) => item.key).sort(), ['calendar','employeeDirectory','portalSearch','developmentPlans','ppas'].sort());
+    assert.deepEqual(visible(false).map((item) => item.key).sort(), ['calendar','employeeDirectory','portalSearch','developmentPlans','availablePlanningMaps','ppas'].sort());
     const allowed = visible(true);
     assert.deepEqual(allowed.map((item) => item.key).sort(),
-        ['home','myWork','correspondence','employeeDirectory','records','memoranda','calendar','executiveDepartments','portalSearch','documentCenter','developmentPlans','ppas','systemAdministration'].sort());
+        ['home','myWork','correspondence','employeeDirectory','records','memoranda','calendar','executiveDepartments','portalSearch','documentCenter','developmentPlans','availablePlanningMaps','ppas','systemAdministration'].sort());
     assert.ok(allowed.every((item) => item.readiness === 'wired' && staged.isStagedInertiaPath(item.href)));
     assert.ok(!allowed.some((item) => item.href === '/messages'));
     assert.equal(JSON.stringify(nav.buildPortalNavigation('employee', permissions(true))),
         JSON.stringify(nav.buildPortalNavigation('employee', permissions(true), true)));
     assert.equal(nav.isPortalPathActive('/records?view=all', '/records'), true);
     assert.equal(nav.isPortalPathActive('/records-archive', '/records'), false);
+    assert.equal(nav.isPortalPathActive('/development-plans#available-planning-maps', '/development-plans#available-planning-maps'), true);
+    assert.equal(nav.isPortalPathActive('/development-plans#available-planning-maps', '/development-plans'), false);
+    assert.equal(nav.isPortalPathActive('/development-plans', '/development-plans#available-planning-maps'), false);
+});
+
+test('client terminology is applied without activating held destinations', () => {
+    assert.equal(nav.portalGroupLabels.home, 'Dashboard');
+    assert.equal(nav.portalGroupLabels.files, 'Document Management');
+    assert.equal(nav.portalGroupLabels.organization, 'Departments & Offices');
+    assert.equal(nav.portalGroupLabels.people, 'Employee Directory');
+    assert.equal(nav.portalDestinations.home.label, 'Dashboard');
+    assert.equal(nav.portalDestinations.executiveDepartments.label, 'Departments & Offices');
+    assert.equal(nav.portalDestinations.employeeDirectory.label, 'Employee Directory');
+    assert.ok(!nav.wiredPortalDestinations.some((item) => ['announcements','meetings','legislative','localSpecialBodies','projectMonitoring'].includes(item.key)));
 });
 
 test('already corrected dashboard and density presentation contracts remain intact', () => {

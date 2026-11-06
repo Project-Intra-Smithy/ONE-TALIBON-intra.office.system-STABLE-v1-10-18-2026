@@ -2,6 +2,12 @@
 .r8-plans { min-width: 0; }
 .r8-plans .r8-plans-notice { border: 1px solid var(--municipal-border); border-left: 4px solid var(--municipal-brand); border-radius: 10px; background: var(--municipal-brand-soft); color: var(--municipal-text); padding: .8rem 1rem; font-size: .78rem; line-height: 1.55; }
 .r8-plans .r8-plans-notice strong { font-weight: 750; }
+.r8-plans .r8-planning-maps { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .85rem; scroll-margin-top: 6.5rem; padding: 1rem; border-radius: 10px; }
+.r8-plans .r8-planning-maps-icon { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 999px; background: var(--municipal-brand-soft); color: var(--municipal-brand); }
+.r8-plans .r8-planning-maps h2 { color: var(--municipal-text); font-size: 1rem; font-weight: 750; line-height: 1.4; }
+.r8-plans .r8-planning-maps p { margin-top: .25rem; color: var(--municipal-muted); font-size: .8rem; line-height: 1.55; }
+.r8-plans .r8-planning-maps p[role="status"] { color: var(--municipal-text); font-weight: 650; }
+.r8-plans .r8-planning-maps:focus-visible { outline: 3px solid var(--municipal-focus); outline-offset: 3px; }
 .r8-plans .r8-plans-grid { align-items: stretch; }
 .r8-plans .r8-plans-card { border-radius: 14px; padding: .7rem; background: var(--municipal-surface); transition: border-color 160ms ease, transform 160ms ease; }
 .r8-plans .r8-plans-card:hover { border-color: var(--municipal-brand); transform: translateY(-2px); }
@@ -15,6 +21,7 @@
 .r8-plans-dialog :is(button, a):focus-visible { outline: 3px solid var(--municipal-focus); outline-offset: 3px; }
 .r8-plans-dialog { scrollbar-gutter: stable; overscroll-behavior: contain; }
 @media (max-width: 639px) {
+  .r8-plans .r8-planning-maps { grid-template-columns: minmax(0, 1fr); }
   .r8-plans .r8-plans-card { padding: .65rem; }
   .r8-plans .r8-plans-cover { min-height: 142px; aspect-ratio: 2.05 / 1; }
   .r8-plans .r8-plans-cover > span:nth-of-type(2) { font-size: 1.45rem; }

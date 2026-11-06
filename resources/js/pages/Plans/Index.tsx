@@ -1,7 +1,7 @@
 import '../../../css/ot-r6-modules.css';
 import '../../../css/r8-plans.css';
 import '../../../css/portal-visual-redesign.css';
-import { ClipboardList } from 'lucide-react';
+import { ClipboardList, Map } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import PageFrame from '../../components/PageFrame';
 import PageHeader from '../../components/PageHeader';
@@ -56,6 +56,22 @@ export default function PlansIndex() {
     };
 
     useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const focusPlanningMaps = () => {
+            if (window.location.hash !== '#available-planning-maps') return;
+            window.requestAnimationFrame(() => {
+                const section = document.getElementById('available-planning-maps');
+                section?.focus({ preventScroll: true });
+                section?.scrollIntoView({ block: 'start' });
+            });
+        };
+
+        focusPlanningMaps();
+        window.addEventListener('hashchange', focusPlanningMaps);
+        return () => window.removeEventListener('hashchange', focusPlanningMaps);
+    }, []);
+
+    useEffect(() => {
         if (!selectedPlanId || typeof document === 'undefined') return;
         const previousOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
@@ -99,6 +115,14 @@ export default function PlansIndex() {
             <PageFrame width="wide" density="compact" className="civic-page ot-r6-modules ot-r6-plans r8-plans">
                 <PageHeader eyebrow="Municipality of Talibon · Planning references" title="LGU Plans Library" description="Browse planning references by code, coverage, status, and lead office." icon={ClipboardList} />
                 <div className="r8-plans-notice" role="note"><strong>Reference library only.</strong> Records shown here are not validated live municipal approvals. Covers are illustrative graphics, not scanned or certified documents.</div>
+                <section id="available-planning-maps" tabIndex={-1} className="r8-planning-maps municipal-panel" aria-labelledby="available-planning-maps-title">
+                    <div className="r8-planning-maps-icon" aria-hidden="true"><Map size={24} /></div>
+                    <div>
+                        <h2 id="available-planning-maps-title">Available Planning Maps</h2>
+                        <p role="status">No municipality-approved planning maps have been supplied.</p>
+                        <p>Illustrative plan-card artwork is not an official map. Approved map previews and access links will appear here only after the municipality provides and authorizes them.</p>
+                    </div>
+                </section>
                 <PlanFilterBar filters={filters} leadOffices={leadOffices} resultCount={filteredPlans.length} onChange={(nextFilters) => { setFilters(nextFilters); setSelectedPlanId(null); }} />
                 <section aria-label="Plans library" className="ot-r6-plan-grid r8-plans-grid grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                     {filteredPlans.map((plan) => <PlanCard key={plan.id} plan={plan} selected={selectedPlanId === plan.id} onSelect={() => setSelectedPlanId(plan.id)} />)}
