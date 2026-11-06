@@ -1,10 +1,15 @@
 # KIRION FORGE — SIRIS ACTING TECHNICAL LEAD TAKEOVER
 
-**Control:** `OT-CODEX-SIRIS-TAKEOVER-FULL-SYNC-RECONCILIATION-20261106-R3`  
-**Owner:** Kirch Ivan Balite (`Kirch-Nairu`)  
-**Receiving lead:** Osiris Kedigadash Palac (`Syris-EkzD`)  
-**Effective:** 2026-11-06 PHT  
-**Delivery target:** 2026-11-20 PHT  
+**Control:** `OT-CODEX-SIRIS-TAKEOVER-FULL-SYNC-RECONCILIATION-20261106-R3`
+
+**Owner:** Kirch Ivan Balite (`Kirch-Nairu`)
+
+**Receiving lead:** Osiris Kedigadash Palac (`Syris-EkzD`)
+
+**Effective:** 2026-11-06 PHT
+
+**Delivery target:** 2026-11-20 PHT
+
 **Owning issue:** https://github.com/Project-Intra-Smithy/engineering-hub/issues/162
 
 ## Authority and exact source
