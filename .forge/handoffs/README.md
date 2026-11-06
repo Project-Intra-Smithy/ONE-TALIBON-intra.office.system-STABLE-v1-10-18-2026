@@ -1,12 +1,5 @@
 # ONE TALIBON — FORGE HANDOFF CONTINUITY
 
-## Nov 6 Siris takeover — current pointer (pending docs-only merge)
-
-**Current technical lead delegation:** [Hub #162](https://github.com/Project-Intra-Smithy/engineering-hub/issues/162) appoints Siris as Acting Technical Lead effective 2026-11-06; [current source-state and stale-claim overlay](../memory/SIRIS_ACTING_TECH_LEAD_TAKEOVER_2026-11-06.md). Product main as verified at appointment: `ec17cbfab2a52b55e4f3f45bd5ec199df3858d66`. Existing QA is [Hub #161](https://github.com/Project-Intra-Smithy/engineering-hub/issues/161), not automatically passed. Read exact live Git before acting; original `.forge/SSOT_CURRENT.md`, `WORK_LEDGER.md`, and historical `active/` packages have dated assumptions. This pointer confers **no** source-write lease, new roles, CI green, release approval or disabled security gate. It is canonical only after the reviewed docs-only PR merges and crosslinks to #162.
-
----
-
-
 This directory preserves durable handoff packets, returns and execution provenance.
 
 ## Current execution authority
