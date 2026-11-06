@@ -1,3 +1,5 @@
+<!-- 2026-11-06 CURRENT-SOURCE POINTER: Application main at Siris takeover is ec17cbfab2a52b55e4f3f45bd5ec199df3858d66. PR37 developer receipts are not independent four-role QA, hosted exact-main CI, Gerry acceptance or production proof. See Engineering Hub #162 and #161. -->
+
 # ONE TALIBON — CURRENT VALIDATION & EVIDENCE POLICY
 
 ## Evidence law

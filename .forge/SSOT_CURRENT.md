@@ -1,3 +1,5 @@
+<!-- 2026-11-06 CURRENT-SOURCE POINTER: The product/release anchors below are historical. Application main at Siris takeover is ec17cbfab2a52b55e4f3f45bd5ec199df3858d66. Owning authority: https://github.com/Project-Intra-Smithy/engineering-hub/issues/162 and .forge/handoffs/maintainer/SIRIS-ACTING-TECH-LEAD-2026-11-06.md. This pointer grants no release, deployment, security exception, QA PASS or municipal approval. -->
+
 # ONE TALIBON — CURRENT SSOT
 
 ## Authority

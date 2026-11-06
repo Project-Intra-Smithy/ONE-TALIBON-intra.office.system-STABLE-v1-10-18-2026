@@ -559,3 +559,11 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 - **Preservation / exclusions:** no backend, PHP, routes, database, auth/MFA/RBAC, workflow, dependency, CI, deployment, fake content, held-module activation, new issue, general audit, merge or acceptance claim. Preserve server-derived visibility/readiness and all existing links/actions.
 - **Validation:** TypeScript, 100 frontend contracts, UX, production build, focused navigation/permission/anchor tests, and bounded authenticated Playwright before/after at approved viewports/roles. Human CI/QA, Gerry acknowledgment, Kirch acceptance, merge and release remain unawarded.
 - **State / NEXT:** `START_MEMORY_PUBLICATION_PENDING`; publish this record on canonical `main`, crosslink its exact commit to #35, verify no executable drift, then implement the bounded correction in the isolated candidate branch.
+
+## START / OT-CODEX-SIRIS-TAKEOVER-FULL-SYNC-RECONCILIATION-20261106-R3 / 2026-11-06
+
+- **Owning issue:** [Engineering Hub #162](https://github.com/Project-Intra-Smithy/engineering-hub/issues/162); receiving lead `Syris-EkzD`; owner `Kirch-Nairu`.
+- **Exact source:** application `main@ec17cbfab2a52b55e4f3f45bd5ec199df3858d66`; Engineering Hub `main@16e69b2256db0a5d851768cd73c808166f09d370`.
+- **Canonical proposal:** [Siris Acting Technical Lead handoff](../handoffs/maintainer/SIRIS-ACTING-TECH-LEAD-2026-11-06.md); existing four-role QA remains Hub #161; client alignment remains app #35.
+- **Evidence boundary:** historic P0s need current-SHA re-evaluation; 40/33/48 directory data is provisional; private master archive remote custody is pending; no Siris QA, hosted exact-main CI, Gerry acceptance, merge, release or deployment is claimed.
+- **State / NEXT:** `ISSUE_PUBLISHED / FORGE_PR_PENDING / START_SYNC_REQUIRED`; independent docs review, authorized merge, exact-main readback and Siris acknowledgment are required before START_SYNCED.

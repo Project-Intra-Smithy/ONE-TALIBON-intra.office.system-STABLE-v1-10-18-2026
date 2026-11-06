@@ -1,3 +1,5 @@
+<!-- 2026-11-06 CURRENT-SOURCE POINTER: Prior anchors below remain historical. Application main at Siris takeover is ec17cbfab2a52b55e4f3f45bd5ec199df3858d66; control is Engineering Hub #162 plus .forge/handoffs/maintainer/SIRIS-ACTING-TECH-LEAD-2026-11-06.md. State remains START_SYNC_REQUIRED until reviewed and merged. -->
+
 # ONE TALIBON — ACTIVE WORK LEDGER
 
 ## Authority
