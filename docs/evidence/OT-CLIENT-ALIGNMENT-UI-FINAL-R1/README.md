@@ -32,3 +32,17 @@ Representative pairs:
 - Bounded authenticated Playwright matrix: PASS — 24/24, 48 review images total including baselines
 
 These results belong only to the exact candidate SHA identified by the PR. They do not award CI, independent QA, client acknowledgment, merge, release, or production approval.
+
+## Final Dashboard refinement
+
+The follow-up refinement changes only the scoped Dashboard CSS and its focused contract assertion.
+
+- `refinement/before/`: the original PR #37 candidate Dashboard for department head, executive, and system administrator at 390×844, 768×1024, 1280×800, and 1440×900.
+- `refinement/after/`: the revised authenticated Dashboard captures for the same 12 cases.
+- `refinement/playwright-results.json`: computed panel geometry, metric overflow/collision results, focus and keyboard-scroll observations, page dimensions, HTTP status, horizontal overflow, and console/page errors.
+- Department-head 1280×800: three aligned 350px upper panels; full-page height reduced from 4,220px to 3,466px.
+- Department-head 1440×900: three aligned 350px upper panels; full-page height remains 2,918px with wider metric-label clearance.
+- Mobile/tablet heights remain 5,473px at 390×844 and 4,352px at 768×1024; no new horizontal overflow.
+- Final targeted Playwright result: **12/12 PASS**, with zero placement, card-height, metric-overflow, label/icon collision, focus, horizontal-overflow, console, or page-error failures. Scrollable Work Summary regions accepted keyboard scrolling; non-overflowing regions remained focusable without requiring artificial scroll.
+
+Final refinement gates: TypeScript exit 0; frontend contracts exit 0 (103/103); UX exit 0 (9/9); production build exit 0; targeted authenticated Playwright exit 0 (12/12).

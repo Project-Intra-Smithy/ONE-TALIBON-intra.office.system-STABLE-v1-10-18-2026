@@ -1,0 +1,485 @@
+{
+  "generatedAt": "2026-11-06T04:39:14.833Z",
+  "results": [
+    {
+      "role": "department-head",
+      "viewport": "390x844",
+      "name": "dashboard",
+      "status": 200,
+      "width": 390,
+      "client": 390,
+      "height": 5473,
+      "hash": "",
+      "mapsFocused": false,
+      "mapActive": 0,
+      "panelRects": [
+        {
+          "top": 516.28125,
+          "left": 16,
+          "width": 358,
+          "height": 950.28125
+        },
+        {
+          "top": 1486.5625,
+          "left": 16,
+          "width": 358,
+          "height": 205
+        },
+        {
+          "top": 1711.5625,
+          "left": 16,
+          "width": 358,
+          "height": 133.59375
+        }
+      ],
+      "threePanelRow": false,
+      "metricOverflow": false,
+      "metricLabelIconOverlap": false,
+      "horizontalOverflow": false,
+      "scrollRegionFocused": true,
+      "scrollRegionScrollable": false,
+      "keyboardScrollAvailable": false,
+      "errors": []
+    },
+    {
+      "role": "department-head",
+      "viewport": "768x1024",
+      "name": "dashboard",
+      "status": 200,
+      "width": 768,
+      "client": 768,
+      "height": 4352,
+      "hash": "",
+      "mapsFocused": false,
+      "mapActive": 0,
+      "panelRects": [
+        {
+          "top": 394.515625,
+          "left": 16.125,
+          "width": 298.21875,
+          "height": 950.28125
+        },
+        {
+          "top": 394.515625,
+          "left": 334.34375,
+          "width": 417.515625,
+          "height": 205
+        },
+        {
+          "top": 1364.796875,
+          "left": 16.125,
+          "width": 735.734375,
+          "height": 133.59375
+        }
+      ],
+      "threePanelRow": false,
+      "metricOverflow": false,
+      "metricLabelIconOverlap": false,
+      "horizontalOverflow": false,
+      "scrollRegionFocused": true,
+      "scrollRegionScrollable": false,
+      "keyboardScrollAvailable": false,
+      "errors": []
+    },
+    {
+      "role": "department-head",
+      "viewport": "1280x800",
+      "name": "dashboard",
+      "status": 200,
+      "width": 1280,
+      "client": 1280,
+      "height": 3466,
+      "hash": "",
+      "mapsFocused": false,
+      "mapActive": 0,
+      "panelRects": [
+        {
+          "top": 405.75,
+          "left": 274.875,
+          "width": 307.609375,
+          "height": 350
+        },
+        {
+          "top": 405.75,
+          "left": 602.484375,
+          "width": 353.765625,
+          "height": 350
+        },
+        {
+          "top": 405.75,
+          "left": 976.25,
+          "width": 276.859375,
+          "height": 350
+        }
+      ],
+      "threePanelRow": true,
+      "metricOverflow": false,
+      "metricLabelIconOverlap": false,
+      "horizontalOverflow": false,
+      "scrollRegionFocused": true,
+      "scrollRegionScrollable": true,
+      "keyboardScrollAvailable": true,
+      "errors": []
+    },
+    {
+      "role": "department-head",
+      "viewport": "1440x900",
+      "name": "dashboard",
+      "status": 200,
+      "width": 1440,
+      "client": 1440,
+      "height": 2918,
+      "hash": "",
+      "mapsFocused": false,
+      "mapActive": 0,
+      "panelRects": [
+        {
+          "top": 413.828125,
+          "left": 278.234375,
+          "width": 392.265625,
+          "height": 350
+        },
+        {
+          "top": 413.828125,
+          "left": 690.5,
+          "width": 392.265625,
+          "height": 350
+        },
+        {
+          "top": 413.828125,
+          "left": 1102.765625,
+          "width": 307,
+          "height": 350
+        }
+      ],
+      "threePanelRow": true,
+      "metricOverflow": false,
+      "metricLabelIconOverlap": false,
+      "horizontalOverflow": false,
+      "scrollRegionFocused": true,
+      "scrollRegionScrollable": true,
+      "keyboardScrollAvailable": true,
+      "errors": []
+    },
+    {
+      "role": "executive",
+      "viewport": "390x844",
+      "name": "dashboard",
+      "status": 200,
+      "width": 390,
+      "client": 390,
+      "height": 6245,
+      "hash": "",
+      "mapsFocused": false,
+      "mapActive": 0,
+      "panelRects": [
+        {
+          "top": 463.890625,
+          "left": 16,
+          "width": 358,
+          "height": 681.78125
+        },
+        {
+          "top": 1165.671875,
+          "left": 16,
+          "width": 358,
+          "height": 205
+        },
+        {
+          "top": 1390.671875,
+          "left": 16,
+          "width": 358,
+          "height": 133.59375
+        }
+      ],
+      "threePanelRow": false,
+      "metricOverflow": false,
+      "metricLabelIconOverlap": false,
+      "horizontalOverflow": false,
+      "scrollRegionFocused": true,
+      "scrollRegionScrollable": false,
+      "keyboardScrollAvailable": false,
+      "errors": []
+    },
+    {
+      "role": "executive",
+      "viewport": "768x1024",
+      "name": "dashboard",
+      "status": 200,
+      "width": 768,
+      "client": 768,
+      "height": 4853,
+      "hash": "",
+      "mapsFocused": false,
+      "mapActive": 0,
+      "panelRects": [
+        {
+          "top": 394.515625,
+          "left": 16.125,
+          "width": 298.21875,
+          "height": 694.28125
+        },
+        {
+          "top": 394.515625,
+          "left": 334.34375,
+          "width": 417.515625,
+          "height": 205
+        },
+        {
+          "top": 1108.796875,
+          "left": 16.125,
+          "width": 735.734375,
+          "height": 133.59375
+        }
+      ],
+      "threePanelRow": false,
+      "metricOverflow": false,
+      "metricLabelIconOverlap": false,
+      "horizontalOverflow": false,
+      "scrollRegionFocused": true,
+      "scrollRegionScrollable": false,
+      "keyboardScrollAvailable": false,
+      "errors": []
+    },
+    {
+      "role": "executive",
+      "viewport": "1280x800",
+      "name": "dashboard",
+      "status": 200,
+      "width": 1280,
+      "client": 1280,
+      "height": 4353,
+      "hash": "",
+      "mapsFocused": false,
+      "mapActive": 0,
+      "panelRects": [
+        {
+          "top": 405.75,
+          "left": 274.875,
+          "width": 307.609375,
+          "height": 350
+        },
+        {
+          "top": 405.75,
+          "left": 602.484375,
+          "width": 353.765625,
+          "height": 350
+        },
+        {
+          "top": 405.75,
+          "left": 976.25,
+          "width": 276.859375,
+          "height": 350
+        }
+      ],
+      "threePanelRow": true,
+      "metricOverflow": false,
+      "metricLabelIconOverlap": false,
+      "horizontalOverflow": false,
+      "scrollRegionFocused": true,
+      "scrollRegionScrollable": true,
+      "keyboardScrollAvailable": true,
+      "errors": []
+    },
+    {
+      "role": "executive",
+      "viewport": "1440x900",
+      "name": "dashboard",
+      "status": 200,
+      "width": 1440,
+      "client": 1440,
+      "height": 3805,
+      "hash": "",
+      "mapsFocused": false,
+      "mapActive": 0,
+      "panelRects": [
+        {
+          "top": 413.828125,
+          "left": 278.234375,
+          "width": 392.265625,
+          "height": 350
+        },
+        {
+          "top": 413.828125,
+          "left": 690.5,
+          "width": 392.265625,
+          "height": 350
+        },
+        {
+          "top": 413.828125,
+          "left": 1102.765625,
+          "width": 307,
+          "height": 350
+        }
+      ],
+      "threePanelRow": true,
+      "metricOverflow": false,
+      "metricLabelIconOverlap": false,
+      "horizontalOverflow": false,
+      "scrollRegionFocused": true,
+      "scrollRegionScrollable": false,
+      "keyboardScrollAvailable": false,
+      "errors": []
+    },
+    {
+      "role": "system-administrator",
+      "viewport": "390x844",
+      "name": "dashboard",
+      "status": 200,
+      "width": 390,
+      "client": 390,
+      "height": 3937,
+      "hash": "",
+      "mapsFocused": false,
+      "mapActive": 0,
+      "panelRects": [
+        {
+          "top": 463.890625,
+          "left": 16,
+          "width": 358,
+          "height": 681.78125
+        },
+        {
+          "top": 1165.671875,
+          "left": 16,
+          "width": 358,
+          "height": 205
+        },
+        {
+          "top": 1390.671875,
+          "left": 16,
+          "width": 358,
+          "height": 1123.5
+        }
+      ],
+      "threePanelRow": false,
+      "metricOverflow": false,
+      "metricLabelIconOverlap": false,
+      "horizontalOverflow": false,
+      "scrollRegionFocused": true,
+      "scrollRegionScrollable": false,
+      "keyboardScrollAvailable": false,
+      "errors": []
+    },
+    {
+      "role": "system-administrator",
+      "viewport": "768x1024",
+      "name": "dashboard",
+      "status": 200,
+      "width": 768,
+      "client": 768,
+      "height": 3103,
+      "hash": "",
+      "mapsFocused": false,
+      "mapActive": 0,
+      "panelRects": [
+        {
+          "top": 394.515625,
+          "left": 16.125,
+          "width": 298.21875,
+          "height": 706.78125
+        },
+        {
+          "top": 394.515625,
+          "left": 334.34375,
+          "width": 417.515625,
+          "height": 205
+        },
+        {
+          "top": 1121.296875,
+          "left": 16.125,
+          "width": 735.734375,
+          "height": 1086.75
+        }
+      ],
+      "threePanelRow": false,
+      "metricOverflow": false,
+      "metricLabelIconOverlap": false,
+      "horizontalOverflow": false,
+      "scrollRegionFocused": true,
+      "scrollRegionScrollable": false,
+      "keyboardScrollAvailable": false,
+      "errors": []
+    },
+    {
+      "role": "system-administrator",
+      "viewport": "1280x800",
+      "name": "dashboard",
+      "status": 200,
+      "width": 1280,
+      "client": 1280,
+      "height": 1649,
+      "hash": "",
+      "mapsFocused": false,
+      "mapActive": 0,
+      "panelRects": [
+        {
+          "top": 405.75,
+          "left": 274.875,
+          "width": 307.609375,
+          "height": 350
+        },
+        {
+          "top": 405.75,
+          "left": 602.484375,
+          "width": 353.765625,
+          "height": 350
+        },
+        {
+          "top": 405.75,
+          "left": 976.25,
+          "width": 276.859375,
+          "height": 350
+        }
+      ],
+      "threePanelRow": true,
+      "metricOverflow": false,
+      "metricLabelIconOverlap": false,
+      "horizontalOverflow": false,
+      "scrollRegionFocused": true,
+      "scrollRegionScrollable": true,
+      "keyboardScrollAvailable": true,
+      "errors": []
+    },
+    {
+      "role": "system-administrator",
+      "viewport": "1440x900",
+      "name": "dashboard",
+      "status": 200,
+      "width": 1440,
+      "client": 1440,
+      "height": 1575,
+      "hash": "",
+      "mapsFocused": false,
+      "mapActive": 0,
+      "panelRects": [
+        {
+          "top": 413.828125,
+          "left": 278.234375,
+          "width": 392.265625,
+          "height": 350
+        },
+        {
+          "top": 413.828125,
+          "left": 690.5,
+          "width": 392.265625,
+          "height": 350
+        },
+        {
+          "top": 413.828125,
+          "left": 1102.765625,
+          "width": 307,
+          "height": 350
+        }
+      ],
+      "threePanelRow": true,
+      "metricOverflow": false,
+      "metricLabelIconOverlap": false,
+      "horizontalOverflow": false,
+      "scrollRegionFocused": true,
+      "scrollRegionScrollable": false,
+      "keyboardScrollAvailable": false,
+      "errors": []
+    }
+  ]
+}

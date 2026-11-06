@@ -70,8 +70,9 @@
     grid-area: auto; font-size: 1.85rem; line-height: 1.2;
 }
 .aj-dashboard.r7-dashboard .r7-top-summary .workspace-metric > div:nth-child(2) {
-    grid-area: auto; margin: 0; padding-right: 12px; font-size: 1rem; line-height: 1.5;
+    grid-area: auto; margin: 0; padding-right: 28px; font-size: 1rem; line-height: 1.5;
 }
+.aj-dashboard.r7-dashboard .r7-top-summary .workspace-metric > svg { inset: 10px 8px auto auto; }
 .aj-dashboard.r7-dashboard .r7-top-summary .workspace-count-track {
     grid-column: 2; grid-row: auto; height: 5px; margin: 0; background: var(--municipal-border);
 }
@@ -121,15 +122,19 @@
     .aj-dashboard.r7-dashboard .r7-top-activity { grid-column: 1 / -1; }
     .aj-dashboard.r7-dashboard .r7-lower-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-@container civic-dashboard (min-width: 980px) {
-    .aj-dashboard.r7-dashboard .r7-upper-grid { grid-template-columns: minmax(0, .95fr) minmax(0, 1.25fr) minmax(0, 1fr); }
+@container civic-dashboard (min-width: 850px) {
+    .aj-dashboard.r7-dashboard .r7-upper-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) minmax(0, .9fr); }
     .aj-dashboard.r7-dashboard .r7-top-activity { grid-column: auto; }
     .aj-dashboard.r7-dashboard .r7-panel { height: 350px; align-self: stretch; }
     .aj-dashboard.r7-dashboard .r7-panel .ot-dashboard-scroll-region { min-height: 0; overflow-x: hidden; overflow-y: auto; scrollbar-gutter: stable; }
+}
+@container civic-dashboard (min-width: 1050px) {
+    .aj-dashboard.r7-dashboard .r7-upper-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.15fr) minmax(0, .9fr); }
     .aj-dashboard.r7-dashboard .r7-top-summary .workspace-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 14px; padding-inline: 18px; }
-    .aj-dashboard.r7-dashboard .r7-top-summary .workspace-metric { grid-template-columns: 2.25rem minmax(0, 1fr); gap: 4px 8px; padding: 10px 0; }
+    .aj-dashboard.r7-dashboard .r7-top-summary .workspace-metric { grid-template-columns: 2.25rem minmax(0, 1fr); gap: 4px 10px; padding: 10px 0; }
     .aj-dashboard.r7-dashboard .r7-top-summary .workspace-metric > div:first-child { font-size: 1.35rem; }
-    .aj-dashboard.r7-dashboard .r7-top-summary .workspace-metric > div:nth-child(2) { padding-right: 4px; font-size: .82rem; line-height: 1.35; }
+    .aj-dashboard.r7-dashboard .r7-top-summary .workspace-metric > div:nth-child(2) { padding-right: 28px; font-size: .82rem; line-height: 1.35; }
+    .aj-dashboard.r7-dashboard .r7-top-summary .workspace-metric > svg { inset: 8px 6px auto auto; }
     .aj-dashboard.r7-dashboard .r7-top-summary .municipal-panel > p { padding: 9px 18px; font-size: .78rem; line-height: 1.4; }
 }
 @container civic-dashboard (min-width: 980px) {

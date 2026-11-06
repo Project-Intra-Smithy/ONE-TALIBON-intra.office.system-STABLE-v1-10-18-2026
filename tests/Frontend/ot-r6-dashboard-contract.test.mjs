@@ -79,9 +79,13 @@ test('Hero uses local municipality image and authenticated identity without inve
 });
 
 test('wide Dashboard compacts the upper band without truncating live content', () => {
-    assert.match(ajCss, /@container civic-dashboard \(min-width: 980px\)/);
+    assert.match(ajCss, /@container civic-dashboard \(min-width: 850px\)/);
+    assert.match(ajCss, /@container civic-dashboard \(min-width: 1050px\)/);
+    assert.match(ajCss, /grid-template-columns: minmax\(0, 1fr\) minmax\(0, 1\.15fr\) minmax\(0, \.9fr\)/);
     assert.match(ajCss, /\.r7-panel \{ height: 350px; align-self: stretch; \}/);
     assert.match(ajCss, /overflow-y: auto/);
     assert.match(ajCss, /workspace-metrics \{ grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/);
+    assert.match(ajCss, /workspace-metric > div:nth-child\(2\) \{ padding-right: 28px/);
+    assert.match(ajCss, /workspace-metric > svg \{ inset: 8px 6px auto auto; \}/);
     assert.doesNotMatch(ajCss, /display:\s*none[^}]*workspace-metric|line-clamp/);
 });
