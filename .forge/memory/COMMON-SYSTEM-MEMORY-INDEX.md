@@ -1,12 +1,5 @@
 # KIRION FORGE MEMORY INDEX — COMMON SYSTEM PROGRAM
 
-## CURRENT NOVEMBER 6, 2026 ONE TALIBON LEADERSHIP OVERLAY — READ BEFORE OCTOBER HISTORY
-
-**As of 2026-11-06:** Kirch appointed **Siris (`Syris-EkzD`) Acting Technical Lead** for ONE TALIBON technical delivery, with a November 20 tested **approved Core Portal subset** target. [Receiving issue Hub #162](https://github.com/Project-Intra-Smithy/engineering-hub/issues/162); [full START/authority/readback overlay](SIRIS_ACTING_TECH_LEAD_TAKEOVER_2026-11-06.md). Product app verified `main@ec17cbfab2a52b55e4f3f45bd5ec199df3858d66`; PRs #27, #34 and #37 are merged. Historical October “ACTIVE” sections below remain provenance, not current executable instruction. Existing [four-role local QA Hub #161](https://github.com/Project-Intra-Smithy/engineering-hub/issues/161) must return actual evidence. Kirch retains owner/merge/release and official municipal decision gates. The documentation update is a proposal until reviewed, merged and SHA-crosslinked; **do not claim `START_SYNCED` early**.
-
----
-
-
 ## ACTIVE FEATURE-FIRST MAINTAINER V2 — 12 OCTOBER 2026
 
 **[Engineering Hub #90 / MAINT-MAX-002](https://github.com/Project-Intra-Smithy/engineering-hub/issues/90)** — successor command authority for the original ONE TALIBON Common Municipal Engine; portable [Hub memory](https://github.com/Project-Intra-Smithy/engineering-hub/blob/main/KIRION_FORGE_MAINTAINER_MAX_2026-10-12.md). Governing feature batches [#82](https://github.com/Project-Intra-Smithy/engineering-hub/issues/82), LGU authority [#83](https://github.com/Project-Intra-Smithy/engineering-hub/issues/83). **This is a pointer, not a new package START/accepted feature.** Backend B01–B03 source candidates 9/9 AI-assisted source-reviewed but **untested, unmerged**; 3 disjoint stacked writer scopes. Backend executable source unchanged at `main@4abba38ad84ca6918740941c83ad53618485d80f` before this memory-only link. A01 F01 frontend merged; F02 parked draft. Formal phase P0 only accepted; full P2–P7 implementation requires real consumed contract release, no automatic authority from a roadmap. Update exact main SHA after docs merge.
