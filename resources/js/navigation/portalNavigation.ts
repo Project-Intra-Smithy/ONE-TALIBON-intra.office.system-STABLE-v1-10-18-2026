@@ -15,6 +15,7 @@ import {
     Landmark,
     LayoutDashboard,
     ListChecks,
+    Map,
     Megaphone,
     MessagesSquare,
     Network,
@@ -59,6 +60,7 @@ export type PortalDestinationKey =
     | 'legislative'
     | 'localSpecialBodies'
     | 'developmentPlans'
+    | 'availablePlanningMaps'
     | 'ppas'
     | 'projectMonitoring'
     | 'users'
@@ -106,6 +108,7 @@ export const portalRoutePlan = {
     legislative: '/legislation',
     localSpecialBodies: '/local-special-bodies',
     developmentPlans: '/development-plans',
+    availablePlanningMaps: '/development-plans#available-planning-maps',
     ppas: '/ppas',
     projectMonitoring: '/operations',
     users: '/admin/users',
@@ -117,22 +120,23 @@ export const portalRoutePlan = {
 export const portalDestinations: Partial<Record<PortalDestinationKey, PortalDestination>> = {
     portalSearch: { key: 'portalSearch', label: 'Search Portal', href: portalRoutePlan.portalSearch, icon: FileSearch, group: 'home', readiness: 'wired' },
     documentCenter: { key: 'documentCenter', label: 'Document Center', href: portalRoutePlan.documentCenter, icon: FileText, group: 'files', readiness: 'wired', permission: 'records' },
-    home: { key: 'home', label: 'Home', href: portalRoutePlan.home, icon: LayoutDashboard, group: 'home', readiness: 'wired', permission: 'dashboard' },
+    home: { key: 'home', label: 'Dashboard', href: portalRoutePlan.home, icon: LayoutDashboard, group: 'home', readiness: 'wired', permission: 'dashboard' },
     myDepartment: { key: 'myDepartment', label: 'My Department', href: portalRoutePlan.myDepartment, icon: Building2, group: 'work', readiness: 'wired', permission: 'dashboard', experiences: ['department_head'] },
     myWork: { key: 'myWork', label: 'Work Requests', href: portalRoutePlan.myWork, icon: FileText, group: 'work', readiness: 'wired', permission: 'transactions' },
     correspondence: { key: 'correspondence', label: 'Correspondence', href: portalRoutePlan.correspondence, icon: Inbox, group: 'work', readiness: 'wired', permission: 'correspondence' },
     procurementTracking: { key: 'procurementTracking', label: 'Procurement / PR Tracking', href: portalRoutePlan.procurementTracking, icon: ListChecks, group: 'work', readiness: 'integration_pending' },
-    employeeDirectory: { key: 'employeeDirectory', label: 'Employee & Office Directory', href: portalRoutePlan.employeeDirectory, icon: Users, group: 'people', readiness: 'wired' },
+    employeeDirectory: { key: 'employeeDirectory', label: 'Employee Directory', href: portalRoutePlan.employeeDirectory, icon: Users, group: 'people', readiness: 'wired' },
     records: { key: 'records', label: 'Municipal Records', href: portalRoutePlan.records, icon: FileSearch, group: 'files', readiness: 'wired', permission: 'records' },
     memoranda: { key: 'memoranda', label: 'Official Memoranda', href: portalRoutePlan.memoranda, icon: FileText, group: 'files', readiness: 'wired', permission: 'memoranda' },
     announcements: { key: 'announcements', label: 'Announcements', href: portalRoutePlan.announcements, icon: Megaphone, group: 'communication', readiness: 'integration_pending' },
     calendar: { key: 'calendar', label: 'Calendar', href: portalRoutePlan.calendar, icon: CalendarDays, group: 'schedule', readiness: 'wired' },
     meetings: { key: 'meetings', label: 'Meetings', href: portalRoutePlan.meetings, icon: CalendarClock, group: 'schedule', readiness: 'integration_pending' },
     messages: { key: 'messages', label: 'Messages', href: portalRoutePlan.messages, icon: MessagesSquare, group: 'communication', readiness: 'wired' },
-    executiveDepartments: { key: 'executiveDepartments', label: 'Executive Departments', href: portalRoutePlan.executiveDepartments, icon: Building2, group: 'organization', readiness: 'wired', permission: 'departments' },
+    executiveDepartments: { key: 'executiveDepartments', label: 'Departments & Offices', href: portalRoutePlan.executiveDepartments, icon: Building2, group: 'organization', readiness: 'wired', permission: 'departments' },
     legislative: { key: 'legislative', label: 'Ordinances & Issuances', href: portalRoutePlan.legislative, icon: Landmark, group: 'organization', readiness: 'integration_pending' },
     localSpecialBodies: { key: 'localSpecialBodies', label: 'Councils, Boards & Committees', href: portalRoutePlan.localSpecialBodies, icon: Network, group: 'organization', readiness: 'integration_pending' },
     developmentPlans: { key: 'developmentPlans', label: 'Development Plans', href: portalRoutePlan.developmentPlans, icon: BookOpen, group: 'planning', readiness: 'wired' },
+    availablePlanningMaps: { key: 'availablePlanningMaps', label: 'Available Planning Maps', href: portalRoutePlan.availablePlanningMaps, icon: Map, group: 'planning', readiness: 'wired' },
     ppas: { key: 'ppas', label: 'PPAs', href: portalRoutePlan.ppas, icon: ListChecks, group: 'planning', readiness: 'wired' },
     projectMonitoring: { key: 'projectMonitoring', label: 'Project Monitoring', href: portalRoutePlan.projectMonitoring, icon: FolderKanban, group: 'planning', readiness: 'integration_pending', experiences: ['department_head', 'executive_oversight', 'system_administration'] },
     users: { key: 'users', label: 'Users', href: portalRoutePlan.users, icon: UserCog, group: 'administration', readiness: 'integration_pending', permission: 'systemAdministration' },
@@ -143,26 +147,26 @@ export const portalDestinations: Partial<Record<PortalDestinationKey, PortalDest
 
 export const portalGroupOrder: PortalGroupKey[] = [
     'home',
-    'work',
+    'organization',
+    'planning',
     'files',
+    'work',
     'communication',
     'schedule',
     'people',
-    'organization',
-    'planning',
     'administration',
     'systems',
 ];
 
 export const portalGroupLabels: Record<PortalGroupKey, string> = {
-    home: 'Home',
+    home: 'Dashboard',
     work: 'Work & Routing',
-    files: 'Files & Records',
+    files: 'Document Management',
     communication: 'Communication',
     schedule: 'Schedule & Coordination',
-    people: 'People',
-    organization: 'Municipal Organization',
-    planning: 'Planning',
+    people: 'Employee Directory',
+    organization: 'Departments & Offices',
+    planning: 'Development Planning',
     administration: 'Administration',
     systems: 'Municipal Systems',
 };
@@ -171,6 +175,13 @@ export const portalDestinationOrder: PortalDestinationKey[] = [
     'home',
     'myDepartment',
     'portalSearch',
+    'executiveDepartments',
+    'legislative',
+    'localSpecialBodies',
+    'developmentPlans',
+    'availablePlanningMaps',
+    'ppas',
+    'projectMonitoring',
     'documentCenter',
     'myWork',
     'correspondence',
@@ -182,12 +193,6 @@ export const portalDestinationOrder: PortalDestinationKey[] = [
     'calendar',
     'meetings',
     'messages',
-    'executiveDepartments',
-    'legislative',
-    'localSpecialBodies',
-    'developmentPlans',
-    'ppas',
-    'projectMonitoring',
     'users',
     'adminDepartments',
     'systemAdministration',
@@ -241,6 +246,7 @@ export function isPortalPathActive(currentUrl: string, href: string): boolean {
     const targetHash = href.split('#')[1];
     if (targetHash && targetHash !== hash) return false;
     if (!targetHash && href === '/dashboard' && hash === 'department-overview') return false;
+    if (!targetHash && href === '/development-plans' && hash === 'available-planning-maps') return false;
     const target = href.split(/[?#]/, 1)[0].replace(/\/$/, '') || '/';
 
     return path === target || (target !== '/' && path.startsWith(`${target}/`));

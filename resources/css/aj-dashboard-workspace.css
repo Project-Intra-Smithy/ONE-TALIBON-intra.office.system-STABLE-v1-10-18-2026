@@ -124,6 +124,13 @@
 @container civic-dashboard (min-width: 980px) {
     .aj-dashboard.r7-dashboard .r7-upper-grid { grid-template-columns: minmax(0, .95fr) minmax(0, 1.25fr) minmax(0, 1fr); }
     .aj-dashboard.r7-dashboard .r7-top-activity { grid-column: auto; }
+    .aj-dashboard.r7-dashboard .r7-panel { height: 350px; align-self: stretch; }
+    .aj-dashboard.r7-dashboard .r7-panel .ot-dashboard-scroll-region { min-height: 0; overflow-x: hidden; overflow-y: auto; scrollbar-gutter: stable; }
+    .aj-dashboard.r7-dashboard .r7-top-summary .workspace-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 14px; padding-inline: 18px; }
+    .aj-dashboard.r7-dashboard .r7-top-summary .workspace-metric { grid-template-columns: 2.25rem minmax(0, 1fr); gap: 4px 8px; padding: 10px 0; }
+    .aj-dashboard.r7-dashboard .r7-top-summary .workspace-metric > div:first-child { font-size: 1.35rem; }
+    .aj-dashboard.r7-dashboard .r7-top-summary .workspace-metric > div:nth-child(2) { padding-right: 4px; font-size: .82rem; line-height: 1.35; }
+    .aj-dashboard.r7-dashboard .r7-top-summary .municipal-panel > p { padding: 9px 18px; font-size: .78rem; line-height: 1.4; }
 }
 @container civic-dashboard (min-width: 980px) {
     .aj-dashboard.r7-dashboard .r7-lower-links .r7-links-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }

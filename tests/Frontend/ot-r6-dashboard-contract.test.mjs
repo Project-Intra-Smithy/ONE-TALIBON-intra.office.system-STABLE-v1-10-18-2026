@@ -14,6 +14,7 @@ const activity = source('resources/js/components/dashboard/ActivityRail.tsx');
 const metrics = source('resources/js/components/dashboard/MetricGroup.tsx');
 const scroll = source('resources/js/components/dashboard/DashboardScrollRegion.tsx');
 const css = source('resources/css/ot-reference-dashboard.css');
+const ajCss = source('resources/css/aj-dashboard-workspace.css');
 
 test('R6 retains all four backend-role variants and role-scoped operational sections', () => {
     for (const role of ['employee', 'department_head', 'executive_oversight', 'system_administration']) {
@@ -75,4 +76,12 @@ test('Hero uses local municipality image and authenticated identity without inve
     assert.match(header, /experience\.department\.shortName \|\| experience\.department\.name/);
     assert.match(header, /\/images\/municipality\/talibon-homepage-hero\.jpg/);
     assert.doesNotMatch(dashboard + header + quick, /(?:sampleUnreadCount|fakePending|mockEmployeeData)/);
+});
+
+test('wide Dashboard compacts the upper band without truncating live content', () => {
+    assert.match(ajCss, /@container civic-dashboard \(min-width: 980px\)/);
+    assert.match(ajCss, /\.r7-panel \{ height: 350px; align-self: stretch; \}/);
+    assert.match(ajCss, /overflow-y: auto/);
+    assert.match(ajCss, /workspace-metrics \{ grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/);
+    assert.doesNotMatch(ajCss, /display:\s*none[^}]*workspace-metric|line-clamp/);
 });
