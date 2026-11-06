@@ -549,3 +549,13 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 - **Safety / limitations:** no existing DB/ports/service disruption; inspect and avoid default `scripts/dev-start.ps1` side effects; no bypass of MFA, auth, RBAC, official data, G2 production custody or client acceptance. Keep AJ/Jhayr/Lucien frontend write freeze, PR #18/#22 and #28 untouched; no deployment or G3/G4.
 - **Review / gate:** owner ISSUE START must be crosslinked to merged canonical memory SHA before executable activity; Codex needs a narrow owner execution lease; tests NOT_RUN and screenshots NOT_CAPTURED at START. Classify findings P0/P1/P2; no automatic source fixes or scope expansion.
 - **NEXT:** independently review + merge this docs-only START, crosslink exact main and register blob to Issue #35, then dispatch bounded Codex runtime/Playwright evidence mission. State `START_SYNC_REQUIRED / NO_EXECUTION_YET`.
+
+
+## START / OT-CLIENT-ALIGNMENT-UI-FINAL-R1 / 2026-11-06
+
+- **Owning issue / owner:** [ONE TALIBON #35](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/issues/35), [Kirch implementation direction #6675320037](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/issues/35#issuecomment-6675320037); accountable owner Kirch Ivan Balite, Codex sole bounded writer.
+- **Source / strategy:** executable source `main@17e7b60ba6c9450e0c2f6c9dcf676525639de0c6`; publish this minimum canonical START, then create one isolated candidate branch and one reviewable PR. Preserve AJ PR #18/#22 integration and PR #160 evidence.
+- **Scope / success:** only (1) compact the 1440×900 department-head Dashboard without truncation or mobile regression, (2) align sidebar terminology/order for existing wired and authorized destinations, and (3) add an exact `Available Planning Maps` sidebar deep link plus truthful focusable empty-state section on `/development-plans`.
+- **Preservation / exclusions:** no backend, PHP, routes, database, auth/MFA/RBAC, workflow, dependency, CI, deployment, fake content, held-module activation, new issue, general audit, merge or acceptance claim. Preserve server-derived visibility/readiness and all existing links/actions.
+- **Validation:** TypeScript, 100 frontend contracts, UX, production build, focused navigation/permission/anchor tests, and bounded authenticated Playwright before/after at approved viewports/roles. Human CI/QA, Gerry acknowledgment, Kirch acceptance, merge and release remain unawarded.
+- **State / NEXT:** `START_MEMORY_PUBLICATION_PENDING`; publish this record on canonical `main`, crosslink its exact commit to #35, verify no executable drift, then implement the bounded correction in the isolated candidate branch.
