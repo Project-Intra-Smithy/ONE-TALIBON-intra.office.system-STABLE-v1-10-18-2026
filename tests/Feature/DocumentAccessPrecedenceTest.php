@@ -1021,12 +1021,12 @@ class DocumentAccessPrecedenceTest extends TestCase
         $unknown = $this->document($actor, $own, 'QA161_METADATA_UNKNOWN_LINK');
         $duplicatedAllowed = $this->document($actor, $own, 'QA161_METADATA_ALLOWED_MULTIPLE');
 
-        foreach ([$mixedEvent, $unknown, $duplicatedAllowed, $duplicatedAllowed] as $doc) {
+        foreach ([$mixedEvent, $unknown, $duplicatedAllowed, $duplicatedAllowed] as $index => $doc) {
             DocumentLink::query()->create([
                 'document_id' => $doc->id,
                 'linkable_type' => $allowed->getMorphClass(),
                 'linkable_id' => $allowed->id,
-                'relationship' => 'authorized_source',
+                'relationship' => 'authorized_source_'.$index,
             ]);
         }
         DocumentLink::query()->create([
