@@ -274,15 +274,15 @@ final readonly class AuthorizedArchiveSql
                 'current_department_id','assigned_employee_id']);
 
         $sources = [
-            $this->links($correspondence, CorrespondenceRecord::class, 'correspondence', 1, null, null, []),
-            $this->links($correspondence, CorrespondenceEvent::class, 'correspondence', 1, 'correspondence_events', 'correspondence_record_id', []),
+            $this->links($correspondence, CorrespondenceRecord::class, 'correspondence', 1, null, null),
+            $this->links($correspondence, CorrespondenceEvent::class, 'correspondence', 1, 'correspondence_events', 'correspondence_record_id'),
             // Include ALL authorized families before counting. Precedence
             // still selects display context, but can never override a denied
             // higher/lower family linked to the same physical document.
-            $this->links($travel, TravelOrder::class, 'travel_order', 2, null, null, []),
-            $this->links($travel, TravelOrderEvent::class, 'travel_order', 2, 'travel_order_events', 'travel_order_id', []),
-            $this->links($transactions, WorkflowTransaction::class, 'transaction', 3, null, null, []),
-            $this->links($transactions, TransactionEvent::class, 'transaction', 3, 'transaction_events', 'transaction_id', []),
+            $this->links($travel, TravelOrder::class, 'travel_order', 2, null, null),
+            $this->links($travel, TravelOrderEvent::class, 'travel_order', 2, 'travel_order_events', 'travel_order_id'),
+            $this->links($transactions, WorkflowTransaction::class, 'transaction', 3, null, null),
+            $this->links($transactions, TransactionEvent::class, 'transaction', 3, 'transaction_events', 'transaction_id'),
         ];
 
         $union = array_shift($sources);
@@ -294,7 +294,6 @@ final readonly class AuthorizedArchiveSql
 
     /**
      * @param EloquentBuilder $authorized Source-policy-filtered parent SELECT
-     * @param list<string> $higherPriorityTypes Types that block lower precedence
      */
     private function links(
         EloquentBuilder $authorized,
@@ -303,7 +302,6 @@ final readonly class AuthorizedArchiveSql
         int $priority,
         ?string $eventTable,
         ?string $eventParentColumn,
-        array $higherPriorityTypes,
     ): Builder {
         $links = DB::table('document_links as l')
             ->whereIn('l.linkable_type', array_unique([$modelClass, (new $modelClass)->getMorphClass()]));
