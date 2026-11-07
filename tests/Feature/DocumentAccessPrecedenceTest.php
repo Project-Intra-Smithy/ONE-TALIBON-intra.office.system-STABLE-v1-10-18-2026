@@ -1003,6 +1003,75 @@ class DocumentAccessPrecedenceTest extends TestCase
         }
     }
 
+    public function test_p0a_archive_denies_mixed_event_unknown_parent_and_keeps_duplicate_authorized_links(): void
+    {
+        $own = $this->department('META-EVENT-OWN');
+        $foreign = $this->department('META-EVENT-FOREIGN');
+        $actor = $this->human($own);
+        $allowed = $this->restrictedCorrespondence($own);
+        $denied = $this->restrictedCorrespondence($foreign);
+        $event = CorrespondenceEvent::query()->create([
+            'correspondence_record_id' => $denied->id,
+            'event' => 'received',
+            'new_lifecycle_state' => CorrespondenceLifecycleState::Received->value,
+            'occurred_at' => now(),
+        ]);
+
+        $mixedEvent = $this->document($actor, $own, 'QA161_METADATA_DENIED_EVENT');
+        $unknown = $this->document($actor, $own, 'QA161_METADATA_UNKNOWN_LINK');
+        $duplicatedAllowed = $this->document($actor, $own, 'QA161_METADATA_ALLOWED_MULTIPLE');
+
+        foreach ([$mixedEvent, $unknown, $duplicatedAllowed, $duplicatedAllowed] as $doc) {
+            DocumentLink::query()->create([
+                'document_id' => $doc->id,
+                'linkable_type' => $allowed->getMorphClass(),
+                'linkable_id' => $allowed->id,
+                'relationship' => 'authorized_source',
+            ]);
+        }
+        DocumentLink::query()->create([
+            'document_id' => $mixedEvent->id,
+            'linkable_type' => $event->getMorphClass(),
+            'linkable_id' => $event->id,
+            'relationship' => 'foreign_restricted_event',
+        ]);
+        DocumentLink::query()->create([
+            'document_id' => $unknown->id,
+            'linkable_type' => 'qa161-unknown-parent',
+            'linkable_id' => 17,
+            'relationship' => 'unsupported_source',
+        ]);
+
+        $this->actingAs($actor);
+        $archive = app(DocumentArchiveQuery::class)->workspace($actor, []);
+        $ids = array_column($archive['records']->items(), 'publicId');
+        $this->assertSame(1, $archive['records']->total());
+        $this->assertSame(1, $archive['counts']['all']);
+        $this->assertSame([$duplicatedAllowed->public_id], $ids);
+        $this->assertNull(app(DocumentArchiveQuery::class)->workspace(
+            $actor, ['document' => $mixedEvent->public_id],
+        )['selected']);
+        $this->assertSame(0, app(DocumentArchiveQuery::class)->workspace(
+            $actor, ['archive_search' => 'QA161_METADATA_UNKNOWN_LINK'],
+        )['records']->total());
+        $this->assertSame(0, app(DocumentArchiveQuery::class)->workspace(
+            $actor, ['archive_search' => 'QA161_METADATA_DENIED_EVENT'],
+        )['records']->total());
+
+        $detail = app(\App\Services\DocumentEvidenceQuery::class)->forCorrespondence($allowed);
+        $detailIds = array_column($detail['record'], 'publicId');
+        $this->assertSame([$duplicatedAllowed->public_id, $duplicatedAllowed->public_id], $detailIds);
+        $this->get('/documents/'.$mixedEvent->public_id.'/download')->assertForbidden();
+        $this->get('/documents/'.$unknown->public_id.'/download')->assertForbidden();
+        $this->get('/documents/'.$duplicatedAllowed->public_id.'/download')->assertOk();
+        $this->get('/documents?mode=files')->assertInertia(
+            fn (Assert $page) => $page->where('archive.records.total', 1)->etc()
+        );
+        $this->get('/correspondence/'.$allowed->public_id.'/workspace')->assertInertia(
+            fn (Assert $page) => $page->where('evidence.record.0.publicId', $duplicatedAllowed->public_id)->etc()
+        );
+    }
+
     private function department(string $name): Department
     {
         return Department::query()->create([
