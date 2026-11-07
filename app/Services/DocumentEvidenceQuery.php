@@ -9,10 +9,15 @@ use App\Models\TransactionEvent;
 use App\Models\TravelOrder;
 use App\Models\TravelOrderEvent;
 use App\Models\WorkflowTransaction;
+use App\Models\User;
+use App\Services\CommonEvidence\AuthorizedArchiveSql;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 final class DocumentEvidenceQuery
 {
+    public function __construct(private readonly AuthorizedArchiveSql $authorizedArchive) {}
+
     /** @return array{record:array<int,array<string,mixed>>,events:array<string,array<int,array<string,mixed>>>} */
     public function forTransaction(WorkflowTransaction $transaction): array
     {
@@ -68,9 +73,26 @@ final class DocumentEvidenceQuery
 
         $record = [];
         $events = [];
+        if ($links->isEmpty()) {
+            return ['record' => $record, 'events' => $events];
+        }
+
+        // Evidence previews are only produced during an authenticated
+        // request. Parent detail authorization alone cannot grant access
+        // to metadata for a file shared with any denied source.
+        $actor = Auth::user();
+        if (! $actor instanceof User) {
+            return ['record' => $record, 'events' => $events];
+        }
+
+        $authorizedIds = $this->authorizedArchive->visibleDocumentIds(
+            $actor,
+            $links->pluck('document_id')->map(static fn ($id): int => (int) $id)->unique()->values()->all(),
+        );
+        $allowed = array_fill_keys($authorizedIds, true);
 
         foreach ($links as $link) {
-            if (! $link->document) {
+            if (! $link->document || ! isset($allowed[(int) $link->document_id])) {
                 continue;
             }
 
