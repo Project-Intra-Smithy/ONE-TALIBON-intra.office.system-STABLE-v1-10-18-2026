@@ -43,9 +43,10 @@ final class DocumentAccessService
             return false;
         }
 
-        // Collect all parent IDs in a single query. Never truncate by link
-        // position. Each family performs at most one scoped existence query,
-        // not a query per document link.
+        // Collect all links without truncation. All recognized source parents
+        // must authorize download; one visible sibling cannot overrule a
+        // restricted or deleted linked source. The queries are bounded by
+        // source family, not by the number of document links.
         $families = [
             'correspondence' => ['direct' => [], 'events' => []],
             'travel_order' => ['direct' => [], 'events' => []],
@@ -76,9 +77,13 @@ final class DocumentAccessService
                 case TransactionEvent::class:
                     $families['transaction']['events'][] = $id;
                     break;
+                default:
+                    // Unknown source semantics cannot establish safe custody.
+                    return false;
             }
         }
 
+        $hasRecognizedParent = false;
         foreach (['correspondence', 'travel_order', 'transaction'] as $family) {
             $ids = $families[$family];
             if ($ids['direct'] === [] && $ids['events'] === []) {
@@ -97,14 +102,18 @@ final class DocumentAccessService
                 'transaction' => [TransactionEvent::class, 'transaction_id'],
             };
 
-            // A family with any link controls precedence, including orphan
-            // links. A denied family cannot fall through to a lower family.
-            return $this->anyAuthorizedParent(
+            $hasRecognizedParent = true;
+
+            // Every present family and every linked parent must grant access.
+            // Never fall through from a denied, deleted, or orphaned source.
+            if (! $this->allAuthorizedParents(
                 $scope, $ids['direct'], $ids['events'], $eventClass, $eventParent,
-            );
+            )) {
+                return false;
+            }
         }
 
-        return false;
+        return $hasRecognizedParent;
     }
 
     /**
@@ -112,28 +121,36 @@ final class DocumentAccessService
      * @param  list<int>  $events
      * @param  class-string  $eventClass
      */
-    private function anyAuthorizedParent(
+    private function allAuthorizedParents(
         Builder $scope,
         array $direct,
         array $events,
         string $eventClass,
         string $eventParent,
     ): bool {
-        return $scope->where(function (Builder $parents) use ($direct, $events, $eventClass, $eventParent): void {
-            if ($direct !== []) {
-                $parents->whereIn('id', array_values(array_unique($direct)));
+        $parentIds = array_values(array_unique($direct));
+        $eventIds = array_values(array_unique($events));
+
+        if ($eventIds !== []) {
+            // Missing/orphaned event links deny; a deleted event must not
+            // silently remove a parent from the authorization requirement.
+            $eventParents = $eventClass::query()
+                ->whereIn('id', $eventIds)
+                ->pluck($eventParent);
+            if ($eventParents->count() !== count($eventIds)
+                || $eventParents->contains(null)) {
+                return false;
             }
 
-            if ($events !== []) {
-                $eventParents = $eventClass::query()
-                    ->whereIn('id', array_values(array_unique($events)))
-                    ->select($eventParent);
-                if ($direct !== []) {
-                    $parents->orWhereIn('id', $eventParents);
-                } else {
-                    $parents->whereIn('id', $eventParents);
-                }
-            }
-        })->exists();
+            $parentIds = array_values(array_unique(array_merge(
+                $parentIds,
+                $eventParents->map(fn ($id): int => (int) $id)->all(),
+            )));
+        }
+
+        // Distinct prevents duplicate links or joined policy scopes from
+        // inflating the number of authorized parents.
+        return $parentIds !== []
+            && $scope->whereIn('id', $parentIds)->distinct()->count('id') === count($parentIds);
     }
 }
