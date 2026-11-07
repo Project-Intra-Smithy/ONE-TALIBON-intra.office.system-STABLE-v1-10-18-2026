@@ -929,7 +929,7 @@ class DocumentAccessPrecedenceTest extends TestCase
         $marker = 'QA161_MIXED_METADATA_MARKER';
         $result = [
             'source' => 'synthetic-immutable-candidate',
-            'direct_download' => ['allowed_only_http' => $allowedHttp->status(), 'mixed_http' => $deniedHttp->status()],
+            'direct_download' => ['allowed_only_http' => $allowedHttp->getStatusCode(), 'mixed_http' => $deniedHttp->getStatusCode()],
             'archive' => [
                 'allowed_listed' => in_array($allowedOnly->public_id, $listed, true),
                 'mixed_listed' => in_array($mixed->public_id, $listed, true),
@@ -947,11 +947,11 @@ class DocumentAccessPrecedenceTest extends TestCase
                 'authorized_only_metadata' => in_array($allowedOnly->public_id, $evidenceIds, true),
             ],
             'http' => [
-                'archive_listing' => $listingHttp->status(),
-                'archive_search' => $searchHttp->status(),
-                'archive_selection' => $selectedHttp->status(),
-                'correspondence_detail' => $detailHttp->status(),
-                'records_search' => $recordsHttp->status(),
+                'archive_listing' => $listingHttp->getStatusCode(),
+                'archive_search' => $searchHttp->getStatusCode(),
+                'archive_selection' => $selectedHttp->getStatusCode(),
+                'correspondence_detail' => $detailHttp->getStatusCode(),
+                'records_search' => $recordsHttp->getStatusCode(),
                 'mixed_filename_in_listing' => str_contains($listingHttp->getContent(), $marker),
                 'mixed_filename_in_search' => str_contains($searchHttp->getContent(), $marker),
                 'mixed_filename_in_selected' => str_contains($selectedHttp->getContent(), $marker),
