@@ -881,6 +881,109 @@ class DocumentAccessPrecedenceTest extends TestCase
         $this->actingAs($actor)->get('/documents/'.$document->public_id.'/download')->assertForbidden();
     }
 
+    public function test_p0a_metadata_boundaries_for_mixed_parent_document(): void
+    {
+        $own = $this->department('META-PROBE-OWN');
+        $foreign = $this->department('META-PROBE-FOREIGN');
+        $actor = $this->human($own);
+        $allowed = $this->restrictedCorrespondence($own);
+        $denied = $this->restrictedCorrespondence($foreign);
+        $allowedOnly = $this->document($actor, $own, 'QA161_ALLOWED_METADATA_MARKER');
+        $mixed = $this->document($actor, $own, 'QA161_MIXED_METADATA_MARKER');
+        $deniedOnly = $this->document($actor, $foreign, 'QA161_DENIED_METADATA_MARKER');
+
+        foreach ([[$allowedOnly, $allowed], [$mixed, $allowed], [$mixed, $denied], [$deniedOnly, $denied]] as [$document, $record]) {
+            DocumentLink::query()->create([
+                'document_id' => $document->id,
+                'linkable_type' => $record->getMorphClass(),
+                'linkable_id' => $record->id,
+                'relationship' => 'document_meta_probe',
+            ]);
+        }
+
+        $this->assertTrue(app(CorrespondenceAccessDecider::class)->canViewInWorkspace($actor, $allowed));
+        $this->assertFalse(app(CorrespondenceAccessDecider::class)->canViewInWorkspace($actor, $denied));
+
+        $this->actingAs($actor);
+        $access = app(DocumentAccessService::class);
+        $this->assertTrue($access->canDownload($actor, $allowedOnly));
+        $this->assertFalse($access->canDownload($actor, $mixed));
+        $this->assertFalse($access->canDownload($actor, $deniedOnly));
+
+        $archive = app(DocumentArchiveQuery::class);
+        $listing = $archive->workspace($actor, []);
+        $search = $archive->workspace($actor, ['archive_search' => 'QA161_MIXED_METADATA_MARKER']);
+        $selection = $archive->workspace($actor, ['document' => $mixed->public_id]);
+        $activity = $archive->activity($actor);
+        $detailEvidence = app(\App\Services\DocumentEvidenceQuery::class)->forCorrespondence($allowed);
+        $listingHttp = $this->get('/documents?mode=files')->assertOk();
+        $searchHttp = $this->get('/documents?mode=files&archive_search=QA161_MIXED_METADATA_MARKER')->assertOk();
+        $selectedHttp = $this->get('/documents?mode=files&document='.$mixed->public_id)->assertOk();
+        $detailHttp = $this->get('/correspondence/'.$allowed->public_id.'/workspace')->assertOk();
+        $recordsHttp = $this->get('/records?search=QA161_MIXED_METADATA_MARKER')->assertOk();
+        $deniedHttp = $this->get('/documents/'.$mixed->public_id.'/download')->assertForbidden();
+        $allowedHttp = $this->get('/documents/'.$allowedOnly->public_id.'/download')->assertOk();
+
+        $listed = array_column($listing['records']->items(), 'publicId');
+        $evidenceIds = array_column($detailEvidence['record'], 'publicId');
+        $marker = 'QA161_MIXED_METADATA_MARKER';
+        $result = [
+            'source' => 'synthetic-immutable-candidate',
+            'direct_download' => ['allowed_only_http' => $allowedHttp->status(), 'mixed_http' => $deniedHttp->status()],
+            'archive' => [
+                'allowed_listed' => in_array($allowedOnly->public_id, $listed, true),
+                'mixed_listed' => in_array($mixed->public_id, $listed, true),
+                'mixed_search_total' => $search['records']->total(),
+                'mixed_selected' => $selection['selected'] !== null,
+                'count_all' => $listing['counts']['all'],
+                'mixed_name_in_activity' => str_contains(json_encode($activity), $marker),
+                'mixed_download_url_provided' => collect($listing['records']->items())->contains(
+                    fn (array $row): bool => $row['publicId'] === $mixed->public_id && filled($row['downloadUrl'] ?? null)
+                ),
+                'mixed_filter_option_classification' => in_array('Restricted', $listing['filterOptions']['classifications'], true),
+            ],
+            'related_detail' => [
+                'mixed_evidence_metadata' => in_array($mixed->public_id, $evidenceIds, true),
+                'authorized_only_metadata' => in_array($allowedOnly->public_id, $evidenceIds, true),
+            ],
+            'http' => [
+                'archive_listing' => $listingHttp->status(),
+                'archive_search' => $searchHttp->status(),
+                'archive_selection' => $selectedHttp->status(),
+                'correspondence_detail' => $detailHttp->status(),
+                'records_search' => $recordsHttp->status(),
+                'mixed_filename_in_listing' => str_contains($listingHttp->getContent(), $marker),
+                'mixed_filename_in_search' => str_contains($searchHttp->getContent(), $marker),
+                'mixed_filename_in_selected' => str_contains($selectedHttp->getContent(), $marker),
+                'mixed_filename_in_correspondence_detail' => str_contains($detailHttp->getContent(), $marker),
+                'mixed_filename_in_records_search' => str_contains($recordsHttp->getContent(), $marker),
+                'denied_response_contains_marker' => str_contains($deniedHttp->getContent(), $marker),
+            ],
+        ];
+        $evidencePath = base_path('../qa-evidence/p0a-metadata-observed.json');
+        if (is_dir(dirname($evidencePath))) {
+            file_put_contents($evidencePath, json_encode($result, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR));
+        }
+
+        // Proposed all-parent confidentiality: the parent record's own
+        // subject remains readable, but a mixed-custody attachment's
+        // document-level metadata must not appear in these projections.
+        $this->assertTrue($result['archive']['allowed_listed']);
+        $this->assertFalse($result['archive']['mixed_listed']);
+        $this->assertSame(0, $result['archive']['mixed_search_total']);
+        $this->assertFalse($result['archive']['mixed_selected']);
+        $this->assertSame(1, $result['archive']['count_all']);
+        $this->assertFalse($result['archive']['mixed_download_url_provided']);
+        $this->assertFalse($result['archive']['mixed_name_in_activity']);
+        $this->assertTrue($result['related_detail']['authorized_only_metadata']);
+        $this->assertFalse($result['related_detail']['mixed_evidence_metadata']);
+        foreach (['mixed_filename_in_listing', 'mixed_filename_in_search',
+            'mixed_filename_in_selected', 'mixed_filename_in_correspondence_detail',
+            'mixed_filename_in_records_search', 'denied_response_contains_marker'] as $key) {
+            $this->assertFalse($result['http'][$key], $key);
+        }
+    }
+
     private function department(string $name): Department
     {
         return Department::query()->create([
