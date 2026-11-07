@@ -214,7 +214,12 @@ class DocumentAccessPrecedenceTest extends TestCase
             ]);
         }
 
-        $this->assertTrue(app(DocumentAccessService::class)->canDownload($actor, $document));
+        // The archive may expose the authorized sibling's metadata, but this
+        // mixed-authority document itself must not be downloaded.
+        $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
+        $this->actingAs($actor)
+            ->get('/documents/'.$document->public_id.'/download')
+            ->assertForbidden();
         $archive = app(DocumentArchiveQuery::class)->workspace($actor, [
             'document' => $document->public_id,
         ]);
@@ -712,6 +717,167 @@ class DocumentAccessPrecedenceTest extends TestCase
         $search = $service->workspace($actor, ['archive_search' => $foreign->subject]);
         $this->assertSame(0, $search['records']->total());
         $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
+        $this->actingAs($actor)->get('/documents/'.$document->public_id.'/download')->assertForbidden();
+    }
+
+    public function test_mixed_same_family_document_denies_direct_http_without_streaming_file(): void
+    {
+        $office = $this->department('QA-OWN');
+        $foreign = $this->department('QA-FOREIGN');
+        $actor = $this->human($office);
+        $allowed = $this->restrictedCorrespondence($office);
+        $denied = $this->restrictedCorrespondence($foreign);
+        $document = $this->document($actor, $office, 'QA restricted document bytes');
+
+        $this->assertTrue(app(CorrespondenceAccessDecider::class)->canViewInWorkspace($actor, $allowed));
+        $this->assertFalse(app(CorrespondenceAccessDecider::class)->canViewInWorkspace($actor, $denied));
+
+        foreach ([$allowed, $denied] as $record) {
+            DocumentLink::query()->create([
+                'document_id' => $document->id,
+                'linkable_type' => $record->getMorphClass(),
+                'linkable_id' => $record->id,
+                'relationship' => 'classified_attachment',
+            ]);
+        }
+
+        $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
+        $response = $this->actingAs($actor)->get('/documents/'.$document->public_id.'/download');
+        $response->assertForbidden();
+        $this->assertStringNotContainsString('%PDF-1.7 test', $response->getContent());
+
+        // Restricted parent first must make no difference.
+        $document2 = $this->document($actor, $office, 'QA reversed link precedence');
+        foreach ([$denied, $allowed] as $record) {
+            DocumentLink::query()->create([
+                'document_id' => $document2->id,
+                'linkable_type' => $record->getMorphClass(),
+                'linkable_id' => $record->id,
+                'relationship' => 'classified_attachment',
+            ]);
+        }
+        $this->actingAs($actor)
+            ->get('/documents/'.$document2->public_id.'/download')
+            ->assertForbidden();
+    }
+
+    public function test_two_authorized_correspondence_parents_allow_download_including_duplicate_links(): void
+    {
+        $office = $this->department('QA-MULTI-ALLOWED');
+        $actor = $this->human($office);
+        $first = $this->restrictedCorrespondence($office);
+        $second = $this->restrictedCorrespondence($office);
+        $document = $this->document($actor, $office, 'QA authorized shared document');
+
+        foreach ([$first, $first, $second] as $index => $record) {
+            DocumentLink::query()->create([
+                'document_id' => $document->id,
+                'linkable_type' => $record->getMorphClass(),
+                'linkable_id' => $record->id,
+                'relationship' => 'source_'.$index,
+            ]);
+        }
+
+        $this->assertTrue(app(DocumentAccessService::class)->canDownload($actor, $document));
+        $this->actingAs($actor)
+            ->get('/documents/'.$document->public_id.'/download')
+            ->assertOk();
+    }
+
+    public function test_authorized_correspondence_cannot_override_foreign_transaction_parent(): void
+    {
+        $own = $this->department('QA-CORR');
+        $foreign = $this->department('QA-TX');
+        $actor = $this->human($own);
+        $other = $this->human($foreign);
+        $allowed = $this->restrictedCorrespondence($own);
+        $denied = $this->transaction($other, $foreign);
+        $document = $this->document($actor, $own, 'QA cross-family restricted document');
+
+        $this->assertTrue(app(CorrespondenceAccessDecider::class)->canViewInWorkspace($actor, $allowed));
+        $this->assertFalse($actor->can('view', $denied));
+        foreach ([$allowed, $denied] as $parent) {
+            DocumentLink::query()->create([
+                'document_id' => $document->id,
+                'linkable_type' => $parent->getMorphClass(),
+                'linkable_id' => $parent->id,
+                'relationship' => 'cross_family_parent',
+            ]);
+        }
+
+        $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
+        $this->actingAs($actor)
+            ->get('/documents/'.$document->public_id.'/download')
+            ->assertForbidden();
+    }
+
+    public function test_linked_correspondence_event_parent_requires_same_visibility_and_detects_missing_events(): void
+    {
+        $office = $this->department('QA-EVENT');
+        $foreign = $this->department('QA-EVENT-FOREIGN');
+        $actor = $this->human($office);
+        $allowed = $this->restrictedCorrespondence($office);
+        $denied = $this->restrictedCorrespondence($foreign);
+        $document = $this->document($actor, $office, 'QA event linked confidentiality');
+
+        $allowedEvent = CorrespondenceEvent::query()->create([
+            'correspondence_record_id' => $allowed->id,
+            'event' => 'received',
+            'new_lifecycle_state' => CorrespondenceLifecycleState::Received->value,
+            'occurred_at' => now(),
+        ]);
+        $deniedEvent = CorrespondenceEvent::query()->create([
+            'correspondence_record_id' => $denied->id,
+            'event' => 'received',
+            'new_lifecycle_state' => CorrespondenceLifecycleState::Received->value,
+            'occurred_at' => now(),
+        ]);
+
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => $allowedEvent->getMorphClass(),
+            'linkable_id' => $allowedEvent->id,
+            'relationship' => 'event_attachment',
+        ]);
+        $this->actingAs($actor)->get('/documents/'.$document->public_id.'/download')->assertOk();
+
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => $deniedEvent->getMorphClass(),
+            'linkable_id' => $deniedEvent->id,
+            'relationship' => 'event_attachment',
+        ]);
+        $this->actingAs($actor)->get('/documents/'.$document->public_id.'/download')->assertForbidden();
+
+        $missing = $this->document($actor, $office, 'QA missing event');
+        DocumentLink::query()->create([
+            'document_id' => $missing->id,
+            'linkable_type' => $allowedEvent->getMorphClass(),
+            'linkable_id' => 2147483600,
+            'relationship' => 'orphan_event',
+        ]);
+        $this->actingAs($actor)->get('/documents/'.$missing->public_id.'/download')->assertForbidden();
+    }
+
+    public function test_unknown_parent_type_cannot_be_bypassed_with_allowed_transaction(): void
+    {
+        $office = $this->department('QA-UNKNOWN');
+        $actor = $this->human($office);
+        $allowed = $this->transaction($actor, $office);
+        $document = $this->document($actor, $office, 'QA unsupported attached parent');
+
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => $allowed->getMorphClass(),
+            'linkable_id' => $allowed->id,
+            'relationship' => 'known',
+        ]);
+        DocumentLink::query()->create([
+            'document_id' => $document->id,
+            'linkable_type' => 'unsupported-synthetic-parent',
+            'linkable_id' => 12,
+            'relationship' => 'unknown',
+        ]);
         $this->actingAs($actor)->get('/documents/'.$document->public_id.'/download')->assertForbidden();
     }
 
