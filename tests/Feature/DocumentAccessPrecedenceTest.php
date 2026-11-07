@@ -21,6 +21,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class DocumentAccessPrecedenceTest extends TestCase
@@ -223,10 +224,13 @@ class DocumentAccessPrecedenceTest extends TestCase
         $archive = app(DocumentArchiveQuery::class)->workspace($actor, [
             'document' => $document->public_id,
         ]);
-        $this->assertSame(1, $archive['records']->total());
-        $this->assertSame('Authorized correspondence context', $archive['selected']['relatedTitle']);
-        $this->assertSame('Authorized correspondence context', $archive['records']->items()[0]['relatedTitle']);
-        $this->assertNotSame($denied->subject, $archive['selected']['relatedTitle']);
+        // Parent-level visibility remains authorized, but the shared file
+        // can no longer contribute any document metadata to this archive.
+        $this->assertSame(0, $archive['records']->total());
+        $this->assertNull($archive['selected']);
+        $this->actingAs($actor)
+            ->get('/correspondence/'.$allowed->public_id.'/workspace')
+            ->assertOk();
     }
 
     public function test_sql_archive_zero_one_and_one_thousand_documents_keep_stable_pages_and_counts(): void
@@ -342,7 +346,8 @@ class DocumentAccessPrecedenceTest extends TestCase
         $archive = app(DocumentArchiveQuery::class)->workspace($actor, [
             'document' => $document->public_id,
         ]);
-        $this->assertSame('Authorized SQL archive source', $archive['selected']['relatedTitle']);
+        $this->assertSame(0, $archive['records']->total());
+        $this->assertNull($archive['selected']);
         $serialized = json_encode($archive);
         $this->assertStringNotContainsString($denied->subject, $serialized);
         $this->assertStringNotContainsString($denied->municipal_reference_no, $serialized);
@@ -924,6 +929,18 @@ class DocumentAccessPrecedenceTest extends TestCase
         $deniedHttp = $this->get('/documents/'.$mixed->public_id.'/download')->assertForbidden();
         $allowedHttp = $this->get('/documents/'.$allowedOnly->public_id.'/download')->assertOk();
 
+        // Inspect Inertia props, not the raw echoed URL/query filter.
+        $listingHttp->assertInertia(fn (Assert $page) => $page
+            ->where('archive.records.total', 1)
+            ->where('archive.counts.all', 1)
+            ->etc());
+        $searchHttp->assertInertia(fn (Assert $page) => $page
+            ->where('archive.records.total', 0)->etc());
+        $selectedHttp->assertInertia(fn (Assert $page) => $page
+            ->where('archive.selected', null)->etc());
+        $recordsHttp->assertInertia(fn (Assert $page) => $page
+            ->where('records.total', 0)->etc());
+
         $listed = array_column($listing['records']->items(), 'publicId');
         $evidenceIds = array_column($detailEvidence['record'], 'publicId');
         $marker = 'QA161_MIXED_METADATA_MARKER';
@@ -956,7 +973,10 @@ class DocumentAccessPrecedenceTest extends TestCase
                 'mixed_filename_in_search' => str_contains($searchHttp->getContent(), $marker),
                 'mixed_filename_in_selected' => str_contains($selectedHttp->getContent(), $marker),
                 'mixed_filename_in_correspondence_detail' => str_contains($detailHttp->getContent(), $marker),
-                'mixed_filename_in_records_search' => str_contains($recordsHttp->getContent(), $marker),
+                // These raw HTML values may only reflect the echoed search
+                // query; records and archive props are asserted separately.
+                'raw_search_echoes_query' => str_contains($searchHttp->getContent(), $marker),
+                'raw_records_echoes_query' => str_contains($recordsHttp->getContent(), $marker),
                 'denied_response_contains_marker' => str_contains($deniedHttp->getContent(), $marker),
             ],
         ];
@@ -977,9 +997,8 @@ class DocumentAccessPrecedenceTest extends TestCase
         $this->assertFalse($result['archive']['mixed_name_in_activity']);
         $this->assertTrue($result['related_detail']['authorized_only_metadata']);
         $this->assertFalse($result['related_detail']['mixed_evidence_metadata']);
-        foreach (['mixed_filename_in_listing', 'mixed_filename_in_search',
-            'mixed_filename_in_selected', 'mixed_filename_in_correspondence_detail',
-            'mixed_filename_in_records_search', 'denied_response_contains_marker'] as $key) {
+        foreach (['mixed_filename_in_listing', 'mixed_filename_in_selected',
+            'mixed_filename_in_correspondence_detail', 'denied_response_contains_marker'] as $key) {
             $this->assertFalse($result['http'][$key], $key);
         }
     }
