@@ -25,9 +25,9 @@ use Illuminate\Support\Str;
 /**
  * PostgreSQL archive projection. Only authorized links reach the catalog.
  *
- * A higher-priority link FAMILY blocks lower-priority families even if its
- * parent was deleted or is inaccessible. Within one family the first
- * authorized link by link ID supplies presentation context.
+ * All linked sources must grant file-metadata visibility. Among fully
+ * authorized documents, the highest-priority family and earliest link
+ * supplies presentation context; no denied family can be skipped.
  */
 final readonly class AuthorizedArchiveSql
 {
@@ -36,6 +36,29 @@ final readonly class AuthorizedArchiveSql
         private TravelOrderAccess $travelOrderAccess,
         private TransactionVisibilityQuery $transactionVisibility,
     ) {}
+
+    /**
+     * Reuse the archive's SQL-level all-parent authorization for evidence
+     * previews. Returns only IDs with every linked parent authorized.
+     *
+     * @param list<int> $documentIds
+     * @return list<int>
+     */
+    public function visibleDocumentIds(User $claimedActor, array $documentIds): array
+    {
+        if ($documentIds === []) {
+            return [];
+        }
+
+        $verified = VerifiedMunicipalActor::forProtectedSource($claimedActor);
+
+        return DB::query()
+            ->fromSub($this->catalog($verified), 'visible_documents')
+            ->whereIn('doc_id', array_values(array_unique($documentIds)))
+            ->pluck('doc_id')
+            ->map(static fn ($id): int => (int) $id)
+            ->all();
+    }
 
     /** @param array<string, mixed> $filters */
     public function workspace(User $claimedActor, array $filters): array
@@ -187,7 +210,8 @@ final readonly class AuthorizedArchiveSql
         $ranked = DB::query()->fromSub($links, 'authorized_links')
             ->selectRaw(
                 'authorized_links.*, ROW_NUMBER() OVER '
-                .'(PARTITION BY document_id ORDER BY family_priority ASC, link_id ASC) AS source_position'
+                .'(PARTITION BY document_id ORDER BY family_priority ASC, link_id ASC) AS source_position, '
+                .'COUNT(*) OVER (PARTITION BY document_id) AS authorized_link_count'
             );
 
         $actorId = (int) $actor->id;
@@ -201,6 +225,14 @@ final readonly class AuthorizedArchiveSql
             ->leftJoin('departments as own', 'own.id', '=', 'd.owner_department_id')
             ->leftJoin('departments as cur', 'cur.id', '=', 'source.current_office_id')
             ->leftJoin('departments as orig', 'orig.id', '=', 'source.origin_office_id')
+            // A source record may remain visible on its own, but shared file
+            // metadata is confidential if ANY linked parent is inaccessible,
+            // deleted or of an unknown type. Match every document link, not
+            // only the first permitted source within the winning family.
+            ->whereRaw(
+                'source.authorized_link_count = (SELECT COUNT(*) FROM document_links AS all_l '
+                .'WHERE all_l.document_id = d.id)'
+            )
             ->selectRaw(
                 "d.id AS doc_id, CAST(d.public_id AS TEXT) AS public_id, "
                 ."COALESCE(NULLIF(d.original_name, ''), d.title) AS name, d.title AS title, "
@@ -241,16 +273,16 @@ final readonly class AuthorizedArchiveSql
             ->select(['id','reference_no','title','origin_department_id',
                 'current_department_id','assigned_employee_id']);
 
-        $corrTypes = $this->morphTypes(CorrespondenceRecord::class, CorrespondenceEvent::class);
-        $travelTypes = $this->morphTypes(TravelOrder::class, TravelOrderEvent::class);
-
         $sources = [
-            $this->links($correspondence, CorrespondenceRecord::class, 'correspondence', 1, null, null, []),
-            $this->links($correspondence, CorrespondenceEvent::class, 'correspondence', 1, 'correspondence_events', 'correspondence_record_id', []),
-            $this->links($travel, TravelOrder::class, 'travel_order', 2, null, null, $corrTypes),
-            $this->links($travel, TravelOrderEvent::class, 'travel_order', 2, 'travel_order_events', 'travel_order_id', $corrTypes),
-            $this->links($transactions, WorkflowTransaction::class, 'transaction', 3, null, null, array_merge($corrTypes, $travelTypes)),
-            $this->links($transactions, TransactionEvent::class, 'transaction', 3, 'transaction_events', 'transaction_id', array_merge($corrTypes, $travelTypes)),
+            $this->links($correspondence, CorrespondenceRecord::class, 'correspondence', 1, null, null),
+            $this->links($correspondence, CorrespondenceEvent::class, 'correspondence', 1, 'correspondence_events', 'correspondence_record_id'),
+            // Include ALL authorized families before counting. Precedence
+            // still selects display context, but can never override a denied
+            // higher/lower family linked to the same physical document.
+            $this->links($travel, TravelOrder::class, 'travel_order', 2, null, null),
+            $this->links($travel, TravelOrderEvent::class, 'travel_order', 2, 'travel_order_events', 'travel_order_id'),
+            $this->links($transactions, WorkflowTransaction::class, 'transaction', 3, null, null),
+            $this->links($transactions, TransactionEvent::class, 'transaction', 3, 'transaction_events', 'transaction_id'),
         ];
 
         $union = array_shift($sources);
@@ -262,7 +294,6 @@ final readonly class AuthorizedArchiveSql
 
     /**
      * @param EloquentBuilder $authorized Source-policy-filtered parent SELECT
-     * @param list<string> $higherPriorityTypes Types that block lower precedence
      */
     private function links(
         EloquentBuilder $authorized,
@@ -271,7 +302,6 @@ final readonly class AuthorizedArchiveSql
         int $priority,
         ?string $eventTable,
         ?string $eventParentColumn,
-        array $higherPriorityTypes,
     ): Builder {
         $links = DB::table('document_links as l')
             ->whereIn('l.linkable_type', array_unique([$modelClass, (new $modelClass)->getMorphClass()]));
@@ -303,30 +333,10 @@ final readonly class AuthorizedArchiveSql
                 ."r.assigned_employee_id AS assigned_employee_id";
         }
 
-        if ($higherPriorityTypes !== []) {
-            $links->whereNotExists(function (Builder $blocked) use ($higherPriorityTypes): void {
-                $blocked->selectRaw('1')
-                    ->from('document_links as higher')
-                    ->whereColumn('higher.document_id', 'l.document_id')
-                    ->whereIn('higher.linkable_type', array_values(array_unique($higherPriorityTypes)));
-            });
-        }
-
         return $links->selectRaw(
             "l.document_id, l.id AS link_id, l.relationship, {$priority} AS family_priority, "
             ."'{$family}' AS related_type, ".$context
         );
-    }
-
-    /** @return list<string> */
-    private function morphTypes(string ...$classes): array
-    {
-        $types = [];
-        foreach ($classes as $class) {
-            $types[] = $class;
-            $types[] = (new $class)->getMorphClass();
-        }
-        return array_values(array_unique($types));
     }
 
     /** @return array<string, mixed> */
