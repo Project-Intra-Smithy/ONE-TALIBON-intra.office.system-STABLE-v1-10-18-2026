@@ -126,7 +126,7 @@ test('dedicated My Department stays head-only and My Tasks is a genuine staged p
     assert.equal(staged.isStagedInertiaPath('/my-tasks'), true);
     assert.equal(staged.isStagedInertiaPath('/tasks'), false);
     const sidebar = readFileSync(fileURLToPath(new URL('../../resources/js/components/shell/PortalSidebar.tsx', import.meta.url)), 'utf8');
-    assert.doesNotMatch(sidebar, /href="\\/dashboard#personal-tasks"/);
+    assert.ok(!sidebar.includes('href="/dashboard#personal-tasks"'));
     assert.doesNotMatch(sidebar, /const tasksActive =/);
 });
 
@@ -135,12 +135,12 @@ test('Dashboard only previews Tasks and does not enable deferred Chat Room', () 
     const preview = readFileSync(fileURLToPath(new URL('../../resources/js/components/dashboard/r7/lower/R7TaskPanel.tsx', import.meta.url)), 'utf8');
     const transactions = readFileSync(fileURLToPath(new URL('../../resources/js/pages/Transactions/Index.tsx', import.meta.url)), 'utf8');
     const upper = readFileSync(fileURLToPath(new URL('../../resources/js/components/dashboard/r7/R7UpperRegion.tsx', import.meta.url)), 'utf8');
-    assert.match(dashboard, /href="\\/my-department"/);
-    assert.match(preview, /href="\\/my-tasks"/);
+    assert.ok(dashboard.includes('href="/my-department"'));
+    assert.ok(preview.includes('href="/my-tasks"'));
     assert.doesNotMatch(preview, /<PersonalTaskWorkspace/);
     assert.doesNotMatch(transactions, /<PersonalTaskWorkspace/);
     for (const name of ['Recent Advisories', 'Announcements', 'Chat Room', 'Planned']) {
         assert.ok(upper.includes(name));
     }
-    assert.doesNotMatch(upper, /href="\\/messages"/);
+    assert.ok(!upper.includes('href="/messages"'));
 });
