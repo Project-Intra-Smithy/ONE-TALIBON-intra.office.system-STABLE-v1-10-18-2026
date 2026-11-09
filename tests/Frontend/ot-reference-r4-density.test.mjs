@@ -13,7 +13,7 @@ const css = source('resources/css/ot-reference-dashboard.css');
 test('one compact municipal toolbar retains all valid in-page jump destinations', () => {
     assert.match(dashboard, /className="ot-dashboard-toolbar"/);
     assert.match(dashboard, /aria-label="Jump to work section"/);
-    for (const destination of ['#work-overview', '#dashboard-correspondence', '#personal-tasks']) {
+    for (const destination of ['#work-overview', '#dashboard-correspondence', '/my-tasks']) {
         assert.ok(dashboard.includes(`href="${destination}"`));
     }
     assert.match(dashboard, /<MunicipalContext\s*\/>/);
@@ -50,5 +50,5 @@ test('responsive and accessible theme variants are present', () => {
     assert.match(css, /@media \(max-width:767px\)/);
     assert.match(css, /\.dark \.ot-reference-dashboard \.ot-dashboard-panel-heading/);
     assert.match(css, /@media \(prefers-contrast:more\)/);
-    assert.match(dashboard, /tabIndex=\{-1\}/);
+    assert.match(upper, /tabIndex=\{-1\}/);
 });
