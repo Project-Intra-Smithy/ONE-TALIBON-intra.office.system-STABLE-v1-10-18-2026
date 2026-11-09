@@ -104,3 +104,9 @@ function TaskSummary({ userId }: { userId: number }) {
         </section>
     );
 }
+
+/** Render one read-only task preview per signed-in user. */
+export default function R7TaskPanel() {
+    const id = usePage<SharedProps>().props.auth?.user?.id;
+    return typeof id === 'number' ? <TaskSummary key={id} userId={id} /> : null;
+}
