@@ -34,7 +34,11 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
     const [priority, setPriority] = useState(filters.priority);
     const [officeId, setOfficeId] = useState(filters.office_id ? String(filters.office_id) : '');
     const currentQueue = scopeGroups.flatMap((group) => group.views).find((view) => view.key === currentView);
-    const currentTitle = currentQueue?.label || 'My Work';
+    const currentTitle = currentQueue?.label || 'Work Requests';
+    const requestScopeGroups = scopeGroups.map((group) => ({
+        ...group,
+        label: group.label.toLowerCase() === 'my tasks' ? 'My Work Request Actions' : group.label,
+    }));
 
     useEffect(() => {
         setSearch(filters.search);
@@ -105,7 +109,7 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
                 </div>
 
                 <h2 className="mt-5 text-base font-bold text-slate-900 dark:text-white">Work Request queues</h2>
-                <WorkScopeTabs groups={scopeGroups} currentView={currentView} onSelect={selectView} />
+                <WorkScopeTabs groups={requestScopeGroups} currentView={currentView} onSelect={selectView} />
 
                 <form onSubmit={applyFilters}>
                     <ProgressiveFilterBar
