@@ -101,5 +101,6 @@ function TaskSummary({ userId }: { userId: number }) {
                     Open My Tasks <ArrowRight size={17} aria-hidden="true" />
                 </Link>
             </div>
-        </section>;
+        </section>
+    );
 }
