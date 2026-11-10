@@ -1,3 +1,5 @@
+> **CURRENT-SOURCE NOTICE (2026-11-06):** The application baseline at Siris (`Syris-EkzD`) acting-lead takeover is `ec17cbfab2a52b55e4f3f45bd5ec199df3858d66`. PR #37 developer receipts are not independent four-role QA, hosted exact-main CI, Gerry acceptance or production proof. See [Engineering Hub #162](https://github.com/Project-Intra-Smithy/engineering-hub/issues/162), [QA #161](https://github.com/Project-Intra-Smithy/engineering-hub/issues/161) and [the maintainer handoff](handoffs/maintainer/SIRIS-ACTING-TECH-LEAD-2026-11-06.md).
+
 # ONE TALIBON — CURRENT VALIDATION & EVIDENCE POLICY
 
 ## Evidence law

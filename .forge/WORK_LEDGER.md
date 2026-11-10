@@ -1,3 +1,5 @@
+> **CURRENT-SOURCE NOTICE (2026-11-06):** Prior anchors below remain historical. The application baseline at Siris (`Syris-EkzD`) acting-lead takeover is `ec17cbfab2a52b55e4f3f45bd5ec199df3858d66`. Current control: [Engineering Hub #162](https://github.com/Project-Intra-Smithy/engineering-hub/issues/162) and [the maintainer handoff](handoffs/maintainer/SIRIS-ACTING-TECH-LEAD-2026-11-06.md). State remains `START_SYNC_REQUIRED` until reviewed and merged.
+
 # ONE TALIBON — ACTIVE WORK LEDGER
 
 ## Authority
