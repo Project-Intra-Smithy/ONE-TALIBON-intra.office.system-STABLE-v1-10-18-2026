@@ -11,20 +11,31 @@ use App\Models\Employee;
 use App\Models\TravelOrder;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTruncation;
+use Illuminate\Foundation\Testing\RefreshDatabaseState;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
 /**
- * Authenticated HTTP regressions. DatabaseMigrations is intentional: RefreshDatabase
- * wraps tests in a transaction, hiding fixtures from a second PG connection.
- * The revoker uses a separately committed connection while the web session remains.
+ * Authenticated HTTP regressions require committed synthetic fixtures visible to
+ * the independent revoker connection. DatabaseTruncation avoids a transaction
+ * and never invokes rollback of forward-only protected custody migrations.
+ * Run only against the disposable PostgreSQL test database.
  */
 final class P0DestinationRevocationTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTruncation;
+
+    protected function tearDown(): void
+    {
+        // Cross-connection tests commit fixtures. Force the next Feature test
+        // to rebuild its disposable schema instead of reusing committed rows.
+        RefreshDatabaseState::$migrated = false;
+
+        parent::tearDown();
+    }
 
     public function test_travel_order_detail_and_index_reject_separated_employment_with_retained_session(): void
     {
