@@ -5,6 +5,7 @@ on:
     branches:
       - KIRCH-TALIBON-V1-UIUX-CORRECTION
       - 'KIRCH-TALIBON-UIUX-W*'
+      - candidate/codex-iam-admin-provisioning-r2
   pull_request:
     branches:
       - KIRCH-TALIBON-V1-UIUX-CORRECTION
