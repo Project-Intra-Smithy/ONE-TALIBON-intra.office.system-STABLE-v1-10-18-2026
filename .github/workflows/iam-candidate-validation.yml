@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - candidate/codex-iam-admin-provisioning-r2
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -58,7 +59,9 @@ jobs:
         run: |
           cp .env.example .env
           php artisan key:generate
-          php artisan migrate:fresh --force
+          # Refuse any preexisting or non-disposable database; use forward-only migration.
+          php -r '$p = new PDO("pgsql:host=127.0.0.1;port=5432;dbname=talibon_portal_test", "postgres", "iam_candidate_disposable"); $db=$p->query("select current_database()")->fetchColumn(); $tables=(int)$p->query("select count(*) from pg_tables where schemaname = current_schema()")->fetchColumn(); if ($db !== "talibon_portal_test" || $tables !== 0) {fwrite(STDERR,"Refusing nonempty/incorrect database\n");exit(1);}'
+          php artisan migrate --force --no-interaction
       - name: Permanent IAM lifecycle
         run: php artisan test tests/Feature/PermanentIamLifecycleTest.php
       - name: Feature regression
