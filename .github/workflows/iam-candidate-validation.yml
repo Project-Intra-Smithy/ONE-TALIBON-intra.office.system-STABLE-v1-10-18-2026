@@ -95,7 +95,7 @@ jobs:
           exit 1
       - name: Chromium administrator-to-employee lifecycle (1440 and 390px)
         env:
-          QA_EXPECTED_SHA: \${{ github.sha }}
+          QA_EXPECTED_SHA: ${{ github.sha }}
         run: node tests/Browser/iam-pr48-onboarding.mjs
       - name: Upload sanitized browser QA receipt
         if: always()
