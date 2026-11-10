@@ -30,13 +30,16 @@ class AuthenticatedSessionController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
+            'login' => ['nullable', 'string', 'max:255', 'required_without:email'],
+            'email' => ['nullable', 'email', 'required_without:login'],
             'password' => ['required', 'string'],
         ]);
 
         $this->rejectLimitedLogin($request);
 
-        if (! Auth::attempt([...$credentials, 'is_active' => true], $request->boolean('remember'))) {
+        $login = mb_strtolower(trim((string) ($credentials['login'] ?? $credentials['email'])));
+        $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        if (! Auth::attempt([$field => $login, 'password' => $credentials['password'], 'is_active' => true], $request->boolean('remember'))) {
             $this->recordFailedLogin($request);
         }
 
@@ -44,6 +47,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
         $this->assurance->clear($request);
         $user = $request->user();
+        $request->session()->put('auth_session_version', (int) $user->session_version);
 
         if (! $this->assurance->requiresMfa($user)) {
             return redirect()->intended(route('dashboard'));
@@ -96,7 +100,7 @@ class AuthenticatedSessionController extends Controller
         );
 
         throw ValidationException::withMessages([
-            'email' => 'Sign in could not be completed. Please wait and try again.',
+            $request->has('login') ? 'login' : 'email' => 'Sign in could not be completed. Please wait and try again.',
         ]);
     }
 
@@ -110,7 +114,7 @@ class AuthenticatedSessionController extends Controller
         );
 
         throw ValidationException::withMessages([
-            'email' => 'The provided credentials are invalid or the account is inactive.',
+            $request->has('login') ? 'login' : 'email' => 'The provided credentials are invalid or the account is inactive.',
         ]);
     }
 }

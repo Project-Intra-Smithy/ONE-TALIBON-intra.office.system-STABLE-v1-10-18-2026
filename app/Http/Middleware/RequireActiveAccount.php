@@ -20,9 +20,22 @@ final class RequireActiveAccount
     {
         $user = $request->user();
 
-        if (! $user || $user->is_active) {
+        if (! $user) {
             return $next($request);
         }
+
+        $employee = $user->employee()->with('department')->first();
+        $sessionCurrent = (int) $request->session()->get('auth_session_version', $user->session_version);
+        $legacyEligible = blank($user->username);
+        $employeeEligible = $legacyEligible || ($employee !== null
+            && $employee->employment_status === 'active'
+            && $employee->separation_date === null
+            && (bool) $employee->department?->is_active);
+        $eligible = $user->is_active
+            && $user->account_status === 'active'
+            && $sessionCurrent === (int) $user->session_version
+            && $employeeEligible;
+        if ($eligible) return $next($request);
 
         $this->audit->record(
             $user,
@@ -57,7 +70,7 @@ final class RequireActiveAccount
     private function inactiveResponse(): RedirectResponse
     {
         return redirect()->route('login')->withErrors([
-            'email' => 'This session is no longer active. Please sign in again or contact an administrator.',
+            'login' => 'This session is no longer active. Please sign in again or contact an administrator.',
         ]);
     }
 }

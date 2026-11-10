@@ -13,10 +13,13 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
         'role',
         'is_active',
+        'account_status',
+        'session_version',
     ];
 
     protected $hidden = [
@@ -40,6 +43,8 @@ class User extends Authenticatable
             'mfa_recovery_codes_generated_at' => 'datetime',
             'mfa_version' => 'integer',
             'last_seen_at' => 'datetime',
+            'session_version' => 'integer',
+            'suspended_at' => 'datetime',
         ];
     }
 

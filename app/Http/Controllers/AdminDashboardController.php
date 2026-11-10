@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\AccountRegistryQuery;
 use App\Services\SystemAdministrationAccess;
 use App\Services\SystemAdministrationQuery;
+use App\Services\StaffActivationService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -40,6 +41,10 @@ final class AdminDashboardController extends Controller
             ],
             'departmentOptions' => $registry->departmentOptions(),
             'roleOptions' => $roleOptions,
+            'invitableRoles' => StaffActivationService::INVITABLE_ROLES,
+            'eligibleEmployees' => $registry->eligibleEmployees(),
+            'pendingInvitations' => $registry->pendingInvitations(),
+            'activationCredential' => $request->session()->pull('activationCredential'),
         ]);
     }
 }

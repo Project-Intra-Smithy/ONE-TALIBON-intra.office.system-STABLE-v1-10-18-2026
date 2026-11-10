@@ -6,6 +6,8 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\MfaChallengeController;
 use App\Http\Controllers\Auth\MfaEnrollmentController;
 use App\Http\Controllers\Auth\MfaSecurityController;
+use App\Http\Controllers\Auth\PasswordChangeController;
+use App\Http\Controllers\StaffActivationController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CorrespondenceLifecycleController;
 use App\Http\Controllers\CorrespondenceWorkspaceActionController;
@@ -57,7 +59,8 @@ use Inertia\Inertia;
 Route::get('/', [PublicPortalController::class, 'home'])->name('public.home');
 
 Route::middleware('guest')->group(function (): void {
-    Route::get('/activate-account', [PublicPortalController::class, 'activation'])->name('public.activate-account');
+    Route::get('/activate-account', [StaffActivationController::class, 'show'])->name('public.activate-account');
+    Route::post('/activate-account', [StaffActivationController::class, 'redeem'])->middleware('throttle:6,1')->name('public.activate-account.redeem');
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login.store');
 });
@@ -79,10 +82,17 @@ Route::middleware(['auth', 'active', 'mfa.subject', 'mfa.assured'])->group(funct
     Route::post('/security/mfa/recovery-codes', [MfaSecurityController::class, 'regenerateRecoveryCodes'])->name('mfa.recovery.regenerate');
     Route::post('/security/mfa/reset', [MfaSecurityController::class, 'reset'])->name('mfa.reset');
     Route::delete('/security/mfa', [MfaSecurityController::class, 'disable'])->name('mfa.disable');
+    Route::put('/security/password', PasswordChangeController::class)->name('password.change');
 });
 
 Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
     Route::get('/admin', AdminDashboardController::class)->name('admin.index');
+    Route::post('/admin/accounts', [StaffActivationController::class, 'store'])->name('admin.accounts.store');
+    Route::post('/admin/invitations', [StaffActivationController::class, 'store'])->name('admin.invitations.store');
+    Route::post('/admin/invitations/{invitation}/revoke', [StaffActivationController::class, 'revoke'])->whereNumber('invitation')->name('admin.invitations.revoke');
+    Route::post('/admin/accounts/{user}/suspend', [StaffActivationController::class, 'suspend'])->whereNumber('user')->name('admin.accounts.suspend');
+    Route::post('/admin/accounts/{user}/reactivate', [StaffActivationController::class, 'reactivate'])->whereNumber('user')->name('admin.accounts.reactivate');
+    Route::post('/admin/accounts/{user}/recovery', [StaffActivationController::class, 'recover'])->whereNumber('user')->name('admin.accounts.recovery');
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::get('/my-department', [DepartmentController::class, 'myWorkspace'])->name('my-department.index');
     Route::get('/my-tasks', fn () => Inertia::render('Tasks/Index'))->name('my-tasks.index');
