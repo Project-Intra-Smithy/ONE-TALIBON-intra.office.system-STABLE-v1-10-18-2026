@@ -82,6 +82,7 @@ export default function Show({
     accountability: initialAccountability,
     transactionPermissions: initialPermissions,
     evidence,
+    returnTo,
 }: {
     transaction: Tx;
     departments: Dept[];
@@ -89,6 +90,7 @@ export default function Show({
     accountability: Accountability;
     transactionPermissions: Permissions;
     evidence: EvidencePayload;
+    returnTo: string;
 }) {
     const [tx, setTx] = useState(initialTx);
     const [assignableEmployees, setAssignableEmployees] = useState(initialAssignableEmployees);
@@ -172,7 +174,7 @@ export default function Show({
         <AppLayout title={tx.reference_no}>
             <div className="civic-page mx-auto max-w-6xl space-y-4 sm:space-y-6">
                 <div className="flex items-center justify-between gap-3 sm:gap-4">
-                    <Link href="/transactions" className="text-[12px] font-semibold text-blue-700 sm:text-sm">← Back to My Work</Link>
+                    <Link href={returnTo} className="text-[12px] font-semibold text-blue-700 sm:text-sm">← Back to Work Requests</Link>
                     <div role="status" className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold sm:gap-2 sm:px-3 sm:py-1.5 sm:text-xs ${liveState === 'current' ? 'bg-emerald-50 text-emerald-800' : 'bg-amber-50 text-amber-900'}`}><Radio size={12} className="sm:h-[14px] sm:w-[14px]" />{liveState === 'current' ? 'Updates current' : liveState === 'expired' ? 'Session expired — sign in again' : liveState === 'stale' ? 'Updates unavailable — last known state' : 'Checking updates…'}</div>
                 </div>
 

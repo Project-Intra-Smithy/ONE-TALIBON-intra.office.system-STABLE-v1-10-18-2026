@@ -36,7 +36,9 @@ test('A3 retains guarded Records access and authority boundary', () => {
  assert.match(directory, /\{recordsHref \? \(/);
  assert.match(directory, /Records access unavailable — authority pending/);
  assert.match(directory, /subject to LGU validation/);
- assert.match(workspace, /AuthorityPendingSurface/);
+ assert.match(workspace, /<OfficeOverview/);
+ assert.match(workspace, /Recent authorized department activity/);
+ assert.match(workspace, /Department-specific approvals, signatures and routing changes remain unavailable/);
  assert.doesNotMatch(directory, /router\.post|router\.delete|fetch\(/);
 });
 

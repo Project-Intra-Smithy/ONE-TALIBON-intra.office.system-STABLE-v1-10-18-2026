@@ -35,6 +35,12 @@ class DepartmentController extends Controller
         ));
     }
 
+    /** Reuse the existing Head-only query; no expanded directory or workflow permissions. */
+    public function myWorkspace(Request $request): Response
+    {
+        return Inertia::render('Departments/Workspace', $this->workspace->workspace($request->user()));
+    }
+
     /** @return array<string, mixed> */
     private function directory(): array
     {

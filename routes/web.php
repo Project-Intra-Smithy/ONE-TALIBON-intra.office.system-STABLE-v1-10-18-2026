@@ -84,6 +84,8 @@ Route::middleware(['auth', 'active', 'mfa.subject', 'mfa.assured'])->group(funct
 Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
     Route::get('/admin', AdminDashboardController::class)->name('admin.index');
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::get('/my-department', [DepartmentController::class, 'myWorkspace'])->name('my-department.index');
+    Route::get('/my-tasks', fn () => Inertia::render('Tasks/Index'))->name('my-tasks.index');
     Route::get('/portal-search', PortalSearchController::class)->name('portal-search.index');
     Route::get('/documents', DocumentCenterController::class)->name('document-center.index');
     Route::get('/departments', DepartmentController::class)->name('departments.index');
