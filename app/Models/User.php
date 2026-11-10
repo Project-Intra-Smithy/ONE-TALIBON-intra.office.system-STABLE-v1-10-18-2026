@@ -11,6 +11,14 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    // Mirror the PostgreSQL defaults for newly created, not-yet-refreshed models.
+    // Account suspension still sets an explicit non-active status and is enforced
+    // by RequireActiveAccount together with the session-version check.
+    protected $attributes = [
+        'account_status' => 'active',
+        'session_version' => 1,
+    ];
+
     protected $fillable = [
         'name',
         'username',
