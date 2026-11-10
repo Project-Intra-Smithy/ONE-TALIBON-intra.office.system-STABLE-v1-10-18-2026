@@ -72,3 +72,36 @@ jobs:
           npm run test:contracts
           npm run test:ux
           npm run build
+
+      - name: Install Chromium for authenticated onboarding
+        run: npx playwright install --with-deps chromium
+      - name: Generate disposable synthetic credentials
+        run: |
+          for key in IAM_QA_ADMIN_PASSWORD IAM_QA_EMPLOYEE_PASSWORD IAM_QA_RECOVERY_PASSWORD; do
+            value="$(openssl rand -hex 20)Aa1!"
+            echo "::add-mask::$value"
+            echo "$key=$value" >> "$GITHUB_ENV"
+          done
+      - name: Create bounded browser fixture
+        run: php tests/Browser/iam-pr48-fixture.php
+      - name: Start isolated Laravel HTTP service
+        run: |
+          APP_ENV=local php artisan serve --host=127.0.0.1 --port=8000 > "$RUNNER_TEMP/iam-http.log" 2>&1 &
+          for attempt in $(seq 1 40); do
+            if curl --fail --silent --output /dev/null http://127.0.0.1:8000/login; then exit 0; fi
+            sleep 1
+          done
+          echo "Disposable IAM HTTP service failed to start" >&2
+          exit 1
+      - name: Chromium administrator-to-employee lifecycle (1440 and 390px)
+        env:
+          QA_EXPECTED_SHA: \${{ github.sha }}
+        run: node tests/Browser/iam-pr48-onboarding.mjs
+      - name: Upload sanitized browser QA receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: iam-pr48-synthetic-browser-receipt
+          path: storage/app/qa/iam-pr48-browser.json
+          if-no-files-found: ignore
+          retention-days: 7
