@@ -77,6 +77,20 @@ final readonly class AuthorizedArchiveSql
             ->all();
     }
 
+    /**
+     * Internal event-file eligibility only; does not grant report field publication.
+     * Explicit LEGACY_CTW is required by the event evidence contract.
+     */
+    public function eligibleEventLinks(User $claimedActor): Builder
+    {
+        $verified = VerifiedMunicipalActor::forProtectedSource($claimedActor);
+
+        return DB::table('document_links as event_link')
+            ->joinSub($this->catalog($verified, false, true), 'eligible_document',
+                fn (JoinClause $join) => $join->on('eligible_document.doc_id', '=', 'event_link.document_id'))
+            ->select(['event_link.linkable_type', 'event_link.linkable_id']);
+    }
+
     /** @param array<string, mixed> $filters */
     public function workspace(User $claimedActor, array $filters): array
     {
@@ -220,7 +234,7 @@ final readonly class AuthorizedArchiveSql
         ];
     }
 
-    private function catalog(VerifiedMunicipalActor $verified, bool $includePreview = false): Builder
+    private function catalog(VerifiedMunicipalActor $verified, bool $includePreview = false, bool $explicitLegacy = false): Builder
     {
         $actor = $verified->user();
         $links = $this->authorizedLinks($verified);
@@ -274,28 +288,18 @@ final readonly class AuthorizedArchiveSql
                 ."WHEN d.uploaded_by_user_id = {$actorId} THEN 'upload' ELSE 'visible' END AS direction"
             );
 
+        // Quarantine before list, selected detail, counts, facets, search,
+        // activity, or any eligible-ID projection. Non-PDF legacy rows
+        // remain visible; preview eligibility is a separate presentation hint.
+        LegacyEvidenceEligibility::restrict($catalog, 'd', $explicitLegacy);
         if ($includePreview) {
-            // Probe both provenance components once, not per document.
-            // Missing or partial schema cannot establish preview entitlement.
-            $schema = DB::selectOne(
-                "SELECT CASE WHEN to_regclass('plan_document_origin_receipts') IS NOT NULL "
-                ."AND EXISTS (SELECT 1 FROM information_schema.columns "
-                ."WHERE table_schema = current_schema() AND table_name = 'documents' "
-                ."AND column_name = 'security_domain') THEN 1 ELSE 0 END AS ready"
+            $catalog->selectRaw(
+                "CASE WHEN d.mime_type = 'application/pdf' AND d.storage_disk = 'documents' "
+                ."AND d.storage_disk = ? AND d.storage_path IS NOT NULL AND d.storage_path <> '' "
+                ."AND d.checksum_sha256 ~ '^[0-9a-f]{64}$' AND d.size_bytes > 0 "
+                ."THEN 1 ELSE 0 END AS preview_eligible",
+                [(string) config('documents.disk', 'documents')],
             );
-            if ((int) ($schema->ready ?? 0) === 1) {
-                $catalog->selectRaw(
-                    "CASE WHEN d.mime_type = 'application/pdf' AND d.storage_disk = 'documents' "
-                    ."AND d.storage_disk = ? AND d.storage_path IS NOT NULL AND d.storage_path <> '' "
-                    ."AND d.checksum_sha256 ~ '^[0-9a-f]{64}$' AND d.size_bytes > 0 "
-                    ."AND (d.security_domain IS NULL OR d.security_domain = 'LEGACY_CTW') "
-                    ."AND NOT EXISTS (SELECT 1 FROM plan_document_origin_receipts AS receipt "
-                    ."WHERE receipt.document_id = d.id) THEN 1 ELSE 0 END AS preview_eligible",
-                    [(string) config('documents.disk', 'documents')],
-                );
-            } else {
-                $catalog->selectRaw('0 AS preview_eligible');
-            }
         }
 
         return $catalog;

@@ -188,6 +188,7 @@ class CorePortalReportsTest extends TestCase
             'created_at' => now()->subHour(),
         ]);
         $document = Document::query()->create(['title' => 'Route evidence']);
+        DB::table('documents')->where('id', $document->id)->update(['security_domain' => 'LEGACY_CTW']);
         DocumentLink::query()->create([
             'document_id' => $document->id, 'linkable_type' => $submitted->getMorphClass(),
             'linkable_id' => $submitted->id, 'relationship' => 'route_evidence', 'created_by_user_id' => $head->id,
@@ -211,6 +212,12 @@ class CorePortalReportsTest extends TestCase
         $this->assertSame('MOVE-FINAL', $forwardRow['toOffice']);
         $this->assertSame('Later forward.', $forwardRow['remarks']);
         $this->assertSame($head->name, $forwardRow['actor']);
+        // Internal predicate proof only, not an independently granted HTTP field.
+        $movement = app(\App\Services\Reports\DocumentMovementReportQuery::class);
+        $this->assertTrue($movement->eligibleEventEvidence($head, 'correspondence', $route->id));
+        $this->assertFalse($movement->eligibleEventEvidence($head, 'workflow', $forward->id));
+        $document->links()->delete();
+        $this->assertFalse($movement->eligibleEventEvidence($head, 'correspondence', $route->id));
     }
 
     public function test_document_movement_route_fallback_and_equal_time_order_match_detail_trace(): void

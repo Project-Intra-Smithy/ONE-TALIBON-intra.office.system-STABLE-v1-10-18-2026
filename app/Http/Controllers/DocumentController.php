@@ -40,7 +40,7 @@ final class DocumentController extends Controller
         $record = Str::isUuid($document)
             ? Document::query()->where('public_id', $document)->first()
             : null;
-        if (! $record || PlanDocumentOriginGuard::isProtected($record) || ! $access->canDownload($actor, $record)) {
+        if (! $record || ! PlanDocumentOriginGuard::isEligibleForLegacyPreview($record) || ! $access->canDownload($actor, $record)) {
             return $deny();
         }
 
@@ -53,7 +53,7 @@ final class DocumentController extends Controller
         // disclosure. This is not atomic cross-transaction revocation.
         $fresh = $record->fresh();
         if (! $fresh
-            || PlanDocumentOriginGuard::isProtected($fresh)
+            || ! PlanDocumentOriginGuard::isEligibleForLegacyPreview($fresh)
             || ! $access->canDownload($actor, $fresh)
             || $record->getAttributes() !== $fresh->getAttributes()) {
             return $deny();

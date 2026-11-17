@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Document;
+use App\Services\CommonEvidence\LegacyEvidenceEligibility;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Throwable;
@@ -13,6 +14,28 @@ use Throwable;
  */
 final class PlanDocumentOriginGuard
 {
+    /** New preview only: unlike old download, absent provenance is never eligible. */
+    public static function isEligibleForLegacyPreview(Document $document): bool
+    {
+        if (! $document->exists || $document->getKey() === null
+            || $document->getAttribute('security_domain') === 'EVER_PLAN') {
+            return false;
+        }
+
+        try {
+            $hasDomain = Schema::hasColumn('documents', 'security_domain');
+            $hasReceipts = Schema::hasTable('plan_document_origin_receipts');
+            if (! $hasDomain || ! $hasReceipts) {
+                return false;
+            }
+
+            return LegacyEvidenceEligibility::restrict(DB::table('documents as d'), 'd')
+                ->where('d.id', $document->getKey())->exists();
+        } catch (Throwable) {
+            return false;
+        }
+    }
+
     public static function isProtected(Document $document): bool
     {
         // A loaded, explicitly sealed Document remains protected even if the
