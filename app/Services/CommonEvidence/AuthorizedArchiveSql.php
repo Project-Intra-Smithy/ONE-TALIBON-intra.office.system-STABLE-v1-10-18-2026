@@ -60,11 +60,28 @@ final readonly class AuthorizedArchiveSql
             ->all();
     }
 
+    /** @return array<int, bool> All-parent-authorized IDs and projected preview eligibility. */
+    public function visibleDocumentPreviewEligibility(User $claimedActor, array $documentIds): array
+    {
+        if ($documentIds === []) {
+            return [];
+        }
+
+        $verified = VerifiedMunicipalActor::forProtectedSource($claimedActor);
+
+        return DB::query()
+            ->fromSub($this->catalog($verified, true), 'visible_documents')
+            ->whereIn('doc_id', array_values(array_unique($documentIds)))
+            ->pluck('preview_eligible', 'doc_id')
+            ->map(static fn ($eligible): bool => (int) $eligible === 1)
+            ->all();
+    }
+
     /** @param array<string, mixed> $filters */
     public function workspace(User $claimedActor, array $filters): array
     {
         $verified = VerifiedMunicipalActor::forProtectedSource($claimedActor);
-        $all = $this->catalog($verified);
+        $all = $this->catalog($verified, true);
         $scope = (string) ($filters['archive_scope'] ?? 'all');
         $search = Str::lower(trim((string) ($filters['archive_search'] ?? '')));
         $type = (string) ($filters['document_type'] ?? '');
@@ -183,7 +200,7 @@ final readonly class AuthorizedArchiveSql
     /** @return array<string, mixed> */
     public function activity(User $claimedActor): array
     {
-        $all = $this->catalog(VerifiedMunicipalActor::forProtectedSource($claimedActor));
+        $all = $this->catalog(VerifiedMunicipalActor::forProtectedSource($claimedActor), true);
         $counts = DB::query()->fromSub(clone $all, 'activity_counts')
             ->selectRaw(
                 "COUNT(*) FILTER (WHERE direction = 'sent') AS sent, "
@@ -203,7 +220,7 @@ final readonly class AuthorizedArchiveSql
         ];
     }
 
-    private function catalog(VerifiedMunicipalActor $verified): Builder
+    private function catalog(VerifiedMunicipalActor $verified, bool $includePreview = false): Builder
     {
         $actor = $verified->user();
         $links = $this->authorizedLinks($verified);
@@ -217,7 +234,7 @@ final readonly class AuthorizedArchiveSql
         $actorId = (int) $actor->id;
         $officeId = (int) $actor->employee->department_id;
         $employeeId = (int) $actor->employee->id;
-        return DB::table('documents as d')
+        $catalog = DB::table('documents as d')
             ->joinSub($ranked, 'source', function (JoinClause $join): void {
                 $join->on('source.document_id', '=', 'd.id')->where('source.source_position', '=', 1);
             })
@@ -256,6 +273,32 @@ final readonly class AuthorizedArchiveSql
                 ."AND (source.assigned_employee_id = {$employeeId} OR source.current_office_id = {$officeId}) THEN 'received' "
                 ."WHEN d.uploaded_by_user_id = {$actorId} THEN 'upload' ELSE 'visible' END AS direction"
             );
+
+        if ($includePreview) {
+            // Probe both provenance components once, not per document.
+            // Missing or partial schema cannot establish preview entitlement.
+            $schema = DB::selectOne(
+                "SELECT CASE WHEN to_regclass('plan_document_origin_receipts') IS NOT NULL "
+                ."AND EXISTS (SELECT 1 FROM information_schema.columns "
+                ."WHERE table_schema = current_schema() AND table_name = 'documents' "
+                ."AND column_name = 'security_domain') THEN 1 ELSE 0 END AS ready"
+            );
+            if ((int) ($schema->ready ?? 0) === 1) {
+                $catalog->selectRaw(
+                    "CASE WHEN d.mime_type = 'application/pdf' AND d.storage_disk = 'documents' "
+                    ."AND d.storage_disk = ? AND d.storage_path IS NOT NULL AND d.storage_path <> '' "
+                    ."AND d.checksum_sha256 ~ '^[0-9a-f]{64}$' AND d.size_bytes > 0 "
+                    ."AND (d.security_domain IS NULL OR d.security_domain = 'LEGACY_CTW') "
+                    ."AND NOT EXISTS (SELECT 1 FROM plan_document_origin_receipts AS receipt "
+                    ."WHERE receipt.document_id = d.id) THEN 1 ELSE 0 END AS preview_eligible",
+                    [(string) config('documents.disk', 'documents')],
+                );
+            } else {
+                $catalog->selectRaw('0 AS preview_eligible');
+            }
+        }
+
+        return $catalog;
     }
 
     private function authorizedLinks(VerifiedMunicipalActor $verified): Builder
@@ -372,6 +415,8 @@ final readonly class AuthorizedArchiveSql
             'originOffice' => $this->office($row, 'origin'),
             'currentOffice' => $this->office($row, 'current'),
             'downloadUrl' => route('documents.download', ['document' => $row->public_id], false),
+            'previewUrl' => (int) ($row->preview_eligible ?? 0) === 1
+                ? route('documents.preview', ['document' => $row->public_id], false) : null,
         ];
     }
 

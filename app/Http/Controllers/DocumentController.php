@@ -5,14 +5,78 @@ namespace App\Http\Controllers;
 use App\Models\Document;
 use App\Services\AuditLogger;
 use App\Services\DocumentAccessService;
+use App\Services\LegacyPdfPreview;
 use App\Services\PlanDocumentOriginGuard;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 final class DocumentController extends Controller
 {
+    public function preview(
+        Request $request,
+        string $document,
+        DocumentAccessService $access,
+        AuditLogger $audit,
+        LegacyPdfPreview $preview,
+    ): Response {
+        $actor = $request->user()->loadMissing('employee');
+        $headers = [
+            'Cache-Control' => 'private, no-store',
+            'X-Content-Type-Options' => 'nosniff',
+            'Referrer-Policy' => 'no-referrer',
+        ];
+
+        // Missing, protected and unauthorized identities are indistinguishable.
+        $deny = static function () use ($actor, $audit, $headers): Response {
+            $audit->record($actor, 'document.preview', 'Denied evidence preview.', outcome: 'denied');
+
+            return new Response('Not Found', 404, [...$headers, 'Content-Type' => 'text/plain; charset=UTF-8']);
+        };
+
+        $record = Str::isUuid($document)
+            ? Document::query()->where('public_id', $document)->first()
+            : null;
+        if (! $record || PlanDocumentOriginGuard::isProtected($record) || ! $access->canDownload($actor, $record)) {
+            return $deny();
+        }
+
+        $bytes = $preview->verifiedBytes($record);
+        if ($bytes === null) {
+            return $deny();
+        }
+
+        // Recheck persisted identity, provenance and all parents before
+        // disclosure. This is not atomic cross-transaction revocation.
+        $fresh = $record->fresh();
+        if (! $fresh
+            || PlanDocumentOriginGuard::isProtected($fresh)
+            || ! $access->canDownload($actor, $fresh)
+            || $record->getAttributes() !== $fresh->getAttributes()) {
+            return $deny();
+        }
+
+        $disposition = $preview->disposition($fresh);
+        $audit->record(
+            $actor,
+            'document.preview',
+            'Authorized protected Core Portal evidence preview.',
+            entityType: 'document',
+            entityId: $fresh->id,
+        );
+
+        // Range requests intentionally receive the entire verified representation.
+        return new Response($bytes, 200, [
+            ...$headers,
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => $disposition,
+            'Content-Length' => (string) strlen($bytes),
+        ]);
+    }
+
     public function download(
         Request $request,
         Document $document,

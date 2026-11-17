@@ -1,0 +1,120 @@
+name: OperationForge legacy PDF validation
+
+on:
+  push:
+    branches:
+      - candidate/operationforge-traceability-core-r1
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: postgres
+      DB_PASSWORD: operationforge_disposable
+      CACHE_STORE: file
+      SESSION_DRIVER: file
+      QUEUE_CONNECTION: sync
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: operationforge_disposable
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d talibon_portal_test"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, fileinfo, zip
+          coverage: none
+          tools: composer:v2
+      - run: git rev-parse HEAD
+      - run: composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+      - run: npm ci
+      - name: Prepare isolated database
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          php -r '$p = new PDO("pgsql:host=127.0.0.1;port=5432;dbname=talibon_portal_test", "postgres", "operationforge_disposable"); if ($p->query("select current_database()")->fetchColumn() !== "talibon_portal_test" || (int)$p->query("select count(*) from pg_tables where schemaname = current_schema()")->fetchColumn() !== 0) {exit(1);}'
+          php artisan migrate --force --no-interaction
+      - name: Focused preview regression
+        id: focused
+        continue-on-error: true
+        run: php artisan test tests/Feature/LegacyPdfPreviewTest.php
+      - name: Complete canonical Feature suite
+        id: feature
+        continue-on-error: true
+        run: php artisan test --testsuite=Feature
+      - name: Frontend contracts and build
+        id: frontend
+        continue-on-error: true
+        run: |
+          npm run types:check
+          npm run test:contracts
+          npm run test:ux
+          npm run build
+      - run: npx playwright install --with-deps chromium
+      - name: Prepare synthetic browser credentials and fixture
+        run: |
+          password="$(openssl rand -hex 24)Aa1!"
+          echo "::add-mask::$password"
+          echo "PDF_QA_PASSWORD=$password" >> "$GITHUB_ENV"
+          PDF_QA_PASSWORD="$password" php tests/Browser/legacy-pdf-inline-fixture.php
+      - name: Start loopback isolated HTTP server
+        run: |
+          APP_ENV=local php artisan serve --host=127.0.0.1 --port=8000 > "$RUNNER_TEMP/operationforge-http.log" 2>&1 &
+          for attempt in $(seq 1 40); do
+            if curl --fail --silent --output /dev/null http://127.0.0.1:8000/login; then exit 0; fi
+            sleep 1
+          done
+          exit 1
+      - name: Real native PDF tab and explicit download
+        id: browser
+        continue-on-error: true
+        env:
+          QA_EXPECTED_SHA: ${{ github.sha }}
+        run: xvfb-run -a node tests/Browser/legacy-pdf-inline-authenticated.mjs
+      - name: Upload synthetic receipt and viewer screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: operationforge-legacy-pdf-synthetic
+          path: |
+            storage/app/qa/legacy-pdf-browser.json
+            storage/app/qa/legacy-pdf-native-viewer.png
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Mandatory gates
+        if: always()
+        env:
+          FOCUSED: ${{ steps.focused.outcome }}
+          FEATURE: ${{ steps.feature.outcome }}
+          FRONTEND: ${{ steps.frontend.outcome }}
+          BROWSER: ${{ steps.browser.outcome }}
+        run: |
+          printf 'focused=%s feature=%s frontend=%s browser=%s\n' "$FOCUSED" "$FEATURE" "$FRONTEND" "$BROWSER"
+          test "$FOCUSED" = success && test "$FEATURE" = success && test "$FRONTEND" = success && test "$BROWSER" = success
