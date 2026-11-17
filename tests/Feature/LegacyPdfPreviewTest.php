@@ -2,15 +2,24 @@
 
 namespace Tests\Feature;
 
+use App\Domain\Correspondence\CorrespondenceClassification;
+use App\Domain\Correspondence\CorrespondenceLifecycleState;
+use App\Domain\TravelOrders\TravelOrderStatus;
+use App\Models\CorrespondenceEvent;
+use App\Models\CorrespondenceRecord;
 use App\Models\Department;
 use App\Models\Document;
 use App\Models\DocumentLink;
 use App\Models\Employee;
+use App\Models\TransactionEvent;
+use App\Models\TravelOrder;
+use App\Models\TravelOrderEvent;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
 use App\Services\AuditLogger;
 use App\Services\DocumentArchiveQuery;
 use App\Services\DocumentEvidenceQuery;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -162,6 +171,146 @@ final class LegacyPdfPreviewTest extends TestCase
         $this->assertFalse($response->headers->has('X-Injection'));
     }
 
+    public function test_all_legacy_direct_and_event_families_recheck_and_project_preview(): void
+    {
+        [$actor, $transaction, $document] = $this->evidence();
+        $office = $actor->employee->department_id;
+        $correspondence = $this->correspondence($actor);
+        $travel = TravelOrder::query()->create([
+            'reference_number' => 'PDF-TO-'.Str::upper(Str::random(10)),
+            'issuance_date' => '2026-10-01', 'travel_start_date' => '2026-10-02',
+            'travel_end_date' => '2026-10-03', 'purpose' => 'Synthetic PDF travel',
+            'destination' => 'Synthetic destination', 'department_id' => $office,
+            'status' => TravelOrderStatus::Approved,
+        ]);
+        $transactionEvent = TransactionEvent::query()->create([
+            'transaction_id' => $transaction->id, 'actor_user_id' => $actor->id,
+            'action' => 'submitted', 'new_status' => 'submitted', 'created_at' => now(),
+        ]);
+        $correspondenceEvent = CorrespondenceEvent::query()->create([
+            'correspondence_record_id' => $correspondence->id, 'event' => 'received',
+            'new_lifecycle_state' => CorrespondenceLifecycleState::Received->value,
+            'occurred_at' => now(),
+        ]);
+        $travelEvent = TravelOrderEvent::query()->create([
+            'travel_order_id' => $travel->id, 'actor_user_id' => $actor->id,
+            'event' => 'evidence_marker', 'to_status' => TravelOrderStatus::Approved,
+            'occurred_at' => now(), 'created_at' => now(),
+        ]);
+        $outsider = $this->actor();
+        $url = $this->url($document);
+
+        foreach ([
+            [$transaction, 'forTransaction', null],
+            [$transactionEvent, 'forTransaction', $transaction],
+            [$correspondence, 'forCorrespondence', null],
+            [$correspondenceEvent, 'forCorrespondence', $correspondence],
+            [$travel, 'forTravelOrder', null],
+            [$travelEvent, 'forTravelOrder', $travel],
+        ] as [$source, $query, $parent]) {
+            $document->links()->delete();
+            $this->link($document, $source);
+            $this->actingAs($actor)->get($url)->assertOk()->assertContent($this->pdf());
+            $evidence = app(DocumentEvidenceQuery::class)->{$query}($parent ?? $source);
+            $items = $parent ? $evidence['events'][(string) $source->id] : $evidence['record'];
+            $this->assertSame($url, $items[0]['previewUrl']);
+            $this->actingAs($outsider)->get($url)->assertNotFound()->assertContent('Not Found');
+        }
+    }
+
+    public function test_mixed_restricted_parent_positions_and_unknown_source_fail_closed(): void
+    {
+        [$actor, $transaction, $document] = $this->evidence();
+        $foreign = $this->correspondence($this->actor());
+        $this->actingAs($actor);
+
+        foreach ([1, 16, 17, 32] as $position) {
+            $document->links()->delete();
+            for ($index = 1; $index <= 32; $index++) {
+                $source = $index === $position ? $foreign : $transaction;
+                DocumentLink::query()->create([
+                    'document_id' => $document->id,
+                    'linkable_type' => $source->getMorphClass(),
+                    'linkable_id' => $source->id,
+                    'relationship' => 'preview_position_'.$index,
+                ]);
+            }
+            $this->get($this->url($document))->assertNotFound()->assertContent('Not Found');
+            $this->assertNull(app(DocumentArchiveQuery::class)->workspace($actor, ['document' => $document->public_id])['selected']);
+        }
+
+        $document->links()->delete();
+        $this->link($document, $transaction);
+        DocumentLink::query()->create([
+            'document_id' => $document->id, 'linkable_type' => 'synthetic-unknown',
+            'linkable_id' => 12, 'relationship' => 'unknown',
+        ]);
+        $this->get($this->url($document))->assertNotFound();
+    }
+
+    public function test_receipt_only_corruption_never_exposes_preview_entitlement(): void
+    {
+        [$actor, $record, $document] = $this->evidence();
+        $document->links()->delete();
+        DB::table('documents')->where('id', $document->id)->update(['security_domain' => 'EVER_PLAN']);
+        // Privileged corruption fixture ONLY, inside RefreshDatabase's isolated
+        // transaction. Restore the specific named triggers before exercising
+        // any application read path. Never weaken production privileges.
+        DB::statement('ALTER TABLE documents DISABLE TRIGGER kirion_plan_document_guard_trigger');
+        try {
+            DB::table('documents')->where('id', $document->id)->update(['security_domain' => null]);
+        } finally {
+            DB::statement('ALTER TABLE documents ENABLE TRIGGER kirion_plan_document_guard_trigger');
+        }
+        DB::statement('ALTER TABLE document_links DISABLE TRIGGER kirion_plan_generic_link_guard_trigger');
+        try {
+            $this->link($document, $record);
+        } finally {
+            DB::statement('ALTER TABLE document_links ENABLE TRIGGER kirion_plan_generic_link_guard_trigger');
+        }
+        $this->assertDatabaseHas('plan_document_origin_receipts', ['document_id' => $document->id]);
+        $this->actingAs($actor)->get($this->url($document))->assertNotFound()->assertContent('Not Found');
+        $this->get('/documents/'.$document->public_id.'/download')->assertNotFound();
+        $archive = app(DocumentArchiveQuery::class)->workspace($actor, ['document' => $document->public_id]);
+        $this->assertNull($archive['selected']['previewUrl'] ?? null);
+        $detail = app(DocumentEvidenceQuery::class)->forTransaction($record);
+        $this->assertNull($detail['record'][0]['previewUrl'] ?? null);
+        $this->assertDatabaseMissing('audit_logs', [
+            'action' => 'document.preview', 'outcome' => 'allowed', 'entity_id' => $document->id,
+        ]);
+    }
+
+    public function test_symlink_alias_and_size_limit_cannot_return_bytes(): void
+    {
+        [$actor, , $document] = $this->evidence();
+        $this->actingAs($actor);
+        $path = Storage::disk('documents')->path($document->storage_path);
+        $alias = dirname($path).'/alias.pdf';
+        $this->assertTrue(symlink($path, $alias));
+        try {
+            $document->update(['storage_path' => '2026/11/alias.pdf']);
+            $this->get($this->url($document))->assertNotFound();
+        } finally {
+            unlink($alias);
+        }
+        $document->update(['storage_path' => '2026/11/'.basename($path)]);
+        config(['documents.max_upload_mb' => 0]);
+        $this->get($this->url($document))->assertNotFound();
+    }
+
+    private function correspondence(User $actor): CorrespondenceRecord
+    {
+        return CorrespondenceRecord::query()->create([
+            'public_id' => (string) Str::uuid(), 'external_reference_no' => 'PDF-COR-'.Str::random(12),
+            'source' => 'email', 'channel' => 'official_email', 'sender_name' => 'Synthetic sender',
+            'sender_organization' => 'Synthetic office', 'subject' => 'Synthetic restricted source',
+            'received_at' => now(), 'receiving_department_id' => $actor->employee->department_id,
+            'municipal_reference_no' => 'PDF-MUN-'.Str::random(12),
+            'classification' => CorrespondenceClassification::Restricted->value,
+            'lifecycle_state' => CorrespondenceLifecycleState::Classified->value,
+        ]);
+    }
+
     private function url(Document $document): string
     {
         return '/documents/'.$document->public_id.'/preview';
@@ -187,7 +336,7 @@ final class LegacyPdfPreviewTest extends TestCase
         return [$actor, $record, $document];
     }
 
-    private function link(Document $document, WorkflowTransaction $record): DocumentLink
+    private function link(Document $document, Model $record): DocumentLink
     {
         return DocumentLink::query()->create([
             'document_id' => $document->id, 'linkable_type' => $record->getMorphClass(),

@@ -46,13 +46,19 @@ try {
     // Password-only session may be redirected or denied, never given bytes.
     assert.ok([302, 403, 404].includes(denied.status()));
     assert.notEqual(denied.headers()['content-type'], 'application/pdf');
+    // The denied safe request intentionally writes url.intended=preview.
+    // Return to an ordinary guarded portal journey while MFA is still
+    // pending so the recovery-code Continue link targets an Inertia page.
+    report.stages.push('guest and password-only retrieval denied');
+    await page.goto(base + '/dashboard');
+    await page.waitForURL(url => url.pathname === '/security/mfa/enroll');
     const secret = (await page.locator('main code').first().innerText()).trim();
     await page.getByLabel('Six-digit verification code').fill(otp(secret));
     await page.getByRole('button', { name: 'Confirm MFA enrollment' }).click();
     await page.waitForURL(url => url.pathname === '/security/mfa/recovery-codes');
     await page.getByRole('link', { name: 'Continue to portal' }).click();
     await page.waitForURL(url => url.pathname === '/dashboard');
-    report.stages.push('guest/password-only denied, real MFA enrollment completed');
+    report.stages.push('real MFA enrollment completed through dashboard continuation');
 
     await page.goto(base + '/documents?mode=files&document=' + fixture.publicId);
     const open = page.getByRole('link', { name: 'Open PDF', exact: true });
