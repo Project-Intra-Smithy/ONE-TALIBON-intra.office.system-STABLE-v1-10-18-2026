@@ -200,7 +200,13 @@ class CorePortalReportsTest extends TestCase
         $this->assertFalse($rows->contains('id', 'workflow:'.$submitted->id));
         $this->assertSame('MOVE-FROM', $routeRow['fromOffice']);
         $this->assertSame('MOVE-TO', $routeRow['toOffice']);
-        $this->assertSame('Yes', $routeRow['hasEvidence']);
+        $this->assertArrayNotHasKey('hasEvidence', $routeRow);
+        $this->assertArrayNotHasKey('hasEvidence', $forwardRow);
+        $catalog = collect($props['catalog'])->firstWhere('key', 'document-movement');
+        $this->assertNotContains('hasEvidence', array_column($catalog['columns'], 'key'));
+        $csv = $this->get('/reports/export/document-movement')->assertOk()->streamedContent();
+        $header = str_getcsv(explode("\n", $csv)[0]);
+        $this->assertNotContains('Evidence', $header);
         $this->assertSame('MOVE-TO', $forwardRow['fromOffice']);
         $this->assertSame('MOVE-FINAL', $forwardRow['toOffice']);
         $this->assertSame('Later forward.', $forwardRow['remarks']);

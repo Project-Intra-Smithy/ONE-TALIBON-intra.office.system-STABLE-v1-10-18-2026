@@ -272,12 +272,25 @@ final class LegacyPdfPreviewTest extends TestCase
         $this->actingAs($actor)->get($this->url($document))->assertNotFound()->assertContent('Not Found');
         $this->get('/documents/'.$document->public_id.'/download')->assertNotFound();
         $archive = app(DocumentArchiveQuery::class)->workspace($actor, ['document' => $document->public_id]);
-        $this->assertNull($archive['selected']['previewUrl'] ?? null);
+        $this->assertNull($archive['selected']);
+        $this->assertSame(0, $archive['records']->total());
         $detail = app(DocumentEvidenceQuery::class)->forTransaction($record);
-        $this->assertNull($detail['record'][0]['previewUrl'] ?? null);
+        $this->assertSame([], $detail['record']);
         $this->assertDatabaseMissing('audit_logs', [
             'action' => 'document.preview', 'outcome' => 'allowed', 'entity_id' => $document->id,
         ]);
+    }
+
+    public function test_both_provenance_components_absent_denies_new_preview(): void
+    {
+        [$actor, , $document] = $this->evidence();
+        $this->actingAs($actor);
+        // Simulate the old-schema compatibility branch without touching schema.
+        Schema::partialMock();
+        Schema::shouldReceive('hasColumn')->with('documents', 'security_domain')->andReturn(false);
+        Schema::shouldReceive('hasTable')->with('plan_document_origin_receipts')->andReturn(false);
+
+        $this->get($this->url($document))->assertNotFound()->assertContent('Not Found');
     }
 
     public function test_symlink_alias_and_size_limit_cannot_return_bytes(): void
