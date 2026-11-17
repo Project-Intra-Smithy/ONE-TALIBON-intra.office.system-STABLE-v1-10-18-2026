@@ -250,6 +250,7 @@ final class LegacyPdfPreviewTest extends TestCase
         $foreign = $this->correspondence($this->actor());
         $this->actingAs($actor);
 
+        $queryCounts = [];
         foreach ([1, 16, 17, 32] as $position) {
             $document->links()->delete();
             for ($index = 1; $index <= 32; $index++) {
@@ -261,8 +262,23 @@ final class LegacyPdfPreviewTest extends TestCase
                     'relationship' => 'preview_position_'.$index,
                 ]);
             }
-            $this->get($this->url($document))->assertNotFound()->assertContent('Not Found');
-            $this->assertNull(app(DocumentArchiveQuery::class)->workspace($actor, ['document' => $document->public_id])['selected']);
+            DB::enableQueryLog();
+            DB::flushQueryLog();
+            try {
+                $this->get($this->url($document))->assertNotFound()->assertContent('Not Found');
+                $previewCount = count(DB::getQueryLog());
+                DB::flushQueryLog();
+                $this->assertNull(app(DocumentArchiveQuery::class)->workspace($actor, ['document' => $document->public_id])['selected']);
+                $archiveCount = count(DB::getQueryLog());
+            } finally {
+                DB::disableQueryLog();
+                DB::flushQueryLog();
+            }
+            $queryCounts[] = [$previewCount, $archiveCount];
+        }
+        foreach ($queryCounts as [$previewCount, $archiveCount]) {
+            $this->assertLessThanOrEqual($queryCounts[0][0] + 1, $previewCount);
+            $this->assertLessThanOrEqual($queryCounts[0][1] + 1, $archiveCount);
         }
 
         $document->links()->delete();
@@ -278,6 +294,9 @@ final class LegacyPdfPreviewTest extends TestCase
     {
         [$actor, $record, $document] = $this->evidence();
         $document->links()->delete();
+        $this->actingAs($actor);
+        $before = $this->get('/documents?mode=files')->assertOk()->viewData('page')['props']['archive'];
+        $searchBefore = $this->get('/portal-search')->assertOk()->viewData('page')['props']['archiveActivity'];
         DB::table('documents')->where('id', $document->id)->update(['security_domain' => 'EVER_PLAN']);
         // Privileged corruption fixture ONLY, inside RefreshDatabase's isolated
         // transaction. Restore the specific named triggers before exercising
@@ -307,6 +326,11 @@ final class LegacyPdfPreviewTest extends TestCase
         $this->assertSame(0, $archive['records']->total());
         $detail = app(DocumentEvidenceQuery::class)->forTransaction($record);
         $this->assertSame([], $detail['record']);
+        $after = $this->get('/documents?mode=files')->assertOk()->viewData('page')['props']['archive'];
+        foreach (['selected', 'counts', 'filterOptions', 'records'] as $key) {
+            $this->assertSame(json_encode($before[$key]), json_encode($after[$key]));
+        }
+        $this->assertSame($searchBefore, $this->get('/portal-search')->assertOk()->viewData('page')['props']['archiveActivity']);
         $this->assertDatabaseMissing('audit_logs', [
             'action' => 'document.preview', 'outcome' => 'allowed', 'entity_id' => $document->id,
         ]);
@@ -350,6 +374,27 @@ final class LegacyPdfPreviewTest extends TestCase
         $this->get($this->url($document))->assertOk();
         config(['documents.max_upload_mb' => 0]);
         $this->get($this->url($document))->assertNotFound();
+    }
+
+    public function test_exact_preview_size_boundary_and_non_pdf_metadata_preservation(): void
+    {
+        [$actor, $record, $document] = $this->evidence();
+        $this->actingAs($actor);
+        config(['documents.max_upload_mb' => 1]);
+        $bytes = str_pad($this->pdf(), 1024 * 1024, ' ');
+        Storage::disk('documents')->put($document->storage_path, $bytes);
+        $document->update(['size_bytes' => strlen($bytes), 'checksum_sha256' => hash('sha256', $bytes)]);
+        $this->get($this->url($document))->assertOk()->assertContent($bytes);
+        $bytes .= ' ';
+        Storage::disk('documents')->put($document->storage_path, $bytes);
+        $document->update(['size_bytes' => strlen($bytes), 'checksum_sha256' => hash('sha256', $bytes)]);
+        $this->get($this->url($document))->assertNotFound();
+        $document->update(['mime_type' => 'image/png']);
+        $archive = app(DocumentArchiveQuery::class)->workspace($actor, ['document' => $document->public_id]);
+        $this->assertSame($document->public_id, $archive['selected']['publicId']);
+        $this->assertNull($archive['selected']['previewUrl']);
+        $this->assertNotNull($archive['selected']['downloadUrl']);
+        $this->assertNull(app(DocumentEvidenceQuery::class)->forTransaction($record)['record'][0]['previewUrl']);
     }
 
     public function test_actual_partial_and_missing_provenance_hide_metadata_and_preview(): void

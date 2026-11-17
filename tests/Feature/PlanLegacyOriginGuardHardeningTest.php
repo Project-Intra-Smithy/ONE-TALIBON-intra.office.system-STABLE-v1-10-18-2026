@@ -76,6 +76,36 @@ final class PlanLegacyOriginGuardHardeningTest extends TestCase
         $this->assertFalse(PlanDocumentOriginGuard::isProtected($document));
     }
 
+    public function test_ordinary_generic_plan_link_insert_update_delete_remain_denied(): void
+    {
+        $document = Document::query()->create(['title' => 'Synthetic Plan link guard']);
+        DB::table('documents')->where('id', $document->id)->update(['security_domain' => 'EVER_PLAN']);
+        $link = [
+            'document_id' => $document->id, 'linkable_type' => 'synthetic',
+            'linkable_id' => 1, 'relationship' => 'attachment',
+            'created_at' => now(), 'updated_at' => now(),
+        ];
+        $assertRejected = function (callable $operation): void {
+            try {
+                DB::transaction($operation);
+                $this->fail('Expected ordinary generic mutation to be denied.');
+            } catch (\Illuminate\Database\QueryException $e) {
+                $this->assertSame('23514', (string) ($e->errorInfo[0] ?? ''));
+            }
+        };
+        $assertRejected(fn () => DB::table('document_links')->insert($link));
+        // Existing impossible graph, synthetic only. Restore named guard before reads/writes.
+        DB::statement('ALTER TABLE document_links DISABLE TRIGGER kirion_plan_generic_link_guard_trigger');
+        try {
+            $id = DB::table('document_links')->insertGetId($link);
+        } finally {
+            DB::statement('ALTER TABLE document_links ENABLE TRIGGER kirion_plan_generic_link_guard_trigger');
+        }
+        $assertRejected(fn () => DB::table('document_links')->where('id', $id)->update(['relationship' => 'changed']));
+        $assertRejected(fn () => DB::table('document_links')->where('id', $id)->delete());
+        $this->assertDatabaseHas('document_links', ['id' => $id, 'relationship' => 'attachment']);
+    }
+
     public function test_new_preview_fails_closed_when_provenance_discovery_throws(): void
     {
         $document = Document::query()->create(['title' => 'Synthetic new preview']);

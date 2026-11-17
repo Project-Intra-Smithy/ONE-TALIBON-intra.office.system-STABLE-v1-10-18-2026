@@ -99,6 +99,19 @@ try {
     ]);
     assert.equal(hash(await fs.readFile(await download.path())), fixture.sha256);
     report.stages.push('explicit attachment download exact bytes');
+    // Use the real authenticated cookie session and CSRF-protected logout.
+    const cookies = await context.cookies(base);
+    const xsrf = cookies.find(cookie => cookie.name === 'XSRF-TOKEN');
+    assert.ok(xsrf?.value);
+    const logout = await context.request.post(base + '/logout', {
+        headers: { 'X-XSRF-TOKEN': decodeURIComponent(xsrf.value), Referer: base + '/documents' },
+        maxRedirects: 0,
+    });
+    assert.ok([302, 303].includes(logout.status()));
+    const loggedOut = await context.request.get(preview, { maxRedirects: 0 });
+    assert.equal(loggedOut.status(), 302);
+    assert.notEqual(loggedOut.headers()['content-type'], 'application/pdf');
+    report.stages.push('real authenticated session logout invalidates PDF retrieval');
     report.completed = true;
 } finally {
     await browser?.close();

@@ -206,6 +206,9 @@ class CorePortalReportsTest extends TestCase
         $catalog = collect($props['catalog'])->firstWhere('key', 'document-movement');
         $this->assertNotContains('hasEvidence', array_column($catalog['columns'], 'key'));
         $csv = $this->get('/reports/export/document-movement')->assertOk()->streamedContent();
+        $filteredPath = '?classification=internal&office='.$origin->id;
+        $filtered = $this->props($this->get('/reports'.$filteredPath.'&report=document-movement')->assertOk());
+        $filteredCsv = $this->get('/reports/export/document-movement'.$filteredPath)->assertOk()->streamedContent();
         $header = str_getcsv(explode("\n", $csv)[0]);
         $this->assertNotContains('Evidence', $header);
         $this->assertSame('MOVE-TO', $forwardRow['fromOffice']);
@@ -237,6 +240,10 @@ class CorePortalReportsTest extends TestCase
         $this->assertSame($props['result']['data'], $after['result']['data']);
         $this->assertSame($props['result']['total'], $after['result']['total']);
         $this->assertSame($csv, $this->get('/reports/export/document-movement')->assertOk()->streamedContent());
+        $afterFiltered = $this->props($this->get('/reports'.$filteredPath.'&report=document-movement')->assertOk());
+        $this->assertSame($filtered['result']['data'], $afterFiltered['result']['data']);
+        $this->assertSame($filtered['result']['total'], $afterFiltered['result']['total']);
+        $this->assertSame($filteredCsv, $this->get('/reports/export/document-movement'.$filteredPath)->assertOk()->streamedContent());
         DocumentLink::query()->create([
             'document_id' => $document->id, 'linkable_type' => $submitted->getMorphClass(),
             'linkable_id' => $submitted->id, 'relationship' => 'route_evidence',
