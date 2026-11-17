@@ -218,6 +218,31 @@ class CorePortalReportsTest extends TestCase
         $this->assertFalse($movement->eligibleEventEvidence($head, 'workflow', $forward->id));
         $document->links()->delete();
         $this->assertFalse($movement->eligibleEventEvidence($head, 'correspondence', $route->id));
+        $plan = Document::query()->create(['title' => 'R3 report quarantined marker']);
+        DB::table('documents')->where('id', $plan->id)->update(['security_domain' => 'EVER_PLAN']);
+        DB::statement('ALTER TABLE document_links DISABLE TRIGGER kirion_plan_generic_link_guard_trigger');
+        try {
+            foreach ([$route, $submitted, $forward] as $event) {
+                DocumentLink::query()->create([
+                    'document_id' => $plan->id, 'linkable_type' => $event->getMorphClass(),
+                    'linkable_id' => $event->id, 'relationship' => 'synthetic_corrupt_evidence',
+                ]);
+            }
+        } finally {
+            DB::statement('ALTER TABLE document_links ENABLE TRIGGER kirion_plan_generic_link_guard_trigger');
+        }
+        $this->assertFalse($movement->eligibleEventEvidence($head, 'correspondence', $route->id));
+        $this->assertFalse($movement->eligibleEventEvidence($head, 'workflow', $forward->id));
+        $after = $this->props($this->get('/reports?report=document-movement')->assertOk());
+        $this->assertSame($props['result']['data'], $after['result']['data']);
+        $this->assertSame($props['result']['total'], $after['result']['total']);
+        $this->assertSame($csv, $this->get('/reports/export/document-movement')->assertOk()->streamedContent());
+        DocumentLink::query()->create([
+            'document_id' => $document->id, 'linkable_type' => $submitted->getMorphClass(),
+            'linkable_id' => $submitted->id, 'relationship' => 'route_evidence',
+        ]);
+        $this->assertTrue($movement->eligibleEventEvidence($head, 'correspondence', $route->id));
+        $this->assertFalse($movement->eligibleEventEvidence($head, 'workflow', $forward->id));
     }
 
     public function test_document_movement_route_fallback_and_equal_time_order_match_detail_trace(): void

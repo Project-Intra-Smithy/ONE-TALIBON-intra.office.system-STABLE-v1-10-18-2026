@@ -199,6 +199,12 @@ final class LegacyPdfPreviewTest extends TestCase
         ]);
         $outsider = $this->actor();
         $url = $this->url($document);
+        $plan = Document::query()->create(['title' => 'R3 synthetic quarantined marker',
+            'original_name' => 'R3-hidden.pdf', 'classification' => 'restricted',
+            'document_type' => 'plan_file', 'size_bytes' => 987654,
+            'uploaded_by_user_id' => $actor->id, 'owner_department_id' => $office]);
+        DB::table('documents')->where('id', $plan->id)->update(['security_domain' => 'EVER_PLAN']);
+        $archive = app(DocumentArchiveQuery::class);
 
         foreach ([
             [$transaction, 'forTransaction', null],
@@ -214,6 +220,26 @@ final class LegacyPdfPreviewTest extends TestCase
             $evidence = app(DocumentEvidenceQuery::class)->{$query}($parent ?? $source);
             $items = $parent ? $evidence['events'][(string) $source->id] : $evidence['record'];
             $this->assertSame($url, $items[0]['previewUrl']);
+            $baseline = $archive->workspace($actor, ['document' => $document->public_id]);
+            $activity = $archive->activity($actor);
+            // Deliberate synthetic corruption inside RefreshDatabase only.
+            DB::statement('ALTER TABLE document_links DISABLE TRIGGER kirion_plan_generic_link_guard_trigger');
+            try {
+                $plan->links()->delete();
+                $this->link($plan, $source);
+            } finally {
+                DB::statement('ALTER TABLE document_links ENABLE TRIGGER kirion_plan_generic_link_guard_trigger');
+            }
+            $current = $archive->workspace($actor, ['document' => $document->public_id]);
+            foreach (['selected', 'counts', 'filterOptions'] as $key) {
+                $this->assertSame($baseline[$key], $current[$key]);
+            }
+            $this->assertSame($baseline['records']->items(), $current['records']->items());
+            $this->assertSame($baseline['records']->total(), $current['records']->total());
+            $this->assertSame($activity, $archive->activity($actor));
+            $this->assertSame($evidence, app(DocumentEvidenceQuery::class)->{$query}($parent ?? $source));
+            $this->assertNull($archive->workspace($actor, ['document' => $plan->public_id])['selected']);
+            $this->assertSame(0, $archive->workspace($actor, ['archive_search' => 'R3 synthetic quarantined marker'])['records']->total());
             $this->actingAs($outsider)->get($url)->assertNotFound()->assertContent('Not Found');
         }
     }
@@ -271,6 +297,11 @@ final class LegacyPdfPreviewTest extends TestCase
         $this->assertDatabaseHas('plan_document_origin_receipts', ['document_id' => $document->id]);
         $this->actingAs($actor)->get($this->url($document))->assertNotFound()->assertContent('Not Found');
         $this->get('/documents/'.$document->public_id.'/download')->assertNotFound();
+        $this->get($this->url($document), ['Range' => 'bytes=0-15'])->assertNotFound()
+            ->assertContent('Not Found')->assertHeaderMissing('Content-Disposition')
+            ->assertHeaderMissing('Content-Range');
+        $this->head($this->url($document))->assertNotFound()->assertContent('')
+            ->assertHeaderMissing('Content-Disposition')->assertHeaderMissing('Content-Range');
         $archive = app(DocumentArchiveQuery::class)->workspace($actor, ['document' => $document->public_id]);
         $this->assertNull($archive['selected']);
         $this->assertSame(0, $archive['records']->total());
@@ -309,8 +340,126 @@ final class LegacyPdfPreviewTest extends TestCase
             unlink($alias);
         }
         $document->update(['storage_path' => '2026/11/'.basename($path)]);
+        $hard = dirname($path).'/hard.pdf';
+        $this->assertTrue(link($path, $hard));
+        try {
+            $this->get($this->url($document))->assertNotFound();
+        } finally {
+            unlink($hard);
+        }
+        $this->get($this->url($document))->assertOk();
         config(['documents.max_upload_mb' => 0]);
         $this->get($this->url($document))->assertNotFound();
+    }
+
+    public function test_actual_partial_and_missing_provenance_hide_metadata_and_preview(): void
+    {
+        [$actor, $record, $document] = $this->evidence();
+        $this->actingAs($actor);
+        $archive = app(DocumentArchiveQuery::class);
+        foreach (['domain', 'receipt', 'both', 'binding'] as $missing) {
+            $domain = in_array($missing, ['domain', 'both'], true);
+            $receipt = in_array($missing, ['receipt', 'both'], true);
+            $binding = $missing === 'binding';
+            if ($domain) {
+                DB::statement('ALTER TABLE documents RENAME COLUMN security_domain TO r3_hidden_domain');
+            }
+            if ($receipt) {
+                DB::statement('ALTER TABLE plan_document_origin_receipts RENAME TO r3_hidden_receipts');
+            }
+            if ($binding) {
+                DB::statement('ALTER TABLE plan_document_bindings RENAME TO r3_hidden_bindings');
+            }
+            try {
+                $this->assertSame(0, $archive->workspace($actor, [])['records']->total());
+                $this->assertNull($archive->workspace($actor, ['document' => $document->public_id])['selected']);
+                $this->assertSame([], app(DocumentEvidenceQuery::class)->forTransaction($record)['record']);
+                $this->get($this->url($document))->assertNotFound()->assertContent('Not Found');
+            } finally {
+                if ($binding) {
+                    DB::statement('ALTER TABLE r3_hidden_bindings RENAME TO plan_document_bindings');
+                }
+                if ($receipt) {
+                    DB::statement('ALTER TABLE r3_hidden_receipts RENAME TO plan_document_origin_receipts');
+                }
+                if ($domain) {
+                    DB::statement('ALTER TABLE documents RENAME COLUMN r3_hidden_domain TO security_domain');
+                }
+            }
+        }
+        $this->get($this->url($document))->assertOk();
+    }
+
+    public function test_unknown_domain_and_inconsistent_typed_ownership_are_quarantined(): void
+    {
+        [$actor, $record, $document] = $this->evidence();
+        $this->actingAs($actor);
+        $archive = app(DocumentArchiveQuery::class);
+        DB::statement('ALTER TABLE documents DROP CONSTRAINT documents_plan_origin_domain_check');
+        try {
+            DB::table('documents')->where('id', $document->id)->update(['security_domain' => 'UNKNOWN']);
+            $this->assertSame(0, $archive->workspace($actor, [])['records']->total());
+            $this->get($this->url($document))->assertNotFound();
+        } finally {
+            DB::table('documents')->where('id', $document->id)->update(['security_domain' => null]);
+            DB::statement("ALTER TABLE documents ADD CONSTRAINT documents_plan_origin_domain_check CHECK (security_domain IN ('EVER_PLAN', 'LEGACY_CTW'))");
+        }
+
+        $family = \App\Models\PlanFamily::query()->create(['title' => 'Synthetic R3 typed fixture']);
+        $edition = $family->editions()->create(['edition_label' => 'Synthetic R3']);
+        DB::statement('ALTER TABLE plan_document_bindings DISABLE TRIGGER kirion_plan_typed_binding_guard_trigger');
+        try {
+            DB::table('plan_document_bindings')->insert([
+                'plan_edition_id' => $edition->id, 'document_id' => $document->id,
+                'role' => 'master', 'revision_no' => 1, 'binding_state' => 'QUARANTINED',
+                'created_at' => now(), 'updated_at' => now(),
+            ]);
+        } finally {
+            DB::statement('ALTER TABLE plan_document_bindings ENABLE TRIGGER kirion_plan_typed_binding_guard_trigger');
+        }
+        $this->assertSame(0, $archive->workspace($actor, [])['records']->total());
+        $this->assertSame([], app(DocumentEvidenceQuery::class)->forTransaction($record)['record']);
+        $this->get($this->url($document))->assertNotFound();
+    }
+
+    public function test_preview_metadata_query_budget_is_bounded_across_document_and_link_counts(): void
+    {
+        [$actor, $record, $document] = $this->evidence();
+        $this->actingAs($actor);
+        $archive = app(DocumentArchiveQuery::class);
+        $detail = app(DocumentEvidenceQuery::class);
+        $counts = [];
+        for ($index = 1; $index <= 32; $index++) {
+            if ($index > 1) {
+                $copy = $document->replicate(['public_id']);
+                $copy->public_id = (string) Str::uuid();
+                $copy->save();
+                $this->link($copy, $record);
+            }
+            if (! in_array($index, [1, 16, 17, 32], true)) {
+                continue;
+            }
+            DB::enableQueryLog();
+            DB::flushQueryLog();
+            try {
+                $projection = $archive->workspace($actor, ['page' => 1]);
+                $archiveCount = count(DB::getQueryLog());
+                DB::flushQueryLog();
+                $items = $detail->forTransaction($record)['record'];
+                $detailCount = count(DB::getQueryLog());
+            } finally {
+                DB::disableQueryLog();
+                DB::flushQueryLog();
+            }
+            $this->assertSame($index, $projection['records']->total());
+            $this->assertCount($index, $items);
+            $counts[] = [$archiveCount, $detailCount];
+        }
+        foreach ($counts as [$archiveCount, $detailCount]) {
+            $this->assertLessThanOrEqual($counts[0][0] + 1, $archiveCount);
+            $this->assertLessThanOrEqual($counts[0][1] + 1, $detailCount);
+        }
+        $this->assertCount(12, $archive->workspace($actor, ['page' => 2])['records']->items());
     }
 
     private function correspondence(User $actor): CorrespondenceRecord

@@ -76,6 +76,15 @@ final class PlanLegacyOriginGuardHardeningTest extends TestCase
         $this->assertFalse(PlanDocumentOriginGuard::isProtected($document));
     }
 
+    public function test_new_preview_fails_closed_when_provenance_discovery_throws(): void
+    {
+        $document = Document::query()->create(['title' => 'Synthetic new preview']);
+        Schema::shouldReceive('hasColumn')->once()
+            ->with('documents', 'security_domain')->andThrow(new \RuntimeException('Synthetic schema failure'));
+
+        $this->assertFalse(PlanDocumentOriginGuard::isEligibleForLegacyPreview($document));
+    }
+
     public function test_persisted_legacy_check_reads_domain_and_receipt_in_one_sql_statement(): void
     {
         $document = Document::query()->create(['title' => 'Synthetic ordinary legacy']);
