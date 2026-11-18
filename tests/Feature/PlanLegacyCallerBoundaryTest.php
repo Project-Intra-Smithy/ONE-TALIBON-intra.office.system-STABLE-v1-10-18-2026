@@ -137,6 +137,8 @@ final class PlanLegacyCallerBoundaryTest extends TestCase
     public static function invalidProvenance(): array
     {
         return [
+            'sealed' => ['sealed'],
+            'receipt-only' => ['receipt-only'],
             'typed-only' => ['typed'],
             'unknown non-null' => ['unknown'],
             'both absent' => ['both'],
@@ -172,6 +174,13 @@ final class PlanLegacyCallerBoundaryTest extends TestCase
             $this->assertSame($missing->headers->get('Content-Length'), $head->headers->get('Content-Length'));
             $this->assertDatabaseMissing('audit_logs', [
                 'action' => 'document.download', 'entity_id' => $document->id, 'outcome' => 'allowed',
+            ]);
+            $this->assertDatabaseHas('audit_logs', [
+                'action' => 'document.download', 'actor_user_id' => $actor->id,
+                'entity_id' => null, 'outcome' => 'denied',
+            ]);
+            $this->assertDatabaseMissing('audit_logs', [
+                'action' => 'document.download', 'entity_id' => $document->id, 'outcome' => 'denied',
             ]);
         } finally {
             $undo();
@@ -219,6 +228,27 @@ final class PlanLegacyCallerBoundaryTest extends TestCase
     /** Synthetic fixtures only; restore named schema objects before leaving test. */
     private function corruptProvenance(Document $document, string $state): \Closure
     {
+        if (in_array($state, ['sealed', 'receipt-only'], true)) {
+            $links = $document->links()->get()->map(fn ($link) => $link->getAttributes())->all();
+            $document->links()->delete();
+            DB::table('documents')->where('id', $document->id)->update(['security_domain' => 'EVER_PLAN']);
+            if ($state === 'receipt-only') {
+                DB::statement('ALTER TABLE documents DISABLE TRIGGER kirion_plan_document_guard_trigger');
+                try {
+                    DB::table('documents')->where('id', $document->id)->update(['security_domain' => null]);
+                } finally {
+                    DB::statement('ALTER TABLE documents ENABLE TRIGGER kirion_plan_document_guard_trigger');
+                }
+            }
+            DB::statement('ALTER TABLE document_links DISABLE TRIGGER kirion_plan_generic_link_guard_trigger');
+            try {
+                DB::table('document_links')->insert($links);
+            } finally {
+                DB::statement('ALTER TABLE document_links ENABLE TRIGGER kirion_plan_generic_link_guard_trigger');
+            }
+            $this->assertDatabaseHas('plan_document_origin_receipts', ['document_id' => $document->id]);
+            return static function (): void {};
+        }
         if ($state === 'typed') {
             $family = \App\Models\PlanFamily::query()->create(['title' => 'Synthetic R4 typed fixture']);
             $edition = $family->editions()->create(['edition_label' => 'Synthetic R4']);
@@ -262,6 +292,70 @@ final class PlanLegacyCallerBoundaryTest extends TestCase
                 DB::statement($renames[$change][1]);
             }
         };
+    }
+
+    public function test_complete_schema_legacy_null_and_explicit_non_pdf_download_and_cleanup(): void
+    {
+        $actor = $this->actor();
+        $this->actingAs($actor);
+        foreach ([null, 'LEGACY_CTW'] as $domain) {
+            $document = $this->authorizedLegacyDocument($actor);
+            $oldPath = $document->storage_path;
+            $bytes = $domain === null ? Storage::disk('documents')->get($oldPath)
+                : base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+Xn1sAAAAASUVORK5CYII=');
+            if ($domain !== null) {
+                $path = 'g2e-synthetic/'.Str::uuid().'.png';
+                Storage::disk('documents')->put($path, $bytes);
+                Storage::disk('documents')->delete($oldPath);
+                $document->update(['storage_path' => $path, 'original_name' => 'synthetic.png', 'mime_type' => 'image/png',
+                    'size_bytes' => strlen($bytes), 'checksum_sha256' => hash('sha256', $bytes)]);
+                DB::table('documents')->where('id', $document->id)->update(['security_domain' => $domain]);
+            }
+            $this->assertTrue(app(DocumentAccessService::class)->canDownload($actor, $document));
+            $response = $this->get('/documents/'.$document->public_id.'/download')->assertOk();
+            $this->assertSame($bytes, $response->streamedContent());
+            $this->assertStringStartsWith('attachment;', $response->headers->get('Content-Disposition'));
+            app(DocumentAttachmentService::class)->cleanupDocuments([$document]);
+            Storage::disk('documents')->assertMissing($document->storage_path);
+        }
+    }
+
+    public function test_guard_and_service_query_counts_do_not_grow_with_single_document_link_cardinality(): void
+    {
+        $actor = $this->actor();
+        $document = $this->authorizedLegacyDocument($actor);
+        $this->actingAs($actor);
+        $parent = $document->links()->firstOrFail();
+        $counts = [];
+        for ($number = 1; $number <= 32; $number++) {
+            if ($number > 1) {
+                DocumentLink::query()->create([
+                    'document_id' => $document->id, 'linkable_type' => $parent->linkable_type,
+                    'linkable_id' => $parent->linkable_id, 'relationship' => 'r4-budget-'.$number,
+                ]);
+            }
+            if (! in_array($number, [1, 16, 17, 32], true)) {
+                continue;
+            }
+            DB::enableQueryLog();
+            DB::flushQueryLog();
+            try {
+                $this->assertTrue(app(DocumentAccessService::class)->canDownload($actor, $document));
+                $serviceCount = count(DB::getQueryLog());
+                DB::flushQueryLog();
+                $this->assertFalse(\App\Services\PlanDocumentOriginGuard::isProtected($document));
+                $guardCount = count(DB::getQueryLog());
+            } finally {
+                DB::disableQueryLog();
+                DB::flushQueryLog();
+            }
+            $counts[] = [$serviceCount, $guardCount];
+        }
+        foreach ($counts as [$serviceCount, $guardCount]) {
+            $this->assertSame($counts[0][0], $serviceCount);
+            $this->assertSame(4, $guardCount);
+        }
+        fwrite(STDOUT, 'R4 single-document link budgets (1,16,17,32): '.json_encode($counts).PHP_EOL);
     }
 
     private function assertCleanupDenied(Document $document): void

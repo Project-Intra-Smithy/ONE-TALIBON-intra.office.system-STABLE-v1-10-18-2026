@@ -115,7 +115,24 @@ final class PlanLegacyOriginGuardHardeningTest extends TestCase
         $this->assertFalse(PlanDocumentOriginGuard::isEligibleForLegacyPreview($document));
     }
 
-    public function test_persisted_legacy_check_reads_domain_and_receipt_in_one_sql_statement(): void
+    public function test_persisted_decision_query_exception_is_protected(): void
+    {
+        $document = Document::query()->create(['title' => 'Synthetic R4 database failure']);
+        DB::partialMock();
+        DB::shouldReceive('table')->once()->with('documents as d')
+            ->andThrow(new \RuntimeException('Synthetic persisted read failure'));
+
+        $this->assertTrue(PlanDocumentOriginGuard::isProtected($document));
+    }
+
+    public function test_loaded_sealed_model_remains_protected_even_when_current_row_is_legacy(): void
+    {
+        $document = Document::query()->create(['title' => 'Synthetic stale protected model']);
+        $document->setAttribute('security_domain', 'EVER_PLAN');
+        $this->assertTrue(PlanDocumentOriginGuard::isProtected($document));
+    }
+
+    public function test_persisted_legacy_check_reads_domain_receipt_and_binding_in_one_bounded_decision(): void
     {
         $document = Document::query()->create(['title' => 'Synthetic ordinary legacy']);
 
@@ -129,12 +146,16 @@ final class PlanLegacyOriginGuardHardeningTest extends TestCase
             DB::connection()->flushQueryLog();
         }
 
-        // Two dynamic schema checks plus one consistent provenance/receipt
-        // query. No per-request cache or stale positive classification.
-        $this->assertCount(3, $queries);
+        // Two schema checks, one readiness probe, one persisted set-based
+        // decision. No positive cache, no per-link or per-binding iteration.
+        $this->assertCount(4, $queries);
         $this->assertCount(1, array_filter(
             $queries,
-            static fn (array $query): bool => str_contains(strtolower($query['query']), 'join "plan_document_origin_receipts"'),
+            static fn (array $query): bool => str_contains(strtolower($query['query']), 'not exists')
+                && str_contains($query['query'], 'plan_document_origin_receipts')
+                && str_contains($query['query'], 'plan_document_bindings'),
         ));
+        DB::table('documents')->where('id', $document->id)->update(['security_domain' => 'EVER_PLAN']);
+        $this->assertTrue(PlanDocumentOriginGuard::isProtected($document));
     }
 }

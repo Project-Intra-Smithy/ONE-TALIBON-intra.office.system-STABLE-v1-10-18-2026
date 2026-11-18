@@ -93,6 +93,13 @@ final class DocumentController extends Controller
         }
 
         if (! $access->canDownload($actor, $document)) {
+            // Provenance may have changed during the fresh actor/parent check.
+            // Never turn a protected identity into an ordinary identified 403.
+            if (PlanDocumentOriginGuard::isProtected($document)) {
+                $audit->record($actor, 'document.download', 'Denied evidence retrieval.', outcome: 'denied');
+                abort(404);
+            }
+
             $audit->record(
                 $actor,
                 'document.download',
@@ -112,6 +119,18 @@ final class DocumentController extends Controller
             abort(404);
         }
 
+        // Re-read the descriptor and reauthorize before creating the stream.
+        // This is not an atomic filesystem/cross-transaction custody guarantee.
+        $fresh = $document->fresh();
+        if (! $fresh
+            || PlanDocumentOriginGuard::isProtected($fresh)
+            || $document->getAttributes() !== $fresh->getAttributes()
+            || ! $access->canDownload($actor, $fresh)) {
+            $audit->record($actor, 'document.download', 'Denied evidence retrieval.', outcome: 'denied');
+            abort(404);
+        }
+
+        $document = $fresh;
         $audit->record(
             $actor,
             'document.download',

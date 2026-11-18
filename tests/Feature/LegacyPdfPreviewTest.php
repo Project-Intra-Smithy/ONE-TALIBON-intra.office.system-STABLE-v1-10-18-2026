@@ -217,6 +217,7 @@ final class LegacyPdfPreviewTest extends TestCase
             $document->links()->delete();
             $this->link($document, $source);
             $this->actingAs($actor)->get($url)->assertOk()->assertContent($this->pdf());
+            $this->assertSame($this->pdf(), $this->get('/documents/'.$document->public_id.'/download')->assertOk()->streamedContent());
             $evidence = app(DocumentEvidenceQuery::class)->{$query}($parent ?? $source);
             $items = $parent ? $evidence['events'][(string) $source->id] : $evidence['record'];
             $this->assertSame($url, $items[0]['previewUrl']);
@@ -241,6 +242,7 @@ final class LegacyPdfPreviewTest extends TestCase
             $this->assertNull($archive->workspace($actor, ['document' => $plan->public_id])['selected']);
             $this->assertSame(0, $archive->workspace($actor, ['archive_search' => 'R3 synthetic quarantined marker'])['records']->total());
             $this->actingAs($outsider)->get($url)->assertNotFound()->assertContent('Not Found');
+            $this->get('/documents/'.$document->public_id.'/download')->assertForbidden();
         }
     }
 
@@ -267,6 +269,7 @@ final class LegacyPdfPreviewTest extends TestCase
             try {
                 $this->get($this->url($document))->assertNotFound()->assertContent('Not Found');
                 $previewCount = count(DB::getQueryLog());
+                $this->get('/documents/'.$document->public_id.'/download')->assertForbidden();
                 DB::flushQueryLog();
                 $this->assertNull(app(DocumentArchiveQuery::class)->workspace($actor, ['document' => $document->public_id])['selected']);
                 $archiveCount = count(DB::getQueryLog());
