@@ -64,7 +64,7 @@ jobs:
       - name: Focused preview regression
         id: focused
         continue-on-error: true
-        run: php artisan test tests/Feature/LegacyPdfPreviewTest.php tests/Feature/CorePortalReportsTest.php tests/Feature/PlanLegacyOriginGuardHardeningTest.php
+        run: php artisan test tests/Feature/LegacyPdfPreviewTest.php tests/Feature/CorePortalReportsTest.php tests/Feature/PlanLegacyOriginGuardHardeningTest.php tests/Feature/PlanLegacyCallerBoundaryTest.php
       - name: Complete canonical Feature suite
         id: feature
         continue-on-error: true

@@ -346,8 +346,8 @@ final class LegacyPdfPreviewTest extends TestCase
         Schema::shouldReceive('hasTable')->with('plan_document_origin_receipts')->andReturn(false);
 
         $this->get($this->url($document))->assertNotFound()->assertContent('Not Found');
-        // Existing download deliberately retains the pre-G2B compatibility path.
-        $this->get('/documents/'.$document->public_id.'/download')->assertOk();
+        // R4 supersedes the historical fallback in the current candidate.
+        $this->get('/documents/'.$document->public_id.'/download')->assertNotFound();
     }
 
     public function test_symlink_alias_and_size_limit_cannot_return_bytes(): void

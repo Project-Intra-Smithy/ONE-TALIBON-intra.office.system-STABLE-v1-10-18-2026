@@ -64,7 +64,7 @@ final class PlanLegacyOriginGuardHardeningTest extends TestCase
         $this->assertTrue(PlanDocumentOriginGuard::isProtected($document));
     }
 
-    public function test_genuine_preplan_schema_can_still_classify_ordinary_legacy_record(): void
+    public function test_current_candidate_denies_dual_absent_provenance(): void
     {
         $document = Document::query()->create(['title' => 'Synthetic old baseline']);
 
@@ -73,7 +73,7 @@ final class PlanLegacyOriginGuardHardeningTest extends TestCase
         Schema::shouldReceive('hasTable')->once()
             ->with('plan_document_origin_receipts')->andReturn(false);
 
-        $this->assertFalse(PlanDocumentOriginGuard::isProtected($document));
+        $this->assertTrue(PlanDocumentOriginGuard::isProtected($document));
     }
 
     public function test_ordinary_generic_plan_link_insert_update_delete_remain_denied(): void
