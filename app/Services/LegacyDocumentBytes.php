@@ -3,10 +3,17 @@
 namespace App\Services;
 
 use App\Models\Document;
+use Illuminate\Filesystem\FilesystemManager;
+use Illuminate\Filesystem\LocalFilesystemAdapter as LaravelLocalAdapter;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use League\Flysystem\Filesystem as Flysystem;
+use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
+use League\Flysystem\PathPrefixer;
 use League\Flysystem\WhitespacePathNormalizer;
+use ReflectionProperty;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Throwable;
 
@@ -75,7 +82,8 @@ final class LegacyDocumentBytes
         }
 
         try {
-            $target = $this->privatePath($document);
+            $roots = $this->verifiedLocalRoots();
+            $target = $roots === null ? null : $this->privatePath($document, $roots);
             if ($target === null || ! is_array($identity = @lstat($target))
                 || ($identity['mode'] & 0170000) !== 0100000 || $identity['nlink'] !== 1) {
                 return false;
@@ -102,7 +110,6 @@ final class LegacyDocumentBytes
             if ($rows === [] || (int) $rows[0]->visible !== 1 || count($rows) > self::MAX_LOCATORS) {
                 return false;
             }
-            $roots = [];
             $normalizer = new WhitespacePathNormalizer;
             $basename = strtolower(basename($relative));
             foreach ($rows as $row) {
@@ -111,34 +118,23 @@ final class LegacyDocumentBytes
                 }
                 $disk = $row->storage_disk;
                 $path = $row->storage_path;
-                if (! is_string($path) || ! is_string($disk) || $disk === ''
-                    || config('filesystems.disks.'.$disk.'.driver') !== 'local') {
+                if (! is_string($path) || ! is_string($disk) || ! isset($roots[$disk])
+                    || $path === '' || str_starts_with($path, '/') || preg_match('/[\x00-\x1f\x7f]/', $path)) {
                     return false;
                 }
-                $raw = str_replace('\\', '/', $path);
-                if (in_array($basename, explode('/', strtolower($raw)), true)) {
+                $slashMapped = str_replace('\\', '/', $path);
+                if (in_array($basename, explode('/', strtolower($slashMapped)), true)) {
                     return false;
                 }
-                // Flysystem normalization covers repeated separators, dot,
-                // parent and backslash aliases; also examine the raw local
-                // spelling, which may traverse a symlink before a parent step.
+                // Linux raw filename semantics and adapter normalization are
+                // independent: a literal backslash is not an OS separator.
                 $normalized = $normalizer->normalizePath($path);
                 if ($normalized === '') {
                     return false;
                 }
-                if (! isset($roots[$disk])) {
-                    $configured = config('filesystems.disks.'.$disk.'.root');
-                    $adapter = Storage::disk($disk)->path('');
-                    if (! is_string($configured) || $configured === '' || $adapter === '') {
+                foreach (array_unique([$path, $normalized, ltrim($slashMapped, '/')]) as $spelling) {
+                    if ($this->couldAlias($roots[$disk].'/'.$spelling, $target, $identity)) {
                         return false;
-                    }
-                    $roots[$disk] = array_unique([$this->normal($configured), $this->normal($adapter)]);
-                }
-                foreach ($roots[$disk] as $root) {
-                    foreach (array_unique([$normalized, ltrim($raw, '/')]) as $spelling) {
-                        if ($this->couldAlias($root.'/'.$spelling, $target, $identity)) {
-                            return false;
-                        }
                     }
                 }
             }
@@ -152,6 +148,16 @@ final class LegacyDocumentBytes
     /** Metadata only: no reading or opening another document's bytes. */
     private function couldAlias(string $candidate, string $target, array $identity): bool
     {
+        // Linux path limits include the absolute prefix. A syscall error
+        // on an oversized spelling is not evidence of a missing object.
+        if (strlen($candidate) >= 4096) {
+            return true;
+        }
+        foreach (explode('/', $candidate) as $segment) {
+            if (strlen($segment) > 255) {
+                return true;
+            }
+        }
         clearstatcache(true);
         $resolved = @realpath($candidate);
         if ($resolved !== false) {
@@ -221,7 +227,163 @@ final class LegacyDocumentBytes
         ], true) ? $document->mime_type : 'application/octet-stream';
     }
 
-    private function privatePath(Document $document): ?string
+    /**
+     * Supported mapping: pinned Laravel manager / ordinary local Flysystem
+     * adapter on Linux, with no prefix, custom driver or decorated adapter.
+     * Inspect cached objects without resolving absent disks (the default
+     * constructor mkdirs). Uncached mappings follow the verified built-in
+     * factory. Reflection is intentionally version-sensitive and fails closed.
+     * No filesystem generation, bind-mount or concurrent mapping attestation.
+     *
+     * @return array<string, string>|null
+     */
+    private function verifiedLocalRoots(): ?array
+    {
+        if (PHP_OS_FAMILY !== 'Linux' || DIRECTORY_SEPARATOR !== '/') {
+            return null;
+        }
+        $manager = Storage::getFacadeRoot();
+        if (! is_object($manager) || get_class($manager) !== FilesystemManager::class
+            || app('filesystem') !== $manager) {
+            return null;
+        }
+        $cached = (new ReflectionProperty(FilesystemManager::class, 'disks'))->getValue($manager);
+        $custom = (new ReflectionProperty(FilesystemManager::class, 'customCreators'))->getValue($manager);
+        $definitions = config('filesystems.disks');
+        if (! is_array($cached) || ! is_array($custom) || isset($custom['local'])
+            || ! is_array($definitions) || array_diff_key($cached, $definitions) !== []) {
+            return null;
+        }
+        $roots = [];
+        foreach ($definitions as $name => $definition) {
+            if (! is_string($name) || ! is_array($definition)
+                || ($definition['driver'] ?? null) !== 'local'
+                || ! empty($definition['prefix']) || ! empty($definition['read-only'])
+                || ! empty($definition['directory_separator'])) {
+                return null;
+            }
+            $root = $this->canonicalRoot($definition['root'] ?? null);
+            if ($root === null) {
+                return null;
+            }
+            if (array_key_exists($name, $cached)) {
+                $disk = $cached[$name];
+                if (! is_object($disk) || get_class($disk) !== LaravelLocalAdapter::class) {
+                    return null;
+                }
+                $adapter = $disk->getAdapter();
+                $driver = $disk->getDriver();
+                $effective = $disk->getConfig();
+                if (get_class($adapter) !== FlysystemLocalAdapter::class
+                    || get_class($driver) !== Flysystem::class
+                    || ! is_array($effective) || ! empty($effective['prefix'])
+                    || ! empty($effective['read-only']) || ! empty($effective['directory_separator'])
+                    || $this->canonicalRoot($effective['root'] ?? null) !== $root
+                    || $this->canonicalRoot($disk->path('')) !== $root
+                    || $this->canonicalRoot((new ReflectionProperty(FlysystemLocalAdapter::class, 'rootLocation'))->getValue($adapter)) !== $root
+                    || (new ReflectionProperty(Flysystem::class, 'adapter'))->getValue($driver) !== $adapter) {
+                    return null;
+                }
+                $prefixer = (new ReflectionProperty(FlysystemLocalAdapter::class, 'prefixer'))->getValue($adapter);
+                $normalizer = (new ReflectionProperty(Flysystem::class, 'pathNormalizer'))->getValue($driver);
+                if (get_class($prefixer) !== PathPrefixer::class
+                    || $this->canonicalRoot($prefixer->prefixPath('')) !== $root
+                    || get_class($normalizer) !== WhitespacePathNormalizer::class) {
+                    return null;
+                }
+                if ($name === 'documents' && (($effective['visibility'] ?? 'private') !== 'private'
+                    || (new ReflectionProperty(LaravelLocalAdapter::class, 'shouldServeSignedUrls'))->getValue($disk) !== false)) {
+                    return null;
+                }
+            }
+            $roots[$name] = $root;
+        }
+        $target = $roots['documents'] ?? null;
+        if ($target === null || ! is_dir($target)) {
+            return null;
+        }
+        $forbidden = array_diff_key($roots, ['documents' => true]);
+        $public = $this->canonicalRoot(public_path());
+        $published = $this->canonicalRoot(storage_path('app/public'));
+        if ($public === null || $published === null || ! isset($roots['plan_custody'], $roots['public'], $roots['local'])) {
+            return null;
+        }
+        $forbidden[] = $public;
+        $forbidden[] = $published;
+        $links = config('filesystems.links');
+        if (! is_array($links)) {
+            return null;
+        }
+        foreach ($links as $link => $destination) {
+            $destination = $this->canonicalRoot($destination);
+            if (! is_string($link) || $destination === null || $this->canonicalRoot(dirname($link)) === null) {
+                return null;
+            }
+            clearstatcache(true);
+            $actual = is_link($link) ? realpath($link) : $link;
+            if ($actual === false || ($physical = $this->canonicalRoot($actual)) === null) {
+                return null;
+            }
+            $forbidden[] = $destination;
+            $forbidden[] = $physical;
+        }
+        $targetStat = @stat($target);
+        if (! is_array($targetStat)) {
+            return null;
+        }
+        foreach ($forbidden as $otherRoot) {
+            $otherStat = @stat($otherRoot);
+            if ($this->within($target, $otherRoot) || $this->within($otherRoot, $target)
+                || (is_array($otherStat) && $targetStat['dev'] === $otherStat['dev']
+                    && $targetStat['ino'] === $otherStat['ino'])) {
+                return null;
+            }
+        }
+
+        return $roots;
+    }
+
+    /**
+     * Canonical absolute directory spelling; a missing suffix is supported
+     * only under a readable/searchable existing directory. Never mkdir.
+     */
+    private function canonicalRoot(mixed $root): ?string
+    {
+        if (! is_string($root) || strlen($root) >= 4096) {
+            return null;
+        }
+        $root = rtrim($root, '/');
+        if (! preg_match('#\A/[A-Za-z0-9._ -]+(?:/[A-Za-z0-9._ -]+)*\z#D', $root)) {
+            return null;
+        }
+        clearstatcache(true);
+        $path = '';
+        $missing = false;
+        foreach (explode('/', substr($root, 1)) as $segment) {
+            if ($segment === '.' || $segment === '..' || strlen($segment) > 255) {
+                return null;
+            }
+            $path .= '/'.$segment;
+            if ($missing) {
+                continue;
+            }
+            $stat = @lstat($path);
+            if ($stat === false) {
+                $parent = dirname($path);
+                if (! is_dir($parent) || ! is_readable($parent) || ! is_executable($parent)) {
+                    return null;
+                }
+                $missing = true;
+            } elseif (($stat['mode'] & 0170000) !== 0040000
+                || ! is_readable($path) || ! is_executable($path) || realpath($path) !== $path) {
+                return null;
+            }
+        }
+
+        return $root;
+    }
+
+    private function privatePath(Document $document, ?array $roots = null): ?string
     {
         $disk = (string) config('documents.disk', 'documents');
         $relative = $document->storage_path;
@@ -232,27 +394,10 @@ final class LegacyDocumentBytes
             || ! $this->canonical($relative)) {
             return null;
         }
-
-        $rootPath = rtrim(Storage::disk($disk)->path(''), '/\\');
-        clearstatcache(true, $rootPath);
-        $root = realpath($rootPath);
-        if ($root === false || $this->normal($root) !== $this->normal($rootPath) || ! is_dir($root)) {
+        $roots ??= $this->verifiedLocalRoots();
+        $root = $roots[$disk] ?? null;
+        if ($root === null) {
             return null;
-        }
-        $forbidden = [public_path(), storage_path('app/public'), config('filesystems.disks.plan_custody.root')];
-        foreach ((array) config('filesystems.disks') as $name => $definition) {
-            if ($name !== $disk && ($definition['driver'] ?? null) === 'local') {
-                $forbidden[] = $definition['root'] ?? null;
-            }
-        }
-        foreach ($forbidden as $otherRoot) {
-            if (! is_string($otherRoot) || $otherRoot === '') {
-                return null;
-            }
-            $other = realpath($otherRoot) ?: $otherRoot;
-            if ($this->within($root, $other) || $this->within($other, $root)) {
-                return null;
-            }
         }
 
         $path = $root;
@@ -290,7 +435,7 @@ final class LegacyDocumentBytes
 
     private function normal(string $path): string
     {
-        return rtrim(str_replace('\\', '/', $path), '/');
+        return rtrim($path, '/');
     }
 
     private function within(string $path, string $root): bool
