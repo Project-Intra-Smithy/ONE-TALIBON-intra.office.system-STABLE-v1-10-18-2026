@@ -410,6 +410,33 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         $this->assertSame('unrelated synthetic bytes', file_get_contents($disk->path($literal)));
     }
 
+    public function test_d2_dormant_framework_s3_has_no_local_mapping_and_is_not_resolved(): void
+    {
+        [$actor, , $document] = $this->evidence();
+        $this->assertSame('s3', config('filesystems.disks.s3.driver'));
+        $this->assertEmpty(config('filesystems.disks.s3.bucket'));
+        $this->actingAs($actor);
+        $this->get($this->url($document))->assertOk()->assertContent($this->pdf());
+        $cached = (new \ReflectionProperty(\Illuminate\Filesystem\FilesystemManager::class, 'disks'))
+            ->getValue(Storage::getFacadeRoot());
+        $this->assertArrayNotHasKey('s3', $cached);
+    }
+
+    public function test_d2_active_nonlocal_mapping_or_persisted_nonlocal_locator_denied(): void
+    {
+        [$actor, , $document] = $this->evidence();
+        $this->actingAs($actor);
+        config(['filesystems.disks.s3.bucket' => 'synthetic-unproven']);
+        $this->assertOpaque($document);
+        $this->assertCleanupRetained($document);
+        config(['filesystems.disks.s3.bucket' => null]);
+        Document::query()->create(['title' => 'Synthetic nonlocal locator',
+            'storage_disk' => 's3', 'storage_path' => 'foreign/other.pdf']);
+        $this->assertOpaque($document);
+        $this->assertCleanupRetained($document);
+        $this->assertSame($this->pdf(), Storage::disk('documents')->get($document->storage_path));
+    }
+
     public static function rootMappingCases(): array
     {
         $cases = [];

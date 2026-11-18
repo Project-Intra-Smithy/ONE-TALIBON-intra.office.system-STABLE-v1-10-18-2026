@@ -256,6 +256,20 @@ final class LegacyDocumentBytes
         }
         $roots = [];
         foreach ($definitions as $name => $definition) {
+            // Laravel merges its default, dormant S3 definition into the
+            // application's disks. It has no local mapping and is not
+            // resolved here. An active, custom, cached or locally mapped
+            // nonlocal definition is not supported; a persisted S3 locator
+            // is also denied because it will not appear in $roots.
+            if ($name === 's3' && is_array($definition)
+                && ($definition['driver'] ?? null) === 's3'
+                && ! array_key_exists($name, $cached) && ! isset($custom['s3'])
+                && empty($definition['bucket']) && empty($definition['key'])
+                && empty($definition['secret']) && empty($definition['token'])
+                && empty($definition['endpoint']) && empty($definition['url'])
+                && empty($definition['root']) && empty($definition['prefix'])) {
+                continue;
+            }
             if (! is_string($name) || ! is_array($definition)
                 || ($definition['driver'] ?? null) !== 'local'
                 || ! empty($definition['prefix']) || ! empty($definition['read-only'])
