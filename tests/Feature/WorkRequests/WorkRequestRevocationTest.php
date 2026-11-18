@@ -217,7 +217,8 @@ final class WorkRequestRevocationTest extends TestCase
     public function test_retained_session_cannot_read_or_mutate_work_request_or_download_evidence_after_separation(): void
     {
         $this->seed();
-        Storage::fake('documents');
+        $syntheticDisk = Storage::fake('documents');
+        config(['filesystems.disks.documents.root' => rtrim($syntheticDisk->path(''), '/')]);
         $admin = $this->user('admin@talibon.demo');
         $transaction = $this->transaction($admin, $admin->employee->department);
         $secret = 'P1-H-PRIVATE-EVIDENCE-BYTES';

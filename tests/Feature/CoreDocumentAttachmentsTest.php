@@ -29,7 +29,8 @@ class CoreDocumentAttachmentsTest extends TestCase
     {
         parent::setUp();
         config()->set('messaging_release.restricted_uat', false);
-        Storage::fake('documents');
+        $syntheticDisk = Storage::fake('documents');
+        config(['filesystems.disks.documents.root' => rtrim($syntheticDisk->path(''), '/')]);
     }
 
     public function test_transaction_creation_persists_private_hashed_evidence_and_exact_links(): void

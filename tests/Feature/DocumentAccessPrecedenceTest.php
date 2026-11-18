@@ -32,7 +32,8 @@ class DocumentAccessPrecedenceTest extends TestCase
     {
         parent::setUp();
         config(['documents.disk' => 'documents']);
-        Storage::fake('documents');
+        $syntheticDisk = Storage::fake('documents');
+        config(['filesystems.disks.documents.root' => rtrim($syntheticDisk->path(''), '/')]);
     }
 
     public function test_restricted_correspondence_parent_dominates_allowed_transaction_at_positions_1_16_17_32(): void

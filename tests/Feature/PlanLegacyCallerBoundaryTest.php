@@ -30,7 +30,8 @@ final class PlanLegacyCallerBoundaryTest extends TestCase
     {
         parent::setUp();
         config(['documents.disk' => 'documents']);
-        Storage::fake('documents');
+        $syntheticDisk = Storage::fake('documents');
+        config(['filesystems.disks.documents.root' => rtrim($syntheticDisk->path(''), '/')]);
     }
 
     public function test_sealed_plan_download_is_masked_and_the_blob_remains_private(): void

@@ -29,7 +29,8 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         parent::setUp();
         config(['messaging_release.restricted_uat' => false]);
         // Laravel's fake here is a disposable real local filesystem adapter.
-        Storage::fake('documents');
+        $syntheticDisk = Storage::fake('documents');
+        config(['filesystems.disks.documents.root' => rtrim($syntheticDisk->path(''), '/')]);
     }
 
     public static function invalidDescriptors(): array
@@ -182,7 +183,8 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         $disk = Storage::disk('documents');
         $bytes = $disk->get($document->storage_path);
         if ($state === 'other-local-disk') {
-            Storage::fake('plan_custody');
+            $syntheticPlan = Storage::fake('plan_custody');
+            config(['filesystems.disks.plan_custody.root' => rtrim($syntheticPlan->path(''), '/')]);
             $aliasDisk = Storage::disk('plan_custody');
             $alias = 'reverse-alias.pdf';
             $other->update(['storage_disk' => 'plan_custody', 'storage_path' => $alias]);
@@ -276,6 +278,136 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         $this->assertOpaque($document);
         $this->assertCleanupRetained($document);
         $this->assertSame($bytes, $disk->get($document->storage_path));
+    }
+
+    public static function literalAliasCases(): array
+    {
+        $cases = [];
+        foreach (['foreign-null', 'plan-wrong', 'normalized'] as $state) {
+            foreach (['preview', 'download', 'cleanup'] as $action) {
+                $cases[$state.'-'.$action] = [$state, $action];
+            }
+        }
+
+        return $cases;
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('literalAliasCases')]
+    public function test_d2_reverse_literal_and_normalized_aliases(string $state, string $action): void
+    {
+        [$actor, , $document] = $this->evidence();
+        [, , $other] = $this->evidence();
+        $disk = Storage::disk('documents');
+        $target = $disk->path($document->storage_path);
+        $bytes = file_get_contents($target);
+        $disk->delete($other->storage_path);
+        $literal = 'foreign\\different.pdf';
+        $mapped = 'foreign/different.pdf';
+        $this->assertFalse(file_exists($disk->path($mapped)));
+        $alias = $disk->path($literal);
+        if ($state === 'normalized') {
+            $disk->makeDirectory('foreign');
+            $alias = $disk->path($mapped);
+            $this->assertFalse(file_exists($disk->path($literal)));
+        }
+        $this->assertTrue(symlink($target, $alias));
+        $this->assertSame(1, lstat($target)['nlink']);
+        $other->update(['storage_path' => $literal, 'checksum_sha256' => $state === 'foreign-null' ? null : str_repeat('0', 64)]);
+        if ($state === 'plan-wrong') {
+            $other->links()->delete();
+            DB::table('documents')->where('id', $other->id)->update(['security_domain' => 'EVER_PLAN']);
+        }
+        $this->actingAs($actor);
+        try {
+            if ($action === 'cleanup') {
+                $this->assertCleanupRetained($document);
+            } else {
+                $this->assertOpaque($document, [$action]);
+            }
+        } finally {
+            $this->assertTrue(is_link($alias));
+            unlink($alias);
+            $this->assertTrue(is_file($target), 'D2 target deleted');
+            $this->assertSame($bytes, file_get_contents($target));
+        }
+    }
+
+    public function test_d2_literal_nonconflicting_locator_preserves_retrieval(): void
+    {
+        [$actor, , $document] = $this->evidence();
+        [, , $other] = $this->evidence();
+        $disk = Storage::disk('documents');
+        $literal = 'unrelated\\literal.pdf';
+        file_put_contents($disk->path($literal), 'unrelated synthetic bytes');
+        $other->update(['storage_path' => $literal]);
+        $this->actingAs($actor);
+        $this->get($this->url($document))->assertOk()->assertContent($this->pdf());
+        $this->assertSame($this->pdf(), $this->get('/documents/'.$document->public_id.'/download')->assertOk()->streamedContent());
+        $this->assertSame('unrelated synthetic bytes', file_get_contents($disk->path($literal)));
+    }
+
+    public static function rootMappingCases(): array
+    {
+        $cases = [];
+        foreach (['target-stale', 'other-rebound', 'other-stale', 'target-rebound'] as $state) {
+            foreach (['preview', 'download', 'cleanup'] as $action) {
+                $cases[$state.'-'.$action] = [$state, $action];
+            }
+        }
+
+        return $cases;
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('rootMappingCases')]
+    public function test_d2_root_mapping_mismatch_without_other_rows(string $state, string $action): void
+    {
+        [$actor, , $document] = $this->evidence();
+        $disk = Storage::disk('documents');
+        $target = $disk->path($document->storage_path);
+        $bytes = file_get_contents($target);
+        $distinct = storage_path('framework/testing/disks/d2-other');
+        $replacement = null;
+        $this->assertSame(1, Document::query()->count());
+        if ($state === 'target-stale') {
+            config(['filesystems.disks.documents.root' => $distinct]);
+        } elseif ($state === 'other-rebound') {
+            Storage::set('public', $disk);
+        } elseif ($state === 'other-stale') {
+            Storage::fake('public');
+            config(['filesystems.disks.public.root' => $distinct]);
+        } else {
+            $new = Storage::build(['driver' => 'local', 'root' => $distinct]);
+            $new->put($document->storage_path, $bytes);
+            $replacement = $new->path($document->storage_path);
+            Storage::set('documents', $new);
+        }
+        $this->actingAs($actor);
+        try {
+            if ($action === 'cleanup') {
+                $this->assertCleanupRetained($document);
+            } else {
+                $this->assertOpaque($document, [$action]);
+            }
+        } finally {
+            $this->assertTrue(is_file($target), 'Original target must survive');
+            $this->assertSame($bytes, file_get_contents($target));
+            if ($replacement !== null) {
+                $this->assertTrue(is_file($replacement), 'Rebound target must survive');
+                $this->assertSame($bytes, file_get_contents($replacement));
+            }
+        }
+    }
+
+    public function test_d2_disjoint_unresolved_roots_do_not_initialize_directories(): void
+    {
+        [$actor, , $document] = $this->evidence();
+        $absent = storage_path('framework/testing/disks/d2-absent-'.Str::uuid());
+        config(['filesystems.disks.d2_absent' => ['driver' => 'local', 'root' => $absent]]);
+        $this->assertFalse(file_exists($absent));
+        $this->actingAs($actor);
+        $this->get($this->url($document))->assertOk()->assertContent($this->pdf());
+        $this->assertSame($this->pdf(), $this->get('/documents/'.$document->public_id.'/download')->assertOk()->streamedContent());
+        $this->assertFalse(file_exists($absent));
     }
 
     public function test_cleanup_missing_persisted_row_retains_bytes(): void
@@ -488,9 +620,9 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         fwrite(STDOUT, 'K1 request query budgets (1,16,17,32): '.json_encode($counts).PHP_EOL);
     }
 
-    private function assertOpaque(Document $document): void
+    private function assertOpaque(Document $document, array $actions = ['preview', 'download']): void
     {
-        foreach (['preview', 'download'] as $action) {
+        foreach ($actions as $action) {
             $url = '/documents/'.$document->public_id.'/'.$action;
             $missing = $this->get('/documents/'.Str::uuid().'/'.$action)->assertNotFound();
             $response = $this->get($url)->assertNotFound()->assertHeaderMissing('Content-Disposition')
