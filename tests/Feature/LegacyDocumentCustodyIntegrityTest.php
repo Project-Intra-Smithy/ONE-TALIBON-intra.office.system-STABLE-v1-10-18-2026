@@ -280,6 +280,70 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         $this->assertSame($bytes, $disk->get($document->storage_path));
     }
 
+    public function test_d2_catalog_exact_threshold_with_real_disjoint_objects(): void
+    {
+        [$actor, , $document] = $this->evidence();
+        $disk = Storage::disk('documents');
+        $disk->makeDirectory('capacity');
+        $rows = [];
+        for ($n = 0; $n < 2048; $n++) {
+            $path = 'capacity/'.Str::uuid().'.pdf';
+            $disk->put($path, 'synthetic unrelated metadata probe');
+            $rows[] = ['public_id' => (string) Str::uuid(), 'title' => 'Synthetic capacity',
+                'storage_disk' => 'documents', 'storage_path' => $path];
+            if (count($rows) === 256) {
+                DB::table('documents')->insert($rows);
+                $rows = [];
+            }
+        }
+        $this->assertSame(2049, Document::query()->count());
+        $this->actingAs($actor);
+        $samples = [];
+        for ($i = 0; $i < 3; $i++) {
+            $start = hrtime(true);
+            $this->assertSame($this->pdf(), $this->get('/documents/'.$document->public_id.'/download')->assertOk()->streamedContent());
+            $download = round((hrtime(true) - $start) / 1e6, 2);
+            $start = hrtime(true);
+            $this->get($this->url($document))->assertOk()->assertContent($this->pdf());
+            $samples[] = [$download, round((hrtime(true) - $start) / 1e6, 2)];
+        }
+        fwrite(STDOUT, 'K1-D2 near-cap serial request ms (2048 other actual objects; download,preview): '.json_encode($samples).PHP_EOL);
+    }
+
+    public static function longLocatorLengths(): array
+    {
+        return [[4095], [4096], [4097]];
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('longLocatorLengths')]
+    public function test_d2_locator_path_boundary_unprovable_absolute_spelling_retains_bytes(int $length): void
+    {
+        [$actor, , $document] = $this->evidence();
+        $disk = Storage::disk('documents');
+        $path = substr(str_repeat('segment/', 600), 0, $length - 1).'x';
+        $this->assertSame($length, strlen($path));
+        Document::query()->create(['title' => 'Synthetic long path',
+            'storage_disk' => 'documents', 'storage_path' => $path]);
+        $this->actingAs($actor);
+        $this->assertOpaque($document);
+        $this->assertCleanupRetained($document);
+        $this->assertSame($this->pdf(), $disk->get($document->storage_path));
+    }
+
+    public function test_d2_long_relative_locator_within_absolute_linux_limit_is_not_an_alias(): void
+    {
+        [$actor, , $document] = $this->evidence();
+        $disk = Storage::disk('documents');
+        $length = 4095 - strlen($disk->path(''));
+        $path = substr(str_repeat(str_repeat('a', 190).'/', 24), 0, $length - 1).'x';
+        $this->assertSame(4095, strlen($disk->path($path)));
+        Document::query()->create(['title' => 'Synthetic supported long missing locator',
+            'storage_disk' => 'documents', 'storage_path' => $path]);
+        $this->actingAs($actor);
+        $this->get($this->url($document))->assertOk()->assertContent($this->pdf());
+        $this->assertSame($this->pdf(), $this->get('/documents/'.$document->public_id.'/download')->assertOk()->streamedContent());
+    }
+
     public static function literalAliasCases(): array
     {
         $cases = [];
@@ -588,6 +652,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         [$actor, $parent, $document] = $this->evidence();
         $this->actingAs($actor);
         $counts = [];
+        $samples = [];
         for ($n = 1; $n <= 32; $n++) {
             if ($n > 1) {
                 DocumentLink::query()->create(['document_id' => $document->id,
@@ -602,11 +667,16 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
             DB::enableQueryLog();
             DB::flushQueryLog();
             try {
-                $this->get('/documents/'.$document->public_id.'/download')->assertOk();
+                $start = hrtime(true);
+                $this->get('/documents/'.$document->public_id.'/download')->assertOk()->streamedContent();
+                $downloadMs = round((hrtime(true) - $start) / 1e6, 2);
                 $download = count(DB::getQueryLog());
                 DB::flushQueryLog();
+                $start = hrtime(true);
                 $this->get($this->url($document))->assertOk();
+                $previewMs = round((hrtime(true) - $start) / 1e6, 2);
                 $preview = count(DB::getQueryLog());
+                $samples[] = [$downloadMs, $previewMs];
             } finally {
                 DB::disableQueryLog();
                 DB::flushQueryLog();
@@ -618,6 +688,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
             $this->assertLessThanOrEqual($counts[0][1] + 1, $preview);
         }
         fwrite(STDOUT, 'K1 request query budgets (1,16,17,32): '.json_encode($counts).PHP_EOL);
+        fwrite(STDOUT, 'K1-D2 serial request ms (1,16,17,32; download,preview): '.json_encode($samples).PHP_EOL);
     }
 
     private function assertOpaque(Document $document, array $actions = ['preview', 'download']): void
