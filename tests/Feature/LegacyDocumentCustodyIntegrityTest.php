@@ -69,7 +69,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
             case 'hash': $document->update(['checksum_sha256' => str_repeat('a', 64)]); break;
             case 'missing-size': $document->update(['size_bytes' => null]); break;
             case 'missing-hash': $document->update(['checksum_sha256' => null]); break;
-            case 'missing-disk': $document->update(['storage_disk' => null]); break;
+            case 'missing-disk': $document->update(['storage_disk' => '']); break;
             case 'missing-path': $document->update(['storage_path' => null]); break;
             case 'wrong-disk': $document->update(['storage_disk' => 'public']); break;
             case 'traversal': $document->update(['storage_path' => '2026/11/../11/'.basename($path)]); break;
@@ -108,8 +108,12 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         $disk->put($other->storage_path, $otherBytes);
         $other->update(['checksum_sha256' => hash('sha256', $otherBytes)]);
         $document->storage_path = $other->storage_path;
-        $this->assertCleanupRetained($document);
-        $this->assertSame($otherBytes, $disk->get($other->storage_path));
+        try {
+            $this->assertCleanupRetained($document);
+        } finally {
+            $this->assertTrue($disk->exists($other->storage_path), 'Different document blob deleted.');
+            $this->assertSame($otherBytes, $disk->get($other->storage_path));
+        }
     }
 
     public function test_persisted_descriptor_drift_retains_original_blob(): void
@@ -117,14 +121,17 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         [, , $document] = $this->evidence();
         [, , $other] = $this->evidence();
         DB::table('documents')->where('id', $document->id)->update(['storage_path' => $other->storage_path]);
-        $this->assertCleanupRetained($document);
-        Storage::disk('documents')->assertExists($document->storage_path);
-        Storage::disk('documents')->assertExists($other->storage_path);
+        try {
+            $this->assertCleanupRetained($document);
+        } finally {
+            Storage::disk('documents')->assertExists($document->storage_path);
+            Storage::disk('documents')->assertExists($other->storage_path);
+        }
     }
 
     public static function aliases(): array
     {
-        return [['exact'], ['normalized'], ['plan'], ['disk-alias']];
+        return [['exact'], ['normalized'], ['plan'], ['disk-alias'], ['parent-segments'], ['backslash']];
     }
 
     #[\PHPUnit\Framework\Attributes\DataProvider('aliases')]
@@ -134,9 +141,12 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         [$outsider, , $other] = $this->evidence();
         $disk = Storage::disk('documents');
         $original = $disk->get($document->storage_path);
-        $alias = $state === 'normalized'
-            ? '2026//11/./'.basename($document->storage_path)
-            : $document->storage_path;
+        $alias = match ($state) {
+            'normalized' => '2026//11/./'.basename($document->storage_path),
+            'parent-segments' => '2026/11/other/../'.basename($document->storage_path),
+            'backslash' => str_replace('/', '\\', $document->storage_path),
+            default => $document->storage_path,
+        };
         if ($state === 'disk-alias') {
             config(['filesystems.disks.k1_alias' => [
                 'driver' => 'local', 'root' => $disk->path(''), 'visibility' => 'private', 'serve' => false,
@@ -184,12 +194,115 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         $original = $this->pdf();
         $path = $document->storage_path;
         $this->mock(AuditLogger::class, function ($mock) use ($path): void {
-            $mock->shouldReceive('record')->once()->andReturnUsing(function () use ($path): void {
+            $mock->shouldReceive('record')->once()->andReturnUsing(function (...$args) use ($path): \App\Models\AuditLog {
+                $result = (new AuditLogger)->record(...$args);
                 Storage::disk('documents')->put($path, 'SYNTHETIC REPLACEMENT AFTER AUDIT');
+
+                return $result;
             });
         });
         $response = $this->get('/documents/'.$document->public_id.'/download')->assertOk();
         $this->assertSame($original, $response->streamedContent());
+    }
+
+    public static function unsafeRoots(): array
+    {
+        return [['public'], ['plan_custody'], ['local']];
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('unsafeRoots')]
+    public function test_configured_root_overlap_is_not_private_custody(string $disk): void
+    {
+        [$actor, , $document] = $this->evidence();
+        $root = Storage::disk('documents')->path('');
+        config(['filesystems.disks.'.$disk.'.root' => $root]);
+        $this->actingAs($actor);
+        $this->assertOpaque($document);
+        $this->assertCleanupRetained($document);
+        $this->assertSame($this->pdf(), Storage::disk('documents')->get($document->storage_path));
+    }
+
+    public function test_same_content_duplicate_locator_retains_both_identities(): void
+    {
+        [, , $document] = $this->evidence();
+        [, , $other] = $this->evidence();
+        $other->update(['storage_path' => $document->storage_path]);
+        try {
+            $this->assertCleanupRetained($document);
+        } finally {
+            Storage::disk('documents')->assertExists($document->storage_path);
+            $this->assertSame($this->pdf(), Storage::disk('documents')->get($document->storage_path));
+        }
+    }
+
+    public function test_non_pdf_attachment_exact_bytes_and_safe_headers(): void
+    {
+        [$actor, , $document] = $this->evidence();
+        $this->actingAs($actor);
+        $bytes = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+Xn1sAAAAASUVORK5CYII=');
+        Storage::disk('documents')->put($document->storage_path, $bytes);
+        $document->update(['size_bytes' => strlen($bytes), 'checksum_sha256' => hash('sha256', $bytes),
+            'mime_type' => 'image/png', 'original_name' => "../résumé\r\nX-Injection: yes%.png"]);
+        DB::table('documents')->where('id', $document->id)->update(['security_domain' => 'LEGACY_CTW']);
+        $response = $this->get('/documents/'.$document->public_id.'/download')->assertOk()
+            ->assertHeader('Content-Type', 'image/png')->assertHeader('X-Content-Type-Options', 'nosniff');
+        $this->assertSame($bytes, $response->streamedContent());
+        $header = $response->headers->get('Content-Disposition');
+        $this->assertStringStartsWith('attachment;', $header);
+        $this->assertStringNotContainsString("\r", $header);
+        $this->assertStringNotContainsString("\n", $header);
+        $this->assertFalse($response->headers->has('X-Injection'));
+        $this->get($this->url($document))->assertNotFound();
+        app(DocumentAttachmentService::class)->cleanupDocuments([$document->fresh()]);
+        Storage::disk('documents')->assertMissing($document->storage_path);
+    }
+
+    public function test_download_audit_failure_prevents_byte_delivery(): void
+    {
+        [$actor, , $document] = $this->evidence();
+        $this->actingAs($actor);
+        $this->mock(AuditLogger::class, function ($mock): void {
+            $mock->shouldReceive('record')->once()->andThrow(new RuntimeException('Synthetic audit unavailable'));
+        });
+        $this->get('/documents/'.$document->public_id.'/download')->assertStatus(500)
+            ->assertDontSee('Synthetic evidence page one');
+    }
+
+    public function test_request_queries_do_not_grow_with_links_or_locator_count(): void
+    {
+        [$actor, $parent, $document] = $this->evidence();
+        $this->actingAs($actor);
+        $counts = [];
+        for ($n = 1; $n <= 32; $n++) {
+            if ($n > 1) {
+                DocumentLink::query()->create(['document_id' => $document->id,
+                    'linkable_type' => $parent->getMorphClass(), 'linkable_id' => $parent->id,
+                    'relationship' => 'k1-budget-'.$n]);
+                Document::query()->create(['title' => 'Unrelated locator',
+                    'storage_disk' => 'documents', 'storage_path' => 'unrelated/'.Str::uuid().'.pdf']);
+            }
+            if (! in_array($n, [1, 16, 17, 32], true)) {
+                continue;
+            }
+            DB::enableQueryLog();
+            DB::flushQueryLog();
+            try {
+                $this->get('/documents/'.$document->public_id.'/download')->assertOk();
+                $download = count(DB::getQueryLog());
+                DB::flushQueryLog();
+                $this->get($this->url($document))->assertOk();
+                $preview = count(DB::getQueryLog());
+            } finally {
+                DB::disableQueryLog();
+                DB::flushQueryLog();
+            }
+            $counts[] = [$download, $preview];
+        }
+        foreach ($counts as [$download, $preview]) {
+            $this->assertLessThanOrEqual($counts[0][0] + 1, $download);
+            $this->assertLessThanOrEqual($counts[0][1] + 1, $preview);
+        }
+        fwrite(STDOUT, 'K1 request query budgets (1,16,17,32): '.json_encode($counts).PHP_EOL);
     }
 
     private function assertOpaque(Document $document): void
@@ -204,6 +317,9 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
             $this->head($url)->assertNotFound()->assertContent('')->assertHeaderMissing('Content-Disposition');
             $this->assertDatabaseMissing('audit_logs', [
                 'action' => 'document.'.$action, 'entity_id' => $document->id, 'outcome' => 'allowed',
+            ]);
+            $this->assertDatabaseHas('audit_logs', [
+                'action' => 'document.'.$action, 'entity_id' => null, 'outcome' => 'denied',
             ]);
         }
     }
