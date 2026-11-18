@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Document;
 use App\Services\AuditLogger;
 use App\Services\DocumentAccessService;
+use App\Services\LegacyDocumentBytes;
 use App\Services\LegacyPdfPreview;
 use App\Services\PlanDocumentOriginGuard;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -22,6 +22,7 @@ final class DocumentController extends Controller
         DocumentAccessService $access,
         AuditLogger $audit,
         LegacyPdfPreview $preview,
+        LegacyDocumentBytes $storage,
     ): Response {
         $actor = $request->user()->loadMissing('employee');
         $headers = [
@@ -55,7 +56,8 @@ final class DocumentController extends Controller
         if (! $fresh
             || ! PlanDocumentOriginGuard::isEligibleForLegacyPreview($fresh)
             || ! $access->canDownload($actor, $fresh)
-            || $record->getAttributes() !== $fresh->getAttributes()) {
+            || $record->getAttributes() !== $fresh->getAttributes()
+            || ! $storage->unambiguousLocator($fresh)) {
             return $deny();
         }
 
@@ -82,6 +84,7 @@ final class DocumentController extends Controller
         Document $document,
         DocumentAccessService $access,
         AuditLogger $audit,
+        LegacyDocumentBytes $storage,
     ): StreamedResponse {
         $actor = $request->user()->loadMissing('employee');
 
@@ -112,10 +115,9 @@ final class DocumentController extends Controller
             throw new AuthorizationException('You are not authorized to download this evidence.');
         }
 
-        $disk = (string) config('documents.disk', 'documents');
-        if ($document->storage_disk !== $disk
-            || ! $document->storage_path
-            || ! Storage::disk($disk)->exists($document->storage_path)) {
+        $object = $storage->verifiedObject($document);
+        if ($object === null) {
+            $audit->record($actor, 'document.download', 'Denied evidence retrieval.', outcome: 'denied');
             abort(404);
         }
 
@@ -125,12 +127,15 @@ final class DocumentController extends Controller
         if (! $fresh
             || PlanDocumentOriginGuard::isProtected($fresh)
             || $document->getAttributes() !== $fresh->getAttributes()
-            || ! $access->canDownload($actor, $fresh)) {
+            || ! $access->canDownload($actor, $fresh)
+            || ! $storage->unambiguousLocator($fresh)) {
             $audit->record($actor, 'document.download', 'Denied evidence retrieval.', outcome: 'denied');
             abort(404);
         }
 
         $document = $fresh;
+        $bytes = $object['bytes'];
+        $disposition = $storage->attachmentDisposition($document);
         $audit->record(
             $actor,
             'document.download',
@@ -139,14 +144,16 @@ final class DocumentController extends Controller
             entityId: $document->id,
         );
 
-        return Storage::disk($disk)->download(
-            $document->storage_path,
-            $document->original_name ?: $document->title,
-            [
-                'Content-Type' => $document->mime_type ?: 'application/octet-stream',
-                'Cache-Control' => 'private, no-store',
-                'X-Content-Type-Options' => 'nosniff',
-            ],
-        );
+        // Preserve the streamed attachment ABI; emit only verified bytes.
+        return new StreamedResponse(static function () use ($bytes): void {
+            echo $bytes;
+        }, 200, [
+            'Content-Type' => $storage->attachmentMime($document),
+            'Content-Disposition' => $disposition,
+            'Content-Length' => (string) strlen($bytes),
+            'Cache-Control' => 'private, no-store',
+            'X-Content-Type-Options' => 'nosniff',
+            'Referrer-Policy' => 'no-referrer',
+        ]);
     }
 }
