@@ -3,14 +3,20 @@
 namespace App\Services;
 
 use App\Models\Document;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use League\Flysystem\WhitespacePathNormalizer;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Throwable;
 
 /** Bounded private local reads; callers retain provenance and actor authorization. */
 final class LegacyDocumentBytes
 {
+    private const MAX_LOCATORS = 2048;
+
+    private const MAX_LOCATOR_BYTES = 4096;
+
     /** @return array{bytes:string,path:string,stat:array}|null */
     public function verifiedObject(Document $document): ?array
     {
@@ -55,10 +61,11 @@ final class LegacyDocumentBytes
     }
 
     /**
-     * One unscoped set-based probe covering protected rows and all disk labels.
-     * A matching filename segment (case-folded, slash/backslash normalized)
-     * conservatively denies exact, dot, parent, repeated slash and disk aliases.
-     * Distinct canonical files sharing a basename can be denied intentionally.
+     * A bounded catalog snapshot, never actor filtered or hash filtered.
+     * Resolve only stored local locators, not a filesystem tree. Metadata
+     * probes detect physical aliases even when another row names a different
+     * basename. Unavailable visibility, unsupported mapping or excess rows
+     * fail closed. This is not an atomic or immutable-generation proof.
      */
     public function unambiguousLocator(Document $document): bool
     {
@@ -68,13 +75,105 @@ final class LegacyDocumentBytes
         }
 
         try {
-            return ! Document::query()->withoutGlobalScopes()
-                ->where('id', '<>', $document->getKey())
-                ->whereRaw("strpos('/' || lower(replace(storage_path, chr(92), '/')) || '/', ?) > 0", [
-                    '/'.strtolower(basename($relative)).'/',
-                ])->exists();
+            $target = $this->privatePath($document);
+            if ($target === null || ! is_array($identity = @lstat($target))
+                || ($identity['mode'] & 0170000) !== 0100000 || $identity['nlink'] !== 1) {
+                return false;
+            }
+            // One DB statement: the row-visibility fence and the bounded
+            // snapshot share a PostgreSQL statement snapshot. A sentinel row
+            // distinguishes an empty catalog from an unavailable view.
+            $rows = DB::select(<<<'SQL'
+                SELECT CASE WHEN visibility.ok THEN 1 ELSE 0 END AS visible,
+                    locator.id, locator.storage_disk, locator.storage_path
+                FROM (
+                    SELECT has_table_privilege(to_regclass('documents'), 'SELECT')
+                        AND NOT row_security_active(to_regclass('documents')) AS ok
+                ) AS visibility
+                LEFT JOIN LATERAL (
+                    SELECT id, storage_disk,
+                        CASE WHEN octet_length(storage_path) <= ? THEN storage_path END AS storage_path
+                    FROM documents
+                    WHERE id <> ? AND storage_path IS NOT NULL AND storage_path <> ''
+                    LIMIT ?
+                ) AS locator ON visibility.ok
+                SQL, [self::MAX_LOCATOR_BYTES, $document->getKey(), self::MAX_LOCATORS + 1]);
+
+            if ($rows === [] || (int) $rows[0]->visible !== 1 || count($rows) > self::MAX_LOCATORS) {
+                return false;
+            }
+            $roots = [];
+            $normalizer = new WhitespacePathNormalizer;
+            $basename = strtolower(basename($relative));
+            foreach ($rows as $row) {
+                if ($row->id === null) {
+                    continue;
+                }
+                $disk = $row->storage_disk;
+                $path = $row->storage_path;
+                if (! is_string($path) || ! is_string($disk) || $disk === ''
+                    || config('filesystems.disks.'.$disk.'.driver') !== 'local') {
+                    return false;
+                }
+                $raw = str_replace('\\', '/', $path);
+                if (in_array($basename, explode('/', strtolower($raw)), true)) {
+                    return false;
+                }
+                // Flysystem normalization covers repeated separators, dot,
+                // parent and backslash aliases; also examine the raw local
+                // spelling, which may traverse a symlink before a parent step.
+                $normalized = $normalizer->normalizePath($path);
+                if ($normalized === '') {
+                    return false;
+                }
+                if (! isset($roots[$disk])) {
+                    $configured = config('filesystems.disks.'.$disk.'.root');
+                    $adapter = Storage::disk($disk)->path('');
+                    if (! is_string($configured) || $configured === '' || $adapter === '') {
+                        return false;
+                    }
+                    $roots[$disk] = array_unique([$this->normal($configured), $this->normal($adapter)]);
+                }
+                foreach ($roots[$disk] as $root) {
+                    foreach (array_unique([$normalized, ltrim($raw, '/')]) as $spelling) {
+                        if ($this->couldAlias($root.'/'.$spelling, $target, $identity)) {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return true;
         } catch (Throwable) {
             return false;
+        }
+    }
+
+    /** Metadata only: no reading or opening another document's bytes. */
+    private function couldAlias(string $candidate, string $target, array $identity): bool
+    {
+        clearstatcache(true);
+        $resolved = @realpath($candidate);
+        if ($resolved !== false) {
+            $stat = @stat($resolved);
+
+            return ! is_array($stat) || $this->normal($resolved) === $this->normal($target)
+                || ($stat['dev'] === $identity['dev'] && $stat['ino'] === $identity['ino']);
+        }
+        // Missing unrelated objects are not a current physical alias. Do not
+        // mistake a dangling link or inaccessible ancestor for a missing file.
+        $ancestor = $candidate;
+        while (true) {
+            $stat = @lstat($ancestor);
+            if (is_array($stat)) {
+                return ($stat['mode'] & 0170000) !== 0040000
+                    || ! is_readable($ancestor) || ! is_executable($ancestor);
+            }
+            $parent = dirname($ancestor);
+            if ($parent === $ancestor) {
+                return true;
+            }
+            $ancestor = $parent;
         }
     }
 
@@ -118,7 +217,7 @@ final class LegacyDocumentBytes
     {
         return in_array($document->mime_type, [
             'application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            'image/jpeg', 'image/png', 'image/webp', 'application/octet-stream',
+            'image/jpeg', 'image/png', 'image/webp', 'text/plain', 'application/octet-stream',
         ], true) ? $document->mime_type : 'application/octet-stream';
     }
 

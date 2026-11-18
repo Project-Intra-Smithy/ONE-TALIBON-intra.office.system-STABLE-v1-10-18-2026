@@ -221,10 +221,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         [$outsider] = $this->evidence();
         [, , $malformed] = $this->evidence();
         $this->actingAs($outsider);
-        $this->mock(LegacyDocumentBytes::class, function ($mock): void {
-            $mock->shouldNotReceive('verifiedObject');
-            $mock->shouldNotReceive('unambiguousLocator');
-        });
+        Storage::shouldReceive('disk')->never();
         $url = '/documents/'.$document->public_id.'/download';
         $this->get($url)->assertForbidden()->assertHeaderMissing('Content-Disposition');
         $this->head($url)->assertForbidden();

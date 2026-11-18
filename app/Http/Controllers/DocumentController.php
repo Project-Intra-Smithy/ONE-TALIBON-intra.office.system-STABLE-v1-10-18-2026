@@ -98,7 +98,10 @@ final class DocumentController extends Controller
         if (! $access->canDownload($actor, $document)) {
             // Provenance may have changed during the fresh actor/parent check.
             // Never turn a protected identity into an ordinary identified 403.
-            if (PlanDocumentOriginGuard::isProtected($document)) {
+            if (PlanDocumentOriginGuard::isProtected($document)
+                || $document->storage_disk !== (string) config('documents.disk', 'documents')
+                || ! $document->storage_path) {
+                // Shape only: never inspect storage for a denied actor.
                 $audit->record($actor, 'document.download', 'Denied evidence retrieval.', outcome: 'denied');
                 abort(404);
             }
