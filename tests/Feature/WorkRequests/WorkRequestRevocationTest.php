@@ -231,6 +231,8 @@ final class WorkRequestRevocationTest extends TestCase
             'mime_type' => 'text/plain',
             'storage_disk' => 'documents',
             'storage_path' => 'p1-h/revoked.txt',
+            'size_bytes' => strlen($secret),
+            'checksum_sha256' => hash('sha256', $secret),
             'owner_department_id' => $admin->employee->department_id,
             'uploaded_by_user_id' => $admin->id,
         ]);
@@ -243,7 +245,8 @@ final class WorkRequestRevocationTest extends TestCase
 
         $this->actingAs($admin)->get(route('transactions.show', $transaction))->assertOk();
         $this->actingAs($admin)->get(route('transactions.live', $transaction))->assertOk();
-        $this->actingAs($admin)->get(route('documents.download', $document))->assertOk();
+        $response = $this->actingAs($admin)->get(route('documents.download', $document))->assertOk();
+        $this->assertSame($secret, $response->streamedContent());
 
         $admin->load('employee.department');
         $admin->employee()->update(['employment_status' => 'separated']);

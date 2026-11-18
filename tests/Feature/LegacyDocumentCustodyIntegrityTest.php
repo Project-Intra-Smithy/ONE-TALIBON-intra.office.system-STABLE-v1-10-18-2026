@@ -11,6 +11,7 @@ use App\Models\WorkflowTransaction;
 use App\Services\AuditLogger;
 use App\Services\DocumentAccessService;
 use App\Services\DocumentAttachmentService;
+use App\Services\LegacyDocumentBytes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -58,7 +59,10 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         [$actor, , $document] = $this->evidence();
         [, , $other] = $this->evidence();
         $disk = Storage::disk('documents');
-        $otherBytes = str_replace('page one', 'page TWO', $this->pdf());
+        // Physical-alias tests use identical bytes deliberately: digest alone
+        // must not allow a symlink or hardlink, even with matching metadata.
+        $otherBytes = in_array($state, ['symlink', 'hardlink', 'directory-symlink'], true)
+            ? $this->pdf() : str_replace('page one', 'page TWO', $this->pdf());
         $disk->put($other->storage_path, $otherBytes);
         $other->update(['checksum_sha256' => hash('sha256', $otherBytes)]);
         $path = $disk->path($document->storage_path);
@@ -84,7 +88,8 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
                 break;
         }
         $this->actingAs($actor);
-        $this->assertTrue(app(DocumentAccessService::class)->canDownload($actor, $document));
+        $this->assertSame(! in_array($state, ['missing-disk', 'missing-path', 'wrong-disk'], true),
+            app(DocumentAccessService::class)->canDownload($actor, $document));
         try {
             $this->assertOpaque($document);
             $this->assertCleanupRetained($document);
@@ -162,6 +167,80 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         $this->assertOpaque($document);
         $this->assertCleanupRetained($document);
         $this->assertSame($original, $disk->get($document->storage_path));
+    }
+
+    public static function reverseAliases(): array
+    {
+        return [['hidden'], ['plan'], ['incorrect-hash'], ['other-local-disk']];
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('reverseAliases')]
+    public function test_other_row_different_name_symlink_denies_target_and_preserves_bytes(string $state): void
+    {
+        [$actor, , $document] = $this->evidence();
+        [, , $other] = $this->evidence();
+        $disk = Storage::disk('documents');
+        $bytes = $disk->get($document->storage_path);
+        if ($state === 'other-local-disk') {
+            Storage::fake('plan_custody');
+            $aliasDisk = Storage::disk('plan_custody');
+            $alias = 'reverse-alias.pdf';
+            $other->update(['storage_disk' => 'plan_custody', 'storage_path' => $alias]);
+        } else {
+            $aliasDisk = $disk;
+            $alias = $other->storage_path;
+            $disk->delete($alias);
+        }
+        $aliasPath = $aliasDisk->path($alias);
+        $this->assertNotSame(basename($document->storage_path), basename($alias));
+        $this->assertTrue(symlink($disk->path($document->storage_path), $aliasPath));
+        if ($state === 'plan') {
+            $other->links()->delete();
+            DB::table('documents')->where('id', $other->id)->update(['security_domain' => 'EVER_PLAN']);
+        }
+        if ($state === 'incorrect-hash') {
+            $other->update(['checksum_sha256' => str_repeat('0', 64)]);
+        }
+        $this->actingAs($actor);
+        try {
+            $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $other->fresh()));
+            $this->assertOpaque($document);
+            $this->assertCleanupRetained($document);
+        } finally {
+            $this->assertTrue(is_link($aliasPath));
+            unlink($aliasPath);
+            $this->assertSame($bytes, $disk->get($document->storage_path));
+        }
+        // Once the other row has no physical alias, the target is valid again.
+        $this->get($this->url($document))->assertOk()->assertContent($bytes);
+    }
+
+    public function test_unauthorized_actor_preserves_forbidden_for_valid_shape(): void
+    {
+        [, , $document] = $this->evidence();
+        [$outsider] = $this->evidence();
+        [, , $malformed] = $this->evidence();
+        $this->actingAs($outsider);
+        $this->mock(LegacyDocumentBytes::class, function ($mock): void {
+            $mock->shouldNotReceive('verifiedObject');
+            $mock->shouldNotReceive('unambiguousLocator');
+        });
+        $url = '/documents/'.$document->public_id.'/download';
+        $this->get($url)->assertForbidden()->assertHeaderMissing('Content-Disposition');
+        $this->head($url)->assertForbidden();
+        $this->get($url, ['Range' => 'bytes=0-15'])->assertForbidden()->assertHeaderMissing('Content-Range');
+        $malformed->update(['storage_disk' => 'public']);
+        $this->assertOpaque($malformed);
+    }
+
+    public function test_cleanup_missing_persisted_row_retains_bytes(): void
+    {
+        [, , $document] = $this->evidence();
+        $path = $document->storage_path;
+        $bytes = Storage::disk('documents')->get($path);
+        DB::table('documents')->where('id', $document->id)->delete();
+        $this->assertCleanupRetained($document);
+        $this->assertSame($bytes, Storage::disk('documents')->get($path));
     }
 
     public function test_safe_exact_buffer_attachment_and_cleanup_and_cap_boundary(): void
@@ -268,6 +347,65 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
             ->assertDontSee('Synthetic evidence page one');
     }
 
+    public function test_locator_visibility_filtered_by_postgres_rls_is_not_ownership_proof(): void
+    {
+        [, , $document] = $this->evidence();
+        [, , $other] = $this->evidence();
+        $this->assertTrue(app(LegacyDocumentBytes::class)->unambiguousLocator($document));
+        $originalRls = (int) DB::selectOne("SELECT relrowsecurity::int AS enabled FROM pg_class WHERE oid = to_regclass('documents')")->enabled;
+        $role = 'k1_visibility_'.strtolower(Str::random(12));
+        // Disposable PG16 test database only; no application role or grants
+        // changed. The test transaction also rolls back these fixture objects.
+        DB::statement('CREATE ROLE '.$role.' NOLOGIN');
+        DB::statement('GRANT USAGE ON SCHEMA public TO '.$role);
+        DB::statement('GRANT SELECT ON TABLE documents TO '.$role);
+        DB::statement('ALTER TABLE documents ENABLE ROW LEVEL SECURITY');
+        DB::statement('CREATE POLICY k1_visibility ON documents TO '.$role.' USING (id = '.(int) $document->id.')');
+        try {
+            DB::statement('SET LOCAL ROLE '.$role);
+            $this->assertTrue(DB::table('documents')->where('id', $document->id)->exists());
+            $this->assertFalse(DB::table('documents')->where('id', $other->id)->exists());
+            $this->assertFalse(app(LegacyDocumentBytes::class)->unambiguousLocator($document), 'RLS itself cannot prove global visibility.');
+            DB::statement('RESET ROLE');
+            $other->update(['storage_path' => $document->storage_path]);
+            DB::statement('SET LOCAL ROLE '.$role);
+            $this->assertFalse(DB::table('documents')->where('id', $other->id)->exists());
+            $this->assertFalse(app(LegacyDocumentBytes::class)->unambiguousLocator($document));
+            DB::statement('RESET ROLE');
+            DB::statement('REVOKE SELECT ON TABLE documents FROM '.$role);
+            DB::statement('SAVEPOINT k1_visibility_denied');
+            try {
+                DB::statement('SET LOCAL ROLE '.$role);
+                $this->assertFalse(app(LegacyDocumentBytes::class)->unambiguousLocator($document));
+            } finally {
+                DB::statement('ROLLBACK TO SAVEPOINT k1_visibility_denied');
+                DB::statement('RELEASE SAVEPOINT k1_visibility_denied');
+            }
+        } finally {
+            DB::statement('RESET ROLE');
+            DB::statement('DROP POLICY k1_visibility ON documents');
+            if ($originalRls === 0) {
+                DB::statement('ALTER TABLE documents DISABLE ROW LEVEL SECURITY');
+            }
+            DB::statement('REVOKE SELECT ON TABLE documents FROM '.$role);
+            DB::statement('REVOKE USAGE ON SCHEMA public FROM '.$role);
+            DB::statement('DROP ROLE '.$role);
+        }
+    }
+
+    public function test_distinct_paths_with_ambiguous_filename_segment_fail_closed(): void
+    {
+        [$actor, , $document] = $this->evidence();
+        [, , $other] = $this->evidence();
+        $path = 'different/'.basename($document->storage_path);
+        Storage::disk('documents')->put($path, $this->pdf());
+        $other->update(['storage_path' => $path]);
+        $this->actingAs($actor);
+        $this->assertOpaque($document);
+        $this->assertCleanupRetained($document);
+        $this->assertSame($this->pdf(), Storage::disk('documents')->get($path));
+    }
+
     public function test_request_queries_do_not_grow_with_links_or_locator_count(): void
     {
         [$actor, $parent, $document] = $this->evidence();
@@ -320,6 +458,9 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
             ]);
             $this->assertDatabaseHas('audit_logs', [
                 'action' => 'document.'.$action, 'entity_id' => null, 'outcome' => 'denied',
+            ]);
+            $this->assertDatabaseMissing('audit_logs', [
+                'action' => 'document.'.$action, 'entity_id' => $document->id, 'outcome' => 'denied',
             ]);
         }
     }
