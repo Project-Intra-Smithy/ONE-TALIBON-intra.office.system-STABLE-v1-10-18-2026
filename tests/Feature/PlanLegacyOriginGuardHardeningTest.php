@@ -118,6 +118,11 @@ final class PlanLegacyOriginGuardHardeningTest extends TestCase
     public function test_persisted_decision_query_exception_is_protected(): void
     {
         $document = Document::query()->create(['title' => 'Synthetic R4 database failure']);
+        // Make the two schema prerequisites explicit so the injected failure
+        // is reached at the persisted-read operation, not swallowed earlier.
+        Schema::partialMock();
+        Schema::shouldReceive('hasColumn')->once()->with('documents', 'security_domain')->andReturn(true);
+        Schema::shouldReceive('hasTable')->once()->with('plan_document_origin_receipts')->andReturn(true);
         DB::partialMock();
         DB::shouldReceive('table')->once()->with('documents as d')
             ->andThrow(new \RuntimeException('Synthetic persisted read failure'));
