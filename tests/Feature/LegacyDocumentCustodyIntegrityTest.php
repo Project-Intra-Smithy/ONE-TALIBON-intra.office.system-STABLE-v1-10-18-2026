@@ -230,6 +230,54 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         $this->assertOpaque($malformed);
     }
 
+    public function test_reverse_different_basename_cleanup_refuses_without_prior_http_check(): void
+    {
+        [, , $document] = $this->evidence();
+        [, , $other] = $this->evidence();
+        $disk = Storage::disk('documents');
+        $bytes = $disk->get($document->storage_path);
+        $disk->delete($other->storage_path);
+        $alias = $disk->path($other->storage_path);
+        $this->assertTrue(symlink($disk->path($document->storage_path), $alias));
+        DB::table('documents')->where('id', $other->id)->update(['checksum_sha256' => null]);
+        try {
+            $this->assertCleanupRetained($document);
+        } finally {
+            $this->assertTrue(is_link($alias));
+            unlink($alias);
+            $this->assertSame($bytes, $disk->get($document->storage_path));
+        }
+    }
+
+    public function test_catalog_over_bound_and_unmapped_locator_fail_closed(): void
+    {
+        [$actor, , $document] = $this->evidence();
+        $disk = Storage::disk('documents');
+        $bytes = $disk->get($document->storage_path);
+        $this->actingAs($actor);
+        $unknown = Document::query()->create(['title' => 'Unmapped locator',
+            'storage_disk' => 'k1-unconfigured', 'storage_path' => 'unmapped/other.pdf']);
+        $this->assertOpaque($document);
+        $this->assertCleanupRetained($document);
+        $unknown->delete();
+
+        // Batch insert only into the isolated test database; no file creation
+        // or filesystem traversal is required to exceed the catalog bound.
+        $rows = [];
+        for ($n = 0; $n < 2049; $n++) {
+            $rows[] = ['public_id' => (string) Str::uuid(), 'title' => 'Synthetic catalog bound',
+                'storage_disk' => 'documents', 'storage_path' => 'absent/'.Str::uuid().'.pdf'];
+            if (count($rows) === 256 || $n === 2048) {
+                DB::table('documents')->insert($rows);
+                $rows = [];
+            }
+        }
+        $this->assertFalse(app(LegacyDocumentBytes::class)->unambiguousLocator($document));
+        $this->assertOpaque($document);
+        $this->assertCleanupRetained($document);
+        $this->assertSame($bytes, $disk->get($document->storage_path));
+    }
+
     public function test_cleanup_missing_persisted_row_retains_bytes(): void
     {
         [, , $document] = $this->evidence();
