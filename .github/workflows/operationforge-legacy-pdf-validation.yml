@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - candidate/operationforge-traceability-core-r1
+      - candidate/operationforge-storage-integrity-k1
 
 permissions:
   contents: read
@@ -64,7 +65,7 @@ jobs:
       - name: Focused preview regression
         id: focused
         continue-on-error: true
-        run: php artisan test tests/Feature/LegacyPdfPreviewTest.php tests/Feature/CorePortalReportsTest.php tests/Feature/PlanLegacyOriginGuardHardeningTest.php tests/Feature/PlanLegacyCallerBoundaryTest.php
+        run: php artisan test tests/Feature/LegacyPdfPreviewTest.php tests/Feature/CorePortalReportsTest.php tests/Feature/PlanLegacyOriginGuardHardeningTest.php tests/Feature/PlanLegacyCallerBoundaryTest.php tests/Feature/LegacyDocumentCustodyIntegrityTest.php tests/Feature/DocumentAccessPrecedenceTest.php tests/Feature/CoreDocumentAttachmentsTest.php
       - name: Complete canonical Feature suite
         id: feature
         continue-on-error: true
