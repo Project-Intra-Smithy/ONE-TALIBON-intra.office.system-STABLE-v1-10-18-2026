@@ -42,6 +42,17 @@ final readonly class VerifiedCommandActor
             throw new AuthorizationException('Custody command actor does not match the active authenticated session.');
         }
 
+        if ($expectedSessionVersion === null && Auth::id() !== null) {
+            if (app()->bound('request')
+                && request()->hasSession()
+                && request()->session()->has('auth_session_version')) {
+                $expectedSessionVersion = (int) request()->session()->get('auth_session_version');
+            } elseif (app()->bound('session.store')
+                && app('session.store')->has('auth_session_version')) {
+                $expectedSessionVersion = (int) app('session.store')->get('auth_session_version');
+            }
+        }
+
         $user = $connection->table('users')
             ->select(['id', 'role', 'is_active', 'account_status', 'session_version', 'suspended_at'])
             ->where('id', $actorUserId)

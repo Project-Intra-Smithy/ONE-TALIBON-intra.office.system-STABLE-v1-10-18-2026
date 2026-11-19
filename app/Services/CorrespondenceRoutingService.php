@@ -292,8 +292,7 @@ class CorrespondenceRoutingService
             throw ValidationException::withMessages(['correspondence' => 'Only routed correspondence can enter action.']);
         }
 
-        if (! in_array($actor->role, self::ACTION_ROLES, true)
-            || ! $this->canViewOnConnection($connection, $actor, $locked)) {
+        if (! in_array($actor->role, self::ACTION_ROLES, true)) {
             throw new AuthorizationException('You are not authorized to act on this correspondence.');
         }
 
@@ -306,6 +305,10 @@ class CorrespondenceRoutingService
             ->where('id', (int) $locked->workflow_transaction_id)
             ->lockForUpdate()
             ->first();
+
+        if (! $this->canViewOnConnection($connection, $actor, $locked)) {
+            throw new AuthorizationException('You are not authorized to act on this correspondence.');
+        }
 
         if ($workflow === null || ! $this->workflowPermitsInAction($workflow)) {
             throw ValidationException::withMessages(['workflow' => 'The linked workflow transaction has not reached an actionable state.']);

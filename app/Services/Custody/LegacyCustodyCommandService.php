@@ -177,10 +177,24 @@ final class LegacyCustodyCommandService
             $timestamp = $now->format('Y-m-d H:i:sP');
             $committedDocuments = [];
 
+            $allowedClassifications = ['public', 'internal', 'confidential', 'restricted'];
+            if (! in_array($produced->classification, $allowedClassifications, true)) {
+                throw new CustodyViolationException('Produced source event carried an unsupported classification.');
+            }
+
             foreach ($items as $item) {
                 $ordinal = (int) $item->ordinal;
                 $meta = $itemMetadataByOrdinal[$ordinal] ?? [];
-                $classification = (string) ($meta['classification'] ?? $produced->classification);
+                if (array_key_exists('classification', $meta)) {
+                    $requestedClassification = is_string($meta['classification']) ? $meta['classification'] : '';
+                    if (! in_array($requestedClassification, $allowedClassifications, true)
+                        || $requestedClassification !== $produced->classification) {
+                        throw new CustodyViolationException(
+                            'Custody item classification cannot override or diverge from authoritative source classification.'
+                        );
+                    }
+                }
+                $classification = $produced->classification;
                 $title = (string) ($meta['title'] ?? ($meta['original_name'] ?? "Evidence #{$ordinal}"));
                 $originalName = (string) ($meta['original_name'] ?? $title);
                 $documentPublicId = (string) Str::uuid();
@@ -203,10 +217,10 @@ final class LegacyCustodyCommandService
                         ? $meta['retention_code']
                         : null,
                     'metadata' => json_encode(
-                        $extraMeta + [
+                        array_merge($extraMeta, [
                             'source' => 'legacy_custody_registry_v1',
                             'relationships' => $relationships,
-                        ],
+                        ]),
                         JSON_THROW_ON_ERROR,
                     ),
                     'security_domain' => 'LEGACY_CTW',

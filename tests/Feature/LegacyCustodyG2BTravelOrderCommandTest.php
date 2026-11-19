@@ -800,6 +800,93 @@ final class LegacyCustodyG2BTravelOrderCommandTest extends TestCase
         $this->assertSame(1, (int) $this->scalar('SELECT count(*) FROM public.plan_document_origin_receipts WHERE document_id=?', [$legacyDocId]));
     }
 
+    public function test_nox_g2b_001_002_003_regressions_null_entity_type_classification_shadowing_and_active_session_checks(): void
+    {
+        // NOX-G2B-001: SQL three-valued logic NULL entity_type bypass must fail with SQLSTATE 23514.
+        foreach (['travel_order.recorded', 'transaction.approve'] as $allowlistedAction) {
+            $this->assertSqlDenied($this->command, '23514', function () use ($allowlistedAction): void {
+                $stmt = $this->command->prepare(
+                    'INSERT INTO public.audit_logs (actor_user_id, actor_department_id, action, entity_type, entity_id, outcome, summary, correlation_id, integration_client_id, custody_operation_id) '
+                    ."VALUES (?, ?, ?, NULL, 999999, 'allowed', 'Forged NULL entity_type audit', ?, NULL, NULL)"
+                );
+                $stmt->execute([$this->mayorActor->id, $this->mayorOffice->id, $allowlistedAction, (string) Str::uuid()]);
+            });
+        }
+
+        // NOX-G2B-002: Caller cannot downgrade/override authoritative classification or shadow source/relationships metadata.
+        [$opOverride] = $this->reserveAndStage($this->mayorActor, 'travel_record', 'record', 1);
+        $beforeOverride = $this->tableCounts();
+        $commandService = app(LegacyCustodyCommandService::class);
+        $travelService = app(TravelOrderService::class);
+
+        try {
+            $commandService->execute(
+                operationId: $opOverride['operation_id'],
+                businessCommand: fn (ConnectionInterface $conn, VerifiedCommandActor $actor, string $corr): ProducedSourceEvent => $travelService->recordApprovedOnCustodyConnection($conn, $actor, $this->travelPayload(), $corr),
+                itemMetadataByOrdinal: [1 => ['classification' => 'public']],
+            );
+            $this->fail('Classification override unexpectedly succeeded.');
+        } catch (CustodyViolationException $e) {
+            $this->assertStringContainsString('classification', strtolower($e->getMessage()));
+        }
+        $this->assertSame($beforeOverride, $this->tableCounts());
+
+        $committed = $commandService->execute(
+            operationId: $opOverride['operation_id'],
+            businessCommand: fn (ConnectionInterface $conn, VerifiedCommandActor $actor, string $corr): ProducedSourceEvent => $travelService->recordApprovedOnCustodyConnection($conn, $actor, $this->travelPayload(), $corr),
+            itemMetadataByOrdinal: [1 => ['metadata' => ['source' => 'spoofed', 'relationships' => ['forged'], 'custom' => 'kept']]],
+        );
+        $storedMeta = json_decode((string) $this->scalar('SELECT metadata::text FROM public.documents WHERE id=?', [$committed->documents[0]['document_id']]), true, 512, JSON_THROW_ON_ERROR);
+        $this->assertSame('legacy_custody_registry_v1', $storedMeta['source']);
+        $this->assertSame(['supporting_document', 'action_evidence'], $storedMeta['relationships']);
+        $this->assertSame('kept', $storedMeta['custom']);
+
+        // NOX-G2B-003: Active HTTP session Auth::id() mismatch, implicit stale auth_session_version, and explicit expectedRole mismatch must deny.
+        [$opSession] = $this->reserveAndStage($this->mayorActor, 'travel_record', 'record', 1);
+        $otherActor = $this->makeActor($this->otherOffice, 'department_head');
+        $beforeSession = $this->tableCounts();
+
+        $this->actingAs($otherActor);
+        try {
+            $commandService->execute(
+                operationId: $opSession['operation_id'],
+                businessCommand: fn (ConnectionInterface $conn, VerifiedCommandActor $actor, string $corr): ProducedSourceEvent => $travelService->recordApprovedOnCustodyConnection($conn, $actor, $this->travelPayload(), $corr),
+            );
+            $this->fail('Auth::id() mismatch unexpectedly succeeded.');
+        } catch (AuthorizationException $e) {
+            $this->assertStringContainsString('authenticated session', strtolower($e->getMessage()));
+        }
+
+        $this->actingAs($this->mayorActor);
+        app('session.store')->put('auth_session_version', 1);
+        $this->mayorActor->forceFill(['session_version' => 2])->save();
+        try {
+            $commandService->execute(
+                operationId: $opSession['operation_id'],
+                businessCommand: fn (ConnectionInterface $conn, VerifiedCommandActor $actor, string $corr): ProducedSourceEvent => $travelService->recordApprovedOnCustodyConnection($conn, $actor, $this->travelPayload(), $corr),
+            );
+            $this->fail('Implicit stale auth_session_version unexpectedly succeeded.');
+        } catch (AuthorizationException $e) {
+            $this->assertStringContainsString('session version', strtolower($e->getMessage()));
+        }
+        $this->mayorActor->forceFill(['session_version' => 1])->save();
+        app('session.store')->put('auth_session_version', 1);
+
+        try {
+            $commandService->execute(
+                operationId: $opSession['operation_id'],
+                businessCommand: fn (ConnectionInterface $conn, VerifiedCommandActor $actor, string $corr): ProducedSourceEvent => $travelService->recordApprovedOnCustodyConnection($conn, $actor, $this->travelPayload(), $corr),
+                expectedRole: 'department_head',
+            );
+            $this->fail('Explicit expectedRole mismatch unexpectedly succeeded.');
+        } catch (AuthorizationException $e) {
+            $this->assertStringContainsString('role', strtolower($e->getMessage()));
+        } finally {
+            app('session.store')->forget('auth_session_version');
+        }
+        $this->assertSame($beforeSession, $this->tableCounts());
+    }
+
     private function assertSqlDenied(PDO $pdo, string $expectedState, callable $fn): void
     {
         try {

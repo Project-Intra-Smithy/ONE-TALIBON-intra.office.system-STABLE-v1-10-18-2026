@@ -34,7 +34,7 @@ ALTER FUNCTION legacy_custody.public_guard() OWNER TO kirion_g1b_owner;
 REVOKE ALL ON FUNCTION legacy_custody.public_guard() FROM PUBLIC,kirion_g1b_app,kirion_g1b_custody,kirion_g1b_repair,kirion_g1b_migrator,n03_stage,n03_command,n03_reconcile;
 
 -- Fresh actor / office / employee read privileges (SELECT ONLY; zero PII/secret columns).
-GRANT SELECT(id,name,role,is_active,account_status,session_version,suspended_at) ON public.users TO n03_command;
+GRANT SELECT(id,role,is_active,account_status,session_version,suspended_at) ON public.users TO n03_command;
 GRANT SELECT(id,user_id,department_id,full_name,employment_status,separation_date) ON public.employees TO n03_command;
 GRANT SELECT(id,code,is_active,is_routable) ON public.departments TO n03_command;
 

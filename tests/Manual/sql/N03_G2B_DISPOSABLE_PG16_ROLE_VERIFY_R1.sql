@@ -81,7 +81,7 @@ BEGIN
     IF has_column_privilege(r,a.relation_oid,a.column_name,'SELECT') IS DISTINCT FROM
       ((r='n03_command' AND (
         (a.table_name='documents' AND a.column_name IN ('id','public_id','document_type','owner_department_id','uploaded_by_user_id','size_bytes','checksum_sha256','mime_type','storage_disk','storage_path','security_domain','custody_mode','custody_operation_id','custody_ordinal'))
-        OR (a.table_name='users' AND a.column_name IN ('id','name','role','is_active','account_status','session_version','suspended_at'))
+        OR (a.table_name='users' AND a.column_name IN ('id','role','is_active','account_status','session_version','suspended_at'))
         OR (a.table_name='employees' AND a.column_name IN ('id','user_id','department_id','full_name','employment_status','separation_date'))
         OR (a.table_name='departments' AND a.column_name IN ('id','code','is_active','is_routable'))
         OR (a.table_name='travel_orders' AND a.column_name IN ('id','public_id','reference_number','issuance_date','purpose','destination','department_id','travel_start_date','travel_end_date','status','recorded_by_user_id','status_updated_by_user_id','created_at','updated_at'))
@@ -168,6 +168,18 @@ BEGIN
  OR has_table_privilege('n03_command','public.departments','INSERT,UPDATE,DELETE,TRUNCATE')
  OR has_column_privilege('n03_command','public.correspondence_events','integration_client_actor_id','INSERT')
  THEN RAISE EXCEPTION 'n03_command boundary violation'; END IF;
+
+ -- Preserve G2A Plan function ACL, default function ACL, deferred trigger, and generated column invariants.
+ IF EXISTS(SELECT 1 FROM pg_proc p WHERE p.pronamespace='public'::regnamespace AND p.proname LIKE 'kirion_plan_%' AND
+   (p.proowner<>'kirion_g1b_owner'::regrole OR p.prosecdef OR has_function_privilege('n03_command',p.oid,'EXECUTE')))
+ THEN RAISE EXCEPTION 'Plan ACL drift'; END IF;
+ IF EXISTS(SELECT 1 FROM pg_default_acl d CROSS JOIN LATERAL aclexplode(d.defaclacl) x
+  WHERE d.defaclrole IN (current_user::regrole,'kirion_g1b_owner'::regrole) AND d.defaclobjtype='f' AND x.grantee=0 AND x.privilege_type='EXECUTE')
+ OR (SELECT count(*) FROM pg_trigger WHERE tgname LIKE 'n03_%complete' AND tgdeferrable AND tginitdeferred)<>10
+ OR EXISTS(SELECT 1 FROM pg_trigger WHERE (tgname LIKE 'n03_%' OR tgname='a_n03_public_guard') AND tgenabled<>'O')
+ THEN RAISE EXCEPTION 'default/trigger drift'; END IF;
+ IF (SELECT attgenerated FROM pg_attribute WHERE attrelid='public.correspondence_events'::regclass AND attname='n03_municipal_actor')<>'s'
+ THEN RAISE EXCEPTION 'expected stored generated municipal flag'; END IF;
 END $verify$;
 ROLLBACK;
 SELECT 'N03_G2B_DISPOSABLE_CATALOG_VERIFIED' AS result;

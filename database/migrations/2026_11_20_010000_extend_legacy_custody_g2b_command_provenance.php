@@ -53,14 +53,17 @@ BEGIN
   IF TG_OP<>'DELETE' THEN new_marked:=NEW.custody_operation_id IS NOT NULL; END IF;
   IF old_marked OR new_marked OR current_user='n03_command' THEN
    IF TG_OP='INSERT' AND current_user='n03_command' AND NOT new_marked THEN
-    IF NEW.entity_type='document' OR NEW.action='document.uploaded'
+    IF NEW.entity_type IS NULL
+    OR NEW.action IS NULL
+    OR NEW.entity_type='document'
+    OR NEW.action='document.uploaded'
     OR NEW.outcome IS DISTINCT FROM 'allowed'
     OR NEW.integration_client_id IS NOT NULL
     OR NEW.entity_id IS NULL
     OR NEW.actor_user_id IS NULL
     OR NEW.actor_department_id IS NULL
     OR NEW.correlation_id IS NULL
-    OR NOT (
+    OR (
      (NEW.entity_type, NEW.action) IN (
       ('travel_order','travel_order.recorded'),
       ('travel_order','travel_order.status_changed'),
@@ -85,7 +88,7 @@ BEGIN
        'transaction.disapprove'
       )
      )
-    ) THEN
+    ) IS NOT TRUE THEN
      RAISE EXCEPTION 'marked audit immutable' USING ERRCODE='23514';
     END IF;
    ELSE
