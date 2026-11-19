@@ -119,9 +119,12 @@ final class LegacyDocumentBytes
                 $disk = $row->storage_disk;
                 $path = $row->storage_path;
                 if (! is_string($path) || ! is_string($disk) || ! isset($roots[$disk])
-                    || $path === '' || str_starts_with($path, '/') || preg_match('/[\x00-\x1f\x7f]/', $path)) {
+                    || $path === '' || str_starts_with($path, '/') || str_starts_with($path, '\\')
+                    || preg_match('/[\x00-\x1f\x7f]/', $path)) {
                     return false;
                 }
+                // PathPrefixer strips leading separators before raw wrapper access;
+                // those ambiguous locators are outside the supported mapping.
                 $slashMapped = str_replace('\\', '/', $path);
                 if (in_array($basename, explode('/', strtolower($slashMapped)), true)) {
                     return false;
@@ -272,8 +275,7 @@ final class LegacyDocumentBytes
             }
             if (! is_string($name) || ! is_array($definition)
                 || ($definition['driver'] ?? null) !== 'local'
-                || ! empty($definition['prefix']) || ! empty($definition['read-only'])
-                || ! empty($definition['directory_separator'])) {
+                || ! $this->supportedMappingOptions($definition)) {
                 return null;
             }
             $root = $this->canonicalRoot($definition['root'] ?? null);
@@ -290,8 +292,7 @@ final class LegacyDocumentBytes
                 $effective = $disk->getConfig();
                 if (get_class($adapter) !== FlysystemLocalAdapter::class
                     || get_class($driver) !== Flysystem::class
-                    || ! is_array($effective) || ! empty($effective['prefix'])
-                    || ! empty($effective['read-only']) || ! empty($effective['directory_separator'])
+                    || ! is_array($effective) || ! $this->supportedMappingOptions($effective)
                     || $this->canonicalRoot($effective['root'] ?? null) !== $root
                     || $this->canonicalRoot($disk->path('')) !== $root
                     || $this->canonicalRoot((new ReflectionProperty(FlysystemLocalAdapter::class, 'rootLocation'))->getValue($adapter)) !== $root
@@ -303,6 +304,15 @@ final class LegacyDocumentBytes
                 if (get_class($prefixer) !== PathPrefixer::class
                     || $this->canonicalRoot($prefixer->prefixPath('')) !== $root
                     || get_class($normalizer) !== WhitespacePathNormalizer::class) {
+                    return null;
+                }
+                // An empty spelling alone hides a missing trailing separator.
+                // Exercise a canonical nonempty path without touching storage.
+                $sentinel = 'mapping-probe/object.pdf';
+                $expected = $root.'/'.$sentinel;
+                if ($normalizer->normalizePath($sentinel) !== $sentinel
+                    || $disk->path($sentinel) !== $expected
+                    || $prefixer->prefixPath($sentinel) !== $expected) {
                     return null;
                 }
                 if ($name === 'documents' && (($effective['visibility'] ?? 'private') !== 'private'
@@ -355,6 +365,14 @@ final class LegacyDocumentBytes
         }
 
         return $roots;
+    }
+
+    /** Only the ordinary unprefixed, slash-separated local mapping is supported. */
+    private function supportedMappingOptions(array $definition): bool
+    {
+        return ($definition['prefix'] ?? null) === null
+            && in_array($definition['directory_separator'] ?? null, [null, '/'], true)
+            && in_array($definition['read-only'] ?? null, [null, false], true);
     }
 
     /**
