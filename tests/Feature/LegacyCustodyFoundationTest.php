@@ -238,6 +238,8 @@ final class LegacyCustodyFoundationTest extends TestCase
             ], 'id');
             $event = $this->insert($this->root, 'public.travel_order_events', [
                 'travel_order_id' => $parent, 'actor_user_id' => $this->actor->id, 'event' => $eventAction,
+                'from_status' => $eventAction === 'status_changed' ? 'approved' : null,
+                'to_status' => $eventAction === 'status_changed' ? 'completed' : 'approved',
                 'occurred_at' => $now, 'created_at' => $now,
             ], 'id');
         }
