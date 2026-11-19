@@ -370,6 +370,106 @@ final class PermanentIamLifecycleTest extends TestCase
         }
     }
 
+    public function test_v01_stale_administrator_office_denies_recovery_without_mutation(): void
+    {
+        [$admin, $employee] = $this->actors();
+        $adminOffice = Department::query()->create([
+            'code' => 'IAM-V01-ADMIN', 'name' => 'V01 Administrator Office',
+            'is_active' => true,
+        ]);
+        $admin->employee()->update(['department_id' => $adminOffice->id]);
+        $admin = $admin->fresh();
+        $subjectOffice = $employee->department()->firstOrFail();
+        $this->assertNotSame($adminOffice->id, $subjectOffice->id);
+        $this->assertTrue((bool) $subjectOffice->is_active);
+
+        $service = app(StaffActivationService::class);
+        $issued = $this->issue($admin, $employee, 'v01.staff');
+        $user = $service->redeem($issued['code'], self::PASSWORD);
+        $user->forceFill([
+            'remember_token' => 'v01-synthetic-remember',
+            'mfa_secret' => 'JBSWY3DPEHPK3PXP', 'mfa_confirmed_at' => now(),
+            'mfa_version' => 4, 'mfa_recovery_codes' => ['synthetic-hash'],
+            'mfa_recovery_codes_generated_at' => now(),
+        ])->save();
+        $this->actingAs($admin)->withSession(['auth_session_version' => (int) $admin->session_version]);
+        $admin->load('employee.department');
+        $this->assertTrue((bool) $admin->employee->department->is_active);
+
+        // Change only the administrator's persisted office; leave the actor's
+        // loaded employee/department relation stale and the subject eligible.
+        $adminOffice->update(['is_active' => false]);
+        $this->assertTrue((bool) $admin->employee->department->is_active);
+        $this->assertFalse((bool) $adminOffice->fresh()->is_active);
+        $this->assertTrue($admin->fresh()->is_active);
+        $this->assertSame('active', $admin->fresh()->account_status);
+        $this->assertSame('system_admin', $admin->fresh()->role);
+        $this->assertSame('active', $admin->employee->employment_status);
+        $this->assertNull($admin->employee->separation_date);
+        $this->assertTrue((bool) $subjectOffice->fresh()->is_active);
+        $this->assertSame('active', $employee->fresh()->employment_status);
+        $this->assertNull($employee->fresh()->separation_date);
+
+        $snapshot = fn () => [
+            $this->lifecycleSnapshot($user),
+            $employee->fresh()->getAttributes(),
+            $admin->employee()->firstOrFail()->getAttributes(),
+            $subjectOffice->fresh()->getAttributes(),
+            Employee::query()->where('user_id', $user->id)->count(),
+        ];
+        $before = $snapshot();
+        try {
+            $service->recover($admin, $user);
+            $this->fail('Recovery accepted a stale administrator from an inactive office.');
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            $this->assertSame('Administrator access denied.', $exception->getMessage());
+        }
+        $this->assertSame($before, $snapshot(), 'Direct denial must preserve all persisted lifecycle state.');
+
+        $route = route('admin.accounts.recovery', $user);
+        $this->post($route)->assertRedirect(route('login'))
+            ->assertSessionHasErrors('login')->assertSessionMissing('activationCredential');
+        $this->assertGuest('web');
+        $this->assertSame($before, $snapshot(), 'HTTP denial must preserve all persisted lifecycle state.');
+        $this->assertDatabaseHas('audit_logs', [
+            'actor_user_id' => $admin->id,
+            'action' => 'auth.account.deactivated_forced_logout', 'outcome' => 'denied',
+        ]);
+
+        // Restore the same actor's office, reauthenticate and repeat the same
+        // recovery operation as a positive control, without changing the target.
+        $adminOffice->update(['is_active' => true]);
+        $this->actingAs($admin->fresh())->withSession(['auth_session_version' => (int) $admin->session_version]);
+        $this->post($route)->assertRedirect(route('admin.index'))
+            ->assertSessionHas('activationCredential');
+        $recovered = $user->fresh();
+        $this->assertSame('pending', $recovered->account_status);
+        $this->assertFalse($recovered->is_active);
+        $this->assertFalse(Hash::check(self::PASSWORD, $recovered->password));
+        $this->assertSame((int) $user->session_version + 1, (int) $recovered->session_version);
+        $this->assertSame((int) $user->mfa_version + 1, (int) $recovered->mfa_version);
+        $this->assertNull($recovered->remember_token);
+        $this->assertNull($recovered->mfa_secret);
+        $this->assertNull($recovered->mfa_confirmed_at);
+        $this->assertNull($recovered->mfa_recovery_codes);
+        $this->assertNull($recovered->mfa_recovery_codes_generated_at);
+        $this->assertSame($before[1], $employee->fresh()->getAttributes());
+        $this->assertSame(1, Employee::query()->where('user_id', $user->id)->count());
+        $this->assertNotNull($issued['invitation']->fresh()->consumed_at);
+        $replacement = StaffActivationInvitation::query()->where('user_id', $user->id)
+            ->whereNull('consumed_at')->whereNull('revoked_at')->sole();
+        $this->assertSame($subjectOffice->id, $replacement->department_id);
+        $this->assertSame($employee->id, $replacement->employee_id);
+        $this->assertSame(1, \App\Models\AuditLog::query()->where([
+            'actor_user_id' => $admin->id, 'action' => 'identity.account.recovery_started',
+            'entity_id' => $user->id, 'outcome' => 'allowed',
+        ])->count());
+        $this->assertDatabaseHas('audit_logs', [
+            'actor_user_id' => $admin->id, 'action' => 'identity.invitation.issued',
+            'entity_id' => $replacement->id, 'outcome' => 'allowed',
+        ]);
+    }
+
     public function test_recovery_rolls_back_credentials_invitation_and_audit_on_issuance_audit_failure(): void
     {
         [$admin, $employee] = $this->actors();
