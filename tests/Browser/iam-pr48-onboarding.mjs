@@ -124,6 +124,25 @@ try {
         await admin.setViewportSize({ width: 1440, height: 900 });
     });
 
+    await checkpoint('owner-only-database-registers-employee-through-real-ui', async () => {
+        const eligible = admin.getByLabel('Eligible employee');
+        assert.equal(await eligible.locator('option').count(), 1, 'Target employee must not be pre-seeded');
+        const form = admin.getByRole('form', { name: 'Employee registration' });
+        await form.getByLabel('Full name', { exact: true }).fill('Synthetic QA Employee');
+        await form.getByLabel('Department or office').selectOption({ index: 1 });
+        await form.getByLabel('Position title').fill('Synthetic Team Lead');
+        await form.getByLabel('Employee number (optional)').fill('QA-EMP-001');
+        await form.getByLabel('Employment type (optional)').selectOption('permanent');
+        await form.getByRole('button', { name: 'Register employee', exact: true }).click();
+        await eligible.getByRole('option', { name: /Synthetic QA Employee/ }).waitFor({ state: 'attached' });
+        assert.equal(await eligible.locator('option').count(), 2);
+        await noOverflow(admin, 'employee registration desktop');
+        await admin.goto(BASE + '/employees?q=QA-EMP-001');
+        await admin.getByText('Synthetic QA Employee', { exact: true }).first().waitFor();
+        await admin.goto(BASE + '/admin');
+        await admin.getByLabel('Eligible employee').waitFor();
+    });
+
     let firstCode;
     await checkpoint('admin-add-user-with-office-role-and-private-code', async () => {
         const section = admin.locator('section').filter({

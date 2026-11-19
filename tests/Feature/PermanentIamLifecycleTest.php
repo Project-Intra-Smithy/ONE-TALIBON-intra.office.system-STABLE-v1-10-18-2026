@@ -176,6 +176,84 @@ final class PermanentIamLifecycleTest extends TestCase
         $this->post('/login', ['email' => $legacy->email, 'password' => self::PASSWORD])->assertRedirect(route('dashboard'));
     }
 
+    public function test_admin_registers_employee_without_account_then_provisions_using_existing_iam(): void
+    {
+        $admin = $this->userWithEmployee('system_admin', 'register.admin');
+        $office = Department::query()->where('code', 'ENG')->firstOrFail();
+        $data = [
+            'full_name' => 'Registered QA Employee',
+            'department_id' => $office->id,
+            'position_title' => 'Engineering Staff',
+            'employee_number' => 'QA-REG-001',
+            'employment_type' => 'permanent',
+            'user_id' => $admin->id,
+            'role' => 'system_admin',
+        ];
+
+        $this->actingAs($admin)->post('/admin/employees', $data)->assertRedirect(route('admin.index'));
+        $employee = Employee::query()->where('employee_number', 'QA-REG-001')->firstOrFail();
+        $this->assertNull($employee->user_id);
+        $this->assertSame('active', $employee->employment_status);
+        $this->assertSame('permanent', $employee->employment_type);
+        $this->assertSame($office->id, $employee->department_id);
+        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseCount('staff_activation_invitations', 0);
+        $this->assertDatabaseHas('audit_logs', [
+            'actor_user_id' => $admin->id,
+            'action' => 'identity.employee.registered',
+            'entity_id' => $employee->id,
+        ]);
+
+        $this->get('/admin')->assertOk()->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+            ->where('eligibleEmployees.0.id', $employee->id));
+        $this->get('/employees?q=QA-REG-001')->assertOk()->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+            ->where('employees.data.0.id', $employee->id));
+
+        $this->post('/admin/accounts', [
+            'employee_id' => $employee->id, 'username' => 'registered.staff', 'role' => 'department_head',
+        ])->assertRedirect(route('admin.index'));
+        $this->assertDatabaseCount('users', 2);
+        $this->assertDatabaseCount('staff_activation_invitations', 1);
+        $this->assertSame('pending', $employee->fresh()->user->account_status);
+    }
+
+    public function test_employee_registration_rejects_invalid_office_and_duplicate_number_and_accepts_no_number(): void
+    {
+        $admin = $this->userWithEmployee('system_admin', 'validate.admin');
+        $office = Department::query()->where('code', 'ENG')->firstOrFail();
+        $data = ['full_name' => 'New Employee', 'department_id' => $office->id, 'position_title' => 'Staff'];
+        $this->actingAs($admin);
+        $this->from('/admin')->post('/admin/employees', array_replace($data, ['department_id' => 99999999]))
+            ->assertSessionHasErrors('department_id');
+        $this->from('/admin')->post('/admin/employees', array_replace($data, ['employee_number' => $admin->employee->employee_number]))
+            ->assertSessionHasErrors('employee_number');
+        $office->update(['is_active' => false]);
+        $this->from('/admin')->post('/admin/employees', $data)->assertSessionHasErrors('department_id');
+        $this->assertDatabaseCount('employees', 1);
+        $office->update(['is_active' => true]);
+        $this->post('/admin/employees', $data)->assertRedirect(route('admin.index'));
+        $employee = Employee::query()->where('full_name', 'New Employee')->firstOrFail();
+        $this->assertNull($employee->employee_number);
+        $this->assertNull($employee->user_id);
+        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseCount('staff_activation_invitations', 0);
+    }
+
+    public function test_employee_registration_requires_system_admin_and_mfa(): void
+    {
+        $ordinary = $this->userWithEmployee('employee', 'ordinary.register');
+        $office = Department::query()->where('code', 'ENG')->firstOrFail();
+        $data = ['full_name' => 'Denied Person', 'department_id' => $office->id, 'position_title' => 'Staff'];
+        $this->post('/admin/employees', $data)->assertRedirect(route('login'));
+        $this->actingAs($ordinary)->post('/admin/employees', $data)->assertForbidden();
+        $this->post('/logout');
+        $admin = $this->userWithEmployee('system_admin', 'mfa.register');
+        $this->post('/login', ['login' => $admin->username, 'password' => self::PASSWORD])->assertRedirect(route('mfa.enroll'));
+        $this->post('/admin/employees', $data)->assertRedirect(route('mfa.enroll'));
+        $this->assertDatabaseMissing('employees', ['full_name' => 'Denied Person']);
+        $this->assertDatabaseCount('staff_activation_invitations', 0);
+    }
+
     /** @return array{User, Employee} */
     private function actors(): array
     {

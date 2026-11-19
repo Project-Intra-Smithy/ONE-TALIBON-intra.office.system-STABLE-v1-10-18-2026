@@ -65,14 +65,7 @@ DB::transaction(function () use ($password): void {
         'user_id' => $owner->id,
         'created_at' => now(),
     ]);
-    Employee::query()->create([
-        'employee_number' => 'QA-EMP-001',
-        'full_name' => 'Synthetic QA Employee',
-        'user_id' => null,
-        'department_id' => $office->id,
-        'position_title' => 'Synthetic Team Lead',
-        'employment_status' => 'active',
-    ]);
+    // No target employee: the browser must register one through the real UI.
 });
 
 fwrite(STDOUT, "Synthetic IAM browser identities prepared in isolated PostgreSQL test database.\n");

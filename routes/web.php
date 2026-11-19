@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminEmployeeRegistrationController;
 use App\Http\Controllers\AuditController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\MfaChallengeController;
@@ -87,6 +88,7 @@ Route::middleware(['auth', 'active', 'mfa.subject', 'mfa.assured'])->group(funct
 
 Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
     Route::get('/admin', AdminDashboardController::class)->name('admin.index');
+    Route::post('/admin/employees', [AdminEmployeeRegistrationController::class, 'store'])->name('admin.employees.store');
     Route::post('/admin/accounts', [StaffActivationController::class, 'store'])->name('admin.accounts.store');
     Route::post('/admin/invitations', [StaffActivationController::class, 'store'])->name('admin.invitations.store');
     Route::post('/admin/invitations/{invitation}/revoke', [StaffActivationController::class, 'revoke'])->whereNumber('invitation')->name('admin.invitations.revoke');
