@@ -78,9 +78,9 @@ final class LegacyCustodyStageService
             throw new CustodyViolationException('Custody stage reservation refuses nested outer transactions.');
         }
 
-        $operationId = $operationId !== null ? strtolower($operationId) : strtolower((string) Str::uuid());
-        $namespaceId = strtolower($namespaceId);
-        $correlationId = strtolower($correlationId);
+        $operationId = $operationId !== null ? strtolower(trim($operationId)) : strtolower((string) Str::uuid());
+        $namespaceId = strtolower(trim($namespaceId));
+        $correlationId = strtolower(trim($correlationId));
 
         if (! Str::isUuid($operationId) || ! Str::isUuid($namespaceId) || ! Str::isUuid($correlationId)) {
             throw new CustodyViolationException('Custody stage reservation requires valid UUID identifiers.');
@@ -162,7 +162,12 @@ final class LegacyCustodyStageService
         }
 
         $computedManifest = self::computeManifestDigest($normalizedItems);
-        $finalManifest = $manifestDigest ?? $computedManifest;
+        if ($manifestDigest !== null && ! hash_equals($computedManifest, strtolower(trim($manifestDigest)))) {
+            throw new CustodyViolationException(
+                'Custody manifest_digest does not match canonical digest computed from reserved items.'
+            );
+        }
+        $finalManifest = $computedManifest;
         if (preg_match(self::SHA256_PATTERN, $finalManifest) !== 1) {
             throw new CustodyViolationException('Custody manifest_digest must be 64 lowercase hex characters.');
         }
@@ -253,6 +258,7 @@ final class LegacyCustodyStageService
             throw new CustodyViolationException('Custody staging refuses nested outer transactions.');
         }
 
+        $operationId = strtolower(trim($operationId));
         if (! Str::isUuid($operationId)) {
             throw new CustodyViolationException('Custody staging requires a valid UUID operation_id.');
         }
@@ -265,6 +271,23 @@ final class LegacyCustodyStageService
 
         if ($operation === null) {
             throw new CustodyViolationException("Reserved custody operation [{$operationId}] was not found.");
+        }
+
+        $gate = $connection->table('legacy_custody.operation_gates')
+            ->where('operation_id', $operationId)
+            ->first();
+
+        $terminalCount = $connection->table('legacy_custody.terminal_receipts')
+            ->where('operation_id', $operationId)
+            ->count();
+
+        if ($gate === null
+            || (string) $gate->state !== 'OPEN'
+            || (int) $gate->fence_no !== 1
+            || $terminalCount > 0) {
+            throw new CustodyFenceClosedException(
+                "Database fence is already CLOSED or terminal before broker staging for [{$operationId}]."
+            );
         }
 
         $items = $connection->table('legacy_custody.operation_items')

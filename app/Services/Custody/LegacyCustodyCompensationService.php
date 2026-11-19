@@ -44,6 +44,7 @@ final class LegacyCustodyCompensationService
         BrokerCloseAck $closeAck,
         ?callable $cutPointHook = null,
     ): array {
+        $operationId = strtolower(trim($operationId));
         if (! Str::isUuid($operationId)) {
             throw new CustodyViolationException('Custody compensation requires a valid UUID operation_id.');
         }
@@ -115,6 +116,29 @@ final class LegacyCustodyCompensationService
             ->orderBy('ordinal')
             ->get()
             ->all();
+
+        $recordedGenerationIds = [];
+        foreach ($generations as $genRow) {
+            $recordedGenerationIds[strtolower(trim((string) $genRow->generation_id))] = true;
+        }
+
+        $unrecordedSealedGenerations = [];
+        foreach ($closeAck->sealedGenerations as $sealedGenerationId) {
+            $normalizedSealedId = strtolower(trim((string) $sealedGenerationId));
+            if ($normalizedSealedId !== '' && ! isset($recordedGenerationIds[$normalizedSealedId])) {
+                $unrecordedSealedGenerations[] = $normalizedSealedId;
+            }
+        }
+
+        if ($unrecordedSealedGenerations !== []) {
+            throw new CustodyOperationUncertainException(
+                sprintf(
+                    'Custody compensation halted for operation [%s]: pre-TX2 unrecorded broker-sealed generations exist (unrecorded_sealed_generations: [%s]).',
+                    $operationId,
+                    implode(', ', $unrecordedSealedGenerations),
+                )
+            );
+        }
 
         $results = [];
 
@@ -193,6 +217,14 @@ final class LegacyCustodyCompensationService
                     closeAckId: $closeAck->closeAckId,
                     tombstoneId: $tombstoneId,
                 );
+
+                if ($disposeReceipt->tombstoneId !== $tombstoneId
+                    || ! hash_equals($providerObjectIdentity, $disposeReceipt->providerObjectIdentity)
+                    || ! in_array($disposeReceipt->disposition, ['DISPOSED', 'ABSENT_VERIFIED'], true)) {
+                    throw new CustodyViolationException(
+                        "BrokerDisposeReceipt identity or tombstone mismatch for generation [{$generationId}]."
+                    );
+                }
             } catch (Throwable $brokerException) {
                 $quarantineRef = 'quarantined:'.substr(
                     hash('sha256', $tombstoneId.':'.$brokerException->getMessage()),

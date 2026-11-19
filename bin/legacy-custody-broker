@@ -43,23 +43,40 @@ if (! is_string($brokerRoot) || trim($brokerRoot) === '') {
 }
 
 $disallowedJson = getenv('LEGACY_CUSTODY_DISALLOWED_ROOTS_JSON');
-$disallowedRoots = [];
-if (is_string($disallowedJson) && trim($disallowedJson) !== '') {
-    try {
-        $decodedDisallowed = json_decode($disallowedJson, true, 8, JSON_THROW_ON_ERROR);
-        if (! is_array($decodedDisallowed)) {
-            throw new CustodyViolationException('LEGACY_CUSTODY_DISALLOWED_ROOTS_JSON must decode to a list.');
-        }
-        $disallowedRoots = array_values(array_map(static fn (mixed $v): string => (string) $v, $decodedDisallowed));
-    } catch (Throwable $e) {
-        $emit([
-            'ok' => false,
-            'error_code' => 'BROKER_CONFIG_INVALID',
-            'error_class' => CustodyViolationException::class,
-            'message' => 'Invalid LEGACY_CUSTODY_DISALLOWED_ROOTS_JSON: '.$e->getMessage(),
-        ], 1, $hmacKey);
-    }
+if (! is_string($disallowedJson) || trim($disallowedJson) === '') {
+    $emit([
+        'ok' => false,
+        'error_code' => 'BROKER_CONFIG_INVALID',
+        'error_class' => CustodyViolationException::class,
+        'message' => 'LEGACY_CUSTODY_DISALLOWED_ROOTS_JSON is missing or empty.',
+    ], 1, $hmacKey);
 }
+
+$disallowedRoots = [];
+try {
+    $decodedDisallowed = json_decode($disallowedJson, true, 8, JSON_THROW_ON_ERROR);
+    if (! is_array($decodedDisallowed) || ! array_is_list($decodedDisallowed) || $decodedDisallowed === []) {
+        throw new CustodyViolationException('LEGACY_CUSTODY_DISALLOWED_ROOTS_JSON must decode to a non-empty list.');
+    }
+    foreach ($decodedDisallowed as $entry) {
+        if (! is_string($entry) || trim($entry) === '') {
+            throw new CustodyViolationException('LEGACY_CUSTODY_DISALLOWED_ROOTS_JSON entries must be non-empty strings.');
+        }
+        $disallowedRoots[] = $entry;
+    }
+} catch (Throwable $e) {
+    $emit([
+        'ok' => false,
+        'error_code' => 'BROKER_CONFIG_INVALID',
+        'error_class' => CustodyViolationException::class,
+        'message' => 'Invalid LEGACY_CUSTODY_DISALLOWED_ROOTS_JSON: '.$e->getMessage(),
+    ], 1, $hmacKey);
+}
+
+$disallowedRoots = array_values(array_unique(array_merge(
+    $disallowedRoots,
+    [dirname(__DIR__).'/storage', dirname(__DIR__).'/public'],
+)));
 
 $maxUploadBytesEnv = getenv('LEGACY_CUSTODY_MAX_UPLOAD_BYTES');
 $maxUploadBytes = is_string($maxUploadBytesEnv) && ctype_digit($maxUploadBytesEnv)
@@ -111,6 +128,15 @@ try {
         throw new CustodyViolationException('Broker request envelope missing required authenticated fields.');
     }
 
+    if (preg_match('/\A[0-9a-f]{32,64}\z/', $nonce) !== 1) {
+        throw new CustodyViolationException('Broker IPC request nonce format is invalid.');
+    }
+
+    $parsedTs = DateTimeImmutable::createFromFormat(DateTimeInterface::RFC3339, $timestamp);
+    if ($parsedTs === false || abs($parsedTs->getTimestamp() - time()) > 60) {
+        throw new CustodyViolationException('Broker IPC request timestamp is invalid or outside the +-60s replay window.');
+    }
+
     $canonicalRequest = json_encode([
         'method' => $method,
         'params' => $params,
@@ -121,6 +147,12 @@ try {
     $expectedHmac = hash_hmac('sha256', $canonicalRequest, $hmacKey);
     if (! hash_equals($expectedHmac, $providedHmac)) {
         throw new CustodyViolationException('Broker IPC request HMAC authentication failed.');
+    }
+
+    if (isset($params['fault_injection']) && $params['fault_injection'] !== null && $params['fault_injection'] !== '') {
+        if (getenv('APP_ENV') !== 'testing' && getenv('LEGACY_CUSTODY_ALLOW_FAULT_INJECTION') !== '1') {
+            throw new CustodyViolationException('Broker fault_injection is disabled outside testing environments.');
+        }
     }
 
     $engine = new LocalImmutableBrokerEngine(

@@ -122,6 +122,50 @@ final class LegacyCustodyK3BrokerIsolationTest extends TestCase
         $this->assertSame($this->namespaceId, $attested['namespace_id']);
         $this->assertNotNull($client->lastBrokerPid());
         $this->assertNotSame(getmypid(), $client->lastBrokerPid());
+
+        // NOX-K2K3-01: BrokerRootAttestation must fail closed if disallowedRoots is empty or resolves to zero valid paths.
+        try {
+            $attestation->attest($this->brokerRoot, $this->namespaceId, BrokerRootAttestation::BACKEND_KIND, []);
+            $this->fail('Expected empty disallowedRoots array to fail closed.');
+        } catch (CustodyViolationException $e) {
+            $this->assertStringContainsString('non-empty disallowed roots', $e->getMessage());
+        }
+
+        try {
+            $attestation->attest($this->brokerRoot, $this->namespaceId, BrokerRootAttestation::BACKEND_KIND, ['', '   ']);
+            $this->fail('Expected whitespace-only disallowedRoots array to fail closed.');
+        } catch (CustodyViolationException $e) {
+            $this->assertStringContainsString('zero valid normalized disallowed roots', $e->getMessage());
+        }
+
+        // NOX-K2K3-01: bin/legacy-custody-broker must fail closed when LEGACY_CUSTODY_DISALLOWED_ROOTS_JSON is missing or empty.
+        foreach ([null, '', '[]', '[""]'] as $badDisallowedJson) {
+            $proc = $this->spawnRawBrokerProcess('attestRoot', [
+                'namespace_id' => $this->namespaceId,
+            ], customEnv: ['LEGACY_CUSTODY_DISALLOWED_ROOTS_JSON' => $badDisallowedJson]);
+            $res = $this->collectRawBrokerProcess($proc);
+            $this->assertFalse($res['json']['ok'] ?? true);
+            $this->assertSame('BROKER_CONFIG_INVALID', $res['json']['error_code'] ?? '');
+        }
+
+        // NOX-K2K3-01: bin/legacy-custody-broker unconditionally merges dirname(__DIR__).'/storage' and '/public'
+        // even if caller passes an unrelated disallowed root in LEGACY_CUSTODY_DISALLOWED_ROOTS_JSON.
+        $unrelatedForbidden = $this->tempBase.DIRECTORY_SEPARATOR.'unrelated_forbidden';
+        mkdir($unrelatedForbidden, 0750, true);
+        foreach ([storage_path(), public_path()] as $alwaysForbiddenRoot) {
+            if (! is_dir($alwaysForbiddenRoot)) {
+                continue;
+            }
+            $proc = $this->spawnRawBrokerProcess('attestRoot', [
+                'namespace_id' => $this->namespaceId,
+            ], customEnv: [
+                'LEGACY_CUSTODY_BROKER_ROOT' => $alwaysForbiddenRoot,
+                'LEGACY_CUSTODY_DISALLOWED_ROOTS_JSON' => json_encode([$unrelatedForbidden], JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES),
+            ]);
+            $res = $this->collectRawBrokerProcess($proc);
+            $this->assertFalse($res['json']['ok'] ?? true);
+            $this->assertStringContainsString('overlaps forbidden', (string) ($res['json']['message'] ?? ''));
+        }
     }
 
     public function test_k3_n02_exclusive_create_collision_and_concurrent_os_process_race(): void
@@ -545,6 +589,36 @@ final class LegacyCustodyK3BrokerIsolationTest extends TestCase
         $this->assertSame($tombstoneId, $disposeReceipt->tombstoneId);
         $this->assertFileDoesNotExist($blobPath);
 
+        // NOX-K2K3-02: Idempotent crash-recovery retry of conditionalDispose with exact matching tuple
+        // returns ABSENT_VERIFIED with the persisted disposeReceiptId (and rejects mismatched tombstoneId).
+        $retryReceipt = $client->conditionalDispose(
+            namespaceId: $this->namespaceId,
+            operationId: $opId,
+            generationId: $genId,
+            locator: $locator,
+            providerObjectIdentity: $receipt->providerObjectIdentity,
+            closeAckId: $closeAck->closeAckId,
+            tombstoneId: $tombstoneId,
+        );
+        $this->assertSame('ABSENT_VERIFIED', $retryReceipt->disposition);
+        $this->assertSame($disposeReceipt->disposeReceiptId, $retryReceipt->disposeReceiptId);
+        $this->assertSame($tombstoneId, $retryReceipt->tombstoneId);
+
+        try {
+            $client->conditionalDispose(
+                namespaceId: $this->namespaceId,
+                operationId: $opId,
+                generationId: $genId,
+                locator: $locator,
+                providerObjectIdentity: $receipt->providerObjectIdentity,
+                closeAckId: $closeAck->closeAckId,
+                tombstoneId: strtolower((string) Str::uuid()),
+            );
+            $this->fail('Expected conditionalDispose retry with different tombstoneId to fail closed.');
+        } catch (CustodyViolationException $e) {
+            $this->assertStringContainsString('conflicting parameters', $e->getMessage());
+        }
+
         // Disposed generation cannot be read or reused ever again (permanent burn).
         try {
             $client->readGeneration(
@@ -620,9 +694,10 @@ final class LegacyCustodyK3BrokerIsolationTest extends TestCase
 
     /**
      * @param  array<string, mixed>  $params
+     * @param  array<string, ?string>  $customEnv
      * @return array{process: resource, pipes: array<int, resource>}
      */
-    private function spawnRawBrokerProcess(string $method, array $params, bool $forgedHmac = false): array
+    private function spawnRawBrokerProcess(string $method, array $params, bool $forgedHmac = false, array $customEnv = []): array
     {
         $nonce = bin2hex(random_bytes(16));
         $timestamp = gmdate('Y-m-d\TH:i:s\Z');
@@ -644,7 +719,16 @@ final class LegacyCustodyK3BrokerIsolationTest extends TestCase
                 BrokerRootAttestation::collectApplicationDisallowedRoots(),
                 JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES,
             ),
+            'LEGACY_CUSTODY_ALLOW_FAULT_INJECTION' => '1',
         ];
+
+        foreach ($customEnv as $k => $v) {
+            if ($v === null) {
+                unset($env[$k]);
+            } else {
+                $env[$k] = $v;
+            }
+        }
 
         if (DIRECTORY_SEPARATOR === '\\') {
             foreach (['SYSTEMROOT', 'COMSPEC', 'TEMP', 'TMP', 'PATHEXT', 'PATH'] as $key) {

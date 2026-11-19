@@ -417,9 +417,9 @@ final class LegacyCustodyK2ReconciliationTest extends TestCase
                 operationId: $op2,
                 businessCommand: fn (ConnectionInterface $conn, VerifiedCommandActor $actor, string $corr): ProducedSourceEvent => $travelService->recordApprovedOnCustodyConnection(
                     connection: $conn,
-                    verifiedActor: $actor,
+                    actor: $actor,
                     correlationId: $corr,
-                    payload: [
+                    data: [
                         'reference_number' => 'TO-K2-BLOCKED-'.Str::upper(Str::random(6)),
                         'issuance_date' => '2026-11-20',
                         'purpose' => 'Must Not Commit',
@@ -629,6 +629,109 @@ final class LegacyCustodyK2ReconciliationTest extends TestCase
         $this->assertCount(1, $outcomes);
         $this->assertSame('DISPOSED', $outcomes[0]['disposition']);
         $this->assertFileDoesNotExist($blobPath);
+
+        // NOX-K2K3-02: Simulate crash after tombstone commit + broker conditionalDispose succeeded, before compensation_outcomes insert.
+        [$srcRetry, $bytesRetry, $shaRetry] = $this->makeSourcePdf('k2_n05_retry.pdf', 'K2-N05-Crash-Retry');
+        $stagedRetry = $stageService->reserveAndStage(
+            namespaceId: $this->namespaceId,
+            epoch: 1,
+            actorUserId: (int) $this->mayorActor->id,
+            officeId: (int) $this->mayorOffice->id,
+            serviceIdentity: 'test:k2-n05-retry',
+            commandKind: 'travel_record',
+            commandAction: 'record',
+            correlationId: strtolower((string) Str::uuid()),
+            idempotencyHash: hash('sha256', 'k2-n05-retry-'.Str::uuid()),
+            items: [[
+                'size_bytes' => strlen($bytesRetry),
+                'sha256' => $shaRetry,
+                'mime_type' => 'application/pdf',
+                'source_path' => $srcRetry,
+            ]],
+        );
+        $opRetry = $stagedRetry['reservation']['operation_id'];
+        $receiptRetry = $stagedRetry['receipts'][0];
+        $reconciledRetry = $reconciler->reconcile($opRetry);
+        $closeAckRetry = $reconciledRetry['close_ack'];
+
+        $firstReceiptRef = null;
+        $committedTombstoneId = null;
+        try {
+            $compensationService->compensate($opRetry, $closeAckRetry, function (string $point, array $ctx) use ($opRetry, $receiptRetry, $closeAckRetry, &$firstReceiptRef, &$committedTombstoneId): void {
+                if ($point === 'after_tombstone_committed') {
+                    $committedTombstoneId = (string) $ctx['tombstone_id'];
+                    $disposed = $this->broker->conditionalDispose(
+                        namespaceId: $this->namespaceId,
+                        operationId: $opRetry,
+                        generationId: $receiptRetry->generationId,
+                        locator: $receiptRetry->locator,
+                        providerObjectIdentity: $receiptRetry->providerObjectIdentity,
+                        closeAckId: $closeAckRetry->closeAckId,
+                        tombstoneId: $committedTombstoneId,
+                    );
+                    $this->assertSame('DISPOSED', $disposed->disposition);
+                    $firstReceiptRef = $disposed->disposeReceiptId;
+                    throw new RuntimeException('SIMULATED_WORKER_CRASH_BEFORE_OUTCOME_INSERT');
+                }
+            });
+            $this->fail('Expected simulated worker crash exception.');
+        } catch (RuntimeException $e) {
+            $this->assertSame('SIMULATED_WORKER_CRASH_BEFORE_OUTCOME_INSERT', $e->getMessage());
+        }
+
+        $this->assertSame(0, $this->countWhere($this->reconcile, 'legacy_custody.compensation_outcomes', 'tombstone_id = ?', [$committedTombstoneId]));
+
+        $retriedOutcomes = $compensationService->compensate($opRetry, $closeAckRetry);
+        $this->assertCount(1, $retriedOutcomes);
+        $this->assertSame($committedTombstoneId, $retriedOutcomes[0]['tombstone_id']);
+        $this->assertSame('ABSENT_VERIFIED', $retriedOutcomes[0]['disposition']);
+        $this->assertSame($firstReceiptRef, $retriedOutcomes[0]['broker_receipt_ref']);
+
+        // NOX-K2K3-03: If an operation aborted after broker staging but before TX2 recorded legacy_custody.generations,
+        // compensate() MUST fail closed with CustodyOperationUncertainException detailing unrecorded_sealed_generations!
+        [$srcPreTx2, $bytesPreTx2, $shaPreTx2] = $this->makeSourcePdf('k2_n05_pre_tx2.pdf', 'K2-N05-Pre-TX2-Sealed');
+        $resPreTx2 = $stageService->reserve(
+            namespaceId: $this->namespaceId,
+            epoch: 1,
+            actorUserId: (int) $this->mayorActor->id,
+            officeId: (int) $this->mayorOffice->id,
+            serviceIdentity: 'test:k2-n05-pre-tx2',
+            commandKind: 'travel_record',
+            commandAction: 'record',
+            correlationId: strtolower((string) Str::uuid()),
+            idempotencyHash: hash('sha256', 'k2-n05-pre-tx2-'.Str::uuid()),
+            items: [[
+                'size_bytes' => strlen($bytesPreTx2),
+                'sha256' => $shaPreTx2,
+                'mime_type' => 'application/pdf',
+            ]],
+        );
+        $opPreTx2 = $resPreTx2['operation_id'];
+        $itemPreTx2 = $resPreTx2['items'][0];
+
+        $this->broker->stageWrite(
+            namespaceId: $this->namespaceId,
+            operationId: $opPreTx2,
+            ordinal: 1,
+            generationId: $itemPreTx2['generation_id'],
+            locator: $itemPreTx2['locator'],
+            sourceTempPath: $srcPreTx2,
+            expectedSize: strlen($bytesPreTx2),
+            expectedSha256: $shaPreTx2,
+            mimeType: 'application/pdf',
+        );
+
+        $abortedPreTx2 = $reconciler->reconcile($opPreTx2);
+        $this->assertSame('ABORTED', $abortedPreTx2['status']);
+        $this->assertInstanceOf(BrokerCloseAck::class, $abortedPreTx2['close_ack']);
+
+        try {
+            $compensationService->compensate($opPreTx2, $abortedPreTx2['close_ack']);
+            $this->fail('Expected pre-TX2 unrecorded broker-sealed generation to throw CustodyOperationUncertainException.');
+        } catch (CustodyOperationUncertainException $e) {
+            $this->assertStringContainsString('unrecorded_sealed_generations', $e->getMessage());
+            $this->assertStringContainsString($itemPreTx2['generation_id'], $e->getMessage());
+        }
 
         // Permanent generation_id & locator non-reuse in BOTH broker and PostgreSQL!
         try {

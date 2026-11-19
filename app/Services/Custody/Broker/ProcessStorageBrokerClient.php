@@ -183,16 +183,62 @@ final class ProcessStorageBrokerClient implements StorageBrokerClient
         fwrite($pipes[0], $requestJson);
         fclose($pipes[0]);
 
-        $stdout = stream_get_contents($pipes[1]);
-        fclose($pipes[1]);
+        stream_set_blocking($pipes[1], false);
+        stream_set_blocking($pipes[2], false);
 
-        $stderr = stream_get_contents($pipes[2]);
-        fclose($pipes[2]);
+        $stdout = '';
+        $stderr = '';
+        $openPipes = [1 => $pipes[1], 2 => $pipes[2]];
+        $deadline = microtime(true) + 15.0;
+
+        while ($openPipes !== []) {
+            $remaining = $deadline - microtime(true);
+            if ($remaining <= 0.0) {
+                foreach ($openPipes as $pipe) {
+                    @fclose($pipe);
+                }
+                @proc_terminate($process);
+                @proc_close($process);
+
+                throw new CustodyViolationException('Isolated custody broker subprocess timed out after 15 seconds.');
+            }
+
+            $read = array_values($openPipes);
+            $write = null;
+            $except = null;
+            $sec = (int) floor($remaining);
+            $usec = max(1000, (int) (($remaining - $sec) * 1000000));
+
+            $ready = @stream_select($read, $write, $except, $sec, $usec);
+            if ($ready === false) {
+                break;
+            }
+
+            foreach ($read as $pipe) {
+                $chunk = fread($pipe, 65536);
+                if (is_string($chunk) && $chunk !== '') {
+                    if ($pipe === $pipes[1]) {
+                        $stdout .= $chunk;
+                    } else {
+                        $stderr .= $chunk;
+                    }
+                }
+                if ($chunk === false || feof($pipe)) {
+                    $key = $pipe === $pipes[1] ? 1 : 2;
+                    @fclose($pipe);
+                    unset($openPipes[$key]);
+                }
+            }
+        }
+
+        foreach ($openPipes as $pipe) {
+            @fclose($pipe);
+        }
 
         $exitCode = proc_close($process);
 
-        if (! is_string($stdout) || trim($stdout) === '') {
-            $errText = is_string($stderr) ? trim($stderr) : '';
+        if (trim($stdout) === '') {
+            $errText = trim($stderr);
             throw new CustodyViolationException(
                 "Isolated custody broker subprocess exited ({$exitCode}) without JSON response."
                 .($errText !== '' ? " Stderr: {$errText}" : '')
@@ -222,6 +268,14 @@ final class ProcessStorageBrokerClient implements StorageBrokerClient
             throw new CustodyViolationException('Isolated custody broker response failed HMAC verification.');
         }
 
+        if (isset($response['nonce']) && (string) $response['nonce'] !== '') {
+            if (! hash_equals($nonce, (string) $response['nonce'])) {
+                throw new CustodyViolationException('Isolated custody broker response nonce mismatch.');
+            }
+        } elseif (($response['ok'] ?? false) === true) {
+            throw new CustodyViolationException('Isolated custody broker response nonce mismatch.');
+        }
+
         if (($response['ok'] ?? false) !== true) {
             $code = (string) ($response['error_code'] ?? 'CUSTODY_VIOLATION');
             $message = (string) ($response['message'] ?? 'Isolated custody broker rejected request.');
@@ -233,7 +287,7 @@ final class ProcessStorageBrokerClient implements StorageBrokerClient
             throw new CustodyViolationException($message);
         }
 
-        if ((string) ($response['nonce'] ?? '') !== $nonce) {
+        if (! hash_equals($nonce, (string) ($response['nonce'] ?? ''))) {
             throw new CustodyViolationException('Isolated custody broker response nonce mismatch.');
         }
 
@@ -269,6 +323,10 @@ final class ProcessStorageBrokerClient implements StorageBrokerClient
                 JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES,
             ),
         ];
+
+        if (function_exists('app') && app()->environment('testing')) {
+            $env['LEGACY_CUSTODY_ALLOW_FAULT_INJECTION'] = '1';
+        }
 
         if (DIRECTORY_SEPARATOR === '\\') {
             foreach (['SYSTEMROOT', 'COMSPEC', 'TEMP', 'TMP', 'PATHEXT', 'PATH'] as $key) {

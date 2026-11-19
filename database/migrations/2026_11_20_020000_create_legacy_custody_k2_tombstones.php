@@ -99,7 +99,7 @@ BEGIN
     SELECT 1 FROM legacy_custody.terminal_receipts
     WHERE operation_id = NEW.operation_id AND outcome = 'COMMITTED'
    )
-   OR NOT legacy_custody.zero_artifacts(NEW.operation_id)
+   OR legacy_custody.zero_artifacts(NEW.operation_id) IS NOT TRUE
   THEN
    RAISE EXCEPTION 'compensation tombstone precondition failed' USING ERRCODE='23514';
   END IF;
@@ -126,10 +126,12 @@ BEGIN
     SELECT 1 FROM legacy_custody.terminal_receipts
     WHERE operation_id = op AND outcome = 'COMMITTED'
    )
-   OR NOT legacy_custody.zero_artifacts(op)
+   OR legacy_custody.zero_artifacts(op) IS NOT TRUE
   THEN
    RAISE EXCEPTION 'compensation outcome precondition failed' USING ERRCODE='23514';
   END IF;
+ ELSE
+  RAISE EXCEPTION 'unexpected compensation table' USING ERRCODE='23514';
  END IF;
 
  RETURN NEW;

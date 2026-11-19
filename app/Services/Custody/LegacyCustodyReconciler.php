@@ -41,6 +41,7 @@ final class LegacyCustodyReconciler
      */
     public function reconcile(string $operationId, ?callable $cutPointHook = null): array
     {
+        $operationId = strtolower(trim($operationId));
         if (! Str::isUuid($operationId)) {
             throw new CustodyViolationException('Custody reconciliation requires a valid UUID operation_id.');
         }
@@ -58,50 +59,50 @@ final class LegacyCustodyReconciler
             $operation = $connection->table('legacy_custody.operations')
                 ->where('operation_id', $operationId)
                 ->first();
-        } catch (CustodyViolationException $exception) {
+
+            if ($operation === null) {
+                throw new CustodyViolationException("Custody operation [{$operationId}] was not found.");
+            }
+
+            $existingReceipt = $this->fetchTerminalReceipt($connection, $operationId);
+            if ($existingReceipt !== null) {
+                return $this->formatExistingTerminalReceipt($operationId, $existingReceipt);
+            }
+
+            $gate = $connection->table('legacy_custody.operation_gates')
+                ->where('operation_id', $operationId)
+                ->first();
+
+            if ($gate === null) {
+                throw new CustodyViolationException("Custody operation [{$operationId}] is missing its operation_gates row.");
+            }
+
+            if ((string) $gate->state === 'OPEN') {
+                $racedOutcome = $this->closeDatabaseGate($connection, $operationId);
+                if ($racedOutcome !== null) {
+                    return $racedOutcome;
+                }
+            } elseif ((string) $gate->state === 'CLOSED' && (int) $gate->fence_no === 2) {
+                $zeroCheck = $connection->selectOne(
+                    'SELECT legacy_custody.zero_artifacts(?) AS ok',
+                    [$operationId],
+                );
+                if ($zeroCheck === null || ! $zeroCheck->ok) {
+                    throw new CustodyViolationException(
+                        "CLOSED operation [{$operationId}] has non-zero command artifacts; abort refused."
+                    );
+                }
+            } else {
+                throw new CustodyViolationException(
+                    "Unsupported operation gate state [{$gate->state}:{$gate->fence_no}] for [{$operationId}]."
+                );
+            }
+        } catch (CustodyViolationException|CustodyOperationUncertainException $exception) {
             throw $exception;
         } catch (Throwable $exception) {
             throw new CustodyOperationUncertainException(
                 "Authoritative primary DB unavailable while reconciling operation [{$operationId}]; bytes retained untouched.",
                 previous: $exception,
-            );
-        }
-
-        if ($operation === null) {
-            throw new CustodyViolationException("Custody operation [{$operationId}] was not found.");
-        }
-
-        $existingReceipt = $this->fetchTerminalReceipt($connection, $operationId);
-        if ($existingReceipt !== null) {
-            return $this->formatExistingTerminalReceipt($operationId, $existingReceipt);
-        }
-
-        $gate = $connection->table('legacy_custody.operation_gates')
-            ->where('operation_id', $operationId)
-            ->first();
-
-        if ($gate === null) {
-            throw new CustodyViolationException("Custody operation [{$operationId}] is missing its operation_gates row.");
-        }
-
-        if ((string) $gate->state === 'OPEN') {
-            $racedOutcome = $this->closeDatabaseGate($connection, $operationId);
-            if ($racedOutcome !== null) {
-                return $racedOutcome;
-            }
-        } elseif ((string) $gate->state === 'CLOSED' && (int) $gate->fence_no === 2) {
-            $zeroCheck = $connection->selectOne(
-                'SELECT legacy_custody.zero_artifacts(?) AS ok',
-                [$operationId],
-            );
-            if ($zeroCheck === null || ! $zeroCheck->ok) {
-                throw new CustodyViolationException(
-                    "CLOSED operation [{$operationId}] has non-zero command artifacts; abort refused."
-                );
-            }
-        } else {
-            throw new CustodyViolationException(
-                "Unsupported operation gate state [{$gate->state}:{$gate->fence_no}] for [{$operationId}]."
             );
         }
 
@@ -169,24 +170,47 @@ final class LegacyCustodyReconciler
             ];
         } catch (QueryException $exception) {
             if ($connection->transactionLevel() > 0) {
-                $connection->rollBack();
+                try {
+                    $connection->rollBack();
+                } catch (Throwable) {
+                }
             }
 
-            $racedReceipt = $this->fetchTerminalReceipt($connection, $operationId);
-            if ($racedReceipt !== null) {
-                return $this->formatExistingTerminalReceipt($operationId, $racedReceipt);
+            try {
+                $racedReceipt = $this->fetchTerminalReceipt($connection, $operationId);
+                if ($racedReceipt !== null) {
+                    return $this->formatExistingTerminalReceipt($operationId, $racedReceipt);
+                }
+            } catch (CustodyViolationException $violation) {
+                throw $violation;
+            } catch (Throwable) {
             }
 
             throw new CustodyOperationUncertainException(
                 "Failed committing ABORTED terminal receipt for [{$operationId}]; bytes retained.",
                 previous: $exception,
             );
-        } catch (Throwable $exception) {
+        } catch (CustodyViolationException|CustodyOperationUncertainException $exception) {
             if ($connection->transactionLevel() > 0) {
-                $connection->rollBack();
+                try {
+                    $connection->rollBack();
+                } catch (Throwable) {
+                }
             }
 
             throw $exception;
+        } catch (Throwable $exception) {
+            if ($connection->transactionLevel() > 0) {
+                try {
+                    $connection->rollBack();
+                } catch (Throwable) {
+                }
+            }
+
+            throw new CustodyOperationUncertainException(
+                "Failed committing ABORTED terminal receipt for [{$operationId}]; bytes retained.",
+                previous: $exception,
+            );
         }
     }
 
@@ -249,24 +273,47 @@ final class LegacyCustodyReconciler
             return null;
         } catch (QueryException $exception) {
             if ($connection->transactionLevel() > 0) {
-                $connection->rollBack();
+                try {
+                    $connection->rollBack();
+                } catch (Throwable) {
+                }
             }
 
-            $racedReceipt = $this->fetchTerminalReceipt($connection, $operationId);
-            if ($racedReceipt !== null) {
-                return $this->formatExistingTerminalReceipt($operationId, $racedReceipt);
+            try {
+                $racedReceipt = $this->fetchTerminalReceipt($connection, $operationId);
+                if ($racedReceipt !== null) {
+                    return $this->formatExistingTerminalReceipt($operationId, $racedReceipt);
+                }
+            } catch (CustodyViolationException $violation) {
+                throw $violation;
+            } catch (Throwable) {
             }
 
             throw new CustodyOperationUncertainException(
                 "Database gate close failed for operation [{$operationId}]; bytes retained untouched.",
                 previous: $exception,
             );
-        } catch (Throwable $exception) {
+        } catch (CustodyViolationException|CustodyOperationUncertainException $exception) {
             if ($connection->transactionLevel() > 0) {
-                $connection->rollBack();
+                try {
+                    $connection->rollBack();
+                } catch (Throwable) {
+                }
             }
 
             throw $exception;
+        } catch (Throwable $exception) {
+            if ($connection->transactionLevel() > 0) {
+                try {
+                    $connection->rollBack();
+                } catch (Throwable) {
+                }
+            }
+
+            throw new CustodyOperationUncertainException(
+                "Database gate close failed for operation [{$operationId}]; bytes retained untouched.",
+                previous: $exception,
+            );
         }
     }
 

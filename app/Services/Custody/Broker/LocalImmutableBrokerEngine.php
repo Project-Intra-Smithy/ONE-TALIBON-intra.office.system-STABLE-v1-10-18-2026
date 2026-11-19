@@ -147,9 +147,14 @@ final class LocalImmutableBrokerEngine implements StorageBrokerClient
         if (! in_array($mimeType, $this->allowedMimes, true)) {
             throw new CustodyViolationException("Staging mimeType [{$mimeType}] is not allowed.");
         }
+        if ($faultInjection !== null && $faultInjection !== '') {
+            if (getenv('APP_ENV') !== 'testing' && getenv('LEGACY_CUSTODY_ALLOW_FAULT_INJECTION') !== '1') {
+                throw new CustodyViolationException('Broker fault_injection is disabled outside testing environments.');
+            }
+        }
 
         $shard = $this->validateLocatorAndExtractShard($locator, $generationId);
-        $this->validateSourcePath($sourceTempPath);
+        $this->validateSourcePath($sourceTempPath, $root);
 
         $opLockHandle = $this->acquireOperationLock($root, $operationId);
 
@@ -203,36 +208,43 @@ final class LocalImmutableBrokerEngine implements StorageBrokerClient
                     shardDir: $shardDir,
                 );
 
-                $verified = $this->verifySealedObjectSingleFd(
-                    finalPath: $finalPath,
-                    generationId: $generationId,
-                    expectedSize: $expectedSize,
-                    expectedSha256: $expectedSha256,
-                );
+                try {
+                    $verified = $this->verifySealedObjectSingleFd(
+                        finalPath: $finalPath,
+                        generationId: $generationId,
+                        expectedSize: $expectedSize,
+                        expectedSha256: $expectedSha256,
+                    );
 
-                $stagingReceiptId = $this->generateUuidV4();
-                $sealedRecord = [
-                    'namespace_id' => $namespaceId,
-                    'operation_id' => $operationId,
-                    'ordinal' => $ordinal,
-                    'generation_id' => $generationId,
-                    'locator' => $locator,
-                    'size_bytes' => $expectedSize,
-                    'sha256' => $expectedSha256,
-                    'mime_type' => $mimeType,
-                    'provider_object_identity' => $verified['provider_object_identity'],
-                    'staging_receipt_id' => $stagingReceiptId,
-                    'staged_fence' => 1,
-                    'sealed' => true,
-                    'sealed_at' => gmdate('Y-m-d\TH:i:s\Z'),
-                    'disposed' => false,
-                    'disposed_at' => null,
-                    'tombstone_id' => null,
-                    'close_ack_id' => null,
-                    'disposition' => null,
-                ];
+                    $stagingReceiptId = $this->generateUuidV4();
+                    $sealedRecord = [
+                        'namespace_id' => $namespaceId,
+                        'operation_id' => $operationId,
+                        'ordinal' => $ordinal,
+                        'generation_id' => $generationId,
+                        'locator' => $locator,
+                        'size_bytes' => $expectedSize,
+                        'sha256' => $expectedSha256,
+                        'mime_type' => $mimeType,
+                        'provider_object_identity' => $verified['provider_object_identity'],
+                        'staging_receipt_id' => $stagingReceiptId,
+                        'staged_fence' => 1,
+                        'sealed' => true,
+                        'sealed_at' => gmdate('Y-m-d\TH:i:s\Z'),
+                        'disposed' => false,
+                        'disposed_at' => null,
+                        'tombstone_id' => null,
+                        'close_ack_id' => null,
+                        'disposition' => null,
+                    ];
 
-                $this->writeJsonExclusive($sealedPath, $sealedRecord);
+                    $this->writeJsonExclusive($sealedPath, $sealedRecord);
+                } catch (Throwable $postPublishException) {
+                    @chmod($finalPath, 0600);
+                    @unlink($finalPath);
+
+                    throw $postPublishException;
+                }
 
                 $sealedGenerations = [];
                 if ($fenceState !== null && isset($fenceState['sealed_generations']) && is_array($fenceState['sealed_generations'])) {
@@ -431,8 +443,77 @@ final class LocalImmutableBrokerEngine implements StorageBrokerClient
                 }
 
                 if (($record['disposed'] ?? false) === true) {
-                    throw new CustodyViolationException(
-                        "conditionalDispose denied: generation [{$generationId}] is already disposed."
+                    if (($record['sealed'] ?? false) !== true
+                        || (string) ($record['namespace_id'] ?? '') !== $namespaceId
+                        || (string) ($record['operation_id'] ?? '') !== $operationId
+                        || (string) ($record['locator'] ?? '') !== $locator
+                        || ! hash_equals((string) ($record['provider_object_identity'] ?? ''), $providerObjectIdentity)
+                        || ! hash_equals((string) ($record['close_ack_id'] ?? ''), $closeAckId)
+                        || (string) ($record['tombstone_id'] ?? '') !== $tombstoneId) {
+                        throw new CustodyViolationException(
+                            "conditionalDispose denied: generation [{$generationId}] is already disposed with conflicting parameters."
+                        );
+                    }
+
+                    $persistedReceiptId = (string) ($record['dispose_receipt_id'] ?? '');
+                    if ($persistedReceiptId === '') {
+                        $persistedReceiptId = 'disp:'.$this->generateUuidV4();
+                    }
+                    $persistedAt = (string) ($record['disposed_at'] ?? gmdate('Y-m-d\TH:i:s\Z'));
+
+                    $shardDir = $this->resolveExistingSafeSubdir($root, ['objects', $shard]);
+                    $finalPath = $shardDir.DIRECTORY_SEPARATOR.$generationId.'.blob';
+
+                    clearstatcache(true, $finalPath);
+                    if (is_link($finalPath)) {
+                        throw new CustodyViolationException(
+                            "conditionalDispose denied: physical object at [{$locator}] is a symlink."
+                        );
+                    }
+
+                    if (file_exists($finalPath)) {
+                        $verified = $this->verifySealedObjectSingleFd(
+                            finalPath: $finalPath,
+                            generationId: $generationId,
+                            expectedSize: (int) $record['size_bytes'],
+                            expectedSha256: (string) $record['sha256'],
+                        );
+
+                        if (! hash_equals($providerObjectIdentity, $verified['provider_object_identity'])) {
+                            throw new CustodyViolationException(
+                                "conditionalDispose denied: live object identity mismatch for generation [{$generationId}]."
+                            );
+                        }
+
+                        @chmod($finalPath, 0600);
+                        if (! @unlink($finalPath)) {
+                            throw new CustodyViolationException(
+                                "conditionalDispose failed to unlink physical object at [{$locator}]."
+                            );
+                        }
+
+                        clearstatcache(true, $finalPath);
+                        if (file_exists($finalPath) || is_link($finalPath)) {
+                            throw new CustodyViolationException(
+                                "conditionalDispose post-unlink check failed: [{$locator}] still exists."
+                            );
+                        }
+
+                        return new BrokerDisposeReceipt(
+                            disposeReceiptId: $persistedReceiptId,
+                            tombstoneId: $tombstoneId,
+                            disposition: 'DISPOSED',
+                            providerObjectIdentity: $providerObjectIdentity,
+                            recordedAt: $persistedAt,
+                        );
+                    }
+
+                    return new BrokerDisposeReceipt(
+                        disposeReceiptId: $persistedReceiptId,
+                        tombstoneId: $tombstoneId,
+                        disposition: 'ABSENT_VERIFIED',
+                        providerObjectIdentity: $providerObjectIdentity,
+                        recordedAt: $persistedAt,
                     );
                 }
 
@@ -469,19 +550,6 @@ final class LocalImmutableBrokerEngine implements StorageBrokerClient
                     );
                 }
 
-                $disposeReceiptId = 'disp:'.$this->generateUuidV4();
-                $recordedAt = gmdate('Y-m-d\TH:i:s\Z');
-
-                // Record disposed tombstone durably BEFORE unlinking physical bytes.
-                $record['disposed'] = true;
-                $record['disposed_at'] = $recordedAt;
-                $record['tombstone_id'] = $tombstoneId;
-                $record['close_ack_id'] = $closeAckId;
-                $record['dispose_receipt_id'] = $disposeReceiptId;
-                $record['disposition'] = 'DISPOSED';
-
-                $this->persistJsonReplace($sealedPath, $record);
-
                 @chmod($finalPath, 0600);
                 if (! @unlink($finalPath)) {
                     throw new CustodyViolationException(
@@ -495,6 +563,18 @@ final class LocalImmutableBrokerEngine implements StorageBrokerClient
                         "conditionalDispose post-unlink check failed: [{$locator}] still exists."
                     );
                 }
+
+                $disposeReceiptId = 'disp:'.$this->generateUuidV4();
+                $recordedAt = gmdate('Y-m-d\TH:i:s\Z');
+
+                $record['disposed'] = true;
+                $record['disposed_at'] = $recordedAt;
+                $record['tombstone_id'] = $tombstoneId;
+                $record['close_ack_id'] = $closeAckId;
+                $record['dispose_receipt_id'] = $disposeReceiptId;
+                $record['disposition'] = 'DISPOSED';
+
+                $this->persistJsonReplace($sealedPath, $record);
 
                 return new BrokerDisposeReceipt(
                     disposeReceiptId: $disposeReceiptId,
@@ -535,49 +615,55 @@ final class LocalImmutableBrokerEngine implements StorageBrokerClient
 
         $shard = $this->validateLocatorAndExtractShard($locator, $generationId);
 
-        $sealedPath = $this->sealedRecordPath($root, $generationId);
-        $record = $this->readJsonFile($sealedPath);
-        if ($record === null
-            || ($record['sealed'] ?? false) !== true
-            || ($record['disposed'] ?? false) === true
-            || (string) ($record['namespace_id'] ?? '') !== $namespaceId
-            || (string) ($record['locator'] ?? '') !== $locator
-            || (int) ($record['size_bytes'] ?? 0) !== $expectedSize
-            || ! hash_equals((string) ($record['sha256'] ?? ''), $expectedSha256)
-            || ! hash_equals((string) ($record['provider_object_identity'] ?? ''), $expectedProviderObjectIdentity)) {
-            throw new CustodyViolationException(
-                "readGeneration denied: sealed index verification failed for generation [{$generationId}]."
+        $genLockHandle = $this->acquireGenerationSharedLock($root, $generationId);
+
+        try {
+            $sealedPath = $this->existingSealedRecordPath($root, $generationId);
+            $record = $this->readJsonFile($sealedPath);
+            if ($record === null
+                || ($record['sealed'] ?? false) !== true
+                || ($record['disposed'] ?? false) === true
+                || (string) ($record['namespace_id'] ?? '') !== $namespaceId
+                || (string) ($record['locator'] ?? '') !== $locator
+                || (int) ($record['size_bytes'] ?? 0) !== $expectedSize
+                || ! hash_equals((string) ($record['sha256'] ?? ''), $expectedSha256)
+                || ! hash_equals((string) ($record['provider_object_identity'] ?? ''), $expectedProviderObjectIdentity)) {
+                throw new CustodyViolationException(
+                    "readGeneration denied: sealed index verification failed for generation [{$generationId}]."
+                );
+            }
+
+            $shardDir = $this->resolveExistingSafeSubdir($root, ['objects', $shard]);
+            $finalPath = $shardDir.DIRECTORY_SEPARATOR.$generationId.'.blob';
+
+            clearstatcache(true, $finalPath);
+            if (is_link($finalPath) || ! file_exists($finalPath)) {
+                throw new CustodyViolationException("readGeneration denied: object missing or symlink at [{$locator}].");
+            }
+
+            $verified = $this->verifySealedObjectSingleFd(
+                finalPath: $finalPath,
+                generationId: $generationId,
+                expectedSize: $expectedSize,
+                expectedSha256: $expectedSha256,
+                returnBytes: true,
             );
-        }
 
-        $shardDir = $this->resolveExistingSafeSubdir($root, ['objects', $shard]);
-        $finalPath = $shardDir.DIRECTORY_SEPARATOR.$generationId.'.blob';
+            if (! hash_equals($expectedProviderObjectIdentity, $verified['provider_object_identity'])) {
+                throw new CustodyViolationException(
+                    "readGeneration denied: live provider_object_identity mismatch for [{$generationId}]."
+                );
+            }
 
-        clearstatcache(true, $finalPath);
-        if (is_link($finalPath) || ! file_exists($finalPath)) {
-            throw new CustodyViolationException("readGeneration denied: object missing or symlink at [{$locator}].");
-        }
-
-        $verified = $this->verifySealedObjectSingleFd(
-            finalPath: $finalPath,
-            generationId: $generationId,
-            expectedSize: $expectedSize,
-            expectedSha256: $expectedSha256,
-            returnBytes: true,
-        );
-
-        if (! hash_equals($expectedProviderObjectIdentity, $verified['provider_object_identity'])) {
-            throw new CustodyViolationException(
-                "readGeneration denied: live provider_object_identity mismatch for [{$generationId}]."
+            return new BrokerReadObject(
+                bytes: $verified['bytes'],
+                sizeBytes: $expectedSize,
+                sha256: $expectedSha256,
+                providerObjectIdentity: $verified['provider_object_identity'],
             );
+        } finally {
+            $this->releaseLock($genLockHandle);
         }
-
-        return new BrokerReadObject(
-            bytes: $verified['bytes'],
-            sizeBytes: $expectedSize,
-            sha256: $expectedSha256,
-            providerObjectIdentity: $verified['provider_object_identity'],
-        );
     }
 
     private function assertUuid(string $value, string $field): void
@@ -610,22 +696,71 @@ final class LocalImmutableBrokerEngine implements StorageBrokerClient
         return $shard;
     }
 
-    private function validateSourcePath(string $sourceTempPath): void
+    private function validateSourcePath(string $sourceTempPath, string $canonicalBrokerRoot): void
     {
         if ($sourceTempPath === '' || preg_match('/[\x00-\x1F\x7F]/', $sourceTempPath) === 1) {
             throw new CustodyViolationException('Invalid source staging path.');
         }
 
-        $segments = explode('/', str_replace('\\', '/', $sourceTempPath));
+        $isWindows = DIRECTORY_SEPARATOR === '\\';
+        if ($isWindows) {
+            if (preg_match('/\A[A-Za-z]:[\\\\\/]/', $sourceTempPath) !== 1) {
+                throw new CustodyViolationException('Source staging path must be an absolute path.');
+            }
+        } elseif (! str_starts_with($sourceTempPath, '/')) {
+            throw new CustodyViolationException('Source staging path must be an absolute path.');
+        }
+
+        $normalized = str_replace('\\', '/', $sourceTempPath);
+        $segments = explode('/', $normalized);
         foreach ($segments as $segment) {
-            if ($segment === '..') {
-                throw new CustodyViolationException('Source staging path must not contain traversal segments.');
+            if ($segment === '..' || $segment === '.') {
+                throw new CustodyViolationException('Source staging path must not contain dot or traversal segments.');
+            }
+        }
+
+        if ($isWindows) {
+            preg_match('/\A([A-Za-z]:)\/(.*)\z/', $normalized, $m);
+            $current = strtoupper($m[1] ?? '');
+            $walkSegments = isset($m[2]) && $m[2] !== '' ? explode('/', $m[2]) : [];
+        } else {
+            $current = '';
+            $walkSegments = explode('/', ltrim($normalized, '/'));
+        }
+
+        foreach ($walkSegments as $seg) {
+            if ($seg === '') {
+                continue;
+            }
+            $current .= '/'.$seg;
+            $probe = $isWindows ? str_replace('/', '\\', $current) : $current;
+            clearstatcache(true, $probe);
+            if (is_link($probe)) {
+                throw new CustodyViolationException("Source staging path component [{$probe}] is a symlink.");
             }
         }
 
         clearstatcache(true, $sourceTempPath);
         if (is_link($sourceTempPath) || ! file_exists($sourceTempPath) || ! is_file($sourceTempPath)) {
             throw new CustodyViolationException('Source staging path is missing, a symlink, or not a regular file.');
+        }
+
+        $realSource = @realpath($sourceTempPath);
+        if (! is_string($realSource) || $realSource === '') {
+            throw new CustodyViolationException('Failed resolving canonical source staging path.');
+        }
+
+        $compSource = $isWindows
+            ? strtolower(rtrim(str_replace('\\', '/', $realSource), '/'))
+            : rtrim(str_replace('\\', '/', $realSource), '/');
+        $compRoot = $isWindows
+            ? strtolower(rtrim(str_replace('\\', '/', $canonicalBrokerRoot), '/'))
+            : rtrim(str_replace('\\', '/', $canonicalBrokerRoot), '/');
+
+        if ($compSource === $compRoot
+            || str_starts_with($compSource.'/', $compRoot.'/')
+            || str_starts_with($compRoot.'/', $compSource.'/')) {
+            throw new CustodyViolationException('Source staging path must be strictly disjoint from the isolated broker root.');
         }
     }
 
@@ -783,8 +918,12 @@ final class LocalImmutableBrokerEngine implements StorageBrokerClient
         $isWindows = DIRECTORY_SEPARATOR === '\\';
 
         clearstatcache(true, $finalPath);
-        if (is_link($finalPath) || ! file_exists($finalPath)) {
-            throw new CustodyViolationException('Post-seal verification failed: target missing or symlink.');
+        $lstatBefore = @lstat($finalPath);
+        if ($lstatBefore === false
+            || is_link($finalPath)
+            || ! file_exists($finalPath)
+            || (($lstatBefore['mode'] & 0170000) !== 0100000)) {
+            throw new CustodyViolationException('Post-seal verification failed: target missing, symlink, or non-regular file.');
         }
 
         $fd = @fopen($finalPath, 'rb');
@@ -800,6 +939,12 @@ final class LocalImmutableBrokerEngine implements StorageBrokerClient
 
             if (($statBefore['mode'] & 0170000) !== 0100000) {
                 throw new CustodyViolationException('Post-seal verification rejected non-regular file.');
+            }
+
+            if (! $isWindows
+                && ((int) $lstatBefore['dev'] !== (int) $statBefore['dev']
+                    || (int) $lstatBefore['ino'] !== (int) $statBefore['ino'])) {
+                throw new CustodyViolationException('Post-seal verification detected pre-open TOCTOU inode substitution.');
             }
 
             if ((int) $statBefore['nlink'] !== 1) {
@@ -856,7 +1001,10 @@ final class LocalImmutableBrokerEngine implements StorageBrokerClient
             if ($statAfter === false
                 || (int) $statAfter['dev'] !== (int) $statBefore['dev']
                 || (int) $statAfter['ino'] !== (int) $statBefore['ino']
-                || (int) $statAfter['size'] !== (int) $statBefore['size']) {
+                || (int) $statAfter['size'] !== (int) $statBefore['size']
+                || (int) $statAfter['nlink'] !== 1
+                || (int) $statAfter['mtime'] !== (int) $statBefore['mtime']
+                || (int) $statAfter['ctime'] !== (int) $statBefore['ctime']) {
                 throw new CustodyViolationException('Post-seal verification detected concurrent descriptor mutation.');
             }
 
@@ -955,13 +1103,40 @@ final class LocalImmutableBrokerEngine implements StorageBrokerClient
         $dir = $this->ensureSafeSubdir($root, ['.fence-journal', 'gen-locks', $shard]);
         $lockPath = $dir.DIRECTORY_SEPARATOR.$generationId.'.lock';
 
-        return $this->acquireFileLock($lockPath);
+        return $this->acquireFileLock($lockPath, LOCK_EX);
     }
 
     /**
      * @return resource
      */
-    private function acquireFileLock(string $lockPath)
+    private function acquireGenerationSharedLock(string $root, string $generationId)
+    {
+        $shard = substr($generationId, 0, 2);
+        $dir = $this->resolveExistingSafeSubdir($root, ['.fence-journal', 'gen-locks', $shard]);
+        $lockPath = $dir.DIRECTORY_SEPARATOR.$generationId.'.lock';
+
+        clearstatcache(true, $lockPath);
+        if (is_link($lockPath) || ! is_file($lockPath)) {
+            throw new CustodyViolationException("readGeneration denied: generation lockfile missing for [{$generationId}].");
+        }
+
+        $handle = @fopen($lockPath, 'rb');
+        if ($handle === false) {
+            throw new CustodyViolationException("Unable to open broker generation lockfile [{$lockPath}].");
+        }
+
+        if (! flock($handle, LOCK_SH)) {
+            fclose($handle);
+            throw new CustodyViolationException("Unable to acquire shared broker lock [{$lockPath}].");
+        }
+
+        return $handle;
+    }
+
+    /**
+     * @return resource
+     */
+    private function acquireFileLock(string $lockPath, int $operation = LOCK_EX)
     {
         clearstatcache(true, $lockPath);
         if (is_link($lockPath)) {
@@ -973,7 +1148,7 @@ final class LocalImmutableBrokerEngine implements StorageBrokerClient
             throw new CustodyViolationException("Unable to open broker lockfile [{$lockPath}].");
         }
 
-        if (! flock($handle, LOCK_EX)) {
+        if (! flock($handle, $operation)) {
             fclose($handle);
             throw new CustodyViolationException("Unable to acquire exclusive broker lock [{$lockPath}].");
         }
@@ -1004,6 +1179,14 @@ final class LocalImmutableBrokerEngine implements StorageBrokerClient
     {
         $shard = substr($generationId, 0, 2);
         $dir = $this->ensureSafeSubdir($root, ['.fence-journal', 'sealed', $shard]);
+
+        return $dir.DIRECTORY_SEPARATOR.$generationId.'.json';
+    }
+
+    private function existingSealedRecordPath(string $root, string $generationId): string
+    {
+        $shard = substr($generationId, 0, 2);
+        $dir = $this->resolveExistingSafeSubdir($root, ['.fence-journal', 'sealed', $shard]);
 
         return $dir.DIRECTORY_SEPARATOR.$generationId.'.json';
     }
@@ -1078,6 +1261,7 @@ final class LocalImmutableBrokerEngine implements StorageBrokerClient
                 throw new CustodyViolationException('Exclusive broker metadata record already exists.');
             }
             @unlink($tmpPath);
+            $this->fsyncDir(dirname($targetPath));
         } catch (Throwable $exception) {
             if (is_resource($h)) {
                 fclose($h);
@@ -1117,6 +1301,7 @@ final class LocalImmutableBrokerEngine implements StorageBrokerClient
             if (! @rename($tmpPath, $targetPath)) {
                 throw new CustodyViolationException('Failed atomically replacing broker state file.');
             }
+            $this->fsyncDir(dirname($targetPath));
         } catch (Throwable $exception) {
             if (is_resource($h)) {
                 fclose($h);
@@ -1124,6 +1309,19 @@ final class LocalImmutableBrokerEngine implements StorageBrokerClient
             @unlink($tmpPath);
 
             throw $exception;
+        }
+    }
+
+    private function fsyncDir(string $dirPath): void
+    {
+        if (DIRECTORY_SEPARATOR === '\\') {
+            return;
+        }
+
+        $dirHandle = @fopen($dirPath, 'rb');
+        if (is_resource($dirHandle)) {
+            @fsync($dirHandle);
+            fclose($dirHandle);
         }
     }
 

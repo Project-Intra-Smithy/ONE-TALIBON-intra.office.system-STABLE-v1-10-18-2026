@@ -82,6 +82,10 @@ final class BrokerRootAttestation
         $canonicalRoot = $this->canonicalizeWithoutSymlinks($brokerRoot);
         $forbidden = $disallowedRoots ?? self::collectApplicationDisallowedRoots();
 
+        if ($forbidden === []) {
+            throw new CustodyViolationException('Broker root attestation requires a non-empty disallowed roots list.');
+        }
+
         $this->assertDisjointFromAll($canonicalRoot, $forbidden);
 
         return [
@@ -191,11 +195,19 @@ final class BrokerRootAttestation
     {
         $isWindows = DIRECTORY_SEPARATOR === '\\';
         $brokerComp = $this->normalizeComparable($canonicalBrokerRoot, $isWindows);
+        $brokerStat = $isWindows ? false : @stat($canonicalBrokerRoot);
+        $evaluatedCandidates = 0;
 
         foreach ($disallowedRoots as $rawDisallowed) {
+            if (! is_string($rawDisallowed) || trim($rawDisallowed) === '') {
+                continue;
+            }
+
             $candidates = $this->expandComparableCandidates($rawDisallowed, $isWindows);
 
             foreach ($candidates as $disallowedComp) {
+                $evaluatedCandidates++;
+
                 if ($brokerComp === $disallowedComp
                     || str_starts_with($brokerComp.'/', $disallowedComp.'/')
                     || str_starts_with($disallowedComp.'/', $brokerComp.'/')) {
@@ -204,6 +216,23 @@ final class BrokerRootAttestation
                     );
                 }
             }
+
+            if (! $isWindows && is_array($brokerStat) && isset($brokerStat['dev'], $brokerStat['ino'])) {
+                clearstatcache(true, $rawDisallowed);
+                $disallowedStat = @stat($rawDisallowed);
+                if (is_array($disallowedStat)
+                    && isset($disallowedStat['dev'], $disallowedStat['ino'])
+                    && (int) $brokerStat['dev'] === (int) $disallowedStat['dev']
+                    && (int) $brokerStat['ino'] === (int) $disallowedStat['ino']) {
+                    throw new CustodyViolationException(
+                        "Broker root [{$canonicalBrokerRoot}] shares POSIX (dev, ino) with forbidden root [{$rawDisallowed}]."
+                    );
+                }
+            }
+        }
+
+        if ($evaluatedCandidates === 0) {
+            throw new CustodyViolationException('Broker root attestation failed closed: zero valid normalized disallowed roots.');
         }
     }
 
