@@ -30,7 +30,8 @@ final class PlanLegacyCallerBoundaryTest extends TestCase
     {
         parent::setUp();
         config(['documents.disk' => 'documents']);
-        Storage::fake('documents');
+        $syntheticDisk = Storage::fake('documents');
+        config(['filesystems.disks.documents.root' => rtrim($syntheticDisk->path(''), '/')]);
     }
 
     public function test_sealed_plan_download_is_masked_and_the_blob_remains_private(): void
@@ -315,7 +316,7 @@ final class PlanLegacyCallerBoundaryTest extends TestCase
             $response = $this->get('/documents/'.$document->public_id.'/download')->assertOk();
             $this->assertSame($bytes, $response->streamedContent());
             $this->assertStringStartsWith('attachment;', $response->headers->get('Content-Disposition'));
-            app(DocumentAttachmentService::class)->cleanupDocuments([$document]);
+            app(DocumentAttachmentService::class)->cleanupDocuments([$document->fresh()]);
             Storage::disk('documents')->assertMissing($document->storage_path);
         }
     }
@@ -405,7 +406,8 @@ final class PlanLegacyCallerBoundaryTest extends TestCase
     private function storedDocument(User $actor, string $contents): Document
     {
         $path = 'g2e-synthetic/'.Str::uuid().'.pdf';
-        Storage::disk('documents')->put($path, "%PDF-1.7\n".$contents."\n%%EOF");
+        $bytes = "%PDF-1.7\n".$contents."\n%%EOF";
+        Storage::disk('documents')->put($path, $bytes);
 
         return Document::query()->create([
             'title' => 'G2E synthetic evidence',
@@ -414,6 +416,9 @@ final class PlanLegacyCallerBoundaryTest extends TestCase
             'classification' => 'internal',
             'storage_disk' => 'documents',
             'storage_path' => $path,
+            'mime_type' => 'application/pdf',
+            'size_bytes' => strlen($bytes),
+            'checksum_sha256' => hash('sha256', $bytes),
             'owner_department_id' => $actor->employee->department_id,
             'uploaded_by_user_id' => $actor->id,
         ]);

@@ -36,7 +36,8 @@ final class LegacyPdfPreviewTest extends TestCase
     {
         parent::setUp();
         config(['messaging_release.restricted_uat' => false]);
-        Storage::fake('documents');
+        $syntheticDisk = Storage::fake('documents');
+        config(['filesystems.disks.documents.root' => rtrim($syntheticDisk->path(''), '/')]);
     }
 
     public function test_authorized_inline_exact_bytes_and_download_are_distinct(): void

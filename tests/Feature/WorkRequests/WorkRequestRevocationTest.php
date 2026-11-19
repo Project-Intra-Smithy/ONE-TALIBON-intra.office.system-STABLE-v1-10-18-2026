@@ -217,7 +217,8 @@ final class WorkRequestRevocationTest extends TestCase
     public function test_retained_session_cannot_read_or_mutate_work_request_or_download_evidence_after_separation(): void
     {
         $this->seed();
-        Storage::fake('documents');
+        $syntheticDisk = Storage::fake('documents');
+        config(['filesystems.disks.documents.root' => rtrim($syntheticDisk->path(''), '/')]);
         $admin = $this->user('admin@talibon.demo');
         $transaction = $this->transaction($admin, $admin->employee->department);
         $secret = 'P1-H-PRIVATE-EVIDENCE-BYTES';
@@ -231,6 +232,8 @@ final class WorkRequestRevocationTest extends TestCase
             'mime_type' => 'text/plain',
             'storage_disk' => 'documents',
             'storage_path' => 'p1-h/revoked.txt',
+            'size_bytes' => strlen($secret),
+            'checksum_sha256' => hash('sha256', $secret),
             'owner_department_id' => $admin->employee->department_id,
             'uploaded_by_user_id' => $admin->id,
         ]);
@@ -243,7 +246,8 @@ final class WorkRequestRevocationTest extends TestCase
 
         $this->actingAs($admin)->get(route('transactions.show', $transaction))->assertOk();
         $this->actingAs($admin)->get(route('transactions.live', $transaction))->assertOk();
-        $this->actingAs($admin)->get(route('documents.download', $document))->assertOk();
+        $response = $this->actingAs($admin)->get(route('documents.download', $document))->assertOk();
+        $this->assertSame($secret, $response->streamedContent());
 
         $admin->load('employee.department');
         $admin->employee()->update(['employment_status' => 'separated']);
