@@ -7,6 +7,8 @@ use App\Models\Employee;
 use App\Models\StaffActivationInvitation;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -26,96 +28,71 @@ final class StaffActivationService
     /** @return array{invitation: StaffActivationInvitation, code: string} */
     public function issue(User $actor, array $input): array
     {
-        $this->access->authorize($actor);
         $role = (string) $input['role'];
         if (! in_array($role, self::INVITABLE_ROLES, true)) {
             throw ValidationException::withMessages(['role' => 'This role cannot be granted through ordinary onboarding.']);
         }
 
-        return DB::transaction(function () use ($actor, $input, $role): array {
-            $employee = Employee::query()->whereKey((int) $input['employee_id'])->lockForUpdate()->first();
-            if (! $employee || $employee->employment_status !== 'active' || $employee->separation_date !== null) {
-                throw ValidationException::withMessages(['employee_id' => 'Select an active eligible employee.']);
-            }
-            $department = Department::query()->whereKey($employee->department_id)->where('is_active', true)->first();
-            if (! $department) {
-                throw ValidationException::withMessages(['employee_id' => 'The employee office is not active.']);
-            }
-
+        return $this->transaction(function () use ($actor, $input, $role): array {
+            [$admin, $employee, $user, $office, $invitations] = $this->lockContext($actor, (int) $input['employee_id']);
+            $this->requireEligible($employee, $office);
             $username = Str::lower(trim((string) $input['username']));
             $email = filled($input['contact_email'] ?? null) ? Str::lower(trim((string) $input['contact_email'])) : null;
-            $user = $employee->user_id
-                ? User::query()->whereKey($employee->user_id)->lockForUpdate()->first()
-                : null;
 
-            if ($user && $user->account_status !== 'pending') {
-                throw ValidationException::withMessages(['employee_id' => 'This employee already has a provisioned account.']);
+            if ($user) {
+                $this->requireOrdinary($admin, $user);
+                $this->requireState($user, 'pending', false);
+                $previous = $invitations->last();
+                if (! $previous || ! $this->matchesInvitation($previous, $employee, $user, $office)
+                    || $user->username !== $username || $user->email !== $email || $user->role !== $role) {
+                    throw $this->invalidState();
+                }
             }
-            if (User::query()->whereRaw('lower(username) = ?', [$username])->when($user, fn ($q) => $q->whereKeyNot($user->id))->exists()) {
-                throw ValidationException::withMessages(['username' => 'That portal username is already in use.']);
-            }
-            if ($email && User::query()->whereRaw('lower(email) = ?', [$email])->when($user, fn ($q) => $q->whereKeyNot($user->id))->exists()) {
-                throw ValidationException::withMessages(['contact_email' => 'That contact email is already in use.']);
-            }
+            $this->requireUniqueLogin($username, $email, $user);
 
-            $attributes = [
-                'name' => $employee->full_name ?: 'Portal user',
-                'username' => $username,
-                'email' => $email,
-                'role' => $role,
-                'is_active' => false,
-                'account_status' => 'pending',
-            ];
             if (! $user) {
-                $user = User::query()->create($attributes + ['password' => Str::random(80)]);
+                $user = User::query()->create([
+                    'name' => $employee->full_name ?: 'Portal user',
+                    'username' => $username,
+                    'email' => $email,
+                    'role' => $role,
+                    'is_active' => false,
+                    'account_status' => 'pending',
+                    'password' => Str::random(80),
+                ]);
                 $employee->forceFill(['user_id' => $user->id])->save();
-            } else {
-                $user->forceFill($attributes)->save();
             }
 
-            StaffActivationInvitation::query()->where('user_id', $user->id)
-                ->whereNull('consumed_at')->whereNull('revoked_at')
-                ->update(['revoked_at' => now(), 'revocation_reason' => 'reissued']);
-
-            $code = strtoupper(bin2hex(random_bytes(16)));
-            $invitation = StaffActivationInvitation::query()->create([
-                'employee_id' => $employee->id,
-                'user_id' => $user->id,
-                'department_id' => $department->id,
-                'created_by_user_id' => $actor->id,
-                'username' => $username,
-                'contact_email' => $email,
-                'role' => $role,
-                'code_digest' => $this->digest($code),
-                'expires_at' => now()->addHours(24),
-            ]);
-            $this->audit->record($actor, 'identity.invitation.issued', 'Private activation code issued; secret omitted.', 'allowed', StaffActivationInvitation::class, $invitation->id);
-
-            return ['invitation' => $invitation, 'code' => $this->formatCode($code)];
-        }, 3);
+            return $this->issueLocked($admin, $employee, $user, $office, $invitations);
+        });
     }
 
     public function redeem(string $code, string $password): User
     {
-        $normalized = $this->normalizeCode($code);
-        if (! preg_match('/\A[A-F0-9]{32}\z/D', $normalized)) {
+        if (! preg_match('/\A(?:[A-Fa-f0-9]{32}|[A-Fa-f0-9]{4}(?:-[A-Fa-f0-9]{4}){7})\z/D', trim($code))) {
             throw $this->invalidCode();
         }
 
-        return DB::transaction(function () use ($normalized, $password): User {
-            $candidate = StaffActivationInvitation::query()->where('code_digest', $this->digest($normalized))->first();
-            if (! $candidate) throw $this->invalidCode();
-            $employee = Employee::query()->whereKey($candidate->employee_id)->lockForUpdate()->first();
-            $user = User::query()->whereKey($candidate->user_id)->lockForUpdate()->first();
-            $invitation = StaffActivationInvitation::query()->whereKey($candidate->id)->lockForUpdate()->first();
-            $department = Department::query()->whereKey($candidate->department_id)->first();
+        return $this->transaction(function () use ($code, $password): User {
+            $digest = $this->digest($code);
+            $candidate = StaffActivationInvitation::query()->where('code_digest', $digest)->first();
+            if (! $candidate) {
+                throw $this->invalidCode();
+            }
 
-            if (! $invitation || $invitation->consumed_at || $invitation->revoked_at || $invitation->expires_at->isPast()
-                || ! $employee || ! $user || ! $department || ! $department->is_active
-                || $employee->employment_status !== 'active' || $employee->separation_date !== null
-                || (int) $employee->user_id !== (int) $user->id || (int) $employee->department_id !== (int) $department->id
-                || $user->account_status !== 'pending' || $user->username !== $invitation->username
-                || $user->role !== $invitation->role || ! in_array($user->role, self::INVITABLE_ROLES, true)) {
+            try {
+                [, $employee, $user, $office, $invitations] = $this->lockContext(null, (int) $candidate->employee_id, (int) $candidate->user_id);
+                $invitation = $invitations->find($candidate->id);
+                $this->requireEligible($employee, $office);
+                $this->requireState($user, 'pending', false);
+                if (! $invitation || $invitation->consumed_at || $invitation->revoked_at
+                    || $invitation->expires_at->lessThanOrEqualTo(now())
+                    || ! hash_equals($invitation->code_digest, $digest)
+                    || ! $this->matchesInvitation($invitation, $employee, $user, $office)
+                    || ! in_array($user->role, self::INVITABLE_ROLES, true)) {
+                    throw $this->invalidCode();
+                }
+            } catch (ValidationException $exception) {
                 throw $this->invalidCode();
             }
 
@@ -124,78 +101,250 @@ final class StaffActivationService
                 'is_active' => true,
                 'account_status' => 'active',
                 'session_version' => ((int) $user->session_version) + 1,
+                'remember_token' => null,
                 'suspended_at' => null,
                 'suspended_by_user_id' => null,
             ])->save();
             $invitation->forceFill(['consumed_at' => now()])->save();
+            $this->revokeOutstanding($invitations, 'activation completed');
             $this->audit->record($user, 'identity.activation.completed', 'Account activated through a one-time private code.', 'allowed', User::class, $user->id);
 
             return $user;
-        }, 3);
+        });
     }
 
     public function revoke(User $actor, StaffActivationInvitation $invitation, string $reason = 'administrator revoked'): void
     {
-        $this->access->authorize($actor);
-        DB::transaction(function () use ($actor, $invitation, $reason): void {
-            $locked = StaffActivationInvitation::query()->whereKey($invitation->id)->lockForUpdate()->firstOrFail();
-            if (! $locked->consumed_at && ! $locked->revoked_at) {
-                $locked->forceFill(['revoked_at' => now(), 'revocation_reason' => Str::limit($reason, 255, '')])->save();
-                $this->audit->record($actor, 'identity.invitation.revoked', 'Pending activation revoked; secret omitted.', 'allowed', StaffActivationInvitation::class, $locked->id);
+        $this->transaction(function () use ($actor, $invitation, $reason): void {
+            $candidate = StaffActivationInvitation::query()->findOrFail($invitation->id);
+            [$admin, $employee, $user, , $invitations] = $this->lockContext($actor, (int) $candidate->employee_id, (int) $candidate->user_id);
+            $this->requireOrdinary($admin, $user);
+            $this->requireState($user, 'pending', false);
+            $locked = $invitations->find($candidate->id);
+            if (! $locked || (int) $locked->employee_id !== (int) $employee->id
+                || $locked->consumed_at || $locked->revoked_at) {
+                throw $this->invalidState();
             }
+            $locked->forceFill(['revoked_at' => now(), 'revocation_reason' => Str::limit($reason, 255, '')])->save();
+            $this->audit->record($admin, 'identity.invitation.revoked', 'Pending activation revoked; secret omitted.', 'allowed', StaffActivationInvitation::class, $locked->id);
         });
     }
 
     public function suspend(User $actor, User $subject, string $reason): void
     {
-        $this->access->authorize($actor);
-        if ($subject->isRole('system_admin')) throw new AuthorizationException('System administrator lifecycle requires operator control.');
-        $subject->forceFill(['is_active' => false, 'account_status' => 'suspended', 'suspended_at' => now(), 'suspended_by_user_id' => $actor->id, 'session_version' => ((int) $subject->session_version) + 1, 'remember_token' => null])->save();
-        $this->audit->record($actor, 'identity.account.suspended', 'Portal account suspended. Reason: '.Str::limit($reason, 160, ''), 'allowed', User::class, $subject->id);
+        $this->transaction(function () use ($actor, $subject, $reason): void {
+            [$admin, , $user, , $invitations] = $this->lockContext($actor, null, (int) $subject->id);
+            $this->requireOrdinary($admin, $user);
+            $this->requireState($user, 'active', true);
+            // Removal of access must remain possible even after separation.
+            $user->forceFill([
+                'is_active' => false, 'account_status' => 'suspended',
+                'suspended_at' => now(), 'suspended_by_user_id' => $admin->id,
+                'session_version' => ((int) $user->session_version) + 1, 'remember_token' => null,
+            ])->save();
+            $this->revokeOutstanding($invitations, 'account suspended');
+            $this->audit->record($admin, 'identity.account.suspended', 'Portal account suspended. Reason: '.Str::limit($reason, 160, ''), 'allowed', User::class, $user->id);
+        });
     }
 
     public function reactivate(User $actor, User $subject): void
     {
-        $this->access->authorize($actor);
-        $employee = $subject->employee()->with('department')->first();
-        if (! $employee || $employee->employment_status !== 'active' || ! $employee->department?->is_active) {
-            throw ValidationException::withMessages(['account' => 'The linked employee and office must be active before reactivation.']);
-        }
-        $subject->forceFill(['is_active' => true, 'account_status' => 'active', 'suspended_at' => null, 'suspended_by_user_id' => null, 'session_version' => ((int) $subject->session_version) + 1])->save();
-        $this->audit->record($actor, 'identity.account.reactivated', 'Portal account reactivated after eligibility verification.', 'allowed', User::class, $subject->id);
+        $this->transaction(function () use ($actor, $subject): void {
+            [$admin, $employee, $user, $office, $invitations] = $this->lockContext($actor, null, (int) $subject->id);
+            $this->requireOrdinary($admin, $user);
+            $this->requireState($user, 'suspended', false);
+            $this->requireEligible($employee, $office);
+            $user->forceFill([
+                'is_active' => true, 'account_status' => 'active',
+                'suspended_at' => null, 'suspended_by_user_id' => null,
+                'session_version' => ((int) $user->session_version) + 1, 'remember_token' => null,
+            ])->save();
+            $this->revokeOutstanding($invitations, 'account reactivated');
+            $this->audit->record($admin, 'identity.account.reactivated', 'Portal account reactivated after eligibility verification.', 'allowed', User::class, $user->id);
+        });
     }
 
     /** @return array{invitation: StaffActivationInvitation, code: string} */
     public function recover(User $actor, User $subject): array
     {
-        $this->access->authorize($actor);
-        if ($subject->isRole('system_admin') || ! in_array($subject->role, self::INVITABLE_ROLES, true)) {
-            throw new AuthorizationException('Elevated accounts require operator-controlled recovery.');
-        }
-        $employee = $subject->employee()->with('department')->first();
-        if (! $employee || $employee->employment_status !== 'active' || ! $employee->department?->is_active || ! $subject->username) {
-            throw ValidationException::withMessages(['account' => 'This account is not eligible for controlled recovery.']);
-        }
-        $subject->forceFill([
-            'is_active' => false, 'account_status' => 'pending',
-            'password' => Str::random(80), 'remember_token' => null,
-            'mfa_secret' => null, 'mfa_confirmed_at' => null,
-            'mfa_recovery_codes' => null, 'mfa_recovery_codes_generated_at' => null,
-            'mfa_version' => ((int) $subject->mfa_version) + 1,
-            'session_version' => ((int) $subject->session_version) + 1,
-        ])->save();
-        $this->audit->record($actor, 'identity.account.recovery_started', 'Controlled credential recovery started; existing sessions and MFA assurance invalidated.', 'allowed', User::class, $subject->id);
+        return $this->transaction(function () use ($actor, $subject): array {
+            [$admin, $employee, $user, $office, $invitations] = $this->lockContext($actor, null, (int) $subject->id);
+            $this->requireOrdinary($admin, $user);
+            $this->requireState($user, 'active', true);
+            $this->requireEligible($employee, $office);
+            if (blank($user->username)) {
+                throw $this->invalidState();
+            }
+            $this->requireUniqueLogin($user->username, $user->email, $user);
+            $user->forceFill([
+                'is_active' => false, 'account_status' => 'pending',
+                'password' => Str::random(80), 'remember_token' => null,
+                'suspended_at' => null, 'suspended_by_user_id' => null,
+                'mfa_secret' => null, 'mfa_confirmed_at' => null,
+                'mfa_recovery_codes' => null, 'mfa_recovery_codes_generated_at' => null,
+                'mfa_version' => ((int) $user->mfa_version) + 1,
+                'session_version' => ((int) $user->session_version) + 1,
+            ])->save();
+            $this->audit->record($admin, 'identity.account.recovery_started', 'Controlled credential recovery started; existing sessions and MFA assurance invalidated.', 'allowed', User::class, $user->id);
 
-        return $this->issue($actor, [
-            'employee_id' => $employee->id,
-            'username' => $subject->username,
-            'contact_email' => $subject->email,
-            'role' => $subject->role,
-        ]);
+            return $this->issueLocked($admin, $employee, $user, $office, $invitations);
+        });
     }
 
-    private function digest(string $code): string { return hash_hmac('sha256', $this->normalizeCode($code), (string) config('app.key')); }
-    private function normalizeCode(string $code): string { return strtoupper((string) preg_replace('/[^A-Fa-f0-9]/', '', $code)); }
-    private function formatCode(string $code): string { return implode('-', str_split($code, 4)); }
-    private function invalidCode(): ValidationException { return ValidationException::withMessages(['code' => 'This activation code cannot be used. Ask the administrator for a new code.']); }
+    /**
+     * Discover identifiers, then acquire every existing row in the same order.
+     * Re-read links after locking; route models supply identifiers only.
+     * @return array{?User, ?Employee, ?User, ?Department, Collection}
+     */
+    private function lockContext(?User $actor, ?int $employeeId, ?int $subjectId = null): array
+    {
+        $actorId = $actor ? (int) $actor->getKey() : null;
+        if ($actor && ! $actorId) {
+            throw new AuthorizationException('Administrator access denied.');
+        }
+        $actorEmployeeId = $actorId ? Employee::query()->where('user_id', $actorId)->value('id') : null;
+        if ($employeeId === null && $subjectId !== null) {
+            $employeeId = Employee::query()->where('user_id', $subjectId)->value('id');
+        }
+        $employeeIds = array_unique(array_filter([$actorEmployeeId, $employeeId]));
+        $employees = Employee::query()->whereIn('id', $employeeIds)->orderBy('id')->lockForUpdate()->get()->keyBy('id');
+        $employee = $employees->get($employeeId);
+        $actorEmployee = $employees->get($actorEmployeeId);
+        if ($employeeId !== null && ! $employee) {
+            throw $this->invalidState();
+        }
+        if ($subjectId !== null && $employee && (int) $employee->user_id !== $subjectId) {
+            throw $this->invalidState();
+        }
+        $targetId = $subjectId ?? $employee?->user_id;
+        $users = User::query()->whereIn('id', array_unique(array_filter([$actorId, $targetId])))
+            ->orderBy('id')->lockForUpdate()->get()->keyBy('id');
+        $admin = $users->get($actorId);
+        $user = $users->get($targetId);
+        if ($actorId !== null && (! $admin || $admin->account_status !== 'active'
+            || (int) Employee::query()->where('user_id', $actorId)->value('id') !== (int) $actorEmployeeId
+            || ($actorEmployee && (int) $actorEmployee->user_id !== $actorId))) {
+            throw new AuthorizationException('Administrator access denied.');
+        }
+        if ($targetId !== null && (! $user
+            || (int) Employee::query()->where('user_id', $targetId)->value('id') !== (int) $employeeId)) {
+            throw $this->invalidState();
+        }
+        $offices = Department::query()->whereIn('id', array_unique(array_filter([$actorEmployee?->department_id, $employee?->department_id])))
+            ->orderBy('id')->lockForUpdate()->get()->keyBy('id');
+        if ($admin) {
+            $this->access->authorize($admin);
+            // Preserve the existing username-less administrator compatibility
+            // boundary; changing legacy session eligibility belongs to G2/G3.
+            if (filled($admin->username) && ! $this->eligible($actorEmployee, $offices->get($actorEmployee?->department_id))) {
+                throw new AuthorizationException('Administrator access denied.');
+            }
+        }
+        $invitations = $user
+            ? StaffActivationInvitation::query()->where('user_id', $user->id)->orderBy('id')->lockForUpdate()->get()
+            : new Collection();
+
+        return [$admin, $employee, $user, $offices->get($employee?->department_id), $invitations];
+    }
+
+    private function eligible(?Employee $employee, ?Department $office): bool
+    {
+        return $employee !== null && $employee->employment_status === 'active'
+            && $employee->separation_date === null && (bool) $office?->is_active;
+    }
+
+    private function requireEligible(?Employee $employee, ?Department $office): void
+    {
+        if (! $this->eligible($employee, $office)) {
+            throw ValidationException::withMessages(['employee_id' => 'Select an active eligible employee in an active office.']);
+        }
+    }
+
+    private function requireOrdinary(User $actor, ?User $user): void
+    {
+        if (! $user || (int) $actor->id === (int) $user->id || ! in_array($user->role, self::INVITABLE_ROLES, true)) {
+            throw new AuthorizationException('This account requires operator-controlled lifecycle management.');
+        }
+    }
+
+    private function requireState(?User $user, string $state, bool $active): void
+    {
+        if (! $user || $user->account_status !== $state || $user->is_active !== $active) {
+            throw $this->invalidState();
+        }
+    }
+
+    private function matchesInvitation(StaffActivationInvitation $invitation, Employee $employee, User $user, Department $office): bool
+    {
+        return (int) $invitation->employee_id === (int) $employee->id
+            && (int) $invitation->user_id === (int) $user->id
+            && (int) $invitation->department_id === (int) $office->id
+            && (int) $employee->user_id === (int) $user->id
+            && $user->username === $invitation->username
+            && $user->email === $invitation->contact_email
+            && $user->role === $invitation->role;
+    }
+
+    private function requireUniqueLogin(string $username, ?string $email, ?User $user): void
+    {
+        if (User::query()->whereRaw('lower(username) = ?', [Str::lower($username)])->when($user, fn ($q) => $q->whereKeyNot($user->id))->exists()) {
+            throw ValidationException::withMessages(['username' => 'That portal username is already in use.']);
+        }
+        if ($email && User::query()->whereRaw('lower(email) = ?', [Str::lower($email)])->when($user, fn ($q) => $q->whereKeyNot($user->id))->exists()) {
+            throw ValidationException::withMessages(['contact_email' => 'That contact email is already in use.']);
+        }
+    }
+
+    private function issueLocked(User $actor, Employee $employee, User $user, Department $office, Collection $invitations): array
+    {
+        $this->revokeOutstanding($invitations, 'reissued');
+        $code = strtoupper(bin2hex(random_bytes(16)));
+        $invitation = StaffActivationInvitation::query()->create([
+            'employee_id' => $employee->id,
+            'user_id' => $user->id,
+            'department_id' => $office->id,
+            'created_by_user_id' => $actor->id,
+            'username' => $user->username,
+            'contact_email' => $user->email,
+            'role' => $user->role,
+            'code_digest' => $this->digest($code),
+            'expires_at' => now()->addHours(24),
+        ]);
+        $this->audit->record($actor, 'identity.invitation.issued', 'Private activation code issued; secret omitted.', 'allowed', StaffActivationInvitation::class, $invitation->id);
+
+        return ['invitation' => $invitation, 'code' => implode('-', str_split($code, 4))];
+    }
+
+    private function revokeOutstanding(Collection $invitations, string $reason): void
+    {
+        foreach ($invitations as $invitation) {
+            if (! $invitation->consumed_at && ! $invitation->revoked_at) {
+                $invitation->forceFill(['revoked_at' => now(), 'revocation_reason' => $reason])->save();
+            }
+        }
+    }
+
+    private function transaction(callable $operation): mixed
+    {
+        try {
+            return DB::transaction($operation, 3);
+        } catch (UniqueConstraintViolationException $exception) {
+            throw ValidationException::withMessages(['account' => 'The account operation conflicts with an existing identity.']);
+        }
+    }
+
+    private function digest(string $code): string
+    {
+        return hash_hmac('sha256', strtoupper(str_replace('-', '', trim($code))), (string) config('app.key'));
+    }
+
+    private function invalidState(): ValidationException
+    {
+        return ValidationException::withMessages(['account' => 'This account cannot undergo the requested lifecycle operation.']);
+    }
+
+    private function invalidCode(): ValidationException
+    {
+        return ValidationException::withMessages(['code' => 'This activation code cannot be used. Ask the administrator for a new code.']);
+    }
 }

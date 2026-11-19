@@ -260,6 +260,164 @@ final class PermanentIamLifecycleTest extends TestCase
         $this->assertDatabaseCount('staff_activation_invitations', 0);
     }
 
+    public function test_activation_expiration_and_binding_mismatch_fail_without_mutation(): void
+    {
+        [$admin, $employee] = $this->actors();
+        $service = app(StaffActivationService::class);
+        $issued = $this->issue($admin, $employee, 'expiry.staff');
+        $user = $employee->fresh()->user;
+        $this->travel(25)->hours();
+        $this->assertDeniedUnchanged($user, fn () => $service->redeem($issued['code'], self::PASSWORD), 'code');
+        $this->travelBack();
+
+        $issued = $this->issue($admin, $employee, 'expiry.staff');
+        $invitation = $issued['invitation'];
+        $this->assertDeniedUnchanged($user, fn () => $service->redeem('INVALID'.$issued['code'], self::PASSWORD), 'code');
+        foreach ([
+            ['role' => 'employee'], ['username' => 'other.staff'], ['email' => 'changed@example.test'],
+            ['is_active' => true], ['role' => 'system_admin'],
+        ] as $change) {
+            $original = array_intersect_key($user->fresh()->getAttributes(), $change);
+            $user->fresh()->forceFill($change)->save();
+            $this->assertDeniedUnchanged($user, fn () => $service->redeem($issued['code'], self::PASSWORD), 'code');
+            $user->fresh()->forceFill($original)->save();
+        }
+        $employee->refresh()->update(['separation_date' => now()]);
+        $this->assertDeniedUnchanged($user, fn () => $service->redeem($issued['code'], self::PASSWORD), 'code');
+        $employee->update(['separation_date' => null]);
+        $other = Department::query()->create(['code' => 'IAM-OTHER', 'name' => 'Other office', 'is_active' => true]);
+        $officeId = $employee->department_id;
+        $employee->update(['department_id' => $other->id]);
+        $this->assertDeniedUnchanged($user, fn () => $service->redeem($issued['code'], self::PASSWORD), 'code');
+        $employee->update(['department_id' => $officeId]);
+        $employee->update(['user_id' => null]);
+        $this->assertDeniedUnchanged($user, fn () => $service->redeem($issued['code'], self::PASSWORD), 'code');
+        $employee->update(['user_id' => $user->id]);
+        $employee->department()->update(['is_active' => false]);
+        $this->assertDeniedUnchanged($user, fn () => $service->redeem($issued['code'], self::PASSWORD), 'code');
+        $employee->department()->update(['is_active' => true]);
+        $service->revoke($admin, $invitation);
+        $this->assertNotNull($invitation->fresh()->revoked_at);
+        $this->assertDeniedUnchanged($user, fn () => $service->redeem($issued['code'], self::PASSWORD), 'code');
+    }
+
+    public function test_http_and_service_lifecycle_matrix_rejects_invalid_states_and_protected_targets(): void
+    {
+        [$admin, $employee] = $this->actors();
+        $service = app(StaffActivationService::class);
+        $issued = $this->issue($admin, $employee, 'matrix.staff');
+        $user = $employee->fresh()->user;
+        $this->actingAs($admin);
+        foreach (['reactivate', 'suspend', 'recovery'] as $action) {
+            $before = $this->lifecycleSnapshot($user);
+            $this->from('/admin')->post("/admin/accounts/{$user->id}/{$action}", ['reason' => 'State test'])
+                ->assertSessionHasErrors('account');
+            $this->assertSame($before, $this->lifecycleSnapshot($user));
+        }
+        $this->assertDeniedUnchanged($user, fn () => $this->issue($admin, $employee, 'renamed.staff'), 'account');
+        $service->redeem($issued['code'], self::PASSWORD);
+        $this->assertDeniedUnchanged($user, fn () => $service->reactivate($admin, $user), 'account');
+        $service->suspend($admin, $user, 'State test');
+        $this->assertDeniedUnchanged($user, fn () => $service->suspend($admin, $user, 'Repeat'), 'account');
+        $this->assertDeniedUnchanged($user, fn () => $service->recover($admin, $user), 'account');
+        $employee->refresh()->update(['separation_date' => now()]);
+        $this->assertDeniedUnchanged($user, fn () => $service->reactivate($admin, $user), 'employee_id');
+        $employee->update(['separation_date' => null]);
+        $service->reactivate($admin, $user);
+        foreach (['deactivated', 'unknown'] as $state) {
+            $user->fresh()->forceFill(['account_status' => $state, 'is_active' => false])->save();
+            $this->assertDeniedUnchanged($user, fn () => $service->reactivate($admin, $user), 'account');
+        }
+        foreach (['system_admin', 'mayor_approver', 'unknown_role'] as $role) {
+            $user->fresh()->forceFill(['role' => $role, 'account_status' => 'pending', 'is_active' => false])->save();
+            $before = $this->lifecycleSnapshot($user);
+            foreach (['reactivate', 'suspend', 'recovery'] as $action) {
+                $this->post("/admin/accounts/{$user->id}/{$action}", ['reason' => 'Protected target'])->assertForbidden();
+            }
+            $this->post('/admin/accounts', ['employee_id' => $employee->id, 'username' => $user->username, 'role' => 'employee'])->assertForbidden();
+            $this->post("/admin/invitations/{$issued['invitation']->id}/revoke")->assertForbidden();
+            $this->assertSame($before, $this->lifecycleSnapshot($user));
+        }
+        $before = $this->lifecycleSnapshot($admin);
+        $this->post("/admin/accounts/{$admin->id}/suspend", ['reason' => 'Self target'])->assertForbidden();
+        $this->assertSame($before, $this->lifecycleSnapshot($admin));
+    }
+
+    public function test_stale_actor_authority_is_rechecked_under_lock(): void
+    {
+        [$admin, $employee] = $this->actors();
+        $service = app(StaffActivationService::class);
+        $user = $service->redeem($this->issue($admin, $employee, 'stale.staff')['code'], self::PASSWORD);
+        foreach ([['role' => 'employee'], ['account_status' => 'pending'], ['is_active' => false]] as $change) {
+            $original = array_intersect_key($admin->fresh()->getAttributes(), $change);
+            $admin->fresh()->forceFill($change)->save();
+            $before = $this->lifecycleSnapshot($user);
+            try {
+                $service->suspend($admin, $user, 'Stale actor');
+                $this->fail('Stale actor was accepted.');
+            } catch (\Illuminate\Auth\Access\AuthorizationException|\Symfony\Component\HttpKernel\Exception\HttpException $exception) {
+                $this->assertSame($before, $this->lifecycleSnapshot($user));
+            }
+            $admin->fresh()->forceFill($original)->save();
+        }
+        $admin->employee()->update(['separation_date' => now()]);
+        $before = $this->lifecycleSnapshot($user);
+        try {
+            $service->recover($admin, $user);
+            $this->fail('Separated actor was accepted.');
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            $this->assertSame($before, $this->lifecycleSnapshot($user));
+        }
+    }
+
+    public function test_recovery_rolls_back_credentials_invitation_and_audit_on_issuance_audit_failure(): void
+    {
+        [$admin, $employee] = $this->actors();
+        $service = app(StaffActivationService::class);
+        $user = $service->redeem($this->issue($admin, $employee, 'rollback.staff')['code'], self::PASSWORD);
+        $user->forceFill([
+            'remember_token' => 'synthetic-remember-token', 'mfa_secret' => 'JBSWY3DPEHPK3PXP',
+            'mfa_confirmed_at' => now(), 'mfa_version' => 4,
+            'mfa_recovery_codes' => ['synthetic-hash'], 'mfa_recovery_codes_generated_at' => now(),
+        ])->save();
+        // Synthetic pre-existing outstanding invite tests rollback of the revocation ledger.
+        $old = StaffActivationInvitation::query()->where('user_id', $user->id)->firstOrFail();
+        $old->forceFill(['consumed_at' => null])->save();
+        $before = $this->lifecycleSnapshot($user);
+        $audit = \Mockery::mock(\App\Services\AuditLogger::class)->makePartial();
+        $audit->shouldReceive('record')->withArgs(fn ($actor, $action) => $action === 'identity.invitation.issued')
+            ->once()->andThrow(new \RuntimeException('Synthetic audit failure'));
+        $this->app->instance(\App\Services\AuditLogger::class, $audit);
+        try {
+            app(StaffActivationService::class)->recover($admin, $user);
+            $this->fail('Recovery returned despite injected failure.');
+        } catch (\RuntimeException $exception) {
+            $this->assertSame('Synthetic audit failure', $exception->getMessage());
+        }
+        $this->assertSame($before, $this->lifecycleSnapshot($user), 'Recovery must roll back the entire persisted operation.');
+    }
+
+    private function assertDeniedUnchanged(User $user, callable $operation, string $field): void
+    {
+        $before = $this->lifecycleSnapshot($user);
+        try {
+            $operation();
+            $this->fail('Invalid lifecycle operation was accepted.');
+        } catch (\Illuminate\Validation\ValidationException $exception) {
+            $this->assertArrayHasKey($field, $exception->errors());
+        }
+        $this->assertSame($before, $this->lifecycleSnapshot($user));
+    }
+
+    private function lifecycleSnapshot(User $user): array
+    {
+        return [
+            $user->fresh()->getAttributes(),
+            StaffActivationInvitation::query()->where('user_id', $user->id)->orderBy('id')->get()->map(fn ($row) => $row->getAttributes())->all(),
+            \App\Models\AuditLog::query()->where('action', 'like', 'identity.%')->orderBy('id')->get()->map(fn ($row) => $row->getAttributes())->all(),
+        ];
+    }
+
     /** @return array{User, Employee} */
     private function actors(): array
     {
