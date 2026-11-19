@@ -264,12 +264,55 @@ try {
         await ordinary.getByRole('link', { name: 'Account security', exact: true }).click();
         await ordinary.waitForURL(url => url.pathname === '/security/account');
         await noOverflow(ordinary, 'ordinary security mobile');
+        // A separate synthetic candidate ensures the forged credential is never
+        // the one intentionally installed by the subsequent legitimate change.
+        const forgedPassword = crypto.randomBytes(20).toString('hex') + 'Aa1!';
         const next = crypto.randomBytes(20).toString('hex') + 'Aa1!';
         const forged = await ordinary.request.put(BASE + '/security/password', {
-            data: { current_password: firstPassword, password: next, password_confirmation: next },
+            headers: { Accept: 'application/json' },
+            data: { current_password: firstPassword, password: forgedPassword, password_confirmation: forgedPassword },
             maxRedirects: 0,
         });
+        // APIRequestContext shares the authenticated cookies but sends no
+        // CSRF token/header or browser same-origin Fetch Metadata shortcut.
+        // JSON negotiation preserves Laravel's native rejection status.
         assert.equal(forged.status(), 419, 'Password mutation without CSRF token must fail');
+        report.csrf = { tokenlessStatus: forged.status() };
+
+        // Prove the rejection did not install the forged credential. Use new
+        // browser contexts, not the existing authenticated session or a mock.
+        const deniedContext = await browser.newContext();
+        const denied = await deniedContext.newPage();
+        monitor(denied);
+        try {
+            await signIn(denied, 'qa.ordinary', forgedPassword);
+            await denied.getByRole('alert').first().waitFor();
+            await denied.waitForURL(url => url.pathname === '/login');
+            await denied.goto(BASE + '/security/account');
+            await denied.waitForURL(url => url.pathname === '/login');
+            report.csrf.forgedPasswordDenied = true;
+        } finally {
+            await deniedContext.close();
+        }
+        const oldContext = await browser.newContext();
+        const old = await oldContext.newPage();
+        monitor(old);
+        try {
+            await signIn(old, 'qa.ordinary', firstPassword);
+            await old.waitForURL(url => url.pathname === '/dashboard');
+            await old.goto(BASE + '/security/account');
+            await old.getByRole('heading', { name: 'Account security', exact: true }).waitFor();
+            report.csrf.originalPasswordAccepted = true;
+        } finally {
+            await oldContext.close();
+        }
+        // Both existing sessions must remain eligible until a real change.
+        await stale.goto(BASE + '/security/account');
+        await stale.getByRole('heading', { name: 'Account security', exact: true }).waitFor();
+        await ordinary.goto(BASE + '/security/account');
+        await ordinary.getByRole('heading', { name: 'Account security', exact: true }).waitFor();
+        report.csrf.existingSessionsPreserved = true;
+
         await changePassword(ordinary, firstPassword, next);
         await ordinary.goto(BASE + '/security/account');
         await ordinary.getByRole('heading', { name: 'Account security', exact: true }).waitFor();
@@ -279,6 +322,7 @@ try {
         await stale.getByRole('alert').first().waitFor();
         await signIn(stale, 'qa.ordinary', next);
         await stale.waitForURL(url => url.pathname === '/dashboard');
+        report.csrf.legitimateChangeAndStaleSessionDenial = true;
         await ordinaryContext.close();
         await staleContext.close();
     });
