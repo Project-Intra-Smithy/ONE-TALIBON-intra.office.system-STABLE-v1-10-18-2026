@@ -57,6 +57,18 @@ function totp(secret) {
         | (digest[offset + 2] << 8) | digest[offset + 3];
     return String(number % 1000000).padStart(6, '0');
 }
+// Bounded read-only synthetic DB proof. Fingerprints stay in process memory;
+ // only equality is recorded, never account fields, keys or digest values.
+const fingerprintKey = crypto.randomBytes(32).toString('hex');
+function ordinaryMutationFingerprint() {
+    const script = "\nif (getenv('GITHUB_ACTIONS') !== 'true' || getenv('APP_ENV') !== 'testing'\n    || getenv('DB_DATABASE') !== 'talibon_portal_test' || getenv('DB_HOST') !== '127.0.0.1') {\n    exit(2);\n}\nrequire 'vendor/autoload.php';\n$app = require 'bootstrap/app.php';\n$app->make(\\Illuminate\\Contracts\\Console\\Kernel::class)->bootstrap();\n$db = \\Illuminate\\Support\\Facades\\DB::class;\nif ($db::connection()->getDriverName() !== 'pgsql'\n    || $db::selectOne('select current_database() as name')->name !== 'talibon_portal_test') {\n    exit(2);\n}\n$account = $db::table('users')->where('username', 'qa.ordinary')->first([\n    'id', 'password', 'session_version', 'remember_token', 'mfa_version',\n    'mfa_secret', 'mfa_confirmed_at', 'mfa_recovery_codes',\n    'mfa_recovery_codes_generated_at', 'is_active', 'account_status',\n]);\n$key = getenv('IAM_QA_FINGERPRINT_KEY');\nif (!$account || !is_string($key) || strlen($key) !== 64) {\n    exit(2);\n}\n$audits = $db::table('audit_logs')->where('actor_user_id', $account->id)\n    ->where('action', 'identity.password.changed')->where('outcome', 'allowed')->count();\necho hash_hmac('sha256', json_encode([$account, $audits], JSON_THROW_ON_ERROR), $key);\n";
+    const digest = execFileSync('php', ['-r', script], {
+        encoding: 'utf8', env: { ...process.env, IAM_QA_FINGERPRINT_KEY: fingerprintKey },
+        stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+    if (!/^[a-f0-9]{64}$/.test(digest)) throw Error('Invalid synthetic state fingerprint');
+    return digest;
+}
 async function noOverflow(page, label) {
     const dimensions = await page.evaluate(() => ({
         viewport: innerWidth,
@@ -299,6 +311,7 @@ try {
         // the one intentionally installed by the subsequent legitimate change.
         const forgedPassword = crypto.randomBytes(20).toString('hex') + 'Aa1!';
         const next = crypto.randomBytes(20).toString('hex') + 'Aa1!';
+        const beforeDeniedMutation = ordinaryMutationFingerprint();
         const forged = await ordinary.request.put(BASE + '/security/password', {
             headers: { Accept: 'application/json' },
             data: { current_password: firstPassword, password: forgedPassword, password_confirmation: forgedPassword },
@@ -308,7 +321,8 @@ try {
         // CSRF token/header or browser same-origin Fetch Metadata shortcut.
         // JSON negotiation preserves Laravel's native rejection status.
         assert.equal(forged.status(), 419, 'Password mutation without CSRF token must fail');
-        report.csrf = { tokenlessStatus: forged.status() };
+        assert.ok(beforeDeniedMutation === ordinaryMutationFingerprint(), 'Denied CSRF mutation changed persisted account or success audit');
+        report.csrf = { tokenlessStatus: forged.status(), persistedSecurityStateUnchanged: true };
 
         // Prove the rejection did not install the forged credential. Use new
         // browser contexts, not the existing authenticated session or a mock.
@@ -356,6 +370,49 @@ try {
         report.csrf.legitimateChangeAndStaleSessionDenial = true;
         await ordinaryContext.close();
         await staleContext.close();
+    });
+    await checkpoint('g4-mobile-administrator-registration-and-desktop-ordinary-activation', async () => {
+        await admin.setViewportSize({ width: 390, height: 844 });
+        await admin.goto(BASE + '/admin');
+        const form = admin.getByRole('form', { name: 'Employee registration' });
+        await form.getByLabel('Full name', { exact: true }).fill('Synthetic Mobile Registered Person');
+        await form.getByLabel('Department or office').selectOption({ index: 1 });
+        await form.getByLabel('Position title').fill('Synthetic Staff');
+        await form.getByLabel('Employee number (optional)').fill('QA-MOBILE-001');
+        await form.getByRole('button', { name: 'Register employee', exact: true }).click();
+        const section = admin.locator('section').filter({ has: admin.getByRole('heading', { name: 'Add user' }) }).first();
+        const eligible = section.getByLabel('Eligible employee');
+        const option = eligible.getByRole('option', { name: /Synthetic Mobile Registered Person/ });
+        await option.waitFor({ state: 'attached' });
+        await noOverflow(admin, 'mobile registration');
+        await eligible.selectOption(await option.getAttribute('value'));
+        await section.getByLabel('Portal role').selectOption('employee');
+        await section.getByLabel('Portal username').fill('qa.mobile.ordinary');
+        await section.getByRole('button', { name: 'Generate activation code' }).click();
+        const mobileCode = await getPrivateCode(admin);
+        await noOverflow(admin, 'mobile activation disclosure');
+        await admin.locator('section[role="status"]').getByRole('button', { name: 'Dismiss', exact: true }).click();
+        await admin.locator('section[role="status"] code').waitFor({ state: 'detached' });
+        const desktopContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+        const desktop = await desktopContext.newPage();
+        monitor(desktop);
+        try {
+            await desktop.goto(BASE + '/activate-account');
+            await desktop.getByLabel('Activation code').fill(mobileCode);
+            await desktop.getByLabel('Choose password').fill(firstPassword);
+            await desktop.getByLabel('Confirm password').fill(firstPassword);
+            await desktop.getByRole('button', { name: 'Activate account', exact: true }).click();
+            await desktop.waitForURL(url => url.pathname === '/dashboard');
+            await noOverflow(desktop, 'ordinary desktop activation');
+            const forbidden = await desktop.request.get(BASE + '/admin', { maxRedirects: 0 });
+            assert.equal(forbidden.status(), 403);
+            const task = await desktop.request.get(BASE + '/tasks', { headers: { Accept: 'application/json' } });
+            assert.equal(task.status(), 200);
+        } finally {
+            await desktopContext.close();
+        }
+        await admin.reload();
+        await admin.locator('table tbody tr').filter({ hasText: '@qa.mobile.ordinary' }).waitFor();
     });
     if (fail.length) throw Error('Browser/server runtime error count: ' + fail.length);
     report.completed = true;

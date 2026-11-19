@@ -766,6 +766,128 @@ final class PermanentIamLifecycleTest extends TestCase
         $this->assertSame(1, StaffActivationInvitation::query()->where('user_id', $invite->user_id)->whereNull('revoked_at')->whereNull('consumed_at')->count());
     }
 
+    public function test_distinct_same_name_no_number_registrations_do_not_merge_or_grant_accounts(): void
+    {
+        [$admin, $employee] = $this->actors();
+        $data = [
+            'full_name' => 'Synthetic Same Name',
+            'department_id' => $employee->department_id,
+            'position_title' => 'Staff',
+        ];
+        $this->actingAs($admin);
+        $this->post('/admin/employees', $data)->assertRedirect(route('admin.index'));
+        $this->post('/admin/employees', $data)->assertRedirect(route('admin.index'));
+        $people = Employee::query()->where('full_name', $data['full_name'])->get();
+        $this->assertCount(2, $people);
+        $this->assertNotSame($people[0]->id, $people[1]->id);
+        foreach ($people as $person) {
+            $this->assertNull($person->employee_number);
+            $this->assertNull($person->user_id);
+        }
+        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseCount('staff_activation_invitations', 0);
+    }
+
+    public function test_synthetic_ordinary_role_provisioning_preserves_identity_and_role_on_reissue(): void
+    {
+        [$admin, $employee] = $this->actors();
+        $service = app(StaffActivationService::class);
+        foreach (['employee', 'department_staff', 'department_head'] as $role) {
+            $person = Employee::query()->create([
+                'employee_number' => null, 'full_name' => 'Synthetic '.$role,
+                'department_id' => $employee->department_id, 'position_title' => 'Staff',
+                'employment_status' => 'active',
+            ]);
+            $input = ['employee_id' => $person->id, 'username' => 'synthetic.'.$role, 'role' => $role];
+            $issued = $service->issue($this->iamActorRequest($admin), $admin, $input);
+            $user = $person->fresh()->user;
+            $this->assertSame($role, $user->role);
+            $this->assertFalse($user->is_active);
+            $altered = array_replace($input, ['role' => $role === 'employee' ? 'department_head' : 'employee']);
+            $this->assertDeniedUnchanged($user, fn () => $service->issue($this->iamActorRequest($admin), $admin, $altered), 'account');
+            $next = $service->issue($this->iamActorRequest($admin), $admin, $input);
+            $this->assertNotNull($issued['invitation']->fresh()->revoked_at);
+            $active = $service->redeem($next['code'], self::PASSWORD);
+            $this->assertSame($user->id, $active->id);
+            $this->assertSame($role, $active->role);
+            $this->assertTrue($active->is_active);
+            $this->assertSame($person->id, $active->employee->id);
+            $this->assertSame($employee->department_id, $active->employee->department_id);
+        }
+    }
+
+    public function test_activation_disclosure_audit_failure_rolls_back_marker_and_keeps_redemption_unconsumed(): void
+    {
+        [$admin, $employee] = $this->actors();
+        $issued = $this->issue($admin, $employee, 'custody.rollback');
+        $invite = $issued['invitation'];
+        $user = $employee->fresh()->user;
+        $before = $this->lifecycleSnapshot($user);
+        $audit = \Mockery::mock(\App\Services\AuditLogger::class)->makePartial();
+        $audit->shouldReceive('record')->withArgs(fn ($actor, $event) => $event === 'identity.invitation.disclosed')
+            ->once()->andThrow(new \RuntimeException('Synthetic disclosure audit failure'));
+        $this->app->instance(\App\Services\AuditLogger::class, $audit);
+        try {
+            app(StaffActivationService::class)->claimDisclosure($this->iamActorRequest($admin), $admin, $invite->id, $issued['code']);
+            $this->fail('Disclosure returned despite failed audit.');
+        } catch (\RuntimeException $exception) {
+            $this->assertSame('Synthetic disclosure audit failure', $exception->getMessage());
+        }
+        $this->assertSame($before, $this->lifecycleSnapshot($user));
+        $this->assertNull($invite->fresh()->disclosed_at);
+        $this->assertNull($invite->fresh()->consumed_at);
+        $this->assertDatabaseMissing('audit_logs', ['action' => 'identity.invitation.disclosed', 'entity_id' => $invite->id]);
+        $this->app->forgetInstance(\App\Services\AuditLogger::class);
+        $this->assertTrue(app(StaffActivationService::class)->redeem($issued['code'], self::PASSWORD)->is_active);
+    }
+
+    public function test_https_activation_disclosure_uses_secure_history_and_no_regular_credential_prop(): void
+    {
+        [$admin, $employee] = $this->actors();
+        $this->actingAs($admin)->post('https://localhost/admin/accounts', [
+            'employee_id' => $employee->id, 'username' => 'custody.secure', 'role' => 'employee',
+        ])->assertRedirect()->assertSessionHas('activationCredential');
+        $this->withCookie(config('session.cookie'), session()->getId());
+        $response = $this->get('https://localhost/admin')->assertOk()
+            ->assertHeader('Pragma', 'no-cache')->assertHeader('Expires', '0')
+            ->assertInertia(function (\Inertia\Testing\AssertableInertia $page): void {
+                $page->component('Admin/Index')->missing('activationCredential')->hasFlash('activationCredential');
+                $this->assertTrue($page->toArray()['encryptHistory'] ?? false);
+            });
+        $this->assertStringContainsString('no-store', $response->headers->get('Cache-Control'));
+        $this->assertStringContainsString('private', $response->headers->get('Cache-Control'));
+        $this->get('https://localhost/admin')->assertOk()->assertInertia(function (\Inertia\Testing\AssertableInertia $page): void {
+            $page->missing('activationCredential')->missingFlash('activationCredential');
+            $this->assertFalse((bool) ($page->toArray()['encryptHistory'] ?? false));
+        });
+    }
+
+    public function test_upgrade_preflight_refuses_multiple_outstanding_invitations_before_mutation(): void
+    {
+        $db = \Illuminate\Support\Facades\DB::class;
+        foreach (['users_iam_username_normalized_unique', 'users_iam_email_normalized_unique', 'staff_activation_one_outstanding_per_user'] as $index) {
+            $db::statement('DROP INDEX '.$index);
+        }
+        [$admin, $employee] = $this->actors();
+        $invite = $this->issue($admin, $employee, 'upgrade.invitation')['invitation'];
+        $copy = $invite->replicate(['id']);
+        $copy->forceFill(['code_digest' => hash('sha256', 'synthetic-upgrade-duplicate')])->save();
+        $inactive = $this->userWithEmployee('employee', 'upgrade.inactive');
+        $inactive->forceFill(['is_active' => false, 'account_status' => 'active', 'session_version' => 5])->save();
+        $before = $inactive->fresh()->getAttributes();
+        $migration = require database_path('migrations/2026_11_20_000200_enforce_iam_identity_integrity.php');
+        try {
+            $migration->up();
+            $this->fail('Ambiguous invitation ledger silently migrated.');
+        } catch (\RuntimeException $exception) {
+            $this->assertStringContainsString('multiple outstanding invitations', $exception->getMessage());
+        }
+        $this->assertSame($before, $inactive->fresh()->getAttributes());
+        $this->assertDatabaseCount('staff_activation_invitations', 2);
+        $this->assertNull($invite->fresh()->revoked_at);
+        $this->assertNull($copy->fresh()->revoked_at);
+    }
+
     private function assertDeniedUnchanged(User $user, callable $operation, string $field): void
     {
         $before = $this->lifecycleSnapshot($user);
