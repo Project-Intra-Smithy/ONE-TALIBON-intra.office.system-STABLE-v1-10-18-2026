@@ -573,6 +573,9 @@ final class PermanentIamLifecycleTest extends TestCase
         $invite = StaffActivationInvitation::query()->sole();
         $this->assertNull($invite->disclosed_at);
 
+        // Laravel's HTTP test client does not automatically replay response cookies.
+        // Preserve the issuing session exactly as the browser does.
+        $this->withCookie(config('session.cookie'), session()->getId());
         $response = $this->get('/admin')->assertOk()->assertHeader('Pragma', 'no-cache')->assertHeader('Expires', '0')
             ->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
                 ->component('Admin/Index')->missing('activationCredential')->hasFlash('activationCredential.code', $code));
