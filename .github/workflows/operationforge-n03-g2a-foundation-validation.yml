@@ -195,12 +195,74 @@ jobs:
         env:
           N03_ROLE_SUITE: '1'
         run: php artisan test tests/Feature/LegacyCustodyFoundationTest.php --group=n03-role
+      - name: A08 disposable regression schema lifecycle
+        if: matrix.phase == 'focused' || matrix.phase == 'full'
+        run: |
+          set -euo pipefail
+          # Laravel's PostgreSQL db:wipe enumerates only the configured public
+          # schema. Full Feature tests repeatedly call migrate:fresh; include
+          # the EMPTY synthetic namespace in that existing disposable wipe.
+          # This is not a migration rollback or a role-cluster cleanup.
+          cat > "$RUNNER_TEMP/n03-regression-bootstrap.php" <<'PHP'
+          <?php
+          require getenv('GITHUB_WORKSPACE').'/vendor/autoload.php';
+          if (getenv('GITHUB_ACTIONS') !== 'true' || getenv('APP_ENV') !== 'testing'
+              || getenv('DB_DATABASE') !== 'talibon_portal_test'
+              || getenv('N03_DISPOSABLE_LEASE') !== 'EXCLUSIVE_PG16_SYNTHETIC_ONLY'
+              || getenv('N03_ROLE_SUITE') === '1'
+              || getenv('GITHUB_REF') !== 'refs/heads/candidate/operationforge-n03-g2a-foundation') {
+              throw new RuntimeException('Unsafe N03 regression bootstrap.');
+          }
+          \Illuminate\Database\Connection::resolverFor('pgsql', static function ($connection, $database, $prefix, $config) {
+              return new class($connection, $database, $prefix, $config) extends \Illuminate\Database\PostgresConnection {
+                  public function getSchemaBuilder()
+                  {
+                      if (is_null($this->schemaGrammar)) {
+                          $this->useDefaultSchemaGrammar();
+                      }
+                      return new class($this) extends \Illuminate\Database\Schema\PostgresBuilder {
+                          public function dropAllTables()
+                          {
+                              $db = $this->connection;
+                              $db->transaction(function () use ($db) {
+                                  $guard = $db->selectOne("SELECT current_database() AS db, current_setting('server_version_num')::integer AS version, current_setting('is_superuser') AS bootstrap, to_regnamespace('legacy_custody') IS NOT NULL AS present, EXISTS(SELECT 1 FROM pg_catalog.pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%') AS role_cluster");
+                                  if ($guard->db !== 'talibon_portal_test' || $guard->version < 160000 || $guard->version >= 170000
+                                      || $guard->bootstrap !== 'on' || $guard->role_cluster || getenv('N03_ROLE_SUITE') === '1') {
+                                      throw new RuntimeException('Refusing N03 regression wipe outside the normal isolated cluster.');
+                                  }
+                                  if ($guard->present) {
+                                      $expected = ['bindings','command_results','generations','namespaces','operation_events','operation_gates','operation_items','operations','ownership_links','terminal_receipts'];
+                                      $actual = array_map(static fn ($row) => $row->tablename, $db->select("SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname='legacy_custody' ORDER BY tablename"));
+                                      if ($actual !== $expected
+                                          || (int) $db->selectOne("SELECT count(*) AS n FROM pg_catalog.pg_proc WHERE pronamespace='legacy_custody'::regnamespace")->n !== 7
+                                          || (int) $db->selectOne("SELECT count(*) AS n FROM public.migrations WHERE migration='2026_11_19_200000_create_legacy_custody_foundation'")->n !== 1
+                                          || $db->selectOne("SELECT EXISTS(SELECT 1 FROM public.documents WHERE custody_mode<>'LEGACY_PATH' OR custody_operation_id IS NOT NULL OR custody_ordinal IS NOT NULL) AS marked")->marked
+                                          || $db->selectOne("SELECT EXISTS(SELECT 1 FROM public.audit_logs WHERE custody_operation_id IS NOT NULL) AS marked")->marked) {
+                                          throw new RuntimeException('Refusing noncanonical or marked N03 regression namespace.');
+                                      }
+                                      foreach ($expected as $table) {
+                                          if ($db->selectOne("SELECT EXISTS(SELECT 1 FROM legacy_custody.$table) AS populated")->populated) {
+                                              throw new RuntimeException('Refusing populated N03 regression namespace.');
+                                          }
+                                      }
+                                      $db->unprepared('DROP SCHEMA legacy_custody CASCADE');
+                                      fwrite(STDOUT, "N03 empty regression namespace included in disposable migrate:fresh\n");
+                                  }
+                                  parent::dropAllTables();
+                              });
+                          }
+                      };
+                  }
+              };
+          });
+          PHP
+          php -l "$RUNNER_TEMP/n03-regression-bootstrap.php"
       - name: A08 focused unregistered regression (separate isolated cluster)
         if: matrix.phase == 'focused'
-        run: php artisan test tests/Feature/LegacyPdfPreviewTest.php tests/Feature/CorePortalReportsTest.php tests/Feature/PlanLegacyOriginGuardHardeningTest.php tests/Feature/PlanLegacyCallerBoundaryTest.php tests/Feature/LegacyDocumentCustodyIntegrityTest.php tests/Feature/DocumentAccessPrecedenceTest.php tests/Feature/CoreDocumentAttachmentsTest.php tests/Feature/WorkRequests/WorkRequestRevocationTest.php
+        run: php artisan test --bootstrap="$RUNNER_TEMP/n03-regression-bootstrap.php" tests/Feature/LegacyPdfPreviewTest.php tests/Feature/CorePortalReportsTest.php tests/Feature/PlanLegacyOriginGuardHardeningTest.php tests/Feature/PlanLegacyCallerBoundaryTest.php tests/Feature/LegacyDocumentCustodyIntegrityTest.php tests/Feature/DocumentAccessPrecedenceTest.php tests/Feature/CoreDocumentAttachmentsTest.php tests/Feature/WorkRequests/WorkRequestRevocationTest.php
       - name: A08 full canonical PG16 Feature (separate isolated cluster)
         if: matrix.phase == 'full'
-        run: php artisan test --testsuite=Feature --exclude-group=n03-role
+        run: php artisan test --bootstrap="$RUNNER_TEMP/n03-regression-bootstrap.php" --testsuite=Feature --exclude-group=n03-role
       - uses: actions/setup-node@v4
         if: matrix.phase == 'browser'
         with:
