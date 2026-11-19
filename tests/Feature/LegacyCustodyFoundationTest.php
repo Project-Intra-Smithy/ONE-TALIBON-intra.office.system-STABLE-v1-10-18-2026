@@ -691,4 +691,204 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->assertSame([], $archive->visibleDocumentIds($other, [$id]));
         $this->assertSame(0, (int) $this->scalar("SELECT count(*) FROM public.documents WHERE custody_operation_id=? AND storage_path IS NOT NULL", [$op['operation_id']]));
     }
+
+
+    public function test_a01_wrong_driver_and_database_refuse_before_ddl(): void
+    {
+        $migration = require database_path('migrations/2026_11_19_200000_create_legacy_custody_foundation.php');
+        $original = DB::getDefaultConnection();
+        $baseline = config('database.connections.pgsql');
+        try {
+            foreach ([
+                ['driver' => 'sqlite', 'database' => ':memory:', 'prefix' => ''],
+                array_replace($baseline, ['database' => 'n03_forbidden_database']),
+            ] as $configuration) {
+                config(['database.connections.n03_wrong' => $configuration]);
+                DB::purge('n03_wrong');
+                DB::setDefaultConnection('n03_wrong');
+                try {
+                    $migration->up();
+                    $this->fail('Wrong driver/database accepted.');
+                } catch (RuntimeException $e) {
+                    $this->assertStringContainsString('N03 requires a leased synthetic PG16 database', $e->getMessage());
+                }
+            }
+        } finally {
+            DB::purge('n03_wrong');
+            DB::setDefaultConnection($original);
+        }
+        $this->assertSame(53, (int) $this->scalar('SELECT count(*) FROM public.migrations'));
+    }
+
+    private function asyncRole(string $role, string $passwordVariable): \PgSql\Connection
+    {
+        $password = getenv($passwordVariable);
+        $this->assertMatchesRegularExpression('/^[0-9a-f]{48}$/', (string) $password);
+        $c = pg_connect("host=127.0.0.1 port=5432 dbname=talibon_portal_test user=$role password=$password", PGSQL_CONNECT_FORCE_NEW);
+        $this->assertInstanceOf(\PgSql\Connection::class, $c);
+        $this->assertSame([$role, $role], pg_fetch_row(pg_query($c, 'SELECT session_user,current_user')));
+        $this->assertNotFalse(pg_query($c, "SET lock_timeout='8s'; SET statement_timeout='12s'"));
+        return $c;
+    }
+
+    private function waitForBlocker(\PgSql\Connection $waiter, PDO $holder): void
+    {
+        $pid = (int) $holder->query('SELECT pg_backend_pid()')->fetchColumn();
+        $waitingPid = pg_get_pid($waiter);
+        $deadline = microtime(true) + 5;
+        do {
+            if ((int) $this->scalar('SELECT (CAST(? AS integer)=ANY(pg_blocking_pids(CAST(? AS integer))))::int', [$pid, $waitingPid]) === 1) {
+                fwrite(STDOUT, "N03 deterministic barrier observed\n");
+                return;
+            }
+            usleep(10000);
+        } while (microtime(true) < $deadline);
+        $this->fail('Expected the independent backend to wait on the actual gate holder.');
+    }
+
+    private function sendInsert(\PgSql\Connection $c, string $table, array $data): void
+    {
+        $columns = implode(',', array_keys($data));
+        $params = implode(',', array_map(static fn ($n) => '$'.$n, range(1, count($data))));
+        $this->assertTrue(pg_send_query_params($c, "INSERT INTO $table ($columns) VALUES ($params)", array_values($data)));
+    }
+
+    private function asyncResult(\PgSql\Connection $c, ?string $state): void
+    {
+        $r = pg_get_result($c);
+        $this->assertInstanceOf(\PgSql\Result::class, $r);
+        if ($state === null) {
+            $this->assertSame(PGSQL_COMMAND_OK, pg_result_status($r), pg_result_error($r));
+        } else {
+            $this->assertSame($state, pg_result_error_field($r, PGSQL_DIAG_SQLSTATE), pg_result_error($r));
+            fwrite(STDOUT, "N03 post-wait denial SQLSTATE $state\n");
+        }
+        $this->assertFalse(pg_get_result($c));
+    }
+
+    public function test_a06_after_wait_reads_current_gate_and_terminal(): void
+    {
+        $stage = $this->asyncRole('n03_stage', 'N03_STAGE_PASSWORD');
+        $reconcile = $this->asyncRole('n03_reconcile', 'N03_RECONCILE_PASSWORD');
+        $command = $this->asyncRole('n03_command', 'N03_COMMAND_PASSWORD');
+        $close = "UPDATE legacy_custody.operation_gates SET state='CLOSED',fence_no=2 WHERE operation_id=?";
+        $asyncClose = "UPDATE legacy_custody.operation_gates SET state='CLOSED',fence_no=2 WHERE operation_id=$1";
+        try {
+            // Closure wins against a stage insert actually waiting on the gate.
+            [$op, $items] = $this->reservation();
+            $this->reserve($op, $items);
+            $this->reconcile->beginTransaction();
+            $this->custodyQuery($this->reconcile, $close, [$op['operation_id']]);
+            $this->sendInsert($stage, 'legacy_custody.generations', $this->generation($items[0]));
+            $this->waitForBlocker($stage, $this->reconcile);
+            $this->reconcile->commit();
+            $this->asyncResult($stage, '23514');
+            $this->assertSame(0, (int) $this->scalar('SELECT count(*) FROM legacy_custody.generations WHERE operation_id=?', [$op['operation_id']]));
+            $this->absent($op);
+
+            // Stage wins first; subsequent close retains the staged identity.
+            [$op, $items] = $this->reservation();
+            $this->reserve($op, $items);
+            $this->stage->beginTransaction();
+            $this->insert($this->stage, 'legacy_custody.generations', $this->generation($items[0]));
+            $this->assertTrue(pg_send_query_params($reconcile, $asyncClose, [$op['operation_id']]));
+            $this->waitForBlocker($reconcile, $this->stage);
+            $this->stage->commit();
+            $this->asyncResult($reconcile, null);
+            $this->assertSame('CLOSED', $this->scalar('SELECT state FROM legacy_custody.operation_gates WHERE operation_id=?', [$op['operation_id']]));
+            $this->assertSame(1, (int) $this->scalar('SELECT count(*) FROM legacy_custody.generations WHERE operation_id=?', [$op['operation_id']]));
+            $this->absent($op);
+
+            // Closure also wins against an already staged command result.
+            [$op, $items] = $this->reservation();
+            $this->reserve($op, $items);
+            $this->stageItems($items);
+            $result = $this->source($op, 'submitted');
+            $this->reconcile->beginTransaction();
+            $this->custodyQuery($this->reconcile, $close, [$op['operation_id']]);
+            $this->sendInsert($command, 'legacy_custody.command_results', $result);
+            $this->waitForBlocker($command, $this->reconcile);
+            $this->reconcile->commit();
+            $this->asyncResult($command, '23514');
+            $this->absent($op);
+
+            // Fully committed command wins; a waiting close must see the receipt.
+            [$op, $items] = $this->reservation();
+            $this->reserve($op, $items);
+            $this->stageItems($items);
+            $result = $this->source($op, 'submitted');
+            $this->command->beginTransaction();
+            $this->insert($this->command, 'legacy_custody.command_results', $result);
+            $this->artifact($op, $items[0], $this->links($result, true, 'route_evidence'));
+            $this->insert($this->command, 'legacy_custody.terminal_receipts', $this->receipt($op));
+            $this->assertTrue(pg_send_query_params($reconcile, $asyncClose, [$op['operation_id']]));
+            $this->waitForBlocker($reconcile, $this->command);
+            $this->command->commit();
+            $this->asyncResult($reconcile, '23514');
+            $this->assertSame('COMMITTED', $this->scalar('SELECT outcome FROM legacy_custody.terminal_receipts WHERE operation_id=?', [$op['operation_id']]));
+            $this->assertSame('OPEN', $this->scalar('SELECT state FROM legacy_custody.operation_gates WHERE operation_id=?', [$op['operation_id']]));
+            $this->assertSame(1, (int) $this->scalar('SELECT count(*) FROM legacy_custody.bindings WHERE operation_id=?', [$op['operation_id']]));
+        } finally {
+            foreach ([$this->stage, $this->command, $this->reconcile] as $holder) {
+                if ($holder->inTransaction()) {
+                    $holder->rollBack();
+                }
+            }
+            foreach ([$stage, $reconcile, $command] as $c) {
+                pg_close($c);
+            }
+        }
+    }
+
+    public function test_a07_correspondence_event_report_and_unregistered_projection_parity(): void
+    {
+        [$op, $items] = $this->reservation('correspondence_register', 'register');
+        $this->reserve($op, $items);
+        $this->stageItems($items);
+        $result = $this->source($op, 'registered');
+        $links = $this->links($result, true, 'action_evidence');
+        $oldUuid = $this->uuid();
+        $old = $this->insert($this->ordinary, 'public.documents', [
+            'public_id' => $oldUuid, 'title' => 'Synthetic old archive control', 'document_type' => 'supporting_document',
+            'classification' => 'internal', 'storage_disk' => 'documents', 'storage_path' => 'synthetic/old.pdf',
+            'mime_type' => 'application/pdf', 'size_bytes' => 123, 'checksum_sha256' => str_repeat('b', 64),
+            'owner_department_id' => $this->office, 'uploaded_by_user_id' => $this->actor->id,
+        ], 'id');
+        $oldLink = $this->insert($this->ordinary, 'public.document_links', $links[0] + ['document_id' => $old, 'created_by_user_id' => $this->actor->id], 'id');
+        $archive = app(AuthorizedArchiveSql::class);
+        $report = app(DocumentMovementReportQuery::class);
+        $this->actingAs($this->actor);
+        $before = $archive->workspace($this->actor, ['document' => $oldUuid]);
+        $this->assertSame($oldUuid, $before['selected']['publicId']);
+        $this->assertFalse($report->eligibleEventEvidence($this->actor, 'correspondence', $result['event_id']));
+        $reportBefore = $report->rows($this->actor, [], false)->all();
+        $this->assertContains('correspondence:'.$result['event_id'], array_column($reportBefore, 'id'));
+        [[$id, $uuid, $audit]] = $this->commit($op, $items, $result, $links);
+        $after = $archive->workspace($this->actor, ['document' => $oldUuid]);
+        $this->assertSame($before['selected'], $after['selected']);
+        $this->assertSame($before['counts']['all'] + 1, $after['counts']['all']);
+        $this->assertTrue($report->eligibleEventEvidence($this->actor, 'correspondence', $result['event_id']));
+        $this->assertSame($reportBefore, $report->rows($this->actor, [], false)->all());
+        foreach ($reportBefore as $row) {
+            $this->assertArrayNotHasKey('hasEvidence', $row);
+        }
+        $this->assertSame([$id], $archive->visibleDocumentIds($this->actor, [$id]));
+        $this->assertSame([$id => false], $archive->visibleDocumentPreviewEligibility($this->actor, [$id]));
+        $spoof = $this->markedAudit($op, $id);
+        unset($spoof['custody_operation_id']);
+        $this->insert($this->ordinary, 'public.audit_logs', $spoof);
+        $this->assertSame(1, (int) $this->scalar('SELECT count(*) FROM public.audit_logs WHERE entity_id=? AND custody_operation_id IS NOT NULL', [$id]));
+        $this->assertSame($audit, (int) $this->scalar('SELECT upload_audit_id FROM legacy_custody.bindings WHERE document_id=?', [$id]));
+        $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.document_links SET document_id=? WHERE id=?', [$id, $oldLink]));
+        $this->assertSame((int) $old, (int) $this->scalar('SELECT document_id FROM public.document_links WHERE id=?', [$oldLink]));
+        foreach (['preview','download'] as $route) {
+            $this->get('/documents/'.$uuid.'/'.$route)->assertNotFound();
+        }
+        $other = $this->makeActor();
+        $this->actingAs($other);
+        $this->assertFalse($report->eligibleEventEvidence($other, 'correspondence', $result['event_id']));
+        $this->assertNotContains('correspondence:'.$result['event_id'], array_column($report->rows($other, [], false)->all(), 'id'));
+        $this->assertSame([], $archive->visibleDocumentIds($other, [$id, $old]));
+        $this->assertNull($archive->workspace($other, ['document' => $uuid])['selected']);
+    }
 }

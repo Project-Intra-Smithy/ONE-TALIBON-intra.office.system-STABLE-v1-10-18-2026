@@ -43,12 +43,32 @@ BEGIN
     THEN RAISE EXCEPTION 'column ACL mismatch % %.%',r,t,a.attname; END IF;
    END LOOP;
   END LOOP;
+  FOR a IN SELECT p.oid,p.proname FROM pg_catalog.pg_proc p WHERE p.pronamespace='legacy_custody'::regnamespace LOOP
+   IF has_function_privilege(r,a.oid,'EXECUTE') IS DISTINCT FROM
+     ((r LIKE 'n03_%' AND a.proname='lock_pending') OR (r='n03_reconcile' AND a.proname='zero_artifacts') OR (r='n03_command' AND a.proname='expected_links'))
+   THEN RAISE EXCEPTION 'function execute mismatch % %',r,a.proname; END IF;
+  END LOOP;
   IF r LIKE 'n03_%' THEN
-   FOR a IN SELECT table_name,column_name FROM information_schema.columns WHERE table_schema='public' LOOP
-    IF has_column_privilege(r,'public.'||a.table_name,a.column_name,'UPDATE') IS DISTINCT FROM
+   FOR a IN SELECT c.oid AS relation_oid,c.relname AS table_name,att.attname AS column_name
+     FROM pg_catalog.pg_class c JOIN pg_catalog.pg_namespace ns ON ns.oid=c.relnamespace
+     JOIN pg_catalog.pg_attribute att ON att.attrelid=c.oid
+     WHERE ns.nspname='public' AND c.relkind IN ('r','p','v','m','f') AND att.attnum>0 AND NOT att.attisdropped LOOP
+    IF has_column_privilege(r,a.relation_oid,a.column_name,'SELECT') IS DISTINCT FROM
+      ((r='n03_command' AND ((a.table_name='documents' AND a.column_name IN ('id','public_id','document_type','owner_department_id','uploaded_by_user_id','size_bytes','checksum_sha256','mime_type','storage_disk','storage_path','security_domain','custody_mode','custody_operation_id','custody_ordinal'))
+       OR (a.table_name IN ('users','departments','transactions','correspondence_records','travel_orders') AND a.column_name='id')
+       OR (a.table_name='transaction_events' AND a.column_name IN ('id','transaction_id','actor_user_id','action'))
+       OR (a.table_name='correspondence_events' AND a.column_name IN ('id','correspondence_record_id','actor_user_id','event','office_department_id','correlation_id','n03_municipal_actor'))
+       OR (a.table_name='travel_order_events' AND a.column_name IN ('id','travel_order_id','actor_user_id','event'))
+       OR (a.table_name IN ('plan_document_origin_receipts','plan_document_bindings') AND a.column_name='document_id')))
+       OR (r='n03_reconcile' AND a.table_name='documents' AND a.column_name IN ('id','custody_mode','custody_operation_id','custody_ordinal'))
+       OR (r IN ('n03_command','n03_reconcile') AND ((a.table_name='document_links' AND a.column_name IN ('id','document_id','linkable_type','linkable_id','relationship','created_by_user_id'))
+       OR (a.table_name='audit_logs' AND a.column_name IN ('id','custody_operation_id','entity_id','entity_type','action','outcome','actor_user_id','actor_department_id','correlation_id','integration_client_id')))))
+    OR has_column_privilege(r,a.relation_oid,a.column_name,'REFERENCES')
+    THEN RAISE EXCEPTION 'public read/reference ACL mismatch % %.%',r,a.table_name,a.column_name; END IF;
+    IF has_column_privilege(r,a.relation_oid,a.column_name,'UPDATE') IS DISTINCT FROM
       (r='n03_command' AND a.table_name='documents' AND a.column_name='updated_at')
     THEN RAISE EXCEPTION 'public update mismatch % %.%',r,a.table_name,a.column_name; END IF;
-    IF has_column_privilege(r,'public.'||a.table_name,a.column_name,'INSERT') IS DISTINCT FROM
+    IF has_column_privilege(r,a.relation_oid,a.column_name,'INSERT') IS DISTINCT FROM
       (r='n03_command' AND ((a.table_name='documents' AND a.column_name IN ('public_id','title','document_type','classification','original_name','mime_type','size_bytes','storage_disk','storage_path','checksum_sha256','owner_department_id','uploaded_by_user_id','retention_code','metadata','created_at','updated_at','security_domain','custody_mode','custody_operation_id','custody_ordinal'))
       OR (a.table_name='document_links' AND a.column_name IN ('document_id','linkable_type','linkable_id','relationship','created_by_user_id','created_at','updated_at'))
       OR (a.table_name='audit_logs' AND a.column_name IN ('actor_user_id','actor_department_id','action','entity_type','entity_id','outcome','summary','ip_address','user_agent','correlation_id','created_at','integration_client_id','custody_operation_id'))))
