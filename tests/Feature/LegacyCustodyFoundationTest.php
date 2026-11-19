@@ -1026,4 +1026,231 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->assertSame(1, (int) $this->scalar('SELECT count(*) FROM public.audit_logs WHERE custody_operation_id=?', [$op['operation_id']]));
         $this->assertSame('COMMITTED', $this->scalar('SELECT outcome FROM legacy_custody.terminal_receipts WHERE operation_id=?', [$op['operation_id']]));
     }
+
+    /** Read the entire persisted private tuple using the real command principal. */
+    private function replaySnapshot(string $op): array
+    {
+        $rows = [];
+        foreach ([
+            'operations' => 'operation_id', 'operation_items' => 'ordinal',
+            'operation_gates' => 'operation_id', 'generations' => 'ordinal',
+            'command_results' => 'operation_id', 'bindings' => 'ordinal',
+            'terminal_receipts' => 'operation_id', 'operation_events' => 'event_id',
+        ] as $table => $order) {
+            $rows[$table] = $this->custodyQuery($this->command,
+                "SELECT * FROM legacy_custody.$table WHERE operation_id=? ORDER BY $order", [$op])->fetchAll(PDO::FETCH_ASSOC);
+        }
+        $rows['ownership_links'] = $this->custodyQuery($this->command,
+            'SELECT m.* FROM legacy_custody.ownership_links m JOIN legacy_custody.bindings b ON b.document_id=m.binding_document_id WHERE b.operation_id=? ORDER BY m.public_document_link_id',
+            [$op])->fetchAll(PDO::FETCH_ASSOC);
+
+        return $rows;
+    }
+
+    private function tupleMatches(array $expected, array $actual): bool
+    {
+        foreach ($expected as $key => $value) {
+            if (! array_key_exists($key, $actual) || ($value === null ? $actual[$key] !== null : ($actual[$key] === null || (string) $value !== (string) $actual[$key]))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /** Test-only readback; no application replay API or digest-only acceptance. */
+    private function replayOutcome(array $op, array $items): ?array
+    {
+        $row = $this->custodyQuery($this->command,
+            'SELECT * FROM legacy_custody.operations WHERE namespace_id=? AND actor_user_id=? AND office_id=? AND service_identity=? AND command_kind=? AND idempotency_hash=?',
+            array_map(fn ($k) => $op[$k], ['namespace_id','actor_user_id','office_id','service_identity','command_kind','idempotency_hash']))->fetch(PDO::FETCH_ASSOC);
+        if (! $row || ! $this->tupleMatches($op, $row)) {
+            return null;
+        }
+        $snapshot = $this->replaySnapshot($row['operation_id']);
+        if (count($items) !== count($snapshot['operation_items'])) {
+            return null;
+        }
+        foreach ($items as $i => $item) {
+            if (! $this->tupleMatches($item, $snapshot['operation_items'][$i])) {
+                return null;
+            }
+        }
+
+        return $snapshot;
+    }
+
+    private function publicSnapshot(array $ids): array
+    {
+        $rows = [];
+        $params = implode(',', array_fill(0, count($ids), '?'));
+        foreach (['documents' => 'id', 'document_links' => 'document_id', 'audit_logs' => 'entity_id'] as $table => $column) {
+            $rows[$table] = $this->custodyQuery($this->root,
+                "SELECT * FROM public.$table WHERE $column IN ($params) ORDER BY id", $ids)->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        return $rows;
+    }
+
+    private function deniedAt(PDO $principal, string $state, string $message, callable $action): void
+    {
+        $role = $principal->query('SELECT current_user')->fetchColumn();
+        $this->denied($principal, $state, function () use ($action, $message, $role, $state) {
+            try {
+                $action();
+            } catch (PDOException $e) {
+                $this->assertStringContainsString($message, $e->getMessage());
+                fwrite(STDOUT, "N03 targeted principal=$role SQLSTATE $state path=$message\n");
+                throw $e;
+            }
+        });
+    }
+
+    public function test_a06_v01_completed_relational_replay_and_identical_hash_mismatch(): void
+    {
+        [$op, $items] = $this->reservation('transaction_create', 'create', 2);
+        $this->reserve($op, $items);
+        $generations = [];
+        foreach ($items as $item) {
+            $generation = $this->generation($item);
+            $this->insert($this->stage, 'legacy_custody.generations', $generation);
+            $generations[] = $generation;
+        }
+        $result = $this->source($op, 'submitted');
+        $this->command->beginTransaction();
+        $this->insert($this->command, 'legacy_custody.command_results', $result);
+        $documents = [];
+        foreach ($items as $item) {
+            $documents[] = $this->artifact($op, $item, $this->links($result, true, 'route_evidence'));
+        }
+        $receipt = $this->receipt($op);
+        $this->insert($this->command, 'legacy_custody.terminal_receipts', $receipt);
+        $this->command->commit();
+
+        $id = $op['operation_id'];
+        $before = $this->replaySnapshot($id);
+        $public = $this->publicSnapshot(array_column($documents, 0));
+        $this->command->beginTransaction();
+        $this->command->exec('SET TRANSACTION READ ONLY');
+        $this->assertSame($before, $this->replayOutcome($op, $items));
+        $this->assertTrue($this->tupleMatches($op, $before['operations'][0]));
+        $this->assertTrue($this->tupleMatches($result, $before['command_results'][0]));
+        $this->assertTrue($this->tupleMatches($receipt, $before['terminal_receipts'][0]));
+        $this->assertTrue($this->tupleMatches(['state'=>'OPEN','fence_no'=>1], $before['operation_gates'][0]));
+        $this->assertCount(2, $before['bindings']);
+        $this->assertCount(2, $before['generations']);
+        $this->assertCount(4, $before['ownership_links']);
+        foreach ($items as $i => $item) {
+            $this->assertTrue($this->tupleMatches($item, $before['operation_items'][$i]));
+            $this->assertTrue($this->tupleMatches($generations[$i], $before['generations'][$i]));
+            $this->assertTrue($this->tupleMatches([
+                'document_id'=>$documents[$i][0], 'document_public_id'=>$documents[$i][1],
+                'upload_audit_id'=>$documents[$i][2], 'generation_id'=>$item['generation_id'],
+                'operation_id'=>$id, 'ordinal'=>$item['ordinal'], 'fence_no'=>1,
+            ], $before['bindings'][$i]));
+        }
+        $mismatch = $items;
+        $mismatch[1]['size_bytes'] = 124;
+        $this->assertNull($this->replayOutcome($op, $mismatch));
+        $this->command->commit();
+        fwrite(STDOUT, "N03 V01 n03_command read-only exact replay COMMITTED; same-hash descriptor mismatch REJECTED\n");
+
+        $duplicate = array_replace($op, ['operation_id'=>$this->uuid()]);
+        $this->denied($this->stage, '23505', fn () => $this->reserve($duplicate, $items));
+        $this->assertSame(0, (int) $this->scalar('SELECT count(*) FROM legacy_custody.operations WHERE operation_id=?', [$duplicate['operation_id']]));
+        $this->deniedAt($this->command, '23514', 'custody fence unavailable',
+            fn () => $this->insert($this->command, 'legacy_custody.bindings', $before['bindings'][0]));
+        $this->assertSame($before, $this->replaySnapshot($id));
+        $this->assertSame($public, $this->publicSnapshot(array_column($documents, 0)));
+    }
+
+    public function test_a06_v01_direct_binding_wrong_fence_and_closed_pending(): void
+    {
+        [$op, $items] = $this->reservation();
+        $this->reserve($op, $items);
+        $this->stageItems($items);
+        $result = $this->source($op, 'submitted');
+        $before = $this->replaySnapshot($op['operation_id']);
+        $this->command->beginTransaction();
+        $this->insert($this->command, 'legacy_custody.command_results', $result);
+        $data = $this->docData($op, $items[0], 'supporting_document');
+        $id = (int) $this->insert($this->command, 'public.documents', $data, 'id');
+        $audit = $this->insert($this->command, 'public.audit_logs', $this->markedAudit($op, $id), 'id');
+        $binding = [
+            'document_id'=>$id, 'document_public_id'=>$data['public_id'],
+            'generation_id'=>$items[0]['generation_id'], 'operation_id'=>$op['operation_id'],
+            'ordinal'=>1, 'fence_no'=>1, 'upload_audit_id'=>$audit,
+        ];
+        $this->deniedAt($this->command, '23514', 'bindings_fence_no_check',
+            fn () => $this->insert($this->command, 'legacy_custody.bindings', array_replace($binding, ['fence_no'=>2])));
+        $this->assertSame($before, $this->replaySnapshot($op['operation_id']));
+        $this->assertSame(['documents'=>[], 'document_links'=>[], 'audit_logs'=>[]], $this->publicSnapshot([$id]));
+        $this->custodyQuery($this->reconcile, "UPDATE legacy_custody.operation_gates SET state='CLOSED',fence_no=2 WHERE operation_id=?", [$op['operation_id']]);
+        $closed = $this->replaySnapshot($op['operation_id']);
+        $this->assertSame('CLOSED', $closed['operation_gates'][0]['state']);
+        // Exact previously prepared binding; its rolled-back public keys cannot mask the BEFORE gate denial.
+        $this->deniedAt($this->command, '23514', 'custody fence unavailable',
+            fn () => $this->insert($this->command, 'legacy_custody.bindings', $binding));
+        $this->assertSame($closed, $this->replaySnapshot($op['operation_id']));
+        $this->absent($op);
+    }
+
+    public function test_a04_v02_ordinary_reverse_reparent_and_extra_registry_link(): void
+    {
+        [$op, $items] = $this->reservation();
+        $this->reserve($op, $items);
+        $this->stageItems($items);
+        $result = $this->source($op, 'submitted');
+        $links = $this->links($result, true, 'route_evidence');
+        [[$id]] = $this->commit($op, $items, $result, $links);
+        $old = (int) $this->insert($this->ordinary, 'public.documents', [
+            'public_id'=>$this->uuid(), 'title'=>'Synthetic reverse link control',
+            'storage_disk'=>'documents', 'storage_path'=>'synthetic/reverse.pdf',
+        ], 'id');
+        $other = $this->source($op, 'submitted');
+        $extra = $this->links($other, true, 'route_evidence')[0];
+        $control = $this->insert($this->ordinary, 'public.document_links',
+            $extra + ['document_id'=>$old, 'created_by_user_id'=>$this->actor->id], 'id');
+        $this->assertGreaterThan(0, (int) $control);
+        $link = $this->scalar('SELECT id FROM public.document_links WHERE document_id=? ORDER BY id LIMIT 1', [$id]);
+        $private = $this->replaySnapshot($op['operation_id']);
+        $public = $this->publicSnapshot([$id, $old]);
+        $this->deniedAt($this->ordinary, '23514', 'registry link immutable',
+            fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.document_links SET document_id=? WHERE id=?', [$old, $link]));
+        $this->deniedAt($this->ordinary, '23514', 'registry link immutable',
+            fn () => $this->insert($this->ordinary, 'public.document_links',
+                $extra + ['document_id'=>$id, 'created_by_user_id'=>$this->actor->id]));
+        $this->assertSame($private, $this->replaySnapshot($op['operation_id']));
+        $this->assertSame($public, $this->publicSnapshot([$id, $old]));
+    }
+
+    public function test_a04_v02_unmarked_audit_cannot_bind_pending_command(): void
+    {
+        [$op, $items] = $this->reservation();
+        $this->reserve($op, $items);
+        $this->stageItems($items);
+        $result = $this->source($op, 'submitted');
+        $before = $this->replaySnapshot($op['operation_id']);
+        $this->command->beginTransaction();
+        $this->insert($this->command, 'legacy_custody.command_results', $result);
+        $data = $this->docData($op, $items[0], 'supporting_document');
+        $id = (int) $this->insert($this->command, 'public.documents', $data, 'id');
+        $row = $this->markedAudit($op, $id);
+        unset($row['custody_operation_id']);
+        $spoof = $this->insert($this->ordinary, 'public.audit_logs', $row, 'id');
+        $this->assertNull($this->scalar('SELECT custody_operation_id FROM public.audit_logs WHERE id=?', [$spoof]));
+        $this->assertSame($id, (int) $this->scalar('SELECT entity_id FROM public.audit_logs WHERE id=?', [$spoof]));
+        $ordinaryBefore = $this->publicSnapshot([$id]);
+        $this->assertCount(1, $ordinaryBefore['audit_logs']);
+        $this->assertSame([], $ordinaryBefore['documents']);
+        $this->deniedAt($this->command, '23503', 'bindings_upload_audit_id_operation_id_document_id_fkey',
+            fn () => $this->insert($this->command, 'legacy_custody.bindings', [
+                'document_id'=>$id, 'document_public_id'=>$data['public_id'],
+                'generation_id'=>$items[0]['generation_id'], 'operation_id'=>$op['operation_id'],
+                'ordinal'=>1, 'fence_no'=>1, 'upload_audit_id'=>$spoof,
+            ]));
+        $this->assertSame($before, $this->replaySnapshot($op['operation_id']));
+        $this->assertSame($ordinaryBefore, $this->publicSnapshot([$id]));
+        $this->absent($op);
+    }
 }
