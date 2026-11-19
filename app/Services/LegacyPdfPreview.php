@@ -21,24 +21,33 @@ final class LegacyPdfPreview
             return null;
         }
         $bytes = $object['bytes'];
+
+        return self::isValidPdfBytes($bytes) ? $bytes : null;
+    }
+
+    public static function isValidPdfBytes(string $bytes): bool
+    {
         $size = strlen($bytes);
+        if ($size === 0) {
+            return false;
+        }
 
         try {
             // Format/structure checks, not full parsing or malware scanning.
             if (! preg_match('/\A%PDF-(?:1\.[0-7]|2\.0)(?:\r\n|\r|\n)/', $bytes)
                 || (new \finfo(FILEINFO_MIME_TYPE))->buffer($bytes) !== 'application/pdf'
                 || ! preg_match('/startxref\s+([0-9]+)\s+%%EOF[ \r\n\t]*\z/', $bytes, $xref)) {
-                return null;
+                return false;
             }
             $offset = filter_var($xref[1], FILTER_VALIDATE_INT);
             if (! is_int($offset) || $offset < 0 || $offset >= $size
                 || ! preg_match('/\A(?:xref\b|[0-9]+\s+[0-9]+\s+obj\b)/', substr($bytes, $offset, 128))) {
-                return null;
+                return false;
             }
 
-            return $bytes;
+            return true;
         } catch (Throwable) {
-            return null;
+            return false;
         }
     }
 
