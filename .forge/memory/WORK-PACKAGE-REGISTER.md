@@ -825,3 +825,9 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 - Factory PR14 exact 0e8765de6e0e87ea9b4503714f08fa650e1a79c6 read; no native agent session capability exposed here. Serial AI-assisted execution only, independent review held pending actual separate reviewer; G1 confirmation due G4. LGU W01/W03 policy, production, merge/deploy and final acceptance held. NEXT after reciprocal crosslink: implement G2A R01/R02; no application writes on main.
 
 - **G2A caller fixture amendment:** [#7020466740](https://github.com/Project-Intra-Smithy/engineering-hub/issues/138#issuecomment-7020466740), add tests/TestCase.php only for opt-in synthetic administrator setup and captured request context helpers, no change to actingAs or environment guards. Ten-path cap, same lease and frozen baseline.
+
+
+## CHECKPOINT / OT-IAM-PR48-AUTONOMOUS-FULL-CLOSURE-R1 / G2A TECHNICAL PASS + G2B START / 2026-11-20 PHT
+
+- G2A R01/R02 immutable technical candidate `40c3f3e0b33ab5439e498d01005e30656f481532`; [receipt #7020776532](https://github.com/Project-Intra-Smithy/engineering-hub/issues/138#issuecomment-7020776532). IAM 44603976166 / Forge 44603976179 success; 643/7886, 18/247, FE111 UX9, browser11, cleanup. Nox actual GitHub review request issued; separate context not available here, formal HOLD remains; no CLOSE.
+- G2B [START #7020824021](https://github.com/Project-Intra-Smithy/engineering-hub/issues/138#issuecomment-7020824021) same sole lease IAM-AUTO-R1-W01, existing PR48 successor only; ten-path custody scope, sealed short-lived request-bound envelope, durable disclosure marker, locked invitation validation, flash/no-store/history/input redaction, exact-SHA tests. Additive migration justified by concurrent replay prevention; no plaintext DB, no other schema changes. G2A frozen evidence immutable. NEXT after crosslink G2B source implementation; independent review, LGU policy, separate lanes, merge/deploy held.
