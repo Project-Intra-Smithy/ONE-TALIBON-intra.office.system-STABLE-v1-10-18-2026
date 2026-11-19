@@ -363,6 +363,7 @@ final class ExternalWatermarkAuthority
         $record['hmac'] = $this->computeHmac($unsigned, $hmacKey);
         $line = json_encode($record, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES)."\n";
 
+        $existedBefore = file_exists($storePath);
         $fp = @fopen($storePath, 'ab');
         if (! is_resource($fp)) {
             throw new CustodyViolationException("Unable to open external watermark ledger [{$storePath}] for append.");
@@ -375,6 +376,17 @@ final class ExternalWatermarkAuthority
             }
         } finally {
             fclose($fp);
+        }
+
+        if (! $existedBefore && PHP_OS_FAMILY !== 'Windows' && function_exists('fsync')) {
+            $dirFp = @fopen(dirname($storePath), 'rb');
+            if (is_resource($dirFp)) {
+                try {
+                    @fsync($dirFp);
+                } finally {
+                    fclose($dirFp);
+                }
+            }
         }
     }
 

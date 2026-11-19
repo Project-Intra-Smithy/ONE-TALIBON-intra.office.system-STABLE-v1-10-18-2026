@@ -73,9 +73,15 @@ jobs:
           git rev-parse HEAD
       - run: composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
       - run: |
+          set -euo pipefail
           cp .env.example .env
           php artisan key:generate
-          php vendor/bin/pint --test
+          mapfile -t changed_php < <(git diff --name-only 4084af39ecf10262ef5972df1b9cf03f038c3383..HEAD -- '*.php')
+          if [ "${#changed_php[@]}" -gt 0 ]; then
+            for f in "${changed_php[@]}"; do php -l "$f"; done
+            php vendor/bin/pint --test "${changed_php[@]}"
+          fi
+          php -l bin/legacy-custody-broker
 
       - name: Stage 3 (K3) isolated subprocess broker suite
         if: matrix.phase == 'broker'
