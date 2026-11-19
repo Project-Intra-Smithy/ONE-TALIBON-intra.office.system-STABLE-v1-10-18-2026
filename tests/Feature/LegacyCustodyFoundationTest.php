@@ -891,4 +891,136 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->assertSame([], $archive->visibleDocumentIds($other, [$id, $old]));
         $this->assertNull($archive->workspace($other, ['document' => $uuid])['selected']);
     }
+
+
+    public function test_a02_legacy_and_typed_plan_writes_remain_available_after_install(): void
+    {
+        $now = gmdate('Y-m-d H:i:sP');
+        $family = $this->insert($this->root, 'public.plan_families', [
+            'public_id' => $this->uuid(), 'title' => 'Synthetic plan family', 'created_at' => $now, 'updated_at' => $now,
+        ], 'id');
+        $edition = $this->insert($this->root, 'public.plan_editions', [
+            'public_id' => $this->uuid(), 'plan_family_id' => $family, 'edition_label' => 'Synthetic plan edition',
+            'created_at' => $now, 'updated_at' => $now,
+        ], 'id');
+        $doc = $this->insert($this->ordinary, 'public.documents', [
+            'public_id' => $this->uuid(), 'title' => 'Synthetic Plan document', 'storage_disk' => 'local',
+            'storage_path' => 'synthetic/n03-plan.pdf',
+        ], 'id');
+        $link = $this->insert($this->ordinary, 'public.document_links', [
+            'document_id' => $doc, 'linkable_type' => 'App\\Models\\WorkflowTransaction',
+            'linkable_id' => 999999999, 'relationship' => 'attachment', 'created_by_user_id' => $this->actor->id,
+        ], 'id');
+        $this->custodyQuery($this->ordinary, 'DELETE FROM public.document_links WHERE id=?', [$link]);
+        $this->assertSame(0, (int) $this->scalar('SELECT count(*) FROM public.document_links WHERE id=?', [$link]));
+        $this->custodyQuery($this->plan, "UPDATE public.documents SET security_domain='EVER_PLAN' WHERE id=?", [$doc]);
+        $binding = [
+            'document_id' => $doc, 'plan_edition_id' => $edition, 'role' => 'master', 'revision_no' => 1,
+            'binding_state' => 'QUARANTINED', 'created_at' => $now, 'updated_at' => $now,
+        ];
+        $this->insert($this->plan, 'public.plan_document_bindings', $binding);
+        $this->assertSame(1, (int) $this->scalar('SELECT count(*) FROM public.plan_document_bindings WHERE document_id=?', [$doc]));
+        $this->denied($this->ordinary, '23514', fn () => $this->insert($this->ordinary, 'public.document_links', [
+            'document_id' => $doc, 'linkable_type' => 'App\\Models\\WorkflowTransaction', 'linkable_id' => 999999999, 'relationship' => 'attachment',
+        ]));
+        [$op, $items] = $this->reservation();
+        $this->reserve($op, $items);
+        $this->stageItems($items);
+        $result = $this->source($op, 'submitted');
+        [[$registry]] = $this->commit($op, $items, $result, $this->links($result, true, 'route_evidence'));
+        $binding['document_id'] = $registry;
+        $binding['revision_no'] = 2;
+        $this->denied($this->plan, '23514', fn () => $this->insert($this->plan, 'public.plan_document_bindings', $binding));
+        $this->assertSame(0, (int) $this->scalar('SELECT count(*) FROM public.plan_document_bindings WHERE document_id=?', [$registry]));
+    }
+
+    public function test_a03_generation_tuple_role_and_closed_identity_reuse(): void
+    {
+        [$op, $items] = $this->reservation();
+        $this->reserve($op, $items);
+        $bad = $this->generation($items[0]);
+        $bad['sha256'] = str_repeat('e', 64);
+        $this->denied($this->stage, '23503', fn () => $this->insert($this->stage, 'legacy_custody.generations', $bad));
+        $this->denied($this->command, '42501', fn () => $this->insert($this->command, 'legacy_custody.generations', $this->generation($items[0])));
+        $this->assertSame(0, (int) $this->scalar('SELECT count(*) FROM legacy_custody.generations WHERE operation_id=?', [$op['operation_id']]));
+        $this->stageItems($items);
+        $this->custodyQuery($this->reconcile, "UPDATE legacy_custody.operation_gates SET state='CLOSED',fence_no=2 WHERE operation_id=?", [$op['operation_id']]);
+        $this->insert($this->reconcile, 'legacy_custody.terminal_receipts', $this->receipt($op, 'ABORTED'));
+        [$new, $newItems] = $this->reservation();
+        $new['epoch'] = 2;
+        $newItems[0]['epoch'] = 2;
+        $newItems[0]['generation_id'] = $items[0]['generation_id'];
+        $newItems[0]['locator'] = $items[0]['locator'];
+        $this->denied($this->stage, '23505', fn () => $this->reserve($new, $newItems));
+        $this->assertSame(0, (int) $this->scalar('SELECT count(*) FROM legacy_custody.operations WHERE operation_id=?', [$new['operation_id']]));
+        $this->assertSame(1, (int) $this->scalar('SELECT count(*) FROM legacy_custody.generations WHERE operation_id=?', [$op['operation_id']]));
+    }
+
+    public function test_a04_source_parent_event_creator_and_audit_are_pinned(): void
+    {
+        [$op, $items] = $this->reservation('travel_status', 'status');
+        $this->reserve($op, $items);
+        $this->stageItems($items);
+        $result = $this->source($op, 'status_changed');
+        $otherResult = $this->source($op, 'status_changed');
+        $bad = array_replace($result, ['event_id' => $otherResult['event_id']]);
+        $this->denied($this->command, '23503', fn () => $this->insert($this->command, 'legacy_custody.command_results', $bad));
+        $this->absent($op);
+        [[$doc, , $audit]] = $this->commit($op, $items, $result, $this->links($result, false, 'action_evidence'));
+        $this->denied($this->ordinary, '23503', fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.travel_order_events SET travel_order_id=? WHERE id=?', [$otherResult['source_id'], $result['event_id']]));
+        $this->denied($this->ordinary, '23503', fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.travel_order_events SET actor_user_id=NULL WHERE id=?', [$result['event_id']]));
+        $this->denied($this->ordinary, '23503', fn () => $this->custodyQuery($this->ordinary, 'DELETE FROM public.travel_orders WHERE id=?', [$result['source_id']]));
+        $this->denied($this->ordinary, '23503', fn () => $this->custodyQuery($this->ordinary, 'DELETE FROM public.users WHERE id=?', [$op['actor_user_id']]));
+        $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.documents SET title=title WHERE id=?', [$doc]));
+        $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.audit_logs SET summary=summary WHERE id=?', [$audit]));
+        $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, 'DELETE FROM public.documents WHERE id=?', [$doc]));
+        $this->assertSame((int) $result['source_id'], (int) $this->scalar('SELECT travel_order_id FROM public.travel_order_events WHERE id=?', [$result['event_id']]));
+        $this->assertSame((int) $op['actor_user_id'], (int) $this->scalar('SELECT actor_user_id FROM public.travel_order_events WHERE id=?', [$result['event_id']]));
+        $this->assertSame((int) $op['actor_user_id'], (int) $this->scalar('SELECT created_by_user_id FROM public.document_links WHERE document_id=?', [$doc]));
+        $this->assertSame('COMMITTED', $this->scalar('SELECT outcome FROM legacy_custody.terminal_receipts WHERE operation_id=?', [$op['operation_id']]));
+    }
+
+    public function test_a05_direct_markers_deferred_reset_and_terminal_role_denials(): void
+    {
+        [$op, $items] = $this->reservation();
+        $this->reserve($op, $items);
+        $this->stageItems($items);
+        $result = $this->source($op, 'submitted');
+        $docData = $this->docData($op, $items[0], 'supporting_document');
+        $this->denied($this->ordinary, '42501', fn () => $this->insert($this->ordinary, 'public.documents', $docData));
+        $this->denied($this->command, '23514', fn () => $this->insert($this->command, 'public.documents', $docData));
+        $this->denied($this->command, '42501', fn () => $this->insert($this->command, 'legacy_custody.terminal_receipts', $this->receipt($op, 'ABORTED')));
+        $this->denied($this->reconcile, '42501', fn () => $this->insert($this->reconcile, 'legacy_custody.terminal_receipts', $this->receipt($op)));
+        $this->denied($this->command, '23514', function () use ($op, $result, $docData) {
+            $this->command->beginTransaction();
+            $this->command->exec('SET CONSTRAINTS ALL IMMEDIATE');
+            $this->command->exec('SET CONSTRAINTS ALL DEFERRED');
+            $this->insert($this->command, 'legacy_custody.command_results', $result);
+            $doc = (int) $this->insert($this->command, 'public.documents', $docData, 'id');
+            $this->insert($this->command, 'public.audit_logs', $this->markedAudit($op, $doc));
+            $this->command->commit();
+        });
+        $this->absent($op);
+        $this->assertSame(1, (int) $this->scalar('SELECT count(*) FROM legacy_custody.generations WHERE operation_id=?', [$op['operation_id']]));
+        $this->command->beginTransaction();
+        $this->insert($this->command, 'legacy_custody.command_results', $result);
+        $this->artifact($op, $items[0], $this->links($result, true, 'route_evidence'));
+        $this->insert($this->command, 'legacy_custody.terminal_receipts', $this->receipt($op));
+        $this->command->exec('SET CONSTRAINTS ALL IMMEDIATE');
+        $this->command->exec('SET CONSTRAINTS ALL DEFERRED');
+        $this->command->exec('SAVEPOINT late');
+        try {
+            $late = array_replace($docData, ['public_id' => $this->uuid()]);
+            $this->insert($this->command, 'public.documents', $late);
+            $this->fail('Late artifact after terminal accepted.');
+        } catch (PDOException $e) {
+            $this->assertSame('23514', $e->errorInfo[0]);
+            fwrite(STDOUT, "N03 late artifact SQLSTATE 23514\n");
+            $this->command->exec('ROLLBACK TO SAVEPOINT late');
+        }
+        $this->command->commit();
+        $this->assertSame(1, (int) $this->scalar('SELECT count(*) FROM public.documents WHERE custody_operation_id=?', [$op['operation_id']]));
+        $this->assertSame(1, (int) $this->scalar('SELECT count(*) FROM public.audit_logs WHERE custody_operation_id=?', [$op['operation_id']]));
+        $this->assertSame('COMMITTED', $this->scalar('SELECT outcome FROM legacy_custody.terminal_receipts WHERE operation_id=?', [$op['operation_id']]));
+    }
 }
