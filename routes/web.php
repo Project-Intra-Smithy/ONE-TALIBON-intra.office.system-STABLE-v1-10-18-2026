@@ -132,6 +132,7 @@ Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
     Route::get('/correspondence', CorrespondenceWorkspaceController::class)->name('correspondence.index');
     Route::get('/records', RecordsController::class)->name('records.index');
     Route::get('/documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
+    Route::get('/documents/{document}/preview', [DocumentController::class, 'preview'])->name('documents.preview');
     Route::get('/travel-orders', [TravelOrderController::class, 'index'])->name('travel-orders.index');
     Route::get('/travel-orders/create', [TravelOrderController::class, 'create'])->name('travel-orders.create');
     Route::post('/travel-orders', [TravelOrderController::class, 'store'])->name('travel-orders.store');

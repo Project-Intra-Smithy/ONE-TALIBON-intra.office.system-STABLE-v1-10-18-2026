@@ -60,11 +60,42 @@ final readonly class AuthorizedArchiveSql
             ->all();
     }
 
+    /** @return array<int, bool> All-parent-authorized IDs and projected preview eligibility. */
+    public function visibleDocumentPreviewEligibility(User $claimedActor, array $documentIds): array
+    {
+        if ($documentIds === []) {
+            return [];
+        }
+
+        $verified = VerifiedMunicipalActor::forProtectedSource($claimedActor);
+
+        return DB::query()
+            ->fromSub($this->catalog($verified, true), 'visible_documents')
+            ->whereIn('doc_id', array_values(array_unique($documentIds)))
+            ->pluck('preview_eligible', 'doc_id')
+            ->map(static fn ($eligible): bool => (int) $eligible === 1)
+            ->all();
+    }
+
+    /**
+     * Internal event-file eligibility only; does not grant report field publication.
+     * Explicit LEGACY_CTW is required by the event evidence contract.
+     */
+    public function eligibleEventLinks(User $claimedActor): Builder
+    {
+        $verified = VerifiedMunicipalActor::forProtectedSource($claimedActor);
+
+        return DB::table('document_links as event_link')
+            ->joinSub($this->catalog($verified, false, true), 'eligible_document',
+                fn (JoinClause $join) => $join->on('eligible_document.doc_id', '=', 'event_link.document_id'))
+            ->select(['event_link.linkable_type', 'event_link.linkable_id']);
+    }
+
     /** @param array<string, mixed> $filters */
     public function workspace(User $claimedActor, array $filters): array
     {
         $verified = VerifiedMunicipalActor::forProtectedSource($claimedActor);
-        $all = $this->catalog($verified);
+        $all = $this->catalog($verified, true);
         $scope = (string) ($filters['archive_scope'] ?? 'all');
         $search = Str::lower(trim((string) ($filters['archive_search'] ?? '')));
         $type = (string) ($filters['document_type'] ?? '');
@@ -183,7 +214,7 @@ final readonly class AuthorizedArchiveSql
     /** @return array<string, mixed> */
     public function activity(User $claimedActor): array
     {
-        $all = $this->catalog(VerifiedMunicipalActor::forProtectedSource($claimedActor));
+        $all = $this->catalog(VerifiedMunicipalActor::forProtectedSource($claimedActor), true);
         $counts = DB::query()->fromSub(clone $all, 'activity_counts')
             ->selectRaw(
                 "COUNT(*) FILTER (WHERE direction = 'sent') AS sent, "
@@ -203,7 +234,7 @@ final readonly class AuthorizedArchiveSql
         ];
     }
 
-    private function catalog(VerifiedMunicipalActor $verified): Builder
+    private function catalog(VerifiedMunicipalActor $verified, bool $includePreview = false, bool $explicitLegacy = false): Builder
     {
         $actor = $verified->user();
         $links = $this->authorizedLinks($verified);
@@ -217,7 +248,7 @@ final readonly class AuthorizedArchiveSql
         $actorId = (int) $actor->id;
         $officeId = (int) $actor->employee->department_id;
         $employeeId = (int) $actor->employee->id;
-        return DB::table('documents as d')
+        $catalog = DB::table('documents as d')
             ->joinSub($ranked, 'source', function (JoinClause $join): void {
                 $join->on('source.document_id', '=', 'd.id')->where('source.source_position', '=', 1);
             })
@@ -256,6 +287,22 @@ final readonly class AuthorizedArchiveSql
                 ."AND (source.assigned_employee_id = {$employeeId} OR source.current_office_id = {$officeId}) THEN 'received' "
                 ."WHEN d.uploaded_by_user_id = {$actorId} THEN 'upload' ELSE 'visible' END AS direction"
             );
+
+        // Quarantine before list, selected detail, counts, facets, search,
+        // activity, or any eligible-ID projection. Non-PDF legacy rows
+        // remain visible; preview eligibility is a separate presentation hint.
+        LegacyEvidenceEligibility::restrict($catalog, 'd', $explicitLegacy);
+        if ($includePreview) {
+            $catalog->selectRaw(
+                "CASE WHEN d.mime_type = 'application/pdf' AND d.storage_disk = 'documents' "
+                ."AND d.storage_disk = ? AND d.storage_path IS NOT NULL AND d.storage_path <> '' "
+                ."AND d.checksum_sha256 ~ '^[0-9a-f]{64}$' AND d.size_bytes > 0 "
+                ."THEN 1 ELSE 0 END AS preview_eligible",
+                [(string) config('documents.disk', 'documents')],
+            );
+        }
+
+        return $catalog;
     }
 
     private function authorizedLinks(VerifiedMunicipalActor $verified): Builder
@@ -372,6 +419,8 @@ final readonly class AuthorizedArchiveSql
             'originOffice' => $this->office($row, 'origin'),
             'currentOffice' => $this->office($row, 'current'),
             'downloadUrl' => route('documents.download', ['document' => $row->public_id], false),
+            'previewUrl' => (int) ($row->preview_eligible ?? 0) === 1
+                ? route('documents.preview', ['document' => $row->public_id], false) : null,
         ];
     }
 

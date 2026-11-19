@@ -10,6 +10,7 @@ export type EvidenceItem = {
     uploadedAt?: string | null;
     uploadedBy?: string | null;
     downloadUrl: string;
+    previewUrl?: string | null;
 };
 
 export type EvidencePayload = {
@@ -41,7 +42,11 @@ export default function EvidenceList({ items, emptyLabel, compact = false }: Pro
                     <div className="flex min-w-0 items-start gap-2.5">
                         <FileText size={15} className="mt-0.5 shrink-0 text-blue-700" />
                         <div className="min-w-0">
-                            <div className="truncate text-[11px] font-semibold text-slate-800 sm:text-xs">{item.name}</div>
+                            {item.previewUrl ? (
+                                <a href={item.previewUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open PDF: ${item.name}`} className="block truncate text-[11px] font-semibold text-blue-700 hover:underline sm:text-xs">{item.name}</a>
+                            ) : (
+                                <div className="truncate text-[11px] font-semibold text-slate-800 sm:text-xs">{item.name}</div>
+                            )}
                             <div className="mt-0.5 text-[9px] text-slate-400 sm:text-[10px]">
                                 {sizeLabel(item.sizeBytes)} · {item.relationship.replaceAll('_', ' ')} · {item.classification}
                                 {item.uploadedBy ? ` · ${item.uploadedBy}` : ''}
