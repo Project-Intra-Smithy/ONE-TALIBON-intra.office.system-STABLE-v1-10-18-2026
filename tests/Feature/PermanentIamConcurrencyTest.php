@@ -35,6 +35,7 @@ final class PermanentIamConcurrencyTest extends TestCase
             'name' => 'Synthetic Administrator', 'username' => 'race.admin',
             'password' => self::PASSWORD, 'role' => 'system_admin', 'is_active' => true, 'account_status' => 'active',
         ]);
+        $this->configureIamAdministrator($admin);
         $actorEmployee = $this->employee($office, $admin);
         $service = app(StaffActivationService::class);
 
@@ -50,7 +51,7 @@ final class PermanentIamConcurrencyTest extends TestCase
         ] as $index => [$first, $second, $expected, $state, $increment, $usable]) {
             $employee = $this->employee($office);
             $input = ['employee_id' => $employee->id, 'username' => 'race.staff'.$index, 'role' => 'department_staff'];
-            $issued = $service->issue($admin, $input);
+            $issued = $service->issue($this->iamActorRequest($admin), $admin, $input);
             $user = $employee->fresh()->user;
             if ($first === 'suspend') {
                 $service->redeem($issued['code'], self::PASSWORD);
@@ -60,11 +61,11 @@ final class PermanentIamConcurrencyTest extends TestCase
                 $service = app(StaffActivationService::class);
                 match ($operation) {
                     'redeem' => $service->redeem($issued['code'], self::PASSWORD),
-                    'issue' => $service->issue($admin, $input),
-                    'revoke' => $service->revoke($admin, $issued['invitation']),
-                    'suspend' => $service->suspend($admin, $user, 'Synthetic race'),
-                    'reactivate' => $service->reactivate($admin, $user),
-                    'recover' => $service->recover($admin, $user),
+                    'issue' => $service->issue($this->iamActorRequest($admin), $admin, $input),
+                    'revoke' => $service->revoke($this->iamActorRequest($admin), $admin, $issued['invitation']),
+                    'suspend' => $service->suspend($this->iamActorRequest($admin), $admin, $user, 'Synthetic race'),
+                    'reactivate' => $service->reactivate($this->iamActorRequest($admin), $admin, $user),
+                    'recover' => $service->recover($this->iamActorRequest($admin), $admin, $user),
                 };
             };
             $this->contend(
@@ -80,6 +81,48 @@ final class PermanentIamConcurrencyTest extends TestCase
             $this->assertSame($usable, StaffActivationInvitation::query()->where('user_id', $user->id)
                 ->whereNull('consumed_at')->whereNull('revoked_at')->where('expires_at', '>', now())->count());
             $this->assertSame(1, Employee::query()->where('user_id', $user->id)->count());
+        }
+    }
+
+
+    public function test_administrator_revocation_ordering_prevents_lifecycle_mutation(): void
+    {
+        $this->assertTrue(extension_loaded('pcntl'));
+        $this->assertSame('pgsql', DB::getDriverName());
+        $office = Department::query()->create(['code' => 'IAM-ACTOR', 'name' => 'Synthetic actor office', 'is_active' => true]);
+        foreach (['epoch', 'mfa'] as $revocation) {
+            $admin = User::query()->create([
+                'name' => 'Synthetic Administrator', 'username' => 'actor.admin.'.$revocation,
+                'password' => self::PASSWORD, 'role' => 'system_admin', 'is_active' => true, 'account_status' => 'active',
+            ]);
+            $this->configureIamAdministrator($admin);
+            $actorEmployee = $this->employee($office, $admin);
+            $employee = $this->employee($office);
+            $input = ['employee_id' => $employee->id, 'username' => 'actor.staff.'.$revocation, 'role' => 'department_staff'];
+            $request = $this->iamActorRequest($admin);
+            $service = app(StaffActivationService::class);
+            $issued = $service->issue($request, $admin, $input);
+            $user = $service->redeem($issued['code'], self::PASSWORD);
+            $snapshot = fn () => [
+                $user->fresh()->getAttributes(), $employee->fresh()->getAttributes(),
+                StaffActivationInvitation::query()->where('user_id', $user->id)->orderBy('id')->get()->map->getAttributes()->all(),
+                \App\Models\AuditLog::query()->where('action', 'like', 'identity.%')->orderBy('id')->get()->map->getAttributes()->all(),
+            ];
+            $before = $snapshot();
+            $this->contend(
+                [(int) $actorEmployee->id, (int) $employee->id],
+                function () use ($admin, $revocation): void {
+                    $locked = User::query()->lockForUpdate()->findOrFail($admin->id);
+                    $field = $revocation === 'epoch' ? 'session_version' : 'mfa_version';
+                    $locked->forceFill([$field => (int) $locked->{$field} + 1])->save();
+                },
+                fn () => app(StaffActivationService::class)->recover($request, $admin, $user),
+                'denied',
+            );
+            $this->assertSame($before, $snapshot(), 'Revocation before authorization must preserve target state and audit.');
+            $current = $admin->fresh();
+            app(StaffActivationService::class)->recover($this->iamActorRequest($current), $current, $user);
+            $this->assertSame('pending', $user->fresh()->account_status);
         }
     }
 
@@ -116,7 +159,7 @@ final class PermanentIamConcurrencyTest extends TestCase
                 try {
                     $second();
                     fwrite($childSocket, "ok\n");
-                } catch (ValidationException $exception) {
+                } catch (\Illuminate\Auth\Access\AuthorizationException|ValidationException $exception) {
                     fwrite($childSocket, "denied\n");
                 }
                 fclose($childSocket);

@@ -15,7 +15,7 @@ use PragmaRX\Google2FA\Google2FA;
 
 final class MfaService
 {
-    public function __construct(private readonly Google2FA $totp, private readonly AccountSessionEligibility $eligibility, private readonly AuthenticationAssurance $assurance)
+    public function __construct(private readonly Google2FA $totp, private readonly AccountSessionEligibility $eligibility, private readonly AuthenticationAssurance $assurance, private readonly AuditLogger $audit)
     {
     }
 
@@ -125,6 +125,7 @@ final class MfaService
 
             $codes = $this->newRecoveryCodes();
             $this->persistRecoveryCodes($locked, $codes, now());
+            $this->audit->record($locked, 'auth.mfa.recovery_codes.regenerated', 'MFA recovery codes were regenerated.');
 
             return $codes;
         }, 3);
@@ -142,6 +143,7 @@ final class MfaService
                 'mfa_recovery_codes_generated_at' => null,
                 'mfa_version' => $this->nextVersion($locked),
             ])->save();
+            $this->audit->record($locked, 'auth.mfa.reset', 'Privileged MFA enrollment was reset.');
 
             return $secret;
         }, 3);
@@ -158,6 +160,7 @@ final class MfaService
                 'mfa_recovery_codes_generated_at' => null,
                 'mfa_version' => $this->nextVersion($locked),
             ])->save();
+            $this->audit->record($locked, 'auth.mfa.disabled', 'Privileged MFA enrollment was disabled.');
         }, 3);
     }
 

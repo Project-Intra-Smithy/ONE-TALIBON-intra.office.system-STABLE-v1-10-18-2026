@@ -49,6 +49,7 @@ final class PermanentIamPasswordConcurrencyTest extends TestCase
             'name' => 'Synthetic Administrator', 'username' => 'g2.race.admin', 'password' => self::PASSWORD,
             'role' => 'system_admin', 'is_active' => true, 'account_status' => 'active',
         ]);
+        $this->configureIamAdministrator($admin);
         $actorEmployee = $this->employee($office, $admin);
         $service = app(StaffActivationService::class);
 
@@ -62,7 +63,7 @@ final class PermanentIamPasswordConcurrencyTest extends TestCase
             ['password', 'suspend', 'ok', 'suspended', 2, 1],
         ] as $index => [$first, $second, $expected, $state, $increment, $passwordAudits]) {
             $employee = $this->employee($office);
-            $issued = $service->issue($admin, [
+            $issued = $service->issue($this->iamActorRequest($admin), $admin, [
                 'employee_id' => $employee->id, 'username' => 'g2.race.staff'.$index, 'role' => 'department_staff',
             ]);
             $user = $service->redeem($issued['code'], self::PASSWORD);
@@ -95,8 +96,8 @@ final class PermanentIamPasswordConcurrencyTest extends TestCase
                 $request->setUserResolver(fn () => $user);
                 match ($operation) {
                     'password' => app(PasswordChangeController::class)($request, app(AuditLogger::class), app(AccountSessionEligibility::class), app(AuthenticationAssurance::class)),
-                    'recover' => app(StaffActivationService::class)->recover($admin, $user),
-                    'suspend' => app(StaffActivationService::class)->suspend($admin, $user, 'Synthetic G2 race'),
+                    'recover' => app(StaffActivationService::class)->recover($this->iamActorRequest($admin), $admin, $user),
+                    'suspend' => app(StaffActivationService::class)->suspend($this->iamActorRequest($admin), $admin, $user, 'Synthetic G2 race'),
                     'reset' => app(MfaService::class)->resetEnrollment($user, $request),
                 };
             };

@@ -23,7 +23,7 @@ final class StaffActivationController extends Controller
             'contact_email' => ['nullable', 'email:rfc', 'max:255'],
             'role' => ['required', Rule::in(StaffActivationService::INVITABLE_ROLES)],
         ]);
-        $issued = $service->issue($request->user(), $data);
+        $issued = $service->issue($request, $request->user(), $data);
 
         return redirect()->route('admin.index')->with('activationCredential', [
             'code' => $issued['code'],
@@ -34,26 +34,26 @@ final class StaffActivationController extends Controller
 
     public function revoke(Request $request, StaffActivationInvitation $invitation, StaffActivationService $service): RedirectResponse
     {
-        $service->revoke($request->user(), $invitation, (string) $request->input('reason', 'administrator revoked'));
+        $service->revoke($request, $request->user(), $invitation, (string) $request->input('reason', 'administrator revoked'));
         return back()->with('success', 'Pending activation revoked.');
     }
 
     public function suspend(Request $request, User $user, StaffActivationService $service): RedirectResponse
     {
         $data = $request->validate(['reason' => ['required', 'string', 'min:4', 'max:160']]);
-        $service->suspend($request->user(), $user, $data['reason']);
+        $service->suspend($request, $request->user(), $user, $data['reason']);
         return back()->with('success', 'Account suspended and existing sessions invalidated.');
     }
 
     public function reactivate(Request $request, User $user, StaffActivationService $service): RedirectResponse
     {
-        $service->reactivate($request->user(), $user);
+        $service->reactivate($request, $request->user(), $user);
         return back()->with('success', 'Account reactivated.');
     }
 
     public function recover(Request $request, User $user, StaffActivationService $service): RedirectResponse
     {
-        $issued = $service->recover($request->user(), $user);
+        $issued = $service->recover($request, $request->user(), $user);
         return redirect()->route('admin.index')->with('activationCredential', [
             'code' => $issued['code'],
             'username' => $issued['invitation']->username,

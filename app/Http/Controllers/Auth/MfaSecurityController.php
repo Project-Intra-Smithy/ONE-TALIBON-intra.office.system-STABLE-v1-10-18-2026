@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Services\AuditLogger;
 use App\Services\AuthenticationAssurance;
 use App\Services\MfaRecoveryCodeBroker;
 use App\Services\MfaService;
@@ -20,7 +19,6 @@ final class MfaSecurityController extends Controller
         private readonly AuthenticationAssurance $assurance,
         private readonly MfaService $mfa,
         private readonly MfaRecoveryCodeBroker $recoveryBroker,
-        private readonly AuditLogger $audit,
         private readonly SensitiveInertiaResponse $sensitiveResponse,
     ) {
     }
@@ -57,7 +55,6 @@ final class MfaSecurityController extends Controller
     {
         $user = $request->user();
         $codes = $this->mfa->regenerateRecoveryCodes($user, $request);
-        $this->audit->record($user, 'auth.mfa.recovery_codes.regenerated', 'MFA recovery codes were regenerated.');
 
         return redirect()->route('mfa.recovery.show')->with(
             'mfa_recovery_codes_sealed',
@@ -71,7 +68,6 @@ final class MfaSecurityController extends Controller
         $this->mfa->resetEnrollment($user, $request);
         $user->refresh();
         $this->assurance->clear($request);
-        $this->audit->record($user, 'auth.mfa.reset', 'Privileged MFA enrollment was reset.');
 
         return redirect()->route('mfa.enroll');
     }
@@ -82,7 +78,6 @@ final class MfaSecurityController extends Controller
         $this->mfa->disable($user, $request);
         $user->refresh();
         $this->assurance->clear($request);
-        $this->audit->record($user, 'auth.mfa.disabled', 'Privileged MFA enrollment was disabled.');
 
         return redirect()->route('mfa.enroll')->with('success', 'MFA was disabled. Re-enrollment is required before municipal access resumes.');
     }

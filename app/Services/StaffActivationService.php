@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\UniqueConstraintViolationException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -23,18 +24,20 @@ final class StaffActivationService
     public function __construct(
         private readonly AuditLogger $audit,
         private readonly SystemAdministrationAccess $access,
+        private readonly AccountSessionEligibility $eligibility,
+        private readonly AuthenticationAssurance $assurance,
     ) {}
 
     /** @return array{invitation: StaffActivationInvitation, code: string} */
-    public function issue(User $actor, array $input): array
+    public function issue(Request $request, User $actor, array $input): array
     {
         $role = (string) $input['role'];
         if (! in_array($role, self::INVITABLE_ROLES, true)) {
             throw ValidationException::withMessages(['role' => 'This role cannot be granted through ordinary onboarding.']);
         }
 
-        return $this->transaction(function () use ($actor, $input, $role): array {
-            [$admin, $employee, $user, $office, $invitations] = $this->lockContext($actor, (int) $input['employee_id']);
+        return $this->transaction(function () use ($request, $actor, $input, $role): array {
+            [$admin, $employee, $user, $office, $invitations] = $this->lockContext($actor, (int) $input['employee_id'], request: $request);
             $this->requireEligible($employee, $office);
             $username = Str::lower(trim((string) $input['username']));
             $email = filled($input['contact_email'] ?? null) ? Str::lower(trim((string) $input['contact_email'])) : null;
@@ -113,11 +116,11 @@ final class StaffActivationService
         });
     }
 
-    public function revoke(User $actor, StaffActivationInvitation $invitation, string $reason = 'administrator revoked'): void
+    public function revoke(Request $request, User $actor, StaffActivationInvitation $invitation, string $reason = 'administrator revoked'): void
     {
-        $this->transaction(function () use ($actor, $invitation, $reason): void {
+        $this->transaction(function () use ($request, $actor, $invitation, $reason): void {
             $candidate = StaffActivationInvitation::query()->findOrFail($invitation->id);
-            [$admin, $employee, $user, , $invitations] = $this->lockContext($actor, (int) $candidate->employee_id, (int) $candidate->user_id);
+            [$admin, $employee, $user, , $invitations] = $this->lockContext($actor, (int) $candidate->employee_id, (int) $candidate->user_id, $request);
             $this->requireOrdinary($admin, $user);
             $this->requireState($user, 'pending', false);
             $locked = $invitations->find($candidate->id);
@@ -130,10 +133,10 @@ final class StaffActivationService
         });
     }
 
-    public function suspend(User $actor, User $subject, string $reason): void
+    public function suspend(Request $request, User $actor, User $subject, string $reason): void
     {
-        $this->transaction(function () use ($actor, $subject, $reason): void {
-            [$admin, , $user, , $invitations] = $this->lockContext($actor, null, (int) $subject->id);
+        $this->transaction(function () use ($request, $actor, $subject, $reason): void {
+            [$admin, , $user, , $invitations] = $this->lockContext($actor, null, (int) $subject->id, $request);
             $this->requireOrdinary($admin, $user);
             $this->requireState($user, 'active', true);
             // Removal of access must remain possible even after separation.
@@ -147,10 +150,10 @@ final class StaffActivationService
         });
     }
 
-    public function reactivate(User $actor, User $subject): void
+    public function reactivate(Request $request, User $actor, User $subject): void
     {
-        $this->transaction(function () use ($actor, $subject): void {
-            [$admin, $employee, $user, $office, $invitations] = $this->lockContext($actor, null, (int) $subject->id);
+        $this->transaction(function () use ($request, $actor, $subject): void {
+            [$admin, $employee, $user, $office, $invitations] = $this->lockContext($actor, null, (int) $subject->id, $request);
             $this->requireOrdinary($admin, $user);
             $this->requireState($user, 'suspended', false);
             $this->requireEligible($employee, $office);
@@ -165,10 +168,10 @@ final class StaffActivationService
     }
 
     /** @return array{invitation: StaffActivationInvitation, code: string} */
-    public function recover(User $actor, User $subject): array
+    public function recover(Request $request, User $actor, User $subject): array
     {
-        return $this->transaction(function () use ($actor, $subject): array {
-            [$admin, $employee, $user, $office, $invitations] = $this->lockContext($actor, null, (int) $subject->id);
+        return $this->transaction(function () use ($request, $actor, $subject): array {
+            [$admin, $employee, $user, $office, $invitations] = $this->lockContext($actor, null, (int) $subject->id, $request);
             $this->requireOrdinary($admin, $user);
             $this->requireState($user, 'active', true);
             $this->requireEligible($employee, $office);
@@ -196,7 +199,7 @@ final class StaffActivationService
      * Re-read links after locking; route models supply identifiers only.
      * @return array{?User, ?Employee, ?User, ?Department, Collection}
      */
-    private function lockContext(?User $actor, ?int $employeeId, ?int $subjectId = null): array
+    private function lockContext(?User $actor, ?int $employeeId, ?int $subjectId = null, ?Request $request = null): array
     {
         $actorId = $actor ? (int) $actor->getKey() : null;
         if ($actor && ! $actorId) {
@@ -237,6 +240,15 @@ final class StaffActivationService
             // Unlinked username-less legacy administration remains compatible;
             // a linked legacy administrator must meet the same office rules.
             if (($actorEmployee !== null || filled($admin->username)) && ! $this->eligible($actorEmployee, $offices->get($actorEmployee?->department_id))) {
+                throw new AuthorizationException('Administrator access denied.');
+            }
+            // The same locked administrator must still authorize this request.
+            // No second lock acquisition or middleware-only assurance.
+            if ($request === null) {
+                throw new AuthorizationException('Administrator access denied.');
+            }
+            $this->eligibility->requireSession($request, $admin);
+            if (! $this->assurance->isSatisfiedAgainst($request, $admin)) {
                 throw new AuthorizationException('Administrator access denied.');
             }
         }

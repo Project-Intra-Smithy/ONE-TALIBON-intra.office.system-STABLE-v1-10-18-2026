@@ -49,7 +49,7 @@ final class PermanentIamLifecycleTest extends TestCase
     public function test_system_admin_issues_hash_only_code_and_employee_activates_without_email(): void
     {
         [$admin, $employee] = $this->actors();
-        $issued = app(StaffActivationService::class)->issue($admin, [
+        $issued = app(StaffActivationService::class)->issue($this->iamActorRequest($admin), $admin, [
             'employee_id' => $employee->id,
             'username' => 'new.staff',
             'contact_email' => null,
@@ -107,7 +107,7 @@ final class PermanentIamLifecycleTest extends TestCase
         [$admin, $employee] = $this->actors();
         foreach (['system_admin', 'mayor_approver'] as $role) {
             try {
-                app(StaffActivationService::class)->issue($admin, [
+                app(StaffActivationService::class)->issue($this->iamActorRequest($admin), $admin, [
                     'employee_id' => $employee->id, 'username' => 'blocked.'.$role,
                     'contact_email' => null, 'role' => $role,
                 ]);
@@ -137,16 +137,16 @@ final class PermanentIamLifecycleTest extends TestCase
         [$admin, $employee] = $this->actors();
         $subject = app(StaffActivationService::class)->redeem($this->issue($admin, $employee, 'suspend.user')['code'], self::PASSWORD);
         $oldVersion = (int) $subject->session_version;
-        app(StaffActivationService::class)->suspend($admin, $subject, 'Access review');
+        app(StaffActivationService::class)->suspend($this->iamActorRequest($admin), $admin, $subject, 'Access review');
         $this->assertFalse($subject->fresh()->is_active);
         $this->assertGreaterThan($oldVersion, (int) $subject->fresh()->session_version);
 
-        app(StaffActivationService::class)->reactivate($admin, $subject->fresh());
+        app(StaffActivationService::class)->reactivate($this->iamActorRequest($admin), $admin, $subject->fresh());
         $this->assertTrue($subject->fresh()->is_active);
         $employee->forceFill(['employment_status' => 'separated', 'separation_date' => now()])->save();
-        app(StaffActivationService::class)->suspend($admin, $subject->fresh(), 'Employment ended');
+        app(StaffActivationService::class)->suspend($this->iamActorRequest($admin), $admin, $subject->fresh(), 'Employment ended');
         $this->expectException(\Illuminate\Validation\ValidationException::class);
-        app(StaffActivationService::class)->reactivate($admin, $subject->fresh());
+        app(StaffActivationService::class)->reactivate($this->iamActorRequest($admin), $admin, $subject->fresh());
     }
 
     public function test_controlled_recovery_invalidates_password_mfa_and_sessions_then_issues_new_code(): void
@@ -155,7 +155,7 @@ final class PermanentIamLifecycleTest extends TestCase
         $subject = app(StaffActivationService::class)->redeem($this->issue($admin, $employee, 'recover.user')['code'], self::PASSWORD);
         $subject->forceFill(['mfa_secret' => 'JBSWY3DPEHPK3PXP', 'mfa_confirmed_at' => now(), 'mfa_version' => 4])->save();
         $oldSessionVersion = (int) $subject->session_version;
-        $recovery = app(StaffActivationService::class)->recover($admin, $subject->fresh());
+        $recovery = app(StaffActivationService::class)->recover($this->iamActorRequest($admin), $admin, $subject->fresh());
 
         $pending = $subject->fresh();
         $this->assertSame('pending', $pending->account_status);
@@ -296,7 +296,7 @@ final class PermanentIamLifecycleTest extends TestCase
         $employee->department()->update(['is_active' => false]);
         $this->assertDeniedUnchanged($user, fn () => $service->redeem($issued['code'], self::PASSWORD), 'code');
         $employee->department()->update(['is_active' => true]);
-        $service->revoke($admin, $invitation);
+        $service->revoke($this->iamActorRequest($admin), $admin, $invitation);
         $this->assertNotNull($invitation->fresh()->revoked_at);
         $this->assertDeniedUnchanged($user, fn () => $service->redeem($issued['code'], self::PASSWORD), 'code');
     }
@@ -316,17 +316,17 @@ final class PermanentIamLifecycleTest extends TestCase
         }
         $this->assertDeniedUnchanged($user, fn () => $this->issue($admin, $employee, 'renamed.staff'), 'account');
         $service->redeem($issued['code'], self::PASSWORD);
-        $this->assertDeniedUnchanged($user, fn () => $service->reactivate($admin, $user), 'account');
-        $service->suspend($admin, $user, 'State test');
-        $this->assertDeniedUnchanged($user, fn () => $service->suspend($admin, $user, 'Repeat'), 'account');
-        $this->assertDeniedUnchanged($user, fn () => $service->recover($admin, $user), 'account');
+        $this->assertDeniedUnchanged($user, fn () => $service->reactivate($this->iamActorRequest($admin), $admin, $user), 'account');
+        $service->suspend($this->iamActorRequest($admin), $admin, $user, 'State test');
+        $this->assertDeniedUnchanged($user, fn () => $service->suspend($this->iamActorRequest($admin), $admin, $user, 'Repeat'), 'account');
+        $this->assertDeniedUnchanged($user, fn () => $service->recover($this->iamActorRequest($admin), $admin, $user), 'account');
         $employee->refresh()->update(['separation_date' => now()]);
-        $this->assertDeniedUnchanged($user, fn () => $service->reactivate($admin, $user), 'employee_id');
+        $this->assertDeniedUnchanged($user, fn () => $service->reactivate($this->iamActorRequest($admin), $admin, $user), 'employee_id');
         $employee->update(['separation_date' => null]);
-        $service->reactivate($admin, $user);
+        $service->reactivate($this->iamActorRequest($admin), $admin, $user);
         foreach (['deactivated', 'unknown'] as $state) {
             $user->fresh()->forceFill(['account_status' => $state, 'is_active' => false])->save();
-            $this->assertDeniedUnchanged($user, fn () => $service->reactivate($admin, $user), 'account');
+            $this->assertDeniedUnchanged($user, fn () => $service->reactivate($this->iamActorRequest($admin), $admin, $user), 'account');
         }
         foreach (['system_admin', 'mayor_approver', 'unknown_role'] as $role) {
             $user->fresh()->forceFill(['role' => $role, 'account_status' => 'pending', 'is_active' => false])->save();
@@ -353,7 +353,7 @@ final class PermanentIamLifecycleTest extends TestCase
             $admin->fresh()->forceFill($change)->save();
             $before = $this->lifecycleSnapshot($user);
             try {
-                $service->suspend($admin, $user, 'Stale actor');
+                $service->suspend($this->iamActorRequest($admin), $admin, $user, 'Stale actor');
                 $this->fail('Stale actor was accepted.');
             } catch (\Illuminate\Auth\Access\AuthorizationException|\Symfony\Component\HttpKernel\Exception\HttpException $exception) {
                 $this->assertSame($before, $this->lifecycleSnapshot($user));
@@ -363,7 +363,7 @@ final class PermanentIamLifecycleTest extends TestCase
         $admin->employee()->update(['separation_date' => now()]);
         $before = $this->lifecycleSnapshot($user);
         try {
-            $service->recover($admin, $user);
+            $service->recover($this->iamActorRequest($admin), $admin, $user);
             $this->fail('Separated actor was accepted.');
         } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
             $this->assertSame($before, $this->lifecycleSnapshot($user));
@@ -419,7 +419,7 @@ final class PermanentIamLifecycleTest extends TestCase
         ];
         $before = $snapshot();
         try {
-            $service->recover($admin, $user);
+            $service->recover($this->iamActorRequest($admin), $admin, $user);
             $this->fail('Recovery accepted a stale administrator from an inactive office.');
         } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
             $this->assertSame('Administrator access denied.', $exception->getMessage());
@@ -489,12 +489,72 @@ final class PermanentIamLifecycleTest extends TestCase
             ->once()->andThrow(new \RuntimeException('Synthetic audit failure'));
         $this->app->instance(\App\Services\AuditLogger::class, $audit);
         try {
-            app(StaffActivationService::class)->recover($admin, $user);
+            app(StaffActivationService::class)->recover($this->iamActorRequest($admin), $admin, $user);
             $this->fail('Recovery returned despite injected failure.');
         } catch (\RuntimeException $exception) {
             $this->assertSame('Synthetic audit failure', $exception->getMessage());
         }
         $this->assertSame($before, $this->lifecycleSnapshot($user), 'Recovery must roll back the entire persisted operation.');
+    }
+
+
+    public function test_locked_administrator_assurance_is_required_for_every_lifecycle_mutation(): void
+    {
+        [$admin, $employee] = $this->actors();
+        $service = app(StaffActivationService::class);
+        $valid = $this->iamActorRequest($admin);
+        $pending = $service->issue($valid, $admin, [
+            'employee_id' => $employee->id, 'username' => 'assurance.pending', 'role' => 'employee',
+        ])['invitation'];
+        $activeEmployee = Employee::query()->create([
+            'full_name' => 'Synthetic Active Staff', 'department_id' => $employee->department_id,
+            'position_title' => 'Staff', 'employment_status' => 'active',
+        ]);
+        $activeInvite = $this->issue($admin, $activeEmployee, 'assurance.active');
+        $active = $service->redeem($activeInvite['code'], self::PASSWORD);
+        $suspendedEmployee = Employee::query()->create([
+            'full_name' => 'Synthetic Suspended Staff', 'department_id' => $employee->department_id,
+            'position_title' => 'Staff', 'employment_status' => 'active',
+        ]);
+        $suspendedInvite = $this->issue($admin, $suspendedEmployee, 'assurance.suspended');
+        $suspended = $service->redeem($suspendedInvite['code'], self::PASSWORD);
+        $service->suspend($valid, $admin, $suspended, 'Synthetic state');
+
+        $snapshot = fn () => [
+            User::query()->orderBy('id')->get()->map->getAttributes()->all(),
+            Employee::query()->orderBy('id')->get()->map->getAttributes()->all(),
+            StaffActivationInvitation::query()->orderBy('id')->get()->map->getAttributes()->all(),
+            \App\Models\AuditLog::query()->where('action', 'like', 'identity.%')->orderBy('id')->get()->map->getAttributes()->all(),
+        ];
+        foreach (['missing epoch', 'stale epoch', 'missing MFA', 'stale MFA', 'wrong actor'] as $case) {
+            $request = $this->iamActorRequest($admin);
+            match ($case) {
+                'missing epoch' => $request->session()->forget('auth_session_version'),
+                'stale epoch' => $request->session()->put('auth_session_version', (int) $admin->session_version + 1),
+                'missing MFA' => $request->session()->forget(\App\Services\AuthenticationAssurance::SESSION_VERSION_KEY),
+                'stale MFA' => $request->session()->put(\App\Services\AuthenticationAssurance::SESSION_VERSION_KEY, (int) $admin->mfa_version + 1),
+                'wrong actor' => $request->setUserResolver(fn () => $active),
+            };
+            $before = $snapshot();
+            foreach ([
+                fn () => $service->issue($request, $admin, ['employee_id' => $employee->id, 'username' => 'assurance.pending', 'role' => 'employee']),
+                fn () => $service->revoke($request, $admin, $pending),
+                fn () => $service->suspend($request, $admin, $active, 'Synthetic denial'),
+                fn () => $service->reactivate($request, $admin, $suspended),
+                fn () => $service->recover($request, $admin, $active),
+            ] as $operation) {
+                try {
+                    $operation();
+                    $this->fail('Unassured administrator operation was accepted: '.$case);
+                } catch (\Illuminate\Auth\Access\AuthorizationException) {
+                    $this->assertSame($before, $snapshot(), $case);
+                }
+            }
+        }
+        $service->revoke($valid, $admin, $pending);
+        $this->assertNotNull($pending->fresh()->revoked_at);
+        $service->reactivate($valid, $admin, $suspended);
+        $this->assertTrue($suspended->fresh()->is_active);
     }
 
     private function assertDeniedUnchanged(User $user, callable $operation, string $field): void
@@ -522,6 +582,7 @@ final class PermanentIamLifecycleTest extends TestCase
     private function actors(): array
     {
         $admin = $this->userWithEmployee('system_admin', 'first.admin');
+        $this->configureIamAdministrator($admin);
         $office = Department::query()->where('code', 'ENG')->firstOrFail();
         $employee = Employee::query()->create([
             'employee_number' => null, 'full_name' => 'New Staff Member', 'work_email' => null,
@@ -533,7 +594,7 @@ final class PermanentIamLifecycleTest extends TestCase
 
     private function issue(User $admin, Employee $employee, string $username): array
     {
-        return app(StaffActivationService::class)->issue($admin, [
+        return app(StaffActivationService::class)->issue($this->iamActorRequest($admin), $admin, [
             'employee_id' => $employee->id, 'username' => $username,
             'contact_email' => null, 'role' => 'department_staff',
         ]);

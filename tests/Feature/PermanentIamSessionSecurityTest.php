@@ -186,13 +186,14 @@ final class PermanentIamSessionSecurityTest extends TestCase
     public function test_recovery_invalidates_existing_recall_token_and_password(): void
     {
         $admin = $this->account('system_admin');
+        $this->configureIamAdministrator($admin);
         $office = Department::query()->create(['code' => 'G2-RECOVERY', 'name' => 'G2 recovery office', 'is_active' => true]);
         $employee = Employee::query()->create([
             'full_name' => 'Synthetic recovery employee', 'department_id' => $office->id,
             'position_title' => 'Staff', 'employment_status' => 'active',
         ]);
         $service = app(\App\Services\StaffActivationService::class);
-        $issued = $service->issue($admin, ['employee_id' => $employee->id, 'username' => 'g2.recover', 'role' => 'department_staff']);
+        $issued = $service->issue($this->iamActorRequest($admin), $admin, ['employee_id' => $employee->id, 'username' => 'g2.recover', 'role' => 'department_staff']);
         $user = $service->redeem($issued['code'], self::OLD);
         $token = Str::random(60);
         $user->forceFill(['remember_token' => $token])->save();
@@ -200,7 +201,7 @@ final class PermanentIamSessionSecurityTest extends TestCase
         $name = $guard->getRecallerName();
         $cookie = $user->id.'|'.$token.'|'.$guard->hashPasswordForCookie($user->password);
         $epoch = $user->session_version;
-        $service->recover($admin, $user);
+        $service->recover($this->iamActorRequest($admin), $admin, $user);
         $fresh = $user->fresh();
         $this->assertSame('pending', $fresh->account_status);
         $this->assertSame($epoch + 1, $fresh->session_version);

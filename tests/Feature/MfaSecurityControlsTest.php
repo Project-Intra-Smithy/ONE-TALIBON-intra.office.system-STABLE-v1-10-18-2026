@@ -356,6 +356,52 @@ class MfaSecurityControlsTest extends TestCase
         $this->assertOrdinaryResponseDoesNotEncryptHistory(false);
     }
 
+
+    public function test_mfa_security_mutations_rollback_on_success_audit_failure(): void
+    {
+        foreach ([
+            ['POST', '/security/mfa/recovery-codes', 'auth.mfa.recovery_codes.regenerated'],
+            ['POST', '/security/mfa/reset', 'auth.mfa.reset'],
+            ['DELETE', '/security/mfa', 'auth.mfa.disabled'],
+        ] as [$method, $path, $action]) {
+            $user = $this->configuredPrivilegedUser();
+            $this->actingAs($user)->withSession($this->assuredSession($user));
+            $before = $user->fresh()->getAttributes();
+            $beforeAudits = AuditLog::query()->where('actor_user_id', $user->id)->where('action', $action)->count();
+            $audit = \Mockery::mock(\App\Services\AuditLogger::class)->makePartial();
+            $audit->shouldReceive('record')->withArgs(fn ($actor, $event) => $event === $action)
+                ->once()->andThrow(new \RuntimeException('Synthetic MFA audit failure'));
+            $this->app->instance(\App\Services\AuditLogger::class, $audit);
+            $this->withoutExceptionHandling();
+            try {
+                $this->call($method, $path);
+                $this->fail('MFA mutation returned despite injected audit failure.');
+            } catch (\RuntimeException $exception) {
+                $this->assertSame('Synthetic MFA audit failure', $exception->getMessage());
+            }
+            $this->assertSame($before, $user->fresh()->getAttributes());
+            $this->assertSame($beforeAudits, AuditLog::query()->where('actor_user_id', $user->id)->where('action', $action)->count());
+            $this->assertFalse(session()->has('mfa_recovery_codes_sealed'));
+            $this->app->forgetInstance(\App\Services\AuditLogger::class);
+            $this->get('/security/mfa')->assertOk();
+        }
+    }
+
+    public function test_mfa_security_mutations_record_exactly_one_success_audit(): void
+    {
+        foreach ([
+            ['POST', '/security/mfa/recovery-codes', 'auth.mfa.recovery_codes.regenerated'],
+            ['POST', '/security/mfa/reset', 'auth.mfa.reset'],
+            ['DELETE', '/security/mfa', 'auth.mfa.disabled'],
+        ] as [$method, $path, $action]) {
+            $user = $this->configuredPrivilegedUser();
+            $this->actingAs($user)->withSession($this->assuredSession($user));
+            $this->call($method, $path)->assertRedirect();
+            $this->assertSame(1, AuditLog::query()->where('actor_user_id', $user->id)->where('action', $action)->where('outcome', 'allowed')->count());
+            session()->forget('mfa_recovery_codes_sealed');
+        }
+    }
+
     private function configuredPrivilegedUser(): User
     {
         $user = $this->user('system_admin');
