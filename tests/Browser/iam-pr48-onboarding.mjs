@@ -147,6 +147,7 @@ try {
     });
 
     let firstCode;
+    let adminAssetVersion;
     await checkpoint('admin-add-user-with-office-role-and-private-code', async () => {
         const section = admin.locator('section').filter({
             has: admin.getByRole('heading', { name: 'Add user' }),
@@ -154,7 +155,13 @@ try {
         await section.getByLabel('Eligible employee').selectOption({ index: 1 });
         await section.getByLabel('Portal role').selectOption('department_head');
         await section.getByLabel('Portal username').fill('qa.employee');
+        const pageResponse = admin.waitForResponse(response => response.url() === BASE + '/admin'
+            && response.request().method() === 'GET' && response.status() === 200
+            && response.headers()['x-inertia'] === 'true');
         await section.getByRole('button', { name: 'Generate activation code' }).click();
+        // Retain only the public asset-version string, never the page body in evidence.
+        adminAssetVersion = (await (await pageResponse).json()).version;
+        assert.equal(typeof adminAssetVersion, 'string');
         await admin.locator('section[role="status"] code').first().waitFor();
         firstCode = await getPrivateCode(admin);
     });
@@ -164,7 +171,7 @@ try {
         await admin.waitForFunction(() => history.state !== null);
         assert.ok(await admin.evaluate(code => !JSON.stringify(history.state).includes(code), firstCode), 'Credential persisted in navigation history');
         const partial = await admin.request.get(BASE + '/admin', {
-            headers: {'X-Inertia':'true','X-Inertia-Partial-Component':'Admin/Index','X-Inertia-Partial-Data':'registry'},
+            headers: {'X-Inertia':'true','X-Inertia-Version':adminAssetVersion,'X-Inertia-Partial-Component':'Admin/Index','X-Inertia-Partial-Data':'registry'},
         });
         assert.equal(partial.status(), 200);
         assert.ok(!(await partial.text()).includes(firstCode), 'Partial response exposed a credential');
