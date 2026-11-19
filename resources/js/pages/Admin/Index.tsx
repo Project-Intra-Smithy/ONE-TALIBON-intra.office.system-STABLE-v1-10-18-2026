@@ -1,4 +1,6 @@
-import { Link, router, useForm } from '@inertiajs/react';
+import { Link, router, useForm, usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { Activity, Ban, Building2, Copy, KeyRound, LockKeyhole, RotateCcw, Search, ShieldCheck, UserCheck, UserPlus, Users } from 'lucide-react';
 import type { ChangeEvent, FormEvent, ReactNode } from 'react';
 import PageFrame from '../../components/PageFrame';
@@ -10,7 +12,8 @@ type Department = { id:number; code:string; name:string; shortName:string|null }
 type RegistryRow = { id:number; employee:string|null; employeeNumber:string|null; department:Omit<Department,'id'>|null; position:string|null; role:string|null; username:string|null; loginEmail:string|null; accountStatus:string; active:boolean; mfaEnrolled:boolean };
 type EligibleEmployee = { id:number; name:string; employeeNumber:string|null; office:string|null; departmentId:number };
 type PendingInvitation = { id:number; employee:string|null; username:string; role:string; office:string|null; expiresAt:string; expired:boolean };
-type ActivationCredential = { code:string; username:string; expiresAt:string }|null;
+type ActivationCredential = { invitationId:number; code:string; username:string; expiresAt:string };
+type ActivationFlash = { activationCredential?:ActivationCredential };
 type PageLink = { url:string|null; label:string; active:boolean };
 type Registry = { data:RegistryRow[]; total:number; current_page:number; last_page:number; per_page:number; links:PageLink[] };
 type OfficeIdentity = { office:string; code:string; shortName:string|null; officialEmail:string|null; status:string };
@@ -19,13 +22,28 @@ type DepartmentWorkload = { id:number; code:string; name:string; shortName:strin
 type SecurityEvent = { actor:string|null; action:string; outcome:string; summary:string; createdAt:string|null };
 type Security = { privilegedAccounts:number; mfaEnrolled:number; inactiveAccounts:number; recentEvents:SecurityEvent[] };
 type Filters = { search:string; department_id:string; role:string; status:string };
-type Props = { overview:Overview; registry:Registry; registryFilters:{search:string;department_id:number|null;role:string;status:string}; departmentOptions:Department[]; roleOptions:string[]; invitableRoles:string[]; eligibleEmployees:EligibleEmployee[]; pendingInvitations:PendingInvitation[]; activationCredential:ActivationCredential; officeIdentities:OfficeIdentity[]; operations:{summary:OperationSummary;departmentWorkload:DepartmentWorkload[]}; security:Security };
+type Props = { overview:Overview; registry:Registry; registryFilters:{search:string;department_id:number|null;role:string;status:string}; departmentOptions:Department[]; roleOptions:string[]; invitableRoles:string[]; eligibleEmployees:EligibleEmployee[]; pendingInvitations:PendingInvitation[]; officeIdentities:OfficeIdentity[]; operations:{summary:OperationSummary;departmentWorkload:DepartmentWorkload[]}; security:Security };
 
 const label = (value:string) => value.replaceAll('_',' ').replace(/\b\w/g,letter=>letter.toUpperCase());
 const fieldClass = 'w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:focus:ring-blue-900';
 const insetSurface = 'border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]';
 
-export default function AdminIndex({ overview, registry, registryFilters, departmentOptions, roleOptions, invitableRoles, eligibleEmployees, pendingInvitations, activationCredential, officeIdentities, operations, security }:Props) {
+export default function AdminIndex({ overview, registry, registryFilters, departmentOptions, roleOptions, invitableRoles, eligibleEmployees, pendingInvitations, officeIdentities, operations, security }:Props) {
+
+    const flash = usePage().flash as ActivationFlash | undefined;
+    const credential = flash?.activationCredential;
+    const [dismissedId,setDismissedId] = useState<number|null>(null);
+    const activationCredential = credential && credential.invitationId!==dismissedId ? credential : null;
+    // Keep only the nonsecret identifier in component state. Hide credentials
+    // before a document is cached by the browser and on restored documents.
+    useEffect(()=>{
+        if(!activationCredential)return;
+        const hide=()=>flushSync(()=>setDismissedId(activationCredential.invitationId));
+        const restored=(event:PageTransitionEvent)=>{if(event.persisted)hide();};
+        window.addEventListener('pagehide',hide);
+        window.addEventListener('pageshow',restored);
+        return ()=>{window.removeEventListener('pagehide',hide);window.removeEventListener('pageshow',restored);};
+    },[activationCredential?.invitationId]);
     const { data,setData,get,processing } = useForm<Filters>({ search:registryFilters.search??'', department_id:registryFilters.department_id?.toString()??'', role:registryFilters.role??'', status:registryFilters.status??'' });
     const applyFilters=(event:FormEvent)=>{event.preventDefault();get('/admin',{preserveScroll:true,preserveState:true,replace:true});};
     const clearFilters=()=>router.get('/admin',{}, {preserveScroll:true,replace:true});
@@ -39,7 +57,7 @@ export default function AdminIndex({ overview, registry, registryFilters, depart
     return <AppLayout title="Accounts & Access"><PageFrame>
         <PageHeader eyebrow="System administration" title="Accounts & Access" description="Review portal identities, role assignment, account state, MFA enrollment, office digital identity, and authorized security metadata. Administrative access does not expand access to confidential municipal content." icon={ShieldCheck} />
 
-        {activationCredential&&<section role="status" className="mb-4 rounded-2xl border-2 border-emerald-300 bg-emerald-50 p-4 text-emerald-950 dark:border-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-100"><div className="flex items-start gap-3"><KeyRound className="mt-0.5 shrink-0" size={20}/><div className="min-w-0"><h2 className="font-bold">Private activation code — shown once</h2><p className="mt-1 text-sm">Give this code privately to <strong>{activationCredential.username}</strong>. It expires {new Date(activationCredential.expiresAt).toLocaleString()}.</p><div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center"><code className="break-all rounded-lg bg-white px-3 py-2 font-mono text-sm font-bold tracking-wider text-slate-950 dark:bg-slate-900 dark:text-white">{activationCredential.code}</code><button type="button" onClick={()=>navigator.clipboard.writeText(activationCredential.code)} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-emerald-400 px-3 text-sm font-semibold"><Copy size={15}/>Copy once</button></div></div></div></section>}
+        {activationCredential&&<section role="status" className="mb-4 rounded-2xl border-2 border-emerald-300 bg-emerald-50 p-4 text-emerald-950 dark:border-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-100"><div className="flex items-start gap-3"><KeyRound className="mt-0.5 shrink-0" size={20}/><div className="min-w-0"><h2 className="font-bold">Private activation code — shown once</h2><p className="mt-1 text-sm">Give this code privately to <strong>{activationCredential.username}</strong>. It expires {new Date(activationCredential.expiresAt).toLocaleString()}.</p><div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center"><code className="break-all rounded-lg bg-white px-3 py-2 font-mono text-sm font-bold tracking-wider text-slate-950 dark:bg-slate-900 dark:text-white">{activationCredential.code}</code><button type="button" onClick={()=>navigator.clipboard?.writeText(activationCredential.code)} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-emerald-400 px-3 text-sm font-semibold"><Copy size={15}/>Copy code</button><button type="button" onClick={()=>setDismissedId(activationCredential.invitationId)} className="inline-flex min-h-11 items-center justify-center rounded-lg border border-emerald-400 px-3 text-sm font-semibold">Dismiss</button></div></div></div></section>}
 
         <Section title="Register employee" icon={<UserPlus size={17}/>} description="Step 1 — Register a verified active municipal employee. This creates a directory record only, not a portal account. Check the Employee Directory first to avoid duplicate personnel records.">
             <form onSubmit={registerEmployee} aria-label="Employee registration" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

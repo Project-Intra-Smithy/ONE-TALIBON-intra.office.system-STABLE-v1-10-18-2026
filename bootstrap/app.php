@@ -47,6 +47,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        $exceptions->dontFlash(['code', 'recovery_code']);
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request): Response {
             return app(ApplicationErrorResponse::class)->respond($response, $exception, $request);
         });

@@ -19,6 +19,7 @@ final class StaffActivationInvitation extends Model
     {
         return [
             'expires_at' => 'datetime',
+            'disclosed_at' => 'datetime',
             'consumed_at' => 'datetime',
             'revoked_at' => 'datetime',
         ];

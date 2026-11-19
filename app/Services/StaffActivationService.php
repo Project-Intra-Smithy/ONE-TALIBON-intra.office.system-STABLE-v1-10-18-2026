@@ -70,6 +70,49 @@ final class StaffActivationService
         });
     }
 
+    /**
+     * Claim delivery once; this does not consume the invitation for redemption.
+     * Return only after the locked authorization and disclosure audit commit.
+     */
+    public function claimDisclosure(Request $request, User $actor, int $invitationId, string $code): ?array
+    {
+        return $this->transaction(function () use ($request, $actor, $invitationId, $code): ?array {
+            $candidate = StaffActivationInvitation::query()->find($invitationId);
+            if (! $candidate || (int) $candidate->created_by_user_id !== (int) $actor->id) {
+                return null;
+            }
+
+            try {
+                [$admin, $employee, $user, $office, $invitations] = $this->lockContext(
+                    $actor, (int) $candidate->employee_id, (int) $candidate->user_id, $request,
+                );
+                $this->requireEligible($employee, $office);
+                $this->requireState($user, 'pending', false);
+                $this->requireOrdinary($admin, $user);
+                $locked = $invitations->find($invitationId);
+                if (! $locked || (int) $locked->created_by_user_id !== (int) $admin->id
+                    || $locked->disclosed_at || $locked->consumed_at || $locked->revoked_at
+                    || $locked->expires_at->lessThanOrEqualTo(now())
+                    || ! $this->matchesInvitation($locked, $employee, $user, $office)
+                    || ! hash_equals($locked->code_digest, $this->digest($code))) {
+                    return null;
+                }
+            } catch (ValidationException) {
+                return null;
+            }
+
+            $locked->forceFill(['disclosed_at' => now()])->save();
+            $this->audit->record($admin, 'identity.invitation.disclosed', 'Private activation credential disclosed once; secret omitted.', 'allowed', StaffActivationInvitation::class, $locked->id);
+
+            return [
+                'invitationId' => (int) $locked->id,
+                'code' => $code,
+                'username' => $locked->username,
+                'expiresAt' => $locked->expires_at->toIso8601String(),
+            ];
+        });
+    }
+
     public function redeem(string $code, string $password): User
     {
         if (! preg_match('/\A(?:[A-Fa-f0-9]{32}|[A-Fa-f0-9]{4}(?:-[A-Fa-f0-9]{4}){7})\z/D', trim($code))) {

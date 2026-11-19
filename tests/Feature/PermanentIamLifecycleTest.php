@@ -557,6 +557,112 @@ final class PermanentIamLifecycleTest extends TestCase
         $this->assertTrue($suspended->fresh()->is_active);
     }
 
+
+    public function test_activation_credential_is_sealed_and_flashed_once_without_history_props(): void
+    {
+        [$admin, $employee] = $this->actors();
+        $this->actingAs($admin)->post('/admin/accounts', [
+            'employee_id' => $employee->id, 'username' => 'custody.staff', 'role' => 'employee',
+        ])->assertRedirect(route('admin.index'))->assertSessionHas('activationCredential');
+        $sealed = session()->get('activationCredential');
+        $this->assertIsString($sealed);
+        $payload = json_decode(\Illuminate\Support\Facades\Crypt::decryptString($sealed), true, flags: JSON_THROW_ON_ERROR);
+        $code = $payload['code'];
+        $this->assertStringNotContainsString($code, $sealed);
+        $this->assertStringNotContainsString($code, json_encode(session()->all(), JSON_THROW_ON_ERROR));
+        $invite = StaffActivationInvitation::query()->sole();
+        $this->assertNull($invite->disclosed_at);
+
+        $response = $this->get('/admin')->assertOk()->assertHeader('Pragma', 'no-cache')->assertHeader('Expires', '0')
+            ->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+                ->component('Admin/Index')->missing('activationCredential')->hasFlash('activationCredential.code', $code));
+        $this->assertStringContainsString('no-store', $response->headers->get('Cache-Control'));
+        $this->assertStringContainsString('private', $response->headers->get('Cache-Control'));
+        $claimed = $invite->fresh()->disclosed_at;
+        $this->assertNotNull($claimed);
+        $this->assertNull($invite->fresh()->consumed_at);
+        $this->assertFalse(session()->has('activationCredential'));
+        $this->get('/admin')->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+            ->missing('activationCredential')->missingFlash('activationCredential'));
+
+        // Even a stale session copy cannot claim the persisted marker twice.
+        $this->withSession(['activationCredential' => $sealed])->get('/admin')->assertOk()
+            ->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+                ->missing('activationCredential')->missingFlash('activationCredential'));
+        $this->assertTrue($claimed->equalTo($invite->fresh()->disclosed_at));
+        $this->assertSame(1, \App\Models\AuditLog::query()->where('action', 'identity.invitation.disclosed')->where('entity_id', $invite->id)->count());
+        $user = app(StaffActivationService::class)->redeem($code, self::PASSWORD);
+        $this->assertTrue($user->is_active, 'Disclosure does not consume redemption.');
+    }
+
+    public function test_activation_disclosure_rejects_stale_corrupt_and_background_envelopes(): void
+    {
+        [$admin, $employee] = $this->actors();
+        $service = app(StaffActivationService::class);
+        $broker = app(\App\Services\ActivationCredentialBroker::class);
+        $other = $this->userWithEmployee('system_admin', 'custody.other');
+        $this->configureIamAdministrator($other);
+        foreach (['wrong actor', 'wrong session', 'stale epoch', 'stale MFA', 'expired envelope', 'corrupt', 'legacy plaintext', 'partial', 'prefetch', 'revoked', 'reissued', 'expired invitation', 'consumed'] as $case) {
+            // A consumed invitation is last: its account becomes active.
+            $request = $this->iamActorRequest($admin);
+            $input = ['employee_id' => $employee->id, 'username' => 'custody.pending', 'role' => 'employee'];
+            $issued = $service->issue($request, $admin, $input);
+            $invite = $issued['invitation'];
+            $sealed = $broker->seal($request, $issued);
+            $actor = $admin;
+            if ($case === 'wrong actor') {
+                $actor = $other;
+                $request = $this->iamActorRequest($other);
+            } elseif ($case === 'wrong session') {
+                $request = $this->iamActorRequest($admin);
+            } elseif ($case === 'stale epoch') {
+                $request->session()->put('auth_session_version', (int) $admin->session_version + 1);
+            } elseif ($case === 'stale MFA') {
+                $request->session()->put(\App\Services\AuthenticationAssurance::SESSION_VERSION_KEY, (int) $admin->mfa_version + 1);
+            } elseif ($case === 'expired envelope') {
+                $this->travel(3)->minutes();
+            } elseif ($case === 'corrupt') {
+                $sealed = 'invalid-envelope';
+            } elseif ($case === 'legacy plaintext') {
+                $sealed = ['code' => $issued['code']];
+            } elseif ($case === 'partial') {
+                $request->headers->set('X-Inertia-Partial-Component', 'Admin/Index');
+            } elseif ($case === 'prefetch') {
+                $request->headers->set('Purpose', 'prefetch');
+            } elseif ($case === 'revoked') {
+                $service->revoke($request, $admin, $invite);
+            } elseif ($case === 'reissued') {
+                $service->issue($request, $admin, $input);
+            } elseif ($case === 'expired invitation') {
+                $invite->forceFill(['expires_at' => now()->subSecond()])->save();
+            } elseif ($case === 'consumed') {
+                $service->redeem($issued['code'], self::PASSWORD);
+            }
+            $request->session()->put('activationCredential', $sealed);
+            $this->assertNull($broker->take($request, $actor), $case);
+            $this->assertFalse($request->session()->has('activationCredential'), $case);
+            $this->assertNull($invite->fresh()->disclosed_at, $case);
+            $this->assertDatabaseMissing('audit_logs', ['action' => 'identity.invitation.disclosed', 'entity_id' => $invite->id]);
+            if ($case === 'expired envelope') {
+                $this->travelBack();
+            }
+        }
+    }
+
+    public function test_invalid_activation_and_mfa_codes_are_not_retained_as_old_input(): void
+    {
+        $this->from('/activate-account')->post('/activate-account', [
+            'code' => 'synthetic-invalid-code',
+            'password' => self::PASSWORD, 'password_confirmation' => self::PASSWORD,
+        ])->assertSessionHasErrors('code')->assertSessionMissing('_old_input.code')
+            ->assertSessionMissing('_old_input.password')->assertSessionMissing('_old_input.password_confirmation');
+        $admin = $this->userWithEmployee('system_admin', 'custody.mfa');
+        $this->configureIamAdministrator($admin);
+        $this->post('/login', ['login' => $admin->username, 'password' => self::PASSWORD])->assertRedirect(route('mfa.challenge'));
+        $this->from('/security/mfa/challenge')->post('/security/mfa/challenge', ['recovery_code' => 'invalid-synthetic-recovery'])
+            ->assertSessionHasErrors('recovery_code')->assertSessionMissing('_old_input.recovery_code');
+    }
+
     private function assertDeniedUnchanged(User $user, callable $operation, string $field): void
     {
         $before = $this->lifecycleSnapshot($user);

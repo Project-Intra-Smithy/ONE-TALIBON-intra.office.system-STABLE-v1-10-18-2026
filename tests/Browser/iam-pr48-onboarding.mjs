@@ -159,6 +159,30 @@ try {
         firstCode = await getPrivateCode(admin);
     });
 
+
+    await checkpoint('g2b-activation-credential-one-time-history-and-reload', async () => {
+        await admin.waitForFunction(() => history.state !== null);
+        assert.ok(await admin.evaluate(code => !JSON.stringify(history.state).includes(code), firstCode), 'Credential persisted in navigation history');
+        const partial = await admin.request.get(BASE + '/admin', {
+            headers: {'X-Inertia':'true','X-Inertia-Partial-Component':'Admin/Index','X-Inertia-Partial-Data':'registry'},
+        });
+        assert.equal(partial.status(), 200);
+        assert.ok(!(await partial.text()).includes(firstCode), 'Partial response exposed a credential');
+        await admin.goto(BASE + '/dashboard');
+        await admin.goBack();
+        await admin.getByRole('heading', { name: 'Accounts & Access' }).waitFor();
+        assert.equal(await admin.locator('section[role="status"] code').count(), 0, 'Back navigation restored a credential');
+        await admin.goForward();
+        await admin.waitForURL(url => url.pathname === '/dashboard');
+        await admin.goBack();
+        await admin.getByRole('heading', { name: 'Accounts & Access' }).waitFor();
+        assert.equal(await admin.locator('section[role="status"] code').count(), 0, 'Repeated navigation restored a credential');
+        await admin.reload();
+        await admin.getByRole('heading', { name: 'Accounts & Access' }).waitFor();
+        assert.equal(await admin.locator('section[role="status"] code').count(), 0, 'Reload restored a credential');
+        report.activationCustody = { historyExcluded: true, partialExcluded: true, backForwardExcluded: true, reloadExcluded: true };
+    });
+
     await checkpoint('employee-mobile-activation-password-and-totp', async () => {
         await redeem(employee, firstCode, firstPassword);
         await noOverflow(employee, 'employee mobile');

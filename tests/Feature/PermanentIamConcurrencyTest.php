@@ -126,6 +126,49 @@ final class PermanentIamConcurrencyTest extends TestCase
         }
     }
 
+
+    public function test_concurrent_activation_disclosure_claims_serialize_on_independent_connections(): void
+    {
+        $this->assertTrue(extension_loaded('pcntl'));
+        $this->assertSame('pgsql', DB::getDriverName());
+        $office = Department::query()->create(['code' => 'IAM-DISCLOSURE', 'name' => 'Synthetic disclosure office', 'is_active' => true]);
+        $admin = User::query()->create([
+            'name' => 'Synthetic Administrator', 'username' => 'disclosure.admin',
+            'password' => self::PASSWORD, 'role' => 'system_admin', 'is_active' => true, 'account_status' => 'active',
+        ]);
+        $this->configureIamAdministrator($admin);
+        $actorEmployee = $this->employee($office, $admin);
+        $employee = $this->employee($office);
+        $request = $this->iamActorRequest($admin);
+        $issued = app(StaffActivationService::class)->issue($request, $admin, [
+            'employee_id' => $employee->id, 'username' => 'disclosure.staff', 'role' => 'department_staff',
+        ]);
+        $broker = app(\App\Services\ActivationCredentialBroker::class);
+        $request->session()->put('activationCredential', $broker->seal($request, $issued));
+        $invite = $issued['invitation'];
+        $this->assertNull($invite->fresh()->disclosed_at);
+        // Both processes inherit the same captured session envelope. The
+        // existing PostgreSQL barrier proves the second waits on real locks.
+        $this->contend(
+            [(int) $actorEmployee->id, (int) $employee->id],
+            function () use ($request, $admin): void {
+                $claim = app(\App\Services\ActivationCredentialBroker::class)->take($request, $admin);
+                $this->assertNotNull($claim);
+            },
+            function () use ($request, $admin): void {
+                if (app(\App\Services\ActivationCredentialBroker::class)->take($request, $admin) !== null) {
+                    throw new \RuntimeException('Duplicate synthetic disclosure claim');
+                }
+            },
+            'ok',
+        );
+        $this->assertNotNull($invite->fresh()->disclosed_at);
+        $this->assertNull($invite->fresh()->consumed_at);
+        $this->assertSame(1, \App\Models\AuditLog::query()->where('action', 'identity.invitation.disclosed')->where('entity_id', $invite->id)->count());
+        $user = app(StaffActivationService::class)->redeem($issued['code'], self::PASSWORD);
+        $this->assertTrue($user->is_active);
+    }
+
     private function employee(Department $office, ?User $user = null): Employee
     {
         return Employee::query()->create([

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\StaffActivationInvitation;
 use App\Models\User;
+use App\Services\ActivationCredentialBroker;
 use App\Services\StaffActivationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ use Inertia\Response;
 
 final class StaffActivationController extends Controller
 {
-    public function store(Request $request, StaffActivationService $service): RedirectResponse
+    public function store(Request $request, StaffActivationService $service, ActivationCredentialBroker $broker): RedirectResponse
     {
         $data = $request->validate([
             'employee_id' => ['required', 'integer', 'exists:employees,id'],
@@ -25,11 +26,9 @@ final class StaffActivationController extends Controller
         ]);
         $issued = $service->issue($request, $request->user(), $data);
 
-        return redirect()->route('admin.index')->with('activationCredential', [
-            'code' => $issued['code'],
-            'username' => $issued['invitation']->username,
-            'expiresAt' => $issued['invitation']->expires_at->toIso8601String(),
-        ]);
+        return redirect()->route('admin.index')
+            ->with('activationCredential', $broker->seal($request, $issued))
+            ->header('Cache-Control', 'no-store, private');
     }
 
     public function revoke(Request $request, StaffActivationInvitation $invitation, StaffActivationService $service): RedirectResponse
@@ -51,14 +50,12 @@ final class StaffActivationController extends Controller
         return back()->with('success', 'Account reactivated.');
     }
 
-    public function recover(Request $request, User $user, StaffActivationService $service): RedirectResponse
+    public function recover(Request $request, User $user, StaffActivationService $service, ActivationCredentialBroker $broker): RedirectResponse
     {
         $issued = $service->recover($request, $request->user(), $user);
-        return redirect()->route('admin.index')->with('activationCredential', [
-            'code' => $issued['code'],
-            'username' => $issued['invitation']->username,
-            'expiresAt' => $issued['invitation']->expires_at->toIso8601String(),
-        ]);
+        return redirect()->route('admin.index')
+            ->with('activationCredential', $broker->seal($request, $issued))
+            ->header('Cache-Control', 'no-store, private');
     }
 
     public function show(): Response
