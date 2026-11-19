@@ -412,7 +412,9 @@ try {
             await desktopContext.close();
         }
         await admin.reload();
-        await admin.locator('table tbody tr').filter({ hasText: '@qa.mobile.ordinary' }).waitFor();
+        const mobileCard = admin.locator('article').filter({ hasText: '@qa.mobile.ordinary' });
+        await mobileCard.waitFor({ state: 'visible' });
+        await mobileCard.getByText('Active', { exact: true }).waitFor({ state: 'visible' });
     });
     if (fail.length) throw Error('Browser/server runtime error count: ' + fail.length);
     report.completed = true;
