@@ -220,7 +220,13 @@ final class PermanentIamLifecycleTest extends TestCase
     public function test_employee_registration_rejects_invalid_office_and_duplicate_number_and_accepts_no_number(): void
     {
         $admin = $this->userWithEmployee('system_admin', 'validate.admin');
-        $office = Department::query()->where('code', 'ENG')->firstOrFail();
+        // Keep the acting administrator's own office active. Only the target
+        // office is deactivated, so this exercises registration validation.
+        $office = Department::query()->create([
+            'code' => 'QA-TARGET', 'name' => 'QA Target Office',
+            'short_name' => 'Target', 'branch' => 'executive',
+            'office_type' => 'department', 'sort_order' => 2, 'is_active' => true,
+        ]);
         $data = ['full_name' => 'New Employee', 'department_id' => $office->id, 'position_title' => 'Staff'];
         $this->actingAs($admin);
         $this->from('/admin')->post('/admin/employees', array_replace($data, ['department_id' => 99999999]))
