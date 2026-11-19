@@ -33,6 +33,7 @@ class DashboardWorkspaceTest extends TestCase
 
         $mfaPending = $this->human('department_head', $office);
         Auth::guard('web')->login($mfaPending);
+        $this->withSession(['auth_session_version' => (int) $mfaPending->session_version]);
         $this->get('/dashboard')->assertRedirect(route('mfa.enroll'));
     }
 

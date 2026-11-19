@@ -41,7 +41,7 @@ final class AuthenticationAttemptLimiter
 
     private function loginKey(Request $request): string
     {
-        $identity = Str::lower((string) $request->input('email'));
+        $identity = Str::lower((string) $request->input('login', $request->input('email')));
 
         return 'auth:login:'.hash('sha256', $identity.'|'.$request->ip());
     }

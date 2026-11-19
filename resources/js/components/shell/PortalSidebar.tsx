@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, router } from '@inertiajs/react';
-import { LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { KeyRound, LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { isPortalPathActive, type PortalNavigationGroup } from '../../navigation/portalNavigation';
 import type { AuthUser } from '../../types';
 import AppearanceControl from '../AppearanceControl';
@@ -177,6 +177,7 @@ export default function PortalSidebar({
                         </div>
 
                         <AppearanceControl compact />
+                        <Link href="/security/account" onClick={onNavigate} aria-label="Account security" title="Account security" className="flex h-10 w-10 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-emerald-700"><KeyRound size={17} aria-hidden="true" /></Link>
 
                         <button
                             type="button"
@@ -209,6 +210,7 @@ export default function PortalSidebar({
                                 </div>
                             )}
 
+                            <Link href="/security/account" onClick={onNavigate} className="mt-2 flex min-h-10 items-center gap-2 rounded-lg px-2 text-sm text-slate-700 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-emerald-700"><KeyRound size={15} aria-hidden="true" /><span>Account security</span></Link>
                             <button
                                 type="button"
                                 onClick={() => router.post('/logout')}

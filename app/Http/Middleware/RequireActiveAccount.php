@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\User;
 use App\Services\AuditLogger;
+use App\Services\AccountSessionEligibility;
 use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class RequireActiveAccount
 {
-    public function __construct(private readonly AuditLogger $audit)
+    public function __construct(private readonly AuditLogger $audit, private readonly AccountSessionEligibility $eligibility)
     {
     }
 
@@ -20,7 +21,16 @@ final class RequireActiveAccount
     {
         $user = $request->user();
 
-        if (! $user || $user->is_active) {
+        if (! $user) {
+            return $next($request);
+        }
+
+        $current = $this->eligibility->current($user);
+        if ($current && ! Auth::guard('web')->viaRemember()
+            && $this->eligibility->matchesEpoch($request, $current)) {
+            // Downstream authorization must not see cached role or account data.
+            Auth::guard('web')->setUser($current);
+
             return $next($request);
         }
 
@@ -49,7 +59,7 @@ final class RequireActiveAccount
 
     private function logout(Request $request): void
     {
-        Auth::guard('web')->logout();
+        Auth::guard('web')->logoutCurrentDevice();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
     }
@@ -57,7 +67,7 @@ final class RequireActiveAccount
     private function inactiveResponse(): RedirectResponse
     {
         return redirect()->route('login')->withErrors([
-            'email' => 'This session is no longer active. Please sign in again or contact an administrator.',
+            'login' => 'This session is no longer active. Please sign in again or contact an administrator.',
         ]);
     }
 }

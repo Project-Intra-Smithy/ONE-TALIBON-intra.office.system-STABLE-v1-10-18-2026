@@ -1,4 +1,4 @@
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
 import { KeyRound, RotateCcw, ShieldCheck, ShieldOff } from 'lucide-react';
 
 type Props = {
@@ -8,6 +8,7 @@ type Props = {
 };
 
 export default function MfaSettings({ configured, confirmedAt, recoveryGeneratedAt }: Props) {
+    const password = useForm({ current_password:'', password:'', password_confirmation:'' });
     return (
         <>
             <Head title="MFA security" />
@@ -23,6 +24,15 @@ export default function MfaSettings({ configured, confirmedAt, recoveryGenerated
                         <button type="button" onClick={() => { if (window.confirm('Disable MFA? Your current assurance will be cleared and re-enrollment is required before municipal access resumes.')) router.delete('/security/mfa'); }} className="inline-flex items-center justify-center gap-2 rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm font-semibold text-red-800 hover:bg-red-100"><ShieldOff size={16} /> Disable MFA</button>
                         <Link href="/dashboard" className="rounded-xl bg-[#0b2852] px-4 py-3 text-center text-sm font-semibold text-white hover:bg-[#10366c]">Back to dashboard</Link>
                     </div>
+                    <form onSubmit={event=>{event.preventDefault();password.put('/security/password',{preserveScroll:true,onSuccess:()=>password.reset()});}} className="mt-7 space-y-3 border-t border-slate-200 pt-6">
+                        <h2 className="font-bold text-slate-950">Change password</h2>
+                        <p className="text-sm text-slate-600">Changing your password invalidates other signed-in sessions.</p>
+                        <input aria-label="Current password" type="password" autoComplete="current-password" placeholder="Current password" value={password.data.current_password} onChange={e=>password.setData('current_password',e.target.value)} className="w-full rounded-xl border border-slate-300 px-3 py-3" required/>
+                        <input aria-label="New password" type="password" autoComplete="new-password" placeholder="New password" value={password.data.password} onChange={e=>password.setData('password',e.target.value)} className="w-full rounded-xl border border-slate-300 px-3 py-3" required/>
+                        <input aria-label="Confirm new password" type="password" autoComplete="new-password" placeholder="Confirm new password" value={password.data.password_confirmation} onChange={e=>password.setData('password_confirmation',e.target.value)} className="w-full rounded-xl border border-slate-300 px-3 py-3" required/>
+                        {Object.values(password.errors).map(error=><p key={error} role="alert" className="text-sm font-semibold text-red-700">{error}</p>)}
+                        <button disabled={password.processing} className="rounded-xl bg-[#0b2852] px-4 py-3 text-sm font-semibold text-white disabled:opacity-60">Update password</button>
+                    </form>
                 </div>
             </main>
         </>

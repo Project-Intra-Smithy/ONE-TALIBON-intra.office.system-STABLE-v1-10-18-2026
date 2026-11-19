@@ -164,9 +164,13 @@ class DocumentAccessPrecedenceTest extends TestCase
         $actor->employee->update(['employment_status' => 'inactive']);
         // Deliberately keep the original actor with cached active relations.
         $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
-        $this->actingAs($actor)
-            ->get('/documents/'.$document->public_id.'/download')
-            ->assertForbidden();
+        $response = $this->get('/documents/'.$document->public_id.'/download')
+            ->assertRedirect(route('login'))->assertSessionMissing('auth_session_version');
+        $this->assertGuest();
+        $this->assertStringNotContainsString('%PDF-1.7 test', $response->getContent());
+        $this->assertStringNotContainsString($document->title, $response->getContent());
+
+        // The direct access service above still exercises the original domain denial.
     }
 
     public function test_orphaned_higher_priority_event_link_does_not_downgrade_to_transaction(): void

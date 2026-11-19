@@ -5,6 +5,7 @@ on:
     branches:
       - KIRCH-TALIBON-V1-UIUX-CORRECTION
       - 'KIRCH-TALIBON-UIUX-W*'
+      - candidate/codex-iam-admin-provisioning-r2
   pull_request:
     branches:
       - KIRCH-TALIBON-V1-UIUX-CORRECTION
@@ -43,14 +44,26 @@ jobs:
   backend:
     name: Laravel feature tests
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 35
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: postgres
+      DB_PASSWORD: iam_candidate_disposable
+      CACHE_STORE: file
+      SESSION_DRIVER: file
+      QUEUE_CONNECTION: sync
     services:
       postgres:
         image: postgres:16
         env:
           POSTGRES_DB: talibon_portal_test
           POSTGRES_USER: postgres
-          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_PASSWORD: iam_candidate_disposable
         ports:
           - 5432:5432
         options: >-
@@ -77,6 +90,9 @@ jobs:
         run: |
           cp .env.example .env
           php artisan key:generate
+          # Fail closed: this runner must use a newly provisioned empty test DB.
+          php -r '$p = new PDO("pgsql:host=127.0.0.1;port=5432;dbname=talibon_portal_test", "postgres", "iam_candidate_disposable"); if ($p->query("select current_database()")->fetchColumn() !== "talibon_portal_test" || (int)$p->query("select count(*) from pg_tables where schemaname = current_schema()")->fetchColumn() !== 0) {fwrite(STDERR,"Refusing nonempty/incorrect database\\n");exit(1);}'
+          php artisan migrate --force --no-interaction
 
-      - name: Run feature tests
-        run: composer test
+      - name: Run full Feature regression
+        run: php artisan test --testsuite=Feature

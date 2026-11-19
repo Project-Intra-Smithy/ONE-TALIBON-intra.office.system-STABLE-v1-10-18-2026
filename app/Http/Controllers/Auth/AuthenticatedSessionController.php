@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Services\AccountSessionEligibility;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Hash;
 use App\Services\AuditLogger;
 use App\Services\AuthenticationAssurance;
 use App\Services\AuthenticationAttemptLimiter;
@@ -20,6 +24,7 @@ class AuthenticatedSessionController extends Controller
         private readonly AuthenticationAssurance $assurance,
         private readonly AuthenticationAttemptLimiter $limiter,
         private readonly AuditLogger $audit,
+        private readonly AccountSessionEligibility $eligibility,
     ) {}
 
     public function create(): Response
@@ -30,20 +35,52 @@ class AuthenticatedSessionController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
+            'login' => ['nullable', 'string', 'max:255', 'required_without:email'],
+            'email' => ['nullable', 'email', 'required_without:login'],
             'password' => ['required', 'string'],
         ]);
 
         $this->rejectLimitedLogin($request);
 
-        if (! Auth::attempt([...$credentials, 'is_active' => true], $request->boolean('remember'))) {
+        $login = mb_strtolower(trim((string) ($credentials['login'] ?? $credentials['email'])));
+        $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        // Field is selected above from two fixed identifiers, never request SQL.
+        // Deny ambiguous legacy data even before deployment of the DB backstop.
+        $matches = User::query()->whereRaw("lower(btrim({$field})) = ?", [$login])->limit(2)->get();
+        $candidate = $matches->count() === 1 ? $matches->first() : null;
+        $user = null;
+        if ($candidate) {
+            try {
+                $user = DB::transaction(function () use ($candidate, $field, $login, $credentials): ?User {
+                    $locked = $this->eligibility->lock($candidate);
+                    if (mb_strtolower(trim((string) $locked->{$field})) !== $login || ! Hash::check($credentials['password'], $locked->password)) {
+                        return null;
+                    }
+                    // Retire previously issued recall tokens even on successful
+                    // password login. No recaller can establish an auth epoch.
+                    $locked->forceFill(['remember_token' => null]);
+                    if (Hash::needsRehash($locked->password)) {
+                        $locked->password = $credentials['password'];
+                    }
+                    if ($locked->isDirty()) {
+                        $locked->save();
+                    }
+
+                    return $locked;
+                }, 3);
+            } catch (AuthorizationException) {
+                // Do not distinguish inactive or ineligible identities.
+            }
+        }
+        if (! $user) {
             $this->recordFailedLogin($request);
         }
 
         $this->limiter->clearLogin($request);
+        Auth::guard('web')->login($user, false);
         $request->session()->regenerate();
         $this->assurance->clear($request);
-        $user = $request->user();
+        $request->session()->put(AccountSessionEligibility::EPOCH, (int) $user->session_version);
 
         if (! $this->assurance->requiresMfa($user)) {
             return redirect()->intended(route('dashboard'));
@@ -60,7 +97,8 @@ class AuthenticatedSessionController extends Controller
 
     public function destroy(Request $request): RedirectResponse
     {
-        if ($request->user()) {
+        if ($request->user() && ! Auth::guard('web')->viaRemember()
+            && $this->eligibility->matchesEpoch($request, $request->user())) {
             $userId = $request->user()->id;
             $sessionHash = (string) $request->session()->get(
                 'presence_session_hash',
@@ -76,7 +114,7 @@ class AuthenticatedSessionController extends Controller
                     ->max('last_seen_at'),
             ]);
         }
-        Auth::guard('web')->logout();
+        Auth::guard('web')->logoutCurrentDevice();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
@@ -96,7 +134,7 @@ class AuthenticatedSessionController extends Controller
         );
 
         throw ValidationException::withMessages([
-            'email' => 'Sign in could not be completed. Please wait and try again.',
+            $request->has('login') ? 'login' : 'email' => 'Sign in could not be completed. Please wait and try again.',
         ]);
     }
 
@@ -110,7 +148,7 @@ class AuthenticatedSessionController extends Controller
         );
 
         throw ValidationException::withMessages([
-            'email' => 'The provided credentials are invalid or the account is inactive.',
+            $request->has('login') ? 'login' : 'email' => 'The provided credentials are invalid or the account is inactive.',
         ]);
     }
 }

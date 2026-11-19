@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Services\AccountRegistryQuery;
+use App\Services\ActivationCredentialBroker;
+use App\Services\SensitiveInertiaResponse;
 use App\Services\SystemAdministrationAccess;
 use App\Services\SystemAdministrationQuery;
+use App\Services\StaffActivationService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 final class AdminDashboardController extends Controller
 {
@@ -17,7 +21,9 @@ final class AdminDashboardController extends Controller
         SystemAdministrationAccess $access,
         SystemAdministrationQuery $dashboard,
         AccountRegistryQuery $registry,
-    ): Response {
+        ActivationCredentialBroker $broker,
+        SensitiveInertiaResponse $sensitiveResponse,
+    ): Response|HttpResponse {
         $actor = $request->user();
         $access->authorize($actor);
 
@@ -29,7 +35,7 @@ final class AdminDashboardController extends Controller
             'status' => ['nullable', Rule::in(['active', 'inactive'])],
         ]);
 
-        return Inertia::render('Admin/Index', [
+        $props = [
             ...$dashboard->dashboard($actor),
             'registry' => $registry->paginate($filters),
             'registryFilters' => [
@@ -40,6 +46,18 @@ final class AdminDashboardController extends Controller
             ],
             'departmentOptions' => $registry->departmentOptions(),
             'roleOptions' => $roleOptions,
-        ]);
+            'invitableRoles' => StaffActivationService::INVITABLE_ROLES,
+            'eligibleEmployees' => $registry->eligibleEmployees(),
+            'pendingInvitations' => $registry->pendingInvitations(),
+        ];
+
+        $credential = $broker->take($request, $actor);
+        if ($credential !== null) {
+            Inertia::flash('activationCredential', $credential);
+
+            return $sensitiveResponse->render($request, 'Admin/Index', $props);
+        }
+
+        return Inertia::render('Admin/Index', $props);
     }
 }

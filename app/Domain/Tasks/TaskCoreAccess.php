@@ -32,12 +32,14 @@ final class TaskCoreAccess
             ->with('employee.department')
             ->whereKey($claimedActor->getKey())
             ->where('is_active', true)
+            ->where('account_status', 'active')
             ->first();
 
         if (
             ! $actor ||
             ! $actor->employee ||
             $actor->employee->employment_status !== 'active' ||
+            $actor->employee->separation_date !== null ||
             ! $actor->employee->department ||
             ! $actor->employee->department->is_active
         ) {

@@ -188,15 +188,49 @@ final class IndividualTaskHttpTest extends TestCase
         $this->actingAs($actor);
         $id = $this->postJson('/tasks', ['title' => 'Saved'])->assertCreated()->json('data.id');
 
-        $actor->employee()->update(['employment_status' => 'separated']);
-        $this->getJson('/tasks')->assertForbidden();
-        $this->postJson('/tasks/'.$id.'/start')->assertForbidden();
-        $this->postJson('/tasks', ['title' => 'No'])->assertForbidden();
+        foreach ([
+            fn () => $this->getJson('/tasks'),
+            fn () => $this->postJson('/tasks/'.$id.'/start'),
+            fn () => $this->postJson('/tasks', ['title' => 'No']),
+        ] as $request) {
+            $actor->employee()->update(['employment_status' => 'active']);
+            // Independently bind a valid synthetic session BEFORE revoking it.
+            $this->actingAs($actor->fresh());
+            $actor->employee()->update(['employment_status' => 'separated']);
+            $request()->assertUnauthorized()->assertJsonPath('code', 'ACCOUNT_INACTIVE')
+                ->assertSessionMissing('auth_session_version');
+            $this->assertGuest();
+            $this->getJson('/tasks')->assertUnauthorized();
+
+            // Isolate the original domain HTTP boundary; only the outer
+            // account middleware is removed for this separate test request.
+            $this->withoutMiddleware(\App\Http\Middleware\RequireActiveAccount::class);
+            try {
+                $this->actingAs($actor);
+                $request()->assertForbidden();
+            } finally {
+                $this->withMiddleware(\App\Http\Middleware\RequireActiveAccount::class);
+            }
+        }
 
         $actor->employee()->update(['employment_status' => 'active']);
+        $this->actingAs($actor->fresh());
         $office->update(['is_active' => false]);
-        $this->getJson('/tasks')->assertForbidden();
+        $this->getJson('/tasks')->assertUnauthorized()->assertJsonPath('code', 'ACCOUNT_INACTIVE')
+            ->assertSessionMissing('auth_session_version');
+        $this->assertGuest();
+        $this->withoutMiddleware(\App\Http\Middleware\RequireActiveAccount::class);
+        try {
+            $this->actingAs($actor);
+            $this->getJson('/tasks')->assertForbidden();
+        } finally {
+            $this->withMiddleware(\App\Http\Middleware\RequireActiveAccount::class);
+        }
         $office->update(['is_active' => true]);
+        $this->actingAs($actor->fresh());
+        $this->getJson('/tasks')->assertOk();
+        $this->assertDatabaseCount('tasks', 1);
+        $this->assertDatabaseHas('tasks', ['id' => $id, 'state' => 'open']);
 
         $orphan = User::query()->create([
             'name' => 'Unlinked Staff',
@@ -234,6 +268,7 @@ final class IndividualTaskHttpTest extends TestCase
         // Tests\\TestCase::actingAs() deliberately auto-satisfies privileged MFA.
         // Use the guard directly for a password-authenticated, MFA-pending session.
         auth()->guard('web')->login($actor);
+        $this->withSession(['auth_session_version' => (int) $actor->session_version]);
         $this->getJson('/tasks')->assertForbidden()->assertJsonPath('code', 'MFA_REQUIRED');
         $this->postJson('/tasks', ['title' => 'No MFA'])->assertForbidden()->assertJsonPath('code', 'MFA_REQUIRED');
         $this->assertSame(0, Task::query()->count());

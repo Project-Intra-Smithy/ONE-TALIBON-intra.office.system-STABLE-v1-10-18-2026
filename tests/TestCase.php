@@ -73,6 +73,10 @@ abstract class TestCase extends BaseTestCase
     {
         parent::actingAs($user, $guard);
 
+        if ($user instanceof User) {
+            $this->withSession(['auth_session_version' => (int) $user->session_version]);
+        }
+
         if ($user instanceof User && app(PrivilegedRolePolicy::class)->requiresMfa($user)) {
             if (blank($user->mfa_secret) || $user->mfa_confirmed_at === null) {
                 $user->forceFill([
@@ -93,5 +97,34 @@ abstract class TestCase extends BaseTestCase
         }
 
         return $this;
+    }
+
+    /** Explicitly prepare a synthetic, fully enrolled IAM administrator fixture. */
+    protected function configureIamAdministrator(User $admin): void
+    {
+        $admin->forceFill([
+            'mfa_secret' => app(\PragmaRX\Google2FA\Google2FA::class)->generateSecretKey(),
+            'mfa_confirmed_at' => now(),
+            'mfa_recovery_codes' => [],
+            'mfa_version' => max(1, (int) $admin->mfa_version),
+        ])->save();
+    }
+
+    /** Capture the claimed session; do not refresh or grant authority on each call. */
+    protected function iamActorRequest(User $admin): \Illuminate\Http\Request
+    {
+        $request = \Illuminate\Http\Request::create('/admin/accounts', 'POST');
+        $session = new \Illuminate\Session\Store('iam-synthetic', new \Illuminate\Session\ArraySessionHandler(120));
+        $session->start();
+        $session->put([
+            'auth_session_version' => (int) $admin->session_version,
+            AuthenticationAssurance::SESSION_USER_KEY => (int) $admin->id,
+            AuthenticationAssurance::SESSION_VERSION_KEY => (int) $admin->mfa_version,
+            AuthenticationAssurance::SESSION_VERIFIED_AT_KEY => now()->getTimestamp(),
+        ]);
+        $request->setLaravelSession($session);
+        $request->setUserResolver(fn () => $admin);
+
+        return $request;
     }
 }
