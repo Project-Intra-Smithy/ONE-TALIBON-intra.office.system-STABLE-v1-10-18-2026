@@ -95,7 +95,7 @@ export default function Login() {
                 )}
               </div>
 
-              <p className="employee-login__google-note">For account security, sign in again when your session ends.</p>
+              <p className="employee-login__google-note">Remember me is disabled for account security. Sign in again when your session ends.</p>
 
               <button type="submit" className="employee-login__submit" disabled={form.processing}>
                 <span>{form.processing ? 'Signing in…' : 'Sign in'}</span>

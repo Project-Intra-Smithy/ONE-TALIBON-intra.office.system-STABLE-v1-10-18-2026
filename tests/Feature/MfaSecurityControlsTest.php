@@ -164,6 +164,9 @@ class MfaSecurityControlsTest extends TestCase
         $this->assertDatabaseHas('audit_logs', ['actor_user_id' => $user->id, 'action' => 'auth.mfa.reset']);
         $this->get('/dashboard')->assertRedirect(route('mfa.enroll'));
 
+        // The guard now receives a distinct fresh actor model on each request.
+        // Refresh this fixture before explicitly simulating re-enrollment.
+        $user = $user->fresh();
         $this->configure($user);
         $beforeDisable = $user->fresh();
         $this->withSession($this->assuredSession($beforeDisable))

@@ -33,10 +33,28 @@ final class AccountSessionEligibility
 
     public function current(User $claimed): ?User
     {
-        $user = User::query()->with('employee.department')->find($claimed->getKey());
+        // A single fresh identity query also evaluates the two employee
+        // predicates. Do not load a second copy of the employee/office graph
+        // for each protected read, or retain eligibility flags on the actor.
+        $user = User::query()->withExists([
+            'employee as has_eligibility_employee',
+            'employee as has_eligible_employee' => fn ($query) => $query
+                ->where('employment_status', 'active')
+                ->whereNull('separation_date')
+                ->whereHas('department', fn ($office) => $office->where('is_active', true)),
+        ])->find($claimed->getKey());
 
-        return $user && $this->eligible($user, $user->employee, $user->employee?->department)
-            ? $user : null;
+        if (! $user || ! $user->is_active || $user->account_status !== 'active'
+            || ($user->has_eligibility_employee
+                ? ! $user->has_eligible_employee
+                : ! blank($user->username))) {
+            return null;
+        }
+        $attributes = $user->getAttributes();
+        unset($attributes['has_eligibility_employee'], $attributes['has_eligible_employee']);
+        $user->setRawAttributes($attributes, true);
+
+        return $user;
     }
 
     /**
