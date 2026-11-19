@@ -80,6 +80,7 @@ async function enroll(page) {
     await page.getByRole('heading', { name: 'Store your recovery codes' }).waitFor();
     await page.getByRole('link', { name: 'Continue to portal' }).click();
     await page.waitForURL(url => url.pathname === '/dashboard');
+    return secret;
 }
 async function getPrivateCode(page) {
     const code = (await page.locator('section[role="status"] code').first().innerText()).trim();
@@ -92,7 +93,7 @@ async function redeem(page, code, password) {
     await page.getByLabel('Choose password').fill(password);
     await page.getByLabel('Confirm password').fill(password);
     await page.getByRole('button', { name: 'Activate account', exact: true }).click();
-    await enroll(page);
+    return enroll(page);
 }
 async function registryRow(page) {
     const row = page.locator('table tbody tr').filter({ hasText: '@qa.employee' });
@@ -193,17 +194,97 @@ try {
         await employee.waitForURL(url => url.pathname === '/login');
         await employee.getByRole('alert').first().waitFor();
     });
+    let recoveredSecret;
     await checkpoint('employee-recovery-reactivation-and-new-mfa', async () => {
-        await redeem(employee, replacementCode, recoveryPassword);
+        recoveredSecret = await redeem(employee, replacementCode, recoveryPassword);
         await noOverflow(employee, 'recovered employee mobile');
         const forbidden = await employee.request.get(BASE + '/admin', { maxRedirects: 0 });
         assert.equal(forbidden.status(), 403);
+    });
+    async function changePassword(page, currentPassword, nextPassword) {
+        await page.getByLabel('Current password', { exact: true }).fill(currentPassword);
+        await page.getByLabel('New password', { exact: true }).fill(nextPassword);
+        await page.getByLabel('Confirm new password', { exact: true }).fill(nextPassword);
+        await page.getByRole('button', { name: 'Update password', exact: true }).click();
+        await page.waitForFunction(() => document.querySelector('input[aria-label="Current password"]')?.value === '');
+    }
+
+    await checkpoint('g2a-privileged-real-mfa-password-change-and-old-session-denial', async () => {
+        const secondContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+        const second = await secondContext.newPage();
+        monitor(second);
+        await signIn(second, 'qa.employee', recoveryPassword);
+        await second.waitForURL(url => url.pathname === '/security/mfa/challenge');
+        await second.goto(BASE + '/security/account');
+        await second.waitForURL(url => url.pathname === '/security/mfa/challenge');
+        await second.getByLabel('Authenticator code').fill(totp(recoveredSecret));
+        await second.getByRole('button', { name: 'Verify and continue' }).click();
+        await second.waitForURL(url => url.pathname === '/security/account');
+        await employee.goto(BASE + '/dashboard');
+        await employee.getByRole('button', { name: 'Open navigation', exact: true }).click();
+        await employee.getByRole('link', { name: 'Account security', exact: true }).click();
+        await employee.waitForURL(url => url.pathname === '/security/account');
+        await noOverflow(employee, 'privileged password mobile');
+        const next = crypto.randomBytes(20).toString('hex') + 'Aa1!';
+        await changePassword(employee, recoveryPassword, next);
+        await employee.goto(BASE + '/security/mfa');
+        await employee.getByRole('heading', { name: 'Multi-factor authentication', exact: true }).waitFor();
+        await second.goto(BASE + '/security/account');
+        await second.waitForURL(url => url.pathname === '/login');
+        await secondContext.close();
+    });
+
+    await checkpoint('g2a-ordinary-desktop-compact-mobile-password-csrf-and-session-revocation', async () => {
+        const ordinaryContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+        const ordinary = await ordinaryContext.newPage();
+        monitor(ordinary);
+        const staleContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+        const stale = await staleContext.newPage();
+        monitor(stale);
+        await ordinary.goto(BASE + '/login');
+        assert.equal(await ordinary.getByRole('checkbox', { name: /remember/i }).count(), 0);
+        await signIn(ordinary, 'qa.ordinary', firstPassword);
+        await ordinary.waitForURL(url => url.pathname === '/dashboard');
+        await signIn(stale, 'qa.ordinary', firstPassword);
+        await stale.waitForURL(url => url.pathname === '/dashboard');
+        await ordinary.getByRole('link', { name: 'Account security', exact: true }).click();
+        await ordinary.waitForURL(url => url.pathname === '/security/account');
+        await noOverflow(ordinary, 'ordinary security desktop');
+        await ordinary.getByRole('link', { name: 'Back to dashboard' }).click();
+        await ordinary.waitForURL(url => url.pathname === '/dashboard');
+        await ordinary.getByRole('button', { name: 'Collapse navigation' }).click();
+        await ordinary.getByRole('link', { name: 'Account security', exact: true }).click();
+        await ordinary.waitForURL(url => url.pathname === '/security/account');
+        await ordinary.getByRole('link', { name: 'Back to dashboard' }).click();
+        await ordinary.waitForURL(url => url.pathname === '/dashboard');
+        await ordinary.setViewportSize({ width: 390, height: 844 });
+        await ordinary.getByRole('button', { name: 'Open navigation', exact: true }).click();
+        await ordinary.getByRole('link', { name: 'Account security', exact: true }).click();
+        await ordinary.waitForURL(url => url.pathname === '/security/account');
+        await noOverflow(ordinary, 'ordinary security mobile');
+        const next = crypto.randomBytes(20).toString('hex') + 'Aa1!';
+        const forged = await ordinary.request.put(BASE + '/security/password', {
+            data: { current_password: firstPassword, password: next, password_confirmation: next },
+            maxRedirects: 0,
+        });
+        assert.equal(forged.status(), 419, 'Password mutation without CSRF token must fail');
+        await changePassword(ordinary, firstPassword, next);
+        await ordinary.goto(BASE + '/security/account');
+        await ordinary.getByRole('heading', { name: 'Account security', exact: true }).waitFor();
+        await stale.goto(BASE + '/security/account');
+        await stale.waitForURL(url => url.pathname === '/login');
+        await signIn(stale, 'qa.ordinary', firstPassword);
+        await stale.getByRole('alert').first().waitFor();
+        await signIn(stale, 'qa.ordinary', next);
+        await stale.waitForURL(url => url.pathname === '/dashboard');
+        await ordinaryContext.close();
+        await staleContext.close();
     });
     if (fail.length) throw Error('Browser/server runtime error count: ' + fail.length);
     report.completed = true;
 } catch (error) {
     report.errorStage = stageName;
-    report.runtimeFailures = [...fail, String(error?.message || error)];
+    report.runtimeFailures = [...fail, String(error?.name || 'CheckpointError')];
     process.exitCode = 1;
 } finally {
     await browser?.close().catch(() => {});

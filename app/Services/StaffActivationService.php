@@ -234,9 +234,9 @@ final class StaffActivationService
             ->orderBy('id')->lockForUpdate()->get()->keyBy('id');
         if ($admin) {
             $this->access->authorize($admin);
-            // Preserve the existing username-less administrator compatibility
-            // boundary; changing legacy session eligibility belongs to G2/G3.
-            if (filled($admin->username) && ! $this->eligible($actorEmployee, $offices->get($actorEmployee?->department_id))) {
+            // Unlinked username-less legacy administration remains compatible;
+            // a linked legacy administrator must meet the same office rules.
+            if (($actorEmployee !== null || filled($admin->username)) && ! $this->eligible($actorEmployee, $offices->get($actorEmployee?->department_id))) {
                 throw new AuthorizationException('Administrator access denied.');
             }
         }

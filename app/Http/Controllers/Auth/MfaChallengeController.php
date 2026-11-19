@@ -51,6 +51,7 @@ final class MfaChallengeController extends Controller
             $user,
             $data['code'] ?? null,
             $data['recovery_code'] ?? null,
+            $request,
         );
 
         if ($proof === null) {

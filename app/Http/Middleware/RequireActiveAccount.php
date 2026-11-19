@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\User;
 use App\Services\AuditLogger;
+use App\Services\AccountSessionEligibility;
 use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class RequireActiveAccount
 {
-    public function __construct(private readonly AuditLogger $audit)
+    public function __construct(private readonly AuditLogger $audit, private readonly AccountSessionEligibility $eligibility)
     {
     }
 
@@ -24,18 +25,14 @@ final class RequireActiveAccount
             return $next($request);
         }
 
-        $employee = $user->employee()->with('department')->first();
-        $sessionCurrent = (int) $request->session()->get('auth_session_version', $user->session_version);
-        $legacyEligible = blank($user->username);
-        $employeeEligible = $legacyEligible || ($employee !== null
-            && $employee->employment_status === 'active'
-            && $employee->separation_date === null
-            && (bool) $employee->department?->is_active);
-        $eligible = $user->is_active
-            && $user->account_status === 'active'
-            && $sessionCurrent === (int) $user->session_version
-            && $employeeEligible;
-        if ($eligible) return $next($request);
+        $current = $this->eligibility->current($user);
+        if ($current && ! Auth::guard('web')->viaRemember()
+            && $this->eligibility->matchesEpoch($request, $current)) {
+            // Downstream authorization must not see cached role or account data.
+            Auth::guard('web')->setUser($current);
+
+            return $next($request);
+        }
 
         $this->audit->record(
             $user,
@@ -62,7 +59,7 @@ final class RequireActiveAccount
 
     private function logout(Request $request): void
     {
-        Auth::guard('web')->logout();
+        Auth::guard('web')->logoutCurrentDevice();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
     }

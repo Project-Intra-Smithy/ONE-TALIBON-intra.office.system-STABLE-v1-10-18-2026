@@ -65,7 +65,22 @@ DB::transaction(function () use ($password): void {
         'user_id' => $owner->id,
         'created_at' => now(),
     ]);
-    // No target employee: the browser must register one through the real UI.
+    // No eligible target employee exists: the browser still registers one.
+    // This separate already-linked ordinary identity exercises G2A password UI.
+    $ordinaryPassword = getenv('IAM_QA_EMPLOYEE_PASSWORD');
+    if (! is_string($ordinaryPassword) || strlen($ordinaryPassword) < 16) {
+        throw new RuntimeException('Synthetic ordinary credential missing.');
+    }
+    $ordinary = User::query()->create([
+        'name' => 'Synthetic Ordinary Employee', 'username' => 'qa.ordinary',
+        'email' => null, 'password' => $ordinaryPassword, 'role' => 'employee',
+        'is_active' => true, 'account_status' => 'active',
+    ]);
+    Employee::query()->create([
+        'employee_number' => 'QA-ORDINARY', 'full_name' => 'Synthetic Ordinary Employee',
+        'user_id' => $ordinary->id, 'department_id' => $office->id,
+        'position_title' => 'Synthetic Staff', 'employment_status' => 'active',
+    ]);
 });
 
 fwrite(STDOUT, "Synthetic IAM browser identities prepared in isolated PostgreSQL test database.\n");

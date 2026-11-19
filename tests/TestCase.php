@@ -73,6 +73,10 @@ abstract class TestCase extends BaseTestCase
     {
         parent::actingAs($user, $guard);
 
+        if ($user instanceof User) {
+            $this->withSession(['auth_session_version' => (int) $user->session_version]);
+        }
+
         if ($user instanceof User && app(PrivilegedRolePolicy::class)->requiresMfa($user)) {
             if (blank($user->mfa_secret) || $user->mfa_confirmed_at === null) {
                 $user->forceFill([

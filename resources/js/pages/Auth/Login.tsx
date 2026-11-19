@@ -4,7 +4,7 @@ import { useState, type FormEvent } from 'react';
 import './login.css';
 
 export default function Login() {
-  const form = useForm({ login: '', password: '', remember: false });
+  const form = useForm({ login: '', password: '' });
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -95,16 +95,7 @@ export default function Login() {
                 )}
               </div>
 
-              <label className="employee-login__remember">
-                <input
-                  name="remember"
-                  type="checkbox"
-                  checked={form.data.remember}
-                  onChange={(event) => form.setData('remember', event.target.checked)}
-                  disabled={form.processing}
-                />
-                <span>Remember me on this device</span>
-              </label>
+              <p className="employee-login__google-note">For account security, sign in again when your session ends.</p>
 
               <button type="submit" className="employee-login__submit" disabled={form.processing}>
                 <span>{form.processing ? 'Signing in…' : 'Sign in'}</span>

@@ -30,8 +30,9 @@ final readonly class VerifiedMunicipalActor
 
         $actor = User::query()->with('employee.department')->find($claimed->getKey());
 
-        if ($actor === null || $actor->is_active === false
+        if ($actor === null || $actor->is_active === false || $actor->account_status !== 'active'
             || $actor->employee === null || $actor->employee->employment_status !== 'active'
+            || $actor->employee->separation_date !== null
             || $actor->employee->department === null || $actor->employee->department->is_active === false) {
             throw new AuthorizationException('Common Search municipal access is revoked.');
         }
@@ -52,8 +53,9 @@ final readonly class VerifiedMunicipalActor
         }
 
         $actor = User::query()->with('employee.department')->find($claimed->getKey());
-        if ($actor === null || ! $actor->is_active || $actor->role !== $claimed->role
+        if ($actor === null || ! $actor->is_active || $actor->account_status !== 'active' || $actor->role !== $claimed->role
             || $actor->employee === null || $actor->employee->employment_status !== 'active'
+            || $actor->employee->separation_date !== null
             || $actor->employee->department === null || ! $actor->employee->department->is_active) {
             throw new AuthorizationException('Document source municipal access is revoked.');
         }

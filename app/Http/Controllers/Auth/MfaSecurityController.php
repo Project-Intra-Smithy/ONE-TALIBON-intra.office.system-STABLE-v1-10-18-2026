@@ -56,7 +56,7 @@ final class MfaSecurityController extends Controller
     public function regenerateRecoveryCodes(Request $request): RedirectResponse
     {
         $user = $request->user();
-        $codes = $this->mfa->regenerateRecoveryCodes($user);
+        $codes = $this->mfa->regenerateRecoveryCodes($user, $request);
         $this->audit->record($user, 'auth.mfa.recovery_codes.regenerated', 'MFA recovery codes were regenerated.');
 
         return redirect()->route('mfa.recovery.show')->with(
@@ -68,7 +68,7 @@ final class MfaSecurityController extends Controller
     public function reset(Request $request): RedirectResponse
     {
         $user = $request->user();
-        $this->mfa->resetEnrollment($user);
+        $this->mfa->resetEnrollment($user, $request);
         $user->refresh();
         $this->assurance->clear($request);
         $this->audit->record($user, 'auth.mfa.reset', 'Privileged MFA enrollment was reset.');
@@ -79,7 +79,7 @@ final class MfaSecurityController extends Controller
     public function disable(Request $request): RedirectResponse
     {
         $user = $request->user();
-        $this->mfa->disable($user);
+        $this->mfa->disable($user, $request);
         $user->refresh();
         $this->assurance->clear($request);
         $this->audit->record($user, 'auth.mfa.disabled', 'Privileged MFA enrollment was disabled.');

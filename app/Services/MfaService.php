@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Domain\Identity\ConfirmedMfaEnrollment;
 use App\Models\User;
 use DateTimeInterface;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -13,15 +15,18 @@ use PragmaRX\Google2FA\Google2FA;
 
 final class MfaService
 {
-    public function __construct(private readonly Google2FA $totp)
+    public function __construct(private readonly Google2FA $totp, private readonly AccountSessionEligibility $eligibility, private readonly AuthenticationAssurance $assurance)
     {
     }
 
-    public function ensureEnrollmentSecret(User $user): string
+    public function ensureEnrollmentSecret(User $user, ?Request $request = null): string
     {
-        return DB::transaction(function () use ($user): string {
-            $locked = User::query()->lockForUpdate()->findOrFail($user->id);
+        return DB::transaction(function () use ($user, $request): string {
+            $locked = $this->lockActor($user, $request, false);
 
+            if ($request && $locked->mfa_confirmed_at !== null) {
+                throw new AuthorizationException('Account access denied.');
+            }
             if (filled($locked->mfa_secret)) {
                 return $locked->mfa_secret;
             }
@@ -36,19 +41,20 @@ final class MfaService
             ])->save();
 
             return $secret;
-        });
+        }, 3);
     }
 
-    public function provisioningUri(User $user): string
+    public function provisioningUri(User $user, ?string $secret = null): string
     {
-        if (! filled($user->mfa_secret)) {
+        $secret ??= $user->mfa_secret;
+        if (! filled($secret)) {
             throw new LogicException('MFA enrollment secret is not initialized.');
         }
 
         return $this->totp->getQRCodeUrl(
             (string) config('identity.mfa.issuer'),
             $user->email,
-            $user->mfa_secret,
+            $secret,
         );
     }
 
@@ -65,10 +71,10 @@ final class MfaService
         );
     }
 
-    public function confirmEnrollment(User $user, string $code): ?ConfirmedMfaEnrollment
+    public function confirmEnrollment(User $user, string $code, ?Request $request = null): ?ConfirmedMfaEnrollment
     {
-        return DB::transaction(function () use ($user, $code): ?ConfirmedMfaEnrollment {
-            $locked = User::query()->lockForUpdate()->findOrFail($user->id);
+        return DB::transaction(function () use ($user, $code, $request): ?ConfirmedMfaEnrollment {
+            $locked = $this->lockActor($user, $request, false);
 
             if ($locked->mfa_confirmed_at !== null || ! $this->verifyTotp($locked, $code)) {
                 return null;
@@ -83,13 +89,13 @@ final class MfaService
             ])->save();
 
             return new ConfirmedMfaEnrollment((int) $locked->id, $version, $codes);
-        });
+        }, 3);
     }
 
-    public function verifyChallenge(User $user, ?string $totpCode, ?string $recoveryCode): ?ConfirmedMfaEnrollment
+    public function verifyChallenge(User $user, ?string $totpCode, ?string $recoveryCode, ?Request $request = null): ?ConfirmedMfaEnrollment
     {
-        return DB::transaction(function () use ($user, $totpCode, $recoveryCode): ?ConfirmedMfaEnrollment {
-            $locked = User::query()->lockForUpdate()->findOrFail($user->id);
+        return DB::transaction(function () use ($user, $totpCode, $recoveryCode, $request): ?ConfirmedMfaEnrollment {
+            $locked = $this->lockActor($user, $request, false);
 
             if ($locked->mfa_confirmed_at === null || ! filled($locked->mfa_secret)) {
                 return null;
@@ -102,16 +108,16 @@ final class MfaService
             return $accepted
                 ? new ConfirmedMfaEnrollment((int) $locked->id, (int) $locked->mfa_version)
                 : null;
-        });
+        }, 3);
     }
 
     /**
      * @return array<int, string>
      */
-    public function regenerateRecoveryCodes(User $user): array
+    public function regenerateRecoveryCodes(User $user, ?Request $request = null): array
     {
-        return DB::transaction(function () use ($user): array {
-            $locked = User::query()->lockForUpdate()->findOrFail($user->id);
+        return DB::transaction(function () use ($user, $request): array {
+            $locked = $this->lockActor($user, $request, true);
 
             if ($locked->mfa_confirmed_at === null) {
                 throw new LogicException('MFA must be confirmed before recovery codes can be regenerated.');
@@ -121,13 +127,13 @@ final class MfaService
             $this->persistRecoveryCodes($locked, $codes, now());
 
             return $codes;
-        });
+        }, 3);
     }
 
-    public function resetEnrollment(User $user): string
+    public function resetEnrollment(User $user, ?Request $request = null): string
     {
-        return DB::transaction(function () use ($user): string {
-            $locked = User::query()->lockForUpdate()->findOrFail($user->id);
+        return DB::transaction(function () use ($user, $request): string {
+            $locked = $this->lockActor($user, $request, true);
             $secret = $this->totp->generateSecretKey();
             $locked->forceFill([
                 'mfa_secret' => $secret,
@@ -138,13 +144,13 @@ final class MfaService
             ])->save();
 
             return $secret;
-        });
+        }, 3);
     }
 
-    public function disable(User $user): void
+    public function disable(User $user, ?Request $request = null): void
     {
-        DB::transaction(function () use ($user): void {
-            $locked = User::query()->lockForUpdate()->findOrFail($user->id);
+        DB::transaction(function () use ($user, $request): void {
+            $locked = $this->lockActor($user, $request, true);
             $locked->forceFill([
                 'mfa_secret' => null,
                 'mfa_confirmed_at' => null,
@@ -152,7 +158,7 @@ final class MfaService
                 'mfa_recovery_codes_generated_at' => null,
                 'mfa_version' => $this->nextVersion($locked),
             ])->save();
-        });
+        }, 3);
     }
 
     /**
@@ -205,6 +211,27 @@ final class MfaService
     private function normalizeRecoveryCode(string $code): string
     {
         return Str::upper(str_replace(' ', '', trim($code)));
+    }
+
+    private function lockActor(User $claimed, ?Request $request, bool $assured): User
+    {
+        $locked = $this->eligibility->lock($claimed);
+        if (! $this->assurance->requiresMfa($locked)
+            || $locked->role !== $claimed->role
+            || (int) $locked->mfa_version !== (int) $claimed->mfa_version) {
+            throw new AuthorizationException('Account access denied.');
+        }
+        if ($request) {
+            $this->eligibility->requireSession($request, $locked);
+            if ($assured && ! $this->assurance->isSatisfiedAgainst($request, $locked)) {
+                throw new AuthorizationException('Account access denied.');
+            }
+        } elseif ((int) $locked->session_version !== (int) $claimed->session_version) {
+            // Existing trusted non-HTTP service callers cannot mutate stale epochs.
+            throw new AuthorizationException('Account access denied.');
+        }
+
+        return $locked;
     }
 
     private function nextVersion(User $user): int

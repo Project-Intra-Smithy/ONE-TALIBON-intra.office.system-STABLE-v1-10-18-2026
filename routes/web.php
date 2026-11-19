@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminEmployeeRegistrationController;
 use App\Http\Controllers\AuditController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\AccountSecurityController;
 use App\Http\Controllers\Auth\MfaChallengeController;
 use App\Http\Controllers\Auth\MfaEnrollmentController;
 use App\Http\Controllers\Auth\MfaSecurityController;
@@ -83,10 +84,11 @@ Route::middleware(['auth', 'active', 'mfa.subject', 'mfa.assured'])->group(funct
     Route::post('/security/mfa/recovery-codes', [MfaSecurityController::class, 'regenerateRecoveryCodes'])->name('mfa.recovery.regenerate');
     Route::post('/security/mfa/reset', [MfaSecurityController::class, 'reset'])->name('mfa.reset');
     Route::delete('/security/mfa', [MfaSecurityController::class, 'disable'])->name('mfa.disable');
-    Route::put('/security/password', PasswordChangeController::class)->name('password.change');
 });
 
 Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
+    Route::get('/security/account', AccountSecurityController::class)->name('account.security');
+    Route::put('/security/password', PasswordChangeController::class)->name('password.change');
     Route::get('/admin', AdminDashboardController::class)->name('admin.index');
     Route::post('/admin/employees', [AdminEmployeeRegistrationController::class, 'store'])->name('admin.employees.store');
     Route::post('/admin/accounts', [StaffActivationController::class, 'store'])->name('admin.accounts.store');

@@ -50,6 +50,7 @@ class MfaSecurityControlsTest extends TestCase
         $user = $this->configuredPrivilegedUser();
 
         Auth::guard('web')->login($user);
+        $this->withSession(['auth_session_version' => (int) $user->session_version]);
         $this->get('/transactions')->assertRedirect(route('mfa.challenge'));
 
         $this->assertDatabaseHas('audit_logs', [
@@ -74,6 +75,7 @@ class MfaSecurityControlsTest extends TestCase
         Cache::flush();
         $privileged = $this->configuredPrivilegedUser();
         Auth::guard('web')->login($privileged);
+        $this->withSession(['auth_session_version' => (int) $privileged->session_version]);
         $current = $this->totp()->getCurrentOtp($privileged->mfa_secret);
         $invalid = $current === '000000' ? '000001' : '000000';
 
@@ -180,6 +182,7 @@ class MfaSecurityControlsTest extends TestCase
         $user = $this->configuredPrivilegedUser();
         $secret = $user->mfa_secret;
         Auth::guard('web')->login($user);
+        $this->withSession(['auth_session_version' => (int) $user->session_version]);
 
         $invalid = $this->totp()->getCurrentOtp($secret) === '000000' ? '000001' : '000000';
         $this->post('/security/mfa/challenge', ['code' => $invalid]);
@@ -208,6 +211,7 @@ class MfaSecurityControlsTest extends TestCase
         $this->assertGreaterThan($oldVersion, (int) $afterReset->mfa_version);
 
         Auth::guard('web')->login($afterReset);
+        $this->withSession(['auth_session_version' => (int) $afterReset->session_version]);
         $this->withSession($sessionA)
             ->get('/dashboard')
             ->assertRedirect(route('mfa.enroll'));
@@ -222,6 +226,7 @@ class MfaSecurityControlsTest extends TestCase
         $this->assertNotNull($reenrolled->mfa_confirmed_at);
 
         Auth::guard('web')->login($reenrolled);
+        $this->withSession(['auth_session_version' => (int) $reenrolled->session_version]);
         $this->withSession($sessionA)
             ->get('/dashboard')
             ->assertRedirect(route('mfa.challenge'));
@@ -249,6 +254,7 @@ class MfaSecurityControlsTest extends TestCase
     {
         $user = $this->user('system_admin');
         Auth::guard('web')->login($user);
+        $this->withSession(['auth_session_version' => (int) $user->session_version]);
 
         $response = $this->get('https://localhost/security/mfa/enroll');
 
@@ -269,6 +275,7 @@ class MfaSecurityControlsTest extends TestCase
         $codes = ['ONETIME-ALPHA1', 'ONETIME-BRAVO2'];
         $sealed = app(MfaRecoveryCodeBroker::class)->seal($codes);
         Auth::guard('web')->login($user);
+        $this->withSession(['auth_session_version' => (int) $user->session_version]);
 
         $response = $this->withSession([
             ...$this->assuredSession($user),
@@ -296,6 +303,7 @@ class MfaSecurityControlsTest extends TestCase
         $codes = ['ONETIME-CHARLIE3', 'ONETIME-DELTA4'];
         $sealed = app(MfaRecoveryCodeBroker::class)->seal($codes);
         Auth::guard('web')->login($user);
+        $this->withSession(['auth_session_version' => (int) $user->session_version]);
 
         $response = $this->withSession([
             ...$this->assuredSession($user),
@@ -321,6 +329,7 @@ class MfaSecurityControlsTest extends TestCase
     {
         $user = $this->user('system_admin');
         Auth::guard('web')->login($user);
+        $this->withSession(['auth_session_version' => (int) $user->session_version]);
 
         $this->get('https://localhost/security/mfa/enroll')
             ->assertInertia(function (Assert $page): void {
@@ -334,6 +343,7 @@ class MfaSecurityControlsTest extends TestCase
     {
         $user = $this->user('system_admin');
         Auth::guard('web')->login($user);
+        $this->withSession(['auth_session_version' => (int) $user->session_version]);
 
         $this->get('/security/mfa/enroll')
             ->assertInertia(function (Assert $page): void {
