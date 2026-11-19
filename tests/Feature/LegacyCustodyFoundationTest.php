@@ -97,7 +97,7 @@ final class LegacyCustodyFoundationTest extends TestCase
         return (string) Str::uuid();
     }
 
-    private function query(PDO $p, string $sql, array $values = []): \PDOStatement
+    private function custodyQuery(PDO $p, string $sql, array $values = []): \PDOStatement
     {
         $q = $p->prepare($sql);
         $q->execute($values);
@@ -110,14 +110,14 @@ final class LegacyCustodyFoundationTest extends TestCase
         // Only internal fixed fixture identifiers, never request input.
         $cols = implode(',', array_keys($data));
         $params = implode(',', array_fill(0, count($data), '?'));
-        $q = $this->query($p, "INSERT INTO $table ($cols) VALUES ($params)".($return ? " RETURNING $return" : ''), array_values($data));
+        $q = $this->custodyQuery($p, "INSERT INTO $table ($cols) VALUES ($params)".($return ? " RETURNING $return" : ''), array_values($data));
 
         return $return ? $q->fetchColumn() : null;
     }
 
     private function scalar(string $sql, array $values = []): mixed
     {
-        return $this->query($this->root, $sql, $values)->fetchColumn();
+        return $this->custodyQuery($this->root, $sql, $values)->fetchColumn();
     }
 
     private function denied(PDO $p, string|array $states, callable $f): void
@@ -390,24 +390,24 @@ final class LegacyCustodyFoundationTest extends TestCase
             $this->denied($p, '42501', fn () => $p->exec('ALTER TABLE public.documents DISABLE TRIGGER a_n03_public_guard'));
         }
         $d = $this->insert($this->ordinary, 'public.documents', ['public_id' => $this->uuid(), 'title' => 'old unregistered', 'storage_disk' => 'documents'], 'id');
-        $this->query($this->ordinary, "UPDATE public.documents SET classification='internal' WHERE id=?", [$d]);
+        $this->custodyQuery($this->ordinary, "UPDATE public.documents SET classification='internal' WHERE id=?", [$d]);
         $id = $this->insert($this->ordinary, 'public.audit_logs', ['action' => 'old.fixture', 'summary' => 'old fixture'], 'id');
-        $this->query($this->ordinary, "UPDATE public.audit_logs SET summary='old changed' WHERE id=?", [$id]);
+        $this->custodyQuery($this->ordinary, "UPDATE public.audit_logs SET summary='old changed' WHERE id=?", [$id]);
         $this->assertSame('old changed', $this->scalar('SELECT summary FROM public.audit_logs WHERE id=?', [$id]));
-        $this->denied($this->ordinary, '42501', fn () => $this->query($this->ordinary, 'UPDATE public.audit_logs SET custody_operation_id=NULL WHERE id=?', [$id]));
-        $this->denied($this->command, '23514', fn () => $this->query($this->command, 'UPDATE public.documents SET updated_at=now() WHERE id=?', [$d]));
+        $this->denied($this->ordinary, '42501', fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.audit_logs SET custody_operation_id=NULL WHERE id=?', [$id]));
+        $this->denied($this->command, '23514', fn () => $this->custodyQuery($this->command, 'UPDATE public.documents SET updated_at=now() WHERE id=?', [$d]));
         $this->denied($this->command, '23514', fn () => $this->insert($this->command, 'public.documents', ['public_id' => $this->uuid(), 'title' => 'ordinary denied']));
-        $this->query($this->ordinary, 'DELETE FROM public.audit_logs WHERE id=?', [$id]);
-        $this->query($this->plan, "UPDATE public.documents SET security_domain='EVER_PLAN' WHERE id=?", [$d]);
+        $this->custodyQuery($this->ordinary, 'DELETE FROM public.audit_logs WHERE id=?', [$id]);
+        $this->custodyQuery($this->plan, "UPDATE public.documents SET security_domain='EVER_PLAN' WHERE id=?", [$d]);
         $this->assertSame('EVER_PLAN', $this->scalar('SELECT security_domain FROM public.documents WHERE id=?', [$d]));
         $this->assertSame(1, (int) $this->scalar('SELECT count(*) FROM public.plan_document_origin_receipts WHERE document_id=?', [$d]));
-        $this->denied($this->ordinary, '23514', fn () => $this->query($this->ordinary, 'DELETE FROM public.documents WHERE id=?', [$d]));
+        $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, 'DELETE FROM public.documents WHERE id=?', [$d]));
         [$op, $items] = $this->reservation();
         $this->reserve($op, $items);
         foreach ([$this->stage, $this->command] as $p) {
             $p->beginTransaction();
-            $this->assertSame($op['operation_id'], $this->query($p, 'SELECT operation_id FROM legacy_custody.operation_gates WHERE operation_id=? FOR UPDATE', [$op['operation_id']])->fetchColumn());
-            $this->denied($p, '23514', fn () => $this->query($p, 'UPDATE legacy_custody.operation_gates SET lock_stub=0 WHERE operation_id=?', [$op['operation_id']]));
+            $this->assertSame($op['operation_id'], $this->custodyQuery($p, 'SELECT operation_id FROM legacy_custody.operation_gates WHERE operation_id=? FOR UPDATE', [$op['operation_id']])->fetchColumn());
+            $this->denied($p, '23514', fn () => $this->custodyQuery($p, 'UPDATE legacy_custody.operation_gates SET lock_stub=0 WHERE operation_id=?', [$op['operation_id']]));
         }
         $this->assertSame(1, (int) $this->scalar('SELECT fence_no FROM legacy_custody.operation_gates WHERE operation_id=?', [$op['operation_id']]));
     }
@@ -421,7 +421,7 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->assertSame(1, (int) $this->scalar('SELECT count(DISTINCT sha256) FROM legacy_custody.generations WHERE operation_id=?', [$op['operation_id']]));
         $this->assertSame(5, (int) $this->scalar('SELECT count(DISTINCT generation_id) FROM legacy_custody.generations WHERE operation_id=?', [$op['operation_id']]));
         $this->absent($op);
-        $replay = $this->query($this->stage, 'SELECT idempotency_hash,manifest_digest FROM legacy_custody.operations WHERE operation_id=?', [$op['operation_id']])->fetch(PDO::FETCH_ASSOC);
+        $replay = $this->custodyQuery($this->stage, 'SELECT idempotency_hash,manifest_digest FROM legacy_custody.operations WHERE operation_id=?', [$op['operation_id']])->fetch(PDO::FETCH_ASSOC);
         $this->assertSame($op['idempotency_hash'], $replay['idempotency_hash']);
         $this->assertSame($op['manifest_digest'], $replay['manifest_digest']);
         $dup = array_replace($op, ['operation_id' => $this->uuid(), 'epoch' => 2, 'manifest_digest' => str_repeat('c', 64)]);
@@ -519,19 +519,19 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->assertSame(count($links), (int) $this->scalar('SELECT count(*) FROM legacy_custody.ownership_links WHERE binding_document_id=?', [$doc]));
         $this->assertSame($uuid, $this->scalar('SELECT document_public_id FROM legacy_custody.bindings WHERE document_id=?', [$doc]));
         $this->assertSame($op['correlation_id'], $this->scalar('SELECT correlation_id FROM public.audit_logs WHERE id=?', [$audit]));
-        $this->denied($this->ordinary, ['23503','23514'], fn () => $this->query($this->ordinary, 'UPDATE public.document_links SET created_by_user_id=NULL WHERE document_id=?', [$doc]));
-        $this->denied($this->ordinary, '23514', fn () => $this->query($this->ordinary, 'DELETE FROM public.document_links WHERE document_id=?', [$doc]));
-        $this->denied($this->ordinary, '23514', fn () => $this->query($this->ordinary, "UPDATE public.documents SET title='changed' WHERE id=?", [$doc]));
-        $this->denied($this->ordinary, '23514', fn () => $this->query($this->ordinary, "UPDATE public.audit_logs SET summary='changed' WHERE id=?", [$audit]));
-        $this->denied($this->ordinary, '23514', fn () => $this->query($this->ordinary, 'DELETE FROM public.audit_logs WHERE id=?', [$audit]));
-        $this->denied($this->plan, '23514', fn () => $this->query($this->plan, "UPDATE public.documents SET security_domain='EVER_PLAN' WHERE id=?", [$doc]));
-        $this->denied($this->reconcile, '23514', fn () => $this->query($this->reconcile, "UPDATE legacy_custody.operation_gates SET state='CLOSED',fence_no=2 WHERE operation_id=?", [$op['operation_id']]));
+        $this->denied($this->ordinary, ['23503','23514'], fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.document_links SET created_by_user_id=NULL WHERE document_id=?', [$doc]));
+        $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, 'DELETE FROM public.document_links WHERE document_id=?', [$doc]));
+        $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, "UPDATE public.documents SET title='changed' WHERE id=?", [$doc]));
+        $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, "UPDATE public.audit_logs SET summary='changed' WHERE id=?", [$audit]));
+        $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, 'DELETE FROM public.audit_logs WHERE id=?', [$audit]));
+        $this->denied($this->plan, '23514', fn () => $this->custodyQuery($this->plan, "UPDATE public.documents SET security_domain='EVER_PLAN' WHERE id=?", [$doc]));
+        $this->denied($this->reconcile, '23514', fn () => $this->custodyQuery($this->reconcile, "UPDATE legacy_custody.operation_gates SET state='CLOSED',fence_no=2 WHERE operation_id=?", [$op['operation_id']]));
         $this->assertSame('OPEN', $this->scalar('SELECT state FROM legacy_custody.operation_gates WHERE operation_id=?', [$op['operation_id']]));
         $table = match ($result['source_kind']) {'transaction' => 'transaction_events','correspondence' => 'correspondence_events','travel' => 'travel_order_events'};
-        $this->denied($this->ordinary, '23503', fn () => $this->query($this->ordinary, "DELETE FROM public.$table WHERE id=?", [$result['event_id']]));
+        $this->denied($this->ordinary, '23503', fn () => $this->custodyQuery($this->ordinary, "DELETE FROM public.$table WHERE id=?", [$result['event_id']]));
         if ($result['source_kind'] === 'correspondence') {
             $client = $this->insert($this->root, 'public.integration_clients', ['public_id' => $this->uuid(), 'name' => 'synthetic external'], 'id');
-            $this->denied($this->ordinary, '23503', fn () => $this->query($this->ordinary, 'UPDATE public.correspondence_events SET integration_client_actor_id=? WHERE id=?', [$client, $result['event_id']]));
+            $this->denied($this->ordinary, '23503', fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.correspondence_events SET integration_client_actor_id=? WHERE id=?', [$client, $result['event_id']]));
             $this->assertTrue((bool) $this->scalar('SELECT n03_municipal_actor FROM public.correspondence_events WHERE id=?', [$result['event_id']]));
         }
         $this->assertSame(count($links), (int) $this->scalar('SELECT count(*) FROM public.document_links WHERE document_id=?', [$doc]));
@@ -616,13 +616,13 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->reserve($abort, $parts);
         $this->stageItems([$parts[0]]);
         $this->denied($this->reconcile, '23514', fn () => $this->insert($this->reconcile, 'legacy_custody.terminal_receipts', $this->receipt($abort, 'ABORTED')));
-        $this->query($this->reconcile, "UPDATE legacy_custody.operation_gates SET state='CLOSED',fence_no=2 WHERE operation_id=?", [$abort['operation_id']]);
+        $this->custodyQuery($this->reconcile, "UPDATE legacy_custody.operation_gates SET state='CLOSED',fence_no=2 WHERE operation_id=?", [$abort['operation_id']]);
         $this->absent($abort);
         $this->denied($this->stage, '23514', fn () => $this->insert($this->stage, 'legacy_custody.generations', $this->generation($parts[1])));
         $this->insert($this->reconcile, 'legacy_custody.terminal_receipts', $this->receipt($abort, 'ABORTED'));
         $this->assertSame('ABORTED', $this->scalar('SELECT outcome FROM legacy_custody.terminal_receipts WHERE operation_id=?', [$abort['operation_id']]));
         $this->assertSame(1, (int) $this->scalar('SELECT count(*) FROM legacy_custody.generations WHERE operation_id=?', [$abort['operation_id']]));
-        $this->denied($this->reconcile, '23514', fn () => $this->query($this->reconcile, "UPDATE legacy_custody.operation_gates SET state='OPEN',fence_no=1 WHERE operation_id=?", [$abort['operation_id']]));
+        $this->denied($this->reconcile, '23514', fn () => $this->custodyQuery($this->reconcile, "UPDATE legacy_custody.operation_gates SET state='OPEN',fence_no=1 WHERE operation_id=?", [$abort['operation_id']]));
         $this->assertSame('CLOSED', $this->scalar('SELECT state FROM legacy_custody.operation_gates WHERE operation_id=?', [$abort['operation_id']]));
         $this->assertSame(0, (int) $this->scalar('SELECT count(*) FROM public.documents WHERE custody_operation_id=?', [$abort['operation_id']]));
     }
@@ -632,7 +632,7 @@ final class LegacyCustodyFoundationTest extends TestCase
         [$op, $items] = $this->reservation();
         $this->reserve($op, $items);
         $this->reconcile->beginTransaction();
-        $this->query($this->reconcile, "UPDATE legacy_custody.operation_gates SET state='CLOSED',fence_no=2 WHERE operation_id=?", [$op['operation_id']]);
+        $this->custodyQuery($this->reconcile, "UPDATE legacy_custody.operation_gates SET state='CLOSED',fence_no=2 WHERE operation_id=?", [$op['operation_id']]);
         $this->denied($this->stage, '55P03', fn () => $this->insert($this->stage, 'legacy_custody.generations', $this->generation($items[0])));
         $this->assertSame('OPEN', $this->scalar('SELECT state FROM legacy_custody.operation_gates WHERE operation_id=?', [$op['operation_id']]));
         $this->reconcile->commit();
@@ -649,10 +649,10 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->insert($this->command, 'legacy_custody.command_results', $result);
         $this->artifact($second, $parts[0], $this->links($result, true, 'route_evidence'));
         $this->insert($this->command, 'legacy_custody.terminal_receipts', $this->receipt($second));
-        $this->denied($this->reconcile, '55P03', fn () => $this->query($this->reconcile, "UPDATE legacy_custody.operation_gates SET state='CLOSED',fence_no=2 WHERE operation_id=?", [$second['operation_id']]));
+        $this->denied($this->reconcile, '55P03', fn () => $this->custodyQuery($this->reconcile, "UPDATE legacy_custody.operation_gates SET state='CLOSED',fence_no=2 WHERE operation_id=?", [$second['operation_id']]));
         $this->assertSame(0, (int) $this->scalar('SELECT count(*) FROM legacy_custody.terminal_receipts WHERE operation_id=?', [$second['operation_id']]));
         $this->command->commit();
-        $this->denied($this->reconcile, '23514', fn () => $this->query($this->reconcile, "UPDATE legacy_custody.operation_gates SET state='CLOSED',fence_no=2 WHERE operation_id=?", [$second['operation_id']]));
+        $this->denied($this->reconcile, '23514', fn () => $this->custodyQuery($this->reconcile, "UPDATE legacy_custody.operation_gates SET state='CLOSED',fence_no=2 WHERE operation_id=?", [$second['operation_id']]));
         $this->assertSame('COMMITTED', $this->scalar('SELECT outcome FROM legacy_custody.terminal_receipts WHERE operation_id=?', [$second['operation_id']]));
     }
 

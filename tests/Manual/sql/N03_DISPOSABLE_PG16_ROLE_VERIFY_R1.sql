@@ -54,7 +54,13 @@ BEGIN
       OR (a.table_name='audit_logs' AND a.column_name IN ('actor_user_id','actor_department_id','action','entity_type','entity_id','outcome','summary','ip_address','user_agent','correlation_id','created_at','integration_client_id','custody_operation_id'))))
     THEN RAISE EXCEPTION 'public insert mismatch % %.%',r,a.table_name,a.column_name; END IF;
    END LOOP;
-   IF EXISTS(SELECT 1 FROM pg_tables WHERE schemaname='public' AND has_table_privilege(r,'public.'||tablename,'DELETE,TRUNCATE,TRIGGER,REFERENCES')) THEN RAISE EXCEPTION 'unexpected public DML %',r; END IF;
+   FOR a IN SELECT c.oid, c.relname FROM pg_catalog.pg_class c
+     JOIN pg_catalog.pg_namespace ns ON ns.oid=c.relnamespace
+     WHERE ns.nspname='public' AND c.relkind IN ('r','p','v','m','f') LOOP
+    IF has_table_privilege(r,a.oid,'DELETE') OR has_table_privilege(r,a.oid,'TRUNCATE')
+     OR has_table_privilege(r,a.oid,'TRIGGER') OR has_table_privilege(r,a.oid,'REFERENCES')
+    THEN RAISE EXCEPTION 'unexpected public DML % %',r,a.relname; END IF;
+   END LOOP;
    FOR a IN SELECT sequencename FROM pg_sequences WHERE schemaname='public' LOOP
     IF has_sequence_privilege(r,'public.'||a.sequencename,'USAGE') IS DISTINCT FROM
        (r='n03_command' AND a.sequencename IN ('documents_id_seq','document_links_id_seq','audit_logs_id_seq'))
