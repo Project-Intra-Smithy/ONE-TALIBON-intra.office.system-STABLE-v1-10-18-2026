@@ -28,6 +28,49 @@ final class WorkRequestRevocationTest extends TestCase
 {
     use RefreshDatabase;
 
+    /** Exercise each endpoint with an independent eligible pre-revocation session. */
+    private function assertRevokedTransport(User $actor, string $kind, array $requests, array $secrets): void
+    {
+        $employee = $actor->employee()->firstOrFail();
+        foreach ($requests as $request) {
+            if ($kind === 'employment') {
+                $actor->employee()->update(['employment_status' => 'active']);
+            } else {
+                Department::query()->whereKey($employee->department_id)->update(['is_active' => true]);
+            }
+            $this->actingAs($actor->fresh());
+            if ($kind === 'employment') {
+                $actor->employee()->update(['employment_status' => 'separated']);
+            } else {
+                Department::query()->whereKey($employee->department_id)->update(['is_active' => false]);
+            }
+
+            $response = $request()->assertRedirect(route('login'))->assertSessionMissing('auth_session_version');
+            $this->assertGuest();
+            foreach ($secrets as $secret) {
+                $this->assertStringNotContainsString($secret, $response->getContent());
+            }
+        }
+    }
+
+    /**
+     * Separately isolate the original domain path after asserting real account
+     * middleware. Only the outer account gate is removed in this test;
+     * authorization, MFA, FormRequests and controllers remain real.
+     */
+    private function assertDomainBoundary(User $actor, \Closure $assertions): void
+    {
+        $this->withoutMiddleware(\App\Http\Middleware\RequireActiveAccount::class);
+        try {
+            $this->actingAs($actor);
+            $assertions();
+        } finally {
+            $this->withMiddleware(\App\Http\Middleware\RequireActiveAccount::class);
+            auth()->guard('web')->logoutCurrentDevice();
+            session()->invalidate();
+        }
+    }
+
     /** @return array<string, string> */
     private function inertiaHeaders(): array
     {
@@ -125,10 +168,16 @@ final class WorkRequestRevocationTest extends TestCase
 
         $employee->update(['employment_status' => 'separated']);
 
-        $this->actingAs($admin)
-            ->withHeaders($this->inertiaHeaders())
-            ->get(route('employees.show', $employee))
-            ->assertNotFound();
+        $this->assertRevokedTransport($admin, 'employment', [
+            fn () => $this->withHeaders($this->inertiaHeaders())->get(route('employees.show', $employee)),
+        ], [$transaction->title, $transaction->reference_no]);
+        $this->assertDomainBoundary($admin, function () use ($admin, $employee): void {
+            $this->actingAs($admin)
+                ->withHeaders($this->inertiaHeaders())
+                ->get(route('employees.show', $employee))
+                ->assertNotFound();
+        });
+
     }
 
     public function test_separated_administrator_cannot_read_work_request_via_legislative_aggregates_or_agenda(): void
@@ -162,10 +211,16 @@ final class WorkRequestRevocationTest extends TestCase
 
         $admin->employee()->update(['employment_status' => 'separated']);
 
-        $this->actingAs($admin)
-            ->withHeaders($this->inertiaHeaders())
-            ->get(route('legislative.workspace'))
-            ->assertForbidden();
+        $this->assertRevokedTransport($admin, 'employment', [
+            fn () => $this->withHeaders($this->inertiaHeaders())->get(route('legislative.workspace')),
+        ], [$transaction->title, $session->title]);
+        $this->assertDomainBoundary($admin, function () use ($admin): void {
+            $this->actingAs($admin)
+                ->withHeaders($this->inertiaHeaders())
+                ->get(route('legislative.workspace'))
+                ->assertForbidden();
+        });
+
     }
 
     public function test_calendar_drops_cached_work_request_deadline_after_privileged_employee_revocation(): void
@@ -249,22 +304,30 @@ final class WorkRequestRevocationTest extends TestCase
         $admin->employee()->update(['employment_status' => 'separated']);
         $originalEvents = $transaction->events()->count();
 
-        foreach ([
-            route('transactions.show', $transaction),
-            route('transactions.live', $transaction),
-            route('documents.download', $document),
-        ] as $url) {
-            $response = $this->actingAs($admin)->get($url)->assertForbidden();
-            $this->assertStringNotContainsString($secret, $response->getContent());
-            $this->assertStringNotContainsString($transaction->title, $response->getContent());
-            $this->assertStringNotContainsString($document->title, $response->getContent());
-        }
+        $this->assertRevokedTransport($admin, 'employment', [
+            fn () => $this->get(route('transactions.show', $transaction)),
+            fn () => $this->get(route('transactions.live', $transaction)),
+            fn () => $this->get(route('documents.download', $document)),
+            fn () => $this->post(route('transactions.transition', $transaction), ['action' => 'mark_review', 'remarks' => 'MUST NOT PERSIST']),
+        ], [$secret, $transaction->title, $document->title]);
+        $this->assertDomainBoundary($admin, function () use ($admin, $transaction, $document, $secret): void {
+            foreach ([
+                route('transactions.show', $transaction),
+                route('transactions.live', $transaction),
+                route('documents.download', $document),
+            ] as $url) {
+                $response = $this->actingAs($admin)->get($url)->assertForbidden();
+                $this->assertStringNotContainsString($secret, $response->getContent());
+                $this->assertStringNotContainsString($transaction->title, $response->getContent());
+                $this->assertStringNotContainsString($document->title, $response->getContent());
+            }
 
-        $this->actingAs($admin)
-            ->post(route('transactions.transition', $transaction), [
-                'action' => 'mark_review',
-                'remarks' => 'MUST NOT PERSIST',
-            ])->assertForbidden();
+            $this->actingAs($admin)
+                ->post(route('transactions.transition', $transaction), [
+                    'action' => 'mark_review',
+                    'remarks' => 'MUST NOT PERSIST',
+                ])->assertForbidden();
+        });
 
         $this->assertSame('submitted', $transaction->fresh()->status);
         $this->assertSame($originalEvents, $transaction->events()->count());
@@ -294,14 +357,25 @@ final class WorkRequestRevocationTest extends TestCase
 
         $admin->load('employee.department');
         $admin->employee()->update(['employment_status' => 'separated']);
-        $separated = $this->actingAs($admin)->withHeaders($this->inertiaHeaders())
-            ->get($url)->assertForbidden();
-        $this->assertStringNotContainsString('999-888-777-001', $separated->getContent());
-        $this->assertStringNotContainsString('protected-p1h@example.test', $separated->getContent());
+        $this->assertRevokedTransport($admin, 'employment', [
+            fn () => $this->withHeaders($this->inertiaHeaders())->get($url),
+        ], ['999-888-777-001', 'protected-p1h@example.test']);
+        $this->assertDomainBoundary($admin, function () use ($admin, $url): void {
+            $separated = $this->actingAs($admin)->withHeaders($this->inertiaHeaders())
+                ->get($url)->assertForbidden();
+            $this->assertStringNotContainsString('999-888-777-001', $separated->getContent());
+            $this->assertStringNotContainsString('protected-p1h@example.test', $separated->getContent());
+        });
 
         $admin->employee()->update(['employment_status' => 'active']);
         $admin->employee->department->update(['is_active' => false]);
-        $this->actingAs($admin)->get($url)->assertForbidden();
+        $this->assertRevokedTransport($admin, 'office', [
+            fn () => $this->get($url),
+        ], ['999-888-777-001', 'protected-p1h@example.test']);
+        $this->assertDomainBoundary($admin, function () use ($admin, $url): void {
+            $this->actingAs($admin)->get($url)->assertForbidden();
+        });
+
     }
 
     public function test_retained_administrator_session_cannot_create_legislative_sessions_or_agenda_after_revocation(): void
@@ -320,19 +394,26 @@ final class WorkRequestRevocationTest extends TestCase
         $admin->load('employee.department');
         $admin->employee()->update(['employment_status' => 'separated']);
 
-        $response = $this->actingAs($admin)->get(route('legislative.workspace'))->assertForbidden();
-        $this->assertStringNotContainsString($session->title, $response->getContent());
+        $this->assertRevokedTransport($admin, 'employment', [
+            fn () => $this->get(route('legislative.workspace')),
+            fn () => $this->post(route('legislative.sessions.store'), ['session_code' => 'P1-H-FORBIDDEN', 'session_type' => 'regular', 'title' => 'MUST NOT CREATE', 'scheduled_at' => now()->addDays(2)->toDateTimeString()]),
+            fn () => $this->post(route('legislative.sessions.agenda.store', $session), ['sequence_no' => 1, 'title' => 'MUST NOT CREATE AGENDA']),
+        ], [$session->title]);
+        $this->assertDomainBoundary($admin, function () use ($admin, $session): void {
+            $response = $this->actingAs($admin)->get(route('legislative.workspace'))->assertForbidden();
+            $this->assertStringNotContainsString($session->title, $response->getContent());
 
-        $this->actingAs($admin)->post(route('legislative.sessions.store'), [
-            'session_code' => 'P1-H-FORBIDDEN',
-            'session_type' => 'regular',
-            'title' => 'MUST NOT CREATE',
-            'scheduled_at' => now()->addDays(2)->toDateTimeString(),
-        ])->assertForbidden();
-        $this->actingAs($admin)->post(route('legislative.sessions.agenda.store', $session), [
-            'sequence_no' => 1,
-            'title' => 'MUST NOT CREATE AGENDA',
-        ])->assertForbidden();
+            $this->actingAs($admin)->post(route('legislative.sessions.store'), [
+                'session_code' => 'P1-H-FORBIDDEN',
+                'session_type' => 'regular',
+                'title' => 'MUST NOT CREATE',
+                'scheduled_at' => now()->addDays(2)->toDateTimeString(),
+            ])->assertForbidden();
+            $this->actingAs($admin)->post(route('legislative.sessions.agenda.store', $session), [
+                'sequence_no' => 1,
+                'title' => 'MUST NOT CREATE AGENDA',
+            ])->assertForbidden();
+        });
 
         $this->assertDatabaseMissing('legislative_sessions', ['session_code' => 'P1-H-FORBIDDEN']);
         $this->assertDatabaseMissing('legislative_agenda_items', ['title' => 'MUST NOT CREATE AGENDA']);
@@ -340,13 +421,20 @@ final class WorkRequestRevocationTest extends TestCase
 
         $admin->employee()->update(['employment_status' => 'active']);
         $admin->employee->department->update(['is_active' => false]);
-        $this->actingAs($admin)->get(route('legislative.workspace'))->assertForbidden();
-        $this->actingAs($admin)->post(route('legislative.sessions.store'), [
-            'session_code' => 'P1-H-INACTIVE',
-            'session_type' => 'regular',
-            'title' => 'MUST NOT CREATE INACTIVE',
-            'scheduled_at' => now()->addDays(3)->toDateTimeString(),
-        ])->assertForbidden();
+        $this->assertRevokedTransport($admin, 'office', [
+            fn () => $this->get(route('legislative.workspace')),
+            fn () => $this->post(route('legislative.sessions.store'), ['session_code' => 'P1-H-INACTIVE', 'session_type' => 'regular', 'title' => 'MUST NOT CREATE INACTIVE', 'scheduled_at' => now()->addDays(3)->toDateTimeString()]),
+        ], [$session->title]);
+        $this->assertDomainBoundary($admin, function () use ($admin): void {
+            $this->actingAs($admin)->get(route('legislative.workspace'))->assertForbidden();
+            $this->actingAs($admin)->post(route('legislative.sessions.store'), [
+                'session_code' => 'P1-H-INACTIVE',
+                'session_type' => 'regular',
+                'title' => 'MUST NOT CREATE INACTIVE',
+                'scheduled_at' => now()->addDays(3)->toDateTimeString(),
+            ])->assertForbidden();
+        });
+
         $this->assertDatabaseMissing('legislative_sessions', ['session_code' => 'P1-H-INACTIVE']);
     }
 

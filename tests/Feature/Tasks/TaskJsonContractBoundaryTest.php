@@ -44,6 +44,7 @@ final class TaskJsonContractBoundaryTest extends TestCase
         $actor->forceFill(['role' => 'department_head'])->save();
         // Bypass TestCase::actingAs() here because it auto-fulfills MFA.
         auth()->guard('web')->login($actor);
+        $this->withSession(['auth_session_version' => (int) $actor->session_version]);
 
         $this->get('/tasks')->assertForbidden()
             ->assertJsonPath('code', 'MFA_REQUIRED')
@@ -77,6 +78,7 @@ final class TaskJsonContractBoundaryTest extends TestCase
         ])->save();
         // Login without TestCase::actingAs, which deliberately satisfies MFA.
         auth()->guard('web')->login($actor);
+        $this->withSession(['auth_session_version' => (int) $actor->session_version]);
 
         $destination = route('dashboard');
         $this->withSession(['url.intended' => $destination]);
@@ -101,6 +103,7 @@ final class TaskJsonContractBoundaryTest extends TestCase
         $actor = $this->staff('no-intent');
         $actor->forceFill(['role' => 'department_head'])->save();
         auth()->guard('web')->login($actor);
+        $this->withSession(['auth_session_version' => (int) $actor->session_version]);
 
         $this->get('/tasks')->assertForbidden()
             ->assertJsonPath('code', 'MFA_REQUIRED')
