@@ -342,10 +342,10 @@ final class StaffActivationService
 
     private function requireUniqueLogin(string $username, ?string $email, ?User $user): void
     {
-        if (User::query()->whereRaw('lower(username) = ?', [Str::lower($username)])->when($user, fn ($q) => $q->whereKeyNot($user->id))->exists()) {
+        if (User::query()->whereRaw('lower(btrim(username)) = ?', [Str::lower(trim($username))])->when($user, fn ($q) => $q->whereKeyNot($user->id))->exists()) {
             throw ValidationException::withMessages(['username' => 'That portal username is already in use.']);
         }
-        if ($email && User::query()->whereRaw('lower(email) = ?', [Str::lower($email)])->when($user, fn ($q) => $q->whereKeyNot($user->id))->exists()) {
+        if ($email && User::query()->whereRaw('lower(btrim(email)) = ?', [Str::lower(trim($email))])->when($user, fn ($q) => $q->whereKeyNot($user->id))->exists()) {
             throw ValidationException::withMessages(['contact_email' => 'That contact email is already in use.']);
         }
     }

@@ -63,6 +63,17 @@ final class AccountSessionEligibility
      */
     public function lock(User $claimed): User
     {
+        return $this->lockWithDepartments($claimed, [])[0];
+    }
+
+    /**
+     * Lock the actor office and any operation destination offices together, in
+     * ascending order. Never acquire a second lower-ID office after the first.
+     * @param list<int> $additionalDepartmentIds
+     * @return array{User, \Illuminate\Database\Eloquent\Collection}
+     */
+    public function lockWithDepartments(User $claimed, array $additionalDepartmentIds): array
+    {
         if ($claimed->getKey() === null || $claimed->getConnection()->transactionLevel() < 1) {
             throw new LogicException('Account identity lock requires a transaction and persisted actor.');
         }
@@ -70,7 +81,9 @@ final class AccountSessionEligibility
         $employeeId = Employee::query()->where('user_id', $id)->value('id');
         $employee = $employeeId === null ? null : Employee::query()->lockForUpdate()->find($employeeId);
         $user = User::query()->lockForUpdate()->find($id);
-        $office = $employee ? Department::query()->lockForUpdate()->find($employee->department_id) : null;
+        $departmentIds = array_unique(array_filter([...$additionalDepartmentIds, $employee?->department_id]));
+        $offices = Department::query()->whereIn('id', $departmentIds)->orderBy('id')->lockForUpdate()->get()->keyBy('id');
+        $office = $employee ? $offices->get($employee->department_id) : null;
 
         if (! $user || ($employeeId !== null && ! $employee)
             || (int) Employee::query()->where('user_id', $id)->value('id') !== (int) $employeeId
@@ -78,7 +91,7 @@ final class AccountSessionEligibility
             throw new AuthorizationException('Account access denied.');
         }
 
-        return $user;
+        return [$user, $offices];
     }
 
     public function requireSession(Request $request, User $locked): void

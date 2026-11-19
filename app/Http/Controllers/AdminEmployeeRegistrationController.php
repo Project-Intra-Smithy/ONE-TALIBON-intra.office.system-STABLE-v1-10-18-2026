@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Department;
 use App\Models\Employee;
+use App\Services\AccountSessionEligibility;
+use App\Services\AuthenticationAssurance;
 use App\Services\AuditLogger;
+use Illuminate\Auth\Access\AuthorizationException;
 use App\Services\SystemAdministrationAccess;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\RedirectResponse;
@@ -15,8 +17,13 @@ use Illuminate\Validation\ValidationException;
 
 final class AdminEmployeeRegistrationController extends Controller
 {
-    public function store(Request $request, SystemAdministrationAccess $access, AuditLogger $audit): RedirectResponse
-    {
+    public function store(
+        Request $request,
+        SystemAdministrationAccess $access,
+        AuditLogger $audit,
+        AccountSessionEligibility $eligibility,
+        AuthenticationAssurance $assurance,
+    ): RedirectResponse {
         $actor = $request->user();
         $access->authorize($actor);
 
@@ -30,8 +37,14 @@ final class AdminEmployeeRegistrationController extends Controller
         ]);
 
         try {
-            DB::transaction(function () use ($actor, $audit, $data): void {
-                $office = Department::query()->whereKey($data['department_id'])->lockForUpdate()->first();
+            DB::transaction(function () use ($request, $actor, $access, $audit, $eligibility, $assurance, $data): void {
+                [$lockedActor, $offices] = $eligibility->lockWithDepartments($actor, [(int) $data['department_id']]);
+                $access->authorize($lockedActor);
+                $eligibility->requireSession($request, $lockedActor);
+                if (! $assurance->isSatisfiedAgainst($request, $lockedActor)) {
+                    throw new AuthorizationException('Administrator access denied.');
+                }
+                $office = $offices->get((int) $data['department_id']);
                 if (! $office || ! $office->is_active) {
                     throw ValidationException::withMessages(['department_id' => 'Choose an active office.']);
                 }
@@ -49,8 +62,8 @@ final class AdminEmployeeRegistrationController extends Controller
                     'user_id' => null,
                 ]);
 
-                $audit->record($actor, 'identity.employee.registered', 'Active personnel record registered without portal credentials.', 'allowed', Employee::class, $employee->id);
-            });
+                $audit->record($lockedActor, 'identity.employee.registered', 'Active personnel record registered without portal credentials.', 'allowed', Employee::class, $employee->id);
+            }, 3);
         } catch (UniqueConstraintViolationException $exception) {
             if (filled($data['employee_number'] ?? null) && Employee::query()->where('employee_number', $data['employee_number'])->exists()) {
                 throw ValidationException::withMessages(['employee_number' => 'This employee number is already registered.']);

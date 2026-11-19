@@ -169,6 +169,40 @@ final class PermanentIamConcurrencyTest extends TestCase
         $this->assertTrue($user->is_active);
     }
 
+    public function test_concurrent_administrators_cannot_register_duplicate_employee_numbers(): void
+    {
+        $this->assertTrue(extension_loaded('pcntl'));
+        $this->assertSame('pgsql', DB::getDriverName());
+        $office = Department::query()->create(['code' => 'IAM-REG-RACE', 'name' => 'Registration race office', 'is_active' => true]);
+        $admins = [];
+        $employeeIds = [];
+        foreach (['first', 'second'] as $suffix) {
+            $admin = User::query()->create([
+                'name' => 'Synthetic administrator', 'username' => 'registration.'.$suffix,
+                'password' => self::PASSWORD, 'role' => 'system_admin', 'is_active' => true, 'account_status' => 'active',
+            ]);
+            $this->configureIamAdministrator($admin);
+            $employeeIds[] = (int) $this->employee($office, $admin)->id;
+            $admins[] = $admin;
+        }
+        $register = function (User $admin) use ($office): void {
+            $request = $this->iamActorRequest($admin);
+            $request->merge([
+                'full_name' => 'Synthetic concurrent employee',
+                'department_id' => $office->id,
+                'position_title' => 'Staff',
+                'employee_number' => 'SYNTHETIC-REG-001',
+            ]);
+            app()->call([app(\App\Http\Controllers\AdminEmployeeRegistrationController::class), 'store'], ['request' => $request]);
+        };
+        $this->contend($employeeIds, fn () => $register($admins[0]), fn () => $register($admins[1]), 'denied');
+        $employee = Employee::query()->where('employee_number', 'SYNTHETIC-REG-001')->sole();
+        $this->assertNull($employee->user_id);
+        $this->assertSame(2, User::query()->count());
+        $this->assertSame(0, StaffActivationInvitation::query()->count());
+        $this->assertSame(1, \App\Models\AuditLog::query()->where('action', 'identity.employee.registered')->where('entity_id', $employee->id)->count());
+    }
+
     private function employee(Department $office, ?User $user = null): Employee
     {
         return Employee::query()->create([

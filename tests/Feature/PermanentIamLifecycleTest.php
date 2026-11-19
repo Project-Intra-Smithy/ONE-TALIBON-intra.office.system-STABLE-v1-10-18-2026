@@ -666,6 +666,106 @@ final class PermanentIamLifecycleTest extends TestCase
             ->assertSessionHasErrors('recovery_code')->assertSessionMissing('_old_input.recovery_code');
     }
 
+    public function test_registration_revalidates_locked_actor_and_does_not_create_employee_on_revocation(): void
+    {
+        [$admin, $employee] = $this->actors();
+        foreach (['epoch', 'mfa', 'office'] as $change) {
+            $admin = $admin->fresh();
+            $request = $this->iamActorRequest($admin);
+            $request->merge([
+                'full_name' => 'Denied synthetic registration',
+                'department_id' => $employee->department_id,
+                'position_title' => 'Staff',
+            ]);
+            $before = Employee::query()->count();
+            $auditBefore = \App\Models\AuditLog::query()->where('action', 'identity.employee.registered')->count();
+            if ($change === 'epoch') {
+                $admin->increment('session_version');
+            } elseif ($change === 'mfa') {
+                $admin->increment('mfa_version');
+            } else {
+                $admin->employee()->update(['employment_status' => 'inactive']);
+            }
+            try {
+                app()->call([app(\App\Http\Controllers\AdminEmployeeRegistrationController::class), 'store'], ['request' => $request]);
+                $this->fail('Revoked registration authority was accepted.');
+            } catch (\Illuminate\Auth\Access\AuthorizationException) {
+                $this->assertSame($before, Employee::query()->count());
+                $this->assertSame($auditBefore, \App\Models\AuditLog::query()->where('action', 'identity.employee.registered')->count());
+            }
+            $admin->employee()->update(['employment_status' => 'active']);
+        }
+    }
+
+    public function test_legacy_normalized_login_database_backstop_and_inactive_upgrade(): void
+    {
+        $db = \Illuminate\Support\Facades\DB::class;
+        $this->assertSame('pgsql', $db::getDriverName());
+        // Model the pre-upgrade schema inside this rolled-back test transaction.
+        foreach (['users_iam_username_normalized_unique', 'users_iam_email_normalized_unique', 'staff_activation_one_outstanding_per_user'] as $index) {
+            $db::statement('DROP INDEX '.$index);
+        }
+        $legacy = $this->userWithEmployee('employee', 'Legacy.Mixed', 'Legacy.Mixed@Example.test');
+        $inactive = $this->userWithEmployee('employee', 'legacy.inactive');
+        $inactive->forceFill(['is_active' => false, 'account_status' => 'active', 'session_version' => 7, 'remember_token' => 'synthetic-recall'])->save();
+        $duplicate = $this->userWithEmployee('employee', 'legacy.mixed', 'legacy.mixed@example.test');
+        $migration = require database_path('migrations/2026_11_20_000200_enforce_iam_identity_integrity.php');
+        try {
+            $migration->up();
+            $this->fail('Ambiguous identities silently migrated.');
+        } catch (\RuntimeException $exception) {
+            $this->assertStringContainsString('ambiguous normalized login', $exception->getMessage());
+        }
+        $this->assertSame('active', $inactive->fresh()->account_status);
+        $this->assertSame(7, (int) $inactive->fresh()->session_version);
+        $this->assertSame('synthetic-recall', $inactive->fresh()->remember_token);
+
+        // Reconcile only the synthetic conflicting fixture; never auto-merge.
+        $duplicate->forceFill(['username' => 'legacy.distinct', 'email' => 'distinct@example.test'])->save();
+        $migration->up();
+        $this->assertFalse($inactive->fresh()->is_active);
+        $this->assertSame('deactivated', $inactive->fresh()->account_status);
+        $this->assertSame(8, (int) $inactive->fresh()->session_version);
+        $this->assertNull($inactive->fresh()->remember_token);
+        $this->assertSame('Legacy.Mixed', $legacy->fresh()->username);
+        $this->assertSame('Legacy.Mixed@Example.test', $legacy->fresh()->email);
+
+        foreach ([['username' => ' LEGACY.MIXED '], ['email' => ' LEGACY.MIXED@EXAMPLE.TEST ']] as $collision) {
+            try {
+                $db::transaction(fn () => $duplicate->fresh()->forceFill($collision)->save());
+                $this->fail('Normalized identity collision accepted by database.');
+            } catch (\Illuminate\Database\UniqueConstraintViolationException) {
+                $this->assertSame('legacy.distinct', $duplicate->fresh()->username);
+                $this->assertSame('distinct@example.test', $duplicate->fresh()->email);
+            }
+        }
+        $this->post('/login', ['login' => 'legacy.mixed', 'password' => self::PASSWORD])->assertRedirect(route('dashboard'));
+        $this->assertAuthenticatedAs($legacy);
+        $this->post('/logout');
+        $this->post('/login', ['email' => 'legacy.mixed@example.test', 'password' => self::PASSWORD])->assertRedirect(route('dashboard'));
+        $this->assertAuthenticatedAs($legacy);
+        $this->post('/logout');
+        $this->from('/login')->post('/login', ['login' => 'legacy.inactive', 'password' => self::PASSWORD])->assertSessionHasErrors('login');
+        $this->assertGuest();
+    }
+
+    public function test_database_allows_only_one_outstanding_invitation_per_user(): void
+    {
+        [$admin, $employee] = $this->actors();
+        $invite = $this->issue($admin, $employee, 'database.unique')['invitation'];
+        $copy = $invite->replicate(['id']);
+        $copy->forceFill(['code_digest' => hash('sha256', 'synthetic-other-digest')]);
+        try {
+            \Illuminate\Support\Facades\DB::transaction(fn () => $copy->save());
+            $this->fail('Database accepted a second outstanding invitation.');
+        } catch (\Illuminate\Database\UniqueConstraintViolationException) {
+            $this->assertSame(1, StaffActivationInvitation::query()->where('user_id', $invite->user_id)->count());
+        }
+        $this->issue($admin, $employee, 'database.unique');
+        $this->assertNotNull($invite->fresh()->revoked_at);
+        $this->assertSame(1, StaffActivationInvitation::query()->where('user_id', $invite->user_id)->whereNull('revoked_at')->whereNull('consumed_at')->count());
+    }
+
     private function assertDeniedUnchanged(User $user, callable $operation, string $field): void
     {
         $before = $this->lifecycleSnapshot($user);

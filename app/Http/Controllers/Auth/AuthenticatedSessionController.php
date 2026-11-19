@@ -44,13 +44,16 @@ class AuthenticatedSessionController extends Controller
 
         $login = mb_strtolower(trim((string) ($credentials['login'] ?? $credentials['email'])));
         $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-        $candidate = User::query()->where($field, $login)->first();
+        // Field is selected above from two fixed identifiers, never request SQL.
+        // Deny ambiguous legacy data even before deployment of the DB backstop.
+        $matches = User::query()->whereRaw("lower(btrim({$field})) = ?", [$login])->limit(2)->get();
+        $candidate = $matches->count() === 1 ? $matches->first() : null;
         $user = null;
         if ($candidate) {
             try {
                 $user = DB::transaction(function () use ($candidate, $field, $login, $credentials): ?User {
                     $locked = $this->eligibility->lock($candidate);
-                    if ($locked->{$field} !== $login || ! Hash::check($credentials['password'], $locked->password)) {
+                    if (mb_strtolower(trim((string) $locked->{$field})) !== $login || ! Hash::check($credentials['password'], $locked->password)) {
                         return null;
                     }
                     // Retire previously issued recall tokens even on successful
