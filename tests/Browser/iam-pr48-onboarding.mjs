@@ -25,8 +25,10 @@ const fail = [];
 let browser;
 async function checkpoint(name, action) {
     stageName = name;
+    console.log('IAM_BROWSER_CHECKPOINT_START ' + name);
     await action();
     report.passed.push(name);
+    console.log('IAM_BROWSER_CHECKPOINT_PASS ' + name);
 }
 function monitor(page) {
     page.on('pageerror', () => fail.push('browser runtime exception'));
@@ -284,10 +286,18 @@ try {
     report.completed = true;
 } catch (error) {
     report.errorStage = stageName;
-    report.runtimeFailures = [...fail, String(error?.name || 'CheckpointError')];
+    const kind = ['AssertionError', 'TimeoutError', 'Error', 'TypeError', 'ReferenceError'].includes(error?.name)
+        ? error.name : 'CheckpointError';
+    const location = String(error?.stack ?? '').match(/iam-pr48-onboarding\.mjs:(\d+):(\d+)/);
+    report.runtimeFailures = [...fail, kind];
+    report.failureLocation = location ? { line: Number(location[1]), column: Number(location[2]) } : null;
+    // Assertions may include secrets. Emit scalar diagnostics only.
+    report.assertionNumbers = Number.isFinite(error?.actual) && Number.isFinite(error?.expected)
+        ? { actual: error.actual, expected: error.expected } : null;
     process.exitCode = 1;
 } finally {
     await browser?.close().catch(() => {});
     await fs.mkdir('storage/app/qa', { recursive: true });
     await fs.writeFile(REPORT, JSON.stringify(report, null, 2));
+    console.log('IAM_BROWSER_RECEIPT ' + JSON.stringify(report));
 }
