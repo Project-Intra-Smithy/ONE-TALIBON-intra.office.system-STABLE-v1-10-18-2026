@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        phase: [roles, broker, focused, full, browser]
+        phase: [g2a-roles, roles, broker, focused, full, browser]
     env:
       APP_ENV: testing
       APP_DEBUG: 'false'
@@ -55,6 +55,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
@@ -86,6 +87,30 @@ jobs:
       - name: Stage 3 (K3) isolated subprocess broker suite
         if: matrix.phase == 'broker'
         run: php artisan test tests/Feature/LegacyCustodyK3BrokerIsolationTest.php --group=n03-k3-broker
+
+      - name: Provision Stage 0 (G2A) isolated role cluster and run 61 G2A real-role tests
+        if: matrix.phase == 'g2a-roles'
+        env:
+          N03_ROLE_SUITE: '1'
+        run: |
+          set -euo pipefail
+          for name in G1B_MIGRATOR_PASSWORD G1B_APP_PASSWORD G1B_CUSTODY_PASSWORD N03_STAGE_PASSWORD N03_COMMAND_PASSWORD N03_RECONCILE_PASSWORD; do
+            value="$(openssl rand -hex 24)"
+            echo "::add-mask::$value"
+            export "$name=$value"
+          done
+          mapfile -t baseline < <(find database/migrations -maxdepth 1 -name '*.php' ! -name '2026_11_19_200000_*' ! -name '2026_11_20_*' | sort)
+          args=()
+          for f in "${baseline[@]}"; do args+=("--path=$f"); done
+          php artisan migrate --force --no-interaction "${args[@]}"
+          psql -X -v ON_ERROR_STOP=1 -v KIRION_G1B_DISPOSABLE_LEASE=EXCLUSIVE_PG16_TMPFS_QA_ONLY -v G1B_MIGRATOR_PASSWORD="$G1B_MIGRATOR_PASSWORD" -v G1B_APP_PASSWORD="$G1B_APP_PASSWORD" -v G1B_CUSTODY_PASSWORD="$G1B_CUSTODY_PASSWORD" -f tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -v KIRION_G2_DISPOSABLE_LEASE=EXCLUSIVE_G2_PG16_TMPFS_QA_ONLY -f tests/Manual/sql/G2_DISPOSABLE_PG16_CUSTODY_ROLE_EXTENSION_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/G2_DISPOSABLE_PG16_CUSTODY_ROLE_VERIFY_R1.sql
+          php artisan migrate --force --no-interaction --path=database/migrations/2026_11_19_200000_create_legacy_custody_foundation.php
+          psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -v N03_STAGE_PASSWORD="$N03_STAGE_PASSWORD" -v N03_COMMAND_PASSWORD="$N03_COMMAND_PASSWORD" -v N03_RECONCILE_PASSWORD="$N03_RECONCILE_PASSWORD" -f tests/Manual/sql/N03_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+          php artisan test tests/Feature/LegacyCustodyFoundationTest.php --group=n03-role
 
       - name: Provision baseline + G1B/G2 + G2A + G2B + K2 + G3-G5 real-role cluster
         if: matrix.phase == 'roles'
@@ -130,16 +155,14 @@ jobs:
           psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -v N03_READER_PASSWORD="$N03_READER_PASSWORD" -f tests/Manual/sql/N03_G3_DISPOSABLE_PG16_READER_ROLE_INSTALL_R1.sql
           psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_G3_DISPOSABLE_PG16_READER_ROLE_VERIFY_R1.sql
 
-      - name: Run G2A + G2B + K2 + G3-G5 real-role Feature suites
+      - name: Run G2B + K2 + G3-G5 real-role Feature suites
         if: matrix.phase == 'roles'
         env:
-          N03_ROLE_SUITE: '1'
           N03_G2B_ROLE_SUITE: '1'
           N03_K2_ROLE_SUITE: '1'
           N03_G3_ROLE_SUITE: '1'
         run: |
           set -euo pipefail
-          php artisan test tests/Feature/LegacyCustodyFoundationTest.php --group=n03-role
           php artisan test tests/Feature/LegacyCustodyG2BTravelOrderCommandTest.php tests/Feature/LegacyCustodyG2BTransactionCorrespondenceCommandTest.php --group=n03-g2b-role
           php artisan test tests/Feature/LegacyCustodyK2ReconciliationTest.php --group=n03-k2-role
           php artisan test tests/Feature/LegacyCustodyG3EgressAndWatermarkTest.php --group=n03-g3-role
