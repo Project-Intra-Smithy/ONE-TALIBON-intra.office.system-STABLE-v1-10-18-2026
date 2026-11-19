@@ -501,6 +501,243 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         $this->assertFalse(file_exists($absent));
     }
 
+    public static function d3LeadingCases(): array
+    {
+        $cases = [];
+        foreach (['single' => '\\', 'multiple' => '\\\\', 'slash' => '/', 'mixed' => '\\/'] as $label => $leading) {
+            foreach (['preview', 'download', 'cleanup'] as $action) {
+                $cases[$label.'-'.$action] = [$leading, $label === 'multiple', $action];
+            }
+        }
+
+        return $cases;
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('d3LeadingCases')]
+    public function test_d3_leading_locator_actual_wrapper_alias(string $leading, bool $plan, string $action): void
+    {
+        [$actor, , $document] = $this->evidence();
+        [, , $other] = $this->evidence();
+        $disk = Storage::disk('documents');
+        $root = rtrim($disk->path(''), '/');
+        $target = $disk->path($document->storage_path);
+        $bytes = file_get_contents($target);
+        $disk->delete($other->storage_path);
+        $interior = 'd3-foreign\\different.pdf';
+        $locator = $leading.$interior;
+        $alias = $disk->path($locator);
+        $this->assertSame($root.'/'.$interior, $alias);
+        $normalized = (new \League\Flysystem\WhitespacePathNormalizer)->normalizePath($locator);
+        $this->assertFalse(file_exists($root.'/'.$normalized));
+        if (! str_starts_with($leading, '/')) {
+            $this->assertFalse(file_exists($root.'/'.$locator));
+        }
+        $this->assertTrue(symlink($target, $alias));
+        $this->assertSame($target, realpath($alias));
+        $this->assertSame(1, lstat($target)['nlink']);
+        $other->update(['storage_path' => $locator, 'checksum_sha256' => $plan ? str_repeat('0', 64) : null]);
+        if ($plan) {
+            $other->links()->delete();
+            DB::table('documents')->where('id', $other->id)->update(['security_domain' => 'EVER_PLAN']);
+        }
+        $this->actingAs($actor);
+        try {
+            $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $other->fresh()));
+            if ($action === 'cleanup') {
+                $this->assertCleanupRetained($document);
+            } else {
+                $this->assertOpaque($document, [$action]);
+            }
+        } finally {
+            $this->assertTrue(is_link($alias));
+            unlink($alias);
+            $this->assertTrue(is_file($target), 'D3 leading-locator target deleted');
+            $this->assertSame($bytes, file_get_contents($target));
+        }
+    }
+
+    public static function d3UncachedAliasCases(): array
+    {
+        $cases = [];
+        foreach (['prefix' => '0', 'directory_separator' => ''] as $option => $value) {
+            foreach (['preview', 'download', 'cleanup'] as $action) {
+                $cases[$option.'-'.$action] = [$option, $value, $action];
+            }
+        }
+
+        return $cases;
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('d3UncachedAliasCases')]
+    public function test_d3_uncached_mapping_actual_wrapper_alias(string $option, string $value, string $action): void
+    {
+        [$actor, , $document] = $this->evidence();
+        [, , $other] = $this->evidence();
+        $disk = Storage::disk('documents');
+        $target = $disk->path($document->storage_path);
+        $bytes = file_get_contents($target);
+        $disk->delete($other->storage_path);
+        $root = storage_path('framework/testing/disks/d3-'.Str::uuid());
+        $definition = ['driver' => 'local', 'root' => $root, $option => $value];
+        // Explicit fixture construction only; build is on-demand, not cached.
+        $wrapper = Storage::build($definition);
+        config(['filesystems.disks.d3_alias' => $definition]);
+        $locator = 'foreign/different.pdf';
+        $alias = $wrapper->path($locator);
+        $this->assertSame($option === 'prefix' ? $root.'/0/'.$locator : $root.$locator, $alias);
+        $adapter = $wrapper->getAdapter();
+        $prefixer = (new \ReflectionProperty(\League\Flysystem\Local\LocalFilesystemAdapter::class, 'prefixer'))->getValue($adapter);
+        $this->assertSame($root.'/'.$locator, $prefixer->prefixPath($locator));
+        $this->assertFalse(file_exists($root.'/'.$locator));
+        $this->assertTrue(mkdir(dirname($alias), 0700, true));
+        $this->assertTrue(symlink($target, $alias));
+        $this->assertSame($target, realpath($alias));
+        $other->update(['storage_disk' => 'd3_alias', 'storage_path' => $locator, 'checksum_sha256' => null]);
+        $cached = new \ReflectionProperty(\Illuminate\Filesystem\FilesystemManager::class, 'disks');
+        $manager = Storage::getFacadeRoot();
+        $this->assertArrayNotHasKey('d3_alias', $cached->getValue($manager));
+        $this->actingAs($actor);
+        try {
+            if ($action === 'cleanup') {
+                $this->assertCleanupRetained($document);
+            } else {
+                $this->assertOpaque($document, [$action]);
+            }
+            $this->assertArrayNotHasKey('d3_alias', $cached->getValue($manager));
+        } finally {
+            unlink($alias);
+            rmdir(dirname($alias));
+            if ($option === 'prefix') {
+                rmdir($root.'/0');
+            }
+            rmdir($root);
+            $this->assertTrue(is_file($target), 'D3 mapping target deleted');
+            $this->assertSame($bytes, file_get_contents($target));
+        }
+    }
+
+    public static function d3MappingOptions(): array
+    {
+        $cases = [];
+        $variants = [
+            'absent' => [[], true],
+            'null' => [['prefix' => null, 'directory_separator' => null, 'read-only' => null], true],
+            'slash-false' => [['directory_separator' => '/', 'read-only' => false], true],
+            'prefix-empty' => [['prefix' => ''], false],
+            'prefix-false' => [['prefix' => false], false],
+            'prefix-int-zero' => [['prefix' => 0], false],
+            'prefix-string-zero' => [['prefix' => '0'], false],
+            'separator-empty' => [['directory_separator' => ''], false],
+            'separator-false' => [['directory_separator' => false], false],
+            'separator-int-zero' => [['directory_separator' => 0], false],
+            'separator-string-zero' => [['directory_separator' => '0'], false],
+            'separator-backslash' => [['directory_separator' => '\\'], false],
+            'readonly-empty' => [['read-only' => ''], false],
+            'readonly-int-zero' => [['read-only' => 0], false],
+            'readonly-string-zero' => [['read-only' => '0'], false],
+            'readonly-true' => [['read-only' => true], false],
+        ];
+        foreach ($variants as $name => [$options, $allowed]) {
+            foreach (['uncached', 'cached-effective'] as $mode) {
+                $cases[$name.'-'.$mode] = [$options, $allowed, $mode];
+            }
+        }
+
+        return $cases;
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('d3MappingOptions')]
+    public function test_d3_typed_mapping_options_without_other_rows(array $options, bool $allowed, string $mode): void
+    {
+        [$actor, , $document] = $this->evidence();
+        $disk = Storage::disk('documents');
+        $target = $disk->path($document->storage_path);
+        $bytes = file_get_contents($target);
+        $root = storage_path('framework/testing/disks/d3-options-'.Str::uuid());
+        $base = ['driver' => 'local', 'root' => $root];
+        $cached = new \ReflectionProperty(\Illuminate\Filesystem\FilesystemManager::class, 'disks');
+        $manager = Storage::getFacadeRoot();
+        $this->assertSame(1, Document::query()->count());
+        $this->assertFalse(file_exists($root));
+        if ($mode === 'cached-effective') {
+            // Isolate effective-config type checking from constructor coercion:
+            // actual ordinary adapter, deliberately stale effective metadata.
+            $wrapper = Storage::build($base);
+            (new \ReflectionProperty(\Illuminate\Filesystem\FilesystemAdapter::class, 'config'))
+                ->setValue($wrapper, $base + $options);
+            Storage::set('d3_options', $wrapper);
+            config(['filesystems.disks.d3_options' => $base]);
+        } else {
+            config(['filesystems.disks.d3_options' => $base + $options]);
+        }
+        $this->actingAs($actor);
+        try {
+            if ($allowed) {
+                $this->get($this->url($document))->assertOk()->assertContent($bytes);
+                $this->assertSame($bytes, $this->get('/documents/'.$document->public_id.'/download')->assertOk()->streamedContent());
+                app(DocumentAttachmentService::class)->cleanupDocuments([$document->fresh()]);
+                $this->assertFalse(file_exists($target));
+            } else {
+                $this->assertOpaque($document);
+                $this->assertCleanupRetained($document);
+                $this->assertSame($bytes, file_get_contents($target));
+            }
+        } finally {
+            if ($mode === 'uncached') {
+                $this->assertArrayNotHasKey('d3_options', $cached->getValue($manager));
+                $this->assertFalse(file_exists($root));
+            } else {
+                rmdir($root);
+            }
+        }
+    }
+
+    public static function d3SentinelCases(): array
+    {
+        $cases = [];
+        foreach (['wrapper', 'adapter'] as $mapping) {
+            foreach (['preview', 'download', 'cleanup'] as $action) {
+                $cases[$mapping.'-'.$action] = [$mapping, $action];
+            }
+        }
+
+        return $cases;
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('d3SentinelCases')]
+    public function test_d3_nonempty_cached_mapping_must_match(string $mapping, string $action): void
+    {
+        [$actor, , $document] = $this->evidence();
+        $disk = Storage::disk('documents');
+        $target = $disk->path($document->storage_path);
+        $bytes = file_get_contents($target);
+        $root = storage_path('framework/testing/disks/d3-sentinel-'.Str::uuid());
+        $base = ['driver' => 'local', 'root' => $root];
+        $wrapper = Storage::build($base);
+        $object = $mapping === 'wrapper' ? $wrapper : $wrapper->getAdapter();
+        $owner = $mapping === 'wrapper' ? \Illuminate\Filesystem\FilesystemAdapter::class : \League\Flysystem\Local\LocalFilesystemAdapter::class;
+        $property = new \ReflectionProperty($owner, 'prefixer');
+        $prefixer = new \League\Flysystem\PathPrefixer($root, '');
+        $property->setValue($object, $prefixer);
+        $this->assertSame($root, $prefixer->prefixPath(''));
+        $this->assertSame($root.'probe/file.pdf', $prefixer->prefixPath('probe/file.pdf'));
+        Storage::set('d3_sentinel', $wrapper);
+        config(['filesystems.disks.d3_sentinel' => $base]);
+        $this->assertSame(1, Document::query()->count());
+        $this->actingAs($actor);
+        try {
+            if ($action === 'cleanup') {
+                $this->assertCleanupRetained($document);
+            } else {
+                $this->assertOpaque($document, [$action]);
+            }
+        } finally {
+            rmdir($root);
+            $this->assertTrue(is_file($target), 'D3 sentinel target deleted');
+            $this->assertSame($bytes, file_get_contents($target));
+        }
+    }
+
     public function test_cleanup_missing_persisted_row_retains_bytes(): void
     {
         [, , $document] = $this->evidence();
