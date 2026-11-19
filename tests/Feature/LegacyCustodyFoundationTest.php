@@ -970,7 +970,10 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->denied($this->ordinary, '23503', fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.travel_order_events SET travel_order_id=? WHERE id=?', [$otherResult['source_id'], $result['event_id']]));
         $this->denied($this->ordinary, '23503', fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.travel_order_events SET actor_user_id=NULL WHERE id=?', [$result['event_id']]));
         $this->denied($this->ordinary, '23503', fn () => $this->custodyQuery($this->ordinary, 'DELETE FROM public.travel_orders WHERE id=?', [$result['source_id']]));
-        $this->denied($this->ordinary, '23503', fn () => $this->custodyQuery($this->ordinary, 'DELETE FROM public.users WHERE id=?', [$op['actor_user_id']]));
+        // PostgreSQL may reach the marked-audit SET NULL cascade before the restrictive operation FK.
+        $this->denied($this->ordinary, ['23503','23514'], fn () => $this->custodyQuery($this->ordinary, 'DELETE FROM public.users WHERE id=?', [$op['actor_user_id']]));
+        $this->assertSame(1, (int) $this->scalar('SELECT count(*) FROM public.users WHERE id=?', [$op['actor_user_id']]));
+        $this->assertSame((int) $op['actor_user_id'], (int) $this->scalar('SELECT actor_user_id FROM public.audit_logs WHERE id=?', [$audit]));
         $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.documents SET title=title WHERE id=?', [$doc]));
         $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.audit_logs SET summary=summary WHERE id=?', [$audit]));
         $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, 'DELETE FROM public.documents WHERE id=?', [$doc]));
