@@ -917,3 +917,10 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 - **Consolidated scope:** SEC-01 personnel response minimization; SEC-03 append-only ordinary audit integrity; SEC-04 pre-auth API throttling; SEC-05 trusted proxy/ingress security; SEC-06 exact-lock supply-chain verification (not confirmed vulnerability). SEC-02 repository settings owner-only, independent release evidence; no live production changes. Source/test path families and acceptance requirements in #7032068653; exact bounded allowlist before source edits, no broad architecture review.
 - **Acceptance:** targeted synthetic negatives and all three integrated exact-successor hosted workflows, ten baseline jobs plus new security checks; no inherited pass and no weakened assertions. Separate independent Nox final acceptance, Siris operational QA, LGU #83, original artifact contents and production controls remain held. No ZIP/download, local execution or production merge/deploy/CLOSE.
 - **NEXT:** reciprocal documentation synchronization; owner START required before activating lease or initiating candidate source changes. SECURITY_HARDENING_CONSOLIDATED / AUTHORIZATION_PENDING / RELEASE_HELD.
+
+## START / OT-SECURITY-HARDENING-R1 / 2026-11-20 PHT
+
+- **Authority:** [Engineer START](https://github.com/Project-Intra-Smithy/engineering-hub/issues/174#issuecomment-7032342629); AI-assisted Kirch-Nairu 291564617 sole source writer, OT-SH-R1-W01 ACTIVE; OT-UI-R1-W01 FROZEN.
+- **Baseline:** immutable PR53 52b855581f07e49ce3d38b34bcd3bcae5050c394; isolated candidate/security-hardening-r1 from that SHA; all seven original draft PRs preserved.
+- **Scope and acceptance:** #7032068653 governs SEC-01,03,04,05,06 bounded implementation and exact-successor regression. SEC-02 remains owner-only. No production merge/deploy, no inherited PASS, independent Nox acceptance and Siris QA held.
+- **Disposition:** START_AUTHORIZED / WRITER_ACTIVE / RELEASE_HELD.
