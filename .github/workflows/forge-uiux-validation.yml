@@ -7,6 +7,7 @@ on:
       - 'KIRCH-TALIBON-UIUX-W*'
       - candidate/codex-iam-admin-provisioning-r2
       - candidate/unified-system-integration-r1
+      - candidate/security-hardening-r1
   pull_request:
     branches:
       - KIRCH-TALIBON-V1-UIUX-CORRECTION
@@ -25,10 +26,10 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -55,7 +56,7 @@ jobs:
       DB_DATABASE: talibon_portal_test
       DB_USERNAME: postgres
       DB_PASSWORD: iam_candidate_disposable
-      N03_DISPOSABLE_LEASE: ${{ github.ref_name == 'candidate/unified-system-integration-r1' && 'EXCLUSIVE_PG16_SYNTHETIC_ONLY' || '' }}
+      N03_DISPOSABLE_LEASE: ${{ (github.ref_name == 'candidate/unified-system-integration-r1' || github.ref_name == 'candidate/security-hardening-r1') && 'EXCLUSIVE_PG16_SYNTHETIC_ONLY' || '' }}
       CACHE_STORE: file
       SESSION_DRIVER: file
       QUEUE_CONNECTION: sync
@@ -76,10 +77,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
         with:
           php-version: '8.4'
           coverage: none
@@ -97,7 +98,7 @@ jobs:
           php artisan migrate --force --no-interaction
 
       - name: Disposable regression schema lifecycle bootstrap
-        if: github.ref_name == 'candidate/unified-system-integration-r1'
+        if: (github.ref_name == 'candidate/unified-system-integration-r1' || github.ref_name == 'candidate/security-hardening-r1')
         env:
           N03_DISPOSABLE_LEASE: EXCLUSIVE_PG16_SYNTHETIC_ONLY
         run: |
@@ -143,7 +144,7 @@ jobs:
 
       - name: Run full Feature regression
         run: |
-          if [ "$GITHUB_REF_NAME" = "candidate/unified-system-integration-r1" ]; then
+          if { [ "$GITHUB_REF_NAME" = "candidate/unified-system-integration-r1" ] || [ "$GITHUB_REF_NAME" = "candidate/security-hardening-r1" ]; }; then
             N03_DISPOSABLE_LEASE=EXCLUSIVE_PG16_SYNTHETIC_ONLY php artisan test --bootstrap="$RUNNER_TEMP/n03-regression-bootstrap.php" --testsuite=Feature
           else
             php artisan test --testsuite=Feature

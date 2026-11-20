@@ -5,6 +5,7 @@ on:
     branches:
       - candidate/codex-iam-admin-provisioning-r2
       - candidate/unified-system-integration-r1
+      - candidate/security-hardening-r1
   workflow_dispatch:
 
 permissions:
@@ -25,7 +26,7 @@ jobs:
       DB_DATABASE: talibon_portal_test
       DB_USERNAME: postgres
       DB_PASSWORD: iam_candidate_disposable
-      N03_DISPOSABLE_LEASE: ${{ github.ref_name == 'candidate/unified-system-integration-r1' && 'EXCLUSIVE_PG16_SYNTHETIC_ONLY' || '' }}
+      N03_DISPOSABLE_LEASE: ${{ (github.ref_name == 'candidate/unified-system-integration-r1' || github.ref_name == 'candidate/security-hardening-r1') && 'EXCLUSIVE_PG16_SYNTHETIC_ONLY' || '' }}
       CACHE_STORE: file
       SESSION_DRIVER: file
       QUEUE_CONNECTION: sync
@@ -44,13 +45,13 @@ jobs:
           --health-timeout=5s
           --health-retries=12
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: .nvmrc
-      - uses: shivammathur/setup-php@v2
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
         with:
           php-version: '8.4'
           extensions: pdo_pgsql, pgsql, fileinfo, zip
@@ -66,7 +67,7 @@ jobs:
           php -r '$p = new PDO("pgsql:host=127.0.0.1;port=5432;dbname=talibon_portal_test", "postgres", "iam_candidate_disposable"); $db=$p->query("select current_database()")->fetchColumn(); $tables=(int)$p->query("select count(*) from pg_tables where schemaname = current_schema()")->fetchColumn(); if ($db !== "talibon_portal_test" || $tables !== 0) {fwrite(STDERR,"Refusing nonempty/incorrect database\n");exit(1);}'
           php artisan migrate --force --no-interaction
       - name: Disposable regression schema lifecycle bootstrap
-        if: github.ref_name == 'candidate/unified-system-integration-r1'
+        if: (github.ref_name == 'candidate/unified-system-integration-r1' || github.ref_name == 'candidate/security-hardening-r1')
         env:
           N03_DISPOSABLE_LEASE: EXCLUSIVE_PG16_SYNTHETIC_ONLY
         run: |
@@ -112,14 +113,14 @@ jobs:
 
       - name: Permanent IAM lifecycle
         run: |
-          if [ "$GITHUB_REF_NAME" = "candidate/unified-system-integration-r1" ]; then
+          if { [ "$GITHUB_REF_NAME" = "candidate/unified-system-integration-r1" ] || [ "$GITHUB_REF_NAME" = "candidate/security-hardening-r1" ]; }; then
             N03_DISPOSABLE_LEASE=EXCLUSIVE_PG16_SYNTHETIC_ONLY php artisan test --bootstrap="$RUNNER_TEMP/n03-regression-bootstrap.php" tests/Feature/PermanentIamLifecycleTest.php
           else
             php artisan test tests/Feature/PermanentIamLifecycleTest.php
           fi
       - name: Feature regression
         run: |
-          if [ "$GITHUB_REF_NAME" = "candidate/unified-system-integration-r1" ]; then
+          if { [ "$GITHUB_REF_NAME" = "candidate/unified-system-integration-r1" ] || [ "$GITHUB_REF_NAME" = "candidate/security-hardening-r1" ]; }; then
             N03_DISPOSABLE_LEASE=EXCLUSIVE_PG16_SYNTHETIC_ONLY php artisan test --bootstrap="$RUNNER_TEMP/n03-regression-bootstrap.php" --testsuite=Feature
           else
             php artisan test --testsuite=Feature
@@ -157,7 +158,7 @@ jobs:
         run: node tests/Browser/iam-pr48-onboarding.mjs
       - name: Upload sanitized browser QA receipt
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: iam-pr48-synthetic-browser-receipt
           path: storage/app/qa/iam-pr48-browser.json
