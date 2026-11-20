@@ -57,4 +57,33 @@ class Phase1ReportingAuditSecurityTest extends TestCase
             ->get('/audit?outcome=denied&department_id='.$engineering->id.'&action=security.test')
             ->assertOk();
     }
+    public function test_audit_payload_uses_only_recorded_actor_and_office_fields(): void
+    {
+        $this->seed();
+        $actor = User::query()->where('email', 'engineering@talibon.demo')->firstOrFail();
+        $office = Department::query()->where('code', 'ENG')->firstOrFail();
+        $actor->employee()->firstOrFail()->update(['home_address' => 'SEC01-SYNTHETIC-ADDRESS-CANARY']);
+        $event = AuditLog::query()->create([
+            'actor_user_id' => $actor->id,
+            'actor_department_id' => $office->id,
+            'action' => 'security.payload.canary',
+            'outcome' => 'allowed',
+            'summary' => 'Synthetic event.',
+            'created_at' => now(),
+        ]);
+
+        foreach (['admin@talibon.demo', 'mayor@talibon.demo'] as $email) {
+            $viewer = User::query()->where('email', $email)->firstOrFail();
+            $url = '/audit?action=security.payload.canary';
+            $this->actingAs($viewer)->get($url)->assertOk()
+                ->assertDontSee('SEC01-SYNTHETIC-ADDRESS-CANARY');
+            $response = $this->actingAs($viewer)->get($url, ['X-Inertia' => 'true']);
+            $response->assertOk()->assertJsonPath('props.events.0.id', $event->id)
+                ->assertJsonPath('props.events.0.actor.name', $actor->name)
+                ->assertJsonPath('props.events.0.actor_department.id', $office->id)
+                ->assertJsonMissingPath('props.events.0.actor.employee')
+                ->assertJsonMissingPath('props.events.0.ip_address')
+                ->assertDontSee('SEC01-SYNTHETIC-ADDRESS-CANARY');
+        }
+    }
 }
