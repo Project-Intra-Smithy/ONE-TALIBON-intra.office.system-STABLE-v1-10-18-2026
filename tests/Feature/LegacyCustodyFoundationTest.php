@@ -363,9 +363,77 @@ final class LegacyCustodyFoundationTest extends TestCase
         }
     }
 
+    private function assertFoundationMigrationInventory(): void
+    {
+        // Immutable PR51 G2A inventory plus the two explicitly composed IAM G4
+        // migrations. Do not infer expected inventory from the live database.
+        $expected = [
+            '0001_01_01_000000_create_users_table',
+            '2026_08_18_000100_create_departments_table',
+            '2026_08_18_000200_create_employees_table',
+            '2026_08_18_001000_create_transactions_table',
+            '2026_08_18_001100_create_transaction_events_table',
+            '2026_08_18_001200_create_audit_logs_table',
+            '2026_08_18_002000_create_memoranda_table',
+            '2026_08_18_002100_create_memo_recipients_table',
+            '2026_08_18_003000_create_legislative_records_table',
+            '2026_08_18_004000_create_hris_leave_and_attendance_tables',
+            '2026_08_19_000100_make_employee_user_optional',
+            '2026_08_19_000110_add_employee_identity_fields',
+            '2026_08_19_000200_add_transaction_accountability_fields',
+            '2026_08_19_000300_create_operational_items_table',
+            '2026_08_19_000400_create_payroll_prototype_tables',
+            '2026_08_19_010000_add_phase1_office_routing_metadata',
+            '2026_08_19_011000_create_platform_notifications_table',
+            '2026_08_19_011100_create_calendar_events_table',
+            '2026_08_19_011200_create_shared_documents_tables',
+            '2026_08_19_012000_add_phase1_employee_profile_fields',
+            '2026_08_19_013000_create_employee_lifecycle_tables',
+            '2026_08_19_013100_create_property_accountability_tables',
+            '2026_08_19_014000_create_phase1_dtr_and_payroll_context',
+            '2026_08_19_016000_create_employee_development_and_health_tables',
+            '2026_08_22_017000_create_offboarding_tables',
+            '2026_08_22_020000_create_property_lifecycle_tables',
+            '2026_08_22_030000_create_legislative_sessions_and_agenda',
+            '2026_08_22_130000_add_mfa_fields_to_users_table',
+            '2026_08_22_144500_add_mfa_version_to_users_table',
+            '2026_08_23_090000_create_integration_client_tables',
+            '2026_08_23_090100_add_integration_client_to_audit_logs',
+            '2026_08_23_150000_create_integration_idempotency_records_table',
+            '2026_08_23_150100_create_outbox_messages_table',
+            '2026_08_23_150200_create_integration_proof_writes_table',
+            '2026_08_23_170000_create_correspondence_records_table',
+            '2026_08_23_170100_create_correspondence_events_table',
+            '2026_08_23_170200_create_correspondence_reference_counters_table',
+            '2026_08_24_010000_add_route_action_fields_to_correspondence_records',
+            '2026_08_27_120000_create_travel_orders_tables',
+            '2026_09_24_012300_create_prototype_messages_table',
+            '2026_09_30_000100_add_work_request_fields_to_transactions',
+            '2026_09_30_183000_add_work_request_queue_indexes',
+            '2026_09_30_184000_add_assignment_audit_to_transaction_events',
+            '2026_10_08_000000_create_tasks_table',
+            '2026_10_09_000000_extend_tasks_for_w02_core',
+            '2026_10_09_000100_create_task_events_table',
+            '2026_10_19_230000_add_user_last_seen_for_portal_presence',
+            '2026_10_20_040000_create_portal_presence_sessions_table',
+            '2026_10_28_010000_create_plan_catalog_foundation_tables',
+            '2026_10_28_011000_add_plan_origin_and_quarantined_bindings',
+            '2026_10_28_012000_create_plan_custody_foundation',
+            '2026_11_11_000100_create_permanent_iam_tables',
+            '2026_11_19_200000_create_legacy_custody_foundation',
+            '2026_11_20_000100_add_activation_disclosure_marker',
+            '2026_11_20_000200_enforce_iam_identity_integrity',
+        ];
+        $actual = $this->root->query('SELECT migration FROM public.migrations')->fetchAll(PDO::FETCH_COLUMN);
+        sort($actual, SORT_STRING);
+
+        $this->assertCount(55, $actual);
+        $this->assertSame($expected, $actual);
+    }
+
     public function test_a01_migration_inventory_and_forward_only(): void
     {
-        $this->assertSame(53, (int) $this->scalar('SELECT count(*) FROM public.migrations'));
+        $this->assertFoundationMigrationInventory();
         $this->assertSame(10, (int) $this->scalar("SELECT count(*) FROM pg_tables WHERE schemaname='legacy_custody'"));
         $migration = require database_path('migrations/2026_11_19_200000_create_legacy_custody_foundation.php');
         foreach (['up', 'down'] as $method) {
@@ -717,7 +785,7 @@ final class LegacyCustodyFoundationTest extends TestCase
             DB::purge('n03_wrong');
             DB::setDefaultConnection($original);
         }
-        $this->assertSame(53, (int) $this->scalar('SELECT count(*) FROM public.migrations'));
+        $this->assertFoundationMigrationInventory();
     }
 
     private function asyncRole(string $role, string $passwordVariable): \PgSql\Connection
