@@ -63,6 +63,18 @@ class IntegrationFoundationTest extends TestCase
         RateLimiter::clear($key);
     }
 
+    public function test_explicit_trusted_proxy_controls_the_ingress_peer_and_scheme(): void
+    {
+        config(['app.trusted_proxies' => '192.0.2.0/24']);
+        $this->withServerVariables(['REMOTE_ADDR' => '192.0.2.50']);
+        $this->withHeader('X-Forwarded-For', '198.51.100.8')
+            ->withHeader('X-Forwarded-Proto', 'https')
+            ->getJson('/api/v1/integration/self')->assertUnauthorized();
+
+        $audit = AuditLog::query()->where('action', 'integration.authentication.failed')->latest('id')->firstOrFail();
+        $this->assertSame('198.51.100.8', $audit->ip_address);
+    }
+
     public function test_wrong_secret_returns_generic_401(): void
     {
         [, $credential] = $this->credential([IntegrationScope::SelfRead->value]);
