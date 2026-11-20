@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')
     ->middleware([
         'integration.correlation',
+        \App\Http\Middleware\ThrottleIntegrationIngress::class,
         'integration.auth',
     ])
     ->group(function (): void {
