@@ -73,13 +73,4 @@ jobs:
               print("No scan report emitted; scanner exit:", os.environ["SCAN_STATUS"])
           PY
           rm -f "$RUNNER_TEMP/gitleaks.json" "$RUNNER_TEMP/gitleaks-console.log" "$RUNNER_TEMP/composer-advisories.json" "$RUNNER_TEMP/npm-advisories.json"
-          # Resolve only the six advisory-hit packages in this disposable checkout.
-          # The original locked audit remains a failed gate; no runner Git writes.
-          if [ "$status" -ne 0 ]; then
-            composer update laravel/framework:13.40.0 league/commonmark:2.10.2 symfony/http-foundation:8.1.11 symfony/http-kernel:8.1.11 symfony/mime:8.1.10 symfony/routing:8.1.11 --with-all-dependencies --minimal-changes --no-install --no-scripts --no-interaction --no-progress
-            composer audit --locked --format=summary
-            printf '%s\n' 'SEC06_LOCK_PATCH_BEGIN'
-            git --no-pager diff --no-ext-diff --no-color -- composer.lock
-            printf '%s\n' 'SEC06_LOCK_PATCH_END'
-          fi
           test "$scan" -eq 0 && test "$status" -eq 0
