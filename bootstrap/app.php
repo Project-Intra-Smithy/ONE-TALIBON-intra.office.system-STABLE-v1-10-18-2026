@@ -13,10 +13,12 @@ use App\Http\Middleware\RequireIntegrationScope;
 use App\Http\Middleware\RequireMfaAssurance;
 use App\Http\Middleware\RequireMfaSubject;
 use App\Http\Middleware\ThrottleIntegrationClient;
+use App\Http\Middleware\TrustConfiguredProxies;
 use App\Services\ApplicationErrorResponse;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Middleware\TrustProxies;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,19 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $proxies = array_values(array_filter(array_map('trim', explode(',', (string) config('app.trusted_proxies', '')))));
-        $proxies = array_values(array_filter($proxies, static function (string $proxy): bool {
-            $parts = explode('/', $proxy, 2);
-            $ip = $parts[0];
-            if (! filter_var($ip, FILTER_VALIDATE_IP)) {
-                return false;
-            }
-
-            return count($parts) === 1 || (ctype_digit($parts[1])
-                && (int) $parts[1] > 0
-                && (int) $parts[1] <= (str_contains($ip, ':') ? 128 : 32));
-        }));
-        $middleware->trustProxies(at: $proxies, headers: Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_PROTO | Request::HEADER_X_FORWARDED_PORT);
+        $middleware->replace(TrustProxies::class, TrustConfiguredProxies::class);
         // Normalize /tasks requests before web auth, CSRF or exception handling.
         $middleware->prepend(EnsureTaskJsonAccept::class);
         $middleware->append(AssignRequestId::class);
