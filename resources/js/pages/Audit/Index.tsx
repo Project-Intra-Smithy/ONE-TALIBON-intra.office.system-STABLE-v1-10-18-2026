@@ -6,11 +6,11 @@ import PageHeader from '../../components/PageHeader';
 import AppLayout from '../../layouts/AppLayout';
 
 type Department = { id: number; name: string; short_name?: string | null };
-type Event = { id: number; action: string; outcome: string; summary?: string | null; created_at: string; actor?: { name: string; employee?: { department?: Department | null } | null } | null; actor_department?: Department | null };
+type Event = { id: number; action: string; outcome: string; summary?: string | null; created_at: string; actor?: { name: string } | null; actor_department?: Department | null };
 type Props = { events: Event[]; summary: { events24h: number; denied24h: number; events7d: number; distinctActors7d: number }; filters: { outcome?: string; action?: string; department_id?: string | number }; departments: Department[] };
 
 const eventLabel = (value: string) => value.replace(/[._-]+/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase());
-const departmentName = (event: Event) => event.actor?.employee?.department?.short_name || event.actor_department?.short_name || event.actor_department?.name || 'Not recorded';
+const departmentName = (event: Event) => event.actor_department?.short_name || event.actor_department?.name || 'Not recorded';
 const fieldClass = 'mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:focus:ring-blue-900';
 
 export default function Index({ events, summary, filters, departments }: Props) {
