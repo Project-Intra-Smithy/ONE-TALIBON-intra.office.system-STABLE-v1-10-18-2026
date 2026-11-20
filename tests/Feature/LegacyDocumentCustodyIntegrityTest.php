@@ -368,11 +368,11 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         $literal = 'foreign\\different.pdf';
         $mapped = 'foreign/different.pdf';
         $this->assertFalse(file_exists($disk->path($mapped)));
-        $alias = $disk->path($literal);
+        $alias = rtrim($disk->path(''), '/').'/'.$literal;
         if ($state === 'normalized') {
             $disk->makeDirectory('foreign');
             $alias = $disk->path($mapped);
-            $this->assertFalse(file_exists($disk->path($literal)));
+            $this->assertFalse(file_exists(rtrim($disk->path(''), '/').'/'.$literal));
         }
         $this->assertTrue(symlink($target, $alias));
         $this->assertSame(1, lstat($target)['nlink']);
@@ -402,12 +402,12 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         [, , $other] = $this->evidence();
         $disk = Storage::disk('documents');
         $literal = 'unrelated\\literal.pdf';
-        file_put_contents($disk->path($literal), 'unrelated synthetic bytes');
+        file_put_contents(rtrim($disk->path(''), '/').'/'.$literal, 'unrelated synthetic bytes');
         $other->update(['storage_path' => $literal]);
         $this->actingAs($actor);
         $this->get($this->url($document))->assertOk()->assertContent($this->pdf());
         $this->assertSame($this->pdf(), $this->get('/documents/'.$document->public_id.'/download')->assertOk()->streamedContent());
-        $this->assertSame('unrelated synthetic bytes', file_get_contents($disk->path($literal)));
+        $this->assertSame('unrelated synthetic bytes', file_get_contents(rtrim($disk->path(''), '/').'/'.$literal));
     }
 
     public function test_d2_dormant_framework_s3_has_no_local_mapping_and_is_not_resolved(): void
@@ -506,7 +506,8 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         $cases = [];
         foreach (['single' => '\\', 'multiple' => '\\\\', 'slash' => '/', 'mixed' => '\\/'] as $label => $leading) {
             foreach (['preview', 'download', 'cleanup'] as $action) {
-                $cases[$label.'-'.$action] = [$leading, $label === 'multiple', $action];
+                $cases[$label.'-'.$action] = [$leading, $label === 'multiple', $action, false];
+                $cases[$label.'-'.$action.'-normalized'] = [$leading, $label === 'multiple', $action, true];
             }
         }
 
@@ -514,7 +515,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
     }
 
     #[\PHPUnit\Framework\Attributes\DataProvider('d3LeadingCases')]
-    public function test_d3_leading_locator_actual_wrapper_alias(string $leading, bool $plan, string $action): void
+    public function test_d3_leading_locator_actual_wrapper_alias(string $leading, bool $plan, string $action, bool $normalizedFixture): void
     {
         [$actor, , $document] = $this->evidence();
         [, , $other] = $this->evidence();
@@ -525,10 +526,15 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         $disk->delete($other->storage_path);
         $interior = 'd3-foreign\\different.pdf';
         $locator = $leading.$interior;
-        $alias = $disk->path($locator);
-        $this->assertSame($root.'/'.$interior, $alias);
         $normalized = (new \League\Flysystem\WhitespacePathNormalizer)->normalizePath($locator);
+        $this->assertSame($root.'/'.$normalized, $disk->path($locator));
         $this->assertFalse(file_exists($root.'/'.$normalized));
+        $this->assertFalse(file_exists($root.'/'.$interior));
+        // Exercise both the historical raw prefixer spelling and the upgraded wrapper.
+        $alias = $normalizedFixture ? $disk->path($locator) : $root.'/'.$interior;
+        if ($normalizedFixture) {
+            $disk->makeDirectory(dirname($normalized));
+        }
         if (! str_starts_with($leading, '/')) {
             $this->assertFalse(file_exists($root.'/'.$locator));
         }

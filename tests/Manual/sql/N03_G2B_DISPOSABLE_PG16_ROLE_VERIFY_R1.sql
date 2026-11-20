@@ -158,8 +158,8 @@ BEGIN
  OR has_column_privilege('kirion_g1b_app','public.documents','security_domain','INSERT,UPDATE')
  OR NOT has_column_privilege('kirion_g1b_app','public.audit_logs','integration_client_id','INSERT')
  OR has_table_privilege('kirion_g1b_app','public.audit_logs','DELETE,TRUNCATE')
- OR EXISTS(SELECT 1 FROM pg_attribute a WHERE a.attrelid='public.audit_logs'::regclass AND a.attnum>0 AND NOT a.attisdropped
-   AND has_column_privilege('kirion_g1b_app','public.audit_logs',a.attname,'UPDATE'))
+ OR EXISTS(SELECT 1 FROM pg_attribute audit_col WHERE audit_col.attrelid='public.audit_logs'::regclass AND audit_col.attnum>0 AND NOT audit_col.attisdropped
+   AND has_column_privilege('kirion_g1b_app','public.audit_logs',audit_col.attname,'UPDATE'))
  OR NOT has_column_privilege('kirion_g1b_custody','public.documents','security_domain','UPDATE')
  OR has_table_privilege('kirion_g1b_app','public.plan_custody_generations','SELECT')
  THEN RAISE EXCEPTION 'legacy/Plan ACL drift'; END IF;

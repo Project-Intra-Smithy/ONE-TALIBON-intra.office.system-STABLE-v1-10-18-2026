@@ -63,14 +63,41 @@ jobs:
           import json, os, collections
           from pathlib import Path
           p = Path(os.environ["RUNNER_TEMP"]) / "gitleaks.json"
-          if p.exists():
-              rows = json.loads(p.read_text()) or []
-              print("Redacted history finding count:", len(rows))
-              print("Rule counts:", dict(collections.Counter(x.get("RuleID", "unknown") for x in rows)))
-              for x in rows:
-                  print("REDACTED_FINDING", json.dumps({k: x.get(k) for k in ["RuleID", "File", "Commit", "StartLine", "EndLine"]}, ensure_ascii=True))
-          else:
-              print("No scan report emitted; scanner exit:", os.environ["SCAN_STATUS"])
+          reviewed = {
+              ("generic-api-key", "7ecc4657c542833b55fcc5067eb813443f939f87", "tests/Feature/CorrespondenceLinkedTransactionParityTest.php", 320, 320): "synthetic event key",
+              ("generic-api-key", "079c79893c5aa754e6a9929b26305fd0fbf31a45", "tests/Feature/CorrespondenceLinkedTransactionParityTest.php", 292, 292): "synthetic event key",
+              ("generic-api-key", "2d39f7ba0f764769130a4e0066a0d0e5163b4eb0", ".forge/evidence/integration/OT-WHOLE-PRODUCT-INTEGRATION-MANIFEST-R1.md", 10, 10): "documented commit SHA",
+              ("generic-api-key", "2d39f7ba0f764769130a4e0066a0d0e5163b4eb0", "tests/Feature/WorkRequests/WorkRequestRevocationTest.php", 216, 216): "fake storage content",
+              ("generic-api-key", "eb0875822afe697a03c4d6781692133483710f51", "docs/evidence/fe-rc-draft/README.md", 26, 26): "documented commit SHA",
+              ("generic-api-key", "8a4e201b1626428fd55b5e1c3716c228736337ed", "docs/evidence/fe-rc-draft/README.md", 26, 26): "documented commit SHA",
+              ("generic-api-key", "2de01349c0c7a1c7ec906015762f97931587268a", "tests/Feature/WorkRequests/WorkRequestRevocationTest.php", 216, 216): "fake storage content",
+              ("generic-api-key", "7cb66691192e6ec906cd9e0dc86c4de7332a1c51", "tests/Feature/WorkRequests/WorkRequestRevocationTest.php", 216, 216): "fake storage content",
+              ("generic-api-key", "3628e6e84949f7a7a8afbff4a9bd21c072c241ef", "docs/contracts/ONE_TALIBON_FRONTEND_CONTRACT_PACK_R1/BACKEND_PRODUCER_VERIFICATION.md", 53, 53): "HTTP contract documentation",
+              ("generic-api-key", "df5946b32adc641497ce160e9056509d6d0ba42b", "tests/Feature/MeetingCalendarProjectionTest.php", 37, 37): "synthetic event key",
+              ("generic-api-key", "df5946b32adc641497ce160e9056509d6d0ba42b", "tests/Feature/MeetingCalendarProjectionTest.php", 56, 56): "synthetic event key",
+          }
+          if not p.is_file():
+              raise SystemExit("Missing scanner report")
+          rows = json.loads(p.read_text())
+          if not isinstance(rows, list):
+              raise SystemExit("Invalid scanner report")
+          scan = int(os.environ["SCAN_STATUS"])
+          if scan not in (0, 1) or (scan == 1) != bool(rows):
+              raise SystemExit("Scanner execution error or inconsistent result")
+          print("Redacted history finding count:", len(rows))
+          print("Rule counts:", dict(collections.Counter(x.get("RuleID", "unknown") for x in rows)))
+          seen = set()
+          unknown = 0
+          for x in rows:
+              key = tuple(x[k] for k in ("RuleID", "Commit", "File", "StartLine", "EndLine"))
+              disposition = reviewed.get(key)
+              if key in seen or disposition is None:
+                  unknown += 1
+              seen.add(key)
+              print("REDACTED_FINDING", json.dumps({"location": key, "disposition": disposition or "UNREVIEWED"}))
+          print("Unreviewed or duplicate findings:", unknown)
+          if unknown:
+              raise SystemExit(1)
           PY
           rm -f "$RUNNER_TEMP/gitleaks.json" "$RUNNER_TEMP/gitleaks-console.log" "$RUNNER_TEMP/composer-advisories.json" "$RUNNER_TEMP/npm-advisories.json"
-          test "$scan" -eq 0 && test "$status" -eq 0
+          test "$status" -eq 0
