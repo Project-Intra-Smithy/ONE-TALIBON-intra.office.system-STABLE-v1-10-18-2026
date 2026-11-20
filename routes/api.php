@@ -5,12 +5,13 @@ use App\Domain\Integration\IntegrationScope;
 use App\Http\Controllers\Api\V1\CorrespondenceIntegrationController;
 use App\Http\Controllers\Api\V1\IntegrationProofWriteController;
 use App\Http\Controllers\Api\V1\IntegrationSelfController;
+use App\Http\Middleware\ThrottleIntegrationIngress;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')
     ->middleware([
         'integration.correlation',
-        \App\Http\Middleware\ThrottleIntegrationIngress::class,
+        ThrottleIntegrationIngress::class,
         'integration.auth',
     ])
     ->group(function (): void {
