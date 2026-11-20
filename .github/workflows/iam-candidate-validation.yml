@@ -25,6 +25,7 @@ jobs:
       DB_DATABASE: talibon_portal_test
       DB_USERNAME: postgres
       DB_PASSWORD: iam_candidate_disposable
+      N03_DISPOSABLE_LEASE: ${{ github.ref_name == 'candidate/unified-system-integration-r1' && 'EXCLUSIVE_PG16_SYNTHETIC_ONLY' || '' }}
       CACHE_STORE: file
       SESSION_DRIVER: file
       QUEUE_CONNECTION: sync

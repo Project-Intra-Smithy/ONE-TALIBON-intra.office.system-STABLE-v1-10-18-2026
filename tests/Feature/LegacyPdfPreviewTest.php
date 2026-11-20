@@ -439,6 +439,64 @@ final class LegacyPdfPreviewTest extends TestCase
         $this->get($this->url($document))->assertOk();
     }
 
+    public function test_actual_partial_custody_columns_quarantine_metadata_and_both_byte_routes(): void
+    {
+        [$actor, $record, $document] = $this->evidence();
+        $this->actingAs($actor);
+        $archive = app(DocumentArchiveQuery::class);
+        $preview = $this->url($document);
+        $download = '/documents/'.$document->public_id.'/download';
+
+        $this->get($preview)->assertOk()->assertContent($this->pdf());
+        $this->assertSame($this->pdf(), $this->get($download)->assertOk()->streamedContent());
+
+        foreach (['custody_mode', 'custody_operation_id'] as $column) {
+            // Isolate each real schema mutation in a savepoint. A failed SQL
+            // query must not hide the assertion failure behind cleanup DDL.
+            DB::beginTransaction();
+            try {
+                DB::statement('ALTER TABLE documents RENAME COLUMN '.$column.' TO integration_hidden_custody');
+                $this->assertSame(0, $archive->workspace($actor, [])['records']->total());
+                $this->assertNull($archive->workspace($actor, ['document' => $document->public_id])['selected']);
+                $this->assertSame([], app(DocumentEvidenceQuery::class)->forTransaction($record)['record']);
+                $this->get($preview)->assertNotFound()->assertContent('Not Found');
+                $this->get($download)->assertNotFound()->assertContent('Not Found');
+            } finally {
+                DB::rollBack();
+            }
+            $restored = $archive->workspace($actor, ['document' => $document->public_id]);
+            $this->assertSame($document->public_id, $restored['selected']['publicId']);
+            $this->assertSame($preview, $restored['selected']['previewUrl']);
+            $this->get($preview)->assertOk()->assertContent($this->pdf());
+            $this->assertSame($this->pdf(), $this->get($download)->assertOk()->streamedContent());
+        }
+    }
+
+    public function test_retained_iam_epoch_cannot_read_pdf_bytes_after_revocation(): void
+    {
+        [$actor, , $document] = $this->evidence();
+        foreach ([$this->url($document), '/documents/'.$document->public_id.'/download'] as $url) {
+            $actor = $actor->fresh();
+            $this->actingAs($actor);
+            $this->get($this->url($document))->assertOk()->assertContent($this->pdf());
+            $allowed = DB::table('audit_logs')->where('actor_user_id', $actor->id)
+                ->whereIn('action', ['document.preview', 'document.download'])->where('outcome', 'allowed')->count();
+            DB::table('users')->where('id', $actor->id)->increment('session_version');
+            $response = $this->get($url)->assertRedirect(route('login'))->assertSessionMissing('auth_session_version');
+            $this->assertGuest();
+            $this->assertStringNotContainsString($this->pdf(), $response->getContent());
+            $this->assertSame($allowed, DB::table('audit_logs')->where('actor_user_id', $actor->id)
+                ->whereIn('action', ['document.preview', 'document.download'])->where('outcome', 'allowed')->count());
+            $this->assertDatabaseHas('audit_logs', [
+                'actor_user_id' => $actor->id,
+                'action' => 'auth.account.deactivated_forced_logout', 'outcome' => 'denied',
+            ]);
+        }
+        // Explicit synthetic reauthentication binds the now-current epoch.
+        $this->actingAs($actor->fresh())->get($this->url($document))->assertOk()->assertContent($this->pdf());
+        $this->assertSame($this->pdf(), $this->get('/documents/'.$document->public_id.'/download')->assertOk()->streamedContent());
+    }
+
     public function test_unknown_domain_and_inconsistent_typed_ownership_are_quarantined(): void
     {
         [$actor, $record, $document] = $this->evidence();

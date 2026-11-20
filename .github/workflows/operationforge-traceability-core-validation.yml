@@ -81,7 +81,17 @@ jobs:
           mapfile -t changed_php < <(git diff --name-only 4084af39ecf10262ef5972df1b9cf03f038c3383..HEAD -- '*.php')
           if [ "${#changed_php[@]}" -gt 0 ]; then
             for f in "${changed_php[@]}"; do php -l "$f"; done
-            php vendor/bin/pint --test "${changed_php[@]}"
+            if ! php vendor/bin/pint --test "${changed_php[@]}"; then
+              if [ "$GITHUB_REF_NAME" = "candidate/unified-system-integration-r1" ] && [ "${{ matrix.phase }}" = "focused" ]; then
+                # Disposable checkout only. Emit a reviewable source-only patch;
+                # never commit, push, include runtime files, or bypass the failing gate.
+                php vendor/bin/pint "${changed_php[@]}"
+                printf '%s\n' 'INTEGRATION_PINT_PATCH_BEGIN'
+                git --no-pager diff --no-ext-diff -- "${changed_php[@]}"
+                printf '%s\n' 'INTEGRATION_PINT_PATCH_END'
+              fi
+              exit 1
+            fi
           fi
           php -l bin/legacy-custody-broker
 
@@ -100,7 +110,7 @@ jobs:
             echo "::add-mask::$value"
             export "$name=$value"
           done
-          mapfile -t baseline < <(find database/migrations -maxdepth 1 -name '*.php' ! -name '2026_11_19_200000_*' ! -name '2026_11_20_*' | sort)
+          mapfile -t baseline < <(find database/migrations -maxdepth 1 -name '*.php' ! -name '2026_11_19_200000_create_legacy_custody_foundation.php' ! -name '2026_11_20_010000_extend_legacy_custody_g2b_command_provenance.php' ! -name '2026_11_20_020000_create_legacy_custody_k2_tombstones.php' ! -name '2026_11_20_030000_create_legacy_custody_g3_g5_extensions.php' | sort)
           args=()
           for f in "${baseline[@]}"; do args+=("--path=$f"); done
           php artisan migrate --force --no-interaction "${args[@]}"
@@ -125,7 +135,7 @@ jobs:
           done
 
           # Baseline migrations (before N03)
-          mapfile -t baseline < <(find database/migrations -maxdepth 1 -name '*.php' ! -name '2026_11_19_200000_*' ! -name '2026_11_20_*' | sort)
+          mapfile -t baseline < <(find database/migrations -maxdepth 1 -name '*.php' ! -name '2026_11_19_200000_create_legacy_custody_foundation.php' ! -name '2026_11_20_010000_extend_legacy_custody_g2b_command_provenance.php' ! -name '2026_11_20_020000_create_legacy_custody_k2_tombstones.php' ! -name '2026_11_20_030000_create_legacy_custody_g3_g5_extensions.php' | sort)
           args=()
           for f in "${baseline[@]}"; do args+=("--path=$f"); done
           php artisan migrate --force --no-interaction "${args[@]}"
