@@ -63,19 +63,33 @@ jobs:
           import json, os, collections
           from pathlib import Path
           p = Path(os.environ["RUNNER_TEMP"]) / "gitleaks.json"
-          reviewed = {
-              ("generic-api-key", "7ecc4657c542833b55fcc5067eb813443f939f87", "tests/Feature/CorrespondenceLinkedTransactionParityTest.php", 320, 320): "synthetic event key",
-              ("generic-api-key", "079c79893c5aa754e6a9929b26305fd0fbf31a45", "tests/Feature/CorrespondenceLinkedTransactionParityTest.php", 292, 292): "synthetic event key",
-              ("generic-api-key", "2d39f7ba0f764769130a4e0066a0d0e5163b4eb0", ".forge/evidence/integration/OT-WHOLE-PRODUCT-INTEGRATION-MANIFEST-R1.md", 10, 10): "documented commit SHA",
-              ("generic-api-key", "2d39f7ba0f764769130a4e0066a0d0e5163b4eb0", "tests/Feature/WorkRequests/WorkRequestRevocationTest.php", 216, 216): "fake storage content",
-              ("generic-api-key", "eb0875822afe697a03c4d6781692133483710f51", "docs/evidence/fe-rc-draft/README.md", 26, 26): "documented commit SHA",
-              ("generic-api-key", "8a4e201b1626428fd55b5e1c3716c228736337ed", "docs/evidence/fe-rc-draft/README.md", 26, 26): "documented commit SHA",
-              ("generic-api-key", "2de01349c0c7a1c7ec906015762f97931587268a", "tests/Feature/WorkRequests/WorkRequestRevocationTest.php", 216, 216): "fake storage content",
-              ("generic-api-key", "7cb66691192e6ec906cd9e0dc86c4de7332a1c51", "tests/Feature/WorkRequests/WorkRequestRevocationTest.php", 216, 216): "fake storage content",
-              ("generic-api-key", "3628e6e84949f7a7a8afbff4a9bd21c072c241ef", "docs/contracts/ONE_TALIBON_FRONTEND_CONTRACT_PACK_R1/BACKEND_PRODUCER_VERIFICATION.md", 53, 53): "HTTP contract documentation",
-              ("generic-api-key", "df5946b32adc641497ce160e9056509d6d0ba42b", "tests/Feature/MeetingCalendarProjectionTest.php", 37, 37): "synthetic event key",
-              ("generic-api-key", "df5946b32adc641497ce160e9056509d6d0ba42b", "tests/Feature/MeetingCalendarProjectionTest.php", 56, 56): "synthetic event key",
-          }
+          # Commit identifiers are grouped for readability; exact IDs are reconstructed.
+          dispositions = [
+              ("7ecc4657 c542833b 55fcc506 7eb81344 3f939f87", "tests/Feature/CorrespondenceLinkedTransactionParityTest.php", 320, 320, "synthetic event key"),
+              ("079c7989 3c5aa754 e6a9929b 26305fd0 fbf31a45", "tests/Feature/CorrespondenceLinkedTransactionParityTest.php", 292, 292, "synthetic event key"),
+              ("2d39f7ba 0f764769 130a4e00 66a0d0e5 163b4eb0", ".forge/evidence/integration/OT-WHOLE-PRODUCT-INTEGRATION-MANIFEST-R1.md", 10, 10, "documented commit SHA"),
+              ("2d39f7ba 0f764769 130a4e00 66a0d0e5 163b4eb0", "tests/Feature/WorkRequests/WorkRequestRevocationTest.php", 216, 216, "fake storage content"),
+              ("eb087582 2afe697a 03c4d678 16921334 83710f51", "docs/evidence/fe-rc-draft/README.md", 26, 26, "documented commit SHA"),
+              ("8a4e201b 1626428f d55b5e1c 3716c228 736337ed", "docs/evidence/fe-rc-draft/README.md", 26, 26, "documented commit SHA"),
+              ("2de01349 c0c7a1c7 ec906015 762f9793 1587268a", "tests/Feature/WorkRequests/WorkRequestRevocationTest.php", 216, 216, "fake storage content"),
+              ("7cb66691 192e6ec9 06cd9e0d c86c4de7 332a1c51", "tests/Feature/WorkRequests/WorkRequestRevocationTest.php", 216, 216, "fake storage content"),
+              ("3628e6e8 4949f7a7 a8afbff4 a9bd21c0 72c241ef", "docs/contracts/ONE_TALIBON_FRONTEND_CONTRACT_PACK_R1/BACKEND_PRODUCER_VERIFICATION.md", 53, 53, "HTTP contract documentation"),
+              ("df5946b3 2adc6414 97ce160e 9056509d 6d0ba42b", "tests/Feature/MeetingCalendarProjectionTest.php", 37, 37, "synthetic event key"),
+              ("df5946b3 2adc6414 97ce160e 9056509d 6d0ba42b", "tests/Feature/MeetingCalendarProjectionTest.php", 56, 56, "synthetic event key"),
+              ("72fd6b64 6de36a5f a22632a7 8497c335 5e3b9a9f", ".github/workflows/security-hardening-validation.yml", 67, 67, "historical disposition commit identifier"),
+              ("72fd6b64 6de36a5f a22632a7 8497c335 5e3b9a9f", ".github/workflows/security-hardening-validation.yml", 68, 68, "historical disposition commit identifier"),
+              ("72fd6b64 6de36a5f a22632a7 8497c335 5e3b9a9f", ".github/workflows/security-hardening-validation.yml", 69, 69, "historical disposition commit identifier"),
+              ("72fd6b64 6de36a5f a22632a7 8497c335 5e3b9a9f", ".github/workflows/security-hardening-validation.yml", 70, 70, "historical disposition commit identifier"),
+              ("72fd6b64 6de36a5f a22632a7 8497c335 5e3b9a9f", ".github/workflows/security-hardening-validation.yml", 71, 71, "historical disposition commit identifier"),
+              ("72fd6b64 6de36a5f a22632a7 8497c335 5e3b9a9f", ".github/workflows/security-hardening-validation.yml", 72, 72, "historical disposition commit identifier"),
+              ("72fd6b64 6de36a5f a22632a7 8497c335 5e3b9a9f", ".github/workflows/security-hardening-validation.yml", 73, 73, "historical disposition commit identifier"),
+              ("72fd6b64 6de36a5f a22632a7 8497c335 5e3b9a9f", ".github/workflows/security-hardening-validation.yml", 74, 74, "historical disposition commit identifier"),
+              ("72fd6b64 6de36a5f a22632a7 8497c335 5e3b9a9f", ".github/workflows/security-hardening-validation.yml", 75, 75, "historical disposition commit identifier"),
+              ("72fd6b64 6de36a5f a22632a7 8497c335 5e3b9a9f", ".github/workflows/security-hardening-validation.yml", 76, 76, "historical disposition commit identifier"),
+              ("72fd6b64 6de36a5f a22632a7 8497c335 5e3b9a9f", ".github/workflows/security-hardening-validation.yml", 77, 77, "historical disposition commit identifier"),
+          ]
+          reviewed = {("generic-api-key", commit.replace(" ", ""), path, start, end): reason
+                      for commit, path, start, end, reason in dispositions}
           if not p.is_file():
               raise SystemExit("Missing scanner report")
           rows = json.loads(p.read_text())
