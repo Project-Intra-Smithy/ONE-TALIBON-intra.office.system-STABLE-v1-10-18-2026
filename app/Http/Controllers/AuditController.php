@@ -23,8 +23,8 @@ class AuditController extends Controller
 
         $query = AuditLog::query()
             ->with([
-                'actor' => fn ($query) => $query->with('employee.department'),
-                'actorDepartment:id,code,name,short_name',
+                'actor:id,name',
+                'actorDepartment:id,name,short_name',
             ]);
 
         if (! empty($filters['outcome'])) {
@@ -38,7 +38,19 @@ class AuditController extends Controller
         }
 
         return Inertia::render('Audit/Index', [
-            'events' => $query->latest('created_at')->limit(250)->get(),
+            'events' => $query->latest('created_at')->limit(250)->get()->map(fn (AuditLog $event): array => [
+                'id' => $event->id,
+                'action' => $event->action,
+                'outcome' => $event->outcome,
+                'summary' => $event->summary,
+                'created_at' => $event->created_at?->toISOString(),
+                'actor' => $event->actor ? ['name' => $event->actor->name] : null,
+                'actor_department' => $event->actorDepartment ? [
+                    'id' => $event->actorDepartment->id,
+                    'name' => $event->actorDepartment->name,
+                    'short_name' => $event->actorDepartment->short_name,
+                ] : null,
+            ]),
             'summary' => [
                 'events24h' => AuditLog::query()->where('created_at', '>=', now()->subDay())->count(),
                 'denied24h' => AuditLog::query()->where('outcome', 'denied')->where('created_at', '>=', now()->subDay())->count(),

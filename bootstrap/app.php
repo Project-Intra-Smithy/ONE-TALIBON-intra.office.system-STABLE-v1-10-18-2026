@@ -13,10 +13,12 @@ use App\Http\Middleware\RequireIntegrationScope;
 use App\Http\Middleware\RequireMfaAssurance;
 use App\Http\Middleware\RequireMfaSubject;
 use App\Http\Middleware\ThrottleIntegrationClient;
+use App\Http\Middleware\TrustConfiguredProxies;
 use App\Services\ApplicationErrorResponse;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Middleware\TrustProxies;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,7 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->trustProxies(at: '*');
+        $middleware->replace(TrustProxies::class, TrustConfiguredProxies::class);
         // Normalize /tasks requests before web auth, CSRF or exception handling.
         $middleware->prepend(EnsureTaskJsonAccept::class);
         $middleware->append(AssignRequestId::class);

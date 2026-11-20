@@ -5,6 +5,7 @@ on:
     branches:
       - candidate/antigravity-operationforge-traceability-core-r1
       - candidate/unified-system-integration-r1
+      - candidate/security-hardening-r1
   workflow_dispatch:
 
 permissions:
@@ -53,11 +54,11 @@ jobs:
           --health-timeout=5s
           --health-retries=12
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
           fetch-depth: 0
-      - uses: shivammathur/setup-php@v2
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
         with:
           php-version: '8.4'
           extensions: pdo_pgsql, pgsql, fileinfo, zip
@@ -82,7 +83,7 @@ jobs:
           if [ "${#changed_php[@]}" -gt 0 ]; then
             for f in "${changed_php[@]}"; do php -l "$f"; done
             if ! php vendor/bin/pint --test "${changed_php[@]}"; then
-              if [ "$GITHUB_REF_NAME" = "candidate/unified-system-integration-r1" ] && [ "${{ matrix.phase }}" = "focused" ]; then
+              if { [ "$GITHUB_REF_NAME" = "candidate/unified-system-integration-r1" ] || [ "$GITHUB_REF_NAME" = "candidate/security-hardening-r1" ]; } && [ "${{ matrix.phase }}" = "focused" ]; then
                 # Disposable checkout only. Emit a reviewable source-only patch;
                 # never commit, push, include runtime files, or bypass the failing gate.
                 php vendor/bin/pint "${changed_php[@]}"
@@ -243,7 +244,7 @@ jobs:
             --testsuite=Feature \
             --exclude-group=n03-role,n03-g2b-role,n03-k2-role,n03-g3-role
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         if: matrix.phase == 'browser'
         with:
           node-version-file: .nvmrc
@@ -274,7 +275,7 @@ jobs:
           PDF_QA_PASSWORD="$password" xvfb-run -a node tests/Browser/legacy-pdf-inline-authenticated.mjs
       - name: Upload browser verification receipt and screenshot
         if: matrix.phase == 'browser' && always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: operationforge-traceability-core-native-pdf
           path: |

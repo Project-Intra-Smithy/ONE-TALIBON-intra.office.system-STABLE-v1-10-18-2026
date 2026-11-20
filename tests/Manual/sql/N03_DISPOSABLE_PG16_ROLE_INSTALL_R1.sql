@@ -71,9 +71,8 @@ GRANT UPDATE(state,fence_no) ON legacy_custody.operation_gates TO n03_reconcile;
 GRANT EXECUTE ON FUNCTION legacy_custody.lock_pending(uuid,bigint,text) TO n03_stage,n03_command,n03_reconcile;
 GRANT EXECUTE ON FUNCTION legacy_custody.zero_artifacts(uuid) TO n03_reconcile;
 GRANT EXECUTE ON FUNCTION legacy_custody.expected_links(uuid) TO n03_command;
-REVOKE INSERT,UPDATE ON public.audit_logs FROM kirion_g1b_app;
-GRANT INSERT(id,actor_user_id,actor_department_id,action,entity_type,entity_id,outcome,summary,ip_address,user_agent,correlation_id,created_at,integration_client_id),
- UPDATE(id,actor_user_id,actor_department_id,action,entity_type,entity_id,outcome,summary,ip_address,user_agent,correlation_id,created_at,integration_client_id) ON public.audit_logs TO kirion_g1b_app;
+REVOKE INSERT,UPDATE,DELETE,TRUNCATE ON public.audit_logs FROM kirion_g1b_app;
+GRANT INSERT(id,actor_user_id,actor_department_id,action,entity_type,entity_id,outcome,summary,ip_address,user_agent,correlation_id,created_at,integration_client_id) ON public.audit_logs TO kirion_g1b_app;
 GRANT SELECT(id,public_id,document_type,owner_department_id,uploaded_by_user_id,size_bytes,checksum_sha256,mime_type,storage_disk,storage_path,security_domain,custody_mode,custody_operation_id,custody_ordinal) ON public.documents TO n03_command;
 GRANT SELECT(id,document_id,linkable_type,linkable_id,relationship,created_by_user_id) ON public.document_links TO n03_command,n03_reconcile;
 GRANT SELECT(id,custody_operation_id,entity_id,entity_type,action,outcome,actor_user_id,actor_department_id,correlation_id,integration_client_id) ON public.audit_logs TO n03_command,n03_reconcile;
