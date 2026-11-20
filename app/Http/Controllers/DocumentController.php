@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use App\Models\User;
 use App\Services\AuditLogger;
+use App\Services\Custody\RegistryDocumentRetrievalService;
 use App\Services\DocumentAccessService;
 use App\Services\LegacyDocumentBytes;
 use App\Services\LegacyPdfPreview;
@@ -13,9 +17,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Throwable;
 
 final class DocumentController extends Controller
 {
+    private const SECURITY_HEADERS = [
+        'Cache-Control' => 'private, no-store',
+        'X-Content-Type-Options' => 'nosniff',
+        'Referrer-Policy' => 'no-referrer',
+    ];
+
     public function preview(
         Request $request,
         string $document,
@@ -23,31 +34,44 @@ final class DocumentController extends Controller
         AuditLogger $audit,
         LegacyPdfPreview $preview,
         LegacyDocumentBytes $storage,
+        RegistryDocumentRetrievalService $registryRetrieval,
     ): Response {
         $actor = $request->user()->loadMissing('employee');
-        $headers = [
-            'Cache-Control' => 'private, no-store',
-            'X-Content-Type-Options' => 'nosniff',
-            'Referrer-Policy' => 'no-referrer',
-        ];
-
-        // Missing, protected and unauthorized identities are indistinguishable.
-        $deny = static function () use ($actor, $audit, $headers): Response {
-            $audit->record($actor, 'document.preview', 'Denied evidence preview.', outcome: 'denied');
-
-            return new Response('Not Found', 404, [...$headers, 'Content-Type' => 'text/plain; charset=UTF-8']);
-        };
 
         $record = Str::isUuid($document)
             ? Document::query()->where('public_id', $document)->first()
             : null;
-        if (! $record || ! PlanDocumentOriginGuard::isEligibleForLegacyPreview($record) || ! $access->canDownload($actor, $record)) {
-            return $deny();
+        if (! $record || ! PlanDocumentOriginGuard::isEligibleForLegacyPreview($record)) {
+            return $this->maskedNotFound($actor, $audit, 'document.preview', 'Denied evidence preview.');
+        }
+
+        if ($record->getAttribute('custody_mode') === 'REGISTRY_V1') {
+            try {
+                $payload = $registryRetrieval->retrieveForEgress($actor, (string) $record->public_id, true);
+            } catch (Throwable) {
+                return $this->maskedNotFound($actor, $audit, 'document.preview', 'Denied evidence preview.');
+            }
+
+            $fresh = $payload['document'];
+            $bytes = $payload['bytes'];
+
+            return new Response($bytes, 200, [
+                ...self::SECURITY_HEADERS,
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => $preview->disposition($fresh),
+                'Content-Length' => (string) strlen($bytes),
+            ]);
+        }
+
+        if ($record->getAttribute('custody_operation_id') !== null
+            || ($record->getAttribute('custody_mode') !== null && $record->getAttribute('custody_mode') !== 'LEGACY_PATH')
+            || ! $access->canDownload($actor, $record)) {
+            return $this->maskedNotFound($actor, $audit, 'document.preview', 'Denied evidence preview.');
         }
 
         $bytes = $preview->verifiedBytes($record);
         if ($bytes === null) {
-            return $deny();
+            return $this->maskedNotFound($actor, $audit, 'document.preview', 'Denied evidence preview.');
         }
 
         // Recheck persisted identity, provenance and all parents before
@@ -58,7 +82,7 @@ final class DocumentController extends Controller
             || ! $access->canDownload($actor, $fresh)
             || $record->getAttributes() !== $fresh->getAttributes()
             || ! $storage->unambiguousLocator($fresh)) {
-            return $deny();
+            return $this->maskedNotFound($actor, $audit, 'document.preview', 'Denied evidence preview.');
         }
 
         $disposition = $preview->disposition($fresh);
@@ -72,7 +96,7 @@ final class DocumentController extends Controller
 
         // Range requests intentionally receive the entire verified representation.
         return new Response($bytes, 200, [
-            ...$headers,
+            ...self::SECURITY_HEADERS,
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => $disposition,
             'Content-Length' => (string) strlen($bytes),
@@ -81,29 +105,58 @@ final class DocumentController extends Controller
 
     public function download(
         Request $request,
-        Document $document,
+        string $document,
         DocumentAccessService $access,
         AuditLogger $audit,
         LegacyDocumentBytes $storage,
-    ): StreamedResponse {
+        RegistryDocumentRetrievalService $registryRetrieval,
+    ): Response {
         $actor = $request->user()->loadMissing('employee');
 
-        // A known protected Plan must be indistinguishable from a missing UUID
-        // at this legacy download endpoint. No Plan bytes are served here.
-        if (PlanDocumentOriginGuard::isProtected($document)) {
-            $audit->record($actor, 'document.download', 'Denied evidence retrieval.', outcome: 'denied');
-            abort(404);
+        $record = Str::isUuid($document)
+            ? Document::query()->where('public_id', $document)->first()
+            : null;
+
+        // Missing, invalid, and protected Plan identities must be byte-identical 404.
+        if (! $record || PlanDocumentOriginGuard::isProtected($record)) {
+            return $this->maskedNotFound($actor, $audit, 'document.download', 'Denied evidence retrieval.');
         }
 
-        if (! $access->canDownload($actor, $document)) {
+        if ($record->getAttribute('custody_mode') === 'REGISTRY_V1') {
+            try {
+                $payload = $registryRetrieval->retrieveForEgress($actor, (string) $record->public_id, false);
+            } catch (Throwable) {
+                return $this->maskedNotFound($actor, $audit, 'document.download', 'Denied evidence retrieval.');
+            }
+
+            $fresh = $payload['document'];
+            $bytes = $payload['bytes'];
+            $disposition = $registryRetrieval->attachmentDisposition($fresh);
+
+            return new StreamedResponse(static function () use ($bytes): void {
+                echo $bytes;
+            }, 200, [
+                ...self::SECURITY_HEADERS,
+                'Content-Type' => $registryRetrieval->attachmentMime($payload['mime']),
+                'Content-Disposition' => $disposition,
+                'Content-Length' => (string) strlen($bytes),
+            ]);
+        }
+
+        // Contradiction defense (G3-N06): LEGACY_PATH row carrying custody_operation_id fails closed.
+        if ($record->getAttribute('custody_operation_id') !== null
+            || ($record->getAttribute('custody_mode') !== null && $record->getAttribute('custody_mode') !== 'LEGACY_PATH')) {
+            return $this->maskedNotFound($actor, $audit, 'document.download', 'Denied evidence retrieval.');
+        }
+
+        if (! $access->canDownload($actor, $record)) {
             // Provenance may have changed during the fresh actor/parent check.
             // Never turn a protected identity into an ordinary identified 403.
-            if (PlanDocumentOriginGuard::isProtected($document)
-                || $document->storage_disk !== (string) config('documents.disk', 'documents')
-                || ! $document->storage_path) {
+            if (PlanDocumentOriginGuard::isProtected($record)
+                || $record->storage_disk !== (string) config('documents.disk', 'documents')
+                || ! $record->storage_path) {
                 // Shape only: never inspect storage for a denied actor.
-                $audit->record($actor, 'document.download', 'Denied evidence retrieval.', outcome: 'denied');
-                abort(404);
+                return $this->maskedNotFound($actor, $audit, 'document.download', 'Denied evidence retrieval.');
             }
 
             $audit->record(
@@ -112,51 +165,61 @@ final class DocumentController extends Controller
                 'Denied protected Core Portal evidence download.',
                 outcome: 'denied',
                 entityType: 'document',
-                entityId: $document->id,
+                entityId: $record->id,
             );
 
             throw new AuthorizationException('You are not authorized to download this evidence.');
         }
 
-        $object = $storage->verifiedObject($document);
+        $object = $storage->verifiedObject($record);
         if ($object === null) {
-            $audit->record($actor, 'document.download', 'Denied evidence retrieval.', outcome: 'denied');
-            abort(404);
+            return $this->maskedNotFound($actor, $audit, 'document.download', 'Denied evidence retrieval.');
         }
 
         // Re-read the descriptor and reauthorize before creating the stream.
         // This is not an atomic filesystem/cross-transaction custody guarantee.
-        $fresh = $document->fresh();
+        $fresh = $record->fresh();
         if (! $fresh
             || PlanDocumentOriginGuard::isProtected($fresh)
-            || $document->getAttributes() !== $fresh->getAttributes()
+            || $record->getAttributes() !== $fresh->getAttributes()
             || ! $access->canDownload($actor, $fresh)
             || ! $storage->unambiguousLocator($fresh)) {
-            $audit->record($actor, 'document.download', 'Denied evidence retrieval.', outcome: 'denied');
-            abort(404);
+            return $this->maskedNotFound($actor, $audit, 'document.download', 'Denied evidence retrieval.');
         }
 
-        $document = $fresh;
+        $record = $fresh;
         $bytes = $object['bytes'];
-        $disposition = $storage->attachmentDisposition($document);
+        $disposition = $storage->attachmentDisposition($record);
         $audit->record(
             $actor,
             'document.download',
             'Downloaded protected Core Portal evidence.',
             entityType: 'document',
-            entityId: $document->id,
+            entityId: $record->id,
         );
 
         // Preserve the streamed attachment ABI; emit only verified bytes.
         return new StreamedResponse(static function () use ($bytes): void {
             echo $bytes;
         }, 200, [
-            'Content-Type' => $storage->attachmentMime($document),
+            ...self::SECURITY_HEADERS,
+            'Content-Type' => $storage->attachmentMime($record),
             'Content-Disposition' => $disposition,
             'Content-Length' => (string) strlen($bytes),
-            'Cache-Control' => 'private, no-store',
-            'X-Content-Type-Options' => 'nosniff',
-            'Referrer-Policy' => 'no-referrer',
+        ]);
+    }
+
+    private function maskedNotFound(User $actor, AuditLogger $audit, string $action, string $summary): Response
+    {
+        try {
+            $audit->record($actor, $action, $summary, outcome: 'denied');
+        } catch (Throwable) {
+            // Fail closed without exposing exception stack or body bytes when audit sink is unavailable.
+        }
+
+        return new Response('Not Found', 404, [
+            ...self::SECURITY_HEADERS,
+            'Content-Type' => 'text/plain; charset=UTF-8',
         ]);
     }
 }

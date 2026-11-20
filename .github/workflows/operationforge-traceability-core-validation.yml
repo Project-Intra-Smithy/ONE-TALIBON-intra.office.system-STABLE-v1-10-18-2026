@@ -1,0 +1,286 @@
+name: OperationForge Traceability Core Full Validation
+
+on:
+  push:
+    branches:
+      - candidate/antigravity-operationforge-traceability-core-r1
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Traceability Core ${{ matrix.phase }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        phase: [g2a-roles, roles, broker, focused, full, browser]
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: postgres
+      DB_PASSWORD: operationforge_disposable
+      PGHOST: 127.0.0.1
+      PGPORT: '5432'
+      PGDATABASE: talibon_portal_test
+      PGUSER: postgres
+      PGPASSWORD: operationforge_disposable
+      CACHE_STORE: file
+      SESSION_DRIVER: file
+      QUEUE_CONNECTION: sync
+      N03_DISPOSABLE_LEASE: EXCLUSIVE_PG16_SYNTHETIC_ONLY
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: operationforge_disposable
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d talibon_portal_test"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, fileinfo, zip
+          coverage: none
+          tools: composer:v2
+      - name: Verify exact candidate and isolated empty PG16 database
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_ACTIONS" = true
+          test "$(psql -XAtc 'SELECT current_database()')" = talibon_portal_test
+          test "$(psql -XAtc "SELECT count(*) FROM pg_tables WHERE schemaname='public'")" = 0
+          test "$(psql -XAtc "SELECT count(*) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%'")" = 0
+          psql -XAtc "SELECT current_setting('server_version_num')::int BETWEEN 160000 AND 169999" | grep -qx t
+          git rev-parse HEAD
+      - run: composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+      - run: |
+          set -euo pipefail
+          cp .env.example .env
+          php artisan key:generate
+          mapfile -t changed_php < <(git diff --name-only 4084af39ecf10262ef5972df1b9cf03f038c3383..HEAD -- '*.php')
+          if [ "${#changed_php[@]}" -gt 0 ]; then
+            for f in "${changed_php[@]}"; do php -l "$f"; done
+            php vendor/bin/pint --test "${changed_php[@]}"
+          fi
+          php -l bin/legacy-custody-broker
+
+      - name: Stage 3 (K3) isolated subprocess broker suite
+        if: matrix.phase == 'broker'
+        run: php artisan test tests/Feature/LegacyCustodyK3BrokerIsolationTest.php --group=n03-k3-broker
+
+      - name: Provision Stage 0 (G2A) isolated role cluster and run 61 G2A real-role tests
+        if: matrix.phase == 'g2a-roles'
+        env:
+          N03_ROLE_SUITE: '1'
+        run: |
+          set -euo pipefail
+          for name in G1B_MIGRATOR_PASSWORD G1B_APP_PASSWORD G1B_CUSTODY_PASSWORD N03_STAGE_PASSWORD N03_COMMAND_PASSWORD N03_RECONCILE_PASSWORD; do
+            value="$(openssl rand -hex 24)"
+            echo "::add-mask::$value"
+            export "$name=$value"
+          done
+          mapfile -t baseline < <(find database/migrations -maxdepth 1 -name '*.php' ! -name '2026_11_19_200000_*' ! -name '2026_11_20_*' | sort)
+          args=()
+          for f in "${baseline[@]}"; do args+=("--path=$f"); done
+          php artisan migrate --force --no-interaction "${args[@]}"
+          psql -X -v ON_ERROR_STOP=1 -v KIRION_G1B_DISPOSABLE_LEASE=EXCLUSIVE_PG16_TMPFS_QA_ONLY -v G1B_MIGRATOR_PASSWORD="$G1B_MIGRATOR_PASSWORD" -v G1B_APP_PASSWORD="$G1B_APP_PASSWORD" -v G1B_CUSTODY_PASSWORD="$G1B_CUSTODY_PASSWORD" -f tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -v KIRION_G2_DISPOSABLE_LEASE=EXCLUSIVE_G2_PG16_TMPFS_QA_ONLY -f tests/Manual/sql/G2_DISPOSABLE_PG16_CUSTODY_ROLE_EXTENSION_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/G2_DISPOSABLE_PG16_CUSTODY_ROLE_VERIFY_R1.sql
+          php artisan migrate --force --no-interaction --path=database/migrations/2026_11_19_200000_create_legacy_custody_foundation.php
+          psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -v N03_STAGE_PASSWORD="$N03_STAGE_PASSWORD" -v N03_COMMAND_PASSWORD="$N03_COMMAND_PASSWORD" -v N03_RECONCILE_PASSWORD="$N03_RECONCILE_PASSWORD" -f tests/Manual/sql/N03_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+          php artisan test tests/Feature/LegacyCustodyFoundationTest.php --group=n03-role
+
+      - name: Provision baseline + G1B/G2 + G2A + G2B + K2 + G3-G5 real-role cluster
+        if: matrix.phase == 'roles'
+        run: |
+          set -euo pipefail
+          for name in G1B_MIGRATOR_PASSWORD G1B_APP_PASSWORD G1B_CUSTODY_PASSWORD N03_STAGE_PASSWORD N03_COMMAND_PASSWORD N03_RECONCILE_PASSWORD N03_READER_PASSWORD; do
+            value="$(openssl rand -hex 24)"
+            echo "::add-mask::$value"
+            printf '%s=%s\n' "$name" "$value" >> "$GITHUB_ENV"
+            export "$name=$value"
+          done
+
+          # Baseline migrations (before N03)
+          mapfile -t baseline < <(find database/migrations -maxdepth 1 -name '*.php' ! -name '2026_11_19_200000_*' ! -name '2026_11_20_*' | sort)
+          args=()
+          for f in "${baseline[@]}"; do args+=("--path=$f"); done
+          php artisan migrate --force --no-interaction "${args[@]}"
+
+          # G1B & G2 historical roles
+          psql -X -v ON_ERROR_STOP=1 -v KIRION_G1B_DISPOSABLE_LEASE=EXCLUSIVE_PG16_TMPFS_QA_ONLY -v G1B_MIGRATOR_PASSWORD="$G1B_MIGRATOR_PASSWORD" -v G1B_APP_PASSWORD="$G1B_APP_PASSWORD" -v G1B_CUSTODY_PASSWORD="$G1B_CUSTODY_PASSWORD" -f tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -v KIRION_G2_DISPOSABLE_LEASE=EXCLUSIVE_G2_PG16_TMPFS_QA_ONLY -f tests/Manual/sql/G2_DISPOSABLE_PG16_CUSTODY_ROLE_EXTENSION_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/G2_DISPOSABLE_PG16_CUSTODY_ROLE_VERIFY_R1.sql
+
+          # Stage 0: G2A foundation migration & role install/verify
+          php artisan migrate --force --no-interaction --path=database/migrations/2026_11_19_200000_create_legacy_custody_foundation.php
+          psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -v N03_STAGE_PASSWORD="$N03_STAGE_PASSWORD" -v N03_COMMAND_PASSWORD="$N03_COMMAND_PASSWORD" -v N03_RECONCILE_PASSWORD="$N03_RECONCILE_PASSWORD" -f tests/Manual/sql/N03_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+
+          # Stage 1: G2B migration & additive role install/verify
+          php artisan migrate --force --no-interaction --path=database/migrations/2026_11_20_010000_extend_legacy_custody_g2b_command_provenance.php
+          psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -f tests/Manual/sql/N03_G2B_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_G2B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+
+          # Stage 2: K2 migration & additive role install/verify
+          php artisan migrate --force --no-interaction --path=database/migrations/2026_11_20_020000_create_legacy_custody_k2_tombstones.php
+          psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -f tests/Manual/sql/N03_K2_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_K2_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+
+          # Stage 4: G3-G5 migration & additive n03_reader role install/verify
+          php artisan migrate --force --no-interaction --path=database/migrations/2026_11_20_030000_create_legacy_custody_g3_g5_extensions.php
+          psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -v N03_READER_PASSWORD="$N03_READER_PASSWORD" -f tests/Manual/sql/N03_G3_DISPOSABLE_PG16_READER_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_G3_DISPOSABLE_PG16_READER_ROLE_VERIFY_R1.sql
+
+      - name: Run G2B + K2 + G3-G5 real-role Feature suites
+        if: matrix.phase == 'roles'
+        env:
+          N03_G2B_ROLE_SUITE: '1'
+          N03_K2_ROLE_SUITE: '1'
+          N03_G3_ROLE_SUITE: '1'
+        run: |
+          set -euo pipefail
+          php artisan test tests/Feature/LegacyCustodyG2BTravelOrderCommandTest.php tests/Feature/LegacyCustodyG2BTransactionCorrespondenceCommandTest.php --group=n03-g2b-role
+          php artisan test tests/Feature/LegacyCustodyK2ReconciliationTest.php --group=n03-k2-role
+          php artisan test tests/Feature/LegacyCustodyG3EgressAndWatermarkTest.php --group=n03-g3-role
+
+      - name: Disposable regression schema lifecycle bootstrap
+        if: matrix.phase == 'focused' || matrix.phase == 'full'
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/n03-regression-bootstrap.php" <<'PHP'
+          <?php
+          require getenv('GITHUB_WORKSPACE').'/vendor/autoload.php';
+          if (getenv('GITHUB_ACTIONS') !== 'true' || getenv('APP_ENV') !== 'testing'
+              || getenv('DB_DATABASE') !== 'talibon_portal_test'
+              || getenv('N03_DISPOSABLE_LEASE') !== 'EXCLUSIVE_PG16_SYNTHETIC_ONLY'
+              || getenv('N03_ROLE_SUITE') === '1') {
+              throw new RuntimeException('Unsafe N03 regression bootstrap.');
+          }
+          \Illuminate\Database\Connection::resolverFor('pgsql', static function ($connection, $database, $prefix, $config) {
+              return new class($connection, $database, $prefix, $config) extends \Illuminate\Database\PostgresConnection {
+                  public function getSchemaBuilder()
+                  {
+                      if (is_null($this->schemaGrammar)) {
+                          $this->useDefaultSchemaGrammar();
+                      }
+                      return new class($this) extends \Illuminate\Database\Schema\PostgresBuilder {
+                          public function dropAllTables()
+                          {
+                              $db = $this->connection;
+                              $db->transaction(function () use ($db) {
+                                  $guard = $db->selectOne("SELECT current_database() AS db, current_setting('server_version_num')::integer AS version, current_setting('is_superuser') AS bootstrap, to_regnamespace('legacy_custody') IS NOT NULL AS present, EXISTS(SELECT 1 FROM pg_catalog.pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%') AS role_cluster");
+                                  if ($guard->db !== 'talibon_portal_test' || $guard->version < 160000 || $guard->version >= 170000
+                                      || $guard->bootstrap !== 'on' || $guard->role_cluster) {
+                                      throw new RuntimeException('Refusing N03 regression wipe outside the normal isolated cluster.');
+                                  }
+                                  if ($guard->present) {
+                                      $db->unprepared('DROP SCHEMA legacy_custody CASCADE');
+                                  }
+                                  parent::dropAllTables();
+                              });
+                          }
+                      };
+                  }
+              };
+          });
+          PHP
+          php -l "$RUNNER_TEMP/n03-regression-bootstrap.php"
+
+      - name: Focused custody, P07 quarantine & whole-system traceability regression
+        if: matrix.phase == 'focused'
+        run: |
+          php artisan test --bootstrap="$RUNNER_TEMP/n03-regression-bootstrap.php" \
+            tests/Feature/EmployeeProfileProvenanceQuarantineTest.php \
+            tests/Feature/WholeSystemTraceabilityJourneyTest.php \
+            tests/Feature/LegacyPdfPreviewTest.php \
+            tests/Feature/CorePortalReportsTest.php \
+            tests/Feature/PlanLegacyOriginGuardHardeningTest.php \
+            tests/Feature/PlanLegacyCallerBoundaryTest.php \
+            tests/Feature/LegacyDocumentCustodyIntegrityTest.php \
+            tests/Feature/DocumentAccessPrecedenceTest.php \
+            tests/Feature/CoreDocumentAttachmentsTest.php \
+            tests/Feature/WorkRequests/WorkRequestRevocationTest.php
+
+      - name: Full canonical PG16 Feature regression
+        if: matrix.phase == 'full'
+        run: |
+          php artisan test --bootstrap="$RUNNER_TEMP/n03-regression-bootstrap.php" \
+            --testsuite=Feature \
+            --exclude-group=n03-role,n03-g2b-role,n03-k2-role,n03-g3-role
+
+      - uses: actions/setup-node@v4
+        if: matrix.phase == 'browser'
+        with:
+          node-version-file: .nvmrc
+      - name: Frontend types, contracts, UX and production build
+        if: matrix.phase == 'browser'
+        run: |
+          npm ci
+          npm run types:check
+          npm run test:contracts
+          npm run test:ux
+          npm run build
+      - name: Playwright native PDF browser verification
+        if: matrix.phase == 'browser'
+        env:
+          QA_EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          php artisan migrate --force --no-interaction
+          npx playwright install --with-deps chromium
+          password="$(openssl rand -hex 24)Aa1!"
+          echo "::add-mask::$password"
+          PDF_QA_PASSWORD="$password" php tests/Browser/legacy-pdf-inline-fixture.php
+          APP_ENV=local php artisan serve --host=127.0.0.1 --port=8000 > "$RUNNER_TEMP/operationforge-http.log" 2>&1 &
+          for attempt in $(seq 1 40); do
+            if curl --fail --silent --output /dev/null http://127.0.0.1:8000/login; then break; fi
+            sleep 1
+          done
+          PDF_QA_PASSWORD="$password" xvfb-run -a node tests/Browser/legacy-pdf-inline-authenticated.mjs
+      - name: Upload browser verification receipt and screenshot
+        if: matrix.phase == 'browser' && always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: operationforge-traceability-core-native-pdf
+          path: |
+            storage/app/qa/legacy-pdf-browser.json
+            storage/app/qa/legacy-pdf-native-viewer.png
+          if-no-files-found: error
+          retention-days: 7
+
+  mandatory:
+    name: Traceability Core aggregate gate
+    runs-on: ubuntu-24.04
+    needs: [validate]
+    if: always()
+    steps:
+      - name: Require all five exact-SHA matrix jobs
+        env:
+          OUTCOME: ${{ needs.validate.result }}
+        run: |
+          printf 'Traceability Core matrix=%s SHA=%s\n' "$OUTCOME" "$GITHUB_SHA"
+          test "$OUTCOME" = success

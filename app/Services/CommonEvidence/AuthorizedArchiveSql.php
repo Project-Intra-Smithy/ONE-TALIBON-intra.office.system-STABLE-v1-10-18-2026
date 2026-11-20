@@ -5,13 +5,11 @@ namespace App\Services\CommonEvidence;
 use App\Domain\Identity\VerifiedMunicipalActor;
 use App\Models\CorrespondenceEvent;
 use App\Models\CorrespondenceRecord;
-use App\Models\DocumentLink;
 use App\Models\TransactionEvent;
 use App\Models\TravelOrder;
 use App\Models\TravelOrderEvent;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
-use App\Services\CorrespondenceAccessDecider;
 use App\Services\TransactionVisibilityQuery;
 use App\Services\TravelOrderAccess;
 use Carbon\CarbonImmutable;
@@ -41,7 +39,7 @@ final readonly class AuthorizedArchiveSql
      * Reuse the archive's SQL-level all-parent authorization for evidence
      * previews. Returns only IDs with every linked parent authorized.
      *
-     * @param list<int> $documentIds
+     * @param  list<int>  $documentIds
      * @return list<int>
      */
     public function visibleDocumentIds(User $claimedActor, array $documentIds): array
@@ -155,10 +153,10 @@ final readonly class AuthorizedArchiveSql
 
         $counts = DB::query()->fromSub(clone $all, 'all_archive')
             ->selectRaw(
-                "COUNT(*) AS total, "
+                'COUNT(*) AS total, '
                 ."COUNT(*) FILTER (WHERE direction = 'sent') AS sent, "
                 ."COUNT(*) FILTER (WHERE direction = 'received') AS received, "
-                ."COUNT(*) FILTER (WHERE uploaded_by_me = 1) AS uploads"
+                .'COUNT(*) FILTER (WHERE uploaded_by_me = 1) AS uploads'
             )->first();
 
         $documentTypes = DB::query()->fromSub(clone $all, 'archive_types')
@@ -175,7 +173,7 @@ final readonly class AuthorizedArchiveSql
             ->orderByDesc('year')->pluck('year')->all();
         $offices = DB::query()->fromSub(clone $all, 'archive_offices')
             ->whereNotNull('owner_office_id')
-            ->select(['owner_office_id','owner_office_code','owner_office_name','owner_office_short_name'])
+            ->select(['owner_office_id', 'owner_office_code', 'owner_office_name', 'owner_office_short_name'])
             ->distinct()->orderBy('owner_office_name')->get()
             ->map(fn (object $row): array => [
                 'id' => (int) $row->owner_office_id,
@@ -226,6 +224,7 @@ final readonly class AuthorizedArchiveSql
                 ->orderByDesc('uploaded_at')->orderByDesc('doc_id')->limit(3)->get()
                 ->map(fn (object $row): array => $this->present($row))->all();
         };
+
         return [
             'sentCount' => (int) ($counts->sent ?? 0),
             'receivedCount' => (int) ($counts->received ?? 0),
@@ -265,22 +264,22 @@ final readonly class AuthorizedArchiveSql
                 .'WHERE all_l.document_id = d.id)'
             )
             ->selectRaw(
-                "d.id AS doc_id, CAST(d.public_id AS TEXT) AS public_id, "
+                'd.id AS doc_id, CAST(d.public_id AS TEXT) AS public_id, '
                 ."COALESCE(NULLIF(d.original_name, ''), d.title) AS name, d.title AS title, "
                 ."d.document_type, INITCAP(REPLACE(COALESCE(d.document_type, ''), '_', ' ')) AS document_type_label, "
                 ."d.classification, INITCAP(REPLACE(COALESCE(d.classification, ''), '_', ' ')) AS classification_label, "
-                ."d.size_bytes, d.created_at AS uploaded_at, "
-                ."d.uploaded_by_user_id, u.name AS uploaded_by, "
-                ."own.id AS owner_office_id, own.code AS owner_office_code, "
-                ."own.name AS owner_office_name, own.short_name AS owner_office_short_name, "
-                ."cur.id AS current_office_id, cur.code AS current_office_code, "
-                ."cur.name AS current_office_name, cur.short_name AS current_office_short_name, "
-                ."orig.id AS origin_office_id, orig.code AS origin_office_code, "
-                ."orig.name AS origin_office_name, orig.short_name AS origin_office_short_name, "
-                ."source.related_type, source.related_key, source.related_reference, source.related_title, "
+                .'d.size_bytes, d.created_at AS uploaded_at, '
+                .'d.uploaded_by_user_id, u.name AS uploaded_by, '
+                .'own.id AS owner_office_id, own.code AS owner_office_code, '
+                .'own.name AS owner_office_name, own.short_name AS owner_office_short_name, '
+                .'cur.id AS current_office_id, cur.code AS current_office_code, '
+                .'cur.name AS current_office_name, cur.short_name AS current_office_short_name, '
+                .'orig.id AS origin_office_id, orig.code AS origin_office_code, '
+                .'orig.name AS origin_office_name, orig.short_name AS origin_office_short_name, '
+                .'source.related_type, source.related_key, source.related_reference, source.related_title, '
                 ."source.relationship, INITCAP(REPLACE(COALESCE(source.relationship, ''), '_', ' ')) AS relationship_label, "
                 ."CASE WHEN d.uploaded_by_user_id = {$actorId} THEN 1 ELSE 0 END AS uploaded_by_me, "
-                ."CASE "
+                .'CASE '
                 ."WHEN d.uploaded_by_user_id = {$actorId} "
                 ."AND source.current_office_id > 0 AND source.current_office_id <> {$officeId} THEN 'sent' "
                 ."WHEN (d.uploaded_by_user_id IS NULL OR d.uploaded_by_user_id <> {$actorId}) "
@@ -291,34 +290,68 @@ final readonly class AuthorizedArchiveSql
         // Quarantine before list, selected detail, counts, facets, search,
         // activity, or any eligible-ID projection. Non-PDF legacy rows
         // remain visible; preview eligibility is a separate presentation hint.
-        LegacyEvidenceEligibility::restrict($catalog, 'd', $explicitLegacy);
+        $schema = LegacyEvidenceEligibility::restrictWithSchema($catalog, 'd', $explicitLegacy);
         if ($includePreview) {
-            $catalog->selectRaw(
-                "CASE WHEN d.mime_type = 'application/pdf' AND d.storage_disk = 'documents' "
-                ."AND d.storage_disk = ? AND d.storage_path IS NOT NULL AND d.storage_path <> '' "
-                ."AND d.checksum_sha256 ~ '^[0-9a-f]{64}$' AND d.size_bytes > 0 "
-                ."THEN 1 ELSE 0 END AS preview_eligible",
-                [(string) config('documents.disk', 'documents')],
-            );
+            // An empty result still has its SQL parsed by PostgreSQL. Never
+            // reference absent provenance or partially installed custody columns.
+            if (! $schema['ready']) {
+                $catalog->selectRaw('0 AS preview_eligible');
+            } elseif ($schema['custodyColumns'] === 2) {
+                $registryPreviewReady = $this->registryPreviewReady() ? 1 : 0;
+                $catalog->selectRaw(
+                    "CASE WHEN d.mime_type = 'application/pdf' "
+                    ."AND d.checksum_sha256 ~ '^[0-9a-f]{64}$' AND d.size_bytes > 0 "
+                    .'AND ('
+                    ."(d.custody_mode = 'LEGACY_PATH' AND d.custody_operation_id IS NULL "
+                    ."AND d.storage_disk = 'documents' AND d.storage_disk = ? "
+                    ."AND d.storage_path IS NOT NULL AND d.storage_path <> '') "
+                    .'OR (? = 1 '
+                    ."AND d.custody_mode = 'REGISTRY_V1' AND d.custody_operation_id IS NOT NULL "
+                    ."AND d.security_domain = 'LEGACY_CTW' "
+                    ."AND d.storage_disk = 'legacy_registry_v1' AND d.storage_path IS NULL)"
+                    .') '
+                    .'THEN 1 ELSE 0 END AS preview_eligible',
+                    [(string) config('documents.disk', 'documents'), $registryPreviewReady],
+                );
+            } else {
+                $catalog->selectRaw(
+                    "CASE WHEN d.mime_type = 'application/pdf' AND d.storage_disk = 'documents' "
+                    ."AND d.storage_disk = ? AND d.storage_path IS NOT NULL AND d.storage_path <> '' "
+                    ."AND d.checksum_sha256 ~ '^[0-9a-f]{64}$' AND d.size_bytes > 0 "
+                    .'THEN 1 ELSE 0 END AS preview_eligible',
+                    [(string) config('documents.disk', 'documents')],
+                );
+            }
         }
 
         return $catalog;
+    }
+
+    private function registryPreviewReady(): bool
+    {
+        $brokerRoot = config('legacy_custody.broker_root');
+        $watermarkPath = config('legacy_custody.watermark_store_path');
+        $fencePath = config('legacy_custody.authority_fence_path');
+
+        return is_string($brokerRoot) && trim($brokerRoot) !== ''
+            && is_string($watermarkPath) && trim($watermarkPath) !== ''
+            && is_string($fencePath) && trim($fencePath) !== '';
     }
 
     private function authorizedLinks(VerifiedMunicipalActor $verified): Builder
     {
         $correspondence = $this->correspondenceScope
             ->visibleToVerifiedActor($verified)
-            ->select(['id','public_id','municipal_reference_no','external_reference_no','subject',
-                'receiving_department_id','workflow_transaction_id']);
+            ->select(['id', 'public_id', 'municipal_reference_no', 'external_reference_no', 'subject',
+                'receiving_department_id', 'workflow_transaction_id']);
         $travel = $this->travelOrderAccess
             ->scopeVisibleToVerifiedActor(TravelOrder::query(), $verified)
-            ->select(['id','public_id','reference_number','purpose','department_id']);
+            ->select(['id', 'public_id', 'reference_number', 'purpose', 'department_id']);
         // Existing transaction SQL scope corresponds to TransactionPolicy::view:
         // VIEW_ALL or the actor's origin/current office. Recheck on download.
         $transactions = $this->transactionVisibility->scopeVisibleToVerifiedActor($verified)
-            ->select(['id','reference_no','title','origin_department_id',
-                'current_department_id','assigned_employee_id']);
+            ->select(['id', 'reference_no', 'title', 'origin_department_id',
+                'current_department_id', 'assigned_employee_id']);
 
         $sources = [
             $this->links($correspondence, CorrespondenceRecord::class, 'correspondence', 1, null, null),
@@ -336,11 +369,12 @@ final readonly class AuthorizedArchiveSql
         foreach ($sources as $source) {
             $union->unionAll($source);
         }
+
         return $union;
     }
 
     /**
-     * @param EloquentBuilder $authorized Source-policy-filtered parent SELECT
+     * @param  EloquentBuilder  $authorized  Source-policy-filtered parent SELECT
      */
     private function links(
         EloquentBuilder $authorized,
@@ -363,21 +397,21 @@ final readonly class AuthorizedArchiveSql
 
         if ($family === 'correspondence') {
             $links->leftJoin('transactions as w', 'w.id', '=', 'r.workflow_transaction_id');
-            $context = "CAST(r.public_id AS TEXT) AS related_key, "
-                ."COALESCE(r.municipal_reference_no, r.external_reference_no) AS related_reference, "
-                ."r.subject AS related_title, w.origin_department_id AS origin_office_id, "
-                ."COALESCE(w.current_department_id, r.receiving_department_id) AS current_office_id, "
-                ."w.assigned_employee_id AS assigned_employee_id";
+            $context = 'CAST(r.public_id AS TEXT) AS related_key, '
+                .'COALESCE(r.municipal_reference_no, r.external_reference_no) AS related_reference, '
+                .'r.subject AS related_title, w.origin_department_id AS origin_office_id, '
+                .'COALESCE(w.current_department_id, r.receiving_department_id) AS current_office_id, '
+                .'w.assigned_employee_id AS assigned_employee_id';
         } elseif ($family === 'travel_order') {
-            $context = "CAST(r.public_id AS TEXT) AS related_key, "
-                ."r.reference_number AS related_reference, r.purpose AS related_title, "
-                ."NULL::BIGINT AS origin_office_id, r.department_id AS current_office_id, "
-                ."NULL::BIGINT AS assigned_employee_id";
+            $context = 'CAST(r.public_id AS TEXT) AS related_key, '
+                .'r.reference_number AS related_reference, r.purpose AS related_title, '
+                .'NULL::BIGINT AS origin_office_id, r.department_id AS current_office_id, '
+                .'NULL::BIGINT AS assigned_employee_id';
         } else {
-            $context = "CAST(r.id AS TEXT) AS related_key, "
-                ."r.reference_no AS related_reference, r.title AS related_title, "
-                ."r.origin_department_id AS origin_office_id, r.current_department_id AS current_office_id, "
-                ."r.assigned_employee_id AS assigned_employee_id";
+            $context = 'CAST(r.id AS TEXT) AS related_key, '
+                .'r.reference_no AS related_reference, r.title AS related_title, '
+                .'r.origin_department_id AS origin_office_id, r.current_department_id AS current_office_id, '
+                .'r.assigned_employee_id AS assigned_employee_id';
         }
 
         return $links->selectRaw(
@@ -395,6 +429,7 @@ final readonly class AuthorizedArchiveSql
             'transaction' => route('transactions.show', ['transaction' => $row->related_key], false),
             default => null,
         };
+
         return [
             'publicId' => $row->public_id,
             'name' => $row->name,
@@ -430,6 +465,7 @@ final readonly class AuthorizedArchiveSql
         if ($id === null) {
             return null;
         }
+
         return [
             'id' => (int) $id,
             'code' => $row->{$prefix.'_office_code'},
