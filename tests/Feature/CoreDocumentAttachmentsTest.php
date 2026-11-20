@@ -29,7 +29,8 @@ class CoreDocumentAttachmentsTest extends TestCase
     {
         parent::setUp();
         config()->set('messaging_release.restricted_uat', false);
-        Storage::fake('documents');
+        $syntheticDisk = Storage::fake('documents');
+        config(['filesystems.disks.documents.root' => rtrim($syntheticDisk->path(''), '/')]);
     }
 
     public function test_transaction_creation_persists_private_hashed_evidence_and_exact_links(): void
@@ -123,6 +124,14 @@ class CoreDocumentAttachmentsTest extends TestCase
             Document::query()->where('original_name', 'brief.docx')->value('mime_type'),
         );
         $this->assertSame('image/png', Document::query()->where('original_name', 'photo.png')->value('mime_type'));
+        foreach (['brief.docx', 'photo.png'] as $name) {
+            $document = Document::query()->where('original_name', $name)->sole();
+            $bytes = Storage::disk('documents')->get($document->storage_path);
+            $this->assertSame(hash('sha256', $bytes), $document->checksum_sha256);
+            $response = $this->actingAs($creator)->get('/documents/'.$document->public_id.'/download')
+                ->assertOk()->assertHeader('Content-Type', $document->mime_type);
+            $this->assertSame($bytes, $response->streamedContent());
+        }
     }
 
     public function test_spoofed_pdf_and_non_docx_zip_are_rejected_before_transaction_mutation(): void

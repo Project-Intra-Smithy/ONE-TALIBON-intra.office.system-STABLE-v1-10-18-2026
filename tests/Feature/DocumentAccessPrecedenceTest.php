@@ -32,7 +32,8 @@ class DocumentAccessPrecedenceTest extends TestCase
     {
         parent::setUp();
         config(['documents.disk' => 'documents']);
-        Storage::fake('documents');
+        $syntheticDisk = Storage::fake('documents');
+        config(['filesystems.disks.documents.root' => rtrim($syntheticDisk->path(''), '/')]);
     }
 
     public function test_restricted_correspondence_parent_dominates_allowed_transaction_at_positions_1_16_17_32(): void
@@ -1156,6 +1157,9 @@ class DocumentAccessPrecedenceTest extends TestCase
             'classification' => 'restricted',
             'storage_disk' => 'documents',
             'storage_path' => $path,
+            'mime_type' => 'application/pdf',
+            'size_bytes' => strlen('%PDF-1.7 test'),
+            'checksum_sha256' => hash('sha256', '%PDF-1.7 test'),
             'owner_department_id' => $office->id,
             'uploaded_by_user_id' => $actor->id,
         ]);

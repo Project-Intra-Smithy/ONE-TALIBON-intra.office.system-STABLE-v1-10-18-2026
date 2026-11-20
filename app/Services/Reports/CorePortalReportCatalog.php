@@ -31,9 +31,9 @@ final class CorePortalReportCatalog
             ),
             'document-movement' => $this->definition(
                 'Document Movement / Routing',
-                'Merged correspondence and workflow movement chronology with evidence indicators.',
+                'Merged correspondence and workflow movement chronology.',
                 ['date_from', 'date_to', 'office', 'lifecycle', 'classification'],
-                ['municipalReference' => 'Municipal reference', 'subject' => 'Subject', 'event' => 'Event', 'source' => 'Source', 'fromOffice' => 'From office', 'toOffice' => 'To office', 'actor' => 'Actor', 'remarks' => 'Remarks', 'occurredAt' => 'Timestamp', 'hasEvidence' => 'Evidence', 'accountableOffice' => 'Accountable office', 'assignee' => 'Assignee'],
+                ['municipalReference' => 'Municipal reference', 'subject' => 'Subject', 'event' => 'Event', 'source' => 'Source', 'fromOffice' => 'From office', 'toOffice' => 'To office', 'actor' => 'Actor', 'remarks' => 'Remarks', 'occurredAt' => 'Timestamp', 'accountableOffice' => 'Accountable office', 'assignee' => 'Assignee'],
             ),
             'completed-work' => $this->definition(
                 'Completed Work',
