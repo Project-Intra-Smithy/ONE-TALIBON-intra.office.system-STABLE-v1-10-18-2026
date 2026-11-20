@@ -16,11 +16,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use PDO;
 use PDOException;
+use PgSql\Connection;
+use PgSql\Result;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use RuntimeException;
 use Tests\TestCase;
-use Throwable;
 
 /**
  * Real-role suite. Never use RefreshDatabase here: the isolated role cluster
@@ -31,14 +32,23 @@ use Throwable;
 final class LegacyCustodyFoundationTest extends TestCase
 {
     private PDO $root;
+
     private PDO $stage;
+
     private PDO $command;
+
     private PDO $reconcile;
+
     private PDO $ordinary;
+
     private PDO $plan;
+
     private User $actor;
+
     private int $office;
+
     private string $namespace;
+
     private array $connections = [];
 
     protected function setUp(): void
@@ -568,8 +578,8 @@ final class LegacyCustodyFoundationTest extends TestCase
             ['correspondence_act', 'act', 'in_action', false, 'action_evidence'],
             ['travel_record', 'record', 'recorded_approved', true, 'action_evidence'],
             ['travel_status', 'status', 'status_changed', false, 'action_evidence']];
-        foreach (['forward','send_to_mayor','return_origin','request_information','assign','mark_review','approve','disapprove'] as $a) {
-            $rows[] = ['transaction_transition', $a, $a, false, in_array($a, ['forward','send_to_mayor','return_origin','request_information'], true) ? 'route_evidence' : 'action_evidence'];
+        foreach (['forward', 'send_to_mayor', 'return_origin', 'request_information', 'assign', 'mark_review', 'approve', 'disapprove'] as $a) {
+            $rows[] = ['transaction_transition', $a, $a, false, in_array($a, ['forward', 'send_to_mayor', 'return_origin', 'request_information'], true) ? 'route_evidence' : 'action_evidence'];
         }
 
         return $rows;
@@ -589,7 +599,7 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->assertSame(count($links), (int) $this->scalar('SELECT count(*) FROM legacy_custody.ownership_links WHERE binding_document_id=?', [$doc]));
         $this->assertSame($uuid, $this->scalar('SELECT document_public_id FROM legacy_custody.bindings WHERE document_id=?', [$doc]));
         $this->assertSame($op['correlation_id'], $this->scalar('SELECT correlation_id FROM public.audit_logs WHERE id=?', [$audit]));
-        $this->denied($this->ordinary, ['23503','23514'], fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.document_links SET created_by_user_id=NULL WHERE document_id=?', [$doc]));
+        $this->denied($this->ordinary, ['23503', '23514'], fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.document_links SET created_by_user_id=NULL WHERE document_id=?', [$doc]));
         $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, 'DELETE FROM public.document_links WHERE document_id=?', [$doc]));
         $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, "UPDATE public.documents SET title='changed' WHERE id=?", [$doc]));
         $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, "UPDATE public.audit_logs SET summary='changed' WHERE id=?", [$audit]));
@@ -597,7 +607,9 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->denied($this->plan, '23514', fn () => $this->custodyQuery($this->plan, "UPDATE public.documents SET security_domain='EVER_PLAN' WHERE id=?", [$doc]));
         $this->denied($this->reconcile, '23514', fn () => $this->custodyQuery($this->reconcile, "UPDATE legacy_custody.operation_gates SET state='CLOSED',fence_no=2 WHERE operation_id=?", [$op['operation_id']]));
         $this->assertSame('OPEN', $this->scalar('SELECT state FROM legacy_custody.operation_gates WHERE operation_id=?', [$op['operation_id']]));
-        $table = match ($result['source_kind']) {'transaction' => 'transaction_events','correspondence' => 'correspondence_events','travel' => 'travel_order_events'};
+        $table = match ($result['source_kind']) {
+            'transaction' => 'transaction_events','correspondence' => 'correspondence_events','travel' => 'travel_order_events'
+        };
         $this->denied($this->ordinary, '23503', fn () => $this->custodyQuery($this->ordinary, "DELETE FROM public.$table WHERE id=?", [$result['event_id']]));
         if ($result['source_kind'] === 'correspondence') {
             $client = $this->insert($this->root, 'public.integration_clients', ['public_id' => $this->uuid(), 'name' => 'synthetic external'], 'id');
@@ -626,7 +638,7 @@ final class LegacyCustodyFoundationTest extends TestCase
             unset($spoof['custody_operation_id']);
             $this->insert($this->ordinary, 'public.audit_logs', $spoof);
         }
-        $this->denied($this->command, ['23514','23503','23502'], function () use ($op, $items, $result, $links, $fault) {
+        $this->denied($this->command, ['23514', '23503', '23502'], function () use ($op, $items, $result, $links, $fault) {
             $this->command->beginTransaction();
             if ($fault === 'immediate') {
                 $this->command->exec('SET CONSTRAINTS ALL IMMEDIATE');
@@ -644,10 +656,12 @@ final class LegacyCustodyFoundationTest extends TestCase
             if ($fault === 'standalone-doc') {
                 $this->insert($this->command, 'public.documents', $this->docData($op, $items[0], 'supporting_document'));
                 $this->command->commit();
+
                 return;
             }
             if ($fault === 'unmarked-spoof') {
                 $this->command->commit();
+
                 return;
             }
             if ($fault === 'savepoint') {
@@ -657,7 +671,7 @@ final class LegacyCustodyFoundationTest extends TestCase
             if ($fault === 'savepoint') {
                 $this->command->exec('ROLLBACK TO SAVEPOINT item_sp');
             }
-            if (! in_array($fault, ['partial','savepoint'], true)) {
+            if (! in_array($fault, ['partial', 'savepoint'], true)) {
                 $this->artifact($op, $items[1], $links);
             }
             if ($fault !== 'no-terminal') {
@@ -745,7 +759,7 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->assertContains('Internal', $visible['filterOptions']['classifications']);
         $this->assertSame([$id => false], $archive->visibleDocumentPreviewEligibility($this->actor, [$id]));
         $this->assertFalse(app(DocumentAccessService::class)->canDownload($this->actor, Document::query()->findOrFail($id)));
-        foreach (['preview','download'] as $route) {
+        foreach (['preview', 'download'] as $route) {
             $response = $this->get('/documents/'.$uuid.'/'.$route)->assertNotFound();
             $this->assertFalse($response->headers->has('Content-Disposition'));
         }
@@ -757,9 +771,8 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->get('/documents/'.$uuid.'/preview')->assertNotFound();
         $this->get('/documents/'.$uuid.'/download')->assertNotFound();
         $this->assertSame([], $archive->visibleDocumentIds($other, [$id]));
-        $this->assertSame(0, (int) $this->scalar("SELECT count(*) FROM public.documents WHERE custody_operation_id=? AND storage_path IS NOT NULL", [$op['operation_id']]));
+        $this->assertSame(0, (int) $this->scalar('SELECT count(*) FROM public.documents WHERE custody_operation_id=? AND storage_path IS NOT NULL', [$op['operation_id']]));
     }
-
 
     public function test_a01_wrong_driver_and_database_refuse_before_ddl(): void
     {
@@ -788,18 +801,19 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->assertFoundationMigrationInventory();
     }
 
-    private function asyncRole(string $role, string $passwordVariable): \PgSql\Connection
+    private function asyncRole(string $role, string $passwordVariable): Connection
     {
         $password = getenv($passwordVariable);
         $this->assertMatchesRegularExpression('/^[0-9a-f]{48}$/', (string) $password);
         $c = pg_connect("host=127.0.0.1 port=5432 dbname=talibon_portal_test user=$role password=$password", PGSQL_CONNECT_FORCE_NEW);
-        $this->assertInstanceOf(\PgSql\Connection::class, $c);
+        $this->assertInstanceOf(Connection::class, $c);
         $this->assertSame([$role, $role], pg_fetch_row(pg_query($c, 'SELECT session_user,current_user')));
         $this->assertNotFalse(pg_query($c, "SET lock_timeout='8s'; SET statement_timeout='12s'"));
+
         return $c;
     }
 
-    private function waitForBlocker(\PgSql\Connection $waiter, PDO $holder): void
+    private function waitForBlocker(Connection $waiter, PDO $holder): void
     {
         $pid = (int) $holder->query('SELECT pg_backend_pid()')->fetchColumn();
         $waitingPid = pg_get_pid($waiter);
@@ -807,6 +821,7 @@ final class LegacyCustodyFoundationTest extends TestCase
         do {
             if ((int) $this->scalar('SELECT (CAST(? AS integer)=ANY(pg_blocking_pids(CAST(? AS integer))))::int', [$pid, $waitingPid]) === 1) {
                 fwrite(STDOUT, "N03 deterministic barrier observed\n");
+
                 return;
             }
             usleep(10000);
@@ -814,17 +829,17 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->fail('Expected the independent backend to wait on the actual gate holder.');
     }
 
-    private function sendInsert(\PgSql\Connection $c, string $table, array $data): void
+    private function sendInsert(Connection $c, string $table, array $data): void
     {
         $columns = implode(',', array_keys($data));
         $params = implode(',', array_map(static fn ($n) => '$'.$n, range(1, count($data))));
         $this->assertTrue(pg_send_query_params($c, "INSERT INTO $table ($columns) VALUES ($params)", array_values($data)));
     }
 
-    private function asyncResult(\PgSql\Connection $c, ?string $state): void
+    private function asyncResult(Connection $c, ?string $state): void
     {
         $r = pg_get_result($c);
-        $this->assertInstanceOf(\PgSql\Result::class, $r);
+        $this->assertInstanceOf(Result::class, $r);
         if ($state === null) {
             $this->assertSame(PGSQL_COMMAND_OK, pg_result_status($r), pg_result_error($r));
         } else {
@@ -949,7 +964,7 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->assertSame($audit, (int) $this->scalar('SELECT upload_audit_id FROM legacy_custody.bindings WHERE document_id=?', [$id]));
         $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.document_links SET document_id=? WHERE id=?', [$id, $oldLink]));
         $this->assertSame((int) $old, (int) $this->scalar('SELECT document_id FROM public.document_links WHERE id=?', [$oldLink]));
-        foreach (['preview','download'] as $route) {
+        foreach (['preview', 'download'] as $route) {
             $this->get('/documents/'.$uuid.'/'.$route)->assertNotFound();
         }
         $other = $this->makeActor();
@@ -959,7 +974,6 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->assertSame([], $archive->visibleDocumentIds($other, [$id, $old]));
         $this->assertNull($archive->workspace($other, ['document' => $uuid])['selected']);
     }
-
 
     public function test_a02_legacy_and_typed_plan_writes_remain_available_after_install(): void
     {
@@ -1039,7 +1053,7 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->denied($this->ordinary, '23503', fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.travel_order_events SET actor_user_id=NULL WHERE id=?', [$result['event_id']]));
         $this->denied($this->ordinary, '23503', fn () => $this->custodyQuery($this->ordinary, 'DELETE FROM public.travel_orders WHERE id=?', [$result['source_id']]));
         // PostgreSQL may reach the marked-audit SET NULL cascade before the restrictive operation FK.
-        $this->denied($this->ordinary, ['23503','23514'], fn () => $this->custodyQuery($this->ordinary, 'DELETE FROM public.users WHERE id=?', [$op['actor_user_id']]));
+        $this->denied($this->ordinary, ['23503', '23514'], fn () => $this->custodyQuery($this->ordinary, 'DELETE FROM public.users WHERE id=?', [$op['actor_user_id']]));
         $this->assertSame(1, (int) $this->scalar('SELECT count(*) FROM public.users WHERE id=?', [$op['actor_user_id']]));
         $this->assertSame((int) $op['actor_user_id'], (int) $this->scalar('SELECT actor_user_id FROM public.audit_logs WHERE id=?', [$audit]));
         $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.documents SET title=title WHERE id=?', [$doc]));
@@ -1131,7 +1145,7 @@ final class LegacyCustodyFoundationTest extends TestCase
     {
         $row = $this->custodyQuery($this->command,
             'SELECT * FROM legacy_custody.operations WHERE namespace_id=? AND actor_user_id=? AND office_id=? AND service_identity=? AND command_kind=? AND idempotency_hash=?',
-            array_map(fn ($k) => $op[$k], ['namespace_id','actor_user_id','office_id','service_identity','command_kind','idempotency_hash']))->fetch(PDO::FETCH_ASSOC);
+            array_map(fn ($k) => $op[$k], ['namespace_id', 'actor_user_id', 'office_id', 'service_identity', 'command_kind', 'idempotency_hash']))->fetch(PDO::FETCH_ASSOC);
         if (! $row || ! $this->tupleMatches($op, $row)) {
             return null;
         }
@@ -1204,7 +1218,7 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->assertTrue($this->tupleMatches($op, $before['operations'][0]));
         $this->assertTrue($this->tupleMatches($result, $before['command_results'][0]));
         $this->assertTrue($this->tupleMatches($receipt, $before['terminal_receipts'][0]));
-        $this->assertTrue($this->tupleMatches(['state'=>'OPEN','fence_no'=>1], $before['operation_gates'][0]));
+        $this->assertTrue($this->tupleMatches(['state' => 'OPEN', 'fence_no' => 1], $before['operation_gates'][0]));
         $this->assertCount(2, $before['bindings']);
         $this->assertCount(2, $before['generations']);
         $this->assertCount(4, $before['ownership_links']);
@@ -1212,9 +1226,9 @@ final class LegacyCustodyFoundationTest extends TestCase
             $this->assertTrue($this->tupleMatches($item, $before['operation_items'][$i]));
             $this->assertTrue($this->tupleMatches($generations[$i], $before['generations'][$i]));
             $this->assertTrue($this->tupleMatches([
-                'document_id'=>$documents[$i][0], 'document_public_id'=>$documents[$i][1],
-                'upload_audit_id'=>$documents[$i][2], 'generation_id'=>$item['generation_id'],
-                'operation_id'=>$id, 'ordinal'=>$item['ordinal'], 'fence_no'=>1,
+                'document_id' => $documents[$i][0], 'document_public_id' => $documents[$i][1],
+                'upload_audit_id' => $documents[$i][2], 'generation_id' => $item['generation_id'],
+                'operation_id' => $id, 'ordinal' => $item['ordinal'], 'fence_no' => 1,
             ], $before['bindings'][$i]));
         }
         $mismatch = $items;
@@ -1223,7 +1237,7 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->command->commit();
         fwrite(STDOUT, "N03 V01 n03_command read-only exact replay COMMITTED; same-hash descriptor mismatch REJECTED\n");
 
-        $duplicate = array_replace($op, ['operation_id'=>$this->uuid()]);
+        $duplicate = array_replace($op, ['operation_id' => $this->uuid()]);
         $this->denied($this->stage, '23505', fn () => $this->reserve($duplicate, $items));
         $this->assertSame(0, (int) $this->scalar('SELECT count(*) FROM legacy_custody.operations WHERE operation_id=?', [$duplicate['operation_id']]));
         $this->deniedAt($this->command, '23514', 'custody fence unavailable',
@@ -1245,14 +1259,14 @@ final class LegacyCustodyFoundationTest extends TestCase
         $id = (int) $this->insert($this->command, 'public.documents', $data, 'id');
         $audit = $this->insert($this->command, 'public.audit_logs', $this->markedAudit($op, $id), 'id');
         $binding = [
-            'document_id'=>$id, 'document_public_id'=>$data['public_id'],
-            'generation_id'=>$items[0]['generation_id'], 'operation_id'=>$op['operation_id'],
-            'ordinal'=>1, 'fence_no'=>1, 'upload_audit_id'=>$audit,
+            'document_id' => $id, 'document_public_id' => $data['public_id'],
+            'generation_id' => $items[0]['generation_id'], 'operation_id' => $op['operation_id'],
+            'ordinal' => 1, 'fence_no' => 1, 'upload_audit_id' => $audit,
         ];
         $this->deniedAt($this->command, '23514', 'bindings_fence_no_check',
-            fn () => $this->insert($this->command, 'legacy_custody.bindings', array_replace($binding, ['fence_no'=>2])));
+            fn () => $this->insert($this->command, 'legacy_custody.bindings', array_replace($binding, ['fence_no' => 2])));
         $this->assertSame($before, $this->replaySnapshot($op['operation_id']));
-        $this->assertSame(['documents'=>[], 'document_links'=>[], 'audit_logs'=>[]], $this->publicSnapshot([$id]));
+        $this->assertSame(['documents' => [], 'document_links' => [], 'audit_logs' => []], $this->publicSnapshot([$id]));
         $this->custodyQuery($this->reconcile, "UPDATE legacy_custody.operation_gates SET state='CLOSED',fence_no=2 WHERE operation_id=?", [$op['operation_id']]);
         $closed = $this->replaySnapshot($op['operation_id']);
         $this->assertSame('CLOSED', $closed['operation_gates'][0]['state']);
@@ -1272,13 +1286,13 @@ final class LegacyCustodyFoundationTest extends TestCase
         $links = $this->links($result, true, 'route_evidence');
         [[$id]] = $this->commit($op, $items, $result, $links);
         $old = (int) $this->insert($this->ordinary, 'public.documents', [
-            'public_id'=>$this->uuid(), 'title'=>'Synthetic reverse link control',
-            'storage_disk'=>'documents', 'storage_path'=>'synthetic/reverse.pdf',
+            'public_id' => $this->uuid(), 'title' => 'Synthetic reverse link control',
+            'storage_disk' => 'documents', 'storage_path' => 'synthetic/reverse.pdf',
         ], 'id');
         $other = $this->source($op, 'submitted');
         $extra = $this->links($other, true, 'route_evidence')[0];
         $control = $this->insert($this->ordinary, 'public.document_links',
-            $extra + ['document_id'=>$old, 'created_by_user_id'=>$this->actor->id], 'id');
+            $extra + ['document_id' => $old, 'created_by_user_id' => $this->actor->id], 'id');
         $this->assertGreaterThan(0, (int) $control);
         $link = $this->scalar('SELECT id FROM public.document_links WHERE document_id=? ORDER BY id LIMIT 1', [$id]);
         $private = $this->replaySnapshot($op['operation_id']);
@@ -1287,7 +1301,7 @@ final class LegacyCustodyFoundationTest extends TestCase
             fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.document_links SET document_id=? WHERE id=?', [$old, $link]));
         $this->deniedAt($this->ordinary, '23514', 'registry link immutable',
             fn () => $this->insert($this->ordinary, 'public.document_links',
-                $extra + ['document_id'=>$id, 'created_by_user_id'=>$this->actor->id]));
+                $extra + ['document_id' => $id, 'created_by_user_id' => $this->actor->id]));
         $this->assertSame($private, $this->replaySnapshot($op['operation_id']));
         $this->assertSame($public, $this->publicSnapshot([$id, $old]));
     }
@@ -1313,9 +1327,9 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->assertSame([], $ordinaryBefore['documents']);
         $this->deniedAt($this->command, '23503', 'bindings_upload_audit_id_operation_id_document_id_fkey',
             fn () => $this->insert($this->command, 'legacy_custody.bindings', [
-                'document_id'=>$id, 'document_public_id'=>$data['public_id'],
-                'generation_id'=>$items[0]['generation_id'], 'operation_id'=>$op['operation_id'],
-                'ordinal'=>1, 'fence_no'=>1, 'upload_audit_id'=>$spoof,
+                'document_id' => $id, 'document_public_id' => $data['public_id'],
+                'generation_id' => $items[0]['generation_id'], 'operation_id' => $op['operation_id'],
+                'ordinal' => 1, 'fence_no' => 1, 'upload_audit_id' => $spoof,
             ]));
         $this->assertSame($before, $this->replaySnapshot($op['operation_id']));
         $this->assertSame($ordinaryBefore, $this->publicSnapshot([$id]));
