@@ -40,6 +40,21 @@ class IntegrationFoundationTest extends TestCase
         $this->assertFalse(Auth::check());
     }
 
+    public function test_ingress_bounds_failed_authentication_before_audit_and_ignores_untrusted_forwarding(): void
+    {
+        config(['app.integration_ingress_per_minute' => 2]);
+        $before = AuditLog::query()->where('action', 'integration.authentication.failed')->count();
+
+        $this->withHeader('X-Forwarded-For', '192.0.2.1')->getJson('/api/v1/integration/self')->assertUnauthorized();
+        $this->withHeader('X-Forwarded-For', '192.0.2.2')->withToken('invalid')->getJson('/api/v1/integration/self')->assertUnauthorized();
+        $this->withHeader('X-Forwarded-For', '192.0.2.3')->withToken((string) Str::uuid().'.'.str_repeat('x', 43))
+            ->getJson('/api/v1/integration/self')->assertStatus(429)
+            ->assertHeader('Retry-After')
+            ->assertJsonPath('error.code', IntegrationErrorCode::RateLimited->value);
+
+        $this->assertSame($before + 2, AuditLog::query()->where('action', 'integration.authentication.failed')->count());
+    }
+
     public function test_wrong_secret_returns_generic_401(): void
     {
         [, $credential] = $this->credential([IntegrationScope::SelfRead->value]);
