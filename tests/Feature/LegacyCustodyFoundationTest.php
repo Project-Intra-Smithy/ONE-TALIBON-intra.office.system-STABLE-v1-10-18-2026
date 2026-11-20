@@ -1062,7 +1062,8 @@ final class LegacyCustodyFoundationTest extends TestCase
         $this->assertSame(1, (int) $this->scalar('SELECT count(*) FROM public.users WHERE id=?', [$op['actor_user_id']]));
         $this->assertSame((int) $op['actor_user_id'], (int) $this->scalar('SELECT actor_user_id FROM public.audit_logs WHERE id=?', [$audit]));
         $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.documents SET title=title WHERE id=?', [$doc]));
-        $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.audit_logs SET summary=summary WHERE id=?', [$audit]));
+        $this->denied($this->ordinary, '42501', fn () => $this->custodyQuery($this->ordinary, 'UPDATE public.audit_logs SET summary=summary WHERE id=?', [$audit]));
+        $this->denied($this->root, '23514', fn () => $this->custodyQuery($this->root, 'UPDATE public.audit_logs SET summary=summary WHERE id=?', [$audit]));
         $this->denied($this->ordinary, '23514', fn () => $this->custodyQuery($this->ordinary, 'DELETE FROM public.documents WHERE id=?', [$doc]));
         $this->assertSame((int) $result['source_id'], (int) $this->scalar('SELECT travel_order_id FROM public.travel_order_events WHERE id=?', [$result['event_id']]));
         $this->assertSame((int) $op['actor_user_id'], (int) $this->scalar('SELECT actor_user_id FROM public.travel_order_events WHERE id=?', [$result['event_id']]));
