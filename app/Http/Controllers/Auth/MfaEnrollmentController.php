@@ -23,8 +23,7 @@ final class MfaEnrollmentController extends Controller
         private readonly MfaRecoveryCodeBroker $recoveryBroker,
         private readonly AuditLogger $audit,
         private readonly SensitiveInertiaResponse $sensitiveResponse,
-    ) {
-    }
+    ) {}
 
     public function create(Request $request): Response|RedirectResponse
     {

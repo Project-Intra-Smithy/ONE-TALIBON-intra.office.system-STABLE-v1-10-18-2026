@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use LogicException;
 
@@ -69,8 +70,9 @@ final class AccountSessionEligibility
     /**
      * Lock the actor office and any operation destination offices together, in
      * ascending order. Never acquire a second lower-ID office after the first.
-     * @param list<int> $additionalDepartmentIds
-     * @return array{User, \Illuminate\Database\Eloquent\Collection}
+     *
+     * @param  list<int>  $additionalDepartmentIds
+     * @return array{User, Collection}
      */
     public function lockWithDepartments(User $claimed, array $additionalDepartmentIds): array
     {

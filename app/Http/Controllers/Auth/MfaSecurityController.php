@@ -20,8 +20,7 @@ final class MfaSecurityController extends Controller
         private readonly MfaService $mfa,
         private readonly MfaRecoveryCodeBroker $recoveryBroker,
         private readonly SensitiveInertiaResponse $sensitiveResponse,
-    ) {
-    }
+    ) {}
 
     public function index(Request $request): InertiaResponse
     {

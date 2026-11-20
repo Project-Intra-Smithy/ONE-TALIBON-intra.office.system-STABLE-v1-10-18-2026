@@ -2,14 +2,27 @@
 
 namespace Tests\Feature;
 
+use App\Http\Controllers\AdminEmployeeRegistrationController;
+use App\Models\AuditLog;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\StaffActivationInvitation;
 use App\Models\User;
+use App\Services\ActivationCredentialBroker;
+use App\Services\AuditLogger;
+use App\Services\AuthenticationAssurance;
 use App\Services\StaffActivationService;
+use Database\Seeders\MunicipalityStructureSeeder;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Inertia\Testing\AssertableInertia;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tests\TestCase;
 
 final class PermanentIamLifecycleTest extends TestCase
@@ -20,7 +33,7 @@ final class PermanentIamLifecycleTest extends TestCase
 
     public function test_first_admin_bootstrap_is_interactive_single_use_and_forces_normal_mfa_path(): void
     {
-        $this->seed(\Database\Seeders\MunicipalityStructureSeeder::class);
+        $this->seed(MunicipalityStructureSeeder::class);
         $this->artisan('talibon:bootstrap-first-admin', [
             '--username' => 'owner.admin', '--name' => 'Trusted Owner',
             '--department-code' => 'ADMIN', '--position' => 'System owner',
@@ -82,7 +95,7 @@ final class PermanentIamLifecycleTest extends TestCase
         $issued = $this->issue($admin, $employee, 'one.use');
         app(StaffActivationService::class)->redeem($issued['code'], self::PASSWORD);
 
-        $this->expectException(\Illuminate\Validation\ValidationException::class);
+        $this->expectException(ValidationException::class);
         app(StaffActivationService::class)->redeem($issued['code'], self::PASSWORD);
     }
 
@@ -96,7 +109,7 @@ final class PermanentIamLifecycleTest extends TestCase
         try {
             app(StaffActivationService::class)->redeem($first['code'], self::PASSWORD);
             $this->fail('Revoked code was accepted.');
-        } catch (\Illuminate\Validation\ValidationException $exception) {
+        } catch (ValidationException $exception) {
             $this->assertArrayHasKey('code', $exception->errors());
         }
         $this->assertTrue(app(StaffActivationService::class)->redeem($second['code'], self::PASSWORD)->is_active);
@@ -112,7 +125,7 @@ final class PermanentIamLifecycleTest extends TestCase
                     'contact_email' => null, 'role' => $role,
                 ]);
                 $this->fail('Elevated role was provisioned.');
-            } catch (\Illuminate\Validation\ValidationException $exception) {
+            } catch (ValidationException $exception) {
                 $this->assertArrayHasKey('role', $exception->errors());
             }
         }
@@ -145,7 +158,7 @@ final class PermanentIamLifecycleTest extends TestCase
         $this->assertTrue($subject->fresh()->is_active);
         $employee->forceFill(['employment_status' => 'separated', 'separation_date' => now()])->save();
         app(StaffActivationService::class)->suspend($this->iamActorRequest($admin), $admin, $subject->fresh(), 'Employment ended');
-        $this->expectException(\Illuminate\Validation\ValidationException::class);
+        $this->expectException(ValidationException::class);
         app(StaffActivationService::class)->reactivate($this->iamActorRequest($admin), $admin, $subject->fresh());
     }
 
@@ -204,9 +217,9 @@ final class PermanentIamLifecycleTest extends TestCase
             'entity_id' => $employee->id,
         ]);
 
-        $this->get('/admin')->assertOk()->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+        $this->get('/admin')->assertOk()->assertInertia(fn (AssertableInertia $page) => $page
             ->where('eligibleEmployees.0.id', $employee->id));
-        $this->get('/employees?q=QA-REG-001')->assertOk()->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+        $this->get('/employees?q=QA-REG-001')->assertOk()->assertInertia(fn (AssertableInertia $page) => $page
             ->where('employees.data.0.id', $employee->id));
 
         $this->post('/admin/accounts', [
@@ -355,7 +368,7 @@ final class PermanentIamLifecycleTest extends TestCase
             try {
                 $service->suspend($this->iamActorRequest($admin), $admin, $user, 'Stale actor');
                 $this->fail('Stale actor was accepted.');
-            } catch (\Illuminate\Auth\Access\AuthorizationException|\Symfony\Component\HttpKernel\Exception\HttpException $exception) {
+            } catch (AuthorizationException|HttpException $exception) {
                 $this->assertSame($before, $this->lifecycleSnapshot($user));
             }
             $admin->fresh()->forceFill($original)->save();
@@ -365,7 +378,7 @@ final class PermanentIamLifecycleTest extends TestCase
         try {
             $service->recover($this->iamActorRequest($admin), $admin, $user);
             $this->fail('Separated actor was accepted.');
-        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+        } catch (AuthorizationException $exception) {
             $this->assertSame($before, $this->lifecycleSnapshot($user));
         }
     }
@@ -421,7 +434,7 @@ final class PermanentIamLifecycleTest extends TestCase
         try {
             $service->recover($this->iamActorRequest($admin), $admin, $user);
             $this->fail('Recovery accepted a stale administrator from an inactive office.');
-        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+        } catch (AuthorizationException $exception) {
             $this->assertSame('Administrator access denied.', $exception->getMessage());
         }
         $this->assertSame($before, $snapshot(), 'Direct denial must preserve all persisted lifecycle state.');
@@ -460,7 +473,7 @@ final class PermanentIamLifecycleTest extends TestCase
             ->whereNull('consumed_at')->whereNull('revoked_at')->sole();
         $this->assertSame($subjectOffice->id, $replacement->department_id);
         $this->assertSame($employee->id, $replacement->employee_id);
-        $this->assertSame(1, \App\Models\AuditLog::query()->where([
+        $this->assertSame(1, AuditLog::query()->where([
             'actor_user_id' => $admin->id, 'action' => 'identity.account.recovery_started',
             'entity_id' => $user->id, 'outcome' => 'allowed',
         ])->count());
@@ -484,10 +497,10 @@ final class PermanentIamLifecycleTest extends TestCase
         $old = StaffActivationInvitation::query()->where('user_id', $user->id)->firstOrFail();
         $old->forceFill(['consumed_at' => null])->save();
         $before = $this->lifecycleSnapshot($user);
-        $audit = \Mockery::mock(\App\Services\AuditLogger::class)->makePartial();
+        $audit = \Mockery::mock(AuditLogger::class)->makePartial();
         $audit->shouldReceive('record')->withArgs(fn ($actor, $action) => $action === 'identity.invitation.issued')
             ->once()->andThrow(new \RuntimeException('Synthetic audit failure'));
-        $this->app->instance(\App\Services\AuditLogger::class, $audit);
+        $this->app->instance(AuditLogger::class, $audit);
         try {
             app(StaffActivationService::class)->recover($this->iamActorRequest($admin), $admin, $user);
             $this->fail('Recovery returned despite injected failure.');
@@ -496,7 +509,6 @@ final class PermanentIamLifecycleTest extends TestCase
         }
         $this->assertSame($before, $this->lifecycleSnapshot($user), 'Recovery must roll back the entire persisted operation.');
     }
-
 
     public function test_locked_administrator_assurance_is_required_for_every_lifecycle_mutation(): void
     {
@@ -524,15 +536,15 @@ final class PermanentIamLifecycleTest extends TestCase
             User::query()->orderBy('id')->get()->map->getAttributes()->all(),
             Employee::query()->orderBy('id')->get()->map->getAttributes()->all(),
             StaffActivationInvitation::query()->orderBy('id')->get()->map->getAttributes()->all(),
-            \App\Models\AuditLog::query()->where('action', 'like', 'identity.%')->orderBy('id')->get()->map->getAttributes()->all(),
+            AuditLog::query()->where('action', 'like', 'identity.%')->orderBy('id')->get()->map->getAttributes()->all(),
         ];
         foreach (['missing epoch', 'stale epoch', 'missing MFA', 'stale MFA', 'wrong actor'] as $case) {
             $request = $this->iamActorRequest($admin);
             match ($case) {
                 'missing epoch' => $request->session()->forget('auth_session_version'),
                 'stale epoch' => $request->session()->put('auth_session_version', (int) $admin->session_version + 1),
-                'missing MFA' => $request->session()->forget(\App\Services\AuthenticationAssurance::SESSION_VERSION_KEY),
-                'stale MFA' => $request->session()->put(\App\Services\AuthenticationAssurance::SESSION_VERSION_KEY, (int) $admin->mfa_version + 1),
+                'missing MFA' => $request->session()->forget(AuthenticationAssurance::SESSION_VERSION_KEY),
+                'stale MFA' => $request->session()->put(AuthenticationAssurance::SESSION_VERSION_KEY, (int) $admin->mfa_version + 1),
                 'wrong actor' => $request->setUserResolver(fn () => $active),
             };
             $before = $snapshot();
@@ -546,7 +558,7 @@ final class PermanentIamLifecycleTest extends TestCase
                 try {
                     $operation();
                     $this->fail('Unassured administrator operation was accepted: '.$case);
-                } catch (\Illuminate\Auth\Access\AuthorizationException) {
+                } catch (AuthorizationException) {
                     $this->assertSame($before, $snapshot(), $case);
                 }
             }
@@ -557,7 +569,6 @@ final class PermanentIamLifecycleTest extends TestCase
         $this->assertTrue($suspended->fresh()->is_active);
     }
 
-
     public function test_activation_credential_is_sealed_and_flashed_once_without_history_props(): void
     {
         [$admin, $employee] = $this->actors();
@@ -566,7 +577,7 @@ final class PermanentIamLifecycleTest extends TestCase
         ])->assertRedirect(route('admin.index'))->assertSessionHas('activationCredential');
         $sealed = session()->get('activationCredential');
         $this->assertIsString($sealed);
-        $payload = json_decode(\Illuminate\Support\Facades\Crypt::decryptString($sealed), true, flags: JSON_THROW_ON_ERROR);
+        $payload = json_decode(Crypt::decryptString($sealed), true, flags: JSON_THROW_ON_ERROR);
         $code = $payload['code'];
         $this->assertStringNotContainsString($code, $sealed);
         $this->assertStringNotContainsString($code, json_encode(session()->all(), JSON_THROW_ON_ERROR));
@@ -577,7 +588,7 @@ final class PermanentIamLifecycleTest extends TestCase
         // Preserve the issuing session exactly as the browser does.
         $this->withCookie(config('session.cookie'), session()->getId());
         $response = $this->get('/admin')->assertOk()->assertHeader('Pragma', 'no-cache')->assertHeader('Expires', '0')
-            ->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+            ->assertInertia(fn (AssertableInertia $page) => $page
                 ->component('Admin/Index')->missing('activationCredential')->hasFlash('activationCredential.code', $code));
         $this->assertStringContainsString('no-store', $response->headers->get('Cache-Control'));
         $this->assertStringContainsString('private', $response->headers->get('Cache-Control'));
@@ -585,15 +596,15 @@ final class PermanentIamLifecycleTest extends TestCase
         $this->assertNotNull($claimed);
         $this->assertNull($invite->fresh()->consumed_at);
         $this->assertFalse(session()->has('activationCredential'));
-        $this->get('/admin')->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+        $this->get('/admin')->assertInertia(fn (AssertableInertia $page) => $page
             ->missing('activationCredential')->missingFlash('activationCredential'));
 
         // Even a stale session copy cannot claim the persisted marker twice.
         $this->withSession(['activationCredential' => $sealed])->get('/admin')->assertOk()
-            ->assertInertia(fn (\Inertia\Testing\AssertableInertia $page) => $page
+            ->assertInertia(fn (AssertableInertia $page) => $page
                 ->missing('activationCredential')->missingFlash('activationCredential'));
         $this->assertTrue($claimed->equalTo($invite->fresh()->disclosed_at));
-        $this->assertSame(1, \App\Models\AuditLog::query()->where('action', 'identity.invitation.disclosed')->where('entity_id', $invite->id)->count());
+        $this->assertSame(1, AuditLog::query()->where('action', 'identity.invitation.disclosed')->where('entity_id', $invite->id)->count());
         $user = app(StaffActivationService::class)->redeem($code, self::PASSWORD);
         $this->assertTrue($user->is_active, 'Disclosure does not consume redemption.');
     }
@@ -602,7 +613,7 @@ final class PermanentIamLifecycleTest extends TestCase
     {
         [$admin, $employee] = $this->actors();
         $service = app(StaffActivationService::class);
-        $broker = app(\App\Services\ActivationCredentialBroker::class);
+        $broker = app(ActivationCredentialBroker::class);
         $other = $this->userWithEmployee('system_admin', 'custody.other');
         $this->configureIamAdministrator($other);
         foreach (['wrong actor', 'wrong session', 'stale epoch', 'stale MFA', 'expired envelope', 'corrupt', 'legacy plaintext', 'partial', 'prefetch', 'revoked', 'reissued', 'expired invitation', 'consumed'] as $case) {
@@ -621,7 +632,7 @@ final class PermanentIamLifecycleTest extends TestCase
             } elseif ($case === 'stale epoch') {
                 $request->session()->put('auth_session_version', (int) $admin->session_version + 1);
             } elseif ($case === 'stale MFA') {
-                $request->session()->put(\App\Services\AuthenticationAssurance::SESSION_VERSION_KEY, (int) $admin->mfa_version + 1);
+                $request->session()->put(AuthenticationAssurance::SESSION_VERSION_KEY, (int) $admin->mfa_version + 1);
             } elseif ($case === 'expired envelope') {
                 $this->travel(3)->minutes();
             } elseif ($case === 'corrupt') {
@@ -678,7 +689,7 @@ final class PermanentIamLifecycleTest extends TestCase
                 'position_title' => 'Staff',
             ]);
             $before = Employee::query()->count();
-            $auditBefore = \App\Models\AuditLog::query()->where('action', 'identity.employee.registered')->count();
+            $auditBefore = AuditLog::query()->where('action', 'identity.employee.registered')->count();
             if ($change === 'epoch') {
                 $admin->increment('session_version');
             } elseif ($change === 'mfa') {
@@ -687,11 +698,11 @@ final class PermanentIamLifecycleTest extends TestCase
                 $admin->employee()->update(['employment_status' => 'inactive']);
             }
             try {
-                app()->call([app(\App\Http\Controllers\AdminEmployeeRegistrationController::class), 'store'], ['request' => $request]);
+                app()->call([app(AdminEmployeeRegistrationController::class), 'store'], ['request' => $request]);
                 $this->fail('Revoked registration authority was accepted.');
-            } catch (\Illuminate\Auth\Access\AuthorizationException) {
+            } catch (AuthorizationException) {
                 $this->assertSame($before, Employee::query()->count());
-                $this->assertSame($auditBefore, \App\Models\AuditLog::query()->where('action', 'identity.employee.registered')->count());
+                $this->assertSame($auditBefore, AuditLog::query()->where('action', 'identity.employee.registered')->count());
             }
             $admin->employee()->update(['employment_status' => 'active']);
         }
@@ -699,7 +710,7 @@ final class PermanentIamLifecycleTest extends TestCase
 
     public function test_legacy_normalized_login_database_backstop_and_inactive_upgrade(): void
     {
-        $db = \Illuminate\Support\Facades\DB::class;
+        $db = DB::class;
         $this->assertSame('pgsql', $db::getDriverName());
         // Model the pre-upgrade schema inside this rolled-back test transaction.
         foreach (['users_iam_username_normalized_unique', 'users_iam_email_normalized_unique', 'staff_activation_one_outstanding_per_user'] as $index) {
@@ -734,7 +745,7 @@ final class PermanentIamLifecycleTest extends TestCase
             try {
                 $db::transaction(fn () => $duplicate->fresh()->forceFill($collision)->save());
                 $this->fail('Normalized identity collision accepted by database.');
-            } catch (\Illuminate\Database\UniqueConstraintViolationException) {
+            } catch (UniqueConstraintViolationException) {
                 $this->assertSame('legacy.distinct', $duplicate->fresh()->username);
                 $this->assertSame('distinct@example.test', $duplicate->fresh()->email);
             }
@@ -756,9 +767,9 @@ final class PermanentIamLifecycleTest extends TestCase
         $copy = $invite->replicate(['id']);
         $copy->forceFill(['code_digest' => hash('sha256', 'synthetic-other-digest')]);
         try {
-            \Illuminate\Support\Facades\DB::transaction(fn () => $copy->save());
+            DB::transaction(fn () => $copy->save());
             $this->fail('Database accepted a second outstanding invitation.');
-        } catch (\Illuminate\Database\UniqueConstraintViolationException) {
+        } catch (UniqueConstraintViolationException) {
             $this->assertSame(1, StaffActivationInvitation::query()->where('user_id', $invite->user_id)->count());
         }
         $this->issue($admin, $employee, 'database.unique');
@@ -823,10 +834,10 @@ final class PermanentIamLifecycleTest extends TestCase
         $invite = $issued['invitation'];
         $user = $employee->fresh()->user;
         $before = $this->lifecycleSnapshot($user);
-        $audit = \Mockery::mock(\App\Services\AuditLogger::class)->makePartial();
+        $audit = \Mockery::mock(AuditLogger::class)->makePartial();
         $audit->shouldReceive('record')->withArgs(fn ($actor, $event) => $event === 'identity.invitation.disclosed')
             ->once()->andThrow(new \RuntimeException('Synthetic disclosure audit failure'));
-        $this->app->instance(\App\Services\AuditLogger::class, $audit);
+        $this->app->instance(AuditLogger::class, $audit);
         try {
             app(StaffActivationService::class)->claimDisclosure($this->iamActorRequest($admin), $admin, $invite->id, $issued['code']);
             $this->fail('Disclosure returned despite failed audit.');
@@ -837,7 +848,7 @@ final class PermanentIamLifecycleTest extends TestCase
         $this->assertNull($invite->fresh()->disclosed_at);
         $this->assertNull($invite->fresh()->consumed_at);
         $this->assertDatabaseMissing('audit_logs', ['action' => 'identity.invitation.disclosed', 'entity_id' => $invite->id]);
-        $this->app->forgetInstance(\App\Services\AuditLogger::class);
+        $this->app->forgetInstance(AuditLogger::class);
         $this->assertTrue(app(StaffActivationService::class)->redeem($issued['code'], self::PASSWORD)->is_active);
     }
 
@@ -850,13 +861,13 @@ final class PermanentIamLifecycleTest extends TestCase
         $this->withCookie(config('session.cookie'), session()->getId());
         $response = $this->get('https://localhost/admin')->assertOk()
             ->assertHeader('Pragma', 'no-cache')->assertHeader('Expires', '0')
-            ->assertInertia(function (\Inertia\Testing\AssertableInertia $page): void {
+            ->assertInertia(function (AssertableInertia $page): void {
                 $page->component('Admin/Index')->missing('activationCredential')->hasFlash('activationCredential');
                 $this->assertTrue($page->toArray()['encryptHistory'] ?? false);
             });
         $this->assertStringContainsString('no-store', $response->headers->get('Cache-Control'));
         $this->assertStringContainsString('private', $response->headers->get('Cache-Control'));
-        $this->get('https://localhost/admin')->assertOk()->assertInertia(function (\Inertia\Testing\AssertableInertia $page): void {
+        $this->get('https://localhost/admin')->assertOk()->assertInertia(function (AssertableInertia $page): void {
             $page->missing('activationCredential')->missingFlash('activationCredential');
             $this->assertFalse((bool) ($page->toArray()['encryptHistory'] ?? false));
         });
@@ -864,7 +875,7 @@ final class PermanentIamLifecycleTest extends TestCase
 
     public function test_upgrade_preflight_refuses_multiple_outstanding_invitations_before_mutation(): void
     {
-        $db = \Illuminate\Support\Facades\DB::class;
+        $db = DB::class;
         foreach (['users_iam_username_normalized_unique', 'users_iam_email_normalized_unique', 'staff_activation_one_outstanding_per_user'] as $index) {
             $db::statement('DROP INDEX '.$index);
         }
@@ -894,7 +905,7 @@ final class PermanentIamLifecycleTest extends TestCase
         try {
             $operation();
             $this->fail('Invalid lifecycle operation was accepted.');
-        } catch (\Illuminate\Validation\ValidationException $exception) {
+        } catch (ValidationException $exception) {
             $this->assertArrayHasKey($field, $exception->errors());
         }
         $this->assertSame($before, $this->lifecycleSnapshot($user));
@@ -905,7 +916,7 @@ final class PermanentIamLifecycleTest extends TestCase
         return [
             $user->fresh()->getAttributes(),
             StaffActivationInvitation::query()->where('user_id', $user->id)->orderBy('id')->get()->map(fn ($row) => $row->getAttributes())->all(),
-            \App\Models\AuditLog::query()->where('action', 'like', 'identity.%')->orderBy('id')->get()->map(fn ($row) => $row->getAttributes())->all(),
+            AuditLog::query()->where('action', 'like', 'identity.%')->orderBy('id')->get()->map(fn ($row) => $row->getAttributes())->all(),
         ];
     }
 
@@ -920,6 +931,7 @@ final class PermanentIamLifecycleTest extends TestCase
             'user_id' => null, 'department_id' => $office->id, 'position_title' => 'Staff',
             'employment_status' => 'active',
         ]);
+
         return [$admin, $employee];
     }
 
@@ -946,6 +958,7 @@ final class PermanentIamLifecycleTest extends TestCase
             'user_id' => $user->id, 'department_id' => $office->id, 'position_title' => 'Staff',
             'employment_status' => 'active',
         ]);
+
         return $user;
     }
 }

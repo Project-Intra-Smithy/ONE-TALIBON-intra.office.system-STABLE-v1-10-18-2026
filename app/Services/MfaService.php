@@ -15,9 +15,7 @@ use PragmaRX\Google2FA\Google2FA;
 
 final class MfaService
 {
-    public function __construct(private readonly Google2FA $totp, private readonly AccountSessionEligibility $eligibility, private readonly AuthenticationAssurance $assurance, private readonly AuditLogger $audit)
-    {
-    }
+    public function __construct(private readonly Google2FA $totp, private readonly AccountSessionEligibility $eligibility, private readonly AuthenticationAssurance $assurance, private readonly AuditLogger $audit) {}
 
     public function ensureEnrollmentSecret(User $user, ?Request $request = null): string
     {

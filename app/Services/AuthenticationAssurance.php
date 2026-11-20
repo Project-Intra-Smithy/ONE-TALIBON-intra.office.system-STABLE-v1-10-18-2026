@@ -18,9 +18,7 @@ final class AuthenticationAssurance
 
     public const SESSION_VERSION_KEY = 'auth.assurance.mfa_version';
 
-    public function __construct(private readonly PrivilegedRolePolicy $roles)
-    {
-    }
+    public function __construct(private readonly PrivilegedRolePolicy $roles) {}
 
     public function requiresMfa(User $user): bool
     {

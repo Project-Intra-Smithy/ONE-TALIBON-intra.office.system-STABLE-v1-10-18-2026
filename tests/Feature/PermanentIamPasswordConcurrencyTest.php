@@ -32,6 +32,7 @@ final class PermanentIamPasswordConcurrencyTest extends TestCase
     use DatabaseTruncation;
 
     private const PASSWORD = 'Synthetic-Race-2026!';
+
     private const NEW = 'Synthetic-Changed-2026!';
 
     protected function tearDown(): void

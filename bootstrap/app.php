@@ -2,9 +2,9 @@
 
 use App\Http\Middleware\AssignIntegrationCorrelationId;
 use App\Http\Middleware\AssignRequestId;
-use App\Http\Middleware\EnsureTaskJsonAccept;
 use App\Http\Middleware\AuditIntegrationRequest;
 use App\Http\Middleware\AuthenticateIntegrationClient;
+use App\Http\Middleware\EnsureTaskJsonAccept;
 use App\Http\Middleware\ExecuteIdempotentIntegrationRequest;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\RequireActiveAccount;

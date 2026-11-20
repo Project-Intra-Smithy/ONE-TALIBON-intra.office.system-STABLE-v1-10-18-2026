@@ -10,6 +10,7 @@ use Throwable;
 final class ActivationCredentialBroker
 {
     private const SESSION_KEY = 'activationCredential';
+
     private const DISCLOSURE_SECONDS = 120;
 
     public function __construct(private readonly StaffActivationService $activation) {}
@@ -18,6 +19,7 @@ final class ActivationCredentialBroker
     public function seal(Request $request, array $issued): string
     {
         $session = $request->session();
+
         return Crypt::encryptString(json_encode([
             'actor' => (int) $request->user()->getKey(),
             'session' => hash('sha256', $session->getId()),

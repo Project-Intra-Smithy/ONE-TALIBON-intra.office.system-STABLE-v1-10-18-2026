@@ -240,6 +240,7 @@ final class StaffActivationService
     /**
      * Discover identifiers, then acquire every existing row in the same order.
      * Re-read links after locking; route models supply identifiers only.
+     *
      * @return array{?User, ?Employee, ?User, ?Department, Collection}
      */
     private function lockContext(?User $actor, ?int $employeeId, ?int $subjectId = null, ?Request $request = null): array
@@ -297,7 +298,7 @@ final class StaffActivationService
         }
         $invitations = $user
             ? StaffActivationInvitation::query()->where('user_id', $user->id)->orderBy('id')->lockForUpdate()->get()
-            : new Collection();
+            : new Collection;
 
         return [$admin, $employee, $user, $offices->get($employee?->department_id), $invitations];
     }

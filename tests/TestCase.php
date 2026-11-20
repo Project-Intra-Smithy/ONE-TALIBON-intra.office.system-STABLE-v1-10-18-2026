@@ -7,6 +7,10 @@ use App\Models\User;
 use App\Services\AuthenticationAssurance;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Http\Request;
+use Illuminate\Session\ArraySessionHandler;
+use Illuminate\Session\Store;
+use PragmaRX\Google2FA\Google2FA;
 use RuntimeException;
 
 abstract class TestCase extends BaseTestCase
@@ -103,7 +107,7 @@ abstract class TestCase extends BaseTestCase
     protected function configureIamAdministrator(User $admin): void
     {
         $admin->forceFill([
-            'mfa_secret' => app(\PragmaRX\Google2FA\Google2FA::class)->generateSecretKey(),
+            'mfa_secret' => app(Google2FA::class)->generateSecretKey(),
             'mfa_confirmed_at' => now(),
             'mfa_recovery_codes' => [],
             'mfa_version' => max(1, (int) $admin->mfa_version),
@@ -111,10 +115,10 @@ abstract class TestCase extends BaseTestCase
     }
 
     /** Capture the claimed session; do not refresh or grant authority on each call. */
-    protected function iamActorRequest(User $admin): \Illuminate\Http\Request
+    protected function iamActorRequest(User $admin): Request
     {
-        $request = \Illuminate\Http\Request::create('/admin/accounts', 'POST');
-        $session = new \Illuminate\Session\Store('iam-synthetic', new \Illuminate\Session\ArraySessionHandler(120));
+        $request = Request::create('/admin/accounts', 'POST');
+        $session = new Store('iam-synthetic', new ArraySessionHandler(120));
         $session->start();
         $session->put([
             'auth_session_version' => (int) $admin->session_version,

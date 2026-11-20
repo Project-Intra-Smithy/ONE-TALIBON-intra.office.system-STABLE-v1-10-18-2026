@@ -21,8 +21,7 @@ final class MfaChallengeController extends Controller
         private readonly AuthenticationAttemptLimiter $limiter,
         private readonly MfaService $mfa,
         private readonly AuditLogger $audit,
-    ) {
-    }
+    ) {}
 
     public function create(Request $request): Response|RedirectResponse
     {

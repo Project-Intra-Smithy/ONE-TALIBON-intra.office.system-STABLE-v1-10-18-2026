@@ -2,10 +2,15 @@
 
 namespace Tests\Feature;
 
+use App\Domain\Identity\VerifiedMunicipalActor;
+use App\Domain\Tasks\TaskCoreAccess;
+use App\Domain\Workflow\Authorization\TransactionActorEligibility;
 use App\Models\AuditLog;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\User;
+use App\Services\StaffActivationService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -20,6 +25,7 @@ final class PermanentIamSessionSecurityTest extends TestCase
     use RefreshDatabase;
 
     private const OLD = 'Synthetic-Session-2026!';
+
     private const NEW = 'Synthetic-Changed-2026!';
 
     protected function setUp(): void
@@ -156,10 +162,10 @@ final class PermanentIamSessionSecurityTest extends TestCase
         ]);
         // These domain services are called directly to bypass route middleware.
         Auth::guard('web')->login($user);
-        $verified = fn () => \App\Domain\Identity\VerifiedMunicipalActor::forProtectedSource($user);
-        $search = fn () => \App\Domain\Identity\VerifiedMunicipalActor::forCurrentSession($user);
-        $task = fn () => app(\App\Domain\Tasks\TaskCoreAccess::class)->verifiedActor($user);
-        $transaction = app(\App\Domain\Workflow\Authorization\TransactionActorEligibility::class);
+        $verified = fn () => VerifiedMunicipalActor::forProtectedSource($user);
+        $search = fn () => VerifiedMunicipalActor::forCurrentSession($user);
+        $task = fn () => app(TaskCoreAccess::class)->verifiedActor($user);
+        $transaction = app(TransactionActorEligibility::class);
         $this->assertSame($user->id, $verified()->user()->id);
         $this->assertSame($user->id, $search()->user()->id);
         $this->assertSame($user->id, $task()->id);
@@ -175,7 +181,7 @@ final class PermanentIamSessionSecurityTest extends TestCase
                 try {
                     $operation();
                     $this->fail('Direct actor eligibility unexpectedly granted.');
-                } catch (\Illuminate\Auth\Access\AuthorizationException) {
+                } catch (AuthorizationException) {
                     $this->assertTrue(true);
                 }
             }
@@ -192,7 +198,7 @@ final class PermanentIamSessionSecurityTest extends TestCase
             'full_name' => 'Synthetic recovery employee', 'department_id' => $office->id,
             'position_title' => 'Staff', 'employment_status' => 'active',
         ]);
-        $service = app(\App\Services\StaffActivationService::class);
+        $service = app(StaffActivationService::class);
         $issued = $service->issue($this->iamActorRequest($admin), $admin, ['employee_id' => $employee->id, 'username' => 'g2.recover', 'role' => 'department_staff']);
         $user = $service->redeem($issued['code'], self::OLD);
         $token = Str::random(60);

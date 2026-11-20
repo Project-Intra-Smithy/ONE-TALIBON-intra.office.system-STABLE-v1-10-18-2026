@@ -3,6 +3,7 @@
 namespace Tests\Feature\WorkRequests;
 
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\RequireActiveAccount;
 use App\Models\CalendarEvent;
 use App\Models\Department;
 use App\Models\Document;
@@ -60,12 +61,12 @@ final class WorkRequestRevocationTest extends TestCase
      */
     private function assertDomainBoundary(User $actor, \Closure $assertions): void
     {
-        $this->withoutMiddleware(\App\Http\Middleware\RequireActiveAccount::class);
+        $this->withoutMiddleware(RequireActiveAccount::class);
         try {
             $this->actingAs($actor);
             $assertions();
         } finally {
-            $this->withMiddleware(\App\Http\Middleware\RequireActiveAccount::class);
+            $this->withMiddleware(RequireActiveAccount::class);
             auth()->guard('web')->logoutCurrentDevice();
             session()->invalidate();
         }

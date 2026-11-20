@@ -16,6 +16,7 @@ use App\Models\WorkflowTransaction;
 use App\Services\CorrespondenceAccessDecider;
 use App\Services\DocumentAccessService;
 use App\Services\DocumentArchiveQuery;
+use App\Services\DocumentEvidenceQuery;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -925,7 +926,7 @@ class DocumentAccessPrecedenceTest extends TestCase
         $search = $archive->workspace($actor, ['archive_search' => 'QA161_MIXED_METADATA_MARKER']);
         $selection = $archive->workspace($actor, ['document' => $mixed->public_id]);
         $activity = $archive->activity($actor);
-        $detailEvidence = app(\App\Services\DocumentEvidenceQuery::class)->forCorrespondence($allowed);
+        $detailEvidence = app(DocumentEvidenceQuery::class)->forCorrespondence($allowed);
         $listingHttp = $this->get('/documents?mode=files')->assertOk();
         $searchHttp = $this->get('/documents?mode=files&archive_search=QA161_MIXED_METADATA_MARKER')->assertOk();
         $selectedHttp = $this->get('/documents?mode=files&document='.$mixed->public_id)->assertOk();
@@ -1063,7 +1064,7 @@ class DocumentAccessPrecedenceTest extends TestCase
             $actor, ['archive_search' => 'QA161_METADATA_DENIED_EVENT'],
         )['records']->total());
 
-        $detail = app(\App\Services\DocumentEvidenceQuery::class)->forCorrespondence($allowed);
+        $detail = app(DocumentEvidenceQuery::class)->forCorrespondence($allowed);
         $detailIds = array_column($detail['record'], 'publicId');
         $this->assertSame([$duplicatedAllowed->public_id, $duplicatedAllowed->public_id], $detailIds);
         $this->get('/documents/'.$mixedEvent->public_id.'/download')->assertForbidden();

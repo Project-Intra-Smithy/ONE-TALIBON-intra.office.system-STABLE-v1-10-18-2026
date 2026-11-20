@@ -5,6 +5,7 @@ namespace Tests\Feature\P0DestinationRevocation;
 use App\Domain\Correspondence\CorrespondenceClassification;
 use App\Domain\Correspondence\CorrespondenceLifecycleState;
 use App\Domain\TravelOrders\TravelOrderStatus;
+use App\Http\Middleware\RequireActiveAccount;
 use App\Models\CorrespondenceRecord;
 use App\Models\Department;
 use App\Models\Employee;
@@ -280,12 +281,12 @@ final class P0DestinationRevocationTest extends TestCase
      */
     private function assertDomainBoundary(User $actor, \Closure $assertions): void
     {
-        $this->withoutMiddleware(\App\Http\Middleware\RequireActiveAccount::class);
+        $this->withoutMiddleware(RequireActiveAccount::class);
         try {
             $this->actingAs($actor);
             $assertions();
         } finally {
-            $this->withMiddleware(\App\Http\Middleware\RequireActiveAccount::class);
+            $this->withMiddleware(RequireActiveAccount::class);
             auth()->guard('web')->logoutCurrentDevice();
             session()->invalidate();
         }

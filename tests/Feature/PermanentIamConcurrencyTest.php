@@ -2,11 +2,15 @@
 
 namespace Tests\Feature;
 
+use App\Http\Controllers\AdminEmployeeRegistrationController;
+use App\Models\AuditLog;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\StaffActivationInvitation;
 use App\Models\User;
+use App\Services\ActivationCredentialBroker;
 use App\Services\StaffActivationService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\DatabaseTruncation;
 use Illuminate\Foundation\Testing\RefreshDatabaseState;
 use Illuminate\Support\Facades\DB;
@@ -84,7 +88,6 @@ final class PermanentIamConcurrencyTest extends TestCase
         }
     }
 
-
     public function test_administrator_revocation_ordering_prevents_lifecycle_mutation(): void
     {
         $this->assertTrue(extension_loaded('pcntl'));
@@ -106,7 +109,7 @@ final class PermanentIamConcurrencyTest extends TestCase
             $snapshot = fn () => [
                 $user->fresh()->getAttributes(), $employee->fresh()->getAttributes(),
                 StaffActivationInvitation::query()->where('user_id', $user->id)->orderBy('id')->get()->map->getAttributes()->all(),
-                \App\Models\AuditLog::query()->where('action', 'like', 'identity.%')->orderBy('id')->get()->map->getAttributes()->all(),
+                AuditLog::query()->where('action', 'like', 'identity.%')->orderBy('id')->get()->map->getAttributes()->all(),
             ];
             $before = $snapshot();
             $this->contend(
@@ -126,7 +129,6 @@ final class PermanentIamConcurrencyTest extends TestCase
         }
     }
 
-
     public function test_concurrent_activation_disclosure_claims_serialize_on_independent_connections(): void
     {
         $this->assertTrue(extension_loaded('pcntl'));
@@ -143,7 +145,7 @@ final class PermanentIamConcurrencyTest extends TestCase
         $issued = app(StaffActivationService::class)->issue($request, $admin, [
             'employee_id' => $employee->id, 'username' => 'disclosure.staff', 'role' => 'department_staff',
         ]);
-        $broker = app(\App\Services\ActivationCredentialBroker::class);
+        $broker = app(ActivationCredentialBroker::class);
         $request->session()->put('activationCredential', $broker->seal($request, $issued));
         $invite = $issued['invitation'];
         $this->assertNull($invite->fresh()->disclosed_at);
@@ -152,11 +154,11 @@ final class PermanentIamConcurrencyTest extends TestCase
         $this->contend(
             [(int) $actorEmployee->id, (int) $employee->id],
             function () use ($request, $admin): void {
-                $claim = app(\App\Services\ActivationCredentialBroker::class)->take($request, $admin);
+                $claim = app(ActivationCredentialBroker::class)->take($request, $admin);
                 $this->assertNotNull($claim);
             },
             function () use ($request, $admin): void {
-                if (app(\App\Services\ActivationCredentialBroker::class)->take($request, $admin) !== null) {
+                if (app(ActivationCredentialBroker::class)->take($request, $admin) !== null) {
                     throw new \RuntimeException('Duplicate synthetic disclosure claim');
                 }
             },
@@ -164,7 +166,7 @@ final class PermanentIamConcurrencyTest extends TestCase
         );
         $this->assertNotNull($invite->fresh()->disclosed_at);
         $this->assertNull($invite->fresh()->consumed_at);
-        $this->assertSame(1, \App\Models\AuditLog::query()->where('action', 'identity.invitation.disclosed')->where('entity_id', $invite->id)->count());
+        $this->assertSame(1, AuditLog::query()->where('action', 'identity.invitation.disclosed')->where('entity_id', $invite->id)->count());
         $user = app(StaffActivationService::class)->redeem($issued['code'], self::PASSWORD);
         $this->assertTrue($user->is_active);
     }
@@ -193,14 +195,14 @@ final class PermanentIamConcurrencyTest extends TestCase
                 'position_title' => 'Staff',
                 'employee_number' => 'SYNTHETIC-REG-001',
             ]);
-            app()->call([app(\App\Http\Controllers\AdminEmployeeRegistrationController::class), 'store'], ['request' => $request]);
+            app()->call([app(AdminEmployeeRegistrationController::class), 'store'], ['request' => $request]);
         };
         $this->contend($employeeIds, fn () => $register($admins[0]), fn () => $register($admins[1]), 'denied');
         $employee = Employee::query()->where('employee_number', 'SYNTHETIC-REG-001')->sole();
         $this->assertNull($employee->user_id);
         $this->assertSame(2, User::query()->count());
         $this->assertSame(0, StaffActivationInvitation::query()->count());
-        $this->assertSame(1, \App\Models\AuditLog::query()->where('action', 'identity.employee.registered')->where('entity_id', $employee->id)->count());
+        $this->assertSame(1, AuditLog::query()->where('action', 'identity.employee.registered')->where('entity_id', $employee->id)->count());
     }
 
     private function employee(Department $office, ?User $user = null): Employee
@@ -236,7 +238,7 @@ final class PermanentIamConcurrencyTest extends TestCase
                 try {
                     $second();
                     fwrite($childSocket, "ok\n");
-                } catch (\Illuminate\Auth\Access\AuthorizationException|ValidationException $exception) {
+                } catch (AuthorizationException|ValidationException $exception) {
                     fwrite($childSocket, "denied\n");
                 }
                 fclose($childSocket);

@@ -5,12 +5,14 @@ namespace Tests\Feature;
 use App\Domain\Correspondence\CorrespondenceClassification;
 use App\Domain\Correspondence\CorrespondenceLifecycleState;
 use App\Domain\TravelOrders\TravelOrderStatus;
+use App\Http\Middleware\RequireActiveAccount;
 use App\Models\CorrespondenceEvent;
 use App\Models\CorrespondenceRecord;
 use App\Models\Department;
 use App\Models\Document;
 use App\Models\DocumentLink;
 use App\Models\Employee;
+use App\Models\PlanFamily;
 use App\Models\TransactionEvent;
 use App\Models\TravelOrder;
 use App\Models\TravelOrderEvent;
@@ -147,7 +149,27 @@ final class LegacyPdfPreviewTest extends TestCase
         $this->get($this->url($document))->assertRedirect('/login');
         $this->actingAs($actor)->get($this->url($document))->assertOk();
         $actor->employee()->update(['employment_status' => 'inactive']);
-        $this->get($this->url($document))->assertNotFound();
+        $response = $this->get($this->url($document))->assertRedirect(route('login'))
+            ->assertSessionMissing('auth_session_version');
+        $this->assertGuest();
+        $this->assertStringNotContainsString($this->pdf(), $response->getContent());
+        $this->assertDatabaseHas('audit_logs', [
+            'actor_user_id' => $actor->id,
+            'action' => 'auth.account.deactivated_forced_logout', 'outcome' => 'denied',
+        ]);
+
+        // Independently preserve the original downstream masked denial.
+        // This isolated test dispatch removes only the already-proven
+        // outer account middleware, never source authorization or MFA.
+        $this->withoutMiddleware(RequireActiveAccount::class);
+        try {
+            $this->actingAs($actor);
+            $this->get($this->url($document))->assertNotFound()->assertContent('Not Found');
+        } finally {
+            $this->withMiddleware(RequireActiveAccount::class);
+            auth()->guard('web')->logoutCurrentDevice();
+            session()->invalidate();
+        }
     }
 
     public function test_audit_failure_prevents_successful_retrieval(): void
@@ -512,7 +534,7 @@ final class LegacyPdfPreviewTest extends TestCase
             DB::statement("ALTER TABLE documents ADD CONSTRAINT documents_plan_origin_domain_check CHECK (security_domain IN ('EVER_PLAN', 'LEGACY_CTW'))");
         }
 
-        $family = \App\Models\PlanFamily::query()->create(['title' => 'Synthetic R3 typed fixture']);
+        $family = PlanFamily::query()->create(['title' => 'Synthetic R3 typed fixture']);
         $edition = $family->editions()->create(['edition_label' => 'Synthetic R3']);
         DB::statement('ALTER TABLE plan_document_bindings DISABLE TRIGGER kirion_plan_typed_binding_guard_trigger');
         try {
@@ -618,6 +640,7 @@ final class LegacyPdfPreviewTest extends TestCase
     private function transaction(User $actor): WorkflowTransaction
     {
         $office = $actor->employee->department_id;
+
         return WorkflowTransaction::query()->create([
             'reference_no' => 'PDF-'.Str::upper(Str::random(12)),
             'transaction_type' => 'internal_request', 'title' => 'Synthetic PDF transaction',

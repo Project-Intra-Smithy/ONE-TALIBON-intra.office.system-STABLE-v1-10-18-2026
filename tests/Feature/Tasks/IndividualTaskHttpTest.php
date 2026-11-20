@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tasks;
 
+use App\Http\Middleware\RequireActiveAccount;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Task;
@@ -204,12 +205,12 @@ final class IndividualTaskHttpTest extends TestCase
 
             // Isolate the original domain HTTP boundary; only the outer
             // account middleware is removed for this separate test request.
-            $this->withoutMiddleware(\App\Http\Middleware\RequireActiveAccount::class);
+            $this->withoutMiddleware(RequireActiveAccount::class);
             try {
                 $this->actingAs($actor);
                 $request()->assertForbidden();
             } finally {
-                $this->withMiddleware(\App\Http\Middleware\RequireActiveAccount::class);
+                $this->withMiddleware(RequireActiveAccount::class);
             }
         }
 
@@ -219,12 +220,12 @@ final class IndividualTaskHttpTest extends TestCase
         $this->getJson('/tasks')->assertUnauthorized()->assertJsonPath('code', 'ACCOUNT_INACTIVE')
             ->assertSessionMissing('auth_session_version');
         $this->assertGuest();
-        $this->withoutMiddleware(\App\Http\Middleware\RequireActiveAccount::class);
+        $this->withoutMiddleware(RequireActiveAccount::class);
         try {
             $this->actingAs($actor);
             $this->getJson('/tasks')->assertForbidden();
         } finally {
-            $this->withMiddleware(\App\Http\Middleware\RequireActiveAccount::class);
+            $this->withMiddleware(RequireActiveAccount::class);
         }
         $office->update(['is_active' => true]);
         $this->actingAs($actor->fresh());

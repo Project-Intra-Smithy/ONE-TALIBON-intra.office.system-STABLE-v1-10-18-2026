@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\StaffActivationInvitation;
 use App\Models\User;
 use App\Services\ActivationCredentialBroker;
+use App\Services\AuthenticationAssurance;
 use App\Services\StaffActivationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -34,6 +35,7 @@ final class StaffActivationController extends Controller
     public function revoke(Request $request, StaffActivationInvitation $invitation, StaffActivationService $service): RedirectResponse
     {
         $service->revoke($request, $request->user(), $invitation, (string) $request->input('reason', 'administrator revoked'));
+
         return back()->with('success', 'Pending activation revoked.');
     }
 
@@ -41,18 +43,21 @@ final class StaffActivationController extends Controller
     {
         $data = $request->validate(['reason' => ['required', 'string', 'min:4', 'max:160']]);
         $service->suspend($request, $request->user(), $user, $data['reason']);
+
         return back()->with('success', 'Account suspended and existing sessions invalidated.');
     }
 
     public function reactivate(Request $request, User $user, StaffActivationService $service): RedirectResponse
     {
         $service->reactivate($request, $request->user(), $user);
+
         return back()->with('success', 'Account reactivated.');
     }
 
     public function recover(Request $request, User $user, StaffActivationService $service, ActivationCredentialBroker $broker): RedirectResponse
     {
         $issued = $service->recover($request, $request->user(), $user);
+
         return redirect()->route('admin.index')
             ->with('activationCredential', $broker->seal($request, $issued))
             ->header('Cache-Control', 'no-store, private');
@@ -74,6 +79,6 @@ final class StaffActivationController extends Controller
         $request->session()->regenerate();
         $request->session()->put('auth_session_version', (int) $user->session_version);
 
-        return redirect()->route(app(\App\Services\AuthenticationAssurance::class)->requiredRoute($user));
+        return redirect()->route(app(AuthenticationAssurance::class)->requiredRoute($user));
     }
 }

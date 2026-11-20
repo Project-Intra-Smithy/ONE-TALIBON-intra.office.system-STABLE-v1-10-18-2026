@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Domain\Identity\ConfirmedMfaEnrollment;
 use App\Models\AuditLog;
 use App\Models\User;
+use App\Services\AuditLogger;
 use App\Services\AuthenticationAssurance;
 use App\Services\MfaRecoveryCodeBroker;
 use App\Services\MfaService;
@@ -356,7 +357,6 @@ class MfaSecurityControlsTest extends TestCase
         $this->assertOrdinaryResponseDoesNotEncryptHistory(false);
     }
 
-
     public function test_mfa_security_mutations_rollback_on_success_audit_failure(): void
     {
         foreach ([
@@ -368,10 +368,10 @@ class MfaSecurityControlsTest extends TestCase
             $this->actingAs($user)->withSession($this->assuredSession($user));
             $before = $user->fresh()->getAttributes();
             $beforeAudits = AuditLog::query()->where('actor_user_id', $user->id)->where('action', $action)->count();
-            $audit = \Mockery::mock(\App\Services\AuditLogger::class)->makePartial();
+            $audit = \Mockery::mock(AuditLogger::class)->makePartial();
             $audit->shouldReceive('record')->withArgs(fn ($actor, $event) => $event === $action)
                 ->once()->andThrow(new \RuntimeException('Synthetic MFA audit failure'));
-            $this->app->instance(\App\Services\AuditLogger::class, $audit);
+            $this->app->instance(AuditLogger::class, $audit);
             $this->withoutExceptionHandling();
             try {
                 $this->call($method, $path);
@@ -382,7 +382,7 @@ class MfaSecurityControlsTest extends TestCase
             $this->assertSame($before, $user->fresh()->getAttributes());
             $this->assertSame($beforeAudits, AuditLog::query()->where('actor_user_id', $user->id)->where('action', $action)->count());
             $this->assertFalse(session()->has('mfa_recovery_codes_sealed'));
-            $this->app->forgetInstance(\App\Services\AuditLogger::class);
+            $this->app->forgetInstance(AuditLogger::class);
             $this->get('/security/mfa')->assertOk();
         }
     }

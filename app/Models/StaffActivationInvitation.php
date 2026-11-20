@@ -25,8 +25,23 @@ final class StaffActivationInvitation extends Model
         ];
     }
 
-    public function employee(): BelongsTo { return $this->belongsTo(Employee::class); }
-    public function user(): BelongsTo { return $this->belongsTo(User::class); }
-    public function department(): BelongsTo { return $this->belongsTo(Department::class); }
-    public function issuer(): BelongsTo { return $this->belongsTo(User::class, 'created_by_user_id'); }
+    public function employee(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    public function issuer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by_user_id');
+    }
 }

@@ -216,6 +216,7 @@ class OfficeDirectoryCatalogTest extends TestCase
             'position_title' => 'Synthetic Test Officer',
             'employment_status' => 'active',
         ]);
+
         return $user->fresh('employee.department');
     }
 

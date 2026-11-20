@@ -3,8 +3,8 @@
 namespace App\Http\Middleware;
 
 use App\Models\User;
-use App\Services\AuditLogger;
 use App\Services\AccountSessionEligibility;
+use App\Services\AuditLogger;
 use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,9 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class RequireActiveAccount
 {
-    public function __construct(private readonly AuditLogger $audit, private readonly AccountSessionEligibility $eligibility)
-    {
-    }
+    public function __construct(private readonly AuditLogger $audit, private readonly AccountSessionEligibility $eligibility) {}
 
     public function handle(Request $request, Closure $next): Response
     {
