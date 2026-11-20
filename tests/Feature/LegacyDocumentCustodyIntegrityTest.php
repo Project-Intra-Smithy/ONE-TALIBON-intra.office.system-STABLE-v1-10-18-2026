@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\AuditLog;
 use App\Models\Department;
 use App\Models\Document;
 use App\Models\DocumentLink;
@@ -13,10 +14,16 @@ use App\Services\DocumentAccessService;
 use App\Services\DocumentAttachmentService;
 use App\Services\LegacyDocumentBytes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use League\Flysystem\Local\LocalFilesystemAdapter;
+use League\Flysystem\PathPrefixer;
+use League\Flysystem\WhitespacePathNormalizer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
 use Tests\TestCase;
 
@@ -54,7 +61,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         ];
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('invalidDescriptors')]
+    #[DataProvider('invalidDescriptors')]
     public function test_integrity_failure_masks_byte_paths_and_retains_other_bytes(string $state): void
     {
         [$actor, , $document] = $this->evidence();
@@ -69,20 +76,37 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         $path = $disk->path($document->storage_path);
         $otherPath = $disk->path($other->storage_path);
         switch ($state) {
-            case 'tamper': $disk->put($document->storage_path, $otherBytes); break;
-            case 'size': $document->update(['size_bytes' => strlen($this->pdf()) + 1]); break;
-            case 'hash': $document->update(['checksum_sha256' => str_repeat('a', 64)]); break;
-            case 'missing-size': $document->update(['size_bytes' => null]); break;
-            case 'missing-hash': $document->update(['checksum_sha256' => null]); break;
-            case 'missing-disk': $document->update(['storage_disk' => '']); break;
-            case 'missing-path': $document->update(['storage_path' => null]); break;
-            case 'wrong-disk': $document->update(['storage_disk' => 'public']); break;
-            case 'traversal': $document->update(['storage_path' => '2026/11/../11/'.basename($path)]); break;
-            case 'cap': config(['documents.max_upload_mb' => 0]); break;
-            case 'missing-object': unlink($path); break;
-            case 'symlink': unlink($path); $this->assertTrue(symlink($otherPath, $path)); break;
-            case 'hardlink': unlink($path); $this->assertTrue(link($otherPath, $path)); break;
-            case 'directory': unlink($path); $this->assertTrue(mkdir($path)); break;
+            case 'tamper': $disk->put($document->storage_path, $otherBytes);
+                break;
+            case 'size': $document->update(['size_bytes' => strlen($this->pdf()) + 1]);
+                break;
+            case 'hash': $document->update(['checksum_sha256' => str_repeat('a', 64)]);
+                break;
+            case 'missing-size': $document->update(['size_bytes' => null]);
+                break;
+            case 'missing-hash': $document->update(['checksum_sha256' => null]);
+                break;
+            case 'missing-disk': $document->update(['storage_disk' => '']);
+                break;
+            case 'missing-path': $document->update(['storage_path' => null]);
+                break;
+            case 'wrong-disk': $document->update(['storage_disk' => 'public']);
+                break;
+            case 'traversal': $document->update(['storage_path' => '2026/11/../11/'.basename($path)]);
+                break;
+            case 'cap': config(['documents.max_upload_mb' => 0]);
+                break;
+            case 'missing-object': unlink($path);
+                break;
+            case 'symlink': unlink($path);
+                $this->assertTrue(symlink($otherPath, $path));
+                break;
+            case 'hardlink': unlink($path);
+                $this->assertTrue(link($otherPath, $path));
+                break;
+            case 'directory': unlink($path);
+                $this->assertTrue(mkdir($path));
+                break;
             case 'directory-symlink':
                 $this->assertTrue(symlink(dirname($otherPath), $disk->path('aliased-dir')));
                 $document->update(['storage_path' => 'aliased-dir/'.basename($otherPath)]);
@@ -140,7 +164,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         return [['exact'], ['normalized'], ['plan'], ['disk-alias'], ['parent-segments'], ['backslash']];
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('aliases')]
+    #[DataProvider('aliases')]
     public function test_conflicting_hidden_locator_denies_even_when_hash_matches(string $state): void
     {
         [$actor, , $document] = $this->evidence();
@@ -175,7 +199,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         return [['hidden'], ['plan'], ['incorrect-hash'], ['other-local-disk']];
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('reverseAliases')]
+    #[DataProvider('reverseAliases')]
     public function test_other_row_different_name_symlink_denies_target_and_preserves_bytes(string $state): void
     {
         [$actor, , $document] = $this->evidence();
@@ -315,7 +339,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         return [[4095], [4096], [4097]];
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('longLocatorLengths')]
+    #[DataProvider('longLocatorLengths')]
     public function test_d2_locator_path_boundary_unprovable_absolute_spelling_retains_bytes(int $length): void
     {
         [$actor, , $document] = $this->evidence();
@@ -356,7 +380,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         return $cases;
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('literalAliasCases')]
+    #[DataProvider('literalAliasCases')]
     public function test_d2_reverse_literal_and_normalized_aliases(string $state, string $action): void
     {
         [$actor, , $document] = $this->evidence();
@@ -417,7 +441,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         $this->assertEmpty(config('filesystems.disks.s3.bucket'));
         $this->actingAs($actor);
         $this->get($this->url($document))->assertOk()->assertContent($this->pdf());
-        $cached = (new \ReflectionProperty(\Illuminate\Filesystem\FilesystemManager::class, 'disks'))
+        $cached = (new \ReflectionProperty(FilesystemManager::class, 'disks'))
             ->getValue(Storage::getFacadeRoot());
         $this->assertArrayNotHasKey('s3', $cached);
     }
@@ -449,7 +473,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         return $cases;
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('rootMappingCases')]
+    #[DataProvider('rootMappingCases')]
     public function test_d2_root_mapping_mismatch_without_other_rows(string $state, string $action): void
     {
         [$actor, , $document] = $this->evidence();
@@ -514,7 +538,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         return $cases;
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('d3LeadingCases')]
+    #[DataProvider('d3LeadingCases')]
     public function test_d3_leading_locator_actual_wrapper_alias(string $leading, bool $plan, string $action, bool $normalizedFixture): void
     {
         [$actor, , $document] = $this->evidence();
@@ -526,7 +550,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         $disk->delete($other->storage_path);
         $interior = 'd3-foreign\\different.pdf';
         $locator = $leading.$interior;
-        $normalized = (new \League\Flysystem\WhitespacePathNormalizer)->normalizePath($locator);
+        $normalized = (new WhitespacePathNormalizer)->normalizePath($locator);
         $this->assertSame($root.'/'.$normalized, $disk->path($locator));
         $this->assertFalse(file_exists($root.'/'.$normalized));
         $this->assertFalse(file_exists($root.'/'.$interior));
@@ -574,7 +598,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         return $cases;
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('d3UncachedAliasCases')]
+    #[DataProvider('d3UncachedAliasCases')]
     public function test_d3_uncached_mapping_actual_wrapper_alias(string $option, string $value, string $action): void
     {
         [$actor, , $document] = $this->evidence();
@@ -592,14 +616,14 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         $alias = $wrapper->path($locator);
         $this->assertSame($option === 'prefix' ? $root.'/0/'.$locator : $root.$locator, $alias);
         $adapter = $wrapper->getAdapter();
-        $prefixer = (new \ReflectionProperty(\League\Flysystem\Local\LocalFilesystemAdapter::class, 'prefixer'))->getValue($adapter);
+        $prefixer = (new \ReflectionProperty(LocalFilesystemAdapter::class, 'prefixer'))->getValue($adapter);
         $this->assertSame($root.'/'.$locator, $prefixer->prefixPath($locator));
         $this->assertFalse(file_exists($root.'/'.$locator));
         $this->assertTrue(mkdir(dirname($alias), 0700, true));
         $this->assertTrue(symlink($target, $alias));
         $this->assertSame($target, realpath($alias));
         $other->update(['storage_disk' => 'd3_alias', 'storage_path' => $locator, 'checksum_sha256' => null]);
-        $cached = new \ReflectionProperty(\Illuminate\Filesystem\FilesystemManager::class, 'disks');
+        $cached = new \ReflectionProperty(FilesystemManager::class, 'disks');
         $manager = Storage::getFacadeRoot();
         $this->assertArrayNotHasKey('d3_alias', $cached->getValue($manager));
         $this->actingAs($actor);
@@ -652,7 +676,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         return $cases;
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('d3MappingOptions')]
+    #[DataProvider('d3MappingOptions')]
     public function test_d3_typed_mapping_options_without_other_rows(array $options, bool $allowed, string $mode): void
     {
         [$actor, , $document] = $this->evidence();
@@ -661,7 +685,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         $bytes = file_get_contents($target);
         $root = storage_path('framework/testing/disks/d3-options-'.Str::uuid());
         $base = ['driver' => 'local', 'root' => $root];
-        $cached = new \ReflectionProperty(\Illuminate\Filesystem\FilesystemManager::class, 'disks');
+        $cached = new \ReflectionProperty(FilesystemManager::class, 'disks');
         $manager = Storage::getFacadeRoot();
         $this->assertSame(1, Document::query()->count());
         $this->assertFalse(file_exists($root));
@@ -669,7 +693,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
             // Isolate effective-config type checking from constructor coercion:
             // actual ordinary adapter, deliberately stale effective metadata.
             $wrapper = Storage::build($base);
-            (new \ReflectionProperty(\Illuminate\Filesystem\FilesystemAdapter::class, 'config'))
+            (new \ReflectionProperty(FilesystemAdapter::class, 'config'))
                 ->setValue($wrapper, $base + $options);
             Storage::set('d3_options', $wrapper);
             config(['filesystems.disks.d3_options' => $base]);
@@ -710,7 +734,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         return $cases;
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('d3SentinelCases')]
+    #[DataProvider('d3SentinelCases')]
     public function test_d3_nonempty_cached_mapping_must_match(string $mapping, string $action): void
     {
         [$actor, , $document] = $this->evidence();
@@ -721,9 +745,9 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         $base = ['driver' => 'local', 'root' => $root];
         $wrapper = Storage::build($base);
         $object = $mapping === 'wrapper' ? $wrapper : $wrapper->getAdapter();
-        $owner = $mapping === 'wrapper' ? \Illuminate\Filesystem\FilesystemAdapter::class : \League\Flysystem\Local\LocalFilesystemAdapter::class;
+        $owner = $mapping === 'wrapper' ? FilesystemAdapter::class : LocalFilesystemAdapter::class;
         $property = new \ReflectionProperty($owner, 'prefixer');
-        $prefixer = new \League\Flysystem\PathPrefixer($root, '');
+        $prefixer = new PathPrefixer($root, '');
         $property->setValue($object, $prefixer);
         $this->assertSame($root, $prefixer->prefixPath(''));
         $this->assertSame($root.'probe/file.pdf', $prefixer->prefixPath('probe/file.pdf'));
@@ -784,7 +808,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         $original = $this->pdf();
         $path = $document->storage_path;
         $this->mock(AuditLogger::class, function ($mock) use ($path): void {
-            $mock->shouldReceive('record')->once()->andReturnUsing(function (...$args) use ($path): \App\Models\AuditLog {
+            $mock->shouldReceive('record')->once()->andReturnUsing(function (...$args) use ($path): AuditLog {
                 $result = (new AuditLogger)->record(...$args);
                 Storage::disk('documents')->put($path, 'SYNTHETIC REPLACEMENT AFTER AUDIT');
 
@@ -800,7 +824,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
         return [['public'], ['plan_custody'], ['local']];
     }
 
-    #[\PHPUnit\Framework\Attributes\DataProvider('unsafeRoots')]
+    #[DataProvider('unsafeRoots')]
     public function test_configured_root_overlap_is_not_private_custody(string $disk): void
     {
         [$actor, , $document] = $this->evidence();
@@ -1030,6 +1054,7 @@ final class LegacyDocumentCustodyIntegrityTest extends TestCase
     private function transaction(User $actor): WorkflowTransaction
     {
         $office = $actor->employee->department_id;
+
         return WorkflowTransaction::query()->create([
             'reference_no' => 'PDF-'.Str::upper(Str::random(12)),
             'transaction_type' => 'internal_request', 'title' => 'Synthetic PDF transaction',
