@@ -10,8 +10,10 @@ use App\Models\CorrespondenceRecord;
 use App\Models\Document;
 use App\Models\DocumentLink;
 use App\Models\User;
+use App\Services\CommonEvidence\LegacyEvidenceEligibility;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use RuntimeException;
 use Throwable;
 
 final class CorrespondenceEvidenceService
@@ -158,11 +160,23 @@ final class CorrespondenceEvidenceService
         }
 
         $ids = $documentIds->unique()->values()->all();
-        if ($ids !== []) {
-            Document::query()
-                ->whereIn('id', $ids)
-                ->where('custody_mode', 'LEGACY_PATH')
-                ->update(['classification' => $classification]);
+        if ($ids === []) {
+            return;
         }
+
+        $query = Document::query()->whereIn('documents.id', $ids);
+        $schema = LegacyEvidenceEligibility::restrictWithSchema($query->getQuery(), 'documents');
+
+        if (! $schema['ready'] || ! in_array($schema['custodyColumns'], [0, 2], true)) {
+            throw new RuntimeException('Unable to verify document custody schema for evidence reclassification.');
+        }
+
+        if ($schema['custodyColumns'] === 2) {
+            $query
+                ->where('documents.custody_mode', 'LEGACY_PATH')
+                ->whereNull('documents.custody_operation_id');
+        }
+
+        $query->update(['classification' => $classification]);
     }
 }

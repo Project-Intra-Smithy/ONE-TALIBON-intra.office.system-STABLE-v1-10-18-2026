@@ -6,6 +6,7 @@ on:
       - candidate/antigravity-operationforge-traceability-core-r1
       - candidate/unified-system-integration-r1
       - candidate/security-hardening-r1
+      - candidate/operationforge-devtest-compatibility-r1
   workflow_dispatch:
 
 permissions:
@@ -83,7 +84,7 @@ jobs:
           if [ "${#changed_php[@]}" -gt 0 ]; then
             for f in "${changed_php[@]}"; do php -l "$f"; done
             if ! php vendor/bin/pint --test "${changed_php[@]}"; then
-              if { [ "$GITHUB_REF_NAME" = "candidate/unified-system-integration-r1" ] || [ "$GITHUB_REF_NAME" = "candidate/security-hardening-r1" ]; } && [ "${{ matrix.phase }}" = "focused" ]; then
+              if { [ "$GITHUB_REF_NAME" = "candidate/unified-system-integration-r1" ] || [ "$GITHUB_REF_NAME" = "candidate/security-hardening-r1" ] || [ "$GITHUB_REF_NAME" = "candidate/operationforge-devtest-compatibility-r1" ]; } && [ "${{ matrix.phase }}" = "focused" ]; then
                 # Disposable checkout only. Emit a reviewable source-only patch;
                 # never commit, push, include runtime files, or bypass the failing gate.
                 php vendor/bin/pint "${changed_php[@]}"

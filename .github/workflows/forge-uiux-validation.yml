@@ -8,6 +8,7 @@ on:
       - candidate/codex-iam-admin-provisioning-r2
       - candidate/unified-system-integration-r1
       - candidate/security-hardening-r1
+      - candidate/operationforge-devtest-compatibility-r1
   pull_request:
     branches:
       - KIRCH-TALIBON-V1-UIUX-CORRECTION
@@ -56,7 +57,7 @@ jobs:
       DB_DATABASE: talibon_portal_test
       DB_USERNAME: postgres
       DB_PASSWORD: iam_candidate_disposable
-      N03_DISPOSABLE_LEASE: ${{ (github.ref_name == 'candidate/unified-system-integration-r1' || github.ref_name == 'candidate/security-hardening-r1') && 'EXCLUSIVE_PG16_SYNTHETIC_ONLY' || '' }}
+      N03_DISPOSABLE_LEASE: ${{ (github.ref_name == 'candidate/unified-system-integration-r1' || github.ref_name == 'candidate/security-hardening-r1' || github.ref_name == 'candidate/operationforge-devtest-compatibility-r1') && 'EXCLUSIVE_PG16_SYNTHETIC_ONLY' || '' }}
       CACHE_STORE: file
       SESSION_DRIVER: file
       QUEUE_CONNECTION: sync
@@ -98,7 +99,7 @@ jobs:
           php artisan migrate --force --no-interaction
 
       - name: Disposable regression schema lifecycle bootstrap
-        if: (github.ref_name == 'candidate/unified-system-integration-r1' || github.ref_name == 'candidate/security-hardening-r1')
+        if: (github.ref_name == 'candidate/unified-system-integration-r1' || github.ref_name == 'candidate/security-hardening-r1' || github.ref_name == 'candidate/operationforge-devtest-compatibility-r1')
         env:
           N03_DISPOSABLE_LEASE: EXCLUSIVE_PG16_SYNTHETIC_ONLY
         run: |
@@ -144,7 +145,7 @@ jobs:
 
       - name: Run full Feature regression
         run: |
-          if { [ "$GITHUB_REF_NAME" = "candidate/unified-system-integration-r1" ] || [ "$GITHUB_REF_NAME" = "candidate/security-hardening-r1" ]; }; then
+          if { [ "$GITHUB_REF_NAME" = "candidate/unified-system-integration-r1" ] || [ "$GITHUB_REF_NAME" = "candidate/security-hardening-r1" ] || [ "$GITHUB_REF_NAME" = "candidate/operationforge-devtest-compatibility-r1" ]; }; then
             N03_DISPOSABLE_LEASE=EXCLUSIVE_PG16_SYNTHETIC_ONLY php artisan test --bootstrap="$RUNNER_TEMP/n03-regression-bootstrap.php" --testsuite=Feature
           else
             php artisan test --testsuite=Feature

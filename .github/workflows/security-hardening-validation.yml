@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - candidate/security-hardening-r1
+      - candidate/operationforge-devtest-compatibility-r1
 permissions:
   contents: read
 jobs:
