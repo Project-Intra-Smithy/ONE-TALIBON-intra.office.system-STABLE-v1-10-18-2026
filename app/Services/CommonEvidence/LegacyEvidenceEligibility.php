@@ -11,11 +11,27 @@ final class LegacyEvidenceEligibility
 {
     public static function restrict(Builder $query, string $alias, bool $explicitLegacy = false): Builder
     {
-        if (! self::ready()) {
-            return $query->whereRaw('1 = 0');
+        self::restrictWithSchema($query, $alias, $explicitLegacy);
+
+        return $query;
+    }
+
+    /**
+     * Apply the same fail-closed provenance restriction and return the
+     * operation-local schema state for callers that project preview hints.
+     *
+     * @return array{ready: bool, custodyColumns: int}
+     */
+    public static function restrictWithSchema(Builder $query, string $alias, bool $explicitLegacy = false): array
+    {
+        $schema = self::schemaState();
+        if (! $schema['ready']) {
+            $query->whereRaw('1 = 0');
+
+            return $schema;
         }
 
-        return $query
+        $query
             ->where(function (Builder $domain) use ($alias, $explicitLegacy): void {
                 $domain->where($alias.'.security_domain', 'LEGACY_CTW');
                 if (! $explicitLegacy) {
@@ -28,9 +44,12 @@ final class LegacyEvidenceEligibility
             ->whereNotExists(fn (Builder $binding) => $binding->selectRaw('1')
                 ->from('plan_document_bindings as binding')
                 ->whereColumn('binding.document_id', $alias.'.id'));
+
+        return $schema;
     }
 
-    private static function ready(): bool
+    /** @return array{ready: bool, custodyColumns: int} */
+    private static function schemaState(): array
     {
         try {
             // One fixed PostgreSQL probe, even for a large archive. Resolve
@@ -48,12 +67,21 @@ final class LegacyEvidenceEligibility
                         AND attname = 'document_id' AND attnum > 0 AND NOT attisdropped)
                     AND has_table_privilege(to_regclass('plan_document_origin_receipts'), 'SELECT')
                     AND has_table_privilege(to_regclass('plan_document_bindings'), 'SELECT')
-                    THEN 1 ELSE 0 END AS ready
+                    THEN 1 ELSE 0 END AS ready,
+                    (SELECT COUNT(*) FROM pg_attribute
+                        WHERE attrelid = to_regclass('documents')
+                        AND attname IN ('custody_mode', 'custody_operation_id')
+                        AND attnum > 0 AND NOT attisdropped) AS custody_columns
                 SQL);
 
-            return (int) ($schema->ready ?? 0) === 1;
+            $custodyColumns = (int) ($schema->custody_columns ?? -1);
+
+            return [
+                'ready' => (int) ($schema->ready ?? 0) === 1 && in_array($custodyColumns, [0, 2], true),
+                'custodyColumns' => $custodyColumns,
+            ];
         } catch (Throwable) {
-            return false;
+            return ['ready' => false, 'custodyColumns' => -1];
         }
     }
 }

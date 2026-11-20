@@ -30,6 +30,19 @@
             <exclude>tests/Feature/TravelOrderRepresentativeRoleTest.php</exclude>
             <exclude>tests/Feature/TravelOrderWorkspaceTest.php</exclude>
             <exclude>tests/Feature/WorkforceShowcasePersonaTest.php</exclude>
+            <!-- Real-role tests must run on their dedicated provisioned PG16 clusters. -->
+            <exclude>tests/Feature/LegacyCustodyFoundationTest.php</exclude>
+            <exclude>tests/Feature/LegacyCustodyG2BTravelOrderCommandTest.php</exclude>
+            <exclude>tests/Feature/LegacyCustodyG2BTransactionCorrespondenceCommandTest.php</exclude>
+            <exclude>tests/Feature/LegacyCustodyK2ReconciliationTest.php</exclude>
+            <exclude>tests/Feature/LegacyCustodyG3EgressAndWatermarkTest.php</exclude>
+        </testsuite>
+        <testsuite name="N03RealRoles">
+            <file>tests/Feature/LegacyCustodyFoundationTest.php</file>
+            <file>tests/Feature/LegacyCustodyG2BTravelOrderCommandTest.php</file>
+            <file>tests/Feature/LegacyCustodyG2BTransactionCorrespondenceCommandTest.php</file>
+            <file>tests/Feature/LegacyCustodyK2ReconciliationTest.php</file>
+            <file>tests/Feature/LegacyCustodyG3EgressAndWatermarkTest.php</file>
         </testsuite>
         <testsuite name="DeferredAndSpecialized">
             <file>tests/Feature/H4SystemAdminActionCompletenessTest.php</file>

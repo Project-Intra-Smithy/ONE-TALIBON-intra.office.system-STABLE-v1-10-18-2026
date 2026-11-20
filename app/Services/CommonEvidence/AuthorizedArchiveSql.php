@@ -18,7 +18,6 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 /**
@@ -291,9 +290,13 @@ final readonly class AuthorizedArchiveSql
         // Quarantine before list, selected detail, counts, facets, search,
         // activity, or any eligible-ID projection. Non-PDF legacy rows
         // remain visible; preview eligibility is a separate presentation hint.
-        LegacyEvidenceEligibility::restrict($catalog, 'd', $explicitLegacy);
+        $schema = LegacyEvidenceEligibility::restrictWithSchema($catalog, 'd', $explicitLegacy);
         if ($includePreview) {
-            if ($this->hasRegistryCustodyColumns()) {
+            // An empty result still has its SQL parsed by PostgreSQL. Never
+            // reference absent provenance or partially installed custody columns.
+            if (! $schema['ready']) {
+                $catalog->selectRaw('0 AS preview_eligible');
+            } elseif ($schema['custodyColumns'] === 2) {
                 $registryPreviewReady = $this->registryPreviewReady() ? 1 : 0;
                 $catalog->selectRaw(
                     "CASE WHEN d.mime_type = 'application/pdf' "
@@ -322,16 +325,6 @@ final readonly class AuthorizedArchiveSql
         }
 
         return $catalog;
-    }
-
-    private function hasRegistryCustodyColumns(): bool
-    {
-        try {
-            return Schema::hasColumn('documents', 'custody_mode')
-                && Schema::hasColumn('documents', 'custody_operation_id');
-        } catch (\Throwable) {
-            return false;
-        }
     }
 
     private function registryPreviewReady(): bool
