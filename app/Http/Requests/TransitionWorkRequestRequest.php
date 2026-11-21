@@ -24,6 +24,7 @@ class TransitionWorkRequestRequest extends FormRequest
         $action = (string) $this->input('action');
 
         return match ($action) {
+            'close' => $user->can('close', $transaction),
             'assign' => $user->can('assign', $transaction),
             'approve', 'disapprove' => $user->can('mayorDecision', $transaction),
             'request_information' => $user->can('mayorDecision', $transaction)
@@ -57,7 +58,7 @@ class TransitionWorkRequestRequest extends FormRequest
                 ),
             ],
             'assigned_employee_id' => ['nullable', 'integer', 'exists:employees,id'],
-            'remarks' => ['nullable', 'string', 'max:2000'],
+            'remarks' => ['required_if:action,close', 'nullable', 'string', 'max:2000'],
             ...CoreEvidenceRules::rules(),
         ];
     }

@@ -10,6 +10,8 @@ final class TransactionCapabilities
 
     public const TRANSITION = 'transaction.transition';
 
+    public const CLOSE = 'transaction.close';
+
     public const ASSIGN = 'transaction.assign';
 
     public const MAYOR_DECISION = 'transaction.mayor_decision';
@@ -35,6 +37,7 @@ final class TransactionCapabilities
         ],
         'department_head' => [
             self::TRANSITION,
+            self::CLOSE,
             self::ASSIGN,
         ],
         'department_staff' => [

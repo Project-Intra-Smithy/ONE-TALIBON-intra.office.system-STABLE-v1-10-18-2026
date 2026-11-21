@@ -45,7 +45,7 @@ type Accountability = {
     dueAt?: string | null;
     completedAt?: string | null;
 };
-type Permissions = { canTransition: boolean; canMayorDecision: boolean; canAssign: boolean };
+type Permissions = { canTransition: boolean; canMayorDecision: boolean; canAssign: boolean; canClose: boolean };
 type LivePayload = {
     transaction: {
         status: string;
@@ -209,10 +209,18 @@ export default function Show({
                     </section>
                 )}
 
-                {(permissions.canTransition || permissions.canMayorDecision) && (
+                {(permissions.canTransition || permissions.canMayorDecision || permissions.canClose) && (
                     <section className="rounded-2xl border border-blue-100 bg-blue-50/60 p-4 sm:rounded-3xl sm:p-6 dark:bg-blue-950/40">
                         <div className="flex items-center gap-2 text-sm font-bold text-slate-950 sm:text-base dark:text-slate-100"><Send size={16} className="sm:h-[18px] sm:w-[18px]" /> Workflow actions</div>
-                        <textarea value={form.data.remarks} onChange={(e) => form.setData('remarks', e.target.value)} rows={2} className="mt-3 w-full rounded-xl border border-blue-200 bg-white px-3 py-2.5 text-[12px] sm:mt-4 sm:px-4 sm:py-3 sm:text-sm dark:bg-[#142236]" placeholder="Review note / routing remarks" />
+                        <textarea value={form.data.remarks} onChange={(e) => form.setData('remarks', e.target.value)} rows={2} className="mt-3 w-full rounded-xl border border-blue-200 bg-white px-3 py-2.5 text-[12px] sm:mt-4 sm:px-4 sm:py-3 sm:text-sm dark:bg-[#142236]" aria-label={permissions.canClose ? 'Completion outcome or routing remarks' : 'Review note / routing remarks'} placeholder={permissions.canClose ? 'Completion outcome required to close' : 'Review note / routing remarks'} />
+                        {(form.errors.remarks || form.errors.action) && (
+                            <p role="alert" className="mt-2 text-sm text-rose-700 dark:text-rose-300">{form.errors.remarks || form.errors.action}</p>
+                        )}
+                        {permissions.canClose && tx.status === 'for_review' && liveState !== 'expired' && (
+                            <button type="button" disabled={form.processing || !form.data.remarks.trim()} onClick={() => transition('close')} className="mt-3 rounded-lg bg-emerald-700 px-3 py-2 text-sm font-semibold text-white disabled:opacity-50">
+                                Close Work Request
+                            </button>
+                        )}
                         <div className="mt-3">
                             <EvidenceFields files={form.data.evidence} onChange={(files) => form.setData('evidence', files)} errors={form.errors as Record<string, string | undefined>} disabled={form.processing} label="Evidence for this workflow action" />
                         </div>
