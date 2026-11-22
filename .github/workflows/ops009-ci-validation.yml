@@ -73,7 +73,7 @@ jobs:
           git diff --exit-code "$frozen" HEAD -- app config resources routes database composer.json composer.lock package.json package-lock.json
           while IFS= read -r path; do
             case "$path" in
-              .github/workflows/ops009-ci-validation.yml|tests/Feature/OPS009C01SimultaneousCloseTest.php|tests/Feature/OPS009C02CustodyCloseTest.php|tests/Manual/ops009-c01-worker.php|tests/Manual/ops009-constraint-verify.sql|tests/Manual/ops009-legacy-bootstrap.php) ;;
+              .github/workflows/ops009-ci-validation.yml|tests/Feature/OPS009C01SimultaneousCloseTest.php|tests/Feature/OPS009C02CustodyCloseTest.php|tests/Manual/ops009-c01-worker.php|tests/Manual/ops009-constraint-verify.sql|tests/Manual/ops009-legacy-bootstrap.php|tests/Manual/ops009-registry-bootstrap.php) ;;
               *) echo "INVALID_FILE=$path"; exit 72;;
             esac
           done < <(git diff --name-only "$frozen" HEAD)
@@ -111,7 +111,8 @@ jobs:
         run: |
           set -euo pipefail
           php -l tests/Manual/ops009-legacy-bootstrap.php
-          php artisan test --bootstrap=tests/Manual/ops009-legacy-bootstrap.php tests/Feature/LegacyPdfPreviewTest.php tests/Feature/WorkRequests/OrdinaryWorkRequestClosureTest.php
+          php artisan test --bootstrap=tests/Manual/ops009-legacy-bootstrap.php tests/Feature/WorkRequests/OrdinaryWorkRequestClosureTest.php
+          php artisan test --bootstrap=tests/Manual/ops009-legacy-bootstrap.php tests/Feature/LegacyPdfPreviewTest.php --filter='^(?!.*actual_partial_custody_columns_quarantine_metadata_and_both_byte_routes)'
       - name: C01 actual competing PostgreSQL sessions and event counts
         if: matrix.phase == 'c01'
         run: |
@@ -166,6 +167,14 @@ jobs:
           test "$before" != "$after"
           printf 'OPS009_CONSTRAINT_AFTER=%s\n' "$after"
           psql -X -v ON_ERROR_STOP=1 -f tests/Manual/ops009-constraint-verify.sql
+      - name: N03 registry partial-column PDF quarantine regression
+        if: matrix.phase == 'c02'
+        env:
+          OPS009_REGISTRY_BASELINE: '1'
+        run: |
+          set -euo pipefail
+          php -l tests/Manual/ops009-registry-bootstrap.php
+          php artisan test --bootstrap=tests/Manual/ops009-registry-bootstrap.php tests/Feature/LegacyPdfPreviewTest.php --filter=test_actual_partial_custody_columns_quarantine_metadata_and_both_byte_routes
       - name: C02 actual custody command and notification parity
         if: matrix.phase == 'c02'
         env:
