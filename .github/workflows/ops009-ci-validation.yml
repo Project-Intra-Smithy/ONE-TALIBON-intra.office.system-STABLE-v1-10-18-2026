@@ -65,7 +65,7 @@ jobs:
       - name: Prove isolated identity and source-only freeze
         run: |
           set -euo pipefail
-          frozen=0dc43665d4e4c47c1ba83ce8f6d543afba7c18de
+          frozen=e41da0ce03e468c309bc73aed8baf737207cf2eb
           test "$GITHUB_ACTIONS" = true
           test "$GITHUB_REF_NAME" = candidate/ops009-ci-proof-r1
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
@@ -146,6 +146,7 @@ jobs:
         run: |
           set -euo pipefail
           migration=database/migrations/2026_11_22_150000_ops009_close_command_compatibility.php
+          php -l "$migration"
           before="$(psql -XAtc "SELECT pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid='legacy_custody.operations'::regclass AND conname='operations_check'")"
           test -n "$before"
           printf 'OPS009_CONSTRAINT_BEFORE=%s\n' "$before"
