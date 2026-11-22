@@ -65,7 +65,7 @@ jobs:
       - name: Prove isolated identity and source-only freeze
         run: |
           set -euo pipefail
-          frozen=78aab0cd776c476759885a36453cd59ec865bba9
+          frozen=6b4db9d83cbd46322fbb059a98043aa7d10a3acb
           test "$GITHUB_ACTIONS" = true
           test "$GITHUB_REF_NAME" = candidate/ops009-ci-proof-r3
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
@@ -102,7 +102,8 @@ jobs:
             ! -name '2026_11_20_030000_create_legacy_custody_g3_g5_extensions.php' \
             ! -name '2026_11_22_150000_ops009_close_command_compatibility.php' \
             ! -name '2026_11_22_170000_ops009_g2b_close_audit_compatibility.php' \
-            ! -name '2026_11_22_190000_ops009_r3_close_audit_provenance.php' | sort)
+            ! -name '2026_11_22_190000_ops009_r3_close_audit_provenance.php' \
+            ! -name '2026_11_22_191000_ops009_r3_origin_notice_effect.php' | sort)
           args=()
           for f in "${baseline[@]}"; do args+=("--path=$f"); done
           php artisan migrate --force --no-interaction "${args[@]}"
@@ -215,6 +216,19 @@ jobs:
           grep -q 'OPS009 R3 audit provenance' /tmp/ops009-r3-unleased.txt
           php artisan migrate --force --no-interaction --path="$migration"
           psql -XAtc "SELECT 'OPS009_R3_TRIGGER='||tgname||':deferrable='||tgdeferrable||':initially_deferred='||tginitdeferred FROM pg_trigger WHERE tgname='ops009_close_audit_integrity'"
+      - name: R3 guarded same-connection origin notice capability
+        if: matrix.phase == 'c02'
+        run: |
+          set -euo pipefail
+          migration=database/migrations/2026_11_22_191000_ops009_r3_origin_notice_effect.php
+          php -l "$migration"
+          if N03_DISPOSABLE_LEASE=UNLEASED php artisan migrate --force --no-interaction --path="$migration" > /tmp/ops009-r3-notice-unleased.txt 2>&1; then
+            echo 'R3_UNLEASED_NOTICE_ACCEPTED'
+            exit 78
+          fi
+          grep -q 'OPS009 R3 origin notice' /tmp/ops009-r3-notice-unleased.txt
+          php artisan migrate --force --no-interaction --path="$migration"
+          psql -XAtc "SELECT 'OPS009_R3_NOTICE_GUARD='||tgname||':enabled='||tgenabled FROM pg_trigger WHERE tgname='ops009_origin_close_notice_guard'"
       - name: N03 registry partial-column PDF quarantine regression
         if: matrix.phase == 'c02'
         env:

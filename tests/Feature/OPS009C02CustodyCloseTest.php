@@ -298,6 +298,98 @@ final class OPS009C02CustodyCloseTest extends TestCase
         $this->assertStringNotContainsString('Custody case completed.', $notice[0]->message);
     }
 
+    public function test_committed_close_rejects_duplicate_unpaired_audit_and_forged_notice(): void
+    {
+        $tx = $this->makeReviewedTransaction('For Information');
+        $op = $this->reserveAndStage($this->head);
+        $result = $this->executeClose($op, $tx, $this->head);
+        $this->assertSame('COMMITTED', $result->outcome);
+        $this->assertSame(1, (int) DB::table('ops009_close_audit_bindings')
+            ->where('operation_id', $op['operation_id'])
+            ->where('transaction_id', $tx->id)
+            ->where('transaction_event_id', $result->eventId)->count());
+
+        $connection = DB::connection('n03_command');
+        $connection->beginTransaction();
+        try {
+            app(AuditLogger::class)->recordOnConnection(
+                connection: $connection,
+                actorUserId: (int) $this->head->id,
+                actorDepartmentId: (int) $this->receivingOffice->id,
+                action: 'transaction.close',
+                summary: 'Synthetic duplicate after a committed close',
+                correlationId: $op['correlation_id'],
+                entityType: WorkflowTransaction::class,
+                entityId: (int) $tx->id,
+            );
+            $connection->statement('SET CONSTRAINTS ops009_close_audit_integrity IMMEDIATE');
+            $this->fail('Duplicate close audit was not rejected by PostgreSQL.');
+        } catch (QueryException $e) {
+            $this->assertSame('23514', (string) $e->getCode());
+        } finally {
+            $connection->rollBack();
+        }
+        $this->assertSame(1, $this->auditCount((int) $tx->id));
+
+        $valid = [
+            'user_id' => (int) $this->origin->id,
+            'department_id' => (int) $this->originOffice->id,
+            'event_key' => 'transaction-event-'.$result->eventId,
+            'source_domain' => 'transaction',
+            'source_type' => WorkflowTransaction::class,
+            'source_id' => (int) $tx->id,
+            'priority' => 'action_required',
+            'title' => 'Transaction completed',
+            'message' => $tx->reference_no.' · '.$tx->title,
+            'action_url' => '/transactions/'.$tx->id,
+            'requires_acknowledgement' => false,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ];
+        $probes = [
+            'foreign-recipient' => array_replace($valid, ['user_id' => (int) $this->foreignHead->id]),
+            'forged-event-key' => array_replace($valid, ['event_key' => 'transaction-event-999999999']),
+            'forged-source' => array_replace($valid, ['source_id' => (int) $tx->id + 100000]),
+            'forged-title' => array_replace($valid, ['title' => 'Private text injected']),
+            'forged-department' => array_replace($valid, ['department_id' => (int) $this->foreignOffice->id]),
+        ];
+        $denied = [];
+        foreach ($probes as $name => $payload) {
+            $connection->beginTransaction();
+            try {
+                $connection->table('platform_notifications')->insert($payload);
+                $this->fail('Forged origin notice accepted: '.$name);
+            } catch (QueryException $e) {
+                $this->assertSame('23514', (string) $e->getCode(), $name);
+                $denied[] = $name;
+            } finally {
+                $connection->rollBack();
+            }
+        }
+        $this->assertCount(count($probes), $denied);
+        $this->assertSame(1, (int) DB::table('platform_notifications')
+            ->where('event_key', $valid['event_key'])
+            ->where('user_id', (int) $this->origin->id)->count());
+
+        // The existing (user_id,event_key) constraint rejects a duplicate,
+        // independently of the idempotent ON CONFLICT used by the real effect.
+        $connection->beginTransaction();
+        try {
+            $connection->table('platform_notifications')->insert($valid);
+            $this->fail('Duplicate notice unexpectedly inserted.');
+        } catch (QueryException $e) {
+            $this->assertSame('23505', (string) $e->getCode());
+        } finally {
+            $connection->rollBack();
+        }
+        fwrite(STDOUT, 'OPS009_R3_DIRECT_NEGATIVES='.json_encode([
+            'audit_duplicate' => '23514',
+            'forged_notices_denied' => $denied,
+            'notice_duplicate' => '23505',
+            'valid_origin_notice_count' => 1,
+        ], JSON_THROW_ON_ERROR)."\n");
+    }
+
     public function test_denied_actors_classifications_missing_outcome_and_replay_have_no_side_effects(): void
     {
         $workflow = app(TransactionWorkflowService::class);
