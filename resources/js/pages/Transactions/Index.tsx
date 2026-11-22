@@ -23,11 +23,12 @@ type Props = {
         hasOfficeScope: boolean;
     };
     staffWorkload: StaffWorkload[];
+    originDeliveryQueueAvailable?: boolean;
 };
 
 const humanize = (value: string) => value.replaceAll('_', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
 
-export default function Index({ records, filters, scopeGroups, filterOptions, experience, staffWorkload }: Props) {
+export default function Index({ records, filters, scopeGroups, filterOptions, experience, staffWorkload, originDeliveryQueueAvailable = false }: Props) {
     const currentView = filters.view || 'all';
     const [search, setSearch] = useState(filters.search);
     const [status, setStatus] = useState(filters.status);
@@ -108,7 +109,15 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
                     <span><span className="font-semibold text-slate-700 dark:text-slate-200">{currentTitle}</span> · {currentQueue?.count ?? records.total} item{(currentQueue?.count ?? records.total) === 1 ? '' : 's'}</span>
                 </div>
 
-                <h2 className="mt-5 text-base font-bold text-slate-900 dark:text-white">Work Request queues</h2>
+                <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+                    <h2 className="text-base font-bold text-slate-900 dark:text-white">Work Request queues</h2>
+                    {originDeliveryQueueAvailable && (
+                        <Link href="/work-requests/origin-delivery-exceptions"
+                            className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-900 hover:bg-amber-100 dark:border-amber-700 dark:bg-amber-950/40 dark:text-amber-200">
+                            Origin notice exceptions
+                        </Link>
+                    )}
+                </div>
                 <WorkScopeTabs groups={requestScopeGroups} currentView={currentView} onSelect={selectView} />
 
                 <form onSubmit={applyFilters}>
