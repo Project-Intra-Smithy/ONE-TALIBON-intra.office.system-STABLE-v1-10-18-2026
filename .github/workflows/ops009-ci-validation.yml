@@ -73,7 +73,7 @@ jobs:
           git diff --exit-code "$frozen" HEAD -- app config resources routes database composer.json composer.lock package.json package-lock.json
           while IFS= read -r path; do
             case "$path" in
-              .github/workflows/ops009-ci-validation.yml|tests/Feature/OPS009C01SimultaneousCloseTest.php|tests/Feature/OPS009C02CustodyCloseTest.php|tests/Manual/ops009-c01-worker.php|tests/Manual/ops009-constraint-verify.sql) ;;
+              .github/workflows/ops009-ci-validation.yml|tests/Feature/OPS009C01SimultaneousCloseTest.php|tests/Feature/OPS009C02CustodyCloseTest.php|tests/Manual/ops009-c01-worker.php|tests/Manual/ops009-constraint-verify.sql|tests/Manual/ops009-legacy-bootstrap.php) ;;
               *) echo "INVALID_FILE=$path"; exit 72;;
             esac
           done < <(git diff --name-only "$frozen" HEAD)
@@ -104,16 +104,19 @@ jobs:
           args=()
           for f in "${baseline[@]}"; do args+=("--path=$f"); done
           php artisan migrate --force --no-interaction "${args[@]}"
+      - name: Legacy-only PDF and HTTP closure regressions on verified baseline
+        if: matrix.phase == 'c01'
+        env:
+          OPS009_LEGACY_BASELINE: '1'
+        run: |
+          set -euo pipefail
+          php -l tests/Manual/ops009-legacy-bootstrap.php
+          php artisan test --bootstrap=tests/Manual/ops009-legacy-bootstrap.php tests/Feature/LegacyPdfPreviewTest.php tests/Feature/WorkRequests/OrdinaryWorkRequestClosureTest.php
       - name: C01 actual competing PostgreSQL sessions and event counts
         if: matrix.phase == 'c01'
         run: |
           set -euo pipefail
           php artisan test tests/Feature/OPS009C01SimultaneousCloseTest.php --group=ops009-c01
-      - name: Legacy PDF and authenticated HTTP close regressions
-        if: matrix.phase == 'c01'
-        run: |
-          set -euo pipefail
-          php artisan test tests/Feature/LegacyPdfPreviewTest.php tests/Feature/WorkRequests/OrdinaryWorkRequestClosureTest.php
       - name: C02 provision protected synthetic N03 roles
         if: matrix.phase == 'c02'
         run: |
