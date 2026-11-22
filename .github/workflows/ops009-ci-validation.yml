@@ -1,9 +1,9 @@
-name: OPS009 isolated C01 C02 proof
+name: Unified R2 isolated integrated-SHA proof
 
 on:
   push:
     branches:
-      - candidate/ops009-ci-proof-r3
+      - candidate/r2-unified-integration-ci-proof-r1
 
 permissions:
   contents: read
@@ -65,9 +65,9 @@ jobs:
       - name: Prove isolated identity and source-only freeze
         run: |
           set -euo pipefail
-          frozen=e60fbb8986be5f77338daace230da72e5b79d031
+          frozen=813340330e5f37b3c750bc37df115f89afc59bc0
           test "$GITHUB_ACTIONS" = true
-          test "$GITHUB_REF_NAME" = candidate/ops009-ci-proof-r3
+          test "$GITHUB_REF_NAME" = candidate/r2-unified-integration-ci-proof-r1
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           test "$(git merge-base "$frozen" HEAD)" = "$frozen"
           git diff --exit-code "$frozen" HEAD -- app config resources routes database composer.json composer.lock package.json package-lock.json
@@ -139,15 +139,18 @@ jobs:
           php artisan migrate --force --no-interaction --path=database/migrations/2026_11_19_200000_create_legacy_custody_foundation.php
           psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -v N03_STAGE_PASSWORD="$N03_STAGE_PASSWORD" -v N03_COMMAND_PASSWORD="$N03_COMMAND_PASSWORD" -v N03_RECONCILE_PASSWORD="$N03_RECONCILE_PASSWORD" -f tests/Manual/sql/N03_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
           psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+          N03_ROLE_SUITE=1 php artisan test tests/Feature/LegacyCustodyFoundationTest.php --group=n03-role --log-junit=storage/logs/unified-foundation.xml
           php artisan migrate --force --no-interaction --path=database/migrations/2026_11_20_010000_extend_legacy_custody_g2b_command_provenance.php
           psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -f tests/Manual/sql/N03_G2B_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
           psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_G2B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
           php artisan migrate --force --no-interaction --path=database/migrations/2026_11_20_020000_create_legacy_custody_k2_tombstones.php
           psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -f tests/Manual/sql/N03_K2_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
           psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_K2_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+          N03_K2_ROLE_SUITE=1 php artisan test tests/Feature/LegacyCustodyK2ReconciliationTest.php --group=n03-k2-role --log-junit=storage/logs/unified-k2.xml
           php artisan migrate --force --no-interaction --path=database/migrations/2026_11_20_030000_create_legacy_custody_g3_g5_extensions.php
           psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -v N03_READER_PASSWORD="$N03_READER_PASSWORD" -f tests/Manual/sql/N03_G3_DISPOSABLE_PG16_READER_ROLE_INSTALL_R1.sql
           psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_G3_DISPOSABLE_PG16_READER_ROLE_VERIFY_R1.sql
+          N03_G3_ROLE_SUITE=1 php artisan test tests/Feature/LegacyCustodyG3EgressAndWatermarkTest.php --group=n03-g3-role --log-junit=storage/logs/unified-g3.xml
           psql -XAtc "SELECT 'OPS009_ROLE=' || rolname FROM pg_roles WHERE rolname='n03_command'"
       - name: Verify original policy, deny unleased execution, run guarded source migration and probe tuples
         if: matrix.phase == 'c02'
@@ -258,8 +261,16 @@ jobs:
           set -euo pipefail
           test -n "${N03_COMMAND_PASSWORD}"
           php artisan test tests/Feature/LegacyCustodyG2BTransactionCorrespondenceCommandTest.php --group=n03-g2b-role
+          php artisan test tests/Feature/LegacyCustodyG2BTravelOrderCommandTest.php --group=n03-g2b-role --log-junit=storage/logs/unified-g2b-travel.xml
       - name: Runner teardown receipt
         if: always()
         run: |
           printf 'OPS009_RUN_END phase=%s SHA=%s database=%s\n' '${{ matrix.phase }}' "$GITHUB_SHA" "$DB_DATABASE"
           echo 'POSTGRES_DISPOSABLE_SERVICE_CLEANUP=GITHUB_JOB_EXIT'
+      - name: Preserve original synthetic JUnit evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: unified-r2-${{ matrix.phase }}-${{ github.sha }}
+          path: storage/logs/*.xml
+          if-no-files-found: warn
