@@ -8,6 +8,7 @@ use App\Domain\Workflow\WorkflowDefinitionResolver;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\TransactionEvent;
+use App\Models\User;
 use App\Models\WorkflowTransaction;
 use App\Services\PlatformNotificationService;
 
@@ -118,13 +119,27 @@ final readonly class NotifyWorkflowTransactionMutation
         TransactionEvent $event,
         string $action,
     ): void {
+        // Non-N03 completion events (e.g. Mayor decisions) must never fan out
+        // to all employees in the origin office. No unverified designees exist.
         $office = $this->activeOffice($transaction->origin_department_id);
-        if (! $office) {
+        $recipient = $transaction->created_by_user_id
+            ? User::query()->with('employee')->find($transaction->created_by_user_id)
+            : null;
+        if (! $office || ! $recipient
+            || ! $recipient->is_active
+            || $recipient->account_status !== 'active'
+            || $recipient->suspended_at !== null
+            || ! $recipient->employee
+            || (int) $recipient->employee->department_id !== (int) $office->id
+            || $recipient->employee->employment_status !== 'active'
+            || $recipient->employee->separation_date !== null
+            || ! $recipient->can('view', $transaction)) {
             return;
         }
 
-        $this->notifications->notifyDepartment($office, [
+        $this->notifications->notifyUser($recipient, [
             'event_key' => 'transaction-event-'.$event->id,
+            'department_id' => $office->id,
             'source_domain' => 'transaction',
             'source_type' => WorkflowTransaction::class,
             'source_id' => $transaction->id,

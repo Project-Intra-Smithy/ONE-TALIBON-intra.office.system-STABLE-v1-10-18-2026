@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\User;
+use App\Services\Custody\WorkRequestN03CloseService;
 use App\Models\WorkflowTransaction;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,7 @@ final class TransactionEvidenceService
     public function __construct(
         private readonly TransactionWorkflowService $workflow,
         private readonly DocumentAttachmentService $attachments,
+        private readonly WorkRequestN03CloseService $n03Close,
     ) {}
 
     /** @param array<string, mixed> $data @param array<int, \Illuminate\Http\UploadedFile> $files */
@@ -54,6 +56,12 @@ final class TransactionEvidenceService
         ?string $remarks,
         array $files,
     ): WorkflowTransaction {
+        // Closing a Work Request is exclusively N03-backed, regardless of
+        // whether the user uploads supporting evidence with the action.
+        if ($action === 'close') {
+            return $this->n03Close->close($actor, $transaction, $remarks, $files);
+        }
+
         if ($files === []) {
             return $this->workflow->transition(
                 $actor,

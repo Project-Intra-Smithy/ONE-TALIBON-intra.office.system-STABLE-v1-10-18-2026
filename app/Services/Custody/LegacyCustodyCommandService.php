@@ -360,7 +360,7 @@ final class LegacyCustodyCommandService
             // validates recipient, event, audit, command and privacy text.
             // The existing ordinary Eloquent listener remains untouched.
             if ($produced->sourceKind === 'transaction' && $produced->eventAction === 'close') {
-                $connection->affectingStatement(<<<'SQL'
+                $notified = $connection->affectingStatement(<<<'SQL'
                     INSERT INTO public.platform_notifications
                         (user_id, department_id, event_key, source_domain, source_type,
                          source_id, priority, title, message, action_url,
@@ -374,7 +374,9 @@ final class LegacyCustodyCommandService
                            FALSE, now(), now()
                     FROM public.transactions tx
                     JOIN public.departments dep ON dep.id=tx.origin_department_id
-                    JOIN public.employees emp ON emp.department_id=dep.id
+                    JOIN public.employees emp
+                      ON emp.department_id=dep.id
+                     AND emp.user_id=tx.created_by_user_id
                     JOIN public.users usr ON usr.id=emp.user_id
                     JOIN public.ops009_close_audit_bindings binding ON binding.transaction_id=tx.id
                     JOIN legacy_custody.command_results cr ON cr.operation_id=binding.operation_id
@@ -388,6 +390,7 @@ final class LegacyCustodyCommandService
                       AND dep.is_active AND dep.is_routable
                       AND usr.is_active AND usr.account_status='active'
                       AND emp.employment_status='active'
+                      AND emp.separation_date IS NULL
                     ON CONFLICT (user_id,event_key) DO NOTHING
                     SQL, [
                     $produced->eventId,
@@ -395,6 +398,53 @@ final class LegacyCustodyCommandService
                     $produced->eventId,
                     $operationId,
                 ]);
+
+                if ($notified < 1) {
+                    // No broad office blast and no fabricated recipient.
+                    // Instead record exactly one immutable exception in the
+                    // SAME N03 command transaction, only if an actual eligible
+                    // origin-office Head can operate the restricted queue.
+                    $queued = $connection->affectingStatement(<<<'SQL'
+                        INSERT INTO public.ops009_origin_delivery_exceptions
+                            (operation_id, transaction_id, transaction_event_id, origin_department_id)
+                        SELECT CAST(? AS uuid), tx.id, ev.id, tx.origin_department_id
+                          FROM public.transactions tx
+                          JOIN public.transaction_events ev
+                            ON ev.transaction_id=tx.id AND ev.id=? AND ev.action='close'
+                          JOIN public.ops009_close_audit_bindings binding
+                            ON binding.transaction_id=tx.id
+                           AND binding.transaction_event_id=ev.id
+                           AND binding.operation_id=CAST(? AS uuid)
+                         WHERE tx.id=? AND tx.status='closed'
+                           AND EXISTS (
+                             SELECT 1
+                               FROM public.users head
+                               JOIN public.employees emp ON emp.user_id=head.id
+                               JOIN public.departments dep ON dep.id=emp.department_id
+                              WHERE emp.department_id=tx.origin_department_id
+                                AND head.role='department_head'
+                                AND head.is_active
+                                AND head.account_status='active'
+                                AND head.suspended_at IS NULL
+                                AND emp.employment_status='active'
+                                AND emp.separation_date IS NULL
+                                AND dep.is_active AND dep.is_routable
+                           )
+                        SQL, [
+                        $operationId,
+                        $produced->eventId,
+                        $operationId,
+                        $produced->sourceId,
+                    ]);
+
+                    // Without an actionable, verified queue custodian, neither
+                    // close, receipt nor exception is allowed to commit.
+                    if ($queued !== 1) {
+                        throw new CustodyViolationException(
+                            'No eligible origin recipient and no active authorized office escalation custodian; closure rolled back.'
+                        );
+                    }
+                }
             }
 
             $this->invokeCutPoint($cutPointHook, 'after_receipt', [

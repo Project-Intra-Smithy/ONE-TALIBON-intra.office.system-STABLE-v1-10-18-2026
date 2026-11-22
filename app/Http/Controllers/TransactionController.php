@@ -17,6 +17,7 @@ use App\Support\ValidatedListReturn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -28,10 +29,12 @@ class TransactionController extends Controller
     ): Response {
         $this->authorize('viewAny', WorkflowTransaction::class);
 
-        return Inertia::render(
-            'Transactions/Index',
-            $queue->workspace($request->user(), $request->validated()),
-        );
+        $workspace = $queue->workspace($request->user(), $request->validated());
+        $workspace['originDeliveryQueueAvailable'] = $request->user()->isRole('department_head')
+            && Schema::hasTable('ops009_origin_delivery_exceptions')
+            && Schema::hasTable('ops009_origin_delivery_exception_actions');
+
+        return Inertia::render('Transactions/Index', $workspace);
     }
 
     public function create(Request $request): Response

@@ -30,6 +30,7 @@ use App\Http\Controllers\Messaging\ListMessagesController;
 use App\Http\Controllers\Messaging\StoreMessageController;
 use App\Http\Controllers\NotificationFeedController;
 use App\Http\Controllers\OperationsMonitoringController;
+use App\Http\Controllers\OriginDeliveryExceptionController;
 use App\Http\Controllers\PlatformNotificationController;
 use App\Http\Controllers\PortalSearchController;
 use App\Http\Controllers\PropertyController;
@@ -160,6 +161,13 @@ Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
     Route::get('/notifications/feed', NotificationFeedController::class)->name('notifications.feed');
     Route::post('/notifications/{notification}/read', [PlatformNotificationController::class, 'markRead'])->name('notifications.read');
     Route::post('/notifications/{notification}/acknowledge', [PlatformNotificationController::class, 'acknowledge'])->name('notifications.acknowledge');
+
+    // Synthetic-approved origin-office delivery exception follow-up. Actual
+    // municipal owner/designations remain held pending HRMO/Records approval.
+    Route::get('/work-requests/origin-delivery-exceptions', [OriginDeliveryExceptionController::class, 'index'])
+        ->name('origin-delivery-exceptions.index');
+    Route::post('/work-requests/origin-delivery-exceptions/{exception}/actions', [OriginDeliveryExceptionController::class, 'act'])
+        ->middleware('throttle:30,1')->whereNumber('exception')->name('origin-delivery-exceptions.act');
 
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
     Route::get('/transactions/create', [TransactionController::class, 'create'])->name('transactions.create');

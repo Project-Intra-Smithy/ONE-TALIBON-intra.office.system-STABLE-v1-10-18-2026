@@ -120,6 +120,14 @@ class TransactionWorkflowService
         ?int $assignedEmployeeId = null,
         ?string $remarks = null,
     ): array {
+        // A normal Eloquent transaction has neither the N03 command receipt nor
+        // the same-transaction origin-delivery guarantee. Never close through it.
+        if ($action === 'close') {
+            throw ValidationException::withMessages([
+                'action' => 'Work Request completion requires the verified N03 custody path.',
+            ]);
+        }
+
         $this->authorizeTransition($actor, $transaction, $action);
 
         return DB::transaction(
@@ -666,6 +674,13 @@ class TransactionWorkflowService
         ?int $assignedEmployeeId,
         ?string $remarks,
     ): array {
+        // Defense in depth for callers already inside a legacy DB transaction.
+        if ($action === 'close') {
+            throw ValidationException::withMessages([
+                'action' => 'Work Request completion requires the verified N03 custody path.',
+            ]);
+        }
+
         $locked = WorkflowTransaction::query()->lockForUpdate()->findOrFail($transaction->id);
         $this->authorizeTransition($actor, $locked, $action);
         $definition = $this->definitions->resolve($locked);

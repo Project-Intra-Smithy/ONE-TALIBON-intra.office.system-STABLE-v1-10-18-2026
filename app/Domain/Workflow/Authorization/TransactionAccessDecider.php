@@ -54,10 +54,6 @@ final class TransactionAccessDecider
 
     private function canTransition(AuthorizationContext $context): bool
     {
-        if ($context->hasRole('system_admin')) {
-            return true;
-        }
-
         return $context->can(TransactionCapabilities::TRANSITION)
             && $context->hasResourceOfficeAuthority();
     }
@@ -77,20 +73,12 @@ final class TransactionAccessDecider
 
     private function canAssign(AuthorizationContext $context): bool
     {
-        if ($context->hasRole('system_admin')) {
-            return true;
-        }
-
         return $context->can(TransactionCapabilities::ASSIGN)
             && $context->hasResourceOfficeAuthority();
     }
 
     private function canMayorDecision(AuthorizationContext $context): bool
     {
-        if ($context->hasRole('system_admin')) {
-            return true;
-        }
-
         return $context->can(TransactionCapabilities::MAYOR_DECISION)
             && $context->actorOfficeCode === 'MAYOR'
             && $context->resourceOfficeCode === 'MAYOR';
