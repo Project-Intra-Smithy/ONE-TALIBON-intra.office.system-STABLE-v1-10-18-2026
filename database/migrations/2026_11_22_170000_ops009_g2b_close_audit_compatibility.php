@@ -171,9 +171,9 @@ END
 G2B_EXPECTED;
 
             if ($installed === null
-                || $installed->owner_name !== 'postgres'
-                || $installed->schema_owner !== 'postgres'
-                || $installed->audit_table_owner !== 'postgres'
+                || $installed->owner_name !== 'kirion_g1b_owner'
+                || $installed->schema_owner !== 'kirion_g1b_owner'
+                || $installed->audit_table_owner !== 'kirion_g1b_owner'
                 || (bool) $installed->security_definer
                 || $installed->volatility !== 'v'
                 || (int) $installed->argument_count !== 0
