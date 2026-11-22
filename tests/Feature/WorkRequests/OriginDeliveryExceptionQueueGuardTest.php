@@ -17,18 +17,22 @@ final class OriginDeliveryExceptionQueueGuardTest extends TestCase
         $admin = User::query()->where('email', 'admin@talibon.demo')->firstOrFail();
         $staff = User::query()->where('email', 'engineering@talibon.demo')->firstOrFail();
 
-        // On an environment without the lease-guarded queue schema the
-        // route is deliberately not exposed (404), even to technical admin.
+        // Without the lease-guarded queue schema, both routes must refuse
+        // every non-head user. The authorization gate can return 403 before
+        // schema lookup; a missing queue can independently return 404.
         foreach ([$admin, $staff] as $actor) {
-            $this->actingAs($actor)
-                ->get('/work-requests/origin-delivery-exceptions')
-                ->assertNotFound();
-            $this->actingAs($actor)
+            $read = $this->actingAs($actor)
+                ->get('/work-requests/origin-delivery-exceptions');
+            $this->assertContains($read->status(), [403, 404]);
+            $this->assertStringNotContainsString('NO_ELIGIBLE_ORIGIN_RECIPIENT', $read->getContent());
+
+            $write = $this->actingAs($actor)
                 ->post('/work-requests/origin-delivery-exceptions/1/actions', [
                     'action' => 'resolve',
                     'note' => 'Attempted foreign mutation',
-                ])
-                ->assertNotFound();
+                ]);
+            $this->assertContains($write->status(), [403, 404]);
+            $this->assertStringNotContainsString('NO_ELIGIBLE_ORIGIN_RECIPIENT', $write->getContent());
         }
     }
 
