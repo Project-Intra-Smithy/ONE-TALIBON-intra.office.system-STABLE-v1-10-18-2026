@@ -31,6 +31,7 @@ final readonly class ProducedSourceEvent
         public int $officeId,
         public string $correlationId,
         public string $classification = 'internal',
+        public ?int $auditId = null,
     ) {
         if (! in_array($this->sourceKind, self::SOURCE_KINDS, true)) {
             throw new CustodyViolationException("Unsupported custody source kind [{$this->sourceKind}].");
@@ -38,6 +39,10 @@ final readonly class ProducedSourceEvent
 
         if ($this->sourceId <= 0 || $this->eventId <= 0 || $this->actorUserId <= 0 || $this->officeId <= 0) {
             throw new CustodyViolationException('ProducedSourceEvent requires positive integer identifiers.');
+        }
+
+        if ($this->auditId !== null && $this->auditId <= 0) {
+            throw new CustodyViolationException('ProducedSourceEvent audit identifier must be positive.');
         }
 
         if ($this->eventAction === '') {
