@@ -81,7 +81,10 @@ return new class extends Migration
                     JOIN public.transactions tx ON tx.id=b.transaction_id
                     JOIN public.audit_logs audit ON audit.id=b.audit_id
                     JOIN public.departments dep ON dep.id=tx.origin_department_id
-                    JOIN public.employees emp ON emp.department_id=dep.id AND emp.user_id=NEW.user_id
+                    JOIN public.employees emp
+                      ON emp.department_id=dep.id
+                     AND emp.user_id=NEW.user_id
+                     AND emp.user_id=tx.created_by_user_id
                     JOIN public.users usr ON usr.id=NEW.user_id
                     WHERE cr.source_kind='transaction' AND cr.event_action='close'
                       AND cr.source_id=tx.id AND cr.transaction_event_id=ev.id
@@ -98,6 +101,7 @@ return new class extends Migration
                       AND audit.correlation_id=o.correlation_id
                       AND usr.is_active AND usr.account_status='active'
                       AND emp.employment_status='active'
+                      AND emp.separation_date IS NULL
                       AND dep.is_active AND dep.is_routable
                       AND NEW.department_id=dep.id
                       AND NEW.event_key='transaction-event-'||ev.id::text
