@@ -4,7 +4,7 @@
 -- but no custody rows, authorization records, or persistent tables are altered.
 BEGIN;
 CREATE TEMP TABLE ops009_constraint_probe
-    (LIKE legacy_custody.operations INCLUDING CONSTRAINTS) ON COMMIT DROP;
+    (LIKE legacy_custody.operations INCLUDING CONSTRAINTS INCLUDING DEFAULTS) ON COMMIT DROP;
 
 DO $ops009$
 DECLARE
