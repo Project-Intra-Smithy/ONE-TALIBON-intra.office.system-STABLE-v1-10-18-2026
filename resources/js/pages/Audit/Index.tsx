@@ -6,12 +6,26 @@ import PageHeader from '../../components/PageHeader';
 import AppLayout from '../../layouts/AppLayout';
 
 type Department = { id: number; name: string; short_name?: string | null };
-type Event = { id: number; action: string; outcome: string; summary?: string | null; created_at: string; actor?: { name: string } | null; actor_department?: Department | null };
+type SourceReference = { kind: 'transaction' | 'document'; reference: string; href: string };
+type Event = { id: number; action: string; outcome: string; summary?: string | null; created_at: string; actor?: { name: string } | null; actor_department?: Department | null; source_reference: SourceReference | null };
 type Props = { events: Event[]; summary: { events24h: number; denied24h: number; events7d: number; distinctActors7d: number }; filters: { outcome?: string; action?: string; department_id?: string | number }; departments: Department[] };
 
 const eventLabel = (value: string) => value.replace(/[._-]+/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase());
 const departmentName = (event: Event) => event.actor_department?.short_name || event.actor_department?.name || 'Not recorded';
 const fieldClass = 'mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:focus:ring-blue-900';
+
+export function SourceReferenceLink({ source }: { source: SourceReference | null }) {
+    if (!source || typeof source.reference !== 'string' || !source.reference.trim()
+        || typeof source.href !== 'string'
+        || !(source.kind === 'transaction' && /^\/transactions\/[1-9][0-9]*$/.test(source.href)
+            || source.kind === 'document' && /^\/documents\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/preview$/i.test(source.href))) return null;
+
+    const pdf = source.kind === 'document';
+    return <a href={source.href} target={pdf ? '_blank' : undefined} rel={pdf ? 'noopener noreferrer' : undefined}
+        className="mt-2 inline-block max-w-full break-all rounded px-1 py-1 text-sm font-semibold text-blue-700 underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:text-blue-300">
+        {pdf ? 'View PDF' : 'View source'}: {source.reference}{pdf && <span className="sr-only"> (opens in a new tab)</span>}
+    </a>;
+}
 
 export default function Index({ events, summary, filters, departments }: Props) {
     const [outcome, setOutcome] = useState(String(filters.outcome || ''));
@@ -60,6 +74,7 @@ export default function Index({ events, summary, filters, departments }: Props) 
                         </div>
                         <p className="mt-1.5 break-words text-[13px] leading-5 text-slate-600 dark:text-slate-300 sm:text-xs">{event.summary || 'No additional event summary was recorded.'}</p>
                         <div className="mt-2 break-all font-mono text-xs text-slate-400 dark:text-slate-400">Event code: {event.action}</div>
+                        <SourceReferenceLink source={event.source_reference} />
                     </div>
                     <dl className="grid grid-cols-2 gap-3 text-xs lg:grid-cols-1">
                         <div className="min-w-0"><dt className="font-bold uppercase tracking-wide text-slate-400 dark:text-slate-400">Actor</dt><dd className="mt-0.5 break-words font-semibold text-slate-700 dark:text-slate-200">{event.actor?.name || 'System'}</dd></div>
