@@ -9,6 +9,7 @@ use App\Models\Employee;
 use App\Models\TransactionEvent;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
+use Illuminate\Support\Str;
 
 final class TransactionLiveQuery
 {
@@ -31,10 +32,14 @@ final class TransactionLiveQuery
 
         $definition = $this->definitions->resolve($transaction);
         $terminal = $definition->isTerminal($transaction->status);
+        // The UI must not advertise a working close button when N03's
+        // explicit namespace/epoch are not yet configured or authorized.
+        $n03Ready = Str::isUuid((string) config('work_requests.n03_namespace_id', ''))
+            && (int) config('work_requests.n03_epoch', 0) > 0;
         $permissions = [
             'canTransition' => ! $terminal && $actor->can('transition', $transaction),
             'canMayorDecision' => ! $terminal && $actor->can('mayorDecision', $transaction),
-            'canClose' => ! $terminal && $actor->can('close', $transaction),
+            'canClose' => $n03Ready && ! $terminal && $actor->can('close', $transaction),
             'canAssign' => ! $terminal && $actor->can('assign', $transaction),
         ];
 
