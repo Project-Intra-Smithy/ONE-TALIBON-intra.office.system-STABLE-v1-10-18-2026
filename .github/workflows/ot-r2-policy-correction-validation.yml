@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        phase: [c02]
+        phase: [c02, legacy]
     env:
       APP_ENV: testing
       APP_DEBUG: 'false'
@@ -98,16 +98,17 @@ jobs:
           args=()
           for f in "${baseline[@]}"; do args+=("--path=$f"); done
           php artisan migrate --force --no-interaction "${args[@]}"
-      - name: Legacy-only PDF and HTTP closure regressions on verified baseline
-        if: matrix.phase == 'c01'
+      - name: Legacy baseline role, workflow HTTP and exception queue negative regressions
+        if: matrix.phase == 'legacy'
         env:
           OPS009_LEGACY_BASELINE: '1'
         run: |
           set -euo pipefail
           php -l tests/Manual/ops009-legacy-bootstrap.php
-          php artisan test --bootstrap=tests/Manual/ops009-legacy-bootstrap.php tests/Feature/WorkRequests/OrdinaryWorkRequestClosureTest.php
-          php artisan test --bootstrap=tests/Manual/ops009-legacy-bootstrap.php tests/Feature/LegacyPdfPreviewTest.php --filter='^(?!.*actual_partial_custody_columns_quarantine_metadata_and_both_byte_routes)'
-          php artisan test --bootstrap=tests/Manual/ops009-legacy-bootstrap.php tests/Feature/DocumentAccessPrecedenceTest.php
+          php artisan test --bootstrap=tests/Manual/ops009-legacy-bootstrap.php \
+            tests/Feature/TransactionAuthorizationNormalizationTest.php \
+            tests/Feature/WorkRequests/OrdinaryWorkRequestClosureTest.php \
+            tests/Feature/WorkRequests/OriginDeliveryExceptionQueueGuardTest.php
       - name: C01 actual competing PostgreSQL sessions and event counts
         if: matrix.phase == 'c01'
         run: |
