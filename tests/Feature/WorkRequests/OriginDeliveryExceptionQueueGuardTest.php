@@ -17,16 +17,18 @@ final class OriginDeliveryExceptionQueueGuardTest extends TestCase
         $admin = User::query()->where('email', 'admin@talibon.demo')->firstOrFail();
         $staff = User::query()->where('email', 'engineering@talibon.demo')->firstOrFail();
 
+        // On an environment without the lease-guarded queue schema the
+        // route is deliberately not exposed (404), even to technical admin.
         foreach ([$admin, $staff] as $actor) {
             $this->actingAs($actor)
                 ->get('/work-requests/origin-delivery-exceptions')
-                ->assertForbidden();
+                ->assertNotFound();
             $this->actingAs($actor)
                 ->post('/work-requests/origin-delivery-exceptions/1/actions', [
                     'action' => 'resolve',
                     'note' => 'Attempted foreign mutation',
                 ])
-                ->assertForbidden();
+                ->assertNotFound();
         }
     }
 
