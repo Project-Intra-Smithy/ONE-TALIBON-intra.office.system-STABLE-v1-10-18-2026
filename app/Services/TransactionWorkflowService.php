@@ -385,7 +385,7 @@ class TransactionWorkflowService
             'created_at' => $timestamp,
         ]);
 
-        ($this->audit ?? app(AuditLogger::class))->recordOnConnection(
+        $auditId = ($this->audit ?? app(AuditLogger::class))->recordOnConnection(
             connection: $connection,
             actorUserId: $actor->userId,
             actorDepartmentId: $actor->officeId,
@@ -410,6 +410,7 @@ class TransactionWorkflowService
             actorUserId: $actor->userId,
             officeId: $actor->officeId,
             correlationId: $correlationId,
+            auditId: $action === 'close' ? $auditId : null,
         );
     }
 
