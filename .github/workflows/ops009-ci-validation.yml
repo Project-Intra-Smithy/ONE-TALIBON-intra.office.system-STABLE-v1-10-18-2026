@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   proof:
-    name: OPS009 ${{ matrix.phase }
+    name: OPS009 ${{ matrix.phase }}
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     strategy:
@@ -101,8 +101,8 @@ jobs:
             ! -name '2026_11_20_020000_create_legacy_custody_k2_tombstones.php' \
             ! -name '2026_11_20_030000_create_legacy_custody_g3_g5_extensions.php' | sort)
           args=()
-          for f in "${baseline[@]"; do args+=("--path=$f"); done
-          php artisan migrate --force --no-interaction "${args[@]"
+          for f in "${baseline[@]}"; do args+=("--path=$f"); done
+          php artisan migrate --force --no-interaction "${args[@]}"
       - name: C01 actual competing PostgreSQL sessions and event counts
         if: matrix.phase == 'c01'
         run: |
@@ -148,10 +148,10 @@ jobs:
           N03_G2B_ROLE_SUITE: '1'
         run: |
           set -euo pipefail
-          test -n "${N03_COMMAND_PASSWORD"
+          test -n "${N03_COMMAND_PASSWORD}"
           php artisan test tests/Feature/LegacyCustodyG2BTransactionCorrespondenceCommandTest.php --group=n03-g2b-role
       - name: Runner teardown receipt
         if: always()
         run: |
-          printf 'OPS009_RUN_END phase=%s SHA=%s database=%s\n' '${{ matrix.phase }' "$GITHUB_SHA" "$DB_DATABASE"
+          printf 'OPS009_RUN_END phase=%s SHA=%s database=%s\n' '${{ matrix.phase }}' "$GITHUB_SHA" "$DB_DATABASE"
           echo 'POSTGRES_DISPOSABLE_SERVICE_CLEANUP=GITHUB_JOB_EXIT'
