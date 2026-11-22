@@ -57,9 +57,9 @@ class TransactionAuthorizationNormalizationTest extends TestCase
         $transaction = $this->transaction($engineering, $budget);
 
         $this->assertTrue(Gate::forUser($admin)->allows('view', $transaction));
-        $this->assertTrue(Gate::forUser($admin)->allows('transition', $transaction));
-        $this->assertTrue(Gate::forUser($admin)->allows('assign', $transaction));
-        $this->assertTrue(Gate::forUser($admin)->allows('mayorDecision', $transaction));
+        $this->assertFalse(Gate::forUser($admin)->allows('transition', $transaction));
+        $this->assertFalse(Gate::forUser($admin)->allows('assign', $transaction));
+        $this->assertFalse(Gate::forUser($admin)->allows('mayorDecision', $transaction));
 
         $this->assertTrue(Gate::forUser($engineering)->allows('view', $transaction));
         $this->assertFalse(Gate::forUser($engineering)->allows('transition', $transaction));
