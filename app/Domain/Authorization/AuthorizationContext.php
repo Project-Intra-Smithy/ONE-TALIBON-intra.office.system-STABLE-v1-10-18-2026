@@ -24,6 +24,7 @@ final readonly class AuthorizationContext
         public ?string $classification,
         public ?string $workflowState,
         public string $requestedAction,
+        public ?string $actionRequired = null,
     ) {
     }
 

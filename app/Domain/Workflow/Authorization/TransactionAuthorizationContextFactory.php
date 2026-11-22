@@ -42,6 +42,7 @@ final readonly class TransactionAuthorizationContextFactory
             classification: $this->classification($transaction),
             workflowState: $transaction?->status,
             requestedAction: $requestedAction,
+            actionRequired: $transaction?->action_required,
         );
     }
 

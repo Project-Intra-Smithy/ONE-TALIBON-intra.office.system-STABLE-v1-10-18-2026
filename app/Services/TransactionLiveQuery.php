@@ -34,6 +34,7 @@ final class TransactionLiveQuery
         $permissions = [
             'canTransition' => ! $terminal && $actor->can('transition', $transaction),
             'canMayorDecision' => ! $terminal && $actor->can('mayorDecision', $transaction),
+            'canClose' => ! $terminal && $actor->can('close', $transaction),
             'canAssign' => ! $terminal && $actor->can('assign', $transaction),
         ];
 

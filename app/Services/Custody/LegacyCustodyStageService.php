@@ -32,6 +32,7 @@ final class LegacyCustodyStageService
             'mark_review',
             'approve',
             'disapprove',
+            'close',
         ],
         'correspondence_register' => ['register'],
         'correspondence_classify' => ['classify'],
