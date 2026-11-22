@@ -149,6 +149,22 @@ final class LegacyCustodyCommandService
                 'event_action' => $produced->eventAction,
             ]);
 
+            // Bind the previously emitted, unmarked close audit to the exact
+            // source event and reserved custody operation on this SAME
+            // n03_command transaction. PostgreSQL verifies the terminal
+            // receipt and all tuples with a deferred constraint at commit.
+            if ($produced->sourceKind === 'transaction' && $produced->eventAction === 'close') {
+                if ($produced->auditId === null) {
+                    throw new CustodyViolationException('OPS009 close requires an identified source audit.');
+                }
+                $connection->table('ops009_close_audit_bindings')->insert([
+                    'audit_id' => $produced->auditId,
+                    'transaction_event_id' => $produced->eventId,
+                    'transaction_id' => $produced->sourceId,
+                    'operation_id' => $operationId,
+                ]);
+            }
+
             $this->invokeCutPoint($cutPointHook, 'after_command_result', [
                 'operation_id' => $operationId,
                 'source_id' => $produced->sourceId,
@@ -337,6 +353,49 @@ final class LegacyCustodyCommandService
                 'actor_user_id' => $actorUserId,
                 'service_identity' => (string) $operation->service_identity,
             ]);
+
+            // R3 spike: create an origin-office notice only from this pinned
+            // n03_command transaction, AFTER the terminal receipt exists and
+            // BEFORE the injected after_receipt failure cutpoint. PostgreSQL
+            // validates recipient, event, audit, command and privacy text.
+            // The existing ordinary Eloquent listener remains untouched.
+            if ($produced->sourceKind === 'transaction' && $produced->eventAction === 'close') {
+                $connection->affectingStatement(<<<'SQL'
+                    INSERT INTO public.platform_notifications
+                        (user_id, department_id, event_key, source_domain, source_type,
+                         source_id, priority, title, message, action_url,
+                         requires_acknowledgement, created_at, updated_at)
+                    SELECT usr.id, tx.origin_department_id,
+                           'transaction-event-' || CAST(? AS text),
+                           'transaction', 'App\Models\WorkflowTransaction',
+                           tx.id, 'action_required', 'Transaction completed',
+                           tx.reference_no || ' · ' || tx.title,
+                           '/transactions/' || CAST(tx.id AS text),
+                           FALSE, now(), now()
+                    FROM public.transactions tx
+                    JOIN public.departments dep ON dep.id=tx.origin_department_id
+                    JOIN public.employees emp ON emp.department_id=dep.id
+                    JOIN public.users usr ON usr.id=emp.user_id
+                    JOIN public.ops009_close_audit_bindings binding ON binding.transaction_id=tx.id
+                    JOIN legacy_custody.command_results cr ON cr.operation_id=binding.operation_id
+                    JOIN legacy_custody.terminal_receipts receipt ON receipt.operation_id=binding.operation_id
+                    WHERE tx.id=?
+                      AND binding.transaction_event_id=?
+                      AND binding.operation_id=CAST(? AS uuid)
+                      AND cr.source_kind='transaction' AND cr.event_action='close'
+                      AND cr.transaction_event_id=binding.transaction_event_id
+                      AND receipt.outcome='COMMITTED' AND receipt.fence_no=1
+                      AND dep.is_active AND dep.is_routable
+                      AND usr.is_active AND usr.account_status='active'
+                      AND emp.employment_status='active'
+                    ON CONFLICT (user_id,event_key) DO NOTHING
+                    SQL, [
+                    $produced->eventId,
+                    $produced->sourceId,
+                    $produced->eventId,
+                    $operationId,
+                ]);
+            }
 
             $this->invokeCutPoint($cutPointHook, 'after_receipt', [
                 'operation_id' => $operationId,

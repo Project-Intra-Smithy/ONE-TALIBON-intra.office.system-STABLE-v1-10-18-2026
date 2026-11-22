@@ -284,6 +284,7 @@ class TransactionWorkflowService
                 'id',
                 'reference_no',
                 'transaction_type',
+                'action_required',
                 'origin_department_id',
                 'current_department_id',
                 'assigned_employee_id',
@@ -303,6 +304,16 @@ class TransactionWorkflowService
             ->select(['id', 'code'])
             ->where('id', (int) $locked->current_department_id)
             ->first();
+
+        if ($action === 'close') {
+            $actor = VerifiedCommandActor::verifyOnConnection(
+                $connection,
+                $actor->userId,
+                $actor->officeId,
+                $actor->sessionVersion,
+                $actor->role,
+            );
+        }
 
         $this->authorizeTransitionOnConnection(
             $actor,
@@ -342,6 +353,7 @@ class TransactionWorkflowService
             (int) $locked->origin_department_id,
             $targetDepartmentId,
         );
+        $remarks = $this->validateCompletionRemarks($action, $remarks);
         $eventRemarks = $this->eventRemarksOnConnection($connection, $rule, $assignment, $remarks);
         $newStatus = $rule->status ?? $currentStatus;
 
@@ -373,7 +385,7 @@ class TransactionWorkflowService
             'created_at' => $timestamp,
         ]);
 
-        ($this->audit ?? app(AuditLogger::class))->recordOnConnection(
+        $auditId = ($this->audit ?? app(AuditLogger::class))->recordOnConnection(
             connection: $connection,
             actorUserId: $actor->userId,
             actorDepartmentId: $actor->officeId,
@@ -398,6 +410,7 @@ class TransactionWorkflowService
             actorUserId: $actor->userId,
             officeId: $actor->officeId,
             correlationId: $correlationId,
+            auditId: $action === 'close' ? $auditId : null,
         );
     }
 
@@ -428,9 +441,11 @@ class TransactionWorkflowService
             classification: null,
             workflowState: (string) $lockedTransaction->status,
             requestedAction: $requestedAction,
+            actionRequired: $lockedTransaction->action_required,
         );
 
         $allowed = match ($action) {
+            'close' => $access->allows($buildContext(TransactionAccessDecider::CLOSE)),
             'assign' => $access->allows($buildContext(TransactionAccessDecider::ASSIGN)),
             'approve', 'disapprove' => $access->allows($buildContext(TransactionAccessDecider::MAYOR_DECISION)),
             'request_information' => $access->allows($buildContext(TransactionAccessDecider::MAYOR_DECISION))
@@ -568,12 +583,29 @@ class TransactionWorkflowService
         return trim(($remarks ? $remarks.' ' : '')."Assigned to {$employee->full_name}.");
     }
 
+    private function validateCompletionRemarks(string $action, ?string $remarks): ?string
+    {
+        if ($action !== 'close') {
+            return $remarks;
+        }
+
+        $outcome = trim($remarks ?? '');
+        if ($outcome === '' || mb_strlen($outcome) > 2000) {
+            throw ValidationException::withMessages([
+                'remarks' => 'Enter a completion outcome of 1 to 2000 characters.',
+            ]);
+        }
+
+        return $outcome;
+    }
+
     private function authorizeTransition(
         User $actor,
         WorkflowTransaction $transaction,
         string $action,
     ): void {
         $ability = match ($action) {
+            'close' => 'close',
             'assign' => 'assign',
             'approve', 'disapprove' => 'mayorDecision',
             'request_information' => Gate::forUser($actor)->allows('mayorDecision', $transaction)
@@ -646,6 +678,7 @@ class TransactionWorkflowService
             ]);
         }
 
+        $remarks = $this->validateCompletionRemarks($action, $remarks);
         $resolved = $this->resolveTransition(
             $locked,
             $rule,

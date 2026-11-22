@@ -14,6 +14,8 @@ final class TransactionAccessDecider
 
     public const TRANSITION = 'transition';
 
+    public const CLOSE = 'close';
+
     public const ASSIGN = 'assign';
 
     public const MAYOR_DECISION = 'mayor_decision';
@@ -31,6 +33,7 @@ final class TransactionAccessDecider
             self::VIEW => $this->canView($context),
             self::CREATE => $this->canEnterTransactionArea($context),
             self::TRANSITION => $this->canTransition($context),
+            self::CLOSE => $this->canClose($context),
             self::ASSIGN => $this->canAssign($context),
             self::MAYOR_DECISION => $this->canMayorDecision($context),
             default => false,
@@ -57,6 +60,19 @@ final class TransactionAccessDecider
 
         return $context->can(TransactionCapabilities::TRANSITION)
             && $context->hasResourceOfficeAuthority();
+    }
+
+    private function canClose(AuthorizationContext $context): bool
+    {
+        return $context->hasRole('department_head')
+            && $context->can(TransactionCapabilities::CLOSE)
+            && $context->isActorResourceOffice()
+            && $context->resourceOriginOfficeId !== null
+            && ! $context->isActorOriginOffice()
+            && $context->resourceOfficeCode !== null
+            && ! in_array($context->resourceOfficeCode, config('workflow.executive_attention_office_codes', []), true)
+            && $context->actionRequired === 'For Information'
+            && $context->workflowState === 'for_review';
     }
 
     private function canAssign(AuthorizationContext $context): bool

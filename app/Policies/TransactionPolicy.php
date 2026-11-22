@@ -35,6 +35,11 @@ final readonly class TransactionPolicy
         return $this->allows($user, TransactionAccessDecider::TRANSITION, $transaction);
     }
 
+    public function close(User $user, WorkflowTransaction $transaction): bool
+    {
+        return $this->allows($user, TransactionAccessDecider::CLOSE, $transaction);
+    }
+
     public function assign(User $user, WorkflowTransaction $transaction): bool
     {
         return $this->allows($user, TransactionAccessDecider::ASSIGN, $transaction);

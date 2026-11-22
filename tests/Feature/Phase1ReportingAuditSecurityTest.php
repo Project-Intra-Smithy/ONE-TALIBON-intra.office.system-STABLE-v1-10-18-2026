@@ -96,13 +96,14 @@ class Phase1ReportingAuditSecurityTest extends TestCase
             foreach ([$headers, $headers + ['X-Inertia-Partial-Component' => 'Audit/Index', 'X-Inertia-Partial-Data' => 'events']] as $requestHeaders) {
                 $response = $this->get($url, $requestHeaders);
                 $response->assertOk()->assertJsonPath('props.events.0.id', $event->id)
+                    ->assertJsonPath('props.events.0.source_reference', null)
                     ->assertJsonPath('props.events.0.actor.name', $actor->name)
                     ->assertJsonPath('props.events.0.actor_department.id', $office->id)
                     ->assertJsonMissingPath('props.events.0.actor.employee')
                     ->assertJsonMissingPath('props.events.0.ip_address')
                     ->assertDontSee('SEC01-SYNTHETIC-ADDRESS-CANARY')
                     ->assertDontSee('sec01-canary@example.invalid');
-                $this->assertSame(['id', 'action', 'outcome', 'summary', 'created_at', 'actor', 'actor_department'], array_keys($response->json('props.events.0')));
+                $this->assertSame(['id', 'action', 'outcome', 'summary', 'created_at', 'source_reference', 'actor', 'actor_department'], array_keys($response->json('props.events.0')));
                 $this->assertSame(['name'], array_keys($response->json('props.events.0.actor')));
             }
         }
