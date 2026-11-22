@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
-    public bool $withinTransaction = true;
+    public $withinTransaction = true;
 
     public function up(): void
     {
