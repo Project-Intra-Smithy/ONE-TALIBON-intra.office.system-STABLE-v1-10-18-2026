@@ -149,6 +149,22 @@ final class LegacyCustodyCommandService
                 'event_action' => $produced->eventAction,
             ]);
 
+            // Bind the previously emitted, unmarked close audit to the exact
+            // source event and reserved custody operation on this SAME
+            // n03_command transaction. PostgreSQL verifies the terminal
+            // receipt and all tuples with a deferred constraint at commit.
+            if ($produced->sourceKind === 'transaction' && $produced->eventAction === 'close') {
+                if ($produced->auditId === null) {
+                    throw new CustodyViolationException('OPS009 close requires an identified source audit.');
+                }
+                $connection->table('ops009_close_audit_bindings')->insert([
+                    'audit_id' => $produced->auditId,
+                    'transaction_event_id' => $produced->eventId,
+                    'transaction_id' => $produced->sourceId,
+                    'operation_id' => $operationId,
+                ]);
+            }
+
             $this->invokeCutPoint($cutPointHook, 'after_command_result', [
                 'operation_id' => $operationId,
                 'source_id' => $produced->sourceId,
