@@ -127,6 +127,7 @@ return new class extends Migration
                     user_id,department_id,event_key,source_domain,source_type,source_id,
                     priority,title,message,action_url,requires_acknowledgement,created_at,updated_at
                 ) ON public.platform_notifications TO n03_command;
+                GRANT USAGE ON SEQUENCE public.platform_notifications_id_seq TO n03_command;
                 SQL);
 
             $post = DB::selectOne(<<<'SQL'
@@ -136,6 +137,7 @@ return new class extends Migration
                        AND tgname='ops009_origin_close_notice_guard'
                        AND tgenabled='O') AS guard_count,
                   has_any_column_privilege('n03_command','public.platform_notifications','INSERT') AS inserts,
+                  has_sequence_privilege('n03_command','public.platform_notifications_id_seq','USAGE') AS seq_usage,
                   has_any_column_privilege('n03_command','public.platform_notifications','UPDATE') AS updates,
                   has_table_privilege('n03_command','public.platform_notifications','DELETE') AS deletes,
                   pg_get_userbyid(p.proowner) AS function_owner,
@@ -146,7 +148,7 @@ return new class extends Migration
                 SQL);
             if ($post === null
                 || (int) $post->guard_count !== 1
-                || ! $post->inserts || $post->updates || $post->deletes
+                || ! $post->inserts || ! $post->seq_usage || $post->updates || $post->deletes
                 || $post->function_owner !== 'kirion_g1b_owner'
                 || (bool) $post->security_definer
                 || ! str_contains((string) $post->function_settings, 'search_path=pg_catalog')) {
