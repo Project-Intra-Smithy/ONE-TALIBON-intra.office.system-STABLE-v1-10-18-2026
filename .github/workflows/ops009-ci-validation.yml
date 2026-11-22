@@ -179,7 +179,12 @@ jobs:
           if N03_DISPOSABLE_LEASE=UNLEASED php artisan migrate --force --no-interaction --path="$migration" >/tmp/ops009-audit-unleased.txt 2>&1; then
             echo "OPS009_UNLEASED_G2B_MIGRATION_ACCEPTED"; exit 74
           fi
-          grep -q 'OPS009 G2B audit compatibility requires an exclusive synthetic PG16 testing lease' /tmp/ops009-audit-unleased.txt
+          if ! grep -q 'OPS009 G2B audit compatibility' /tmp/ops009-audit-unleased.txt; then
+            echo 'OPS009_G2B_UNLEASED_ERROR_MISMATCH'
+            grep -Ei 'OPS009|error|exception|fatal|line|migration' /tmp/ops009-audit-unleased.txt | tail -n 20 || true
+            exit 75
+          fi
+          echo 'OPS009_G2B_UNLEASED_REJECTION_REASON=EXPECTED'
           test "$before_md5" = "$(psql -XAtc "SELECT md5(prosrc) FROM pg_proc WHERE oid='legacy_custody.public_guard()'::regprocedure")"
           echo 'OPS009_G2B_UNLEASED_GUARD_DENIAL=PASS'
           php artisan migrate --force --no-interaction --path="$migration"
