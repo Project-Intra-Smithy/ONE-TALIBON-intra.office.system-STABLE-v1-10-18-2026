@@ -233,6 +233,24 @@ jobs:
           grep -q 'OPS009 R3 origin notice' /tmp/ops009-r3-notice-unleased.txt
           php artisan migrate --force --no-interaction --path="$migration"
           psql -XAtc "SELECT 'OPS009_R3_NOTICE_GUARD='||tgname||':enabled='||tgenabled::text FROM pg_trigger WHERE tgname='ops009_origin_close_notice_guard'"
+      - name: Restore verified schema without historical test fixtures before C02
+        if: matrix.phase == 'c02'
+        run: |
+          set -euo pipefail
+          test "$GITHUB_ACTIONS" = true
+          test "$DB_DATABASE" = talibon_portal_test
+          test "$N03_DISPOSABLE_LEASE" = EXCLUSIVE_PG16_SYNTHETIC_ONLY
+          pg_dump --schema-only --format=custom --file=/tmp/unified-r3-schema.dump
+          pg_dump --data-only --table=public.migrations --file=/tmp/unified-migration-ledger.sql
+          test "$(psql -XAt --dbname=postgres -c "SELECT count(*) FROM pg_stat_activity WHERE datname='talibon_portal_test'")" = 0
+          dropdb --maintenance-db=postgres talibon_portal_test
+          createdb --maintenance-db=postgres talibon_portal_test
+          pg_restore --dbname=talibon_portal_test --exit-on-error /tmp/unified-r3-schema.dump
+          psql -X -v ON_ERROR_STOP=1 -f /tmp/unified-migration-ledger.sql
+          test "$(psql -XAtc 'SELECT count(*) FROM legacy_custody.operations')" = 0
+          test "$(psql -XAtc 'SELECT count(*) FROM public.users')" = 0
+          test "$(psql -XAtc "SELECT count(*) FROM public.migrations WHERE migration IN ('2026_11_22_190000_ops009_r3_close_audit_provenance','2026_11_22_191000_ops009_r3_origin_notice_effect')")" = 2
+          echo 'UNIFIED_C02_EMPTY_FIXTURE_BASELINE_WITH_R3_GUARDS=VERIFIED'
       - name: N03 registry partial-column PDF quarantine regression
         if: matrix.phase == 'c02'
         env:
