@@ -487,6 +487,76 @@ final class OPS009C02CustodyCloseTest extends TestCase
         }
     }
 
+    public function test_actual_http_close_uses_verified_separate_process_n03_broker(): void
+    {
+        $tx = $this->makeReviewedTransaction('For Information');
+        $base = sys_get_temp_dir().'/ot_ops009_http_'.bin2hex(random_bytes(8));
+        $vault = $base.'/vault';
+        $this->assertTrue(mkdir($vault, 0750, true));
+
+        try {
+            $broker = new ProcessStorageBrokerClient(
+                brokerRoot: $vault,
+                hmacKey: hash('sha256', 'http-custody-'.bin2hex(random_bytes(16))),
+                brokerBinary: base_path('bin/legacy-custody-broker'),
+                disallowedRoots: BrokerRootAttestation::collectApplicationDisallowedRoots(),
+            );
+            $namespace = strtolower((string) Str::uuid());
+            $rootClaim = $broker->attestRoot($namespace);
+            $this->insert($this->root, 'legacy_custody.namespaces', [
+                'namespace_id' => $namespace,
+                'backend_kind' => $rootClaim['backend_kind'],
+                'provider_identity' => $rootClaim['provider_identity'],
+                'root_claim' => $rootClaim['root_claim'],
+            ]);
+
+            config([
+                'work_requests.n03_namespace_id' => $namespace,
+                'work_requests.n03_epoch' => 1,
+            ]);
+            app()->instance(\App\Services\Custody\Contracts\StorageBrokerClient::class, $broker);
+
+            $response = $this->actingAs($this->head)->post('/transactions/'.$tx->id.'/transition', [
+                'action' => 'close',
+                'remarks' => 'Synthetic HTTP Work Request evidence-based completion',
+            ]);
+            $response->assertRedirect();
+
+            $this->assertSame('closed', $tx->fresh()->status);
+            $event = $tx->events()->where('action', 'close')->sole();
+            $this->assertSame(1, $this->auditCount((int) $tx->id));
+            $this->assertSame(1, (int) DB::table('platform_notifications')
+                ->where('user_id', $this->origin->id)
+                ->where('event_key', 'transaction-event-'.$event->id)->count());
+            $binding = DB::table('ops009_close_audit_bindings')
+                ->where('transaction_id', $tx->id)
+                ->where('transaction_event_id', $event->id)->sole();
+            $this->assertSame(1, (int) $this->scalar(
+                'SELECT count(*) FROM legacy_custody.terminal_receipts WHERE operation_id=? AND outcome=?',
+                [$binding->operation_id, 'COMMITTED'],
+            ));
+            $this->assertSame(1, DB::table('documents')
+                ->where('custody_operation_id', $binding->operation_id)->count());
+            $this->assertNotSame(getmypid(), $broker->lastBrokerPid());
+        } finally {
+            app()->forgetInstance(\App\Services\Custody\Contracts\StorageBrokerClient::class);
+            if (is_dir($base)) {
+                $walk = new \RecursiveIteratorIterator(
+                    new \RecursiveDirectoryIterator($base, \FilesystemIterator::SKIP_DOTS),
+                    \RecursiveIteratorIterator::CHILD_FIRST,
+                );
+                foreach ($walk as $item) {
+                    if ($item->isDir() && ! $item->isLink()) {
+                        @rmdir($item->getPathname());
+                    } else {
+                        @unlink($item->getPathname());
+                    }
+                }
+                @rmdir($base);
+            }
+        }
+    }
+
     public function test_custody_close_emits_one_safe_origin_notification(): void
     {
         $tx = $this->makeReviewedTransaction('For Information');
