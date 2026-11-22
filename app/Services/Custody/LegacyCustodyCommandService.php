@@ -360,7 +360,7 @@ final class LegacyCustodyCommandService
             // validates recipient, event, audit, command and privacy text.
             // The existing ordinary Eloquent listener remains untouched.
             if ($produced->sourceKind === 'transaction' && $produced->eventAction === 'close') {
-                $connection->affectingStatement(<<<'SQL'
+                $notified = $connection->affectingStatement(<<<'SQL'
                     INSERT INTO public.platform_notifications
                         (user_id, department_id, event_key, source_domain, source_type,
                          source_id, priority, title, message, action_url,
@@ -398,6 +398,15 @@ final class LegacyCustodyCommandService
                     $produced->eventId,
                     $operationId,
                 ]);
+
+                // A missing recipient is NOT a delivered notification.
+                // Until a real authorized immutable escalation queue exists,
+                // the only defensible zero-recipient outcome is full rollback.
+                if ($notified < 1) {
+                    throw new CustodyViolationException(
+                        'No verified origin recipient or authorized escalation custodian is available; completion rolled back.'
+                    );
+                }
             }
 
             $this->invokeCutPoint($cutPointHook, 'after_receipt', [
