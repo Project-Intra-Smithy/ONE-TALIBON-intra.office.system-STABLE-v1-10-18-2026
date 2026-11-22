@@ -65,7 +65,7 @@ jobs:
       - name: Prove isolated identity and source-only freeze
         run: |
           set -euo pipefail
-          frozen=e41da0ce03e468c309bc73aed8baf737207cf2eb
+          frozen=cef12cd853f25dc38d31643462cc0bfcc394b4fd
           test "$GITHUB_ACTIONS" = true
           test "$GITHUB_REF_NAME" = candidate/ops009-ci-proof-r1
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
@@ -100,7 +100,8 @@ jobs:
             ! -name '2026_11_20_010000_extend_legacy_custody_g2b_command_provenance.php' \
             ! -name '2026_11_20_020000_create_legacy_custody_k2_tombstones.php' \
             ! -name '2026_11_20_030000_create_legacy_custody_g3_g5_extensions.php' \
-            ! -name '2026_11_22_150000_ops009_close_command_compatibility.php' | sort)
+            ! -name '2026_11_22_150000_ops009_close_command_compatibility.php' \
+            ! -name '2026_11_22_170000_ops009_g2b_close_audit_compatibility.php' | sort)
           args=()
           for f in "${baseline[@]}"; do args+=("--path=$f"); done
           php artisan migrate --force --no-interaction "${args[@]}"
@@ -167,6 +168,34 @@ jobs:
           test "$before" != "$after"
           printf 'OPS009_CONSTRAINT_AFTER=%s\n' "$after"
           psql -X -v ON_ERROR_STOP=1 -f tests/Manual/ops009-constraint-verify.sql
+      - name: Guard and verify exact G2B unmarked close audit function delta
+        if: matrix.phase == 'c02'
+        run: |
+          set -euo pipefail
+          migration=database/migrations/2026_11_22_170000_ops009_g2b_close_audit_compatibility.php
+          php -l "$migration"
+          psql -XAtc "SELECT prosrc FROM pg_proc WHERE oid='legacy_custody.public_guard()'::regprocedure" > /tmp/ops009-audit-before.txt
+          before_md5="$(psql -XAtc "SELECT md5(prosrc) FROM pg_proc WHERE oid='legacy_custody.public_guard()'::regprocedure")"
+          if N03_DISPOSABLE_LEASE=UNLEASED php artisan migrate --force --no-interaction --path="$migration" >/tmp/ops009-audit-unleased.txt 2>&1; then
+            echo "OPS009_UNLEASED_G2B_MIGRATION_ACCEPTED"; exit 74
+          fi
+          grep -q 'OPS009 G2B audit compatibility requires an exclusive synthetic PG16 testing lease' /tmp/ops009-audit-unleased.txt
+          test "$before_md5" = "$(psql -XAtc "SELECT md5(prosrc) FROM pg_proc WHERE oid='legacy_custody.public_guard()'::regprocedure")"
+          echo 'OPS009_G2B_UNLEASED_GUARD_DENIAL=PASS'
+          php artisan migrate --force --no-interaction --path="$migration"
+          psql -XAtc "SELECT prosrc FROM pg_proc WHERE oid='legacy_custody.public_guard()'::regprocedure" > /tmp/ops009-audit-after.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          before=Path('/tmp/ops009-audit-before.txt').read_text().strip()
+          after=Path('/tmp/ops009-audit-after.txt').read_text().strip()
+          needle="'transaction.disapprove'"
+          assert before.count(needle)==1
+          assert after==before.replace(needle,"'transaction.disapprove',\n        'transaction.close'")
+          print('OPS009_G2B_AUDIT_GUARD_BEFORE_SHA256='+hashlib.sha256(before.encode()).hexdigest())
+          print('OPS009_G2B_AUDIT_GUARD_AFTER_SHA256='+hashlib.sha256(after.encode()).hexdigest())
+          print('OPS009_G2B_GUARD_EXACT_DELTA=PASS')
+          PY
       - name: N03 registry partial-column PDF quarantine regression
         if: matrix.phase == 'c02'
         env:

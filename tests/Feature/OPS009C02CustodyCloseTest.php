@@ -11,10 +11,14 @@ use App\Models\Employee;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
 use App\Services\Custody\LegacyCustodyCommandService;
+use App\Services\Custody\LegacyCustodyStageService;
+use App\Services\AuditLogger;
+use App\Domain\Custody\Exceptions\CustodyViolationException;
 use App\Services\Reports\TransactionOperationalReportQuery;
 use App\Services\TransactionWorkflowService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -116,6 +120,118 @@ final class OPS009C02CustodyCloseTest extends TestCase
             DB::purge($role);
         }
         parent::tearDown();
+    }
+
+    public function test_n03_role_rejects_unpaired_and_forged_close_audits(): void
+    {
+        // Test with a real n03_command session; ROLLBACK preserves synthetic
+        // database integrity even if the current G2B guard incorrectly accepts.
+        $tx = $this->makeReviewedTransaction('For Information');
+        $connection = DB::connection('n03_command');
+        $this->assertSame('n03_command', $connection->selectOne('SELECT current_user AS role')->role);
+        $this->assertSame(0, $tx->events()->where('action', 'close')->count());
+        $this->assertSame(0, (int) $this->scalar('SELECT count(*) FROM legacy_custody.operations'));
+        $accepted = [];
+        $rejected = [];
+        $cases = [
+            'orphan-without-operation' => [(int) $this->head->id, (int) $this->receivingOffice->id, (int) $tx->id],
+            'foreign-office' => [(int) $this->head->id, (int) $this->foreignOffice->id, (int) $tx->id],
+            'foreign-actor' => [(int) $this->foreignHead->id, (int) $this->receivingOffice->id, (int) $tx->id],
+            'forged-entity' => [(int) $this->head->id, (int) $this->receivingOffice->id, (int) $tx->id + 1000000],
+            'forged-correlation' => [(int) $this->head->id, (int) $this->receivingOffice->id, (int) $tx->id],
+        ];
+        foreach ($cases as $name => [$actorId, $officeId, $entityId]) {
+            $connection->beginTransaction();
+            try {
+                $correlation = (string) Str::uuid();
+                app(AuditLogger::class)->recordOnConnection(
+                    connection: $connection,
+                    actorUserId: $actorId,
+                    actorDepartmentId: $officeId,
+                    action: 'transaction.close',
+                    summary: 'Synthetic OPS009 provenance probe',
+                    correlationId: $correlation,
+                    entityType: WorkflowTransaction::class,
+                    entityId: $entityId,
+                );
+                $accepted[] = $name;
+                if ($name === 'orphan-without-operation') {
+                    app(AuditLogger::class)->recordOnConnection(
+                        connection: $connection,
+                        actorUserId: $actorId,
+                        actorDepartmentId: $officeId,
+                        action: 'transaction.close',
+                        summary: 'Synthetic duplicate OPS009 audit probe',
+                        correlationId: $correlation,
+                        entityType: WorkflowTransaction::class,
+                        entityId: $entityId,
+                    );
+                    $accepted[] = 'duplicate-audit';
+                }
+            } catch (QueryException $e) {
+                $rejected[$name] = (string) $e->getCode();
+            } finally {
+                $connection->rollBack();
+            }
+        }
+        fwrite(STDOUT, 'OPS009_N03_AUDIT_NEGATIVE_EVIDENCE='.json_encode([
+            'role' => 'n03_command',
+            'accepted' => $accepted,
+            'rejected' => $rejected,
+            'close_events' => $tx->events()->where('action', 'close')->count(),
+            'persisted_probe_audits' => $this->auditCount($tx->id),
+            'cleanup' => 'rollback_per_probe',
+        ], JSON_THROW_ON_ERROR)."\n");
+        $this->assertSame(0, $this->auditCount($tx->id));
+        $this->assertSame([], $accepted,
+            'PROVENANCE_BINDING_MISSING: n03_command accepted orphan/forged/duplicate close audit inserts');
+    }
+
+    public function test_actual_stage_reservation_accepts_close_and_rejects_wrong_kind(): void
+    {
+        $id = (string) Str::uuid();
+        $result = app(LegacyCustodyStageService::class)->reserve(
+            namespaceId: $this->namespace,
+            epoch: 1,
+            actorUserId: (int) $this->head->id,
+            officeId: (int) $this->receivingOffice->id,
+            serviceIdentity: 'ops009-ci-test',
+            commandKind: 'transaction_transition',
+            commandAction: 'close',
+            correlationId: (string) Str::uuid(),
+            idempotencyHash: hash('sha256', $id),
+            items: [[
+                'size_bytes' => 2048,
+                'sha256' => hash('sha256', 'ops009-stage-test-'.$id),
+                'mime_type' => 'application/pdf',
+            ]],
+            operationId: $id,
+        );
+        $this->assertSame($id, $result['operation_id']);
+        $this->assertSame('close', (string) $this->scalar(
+            'SELECT command_action FROM legacy_custody.operations WHERE operation_id=?', [$id],
+        ));
+        $this->assertSame(1, (int) $this->scalar(
+            "SELECT count(*) FROM legacy_custody.operation_events WHERE operation_id=? AND kind='RESERVED'", [$id],
+        ));
+        fwrite(STDOUT, "OPS009_REAL_STAGE_RESERVE=PASS;role=n03_stage;command=transaction_transition/close\n");
+        $this->expectException(CustodyViolationException::class);
+        app(LegacyCustodyStageService::class)->reserve(
+            namespaceId: $this->namespace,
+            epoch: 1,
+            actorUserId: (int) $this->head->id,
+            officeId: (int) $this->receivingOffice->id,
+            serviceIdentity: 'ops009-ci-test',
+            commandKind: 'correspondence_route',
+            commandAction: 'close',
+            correlationId: (string) Str::uuid(),
+            idempotencyHash: hash('sha256', 'invalid-'.$id),
+            items: [[
+                'size_bytes' => 2048,
+                'sha256' => hash('sha256', 'ops009-invalid-'.$id),
+                'mime_type' => 'application/pdf',
+            ]],
+        );
     }
 
     public function test_real_receiving_head_custody_close_produces_atomic_event_audit_and_report(): void
