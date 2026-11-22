@@ -254,6 +254,52 @@ final class OPS009C02CustodyCloseTest extends TestCase
         $this->assertSame(0, (int) $this->scalar('SELECT count(*) FROM legacy_custody.terminal_receipts WHERE operation_id=?', [$op['operation_id']]));
     }
 
+    public function test_connection_bound_n03_service_emits_safe_completion_notice(): void
+    {
+        // Diagnostic isolation only: the canonical legacy_custody.operations constraint
+        // currently rejects transaction_transition/close before execute() can run.
+        // This directly exercises the *real n03_command PostgreSQL connection and
+        // connection-bound workflow service*, with no mocked notification listeners.
+        // It is NOT a substitute for end-to-end LegacyCustodyCommandService.
+        $tx = $this->makeReviewedTransaction('For Information');
+        $connection = DB::connection('n03_command');
+        $connection->beginTransaction();
+        try {
+            $actor = VerifiedCommandActor::verifyOnConnection(
+                $connection,
+                (int) $this->head->id,
+                (int) $this->receivingOffice->id,
+                (int) $this->head->session_version,
+                'department_head',
+            );
+            $produced = app(TransactionWorkflowService::class)->transitionWithEventOnConnection(
+                $connection, $actor, (int) $tx->id, 'close', (string) Str::uuid(),
+                remarks: 'Custody case completed.',
+            );
+            $connection->commit();
+        } catch (Throwable $e) {
+            if ($connection->transactionLevel() > 0) {
+                $connection->rollBack();
+            }
+            throw $e;
+        }
+        $noticeCount = DB::table('platform_notifications')
+            ->where('event_key', 'transaction-event-'.$produced->eventId)
+            ->where('user_id', $this->origin->id)
+            ->count();
+        fwrite(STDOUT, 'OPS009_C02_DIRECT_CONNECTION='.json_encode([
+            'db_role' => 'n03_command',
+            'status' => $tx->fresh()->status,
+            'event_id' => $produced->eventId,
+            'audit_count' => $this->auditCount($tx->id),
+            'origin_notice_count' => $noticeCount,
+            'limitation' => 'direct_connection_only_not_custody_execute',
+        ], JSON_THROW_ON_ERROR)."\n");
+        $this->assertSame('closed', $tx->fresh()->status);
+        $this->assertSame(1, $this->auditCount($tx->id));
+        $this->assertSame(1, $noticeCount, 'CUSTODY_NOTIFICATION_PARITY_DEFECT: connection-bound closure skipped origin notice');
+    }
+
     private function makeReviewedTransaction(?string $classification): WorkflowTransaction
     {
         $workflow = app(TransactionWorkflowService::class);
