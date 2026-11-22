@@ -108,6 +108,11 @@ jobs:
         run: |
           set -euo pipefail
           php artisan test tests/Feature/OPS009C01SimultaneousCloseTest.php --group=ops009-c01
+      - name: Legacy PDF and authenticated HTTP close regressions
+        if: matrix.phase == 'c01'
+        run: |
+          set -euo pipefail
+          php artisan test tests/Feature/LegacyPdfPreviewTest.php tests/Feature/WorkRequests/OrdinaryWorkRequestClosureTest.php
       - name: C02 provision protected synthetic N03 roles
         if: matrix.phase == 'c02'
         run: |
