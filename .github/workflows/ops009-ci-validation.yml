@@ -116,6 +116,7 @@ jobs:
           php -l tests/Manual/ops009-legacy-bootstrap.php
           php artisan test --bootstrap=tests/Manual/ops009-legacy-bootstrap.php tests/Feature/WorkRequests/OrdinaryWorkRequestClosureTest.php
           php artisan test --bootstrap=tests/Manual/ops009-legacy-bootstrap.php tests/Feature/LegacyPdfPreviewTest.php --filter='^(?!.*actual_partial_custody_columns_quarantine_metadata_and_both_byte_routes)'
+          php artisan test --bootstrap=tests/Manual/ops009-legacy-bootstrap.php tests/Feature/DocumentAccessPrecedenceTest.php
       - name: C01 actual competing PostgreSQL sessions and event counts
         if: matrix.phase == 'c01'
         run: |
@@ -244,6 +245,11 @@ jobs:
         run: |
           set -euo pipefail
           php artisan test tests/Feature/OPS009C02CustodyCloseTest.php --group=ops009-c02
+      - name: R3 subprocess broker isolation regressions
+        if: matrix.phase == 'c02' && always()
+        run: |
+          set -euo pipefail
+          php artisan test tests/Feature/LegacyCustodyK3BrokerIsolationTest.php --group=n03-k3-broker
       - name: C02 original custody and Mayor regression (even if new C02 fails)
         if: matrix.phase == 'c02' && always()
         env:

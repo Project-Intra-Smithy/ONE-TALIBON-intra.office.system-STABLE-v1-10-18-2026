@@ -12,6 +12,8 @@ use App\Models\User;
 use App\Models\WorkflowTransaction;
 use App\Services\Custody\LegacyCustodyCommandService;
 use App\Services\Custody\LegacyCustodyStageService;
+use App\Services\Custody\Broker\ProcessStorageBrokerClient;
+use App\Services\Custody\Broker\BrokerRootAttestation;
 use App\Services\AuditLogger;
 use App\Domain\Custody\Exceptions\CustodyViolationException;
 use App\Services\Reports\TransactionOperationalReportQuery;
@@ -276,6 +278,121 @@ final class OPS009C02CustodyCloseTest extends TestCase
             'audit_count' => $this->auditCount($tx->id),
             'completed_rows' => 1, 'custody_receipts' => 1,
         ], JSON_THROW_ON_ERROR)."\n");
+    }
+
+    public function test_continuous_process_broker_reserve_stage_execute_and_verify_bytes(): void
+    {
+        $tx = $this->makeReviewedTransaction('For Information');
+        $tmp = realpath(sys_get_temp_dir());
+        $this->assertIsString($tmp);
+        $base = $tmp.'/ot_ops009_r3_'.bin2hex(random_bytes(8));
+        $vault = $base.'/vault';
+        $this->assertTrue(mkdir($vault, 0750, true));
+
+        try {
+            $bytes = "%PDF-1.4\n%OPS009-R3-REAL-BROKER-".bin2hex(random_bytes(16))."\n1 0 obj\n<< /Type /Catalog >>\nendobj\n%%EOF\n";
+            $src = $base.'/source.pdf';
+            $this->assertSame(strlen($bytes), file_put_contents($src, $bytes));
+            $namespace = strtolower((string) Str::uuid());
+            $id = strtolower((string) Str::uuid());
+            $broker = new ProcessStorageBrokerClient(
+                brokerRoot: $vault,
+                hmacKey: hash('sha256', 'r3-subprocess-'.bin2hex(random_bytes(16))),
+                brokerBinary: base_path('bin/legacy-custody-broker'),
+                disallowedRoots: BrokerRootAttestation::collectApplicationDisallowedRoots(),
+            );
+
+            $rootClaim = $broker->attestRoot($namespace);
+            $this->assertSame('local_broker_v1', $rootClaim['backend_kind']);
+            $this->assertNotSame(getmypid(), $broker->lastBrokerPid());
+            $this->insert($this->root, 'legacy_custody.namespaces', [
+                'namespace_id' => $namespace,
+                'backend_kind' => $rootClaim['backend_kind'],
+                'provider_identity' => $rootClaim['provider_identity'],
+                'root_claim' => $rootClaim['root_claim'],
+            ]);
+
+            $stage = new LegacyCustodyStageService($broker);
+            $staged = $stage->reserveAndStage(
+                namespaceId: $namespace,
+                epoch: 1,
+                actorUserId: (int) $this->head->id,
+                officeId: (int) $this->receivingOffice->id,
+                serviceIdentity: 'ops009-r3-broker-execution',
+                commandKind: 'transaction_transition',
+                commandAction: 'close',
+                correlationId: strtolower((string) Str::uuid()),
+                idempotencyHash: hash('sha256', $id),
+                items: [[
+                    'source_path' => $src,
+                    'size_bytes' => strlen($bytes),
+                    'sha256' => hash('sha256', $bytes),
+                    'mime_type' => 'application/pdf',
+                ]],
+                operationId: $id,
+            );
+            $this->assertSame($id, $staged['reservation']['operation_id']);
+            $this->assertCount(1, $staged['receipts']);
+            $this->assertSame(1, (int) $this->scalar(
+                "SELECT count(*) FROM legacy_custody.operation_events WHERE operation_id=? AND kind='STAGED'",
+                [$id],
+            ));
+
+            $result = $this->executeClose($staged['reservation'], $tx, $this->head);
+            $this->assertSame('COMMITTED', $result->outcome);
+            $this->assertCount(1, $result->documents);
+            $this->assertSame(1, $this->auditCount((int) $tx->id));
+            $this->assertSame(1, (int) $this->scalar(
+                'SELECT count(*) FROM legacy_custody.terminal_receipts WHERE operation_id=? AND outcome=?',
+                [$id, 'COMMITTED'],
+            ));
+            $this->assertSame(1, (int) DB::table('platform_notifications')
+                ->where('event_key', 'transaction-event-'.$result->eventId)
+                ->where('user_id', $this->origin->id)->count());
+
+            $receipt = $staged['receipts'][0];
+            $read = $broker->readGeneration(
+                namespaceId: $namespace,
+                generationId: $receipt->generationId,
+                locator: $receipt->locator,
+                expectedProviderObjectIdentity: $receipt->providerObjectIdentity,
+                expectedSize: strlen($bytes),
+                expectedSha256: hash('sha256', $bytes),
+            );
+            $this->assertSame($bytes, $read->bytes);
+            $this->assertSame(hash('sha256', $bytes), $read->sha256);
+            $this->assertNotSame(getmypid(), $broker->lastBrokerPid());
+            $this->assertSame('legacy_registry_v1', DB::table('documents')
+                ->where('custody_operation_id', $id)->value('storage_disk'));
+            fwrite(STDOUT, 'OPS009_R3_FULL_BROKER_EVIDENCE='.json_encode([
+                'stage_role' => 'n03_stage',
+                'command_role' => 'n03_command',
+                'broker' => 'separate_php_subprocess',
+                'reservation_id' => $id,
+                'staged_count' => 1,
+                'receipt_count' => 1,
+                'close_event' => $result->eventId,
+                'close_audit_count' => 1,
+                'origin_notice_count' => 1,
+                'sealed_sha256_match' => true,
+                'document_count' => 1,
+            ], JSON_THROW_ON_ERROR)."\n");
+        } finally {
+            if (is_dir($base)) {
+                $walk = new \RecursiveIteratorIterator(
+                    new \RecursiveDirectoryIterator($base, \FilesystemIterator::SKIP_DOTS),
+                    \RecursiveIteratorIterator::CHILD_FIRST,
+                );
+                foreach ($walk as $file) {
+                    if ($file->isDir() && ! $file->isLink()) {
+                        @rmdir($file->getPathname());
+                    } else {
+                        @unlink($file->getPathname());
+                    }
+                }
+                @rmdir($base);
+            }
+        }
     }
 
     public function test_custody_close_emits_one_safe_origin_notification(): void
