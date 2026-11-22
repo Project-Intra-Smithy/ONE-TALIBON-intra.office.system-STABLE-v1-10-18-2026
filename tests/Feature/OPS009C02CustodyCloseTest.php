@@ -537,6 +537,31 @@ final class OPS009C02CustodyCloseTest extends TestCase
             ));
             $this->assertSame(1, DB::table('documents')
                 ->where('custody_operation_id', $binding->operation_id)->count());
+
+            // Repeat the REAL HTTP path with user-supplied document bytes:
+            // machine-attributed PDF plus the uploaded PDF must both stage
+            // and persist through the same N03 terminal receipt.
+            $withUpload = $this->makeReviewedTransaction('For Information');
+            $evidence = \Illuminate\Http\UploadedFile::fake()->createWithContent(
+                'supporting-evidence.pdf',
+                "%PDF-1.4\n%OPS009-HTTP-SYNTHETIC-UPLOAD\n1 0 obj\n<< /Type /Catalog >>\nendobj\n%%EOF\n"
+            );
+            $this->actingAs($this->head)->post('/transactions/'.$withUpload->id.'/transition', [
+                'action' => 'close',
+                'remarks' => 'Synthetic HTTP closure with attached evidence',
+                'evidence' => [$evidence],
+            ])->assertRedirect();
+            $this->assertSame('closed', $withUpload->fresh()->status);
+            $uploadedEvent = $withUpload->events()->where('action', 'close')->sole();
+            $uploadedBinding = DB::table('ops009_close_audit_bindings')
+                ->where('transaction_id', $withUpload->id)
+                ->where('transaction_event_id', $uploadedEvent->id)->sole();
+            $this->assertSame(2, DB::table('documents')
+                ->where('custody_operation_id', $uploadedBinding->operation_id)->count());
+            $this->assertSame(1, (int) $this->scalar(
+                'SELECT count(*) FROM legacy_custody.terminal_receipts WHERE operation_id=? AND outcome=?',
+                [$uploadedBinding->operation_id, 'COMMITTED'],
+            ));
             $this->assertNotSame(getmypid(), $broker->lastBrokerPid());
         } finally {
             app()->forgetInstance(\App\Services\Custody\Contracts\StorageBrokerClient::class);
