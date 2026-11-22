@@ -65,7 +65,7 @@ jobs:
       - name: Prove isolated identity and source-only freeze
         run: |
           set -euo pipefail
-          frozen=48e9aca15d90f22c48672c231592072f9f69f432
+          frozen=0dc43665d4e4c47c1ba83ce8f6d543afba7c18de
           test "$GITHUB_ACTIONS" = true
           test "$GITHUB_REF_NAME" = candidate/ops009-ci-proof-r1
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
@@ -73,7 +73,7 @@ jobs:
           git diff --exit-code "$frozen" HEAD -- app config resources routes database composer.json composer.lock package.json package-lock.json
           while IFS= read -r path; do
             case "$path" in
-              .github/workflows/ops009-ci-validation.yml|tests/Feature/OPS009C01SimultaneousCloseTest.php|tests/Feature/OPS009C02CustodyCloseTest.php|tests/Manual/ops009-c01-worker.php) ;;
+              .github/workflows/ops009-ci-validation.yml|tests/Feature/OPS009C01SimultaneousCloseTest.php|tests/Feature/OPS009C02CustodyCloseTest.php|tests/Manual/ops009-c01-worker.php|tests/Manual/ops009-constraint-verify.sql) ;;
               *) echo "INVALID_FILE=$path"; exit 72;;
             esac
           done < <(git diff --name-only "$frozen" HEAD)
@@ -99,7 +99,8 @@ jobs:
             ! -name '2026_11_19_200000_create_legacy_custody_foundation.php' \
             ! -name '2026_11_20_010000_extend_legacy_custody_g2b_command_provenance.php' \
             ! -name '2026_11_20_020000_create_legacy_custody_k2_tombstones.php' \
-            ! -name '2026_11_20_030000_create_legacy_custody_g3_g5_extensions.php' | sort)
+            ! -name '2026_11_20_030000_create_legacy_custody_g3_g5_extensions.php' \
+            ! -name '2026_11_22_150000_ops009_close_command_compatibility.php' | sort)
           args=()
           for f in "${baseline[@]}"; do args+=("--path=$f"); done
           php artisan migrate --force --no-interaction "${args[@]}"
@@ -140,6 +141,27 @@ jobs:
           psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -v N03_READER_PASSWORD="$N03_READER_PASSWORD" -f tests/Manual/sql/N03_G3_DISPOSABLE_PG16_READER_ROLE_INSTALL_R1.sql
           psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_G3_DISPOSABLE_PG16_READER_ROLE_VERIFY_R1.sql
           psql -XAtc "SELECT 'OPS009_ROLE=' || rolname FROM pg_roles WHERE rolname='n03_command'"
+      - name: Verify original policy, deny unleased execution, run guarded source migration and probe tuples
+        if: matrix.phase == 'c02'
+        run: |
+          set -euo pipefail
+          migration=database/migrations/2026_11_22_150000_ops009_close_command_compatibility.php
+          before="$(psql -XAtc "SELECT pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid='legacy_custody.operations'::regclass AND conname='operations_check'")"
+          test -n "$before"
+          printf 'OPS009_CONSTRAINT_BEFORE=%s\n' "$before"
+          if N03_DISPOSABLE_LEASE=UNLEASED php artisan migrate --force --no-interaction --path="$migration"; then
+            echo 'ERROR: migration accepted invalid disposable lease'
+            exit 73
+          fi
+          after_denied="$(psql -XAtc "SELECT pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid='legacy_custody.operations'::regclass AND conname='operations_check'")"
+          test "$before" = "$after_denied"
+          echo 'OPS009_UNLEASED_MIGRATION_DENIED=PASS'
+          php artisan migrate --force --no-interaction --path="$migration"
+          after="$(psql -XAtc "SELECT pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid='legacy_custody.operations'::regclass AND conname='operations_check'")"
+          test -n "$after"
+          test "$before" != "$after"
+          printf 'OPS009_CONSTRAINT_AFTER=%s\n' "$after"
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/ops009-constraint-verify.sql
       - name: C02 actual custody command and notification parity
         if: matrix.phase == 'c02'
         env:
