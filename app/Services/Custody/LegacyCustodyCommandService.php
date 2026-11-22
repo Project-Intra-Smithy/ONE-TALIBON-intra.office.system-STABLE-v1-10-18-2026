@@ -374,7 +374,9 @@ final class LegacyCustodyCommandService
                            FALSE, now(), now()
                     FROM public.transactions tx
                     JOIN public.departments dep ON dep.id=tx.origin_department_id
-                    JOIN public.employees emp ON emp.department_id=dep.id
+                    JOIN public.employees emp
+                      ON emp.department_id=dep.id
+                     AND emp.user_id=tx.created_by_user_id
                     JOIN public.users usr ON usr.id=emp.user_id
                     JOIN public.ops009_close_audit_bindings binding ON binding.transaction_id=tx.id
                     JOIN legacy_custody.command_results cr ON cr.operation_id=binding.operation_id
@@ -388,6 +390,7 @@ final class LegacyCustodyCommandService
                       AND dep.is_active AND dep.is_routable
                       AND usr.is_active AND usr.account_status='active'
                       AND emp.employment_status='active'
+                      AND emp.separation_date IS NULL
                     ON CONFLICT (user_id,event_key) DO NOTHING
                     SQL, [
                     $produced->eventId,
