@@ -228,7 +228,7 @@ jobs:
           fi
           grep -q 'OPS009 R3 origin notice' /tmp/ops009-r3-notice-unleased.txt
           php artisan migrate --force --no-interaction --path="$migration"
-          psql -XAtc "SELECT 'OPS009_R3_NOTICE_GUARD='||tgname||':enabled='||tgenabled FROM pg_trigger WHERE tgname='ops009_origin_close_notice_guard'"
+          psql -XAtc "SELECT 'OPS009_R3_NOTICE_GUARD='||tgname||':enabled='||tgenabled::text FROM pg_trigger WHERE tgname='ops009_origin_close_notice_guard'"
       - name: N03 registry partial-column PDF quarantine regression
         if: matrix.phase == 'c02'
         env:
