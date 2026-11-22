@@ -1,6 +1,11 @@
 <?php
 
 return [
+    // No official/live identity or namespace is inferred from provisional
+    // directory seeds. An unset N03 namespace disables Work Request closure.
+    'n03_namespace_id' => env('WORK_REQUEST_N03_NAMESPACE_ID'),
+    'n03_epoch' => env('WORK_REQUEST_N03_EPOCH', 0),
+
     'categories' => [
         'Planning & Development' => ['CLUP / Zoning', 'CDP', 'LDIP', 'AIP', 'Project Proposal', 'Project Monitoring', 'GIS / Mapping', 'CBMS / Data', 'Local Special Bodies', 'Technical Review', 'Development Permit', 'Planning Certification'],
         'Zoning / Land Use' => ['Locational Clearance', 'Zoning Certification', 'Development Permit', 'Reclassification', 'Rezoning', 'Variance / Exception', 'Site Inspection', 'Land Use Verification', 'Subdivision / Memorial Park Review', 'Quarry / Special Land Use Review'],
