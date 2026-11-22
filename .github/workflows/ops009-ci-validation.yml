@@ -1,0 +1,157 @@
+name: OPS009 isolated C01 C02 proof
+
+on:
+  push:
+    branches:
+      - candidate/ops009-ci-proof-r1
+
+permissions:
+  contents: read
+
+jobs:
+  proof:
+    name: OPS009 ${{ matrix.phase }
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        phase: [c01, c02]
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: postgres
+      DB_PASSWORD: ops009_disposable_pg16_only
+      PGHOST: 127.0.0.1
+      PGPORT: '5432'
+      PGDATABASE: talibon_portal_test
+      PGUSER: postgres
+      PGPASSWORD: ops009_disposable_pg16_only
+      CACHE_STORE: array
+      SESSION_DRIVER: file
+      QUEUE_CONNECTION: sync
+      OPS009_DISPOSABLE_CI: '1'
+      N03_DISPOSABLE_LEASE: EXCLUSIVE_PG16_SYNTHETIC_ONLY
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ops009_disposable_pg16_only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d talibon_portal_test"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, fileinfo, zip, pcntl
+          coverage: none
+          tools: composer:v2
+      - name: Prove isolated identity and source-only freeze
+        run: |
+          set -euo pipefail
+          frozen=48e9aca15d90f22c48672c231592072f9f69f432
+          test "$GITHUB_ACTIONS" = true
+          test "$GITHUB_REF_NAME" = candidate/ops009-ci-proof-r1
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git merge-base "$frozen" HEAD)" = "$frozen"
+          git diff --exit-code "$frozen" HEAD -- app config resources routes database composer.json composer.lock package.json package-lock.json
+          while IFS= read -r path; do
+            case "$path" in
+              .github/workflows/ops009-ci-validation.yml|tests/Feature/OPS009C01SimultaneousCloseTest.php|tests/Feature/OPS009C02CustodyCloseTest.php|tests/Manual/ops009-c01-worker.php) ;;
+              *) echo "INVALID_FILE=$path"; exit 72;;
+            esac
+          done < <(git diff --name-only "$frozen" HEAD)
+          test "$(psql -XAtc 'SELECT current_database()')" = talibon_portal_test
+          test "$(psql -XAtc "SELECT count(*) FROM pg_tables WHERE schemaname='public'")" = 0
+          test "$(psql -XAtc "SELECT count(*) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%'")" = 0
+          psql -XAtc "SELECT current_setting('server_version_num')::int BETWEEN 160000 AND 169999" | grep -qx t
+          printf 'OPS009_CI_SHA=%s\nOPS009_APP_SOURCE=%s\n' "$GITHUB_SHA" "$frozen"
+          psql -XAtc "SELECT 'OPS009_DB=' || current_database() || ' PG=' || current_setting('server_version')"
+      - name: Dependencies and syntax
+        run: |
+          set -euo pipefail
+          composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+          cp .env.example .env
+          php artisan key:generate
+          php -l tests/Feature/OPS009C01SimultaneousCloseTest.php
+          php -l tests/Feature/OPS009C02CustodyCloseTest.php
+          php -l tests/Manual/ops009-c01-worker.php
+      - name: Exact baseline schema (excluding separately guarded N03 migrations)
+        run: |
+          set -euo pipefail
+          mapfile -t baseline < <(find database/migrations -maxdepth 1 -name '*.php' \
+            ! -name '2026_11_19_200000_create_legacy_custody_foundation.php' \
+            ! -name '2026_11_20_010000_extend_legacy_custody_g2b_command_provenance.php' \
+            ! -name '2026_11_20_020000_create_legacy_custody_k2_tombstones.php' \
+            ! -name '2026_11_20_030000_create_legacy_custody_g3_g5_extensions.php' | sort)
+          args=()
+          for f in "${baseline[@]"; do args+=("--path=$f"); done
+          php artisan migrate --force --no-interaction "${args[@]"
+      - name: C01 actual competing PostgreSQL sessions and event counts
+        if: matrix.phase == 'c01'
+        run: |
+          set -euo pipefail
+          php artisan test tests/Feature/OPS009C01SimultaneousCloseTest.php --group=ops009-c01
+      - name: C02 provision protected synthetic N03 roles
+        if: matrix.phase == 'c02'
+        run: |
+          set -euo pipefail
+          for name in G1B_MIGRATOR_PASSWORD G1B_APP_PASSWORD G1B_CUSTODY_PASSWORD N03_STAGE_PASSWORD N03_COMMAND_PASSWORD N03_RECONCILE_PASSWORD N03_READER_PASSWORD; do
+            value="$(openssl rand -hex 24)"
+            echo "::add-mask::$value"
+            printf '%s=%s\n' "$name" "$value" >> "$GITHUB_ENV"
+            export "$name=$value"
+          done
+          psql -X -v ON_ERROR_STOP=1 -v KIRION_G1B_DISPOSABLE_LEASE=EXCLUSIVE_PG16_TMPFS_QA_ONLY -v G1B_MIGRATOR_PASSWORD="$G1B_MIGRATOR_PASSWORD" -v G1B_APP_PASSWORD="$G1B_APP_PASSWORD" -v G1B_CUSTODY_PASSWORD="$G1B_CUSTODY_PASSWORD" -f tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -v KIRION_G2_DISPOSABLE_LEASE=EXCLUSIVE_G2_PG16_TMPFS_QA_ONLY -f tests/Manual/sql/G2_DISPOSABLE_PG16_CUSTODY_ROLE_EXTENSION_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/G2_DISPOSABLE_PG16_CUSTODY_ROLE_VERIFY_R1.sql
+          php artisan migrate --force --no-interaction --path=database/migrations/2026_11_19_200000_create_legacy_custody_foundation.php
+          psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -v N03_STAGE_PASSWORD="$N03_STAGE_PASSWORD" -v N03_COMMAND_PASSWORD="$N03_COMMAND_PASSWORD" -v N03_RECONCILE_PASSWORD="$N03_RECONCILE_PASSWORD" -f tests/Manual/sql/N03_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+          php artisan migrate --force --no-interaction --path=database/migrations/2026_11_20_010000_extend_legacy_custody_g2b_command_provenance.php
+          psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -f tests/Manual/sql/N03_G2B_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_G2B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+          php artisan migrate --force --no-interaction --path=database/migrations/2026_11_20_020000_create_legacy_custody_k2_tombstones.php
+          psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -f tests/Manual/sql/N03_K2_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_K2_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+          php artisan migrate --force --no-interaction --path=database/migrations/2026_11_20_030000_create_legacy_custody_g3_g5_extensions.php
+          psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -v N03_READER_PASSWORD="$N03_READER_PASSWORD" -f tests/Manual/sql/N03_G3_DISPOSABLE_PG16_READER_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_G3_DISPOSABLE_PG16_READER_ROLE_VERIFY_R1.sql
+          psql -XAtc "SELECT 'OPS009_ROLE=' || rolname FROM pg_roles WHERE rolname='n03_command'"
+      - name: C02 actual custody command and notification parity
+        if: matrix.phase == 'c02'
+        env:
+          N03_G2B_ROLE_SUITE: '1'
+        run: |
+          set -euo pipefail
+          php artisan test tests/Feature/OPS009C02CustodyCloseTest.php --group=ops009-c02
+      - name: C02 original custody and Mayor regression (even if new C02 fails)
+        if: matrix.phase == 'c02' && always()
+        env:
+          N03_G2B_ROLE_SUITE: '1'
+        run: |
+          set -euo pipefail
+          test -n "${N03_COMMAND_PASSWORD"
+          php artisan test tests/Feature/LegacyCustodyG2BTransactionCorrespondenceCommandTest.php --group=n03-g2b-role
+      - name: Runner teardown receipt
+        if: always()
+        run: |
+          printf 'OPS009_RUN_END phase=%s SHA=%s database=%s\n' '${{ matrix.phase }' "$GITHUB_SHA" "$DB_DATABASE"
+          echo 'POSTGRES_DISPOSABLE_SERVICE_CLEANUP=GITHUB_JOB_EXIT'
