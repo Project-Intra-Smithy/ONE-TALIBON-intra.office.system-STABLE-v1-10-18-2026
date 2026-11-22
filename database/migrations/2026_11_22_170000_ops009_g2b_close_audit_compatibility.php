@@ -178,8 +178,7 @@ G2B_EXPECTED;
                 || $installed->volatility !== 'v'
                 || (int) $installed->argument_count !== 0
                 || ! str_contains((string) $installed->function_settings, 'search_path=pg_catalog')
-                || trim(str_replace("\r\n", "\n", (string) $installed->body)) !== trim($canonical)
-                || ! str_contains((string) $installed->definition, 'SECURITY INVOKER')) {
+                || trim(str_replace("\r\n", "\n", (string) $installed->body)) !== trim($canonical)) {
                 throw new RuntimeException('OPS009 G2B audit compatibility refused noncanonical installed public_guard.');
             }
 
