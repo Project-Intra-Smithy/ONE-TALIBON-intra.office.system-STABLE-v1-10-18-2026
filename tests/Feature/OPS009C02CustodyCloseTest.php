@@ -717,14 +717,20 @@ final class OPS009C02CustodyCloseTest extends TestCase
             [$op['operation_id'], 'COMMITTED'],
         ));
 
+        // A foreign legitimate Head may access their OWN empty office queue,
+        // but must never see or mutate an exception belonging to this origin.
         $this->actingAs($this->foreignHead)
-            ->get('/work-requests/origin-delivery-exceptions')->assertForbidden();
+            ->get('/work-requests/origin-delivery-exceptions')
+            ->assertOk()->assertDontSee($transaction->reference_no);
         $this->actingAs($this->admin)
             ->get('/work-requests/origin-delivery-exceptions')->assertForbidden();
 
         $this->actingAs($custodian)->get('/work-requests/origin-delivery-exceptions')
             ->assertOk();
         $path = '/work-requests/origin-delivery-exceptions/'.$exception->id.'/actions';
+        $this->actingAs($this->foreignHead)->post($path, [
+            'action' => 'acknowledge', 'note' => 'Foreign office must not acknowledge',
+        ])->assertNotFound();
         $this->actingAs($custodian)->post($path, [
             'action' => 'resolve', 'note' => 'Attempted premature resolution',
         ])->assertSessionHasErrors('action');
