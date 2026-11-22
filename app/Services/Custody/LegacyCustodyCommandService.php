@@ -399,13 +399,51 @@ final class LegacyCustodyCommandService
                     $operationId,
                 ]);
 
-                // A missing recipient is NOT a delivered notification.
-                // Until a real authorized immutable escalation queue exists,
-                // the only defensible zero-recipient outcome is full rollback.
                 if ($notified < 1) {
-                    throw new CustodyViolationException(
-                        'No verified origin recipient or authorized escalation custodian is available; completion rolled back.'
-                    );
+                    // No broad office blast and no fabricated recipient.
+                    // Instead record exactly one immutable exception in the
+                    // SAME N03 command transaction, only if an actual eligible
+                    // origin-office Head can operate the restricted queue.
+                    $queued = $connection->affectingStatement(<<<'SQL'
+                        INSERT INTO public.ops009_origin_delivery_exceptions
+                            (operation_id, transaction_id, transaction_event_id, origin_department_id)
+                        SELECT CAST(? AS uuid), tx.id, ev.id, tx.origin_department_id
+                          FROM public.transactions tx
+                          JOIN public.transaction_events ev
+                            ON ev.transaction_id=tx.id AND ev.id=? AND ev.action='close'
+                          JOIN public.ops009_close_audit_bindings binding
+                            ON binding.transaction_id=tx.id
+                           AND binding.transaction_event_id=ev.id
+                           AND binding.operation_id=CAST(? AS uuid)
+                         WHERE tx.id=? AND tx.status='closed'
+                           AND EXISTS (
+                             SELECT 1
+                               FROM public.users head
+                               JOIN public.employees emp ON emp.user_id=head.id
+                               JOIN public.departments dep ON dep.id=emp.department_id
+                              WHERE emp.department_id=tx.origin_department_id
+                                AND head.role='department_head'
+                                AND head.is_active
+                                AND head.account_status='active'
+                                AND head.suspended_at IS NULL
+                                AND emp.employment_status='active'
+                                AND emp.separation_date IS NULL
+                                AND dep.is_active AND dep.is_routable
+                           )
+                        SQL, [
+                        $operationId,
+                        $produced->eventId,
+                        $operationId,
+                        $produced->sourceId,
+                    ]);
+
+                    // Without an actionable, verified queue custodian, neither
+                    // close, receipt nor exception is allowed to commit.
+                    if ($queued !== 1) {
+                        throw new CustodyViolationException(
+                            'No eligible origin recipient and no active authorized office escalation custodian; closure rolled back.'
+                        );
+                    }
                 }
             }
 
