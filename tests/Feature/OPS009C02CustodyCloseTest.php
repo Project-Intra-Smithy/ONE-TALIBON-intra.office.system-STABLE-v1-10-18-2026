@@ -689,6 +689,82 @@ final class OPS009C02CustodyCloseTest extends TestCase
         $this->assertSame(0, (int) $this->scalar('SELECT count(*) FROM legacy_custody.terminal_receipts WHERE operation_id=?', [$op['operation_id']]));
     }
 
+    public function test_no_eligible_requester_with_real_origin_head_creates_exactly_one_atomic_delivery_gap(): void
+    {
+        $transaction = $this->makeReviewedTransaction('For Information');
+        // A non-separated, currently active office head exists independently
+        // from the original requester. Do not invent a municipal designation.
+        $custodian = $this->makeActor($this->originOffice, 'department_head');
+        $this->origin->update(['is_active' => false]);
+
+        $op = $this->reserveAndStage($this->head);
+        $result = $this->executeClose($op, $transaction, $this->head);
+
+        $this->assertSame('COMMITTED', $result->outcome);
+        $this->assertSame('closed', $transaction->fresh()->status);
+        $this->assertSame(0, (int) DB::table('platform_notifications')
+            ->where('event_key', 'transaction-event-'.$result->eventId)->count());
+
+        $exception = DB::table('ops009_origin_delivery_exceptions')
+            ->where('operation_id', $op['operation_id'])->sole();
+        $this->assertSame((int) $transaction->id, (int) $exception->transaction_id);
+        $this->assertSame((int) $result->eventId, (int) $exception->transaction_event_id);
+        $this->assertSame((int) $this->originOffice->id, (int) $exception->origin_department_id);
+        $this->assertSame('department_head', $exception->custodian_role);
+        $this->assertSame(1, $this->auditCount((int) $transaction->id));
+        $this->assertSame(1, (int) $this->scalar(
+            'SELECT count(*) FROM legacy_custody.terminal_receipts WHERE operation_id=? AND outcome=?',
+            [$op['operation_id'], 'COMMITTED'],
+        ));
+
+        $this->actingAs($this->foreignHead)
+            ->get('/work-requests/origin-delivery-exceptions')->assertForbidden();
+        $this->actingAs($this->admin)
+            ->get('/work-requests/origin-delivery-exceptions')->assertForbidden();
+
+        $this->actingAs($custodian)->get('/work-requests/origin-delivery-exceptions')
+            ->assertOk();
+        $path = '/work-requests/origin-delivery-exceptions/'.$exception->id.'/actions';
+        $this->actingAs($custodian)->post($path, [
+            'action' => 'resolve', 'note' => 'Attempted premature resolution',
+        ])->assertSessionHasErrors('action');
+        $this->actingAs($custodian)->post($path, [
+            'action' => 'acknowledge', 'note' => 'Synthetic owner accepted delivery gap case',
+        ])->assertRedirect();
+        $this->actingAs($custodian)->post($path, [
+            'action' => 'resolve', 'note' => 'Synthetic follow-up documented for audit',
+        ])->assertRedirect();
+        $this->assertSame(2, DB::table('ops009_origin_delivery_exception_actions')
+            ->where('exception_id', $exception->id)->count());
+        $this->actingAs($custodian)->post($path, [
+            'action' => 'resolve', 'note' => 'Attempted duplicate resolution',
+        ])->assertSessionHasErrors('action');
+    }
+
+    public function test_no_recipient_and_no_authorized_origin_head_cannot_commit_close(): void
+    {
+        $transaction = $this->makeReviewedTransaction('For Information');
+        // The only originating Head is also the now-inactive requester.
+        $this->origin->update(['is_active' => false]);
+
+        $op = $this->reserveAndStage($this->head);
+        $before = $this->delta($transaction);
+        try {
+            $this->executeClose($op, $transaction, $this->head);
+            $this->fail('Close committed with neither eligible recipient nor actionable escalation custodian.');
+        } catch (CustodyViolationException $expected) {
+            $this->assertStringContainsString('no active authorized office escalation', strtolower($expected->getMessage()));
+        }
+        $this->assertSame($before, $this->delta($transaction));
+        $this->assertSame('for_review', $transaction->fresh()->status);
+        $this->assertSame(0, DB::table('ops009_origin_delivery_exceptions')
+            ->where('operation_id', $op['operation_id'])->count());
+        $this->assertSame(0, (int) $this->scalar(
+            'SELECT count(*) FROM legacy_custody.terminal_receipts WHERE operation_id=?',
+            [$op['operation_id']],
+        ));
+    }
+
     private function makeReviewedTransaction(?string $classification): WorkflowTransaction
     {
         $workflow = app(TransactionWorkflowService::class);
