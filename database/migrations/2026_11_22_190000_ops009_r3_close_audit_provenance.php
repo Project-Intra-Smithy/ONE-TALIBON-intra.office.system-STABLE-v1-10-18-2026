@@ -186,8 +186,8 @@ return new class extends Migration
                       WHERE conrelid='public.audit_logs'::regclass
                         AND conname IN ('n03_audit_marked','n03_audit_document')) AS original_constraints,
                     pg_get_userbyid(c.relowner) AS sidecar_owner,
-                    has_table_privilege('n03_command','public.ops009_close_audit_bindings','INSERT') AS can_insert,
-                    has_table_privilege('n03_command','public.ops009_close_audit_bindings','SELECT') AS can_read,
+                    has_any_column_privilege('n03_command','public.ops009_close_audit_bindings','INSERT') AS can_insert,
+                    has_any_column_privilege('n03_command','public.ops009_close_audit_bindings','SELECT') AS can_read,
                     has_table_privilege('n03_command','public.ops009_close_audit_bindings','UPDATE') AS can_update,
                     has_table_privilege('n03_command','public.ops009_close_audit_bindings','DELETE') AS can_delete
                 FROM pg_catalog.pg_class c
