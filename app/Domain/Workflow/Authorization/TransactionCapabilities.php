@@ -21,10 +21,9 @@ final class TransactionCapabilities
      */
     private const ROLE_CAPABILITIES = [
         'system_admin' => [
+            // Technical administration retains read-only municipal visibility.
+            // Municipal workflow authority must come from an eligible office role.
             self::VIEW_ALL,
-            self::TRANSITION,
-            self::ASSIGN,
-            self::MAYOR_DECISION,
         ],
         'mayor_approver' => [
             self::VIEW_ALL,
