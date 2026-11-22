@@ -280,6 +280,98 @@ final class OPS009C02CustodyCloseTest extends TestCase
         ], JSON_THROW_ON_ERROR)."\n");
     }
 
+    public function test_c02_audit_refuses_missing_terminal_receipt_at_deferred_check(): void
+    {
+        $tx = $this->makeReviewedTransaction('For Information');
+        $op = $this->reserveAndStage($this->head);
+        $before = $this->delta($tx);
+        $forcedCheckReached = false;
+        try {
+            app(LegacyCustodyCommandService::class)->execute(
+                operationId: $op['operation_id'],
+                businessCommand: fn (ConnectionInterface $conn, VerifiedCommandActor $verified, string $correlation): ProducedSourceEvent =>
+                    app(TransactionWorkflowService::class)->transitionWithEventOnConnection(
+                        $conn, $verified, (int) $tx->id, 'close', $correlation, remarks: 'Synthetic incomplete receipt.',
+                    ),
+                expectedSessionVersion: (int) $this->head->session_version,
+                expectedRole: $this->head->role,
+                cutPointHook: static function (string $point) use (&$forcedCheckReached): void {
+                    if ($point === 'after_command_result') {
+                        $forcedCheckReached = true;
+                        DB::connection('n03_command')->statement(
+                            'SET CONSTRAINTS ops009_close_audit_integrity IMMEDIATE',
+                        );
+                    }
+                },
+            );
+            $this->fail('OPS009 unreceipted close audit was accepted.');
+        } catch (QueryException $e) {
+            $this->assertSame('23514', (string) $e->getCode());
+        }
+        $this->assertTrue($forcedCheckReached);
+        $this->assertSame($before, $this->delta($tx));
+        $this->assertSame(0, (int) $this->scalar(
+            'SELECT count(*) FROM public.ops009_close_audit_bindings WHERE operation_id=?',
+            [$op['operation_id']],
+        ));
+        fwrite(STDOUT, "OPS009_R3_MISSING_RECEIPT_REJECTION=23514;rollback=verified\n");
+    }
+
+    public function test_uncommitted_origin_notice_is_invisible_and_cutpoint_rolls_back(): void
+    {
+        $tx = $this->makeReviewedTransaction('For Information');
+        $op = $this->reserveAndStage($this->head);
+        $before = $this->delta($tx);
+        $eventId = null;
+        $observedBeforeCommit = null;
+        $external = $this->root;
+
+        try {
+            app(LegacyCustodyCommandService::class)->execute(
+                operationId: $op['operation_id'],
+                businessCommand: fn (ConnectionInterface $conn, VerifiedCommandActor $verified, string $correlation): ProducedSourceEvent =>
+                    app(TransactionWorkflowService::class)->transitionWithEventOnConnection(
+                        $conn, $verified, (int) $tx->id, 'close', $correlation, remarks: 'Synthetic notice rollback.',
+                    ),
+                expectedSessionVersion: (int) $this->head->session_version,
+                expectedRole: $this->head->role,
+                cutPointHook: static function (string $point, array $context) use (
+                    &$eventId, &$observedBeforeCommit, $external,
+                    $tx
+                ): void {
+                    if ($point === 'after_business') {
+                        $eventId = (int) $context['event_id'];
+                    }
+                    if ($point === 'after_receipt') {
+                        if ($eventId === null) {
+                            throw new RuntimeException('Missing close event at after_receipt.');
+                        }
+                        $stmt = $external->prepare(
+                            'SELECT count(*) FROM public.platform_notifications
+                             WHERE event_key=? AND source_id=?',
+                        );
+                        $stmt->execute(['transaction-event-'.$eventId, (int) $tx->id]);
+                        $observedBeforeCommit = (int) $stmt->fetchColumn();
+                        throw new RuntimeException('OPS009_R3_AFTER_RECEIPT_TEST_CUTPOINT');
+                    }
+                },
+            );
+            $this->fail('Injected after_receipt failure did not occur.');
+        } catch (RuntimeException $e) {
+            $this->assertSame('OPS009_R3_AFTER_RECEIPT_TEST_CUTPOINT', $e->getMessage());
+        }
+        $this->assertNotNull($eventId);
+        $this->assertSame(0, $observedBeforeCommit);
+        $this->assertSame($before, $this->delta($tx));
+        $this->assertSame(0, (int) DB::table('platform_notifications')
+            ->where('event_key', 'transaction-event-'.$eventId)->count());
+        fwrite(STDOUT, 'OPS009_R3_NOTICE_PRECOMMIT_VISIBILITY='.json_encode([
+            'external_session_count' => $observedBeforeCommit,
+            'after_rollback_count' => 0,
+            'event_id' => $eventId,
+        ], JSON_THROW_ON_ERROR)."\n");
+    }
+
     public function test_continuous_process_broker_reserve_stage_execute_and_verify_bytes(): void
     {
         $tx = $this->makeReviewedTransaction('For Information');
