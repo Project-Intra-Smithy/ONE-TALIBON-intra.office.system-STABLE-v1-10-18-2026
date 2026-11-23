@@ -74,19 +74,19 @@ jobs:
           test "${#changed_since_m3[@]}" -eq 14
           for path in "${changed_since_m3[@]}"; do
             case "$path" in
-              .github/workflows/ot-m3-unified-full-matrix.yml |
-              app/Domain/Authorization/AuthorizationContext.php |
-              app/Domain/Workflow/Authorization/TransactionAuthorizationContextFactory.php |
-              app/Domain/Workflow/Listeners/NotifyWorkflowTransactionMutation.php |
-              app/Http/Controllers/Planning/DevelopmentPlanController.php |
-              app/Http/Controllers/Planning/PlanningAttachmentController.php |
-              app/Http/Controllers/Planning/PpaController.php |
-              app/Http/Controllers/TransactionController.php |
-              app/Policies/TransactionPolicy.php |
-              app/Services/Custody/WorkRequestCloseDocumentPdf.php |
-              app/Services/TransactionEvidenceService.php |
-              app/Services/TransactionLiveQuery.php |
-              tests/Feature/OPS009C01N03SimultaneousCloseTest.php |
+              .github/workflows/ot-m3-unified-full-matrix.yml) ;;
+              app/Domain/Authorization/AuthorizationContext.php) ;;
+              app/Domain/Workflow/Authorization/TransactionAuthorizationContextFactory.php) ;;
+              app/Domain/Workflow/Listeners/NotifyWorkflowTransactionMutation.php) ;;
+              app/Http/Controllers/Planning/DevelopmentPlanController.php) ;;
+              app/Http/Controllers/Planning/PlanningAttachmentController.php) ;;
+              app/Http/Controllers/Planning/PpaController.php) ;;
+              app/Http/Controllers/TransactionController.php) ;;
+              app/Policies/TransactionPolicy.php) ;;
+              app/Services/Custody/WorkRequestCloseDocumentPdf.php) ;;
+              app/Services/TransactionEvidenceService.php) ;;
+              app/Services/TransactionLiveQuery.php) ;;
+              tests/Feature/OPS009C01N03SimultaneousCloseTest.php) ;;
               tests/Feature/OPS009C02CustodyCloseTest.php) ;;
               *) echo "::error title=Unauthorized M3 cleanup change::$path"; exit 1 ;;
             esac
