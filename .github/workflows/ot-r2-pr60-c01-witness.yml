@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - candidate/kirch-operationforge-r2-c01-ci-witness-r1
+  pull_request:
+    branches:
+      - candidate/kirch-operationforge-r2-policy-completion-r1
 
 permissions:
   contents: read
@@ -56,6 +59,7 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
         with:
           php-version: '8.4'
@@ -66,8 +70,12 @@ jobs:
         run: |
           set -euo pipefail
           test "$GITHUB_ACTIONS" = true
-          test "$GITHUB_REF_NAME" = candidate/kirch-operationforge-r2-c01-ci-witness-r1
-          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          if [ "${GITHUB_EVENT_NAME}" = pull_request ]; then
+            test "${GITHUB_HEAD_REF}" = candidate/kirch-operationforge-r2-c01-ci-witness-r1
+          else
+            test "${GITHUB_REF_NAME}" = candidate/kirch-operationforge-r2-c01-ci-witness-r1
+          fi
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha || github.sha }}"
           test "$(git merge-base 05e1b6d77983410da4943e868118bc0484b25046 HEAD)" = 05e1b6d77983410da4943e868118bc0484b25046
           test "$(psql -XAtc 'SELECT current_database()')" = talibon_portal_test
           test "$(psql -XAtc "SELECT count(*) FROM pg_tables WHERE schemaname='public'")" = 0
@@ -281,6 +289,7 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: .nvmrc
