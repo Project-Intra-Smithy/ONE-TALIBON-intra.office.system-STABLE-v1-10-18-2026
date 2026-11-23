@@ -39,6 +39,7 @@ jobs:
       SESSION_DRIVER: file
       QUEUE_CONNECTION: sync
       N03_DISPOSABLE_LEASE: EXCLUSIVE_PG16_SYNTHETIC_ONLY
+      OPS009_DISPOSABLE_CI: '1'
     services:
       postgres:
         image: postgres:16
@@ -119,7 +120,7 @@ jobs:
             echo "::add-mask::$value"
             export "$name=$value"
           done
-          mapfile -t baseline < <(find database/migrations -maxdepth 1 -name '*.php' ! -name '2026_11_19_200000_create_legacy_custody_foundation.php' ! -name '2026_11_20_010000_extend_legacy_custody_g2b_command_provenance.php' ! -name '2026_11_20_020000_create_legacy_custody_k2_tombstones.php' ! -name '2026_11_20_030000_create_legacy_custody_g3_g5_extensions.php' | sort)
+          mapfile -t baseline < <(find database/migrations -maxdepth 1 -name '*.php' ! -name '2026_11_19_200000_create_legacy_custody_foundation.php' ! -name '2026_11_20_010000_extend_legacy_custody_g2b_command_provenance.php' ! -name '2026_11_20_020000_create_legacy_custody_k2_tombstones.php' ! -name '2026_11_20_030000_create_legacy_custody_g3_g5_extensions.php' ! -name '2026_11_22_150000_ops009_close_command_compatibility.php' ! -name '2026_11_22_170000_ops009_g2b_close_audit_compatibility.php' ! -name '2026_11_22_190000_ops009_r3_close_audit_provenance.php' ! -name '2026_11_22_191000_ops009_r3_origin_notice_effect.php' ! -name '2026_11_23_020000_ops009_origin_delivery_exception_queue.php' | sort)
           args=()
           for f in "${baseline[@]}"; do args+=("--path=$f"); done
           php artisan migrate --force --no-interaction "${args[@]}"
@@ -133,7 +134,7 @@ jobs:
           php artisan test tests/Feature/LegacyCustodyFoundationTest.php --group=n03-role
 
       - name: Provision baseline + G1B/G2 + G2A + G2B + K2 + G3-G5 real-role cluster
-        if: matrix.phase == 'roles'
+        if: matrix.phase == 'roles' || matrix.phase == 'focused' || matrix.phase == 'full' || matrix.phase == 'browser'
         run: |
           set -euo pipefail
           for name in G1B_MIGRATOR_PASSWORD G1B_APP_PASSWORD G1B_CUSTODY_PASSWORD N03_STAGE_PASSWORD N03_COMMAND_PASSWORD N03_RECONCILE_PASSWORD N03_READER_PASSWORD; do
@@ -144,7 +145,7 @@ jobs:
           done
 
           # Baseline migrations (before N03)
-          mapfile -t baseline < <(find database/migrations -maxdepth 1 -name '*.php' ! -name '2026_11_19_200000_create_legacy_custody_foundation.php' ! -name '2026_11_20_010000_extend_legacy_custody_g2b_command_provenance.php' ! -name '2026_11_20_020000_create_legacy_custody_k2_tombstones.php' ! -name '2026_11_20_030000_create_legacy_custody_g3_g5_extensions.php' | sort)
+          mapfile -t baseline < <(find database/migrations -maxdepth 1 -name '*.php' ! -name '2026_11_19_200000_create_legacy_custody_foundation.php' ! -name '2026_11_20_010000_extend_legacy_custody_g2b_command_provenance.php' ! -name '2026_11_20_020000_create_legacy_custody_k2_tombstones.php' ! -name '2026_11_20_030000_create_legacy_custody_g3_g5_extensions.php' ! -name '2026_11_22_150000_ops009_close_command_compatibility.php' ! -name '2026_11_22_170000_ops009_g2b_close_audit_compatibility.php' ! -name '2026_11_22_190000_ops009_r3_close_audit_provenance.php' ! -name '2026_11_22_191000_ops009_r3_origin_notice_effect.php' ! -name '2026_11_23_020000_ops009_origin_delivery_exception_queue.php' | sort)
           args=()
           for f in "${baseline[@]}"; do args+=("--path=$f"); done
           php artisan migrate --force --no-interaction "${args[@]}"
@@ -175,6 +176,60 @@ jobs:
           psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -v N03_READER_PASSWORD="$N03_READER_PASSWORD" -f tests/Manual/sql/N03_G3_DISPOSABLE_PG16_READER_ROLE_INSTALL_R1.sql
           psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_G3_DISPOSABLE_PG16_READER_ROLE_VERIFY_R1.sql
 
+      - name: Complete protected OPS009 migrations and prove fail-closed leases
+        if: matrix.phase == 'roles' || matrix.phase == 'focused' || matrix.phase == 'full' || matrix.phase == 'browser'
+        run: |
+          set -euo pipefail
+          test "$GITHUB_ACTIONS" = true
+          test "$APP_ENV" = testing
+          test "$DB_DATABASE" = talibon_portal_test
+          test "$N03_DISPOSABLE_LEASE" = EXCLUSIVE_PG16_SYNTHETIC_ONLY
+          test "$(psql -XAtc 'SELECT current_database()')" = talibon_portal_test
+          psql -XAtc "SELECT current_setting('server_version_num')::int BETWEEN 160000 AND 169999" | grep -qx t
+          test "$(psql -XAtc "SELECT count(*) FROM pg_roles WHERE rolname IN ('n03_stage','n03_command','n03_reconcile') AND rolcanlogin AND NOT rolsuper")" = 3
+          test "$(psql -XAtc "SELECT count(*) FROM pg_constraint WHERE conrelid=to_regclass('legacy_custody.operations') AND conname='operations_check'")" = 1
+          for migration in \
+            2026_11_22_150000_ops009_close_command_compatibility \
+            2026_11_22_170000_ops009_g2b_close_audit_compatibility \
+            2026_11_22_190000_ops009_r3_close_audit_provenance \
+            2026_11_22_191000_ops009_r3_origin_notice_effect \
+            2026_11_23_020000_ops009_origin_delivery_exception_queue; do
+            path="database/migrations/$migration.php"
+            php -l "$path"
+            test "$(psql -XAtc "SELECT count(*) FROM public.migrations WHERE migration='$migration'")" = 0
+            if N03_DISPOSABLE_LEASE=UNLEASED php artisan migrate --force --no-interaction --path="$path" > "$RUNNER_TEMP/$migration.denied.log" 2>&1; then
+              echo "::error::OPS009 accepted an invalid lease for $migration"
+              exit 82
+            fi
+            grep -q OPS009 "$RUNNER_TEMP/$migration.denied.log" || {
+              echo "::error::Unexpected migration failure instead of guard denial: $migration"
+              tail -n 30 "$RUNNER_TEMP/$migration.denied.log"
+              exit 83
+            }
+            test "$(psql -XAtc "SELECT count(*) FROM public.migrations WHERE migration='$migration'")" = 0
+            echo "OPS009_INVALID_LEASE_DENIED=$migration"
+            php artisan migrate --force --no-interaction --path="$path"
+            test "$(psql -XAtc "SELECT count(*) FROM public.migrations WHERE migration='$migration'")" = 1
+            echo "OPS009_VALID_LEASE_APPLIED=$migration"
+          done
+          test "$(psql -XAtc "SELECT count(*) FROM public.migrations WHERE migration LIKE '2026_11_22_%ops009_%' OR migration='2026_11_23_020000_ops009_origin_delivery_exception_queue'")" = 5
+          test "$(psql -XAtc "SELECT count(*) FROM pg_trigger WHERE tgname IN ('ops009_delivery_exception_guard','ops009_delivery_action_guard','ops009_exception_append_only','ops009_exception_action_append_only')")" = 4
+          test "$(psql -XAtc "SELECT count(*) FROM pg_trigger WHERE tgname='ops009_close_audit_integrity'")" = 1
+          test "$(psql -XAtc "SELECT count(*) FROM pg_trigger WHERE tgname='ops009_origin_close_notice_guard'")" = 1
+          echo OPS009_FULL_GUARDED_MIGRATION_CHAIN=PASS
+      - name: Negative SQL authorization — N03 staging cannot rewrite audit
+        if: matrix.phase == 'roles'
+        run: |
+          set -euo pipefail
+          if psql -X -v ON_ERROR_STOP=1 -c "BEGIN; SET LOCAL ROLE n03_stage; UPDATE public.audit_logs SET action='unauthorized-ci-test' WHERE FALSE; ROLLBACK" > "$RUNNER_TEMP/unauthorized-audit-update.log" 2>&1; then
+            echo "::error::Ordinary N03 stage role permitted audit UPDATE"
+            exit 84
+          fi
+          grep -Eiq 'permission denied|must be owner' "$RUNNER_TEMP/unauthorized-audit-update.log" || {
+            cat "$RUNNER_TEMP/unauthorized-audit-update.log"
+            exit 85
+          }
+          echo N03_STAGE_UNAUTHORIZED_AUDIT_UPDATE_DENIED=PASS
       - name: Run G2B + K2 + G3-G5 real-role Feature suites
         if: matrix.phase == 'roles'
         env:
@@ -187,53 +242,19 @@ jobs:
           php artisan test tests/Feature/LegacyCustodyK2ReconciliationTest.php --group=n03-k2-role
           php artisan test tests/Feature/LegacyCustodyG3EgressAndWatermarkTest.php --group=n03-g3-role
 
-      - name: Disposable regression schema lifecycle bootstrap
+      - name: Verify pre-provisioned protected schema test bootstrap
         if: matrix.phase == 'focused' || matrix.phase == 'full'
         run: |
           set -euo pipefail
-          cat > "$RUNNER_TEMP/n03-regression-bootstrap.php" <<'PHP'
-          <?php
-          require getenv('GITHUB_WORKSPACE').'/vendor/autoload.php';
-          if (getenv('GITHUB_ACTIONS') !== 'true' || getenv('APP_ENV') !== 'testing'
-              || getenv('DB_DATABASE') !== 'talibon_portal_test'
-              || getenv('N03_DISPOSABLE_LEASE') !== 'EXCLUSIVE_PG16_SYNTHETIC_ONLY'
-              || getenv('N03_ROLE_SUITE') === '1') {
-              throw new RuntimeException('Unsafe N03 regression bootstrap.');
-          }
-          \Illuminate\Database\Connection::resolverFor('pgsql', static function ($connection, $database, $prefix, $config) {
-              return new class($connection, $database, $prefix, $config) extends \Illuminate\Database\PostgresConnection {
-                  public function getSchemaBuilder()
-                  {
-                      if (is_null($this->schemaGrammar)) {
-                          $this->useDefaultSchemaGrammar();
-                      }
-                      return new class($this) extends \Illuminate\Database\Schema\PostgresBuilder {
-                          public function dropAllTables()
-                          {
-                              $db = $this->connection;
-                              $db->transaction(function () use ($db) {
-                                  $guard = $db->selectOne("SELECT current_database() AS db, current_setting('server_version_num')::integer AS version, current_setting('is_superuser') AS bootstrap, to_regnamespace('legacy_custody') IS NOT NULL AS present, EXISTS(SELECT 1 FROM pg_catalog.pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%') AS role_cluster");
-                                  if ($guard->db !== 'talibon_portal_test' || $guard->version < 160000 || $guard->version >= 170000
-                                      || $guard->bootstrap !== 'on' || $guard->role_cluster) {
-                                      throw new RuntimeException('Refusing N03 regression wipe outside the normal isolated cluster.');
-                                  }
-                                  if ($guard->present) {
-                                      $db->unprepared('DROP SCHEMA legacy_custody CASCADE');
-                                  }
-                                  parent::dropAllTables();
-                              });
-                          }
-                      };
-                  }
-              };
-          });
-          PHP
-          php -l "$RUNNER_TEMP/n03-regression-bootstrap.php"
-
+          php -l tests/Manual/ops009-registry-bootstrap.php
+          test "$(psql -XAtc "SELECT count(*) FROM public.migrations WHERE migration IN ('2026_11_22_150000_ops009_close_command_compatibility','2026_11_22_170000_ops009_g2b_close_audit_compatibility','2026_11_22_190000_ops009_r3_close_audit_provenance','2026_11_22_191000_ops009_r3_origin_notice_effect','2026_11_23_020000_ops009_origin_delivery_exception_queue')")" = 5
+          echo OPS009_PROTECTED_REGRESSION_SCHEMA_READY=PASS
       - name: Focused custody, P07 quarantine & whole-system traceability regression
         if: matrix.phase == 'focused'
+        env:
+          OPS009_REGISTRY_BASELINE: '1'
         run: |
-          php artisan test --bootstrap="$RUNNER_TEMP/n03-regression-bootstrap.php" \
+          php artisan test --bootstrap=tests/Manual/ops009-registry-bootstrap.php \
             tests/Feature/EmployeeProfileProvenanceQuarantineTest.php \
             tests/Feature/WholeSystemTraceabilityJourneyTest.php \
             tests/Feature/LegacyPdfPreviewTest.php \
@@ -247,8 +268,10 @@ jobs:
 
       - name: Full canonical PG16 Feature regression
         if: matrix.phase == 'full'
+        env:
+          OPS009_REGISTRY_BASELINE: '1'
         run: |
-          php artisan test --bootstrap="$RUNNER_TEMP/n03-regression-bootstrap.php" \
+          php artisan test --bootstrap=tests/Manual/ops009-registry-bootstrap.php \
             --testsuite=Feature \
             --exclude-group=n03-role,n03-g2b-role,n03-k2-role,n03-g3-role
 
@@ -270,7 +293,7 @@ jobs:
           QA_EXPECTED_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
-          php artisan migrate --force --no-interaction
+          test "$(psql -XAtc \"SELECT count(*) FROM public.migrations WHERE migration='2026_11_23_020000_ops009_origin_delivery_exception_queue'\")" = 1
           npx playwright install --with-deps chromium
           password="$(openssl rand -hex 24)Aa1!"
           echo "::add-mask::$password"
@@ -298,7 +321,7 @@ jobs:
     needs: [validate]
     if: always()
     steps:
-      - name: Require all five exact-SHA matrix jobs
+      - name: Require all six exact-SHA matrix jobs
         env:
           OUTCOME: ${{ needs.validate.result }}
         run: |
