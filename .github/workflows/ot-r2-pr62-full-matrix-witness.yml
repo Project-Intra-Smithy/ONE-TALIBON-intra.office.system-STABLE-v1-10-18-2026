@@ -293,13 +293,39 @@ jobs:
         env:
           OPS009_REGISTRY_BASELINE: '1'
         run: |
-          # C01/C02 have dedicated N03 real-role process requirements.
-          # P0DestinationRevocation resets RefreshDatabaseState after each
-          # test; isolate all six tests rather than re-running guarded DDL.
-          php artisan test --bootstrap=tests/Manual/ops009-registry-bootstrap.php \
-            --testsuite=Feature \
-            --exclude-group=n03-role,n03-g2b-role,n03-k2-role,n03-g3-role,ops009-c01,ops009-c02 \
-            --filter='^(?!.*P0DestinationRevocation)'
+          # Command-line --exclude-group/negative --filter proved unreliable:
+          # construct a CI-only PHPUnit config rooted in this checkout.
+          # All regular PR62 Feature tests remain covered, while C01/C02
+          # and the six P0 cross-connection tests run in their dedicated jobs.
+          matrix_config="$GITHUB_WORKSPACE/.ot-m1-pr62-feature-matrix-phpunit.xml"
+          trap 'rm -f "$matrix_config"' EXIT
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          source = Path('phpunit.xml')
+          dest = Path('.ot-m1-pr62-feature-matrix-phpunit.xml')
+          root = ET.parse(source).getroot()
+          suite = next(s for s in root.find('testsuites').findall('testsuite') if s.get('name') == 'Feature')
+          original = [n.text for n in suite.findall('exclude')]
+          dedicated = [
+              'tests/Feature/OPS009C01N03SimultaneousCloseTest.php',
+              'tests/Feature/OPS009C02CustodyCloseTest.php',
+              'tests/Feature/P0DestinationRevocation/P0DestinationRevocationTest.php',
+          ]
+          for path in dedicated:
+              assert Path(path).is_file(), path
+              assert path not in original, path
+              ET.SubElement(suite, 'exclude').text = path
+          ET.ElementTree(root).write(dest, encoding='utf-8', xml_declaration=True)
+          verified = [n.text for n in ET.parse(dest).getroot().find('testsuites').find('testsuite').findall('exclude')]
+          assert verified == original + dedicated
+          print('PHPUNIT_FEATURE_ORIGINAL_EXCLUDES='+str(len(original)))
+          print('PHPUNIT_FEATURE_DEDICATED_EXCLUDES='+str(len(dedicated)))
+          print('PHPUNIT_FEATURE_SOURCE_SUITE_UNALTERED=PASS')
+          PY
+          php artisan test --configuration="$matrix_config" \
+            --bootstrap=tests/Manual/ops009-registry-bootstrap.php \
+            --testsuite=Feature
           echo FEATURE_CORE_WITH_PROTECTED_REGISTRY=PASS
       - name: Six cross-connection P0 revocation tests in isolated PHP processes
         if: matrix.phase == 'full'
