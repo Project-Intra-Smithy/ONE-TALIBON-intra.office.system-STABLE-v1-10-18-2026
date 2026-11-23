@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import type { PortalNavigationGroup } from '../../navigation/portalNavigation';
 import type { AuthUser } from '../../types';
 
-export function RecordsSearch() {
+export function RecordsSearch({ onOpenCommandPalette }: { onOpenCommandPalette?: () => void }) {
     function search(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -15,7 +15,25 @@ export function RecordsSearch() {
             <label className="relative block">
                 <span className="sr-only">Search records</span>
                 <Search size={16} className="pointer-events-none absolute left-3.5 top-3.5 text-slate-500" aria-hidden="true" />
-                <input type="search" name="search" placeholder="Search records…" className="h-11 w-full rounded-lg border border-slate-200 bg-slate-50 pl-10 pr-4 text-sm text-slate-900 placeholder:text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-400" />
+                <input
+                    type="search"
+                    name="search"
+                    placeholder="Search records…"
+                    className={`h-11 w-full rounded-lg border border-slate-200 bg-slate-50 pl-10 text-sm text-slate-900 placeholder:text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-400 ${
+                        onOpenCommandPalette ? 'pr-16' : 'pr-4'
+                    }`}
+                />
+                {onOpenCommandPalette && (
+                    <button
+                        type="button"
+                        onClick={onOpenCommandPalette}
+                        aria-label="Open Quick Jump command palette (Ctrl+K)"
+                        title="Quick Jump (Ctrl+K)"
+                        className="absolute right-2 top-1/2 hidden -translate-y-1/2 items-center rounded border border-slate-200 bg-white px-1.5 py-0.5 font-mono text-xs font-semibold text-slate-600 transition-colors hover:border-emerald-700 hover:text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 lg:inline-flex"
+                    >
+                        Ctrl K
+                    </button>
+                )}
             </label>
             <button type="submit" className="portal-search-submit">Search</button>
         </form>

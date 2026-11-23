@@ -6,6 +6,7 @@ import { NotificationContext, NotificationStateContext } from '../components/she
 import { emptyNotificationFeed, parseNotificationFeed } from '../compat/notificationFeed';
 import MobileNavigation from '../components/shell/MobileNavigation';
 import PortalSidebar from '../components/shell/PortalSidebar';
+import CommandPalette from '../components/shell/CommandPalette';
 import { PortalIdentity, PortalLauncher, RecordsSearch } from '../components/shell/PortalTools';
 import { useVisiblePolling } from '../hooks/useVisiblePolling';
 import { buildPortalNavigation } from '../navigation/portalNavigation';
@@ -52,6 +53,7 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
     const [mobileOpen, setMobileOpen] = useState(false);
     const [desktopCollapsed, setDesktopCollapsed] = useState(false);
     const [notificationsOpen, setNotificationsOpen] = useState(false);
+    const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
     const [dismissedMemoId, setDismissedMemoId] = useState<number | null>(null);
     const [liveAlert, setLiveAlert] = useState<LiveNotification | null>(null);
     const [unseenWorkflowCount, setUnseenWorkflowCount] = useState(0);
@@ -113,6 +115,17 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
             return next;
         });
     };
+
+    useEffect(() => {
+        const handleGlobalShortcut = (event: KeyboardEvent) => {
+            if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+                event.preventDefault();
+                setCommandPaletteOpen((open) => !open);
+            }
+        };
+        window.addEventListener('keydown', handleGlobalShortcut);
+        return () => window.removeEventListener('keydown', handleGlobalShortcut);
+    }, []);
 
     useEffect(() => {
         if (!notificationsOpen) return;
@@ -256,7 +269,7 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
 
                         {navigationGroups.some((group) => group.items.some((item) => item.key === 'records')) && (
                             <div className="hidden min-w-0 lg:block">
-                                <RecordsSearch />
+                                <RecordsSearch onOpenCommandPalette={() => setCommandPaletteOpen(true)} />
                             </div>
                         )}
                         <div className="flex shrink-0 items-center gap-1 sm:gap-2">
@@ -333,6 +346,12 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
                     </nav>
                 </main>
             </div>
+
+            <CommandPalette
+                open={commandPaletteOpen}
+                onClose={() => setCommandPaletteOpen(false)}
+                navigationGroups={navigationGroups}
+            />
 
             {liveAlert && (
                 <div className="fixed left-3 right-3 top-16 z-[60] sm:left-auto sm:right-4 sm:top-20 sm:w-[390px]">
