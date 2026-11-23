@@ -241,6 +241,15 @@ jobs:
           php artisan test tests/Feature/LegacyCustodyG2BTravelOrderCommandTest.php tests/Feature/LegacyCustodyG2BTransactionCorrespondenceCommandTest.php --group=n03-g2b-role
           php artisan test tests/Feature/LegacyCustodyK2ReconciliationTest.php --group=n03-k2-role
           php artisan test tests/Feature/LegacyCustodyG3EgressAndWatermarkTest.php --group=n03-g3-role
+      - name: Dedicated protected OPS009 C02 and C01 actual-role regressions
+        if: matrix.phase == 'roles'
+        env:
+          N03_G2B_ROLE_SUITE: '1'
+        run: |
+          set -euo pipefail
+          php artisan test tests/Feature/OPS009C02CustodyCloseTest.php --group=ops009-c02
+          php artisan test tests/Feature/OPS009C01N03SimultaneousCloseTest.php --group=ops009-c01
+          echo OPS009_DEDICATED_ROLE_SUITES=PASS
 
       - name: Verify pre-provisioned protected schema test bootstrap
         if: matrix.phase == 'focused' || matrix.phase == 'full'
@@ -271,9 +280,33 @@ jobs:
         env:
           OPS009_REGISTRY_BASELINE: '1'
         run: |
+          # C01/C02 have dedicated N03 real-role process requirements.
+          # P0DestinationRevocation resets RefreshDatabaseState after each
+          # test; isolate all six tests rather than re-running guarded DDL.
           php artisan test --bootstrap=tests/Manual/ops009-registry-bootstrap.php \
             --testsuite=Feature \
-            --exclude-group=n03-role,n03-g2b-role,n03-k2-role,n03-g3-role
+            --exclude-group=n03-role,n03-g2b-role,n03-k2-role,n03-g3-role,ops009-c01,ops009-c02 \
+            --filter='^(?!.*P0DestinationRevocation)'
+          echo FEATURE_CORE_WITH_PROTECTED_REGISTRY=PASS
+      - name: Six cross-connection P0 revocation tests in isolated PHP processes
+        if: matrix.phase == 'full'
+        env:
+          OPS009_REGISTRY_BASELINE: '1'
+        run: |
+          set -euo pipefail
+          case_file=tests/Feature/P0DestinationRevocation/P0DestinationRevocationTest.php
+          for case in \
+            test_travel_order_detail_and_index_reject_separated_employment_with_retained_session \
+            test_travel_order_privileged_create_store_and_status_are_denied_after_separation \
+            test_travel_order_mutations_reject_deactivated_mayor_department_and_preserve_other_office_scoping \
+            test_correspondence_json_workspace_and_index_stop_exposing_records_after_department_deactivation \
+            test_inactive_office_cannot_register_classify_route_or_act_using_stale_session_relations \
+            test_eligible_registrar_keeps_received_intake_and_wrong_office_or_classification_stays_denied; do
+            echo "P0_DESTINATION_CASE_START=$case"
+            php artisan test --bootstrap=tests/Manual/ops009-registry-bootstrap.php "$case_file" --filter="$case"
+            echo "P0_DESTINATION_CASE_PASS=$case"
+          done
+          echo P0_DESTINATION_ALL_SIX_ORIGINAL_TESTS=PASS
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         if: matrix.phase == 'browser'
