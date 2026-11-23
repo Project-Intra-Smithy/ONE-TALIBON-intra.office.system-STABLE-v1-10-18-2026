@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        phase: [g2a-roles, roles, broker, focused, full, browser]
+        phase: [g2a-roles, roles, broker, focused, full, browser, c02, c01]
     env:
       APP_ENV: testing
       APP_DEBUG: 'false'
@@ -134,7 +134,7 @@ jobs:
           php artisan test tests/Feature/LegacyCustodyFoundationTest.php --group=n03-role
 
       - name: Provision baseline + G1B/G2 + G2A + G2B + K2 + G3-G5 real-role cluster
-        if: matrix.phase == 'roles' || matrix.phase == 'focused' || matrix.phase == 'full' || matrix.phase == 'browser'
+        if: matrix.phase == 'roles' || matrix.phase == 'focused' || matrix.phase == 'full' || matrix.phase == 'browser' || matrix.phase == 'c02' || matrix.phase == 'c01'
         run: |
           set -euo pipefail
           for name in G1B_MIGRATOR_PASSWORD G1B_APP_PASSWORD G1B_CUSTODY_PASSWORD N03_STAGE_PASSWORD N03_COMMAND_PASSWORD N03_RECONCILE_PASSWORD N03_READER_PASSWORD; do
@@ -177,7 +177,7 @@ jobs:
           psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_G3_DISPOSABLE_PG16_READER_ROLE_VERIFY_R1.sql
 
       - name: Complete protected OPS009 migrations and prove fail-closed leases
-        if: matrix.phase == 'roles' || matrix.phase == 'focused' || matrix.phase == 'full' || matrix.phase == 'browser'
+        if: matrix.phase == 'roles' || matrix.phase == 'focused' || matrix.phase == 'full' || matrix.phase == 'browser' || matrix.phase == 'c02' || matrix.phase == 'c01'
         run: |
           set -euo pipefail
           test "$GITHUB_ACTIONS" = true
@@ -241,15 +241,28 @@ jobs:
           php artisan test tests/Feature/LegacyCustodyG2BTravelOrderCommandTest.php tests/Feature/LegacyCustodyG2BTransactionCorrespondenceCommandTest.php --group=n03-g2b-role
           php artisan test tests/Feature/LegacyCustodyK2ReconciliationTest.php --group=n03-k2-role
           php artisan test tests/Feature/LegacyCustodyG3EgressAndWatermarkTest.php --group=n03-g3-role
-      - name: Dedicated protected OPS009 C02 and C01 actual-role regressions
-        if: matrix.phase == 'roles'
+      - name: Dedicated protected OPS009 C02 on independently fresh PG16
+        if: matrix.phase == 'c02'
         env:
           N03_G2B_ROLE_SUITE: '1'
         run: |
           set -euo pipefail
+          test "$(psql -XAtc 'SELECT count(*) FROM legacy_custody.operations')" = 0
+          test "$(psql -XAtc 'SELECT count(*) FROM public.transactions')" = 0
+          echo 'OPS009_C02_BEFORE=EMPTY_DISPOSABLE_PROTECTED_CLUSTER'
           php artisan test tests/Feature/OPS009C02CustodyCloseTest.php --group=ops009-c02
+          echo 'OPS009_C02_DEDICATED_SUITE=PASS'
+      - name: Dedicated protected OPS009 C01 on independently fresh PG16
+        if: matrix.phase == 'c01'
+        env:
+          N03_G2B_ROLE_SUITE: '1'
+        run: |
+          set -euo pipefail
+          test "$(psql -XAtc 'SELECT count(*) FROM legacy_custody.operations')" = 0
+          test "$(psql -XAtc 'SELECT count(*) FROM public.transactions')" = 0
+          echo 'OPS009_C01_BEFORE=EMPTY_DISPOSABLE_PROTECTED_CLUSTER'
           php artisan test tests/Feature/OPS009C01N03SimultaneousCloseTest.php --group=ops009-c01
-          echo OPS009_DEDICATED_ROLE_SUITES=PASS
+          echo 'OPS009_C01_DEDICATED_SUITE=PASS'
 
       - name: Verify pre-provisioned protected schema test bootstrap
         if: matrix.phase == 'focused' || matrix.phase == 'full'
@@ -383,7 +396,7 @@ jobs:
     needs: [validate]
     if: always()
     steps:
-      - name: Require all six exact-SHA matrix jobs
+      - name: Require six original phases plus two isolated OPS009 role jobs
         env:
           OUTCOME: ${{ needs.validate.result }}
         run: |
