@@ -335,7 +335,11 @@ jobs:
           print('PHPUNIT_FEATURE_DEDICATED_EXCLUDES='+str(len(dedicated)))
           print('PHPUNIT_FEATURE_SOURCE_SUITE_UNALTERED=PASS')
           PY
-          php artisan test --configuration="$matrix_config" \
+          # Artisan's test wrapper adds its own --configuration option when a
+          # config is supplied, yielding "Option --configuration cannot be used
+          # more than once" and exit 1 even after all PHPUnit cases PASS.
+          # Invoke PHPUnit directly with exactly one explicit configuration.
+          php vendor/bin/phpunit --configuration="$matrix_config" \
             --bootstrap=tests/Manual/ops009-registry-bootstrap.php \
             --testsuite=Feature
           echo FEATURE_CORE_WITH_PROTECTED_REGISTRY=PASS
