@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        phase: [g2a-roles, roles, broker, focused, full, browser, c02, c01]
+        phase: [g2a-roles, roles, broker, focused, full, browser, c02, c01, iam-cross-session, task-cross-session, p0-cross-session]
     env:
       APP_ENV: testing
       APP_DEBUG: 'false'
@@ -134,7 +134,7 @@ jobs:
           php artisan test tests/Feature/LegacyCustodyFoundationTest.php --group=n03-role
 
       - name: Provision baseline + G1B/G2 + G2A + G2B + K2 + G3-G5 real-role cluster
-        if: matrix.phase == 'roles' || matrix.phase == 'focused' || matrix.phase == 'full' || matrix.phase == 'browser' || matrix.phase == 'c02' || matrix.phase == 'c01'
+        if: matrix.phase == 'roles' || matrix.phase == 'focused' || matrix.phase == 'full' || matrix.phase == 'browser' || matrix.phase == 'c02' || matrix.phase == 'c01' || matrix.phase == 'iam-cross-session' || matrix.phase == 'task-cross-session' || matrix.phase == 'p0-cross-session'
         run: |
           set -euo pipefail
           for name in G1B_MIGRATOR_PASSWORD G1B_APP_PASSWORD G1B_CUSTODY_PASSWORD N03_STAGE_PASSWORD N03_COMMAND_PASSWORD N03_RECONCILE_PASSWORD N03_READER_PASSWORD; do
@@ -177,7 +177,7 @@ jobs:
           psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_G3_DISPOSABLE_PG16_READER_ROLE_VERIFY_R1.sql
 
       - name: Complete protected OPS009 migrations and prove fail-closed leases
-        if: matrix.phase == 'roles' || matrix.phase == 'focused' || matrix.phase == 'full' || matrix.phase == 'browser' || matrix.phase == 'c02' || matrix.phase == 'c01'
+        if: matrix.phase == 'roles' || matrix.phase == 'focused' || matrix.phase == 'full' || matrix.phase == 'browser' || matrix.phase == 'c02' || matrix.phase == 'c01' || matrix.phase == 'iam-cross-session' || matrix.phase == 'task-cross-session' || matrix.phase == 'p0-cross-session'
         run: |
           set -euo pipefail
           test "$GITHUB_ACTIONS" = true
@@ -311,6 +311,9 @@ jobs:
               'tests/Feature/OPS009C01N03SimultaneousCloseTest.php',
               'tests/Feature/OPS009C02CustodyCloseTest.php',
               'tests/Feature/P0DestinationRevocation/P0DestinationRevocationTest.php',
+              'tests/Feature/PermanentIamConcurrencyTest.php',
+              'tests/Feature/PermanentIamPasswordConcurrencyTest.php',
+              'tests/Feature/Tasks/TaskConcurrentConnectionTest.php',
           ]
           for path in dedicated:
               assert Path(path).is_file(), path
@@ -327,8 +330,33 @@ jobs:
             --bootstrap=tests/Manual/ops009-registry-bootstrap.php \
             --testsuite=Feature
           echo FEATURE_CORE_WITH_PROTECTED_REGISTRY=PASS
-      - name: Six cross-connection P0 revocation tests in isolated PHP processes
-        if: matrix.phase == 'full'
+      - name: Dedicated permanent IAM cross-session role and password concurrency methods
+        if: matrix.phase == 'iam-cross-session'
+        env:
+          OPS009_REGISTRY_BASELINE: '1'
+        run: |
+          set -euo pipefail
+          for case in \
+            test_independent_postgresql_sessions_serialize_iam_lifecycle_operations \
+            test_administrator_revocation_ordering_prevents_lifecycle_mutation \
+            test_concurrent_activation_disclosure_claims_serialize_on_independent_connections \
+            test_concurrent_administrators_cannot_register_duplicate_employee_numbers; do
+            echo "IAM_CONCURRENCY_CASE_START=$case"
+            php artisan test --bootstrap=tests/Manual/ops009-registry-bootstrap.php tests/Feature/PermanentIamConcurrencyTest.php --filter="$case"
+            echo "IAM_CONCURRENCY_CASE_PASS=$case"
+          done
+          php artisan test --bootstrap=tests/Manual/ops009-registry-bootstrap.php tests/Feature/PermanentIamPasswordConcurrencyTest.php --filter=test_password_lifecycle_and_mfa_mutations_serialize_on_independent_postgresql_sessions
+          echo IAM_CROSS_SESSION_ALL_FIVE_ORIGINAL_TESTS=PASS
+      - name: Dedicated two-connection individual task contention proof
+        if: matrix.phase == 'task-cross-session'
+        env:
+          OPS009_REGISTRY_BASELINE: '1'
+        run: |
+          set -euo pipefail
+          php artisan test --bootstrap=tests/Manual/ops009-registry-bootstrap.php tests/Feature/Tasks/TaskConcurrentConnectionTest.php --filter=test_two_postgresql_sessions_cannot_both_start_the_same_task
+          echo TASK_TWO_CONNECTION_ORIGINAL_TEST=PASS
+      - name: Dedicated six P0 destination revocation methods with guarded PG16 schema
+        if: matrix.phase == 'p0-cross-session'
         env:
           OPS009_REGISTRY_BASELINE: '1'
         run: |
@@ -422,7 +450,7 @@ jobs:
     needs: [validate]
     if: always()
     steps:
-      - name: Require six original phases plus two isolated OPS009 role jobs
+      - name: Require original six phases plus five dedicated protected cross-session jobs
         env:
           OUTCOME: ${{ needs.validate.result }}
         run: |
