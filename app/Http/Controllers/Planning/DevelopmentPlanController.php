@@ -12,7 +12,6 @@ use App\Models\Employee;
 use App\Models\PlanningAttachment;
 use App\Services\AuditLogger;
 use App\Services\Planning\PlanningAuthorizationService;
-use App\Services\Planning\PlanningSuiteInitializer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -29,13 +28,11 @@ final class DevelopmentPlanController extends Controller
 
     public function __construct(
         private readonly PlanningAuthorizationService $authorization,
-        private readonly PlanningSuiteInitializer $initializer,
         private readonly AuditLogger $audit,
     ) {}
 
     public function index(Request $request): Response
     {
-        $this->initializer->ensureInitialized();
         $user = $request->user();
         $permissions = $this->authorization->resolve($user);
 

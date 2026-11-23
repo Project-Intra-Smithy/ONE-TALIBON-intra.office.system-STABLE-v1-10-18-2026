@@ -9,7 +9,6 @@ use App\Models\PlanningAttachment;
 use App\Models\PpaRecord;
 use App\Services\AuditLogger;
 use App\Services\Planning\PlanningAuthorizationService;
-use App\Services\Planning\PlanningSuiteInitializer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -26,13 +25,11 @@ final class PpaController extends Controller
 
     public function __construct(
         private readonly PlanningAuthorizationService $authorization,
-        private readonly PlanningSuiteInitializer $initializer,
         private readonly AuditLogger $audit,
     ) {}
 
     public function index(Request $request): Response
     {
-        $this->initializer->ensureInitialized();
         $user = $request->user();
         $permissions = $this->authorization->resolve($user);
 
@@ -321,7 +318,6 @@ final class PpaController extends Controller
 
     public function exportCsv(Request $request): StreamedResponse
     {
-        $this->initializer->ensureInitialized();
         $user = $request->user();
 
         $query = PpaRecord::query()->orderBy('year')->orderBy('ppa_code');
