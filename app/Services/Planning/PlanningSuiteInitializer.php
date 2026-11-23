@@ -9,11 +9,26 @@ use App\Models\DevelopmentPlan;
 use App\Models\PlanningMap;
 use App\Models\PpaRecord;
 use Illuminate\Support\Facades\Schema;
+use RuntimeException;
 
 final class PlanningSuiteInitializer
 {
-    public function ensureInitialized(): void
+    public const SAMPLE_AUTHORITY_DISCLOSURE = 'Reference sample only — not an officially adopted municipal record';
+
+    /**
+     * Explicitly opt-in disposable/local-only demo seeding.
+     * Never invoked from HTTP read/export paths and fails closed outside local/testing.
+     */
+    public function seedReferenceSamples(bool $explicitOptIn = false): void
     {
+        if (! $explicitOptIn) {
+            throw new RuntimeException('Planning reference sample seeding requires explicit opt-in.');
+        }
+
+        if (! app()->environment(['local', 'testing']) || config('app.env') === 'production') {
+            throw new RuntimeException('Planning reference sample seeding is forbidden outside local or testing environments.');
+        }
+
         if (! Schema::hasTable('development_plans')) {
             return;
         }
@@ -65,7 +80,7 @@ final class PlanningSuiteInitializer
                 'coordinating_offices' => ['Office of the Municipal Mayor', 'Municipal Engineering Office', 'Municipal Social Welfare and Development Office'],
                 'coverage_start' => 2023,
                 'coverage_end' => 2028,
-                'status' => 'In force',
+                'status' => 'Draft',
                 'sections_complete' => 18,
                 'sections_total' => 18,
                 'last_action' => 'Annual implementation review recorded',
@@ -73,7 +88,7 @@ final class PlanningSuiteInitializer
                 'next_milestone' => '2027 planning assumptions review',
                 'next_milestone_date' => '2026-10-09',
                 'required_action' => 'Sector focal offices to confirm updated indicators before the review session.',
-                'authority' => 'Sangguniang Bayan adoption record on file',
+                'authority' => self::SAMPLE_AUTHORITY_DISCLOSURE,
                 'document_ref' => 'MPDO-PLAN-CDP-2023-2028',
                 'provenance_status' => 'reference_sample',
             ],
@@ -87,7 +102,7 @@ final class PlanningSuiteInitializer
                 'coordinating_offices' => ['Sangguniang Bayan Secretariat', 'Municipal Planning and Development Office'],
                 'coverage_start' => 2025,
                 'coverage_end' => 2028,
-                'status' => 'In force',
+                'status' => 'Draft',
                 'sections_complete' => 11,
                 'sections_total' => 11,
                 'last_action' => 'Priority commitments reconciled with current work program',
@@ -95,7 +110,7 @@ final class PlanningSuiteInitializer
                 'next_milestone' => 'Executive-legislative progress review',
                 'next_milestone_date' => '2026-10-16',
                 'required_action' => 'Lead offices to submit status notes for commitments marked for joint action.',
-                'authority' => 'Joint executive-legislative adoption record on file',
+                'authority' => self::SAMPLE_AUTHORITY_DISCLOSURE,
                 'document_ref' => 'OMM-SB-ELA-2025-2028',
                 'provenance_status' => 'reference_sample',
             ],
@@ -117,7 +132,7 @@ final class PlanningSuiteInitializer
                 'next_milestone' => 'Technical review of updated land-use tables',
                 'next_milestone_date' => '2026-09-24',
                 'required_action' => 'Planning and Assessor teams to reconcile parcel-level exceptions before technical review.',
-                'authority' => 'Existing adoption and zoning references linked to planning file',
+                'authority' => self::SAMPLE_AUTHORITY_DISCLOSURE,
                 'document_ref' => 'MPDO-PLAN-CLUP-2020-2029',
                 'provenance_status' => 'reference_sample',
             ],
@@ -139,7 +154,7 @@ final class PlanningSuiteInitializer
                 'next_milestone' => 'Budget alignment conference',
                 'next_milestone_date' => '2026-09-21',
                 'required_action' => 'Offices with unresolved cost or schedule entries must submit corrections before conference.',
-                'authority' => 'Preparation cycle under the local planning and budgeting calendar',
+                'authority' => self::SAMPLE_AUTHORITY_DISCLOSURE,
                 'document_ref' => 'MPDO-AIP-2027-WORKING',
                 'provenance_status' => 'reference_sample',
             ],
@@ -153,7 +168,7 @@ final class PlanningSuiteInitializer
                 'coordinating_offices' => ['Municipal Budget Office', 'Municipal Engineering Office', 'Municipal Treasurer’s Office'],
                 'coverage_start' => 2026,
                 'coverage_end' => 2028,
-                'status' => 'In force',
+                'status' => 'Draft',
                 'sections_complete' => 12,
                 'sections_total' => 12,
                 'last_action' => 'Project financing references synchronized',
@@ -161,7 +176,7 @@ final class PlanningSuiteInitializer
                 'next_milestone' => 'Quarterly investment program review',
                 'next_milestone_date' => '2026-10-05',
                 'required_action' => 'Project owners to verify obligation schedules and implementation status.',
-                'authority' => 'Local development investment programming record',
+                'authority' => self::SAMPLE_AUTHORITY_DISCLOSURE,
                 'document_ref' => 'MPDO-LDIP-2026-2028',
                 'provenance_status' => 'reference_sample',
             ],
@@ -175,7 +190,7 @@ final class PlanningSuiteInitializer
                 'coordinating_offices' => ['Municipal Engineering Office', 'Municipal Health Office', 'Municipal Social Welfare and Development Office'],
                 'coverage_start' => 2025,
                 'coverage_end' => 2027,
-                'status' => 'In force',
+                'status' => 'Draft',
                 'sections_complete' => 13,
                 'sections_total' => 13,
                 'last_action' => 'Preparedness actions reviewed for third quarter',
@@ -183,7 +198,7 @@ final class PlanningSuiteInitializer
                 'next_milestone' => 'Fourth-quarter readiness review',
                 'next_milestone_date' => '2026-10-02',
                 'required_action' => 'Response cluster leads to confirm resource and contact updates.',
-                'authority' => 'Local DRRM Council planning record',
+                'authority' => self::SAMPLE_AUTHORITY_DISCLOSURE,
                 'document_ref' => 'MDRRMO-LDRRMP-2025-2027',
                 'provenance_status' => 'reference_sample',
             ],
@@ -205,7 +220,7 @@ final class PlanningSuiteInitializer
                 'next_milestone' => 'Climate expenditure tagging review',
                 'next_milestone_date' => '2026-10-13',
                 'required_action' => 'Lead offices to verify activities tagged for climate adaptation and mitigation.',
-                'authority' => 'Municipal climate action planning record',
+                'authority' => self::SAMPLE_AUTHORITY_DISCLOSURE,
                 'document_ref' => 'MENRO-LCCAP-2021-2030',
                 'provenance_status' => 'reference_sample',
             ],
@@ -227,7 +242,7 @@ final class PlanningSuiteInitializer
                 'next_milestone' => 'Technical review of proposed activities and budget',
                 'next_milestone_date' => '2026-09-29',
                 'required_action' => 'Focal persons to resolve incomplete issue statements and missing performance indicators.',
-                'authority' => 'Annual GAD planning and budgeting cycle',
+                'authority' => self::SAMPLE_AUTHORITY_DISCLOSURE,
                 'document_ref' => 'GFPS-GAD-2027-WORKING',
                 'provenance_status' => 'reference_sample',
             ],
@@ -241,7 +256,7 @@ final class PlanningSuiteInitializer
                 'coordinating_offices' => ['Municipal Engineering Office', 'Municipal Health Office', 'Barangay Affairs Desk'],
                 'coverage_start' => 2025,
                 'coverage_end' => 2034,
-                'status' => 'Adopted',
+                'status' => 'Draft',
                 'sections_complete' => 15,
                 'sections_total' => 15,
                 'last_action' => 'Implementation responsibility matrix distributed',
@@ -249,7 +264,7 @@ final class PlanningSuiteInitializer
                 'next_milestone' => 'Annual diversion target review',
                 'next_milestone_date' => '2026-11-06',
                 'required_action' => 'Responsible offices to update accomplishment notes against assigned actions.',
-                'authority' => 'Municipal solid waste management planning record',
+                'authority' => self::SAMPLE_AUTHORITY_DISCLOSURE,
                 'document_ref' => 'MENRO-SWM-2025-2034',
                 'provenance_status' => 'reference_sample',
             ],
@@ -271,7 +286,7 @@ final class PlanningSuiteInitializer
                 'next_milestone' => 'Beneficiary and site criteria review',
                 'next_milestone_date' => '2026-10-20',
                 'required_action' => 'Planning team to reconcile current household references with identified sites.',
-                'authority' => 'Municipal shelter planning record',
+                'authority' => self::SAMPLE_AUTHORITY_DISCLOSURE,
                 'document_ref' => 'MPDO-LSP-2024-2032',
                 'provenance_status' => 'reference_sample',
             ],
@@ -285,7 +300,7 @@ final class PlanningSuiteInitializer
                 'coordinating_offices' => ['Municipal Social Welfare and Development Office', 'Municipal Agriculture Office', 'Municipal Planning and Development Office'],
                 'coverage_start' => 2026,
                 'coverage_end' => 2028,
-                'status' => 'In force',
+                'status' => 'Draft',
                 'sections_complete' => 9,
                 'sections_total' => 9,
                 'last_action' => 'Program coverage notes updated from second-quarter reports',
@@ -293,7 +308,7 @@ final class PlanningSuiteInitializer
                 'next_milestone' => 'Third-quarter nutrition program review',
                 'next_milestone_date' => '2026-10-08',
                 'required_action' => 'Program leads to submit current coverage and referral notes before review.',
-                'authority' => 'Municipal nutrition planning record',
+                'authority' => self::SAMPLE_AUTHORITY_DISCLOSURE,
                 'document_ref' => 'MHO-LNAP-2026-2028',
                 'provenance_status' => 'reference_sample',
             ],
@@ -315,7 +330,7 @@ final class PlanningSuiteInitializer
                 'next_milestone' => 'Mid-cycle program update',
                 'next_milestone_date' => '2026-11-17',
                 'required_action' => 'Tourism and planning teams to complete program adjustments for the next implementation year.',
-                'authority' => 'Municipal tourism development planning record',
+                'authority' => self::SAMPLE_AUTHORITY_DISCLOSURE,
                 'document_ref' => 'MTO-LTDP-2024-2028',
                 'provenance_status' => 'reference_sample',
             ],

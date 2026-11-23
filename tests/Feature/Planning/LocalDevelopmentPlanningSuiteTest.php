@@ -12,9 +12,12 @@ use App\Models\PlanningMap;
 use App\Models\PpaRecord;
 use App\Models\User;
 use App\Services\Planning\PlanningAuthorizationService;
+use App\Services\Planning\PlanningSuiteInitializer;
+use Database\Seeders\PlanningReferenceSampleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use RuntimeException;
 use Tests\TestCase;
 
 final class LocalDevelopmentPlanningSuiteTest extends TestCase
@@ -76,12 +79,21 @@ final class LocalDevelopmentPlanningSuiteTest extends TestCase
             'can_manage_plans' => true,
         ])->assertForbidden();
 
-        // 5. MPDC Head uploads an mpdc_executive attachment; system_admin is denied preview & download
-        $this->actingAs($mpdcHead)->get('/development-plans')->assertOk();
+        // 5. MPDC Head creates a genuine draft plan and uploads an mpdc_executive attachment; system_admin is denied preview & download
+        $this->actingAs($mpdcHead)->post('/development-plans', [
+            'code' => 'MPDC-EXEC-DRAFT-2027',
+            'title' => 'Executive Draft Working Plan',
+            'horizon' => 'Annual',
+            'lead_office' => 'Municipal Planning and Development Office',
+            'coverage_start' => 2027,
+            'coverage_end' => 2027,
+            'status' => 'Draft',
+        ])->assertRedirect();
+
         $pdfBytes = "%PDF-1.4\n1 0 obj\n<< /Type /Catalog >>\nendobj\n%%EOF";
         $this->actingAs($mpdcHead)->post('/planning/attachments', [
             'parent_type' => 'plan',
-            'parent_code' => 'CDP 2023–2028',
+            'parent_code' => 'MPDC-EXEC-DRAFT-2027',
             'title' => 'Executive Draft Review Notes',
             'category' => 'working_draft',
             'visibility' => 'mpdc_executive',
@@ -278,8 +290,9 @@ final class LocalDevelopmentPlanningSuiteTest extends TestCase
 
         $mpdcHead = User::query()->where('email', 'planning@talibon.demo')->firstOrFail();
 
+        $this->assertSame(0, PlanningMap::query()->count());
         $this->actingAs($mpdcHead)->get('/planning-maps')->assertOk();
-        $this->assertGreaterThanOrEqual(4, PlanningMap::query()->count());
+        $this->assertSame(0, PlanningMap::query()->count());
 
         $this->actingAs($mpdcHead)->post('/planning-maps', [
             'map_code' => 'MAP-ZONING-2027',
@@ -295,5 +308,83 @@ final class LocalDevelopmentPlanningSuiteTest extends TestCase
 
         $this->actingAs($mpdcHead)->delete("/planning-maps/{$map->id}")->assertRedirect();
         $this->assertDatabaseMissing('planning_maps', ['map_code' => 'MAP-ZONING-2027']);
+    }
+
+    public function test_read_only_planning_routes_and_csv_export_never_create_synthetic_rows(): void
+    {
+        $this->seed();
+
+        $mpdcHead = User::query()->where('email', 'planning@talibon.demo')->firstOrFail();
+        $engHead = User::query()->where('email', 'engineering@talibon.demo')->firstOrFail();
+        $employee = User::query()->where('email', 'employee@talibon.demo')->firstOrFail();
+        $admin = User::query()->where('email', 'admin@talibon.demo')->firstOrFail();
+
+        $this->assertSame(0, DevelopmentPlan::query()->count());
+        $this->assertSame(0, PpaRecord::query()->count());
+        $this->assertSame(0, PlanningMap::query()->count());
+
+        // Repeated reads across multiple actors must leave all empty tables untouched
+        foreach ([$mpdcHead, $engHead, $employee, $admin, $mpdcHead] as $actor) {
+            $this->actingAs($actor)->get('/development-plans')->assertOk();
+            $this->actingAs($actor)->get('/ppas')->assertOk();
+            $this->actingAs($actor)->get('/planning-maps')->assertOk();
+
+            $csvResponse = $this->actingAs($actor)->get('/ppas/export/csv');
+            $csvResponse->assertOk();
+            $csvContent = $csvResponse->streamedContent();
+            $this->assertStringContainsString('AIP Reference Code', $csvContent);
+            $this->assertStringNotContainsString('PPA-2025-001', $csvContent);
+        }
+
+        $this->assertSame(0, DevelopmentPlan::query()->count());
+        $this->assertSame(0, PpaRecord::query()->count());
+        $this->assertSame(0, PlanningMap::query()->count());
+        $this->assertSame(0, DevelopmentPlan::query()->whereIn('status', ['In force', 'Adopted'])->count());
+    }
+
+    public function test_explicit_opt_in_demo_seeder_enforces_non_production_guard_and_never_claims_official_adoption(): void
+    {
+        $this->seed();
+
+        $initializer = app(PlanningSuiteInitializer::class);
+
+        // 1. Calling without explicit opt-in fails closed and writes 0 rows
+        try {
+            $initializer->seedReferenceSamples(explicitOptIn: false);
+            $this->fail('Expected RuntimeException when explicitOptIn is false.');
+        } catch (RuntimeException $e) {
+            $this->assertStringContainsString('explicit opt-in', $e->getMessage());
+        }
+        $this->assertSame(0, DevelopmentPlan::query()->count());
+
+        // 2. Calling in production environment fails closed even with explicit opt-in
+        $originalEnv = config('app.env');
+        $this->app->detectEnvironment(static fn (): string => 'production');
+        config()->set('app.env', 'production');
+        try {
+            $initializer->seedReferenceSamples(explicitOptIn: true);
+            $this->fail('Expected RuntimeException when environment is production.');
+        } catch (RuntimeException $e) {
+            $this->assertStringContainsString('forbidden outside local or testing', $e->getMessage());
+        } finally {
+            $this->app->detectEnvironment(static fn (): string => 'testing');
+            config()->set('app.env', $originalEnv);
+        }
+        $this->assertSame(0, DevelopmentPlan::query()->count());
+        $this->assertSame(0, PpaRecord::query()->count());
+        $this->assertSame(0, PlanningMap::query()->count());
+
+        // 3. Explicit opt-in demo seeder in testing populates visibly marked reference samples with zero In force/Adopted claims
+        app(PlanningReferenceSampleSeeder::class)->run();
+
+        $this->assertGreaterThan(0, DevelopmentPlan::query()->count());
+        $this->assertGreaterThan(0, PpaRecord::query()->count());
+        $this->assertGreaterThan(0, PlanningMap::query()->count());
+
+        $this->assertSame(0, DevelopmentPlan::query()->whereIn('status', ['In force', 'Adopted'])->count());
+        $this->assertSame(0, DevelopmentPlan::query()->where('provenance_status', '!=', 'reference_sample')->count());
+        $this->assertSame(0, DevelopmentPlan::query()->where('authority', '!=', PlanningSuiteInitializer::SAMPLE_AUTHORITY_DISCLOSURE)->count());
+        $this->assertSame(0, PpaRecord::query()->where('provenance_status', '!=', 'reference_sample')->count());
+        $this->assertSame(0, PlanningMap::query()->where('provenance_status', '!=', 'awaiting_official_gis')->count());
     }
 }
