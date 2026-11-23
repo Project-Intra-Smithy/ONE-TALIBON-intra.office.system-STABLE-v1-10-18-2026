@@ -11,6 +11,7 @@ on:
       - candidate/antigravity-m5-integrity-correction-r1
       - candidate/antigravity-m5-r3-provenance-ci-structure-r1
       - candidate/antigravity-m5-r4-ci-reachability-r1
+      - candidate/antigravity-m5-r5-yaml-trigger-normalization-r1
   workflow_dispatch:
 
 permissions:
