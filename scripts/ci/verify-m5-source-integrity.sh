@@ -82,15 +82,15 @@ done
 
 # 6. Verify workflow structural invariants at TARGET_SHA (fail-closed Pint + all 11 phases + aggregate gate)
 WORKFLOW_CONTENT="$(git show "${TARGET_SHA}:.github/workflows/ot-m3-unified-full-matrix.yml")"
-echo "$WORKFLOW_CONTENT" | grep -Fq 'php vendor/bin/pint --test "${changed_php[@]}"' || fail "Workflow missing fail-closed Pint check"
-if echo "$WORKFLOW_CONTENT" | grep -Fq 'if ! php vendor/bin/pint'; then
+grep -Fq 'php vendor/bin/pint --test "${changed_php[@]}"' <<< "$WORKFLOW_CONTENT" || fail "Workflow missing fail-closed Pint check"
+if grep -Fq 'if ! php vendor/bin/pint' <<< "$WORKFLOW_CONTENT"; then
   fail "Workflow contains non-fail-closed Pint warning bypass"
 fi
 for phase in g2a-roles roles broker focused full browser c02 c01 iam-cross-session task-cross-session p0-cross-session; do
-  echo "$WORKFLOW_CONTENT" | grep -Eq "phase:.*${phase}" || fail "Workflow missing required matrix phase: $phase"
+  grep -Eq "phase:.*${phase}" <<< "$WORKFLOW_CONTENT" || fail "Workflow missing required matrix phase: $phase"
 done
-echo "$WORKFLOW_CONTENT" | grep -Fq 'needs: [validate]' || fail "Workflow missing mandatory aggregate gate dependency"
-echo "$WORKFLOW_CONTENT" | grep -Fq 'test "$OUTCOME" = success' || fail "Workflow missing mandatory aggregate gate success assertion"
+grep -Fq 'needs: [validate]' <<< "$WORKFLOW_CONTENT" || fail "Workflow missing mandatory aggregate gate dependency"
+grep -Fq 'test "$OUTCOME" = success' <<< "$WORKFLOW_CONTENT" || fail "Workflow missing mandatory aggregate gate success assertion"
 
 echo "FROZEN_PR62_ANCESTOR=$PR62_SHA"
 echo "FROZEN_M4_SOURCE=$M4_SHA"
