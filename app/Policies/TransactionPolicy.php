@@ -12,8 +12,7 @@ final readonly class TransactionPolicy
     public function __construct(
         private TransactionAuthorizationContextFactory $contexts,
         private TransactionAccessDecider $access,
-    ) {
-    }
+    ) {}
 
     public function viewAny(User $user): bool
     {

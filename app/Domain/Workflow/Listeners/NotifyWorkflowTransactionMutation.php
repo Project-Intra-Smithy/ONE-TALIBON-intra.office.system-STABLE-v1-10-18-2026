@@ -17,8 +17,7 @@ final readonly class NotifyWorkflowTransactionMutation
     public function __construct(
         private PlatformNotificationService $notifications,
         private WorkflowDefinitionResolver $definitions,
-    ) {
-    }
+    ) {}
 
     public function handle(
         WorkflowTransactionCreated|WorkflowTransactionTransitioned $domainEvent,

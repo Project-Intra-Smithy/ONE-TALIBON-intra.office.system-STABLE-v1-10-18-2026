@@ -17,6 +17,7 @@ use App\Support\ValidatedListReturn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -184,7 +185,7 @@ class TransactionController extends Controller
             ->all();
     }
 
-    /** @return array<int, \Illuminate\Http\UploadedFile> */
+    /** @return array<int, UploadedFile> */
     private function evidenceFiles(Request $request): array
     {
         $files = $request->file('evidence', []);

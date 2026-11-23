@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 final class PlanningAttachmentController extends Controller
 {
     public const ALLOWED_PARENT_TYPES = ['plan', 'ppa', 'map'];
+
     public const ALLOWED_CATEGORIES = [
         'ordinance_resolution',
         'technical_narrative',
@@ -27,6 +28,7 @@ final class PlanningAttachmentController extends Controller
         'cartographic_plate',
         'working_draft',
     ];
+
     public const ALLOWED_VISIBILITIES = [
         'public_portal',
         'lgu_internal',

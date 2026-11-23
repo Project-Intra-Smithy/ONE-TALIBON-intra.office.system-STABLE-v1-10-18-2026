@@ -51,7 +51,7 @@ final class WorkRequestCloseDocumentPdf
                 '<< /Type /Catalog /Pages 2 0 R >>',
                 '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
                 '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>',
-                '<< /Length '.strlen($stream)." >>\nstream\n".$stream."endstream",
+                '<< /Length '.strlen($stream)." >>\nstream\n".$stream.'endstream',
                 '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>',
             ];
             $pdf = "%PDF-1.4\n";
