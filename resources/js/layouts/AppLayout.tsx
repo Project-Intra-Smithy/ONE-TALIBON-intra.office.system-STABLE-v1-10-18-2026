@@ -1,6 +1,6 @@
 import '../../css/ot-reference-shell.css';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { Bell, ListChecks, Menu, X } from 'lucide-react';
+import { Bell, Menu, X } from 'lucide-react';
 import { type PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { NotificationContext, NotificationStateContext } from '../components/shell/NotificationContext';
 import { emptyNotificationFeed, parseNotificationFeed } from '../compat/notificationFeed';
@@ -316,16 +316,16 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
                     <nav aria-label="Mobile workspace navigation"
                         className="fixed bottom-0 inset-x-0 z-30 flex items-center justify-around border-t border-slate-200 bg-white/95 px-1 pt-1 backdrop-blur-md dark:border-slate-700 dark:bg-[#142236]/95 md:hidden"
                         style={{ paddingBottom: 'max(4px, env(safe-area-inset-bottom, 0px))' }}>
-                        {navigationGroups.flatMap(group => group.items).filter(item => ['home', 'myWork', 'calendar'].includes(item.key)).flatMap(item => item.key === 'home'
-                            ? [{ ...item, label: 'Home' }, { ...item, key: 'personalTasks', label: 'Tasks', href: '/dashboard#personal-tasks', icon: ListChecks }]
-                            : [{ ...item, label: item.key === 'myWork' ? 'Work' : item.label }]).map(({ key, label, href, icon: Icon }) => {
-                            const active = key === 'personalTasks' ? currentUrl === href : key === 'home' ? currentUrl === '/dashboard' : page.url.split('?')[0] === href;
-                            return <a key={key} href={href} aria-current={active ? 'page' : undefined}
-                                onClick={() => { if (key === 'personalTasks') document.getElementById('personal-tasks')?.focus(); }}
-                                className={`flex min-h-12 min-w-11 flex-col items-center justify-center rounded-lg px-2 text-[11px] font-bold focus-visible:ring-2 focus-visible:ring-emerald-700 ${active ? 'bg-emerald-50 text-[#145a43]' : 'text-slate-600 dark:text-slate-200'}`}>
-                                <Icon size={20} aria-hidden="true" /><span>{label}</span>
-                            </a>;
-                        })}
+                        {navigationGroups.flatMap(group => group.items)
+                            .filter(item => ['home', 'myTasks', 'myWork', 'calendar'].includes(item.key))
+                            .map(({ key, label, href, icon: Icon }) => {
+                                const active = page.url.split(/[?#]/, 1)[0] === href;
+                                const shortLabel = key === 'home' ? 'Home' : key === 'myTasks' ? 'Tasks' : key === 'myWork' ? 'Requests' : label;
+                                return <Link key={key} href={href} aria-current={active ? 'page' : undefined}
+                                    className={`flex min-h-12 min-w-11 flex-col items-center justify-center rounded-lg px-2 text-[11px] font-bold focus-visible:ring-2 focus-visible:ring-emerald-700 ${active ? 'bg-emerald-50 text-[#145a43]' : 'text-slate-600 dark:text-slate-200'}`}>
+                                    <Icon size={20} aria-hidden="true" /><span>{shortLabel}</span>
+                                </Link>;
+                            })}
                         <button type="button" onClick={() => setMobileOpen(true)} aria-label="Open more navigation options" aria-expanded={mobileOpen}
                             className="flex min-h-12 min-w-11 flex-col items-center justify-center rounded-lg px-2 text-[11px] font-bold focus-visible:ring-2 focus-visible:ring-emerald-700">
                             <Menu size={20} aria-hidden="true" /><span>More</span>

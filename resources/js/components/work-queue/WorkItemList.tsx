@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { AlertTriangle, ArrowRight, Building2, Clock3, UserRound } from 'lucide-react';
 import type { Paginator } from './types';
 
@@ -31,6 +31,9 @@ const dueLabel = {
 } as const;
 
 export default function WorkItemList({ records, title }: { records: Paginator; title: string }) {
+    const currentUrl = usePage().url;
+    const returnTo = currentUrl.split('?')[0] === '/transactions' ? currentUrl : '/transactions';
+
     return (
         <section className="municipal-panel overflow-hidden text-slate-900 dark:text-slate-100" aria-label={title}>
             <div className="flex flex-col gap-1 border-b border-slate-100 bg-slate-50 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5 dark:bg-slate-900/40 dark:border-slate-700">
@@ -105,7 +108,7 @@ export default function WorkItemList({ records, title }: { records: Paginator; t
                             </div>
 
                             <Link
-                                href={`/transactions/${item.id}`}
+                                href={`/transactions/${item.id}?return_to=${encodeURIComponent(returnTo)}`}
                                 className="inline-flex min-h-10 items-center justify-center gap-1.5 border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-blue-800 transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2 sm:text-xs dark:bg-[#142236] dark:border-slate-700"
                                 aria-label={`Open work item ${item.reference}`}
                             >

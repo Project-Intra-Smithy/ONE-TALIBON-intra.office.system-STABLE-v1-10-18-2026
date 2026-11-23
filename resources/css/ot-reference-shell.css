@@ -148,3 +148,76 @@
         outline-color: Highlight;
     }
 }
+
+/* The modal drawer is rendered by MobileNavigation, but phase-one-shell.css is
+ * intentionally not loaded by AppLayout. Keep its layout in the active shell,
+ * without importing the legacy stylesheet or changing modal/permission logic. */
+[data-workspace-shell] .portal-mobile-navigation {
+    position: fixed;
+    inset: 0;
+    margin: 0;
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+[data-workspace-shell] .portal-mobile-navigation::backdrop {
+    background: rgb(9 28 18 / 55%);
+}
+[data-workspace-shell] .portal-drawer-backdrop {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: transparent;
+}
+[data-workspace-shell] .portal-drawer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: min(352px, 100%);
+    max-width: 100%;
+    height: 100%;
+    min-height: 0;
+    background: var(--ot-shell-deep);
+    color: #f0f7f2;
+}
+[data-workspace-shell] .portal-drawer-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    gap: 12px;
+    min-height: 60px;
+    padding: 8px 16px;
+    border-bottom: 1px solid #39634c;
+}
+[data-workspace-shell] .portal-drawer-heading button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px;
+    border-radius: 8px;
+    color: inherit;
+}
+[data-workspace-shell] .portal-drawer-heading button:focus-visible {
+    outline: 3px solid #f4d16b;
+    outline-offset: 2px;
+}
+[data-workspace-shell] .portal-drawer-content {
+    min-height: 0;
+    flex: 1;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+[data-workspace-shell] .portal-drawer-content .portal-sidebar {
+    height: auto;
+    min-height: 100%;
+}

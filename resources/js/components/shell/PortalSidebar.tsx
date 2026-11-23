@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, router } from '@inertiajs/react';
-import { ListChecks, LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { KeyRound, LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { isPortalPathActive, type PortalNavigationGroup } from '../../navigation/portalNavigation';
 import type { AuthUser } from '../../types';
 import AppearanceControl from '../AppearanceControl';
@@ -96,7 +96,7 @@ export default function PortalSidebar({
 
                                 <div className={compact ? 'space-y-1' : 'mt-2 space-y-1'}>
                                     {group.items.map(({ key, label, href, icon: Icon }) => {
-                                        const active = isPortalPathActive(navigationUrl, href) && !(key === 'home' && hash === '#personal-tasks');
+                                        const active = isPortalPathActive(navigationUrl, href);
                                         const NavigationLink = href.includes('#') ? 'a' : Link;
                                         const hasMemoCount = key === 'memoranda' && unreadMemoCount > 0;
                                         const accessibleLabel = hasMemoCount
@@ -154,39 +154,6 @@ export default function PortalSidebar({
                                             </NavigationLink>
                                         );
 
-                                        if (key === 'myWork' && group.key === 'work') {
-                                            const tasksActive = hash === '#personal-tasks' && navigationUrl.split('#')[0] === '/dashboard';
-                                            return (
-                                                <div key="work-with-tasks" className="space-y-1">
-                                                    {itemElement}
-                                                    <a
-                                                        key="personalTasks"
-                                                        href="/dashboard#personal-tasks"
-                                                        onClick={() => {
-                                                            onNavigate?.();
-                                                            if (typeof window !== 'undefined' && window.location.pathname === '/dashboard') {
-                                                                const el = document.getElementById('personal-tasks');
-                                                                el?.scrollIntoView({ behavior: 'smooth' });
-                                                                el?.focus();
-                                                            }
-                                                        }}
-                                                        aria-current={tasksActive ? 'page' : undefined}
-                                                        aria-label={compact ? 'Tasks' : undefined}
-                                                        title={compact ? 'Tasks' : undefined}
-                                                        className={`relative flex min-h-11 items-center rounded-lg py-2 text-base font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-1 focus-visible:ring-offset-white ${
-                                                            compact ? 'justify-center px-2' : 'gap-3 px-3'
-                                                        } ${
-                                                            tasksActive
-                                                                ? 'bg-[#edf5ef] text-[#145a43] before:absolute before:inset-y-2 before:left-0 before:w-1 before:rounded-r before:bg-[#145a43]'
-                                                                : 'text-slate-700 hover:bg-slate-100 hover:text-slate-950'
-                                                        }`}
-                                                    >
-                                                        <ListChecks size={18} aria-hidden="true" className="shrink-0" />
-                                                        {!compact && <span className="min-w-0 flex-1 truncate">Tasks</span>}
-                                                    </a>
-                                                </div>
-                                            );
-                                        }
 
                                         return itemElement;
                                     })}
@@ -210,6 +177,7 @@ export default function PortalSidebar({
                         </div>
 
                         <AppearanceControl compact />
+                        <Link href="/security/account" onClick={onNavigate} aria-label="Account security" title="Account security" className="flex h-10 w-10 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-emerald-700"><KeyRound size={17} aria-hidden="true" /></Link>
 
                         <button
                             type="button"
@@ -242,6 +210,7 @@ export default function PortalSidebar({
                                 </div>
                             )}
 
+                            <Link href="/security/account" onClick={onNavigate} className="mt-2 flex min-h-10 items-center gap-2 rounded-lg px-2 text-sm text-slate-700 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-emerald-700"><KeyRound size={15} aria-hidden="true" /><span>Account security</span></Link>
                             <button
                                 type="button"
                                 onClick={() => router.post('/logout')}

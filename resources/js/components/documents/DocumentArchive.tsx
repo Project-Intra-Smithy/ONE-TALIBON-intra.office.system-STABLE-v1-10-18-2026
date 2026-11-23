@@ -37,6 +37,7 @@ export type ArchiveItem = {
     originOffice?: Office | null;
     currentOffice?: Office | null;
     downloadUrl: string;
+    previewUrl?: string | null;
 };
 
 export type ArchiveWorkspace = {
@@ -315,7 +316,11 @@ export default function DocumentArchive({ archive }: { archive: ArchiveWorkspace
                             <div className="flex items-start gap-2">
                                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand)]"><FileText size={16} aria-hidden="true" /></div>
                                 <div className="min-w-0">
-                                    <div className="break-words text-[12px] font-bold text-[var(--municipal-text)]">{selected.name}</div>
+                                    {selected.previewUrl ? (
+                                        <a href={selected.previewUrl} target="_blank" rel="noopener noreferrer" className="break-words text-[12px] font-bold text-[var(--municipal-brand)] hover:underline" aria-label={`Open PDF: ${selected.name}`}>{selected.name}</a>
+                                    ) : (
+                                        <div className="break-words text-[12px] font-bold text-[var(--municipal-text)]">{selected.name}</div>
+                                    )}
                                     <div className="mt-0.5 text-[9px] text-[var(--municipal-muted)]">{selected.documentType} · {selected.classification}</div>
                                 </div>
                             </div>
@@ -342,6 +347,11 @@ export default function DocumentArchive({ archive }: { archive: ArchiveWorkspace
                                     <Link href={selected.relatedUrl} className="inline-flex min-h-10 items-center justify-between rounded-md border border-[var(--municipal-border)] px-3 text-[10px] font-bold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]">
                                         Open record <ArrowUpRight size={13} aria-hidden="true" />
                                     </Link>
+                                ) : null}
+                                {selected.previewUrl ? (
+                                    <a href={selected.previewUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center justify-between rounded-md border border-[var(--municipal-border)] px-3 text-[10px] font-bold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]">
+                                        Open PDF <ArrowUpRight size={13} aria-hidden="true" />
+                                    </a>
                                 ) : null}
                                 <a href={selected.downloadUrl} className="inline-flex min-h-10 items-center justify-between rounded-md bg-[var(--municipal-brand-deep)] px-3 text-[10px] font-bold text-white">
                                     Download <Download size={13} aria-hidden="true" />

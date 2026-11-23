@@ -17,6 +17,8 @@ use App\PlanCustody\DenyAllScannerEvidenceVerifier;
 use App\PlanCustody\LocalImmutableObjectStore;
 use App\PlanCustody\RandomGenerationIdSource;
 use App\Policies\TransactionPolicy;
+use App\Services\Custody\Broker\ProcessStorageBrokerClient;
+use App\Services\Custody\Contracts\StorageBrokerClient;
 use App\Support\ViteHotFileGuard;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
@@ -33,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(GenerationIdSource::class, RandomGenerationIdSource::class);
         $this->app->bind(ScannerEvidenceVerifier::class, DenyAllScannerEvidenceVerifier::class);
         $this->app->bind(CustodySecurityGate::class, DenyAllCustodySecurityGate::class);
+        $this->app->bind(StorageBrokerClient::class, ProcessStorageBrokerClient::class);
     }
 
     public function boot(): void

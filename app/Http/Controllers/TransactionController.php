@@ -95,8 +95,15 @@ class TransactionController extends Controller
             includeEvents: false,
         );
 
+        // Navigation context is never authority; only a short, same-path validated list URL can return.
+        $candidate = $request->query('return_to');
+        $returnTo = is_string($candidate) && strlen($candidate) <= 2048
+            ? ValidatedListReturn::validate($candidate, '/transactions')
+            : '/transactions';
+
         return Inertia::render('Transactions/Show', [
             'transaction' => $transaction,
+            'returnTo' => $returnTo,
             'departments' => Department::query()
                 ->activeRoutable()
                 ->orderBy('branch')

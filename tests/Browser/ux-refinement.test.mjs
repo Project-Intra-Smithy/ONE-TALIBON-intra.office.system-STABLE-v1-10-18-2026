@@ -93,18 +93,12 @@ for (const width of [320, 390, 768, 1024, 1440]) {
                 const bottom = page.getByRole('navigation', { name: 'Mobile workspace navigation' });
                 assert.equal(await bottom.isVisible(), width < 768);
                 if (screen === 'dashboard') {
-                    await page.getByRole('button', { name: 'Manage my tasks' }).click();
-                    const filters = page.getByRole('group', { name: 'Task state filter' });
-                    for (const label of ['Open', 'In Progress', 'Completed']) {
-                        const tab = filters.getByRole('button', { name: new RegExp(label, 'i') });
-                        await tab.focus(); await page.keyboard.press('Enter');
-                        assert.equal(await tab.getAttribute('aria-pressed'), 'true');
-                        assert.equal(await filters.locator('[aria-pressed="true"]').count(), 1);
-                    }
+                    const dedicated = page.locator('a[href="/my-tasks"]');
+                    assert.ok(await dedicated.count() > 0, 'Dashboard must link to standalone Tasks');
+                    assert.equal(await page.getByRole('button', { name: 'Manage my tasks' }).count(), 0);
                     if (width < 768) {
-                        await bottom.getByRole('link', { name: 'Tasks', exact: true }).click();
-                        await page.waitForFunction(() => document.activeElement.id === 'personal-tasks');
-                        await page.waitForFunction(() => document.querySelector('nav[aria-label="Mobile workspace navigation"] a[href="/dashboard#personal-tasks"]')?.getAttribute('aria-current') === 'page');
+                        const tasks = bottom.locator('a[href="/my-tasks"]');
+                        assert.ok(await tasks.count() > 0, 'Mobile nav must expose the dedicated My Tasks page');
                         await bottom.getByRole('button', { name: 'Open more navigation options' }).click();
                         await page.getByRole('dialog', { name: 'Municipal navigation' }).waitFor();
                         await page.keyboard.press('Escape');
@@ -155,7 +149,7 @@ test('Calendar dialog traps focus, closes with Escape and restores trigger focus
 });
 
 test('personal Task selection, keyboard back action and denied reads', async () => {
-    const { page } = await mount(install('dashboard'), 390);
+    const { page } = await mount(install('myTasks'), 390);
     const task = { id: 7, kind: 'individual', title: 'Synthetic Task', instructions: 'Test instructions', state: 'open', owning_department_id: null, due_at: null, completed_at: null, created_at: '2026-10-09T09:00:00+08:00', updated_at: '2026-10-09T09:00:00+08:00' };
     let denied = false;
     const methods = [];
@@ -164,7 +158,6 @@ test('personal Task selection, keyboard back action and denied reads', async () 
             methods.push(route.request().method());
             return route.fulfill({ status: denied ? 403 : 200, contentType: 'application/json', body: JSON.stringify(denied ? { message: 'Forbidden' } : route.request().url().includes('/tasks/7') ? { data: task } : { data: [task], meta: { page: 1, per_page: 10, last_page: 1, total: 1 } }) });
         });
-        await page.getByRole('button', { name: 'Manage my tasks' }).click();
         await page.getByRole('button', { name: 'Refresh', exact: true }).click();
         const row = page.getByRole('button', { name: /Synthetic Task/ }); await row.waitFor();
         await row.focus(); await page.keyboard.press('Enter');
@@ -180,7 +173,7 @@ test('personal Task selection, keyboard back action and denied reads', async () 
 });
 
 test('server-confirmed Task mutations refresh the read workspace without optimistic state', async () => {
-    const { page } = await mount(install('dashboard'), 1440);
+    const { page } = await mount(install('myTasks'), 1440);
     let task = null;
     let rejectNextStart = false;
     const responseTask = () => ({ data: task });
@@ -213,7 +206,6 @@ test('server-confirmed Task mutations refresh the read workspace without optimis
             return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ data, meta: { page: 1, per_page: 20, last_page: 1, total: data.length } }) });
         });
 
-        await page.getByRole('button', { name: 'Manage my tasks' }).click();
         const actions = page.getByRole('region', { name: 'Personal Task actions' });
         await page.getByLabel('New personal Task title').fill('Synchronized Task');
         await page.getByRole('button', { name: 'Create Task' }).click();

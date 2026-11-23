@@ -46,6 +46,7 @@ export type PortalDestinationKey =
     | 'documentCenter'
     | 'home'
     | 'myDepartment'
+    | 'myTasks'
     | 'myWork'
     | 'correspondence'
     | 'procurementTracking'
@@ -91,7 +92,8 @@ export type PortalNavigationGroup = {
 
 export const portalRoutePlan = {
     home: '/dashboard',
-    myDepartment: '/dashboard#department-overview',
+    myDepartment: '/my-department',
+    myTasks: '/my-tasks',
     portalSearch: '/portal-search',
     documentCenter: '/documents',
     myWork: '/transactions',
@@ -122,6 +124,7 @@ export const portalDestinations: Partial<Record<PortalDestinationKey, PortalDest
     documentCenter: { key: 'documentCenter', label: 'Document Center', href: portalRoutePlan.documentCenter, icon: FileText, group: 'files', readiness: 'wired', permission: 'records' },
     home: { key: 'home', label: 'Dashboard', href: portalRoutePlan.home, icon: LayoutDashboard, group: 'home', readiness: 'wired', permission: 'dashboard' },
     myDepartment: { key: 'myDepartment', label: 'My Department', href: portalRoutePlan.myDepartment, icon: Building2, group: 'work', readiness: 'wired', permission: 'dashboard', experiences: ['department_head'] },
+    myTasks: { key: 'myTasks', label: 'My Tasks', href: portalRoutePlan.myTasks, icon: ListChecks, group: 'work', readiness: 'wired', permission: 'dashboard' },
     myWork: { key: 'myWork', label: 'Work Requests', href: portalRoutePlan.myWork, icon: FileText, group: 'work', readiness: 'wired', permission: 'transactions' },
     correspondence: { key: 'correspondence', label: 'Correspondence', href: portalRoutePlan.correspondence, icon: Inbox, group: 'work', readiness: 'wired', permission: 'correspondence' },
     procurementTracking: { key: 'procurementTracking', label: 'Procurement / PR Tracking', href: portalRoutePlan.procurementTracking, icon: ListChecks, group: 'work', readiness: 'integration_pending' },
@@ -131,7 +134,7 @@ export const portalDestinations: Partial<Record<PortalDestinationKey, PortalDest
     announcements: { key: 'announcements', label: 'Announcements', href: portalRoutePlan.announcements, icon: Megaphone, group: 'communication', readiness: 'integration_pending' },
     calendar: { key: 'calendar', label: 'Calendar', href: portalRoutePlan.calendar, icon: CalendarDays, group: 'schedule', readiness: 'wired' },
     meetings: { key: 'meetings', label: 'Meetings', href: portalRoutePlan.meetings, icon: CalendarClock, group: 'schedule', readiness: 'integration_pending' },
-    messages: { key: 'messages', label: 'Messages', href: portalRoutePlan.messages, icon: MessagesSquare, group: 'communication', readiness: 'wired' },
+    messages: { key: 'messages', label: 'Chat Room (Planned)', href: portalRoutePlan.messages, icon: MessagesSquare, group: 'communication', readiness: 'integration_pending' },
     executiveDepartments: { key: 'executiveDepartments', label: 'Departments & Offices', href: portalRoutePlan.executiveDepartments, icon: Building2, group: 'organization', readiness: 'wired', permission: 'departments' },
     legislative: { key: 'legislative', label: 'Ordinances & Issuances', href: portalRoutePlan.legislative, icon: Landmark, group: 'organization', readiness: 'integration_pending' },
     localSpecialBodies: { key: 'localSpecialBodies', label: 'Councils, Boards & Committees', href: portalRoutePlan.localSpecialBodies, icon: Network, group: 'organization', readiness: 'integration_pending' },
@@ -174,6 +177,7 @@ export const portalGroupLabels: Record<PortalGroupKey, string> = {
 export const portalDestinationOrder: PortalDestinationKey[] = [
     'home',
     'myDepartment',
+    'myTasks',
     'portalSearch',
     'executiveDepartments',
     'legislative',
@@ -245,7 +249,6 @@ export function isPortalPathActive(currentUrl: string, href: string): boolean {
     const hash = currentUrl.split('#')[1];
     const targetHash = href.split('#')[1];
     if (targetHash && targetHash !== hash) return false;
-    if (!targetHash && href === '/dashboard' && hash === 'department-overview') return false;
     if (!targetHash && href === '/development-plans' && hash === 'available-planning-maps') return false;
     const target = href.split(/[?#]/, 1)[0].replace(/\/$/, '') || '/';
 

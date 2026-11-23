@@ -74,7 +74,7 @@ class PublicPortalTest extends TestCase
         $this->assertContains('guest', $activation->gatherMiddleware());
     }
 
-    public function test_activation_is_read_only_and_public_registration_is_absent(): void
+    public function test_activation_requires_valid_credentials_and_public_registration_is_absent(): void
     {
         $this->get('/activate-account')
             ->assertOk()
@@ -83,7 +83,11 @@ class PublicPortalTest extends TestCase
                 ->where('authenticated', false)
                 ->missing('auth'));
 
-        $this->post('/activate-account')->assertStatus(405);
+        $this->from('/activate-account')->post('/activate-account', [])
+            ->assertRedirect('/activate-account')
+            ->assertSessionHasErrors(['code', 'password']);
+        $this->assertDatabaseCount('staff_activation_invitations', 0);
+        $this->assertDatabaseCount('users', 0);
         $this->get('/register')->assertNotFound();
         $this->post('/register')->assertNotFound();
         $this->assertFalse(Route::has('register'));

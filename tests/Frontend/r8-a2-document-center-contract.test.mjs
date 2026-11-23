@@ -37,3 +37,12 @@ test('classification and file actions remain tied to server projection', () => {
  assert.doesNotMatch(page + register + metadata, /UploadCloud|downloadUrl|uploadUrl/);
  assert.doesNotMatch(css, /(^|\n)\s*(html|body|:root)\b/);
 });
+
+test('authorized preview projection uses native isolated new-tab anchors and retains download', () => {
+ const evidence = source('resources/js/components/documents/EvidenceList.tsx');
+ assert.match(archive, /<a href=\{selected\.previewUrl\} target="_blank" rel="noopener noreferrer"/);
+ assert.match(evidence, /<a href=\{item\.previewUrl\} target="_blank" rel="noopener noreferrer"/);
+ assert.match(archive, /<a href=\{selected\.downloadUrl\}/);
+ assert.match(evidence, /href=\{item\.downloadUrl\}/);
+ assert.doesNotMatch(archive + evidence, /<iframe|createObjectURL|window\.open/);
+});

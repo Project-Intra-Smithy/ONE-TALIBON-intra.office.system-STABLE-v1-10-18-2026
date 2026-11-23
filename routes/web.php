@@ -1,34 +1,26 @@
 <?php
 
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminEmployeeRegistrationController;
 use App\Http\Controllers\AuditController;
+use App\Http\Controllers\Auth\AccountSecurityController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\MfaChallengeController;
 use App\Http\Controllers\Auth\MfaEnrollmentController;
 use App\Http\Controllers\Auth\MfaSecurityController;
+use App\Http\Controllers\Auth\PasswordChangeController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CorrespondenceLifecycleController;
 use App\Http\Controllers\CorrespondenceWorkspaceActionController;
 use App\Http\Controllers\CorrespondenceWorkspaceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DocumentCenterController;
-use App\Http\Controllers\DtrController;
-use App\Http\Controllers\EmployeeHealthVaultController;
-use App\Http\Controllers\HealthAccessController;
-use App\Http\Controllers\HrisAdminController;
-use App\Http\Controllers\HrisController;
-use App\Http\Controllers\HrisDevelopmentController;
-use App\Http\Controllers\HrisLifecycleController;
-use App\Http\Controllers\HrisOffboardingController;
-use App\Http\Controllers\LeaveRequestController;
-use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmployeeAttendanceController;
 use App\Http\Controllers\EmployeeDirectoryController;
 use App\Http\Controllers\EmployeeDirectoryProfileController;
 use App\Http\Controllers\EmployeePresenceController;
-use App\Http\Controllers\EmployeeProfileController;
 use App\Http\Controllers\LegislativeRecordController;
 use App\Http\Controllers\LegislativeWorkspaceController;
 use App\Http\Controllers\MayorOfficeController;
@@ -45,9 +37,10 @@ use App\Http\Controllers\PropertyLifecycleController;
 use App\Http\Controllers\PublicPortalController;
 use App\Http\Controllers\RecordsController;
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\StaffActivationController;
+use App\Http\Controllers\Tasks\IndividualTaskController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionLiveController;
-use App\Http\Controllers\Tasks\IndividualTaskController;
 use App\Http\Controllers\TravelOrderController;
 use App\Http\Middleware\DenyUnapprovedMessaging;
 use App\Http\Middleware\DenyUnverifiedCorrespondenceMutations;
@@ -57,7 +50,8 @@ use Inertia\Inertia;
 Route::get('/', [PublicPortalController::class, 'home'])->name('public.home');
 
 Route::middleware('guest')->group(function (): void {
-    Route::get('/activate-account', [PublicPortalController::class, 'activation'])->name('public.activate-account');
+    Route::get('/activate-account', [StaffActivationController::class, 'show'])->name('public.activate-account');
+    Route::post('/activate-account', [StaffActivationController::class, 'redeem'])->middleware('throttle:6,1')->name('public.activate-account.redeem');
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login.store');
 });
@@ -82,8 +76,19 @@ Route::middleware(['auth', 'active', 'mfa.subject', 'mfa.assured'])->group(funct
 });
 
 Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
+    Route::get('/security/account', AccountSecurityController::class)->name('account.security');
+    Route::put('/security/password', PasswordChangeController::class)->name('password.change');
     Route::get('/admin', AdminDashboardController::class)->name('admin.index');
+    Route::post('/admin/employees', [AdminEmployeeRegistrationController::class, 'store'])->name('admin.employees.store');
+    Route::post('/admin/accounts', [StaffActivationController::class, 'store'])->name('admin.accounts.store');
+    Route::post('/admin/invitations', [StaffActivationController::class, 'store'])->name('admin.invitations.store');
+    Route::post('/admin/invitations/{invitation}/revoke', [StaffActivationController::class, 'revoke'])->whereNumber('invitation')->name('admin.invitations.revoke');
+    Route::post('/admin/accounts/{user}/suspend', [StaffActivationController::class, 'suspend'])->whereNumber('user')->name('admin.accounts.suspend');
+    Route::post('/admin/accounts/{user}/reactivate', [StaffActivationController::class, 'reactivate'])->whereNumber('user')->name('admin.accounts.reactivate');
+    Route::post('/admin/accounts/{user}/recovery', [StaffActivationController::class, 'recover'])->whereNumber('user')->name('admin.accounts.recovery');
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::get('/my-department', [DepartmentController::class, 'myWorkspace'])->name('my-department.index');
+    Route::get('/my-tasks', fn () => Inertia::render('Tasks/Index'))->name('my-tasks.index');
     Route::get('/portal-search', PortalSearchController::class)->name('portal-search.index');
     Route::get('/documents', DocumentCenterController::class)->name('document-center.index');
     Route::get('/departments', DepartmentController::class)->name('departments.index');
@@ -118,6 +123,7 @@ Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
     Route::get('/correspondence', CorrespondenceWorkspaceController::class)->name('correspondence.index');
     Route::get('/records', RecordsController::class)->name('records.index');
     Route::get('/documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
+    Route::get('/documents/{document}/preview', [DocumentController::class, 'preview'])->name('documents.preview');
     Route::get('/travel-orders', [TravelOrderController::class, 'index'])->name('travel-orders.index');
     Route::get('/travel-orders/create', [TravelOrderController::class, 'create'])->name('travel-orders.create');
     Route::post('/travel-orders', [TravelOrderController::class, 'store'])->name('travel-orders.store');

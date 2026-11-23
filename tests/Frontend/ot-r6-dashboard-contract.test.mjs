@@ -20,13 +20,15 @@ test('R6 retains all four backend-role variants and role-scoped operational sect
     for (const role of ['employee', 'department_head', 'executive_oversight', 'system_administration']) {
         assert.ok(dashboard.includes(`${role}:`), `Missing role mapping ${role}`);
     }
-    for (const component of ['OfficeOverview', 'ExecutiveOverview', 'SystemOverview', 'CorrespondenceOverview']) {
+    for (const component of ['ExecutiveOverview', 'SystemOverview', 'CorrespondenceOverview']) {
         assert.ok(dashboard.includes(`<${component}`), `Missing ${component}`);
     }
     for (const component of ['RecentWorkList', 'ActivityRail']) {
         assert.ok(upper.includes(`<${component}`), `Missing ${component}`);
     }
-    assert.match(taskPanel, /<PersonalTaskWorkspace\s*\/>/);
+    assert.ok(taskPanel.includes('href="/my-tasks"'));
+    assert.doesNotMatch(taskPanel, /<PersonalTaskWorkspace/);
+    assert.ok(dashboard.includes('href="/my-department"'));
     assert.match(upper, /groups\.map\(/);
     assert.match(dashboard, /secondaryGroups\.map\(/);
     assert.match(dashboard, /!experience\?\.department/);

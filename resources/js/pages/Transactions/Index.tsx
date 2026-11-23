@@ -11,7 +11,6 @@ import WorkItemList from '../../components/work-queue/WorkItemList';
 import WorkScopeTabs from '../../components/work-queue/WorkScopeTabs';
 import type { Filters, Office, Paginator, ScopeGroup, StaffWorkload } from '../../components/work-queue/types';
 import AppLayout from '../../layouts/AppLayout';
-import PersonalTaskWorkspace from '../../components/tasks/PersonalTaskWorkspace';
 
 type Props = {
     records: Paginator;
@@ -35,7 +34,11 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
     const [priority, setPriority] = useState(filters.priority);
     const [officeId, setOfficeId] = useState(filters.office_id ? String(filters.office_id) : '');
     const currentQueue = scopeGroups.flatMap((group) => group.views).find((view) => view.key === currentView);
-    const currentTitle = currentQueue?.label || 'My Work';
+    const currentTitle = currentQueue?.label || 'Work Requests';
+    const requestScopeGroups = scopeGroups.map((group) => ({
+        ...group,
+        label: group.label.toLowerCase() === 'my tasks' ? 'My Work Request Actions' : group.label,
+    }));
 
     useEffect(() => {
         setSearch(filters.search);
@@ -83,12 +86,12 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
     ].filter(Boolean);
 
     return (
-        <AppLayout title="My Work">
+        <AppLayout title="Work Requests">
             <PageFrame className="civic-page aj-page-workspace" density="comfortable">
                 <PageHeader
-                    eyebrow="Daily work queues"
-                    title="My Work"
-                    description="Review your assignments, deadlines and work requiring action."
+                    eyebrow="Formal work queues"
+                    title="Work Requests"
+                    description="Review authorized municipal Work Requests, deadlines and office actions. Personal Tasks are managed in My Tasks."
                     icon={BriefcaseBusiness}
                     aside={(
                         <Link
@@ -105,9 +108,8 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
                     <span><span className="font-semibold text-slate-700 dark:text-slate-200">{currentTitle}</span> · {currentQueue?.count ?? records.total} item{(currentQueue?.count ?? records.total) === 1 ? '' : 's'}</span>
                 </div>
 
-                <div className="aj-preserved-task"><PersonalTaskWorkspace /></div>
-                <h2 className="mt-5 text-base font-bold text-slate-900 dark:text-white">Work Requests</h2>
-                <WorkScopeTabs groups={scopeGroups} currentView={currentView} onSelect={selectView} />
+                <h2 className="mt-5 text-base font-bold text-slate-900 dark:text-white">Work Request queues</h2>
+                <WorkScopeTabs groups={requestScopeGroups} currentView={currentView} onSelect={selectView} />
 
                 <form onSubmit={applyFilters}>
                     <ProgressiveFilterBar

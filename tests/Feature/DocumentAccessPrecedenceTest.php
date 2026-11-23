@@ -16,6 +16,7 @@ use App\Models\WorkflowTransaction;
 use App\Services\CorrespondenceAccessDecider;
 use App\Services\DocumentAccessService;
 use App\Services\DocumentArchiveQuery;
+use App\Services\DocumentEvidenceQuery;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -32,7 +33,8 @@ class DocumentAccessPrecedenceTest extends TestCase
     {
         parent::setUp();
         config(['documents.disk' => 'documents']);
-        Storage::fake('documents');
+        $syntheticDisk = Storage::fake('documents');
+        config(['filesystems.disks.documents.root' => rtrim($syntheticDisk->path(''), '/')]);
     }
 
     public function test_restricted_correspondence_parent_dominates_allowed_transaction_at_positions_1_16_17_32(): void
@@ -164,9 +166,13 @@ class DocumentAccessPrecedenceTest extends TestCase
         $actor->employee->update(['employment_status' => 'inactive']);
         // Deliberately keep the original actor with cached active relations.
         $this->assertFalse(app(DocumentAccessService::class)->canDownload($actor, $document));
-        $this->actingAs($actor)
-            ->get('/documents/'.$document->public_id.'/download')
-            ->assertForbidden();
+        $response = $this->get('/documents/'.$document->public_id.'/download')
+            ->assertRedirect(route('login'))->assertSessionMissing('auth_session_version');
+        $this->assertGuest();
+        $this->assertStringNotContainsString('%PDF-1.7 test', $response->getContent());
+        $this->assertStringNotContainsString($document->title, $response->getContent());
+
+        // The direct access service above still exercises the original domain denial.
     }
 
     public function test_orphaned_higher_priority_event_link_does_not_downgrade_to_transaction(): void
@@ -920,7 +926,7 @@ class DocumentAccessPrecedenceTest extends TestCase
         $search = $archive->workspace($actor, ['archive_search' => 'QA161_MIXED_METADATA_MARKER']);
         $selection = $archive->workspace($actor, ['document' => $mixed->public_id]);
         $activity = $archive->activity($actor);
-        $detailEvidence = app(\App\Services\DocumentEvidenceQuery::class)->forCorrespondence($allowed);
+        $detailEvidence = app(DocumentEvidenceQuery::class)->forCorrespondence($allowed);
         $listingHttp = $this->get('/documents?mode=files')->assertOk();
         $searchHttp = $this->get('/documents?mode=files&archive_search=QA161_MIXED_METADATA_MARKER')->assertOk();
         $selectedHttp = $this->get('/documents?mode=files&document='.$mixed->public_id)->assertOk();
@@ -1058,7 +1064,7 @@ class DocumentAccessPrecedenceTest extends TestCase
             $actor, ['archive_search' => 'QA161_METADATA_DENIED_EVENT'],
         )['records']->total());
 
-        $detail = app(\App\Services\DocumentEvidenceQuery::class)->forCorrespondence($allowed);
+        $detail = app(DocumentEvidenceQuery::class)->forCorrespondence($allowed);
         $detailIds = array_column($detail['record'], 'publicId');
         $this->assertSame([$duplicatedAllowed->public_id, $duplicatedAllowed->public_id], $detailIds);
         $this->get('/documents/'.$mixedEvent->public_id.'/download')->assertForbidden();
@@ -1152,6 +1158,9 @@ class DocumentAccessPrecedenceTest extends TestCase
             'classification' => 'restricted',
             'storage_disk' => 'documents',
             'storage_path' => $path,
+            'mime_type' => 'application/pdf',
+            'size_bytes' => strlen('%PDF-1.7 test'),
+            'checksum_sha256' => hash('sha256', '%PDF-1.7 test'),
             'owner_department_id' => $office->id,
             'uploaded_by_user_id' => $actor->id,
         ]);

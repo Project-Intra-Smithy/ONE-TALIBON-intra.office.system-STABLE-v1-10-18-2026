@@ -5,8 +5,8 @@ namespace App\Domain\Tasks;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * W02 individual Task policy. Never infer office, executive or delegated
@@ -32,12 +32,14 @@ final class TaskCoreAccess
             ->with('employee.department')
             ->whereKey($claimedActor->getKey())
             ->where('is_active', true)
+            ->where('account_status', 'active')
             ->first();
 
         if (
             ! $actor ||
             ! $actor->employee ||
             $actor->employee->employment_status !== 'active' ||
+            $actor->employee->separation_date !== null ||
             ! $actor->employee->department ||
             ! $actor->employee->department->is_active
         ) {
