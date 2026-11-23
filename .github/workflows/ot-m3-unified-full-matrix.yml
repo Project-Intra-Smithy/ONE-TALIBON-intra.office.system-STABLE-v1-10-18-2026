@@ -1,0 +1,471 @@
+# M3 integration witness derived from Nox's CI-only PR62 PG16 proof.
+# Preserves protected role/install/guard and all 11 test partitions.
+# M3 source deltas are restricted to two corrected Feature test contracts.
+name: KIRCH M3 Unified R2 + M4 Full Matrix — Protected PG16
+
+on:
+  push:
+    branches:
+      - candidate/kirch-m3-unified-m4-r2-validation-r1
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Traceability Core ${{ matrix.phase }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        phase: [g2a-roles, roles, broker, focused, full, browser, c02, c01, iam-cross-session, task-cross-session, p0-cross-session]
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      APP_URL: http://127.0.0.1:8000
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_DATABASE: talibon_portal_test
+      DB_USERNAME: postgres
+      DB_PASSWORD: operationforge_disposable
+      PGHOST: 127.0.0.1
+      PGPORT: '5432'
+      PGDATABASE: talibon_portal_test
+      PGUSER: postgres
+      PGPASSWORD: operationforge_disposable
+      CACHE_STORE: file
+      SESSION_DRIVER: file
+      QUEUE_CONNECTION: sync
+      N03_DISPOSABLE_LEASE: EXCLUSIVE_PG16_SYNTHETIC_ONLY
+      OPS009_DISPOSABLE_CI: '1'
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: talibon_portal_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: operationforge_disposable
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d talibon_portal_test"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Prove exact accepted M4 ancestry and bounded M3 changes
+        run: |
+          set -euo pipefail
+          M4_SHA="796afd3f26a5f196f02cdc2e0cf6760d880463ea"
+          PR62_SHA="93ab5b64c4bf1621a918278e6d83c250a16bc86e"
+          test "$(git merge-base "$PR62_SHA" "$M4_SHA")" = "$PR62_SHA"
+          test "$(git merge-base "$M4_SHA" HEAD)" = "$M4_SHA"
+          mapfile -t changed < <(git diff --name-only "$M4_SHA"..HEAD)
+          test "${#changed[@]}" -eq 5
+          for path in "${changed[@]}"; do
+            case "$path" in
+              .forge/memory/WORK-PACKAGE-REGISTER.md|.github/workflows/ot-m3-unified-full-matrix.yml|tests/Feature/WorkRequests/OriginDeliveryExceptionQueueGuardTest.php|tests/Feature/WorkflowHardeningTest.php|tests/Feature/LegacyCustodyFoundationTest.php) ;;
+              *) echo "::error title=Unauthorized M3 change::$path"; exit 1 ;;
+            esac
+          done
+          echo "FROZEN_PR62_ANCESTOR=$PR62_SHA"
+          echo "FROZEN_M4_SOURCE=$M4_SHA"
+          echo "M3_EXACT_CANDIDATE=${GITHUB_SHA}"
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, fileinfo, zip
+          coverage: none
+          tools: composer:v2
+      - name: Verify exact candidate and isolated empty PG16 database
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_ACTIONS" = true
+          test "$(psql -XAtc 'SELECT current_database()')" = talibon_portal_test
+          test "$(psql -XAtc "SELECT count(*) FROM pg_tables WHERE schemaname='public'")" = 0
+          test "$(psql -XAtc "SELECT count(*) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%'")" = 0
+          psql -XAtc "SELECT current_setting('server_version_num')::int BETWEEN 160000 AND 169999" | grep -qx t
+          git rev-parse HEAD
+      - run: composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+      - run: |
+          set -euo pipefail
+          cp .env.example .env
+          php artisan key:generate
+          mapfile -t changed_php < <(git diff --name-only 4084af39ecf10262ef5972df1b9cf03f038c3383..HEAD -- '*.php')
+          if [ "${#changed_php[@]}" -gt 0 ]; then
+            for f in "${changed_php[@]}"; do php -l "$f"; done
+            # Preserve the inherited PHP formatting debt as a visible
+            # warning, never as a falsely passing style gate. This proof's
+            # purpose is executing the previously blocked functional matrix.
+            if ! php vendor/bin/pint --test "${changed_php[@]}"; then
+              echo "::warning title=M3 PHP Pint formatting debt::PHP format check FAILED for inherited source. Functional test outcomes must be reported separately; source was not reformatted."
+              echo "M3_PINT_FORMAT=FAIL_RECORDED_NOT_FIXED"
+            else
+              echo "M3_PINT_FORMAT=PASS"
+            fi
+          fi
+          php -l bin/legacy-custody-broker
+
+      - name: Stage 3 (K3) isolated subprocess broker suite
+        if: matrix.phase == 'broker'
+        run: php artisan test tests/Feature/LegacyCustodyK3BrokerIsolationTest.php --group=n03-k3-broker
+
+      - name: Provision Stage 0 (G2A) isolated role cluster and run 61 G2A real-role tests
+        if: matrix.phase == 'g2a-roles'
+        env:
+          N03_ROLE_SUITE: '1'
+        run: |
+          set -euo pipefail
+          for name in G1B_MIGRATOR_PASSWORD G1B_APP_PASSWORD G1B_CUSTODY_PASSWORD N03_STAGE_PASSWORD N03_COMMAND_PASSWORD N03_RECONCILE_PASSWORD; do
+            value="$(openssl rand -hex 24)"
+            echo "::add-mask::$value"
+            export "$name=$value"
+          done
+          mapfile -t baseline < <(find database/migrations -maxdepth 1 -name '*.php' ! -name '2026_11_19_200000_create_legacy_custody_foundation.php' ! -name '2026_11_20_010000_extend_legacy_custody_g2b_command_provenance.php' ! -name '2026_11_20_020000_create_legacy_custody_k2_tombstones.php' ! -name '2026_11_20_030000_create_legacy_custody_g3_g5_extensions.php' ! -name '2026_11_22_150000_ops009_close_command_compatibility.php' ! -name '2026_11_22_170000_ops009_g2b_close_audit_compatibility.php' ! -name '2026_11_22_190000_ops009_r3_close_audit_provenance.php' ! -name '2026_11_22_191000_ops009_r3_origin_notice_effect.php' ! -name '2026_11_23_020000_ops009_origin_delivery_exception_queue.php' | sort)
+          args=()
+          for f in "${baseline[@]}"; do args+=("--path=$f"); done
+          php artisan migrate --force --no-interaction "${args[@]}"
+          psql -X -v ON_ERROR_STOP=1 -v KIRION_G1B_DISPOSABLE_LEASE=EXCLUSIVE_PG16_TMPFS_QA_ONLY -v G1B_MIGRATOR_PASSWORD="$G1B_MIGRATOR_PASSWORD" -v G1B_APP_PASSWORD="$G1B_APP_PASSWORD" -v G1B_CUSTODY_PASSWORD="$G1B_CUSTODY_PASSWORD" -f tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -v KIRION_G2_DISPOSABLE_LEASE=EXCLUSIVE_G2_PG16_TMPFS_QA_ONLY -f tests/Manual/sql/G2_DISPOSABLE_PG16_CUSTODY_ROLE_EXTENSION_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/G2_DISPOSABLE_PG16_CUSTODY_ROLE_VERIFY_R1.sql
+          php artisan migrate --force --no-interaction --path=database/migrations/2026_11_19_200000_create_legacy_custody_foundation.php
+          psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -v N03_STAGE_PASSWORD="$N03_STAGE_PASSWORD" -v N03_COMMAND_PASSWORD="$N03_COMMAND_PASSWORD" -v N03_RECONCILE_PASSWORD="$N03_RECONCILE_PASSWORD" -f tests/Manual/sql/N03_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+          php artisan test tests/Feature/LegacyCustodyFoundationTest.php --group=n03-role
+
+      - name: Provision baseline + G1B/G2 + G2A + G2B + K2 + G3-G5 real-role cluster
+        if: matrix.phase == 'roles' || matrix.phase == 'focused' || matrix.phase == 'full' || matrix.phase == 'browser' || matrix.phase == 'c02' || matrix.phase == 'c01' || matrix.phase == 'iam-cross-session' || matrix.phase == 'task-cross-session' || matrix.phase == 'p0-cross-session'
+        run: |
+          set -euo pipefail
+          for name in G1B_MIGRATOR_PASSWORD G1B_APP_PASSWORD G1B_CUSTODY_PASSWORD N03_STAGE_PASSWORD N03_COMMAND_PASSWORD N03_RECONCILE_PASSWORD N03_READER_PASSWORD; do
+            value="$(openssl rand -hex 24)"
+            echo "::add-mask::$value"
+            printf '%s=%s\n' "$name" "$value" >> "$GITHUB_ENV"
+            export "$name=$value"
+          done
+
+          # Baseline migrations (before N03)
+          mapfile -t baseline < <(find database/migrations -maxdepth 1 -name '*.php' ! -name '2026_11_19_200000_create_legacy_custody_foundation.php' ! -name '2026_11_20_010000_extend_legacy_custody_g2b_command_provenance.php' ! -name '2026_11_20_020000_create_legacy_custody_k2_tombstones.php' ! -name '2026_11_20_030000_create_legacy_custody_g3_g5_extensions.php' ! -name '2026_11_22_150000_ops009_close_command_compatibility.php' ! -name '2026_11_22_170000_ops009_g2b_close_audit_compatibility.php' ! -name '2026_11_22_190000_ops009_r3_close_audit_provenance.php' ! -name '2026_11_22_191000_ops009_r3_origin_notice_effect.php' ! -name '2026_11_23_020000_ops009_origin_delivery_exception_queue.php' | sort)
+          args=()
+          for f in "${baseline[@]}"; do args+=("--path=$f"); done
+          php artisan migrate --force --no-interaction "${args[@]}"
+
+          # G1B & G2 historical roles
+          psql -X -v ON_ERROR_STOP=1 -v KIRION_G1B_DISPOSABLE_LEASE=EXCLUSIVE_PG16_TMPFS_QA_ONLY -v G1B_MIGRATOR_PASSWORD="$G1B_MIGRATOR_PASSWORD" -v G1B_APP_PASSWORD="$G1B_APP_PASSWORD" -v G1B_CUSTODY_PASSWORD="$G1B_CUSTODY_PASSWORD" -f tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -v KIRION_G2_DISPOSABLE_LEASE=EXCLUSIVE_G2_PG16_TMPFS_QA_ONLY -f tests/Manual/sql/G2_DISPOSABLE_PG16_CUSTODY_ROLE_EXTENSION_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/G2_DISPOSABLE_PG16_CUSTODY_ROLE_VERIFY_R1.sql
+
+          # Stage 0: G2A foundation migration & role install/verify
+          php artisan migrate --force --no-interaction --path=database/migrations/2026_11_19_200000_create_legacy_custody_foundation.php
+          psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -v N03_STAGE_PASSWORD="$N03_STAGE_PASSWORD" -v N03_COMMAND_PASSWORD="$N03_COMMAND_PASSWORD" -v N03_RECONCILE_PASSWORD="$N03_RECONCILE_PASSWORD" -f tests/Manual/sql/N03_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+
+          # Stage 1: G2B migration & additive role install/verify
+          php artisan migrate --force --no-interaction --path=database/migrations/2026_11_20_010000_extend_legacy_custody_g2b_command_provenance.php
+          psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -f tests/Manual/sql/N03_G2B_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_G2B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+
+          # Stage 2: K2 migration & additive role install/verify
+          php artisan migrate --force --no-interaction --path=database/migrations/2026_11_20_020000_create_legacy_custody_k2_tombstones.php
+          psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -f tests/Manual/sql/N03_K2_DISPOSABLE_PG16_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_K2_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql
+
+          # Stage 4: G3-G5 migration & additive n03_reader role install/verify
+          php artisan migrate --force --no-interaction --path=database/migrations/2026_11_20_030000_create_legacy_custody_g3_g5_extensions.php
+          psql -X -v ON_ERROR_STOP=1 -v N03_DISPOSABLE_LEASE="$N03_DISPOSABLE_LEASE" -v N03_READER_PASSWORD="$N03_READER_PASSWORD" -f tests/Manual/sql/N03_G3_DISPOSABLE_PG16_READER_ROLE_INSTALL_R1.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/Manual/sql/N03_G3_DISPOSABLE_PG16_READER_ROLE_VERIFY_R1.sql
+
+      - name: Complete protected OPS009 migrations and prove fail-closed leases
+        if: matrix.phase == 'roles' || matrix.phase == 'focused' || matrix.phase == 'full' || matrix.phase == 'browser' || matrix.phase == 'c02' || matrix.phase == 'c01' || matrix.phase == 'iam-cross-session' || matrix.phase == 'task-cross-session' || matrix.phase == 'p0-cross-session'
+        run: |
+          set -euo pipefail
+          test "$GITHUB_ACTIONS" = true
+          test "$APP_ENV" = testing
+          test "$DB_DATABASE" = talibon_portal_test
+          test "$N03_DISPOSABLE_LEASE" = EXCLUSIVE_PG16_SYNTHETIC_ONLY
+          test "$(psql -XAtc 'SELECT current_database()')" = talibon_portal_test
+          psql -XAtc "SELECT current_setting('server_version_num')::int BETWEEN 160000 AND 169999" | grep -qx t
+          test "$(psql -XAtc "SELECT count(*) FROM pg_roles WHERE rolname IN ('n03_stage','n03_command','n03_reconcile') AND rolcanlogin AND NOT rolsuper")" = 3
+          test "$(psql -XAtc "SELECT count(*) FROM pg_constraint WHERE conrelid=to_regclass('legacy_custody.operations') AND conname='operations_check'")" = 1
+          for migration in \
+            2026_11_22_150000_ops009_close_command_compatibility \
+            2026_11_22_170000_ops009_g2b_close_audit_compatibility \
+            2026_11_22_190000_ops009_r3_close_audit_provenance \
+            2026_11_22_191000_ops009_r3_origin_notice_effect \
+            2026_11_23_020000_ops009_origin_delivery_exception_queue; do
+            path="database/migrations/$migration.php"
+            php -l "$path"
+            test "$(psql -XAtc "SELECT count(*) FROM public.migrations WHERE migration='$migration'")" = 0
+            if N03_DISPOSABLE_LEASE=UNLEASED php artisan migrate --force --no-interaction --path="$path" > "$RUNNER_TEMP/$migration.denied.log" 2>&1; then
+              echo "::error::OPS009 accepted an invalid lease for $migration"
+              exit 82
+            fi
+            grep -q OPS009 "$RUNNER_TEMP/$migration.denied.log" || {
+              echo "::error::Unexpected migration failure instead of guard denial: $migration"
+              tail -n 30 "$RUNNER_TEMP/$migration.denied.log"
+              exit 83
+            }
+            test "$(psql -XAtc "SELECT count(*) FROM public.migrations WHERE migration='$migration'")" = 0
+            echo "OPS009_INVALID_LEASE_DENIED=$migration"
+            php artisan migrate --force --no-interaction --path="$path"
+            test "$(psql -XAtc "SELECT count(*) FROM public.migrations WHERE migration='$migration'")" = 1
+            echo "OPS009_VALID_LEASE_APPLIED=$migration"
+          done
+          test "$(psql -XAtc "SELECT count(*) FROM public.migrations WHERE migration LIKE '2026_11_22_%ops009_%' OR migration='2026_11_23_020000_ops009_origin_delivery_exception_queue'")" = 5
+          test "$(psql -XAtc "SELECT count(*) FROM pg_trigger WHERE tgname IN ('ops009_delivery_exception_guard','ops009_delivery_action_guard','ops009_exception_append_only','ops009_exception_action_append_only')")" = 4
+          test "$(psql -XAtc "SELECT count(*) FROM pg_trigger WHERE tgname='ops009_close_audit_integrity'")" = 1
+          test "$(psql -XAtc "SELECT count(*) FROM pg_trigger WHERE tgname='ops009_origin_close_notice_guard'")" = 1
+          echo OPS009_FULL_GUARDED_MIGRATION_CHAIN=PASS
+      - name: Negative SQL authorization — N03 staging cannot rewrite audit
+        if: matrix.phase == 'roles'
+        run: |
+          set -euo pipefail
+          if psql -X -v ON_ERROR_STOP=1 -c "BEGIN; SET LOCAL ROLE n03_stage; UPDATE public.audit_logs SET action='unauthorized-ci-test' WHERE FALSE; ROLLBACK" > "$RUNNER_TEMP/unauthorized-audit-update.log" 2>&1; then
+            echo "::error::Ordinary N03 stage role permitted audit UPDATE"
+            exit 84
+          fi
+          grep -Eiq 'permission denied|must be owner' "$RUNNER_TEMP/unauthorized-audit-update.log" || {
+            cat "$RUNNER_TEMP/unauthorized-audit-update.log"
+            exit 85
+          }
+          echo N03_STAGE_UNAUTHORIZED_AUDIT_UPDATE_DENIED=PASS
+      - name: Run G2B + K2 + G3-G5 real-role Feature suites
+        if: matrix.phase == 'roles'
+        env:
+          N03_G2B_ROLE_SUITE: '1'
+          N03_K2_ROLE_SUITE: '1'
+          N03_G3_ROLE_SUITE: '1'
+        run: |
+          set -euo pipefail
+          php artisan test tests/Feature/LegacyCustodyG2BTravelOrderCommandTest.php tests/Feature/LegacyCustodyG2BTransactionCorrespondenceCommandTest.php --group=n03-g2b-role
+          php artisan test tests/Feature/LegacyCustodyK2ReconciliationTest.php --group=n03-k2-role
+          php artisan test tests/Feature/LegacyCustodyG3EgressAndWatermarkTest.php --group=n03-g3-role
+      - name: Dedicated protected OPS009 C02 on independently fresh PG16
+        if: matrix.phase == 'c02'
+        env:
+          N03_G2B_ROLE_SUITE: '1'
+        run: |
+          set -euo pipefail
+          test "$(psql -XAtc 'SELECT count(*) FROM legacy_custody.operations')" = 0
+          test "$(psql -XAtc 'SELECT count(*) FROM public.transactions')" = 0
+          echo 'OPS009_C02_BEFORE=EMPTY_DISPOSABLE_PROTECTED_CLUSTER'
+          php artisan test tests/Feature/OPS009C02CustodyCloseTest.php --group=ops009-c02
+          echo 'OPS009_C02_DEDICATED_SUITE=PASS'
+      - name: Dedicated protected OPS009 C01 on independently fresh PG16
+        if: matrix.phase == 'c01'
+        env:
+          N03_G2B_ROLE_SUITE: '1'
+        run: |
+          set -euo pipefail
+          test "$(psql -XAtc 'SELECT count(*) FROM legacy_custody.operations')" = 0
+          test "$(psql -XAtc 'SELECT count(*) FROM public.transactions')" = 0
+          echo 'OPS009_C01_BEFORE=EMPTY_DISPOSABLE_PROTECTED_CLUSTER'
+          php artisan test tests/Feature/OPS009C01N03SimultaneousCloseTest.php --group=ops009-c01
+          echo 'OPS009_C01_DEDICATED_SUITE=PASS'
+
+      - name: Verify pre-provisioned protected schema test bootstrap
+        if: matrix.phase == 'focused' || matrix.phase == 'full'
+        run: |
+          set -euo pipefail
+          php -l tests/Manual/ops009-registry-bootstrap.php
+          test "$(psql -XAtc "SELECT count(*) FROM public.migrations WHERE migration IN ('2026_11_22_150000_ops009_close_command_compatibility','2026_11_22_170000_ops009_g2b_close_audit_compatibility','2026_11_22_190000_ops009_r3_close_audit_provenance','2026_11_22_191000_ops009_r3_origin_notice_effect','2026_11_23_020000_ops009_origin_delivery_exception_queue')")" = 5
+          echo OPS009_PROTECTED_REGRESSION_SCHEMA_READY=PASS
+      - name: Focused custody, P07 quarantine & whole-system traceability regression
+        if: matrix.phase == 'focused'
+        env:
+          OPS009_REGISTRY_BASELINE: '1'
+        run: |
+          php artisan test --bootstrap=tests/Manual/ops009-registry-bootstrap.php \
+            tests/Feature/EmployeeProfileProvenanceQuarantineTest.php \
+            tests/Feature/WholeSystemTraceabilityJourneyTest.php \
+            tests/Feature/LegacyPdfPreviewTest.php \
+            tests/Feature/CorePortalReportsTest.php \
+            tests/Feature/PlanLegacyOriginGuardHardeningTest.php \
+            tests/Feature/PlanLegacyCallerBoundaryTest.php \
+            tests/Feature/LegacyDocumentCustodyIntegrityTest.php \
+            tests/Feature/DocumentAccessPrecedenceTest.php \
+            tests/Feature/CoreDocumentAttachmentsTest.php \
+            tests/Feature/WorkRequests/WorkRequestRevocationTest.php
+
+      - name: Full canonical PG16 Feature regression
+        if: matrix.phase == 'full'
+        env:
+          OPS009_REGISTRY_BASELINE: '1'
+        run: |
+          # Command-line --exclude-group/negative --filter proved unreliable:
+          # construct a CI-only PHPUnit config rooted in this checkout.
+          # All regular PR62 Feature tests remain covered, while C01/C02
+          # and the six P0 cross-connection tests run in their dedicated jobs.
+          matrix_config="$GITHUB_WORKSPACE/.ot-m3-unified-feature-matrix-phpunit.xml"
+          trap 'rm -f "$matrix_config"' EXIT
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          source = Path('phpunit.xml')
+          dest = Path('.ot-m3-unified-feature-matrix-phpunit.xml')
+          root = ET.parse(source).getroot()
+          suite = next(s for s in root.find('testsuites').findall('testsuite') if s.get('name') == 'Feature')
+          original = [n.text for n in suite.findall('exclude')]
+          dedicated = [
+              'tests/Feature/OPS009C01N03SimultaneousCloseTest.php',
+              'tests/Feature/OPS009C02CustodyCloseTest.php',
+              'tests/Feature/P0DestinationRevocation/P0DestinationRevocationTest.php',
+              'tests/Feature/PermanentIamConcurrencyTest.php',
+              'tests/Feature/PermanentIamPasswordConcurrencyTest.php',
+              'tests/Feature/Tasks/TaskConcurrentConnectionTest.php',
+          ]
+          for path in dedicated:
+              assert Path(path).is_file(), path
+              assert path not in original, path
+              ET.SubElement(suite, 'exclude').text = path
+          ET.ElementTree(root).write(dest, encoding='utf-8', xml_declaration=True)
+          verified = [n.text for n in ET.parse(dest).getroot().find('testsuites').find('testsuite').findall('exclude')]
+          assert verified == original + dedicated
+          print('PHPUNIT_FEATURE_ORIGINAL_EXCLUDES='+str(len(original)))
+          print('PHPUNIT_FEATURE_DEDICATED_EXCLUDES='+str(len(dedicated)))
+          print('PHPUNIT_FEATURE_SOURCE_SUITE_UNALTERED=PASS')
+          PY
+          # Artisan's test wrapper adds its own --configuration option when a
+          # config is supplied, yielding "Option --configuration cannot be used
+          # more than once" and exit 1 even after all PHPUnit cases PASS.
+          # Invoke PHPUnit directly with exactly one explicit configuration.
+          php vendor/bin/phpunit --configuration="$matrix_config" \
+            --bootstrap=tests/Manual/ops009-registry-bootstrap.php \
+            --testsuite=Feature
+          echo FEATURE_CORE_WITH_PROTECTED_REGISTRY=PASS
+      - name: Dedicated permanent IAM cross-session role and password concurrency methods
+        if: matrix.phase == 'iam-cross-session'
+        env:
+          OPS009_REGISTRY_BASELINE: '1'
+        run: |
+          set -euo pipefail
+          for case in \
+            test_independent_postgresql_sessions_serialize_iam_lifecycle_operations \
+            test_administrator_revocation_ordering_prevents_lifecycle_mutation \
+            test_concurrent_activation_disclosure_claims_serialize_on_independent_connections \
+            test_concurrent_administrators_cannot_register_duplicate_employee_numbers; do
+            echo "IAM_CONCURRENCY_CASE_START=$case"
+            php artisan test --bootstrap=tests/Manual/ops009-registry-bootstrap.php tests/Feature/PermanentIamConcurrencyTest.php --filter="$case"
+            echo "IAM_CONCURRENCY_CASE_PASS=$case"
+          done
+          php artisan test --bootstrap=tests/Manual/ops009-registry-bootstrap.php tests/Feature/PermanentIamPasswordConcurrencyTest.php --filter=test_password_lifecycle_and_mfa_mutations_serialize_on_independent_postgresql_sessions
+          echo IAM_CROSS_SESSION_ALL_FIVE_ORIGINAL_TESTS=PASS
+      - name: Dedicated two-connection individual task contention proof
+        if: matrix.phase == 'task-cross-session'
+        env:
+          OPS009_REGISTRY_BASELINE: '1'
+        run: |
+          set -euo pipefail
+          php artisan test --bootstrap=tests/Manual/ops009-registry-bootstrap.php tests/Feature/Tasks/TaskConcurrentConnectionTest.php --filter=test_two_postgresql_sessions_cannot_both_start_the_same_task
+          echo TASK_TWO_CONNECTION_ORIGINAL_TEST=PASS
+      - name: Dedicated six P0 destination revocation methods with guarded PG16 schema
+        if: matrix.phase == 'p0-cross-session'
+        env:
+          OPS009_REGISTRY_BASELINE: '1'
+        run: |
+          set -euo pipefail
+          case_file=tests/Feature/P0DestinationRevocation/P0DestinationRevocationTest.php
+          for case in \
+            test_travel_order_detail_and_index_reject_separated_employment_with_retained_session \
+            test_travel_order_privileged_create_store_and_status_are_denied_after_separation \
+            test_travel_order_mutations_reject_deactivated_mayor_department_and_preserve_other_office_scoping \
+            test_correspondence_json_workspace_and_index_stop_exposing_records_after_department_deactivation \
+            test_inactive_office_cannot_register_classify_route_or_act_using_stale_session_relations \
+            test_eligible_registrar_keeps_received_intake_and_wrong_office_or_classification_stays_denied; do
+            echo "P0_DESTINATION_CASE_START=$case"
+            php artisan test --bootstrap=tests/Manual/ops009-registry-bootstrap.php "$case_file" --filter="$case"
+            echo "P0_DESTINATION_CASE_PASS=$case"
+          done
+          echo P0_DESTINATION_ALL_SIX_ORIGINAL_TESTS=PASS
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        if: matrix.phase == 'browser'
+        with:
+          node-version-file: .nvmrc
+      - name: Frontend types, contracts, UX and production build
+        if: matrix.phase == 'browser'
+        run: |
+          npm ci
+          npm run types:check
+          npm run test:contracts
+          npm run test:ux
+          npm run build
+      - name: Playwright native PDF browser verification
+        if: matrix.phase == 'browser'
+        env:
+          QA_EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$(psql -XAtc "SELECT count(*) FROM public.migrations WHERE migration='2026_11_23_020000_ops009_origin_delivery_exception_queue'")" = 1
+          npx playwright install --with-deps chromium
+          password="$(openssl rand -hex 24)Aa1!"
+          echo "::add-mask::$password"
+          PDF_QA_PASSWORD="$password" php tests/Browser/legacy-pdf-inline-fixture.php
+          APP_ENV=local php artisan serve --host=127.0.0.1 --port=8000 > "$RUNNER_TEMP/operationforge-http.log" 2>&1 &
+          for attempt in $(seq 1 40); do
+            if curl --fail --silent --output /dev/null http://127.0.0.1:8000/login; then break; fi
+            sleep 1
+          done
+          PDF_QA_PASSWORD="$password" xvfb-run -a node tests/Browser/legacy-pdf-inline-authenticated.mjs
+      - name: Upload browser verification receipt and screenshot
+        if: matrix.phase == 'browser' && always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: operationforge-traceability-core-native-pdf
+          path: |
+            storage/app/qa/legacy-pdf-browser.json
+            storage/app/qa/legacy-pdf-native-viewer.png
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Record exact-SHA PG16 and phase custody receipt
+        if: always()
+        run: |
+          set -euo pipefail
+          receipt="$RUNNER_TEMP/ot-m3-matrix-${{ matrix.phase }}-custody.txt"
+          {
+            printf 'MATRIX_PHASE=${{ matrix.phase }}\n'
+            printf 'EXACT_GITHUB_SHA=%s\n' "$GITHUB_SHA"
+            printf 'CHECKOUT_SHA=%s\n' "$(git rev-parse HEAD)"
+            printf 'FROZEN_M4_SOURCE=796afd3f26a5f196f02cdc2e0cf6760d880463ea\n'
+            git diff --name-only 796afd3f26a5f196f02cdc2e0cf6760d880463ea HEAD
+            printf 'PG16_IDENTITY=%s\n' "$(psql -XAtc "SELECT current_database() || ':' || current_setting('server_version_num')")"
+            printf 'ROLE_CLUSTER=%s\n' "$(psql -XAtc "SELECT string_agg(rolname,',' ORDER BY rolname) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%'")"
+            printf 'SCHEMA_PUBLIC_TABLES=%s\n' "$(psql -XAtc "SELECT count(*) FROM pg_tables WHERE schemaname='public'")"
+            printf 'N03_CUSTODY_SCHEMA_PRESENT=%s\n' "$(psql -XAtc "SELECT to_regnamespace('legacy_custody') IS NOT NULL")"
+            echo 'DISPOSABLE_POSTGRES_CONTAINER=GITHUB_HOSTED_JOB_SERVICE'
+            echo 'PRODUCTION_SOURCE_CHANGES_SINCE_M4=NONE'
+            echo 'M3_PHP_PINT_DEBT=REPORTED_NOT_WAIVED'
+          } > "$receipt"
+          cat "$receipt"
+      - name: Upload original per-phase custody evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ot-m3-unified-${{ matrix.phase }}-source-and-pg16-custody
+          path: ${{ runner.temp }}/ot-m3-matrix-${{ matrix.phase }}-custody.txt
+          if-no-files-found: error
+          retention-days: 14
+
+  mandatory:
+    name: Traceability Core aggregate gate
+    runs-on: ubuntu-24.04
+    needs: [validate]
+    if: always()
+    steps:
+      - name: Require original six phases plus five dedicated protected cross-session jobs
+        env:
+          OUTCOME: ${{ needs.validate.result }}
+        run: |
+          printf 'Traceability Core matrix=%s SHA=%s\n' "$OUTCOME" "$GITHUB_SHA"
+          test "$OUTCOME" = success

@@ -375,8 +375,9 @@ final class LegacyCustodyFoundationTest extends TestCase
 
     private function assertFoundationMigrationInventory(): void
     {
-        // Immutable PR51 G2A inventory plus the two explicitly composed IAM G4
-        // migrations. Do not infer expected inventory from the live database.
+        // Immutable PR51 G2A inventory, the two explicitly composed IAM G4
+        // migrations, and the single approved M4 planning-suite migration.
+        // Do not infer expected inventory from the live database.
         $expected = [
             '0001_01_01_000000_create_users_table',
             '2026_08_18_000100_create_departments_table',
@@ -433,11 +434,12 @@ final class LegacyCustodyFoundationTest extends TestCase
             '2026_11_19_200000_create_legacy_custody_foundation',
             '2026_11_20_000100_add_activation_disclosure_marker',
             '2026_11_20_000200_enforce_iam_identity_integrity',
+            '2026_11_24_010000_create_local_development_planning_suite_tables',
         ];
         $actual = $this->root->query('SELECT migration FROM public.migrations')->fetchAll(PDO::FETCH_COLUMN);
         sort($actual, SORT_STRING);
 
-        $this->assertCount(55, $actual);
+        $this->assertCount(count($expected), $actual);
         $this->assertSame($expected, $actual);
     }
 
