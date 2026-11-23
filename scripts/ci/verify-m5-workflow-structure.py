@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 """
-Closed-AST GitHub Actions workflow verifier for M5-CI-02 (R4).
+Closed-AST GitHub Actions workflow verifier for M5-CI-02 (R5).
 Enforces:
-1. Strict YAML parsing with duplicate mapping key rejection.
+1. Strict YAML 1.2-compatible parsing (`StrictYaml12NoDupLoader`):
+   - Only `true|True|TRUE|false|False|FALSE` resolve as booleans (`on`/`off`/`yes`/`no`
+     resolve natively as `str`, matching GitHub Actions / YAML 1.2).
+   - Rejects YAML merge keys (`<<`), non-string mapping keys (including `true:`,
+     `!!bool true:`, `!!bool on:`), exact duplicate keys, and case/whitespace-colliding
+     keys (`on:` + `"on":`, `"on":` + `on:`, `on:` + `'on':`, `on:` + `ON:`) at the
+     parser boundary BEFORE any normalization or set conversion.
 2. Exact deep AST equality of top-level `name`, `permissions`, and the entire
-   executable `jobs` tree against an independently pinned immutable Git blob
-   (eliminating arbitrary Bash reachability and GitHub expression bypasses
-   including Jane's ADV-A..F, equivalent expressions, early exits, and
-   continue-on-error overrides).
-3. Closed trigger allowlist (`on.push.branches` limited to baseline branches
-   plus the authorized R4 branch, and `workflow_dispatch`).
+   executable `jobs` tree against an independently pinned immutable Git blob.
+3. Exactly one canonical root `on` mapping with closed event/branch allowlist
+   and no duplicate branches.
 4. Explicit structural verification of the parsed `jobs` AST (postgres:16,
    all 11 matrix phases, unconditional verifier, fail-closed Pint, and
    mandatory aggregate gate).
@@ -36,31 +39,74 @@ REQUIRED_PHASES = [
 
 ALLOWED_EXTRA_BRANCHES = {
     "candidate/antigravity-m5-r4-ci-reachability-r1",
+    "candidate/antigravity-m5-r5-yaml-trigger-normalization-r1",
 }
 
 
-class NoDuplicateKeysSafeLoader(yaml.SafeLoader):
+class StrictYaml12NoDupLoader(yaml.SafeLoader):
     pass
 
 
-def _construct_mapping_no_duplicates(loader, node, deep=False):
+# Replace YAML 1.1 implicit boolean resolvers (which coerce `on`/`off`/`yes`/`no` to bool)
+# with strict YAML 1.2 Core Schema booleans (`true|True|TRUE|false|False|FALSE` only)
+# and remove YAML 1.1 merge-key (`<<`) resolution.
+StrictYaml12NoDupLoader.yaml_implicit_resolvers = {
+    ch: [
+        (tag, regexp)
+        for (tag, regexp) in resolvers
+        if tag not in ("tag:yaml.org,2002:bool", "tag:yaml.org,2002:merge")
+    ]
+    for ch, resolvers in yaml.SafeLoader.yaml_implicit_resolvers.items()
+}
+StrictYaml12NoDupLoader.add_implicit_resolver(
+    "tag:yaml.org,2002:bool",
+    re.compile(r"^(?:true|True|TRUE|false|False|FALSE)$"),
+    list("tTfF"),
+)
+
+
+def _construct_mapping_strict(loader, node, deep=False):
     mapping = {}
+    seen_canonical = {}
     for key_node, value_node in node.value:
+        if key_node.tag == "tag:yaml.org,2002:merge":
+            raise yaml.constructor.ConstructorError(
+                "while constructing a mapping",
+                node.start_mark,
+                "YAML merge keys (<<) are forbidden",
+                key_node.start_mark,
+            )
         key = loader.construct_object(key_node, deep=deep)
+        if not isinstance(key, str):
+            raise yaml.constructor.ConstructorError(
+                "while constructing a mapping",
+                node.start_mark,
+                f"non-string mapping key {key!r} ({type(key).__name__}) is forbidden",
+                key_node.start_mark,
+            )
         if key in mapping:
             raise yaml.constructor.ConstructorError(
                 "while constructing a mapping",
                 node.start_mark,
-                f"found duplicate key {key!r}",
+                f"found duplicate mapping key {key!r}",
                 key_node.start_mark,
             )
+        canonical = key.strip().lower()
+        if canonical in seen_canonical:
+            raise yaml.constructor.ConstructorError(
+                "while constructing a mapping",
+                node.start_mark,
+                f"found semantically colliding mapping key {key!r} (conflicts with {seen_canonical[canonical]!r})",
+                key_node.start_mark,
+            )
+        seen_canonical[canonical] = key
         mapping[key] = loader.construct_object(value_node, deep=deep)
     return mapping
 
 
-NoDuplicateKeysSafeLoader.add_constructor(
+StrictYaml12NoDupLoader.add_constructor(
     yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
-    _construct_mapping_no_duplicates,
+    _construct_mapping_strict,
 )
 
 
@@ -69,30 +115,14 @@ def fail(msg: str) -> None:
     sys.exit(1)
 
 
-def parse_strict_yaml(raw: str, label: str) -> dict:
+def parse_strict_yaml12(raw: str, label: str) -> dict:
     try:
-        doc = yaml.load(raw, Loader=NoDuplicateKeysSafeLoader)
+        doc = yaml.load(raw, Loader=StrictYaml12NoDupLoader)
     except Exception as exc:
-        fail(f"Invalid or duplicate-key YAML in {label}: {exc}")
+        fail(f"Strict YAML 1.2 validation failed in {label}: {exc}")
     if not isinstance(doc, dict):
         fail(f"{label} did not parse to a YAML mapping")
     return doc
-
-
-def get_on_key(doc: dict):
-    # YAML 1.1 SafeLoader parses unquoted `on:` as boolean True.
-    if True in doc:
-        return True
-    if "on" in doc:
-        return "on"
-    fail("Workflow missing top-level `on` trigger mapping")
-
-
-def normalize_doc_keys(doc: dict) -> set[str]:
-    keys = set()
-    for k in doc.keys():
-        keys.add("on" if k is True else str(k))
-    return keys
 
 
 def verify_structural_invariants(doc: dict) -> None:
@@ -163,7 +193,7 @@ def verify_structural_invariants(doc: dict) -> None:
         fail("jobs.mandatory step must bind OUTCOME to ${{ needs.validate.result }}")
     m_lines = [l.strip() for l in str(m_step.get("run", "")).splitlines() if l.strip() and not l.strip().startswith("#")]
     if not any(re.fullmatch(r'test\s+"\$OUTCOME"\s*=\s*success', l) for l in m_lines):
-        fail("jobs.mandatory step must enforce test \"$OUTCOME\" = success")
+        fail('jobs.mandatory step must enforce test "$OUTCOME" = success')
 
 
 def main() -> None:
@@ -180,36 +210,41 @@ def main() -> None:
     except subprocess.CalledProcessError as exc:
         fail(f"Failed to read pinned baseline workflow blob {args.baseline_blob}: {exc.stderr.strip()}")
 
-    baseline_doc = parse_strict_yaml(baseline_raw, f"baseline:{args.baseline_blob}")
-    candidate_doc = parse_strict_yaml(sys.stdin.read(), "candidate_workflow")
+    baseline_doc = parse_strict_yaml12(baseline_raw, f"baseline:{args.baseline_blob}")
+    candidate_doc = parse_strict_yaml12(sys.stdin.read(), "candidate_workflow")
 
-    # 1. Verify top-level key set strictly matches baseline (no sneaky extra keys)
-    if normalize_doc_keys(candidate_doc) != {"name", "on", "permissions", "jobs"}:
-        fail(f"Unexpected top-level workflow keys: {sorted(normalize_doc_keys(candidate_doc))}")
+    # 1. Strict root key set (no boolean True aliasing, no set-collapsing)
+    expected_root_keys = {"name", "on", "permissions", "jobs"}
+    if set(candidate_doc.keys()) != expected_root_keys:
+        fail(f"Unexpected top-level workflow keys: {sorted(candidate_doc.keys())}")
 
-    # 2. Verify exact equality of name, permissions, and the ENTIRE executable jobs AST
-    if candidate_doc.get("name") != baseline_doc.get("name"):
+    # 2. Exact deep-AST equality of name, permissions, and the ENTIRE executable jobs tree
+    if candidate_doc["name"] != baseline_doc["name"]:
         fail("Workflow `name` differs from pinned immutable baseline")
-    if candidate_doc.get("permissions") != baseline_doc.get("permissions"):
+    if candidate_doc["permissions"] != baseline_doc["permissions"]:
         fail("Workflow `permissions` differs from pinned immutable baseline")
-    if candidate_doc.get("jobs") != baseline_doc.get("jobs"):
+    if candidate_doc["jobs"] != baseline_doc["jobs"]:
         fail("Workflow executable `jobs` AST differs from pinned immutable baseline (any altered job, condition, continue-on-error, phase, or shell command is rejected fail-closed)")
 
-    # 3. Verify `on` triggers only permit baseline branches plus explicitly allowlisted R4 branch
-    b_on = baseline_doc[get_on_key(baseline_doc)]
-    c_on = candidate_doc[get_on_key(candidate_doc)]
-    if not isinstance(c_on, dict) or set(c_on.keys()) != set(b_on.keys()):
-        fail("Workflow `on` trigger keys differ from pinned immutable baseline")
-    if c_on.get("workflow_dispatch") != b_on.get("workflow_dispatch"):
-        fail("Workflow `on.workflow_dispatch` differs from baseline")
+    # 3. Closed canonical `on` trigger verification
+    b_on = baseline_doc["on"]
+    c_on = candidate_doc["on"]
+    if not isinstance(c_on, dict) or set(c_on.keys()) != {"push", "workflow_dispatch"}:
+        fail(f"Workflow `on` trigger keys must be exactly {{push, workflow_dispatch}}, got {c_on!r}")
+    if c_on["workflow_dispatch"] is not None or c_on["workflow_dispatch"] != b_on["workflow_dispatch"]:
+        fail("Workflow `on.workflow_dispatch` must be null/empty matching baseline")
 
-    b_push = b_on.get("push")
-    c_push = c_on.get("push")
+    b_push = b_on["push"]
+    c_push = c_on["push"]
     if not isinstance(c_push, dict) or set(c_push.keys()) != {"branches"}:
         fail("Workflow `on.push` must contain only `branches`")
-    b_branches = b_push.get("branches", [])
-    c_branches = c_push.get("branches", [])
-    if not isinstance(c_branches, list) or c_branches[: len(b_branches)] != b_branches:
+    b_branches = b_push["branches"]
+    c_branches = c_push["branches"]
+    if not isinstance(c_branches, list) or not all(isinstance(b, str) for b in c_branches):
+        fail("Workflow `on.push.branches` must be a list of strings")
+    if len(c_branches) != len(set(c_branches)):
+        fail("Workflow `on.push.branches` contains duplicate branch entries")
+    if c_branches[: len(b_branches)] != b_branches:
         fail("Workflow `on.push.branches` must preserve all baseline branches in order")
     extra_branches = set(c_branches[len(b_branches) :])
     if not extra_branches.issubset(ALLOWED_EXTRA_BRANCHES):
@@ -218,7 +253,7 @@ def main() -> None:
     # 4. Self-verify structural invariants on the parsed jobs AST
     verify_structural_invariants(candidate_doc)
 
-    print(f"M5_WORKFLOW_YAML_STRUCTURE=CLOSED_AST_AND_PINNED_BASELINE_PASS({args.baseline_blob})")
+    print(f"M5_WORKFLOW_YAML_STRUCTURE=STRICT_YAML12_CLOSED_AST_AND_PINNED_BASELINE_PASS({args.baseline_blob})")
 
 
 if __name__ == "__main__":

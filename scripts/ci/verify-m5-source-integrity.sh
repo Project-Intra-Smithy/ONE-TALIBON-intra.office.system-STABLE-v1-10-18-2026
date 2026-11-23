@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Fail-closed M5 R4 source-integrity & closed-AST pinned-workflow verifier.
+# Fail-closed M5 R5 source-integrity & strict-YAML-1.2 closed-AST workflow verifier.
 # Usage: bash scripts/ci/verify-m5-source-integrity.sh [TARGET_REF]
 # Note: An independent reviewer must inspect and run this script + the companion
-# Python YAML verifier from a reviewer-controlled copy against any candidate SHA;
+# Python YAML 1.2 verifier from a reviewer-controlled copy against any candidate SHA;
 # a candidate-editable workflow alone is never a self-certifying trust anchor.
 set -euo pipefail
 
@@ -20,6 +20,7 @@ FROZEN_R2_FINAL_SHA="6cdba4f437326d4761110fcccfd38b7939f26a6f"
 FROZEN_R3_SOURCE_FIX_SHA="ac606cb7a98f6fff5ae4f761e390e5836af953eb"
 FROZEN_R3_SOURCE_FIX_TREE="5c8ed052b7d660539f15d553ad5eb39ead87850c"
 FROZEN_R3_FINAL_SHA="480da17d02bb58c253d5e65cbbd3be5dcc08df0c"
+FROZEN_R4_FINAL_SHA="3a51759346e094dfe57c97bf5575bf200c194f23"
 PINNED_R3_WORKFLOW_BLOB="ac4754df6f859a7fe4a076154044124d0e228956"
 
 fail() {
@@ -27,7 +28,7 @@ fail() {
   exit 1
 }
 
-# 1. Exact immutable ancestry chain (PR62 -> M4 -> M3 -> 0c79 -> R2 -> R3 -> TARGET_SHA)
+# 1. Exact immutable ancestry chain (PR62 -> M4 -> M3 -> 0c79 -> R2 -> R3 -> R4 -> TARGET_SHA)
 test "$(git merge-base "$PR62_SHA" "$M4_SHA")" = "$PR62_SHA" || fail "Broken PR62 -> M4 ancestry"
 test "$(git merge-base "$M4_SHA" "$M3_VALIDATED_SHA")" = "$M4_SHA" || fail "Broken M4 -> M3 ancestry"
 test "$(git merge-base "$M3_VALIDATED_SHA" "$FROZEN_CLEANUP_SHA")" = "$M3_VALIDATED_SHA" || fail "Broken M3 -> 0c79 cleanup ancestry"
@@ -35,7 +36,8 @@ test "$(git merge-base "$FROZEN_CLEANUP_SHA" "$FROZEN_R2_SOURCE_FIX_SHA")" = "$F
 test "$(git merge-base "$FROZEN_R2_SOURCE_FIX_SHA" "$FROZEN_R2_FINAL_SHA")" = "$FROZEN_R2_SOURCE_FIX_SHA" || fail "Broken R2 source-fix -> R2 final ancestry"
 test "$(git merge-base "$FROZEN_R2_FINAL_SHA" "$FROZEN_R3_SOURCE_FIX_SHA")" = "$FROZEN_R2_FINAL_SHA" || fail "Broken R2 final -> R3 source-fix ancestry"
 test "$(git merge-base "$FROZEN_R3_SOURCE_FIX_SHA" "$FROZEN_R3_FINAL_SHA")" = "$FROZEN_R3_SOURCE_FIX_SHA" || fail "Broken R3 source-fix -> R3 final ancestry"
-test "$(git merge-base "$FROZEN_R3_FINAL_SHA" "$TARGET_SHA")" = "$FROZEN_R3_FINAL_SHA" || fail "TARGET_REF $TARGET_SHA is not a descendant of frozen R3 candidate $FROZEN_R3_FINAL_SHA"
+test "$(git merge-base "$FROZEN_R3_FINAL_SHA" "$FROZEN_R4_FINAL_SHA")" = "$FROZEN_R3_FINAL_SHA" || fail "Broken R3 final -> R4 final ancestry"
+test "$(git merge-base "$FROZEN_R4_FINAL_SHA" "$TARGET_SHA")" = "$FROZEN_R4_FINAL_SHA" || fail "TARGET_REF $TARGET_SHA is not a descendant of frozen R4 candidate $FROZEN_R4_FINAL_SHA"
 
 # 2. Exact tree SHAs of frozen R2 & R3 source-fix commits + pinned R3 workflow baseline blob
 test "$(git rev-parse "${FROZEN_R2_SOURCE_FIX_SHA}^{tree}")" = "$FROZEN_R2_SOURCE_FIX_TREE" || fail "R2 source-fix tree mismatch"
@@ -62,7 +64,7 @@ for path in "${UNAFFECTED_11[@]}"; do
   test "$actual_blob" = "$expected_blob" || fail "Unaffected cleanup file modified: $path (got $actual_blob expected $expected_blob)"
 done
 
-# 4. Exact blob equality on the 4 R2 planning-correction files unchanged in R3/R4
+# 4. Exact blob equality on the 4 R2 planning-correction files unchanged in R3/R4/R5
 declare -A PINNED_R2_UNCHANGED_BLOBS=(
   ["app/Http/Controllers/Planning/PlanningMapController.php"]="c3f721c7ca316d22ef84adcda07a3b7136dda60e"
   ["app/Http/Controllers/Planning/PpaController.php"]="2437781b15c7a77b4179f143db836c9b4ea4462c"
@@ -100,7 +102,7 @@ for path in "${post_source_paths[@]}"; do
   esac
 done
 
-# 7. Closed-AST & pinned-baseline executable workflow verification (M5-CI-02 R4)
+# 7. Strict YAML 1.2 closed-AST & pinned-baseline executable workflow verification (M5-CI-02 R5)
 PYTHON_BIN=""
 for cand in python3 python; do
   if command -v "$cand" >/dev/null 2>&1 && "$cand" -c "import yaml" >/dev/null 2>&1; then
@@ -121,6 +123,7 @@ echo "FROZEN_R2_FINAL_SHA=$FROZEN_R2_FINAL_SHA"
 echo "FROZEN_R3_SOURCE_FIX_SHA=$FROZEN_R3_SOURCE_FIX_SHA"
 echo "FROZEN_R3_SOURCE_FIX_TREE=$FROZEN_R3_SOURCE_FIX_TREE"
 echo "FROZEN_R3_FINAL_SHA=$FROZEN_R3_FINAL_SHA"
+echo "FROZEN_R4_FINAL_SHA=$FROZEN_R4_FINAL_SHA"
 echo "PINNED_R3_WORKFLOW_BLOB=$PINNED_R3_WORKFLOW_BLOB"
 echo "TARGET_VERIFIED_SHA=$TARGET_SHA"
-echo "M5_SOURCE_INTEGRITY=PINNED_BLOB_TREE_AND_CLOSED_AST_PASS"
+echo "M5_SOURCE_INTEGRITY=PINNED_BLOB_TREE_AND_STRICT_YAML12_CLOSED_AST_PASS"
