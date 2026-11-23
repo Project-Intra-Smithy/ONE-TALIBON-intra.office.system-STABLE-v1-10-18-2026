@@ -16,6 +16,8 @@ final class PlanningAuthorizationService
 {
     public const MPDO_CODES = ['MPDO', 'MPDC'];
 
+    public const OFFICIAL_PLAN_STATUSES = ['In force', 'Adopted', 'Published'];
+
     /**
      * Resolve exact server-authorized capabilities for the Local Development Planning Suite.
      *
@@ -180,8 +182,13 @@ final class PlanningAuthorizationService
         ];
     }
 
-    public function authorizePlanMutation(User $user, ?string $targetStatus = null, bool $isDelete = false): array
-    {
+    public function authorizePlanMutation(
+        User $user,
+        ?string $targetStatus = null,
+        bool $isDelete = false,
+        ?DevelopmentPlan $existing = null,
+        ?string $requestedAuthority = null,
+    ): array {
         $perms = $this->resolve($user);
 
         if ($isDelete) {
@@ -198,6 +205,22 @@ final class PlanningAuthorizationService
 
         if ($targetStatus !== null && in_array($targetStatus, ['In force', 'Adopted', 'Published', 'Archived'], true) && ! $perms['canPublishOrArchive']) {
             throw new AuthorizationException('Only the MPDC Head may transition a plan to an adopted, published, or archived status.');
+        }
+
+        // M5-APP-R2-01: Record-provenance invariant — reference_sample rows can never be promoted
+        // to official/adopted status or have their non-official authority disclosure overwritten.
+        if ($existing !== null && $existing->provenance_status === 'reference_sample') {
+            if ($targetStatus !== null && in_array($targetStatus, self::OFFICIAL_PLAN_STATUSES, true)) {
+                throw new AuthorizationException('Reference sample plans cannot be promoted to an official or adopted status.');
+            }
+
+            if ($requestedAuthority !== null) {
+                $normalizedRequested = trim($requestedAuthority);
+                $normalizedCurrent = trim((string) ($existing->authority ?? ''));
+                if ($normalizedRequested !== $normalizedCurrent) {
+                    throw new AuthorizationException('Reference sample authority disclosure cannot be overwritten.');
+                }
+            }
         }
 
         return $perms;

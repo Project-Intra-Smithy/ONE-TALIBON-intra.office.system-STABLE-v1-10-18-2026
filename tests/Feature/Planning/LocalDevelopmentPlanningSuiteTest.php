@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Planning;
 
 use App\Http\Controllers\Planning\PpaController;
+use App\Models\AuditLog;
 use App\Models\DesignatedPlanningStaff;
 use App\Models\DevelopmentPlan;
 use App\Models\PlanningAttachment;
@@ -386,5 +387,109 @@ final class LocalDevelopmentPlanningSuiteTest extends TestCase
         $this->assertSame(0, DevelopmentPlan::query()->where('authority', '!=', PlanningSuiteInitializer::SAMPLE_AUTHORITY_DISCLOSURE)->count());
         $this->assertSame(0, PpaRecord::query()->where('provenance_status', '!=', 'reference_sample')->count());
         $this->assertSame(0, PlanningMap::query()->where('provenance_status', '!=', 'awaiting_official_gis')->count());
+    }
+
+    public function test_m5_app_r2_01_reference_sample_plan_cannot_be_promoted_or_have_authority_forged_via_either_update_route(): void
+    {
+        $this->seed();
+        app(PlanningReferenceSampleSeeder::class)->run();
+
+        $mpdcHead = User::query()->where('email', 'planning@talibon.demo')->firstOrFail();
+        $admin = User::query()->where('email', 'admin@talibon.demo')->firstOrFail();
+        $sample = DevelopmentPlan::query()->where('provenance_status', 'reference_sample')->firstOrFail();
+
+        $originalTitle = $sample->title;
+        $originalStatus = $sample->status;
+        $originalAuthority = $sample->authority;
+        $originalProvenance = $sample->provenance_status;
+        $originalUpdatedBy = $sample->updated_by_user_id;
+        $auditCountBefore = AuditLog::query()->count();
+
+        // 1. POST /development-plans/{id}/status to In force with forged resolution -> 403, zero DB/audit mutation
+        $this->actingAs($mpdcHead)->post("/development-plans/{$sample->id}/status", [
+            'status' => 'In force',
+            'authority' => 'SB Resolution No. 2026-999 (Forged)',
+        ])->assertForbidden();
+
+        // 2. PUT /development-plans/{id} to Adopted with forged authority and altered title -> 403, zero partial mutation
+        $this->actingAs($mpdcHead)->put("/development-plans/{$sample->id}", [
+            'title' => 'Forged Official Title',
+            'horizon' => $sample->horizon,
+            'lead_office' => $sample->lead_office,
+            'coverage_start' => $sample->coverage_start,
+            'coverage_end' => $sample->coverage_end,
+            'status' => 'Adopted',
+            'authority' => 'Sangguniang Bayan Ordinance No. 2026-888',
+        ])->assertForbidden();
+
+        // 3. Forged authority-only overwrite via PUT (keeping Draft status) -> 403, zero mutation
+        $this->actingAs($mpdcHead)->put("/development-plans/{$sample->id}", [
+            'title' => $sample->title,
+            'horizon' => $sample->horizon,
+            'lead_office' => $sample->lead_office,
+            'coverage_start' => $sample->coverage_start,
+            'coverage_end' => $sample->coverage_end,
+            'status' => 'Draft',
+            'authority' => 'Forged Official Adoption Record',
+        ])->assertForbidden();
+
+        // 4. Forged authority-only overwrite via POST status (keeping For review status) -> 403, zero mutation
+        $this->actingAs($mpdcHead)->post("/development-plans/{$sample->id}/status", [
+            'status' => 'For review',
+            'authority' => 'Forged Resolution Reference',
+        ])->assertForbidden();
+
+        // 5. Clearing authority disclosure via empty string -> 403, zero mutation
+        $this->actingAs($mpdcHead)->put("/development-plans/{$sample->id}", [
+            'title' => $sample->title,
+            'horizon' => $sample->horizon,
+            'lead_office' => $sample->lead_office,
+            'coverage_start' => $sample->coverage_start,
+            'coverage_end' => $sample->coverage_end,
+            'status' => 'Draft',
+            'authority' => '',
+        ])->assertForbidden();
+
+        // 6. Replay / repeated attempts also denied with zero mutation
+        $this->actingAs($mpdcHead)->post("/development-plans/{$sample->id}/status", [
+            'status' => 'In force',
+            'authority' => 'SB Resolution No. 2026-999 (Replay)',
+        ])->assertForbidden();
+
+        $freshSample = $sample->fresh();
+        $this->assertSame($originalTitle, $freshSample->title);
+        $this->assertSame($originalStatus, $freshSample->status);
+        $this->assertSame($originalAuthority, $freshSample->authority);
+        $this->assertSame($originalProvenance, $freshSample->provenance_status);
+        $this->assertSame($originalUpdatedBy, $freshSample->updated_by_user_id);
+        $this->assertSame($auditCountBefore, AuditLog::query()->count());
+
+        // 7. Positive control: genuine non-sample plan can still be transitioned to In force by MPDC Head,
+        // while system_admin remains denied
+        $this->actingAs($mpdcHead)->post('/development-plans', [
+            'code' => 'GENUINE-CDP-2027',
+            'title' => 'Genuine Provisional Development Plan',
+            'horizon' => 'Six-year',
+            'lead_office' => 'Municipal Planning and Development Office',
+            'coverage_start' => 2027,
+            'coverage_end' => 2032,
+            'status' => 'Draft',
+        ])->assertRedirect();
+
+        $genuine = DevelopmentPlan::query()->where('code', 'GENUINE-CDP-2027')->firstOrFail();
+        $this->assertSame('provisional_draft', $genuine->provenance_status);
+
+        $this->actingAs($admin)->post("/development-plans/{$genuine->id}/status", [
+            'status' => 'In force',
+            'authority' => 'Admin Attempt',
+        ])->assertForbidden();
+
+        $this->actingAs($mpdcHead)->post("/development-plans/{$genuine->id}/status", [
+            'status' => 'In force',
+            'authority' => 'SB Resolution No. 2027-012',
+        ])->assertRedirect();
+
+        $this->assertSame('In force', $genuine->fresh()->status);
+        $this->assertSame('SB Resolution No. 2027-012', $genuine->fresh()->authority);
     }
 }
