@@ -6,6 +6,8 @@ type Size = 'md' | 'sm';
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     variant?: Variant;
     size?: Size;
+    icon?: ReactNode;
+    loading?: boolean;
     children: ReactNode;
 };
 
@@ -25,6 +27,9 @@ export function Button({
     type = 'button',
     variant = 'primary',
     size = 'md',
+    icon,
+    loading = false,
+    disabled,
     className = '',
     children,
     ...props
@@ -32,10 +37,14 @@ export function Button({
     return (
         <button
             type={type}
+            disabled={disabled || loading}
             className={`inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-55 ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
             {...props}
         >
+            {icon}
             {children}
         </button>
     );
 }
+
+export default Button;

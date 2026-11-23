@@ -36,11 +36,12 @@ test('B2 preserves mobile cards, desktop register and detail focus restoration',
   assert.match(page, /dataset\.ppaTrigger === id/);
   assert.match(page, /trigger\?\.focus\(\)/);
 });
-test('B2 preserves reference disclosures and adds no monitoring or CRUD surface', () => {
+test('B2 preserves reference disclosures and gates mutations through server-authorized permissions', () => {
   assert.match(page, /no completion percentage is recorded for PPAs/);
   assert.match(page, /do not represent verified live project progress/);
   assert.match(detail, /Not verified live implementation progress/);
-  assert.doesNotMatch(page + register + filters + detail, /Add Project|Create PPA|router\.post|percentComplete|progressBar/);
+  assert.match(page, /planningPermissions\?\.canManagePpas \|\| planningPermissions\?\.canProposeOfficePpa/);
+  assert.doesNotMatch(page + register + filters + detail, /localStorage\.|percentComplete|progressBar/);
   assert.match(page, /r8-ppas/);
   assert.match(css, /\.r8-ppas/);
   assert.doesNotMatch(css, /(?:^|\n)\s*(?:body|html|:root)\s*\{/);

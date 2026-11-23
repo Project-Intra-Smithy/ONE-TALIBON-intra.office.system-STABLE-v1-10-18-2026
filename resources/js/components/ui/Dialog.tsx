@@ -150,3 +150,5 @@ export function Dialog({
         </dialog>
     );
 }
+
+export default Dialog;

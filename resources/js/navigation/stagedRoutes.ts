@@ -7,6 +7,7 @@ const stagedPaths = [
     /^\/portal-search\/?$/,
     /^\/documents\/?$/,
     /^\/development-plans\/?$/,
+    /^\/planning-maps\/?$/,
     /^\/ppas\/?$/,
     /^\/admin\/?$/,
     /^\/transactions(?:\/create|\/\d+)?\/?$/,
