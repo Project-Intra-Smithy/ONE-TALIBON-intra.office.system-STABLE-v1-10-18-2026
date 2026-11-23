@@ -173,7 +173,16 @@ final class DevelopmentPlanController extends Controller
             'document_ref' => ['nullable', 'string', 'max:120'],
         ]);
 
-        $this->authorization->authorizePlanMutation($user, $data['status']);
+        $requestedAuthority = $request->exists('authority')
+            ? (string) ($data['authority'] ?? '')
+            : null;
+
+        $this->authorization->authorizePlanMutation(
+            user: $user,
+            targetStatus: $data['status'],
+            existing: $plan,
+            requestedAuthority: $requestedAuthority,
+        );
 
         $plan->update([
             'title' => trim($data['title']),
@@ -190,7 +199,9 @@ final class DevelopmentPlanController extends Controller
             'next_milestone' => $data['next_milestone'] ?? $plan->next_milestone,
             'next_milestone_date' => $data['next_milestone_date'] ?? $plan->next_milestone_date,
             'required_action' => $data['required_action'] ?? $plan->required_action,
-            'authority' => $data['authority'] ?? $plan->authority,
+            'authority' => $plan->provenance_status === 'reference_sample'
+                ? $plan->authority
+                : ($data['authority'] ?? $plan->authority),
             'document_ref' => $data['document_ref'] ?? $plan->document_ref,
             'updated_by_user_id' => $user->id,
         ]);
@@ -214,7 +225,16 @@ final class DevelopmentPlanController extends Controller
             'authority' => ['nullable', 'string', 'max:255'],
         ]);
 
-        $this->authorization->authorizePlanMutation($user, $data['status']);
+        $requestedAuthority = $request->exists('authority') && $data['authority'] !== null
+            ? (string) $data['authority']
+            : null;
+
+        $this->authorization->authorizePlanMutation(
+            user: $user,
+            targetStatus: $data['status'],
+            existing: $plan,
+            requestedAuthority: $requestedAuthority,
+        );
 
         $authority = isset($data['authority']) && trim($data['authority']) !== ''
             ? trim($data['authority'])
