@@ -81,7 +81,8 @@ jobs:
           test "$(psql -XAtc "SELECT count(*) FROM pg_tables WHERE schemaname='public'")" = 0
           test "$(psql -XAtc "SELECT count(*) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%'")" = 0
           psql -XAtc "SELECT current_setting('server_version_num')::int BETWEEN 160000 AND 169999" | grep -qx t
-          printf 'R2_POLICY_SOURCE_SHA=%s\n' "$GITHUB_SHA"
+          printf 'R2_POLICY_CHECKOUT_SHA=%s\n' "$(git rev-parse HEAD)"
+          printf 'R2_POLICY_TRIGGER_SHA=%s\n' "$GITHUB_SHA"
       - name: Dependencies and syntax
         run: |
           set -euo pipefail
@@ -278,7 +279,7 @@ jobs:
       - name: Runner teardown receipt
         if: always()
         run: |
-          printf 'OPS009_RUN_END phase=%s SHA=%s database=%s\n' '${{ matrix.phase }}' "$GITHUB_SHA" "$DB_DATABASE"
+          printf 'OPS009_RUN_END phase=%s checkout_sha=%s trigger_sha=%s database=%s\n' '${{ matrix.phase }}' "$(git rev-parse HEAD)" "$GITHUB_SHA" "$DB_DATABASE"
           echo 'POSTGRES_DISPOSABLE_SERVICE_CLEANUP=GITHUB_JOB_EXIT'
 
   frontend:
