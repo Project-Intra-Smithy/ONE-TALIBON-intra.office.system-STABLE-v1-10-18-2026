@@ -9,6 +9,7 @@ on:
       - candidate/kirch-m3-unified-m4-r2-validation-r1
       - candidate/antigravity-m3-final-cleanup-r1
       - candidate/antigravity-m5-integrity-correction-r1
+      - candidate/antigravity-m5-r3-provenance-ci-structure-r1
   workflow_dispatch:
 
 permissions:
@@ -423,16 +424,16 @@ jobs:
             printf 'CHECKOUT_SHA=%s\n' "$(git rev-parse HEAD)"
             printf 'FROZEN_M4_SOURCE=796afd3f26a5f196f02cdc2e0cf6760d880463ea\n'
             printf 'FROZEN_M3_VALIDATED_SOURCE=070029e7d1165ce809a7a3d148d4ed511d59a5bd\n'
-            printf 'FROZEN_CLEANUP_SOURCE=0c79eba15a470de0c47522c4353cd4c20d5eecc2\n'
-            printf 'FROZEN_SOURCE_FIX_SHA=28c532fec420ea802941b1f209750dcc3c43271d\n'
-            printf 'FROZEN_SOURCE_FIX_TREE=6a02de72307c59e2768d0adf68c59b3a958b7c87\n'
-            git diff --name-only 0c79eba15a470de0c47522c4353cd4c20d5eecc2 HEAD
+            printf 'FROZEN_R2_FINAL_SHA=6cdba4f437326d4761110fcccfd38b7939f26a6f\n'
+            printf 'FROZEN_R3_SOURCE_FIX_SHA=ac606cb7a98f6fff5ae4f761e390e5836af953eb\n'
+            printf 'FROZEN_R3_SOURCE_FIX_TREE=5c8ed052b7d660539f15d553ad5eb39ead87850c\n'
+            git diff --name-only 6cdba4f437326d4761110fcccfd38b7939f26a6f HEAD
             printf 'PG16_IDENTITY=%s\n' "$(psql -XAtc "SELECT current_database() || ':' || current_setting('server_version_num')")"
             printf 'ROLE_CLUSTER=%s\n' "$(psql -XAtc "SELECT string_agg(rolname,',' ORDER BY rolname) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%'")"
             printf 'SCHEMA_PUBLIC_TABLES=%s\n' "$(psql -XAtc "SELECT count(*) FROM pg_tables WHERE schemaname='public'")"
             printf 'N03_CUSTODY_SCHEMA_PRESENT=%s\n' "$(psql -XAtc "SELECT to_regnamespace('legacy_custody') IS NOT NULL")"
             echo 'DISPOSABLE_POSTGRES_CONTAINER=GITHUB_HOSTED_JOB_SERVICE'
-            echo 'M5_SOURCE_INTEGRITY=PINNED_BLOB_AND_TREE_PASS'
+            echo 'M5_SOURCE_INTEGRITY=PINNED_BLOB_TREE_AND_PARSED_YAML_PASS'
             echo 'M3_PHP_PINT_DEBT=RESOLVED_PASS_0_ISSUES'
           } > "$receipt"
           cat "$receipt"
