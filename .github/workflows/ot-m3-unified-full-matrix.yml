@@ -68,10 +68,10 @@ jobs:
           test "$(git merge-base "$PR62_SHA" "$M4_SHA")" = "$PR62_SHA"
           test "$(git merge-base "$M4_SHA" HEAD)" = "$M4_SHA"
           mapfile -t changed < <(git diff --name-only "$M4_SHA"..HEAD)
-          test "${#changed[@]}" -eq 4
+          test "${#changed[@]}" -eq 5
           for path in "${changed[@]}"; do
             case "$path" in
-              .forge/memory/WORK-PACKAGE-REGISTER.md|.github/workflows/ot-m3-unified-full-matrix.yml|tests/Feature/WorkRequests/OriginDeliveryExceptionQueueGuardTest.php|tests/Feature/WorkflowHardeningTest.php) ;;
+              .forge/memory/WORK-PACKAGE-REGISTER.md|.github/workflows/ot-m3-unified-full-matrix.yml|tests/Feature/WorkRequests/OriginDeliveryExceptionQueueGuardTest.php|tests/Feature/WorkflowHardeningTest.php|tests/Feature/LegacyCustodyFoundationTest.php) ;;
               *) echo "::error title=Unauthorized M3 change::$path"; exit 1 ;;
             esac
           done
