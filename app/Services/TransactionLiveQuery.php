@@ -36,12 +36,36 @@ final class TransactionLiveQuery
         // explicit namespace/epoch are not yet configured or authorized.
         $n03Ready = Str::isUuid((string) config('work_requests.n03_namespace_id', ''))
             && (int) config('work_requests.n03_epoch', 0) > 0;
+        $canTransition = ! $terminal && $actor->can('transition', $transaction);
+        $canMayorDecision = ! $terminal && $actor->can('mayorDecision', $transaction);
+        $canClose = $n03Ready && ! $terminal && $actor->can('close', $transaction);
+        $canAssign = ! $terminal && $actor->can('assign', $transaction);
+
         $permissions = [
-            'canTransition' => ! $terminal && $actor->can('transition', $transaction),
-            'canMayorDecision' => ! $terminal && $actor->can('mayorDecision', $transaction),
-            'canClose' => $n03Ready && ! $terminal && $actor->can('close', $transaction),
-            'canAssign' => ! $terminal && $actor->can('assign', $transaction),
+            'canTransition' => $canTransition,
+            'canMayorDecision' => $canMayorDecision,
+            'canClose' => $canClose,
+            'canAssign' => $canAssign,
         ];
+
+        $allowedActions = [];
+        foreach ($definition->actions() as $action) {
+            $rule = $definition->transition($action);
+            $validFromState = $rule->allowsFrom($transaction->status);
+            $authorized = match ($action) {
+                'close' => $canClose,
+                'assign' => $canAssign,
+                'approve', 'disapprove' => $canMayorDecision,
+                'request_information' => $canMayorDecision || $canTransition,
+                default => $canTransition,
+            };
+            $allowedActions[$action] = [
+                'allowed' => $validFromState && $authorized,
+                'requiresRemarks' => in_array($action, ['close', 'request_information'], true),
+                'requiresTargetDepartment' => $action === 'forward',
+                'requiresAssignedEmployee' => $action === 'assign',
+            ];
+        }
 
         return [
             'transaction' => [
@@ -54,6 +78,7 @@ final class TransactionLiveQuery
             ],
             'accountability' => $this->accountability($transaction, $definition),
             'permissions' => $permissions,
+            'allowedActions' => $allowedActions,
             'assignableEmployees' => $permissions['canAssign']
                 ? $this->assignableEmployees($transaction)
                 : [],

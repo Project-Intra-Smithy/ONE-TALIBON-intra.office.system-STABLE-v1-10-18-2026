@@ -4,6 +4,7 @@ import { KeyRound, LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { isPortalPathActive, type PortalNavigationGroup } from '../../navigation/portalNavigation';
 import type { AuthUser } from '../../types';
 import AppearanceControl from '../AppearanceControl';
+import LocaleControl from '../LocaleControl';
 import MunicipalBrand from '../MunicipalBrand';
 
 type Props = {
@@ -177,6 +178,7 @@ export default function PortalSidebar({
                         </div>
 
                         <AppearanceControl compact />
+                        <LocaleControl compact />
                         <Link href="/security/account" onClick={onNavigate} aria-label="Account security" title="Account security" className="flex h-10 w-10 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-emerald-700"><KeyRound size={17} aria-hidden="true" /></Link>
 
                         <button
@@ -190,8 +192,9 @@ export default function PortalSidebar({
                         </button>
                     </div>
                 ) : (
-                    <div className="relative">
+                    <div className="relative space-y-2">
                         <AppearanceControl />
+                        <LocaleControl />
 
                         <div className="mt-3 border-t border-slate-200 pt-3">
                             <div

@@ -116,6 +116,7 @@ class TransactionController extends Controller
             'assignableEmployees' => $mutable['assignableEmployees'],
             'accountability' => $mutable['accountability'],
             'transactionPermissions' => $mutable['permissions'],
+            'allowedActions' => $mutable['allowedActions'],
             'evidence' => $evidence->forTransaction($transaction),
             'relatedWork' => $this->relatedWork($request, $transaction, $visibility),
         ]);

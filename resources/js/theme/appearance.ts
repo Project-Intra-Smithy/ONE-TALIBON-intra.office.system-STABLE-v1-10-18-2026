@@ -27,6 +27,10 @@ export function applyAppearance(preference: AppearancePreference): void {
 
     const resolved = resolveAppearance(preference);
     const root = document.documentElement;
+    const meta = document.querySelector('meta[name="color-scheme"]');
+    if (meta) {
+        meta.setAttribute('content', preference === 'system' ? 'light dark' : preference);
+    }
     root.classList.toggle('dark', resolved === 'dark');
     root.dataset.appearance = preference;
     root.style.colorScheme = resolved;

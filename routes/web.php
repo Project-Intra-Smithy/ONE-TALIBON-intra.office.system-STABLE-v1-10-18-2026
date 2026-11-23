@@ -31,6 +31,11 @@ use App\Http\Controllers\Messaging\StoreMessageController;
 use App\Http\Controllers\NotificationFeedController;
 use App\Http\Controllers\OperationsMonitoringController;
 use App\Http\Controllers\OriginDeliveryExceptionController;
+use App\Http\Controllers\Planning\DesignatedPlanningStaffController;
+use App\Http\Controllers\Planning\DevelopmentPlanController;
+use App\Http\Controllers\Planning\PlanningAttachmentController;
+use App\Http\Controllers\Planning\PlanningMapController;
+use App\Http\Controllers\Planning\PpaController;
 use App\Http\Controllers\PlatformNotificationController;
 use App\Http\Controllers\PortalSearchController;
 use App\Http\Controllers\PropertyController;
@@ -116,8 +121,34 @@ Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
         ->middleware([DenyUnapprovedMessaging::class, 'throttle:60,1'])
         ->name('messages.feed.store');
     Route::get('/local-special-bodies', fn () => Inertia::render('LocalBodies/Index'))->name('local-special-bodies.index');
-    Route::get('/development-plans', fn () => Inertia::render('Plans/Index'))->name('development-plans.index');
-    Route::get('/ppas', fn () => Inertia::render('PPAs/Index'))->name('ppas.index');
+    Route::get('/development-plans', [DevelopmentPlanController::class, 'index'])->name('development-plans.index');
+    Route::post('/development-plans', [DevelopmentPlanController::class, 'store'])->name('development-plans.store');
+    Route::put('/development-plans/{plan}', [DevelopmentPlanController::class, 'update'])->whereNumber('plan')->name('development-plans.update');
+    Route::post('/development-plans/{plan}/status', [DevelopmentPlanController::class, 'updateStatus'])->whereNumber('plan')->name('development-plans.status');
+    Route::delete('/development-plans/{plan}', [DevelopmentPlanController::class, 'destroy'])->whereNumber('plan')->name('development-plans.destroy');
+
+    Route::get('/ppas', [PpaController::class, 'index'])->name('ppas.index');
+    Route::get('/ppas/export/csv', [PpaController::class, 'exportCsv'])->name('ppas.export.csv');
+    Route::post('/ppas', [PpaController::class, 'store'])->name('ppas.store');
+    Route::put('/ppas/{ppa}', [PpaController::class, 'update'])->whereNumber('ppa')->name('ppas.update');
+    Route::post('/ppas/{ppa}/status', [PpaController::class, 'updateStatus'])->whereNumber('ppa')->name('ppas.status');
+    Route::delete('/ppas/{ppa}', [PpaController::class, 'destroy'])->whereNumber('ppa')->name('ppas.destroy');
+
+    Route::get('/planning-maps', [PlanningMapController::class, 'index'])->name('planning-maps.index');
+    Route::post('/planning-maps', [PlanningMapController::class, 'store'])->name('planning-maps.store');
+    Route::put('/planning-maps/{planningMap}', [PlanningMapController::class, 'update'])->whereNumber('planningMap')->name('planning-maps.update');
+    Route::post('/planning-maps/{planningMap}/status', [PlanningMapController::class, 'updateStatus'])->whereNumber('planningMap')->name('planning-maps.status');
+    Route::delete('/planning-maps/{planningMap}', [PlanningMapController::class, 'destroy'])->whereNumber('planningMap')->name('planning-maps.destroy');
+
+    Route::post('/planning/designated-staff', [DesignatedPlanningStaffController::class, 'store'])->name('planning.designated-staff.store');
+    Route::put('/planning/designated-staff/{staff}', [DesignatedPlanningStaffController::class, 'update'])->whereNumber('staff')->name('planning.designated-staff.update');
+    Route::delete('/planning/designated-staff/{staff}', [DesignatedPlanningStaffController::class, 'destroy'])->whereNumber('staff')->name('planning.designated-staff.destroy');
+
+    Route::post('/planning/attachments', [PlanningAttachmentController::class, 'store'])->name('planning.attachments.store');
+    Route::get('/planning/attachments/{attachment}/preview', [PlanningAttachmentController::class, 'preview'])->whereUuid('attachment')->name('planning.attachments.preview');
+    Route::get('/planning/attachments/{attachment}/download', [PlanningAttachmentController::class, 'download'])->whereUuid('attachment')->name('planning.attachments.download');
+    Route::delete('/planning/attachments/{attachment}', [PlanningAttachmentController::class, 'destroy'])->whereUuid('attachment')->name('planning.attachments.destroy');
+
     Route::get('/procurement', fn () => Inertia::render('MunicipalSystems/Index', ['referenceSurface' => 'procurement']))->name('procurement.reference');
     Route::get('/municipal-systems', fn () => Inertia::render('MunicipalSystems/Index'))->name('municipal-systems.index');
 

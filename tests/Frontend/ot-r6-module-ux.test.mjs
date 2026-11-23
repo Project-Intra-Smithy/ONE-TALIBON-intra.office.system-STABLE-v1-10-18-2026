@@ -55,7 +55,7 @@ test('plan filter behavior and safe detail focus restoration are preserved', () 
     assert.match(plans, /records shown here are not validated live municipal approvals/i);
 });
 
-test('PPA filter predicates and static reference-data boundaries stay unchanged', () => {
+test('PPA filter predicates and server-authorized planning boundaries stay intact', () => {
     assert.match(ppas, /ppaRecords\.filter/);
     for (const key of ['sector', 'office', 'year', 'plan', 'fundingSource', 'status']) {
         assert.match(ppas, new RegExp(`filters\\.${key}`));
@@ -64,7 +64,7 @@ test('PPA filter predicates and static reference-data boundaries stay unchanged'
     assert.match(ppaFilters, /min-h-11/);
     assert.match(ppas, /no completion percentage is recorded for PPAs/);
     assert.match(ppas, /do not represent verified live project progress/);
-    assert.doesNotMatch(ppas + detail + register, /router\.post|fetch\(.*method:\s*'POST'|onClick=\{.*createPPA/i);
+    assert.doesNotMatch(ppas + detail + register, /localStorage\.|fetch\(.*method:\s*'POST'|onClick=\{.*createPPA/i);
 });
 
 test('PPA register and detail are responsive, keyboard reachable and preserve selection', () => {
