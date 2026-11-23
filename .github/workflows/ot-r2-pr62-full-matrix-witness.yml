@@ -293,7 +293,7 @@ jobs:
           QA_EXPECTED_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
-          test "$(psql -XAtc \"SELECT count(*) FROM public.migrations WHERE migration='2026_11_23_020000_ops009_origin_delivery_exception_queue'\")" = 1
+          test "$(psql -XAtc "SELECT count(*) FROM public.migrations WHERE migration='2026_11_23_020000_ops009_origin_delivery_exception_queue'")" = 1
           npx playwright install --with-deps chromium
           password="$(openssl rand -hex 24)Aa1!"
           echo "::add-mask::$password"
@@ -314,6 +314,35 @@ jobs:
             storage/app/qa/legacy-pdf-native-viewer.png
           if-no-files-found: error
           retention-days: 7
+
+      - name: Record exact-SHA PG16 and phase custody receipt
+        if: always()
+        run: |
+          set -euo pipefail
+          receipt="$RUNNER_TEMP/ot-m1-matrix-${{ matrix.phase }}-custody.txt"
+          {
+            printf 'MATRIX_PHASE=${{ matrix.phase }}\n'
+            printf 'EXACT_GITHUB_SHA=%s\n' "$GITHUB_SHA"
+            printf 'CHECKOUT_SHA=%s\n' "$(git rev-parse HEAD)"
+            printf 'PR62_SOURCE_BASE=93ab5b64c4bf1621a918278e6d83c250a16bc86e\n'
+            git diff --name-only 93ab5b64c4bf1621a918278e6d83c250a16bc86e HEAD
+            printf 'PG16_IDENTITY=%s\n' "$(psql -XAtc "SELECT current_database() || ':' || current_setting('server_version_num')")"
+            printf 'ROLE_CLUSTER=%s\n' "$(psql -XAtc "SELECT string_agg(rolname,',' ORDER BY rolname) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%'")"
+            printf 'SCHEMA_PUBLIC_TABLES=%s\n' "$(psql -XAtc "SELECT count(*) FROM pg_tables WHERE schemaname='public'")"
+            printf 'N03_CUSTODY_SCHEMA_PRESENT=%s\n' "$(psql -XAtc "SELECT to_regnamespace('legacy_custody') IS NOT NULL")"
+            echo 'DISPOSABLE_POSTGRES_CONTAINER=GITHUB_HOSTED_JOB_SERVICE'
+            echo 'SOURCE_WRITES=NONE'
+            echo 'PR62_INHERITED_PHP_PINT_DEBT=UNRESOLVED'
+          } > "$receipt"
+          cat "$receipt"
+      - name: Upload original per-phase custody evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ot-m1-pr62-${{ matrix.phase }}-source-and-pg16-custody
+          path: ${{ runner.temp }}/ot-m1-matrix-${{ matrix.phase }}-custody.txt
+          if-no-files-found: error
+          retention-days: 14
 
   mandatory:
     name: Traceability Core aggregate gate
