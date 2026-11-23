@@ -24,6 +24,7 @@ use Inertia\Response;
 final class DevelopmentPlanController extends Controller
 {
     public const ALLOWED_HORIZONS = ['Annual', 'Three-year', 'Six-year', 'Long-term', 'Sectoral'];
+
     public const ALLOWED_STATUSES = ['Draft', 'For review', 'Updating', 'In force', 'Adopted', 'Due this year', 'Archived'];
 
     public function __construct(

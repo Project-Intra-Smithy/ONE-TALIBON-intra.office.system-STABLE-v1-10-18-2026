@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Domain\Custody\Exceptions\CustodyViolationException;
 use App\Domain\Custody\ProducedSourceEvent;
 use App\Domain\Custody\VerifiedCommandActor;
-use App\Domain\Custody\Exceptions\CustodyViolationException;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\User;
@@ -434,6 +434,7 @@ final class OPS009C01N03SimultaneousCloseTest extends TestCase
             'position_title' => 'Synthetic Head',
             'employment_status' => 'active',
         ]);
+
         return $user->fresh('employee.department');
     }
 
@@ -488,6 +489,7 @@ final class OPS009C01N03SimultaneousCloseTest extends TestCase
             'staged_fence' => 1,
             'staging_receipt_id' => (string) Str::uuid(),
         ]);
+
         return $id;
     }
 
@@ -516,6 +518,7 @@ final class OPS009C01N03SimultaneousCloseTest extends TestCase
             throw new RuntimeException('C01 could not launch real independent N03 PHP process.');
         }
         fclose($pipes[0]);
+
         return $process;
     }
 
@@ -534,6 +537,7 @@ final class OPS009C01N03SimultaneousCloseTest extends TestCase
         while (microtime(true) < $deadline) {
             if (! proc_get_status($process)['running']) {
                 proc_close($process);
+
                 return;
             }
             usleep(50000);
@@ -549,6 +553,7 @@ final class OPS009C01N03SimultaneousCloseTest extends TestCase
         if ($content === false) {
             throw new RuntimeException('Missing N03 C01 child evidence.');
         }
+
         return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
     }
 }

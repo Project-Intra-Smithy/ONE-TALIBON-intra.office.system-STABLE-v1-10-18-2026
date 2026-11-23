@@ -4,23 +4,25 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Domain\Custody\Exceptions\CustodyViolationException;
 use App\Domain\Custody\ProducedSourceEvent;
 use App\Domain\Custody\VerifiedCommandActor;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
+use App\Services\AuditLogger;
+use App\Services\Custody\Broker\BrokerRootAttestation;
+use App\Services\Custody\Broker\ProcessStorageBrokerClient;
+use App\Services\Custody\Contracts\StorageBrokerClient;
 use App\Services\Custody\LegacyCustodyCommandService;
 use App\Services\Custody\LegacyCustodyStageService;
-use App\Services\Custody\Broker\ProcessStorageBrokerClient;
-use App\Services\Custody\Broker\BrokerRootAttestation;
-use App\Services\AuditLogger;
-use App\Domain\Custody\Exceptions\CustodyViolationException;
 use App\Services\Reports\TransactionOperationalReportQuery;
 use App\Services\TransactionWorkflowService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -38,16 +40,27 @@ use Throwable;
 final class OPS009C02CustodyCloseTest extends TestCase
 {
     private PDO $root;
+
     private PDO $stage;
+
     private Department $originOffice;
+
     private Department $receivingOffice;
+
     private Department $foreignOffice;
+
     private User $origin;
+
     private User $head;
+
     private User $staff;
+
     private User $admin;
+
     private User $foreignHead;
+
     private string $namespace;
+
     /** @var list<PDO> */
     private array $connections = [];
 
@@ -289,10 +302,9 @@ final class OPS009C02CustodyCloseTest extends TestCase
         try {
             app(LegacyCustodyCommandService::class)->execute(
                 operationId: $op['operation_id'],
-                businessCommand: fn (ConnectionInterface $conn, VerifiedCommandActor $verified, string $correlation): ProducedSourceEvent =>
-                    app(TransactionWorkflowService::class)->transitionWithEventOnConnection(
-                        $conn, $verified, (int) $tx->id, 'close', $correlation, remarks: 'Synthetic incomplete receipt.',
-                    ),
+                businessCommand: fn (ConnectionInterface $conn, VerifiedCommandActor $verified, string $correlation): ProducedSourceEvent => app(TransactionWorkflowService::class)->transitionWithEventOnConnection(
+                    $conn, $verified, (int) $tx->id, 'close', $correlation, remarks: 'Synthetic incomplete receipt.',
+                ),
                 expectedSessionVersion: (int) $this->head->session_version,
                 expectedRole: $this->head->role,
                 cutPointHook: static function (string $point) use (&$forcedCheckReached): void {
@@ -329,10 +341,9 @@ final class OPS009C02CustodyCloseTest extends TestCase
         try {
             app(LegacyCustodyCommandService::class)->execute(
                 operationId: $op['operation_id'],
-                businessCommand: fn (ConnectionInterface $conn, VerifiedCommandActor $verified, string $correlation): ProducedSourceEvent =>
-                    app(TransactionWorkflowService::class)->transitionWithEventOnConnection(
-                        $conn, $verified, (int) $tx->id, 'close', $correlation, remarks: 'Synthetic notice rollback.',
-                    ),
+                businessCommand: fn (ConnectionInterface $conn, VerifiedCommandActor $verified, string $correlation): ProducedSourceEvent => app(TransactionWorkflowService::class)->transitionWithEventOnConnection(
+                    $conn, $verified, (int) $tx->id, 'close', $correlation, remarks: 'Synthetic notice rollback.',
+                ),
                 expectedSessionVersion: (int) $this->head->session_version,
                 expectedRole: $this->head->role,
                 cutPointHook: static function (string $point, array $context) use (
@@ -514,7 +525,7 @@ final class OPS009C02CustodyCloseTest extends TestCase
                 'work_requests.n03_namespace_id' => $namespace,
                 'work_requests.n03_epoch' => 1,
             ]);
-            app()->instance(\App\Services\Custody\Contracts\StorageBrokerClient::class, $broker);
+            app()->instance(StorageBrokerClient::class, $broker);
 
             $response = $this->actingAs($this->head)->post('/transactions/'.$tx->id.'/transition', [
                 'action' => 'close',
@@ -542,7 +553,7 @@ final class OPS009C02CustodyCloseTest extends TestCase
             // machine-attributed PDF plus the uploaded PDF must both stage
             // and persist through the same N03 terminal receipt.
             $withUpload = $this->makeReviewedTransaction('For Information');
-            $evidence = \Illuminate\Http\UploadedFile::fake()->createWithContent(
+            $evidence = UploadedFile::fake()->createWithContent(
                 'supporting-evidence.pdf',
                 "%PDF-1.4\n%OPS009-HTTP-SYNTHETIC-UPLOAD\n1 0 obj\n<< /Type /Catalog >>\nendobj\n%%EOF\n"
             );
@@ -564,7 +575,7 @@ final class OPS009C02CustodyCloseTest extends TestCase
             ));
             $this->assertNotSame(getmypid(), $broker->lastBrokerPid());
         } finally {
-            app()->forgetInstance(\App\Services\Custody\Contracts\StorageBrokerClient::class);
+            app()->forgetInstance(StorageBrokerClient::class);
             if (is_dir($base)) {
                 $walk = new \RecursiveIteratorIterator(
                     new \RecursiveDirectoryIterator($base, \FilesystemIterator::SKIP_DOTS),
@@ -876,6 +887,7 @@ final class OPS009C02CustodyCloseTest extends TestCase
             'target_department_id' => $this->receivingOffice->id,
             'action_required' => $classification,
         ]);
+
         return $workflow->transition($this->head, $tx, 'mark_review');
     }
 
@@ -889,10 +901,9 @@ final class OPS009C02CustodyCloseTest extends TestCase
     ): mixed {
         return app(LegacyCustodyCommandService::class)->execute(
             operationId: $operation['operation_id'],
-            businessCommand: fn (ConnectionInterface $conn, VerifiedCommandActor $verified, string $correlation): ProducedSourceEvent =>
-                app(TransactionWorkflowService::class)->transitionWithEventOnConnection(
-                    $conn, $verified, (int) $tx->id, 'close', $correlation, remarks: $remarks,
-                ),
+            businessCommand: fn (ConnectionInterface $conn, VerifiedCommandActor $verified, string $correlation): ProducedSourceEvent => app(TransactionWorkflowService::class)->transitionWithEventOnConnection(
+                $conn, $verified, (int) $tx->id, 'close', $correlation, remarks: $remarks,
+            ),
             expectedSessionVersion: $expectedSessionVersion ?? (int) $actor->session_version,
             expectedRole: $actor->role,
             cutPointHook: $failure === null ? null : static function (string $point) use ($failure): void {
@@ -956,6 +967,7 @@ final class OPS009C02CustodyCloseTest extends TestCase
             'position_title' => 'Synthetic Officer',
             'employment_status' => 'active',
         ]);
+
         return $user->fresh('employee.department');
     }
 
@@ -974,6 +986,7 @@ final class OPS009C02CustodyCloseTest extends TestCase
         $this->assertSame($role, $pdo->query('SELECT session_user')->fetchColumn());
         $pdo->exec("SET lock_timeout='2000ms'; SET statement_timeout='15s'");
         $this->connections[] = $pdo;
+
         return $pdo;
     }
 
@@ -989,6 +1002,7 @@ final class OPS009C02CustodyCloseTest extends TestCase
     {
         $stmt = $this->root->prepare($query);
         $stmt->execute($values);
+
         return $stmt->fetchColumn();
     }
 
@@ -1036,6 +1050,7 @@ final class OPS009C02CustodyCloseTest extends TestCase
             'staged_fence' => 1,
             'staging_receipt_id' => (string) Str::uuid(),
         ]);
+
         return $op;
     }
 }

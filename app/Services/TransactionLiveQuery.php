@@ -15,8 +15,7 @@ final class TransactionLiveQuery
 {
     public function __construct(
         private readonly WorkflowDefinitionResolver $definitions,
-    ) {
-    }
+    ) {}
 
     /** @return array<string, mixed> */
     public function snapshot(

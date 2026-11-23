@@ -11,9 +11,7 @@ final readonly class TransactionAuthorizationContextFactory
     public function __construct(
         private TransactionCapabilities $capabilities,
         private TransactionActorEligibility $eligibility,
-    )
-    {
-    }
+    ) {}
 
     public function make(
         User $user,

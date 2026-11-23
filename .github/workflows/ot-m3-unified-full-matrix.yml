@@ -1,12 +1,13 @@
 # M3 integration witness derived from Nox's CI-only PR62 PG16 proof.
 # Preserves protected role/install/guard and all 11 test partitions.
-# M3 source deltas are restricted to two corrected Feature test contracts.
+# Final cleanup delta is restricted to 13 audited Pint formatting-only PHP files + this CI attestation.
 name: KIRCH M3 Unified R2 + M4 Full Matrix — Protected PG16
 
 on:
   push:
     branches:
       - candidate/kirch-m3-unified-m4-r2-validation-r1
+      - candidate/antigravity-m3-final-cleanup-r1
   workflow_dispatch:
 
 permissions:
@@ -60,24 +61,43 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-      - name: Prove exact accepted M4 ancestry and bounded M3 changes
+      - name: Prove exact accepted M4/M3 ancestry and audited formatting-only cleanup delta
         run: |
           set -euo pipefail
-          M4_SHA="796afd3f26a5f196f02cdc2e0cf6760d880463ea"
           PR62_SHA="93ab5b64c4bf1621a918278e6d83c250a16bc86e"
+          M4_SHA="796afd3f26a5f196f02cdc2e0cf6760d880463ea"
+          M3_VALIDATED_SHA="070029e7d1165ce809a7a3d148d4ed511d59a5bd"
           test "$(git merge-base "$PR62_SHA" "$M4_SHA")" = "$PR62_SHA"
-          test "$(git merge-base "$M4_SHA" HEAD)" = "$M4_SHA"
-          mapfile -t changed < <(git diff --name-only "$M4_SHA"..HEAD)
-          test "${#changed[@]}" -eq 5
-          for path in "${changed[@]}"; do
+          test "$(git merge-base "$M4_SHA" "$M3_VALIDATED_SHA")" = "$M4_SHA"
+          test "$(git merge-base "$M3_VALIDATED_SHA" HEAD)" = "$M3_VALIDATED_SHA"
+          mapfile -t changed_since_m3 < <(git diff --name-only "$M3_VALIDATED_SHA"..HEAD)
+          test "${#changed_since_m3[@]}" -eq 14
+          for path in "${changed_since_m3[@]}"; do
             case "$path" in
-              .forge/memory/WORK-PACKAGE-REGISTER.md|.github/workflows/ot-m3-unified-full-matrix.yml|tests/Feature/WorkRequests/OriginDeliveryExceptionQueueGuardTest.php|tests/Feature/WorkflowHardeningTest.php|tests/Feature/LegacyCustodyFoundationTest.php) ;;
-              *) echo "::error title=Unauthorized M3 change::$path"; exit 1 ;;
+              .github/workflows/ot-m3-unified-full-matrix.yml) ;;
+              app/Domain/Authorization/AuthorizationContext.php) ;;
+              app/Domain/Workflow/Authorization/TransactionAuthorizationContextFactory.php) ;;
+              app/Domain/Workflow/Listeners/NotifyWorkflowTransactionMutation.php) ;;
+              app/Http/Controllers/Planning/DevelopmentPlanController.php) ;;
+              app/Http/Controllers/Planning/PlanningAttachmentController.php) ;;
+              app/Http/Controllers/Planning/PpaController.php) ;;
+              app/Http/Controllers/TransactionController.php) ;;
+              app/Policies/TransactionPolicy.php) ;;
+              app/Services/Custody/WorkRequestCloseDocumentPdf.php) ;;
+              app/Services/TransactionEvidenceService.php) ;;
+              app/Services/TransactionLiveQuery.php) ;;
+              tests/Feature/OPS009C01N03SimultaneousCloseTest.php) ;;
+              tests/Feature/OPS009C02CustodyCloseTest.php) ;;
+              *) echo "::error title=Unauthorized M3 cleanup change::$path"; exit 1 ;;
             esac
           done
+          mapfile -t changed_since_m4 < <(git diff --name-only "$M4_SHA"..HEAD)
+          test "${#changed_since_m4[@]}" -eq 18
           echo "FROZEN_PR62_ANCESTOR=$PR62_SHA"
           echo "FROZEN_M4_SOURCE=$M4_SHA"
-          echo "M3_EXACT_CANDIDATE=${GITHUB_SHA}"
+          echo "FROZEN_M3_VALIDATED_SOURCE=$M3_VALIDATED_SHA"
+          echo "M3_CLEANUP_EXACT_CANDIDATE=${GITHUB_SHA}"
+          echo "M3_CLEANUP_ATTESTATION=13_AUDITED_PINT_FORMATTING_ONLY_FILES_PLUS_CI_WORKFLOW"
       - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
         with:
           php-version: '8.4'
@@ -102,15 +122,8 @@ jobs:
           mapfile -t changed_php < <(git diff --name-only 4084af39ecf10262ef5972df1b9cf03f038c3383..HEAD -- '*.php')
           if [ "${#changed_php[@]}" -gt 0 ]; then
             for f in "${changed_php[@]}"; do php -l "$f"; done
-            # Preserve the inherited PHP formatting debt as a visible
-            # warning, never as a falsely passing style gate. This proof's
-            # purpose is executing the previously blocked functional matrix.
-            if ! php vendor/bin/pint --test "${changed_php[@]}"; then
-              echo "::warning title=M3 PHP Pint formatting debt::PHP format check FAILED for inherited source. Functional test outcomes must be reported separately; source was not reformatted."
-              echo "M3_PINT_FORMAT=FAIL_RECORDED_NOT_FIXED"
-            else
-              echo "M3_PINT_FORMAT=PASS"
-            fi
+            php vendor/bin/pint --test "${changed_php[@]}"
+            echo "M3_PINT_FORMAT=PASS"
           fi
           php -l bin/legacy-custody-broker
 
@@ -438,14 +451,15 @@ jobs:
             printf 'EXACT_GITHUB_SHA=%s\n' "$GITHUB_SHA"
             printf 'CHECKOUT_SHA=%s\n' "$(git rev-parse HEAD)"
             printf 'FROZEN_M4_SOURCE=796afd3f26a5f196f02cdc2e0cf6760d880463ea\n'
-            git diff --name-only 796afd3f26a5f196f02cdc2e0cf6760d880463ea HEAD
+            printf 'FROZEN_M3_VALIDATED_SOURCE=070029e7d1165ce809a7a3d148d4ed511d59a5bd\n'
+            git diff --name-only 070029e7d1165ce809a7a3d148d4ed511d59a5bd HEAD
             printf 'PG16_IDENTITY=%s\n' "$(psql -XAtc "SELECT current_database() || ':' || current_setting('server_version_num')")"
             printf 'ROLE_CLUSTER=%s\n' "$(psql -XAtc "SELECT string_agg(rolname,',' ORDER BY rolname) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%'")"
             printf 'SCHEMA_PUBLIC_TABLES=%s\n' "$(psql -XAtc "SELECT count(*) FROM pg_tables WHERE schemaname='public'")"
             printf 'N03_CUSTODY_SCHEMA_PRESENT=%s\n' "$(psql -XAtc "SELECT to_regnamespace('legacy_custody') IS NOT NULL")"
             echo 'DISPOSABLE_POSTGRES_CONTAINER=GITHUB_HOSTED_JOB_SERVICE'
-            echo 'PRODUCTION_SOURCE_CHANGES_SINCE_M4=NONE'
-            echo 'M3_PHP_PINT_DEBT=REPORTED_NOT_WAIVED'
+            echo 'PRODUCTION_SOURCE_CHANGES_SINCE_M3=AUDITED_PINT_FORMATTING_ONLY_13_FILES'
+            echo 'M3_PHP_PINT_DEBT=RESOLVED_PASS_0_ISSUES'
           } > "$receipt"
           cat "$receipt"
       - name: Upload original per-phase custody evidence

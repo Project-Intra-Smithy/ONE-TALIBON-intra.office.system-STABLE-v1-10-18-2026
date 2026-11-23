@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 final class PpaController extends Controller
 {
     public const ALLOWED_STATUSES = ['Draft', 'Planned', 'For Procurement', 'Ongoing', 'Completed', 'On Hold'];
+
     public const ALLOWED_PRIORITIES = ['High', 'Medium', 'Routine'];
 
     public function __construct(

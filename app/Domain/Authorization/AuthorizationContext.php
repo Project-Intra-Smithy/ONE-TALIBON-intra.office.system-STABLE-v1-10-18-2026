@@ -25,8 +25,7 @@ final readonly class AuthorizationContext
         public ?string $workflowState,
         public string $requestedAction,
         public ?string $actionRequired = null,
-    ) {
-    }
+    ) {}
 
     public function hasRole(string ...$roles): bool
     {
