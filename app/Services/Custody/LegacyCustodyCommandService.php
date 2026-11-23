@@ -389,6 +389,7 @@ final class LegacyCustodyCommandService
                       AND receipt.outcome='COMMITTED' AND receipt.fence_no=1
                       AND dep.is_active AND dep.is_routable
                       AND usr.is_active AND usr.account_status='active'
+                      AND usr.suspended_at IS NULL
                       AND emp.employment_status='active'
                       AND emp.separation_date IS NULL
                     ON CONFLICT (user_id,event_key) DO NOTHING

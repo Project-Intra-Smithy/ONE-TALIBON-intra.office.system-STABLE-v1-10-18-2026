@@ -100,6 +100,7 @@ return new class extends Migration
                       AND audit.actor_department_id=o.office_id
                       AND audit.correlation_id=o.correlation_id
                       AND usr.is_active AND usr.account_status='active'
+                      AND usr.suspended_at IS NULL
                       AND emp.employment_status='active'
                       AND emp.separation_date IS NULL
                       AND dep.is_active AND dep.is_routable

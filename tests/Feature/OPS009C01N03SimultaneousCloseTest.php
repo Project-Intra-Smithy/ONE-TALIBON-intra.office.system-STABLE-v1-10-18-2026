@@ -15,6 +15,7 @@ use App\Services\Custody\LegacyCustodyCommandService;
 use App\Services\TransactionWorkflowService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -93,7 +94,81 @@ final class OPS009C01N03SimultaneousCloseTest extends TestCase
         $this->proveCompetingClose(true);
     }
 
-    private function proveCompetingClose(bool $deliveryGap): void
+    public function test_two_real_n03_sessions_reject_suspended_requester_with_one_exception(): void
+    {
+        $this->proveCompetingClose(true, true);
+    }
+
+    public function test_suspended_requester_without_eligible_origin_head_rolls_back_entire_close(): void
+    {
+        $originOffice = $this->makeOffice('SR');
+        $receivingOffice = $this->makeOffice('SRR');
+        $requester = $this->makeActor($originOffice);
+        $receivingHead = $this->makeActor($receivingOffice);
+        $workflow = app(TransactionWorkflowService::class);
+        $transaction = $workflow->create($requester, [
+            'transaction_type' => 'internal_request',
+            'title' => 'SEC-R2-01 suspended origin no custodian',
+            'priority' => 'normal',
+            'target_department_id' => $receivingOffice->id,
+            'action_required' => 'For Information',
+        ]);
+        $transaction = $workflow->transition($receivingHead, $transaction, 'mark_review');
+        DB::table('users')->where('id', $requester->id)->update(['suspended_at' => now()]);
+        $this->assertSame('active', (string) $requester->fresh()->account_status);
+        $this->assertTrue((bool) $requester->fresh()->is_active);
+        $this->assertNotNull($requester->fresh()->suspended_at);
+
+        $namespace = (string) Str::uuid();
+        DB::table('legacy_custody.namespaces')->insert([
+            'namespace_id' => $namespace,
+            'backend_kind' => 'synthetic',
+            'provider_identity' => $namespace,
+            'root_claim' => 'fixture:'.$namespace,
+        ]);
+        $operation = $this->stageOperation($this->stageConnection(), $namespace, $receivingHead);
+
+        $rejected = false;
+        try {
+            app(LegacyCustodyCommandService::class)->execute(
+                operationId: $operation,
+                businessCommand: fn (
+                    ConnectionInterface $connection,
+                    VerifiedCommandActor $actor,
+                    string $correlation,
+                ): ProducedSourceEvent => $workflow->transitionWithEventOnConnection(
+                    $connection, $actor, (int) $transaction->id, 'close',
+                    $correlation, remarks: 'SEC-R2-01 must roll back without origin custodian.',
+                ),
+                expectedSessionVersion: (int) $receivingHead->session_version,
+                expectedRole: (string) $receivingHead->role,
+            );
+        } catch (CustodyViolationException $e) {
+            $this->assertStringContainsString('No eligible origin recipient', $e->getMessage());
+            $rejected = true;
+        }
+        $this->assertTrue($rejected, 'Close committed despite suspended origin and no eligible custodian.');
+        $this->assertSame('for_review', $transaction->fresh()->status);
+        $this->assertSame(0, $transaction->events()->where('action', 'close')->count());
+        $this->assertSame(0, DB::table('audit_logs')
+            ->where('entity_type', WorkflowTransaction::class)
+            ->where('entity_id', $transaction->id)
+            ->where('action', 'transaction.close')->count());
+        $this->assertSame(0, DB::table('legacy_custody.command_results')
+            ->where('operation_id', $operation)->count());
+        $this->assertSame(0, DB::table('legacy_custody.terminal_receipts')
+            ->where('operation_id', $operation)->count());
+        $this->assertSame(0, DB::table('documents')
+            ->where('custody_operation_id', $operation)->count());
+        $this->assertSame(0, DB::table('platform_notifications')
+            ->where('source_domain', 'transaction')
+            ->where('source_id', $transaction->id)
+            ->where('title', 'Transaction completed')->count());
+        $this->assertSame(0, DB::table('ops009_origin_delivery_exceptions')
+            ->where('transaction_id', $transaction->id)->count());
+    }
+
+    private function proveCompetingClose(bool $deliveryGap, bool $suspendedRequester = false): void
     {
         $originOffice = $this->makeOffice('OO');
         $receivingOffice = $this->makeOffice('RC');
@@ -113,7 +188,18 @@ final class OPS009C01N03SimultaneousCloseTest extends TestCase
         if ($deliveryGap) {
             // A different legitimate origin office Head owns the restricted queue.
             $this->makeActor($originOffice);
-            $requester->update(['is_active' => false]);
+            if ($suspendedRequester) {
+                // SEC-R2-01: retain every *other* eligibility flag so that
+                // only the suspended_at predicate can exclude the requester.
+                DB::table('users')->where('id', $requester->id)->update(['suspended_at' => now()]);
+                $this->assertTrue((bool) $requester->fresh()->is_active);
+                $this->assertSame('active', (string) $requester->fresh()->account_status);
+                $this->assertSame('active', (string) $requester->employee->employment_status);
+                $this->assertNull($requester->employee->separation_date);
+                $this->assertNotNull($requester->fresh()->suspended_at);
+            } else {
+                $requester->update(['is_active' => false]);
+            }
         }
 
         $namespace = (string) Str::uuid();
@@ -237,6 +323,36 @@ final class OPS009C01N03SimultaneousCloseTest extends TestCase
                 $this->assertSame((int) $requester->id, (int) $notices[0]->user_id);
                 $this->assertSame('transaction', $notices[0]->source_domain);
                 $this->assertCount(0, $exceptions);
+
+                // SEC-R2-01 direct PostgreSQL guard proof: after a valid
+                // receipt, suspend the original recipient and attempt an
+                // otherwise identical n03_command notice. BEFORE INSERT
+                // must reject it even with ON CONFLICT DO NOTHING.
+                DB::table('users')->where('id', $requester->id)->update(['suspended_at' => now()]);
+                $this->assertNotNull($requester->fresh()->suspended_at);
+                $guardRejected = false;
+                try {
+                    DB::connection('n03_command')->insert(<<<'SQL'
+                        INSERT INTO public.platform_notifications
+                            (user_id, department_id, event_key, source_domain, source_type,
+                             source_id, priority, title, message, action_url,
+                             requires_acknowledgement, created_at, updated_at)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, FALSE, now(), now())
+                        ON CONFLICT (user_id, event_key) DO NOTHING
+                        SQL, [
+                        $notices[0]->user_id, $notices[0]->department_id,
+                        $notices[0]->event_key, $notices[0]->source_domain,
+                        $notices[0]->source_type, $notices[0]->source_id,
+                        $notices[0]->priority, $notices[0]->title,
+                        $notices[0]->message, $notices[0]->action_url,
+                    ]);
+                } catch (QueryException $e) {
+                    $this->assertSame('23514', (string) $e->getCode());
+                    $guardRejected = true;
+                }
+                $this->assertTrue($guardRejected, 'PostgreSQL guard permitted an ineligible suspended recipient.');
+                $this->assertSame(1, DB::table('platform_notifications')
+                    ->where('event_key', 'transaction-event-'.$event->id)->count());
             }
 
             // A third N03 execution attempt using B's same staged operation
@@ -266,6 +382,7 @@ final class OPS009C01N03SimultaneousCloseTest extends TestCase
 
             fwrite(STDOUT, 'OPS009_C01_N03_WITNESS='.json_encode($observed + [
                 'delivery_gap' => $deliveryGap,
+                'suspended_requester' => $suspendedRequester,
                 'winner' => 'A',
                 'loser_exception' => $bResult['exception'],
                 'close_events' => 1,
