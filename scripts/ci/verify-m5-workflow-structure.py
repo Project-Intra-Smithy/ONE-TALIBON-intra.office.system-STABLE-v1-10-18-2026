@@ -1,12 +1,22 @@
 #!/usr/bin/env python3
 """
-Structural GitHub Actions workflow verifier for M5-CI-02.
-Parses the actual YAML AST (yaml.safe_load) and inspects executable job/step
-structure rather than raw text substrings, rejecting comment-only spoofs,
-disabled jobs, continue-on-error bypasses, removed verifier calls, and
-weakened Pint/matrix/aggregate gates.
+Closed-AST GitHub Actions workflow verifier for M5-CI-02 (R4).
+Enforces:
+1. Strict YAML parsing with duplicate mapping key rejection.
+2. Exact deep AST equality of top-level `name`, `permissions`, and the entire
+   executable `jobs` tree against an independently pinned immutable Git blob
+   (eliminating arbitrary Bash reachability and GitHub expression bypasses
+   including Jane's ADV-A..F, equivalent expressions, early exits, and
+   continue-on-error overrides).
+3. Closed trigger allowlist (`on.push.branches` limited to baseline branches
+   plus the authorized R4 branch, and `workflow_dispatch`).
+4. Explicit structural verification of the parsed `jobs` AST (postgres:16,
+   all 11 matrix phases, unconditional verifier, fail-closed Pint, and
+   mandatory aggregate gate).
 """
+import argparse
 import re
+import subprocess
 import sys
 import yaml
 
@@ -24,170 +34,191 @@ REQUIRED_PHASES = [
     "p0-cross-session",
 ]
 
+ALLOWED_EXTRA_BRANCHES = {
+    "candidate/antigravity-m5-r4-ci-reachability-r1",
+}
+
+
+class NoDuplicateKeysSafeLoader(yaml.SafeLoader):
+    pass
+
+
+def _construct_mapping_no_duplicates(loader, node, deep=False):
+    mapping = {}
+    for key_node, value_node in node.value:
+        key = loader.construct_object(key_node, deep=deep)
+        if key in mapping:
+            raise yaml.constructor.ConstructorError(
+                "while constructing a mapping",
+                node.start_mark,
+                f"found duplicate key {key!r}",
+                key_node.start_mark,
+            )
+        mapping[key] = loader.construct_object(value_node, deep=deep)
+    return mapping
+
+
+NoDuplicateKeysSafeLoader.add_constructor(
+    yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
+    _construct_mapping_no_duplicates,
+)
+
 
 def fail(msg: str) -> None:
     print(f"::error title=M5 Workflow Structural Violation::{msg}", file=sys.stderr)
     sys.exit(1)
 
 
-def is_disabled_if(cond) -> bool:
-    if cond is None:
-        return False
-    if isinstance(cond, bool):
-        return cond is False
-    text = str(cond).strip().lower()
-    return text in ("false", "${{ false }}", "0", "!true")
-
-
-def executable_lines(run_block) -> list[str]:
-    if not isinstance(run_block, str):
-        return []
-    lines = []
-    for raw in run_block.splitlines():
-        stripped = raw.strip()
-        if not stripped or stripped.startswith("#"):
-            continue
-        lines.append(stripped)
-    return lines
-
-
-def main() -> None:
-    raw_yaml = sys.stdin.read()
+def parse_strict_yaml(raw: str, label: str) -> dict:
     try:
-        doc = yaml.safe_load(raw_yaml)
+        doc = yaml.load(raw, Loader=NoDuplicateKeysSafeLoader)
     except Exception as exc:
-        fail(f"Invalid workflow YAML: {exc}")
+        fail(f"Invalid or duplicate-key YAML in {label}: {exc}")
+    if not isinstance(doc, dict):
+        fail(f"{label} did not parse to a YAML mapping")
+    return doc
 
-    if not isinstance(doc, dict) or not isinstance(doc.get("jobs"), dict):
-        fail("Workflow missing top-level jobs mapping")
 
-    jobs = doc["jobs"]
+def get_on_key(doc: dict):
+    # YAML 1.1 SafeLoader parses unquoted `on:` as boolean True.
+    if True in doc:
+        return True
+    if "on" in doc:
+        return "on"
+    fail("Workflow missing top-level `on` trigger mapping")
 
-    # 1. Validate job structural checks
-    validate = jobs.get("validate")
+
+def normalize_doc_keys(doc: dict) -> set[str]:
+    keys = set()
+    for k in doc.keys():
+        keys.add("on" if k is True else str(k))
+    return keys
+
+
+def verify_structural_invariants(doc: dict) -> None:
+    jobs = doc.get("jobs")
+    if not isinstance(jobs, dict) or set(jobs.keys()) != {"validate", "mandatory"}:
+        fail("Workflow jobs must contain exactly {validate, mandatory}")
+
+    validate = jobs["validate"]
     if not isinstance(validate, dict):
-        fail("Workflow missing jobs.validate")
-    if is_disabled_if(validate.get("if")):
-        fail("jobs.validate is disabled via if condition")
+        fail("jobs.validate must be a mapping")
+    if "if" in validate:
+        fail("jobs.validate must not declare an `if` condition")
     if validate.get("continue-on-error") is True:
         fail("jobs.validate must not set continue-on-error: true")
 
-    # 2. Disposable PostgreSQL 16 service check
     services = validate.get("services")
     if not isinstance(services, dict) or not isinstance(services.get("postgres"), dict):
         fail("jobs.validate missing services.postgres")
     if str(services["postgres"].get("image", "")).strip() != "postgres:16":
         fail("jobs.validate services.postgres must use postgres:16")
 
-    # 3. Exact 11 matrix phases
-    strategy = validate.get("strategy")
-    matrix = strategy.get("matrix") if isinstance(strategy, dict) else None
-    phases = matrix.get("phase") if isinstance(matrix, dict) else None
-    if not isinstance(phases, list):
-        fail("jobs.validate.strategy.matrix.phase must be a list")
-    missing_phases = [p for p in REQUIRED_PHASES if p not in phases]
-    if missing_phases:
-        fail(f"jobs.validate missing required matrix phases: {', '.join(missing_phases)}")
+    phases = validate.get("strategy", {}).get("matrix", {}).get("phase")
+    if phases != REQUIRED_PHASES:
+        fail(f"jobs.validate matrix phases must exactly match {REQUIRED_PHASES}")
 
     steps = validate.get("steps")
     if not isinstance(steps, list) or not steps:
         fail("jobs.validate.steps must be a non-empty list")
 
-    has_verifier_step = False
-    has_fail_closed_pint_step = False
-    has_g2a_step = False
-    has_broker_step = False
-    has_full_phpunit_step = False
-    has_browser_step = False
-
+    has_verifier = False
+    has_pint = False
     for step in steps:
-        if not isinstance(step, dict):
-            continue
-        step_if = step.get("if")
-        continue_err = step.get("continue-on-error") is True
-        lines = executable_lines(step.get("run"))
-        if not lines:
-            continue
-
-        # Verifier step must be unconditional and fail-closed
-        if step_if is None and not continue_err:
-            for line in lines:
-                if re.fullmatch(r"bash\s+scripts/ci/verify-m5-source-integrity\.sh\s+HEAD", line):
-                    has_verifier_step = True
-
-        # Fail-closed Pint step must be unconditional and fail-closed
-        if step_if is None and not continue_err:
-            has_pint_cmd = False
-            has_pint_bypass = False
-            has_php_l = False
-            for line in lines:
-                if "php -l" in line:
-                    has_php_l = True
-                if "vendor/bin/pint" in line:
-                    if re.search(r"^\s*if\s+!|\|\|\s*true|\|\|\s*:|;\s*true\b", line):
-                        has_pint_bypass = True
-                    elif re.fullmatch(r'php\s+vendor/bin/pint\s+--test\s+"\$\{changed_php\[@\]\}"', line):
-                        has_pint_cmd = True
-                    else:
-                        has_pint_bypass = True
-            if has_pint_cmd and has_php_l and not has_pint_bypass:
-                has_fail_closed_pint_step = True
-
-        if not continue_err and not is_disabled_if(step_if):
-            joined = "\n".join(lines)
-            if "LegacyCustodyFoundationTest.php" in joined and "--group=n03-role" in joined:
-                has_g2a_step = True
-            if "LegacyCustodyK3BrokerIsolationTest.php" in joined:
-                has_broker_step = True
-            if "vendor/bin/phpunit" in joined and "ops009-registry-bootstrap.php" in joined:
-                has_full_phpunit_step = True
-            if "legacy-pdf-inline-authenticated.mjs" in joined:
-                has_browser_step = True
-
-    if not has_verifier_step:
-        fail("jobs.validate missing unconditional fail-closed verifier invocation step")
-    if not has_fail_closed_pint_step:
-        fail("jobs.validate missing unconditional fail-closed Pint step")
-    if not (has_g2a_step and has_broker_step and has_full_phpunit_step and has_browser_step):
-        fail("jobs.validate missing one or more required PG16/broker/browser executable test steps")
-
-    # 4. Mandatory aggregate gate structural checks
-    mandatory = jobs.get("mandatory")
-    if not isinstance(mandatory, dict):
-        fail("Workflow missing jobs.mandatory aggregate gate")
-    if is_disabled_if(mandatory.get("if")):
-        fail("jobs.mandatory is disabled via if condition")
-    if mandatory.get("continue-on-error") is True:
-        fail("jobs.mandatory must not set continue-on-error: true")
-
-    needs = mandatory.get("needs")
-    needs_list = [needs] if isinstance(needs, str) else (needs if isinstance(needs, list) else [])
-    if "validate" not in needs_list:
-        fail("jobs.mandatory must declare needs: [validate]")
-
-    m_steps = mandatory.get("steps")
-    if not isinstance(m_steps, list) or not m_steps:
-        fail("jobs.mandatory.steps must be a non-empty list")
-
-    has_aggregate_gate = False
-    for step in m_steps:
         if not isinstance(step, dict):
             continue
         if step.get("if") is not None or step.get("continue-on-error") is True:
             continue
-        env = step.get("env")
-        outcome_expr = str(env.get("OUTCOME", "")).strip() if isinstance(env, dict) else ""
-        if outcome_expr != "${{ needs.validate.result }}":
+        run_block = step.get("run")
+        if not isinstance(run_block, str):
             continue
-        lines = executable_lines(step.get("run"))
-        for line in lines:
-            if re.fullmatch(r'test\s+"\$OUTCOME"\s*=\s*success', line):
-                has_aggregate_gate = True
+        exec_lines = [l.strip() for l in run_block.splitlines() if l.strip() and not l.strip().startswith("#")]
+        if any(re.fullmatch(r"bash\s+scripts/ci/verify-m5-source-integrity\.sh\s+HEAD", l) for l in exec_lines):
+            has_verifier = True
+        if any(re.fullmatch(r'php\s+vendor/bin/pint\s+--test\s+"\$\{changed_php\[@\]\}"', l) for l in exec_lines):
+            has_pint = True
 
-    if not has_aggregate_gate:
-        fail("jobs.mandatory missing unconditional step enforcing OUTCOME == needs.validate.result == success")
+    if not has_verifier:
+        fail("jobs.validate missing unconditional fail-closed verifier step")
+    if not has_pint:
+        fail("jobs.validate missing unconditional fail-closed Pint step")
 
-    print("M5_WORKFLOW_YAML_STRUCTURE=PARSED_AST_PASS")
+    mandatory = jobs["mandatory"]
+    if not isinstance(mandatory, dict):
+        fail("jobs.mandatory must be a mapping")
+    if str(mandatory.get("if", "")).strip() != "always()":
+        fail("jobs.mandatory must declare `if: always()`")
+    if mandatory.get("continue-on-error") is True:
+        fail("jobs.mandatory must not set continue-on-error: true")
+    if mandatory.get("needs") != ["validate"]:
+        fail("jobs.mandatory must declare `needs: [validate]`")
+
+    m_steps = mandatory.get("steps")
+    if not isinstance(m_steps, list) or len(m_steps) != 1:
+        fail("jobs.mandatory must contain exactly one aggregate enforcement step")
+    m_step = m_steps[0]
+    if m_step.get("if") is not None or m_step.get("continue-on-error") is True:
+        fail("jobs.mandatory step must be unconditional and fail-closed")
+    if m_step.get("env", {}).get("OUTCOME") != "${{ needs.validate.result }}":
+        fail("jobs.mandatory step must bind OUTCOME to ${{ needs.validate.result }}")
+    m_lines = [l.strip() for l in str(m_step.get("run", "")).splitlines() if l.strip() and not l.strip().startswith("#")]
+    if not any(re.fullmatch(r'test\s+"\$OUTCOME"\s*=\s*success', l) for l in m_lines):
+        fail("jobs.mandatory step must enforce test \"$OUTCOME\" = success")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--baseline-blob", required=True, help="Pinned immutable Git blob SHA of reviewed workflow")
+    args = parser.parse_args()
+
+    try:
+        baseline_raw = subprocess.check_output(
+            ["git", "cat-file", "blob", args.baseline_blob],
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+    except subprocess.CalledProcessError as exc:
+        fail(f"Failed to read pinned baseline workflow blob {args.baseline_blob}: {exc.stderr.strip()}")
+
+    baseline_doc = parse_strict_yaml(baseline_raw, f"baseline:{args.baseline_blob}")
+    candidate_doc = parse_strict_yaml(sys.stdin.read(), "candidate_workflow")
+
+    # 1. Verify top-level key set strictly matches baseline (no sneaky extra keys)
+    if normalize_doc_keys(candidate_doc) != {"name", "on", "permissions", "jobs"}:
+        fail(f"Unexpected top-level workflow keys: {sorted(normalize_doc_keys(candidate_doc))}")
+
+    # 2. Verify exact equality of name, permissions, and the ENTIRE executable jobs AST
+    if candidate_doc.get("name") != baseline_doc.get("name"):
+        fail("Workflow `name` differs from pinned immutable baseline")
+    if candidate_doc.get("permissions") != baseline_doc.get("permissions"):
+        fail("Workflow `permissions` differs from pinned immutable baseline")
+    if candidate_doc.get("jobs") != baseline_doc.get("jobs"):
+        fail("Workflow executable `jobs` AST differs from pinned immutable baseline (any altered job, condition, continue-on-error, phase, or shell command is rejected fail-closed)")
+
+    # 3. Verify `on` triggers only permit baseline branches plus explicitly allowlisted R4 branch
+    b_on = baseline_doc[get_on_key(baseline_doc)]
+    c_on = candidate_doc[get_on_key(candidate_doc)]
+    if not isinstance(c_on, dict) or set(c_on.keys()) != set(b_on.keys()):
+        fail("Workflow `on` trigger keys differ from pinned immutable baseline")
+    if c_on.get("workflow_dispatch") != b_on.get("workflow_dispatch"):
+        fail("Workflow `on.workflow_dispatch` differs from baseline")
+
+    b_push = b_on.get("push")
+    c_push = c_on.get("push")
+    if not isinstance(c_push, dict) or set(c_push.keys()) != {"branches"}:
+        fail("Workflow `on.push` must contain only `branches`")
+    b_branches = b_push.get("branches", [])
+    c_branches = c_push.get("branches", [])
+    if not isinstance(c_branches, list) or c_branches[: len(b_branches)] != b_branches:
+        fail("Workflow `on.push.branches` must preserve all baseline branches in order")
+    extra_branches = set(c_branches[len(b_branches) :])
+    if not extra_branches.issubset(ALLOWED_EXTRA_BRANCHES):
+        fail(f"Workflow `on.push.branches` contains unapproved branches: {sorted(extra_branches - ALLOWED_EXTRA_BRANCHES)}")
+
+    # 4. Self-verify structural invariants on the parsed jobs AST
+    verify_structural_invariants(candidate_doc)
+
+    print(f"M5_WORKFLOW_YAML_STRUCTURE=CLOSED_AST_AND_PINNED_BASELINE_PASS({args.baseline_blob})")
 
 
 if __name__ == "__main__":
