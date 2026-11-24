@@ -268,29 +268,29 @@ export default function PlansIndex({
                         </div>
                     }
                 />
-                <div className="r8-plans-notice" role="note">
-                    <strong>Reference library only.</strong> Records shown here are not validated live municipal approvals. Covers are illustrative graphics, not scanned or certified documents.
+                <div className="r8-plans-notice rounded-xl border border-[var(--border-default)] bg-[var(--surface-recessed)] px-4 py-2.5 text-xs text-[var(--ink-secondary)]" role="note">
+                    <strong className="text-[var(--ink-primary)]">Reference library only.</strong> Records shown here are not validated live municipal approvals. Covers are illustrative graphics, not scanned or certified documents.
                 </div>
                 <section
                     id="available-planning-maps"
                     tabIndex={-1}
-                    className="r8-planning-maps municipal-panel"
+                    className="r8-planning-maps municipal-panel tcds-card flex items-start gap-3.5 p-4"
                     aria-labelledby="available-planning-maps-title"
                 >
-                    <div className="r8-planning-maps-icon" aria-hidden="true">
-                        <Map size={24} />
+                    <div className="r8-planning-maps-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[var(--brand-soft)] text-[var(--brand-ink)]" aria-hidden="true">
+                        <Map size={20} />
                     </div>
                     <div className="flex flex-1 flex-wrap items-center justify-between gap-3">
-                        <div>
-                            <h2 id="available-planning-maps-title">Available Planning Maps</h2>
-                            <p role="status">No municipality-approved planning maps have been supplied.</p>
-                            <p>
+                        <div className="min-w-0 space-y-1">
+                            <h2 id="available-planning-maps-title" className="text-sm font-bold text-[var(--ink-primary)]">Available Planning Maps</h2>
+                            <p role="status" className="text-xs font-medium text-[var(--ink-primary)]">No municipality-approved planning maps have been supplied.</p>
+                            <p className="text-xs text-[var(--ink-secondary)]">
                                 Illustrative plan-card artwork is not an official map. Approved map previews and access links will appear here only after the municipality provides and authorizes them.
                             </p>
                         </div>
                         <Link
                             href="/planning-maps"
-                            className="inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-lg border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-3 text-xs font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]"
+                            className="municipal-secondary-button shrink-0 text-xs"
                         >
                             Open Spatial Reference Atlas
                         </Link>

@@ -5,7 +5,7 @@ import CorrespondenceOverview from '../components/dashboard/CorrespondenceOvervi
 import ExecutiveOverview from '../components/dashboard/ExecutiveOverview';
 import SystemOverview from '../components/dashboard/SystemOverview';
 import type { DashboardProps } from '../components/dashboard/types';
-import { NotificationContext } from '../components/shell/NotificationContext';
+import { NotificationContext, NotificationStateContext } from '../components/shell/NotificationContext';
 import { KpiCard, StatusBadge, toneForWorkState, type KpiAccent } from '../components/ui';
 import WorkspaceUnavailable from '../components/WorkspaceUnavailable';
 import AppLayout from '../layouts/AppLayout';
@@ -40,17 +40,29 @@ export default function Dashboard({
     municipalDashboard,
 }: DashboardProps) {
     const { auth } = usePage<SharedProps>().props;
-    const notifications = useContext(NotificationContext);
     const [tasks, setTasks] = useState<TaskPreview[]>([]);
+    const [taskState, setTaskState] = useState<'loading' | 'ready' | 'unavailable'>('loading');
 
     useEffect(() => {
         const controller = new AbortController();
+        setTaskState('loading');
         fetch('/tasks?per_page=4&page=1', { headers: { Accept: 'application/json' }, signal: controller.signal })
-            .then((res) => (res.ok ? res.json() : null))
-            .then((body) => {
-                if (body && Array.isArray(body.data)) setTasks(body.data.slice(0, 4));
+            .then((res) => {
+                if (!res.ok) throw new Error('Tasks unavailable');
+                return res.json();
             })
-            .catch(() => {});
+            .then((body) => {
+                if (body && Array.isArray(body.data)) {
+                    setTasks(body.data.slice(0, 4));
+                    setTaskState('ready');
+                } else {
+                    setTaskState('unavailable');
+                }
+            })
+            .catch(() => {
+                if (controller.signal.aborted) return;
+                setTaskState('unavailable');
+            });
         return () => controller.abort();
     }, [experience?.key]);
 
@@ -270,7 +282,19 @@ export default function Dashboard({
                                     </Link>
                                 </div>
                                 <div className="divide-y divide-[var(--border-default)]">
-                                    {tasks.length === 0 ? (
+                                    {taskState === 'loading' ? (
+                                        <p className="px-4 py-5 text-sm text-[var(--ink-secondary)]">
+                                            Loading your tasks…
+                                        </p>
+                                    ) : taskState === 'unavailable' ? (
+                                        <p className="px-4 py-5 text-sm text-[var(--ink-secondary)]" role="status">
+                                            Personal tasks could not be loaded right now.{' '}
+                                            <Link href="/my-tasks" className="font-semibold text-[var(--brand-ink)] underline">
+                                                Open My Tasks
+                                            </Link>{' '}
+                                            to retry.
+                                        </p>
+                                    ) : tasks.length === 0 ? (
                                         <p className="px-4 py-5 text-sm text-[var(--ink-secondary)]">
                                             No personal tasks queued. <Link href="/my-tasks" className="font-semibold text-[var(--brand-ink)] underline">Open My Tasks</Link> to add one.
                                         </p>
@@ -301,72 +325,7 @@ export default function Dashboard({
                             </section>
                         )}
 
-                        <section aria-labelledby="dashboard-updates-heading" className="tcds-card overflow-hidden">
-                            <div className="flex items-center justify-between gap-2 border-b border-[var(--border-default)] px-4 py-3.5">
-                                <div className="flex items-center gap-2">
-                                    <Bell size={17} aria-hidden="true" className="text-[var(--brand-ink)]" />
-                                    <h2 id="dashboard-updates-heading" className="text-base font-bold text-[var(--ink-primary)]">
-                                        Official Memoranda &amp; Updates
-                                    </h2>
-                                </div>
-                                <Link href="/memoranda" className="text-sm font-semibold text-[var(--brand-ink)] hover:underline">
-                                    Memoranda
-                                </Link>
-                            </div>
-                            <div className="divide-y divide-[var(--border-default)]">
-                                {notifications.length > 0 ? (
-                                    notifications.slice(0, 4).map((item) => (
-                                        <Link
-                                            key={item.key}
-                                            href={item.url}
-                                            className="flex items-start justify-between gap-3 px-4 py-3 transition-colors hover:bg-[var(--surface-hover)]"
-                                        >
-                                            <div className="min-w-0">
-                                                <div className="text-xs font-bold uppercase tracking-wide text-[var(--brand-ink)]">
-                                                    {item.title}
-                                                </div>
-                                                <div className="mt-0.5 text-sm font-medium text-[var(--ink-primary)]">
-                                                    {item.message}
-                                                </div>
-                                                {item.created_at && (
-                                                    <div className="mt-1 text-xs text-[var(--ink-secondary)]">
-                                                        {relativeTimePH(item.created_at)}
-                                                    </div>
-                                                )}
-                                            </div>
-                                            {item.urgent && <StatusBadge tone="gold">Action</StatusBadge>}
-                                        </Link>
-                                    ))
-                                ) : (municipalDashboard?.announcements?.length ?? 0) > 0 ? (
-                                    (municipalDashboard?.announcements ?? []).slice(0, 3).map((item: any) => (
-                                        <Link
-                                            key={item.id}
-                                            href="/memoranda"
-                                            className="flex items-start justify-between gap-3 px-4 py-3 transition-colors hover:bg-[var(--surface-hover)]"
-                                        >
-                                            <div className="min-w-0">
-                                                <div className="text-xs font-bold uppercase tracking-wide text-[var(--brand-ink)]">
-                                                    {item.office || 'Official Memorandum'}
-                                                </div>
-                                                <div className="mt-0.5 text-sm font-medium text-[var(--ink-primary)]">
-                                                    {item.title}
-                                                </div>
-                                                {(item.body || item.summary) && (
-                                                    <div className="mt-0.5 line-clamp-1 text-xs text-[var(--ink-secondary)]">
-                                                        {item.body || item.summary}
-                                                    </div>
-                                                )}
-                                            </div>
-                                            <StatusBadge tone="gold">Review</StatusBadge>
-                                        </Link>
-                                    ))
-                                ) : (
-                                    <p className="px-4 py-5 text-sm text-[var(--ink-secondary)]">
-                                        You are caught up on recent office updates and memoranda.
-                                    </p>
-                                )}
-                            </div>
-                        </section>
+                        <DashboardUpdatesPanel municipalDashboard={municipalDashboard} />
                     </div>
                 </div>
 
@@ -390,5 +349,103 @@ export default function Dashboard({
                 )}
             </div>
         </AppLayout>
+    );
+}
+
+function DashboardUpdatesPanel({
+    municipalDashboard,
+}: {
+    municipalDashboard?: DashboardProps['municipalDashboard'];
+}) {
+    const notifications = useContext(NotificationContext);
+    const feedState = useContext(NotificationStateContext);
+    const announcements = municipalDashboard?.announcements ?? [];
+
+    return (
+        <section aria-labelledby="dashboard-updates-heading" className="tcds-card overflow-hidden">
+            <div className="flex items-center justify-between gap-2 border-b border-[var(--border-default)] px-4 py-3.5">
+                <div className="flex items-center gap-2">
+                    <Bell size={17} aria-hidden="true" className="text-[var(--brand-ink)]" />
+                    <h2 id="dashboard-updates-heading" className="text-base font-bold text-[var(--ink-primary)]">
+                        Official Memoranda &amp; Updates
+                    </h2>
+                </div>
+                <Link href="/memoranda" className="text-sm font-semibold text-[var(--brand-ink)] hover:underline">
+                    Memoranda
+                </Link>
+            </div>
+            <div className="divide-y divide-[var(--border-default)]">
+                {feedState === 'expired' ? (
+                    <p className="px-4 py-5 text-sm text-[var(--ink-secondary)]" role="status">
+                        Your session expired. Sign in again to refresh office updates and memoranda.
+                    </p>
+                ) : notifications.length > 0 ? (
+                    <>
+                        {feedState === 'unavailable' && (
+                            <p className="bg-[var(--status-warn-bg)] px-4 py-2 text-xs font-medium text-[var(--status-warn-fg)]" role="status">
+                                Live feed unavailable; showing last received updates.
+                            </p>
+                        )}
+                        {notifications.slice(0, 4).map((item) => (
+                            <Link
+                                key={item.key}
+                                href={item.url}
+                                className="flex items-start justify-between gap-3 px-4 py-3 transition-colors hover:bg-[var(--surface-hover)]"
+                            >
+                                <div className="min-w-0">
+                                    <div className="text-xs font-bold uppercase tracking-wide text-[var(--brand-ink)]">
+                                        {item.title}
+                                    </div>
+                                    <div className="mt-0.5 text-sm font-medium text-[var(--ink-primary)]">
+                                        {item.message}
+                                    </div>
+                                    {item.created_at && (
+                                        <div className="mt-1 text-xs text-[var(--ink-secondary)]">
+                                            {relativeTimePH(item.created_at)}
+                                        </div>
+                                    )}
+                                </div>
+                                {item.urgent && <StatusBadge tone="gold">Action</StatusBadge>}
+                            </Link>
+                        ))}
+                    </>
+                ) : feedState === 'loading' ? (
+                    <p className="px-4 py-5 text-sm text-[var(--ink-secondary)]" role="status">
+                        Checking recent office updates and memoranda…
+                    </p>
+                ) : feedState === 'unavailable' ? (
+                    <p className="px-4 py-5 text-sm text-[var(--ink-secondary)]" role="status">
+                        Live office updates are currently unavailable. Check Memoranda directly or retry shortly.
+                    </p>
+                ) : announcements.length > 0 ? (
+                    announcements.slice(0, 3).map((item) => (
+                        <Link
+                            key={item.id}
+                            href="/memoranda"
+                            className="flex items-start justify-between gap-3 px-4 py-3 transition-colors hover:bg-[var(--surface-hover)]"
+                        >
+                            <div className="min-w-0">
+                                <div className="text-xs font-bold uppercase tracking-wide text-[var(--brand-ink)]">
+                                    {item.office || 'Official Memorandum'}
+                                </div>
+                                <div className="mt-0.5 text-sm font-medium text-[var(--ink-primary)]">
+                                    {item.title}
+                                </div>
+                                {(item.body || item.summary) && (
+                                    <div className="mt-0.5 line-clamp-1 text-xs text-[var(--ink-secondary)]">
+                                        {item.body || item.summary}
+                                    </div>
+                                )}
+                            </div>
+                            <StatusBadge tone="gold">Review</StatusBadge>
+                        </Link>
+                    ))
+                ) : (
+                    <p className="px-4 py-5 text-sm text-[var(--ink-secondary)]">
+                        You are caught up on recent office updates and memoranda.
+                    </p>
+                )}
+            </div>
+        </section>
     );
 }

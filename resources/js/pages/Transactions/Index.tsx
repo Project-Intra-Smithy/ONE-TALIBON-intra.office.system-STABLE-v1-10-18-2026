@@ -1,13 +1,12 @@
 import { Link, router, usePage } from '@inertiajs/react';
-import { ArrowRight, Building2, FileText, Plus, RotateCcw, Search } from 'lucide-react';
+import { ArrowRight, FileText, Plus, RotateCcw, Search } from 'lucide-react';
 import { type FormEvent, useEffect, useId, useState } from 'react';
 import StaffWorkloadTable from '../../components/work-queue/StaffWorkloadTable';
 import type { Filters, Office, Paginator, ScopeGroup, StaffWorkload } from '../../components/work-queue/types';
-import { Dialog, EmptyState, PageHeader, StatusBadge, toneForWorkState } from '../../components/ui';
+import { EmptyState, PageHeader, StatusBadge, toneForWorkState } from '../../components/ui';
 import AppLayout from '../../layouts/AppLayout';
 import { formatDatePH, humanizeSlug } from '../../lib/format';
 import { withReturnContext } from '../../navigation/returnContext';
-import { WorkRequestCreateForm } from './Create';
 
 type Props = {
     records: Paginator;
@@ -30,7 +29,6 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
     const [status, setStatus] = useState(filters.status);
     const [priority, setPriority] = useState(filters.priority);
     const [officeId, setOfficeId] = useState(filters.office_id ? String(filters.office_id) : '');
-    const [createDrawerOpen, setCreateDrawerOpen] = useState(false);
 
     const searchId = useId();
     const statusId = useId();
@@ -79,10 +77,6 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
         router.get('/transactions', { view: currentView }, { preserveState: true, preserveScroll: true, replace: true });
     };
 
-    const drawerDepartments = filterOptions.offices.length > 0
-        ? filterOptions.offices.map((o) => ({ id: o.id, code: o.code, name: o.name, short_name: o.shortName, branch: 'executive' }))
-        : [{ id: experience.department.id, code: experience.department.code, name: experience.department.name, short_name: experience.department.shortName, branch: 'executive' }];
-
     return (
         <AppLayout title="Work Requests">
             <div className="mx-auto max-w-[1440px] space-y-4 px-4 py-5 sm:px-6">
@@ -92,16 +86,9 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
                     subtitle={`${experience.department.shortName || experience.department.name} · ${experience.hasOfficeScope ? 'Office & personal queues' : 'Personal queues'}`}
                     actions={
                         <div className="flex flex-wrap items-center gap-2">
-                            <button
-                                type="button"
-                                onClick={() => setCreateDrawerOpen(true)}
-                                className="municipal-primary-button"
-                            >
+                            <Link href="/transactions/create" className="municipal-primary-button">
                                 <Plus size={16} aria-hidden="true" />
                                 <span>New Work Request</span>
-                            </button>
-                            <Link href="/transactions/create" className="municipal-secondary-button hidden sm:inline-flex">
-                                Full form
                             </Link>
                             {originDeliveryQueueAvailable && (
                                 <Link href="/work-requests/origin-delivery-exceptions" className="municipal-secondary-button">
@@ -337,54 +324,6 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
                     </section>
                 )}
 
-                {/* Native top-layer slide-over drawer with sticky action footer */}
-                <Dialog
-                    open={createDrawerOpen}
-                    onClose={() => setCreateDrawerOpen(false)}
-                    title="New Work Request"
-                    description="Route accountable work directly from your queue."
-                    variant="drawer-right"
-                    footer={
-                        <div className="flex w-full flex-wrap items-center justify-between gap-2.5">
-                            <button
-                                type="button"
-                                onClick={() => setCreateDrawerOpen(false)}
-                                className="municipal-secondary-button"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                type="submit"
-                                form="work-request-drawer-form"
-                                className="municipal-primary-button"
-                            >
-                                <Building2 size={16} aria-hidden="true" />
-                                <span>Submit Work Request</span>
-                                <ArrowRight size={16} aria-hidden="true" />
-                            </button>
-                        </div>
-                    }
-                >
-                    <WorkRequestCreateForm
-                        compact
-                        formId="work-request-drawer-form"
-                        hideFooter
-                        departments={drawerDepartments}
-                        assignableEmployees={staffWorkload.map((s, i) => ({
-                            id: i + 1,
-                            employee_number: `EMP-${i + 1}`,
-                            full_name: s.employee,
-                            department_id: experience.department.id,
-                            position_title: s.position || 'Municipal Staff',
-                        }))}
-                        requestCategories={{
-                            planning: ['Review planning evidence', 'AIP amendment endorsement', 'Zoning clearance verification'],
-                            administrative: ['Inter-office endorsement', 'Document routing', 'Records certification'],
-                        }}
-                        actionOptions={['Review', 'Approve & Endorse', 'Verify & Certify', 'Process']}
-                        onCancel={() => setCreateDrawerOpen(false)}
-                    />
-                </Dialog>
             </div>
         </AppLayout>
     );

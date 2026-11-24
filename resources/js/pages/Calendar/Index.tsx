@@ -250,7 +250,7 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
 
     return (
         <AppLayout workspaceRefinement title="Calendar">
-            <PageFrame width="wide" density="comfortable" className="aj-calendar">
+            <PageFrame width="wide" density="comfortable" className="aj-calendar mx-auto max-w-[1440px] px-4 py-5 sm:px-6">
                 <PageHeader
                     eyebrow="Shared municipal calendar"
                     title="Events, deadlines & schedules"
