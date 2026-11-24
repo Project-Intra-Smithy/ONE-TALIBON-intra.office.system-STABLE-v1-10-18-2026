@@ -13,7 +13,7 @@ export default function ExecutiveOverview({ overview }: { overview: ExecutiveOve
                 <span className="text-sm text-slate-500">Detailed decision workspace is not staged</span>
             </div>
 
-            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]">
+            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-[var(--border-default)] dark:bg-[var(--surface-card)]">
                 <div className="flex flex-col gap-1 border-b border-slate-100 px-4 py-3 dark:border-slate-700 sm:flex-row sm:items-center sm:justify-between sm:px-5">
                     <div className="flex items-center gap-2"><Building2 size={16} className="text-blue-700 dark:text-blue-300" aria-hidden="true" /><h3 className="text-base font-bold text-slate-950 dark:text-slate-100">Office workload</h3></div>
                     <span className="text-sm text-slate-500 dark:text-slate-400 sm:text-sm">Overdue and unassigned work first</span>

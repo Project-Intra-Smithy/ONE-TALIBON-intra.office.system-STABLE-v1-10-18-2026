@@ -244,7 +244,7 @@ export default function Show({
                 <div className="flex flex-wrap items-center justify-between gap-2">
                     <Link href={returnTo} className="inline-flex min-h-9 items-center gap-1.5 text-sm font-semibold text-[var(--brand-ink)] hover:underline">
                         <ArrowLeft size={15} aria-hidden="true" />
-                        <span>← Back to Work Requests</span>
+                        <span>Back to Work Requests</span>
                     </Link>
                     <div
                         role="status"

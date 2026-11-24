@@ -237,13 +237,13 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
             <Head title={title} />
             <a href="#portal-content" className="sr-only z-[80] rounded bg-white p-3 text-blue-900 focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to content</a>
             <div data-presentation={presentation} data-workspace-shell={workspaceRefinement || undefined}
-                className={`min-h-screen bg-[var(--municipal-canvas)] text-slate-900 transition-colors dark:bg-[#0d1624] dark:text-slate-100 lg:grid lg:transition-[grid-template-columns] lg:duration-150 lg:ease-out motion-reduce:transition-none ${
+                className={`min-h-screen bg-[var(--surface-canvas,var(--municipal-canvas))] text-[var(--ink-primary)] transition-colors lg:grid lg:transition-[grid-template-columns] lg:duration-150 lg:ease-out motion-reduce:transition-none ${
                     desktopCollapsed
                         ? 'lg:grid-cols-[72px_minmax(0,1fr)]'
                         : 'lg:grid-cols-[248px_minmax(0,1fr)]'
                 }`}
             >
-                <aside className="hidden h-screen shadow-xl shadow-[#071e3d]/10 lg:sticky lg:top-0 lg:block">{desktopSidebar}</aside>
+                <aside className="hidden h-screen shadow-xl shadow-black/15 lg:sticky lg:top-0 lg:block">{desktopSidebar}</aside>
 
                 {mobileOpen && (
                     <MobileNavigation
@@ -255,7 +255,7 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
                 )}
 
                 <main className="min-w-0 pb-20 md:pb-6">
-                    <header className="sticky top-0 z-20 flex min-h-[72px] sm:min-h-[76px] items-center justify-between gap-2 border-b border-slate-200/80 bg-white/95 px-3 shadow-sm shadow-slate-900/5 backdrop-blur-md transition-colors dark:border-slate-700/80 dark:bg-[#142236]/95 sm:px-6">
+                    <header className="sticky top-0 z-20 flex min-h-[72px] sm:min-h-[76px] items-center justify-between gap-2 border-b border-[var(--border-default)] bg-[var(--surface-card)]/95 px-3 shadow-sm shadow-black/5 backdrop-blur-md transition-colors sm:px-6">
                         <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
                             <button onClick={() => setMobileOpen(true)} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800 lg:hidden" aria-label="Open navigation">
                                 <Menu size={20} />
@@ -287,28 +287,28 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
                                 </button>
 
                                 {notificationsOpen && (
-                                    <div id="portal-notifications" className="fixed left-3 right-3 top-20 z-50 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl dark:border-slate-700 dark:bg-[#142236] sm:absolute sm:left-auto sm:right-0 sm:top-10 sm:w-[350px]">
-                                        <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3 dark:border-slate-700">
+                                    <div id="portal-notifications" className="fixed left-3 right-3 top-20 z-50 overflow-hidden rounded-xl border border-[var(--border-default)] bg-[var(--surface-card)] shadow-2xl sm:absolute sm:left-auto sm:right-0 sm:top-10 sm:w-[350px]">
+                                        <div className="flex items-center justify-between border-b border-[var(--border-subtle)] px-4 py-3">
                                             <div>
-                                                <div className="text-[12px] font-bold text-slate-950 dark:text-slate-100 sm:text-sm">Recent activity</div>
-                                                <div className="text-xs text-slate-500 dark:text-slate-400 sm:text-xs">{feedState === 'current' ? 'New office arrivals and unread memoranda' : feedState === 'expired' ? 'Session expired. Sign in again to refresh.' : feedState === 'unavailable' ? 'Updates unavailable; showing last received items.' : 'Loading updates…'}</div>
+                                                <div className="text-[12px] font-bold text-[var(--ink-primary)] sm:text-sm">Recent activity</div>
+                                                <div className="text-xs text-[var(--ink-secondary)] sm:text-xs">{feedState === 'current' ? 'New office arrivals and unread memoranda' : feedState === 'expired' ? 'Session expired. Sign in again to refresh.' : feedState === 'unavailable' ? 'Updates unavailable; showing last received items.' : 'Loading updates…'}</div>
                                             </div>
-                                            <button onClick={() => setNotificationsOpen(false)} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Close notifications"><X size={16} /></button>
+                                            <button onClick={() => setNotificationsOpen(false)} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--ink-secondary)] hover:bg-[var(--surface-hover)]" aria-label="Close notifications"><X size={16} /></button>
                                         </div>
-                                        <div className="max-h-[60vh] divide-y divide-slate-100 overflow-y-auto dark:divide-slate-700">
+                                        <div className="max-h-[60vh] divide-y divide-[var(--border-subtle)] overflow-y-auto">
                                             {notifications.map((notification) => (
-                                                <Link key={notification.key} href={notification.url} onClick={() => setNotificationsOpen(false)} className="block px-4 py-3 transition hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                                                <Link key={notification.key} href={notification.url} onClick={() => setNotificationsOpen(false)} className="block px-4 py-3 transition hover:bg-[var(--surface-hover)]">
                                                     <div className="flex items-start justify-between gap-3">
                                                         <div className="min-w-0">
-                                                            <div className="text-xs font-bold uppercase tracking-wide text-blue-700 dark:text-blue-300 sm:text-xs">{notification.title}</div>
-                                                            <div className="mt-1 text-[13px] leading-4 text-slate-700 dark:text-slate-200 sm:text-sm">{notification.message}</div>
-                                                            {notification.created_at && <div className="mt-1.5 text-xs text-slate-400 sm:text-xs">{relativeTime(notification.created_at)}</div>}
+                                                            <div className="text-xs font-bold uppercase tracking-wide text-[var(--brand-ink)] sm:text-xs">{notification.title}</div>
+                                                            <div className="mt-1 text-[13px] leading-4 text-[var(--ink-primary)] sm:text-sm">{notification.message}</div>
+                                                            {notification.created_at && <div className="mt-1.5 text-xs text-[var(--ink-muted)] sm:text-xs">{relativeTime(notification.created_at)}</div>}
                                                         </div>
                                                         {notification.urgent && <span className="shrink-0 rounded-full bg-rose-50 px-2 py-1 text-xs font-bold uppercase text-rose-700 dark:bg-rose-950/40 dark:text-rose-300 sm:text-xs">Action</span>}
                                                     </div>
                                                 </Link>
                                             ))}
-                                            {notifications.length === 0 && <div className="px-4 py-8 text-center text-[13px] text-slate-500 dark:text-slate-400 sm:text-sm">{feedState === 'current' ? 'No recent notifications.' : 'Notifications have not been refreshed.'}</div>}
+                                            {notifications.length === 0 && <div className="px-4 py-8 text-center text-[13px] text-[var(--ink-secondary)] sm:text-sm">{feedState === 'current' ? 'No recent notifications.' : 'Notifications have not been refreshed.'}</div>}
                                         </div>
                                     </div>
                                 )}
@@ -324,10 +324,10 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
                         </div>
                     )}
                     <div id="portal-content" data-workspace-refinement={workspaceRefinement || undefined} data-presentation={presentation === 'portal-dashboard' ? 'dashboard' : undefined} tabIndex={-1} className={presentation === 'portal-dashboard' ? 'p-3 sm:p-4' : undefined}><NotificationStateContext.Provider value={feedState}><NotificationContext.Provider value={notifications}>{children}</NotificationContext.Provider></NotificationStateContext.Provider></div>
-                    <footer className="mx-3 flex flex-wrap justify-between gap-2 border-t border-slate-200 py-4 text-xs text-slate-500 dark:border-slate-700 dark:text-slate-400 sm:mx-5"><span>Municipality of Talibon · Province of Bohol</span><span>One Talibon · Intra-Office Portal</span></footer>
+                    <footer className="mx-3 flex flex-wrap justify-between gap-2 border-t border-[var(--border-default)] py-4 text-xs text-[var(--ink-secondary)] sm:mx-5"><span>Municipality of Talibon · Province of Bohol</span><span>One Talibon · Intra-Office Portal</span></footer>
 
                     <nav aria-label="Mobile workspace navigation"
-                        className="fixed bottom-0 inset-x-0 z-30 flex items-center justify-around border-t border-slate-200 bg-white/95 px-1 pt-1 backdrop-blur-md dark:border-slate-700 dark:bg-[#142236]/95 md:hidden"
+                        className="fixed bottom-0 inset-x-0 z-30 flex items-center justify-around border-t border-[var(--border-default)] bg-[var(--surface-card)]/95 px-1 pt-1 backdrop-blur-md md:hidden"
                         style={{ paddingBottom: 'max(4px, env(safe-area-inset-bottom, 0px))' }}>
                         {navigationGroups.flatMap(group => group.items)
                             .filter(item => ['home', 'myTasks', 'myWork', 'calendar'].includes(item.key))
@@ -335,12 +335,12 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
                                 const active = page.url.split(/[?#]/, 1)[0] === href;
                                 const shortLabel = key === 'home' ? 'Home' : key === 'myTasks' ? 'Tasks' : key === 'myWork' ? 'Requests' : label;
                                 return <Link key={key} href={href} aria-current={active ? 'page' : undefined}
-                                    className={`flex min-h-12 min-w-11 flex-col items-center justify-center rounded-lg px-2 text-[11px] font-bold focus-visible:ring-2 focus-visible:ring-emerald-700 ${active ? 'bg-emerald-50 text-[#145a43]' : 'text-slate-600 dark:text-slate-200'}`}>
+                                    className={`flex min-h-12 min-w-11 flex-col items-center justify-center rounded-lg px-2 text-[11px] font-bold focus-visible:ring-2 focus-visible:ring-emerald-700 ${active ? 'bg-emerald-50 text-[#145a43] dark:bg-emerald-950/50 dark:text-emerald-300' : 'text-[var(--ink-secondary)]'}`}>
                                     <Icon size={20} aria-hidden="true" /><span>{shortLabel}</span>
                                 </Link>;
                             })}
                         <button type="button" onClick={() => setMobileOpen(true)} aria-label="Open more navigation options" aria-expanded={mobileOpen}
-                            className="flex min-h-12 min-w-11 flex-col items-center justify-center rounded-lg px-2 text-[11px] font-bold focus-visible:ring-2 focus-visible:ring-emerald-700">
+                            className="flex min-h-12 min-w-11 flex-col items-center justify-center rounded-lg px-2 text-[11px] font-bold text-[var(--ink-secondary)] focus-visible:ring-2 focus-visible:ring-emerald-700">
                             <Menu size={20} aria-hidden="true" /><span>More</span>
                         </button>
                     </nav>
@@ -355,36 +355,36 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
 
             {liveAlert && (
                 <div className="fixed left-3 right-3 top-16 z-[60] sm:left-auto sm:right-4 sm:top-20 sm:w-[390px]">
-                    <div className="overflow-hidden rounded-xl border border-blue-200 bg-white shadow-2xl shadow-slate-900/15 dark:border-blue-900 dark:bg-[#142236]">
-                        <div className="h-1 bg-blue-700" />
+                    <div className="overflow-hidden rounded-xl border border-[var(--border-default)] bg-[var(--surface-card)] shadow-2xl shadow-black/20">
+                        <div className="h-1 bg-[var(--brand-primary)]" />
                         <div className="p-4 sm:p-5">
                             <div className="flex items-start justify-between gap-3">
                                 <div className="min-w-0">
-                                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-700 dark:text-blue-300 sm:text-xs"><span className="h-2 w-2 rounded-full bg-emerald-500" /> {liveAlert.title}</div>
-                                    <div className="mt-2 text-[12px] font-semibold leading-5 text-slate-950 dark:text-slate-100 sm:text-sm">{liveAlert.message}</div>
-                                    <div className="mt-1 text-xs text-slate-400 sm:text-xs">{relativeTime(liveAlert.created_at)}</div>
+                                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--brand-ink)] sm:text-xs"><span className="h-2 w-2 rounded-full bg-emerald-500" /> {liveAlert.title}</div>
+                                    <div className="mt-2 text-[12px] font-semibold leading-5 text-[var(--ink-primary)] sm:text-sm">{liveAlert.message}</div>
+                                    <div className="mt-1 text-xs text-[var(--ink-muted)] sm:text-xs">{relativeTime(liveAlert.created_at)}</div>
                                 </div>
-                                <button onClick={() => setLiveAlert(null)} className="shrink-0 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Dismiss notification"><X size={16} /></button>
+                                <button onClick={() => setLiveAlert(null)} className="shrink-0 flex h-11 w-11 items-center justify-center rounded-lg text-[var(--ink-secondary)] hover:bg-[var(--surface-hover)]" aria-label="Dismiss notification"><X size={16} /></button>
                             </div>
-                            <div className="mt-3 flex justify-end"><Link href={liveAlert.url} onClick={() => { setLiveAlert(null); setUnseenWorkflowCount(0); }} className="rounded-lg bg-[#0b2852] px-4 py-2 text-[13px] font-semibold text-white sm:text-xs">Open request</Link></div>
+                            <div className="mt-3 flex justify-end"><Link href={liveAlert.url} onClick={() => { setLiveAlert(null); setUnseenWorkflowCount(0); }} className="municipal-primary-button rounded-lg px-4 py-2 text-[13px] font-semibold text-white sm:text-xs">Open request</Link></div>
                         </div>
                     </div>
                 </div>
             )}
 
             {showMemo && (
-                <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/55 p-3 backdrop-blur-sm sm:p-4">
-                    <div className="w-full max-w-lg rounded-xl bg-white p-4 shadow-2xl dark:bg-[#142236] sm:p-6 md:p-8">
+                <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 p-3 backdrop-blur-sm sm:p-4">
+                    <div className="w-full max-w-lg rounded-xl border border-[var(--border-default)] bg-[var(--surface-card)] p-4 shadow-2xl sm:p-6 md:p-8">
                         <div className="flex items-start justify-between gap-4">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-800 dark:bg-blue-950/50 dark:text-blue-200 sm:h-12 sm:w-12"><Bell size={19} /></div>
-                            <button onClick={() => setDismissedMemoId(pendingMemo.id)} className="rounded-full p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 sm:p-2" aria-label="Dismiss memorandum"><X size={18} /></button>
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-[var(--brand-primary)] dark:bg-emerald-950/50 dark:text-emerald-300 sm:h-12 sm:w-12"><Bell size={19} /></div>
+                            <button onClick={() => setDismissedMemoId(pendingMemo.id)} className="rounded-full p-1.5 text-[var(--ink-secondary)] hover:bg-[var(--surface-hover)] sm:p-2" aria-label="Dismiss memorandum"><X size={18} /></button>
                         </div>
-                        <div className="mt-4 text-xs font-bold uppercase tracking-wider text-blue-700 dark:text-blue-300 sm:mt-6 sm:text-xs">New Memorandum · {pendingMemo.memo_number}</div>
-                        <h2 className="mt-2 text-xl font-bold text-slate-950 dark:text-slate-100 sm:text-2xl">{pendingMemo.title}</h2>
-                        <p className="mt-2 text-[12px] text-slate-500 dark:text-slate-300 sm:mt-3 sm:text-sm">Issued by {pendingMemo.department || pendingMemo.issuer || "Mayor's Office"}. {pendingMemo.requires_acknowledgement ? 'Acknowledgement is required.' : 'Please review this issuance.'}</p>
+                        <div className="mt-4 text-xs font-bold uppercase tracking-wider text-[var(--brand-ink)] sm:mt-6 sm:text-xs">New Memorandum · {pendingMemo.memo_number}</div>
+                        <h2 className="mt-2 text-xl font-bold text-[var(--ink-primary)] sm:text-2xl">{pendingMemo.title}</h2>
+                        <p className="mt-2 text-[12px] text-[var(--ink-secondary)] sm:mt-3 sm:text-sm">Issued by {pendingMemo.department || pendingMemo.issuer || "Mayor's Office"}. {pendingMemo.requires_acknowledgement ? 'Acknowledgement is required.' : 'Please review this issuance.'}</p>
                         <div className="mt-5 flex justify-end gap-2 sm:mt-7 sm:gap-3">
-                            <button onClick={() => setDismissedMemoId(pendingMemo.id)} className="rounded-lg border border-slate-300 px-3 py-2 text-[12px] font-semibold text-slate-700 dark:border-slate-600 dark:text-slate-200 sm:px-4 sm:py-2.5 sm:text-sm">Later</button>
-                            <Link href={`/memoranda/${pendingMemo.id}`} className="rounded-lg bg-[#0b2852] px-4 py-2 text-[12px] font-semibold text-white sm:px-5 sm:py-2.5 sm:text-sm">Open memorandum</Link>
+                            <button onClick={() => setDismissedMemoId(pendingMemo.id)} className="municipal-secondary-button rounded-lg px-3 py-2 text-[12px] font-semibold sm:px-4 sm:py-2.5 sm:text-sm">Later</button>
+                            <Link href={`/memoranda/${pendingMemo.id}`} className="municipal-primary-button rounded-lg px-4 py-2 text-[12px] font-semibold text-white sm:px-5 sm:py-2.5 sm:text-sm">Open memorandum</Link>
                         </div>
                     </div>
                 </div>

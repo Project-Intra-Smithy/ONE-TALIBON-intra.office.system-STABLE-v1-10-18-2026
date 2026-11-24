@@ -86,7 +86,7 @@ export default function ProgressiveFilterBar({
                     <div
                         role="dialog"
                         aria-label={title}
-                        className="relative z-10 max-h-[82vh] w-full overflow-y-auto rounded-t-xl bg-white p-4 text-slate-900 dark:bg-[#142236] dark:text-slate-100 shadow-2xl md:max-h-none md:rounded-xl md:border md:border-slate-200 md:bg-slate-50/70 dark:md:bg-slate-900/40 md:p-4 md:shadow-none"
+                        className="relative z-10 max-h-[82vh] w-full overflow-y-auto rounded-t-xl bg-white p-4 text-slate-900 dark:bg-[var(--surface-card)] dark:text-[var(--ink-primary)] shadow-2xl md:max-h-none md:rounded-xl md:border md:border-slate-200 md:bg-slate-50/70 dark:md:bg-slate-900/40 md:p-4 md:shadow-none"
                     >
                         <div className="mb-4 flex items-center justify-between md:hidden">
                             <div>

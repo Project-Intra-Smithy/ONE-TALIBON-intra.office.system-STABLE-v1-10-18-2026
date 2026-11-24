@@ -15,7 +15,7 @@ export default function OfficeOverview({ overview }: { overview: OfficeOverviewD
                 <Link href="/transactions?view=office_queue" className="inline-flex w-fit items-center gap-1 text-sm font-semibold text-blue-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:text-blue-300 sm:text-sm">Open office work <ArrowRight size={13} aria-hidden="true" /></Link>
             </div>
 
-            <div className="grid overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236] @min-[900px]:grid-cols-[1.35fr_0.65fr]">
+            <div className="grid overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-[var(--border-default)] dark:bg-[var(--surface-card)] @min-[900px]:grid-cols-[1.35fr_0.65fr]">
                 <div className="min-w-0">
                     <div className="flex items-center gap-2 border-b border-slate-100 px-4 py-3 dark:border-slate-700 sm:px-5"><Users size={16} className="text-blue-700 dark:text-blue-300" aria-hidden="true" /><h3 className="text-base font-bold text-slate-950 dark:text-slate-100">Staff workload</h3></div>
                     <div className="hidden grid-cols-[minmax(0,1fr)_75px_75px_90px] gap-3 border-b border-slate-100 bg-slate-50 px-5 py-2 text-sm font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400 dark:border-slate-700 dark:bg-slate-900/40 @min-[600px]:grid">
