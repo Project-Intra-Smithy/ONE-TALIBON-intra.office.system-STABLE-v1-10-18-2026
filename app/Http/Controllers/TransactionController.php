@@ -17,6 +17,8 @@ use App\Support\ValidatedListReturn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -28,10 +30,12 @@ class TransactionController extends Controller
     ): Response {
         $this->authorize('viewAny', WorkflowTransaction::class);
 
-        return Inertia::render(
-            'Transactions/Index',
-            $queue->workspace($request->user(), $request->validated()),
-        );
+        $workspace = $queue->workspace($request->user(), $request->validated());
+        $workspace['originDeliveryQueueAvailable'] = $request->user()->isRole('department_head')
+            && Schema::hasTable('ops009_origin_delivery_exceptions')
+            && Schema::hasTable('ops009_origin_delivery_exception_actions');
+
+        return Inertia::render('Transactions/Index', $workspace);
     }
 
     public function create(Request $request): Response
@@ -95,8 +99,15 @@ class TransactionController extends Controller
             includeEvents: false,
         );
 
+        // Navigation context is never authority; only a short, same-path validated list URL can return.
+        $candidate = $request->query('return_to');
+        $returnTo = is_string($candidate) && strlen($candidate) <= 2048
+            ? ValidatedListReturn::validate($candidate, '/transactions')
+            : '/transactions';
+
         return Inertia::render('Transactions/Show', [
             'transaction' => $transaction,
+            'returnTo' => $returnTo,
             'departments' => Department::query()
                 ->activeRoutable()
                 ->orderBy('branch')
@@ -106,6 +117,7 @@ class TransactionController extends Controller
             'assignableEmployees' => $mutable['assignableEmployees'],
             'accountability' => $mutable['accountability'],
             'transactionPermissions' => $mutable['permissions'],
+            'allowedActions' => $mutable['allowedActions'],
             'evidence' => $evidence->forTransaction($transaction),
             'relatedWork' => $this->relatedWork($request, $transaction, $visibility),
         ]);
@@ -173,7 +185,7 @@ class TransactionController extends Controller
             ->all();
     }
 
-    /** @return array<int, \Illuminate\Http\UploadedFile> */
+    /** @return array<int, UploadedFile> */
     private function evidenceFiles(Request $request): array
     {
         $files = $request->file('evidence', []);

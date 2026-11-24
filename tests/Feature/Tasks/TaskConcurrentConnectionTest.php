@@ -8,7 +8,8 @@ use App\Models\Employee;
 use App\Models\Task;
 use App\Models\TaskEvent;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTruncation;
+use Illuminate\Foundation\Testing\RefreshDatabaseState;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use RuntimeException;
@@ -18,14 +19,23 @@ use Throwable;
 /**
  * Real PostgreSQL lock contention between independently connected processes.
  *
- * DatabaseMigrations is intentional: RefreshDatabase's outer transaction
- * would hide new rows from the second PostgreSQL session. This test requires
- * the existing TestCase hard gate APP_ENV=testing / talibon_portal_test and
- * must run only on a disposable CI database.
+ * DatabaseTruncation avoids RefreshDatabase's outer transaction (which hides
+ * fixtures from a second PostgreSQL session) and DatabaseMigrations rollback
+ * (which conflicts with forward-only protected custody). This test requires
+ * TestCase's APP_ENV=testing / talibon_portal_test gate and disposable CI DB.
  */
 final class TaskConcurrentConnectionTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseTruncation;
+
+    protected function tearDown(): void
+    {
+        // Cross-connection tests commit fixtures. Force the next Feature test
+        // to rebuild its disposable schema instead of reusing committed rows.
+        RefreshDatabaseState::$migrated = false;
+
+        parent::tearDown();
+    }
 
     public function test_two_postgresql_sessions_cannot_both_start_the_same_task(): void
     {

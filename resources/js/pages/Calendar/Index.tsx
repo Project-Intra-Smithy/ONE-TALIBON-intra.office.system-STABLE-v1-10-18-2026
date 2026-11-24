@@ -1,4 +1,3 @@
-import '../../../css/aj-calendar-workspace.css';
 import { Link, router } from '@inertiajs/react';
 import {
     CalendarDays,
@@ -251,7 +250,7 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
 
     return (
         <AppLayout workspaceRefinement title="Calendar">
-            <PageFrame width="wide" density="comfortable" className="aj-calendar">
+            <PageFrame width="wide" density="comfortable" className="aj-calendar mx-auto max-w-[1440px] px-4 py-5 sm:px-6">
                 <PageHeader
                     eyebrow="Shared municipal calendar"
                     title="Events, deadlines & schedules"
@@ -281,7 +280,7 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
                                     className={`inline-flex min-h-[44px] items-center rounded-lg px-4 py-2 text-sm font-semibold capitalize transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 ${
                                         view === option
                                             ? 'bg-[#145a43] text-white shadow-sm'
-                                            : 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-200'
+                                            : 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:bg-[var(--surface-card)] dark:text-slate-200'
                                     }`}
                                 >
                                     {option}
@@ -292,7 +291,7 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
                 </section>
 
                 {/* Google Calendar-Style Workspace */}
-                <div className="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-[#142236]">
+                <div className="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-[var(--surface-card)]">
                     {/* Google Calendar Toolbar */}
                     <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 p-4 dark:border-slate-700 sm:px-6">
                         <div className="flex min-w-0 flex-wrap items-center gap-3">
@@ -302,11 +301,11 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
                                     setSelectedDate(today);
                                     navigateTo(view, today);
                                 }}
-                                className="inline-flex shrink-0 whitespace-nowrap min-h-[44px] items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-800 shadow-sm transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-100"
+                                className="inline-flex shrink-0 whitespace-nowrap min-h-[44px] items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-800 shadow-sm transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 dark:border-slate-600 dark:bg-[var(--surface-card)] dark:text-slate-100"
                             >
                                 Today
                             </button>
-                            <div className="inline-flex shrink-0 items-center rounded-lg border border-slate-300 bg-white dark:border-slate-600 dark:bg-[#142236]">
+                            <div className="inline-flex shrink-0 items-center rounded-lg border border-slate-300 bg-white dark:border-slate-600 dark:bg-[var(--surface-card)]">
                                 <button
                                     type="button"
                                     onClick={() => navigatePeriod(-1)}
@@ -342,7 +341,7 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
                                             navigateTo(view, e.target.value);
                                         }
                                     }}
-                                    className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-800 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-100"
+                                    className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-800 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 dark:border-slate-600 dark:bg-[var(--surface-card)] dark:text-slate-100"
                                 />
                             </label>
 
@@ -463,7 +462,7 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
                                             const val = dateKey(e.target.value, timezone);
                                             if (val) setSelectedDate(val);
                                         }}
-                                        className="mt-1 block min-h-[44px] w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-base text-slate-900 focus:border-[#145a43] focus:ring-2 focus:ring-[#145a43]/20 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-100"
+                                        className="mt-1 block min-h-[44px] w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-base text-slate-900 focus:border-[#145a43] focus:ring-2 focus:ring-[#145a43]/20 dark:border-slate-600 dark:bg-[var(--surface-card)] dark:text-slate-100"
                                     />
                                 </label>
 
@@ -629,7 +628,7 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
                                             <Link
                                                 href={event.action_url}
                                                 onClick={(e) => e.stopPropagation()}
-                                                className="inline-flex min-h-[40px] items-center gap-1.5 self-start rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-100 sm:self-center dark:border-slate-600 dark:bg-[#142236] dark:text-slate-200"
+                                                className="inline-flex min-h-[40px] items-center gap-1.5 self-start rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-100 sm:self-center dark:border-slate-600 dark:bg-[var(--surface-card)] dark:text-slate-200"
                                             >
                                                 Open <ExternalLink size={13} aria-hidden="true" />
                                             </Link>
@@ -737,7 +736,7 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
                     className="aj-calendar-dialog fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-2xl border-0 bg-transparent p-0 backdrop:bg-slate-950/60"
                 >
                     <div
-                        className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-700 dark:bg-[#142236]"
+                        className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-700 dark:bg-[var(--surface-card)]"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="flex items-start justify-between gap-3">

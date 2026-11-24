@@ -1,0 +1,413 @@
+/* ==========================================================================
+ * Talibon Civic Design System (TCDS v2) — Semantic Design Tokens
+ * Single source of truth for Warm Stone Light, Civic Obsidian Pine Dark
+ * (4-tier surface elevation + anti-halation ink), and Forced Colors Mode.
+ * Driven natively by <meta name="color-scheme"> + CSS light-dark() with
+ * automatic fallback for browsers without light-dark() or :has().
+ * ========================================================================== */
+
+@theme {
+  --font-sans: "Public Sans Variable", "Public Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --color-tcds-canvas: var(--surface-canvas);
+  --color-tcds-card: var(--surface-card);
+  --color-tcds-elevated: var(--surface-elevated);
+  --color-tcds-input: var(--surface-input);
+  --color-tcds-recessed: var(--surface-recessed);
+  --color-tcds-sidebar: var(--surface-sidebar);
+  --color-tcds-border: var(--border-default);
+  --color-tcds-control-border: var(--border-control);
+  --color-tcds-ink: var(--ink-primary);
+  --color-tcds-muted: var(--ink-secondary);
+  --color-tcds-brand: var(--brand-primary);
+  --color-tcds-brand-ink: var(--brand-ink);
+  --color-tcds-brand-hover: var(--brand-primary-hover);
+  --color-tcds-brand-soft: var(--brand-soft);
+  --color-tcds-gold: var(--accent-gold);
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 0.875rem;
+}
+
+:root {
+  /* Native color-scheme driven by <meta name="color-scheme"> (zero JS dependency for System mode) */
+  color-scheme: light dark;
+
+  &:has(> head > meta[name="color-scheme"][content="dark"]) {
+    color-scheme: dark;
+  }
+
+  &:has(> head > meta[name="color-scheme"][content="light"]) {
+    color-scheme: light;
+  }
+
+  /* ── Raw Light Primitives (Warm Civic Stone) ─────────────────────────── */
+  --l-surface-canvas: #f7f8f6;
+  --l-surface-card: #ffffff;
+  --l-surface-elevated: #ffffff;
+  --l-surface-input: #ffffff;
+  --l-surface-recessed: #eff3f0;
+  --l-surface-hover: #e7efe9;
+  --l-surface-sidebar: #0e4d36;
+  --l-surface-sidebar-border: rgba(255, 255, 255, 0.14);
+  --l-surface-sidebar-hover: rgba(255, 255, 255, 0.1);
+  --l-surface-sidebar-active: #eaf4ee;
+  --l-surface-sidebar-active-ink: #0e4d36;
+  --l-surface-sidebar-ink: #e8f3ec;
+  --l-surface-sidebar-muted: #b8d5c4;
+
+  --l-border-default: #dce3df;
+  --l-border-strong: #c2cec7;
+  --l-border-elevated: #d5ded9;
+  --l-border-control: #72857c;
+
+  --l-ink-primary: #14211c;
+  --l-ink-secondary: #4a5d55;
+  --l-ink-tertiary: #5a6d65;
+
+  --l-brand-primary: #0e4d36;
+  --l-brand-primary-hover: #0a3b29;
+  --l-brand-ink: #0e4d36;
+  --l-brand-deep: #0b3d2b;
+  --l-brand-soft: #e7f3ec;
+  --l-brand-soft-border: #b6d6c3;
+  --l-accent-gold: #c89b3c;
+  --l-accent-gold-soft: #fef3c7;
+  --l-accent-gold-ink: #78350f;
+  --l-focus-ring: #0b57d0;
+
+  --l-status-danger-bg: #fef2f2;
+  --l-status-danger-border: #fecaca;
+  --l-status-danger-fg: #991b1b;
+  --l-status-danger-bar: #b91c1c;
+
+  --l-status-warn-bg: #fffbeb;
+  --l-status-warn-border: #fde68a;
+  --l-status-warn-fg: #92400e;
+  --l-status-warn-bar: #b45309;
+
+  --l-status-ok-bg: #ecfdf5;
+  --l-status-ok-border: #a7f3d0;
+  --l-status-ok-fg: #065f46;
+  --l-status-ok-bar: #0e4d36;
+
+  --l-status-info-bg: #eff6ff;
+  --l-status-info-border: #bfdbfe;
+  --l-status-info-fg: #1e40af;
+
+  --l-status-neutral-bg: #eef2f0;
+  --l-status-neutral-border: #d5ded9;
+  --l-status-neutral-fg: #374a42;
+  --l-status-neutral-bar: #64756d;
+
+  --l-scrollbar-track: #edf1ee;
+  --l-scrollbar-thumb: #8fa399;
+
+  /* ── Raw Dark Primitives (Civic Obsidian Pine — 4-Tier Elevation) ────── */
+  /* Tier 0: Sidebar (#090d0b) -> Tier 1: Canvas (#0f1412) -> Tier 2: Card (#161e1a)
+     -> Tier 3: Floating Popover/Modal (#1d2722) | Tier 4: Recessed Input (#111815) */
+  --d-surface-canvas: #0f1412;
+  --d-surface-card: #161e1a;
+  --d-surface-elevated: #1d2722;
+  --d-surface-input: #111815;
+  --d-surface-recessed: #111815;
+  --d-surface-hover: #1e2924;
+  --d-surface-sidebar: #090d0b;
+  --d-surface-sidebar-border: #1c2621;
+  --d-surface-sidebar-hover: rgba(255, 255, 255, 0.06);
+  --d-surface-sidebar-active: #162c22;
+  --d-surface-sidebar-active-ink: #ecf2ef;
+  --d-surface-sidebar-ink: #d3dfd9;
+  --d-surface-sidebar-muted: #8d9f96;
+
+  --d-border-default: #25332c;
+  --d-border-strong: #33453c;
+  --d-border-elevated: #31433a;
+  --d-border-control: #3a4e44;
+
+  /* Anti-halation soft off-white (~14.2:1) & WCAG AAA secondary ink (~7.4:1) */
+  --d-ink-primary: #ecf2ef;
+  --d-ink-secondary: #9fb1a8;
+  --d-ink-tertiary: #869990;
+
+  /* Split brand fill (solid CTAs) vs brand ink (high-contrast links & IDs) */
+  --d-brand-primary: #197a54;
+  --d-brand-primary-hover: #209064;
+  --d-brand-ink: #5ee0aa;
+  --d-brand-deep: #122b20;
+  --d-brand-soft: #142c21;
+  --d-brand-soft-border: #28523f;
+  --d-accent-gold: #e6be63;
+  --d-accent-gold-soft: #352811;
+  --d-accent-gold-ink: #fde68a;
+  --d-focus-ring: #5ee0aa;
+
+  --d-status-danger-bg: #36171b;
+  --d-status-danger-border: #66272f;
+  --d-status-danger-fg: #fca5a5;
+  --d-status-danger-bar: #ef4444;
+
+  --d-status-warn-bg: #332410;
+  --d-status-warn-border: #5e431a;
+  --d-status-warn-fg: #fcd34d;
+  --d-status-warn-bar: #e6be63;
+
+  --d-status-ok-bg: #122d22;
+  --d-status-ok-border: #235742;
+  --d-status-ok-fg: #5ee0aa;
+  --d-status-ok-bar: #34d399;
+
+  --d-status-info-bg: #142636;
+  --d-status-info-border: #244560;
+  --d-status-info-fg: #93c5fd;
+
+  --d-status-neutral-bg: #1b2420;
+  --d-status-neutral-border: #2e3d36;
+  --d-status-neutral-fg: #c8d6cf;
+  --d-status-neutral-bar: #74877e;
+
+  --d-scrollbar-track: #0f1412;
+  --d-scrollbar-thumb: #36473f;
+
+  /* ── Shared Constants ────────────────────────────────────────────────── */
+  --ink-on-brand: #ffffff;
+  --focus-ring-sidebar: #e6be63;
+
+  /* ── Default Fallback Assignment (Light, for browsers without light-dark) ─ */
+  --surface-canvas: var(--l-surface-canvas);
+  --surface-card: var(--l-surface-card);
+  --surface-elevated: var(--l-surface-elevated);
+  --surface-input: var(--l-surface-input);
+  --surface-recessed: var(--l-surface-recessed);
+  --surface-hover: var(--l-surface-hover);
+  --surface-sidebar: var(--l-surface-sidebar);
+  --surface-sidebar-border: var(--l-surface-sidebar-border);
+  --surface-sidebar-hover: var(--l-surface-sidebar-hover);
+  --surface-sidebar-active: var(--l-surface-sidebar-active);
+  --surface-sidebar-active-ink: var(--l-surface-sidebar-active-ink);
+  --surface-sidebar-ink: var(--l-surface-sidebar-ink);
+  --surface-sidebar-muted: var(--l-surface-sidebar-muted);
+
+  --border-default: var(--l-border-default);
+  --border-strong: var(--l-border-strong);
+  --border-elevated: var(--l-border-elevated);
+  --border-control: var(--l-border-control);
+
+  --ink-primary: var(--l-ink-primary);
+  --ink-secondary: var(--l-ink-secondary);
+  --ink-tertiary: var(--l-ink-tertiary);
+
+  --brand-primary: var(--l-brand-primary);
+  --brand-primary-hover: var(--l-brand-primary-hover);
+  --brand-ink: var(--l-brand-ink);
+  --brand-deep: var(--l-brand-deep);
+  --brand-soft: var(--l-brand-soft);
+  --brand-soft-border: var(--l-brand-soft-border);
+  --accent-gold: var(--l-accent-gold);
+  --accent-gold-soft: var(--l-accent-gold-soft);
+  --accent-gold-ink: var(--l-accent-gold-ink);
+  --focus-ring: var(--l-focus-ring);
+
+  --status-danger-bg: var(--l-status-danger-bg);
+  --status-danger-border: var(--l-status-danger-border);
+  --status-danger-fg: var(--l-status-danger-fg);
+  --status-danger-bar: var(--l-status-danger-bar);
+
+  --status-warn-bg: var(--l-status-warn-bg);
+  --status-warn-border: var(--l-status-warn-border);
+  --status-warn-fg: var(--l-status-warn-fg);
+  --status-warn-bar: var(--l-status-warn-bar);
+
+  --status-ok-bg: var(--l-status-ok-bg);
+  --status-ok-border: var(--l-status-ok-border);
+  --status-ok-fg: var(--l-status-ok-fg);
+  --status-ok-bar: var(--l-status-ok-bar);
+
+  --status-info-bg: var(--l-status-info-bg);
+  --status-info-border: var(--l-status-info-border);
+  --status-info-fg: var(--l-status-info-fg);
+
+  --status-neutral-bg: var(--l-status-neutral-bg);
+  --status-neutral-border: var(--l-status-neutral-border);
+  --status-neutral-fg: var(--l-status-neutral-fg);
+  --status-neutral-bar: var(--l-status-neutral-bar);
+
+  --scrollbar-track: var(--l-scrollbar-track);
+  --scrollbar-thumb: var(--l-scrollbar-thumb);
+
+  /* Non-color elevation tokens (shadows + dark top-edge specular sheen) */
+  --shadow-card: 0 1px 2px rgba(14, 33, 25, 0.05), 0 1px 1px rgba(14, 33, 25, 0.03);
+  --shadow-popover: 0 12px 32px -8px rgba(9, 18, 15, 0.18), 0 2px 6px rgba(9, 18, 15, 0.08);
+  --shadow-drawer: -12px 0 36px -8px rgba(9, 18, 15, 0.18);
+
+  /* Modern CSS light-dark() — single live expression supporting subtrees & OS mode */
+  @supports (color: light-dark(white, black)) {
+    --surface-canvas: light-dark(var(--l-surface-canvas), var(--d-surface-canvas));
+    --surface-card: light-dark(var(--l-surface-card), var(--d-surface-card));
+    --surface-elevated: light-dark(var(--l-surface-elevated), var(--d-surface-elevated));
+    --surface-input: light-dark(var(--l-surface-input), var(--d-surface-input));
+    --surface-recessed: light-dark(var(--l-surface-recessed), var(--d-surface-recessed));
+    --surface-hover: light-dark(var(--l-surface-hover), var(--d-surface-hover));
+    --surface-sidebar: light-dark(var(--l-surface-sidebar), var(--d-surface-sidebar));
+    --surface-sidebar-border: light-dark(var(--l-surface-sidebar-border), var(--d-surface-sidebar-border));
+    --surface-sidebar-hover: light-dark(var(--l-surface-sidebar-hover), var(--d-surface-sidebar-hover));
+    --surface-sidebar-active: light-dark(var(--l-surface-sidebar-active), var(--d-surface-sidebar-active));
+    --surface-sidebar-active-ink: light-dark(var(--l-surface-sidebar-active-ink), var(--d-surface-sidebar-active-ink));
+    --surface-sidebar-ink: light-dark(var(--l-surface-sidebar-ink), var(--d-surface-sidebar-ink));
+    --surface-sidebar-muted: light-dark(var(--l-surface-sidebar-muted), var(--d-surface-sidebar-muted));
+
+    --border-default: light-dark(var(--l-border-default), var(--d-border-default));
+    --border-strong: light-dark(var(--l-border-strong), var(--d-border-strong));
+    --border-elevated: light-dark(var(--l-border-elevated), var(--d-border-elevated));
+    --border-control: light-dark(var(--l-border-control), var(--d-border-control));
+
+    --ink-primary: light-dark(var(--l-ink-primary), var(--d-ink-primary));
+    --ink-secondary: light-dark(var(--l-ink-secondary), var(--d-ink-secondary));
+    --ink-tertiary: light-dark(var(--l-ink-tertiary), var(--d-ink-tertiary));
+
+    --brand-primary: light-dark(var(--l-brand-primary), var(--d-brand-primary));
+    --brand-primary-hover: light-dark(var(--l-brand-primary-hover), var(--d-brand-primary-hover));
+    --brand-ink: light-dark(var(--l-brand-ink), var(--d-brand-ink));
+    --brand-deep: light-dark(var(--l-brand-deep), var(--d-brand-deep));
+    --brand-soft: light-dark(var(--l-brand-soft), var(--d-brand-soft));
+    --brand-soft-border: light-dark(var(--l-brand-soft-border), var(--d-brand-soft-border));
+    --accent-gold: light-dark(var(--l-accent-gold), var(--d-accent-gold));
+    --accent-gold-soft: light-dark(var(--l-accent-gold-soft), var(--d-accent-gold-soft));
+    --accent-gold-ink: light-dark(var(--l-accent-gold-ink), var(--d-accent-gold-ink));
+    --focus-ring: light-dark(var(--l-focus-ring), var(--d-focus-ring));
+
+    --status-danger-bg: light-dark(var(--l-status-danger-bg), var(--d-status-danger-bg));
+    --status-danger-border: light-dark(var(--l-status-danger-border), var(--d-status-danger-border));
+    --status-danger-fg: light-dark(var(--l-status-danger-fg), var(--d-status-danger-fg));
+    --status-danger-bar: light-dark(var(--l-status-danger-bar), var(--d-status-danger-bar));
+
+    --status-warn-bg: light-dark(var(--l-status-warn-bg), var(--d-status-warn-bg));
+    --status-warn-border: light-dark(var(--l-status-warn-border), var(--d-status-warn-border));
+    --status-warn-fg: light-dark(var(--l-status-warn-fg), var(--d-status-warn-fg));
+    --status-warn-bar: light-dark(var(--l-status-warn-bar), var(--d-status-warn-bar));
+
+    --status-ok-bg: light-dark(var(--l-status-ok-bg), var(--d-status-ok-bg));
+    --status-ok-border: light-dark(var(--l-status-ok-border), var(--d-status-ok-border));
+    --status-ok-fg: light-dark(var(--l-status-ok-fg), var(--d-status-ok-fg));
+    --status-ok-bar: light-dark(var(--l-status-ok-bar), var(--d-status-ok-bar));
+
+    --status-info-bg: light-dark(var(--l-status-info-bg), var(--d-status-info-bg));
+    --status-info-border: light-dark(var(--l-status-info-border), var(--d-status-info-border));
+    --status-info-fg: light-dark(var(--l-status-info-fg), var(--d-status-info-fg));
+
+    --status-neutral-bg: light-dark(var(--l-status-neutral-bg), var(--d-status-neutral-bg));
+    --status-neutral-border: light-dark(var(--l-status-neutral-border), var(--d-status-neutral-border));
+    --status-neutral-fg: light-dark(var(--l-status-neutral-fg), var(--d-status-neutral-fg));
+    --status-neutral-bar: light-dark(var(--l-status-neutral-bar), var(--d-status-neutral-bar));
+
+    --scrollbar-track: light-dark(var(--l-scrollbar-track), var(--d-scrollbar-track));
+    --scrollbar-thumb: light-dark(var(--l-scrollbar-thumb), var(--d-scrollbar-thumb));
+  }
+
+  /* Backward-compatible bridges for secondary legacy pages */
+  --municipal-canvas: var(--surface-canvas);
+  --municipal-surface: var(--surface-card);
+  --municipal-surface-subtle: var(--surface-recessed);
+  --municipal-hover: var(--surface-hover);
+  --municipal-border: var(--border-default);
+  --municipal-border-strong: var(--border-control);
+  --municipal-text: var(--ink-primary);
+  --municipal-muted: var(--ink-secondary);
+  --municipal-brand: var(--brand-primary);
+  --municipal-brand-deep: var(--brand-deep);
+  --municipal-brand-soft: var(--brand-soft);
+  --municipal-action-bg: var(--brand-primary);
+  --municipal-action-hover: var(--brand-primary-hover);
+  --municipal-action-text: var(--ink-on-brand);
+  --municipal-selected-border: var(--brand-ink);
+  --municipal-gold: var(--accent-gold);
+  --municipal-navy: var(--brand-primary);
+  --municipal-blue: var(--brand-ink);
+  --municipal-info: var(--status-info-fg);
+  --municipal-focus: var(--focus-ring);
+  --municipal-radius-surface: 0.75rem;
+  --radius-panel: 0.75rem;
+  --focus-ring-legacy: var(--focus-ring);
+}
+
+/* Non-color elevation shadows + fallback tokens for older browsers without light-dark() */
+:root.dark {
+  color-scheme: dark;
+  --shadow-card: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 2px 6px rgba(0, 0, 0, 0.35);
+  --shadow-popover: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 18px 42px rgba(0, 0, 0, 0.62);
+  --shadow-drawer: inset 1px 0 0 rgba(255, 255, 255, 0.05), -14px 0 42px rgba(0, 0, 0, 0.62);
+}
+
+@supports not (color: light-dark(white, black)) {
+  :root.dark {
+    --surface-canvas: var(--d-surface-canvas);
+    --surface-card: var(--d-surface-card);
+    --surface-elevated: var(--d-surface-elevated);
+    --surface-input: var(--d-surface-input);
+    --surface-recessed: var(--d-surface-recessed);
+    --surface-hover: var(--d-surface-hover);
+    --surface-sidebar: var(--d-surface-sidebar);
+    --surface-sidebar-border: var(--d-surface-sidebar-border);
+    --surface-sidebar-hover: var(--d-surface-sidebar-hover);
+    --surface-sidebar-active: var(--d-surface-sidebar-active);
+    --surface-sidebar-active-ink: var(--d-surface-sidebar-active-ink);
+    --surface-sidebar-ink: var(--d-surface-sidebar-ink);
+    --surface-sidebar-muted: var(--d-surface-sidebar-muted);
+    --border-default: var(--d-border-default);
+    --border-strong: var(--d-border-strong);
+    --border-elevated: var(--d-border-elevated);
+    --border-control: var(--d-border-control);
+    --ink-primary: var(--d-ink-primary);
+    --ink-secondary: var(--d-ink-secondary);
+    --ink-tertiary: var(--d-ink-tertiary);
+    --brand-primary: var(--d-brand-primary);
+    --brand-primary-hover: var(--d-brand-primary-hover);
+    --brand-ink: var(--d-brand-ink);
+    --brand-deep: var(--d-brand-deep);
+    --brand-soft: var(--d-brand-soft);
+    --brand-soft-border: var(--d-brand-soft-border);
+    --accent-gold: var(--d-accent-gold);
+    --accent-gold-soft: var(--d-accent-gold-soft);
+    --accent-gold-ink: var(--d-accent-gold-ink);
+    --focus-ring: var(--d-focus-ring);
+    --status-danger-bg: var(--d-status-danger-bg);
+    --status-danger-border: var(--d-status-danger-border);
+    --status-danger-fg: var(--d-status-danger-fg);
+    --status-danger-bar: var(--d-status-danger-bar);
+    --status-warn-bg: var(--d-status-warn-bg);
+    --status-warn-border: var(--d-status-warn-border);
+    --status-warn-fg: var(--d-status-warn-fg);
+    --status-warn-bar: var(--d-status-warn-bar);
+    --status-ok-bg: var(--d-status-ok-bg);
+    --status-ok-border: var(--d-status-ok-border);
+    --status-ok-fg: var(--d-status-ok-fg);
+    --status-ok-bar: var(--d-status-ok-bar);
+    --status-info-bg: var(--d-status-info-bg);
+    --status-info-border: var(--d-status-info-border);
+    --status-info-fg: var(--d-status-info-fg);
+    --status-neutral-bg: var(--d-status-neutral-bg);
+    --status-neutral-border: var(--d-status-neutral-border);
+    --status-neutral-fg: var(--d-status-neutral-fg);
+    --status-neutral-bar: var(--d-status-neutral-bar);
+    --scrollbar-track: var(--d-scrollbar-track);
+    --scrollbar-thumb: var(--d-scrollbar-thumb);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-appearance="light"]) {
+    --shadow-card: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 2px 6px rgba(0, 0, 0, 0.35);
+    --shadow-popover: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 18px 42px rgba(0, 0, 0, 0.62);
+    --shadow-drawer: inset 1px 0 0 rgba(255, 255, 255, 0.05), -14px 0 42px rgba(0, 0, 0, 0.62);
+  }
+}
+
+/* Scoped Light Paper Subtree (for cartographic plates & print previews in Dark Mode) */
+.tcds-paper-surface {
+  color-scheme: only light;
+  background: var(--surface-card);
+  color: var(--ink-primary);
+  accent-color: var(--brand-ink);
+}

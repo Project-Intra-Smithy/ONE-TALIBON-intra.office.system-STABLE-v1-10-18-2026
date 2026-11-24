@@ -56,10 +56,16 @@ class TransactionAuthorizationNormalizationTest extends TestCase
         $employee = User::query()->where('email', 'employee@talibon.demo')->firstOrFail();
         $transaction = $this->transaction($engineering, $budget);
 
+        $adminCapabilities = app(TransactionCapabilities::class)->resolve(['system_admin']);
+        $this->assertTrue($adminCapabilities->allows(TransactionCapabilities::VIEW_ALL));
+        $this->assertFalse($adminCapabilities->allows(TransactionCapabilities::TRANSITION));
+        $this->assertFalse($adminCapabilities->allows(TransactionCapabilities::ASSIGN));
+        $this->assertFalse($adminCapabilities->allows(TransactionCapabilities::MAYOR_DECISION));
+
         $this->assertTrue(Gate::forUser($admin)->allows('view', $transaction));
-        $this->assertTrue(Gate::forUser($admin)->allows('transition', $transaction));
-        $this->assertTrue(Gate::forUser($admin)->allows('assign', $transaction));
-        $this->assertTrue(Gate::forUser($admin)->allows('mayorDecision', $transaction));
+        $this->assertFalse(Gate::forUser($admin)->allows('transition', $transaction));
+        $this->assertFalse(Gate::forUser($admin)->allows('assign', $transaction));
+        $this->assertFalse(Gate::forUser($admin)->allows('mayorDecision', $transaction));
 
         $this->assertTrue(Gate::forUser($engineering)->allows('view', $transaction));
         $this->assertFalse(Gate::forUser($engineering)->allows('transition', $transaction));
@@ -74,6 +80,7 @@ class TransactionAuthorizationNormalizationTest extends TestCase
         $transaction->update(['current_department_id' => $mayorOffice->id]);
 
         $this->assertTrue(Gate::forUser($mayor)->allows('mayorDecision', $transaction->fresh()));
+        $this->assertFalse(Gate::forUser($admin)->allows('mayorDecision', $transaction->fresh()));
     }
 
     private function transaction(User $originUser, User $currentUser): WorkflowTransaction

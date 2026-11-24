@@ -25,7 +25,8 @@ test('B1 filters preserve dataset-backed predicates and reset', () => {
 test('B1 dialog retains Escape, Tab cycle, focus restoration and scroll lock', () => {
   for (const fragment of ["event.key === 'Escape'", "event.key !== 'Tab'", "document.body.style.overflow = 'hidden'", "document.body.style.overflow = previousOverflow", 'closeButtonRef.current?.focus()', 'role="dialog"', 'aria-modal="true"', 'aria-labelledby=', 'aria-describedby=', "requestAnimationFrame(() => document.getElementById"]) assert.ok(page.includes(fragment), fragment);
   assert.match(page, /event.currentTarget === event.target/);
-  assert.doesNotMatch(page, /router\.post|fetch\(|approvePlan|uploadPlan/);
+  assert.match(page, /planningPermissions\?\.canManagePlans/);
+  assert.doesNotMatch(page, /localStorage\.|approvePlan|uploadPlan/);
 });
 test('B1 styling is rooted and includes compact mobile, reduced-motion and high-contrast accommodations', () => {
   assert.match(page, /className="[^"]*\bot-r6-modules ot-r6-plans r8-plans"/);

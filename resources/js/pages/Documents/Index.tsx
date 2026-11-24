@@ -1,7 +1,4 @@
-import '../../../css/aj-document-workspace.css';
 import '../../../css/document-center.css';
-import '../../../css/r8-documents.css';
-import '../../../css/portal-visual-redesign.css';
 import { Link, router, usePage } from '@inertiajs/react';
 import { FileArchive, LibraryBig } from 'lucide-react';
 import { useEffect, useState, type FormEvent } from 'react';
@@ -54,7 +51,7 @@ export default function DocumentCenter({ records, filters, filterOptions, mode, 
         filters.date_to ? 'To: ' + filters.date_to : '',
     ].filter(Boolean);
 
-    return <AppLayout title="Document Center"><PageFrame width="wide" density="comfortable" className="civic-page aj-documents">
+    return <AppLayout title="Document Center"><PageFrame width="wide" density="comfortable" className="civic-page aj-documents mx-auto max-w-[1440px] space-y-4 px-4 py-5 sm:px-6">
         <PageHeader
             eyebrow="Organized municipal records"
             title="Document Center"
@@ -62,39 +59,39 @@ export default function DocumentCenter({ records, filters, filterOptions, mode, 
             icon={LibraryBig}
         />
 
-        <nav className="r8-documents-modes municipal-panel flex w-fit items-center gap-1 p-1" aria-label="Document Center mode">
+        <nav className="r8-documents-modes municipal-panel inline-flex w-fit items-center gap-1 rounded-xl border border-[var(--border-default)] bg-[var(--surface-card)] p-1" aria-label="Document Center mode">
             <Link
                 href="/documents?mode=records"
                 aria-current={mode === 'records' ? 'page' : undefined}
-                className={`inline-flex min-h-9 items-center gap-1.5 rounded-md px-3 text-xs font-bold ${mode === 'records' ? 'bg-[var(--municipal-brand)] text-white' : 'text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
+                className={`inline-flex min-h-9 items-center gap-1.5 rounded-lg px-3 text-xs font-bold transition-colors ${mode === 'records' ? 'bg-[var(--brand-primary)] text-white' : 'text-[var(--ink-secondary)] hover:bg-[var(--surface-hover)] hover:text-[var(--ink-primary)]'}`}
             >
                 <LibraryBig size={14} aria-hidden="true" /> Archive Overview
             </Link>
             <Link
                 href="/documents?mode=files"
                 aria-current={mode === 'files' ? 'page' : undefined}
-                className={`inline-flex min-h-9 items-center gap-1.5 rounded-md px-3 text-xs font-bold ${mode === 'files' ? 'bg-[var(--municipal-brand)] text-white' : 'text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
+                className={`inline-flex min-h-9 items-center gap-1.5 rounded-lg px-3 text-xs font-bold transition-colors ${mode === 'files' ? 'bg-[var(--brand-primary)] text-white' : 'text-[var(--ink-secondary)] hover:bg-[var(--surface-hover)] hover:text-[var(--ink-primary)]'}`}
             >
                 <FileArchive size={14} aria-hidden="true" /> Attached Files
             </Link>
         </nav>
 
-        {mode === 'files' ? <DocumentArchive archive={archive} /> : <div className="r8-documents dc-workspace">
+        {mode === 'files' ? <DocumentArchive archive={archive} /> : <div className="r8-documents dc-workspace grid gap-4 lg:grid-cols-[220px_minmax(0,1fr)] xl:grid-cols-[220px_minmax(0,1fr)_320px]">
             <DocumentCollectionNav collections={filterOptions.recordTypes} current={filters.record_type} onSelect={changeCollection} workspaces={workspaces} />
-            <div className="dc-main">
-                <form onSubmit={submit} className="dc-toolbar" aria-label="Document search and filters">
-                    <div className="dc-toolbar-row"><PortalSearchField label="Search authorized records" placeholder="Search reference, title, office or person" maxLength={160} value={draft.search} onChange={(event) => setDraft({ ...draft, search: event.target.value })} onClear={draft.search ? () => setDraft({ ...draft, search: '' }) : undefined} />
-                        <select aria-label="Office" className="municipal-field" value={draft.office_id ?? ''} onChange={(event) => setDraft({ ...draft, office_id: event.target.value ? Number(event.target.value) : null })}><option value="">All offices</option>{filterOptions.offices.map((office) => <option key={office.id ?? office.code} value={office.id}>{office.shortName || office.name}</option>)}</select>
-                        <select aria-label="Status" className="municipal-field" value={draft.state} onChange={(event) => setDraft({ ...draft, state: event.target.value })}><option value="">All statuses</option>{filterOptions.states.map((state) => <option key={state.value} value={state.value}>{state.label}</option>)}</select>
-                        <button type="submit" className="municipal-action municipal-action--primary">Search</button><button type="button" onClick={reset} className="municipal-action municipal-action--quiet">Reset</button>
+            <div className="dc-main min-w-0 space-y-3">
+                <form onSubmit={submit} className="dc-toolbar tcds-card space-y-3 p-3.5" aria-label="Document search and filters">
+                    <div className="dc-toolbar-row flex flex-wrap items-center gap-2"><PortalSearchField label="Search authorized records" placeholder="Search reference, title, office or person" maxLength={160} value={draft.search} onChange={(event) => setDraft({ ...draft, search: event.target.value })} onClear={draft.search ? () => setDraft({ ...draft, search: '' }) : undefined} />
+                        <select aria-label="Office" className="municipal-field tcds-input w-auto min-w-40" value={draft.office_id ?? ''} onChange={(event) => setDraft({ ...draft, office_id: event.target.value ? Number(event.target.value) : null })}><option value="">All offices</option>{filterOptions.offices.map((office) => <option key={office.id ?? office.code} value={office.id}>{office.shortName || office.name}</option>)}</select>
+                        <select aria-label="Status" className="municipal-field tcds-input w-auto min-w-36" value={draft.state} onChange={(event) => setDraft({ ...draft, state: event.target.value })}><option value="">All statuses</option>{filterOptions.states.map((state) => <option key={state.value} value={state.value}>{state.label}</option>)}</select>
+                        <button type="submit" className="municipal-action municipal-action--primary municipal-primary-button">Search</button><button type="button" onClick={reset} className="municipal-action municipal-action--quiet municipal-secondary-button">Reset</button>
                     </div>
-                    <details className="dc-filters"><summary>Filters{activeFilters.length > 0 ? ' / ' + activeFilters.length + ' applied' : ''}</summary><div className="dc-date-filters"><label>From date<input type="date" className="municipal-field" value={draft.date_from} onChange={(event) => setDraft({ ...draft, date_from: event.target.value })} /></label><label>To date<input type="date" className="municipal-field" value={draft.date_to} onChange={(event) => setDraft({ ...draft, date_to: event.target.value })} /></label><button type="submit" className="municipal-action municipal-action--primary">Apply</button></div><p className="dc-filter-help">Date range: correspondence received dates; transaction received or creation dates; travel-order travel periods. Travel orders display issued dates.</p>{activeFilters.length > 0 && <p className="dc-filter-help">{activeFilters.join(' / ')}</p>}</details>
+                    <details className="dc-filters text-xs text-[var(--ink-secondary)]"><summary className="cursor-pointer font-semibold text-[var(--ink-primary)]">Filters{activeFilters.length > 0 ? ' / ' + activeFilters.length + ' applied' : ''}</summary><div className="dc-date-filters mt-2.5 flex flex-wrap items-end gap-3"><label className="flex flex-col gap-1 font-semibold">From date<input type="date" className="municipal-field tcds-input" value={draft.date_from} onChange={(event) => setDraft({ ...draft, date_from: event.target.value })} /></label><label className="flex flex-col gap-1 font-semibold">To date<input type="date" className="municipal-field tcds-input" value={draft.date_to} onChange={(event) => setDraft({ ...draft, date_to: event.target.value })} /></label><button type="submit" className="municipal-action municipal-action--primary municipal-primary-button">Apply</button></div><p className="dc-filter-help mt-2">Date range: correspondence received dates; transaction received or creation dates; travel-order travel periods. Travel orders display issued dates.</p>{activeFilters.length > 0 && <p className="dc-filter-help mt-1 font-medium text-[var(--ink-primary)]">{activeFilters.join(' / ')}</p>}</details>
                 </form>
-                <div className="dc-context"><span>{collectionLabels[filters.record_type] || 'Authorized records'}</span><span>Newest record dates first</span></div>
+                <div className="dc-context flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--ink-secondary)]"><span className="font-semibold text-[var(--ink-primary)]">{collectionLabels[filters.record_type] || 'Authorized records'}</span><span>Newest record dates first</span></div>
                 <div className="dc-register-group">
                     <div className="min-w-0 space-y-3">
                         <DocumentRegister records={records.data} total={records.total} selectedUrl={selected?.detailUrl || null} onSelect={(record) => setSelectedUrl(record?.detailUrl || null)} />
-                        {records.last_page > 1 && <nav aria-label="Document pages" className="flex flex-wrap items-center justify-between gap-2 text-xs"><span>Page {records.current_page} of {records.last_page}</span><div className="flex flex-wrap gap-2">{records.prev_page_url && <Link href={pageHref(records.prev_page_url)} onClick={() => setSelectedUrl(null)} className="municipal-action municipal-action--secondary">Previous</Link>}{records.next_page_url && <Link href={pageHref(records.next_page_url)} onClick={() => setSelectedUrl(null)} className="municipal-action municipal-action--secondary">Next</Link>}</div></nav>}
+                        {records.last_page > 1 && <nav aria-label="Document pages" className="flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--ink-secondary)]"><span>Page {records.current_page} of {records.last_page}</span><div className="flex flex-wrap gap-2">{records.prev_page_url && <Link href={pageHref(records.prev_page_url)} onClick={() => setSelectedUrl(null)} className="municipal-action municipal-action--secondary municipal-secondary-button">Previous</Link>}{records.next_page_url && <Link href={pageHref(records.next_page_url)} onClick={() => setSelectedUrl(null)} className="municipal-action municipal-action--secondary municipal-secondary-button">Next</Link>}</div></nav>}
                     </div>
                 </div>
             </div>

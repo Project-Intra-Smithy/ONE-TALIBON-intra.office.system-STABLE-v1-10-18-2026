@@ -165,6 +165,7 @@ class OfficeDirectoryCatalogTest extends TestCase
         ])->save();
 
         auth()->guard('web')->login($admin);
+        $this->withSession(['auth_session_version' => (int) $admin->session_version]);
         $this->get('/departments?view=directory')
             ->assertRedirect(route('mfa.challenge'));
     }
@@ -215,6 +216,7 @@ class OfficeDirectoryCatalogTest extends TestCase
             'position_title' => 'Synthetic Test Officer',
             'employment_status' => 'active',
         ]);
+
         return $user->fresh('employee.department');
     }
 

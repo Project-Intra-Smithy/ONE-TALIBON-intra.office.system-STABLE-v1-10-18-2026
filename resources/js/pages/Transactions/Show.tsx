@@ -1,11 +1,25 @@
-import '../../../css/portal-visual-redesign.css';
 import { Link, useForm } from '@inertiajs/react';
-import { ArrowRight, CheckCircle2, Clock3, Radio, RotateCcw, Send, UserRoundCheck } from 'lucide-react';
+import {
+    ArrowLeft,
+    ArrowRight,
+    Building2,
+    CalendarClock,
+    CheckCircle2,
+    Clock3,
+    FileText,
+    HelpCircle,
+    Radio,
+    RotateCcw,
+    Send,
+    UserRoundCheck,
+} from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import EvidenceFields from '../../components/documents/EvidenceFields';
 import EvidenceList, { type EvidencePayload } from '../../components/documents/EvidenceList';
-import AppLayout from '../../layouts/AppLayout';
+import { StatusBadge, toneForWorkState } from '../../components/ui';
 import { useVisiblePolling } from '../../hooks/useVisiblePolling';
+import AppLayout from '../../layouts/AppLayout';
+import { formatDatePH, formatDateTimePH, humanizeSlug } from '../../lib/format';
 
 type Dept = { id: number; code: string; name: string; short_name?: string };
 type Employee = { id: number; employee_number: string; full_name?: string; position_title: string };
@@ -45,7 +59,14 @@ type Accountability = {
     dueAt?: string | null;
     completedAt?: string | null;
 };
-type Permissions = { canTransition: boolean; canMayorDecision: boolean; canAssign: boolean };
+type Permissions = { canTransition: boolean; canMayorDecision: boolean; canAssign: boolean; canClose: boolean };
+type ActionCapability = {
+    allowed: boolean;
+    requiresRemarks?: boolean;
+    requiresTargetDepartment?: boolean;
+    requiresAssignedEmployee?: boolean;
+};
+type AllowedActions = Record<string, ActionCapability>;
 type LivePayload = {
     transaction: {
         status: string;
@@ -57,6 +78,7 @@ type LivePayload = {
     };
     accountability: Accountability;
     permissions: Permissions;
+    allowedActions?: AllowedActions;
     assignableEmployees: Employee[];
     events: Event[];
 };
@@ -68,12 +90,7 @@ type WorkflowForm = {
     evidence: File[];
 };
 
-const dueTone: Record<Accountability['dueState'], string> = {
-    on_track: 'bg-emerald-50 text-emerald-800',
-    due_soon: 'bg-amber-50 text-amber-800',
-    overdue: 'bg-rose-50 text-rose-800',
-    completed: 'bg-slate-100 text-slate-700 dark:bg-slate-900/40 dark:text-slate-300',
-};
+const MARK_REVIEW_ELIGIBLE_STATES = ['submitted', 'returned', 'information_requested'];
 
 export default function Show({
     transaction: initialTx,
@@ -81,19 +98,24 @@ export default function Show({
     assignableEmployees: initialAssignableEmployees,
     accountability: initialAccountability,
     transactionPermissions: initialPermissions,
+    allowedActions: initialAllowedActions,
     evidence,
+    returnTo,
 }: {
     transaction: Tx;
     departments: Dept[];
     assignableEmployees: Employee[];
     accountability: Accountability;
     transactionPermissions: Permissions;
+    allowedActions?: AllowedActions;
     evidence: EvidencePayload;
+    returnTo: string;
 }) {
     const [tx, setTx] = useState(initialTx);
     const [assignableEmployees, setAssignableEmployees] = useState(initialAssignableEmployees);
     const [accountability, setAccountability] = useState(initialAccountability);
     const [permissions, setPermissions] = useState(initialPermissions);
+    const [allowedActions, setAllowedActions] = useState<AllowedActions | undefined>(initialAllowedActions);
     const [liveState, setLiveState] = useState<'checking' | 'current' | 'stale' | 'expired'>('checking');
     const latestEventId = useRef(initialTx.events.reduce((latest, event) => Math.max(latest, event.id), 0));
     const form = useForm<WorkflowForm>({
@@ -109,48 +131,76 @@ export default function Show({
         setAssignableEmployees(initialAssignableEmployees);
         setAccountability(initialAccountability);
         setPermissions(initialPermissions);
+        setAllowedActions(initialAllowedActions);
         setLiveState('checking');
         latestEventId.current = initialTx.events.reduce((latest, event) => Math.max(latest, event.id), 0);
-    }, [initialTx, initialAssignableEmployees, initialAccountability, initialPermissions]);
+    }, [initialTx, initialAssignableEmployees, initialAccountability, initialPermissions, initialAllowedActions]);
 
-    useVisiblePolling(async (signal) => {
-        const response = await fetch(`/transactions/${tx.id}/live?after_event_id=${latestEventId.current}`, {
-            credentials: 'same-origin',
-            headers: { Accept: 'application/json' },
-            signal,
-        });
+    useVisiblePolling(
+        async (signal) => {
+            const response = await fetch(`/transactions/${tx.id}/live?after_event_id=${latestEventId.current}`, {
+                credentials: 'same-origin',
+                headers: { Accept: 'application/json' },
+                signal,
+            });
 
-        if ([401, 403, 419].includes(response.status)) { setLiveState('expired'); return; }
-        if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) { setLiveState('stale'); return; }
+            if ([401, 403, 419].includes(response.status)) {
+                setLiveState('expired');
+                return;
+            }
+            if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) {
+                setLiveState('stale');
+                return;
+            }
 
-        let payload: LivePayload;
-        try { payload = await response.json() as LivePayload; }
-        catch { setLiveState('stale'); return; }
-        if (!Array.isArray(payload?.events) || !payload.transaction || !payload.permissions || !Array.isArray(payload.assignableEmployees)) { setLiveState('stale'); return; }
-        if (payload.events.length > 0) {
-            latestEventId.current = Math.max(latestEventId.current, ...payload.events.map((event) => event.id));
-        }
+            let payload: LivePayload;
+            try {
+                payload = (await response.json()) as LivePayload;
+            } catch {
+                setLiveState('stale');
+                return;
+            }
+            if (
+                !Array.isArray(payload?.events)
+                || !payload.transaction
+                || !payload.accountability
+                || !payload.permissions
+                || !Array.isArray(payload.assignableEmployees)
+            ) {
+                setLiveState('stale');
+                return;
+            }
+            if (payload.events.length > 0) {
+                latestEventId.current = Math.max(latestEventId.current, ...payload.events.map((event) => event.id));
+            }
 
-        setTx((current) => {
-            const knownEventIds = new Set(current.events.map((event) => event.id));
-            const newEvents = payload.events.filter((event) => !knownEventIds.has(event.id));
+            setTx((current) => {
+                const knownEventIds = new Set(current.events.map((event) => event.id));
+                const newEvents = payload.events.filter((event) => !knownEventIds.has(event.id));
 
-            return {
-                ...current,
-                status: payload.transaction.status,
-                current_department: payload.transaction.current_department,
-                assigned_employee: payload.transaction.assigned_employee,
-                received_at: payload.transaction.received_at ?? undefined,
-                due_at: payload.transaction.due_at ?? undefined,
-                completed_at: payload.transaction.completed_at ?? undefined,
-                events: [...current.events, ...newEvents],
-            };
-        });
-        setAssignableEmployees(payload.assignableEmployees);
-        setAccountability(payload.accountability);
-        setPermissions(payload.permissions);
-        setLiveState('current');
-    }, 4000, !form.processing, () => setLiveState('stale'));
+                return {
+                    ...current,
+                    status: payload.transaction.status,
+                    current_department: payload.transaction.current_department,
+                    assigned_employee: payload.transaction.assigned_employee,
+                    received_at: payload.transaction.received_at ?? undefined,
+                    due_at: payload.transaction.due_at ?? undefined,
+                    completed_at: payload.transaction.completed_at ?? undefined,
+                    events: [...current.events, ...newEvents],
+                };
+            });
+            setAssignableEmployees(payload.assignableEmployees);
+            setAccountability(payload.accountability);
+            setPermissions(payload.permissions);
+            if (payload.allowedActions) {
+                setAllowedActions(payload.allowedActions);
+            }
+            setLiveState('current');
+        },
+        4000,
+        !form.processing,
+        () => setLiveState('stale'),
+    );
 
     useEffect(() => {
         form.setData('assigned_employee_id', tx.assigned_employee?.id ?? '');
@@ -165,106 +215,358 @@ export default function Show({
         });
     };
 
-    const formatDate = (value?: string | null) => value ? new Date(value).toLocaleString() : 'Not recorded';
-    const dueLabel = accountability.dueState.replaceAll('_', ' ').toUpperCase();
+    const canMarkReview = allowedActions?.mark_review
+        ? allowedActions.mark_review.allowed
+        : permissions.canTransition && MARK_REVIEW_ELIGIBLE_STATES.includes(tx.status);
+
+    const canSendToMayor = allowedActions?.send_to_mayor
+        ? allowedActions.send_to_mayor.allowed
+        : permissions.canTransition && tx.status === 'for_review';
+
+    const canRequestInformation = allowedActions?.request_information
+        ? allowedActions.request_information.allowed
+        : (permissions.canTransition || permissions.canMayorDecision) && !['approved', 'disapproved', 'closed'].includes(tx.status);
+
+    const originName = tx.origin_department.short_name || tx.origin_department.name;
+    const currentOfficeName = tx.current_department.short_name || tx.current_department.name;
+    const liveStatusLabel = liveState === 'current'
+        ? 'Updates current'
+        : liveState === 'expired'
+            ? 'Session expired — sign in again'
+            : liveState === 'stale'
+                ? 'Updates unavailable — last known state'
+                : 'Checking updates…';
 
     return (
         <AppLayout title={tx.reference_no}>
-            <div className="civic-page mx-auto max-w-6xl space-y-4 sm:space-y-6">
-                <div className="flex items-center justify-between gap-3 sm:gap-4">
-                    <Link href="/transactions" className="text-[12px] font-semibold text-blue-700 sm:text-sm">← Back to My Work</Link>
-                    <div role="status" className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold sm:gap-2 sm:px-3 sm:py-1.5 sm:text-xs ${liveState === 'current' ? 'bg-emerald-50 text-emerald-800' : 'bg-amber-50 text-amber-900'}`}><Radio size={12} className="sm:h-[14px] sm:w-[14px]" />{liveState === 'current' ? 'Updates current' : liveState === 'expired' ? 'Session expired — sign in again' : liveState === 'stale' ? 'Updates unavailable — last known state' : 'Checking updates…'}</div>
+            <div className="civic-page mx-auto max-w-[1440px] space-y-4 px-4 py-4 sm:px-6">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                    <Link href={returnTo} className="inline-flex min-h-9 items-center gap-1.5 text-sm font-semibold text-[var(--brand-ink)] hover:underline">
+                        <ArrowLeft size={15} aria-hidden="true" />
+                        <span>Back to Work Requests</span>
+                    </Link>
+                    <div
+                        role="status"
+                        className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${
+                            liveState === 'current'
+                                ? 'border-[var(--status-ok-border)] bg-[var(--status-ok-bg)] text-[var(--status-ok-fg)]'
+                                : 'border-[var(--status-warn-border)] bg-[var(--status-warn-bg)] text-[var(--status-warn-fg)]'
+                        }`}
+                    >
+                        <Radio size={13} aria-hidden="true" />
+                        <span>{liveStatusLabel}</span>
+                    </div>
                 </div>
 
-                <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:rounded-3xl sm:p-6 md:p-8 dark:bg-[#142236] dark:border-slate-700">
-                    <div className="flex flex-col gap-3 sm:gap-5 lg:flex-row lg:items-start lg:justify-between">
-                        <div>
-                            <div className="text-[10px] font-bold uppercase tracking-[0.16em] text-blue-700 sm:text-xs sm:tracking-[0.18em]">{tx.reference_no}</div>
-                            <h1 className="mt-1.5 text-2xl font-bold leading-tight text-slate-950 sm:mt-2 sm:text-3xl dark:text-slate-100">{tx.title}</h1>
-                            <p className="mt-2 max-w-3xl text-[12px] leading-5 text-slate-600 sm:mt-3 sm:text-sm sm:leading-6 dark:text-slate-300">{tx.description || 'No additional description.'}</p>
+                <section className="tcds-card p-4 sm:p-5">
+                    <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                        <div className="min-w-0">
+                            <div className="flex flex-wrap items-center gap-2">
+                                <span className="font-mono text-xs font-bold uppercase tracking-wider text-[var(--brand-ink)]">
+                                    {tx.reference_no}
+                                </span>
+                                <span className="text-xs text-[var(--ink-secondary)]">· {humanizeSlug(tx.transaction_type)}</span>
+                            </div>
+                            <h1 className="mt-1 text-xl font-extrabold leading-snug tracking-tight text-[var(--ink-primary)] sm:text-2xl">
+                                {tx.title}
+                            </h1>
+                            <p className="mt-1.5 max-w-4xl text-sm leading-6 text-[var(--ink-secondary)]">
+                                {tx.description || 'No additional description.'}
+                            </p>
                         </div>
-                        <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                            <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[9px] font-bold uppercase text-slate-700 sm:px-3 sm:py-1.5 sm:text-xs dark:bg-slate-900/40 dark:text-slate-300">{tx.status.replaceAll('_', ' ')}</span>
-                            <span className="rounded-full bg-amber-50 px-2.5 py-1 text-[9px] font-bold uppercase text-amber-800 sm:px-3 sm:py-1.5 sm:text-xs">{tx.priority}</span>
-                            <span className={`rounded-full px-2.5 py-1 text-[9px] font-bold sm:px-3 sm:py-1.5 sm:text-xs ${dueTone[accountability.dueState]}`}>{dueLabel}</span>
+                        <div className="flex shrink-0 flex-wrap items-center gap-1.5">
+                            <StatusBadge tone={toneForWorkState(tx.status)}>{humanizeSlug(tx.status)}</StatusBadge>
+                            <StatusBadge tone={toneForWorkState(tx.priority)}>{humanizeSlug(tx.priority)}</StatusBadge>
+                            <StatusBadge tone={toneForWorkState(accountability.dueState)}>{humanizeSlug(accountability.dueState)}</StatusBadge>
                         </div>
                     </div>
-                    <div className="mt-4 grid grid-cols-2 gap-3 border-t border-slate-100 pt-4 sm:mt-7 sm:gap-4 sm:pt-6 lg:grid-cols-5 dark:border-slate-700">
-                        <div><div className="text-[9px] uppercase text-slate-400 sm:text-xs dark:text-slate-400">Origin</div><div className="mt-1 text-[12px] font-semibold text-slate-900 sm:text-sm dark:text-slate-100">{tx.origin_department.short_name || tx.origin_department.name}</div></div>
-                        <div><div className="text-[9px] uppercase text-slate-400 sm:text-xs dark:text-slate-400">Current Office</div><div className="mt-1 text-[12px] font-semibold text-blue-800 sm:text-sm">{tx.current_department.short_name || tx.current_department.name}</div></div>
-                        <div><div className="text-[9px] uppercase text-slate-400 sm:text-xs dark:text-slate-400">Responsible Officer</div><div className="mt-1 text-[12px] font-semibold text-slate-900 sm:text-sm dark:text-slate-100">{tx.assigned_employee?.full_name || 'Unassigned'}</div></div>
-                        <div><div className="text-[9px] uppercase text-slate-400 sm:text-xs dark:text-slate-400">Due</div><div className="mt-1 text-[12px] font-semibold text-slate-900 sm:text-sm dark:text-slate-100">{accountability.dueAt ? new Date(accountability.dueAt).toLocaleDateString() : 'Not set'}</div></div>
-                        <div><div className="text-[9px] uppercase text-slate-400 sm:text-xs dark:text-slate-400">Time in Office</div><div className="mt-1 text-[12px] font-semibold text-slate-900 sm:text-sm dark:text-slate-100">{accountability.timeInCurrentOffice}</div></div>
-                    </div>
-                    <div className="mt-3 grid gap-2 rounded-xl bg-slate-50 p-3 text-[9px] text-slate-500 sm:grid-cols-3 sm:text-xs dark:bg-slate-900/40 dark:text-slate-400"><div><span className="font-semibold text-slate-700 dark:text-slate-300">Received:</span> {formatDate(accountability.receivedAt)}</div><div><span className="font-semibold text-slate-700 dark:text-slate-300">Created by:</span> {tx.creator.name}</div><div><span className="font-semibold text-slate-700 dark:text-slate-300">Deadline state:</span> {dueLabel}</div></div>
+
+                    <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5 border-t border-[var(--border-default)] pt-3.5 text-sm sm:grid-cols-3 lg:grid-cols-5">
+                        <div className="min-w-0">
+                            <dt className="text-xs font-bold uppercase tracking-wide text-[var(--ink-secondary)]">Origin</dt>
+                            <dd className="mt-0.5 truncate font-semibold text-[var(--ink-primary)]">{originName}</dd>
+                        </div>
+                        <div className="min-w-0">
+                            <dt className="text-xs font-bold uppercase tracking-wide text-[var(--ink-secondary)]">Current Office</dt>
+                            <dd className="mt-0.5 truncate font-semibold text-[var(--brand-ink)]">{currentOfficeName}</dd>
+                        </div>
+                        <div className="min-w-0">
+                            <dt className="text-xs font-bold uppercase tracking-wide text-[var(--ink-secondary)]">Responsible Officer</dt>
+                            <dd className="mt-0.5 truncate font-semibold text-[var(--ink-primary)]">{tx.assigned_employee?.full_name || 'Unassigned'}</dd>
+                        </div>
+                        <div className="min-w-0">
+                            <dt className="text-xs font-bold uppercase tracking-wide text-[var(--ink-secondary)]">Due</dt>
+                            <dd className="mt-0.5 whitespace-nowrap font-semibold text-[var(--ink-primary)]">
+                                {accountability.dueAt ? formatDatePH(accountability.dueAt) : 'Not set'}
+                            </dd>
+                        </div>
+                        <div className="min-w-0">
+                            <dt className="text-xs font-bold uppercase tracking-wide text-[var(--ink-secondary)]">Time in Office</dt>
+                            <dd className="mt-0.5 whitespace-nowrap font-semibold text-[var(--ink-primary)]">{accountability.timeInCurrentOffice}</dd>
+                        </div>
+                    </dl>
                 </section>
 
-                {evidence.record.length > 0 && (
-                    <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 dark:bg-[#142236] dark:border-slate-700">
-                        <h2 className="text-sm font-bold text-slate-950 sm:text-base dark:text-slate-100">Transaction evidence</h2>
-                        <p className="mt-1 text-[10px] text-slate-500 sm:text-xs dark:text-slate-400">Protected supporting files attached when this transaction was created.</p>
-                        <div className="mt-3"><EvidenceList items={evidence.record} /></div>
-                    </section>
-                )}
-
-                {(permissions.canTransition || permissions.canMayorDecision) && (
-                    <section className="rounded-2xl border border-blue-100 bg-blue-50/60 p-4 sm:rounded-3xl sm:p-6 dark:bg-blue-950/40">
-                        <div className="flex items-center gap-2 text-sm font-bold text-slate-950 sm:text-base dark:text-slate-100"><Send size={16} className="sm:h-[18px] sm:w-[18px]" /> Workflow actions</div>
-                        <textarea value={form.data.remarks} onChange={(e) => form.setData('remarks', e.target.value)} rows={2} className="mt-3 w-full rounded-xl border border-blue-200 bg-white px-3 py-2.5 text-[12px] sm:mt-4 sm:px-4 sm:py-3 sm:text-sm dark:bg-[#142236]" placeholder="Review note / routing remarks" />
-                        <div className="mt-3">
-                            <EvidenceFields files={form.data.evidence} onChange={(files) => form.setData('evidence', files)} errors={form.errors as Record<string, string | undefined>} disabled={form.processing} label="Evidence for this workflow action" />
-                        </div>
-
-                        {permissions.canAssign && (
-                            <div className="mt-3 rounded-xl border border-blue-100 bg-white p-3 sm:mt-4 sm:p-4 dark:bg-[#142236]">
-                                <div className="flex items-center gap-2 text-[11px] font-bold text-slate-800 sm:text-sm dark:text-slate-100"><UserRoundCheck size={15} /> Assign responsible employee</div>
-                                <div className="mt-2 flex gap-2">
-                                    <select value={form.data.assigned_employee_id} onChange={(e) => form.setData('assigned_employee_id', e.target.value ? Number(e.target.value) : '')} className="min-w-0 flex-1 rounded-lg border border-slate-300 bg-white px-2.5 py-2 text-[11px] sm:rounded-xl sm:px-3 sm:py-2.5 sm:text-sm dark:bg-[#142236] dark:border-slate-700"><option value="">Choose employee…</option>{assignableEmployees.map((employee) => <option key={employee.id} value={employee.id}>{employee.full_name || employee.employee_number} · {employee.position_title}</option>)}</select>
-                                    <button disabled={!form.data.assigned_employee_id || form.processing} onClick={() => transition('assign')} className="rounded-lg bg-blue-800 px-3 py-2 text-[11px] font-semibold text-white disabled:opacity-40 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm">Assign</button>
+                <div className="grid gap-4 lg:grid-cols-[minmax(0,1.4fr)_290px] xl:grid-cols-[minmax(0,1.45fr)_320px] lg:items-start">
+                    <div className="min-w-0 space-y-4">
+                        {(permissions.canTransition || permissions.canMayorDecision || permissions.canClose) && (
+                            <section className="tcds-card border-l-4 border-l-[var(--brand-primary)] p-4 sm:p-5">
+                                <div className="flex items-center gap-2 text-sm font-bold text-[var(--ink-primary)]">
+                                    <Send size={16} aria-hidden="true" className="text-[var(--brand-ink)]" />
+                                    <span>Workflow actions</span>
                                 </div>
-                            </div>
-                        )}
+                                <textarea
+                                    value={form.data.remarks}
+                                    onChange={(e) => form.setData('remarks', e.target.value)}
+                                    rows={2}
+                                    className="tcds-input mt-3 min-h-20 resize-y"
+                                    aria-label={permissions.canClose ? 'Completion outcome or routing remarks' : 'Review note / routing remarks'}
+                                    placeholder={permissions.canClose ? 'Completion outcome required to close' : 'Review note / routing remarks'}
+                                />
+                                {(form.errors.remarks || form.errors.action) && (
+                                    <p role="alert" className="mt-2 text-sm font-semibold text-[var(--status-danger-fg)]">
+                                        {form.errors.remarks || form.errors.action}
+                                    </p>
+                                )}
 
-                        {permissions.canTransition && (
-                            <div className="mt-3 flex flex-wrap gap-2 sm:mt-4 sm:gap-3">
-                                <button disabled={form.processing} onClick={() => transition('mark_review')} className="rounded-lg border border-blue-200 bg-white px-3 py-2 text-[12px] font-semibold text-blue-900 disabled:opacity-50 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm dark:bg-[#142236]"><Clock3 className="mr-1.5 inline" size={14} />Mark for Review</button>
-                                <button disabled={form.processing} onClick={() => transition('send_to_mayor')} className="rounded-lg bg-[#0b2852] px-3 py-2 text-[12px] font-semibold text-white disabled:opacity-50 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm">Send to Mayor's Office</button>
-                                <button disabled={form.processing} onClick={() => transition('return_origin')} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-[12px] font-semibold text-slate-700 disabled:opacity-50 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm dark:bg-[#142236] dark:text-slate-300 dark:border-slate-700"><RotateCcw className="mr-1.5 inline" size={14} />Return to Origin</button>
-                                <div className="flex min-w-0 basis-full gap-2 sm:min-w-[280px] sm:flex-1 sm:basis-auto">
-                                    <select value={form.data.target_department_id} onChange={(e) => form.setData('target_department_id', e.target.value ? Number(e.target.value) : '')} className="min-w-0 flex-1 rounded-lg border border-blue-200 bg-white px-2.5 py-2 text-[12px] sm:rounded-xl sm:px-3 sm:py-2.5 sm:text-sm dark:bg-[#142236]"><option value="">Forward to department…</option>{departments.filter((d) => d.id !== tx.current_department.id).map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}</select>
-                                    <button disabled={!form.data.target_department_id || form.processing} onClick={() => transition('forward')} className="rounded-lg border border-blue-200 bg-white px-3 py-2 text-[12px] font-semibold text-blue-900 disabled:opacity-40 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm dark:bg-[#142236]">Forward</button>
+                                {permissions.canClose && tx.status === 'for_review' && liveState !== 'expired' && (
+                                    <div className="mt-3">
+                                        <button
+                                            type="button"
+                                            disabled={form.processing || !form.data.remarks.trim()}
+                                            onClick={() => transition('close')}
+                                            className="municipal-primary-button disabled:opacity-50"
+                                        >
+                                            <CheckCircle2 size={15} aria-hidden="true" />
+                                            <span>Close Work Request</span>
+                                        </button>
+                                    </div>
+                                )}
+
+                                <div className="mt-3">
+                                    <EvidenceFields
+                                        files={form.data.evidence}
+                                        onChange={(files) => form.setData('evidence', files)}
+                                        errors={form.errors as Record<string, string | undefined>}
+                                        disabled={form.processing}
+                                        label="Evidence for this workflow action"
+                                    />
                                 </div>
-                            </div>
+
+                                {permissions.canAssign && (
+                                    <div className="mt-3 rounded-lg border border-[var(--border-default)] bg-[var(--surface-recessed)] p-3">
+                                        <div className="flex items-center gap-1.5 text-xs font-bold text-[var(--ink-primary)]">
+                                            <UserRoundCheck size={14} aria-hidden="true" />
+                                            <span>Assign responsible employee</span>
+                                        </div>
+                                        <div className="mt-2 flex gap-2">
+                                            <select
+                                                value={form.data.assigned_employee_id}
+                                                onChange={(e) => form.setData('assigned_employee_id', e.target.value ? Number(e.target.value) : '')}
+                                                className="tcds-input min-w-0 flex-1"
+                                            >
+                                                <option value="">Choose employee…</option>
+                                                {assignableEmployees.map((employee) => (
+                                                    <option key={employee.id} value={employee.id}>
+                                                        {employee.full_name || employee.employee_number} · {employee.position_title}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <button
+                                                type="button"
+                                                disabled={!form.data.assigned_employee_id || form.processing}
+                                                onClick={() => transition('assign')}
+                                                className="municipal-primary-button disabled:opacity-40"
+                                            >
+                                                Assign
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {permissions.canTransition && (
+                                    <div className="mt-3 flex flex-wrap gap-2">
+                                        {canMarkReview && (
+                                            <button type="button" disabled={form.processing} onClick={() => transition('mark_review')} className="municipal-secondary-button">
+                                                <Clock3 size={14} aria-hidden="true" />
+                                                <span>Mark for Review</span>
+                                            </button>
+                                        )}
+                                        {canSendToMayor && (
+                                            <button type="button" disabled={form.processing} onClick={() => transition('send_to_mayor')} className="municipal-primary-button">
+                                                <span>Send to Mayor&apos;s Office</span>
+                                            </button>
+                                        )}
+                                        {canRequestInformation && !permissions.canMayorDecision && (
+                                            <button type="button" disabled={form.processing} onClick={() => transition('request_information')} className="municipal-secondary-button">
+                                                <HelpCircle size={14} aria-hidden="true" />
+                                                <span>Request Information</span>
+                                            </button>
+                                        )}
+                                        <button type="button" disabled={form.processing} onClick={() => transition('return_origin')} className="municipal-secondary-button">
+                                            <RotateCcw size={14} aria-hidden="true" />
+                                            <span>Return to Origin</span>
+                                        </button>
+                                        <div className="flex min-w-0 basis-full gap-2 sm:min-w-[260px] sm:flex-1 sm:basis-auto">
+                                            <select
+                                                value={form.data.target_department_id}
+                                                onChange={(e) => form.setData('target_department_id', e.target.value ? Number(e.target.value) : '')}
+                                                className="tcds-input min-w-0 flex-1"
+                                            >
+                                                <option value="">Forward to department…</option>
+                                                {departments
+                                                    .filter((d) => d.id !== tx.current_department.id)
+                                                    .map((d) => (
+                                                        <option key={d.id} value={d.id}>{d.name}</option>
+                                                    ))}
+                                            </select>
+                                            <button
+                                                type="button"
+                                                disabled={!form.data.target_department_id || form.processing}
+                                                onClick={() => transition('forward')}
+                                                className="municipal-secondary-button disabled:opacity-40"
+                                            >
+                                                Forward
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {permissions.canMayorDecision && (
+                                    <div className="mt-3 flex flex-wrap gap-2 border-t border-[var(--border-default)] pt-3">
+                                        <button type="button" disabled={form.processing} onClick={() => transition('approve')} className="municipal-primary-button">
+                                            <CheckCircle2 size={14} aria-hidden="true" />
+                                            <span>Approve</span>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            disabled={form.processing}
+                                            onClick={() => transition('disapprove')}
+                                            className="inline-flex min-h-11 items-center gap-1.5 rounded-lg bg-[var(--status-danger-bar)] px-4 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-50"
+                                        >
+                                            Disapprove
+                                        </button>
+                                        <button type="button" disabled={form.processing} onClick={() => transition('request_information')} className="municipal-secondary-button">
+                                            Request Information
+                                        </button>
+                                    </div>
+                                )}
+                            </section>
                         )}
 
-                        {permissions.canMayorDecision && (
-                            <div className="mt-3 flex flex-wrap gap-2 border-t border-blue-100 pt-3 sm:mt-4 sm:gap-3 sm:pt-4">
-                                <button disabled={form.processing} onClick={() => transition('approve')} className="rounded-lg bg-emerald-700 px-3.5 py-2 text-[12px] font-semibold text-white disabled:opacity-50 sm:rounded-xl sm:px-5 sm:py-2.5 sm:text-sm"><CheckCircle2 className="mr-1.5 inline" size={14} />Approve</button>
-                                <button disabled={form.processing} onClick={() => transition('disapprove')} className="rounded-lg bg-rose-700 px-3.5 py-2 text-[12px] font-semibold text-white disabled:opacity-50 sm:rounded-xl sm:px-5 sm:py-2.5 sm:text-sm">Disapprove</button>
-                                <button disabled={form.processing} onClick={() => transition('request_information')} className="rounded-lg border border-blue-200 bg-white px-3.5 py-2 text-[12px] font-semibold text-blue-900 disabled:opacity-50 sm:rounded-xl sm:px-5 sm:py-2.5 sm:text-sm dark:bg-[#142236]">Request Information</button>
-                            </div>
-                        )}
-                    </section>
-                )}
-
-                <section className="rounded-2xl border border-slate-200 bg-white shadow-sm sm:rounded-3xl dark:bg-[#142236] dark:border-slate-700">
-                    <div className="border-b border-slate-100 px-4 py-3 sm:px-6 sm:py-5 dark:border-slate-700"><h2 className="text-sm font-bold text-slate-950 sm:text-base dark:text-slate-100">Routing history</h2><p className="mt-1 text-[10px] text-slate-500 sm:text-sm dark:text-slate-400">Append-only workflow evidence · updates automatically</p></div>
-                    <div className="divide-y divide-slate-100 dark:divide-slate-700">
-                        {tx.events.map((event) => (
-                            <div key={event.id} className="grid gap-2.5 px-4 py-3.5 sm:gap-4 sm:px-6 sm:py-5 md:grid-cols-[32px_1fr_180px]">
-                                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-50 text-blue-800 sm:h-8 sm:w-8 dark:bg-blue-950/40"><ArrowRight size={14} className="sm:h-[15px] sm:w-[15px]" /></div>
+                        <section className="tcds-card overflow-hidden" aria-labelledby="routing-history-heading">
+                            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--border-default)] bg-[var(--surface-recessed)] px-4 py-3 sm:px-5">
                                 <div>
-                                    <div className="text-[13px] font-semibold capitalize text-slate-950 sm:text-base dark:text-slate-100">{event.action.replaceAll('_', ' ')}</div>
-                                    <div className="mt-1 text-[11px] text-slate-600 sm:text-sm dark:text-slate-300">{event.from_department?.short_name || event.from_department?.name || '—'} → {event.to_department?.short_name || event.to_department?.name || '—'}</div>
-                                    {event.remarks && <div className="mt-2 rounded-lg bg-slate-50 px-2.5 py-1.5 text-[11px] text-slate-600 sm:rounded-xl sm:px-3 sm:py-2 sm:text-sm dark:bg-slate-900/40 dark:text-slate-300">{event.remarks}</div>}
-                                    <div className="mt-2 text-[9px] text-slate-400 sm:text-xs dark:text-slate-400">By {event.actor.name}</div>
-                                    <EvidenceList items={evidence.events[String(event.id)] ?? []} compact />
+                                    <h2 id="routing-history-heading" className="text-sm font-bold text-[var(--ink-primary)]">
+                                        Routing history
+                                    </h2>
+                                    <p className="text-xs text-[var(--ink-secondary)]">
+                                        Append-only workflow evidence · updates automatically
+                                    </p>
                                 </div>
-                                <div className="text-[9px] text-slate-500 sm:text-xs md:text-right dark:text-slate-400">{new Date(event.created_at).toLocaleString()}</div>
+                                <span className="text-xs font-semibold text-[var(--ink-secondary)]">
+                                    {tx.events.length} {tx.events.length === 1 ? 'event' : 'events'}
+                                </span>
                             </div>
-                        ))}
+
+                            <div className="divide-y divide-[var(--border-default)]">
+                                {tx.events.map((event) => (
+                                    <div key={event.id} className="grid gap-2.5 px-4 py-3.5 sm:px-5 md:grid-cols-[28px_minmax(0,1fr)_auto]">
+                                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--brand-soft)] text-[var(--brand-ink)]">
+                                            <ArrowRight size={14} aria-hidden="true" />
+                                        </div>
+                                        <div className="min-w-0">
+                                            <div className="text-sm font-semibold text-[var(--ink-primary)]">
+                                                {humanizeSlug(event.action)}
+                                            </div>
+                                            <div className="mt-0.5 text-xs text-[var(--ink-secondary)]">
+                                                {event.from_department?.short_name || event.from_department?.name || 'Origin'} →{' '}
+                                                {event.to_department?.short_name || event.to_department?.name || currentOfficeName}
+                                                {' · '}By {event.actor.name}
+                                            </div>
+                                            {event.remarks && (
+                                                <div className="mt-2 rounded-lg border border-[var(--border-default)] bg-[var(--surface-recessed)] px-3 py-1.5 text-xs leading-5 text-[var(--ink-secondary)]">
+                                                    {event.remarks}
+                                                </div>
+                                            )}
+                                            <EvidenceList items={evidence.events[String(event.id)] ?? []} compact />
+                                        </div>
+                                        <time
+                                            dateTime={event.created_at}
+                                            className="whitespace-nowrap text-xs font-medium text-[var(--ink-secondary)] md:text-right"
+                                        >
+                                            {formatDateTimePH(event.created_at)}
+                                        </time>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
                     </div>
-                </section>
+
+                    <aside className="space-y-4">
+                        <section className="tcds-card p-4">
+                            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--brand-ink)]">
+                                <CalendarClock size={14} aria-hidden="true" />
+                                <span>Filing &amp; Accountability</span>
+                            </div>
+                            <dl className="mt-3 divide-y divide-[var(--border-default)] text-xs">
+                                <div className="flex items-start justify-between gap-3 py-2 first:pt-0">
+                                    <dt className="font-semibold text-[var(--ink-secondary)]">Received</dt>
+                                    <dd className="text-right font-semibold text-[var(--ink-primary)]">
+                                        {accountability.receivedAt ? formatDateTimePH(accountability.receivedAt) : 'Not recorded'}
+                                    </dd>
+                                </div>
+                                <div className="flex items-start justify-between gap-3 py-2">
+                                    <dt className="font-semibold text-[var(--ink-secondary)]">Created by</dt>
+                                    <dd className="text-right font-semibold text-[var(--ink-primary)]">{tx.creator.name}</dd>
+                                </div>
+                                <div className="flex items-start justify-between gap-3 py-2">
+                                    <dt className="font-semibold text-[var(--ink-secondary)]">Origin office</dt>
+                                    <dd className="text-right font-semibold text-[var(--ink-primary)]">{tx.origin_department.name}</dd>
+                                </div>
+                                {accountability.completedAt && (
+                                    <div className="flex items-start justify-between gap-3 py-2 last:pb-0">
+                                        <dt className="font-semibold text-[var(--ink-secondary)]">Completed</dt>
+                                        <dd className="text-right font-semibold text-[var(--status-ok-fg)]">
+                                            {formatDateTimePH(accountability.completedAt)}
+                                        </dd>
+                                    </div>
+                                )}
+                            </dl>
+                        </section>
+
+                        <section className="tcds-card p-4">
+                            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--brand-ink)]">
+                                <FileText size={14} aria-hidden="true" />
+                                <span>Transaction evidence</span>
+                            </div>
+                            <div className="mt-3">
+                                <EvidenceList items={evidence.record} emptyLabel="No supporting files attached to this request." />
+                            </div>
+                        </section>
+
+                        <section className="tcds-card p-4">
+                            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--brand-ink)]">
+                                <Building2 size={14} aria-hidden="true" />
+                                <span>Quick Navigation</span>
+                            </div>
+                            <div className="mt-2.5 flex flex-col gap-1.5 text-xs">
+                                <Link
+                                    href={`/records?search=${encodeURIComponent(tx.reference_no)}`}
+                                    className="rounded-lg border border-[var(--border-default)] px-3 py-2 font-semibold text-[var(--ink-primary)] hover:bg-[var(--surface-hover)]"
+                                >
+                                    Search {tx.reference_no} in Records →
+                                </Link>
+                                <Link
+                                    href="/transactions?view=office_queue"
+                                    className="rounded-lg border border-[var(--border-default)] px-3 py-2 font-semibold text-[var(--ink-primary)] hover:bg-[var(--surface-hover)]"
+                                >
+                                    Open full Work Queue →
+                                </Link>
+                            </div>
+                        </section>
+                    </aside>
+                </div>
             </div>
         </AppLayout>
     );

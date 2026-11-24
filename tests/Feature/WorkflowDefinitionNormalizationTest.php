@@ -17,6 +17,7 @@ class WorkflowDefinitionNormalizationTest extends TestCase
         $this->assertSame([
             'assign',
             'mark_review',
+            'close',
             'forward',
             'send_to_mayor',
             'return_origin',

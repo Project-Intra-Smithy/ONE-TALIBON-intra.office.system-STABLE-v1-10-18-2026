@@ -4,7 +4,7 @@ import { useState, type FormEvent } from 'react';
 import './login.css';
 
 export default function Login() {
-  const form = useForm({ email: '', password: '', remember: false });
+  const form = useForm({ login: '', password: '' });
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -41,23 +41,22 @@ export default function Login() {
 
             <form onSubmit={submit} aria-label="Employee sign-in" aria-busy={form.processing}>
               <div className="employee-login__field">
-                <label htmlFor="login-email">Email address</label>
+                <label htmlFor="login-identity">Username or email</label>
                 <input
-                  id="login-email"
-                  name="email"
-                  type="email"
-                  inputMode="email"
+                  id="login-identity"
+                  name="login"
+                  type="text"
                   autoComplete="username"
-                  value={form.data.email}
-                  onChange={(event) => form.setData('email', event.target.value)}
+                  value={form.data.login}
+                  onChange={(event) => form.setData('login', event.target.value)}
                   required
                   disabled={form.processing}
-                  aria-invalid={Boolean(form.errors.email)}
-                  aria-describedby={form.errors.email ? 'login-email-error' : undefined}
+                  aria-invalid={Boolean(form.errors.login)}
+                  aria-describedby={form.errors.login ? 'login-identity-error' : undefined}
                 />
-                {form.errors.email && (
-                  <p id="login-email-error" className="employee-login__error" role="alert">
-                    {form.errors.email}
+                {form.errors.login && (
+                  <p id="login-identity-error" className="employee-login__error" role="alert">
+                    {form.errors.login}
                   </p>
                 )}
               </div>
@@ -96,16 +95,7 @@ export default function Login() {
                 )}
               </div>
 
-              <label className="employee-login__remember">
-                <input
-                  name="remember"
-                  type="checkbox"
-                  checked={form.data.remember}
-                  onChange={(event) => form.setData('remember', event.target.checked)}
-                  disabled={form.processing}
-                />
-                <span>Remember me on this device</span>
-              </label>
+              <p className="employee-login__google-note">Remember me is disabled for account security. Sign in again when your session ends.</p>
 
               <button type="submit" className="employee-login__submit" disabled={form.processing}>
                 <span>{form.processing ? 'Signing in…' : 'Sign in'}</span>
