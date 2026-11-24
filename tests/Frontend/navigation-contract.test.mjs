@@ -129,9 +129,9 @@ test('dedicated My Department stays head-only and My Tasks is a genuine staged p
     assert.ok(!sidebar.includes('href="/dashboard#personal-tasks"'));
     assert.doesNotMatch(sidebar, /const tasksActive =/);
     const layout = readFileSync(fileURLToPath(new URL('../../resources/js/layouts/AppLayout.tsx', import.meta.url)), 'utf8');
-    assert.ok(layout.includes("['home', 'myTasks', 'myWork', 'calendar']"));
+    assert.ok(layout.includes("['home', 'myTasks', 'myWork', 'correspondence']"));
     assert.ok(!layout.includes('/dashboard#personal-tasks'));
-    assert.ok(layout.includes("key === 'myTasks' ? 'Tasks'"));
+    assert.ok(layout.includes("key === 'myTasks'") && layout.includes("t('navTasks')"));
 
 });
 

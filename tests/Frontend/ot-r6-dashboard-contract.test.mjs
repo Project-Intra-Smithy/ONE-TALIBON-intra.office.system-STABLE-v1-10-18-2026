@@ -30,7 +30,9 @@ test('R6 retains all four backend-role variants and role-scoped operational sect
     assert.doesNotMatch(taskPanel, /<PersonalTaskWorkspace/);
     assert.ok(dashboard.includes('href="/my-department"'));
     assert.match(upper, /groups\.map\(/);
-    assert.match(dashboard, /secondaryGroups\.map\(/);
+    assert.match(dashboard, /kpiTiles\.map\(/);
+    assert.match(dashboard, /<KpiCard/);
+    assert.doesNotMatch(dashboard, /href="\/messages"/);
     assert.match(dashboard, /!experience\?\.department/);
 });
 

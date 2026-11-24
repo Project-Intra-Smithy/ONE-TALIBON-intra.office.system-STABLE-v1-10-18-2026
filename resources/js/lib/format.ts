@@ -87,8 +87,6 @@ export function formatCurrencyPHP(amount?: number | string | null): string {
     }).format(num);
 }
 
-export const formatPHP = formatCurrencyPHP;
-
 export function relativeTimePH(value?: string | null): string {
     if (!value) return '';
     const time = new Date(value).getTime();
@@ -102,3 +100,5 @@ export function relativeTimePH(value?: string | null): string {
     if (hours < 24) return `${hours}h ago`;
     return formatDatePH(value);
 }
+
+export const formatPHP = formatCurrencyPHP;

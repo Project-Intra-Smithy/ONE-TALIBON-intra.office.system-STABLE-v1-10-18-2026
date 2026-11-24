@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
 import { Link, router } from '@inertiajs/react';
-import { KeyRound, LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { ChevronDown, ChevronRight, KeyRound, LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { useState } from 'react';
+import { getUserInitials } from '../../lib/userIdentity';
 import { isPortalPathActive, type PortalNavigationGroup } from '../../navigation/portalNavigation';
 import type { AuthUser } from '../../types';
 import AppearanceControl from '../AppearanceControl';
@@ -18,15 +19,6 @@ type Props = {
     user: AuthUser | null;
 };
 
-function userInitials(name?: string | null): string {
-    const parts = name?.trim().split(/\s+/).filter(Boolean) ?? [];
-
-    if (parts.length === 0) return 'OT';
-    if (parts.length === 1) return parts[0][0]?.toUpperCase() ?? 'OT';
-
-    return `${parts[0][0] ?? ''}${parts[parts.length - 1][0] ?? ''}`.toUpperCase();
-}
-
 export default function PortalSidebar({
     collapsed,
     currentUrl,
@@ -37,75 +29,75 @@ export default function PortalSidebar({
     unreadMemoCount,
     user,
 }: Props) {
-    const [hash, setHash] = useState(() => typeof window === 'undefined' ? '' : window.location.hash);
-    useEffect(() => {
-        const update = () => setHash(window.location.hash);
-        window.addEventListener('hashchange', update);
-        update();
-        return () => window.removeEventListener('hashchange', update);
-    }, [currentUrl]);
-    const navigationUrl = currentUrl.split('#')[0] + hash;
+    const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
     const compact = !mobile && collapsed;
     const position = user?.employee?.position;
-    const department = user?.employee?.department?.name;
-    const secondaryIdentity = position || department;
+    const department = user?.employee?.department?.short_name || user?.employee?.department?.name;
+    const secondaryIdentity = [department, position].filter(Boolean).join(' · ');
     const identityTitle = [user?.name, position, department].filter(Boolean).join(' · ');
 
     return (
-        <div className="portal-sidebar flex h-full flex-col bg-white text-slate-800">
-            <div className={`border-b border-slate-200 ${compact ? 'px-2 py-4' : 'px-5 py-5'}`}>
-                <div className={compact ? 'flex justify-center' : undefined}>
-                    <MunicipalBrand compact iconOnly={compact} />
-                </div>
-
-                {mobile ? (
-                    <div className="mt-3 text-xs text-slate-600">Intra-office workspace</div>
-                ) : (
-                    <div className={`mt-3 flex items-center ${compact ? 'justify-center' : 'justify-between gap-3'}`}>
-                        {!compact && <div className="text-xs text-slate-600">Intra-office workspace</div>}
+        <div className="flex h-full flex-col border-r border-[var(--surface-sidebar-border)] bg-[var(--surface-sidebar)] text-[var(--surface-sidebar-ink)]">
+            <div className={`shrink-0 border-b border-[var(--surface-sidebar-border)] ${compact ? 'px-2 py-3' : 'px-3.5 py-3'}`}>
+                <div className={compact ? 'flex flex-col items-center gap-2' : 'flex min-w-0 items-center justify-between gap-2'}>
+                    <div className="min-w-0">
+                        <MunicipalBrand compact inverse iconOnly={compact} />
+                    </div>
+                    {!mobile && (
                         <button
                             type="button"
                             onClick={onToggleCollapsed}
-                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
+                            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/15 text-[var(--surface-sidebar-ink)] transition-colors hover:bg-[var(--surface-sidebar-hover)] focus-visible:outline-[var(--focus-ring-sidebar)]"
                             aria-label={compact ? 'Expand navigation' : 'Collapse navigation'}
                             aria-expanded={!compact}
                             title={compact ? 'Expand navigation' : 'Collapse navigation'}
                         >
-                            {compact
-                                ? <PanelLeftOpen size={18} aria-hidden="true" />
-                                : <PanelLeftClose size={18} aria-hidden="true" />}
+                            {compact ? <PanelLeftOpen size={18} aria-hidden="true" /> : <PanelLeftClose size={18} aria-hidden="true" />}
                         </button>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
 
             <nav
-                className={`min-h-0 flex-1 overflow-x-hidden overflow-y-auto ${compact ? 'px-2 py-3' : 'px-3 py-4'}`}
+                className={`min-h-0 flex-1 overflow-x-hidden overflow-y-auto ${compact ? 'px-2 py-3' : 'px-3 py-3'}`}
                 aria-label="Primary navigation"
             >
-                <div className={compact ? 'space-y-3' : 'space-y-4'}>
+                <div className="space-y-3">
                     {navigationGroups.map((group) => {
-                        const groupActive = group.items.some((item) => isPortalPathActive(navigationUrl, item.href));
+                        const groupActive = group.items.some((item) => isPortalPathActive(currentUrl, item.href));
+                        const expandable = !compact && !groupActive && !['home', 'work', 'files'].includes(group.key) && group.items.length > 1;
+                        const expanded = groupActive || expandedGroups[group.key] === true;
+                        const groupContentId = `sidebar-group-${group.key}-${mobile ? 'mobile' : 'desktop'}`;
 
                         return (
-                            <section key={group.label} aria-label={group.label}>
-                                {!compact && (
-                                    <div className={`px-2 text-xs font-bold uppercase tracking-[0.08em] ${groupActive ? 'text-[#145a43]' : 'text-slate-600'}`}>
-                                        {group.label}
-                                    </div>
+                            <section key={group.key} aria-label={group.label}>
+                                {!compact && group.key !== 'home' && (
+                                    expandable ? (
+                                        <button
+                                            type="button"
+                                            className="mb-1 flex min-h-11 w-full items-center justify-between gap-2 rounded-lg px-2.5 text-left text-xs font-bold uppercase tracking-wider text-[var(--surface-sidebar-muted)] hover:bg-[var(--surface-sidebar-hover)] hover:text-white focus-visible:outline-[var(--focus-ring-sidebar)]"
+                                            onClick={() => setExpandedGroups((current) => ({ ...current, [group.key]: !expanded }))}
+                                            aria-expanded={expanded}
+                                            aria-controls={groupContentId}
+                                        >
+                                            <span>{group.label}</span>
+                                            {expanded ? <ChevronDown size={15} aria-hidden="true" /> : <ChevronRight size={15} aria-hidden="true" />}
+                                        </button>
+                                    ) : (
+                                        <div className="mb-1 px-2.5 pt-1 text-xs font-bold uppercase tracking-wider text-[var(--surface-sidebar-muted)]">
+                                            {group.label}
+                                        </div>
+                                    )
                                 )}
 
-                                <div className={compact ? 'space-y-1' : 'mt-2 space-y-1'}>
+                                <div id={groupContentId} hidden={expandable && !expanded} className="space-y-0.5">
                                     {group.items.map(({ key, label, href, icon: Icon }) => {
-                                        const active = isPortalPathActive(navigationUrl, href);
-                                        const NavigationLink = href.includes('#') ? 'a' : Link;
+                                        const active = isPortalPathActive(currentUrl, href);
                                         const hasMemoCount = key === 'memoranda' && unreadMemoCount > 0;
-                                        const accessibleLabel = hasMemoCount
-                                            ? `${label}, ${unreadMemoCount} unread`
-                                            : label;
+                                        const accessibleLabel = hasMemoCount ? `${label}, ${unreadMemoCount} unread` : label;
 
-                                        const itemElement = (
-                                            <NavigationLink
+                                        return (
+                                            <Link
                                                 key={key}
                                                 href={href}
                                                 onClick={() => {
@@ -116,47 +108,35 @@ export default function PortalSidebar({
                                                     }
                                                 }}
                                                 aria-current={active ? 'page' : undefined}
-                                                aria-label={compact ? accessibleLabel : undefined}
-                                                title={compact ? accessibleLabel : undefined}
-                                                className={`relative flex min-h-11 items-center rounded-lg py-2 text-base font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-1 focus-visible:ring-offset-white ${
-                                                    compact ? 'justify-center px-2' : 'gap-3 px-3'
+                                                aria-label={compact ? (key === 'ppas' ? 'Programs, Projects and Activities (PPAs)' : accessibleLabel) : undefined}
+                                                title={key === 'ppas' ? 'Programs, Projects and Activities (PPAs)' : compact ? accessibleLabel : undefined}
+                                                className={`relative flex min-h-11 items-center rounded-lg py-2 text-sm font-medium transition-colors focus-visible:outline-[var(--focus-ring-sidebar)] ${
+                                                    compact ? 'justify-center px-2' : 'gap-2.5 px-3'
                                                 } ${
                                                     active
-                                                        ? 'bg-[#edf5ef] text-[#145a43] before:absolute before:inset-y-2 before:left-0 before:w-1 before:rounded-r before:bg-[#145a43]'
-                                                        : 'text-slate-700 hover:bg-slate-100 hover:text-slate-950'
+                                                        ? 'bg-[var(--surface-sidebar-active)] font-bold text-[var(--surface-sidebar-active-ink)] before:absolute before:inset-y-1.5 before:left-0 before:w-[3px] before:rounded-r before:bg-[var(--accent-gold)]'
+                                                        : 'text-[var(--surface-sidebar-ink)] hover:bg-[var(--surface-sidebar-hover)] hover:text-white'
                                                 }`}
                                             >
                                                 <Icon size={18} aria-hidden="true" className="shrink-0" />
-
                                                 {!compact && <span className="min-w-0 flex-1 truncate">{label}</span>}
 
                                                 {hasMemoCount && (
                                                     compact ? (
                                                         <span
                                                             aria-hidden="true"
-                                                            className={`absolute right-1 top-1 flex min-h-4 min-w-4 items-center justify-center rounded-full px-1 text-[9px] font-bold leading-none ${
-                                                                active
-                                                                    ? 'bg-amber-100 text-amber-900'
-                                                                    : 'bg-amber-400 text-slate-950'
-                                                            }`}
+                                                            className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--accent-gold)] px-1 text-xs font-bold leading-none text-[#14211c]"
                                                         >
                                                             {unreadMemoCount > 99 ? '99+' : unreadMemoCount}
                                                         </span>
                                                     ) : (
-                                                        <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${
-                                                            active
-                                                                ? 'bg-amber-100 text-amber-900'
-                                                                : 'bg-amber-400 text-slate-950'
-                                                        }`}>
+                                                        <span className="rounded-full bg-[var(--accent-gold)] px-2 py-0.5 text-xs font-bold text-[#14211c]">
                                                             {unreadMemoCount}
                                                         </span>
                                                     )
                                                 )}
-                                            </NavigationLink>
+                                            </Link>
                                         );
-
-
-                                        return itemElement;
                                     })}
                                 </div>
                             </section>
@@ -165,66 +145,53 @@ export default function PortalSidebar({
                 </div>
             </nav>
 
-            <div className={`relative shrink-0 border-t border-slate-200 ${compact ? 'p-2' : 'p-3 sm:p-4'}`}>
-                {compact ? (
-                    <div className="relative flex flex-col items-center gap-3">
-                        <div
-                            role="img"
-                            aria-label={identityTitle ? `Signed in as ${identityTitle}` : 'Signed in user'}
-                            title={identityTitle || undefined}
-                            className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-100 text-xs font-bold text-slate-800"
-                        >
-                            {userInitials(user?.name)}
-                        </div>
+            <div className={`shrink-0 border-t border-[var(--surface-sidebar-border)] bg-black/15 ${compact ? 'space-y-1.5 p-2' : 'space-y-2 p-3'}`}>
+                <AppearanceControl compact={compact} />
+                <LocaleControl compact={compact} />
+                <Link
+                    href="/security/account"
+                    onClick={onNavigate}
+                    aria-label="Account security"
+                    title={compact ? 'Account security' : undefined}
+                    className={`flex min-h-11 items-center rounded-lg text-sm font-medium text-[var(--surface-sidebar-ink)] transition-colors hover:bg-[var(--surface-sidebar-hover)] hover:text-white focus-visible:outline-[var(--focus-ring-sidebar)] ${
+                        compact ? 'justify-center px-2' : 'gap-2.5 px-3'
+                    }`}
+                >
+                    <KeyRound size={17} aria-hidden="true" className="shrink-0" />
+                    {!compact && <span className="truncate">Account security</span>}
+                </Link>
 
-                        <AppearanceControl compact />
-                        <LocaleControl compact />
-                        <Link href="/security/account" onClick={onNavigate} aria-label="Account security" title="Account security" className="flex h-10 w-10 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-emerald-700"><KeyRound size={17} aria-hidden="true" /></Link>
-
-                        <button
-                            type="button"
-                            onClick={() => router.post('/logout')}
-                            className="flex h-10 w-10 items-center justify-center rounded-lg text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700"
-                            aria-label="Sign out"
-                            title="Sign out"
-                        >
-                            <LogOut size={17} aria-hidden="true" />
-                        </button>
+                <div className={compact ? 'mt-2 flex flex-col items-center gap-1.5' : 'mt-2.5 flex min-w-0 items-center gap-2.5 border-t border-white/10 pt-2.5'}>
+                    <div
+                        role="img"
+                        aria-label={identityTitle ? `Signed in as ${identityTitle}` : 'Signed in user'}
+                        title={identityTitle || undefined}
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/25 bg-white/15 text-xs font-bold text-white"
+                    >
+                        {getUserInitials(user?.name)}
                     </div>
-                ) : (
-                    <div className="relative space-y-2">
-                        <AppearanceControl />
-                        <LocaleControl />
-
-                        <div className="mt-3 border-t border-slate-200 pt-3">
-                            <div
-                                className="text-sm font-semibold leading-snug break-words"
-                                title={user?.name || undefined}
-                            >
-                                {user?.name}
+                    {!compact && (
+                        <div className="min-w-0 flex-1">
+                            <div className="truncate text-sm font-semibold text-white" title={user?.name || undefined}>
+                                {user?.name || 'Signed in'}
                             </div>
-
                             {secondaryIdentity && (
-                                <div
-                                    className="mt-1 text-xs leading-snug text-slate-600 break-words"
-                                    title={secondaryIdentity}
-                                >
+                                <div className="truncate text-xs text-[var(--surface-sidebar-muted)]" title={secondaryIdentity}>
                                     {secondaryIdentity}
                                 </div>
                             )}
-
-                            <Link href="/security/account" onClick={onNavigate} className="mt-2 flex min-h-10 items-center gap-2 rounded-lg px-2 text-sm text-slate-700 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-emerald-700"><KeyRound size={15} aria-hidden="true" /><span>Account security</span></Link>
-                            <button
-                                type="button"
-                                onClick={() => router.post('/logout')}
-                                className="mt-2 flex min-h-10 w-full items-center gap-2 rounded-lg px-2 text-[13px] text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 sm:mt-3 sm:text-sm"
-                            >
-                                <LogOut size={15} aria-hidden="true" />
-                                <span>Sign out</span>
-                            </button>
                         </div>
-                    </div>
-                )}
+                    )}
+                    <button
+                        type="button"
+                        onClick={() => router.post('/logout')}
+                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--surface-sidebar-ink)] transition-colors hover:bg-[var(--surface-sidebar-hover)] hover:text-white focus-visible:outline-[var(--focus-ring-sidebar)]"
+                        aria-label="Sign out"
+                        title="Sign out"
+                    >
+                        <LogOut size={17} aria-hidden="true" />
+                    </button>
+                </div>
             </div>
         </div>
     );

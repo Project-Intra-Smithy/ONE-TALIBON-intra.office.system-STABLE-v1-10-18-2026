@@ -10,7 +10,9 @@ test('AJ PR44 presentation preserves canonical Task write controls and mutation-
     const taskPanel = read('../../resources/js/components/dashboard/r7/lower/R7TaskPanel.tsx');
     const dedicatedTasks = read('../../resources/js/pages/Tasks/Index.tsx');
     const workspace = read('../../resources/js/components/tasks/PersonalTaskWorkspace.tsx');
-    assert.match(dashboard, /<R7LowerRegion actions=\{experience\.quickActions\}\s*\/>/);
+    assert.ok(dashboard.includes('href="/my-tasks"'));
+    assert.doesNotMatch(dashboard, /<PersonalTaskWorkspace\s*\/>/);
+    assert.doesNotMatch(dashboard, /<PersonalTaskMutationPanel\s*\/>/);
     assert.match(dedicatedTasks, /<PersonalTaskWorkspace\s*\/>/);
     assert.match(dedicatedTasks, /<PersonalTaskMutationPanel\s*\/>/);
     assert.doesNotMatch(taskPanel, /<PersonalTaskWorkspace\s*\/>/);

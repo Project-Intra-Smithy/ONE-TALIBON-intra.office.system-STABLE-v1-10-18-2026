@@ -17,13 +17,15 @@ function rule(selector) {
 }
 
 test('mobile modal layout is present in the actually imported shell, not the retired stylesheet', () => {
-    assert.match(layout, /import '\.\.\/\.\.\/css\/ot-reference-shell\.css';/);
+    assert.doesNotMatch(layout, /ot-reference-shell\.css/);
+    assert.match(appCss, /@import '\.\/tokens\.css';/);
+    assert.match(appCss, /@import '\.\/base\.css';/);
     assert.match(app, /import '\.\.\/css\/app\.css';/);
-    assert.match(app, /import '\.\.\/css\/workspace-refinement\.css';/);
+    assert.doesNotMatch(app, /workspace-refinement\.css/);
     assert.doesNotMatch(layout + app + appCss + activeShell, /@import\s+['"](?:\.\/)?phase-one-shell\.css['"]/);
     assert.match(layout, /<MobileNavigation/);
     assert.match(layout, /data-workspace-shell=\{workspaceRefinement \|\| undefined\}/);
-    assert.match(modal, /<dialog id="portal-mobile-navigation"/);
+    assert.match(modal, /<dialog\s+id="portal-mobile-navigation"/);
 });
 
 test('mobile modal occupies the viewport with an actual covering backdrop and bounded drawer', () => {
@@ -51,8 +53,9 @@ test('Navigation and Close are separated, have accessible targets, and keep focu
     assert.match(close, /min-height:\s*44px\s*;/);
     assert.match(rule('[data-workspace-shell] .portal-drawer-heading button:focus-visible'), /outline:\s*3px\s+solid/);
     assert.match(modal, /aria-label="Close navigation"/);
-    assert.match(modal, /onCancel=\{\(event\) => \{ event\.preventDefault\(\); onClose\(\); \}\}/);
-    assert.match(modal, /previousFocus\?\.focus\(\)/);
+    assert.match(modal, /className="tcds-drawer-left"/);
+    assert.match(modal, /closedby: 'any'/);
+    assert.match(modal, /autoFocus/);
 });
 
 test('drawer remains scrollable without hiding account controls when content grows', () => {
