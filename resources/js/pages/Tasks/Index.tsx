@@ -1,28 +1,31 @@
 import { Link } from '@inertiajs/react';
-import { ArrowRight, ListChecks } from 'lucide-react';
-import PageFrame from '../../components/PageFrame';
-import PageHeader from '../../components/PageHeader';
+import { ArrowRight } from 'lucide-react';
 import PersonalTaskMutationPanel from '../../components/tasks/PersonalTaskMutationPanel';
 import PersonalTaskWorkspace from '../../components/tasks/PersonalTaskWorkspace';
+import { PageHeader } from '../../components/ui';
 import AppLayout from '../../layouts/AppLayout';
 
-/** Dedicated Inertia entry; the existing /tasks JSON endpoints own all task data and writes. */
+/** Dedicated Inertia entry; /tasks JSON endpoints own task reads and mutations. */
 export default function Index() {
     return (
         <AppLayout title="My Tasks">
-            <PageFrame className="civic-page aj-page-workspace" density="comfortable">
+            <div className="mx-auto max-w-[1440px] space-y-5 px-4 py-5 sm:px-6">
                 <PageHeader
                     eyebrow="Personal workspace"
                     title="My Tasks"
-                    description="Create, review, start and complete your own Tasks. Formal Work Requests are managed separately."
-                    icon={ListChecks}
-                    aside={<Link href="/transactions" className="municipal-action inline-flex items-center gap-2">Work Requests <ArrowRight size={16} aria-hidden="true" /></Link>}
+                    subtitle="Create, start, and complete personal daily tasks. Formal inter-office Work Requests are tracked in Work Requests."
+                    actions={
+                        <Link href="/transactions" className="municipal-primary-button">
+                            <span>Work Requests</span>
+                            <ArrowRight size={16} aria-hidden="true" />
+                        </Link>
+                    }
                 />
-                <div className="mt-5 space-y-5">
+                <div className="space-y-5">
                     <PersonalTaskMutationPanel />
                     <PersonalTaskWorkspace />
                 </div>
-            </PageFrame>
+            </div>
         </AppLayout>
     );
 }

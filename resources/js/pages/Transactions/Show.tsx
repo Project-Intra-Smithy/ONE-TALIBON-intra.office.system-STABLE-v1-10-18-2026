@@ -1,4 +1,3 @@
-import '../../../css/portal-visual-redesign.css';
 import { Link, useForm } from '@inertiajs/react';
 import {
     ArrowLeft,

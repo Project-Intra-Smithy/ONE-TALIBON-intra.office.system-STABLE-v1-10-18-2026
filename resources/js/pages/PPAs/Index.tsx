@@ -1,6 +1,3 @@
-import '../../../css/ot-r6-modules.css';
-import '../../../css/r8-ppas.css';
-import '../../../css/portal-visual-redesign.css';
 import { router } from '@inertiajs/react';
 import { ClipboardList, Download, Plus } from 'lucide-react';
 import { type FormEvent, useMemo, useState } from 'react';

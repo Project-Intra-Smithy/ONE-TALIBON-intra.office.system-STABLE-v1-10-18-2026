@@ -43,8 +43,8 @@ test('A3 retains guarded Records access and authority boundary', () => {
 });
 
 test('A3 styling is page-scoped, responsive and accessibility-aware', () => {
- assert.match(directory, /import '\.\.\/\.\.\/\.\.\/css\/r8-directory\.css'/);
- assert.match(directory, /ot-r6-modules ot-r6-departments r8-directory/g);
+ assert.doesNotMatch(directory, /import '\.\.\/\.\.\/\.\.\/css\/r8-directory\.css'/);
+ assert.match(directory, /tcds-card/);
  assert.match(css, /\.r8-directory \.r8-directory-card/);
  assert.match(css, /@media \(max-width:767px\)/);
  assert.match(css, /@media \(max-width:390px\)/);

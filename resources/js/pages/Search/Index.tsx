@@ -1,6 +1,4 @@
 import { Link, usePage } from '@inertiajs/react';
-import '../../../css/r8-search.css';
-import '../../../css/portal-visual-redesign.css';
 import {
     ArrowUpRight,
     BookOpen,
@@ -9,17 +7,18 @@ import {
     FolderSearch,
     Inbox,
     ListChecks,
-    Send,
+    Map,
     Search,
+    Send,
     SlidersHorizontal,
     X,
 } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
-import PageFrame from '../../components/PageFrame';
-import PageHeader from '../../components/PageHeader';
+import { useEffect, useId, useMemo, useState } from 'react';
+import { EmptyState, PageHeader, StatusBadge } from '../../components/ui';
 import { municipalPlans } from '../../data/municipal/plans';
 import { ppaRecords } from '../../data/municipal/ppas';
 import AppLayout from '../../layouts/AppLayout';
+import { formatDatePH } from '../../lib/format';
 import { buildPortalNavigation } from '../../navigation/portalNavigation';
 import type { SharedProps } from '../../types';
 
@@ -57,29 +56,29 @@ type Result = {
     date?: string;
 };
 
-const field = 'min-h-10 min-w-0 w-full rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 text-sm text-[var(--municipal-text)] outline-none focus:border-[var(--municipal-focus)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20';
-
-const resultTone: Record<SearchKind, { icon: typeof Compass; shell: string; label: string }> = {
+const resultTone: Record<SearchKind, { icon: typeof Compass; badge: 'ok' | 'info' | 'warn'; iconWrap: string; label: string }> = {
     portal: {
         icon: Compass,
-        shell: 'bg-[#eef8f1] text-[#17633f]',
+        badge: 'ok',
+        iconWrap: 'bg-[var(--status-ok-bg)] text-[var(--status-ok-fg)] border border-[var(--status-ok-border)]',
         label: 'Portal destination',
     },
     plan: {
         icon: BookOpen,
-        shell: 'bg-[#eef5ff] text-[#265fa8]',
+        badge: 'info',
+        iconWrap: 'bg-[var(--status-info-bg)] text-[var(--status-info-fg)] border border-[var(--status-info-border)]',
         label: 'Development plan',
     },
     ppa: {
         icon: ListChecks,
-        shell: 'bg-[#fff8e8] text-[#9a6a08]',
+        badge: 'warn',
+        iconWrap: 'bg-[var(--status-warn-bg)] text-[var(--status-warn-fg)] border border-[var(--status-warn-border)]',
         label: 'PPA reference',
     },
 };
 
 function relevanceScore(item: Result, query: string) {
     if (!query) return 0;
-
     const title = item.title.toLowerCase();
     const reference = item.reference.toLowerCase();
     const office = item.office.toLowerCase();
@@ -94,24 +93,18 @@ function relevanceScore(item: Result, query: string) {
 
     const terms = query.split(/\s+/).filter(Boolean);
     const haystack = [title, reference, office, type].join(' ');
-    const matches = terms.filter((term) => haystack.includes(term)).length;
-
-    return matches * 100;
+    return terms.filter((term) => haystack.includes(term)).length * 100;
 }
-
-const formatArchiveDate = (value?: string | null) => {
-    if (!value) return '';
-    const date = new Date(value);
-    return Number.isNaN(date.getTime())
-        ? value
-        : date.toLocaleDateString('en-PH', { month: 'short', day: 'numeric' });
-};
 
 export default function PortalSearch({ archiveActivity }: { archiveActivity: ArchiveActivity }) {
     const { workspaceExperience, permissions } = usePage<SharedProps>().props;
     const { url } = usePage<SharedProps>();
     const destinations = buildPortalNavigation(workspaceExperience, permissions.navigation).flatMap((group) => group.items);
     const urlQuery = new URLSearchParams(url.split('?')[1] || '').get('q') || '';
+    const searchInputId = useId();
+    const officeFilterId = useId();
+    const yearFilterId = useId();
+    const statusFilterId = useId();
 
     const [query, setQuery] = useState(urlQuery);
     const [scope, setScope] = useState<SearchScope>('all');
@@ -121,9 +114,10 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
     const [filtersOpen, setFiltersOpen] = useState(false);
     const documentsAllowed = destinations.some((item) => item.key === 'documentCenter');
 
-    useEffect(() => { setQuery(urlQuery); }, [urlQuery]);
+    useEffect(() => {
+        setQuery(urlQuery);
+    }, [urlQuery]);
 
-    // Keep the existing q contract shareable without invoking a new search endpoint.
     useEffect(() => {
         const current = new URL(window.location.href);
         if ((current.searchParams.get('q') || '') === query) return;
@@ -182,7 +176,8 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
         ppa: results.filter((item) => item.kind === 'ppa').length,
     }), [results]);
 
-    const options = (key: 'office' | 'year' | 'status') => [...new Set(results.map((item) => item[key]).filter(Boolean))].sort();
+    const options = (key: 'office' | 'year' | 'status') =>
+        [...new Set(results.map((item) => item[key]).filter(Boolean))].sort();
 
     const normalizedQuery = query.trim().toLowerCase();
     const hasAdvancedFilters = Boolean(office || year || status);
@@ -199,8 +194,7 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
         })
         .sort((a, b) => {
             const score = relevanceScore(b, normalizedQuery) - relevanceScore(a, normalizedQuery);
-            if (score !== 0) return score;
-            return a.title.localeCompare(b.title);
+            return score !== 0 ? score : a.title.localeCompare(b.title);
         }), [results, normalizedQuery, scope, office, year, status]);
 
     const reset = () => {
@@ -212,7 +206,7 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
         setFiltersOpen(false);
     };
 
-    const quickAccessKeys = ['documentCenter', 'myWork', 'developmentPlans', 'ppas', 'executiveDepartments', 'calendar'];
+    const quickAccessKeys = ['documentCenter', 'myWork', 'developmentPlans', 'availablePlanningMaps', 'ppas', 'executiveDepartments'];
     const quickAccess = quickAccessKeys
         .map((key) => destinations.find((item) => item.key === key))
         .filter((item): item is NonNullable<typeof item> => Boolean(item));
@@ -226,266 +220,367 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
 
     return (
         <AppLayout title="Search Portal">
-            <PageFrame className="civic-page r8-search max-w-[1440px]" density="compact">
+            <div className="mx-auto max-w-[1440px] space-y-5 px-4 py-5 sm:px-6">
                 <PageHeader
                     eyebrow="ONE TALIBON discovery"
                     title="Search ONE TALIBON"
-                    description="Discover available portal workspaces and local planning references. Official records are searched separately under your existing permissions."
-                    icon={Search}
+                    subtitle="Discover available portal workspaces, planning maps, and local planning references. Official records are searched separately under your permissions."
                 />
 
-                <section className="r8-search-console" aria-label="Portal and reference search">
-                    <div className="mb-4">
-                        <p className="r8-search-kicker">Portal discovery</p>
-                        <h2 className="mt-1 text-lg font-bold text-[var(--municipal-text)]">Find a workspace or reference</h2>
-                        <p className="mt-1 text-xs text-[var(--municipal-muted)]">Results below are portal links and prototype Plans/PPA references, not searchable document files.</p>
-                    </div>
-                    <label className="relative block">
-                        <span className="sr-only">Search portal destinations and planning references</span>
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--municipal-brand)]" size={19} aria-hidden="true" />
-                        <input
-                            type="search"
-                            value={query}
-                            onChange={(event) => setQuery(event.target.value)}
-                            placeholder="Search a workspace, plan, PPA or office..."
-                            className="r8-search-input"
-                        />
-                        {query ? (
-                            <button
-                                type="button"
-                                onClick={() => setQuery('')}
-                                className="absolute right-2 top-1/2 flex min-h-9 min-w-9 -translate-y-1/2 items-center justify-center rounded-md text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]"
-                                aria-label="Clear search"
-                            >
-                                <X size={16} aria-hidden="true" />
-                            </button>
-                        ) : null}
-                    </label>
+                <search>
+                    <section className="tcds-card space-y-4 p-4 sm:p-5" aria-label="Portal and reference search">
+                        <div>
+                            <p className="text-xs font-bold uppercase tracking-wider text-[var(--brand-ink)]">
+                                Portal discovery
+                            </p>
+                            <h2 className="mt-1 text-lg font-bold text-[var(--ink-primary)]">Find a workspace or reference</h2>
+                            <p className="mt-0.5 text-xs text-[var(--ink-secondary)]">
+                                Results below cover authorized portal destinations, planning references, and PPA catalogs.
+                            </p>
+                        </div>
 
-                    <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-                        <div className="flex flex-wrap gap-1.5" aria-label="Filter by reference type">
-                            {scopeOptions.map((option) => (
+                        <div className="relative">
+                            <label htmlFor={searchInputId} className="sr-only">
+                                Search portal destinations and planning references
+                            </label>
+                            <Search
+                                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--brand-ink)]"
+                                size={18}
+                                aria-hidden="true"
+                            />
+                            <input
+                                id={searchInputId}
+                                type="text"
+                                inputMode="search"
+                                value={query}
+                                onChange={(event) => setQuery(event.target.value)}
+                                placeholder="Search a workspace, plan, planning map, PPA, or office…"
+                                className="tcds-input pl-11 pr-11"
+                            />
+                            {query && (
                                 <button
-                                    key={option.key}
                                     type="button"
-                                    onClick={() => setScope(option.key)}
-                                    aria-pressed={scope === option.key}
-                                    className={`inline-flex min-h-11 items-center gap-1.5 rounded-md px-3 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)] ${scope === option.key ? 'bg-[var(--municipal-brand)] text-white' : 'bg-[var(--municipal-surface-subtle)] text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
+                                    onClick={() => setQuery('')}
+                                    className="absolute right-1.5 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-md text-[var(--ink-secondary)] hover:bg-[var(--surface-hover)] hover:text-[var(--ink-primary)]"
+                                    aria-label="Clear search"
                                 >
-                                    {option.label}
-                                    <span className={`rounded-full px-1.5 py-0.5 text-[9px] leading-none ${scope === option.key ? 'bg-white/20 text-white' : 'bg-white text-[var(--municipal-muted)]'}`}>{option.count}</span>
+                                    <X size={16} aria-hidden="true" />
                                 </button>
-                            ))}
+                            )}
                         </div>
 
-                        <button
-                            type="button"
-                            onClick={() => setFiltersOpen((value) => !value)}
-                            aria-expanded={filtersOpen}
-                            aria-controls="r8-search-filters"
-                            className={`inline-flex min-h-11 items-center gap-1.5 rounded-md border px-3 text-xs font-semibold ${filtersOpen || hasAdvancedFilters ? 'border-[var(--municipal-selected-border)] bg-[var(--municipal-selected-bg)] text-[var(--municipal-brand)]' : 'border-[var(--municipal-border)] bg-[var(--municipal-surface)] text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'}`}
-                        >
-                            <SlidersHorizontal size={14} aria-hidden="true" />
-                            More filters{hasAdvancedFilters ? ` · ${[office, year, status].filter(Boolean).length}` : ''}
-                        </button>
-                    </div>
+                        <div className="flex flex-wrap items-center justify-between gap-2.5">
+                            <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter by reference type">
+                                {scopeOptions.map((option) => {
+                                    const active = scope === option.key;
+                                    return (
+                                        <button
+                                            key={option.key}
+                                            type="button"
+                                            onClick={() => setScope(option.key)}
+                                            aria-pressed={active}
+                                            className={`inline-flex min-h-11 items-center gap-2 rounded-lg border px-3.5 text-sm font-semibold transition-colors ${
+                                                active
+                                                    ? 'border-[var(--brand-primary)] bg-[var(--brand-primary)] text-white'
+                                                    : 'border-[var(--border-default)] bg-[var(--surface-recessed)] text-[var(--ink-primary)] hover:bg-[var(--surface-hover)]'
+                                            }`}
+                                        >
+                                            <span>{option.label}</span>
+                                            <span
+                                                className={`rounded-full px-2 py-0.5 text-xs font-bold leading-none ${
+                                                    active
+                                                        ? 'bg-white/20 text-white'
+                                                        : 'bg-[var(--surface-card)] text-[var(--ink-secondary)]'
+                                                }`}
+                                            >
+                                                {option.count}
+                                            </span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
 
-                    {filtersOpen ? (
-                        <div id="r8-search-filters" className="mt-3 grid gap-3 border-t border-[var(--municipal-border)] pt-2 sm:grid-cols-3">
-                            <label className="min-w-0 text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">
-                                Office
-                                <select className={`${field} mt-1`} value={office} onChange={(event) => setOffice(event.target.value)}>
-                                    <option value="">All offices</option>
-                                    {options('office').map((option) => <option key={option}>{option}</option>)}
-                                </select>
-                            </label>
-                            <label className="min-w-0 text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">
-                                Year
-                                <select className={`${field} mt-1`} value={year} onChange={(event) => setYear(event.target.value)}>
-                                    <option value="">All years</option>
-                                    {options('year').map((option) => <option key={option}>{option}</option>)}
-                                </select>
-                            </label>
-                            <label className="min-w-0 text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">
-                                Status
-                                <select className={`${field} mt-1`} value={status} onChange={(event) => setStatus(event.target.value)}>
-                                    <option value="">All statuses</option>
-                                    {options('status').map((option) => <option key={option}>{option}</option>)}
-                                </select>
-                            </label>
+                            <div className="flex items-center gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setFiltersOpen((value) => !value)}
+                                    aria-expanded={filtersOpen}
+                                    aria-controls="portal-search-filters"
+                                    className={`inline-flex min-h-11 items-center gap-2 rounded-lg border px-3.5 text-sm font-semibold transition-colors ${
+                                        filtersOpen || hasAdvancedFilters
+                                            ? 'border-[var(--brand-primary)] bg-[var(--brand-soft)] text-[var(--ink-primary)]'
+                                            : 'border-[var(--border-control)] bg-[var(--surface-card)] text-[var(--ink-primary)] hover:bg-[var(--surface-hover)]'
+                                    }`}
+                                >
+                                    <SlidersHorizontal size={15} aria-hidden="true" />
+                                    <span>More filters{hasAdvancedFilters ? ` (${[office, year, status].filter(Boolean).length})` : ''}</span>
+                                </button>
+                                {(query || scope !== 'all' || hasAdvancedFilters) && (
+                                    <button type="button" onClick={reset} className="municipal-secondary-button">
+                                        Reset
+                                    </button>
+                                )}
+                            </div>
                         </div>
-                    ) : null}
 
-                    {(query || scope !== 'all' || hasAdvancedFilters) ? (
-                        <div className="mt-2 flex items-center justify-between gap-2 border-t border-[var(--municipal-border)] pt-2">
-                            <p className="text-[10px] text-[var(--municipal-muted)]">Only permitted portal destinations and locally defined planning references are included.</p>
-                            <button type="button" onClick={reset} className="min-h-11 shrink-0 rounded-md px-2.5 text-[11px] font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]">Reset</button>
-                        </div>
-                    ) : null}
-                </section>
+                        {filtersOpen && (
+                            <div id="portal-search-filters" className="grid gap-3 border-t border-[var(--border-default)] pt-4 sm:grid-cols-3">
+                                <div>
+                                    <label htmlFor={officeFilterId} className="mb-1 block text-xs font-bold uppercase tracking-wide text-[var(--ink-secondary)]">
+                                        Office
+                                    </label>
+                                    <select id={officeFilterId} className="tcds-input" value={office} onChange={(event) => setOffice(event.target.value)}>
+                                        <option value="">All offices</option>
+                                        {options('office').map((option) => <option key={option}>{option}</option>)}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label htmlFor={yearFilterId} className="mb-1 block text-xs font-bold uppercase tracking-wide text-[var(--ink-secondary)]">
+                                        Year
+                                    </label>
+                                    <select id={yearFilterId} className="tcds-input" value={year} onChange={(event) => setYear(event.target.value)}>
+                                        <option value="">All years</option>
+                                        {options('year').map((option) => <option key={option}>{option}</option>)}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label htmlFor={statusFilterId} className="mb-1 block text-xs font-bold uppercase tracking-wide text-[var(--ink-secondary)]">
+                                        Status
+                                    </label>
+                                    <select id={statusFilterId} className="tcds-input" value={status} onChange={(event) => setStatus(event.target.value)}>
+                                        <option value="">All statuses</option>
+                                        {options('status').map((option) => <option key={option}>{option}</option>)}
+                                    </select>
+                                </div>
+                            </div>
+                        )}
+                    </section>
+                </search>
 
                 {isDiscovery ? (
                     <>
                         <section aria-labelledby="search-scope-summary">
-                            <div className="mb-1.5 flex items-center justify-between gap-3">
-                                <h2 id="search-scope-summary" className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">Browse searchable categories</h2>
-                                <span className="text-[9px] text-[var(--municipal-muted)]">{counts.all} available entries</span>
+                            <div className="mb-2.5 flex items-center justify-between gap-3">
+                                <h2 id="search-scope-summary" className="text-xs font-bold uppercase tracking-wider text-[var(--ink-secondary)]">
+                                    Browse searchable categories
+                                </h2>
+                                <span className="text-xs font-semibold text-[var(--ink-secondary)]">{counts.all} available entries</span>
                             </div>
 
-                            <div className="grid gap-2 sm:grid-cols-3">
+                            <div className="grid gap-3 sm:grid-cols-3">
                                 {([
-                                    ['portal', 'Portal Destinations', counts.portal, Compass, 'bg-[#eef8f1] text-[#17633f]'],
-                                    ['plan', 'Development Plans', counts.plan, BookOpen, 'bg-[#eef5ff] text-[#265fa8]'],
-                                    ['ppa', 'PPAs', counts.ppa, ListChecks, 'bg-[#fff8e8] text-[#9a6a08]'],
-                                ] as const).map(([key, label, count, Icon, tone]) => (
-                                    <button key={key} type="button" onClick={() => setScope(key)} className={`min-h-[96px] rounded-lg border border-[var(--municipal-border)] p-3 text-left transition hover:-translate-y-px ${tone}`}>
+                                    ['portal', 'Portal Destinations', counts.portal, Compass, 'border-l-[var(--status-ok-bar)]', 'bg-[var(--status-ok-bg)] text-[var(--status-ok-fg)]'],
+                                    ['plan', 'Development Plans', counts.plan, BookOpen, 'border-l-[var(--status-info-fg)]', 'bg-[var(--status-info-bg)] text-[var(--status-info-fg)]'],
+                                    ['ppa', 'PPAs', counts.ppa, ListChecks, 'border-l-[var(--status-warn-bar)]', 'bg-[var(--status-warn-bg)] text-[var(--status-warn-fg)]'],
+                                ] as const).map(([key, label, count, Icon, accentBorder, iconTone]) => (
+                                    <button
+                                        key={key}
+                                        type="button"
+                                        onClick={() => setScope(key)}
+                                        className={`tcds-card flex min-h-28 flex-col justify-between border-l-4 ${accentBorder} p-4 text-left transition-colors hover:bg-[var(--surface-hover)]`}
+                                    >
                                         <div className="flex items-start justify-between gap-3">
-                                            <Icon size={19} aria-hidden="true" />
-                                            <strong className="text-2xl leading-none">{count}</strong>
+                                            <span className={`flex h-9 w-9 items-center justify-center rounded-lg ${iconTone}`}>
+                                                <Icon size={18} aria-hidden="true" />
+                                            </span>
+                                            <strong className="text-2xl font-extrabold tabular-nums text-[var(--ink-primary)]">{count}</strong>
                                         </div>
-                                        <div className="mt-2 text-xs font-bold">{label}</div>
-                                        <div className="mt-0.5 text-[10px] opacity-75">Browse this search family</div>
+                                        <div className="mt-3">
+                                            <div className="text-sm font-bold text-[var(--ink-primary)]">{label}</div>
+                                            <div className="mt-0.5 text-xs text-[var(--ink-secondary)]">Browse this search family</div>
+                                        </div>
                                     </button>
                                 ))}
                             </div>
                         </section>
 
                         <section aria-labelledby="archive-activity-heading">
-                            <div className="mb-1.5 flex items-center justify-between gap-3">
-                                <h2 id="archive-activity-heading" className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]">My archive activity</h2>
-                                {documentsAllowed ? <Link href="/documents" className="text-xs font-semibold text-[var(--municipal-brand)]">Open Document Center →</Link> : null}
+                            <div className="mb-2.5 flex items-center justify-between gap-3">
+                                <h2 id="archive-activity-heading" className="text-xs font-bold uppercase tracking-wider text-[var(--ink-secondary)]">
+                                    My archive activity
+                                </h2>
+                                {documentsAllowed && (
+                                    <Link href="/documents" className="text-xs font-semibold text-[var(--brand-ink)] hover:underline">
+                                        Open Document Center →
+                                    </Link>
+                                )}
                             </div>
 
-                            <div className="grid gap-2 lg:grid-cols-2">
+                            <div className="grid gap-4 lg:grid-cols-2">
                                 {([
-                                    ['my_sent', 'My Sent Files', archiveActivity.sentCount, archiveActivity.recentSent, Send, 'bg-[#f5f0ff] text-[#7150a8]'],
-                                    ['my_received', 'My Received Files', archiveActivity.receivedCount, archiveActivity.recentReceived, Inbox, 'bg-[#eef9f8] text-[#247874]'],
-                                ] as const).map(([scopeKey, label, count, items, Icon, tone]) => (
-                                    <div key={scopeKey} className="municipal-panel overflow-hidden">
-                                        <header className="flex min-h-10 items-center justify-between gap-3 border-b border-[var(--municipal-border)] px-3 py-2">
-                                            <div className="flex min-w-0 items-center gap-2">
-                                                <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md ${tone}`}><Icon size={14} aria-hidden="true" /></div>
+                                    ['my_sent', 'My Sent Files', archiveActivity.sentCount, archiveActivity.recentSent, Send],
+                                    ['my_received', 'My Received Files', archiveActivity.receivedCount, archiveActivity.recentReceived, Inbox],
+                                ] as const).map(([scopeKey, label, count, items, Icon]) => (
+                                    <div key={scopeKey} className="tcds-card overflow-hidden">
+                                        <header className="flex items-center justify-between gap-3 border-b border-[var(--border-default)] px-4 py-3">
+                                            <div className="flex min-w-0 items-center gap-2.5">
+                                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--brand-soft)] text-[var(--brand-ink)]">
+                                                    <Icon size={15} aria-hidden="true" />
+                                                </div>
                                                 <div>
-                                                    <h3 className="text-[11px] font-bold text-[var(--municipal-text)]">{label}</h3>
-                                                    <p className="text-[9px] text-[var(--municipal-muted)]">{count} archived file{count === 1 ? '' : 's'}</p>
+                                                    <h3 className="text-sm font-bold text-[var(--ink-primary)]">{label}</h3>
+                                                    <p className="text-xs text-[var(--ink-secondary)]">
+                                                        {count} archived {count === 1 ? 'file' : 'files'}
+                                                    </p>
                                                 </div>
                                             </div>
-                                            {documentsAllowed ? <Link href={`/documents?mode=files&archive_scope=${scopeKey}`} className="shrink-0 text-xs font-bold text-[var(--municipal-brand)]">View archive</Link> : null}
+                                            {documentsAllowed && (
+                                                <Link
+                                                    href={`/documents?mode=files&archive_scope=${scopeKey}`}
+                                                    className="shrink-0 text-xs font-semibold text-[var(--brand-ink)] hover:underline"
+                                                >
+                                                    View archive
+                                                </Link>
+                                            )}
                                         </header>
-                                        <div className="divide-y divide-[var(--municipal-border)]">
-                                            {documentsAllowed ? items.map((item) => (
+                                        <div className="divide-y divide-[var(--border-default)]">
+                                            {documentsAllowed && items.map((item) => (
                                                 <Link
                                                     key={item.publicId}
                                                     href={`/documents?mode=files&archive_scope=${scopeKey}&document=${encodeURIComponent(item.publicId)}`}
-                                                    className="flex min-h-11 items-center gap-2.5 px-3 py-1.5 hover:bg-[var(--municipal-hover)]"
+                                                    className="flex min-h-11 items-center gap-3 px-4 py-2.5 hover:bg-[var(--surface-hover)]"
                                                 >
-                                                    <FileText size={14} className="shrink-0 text-[var(--municipal-brand)]" aria-hidden="true" />
+                                                    <FileText size={15} className="shrink-0 text-[var(--brand-ink)]" aria-hidden="true" />
                                                     <div className="min-w-0 flex-1">
-                                                        <div className="truncate text-[10px] font-semibold text-[var(--municipal-text)]">{item.name}</div>
-                                                        <div className="truncate text-[9px] text-[var(--municipal-muted)]">
+                                                        <div className="truncate text-sm font-semibold text-[var(--ink-primary)]">{item.name}</div>
+                                                        <div className="truncate text-xs text-[var(--ink-secondary)]">
                                                             {item.relatedReference || item.relatedTitle || item.documentType}
                                                             {item.currentOffice ? ` · ${item.currentOffice.shortName || item.currentOffice.name}` : ''}
-                                                            {item.uploadedAt ? ` · ${formatArchiveDate(item.uploadedAt)}` : ''}
+                                                            {item.uploadedAt ? ` · ${formatDatePH(item.uploadedAt)}` : ''}
                                                         </div>
                                                     </div>
-                                                    <ArrowUpRight size={12} className="shrink-0 text-[var(--municipal-muted)]" aria-hidden="true" />
+                                                    <ArrowUpRight size={14} className="shrink-0 text-[var(--ink-secondary)]" aria-hidden="true" />
                                                 </Link>
-                                            )) : null}
-                                            {!items.length ? <p className="px-3 py-3 text-[10px] text-[var(--municipal-muted)]">No {scopeKey === 'my_sent' ? 'sent' : 'received'} files in your authorized archive yet.</p> : null}
+                                            ))}
+                                            {!items.length && (
+                                                <p className="px-4 py-4 text-sm text-[var(--ink-secondary)]">
+                                                    No {scopeKey === 'my_sent' ? 'sent' : 'received'} files in your authorized archive yet.
+                                                </p>
+                                            )}
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         </section>
 
-                        <section className="grid gap-3 lg:grid-cols-[minmax(0,1.4fr)_minmax(280px,.6fr)]">
-                            <div className="municipal-panel overflow-hidden">
-                                <header className="flex min-h-10 items-center justify-between gap-3 border-b border-[var(--municipal-border)] px-3 py-2">
-                                    <div>
-                                        <h2 className="text-[13px] font-bold">Quick access</h2>
-                                        <p className="text-[10px] text-[var(--municipal-muted)]">Common portal destinations available to your account</p>
-                                    </div>
+                        <section className="grid gap-4 lg:grid-cols-[minmax(0,1.4fr)_minmax(280px,0.6fr)]">
+                            <div className="tcds-card overflow-hidden">
+                                <header className="border-b border-[var(--border-default)] px-4 py-3">
+                                    <h2 className="text-sm font-bold text-[var(--ink-primary)]">Quick access</h2>
+                                    <p className="text-xs text-[var(--ink-secondary)]">Common portal destinations available to your account</p>
                                 </header>
                                 <div className="grid sm:grid-cols-2">
                                     {quickAccess.map((item) => {
                                         const Icon = item.icon;
                                         return (
-                                            <Link key={item.key} href={item.href} className="flex min-h-12 items-center gap-2.5 border-b border-[var(--municipal-border)] px-3 py-2 hover:bg-[var(--municipal-hover)] sm:[&:nth-child(odd)]:border-r">
-                                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand)]"><Icon size={15} aria-hidden="true" /></div>
-                                                <span className="min-w-0 flex-1 truncate text-xs font-semibold">{item.label}</span>
-                                                <ArrowUpRight size={13} className="shrink-0 text-[var(--municipal-muted)]" aria-hidden="true" />
+                                            <Link
+                                                key={item.key}
+                                                href={item.href}
+                                                className="flex min-h-12 items-center gap-3 border-b border-[var(--border-default)] px-4 py-3 transition-colors hover:bg-[var(--surface-hover)] sm:odd:border-r"
+                                            >
+                                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--brand-soft)] text-[var(--brand-ink)]">
+                                                    <Icon size={15} aria-hidden="true" />
+                                                </div>
+                                                <span className="min-w-0 flex-1 truncate text-sm font-semibold text-[var(--ink-primary)]">{item.label}</span>
+                                                <ArrowUpRight size={14} className="shrink-0 text-[var(--ink-secondary)]" aria-hidden="true" />
                                             </Link>
                                         );
                                     })}
                                 </div>
                             </div>
 
-                            <div className="municipal-panel flex min-h-[150px] flex-col justify-between p-3">
+                            <div className="tcds-card flex flex-col justify-between p-4">
                                 <div>
-                                    <div className="flex h-9 w-9 items-center justify-center rounded-md bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand)]"><FolderSearch size={17} aria-hidden="true" /></div>
-                                    <h2 className="mt-2 text-[13px] font-bold">Authorized records</h2>
-                                    <p className="mt-1 text-[11px] leading-5 text-[var(--municipal-muted)]">Correspondence, workflow transactions and other authorized records remain in the Records Register.</p>
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--brand-soft)] text-[var(--brand-ink)]">
+                                        <FolderSearch size={18} aria-hidden="true" />
+                                    </div>
+                                    <h2 className="mt-3 text-sm font-bold text-[var(--ink-primary)]">Authorized records</h2>
+                                    <p className="mt-1 text-xs leading-5 text-[var(--ink-secondary)]">
+                                        Correspondence, workflow transactions, and other authorized municipal records remain searchable in the Records Register.
+                                    </p>
                                 </div>
-                                {permissions.navigation.records ? (
-                                    <Link href="/records" className="mt-3 inline-flex min-h-10 items-center justify-between rounded-md border border-[var(--municipal-border)] px-3 text-xs font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]">
-                                        Search Records Register <ArrowUpRight size={14} aria-hidden="true" />
+                                <div className="mt-4 flex flex-wrap gap-2">
+                                    {permissions.navigation.records && (
+                                        <Link href="/records" className="municipal-secondary-button w-full justify-between">
+                                            <span>Search Records Register</span>
+                                            <ArrowUpRight size={15} aria-hidden="true" />
+                                        </Link>
+                                    )}
+                                    <Link href="/planning-maps" className="municipal-secondary-button w-full justify-between">
+                                        <span className="inline-flex items-center gap-2"><Map size={15} aria-hidden="true" /> Municipal Planning Maps</span>
+                                        <ArrowUpRight size={15} aria-hidden="true" />
                                     </Link>
-                                ) : null}
+                                </div>
                             </div>
                         </section>
                     </>
                 ) : (
                     <>
-                        <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
-                            <p aria-live="polite">
-                                <strong className="text-[var(--municipal-text)]">{visible.length}</strong> result{visible.length === 1 ? '' : 's'}
+                        <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
+                            <p aria-live="polite" data-provenance-note="prototype reference entries, not validated municipal approvals or downloadable files" className="text-[var(--ink-secondary)]">
+                                <strong className="text-[var(--ink-primary)]">{visible.length}</strong> {visible.length === 1 ? 'result' : 'results'}
                                 {query ? ` for “${query}”` : ''}
                             </p>
-                            {permissions.navigation.records ? (
-                                <Link href={`/records?search=${encodeURIComponent(query)}`} className="inline-flex min-h-9 items-center gap-1 text-[11px] font-semibold text-[var(--municipal-brand)]">
-                                    Search authorized records <ArrowUpRight size={13} />
+                            {permissions.navigation.records && (
+                                <Link
+                                    href={`/records?search=${encodeURIComponent(query)}`}
+                                    className="inline-flex min-h-10 items-center gap-1 text-xs font-semibold text-[var(--brand-ink)] hover:underline"
+                                >
+                                    <span>Search authorized records</span>
+                                    <ArrowUpRight size={14} aria-hidden="true" />
                                 </Link>
-                            ) : null}
+                            )}
                         </div>
 
-                        <section className="r8-search-results" aria-label="Portal and reference results">
-                            {visible.map((item) => {
-                                const tone = resultTone[item.kind];
-                                const Icon = tone.icon;
+                        {visible.length === 0 ? (
+                            <EmptyState
+                                icon={<Search size={24} aria-hidden="true" />}
+                                title="No matching results"
+                                description="Adjust your search terms, category scope, or filter selection."
+                                action={<button type="button" onClick={reset} className="municipal-secondary-button">Clear search</button>}
+                            />
+                        ) : (
+                            <section className="tcds-card divide-y divide-[var(--border-default)] overflow-hidden" aria-label="Portal and reference results">
+                                {visible.map((item) => {
+                                    const tone = resultTone[item.kind];
+                                    const Icon = tone.icon;
 
-                                return (
-                                    <article key={`${item.kind}:${item.id}`} className="r8-search-result">
-                                        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md ${tone.shell}`}><Icon size={15} aria-hidden="true" /></div>
-                                        <div className="min-w-0 flex-1">
-                                            <Link href={item.href} className="r8-search-result-title block text-[var(--municipal-text)] hover:underline">{item.title}</Link>
-                                            <div className="r8-search-result-meta mt-1">
-                                                <span className="font-semibold text-[var(--municipal-brand)]">{tone.label}</span>
-                                                {item.office ? <span>{item.office}</span> : null}
-                                                <span>{item.status}</span>
-                                                {item.year ? <span>{item.year}</span> : null}
-                                                {item.date ? <span>Updated {item.date}</span> : null}
+                                    return (
+                                        <article key={`${item.kind}:${item.id}`} className="flex items-center gap-3.5 px-4 py-3.5 transition-colors hover:bg-[var(--surface-hover)]">
+                                            <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${tone.iconWrap}`}>
+                                                <Icon size={16} aria-hidden="true" />
                                             </div>
-                                            <div className="r8-search-ref mt-1">{item.reference}</div>
-                                        </div>
-                                        <Link href={item.href} aria-label={`Open ${item.title}`} className="r8-search-action inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-[var(--municipal-brand)] hover:bg-[var(--municipal-brand-soft)]"><span className="sr-only">Open result</span><ArrowUpRight size={15} /></Link>
-                                    </article>
-                                );
-                            })}
-
-                            {!visible.length ? (
-                                <div className="p-6 text-center">
-                                    <Search className="mx-auto text-[var(--municipal-muted)]" size={22} aria-hidden="true" />
-                                    <h2 className="mt-2 text-sm font-bold">No matching results</h2>
-                                    <p className="mt-1 text-xs text-[var(--municipal-muted)]">Change the search terms, category or filters.</p>
-                                    <button type="button" onClick={reset} className="mt-3 min-h-10 rounded-md px-3 text-xs font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]">Clear search</button>
-                                </div>
-                            ) : null}
-                        </section>
-
-                        <p className="text-[10px] text-[var(--municipal-muted)]">Plans and PPAs are prototype reference entries, not validated municipal approvals or downloadable files. Use Records Search or the Document Center for authorized records and files.</p>
+                                            <div className="min-w-0 flex-1">
+                                                <div className="flex flex-wrap items-center gap-2">
+                                                    <Link href={item.href} className="text-sm font-bold text-[var(--ink-primary)] hover:text-[var(--brand-primary)] hover:underline hover:text-[var(--brand-ink)]">
+                                                        {item.title}
+                                                    </Link>
+                                                    <StatusBadge tone={tone.badge}>{tone.label}</StatusBadge>
+                                                </div>
+                                                <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[var(--ink-secondary)]">
+                                                    <span className="font-mono font-semibold text-[var(--brand-ink)]">{item.reference}</span>
+                                                    {item.office && <><span>·</span><span>{item.office}</span></>}
+                                                    <span>·</span>
+                                                    <span>{item.status}</span>
+                                                    {item.year && <><span>·</span><span>{item.year}</span></>}
+                                                    {item.date && <><span>·</span><span>Updated {formatDatePH(item.date)}</span></>}
+                                                </div>
+                                            </div>
+                                            <Link
+                                                href={item.href}
+                                                aria-label={`Open ${item.title}`}
+                                                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-[var(--border-control)] bg-[var(--surface-card)] text-[var(--ink-primary)] transition-colors hover:border-[var(--brand-primary)] hover:bg-[var(--brand-soft)]"
+                                            >
+                                                <ArrowUpRight size={16} aria-hidden="true" />
+                                            </Link>
+                                        </article>
+                                    );
+                                })}
+                            </section>
+                        )}
                     </>
                 )}
-            </PageFrame>
+            </div>
         </AppLayout>
     );
 }

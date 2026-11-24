@@ -54,6 +54,7 @@ const PRIORITY_OPTIONS = [
     { value: 'urgent', label: 'Urgent', description: 'Immediate action' },
 ];
 
+/** Reusable GOV.UK/TCDS accessible Work Request form used both on /transactions/create and in the slide-over drawer. */
 export function WorkRequestCreateForm({
     departments,
     assignableEmployees,
@@ -189,6 +190,7 @@ export function WorkRequestCreateForm({
                 </FormField>
             </div>
 
+            {/* 3 mutually exclusive Priority choices -> visible Radio Cards per GOV.UK/modern-web-guidance */}
             <RadioCardGroup
                 legend="Priority"
                 name="priority"

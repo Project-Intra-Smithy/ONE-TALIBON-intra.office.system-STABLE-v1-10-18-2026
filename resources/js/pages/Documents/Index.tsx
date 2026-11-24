@@ -1,7 +1,3 @@
-import '../../../css/aj-document-workspace.css';
-import '../../../css/document-center.css';
-import '../../../css/r8-documents.css';
-import '../../../css/portal-visual-redesign.css';
 import { Link, router, usePage } from '@inertiajs/react';
 import { FileArchive, LibraryBig } from 'lucide-react';
 import { useEffect, useState, type FormEvent } from 'react';

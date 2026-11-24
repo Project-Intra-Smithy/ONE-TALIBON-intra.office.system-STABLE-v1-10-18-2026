@@ -1,5 +1,3 @@
-import '../../../css/ot-r6-modules.css';
-import '../../../css/portal-visual-redesign.css';
 import { Link, router } from '@inertiajs/react';
 import { BookOpen, Compass, Layers, Map, MapPin, Plus } from 'lucide-react';
 import { type FormEvent, useMemo, useState } from 'react';

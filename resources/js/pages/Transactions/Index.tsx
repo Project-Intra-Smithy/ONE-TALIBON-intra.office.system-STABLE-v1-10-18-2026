@@ -1,16 +1,13 @@
-import '../../../css/aj-page-workspace.css';
-import '../../../css/portal-visual-redesign.css';
-import { Link, router } from '@inertiajs/react';
-import { BriefcaseBusiness, Plus, Search, X } from 'lucide-react';
-import { type FormEvent, useEffect, useState } from 'react';
-import PageFrame from '../../components/PageFrame';
-import PageHeader from '../../components/PageHeader';
-import ProgressiveFilterBar from '../../components/filters/ProgressiveFilterBar';
+import { Link, router, usePage } from '@inertiajs/react';
+import { ArrowRight, Building2, FileText, Plus, RotateCcw, Search } from 'lucide-react';
+import { type FormEvent, useEffect, useId, useState } from 'react';
 import StaffWorkloadTable from '../../components/work-queue/StaffWorkloadTable';
-import WorkItemList from '../../components/work-queue/WorkItemList';
-import WorkScopeTabs from '../../components/work-queue/WorkScopeTabs';
 import type { Filters, Office, Paginator, ScopeGroup, StaffWorkload } from '../../components/work-queue/types';
+import { Dialog, EmptyState, PageHeader, StatusBadge, toneForWorkState } from '../../components/ui';
 import AppLayout from '../../layouts/AppLayout';
+import { formatDatePH, humanizeSlug } from '../../lib/format';
+import { withReturnContext } from '../../navigation/returnContext';
+import { WorkRequestCreateForm } from './Create';
 
 type Props = {
     records: Paginator;
@@ -26,20 +23,24 @@ type Props = {
     originDeliveryQueueAvailable?: boolean;
 };
 
-const humanize = (value: string) => value.replaceAll('_', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
-
 export default function Index({ records, filters, scopeGroups, filterOptions, experience, staffWorkload, originDeliveryQueueAvailable = false }: Props) {
+    const page = usePage();
     const currentView = filters.view || 'all';
     const [search, setSearch] = useState(filters.search);
     const [status, setStatus] = useState(filters.status);
     const [priority, setPriority] = useState(filters.priority);
     const [officeId, setOfficeId] = useState(filters.office_id ? String(filters.office_id) : '');
-    const currentQueue = scopeGroups.flatMap((group) => group.views).find((view) => view.key === currentView);
+    const [createDrawerOpen, setCreateDrawerOpen] = useState(false);
+
+    const searchId = useId();
+    const statusId = useId();
+    const priorityId = useId();
+    const officeSelectId = useId();
+
+    const allQueues = scopeGroups.flatMap((group) => group.views);
+    const currentQueue = allQueues.find((view) => view.key === currentView);
     const currentTitle = currentQueue?.label || 'Work Requests';
-    const requestScopeGroups = scopeGroups.map((group) => ({
-        ...group,
-        label: group.label.toLowerCase() === 'my tasks' ? 'My Work Request Actions' : group.label,
-    }));
+    const hasActiveFilters = Boolean(search || status || priority || officeId);
 
     useEffect(() => {
         setSearch(filters.search);
@@ -56,7 +57,6 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
             priority: overrides.priority ?? priority,
             office_id: overrides.office_id ?? (officeId ? Number(officeId) : null),
         };
-
         return Object.fromEntries(
             Object.entries(next).filter(([, value]) => value !== '' && value !== null && value !== undefined),
         );
@@ -79,82 +79,313 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
         router.get('/transactions', { view: currentView }, { preserveState: true, preserveScroll: true, replace: true });
     };
 
-    const selectedOffice = filterOptions.offices.find((office) => String(office.id) === officeId);
-    const activeFilters = [
-        status ? `Status: ${humanize(status)}` : '',
-        priority ? `Priority: ${humanize(priority)}` : '',
-        officeId ? `Office: ${selectedOffice?.shortName || selectedOffice?.name || officeId}` : '',
-    ].filter(Boolean);
+    const drawerDepartments = filterOptions.offices.length > 0
+        ? filterOptions.offices.map((o) => ({ id: o.id, code: o.code, name: o.name, short_name: o.shortName, branch: 'executive' }))
+        : [{ id: experience.department.id, code: experience.department.code, name: experience.department.name, short_name: experience.department.shortName, branch: 'executive' }];
 
     return (
         <AppLayout title="Work Requests">
-            <PageFrame className="civic-page aj-page-workspace" density="comfortable">
+            <div className="mx-auto max-w-[1440px] space-y-4 px-4 py-5 sm:px-6">
+                {/* Compact single-row PageHeader */}
                 <PageHeader
-                    eyebrow="Formal work queues"
                     title="Work Requests"
-                    description="Review authorized municipal Work Requests, deadlines and office actions. Personal Tasks are managed in My Tasks."
-                    icon={BriefcaseBusiness}
-                    aside={(
-                        <Link
-                            href="/transactions/create"
-                            className="municipal-action w-full sm:w-auto"
-                        >
-                            <Plus size={16} aria-hidden="true" /> New transaction
-                        </Link>
-                    )}
+                    subtitle={`${experience.department.shortName || experience.department.name} · ${experience.hasOfficeScope ? 'Office & personal queues' : 'Personal queues'}`}
+                    actions={
+                        <div className="flex flex-wrap items-center gap-2">
+                            <button
+                                type="button"
+                                onClick={() => setCreateDrawerOpen(true)}
+                                className="municipal-primary-button"
+                            >
+                                <Plus size={16} aria-hidden="true" />
+                                <span>New Work Request</span>
+                            </button>
+                            <Link href="/transactions/create" className="municipal-secondary-button hidden sm:inline-flex">
+                                Full form
+                            </Link>
+                            {originDeliveryQueueAvailable && (
+                                <Link href="/work-requests/origin-delivery-exceptions" className="municipal-secondary-button">
+                                    Origin notice exceptions
+                                </Link>
+                            )}
+                        </div>
+                    }
                 />
 
-                <div className="flex flex-wrap items-center justify-between gap-2 px-1 text-xs text-[var(--ink-secondary)]">
-                    <span>{experience.department.name} · {experience.hasOfficeScope ? 'Personal and office queues' : 'Personal queues'}</span>
-                    <span><span className="font-semibold text-[var(--ink-primary)]">{currentTitle}</span> · {currentQueue?.count ?? records.total} item{(currentQueue?.count ?? records.total) === 1 ? '' : 's'}</span>
-                </div>
+                {/* Horizontal scrollable tabs on phone; single-row wrap on sm+ */}
+                <nav
+                    aria-label="Work Request queues"
+                    className="flex flex-nowrap items-center gap-1.5 overflow-x-auto border-b border-[var(--border-default)] pb-2.5 sm:flex-wrap sm:overflow-visible"
+                >
+                    {allQueues.map((view) => {
+                        const active = currentView === view.key;
+                        const pillTone = view.key === 'overdue'
+                            ? 'bg-[var(--status-danger-bg)] text-[var(--status-danger-fg)]'
+                            : view.key === 'needs_action'
+                                ? 'bg-[var(--status-warn-bg)] text-[var(--status-warn-fg)]'
+                                : active
+                                    ? 'bg-[var(--brand-primary)] text-white'
+                                    : 'bg-[var(--surface-recessed)] text-[var(--ink-secondary)]';
+                        return (
+                            <button
+                                key={view.key}
+                                type="button"
+                                aria-pressed={active}
+                                onClick={() => selectView(view.key)}
+                                className={`inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-lg border px-3 py-2 text-sm font-semibold transition-colors ${
+                                    active
+                                        ? 'border-[var(--brand-primary)] bg-[var(--brand-soft)] text-[var(--ink-primary)]'
+                                        : 'border-transparent bg-transparent text-[var(--ink-secondary)] hover:bg-[var(--surface-hover)] hover:text-[var(--ink-primary)]'
+                                }`}
+                            >
+                                <span>{view.label}</span>
+                                <span className={`rounded-full px-2 py-0.5 text-xs font-bold [font-variant-numeric:tabular-nums] ${pillTone}`}>
+                                    {view.count}
+                                </span>
+                            </button>
+                        );
+                    })}
+                </nav>
 
-                <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-                    <h2 className="text-base font-bold text-[var(--ink-primary)]">Work Request queues</h2>
-                    {originDeliveryQueueAvailable && (
-                        <Link href="/work-requests/origin-delivery-exceptions"
-                            className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-900 hover:bg-amber-100 dark:border-amber-700 dark:bg-amber-950/40 dark:text-amber-200">
-                            Origin notice exceptions
-                        </Link>
-                    )}
-                </div>
-                <WorkScopeTabs groups={requestScopeGroups} currentView={currentView} onSelect={selectView} />
-
-                <form onSubmit={applyFilters}>
-                    <ProgressiveFilterBar
-                        title="Queue filters"
-                        activeFilters={activeFilters}
-                        primary={(
-                            <label className="block">
-                                <span className="mb-1 block text-xs font-bold uppercase tracking-wide text-[var(--ink-secondary)]">Search work</span>
-                                <div className="relative">
-                                    <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--ink-secondary)]" size={15} aria-hidden="true" />
-                                    <input value={search} onChange={(event) => setSearch(event.target.value)} className="tcds-input pl-9" placeholder="Reference, title, office, assignee…" />
-                                </div>
+                {/* Compact single-row filter bar */}
+                <search>
+                    <form
+                        onSubmit={applyFilters}
+                        aria-label="Filter Work Requests"
+                        className="tcds-card flex flex-wrap items-end gap-2.5 p-3"
+                    >
+                        <div className="min-w-[14rem] flex-1">
+                            <label htmlFor={searchId} className="sr-only">
+                                Filter by reference, subject, office, or assignee
                             </label>
-                        )}
-                        common={(
-                            <>
-                                <label className="block lg:min-w-40"><span className="mb-1 block text-xs font-bold uppercase tracking-wide text-[var(--ink-secondary)]">Status</span><select value={status} onChange={(event) => setStatus(event.target.value)} className="tcds-input"><option value="">All statuses</option>{filterOptions.statuses.map((value) => <option key={value} value={value}>{humanize(value)}</option>)}</select></label>
-                                <label className="block lg:min-w-40"><span className="mb-1 block text-xs font-bold uppercase tracking-wide text-[var(--ink-secondary)]">Priority</span><select value={priority} onChange={(event) => setPriority(event.target.value)} className="tcds-input"><option value="">All priorities</option>{filterOptions.priorities.map((value) => <option key={value} value={value}>{humanize(value)}</option>)}</select></label>
-                            </>
-                        )}
-                        advanced={(
-                            <label className="block"><span className="mb-1 block text-xs font-bold uppercase tracking-wide text-[var(--ink-secondary)]">Current office</span><select value={officeId} onChange={(event) => setOfficeId(event.target.value)} className="tcds-input"><option value="">All authorized current offices</option>{filterOptions.offices.map((office) => <option key={office.id} value={office.id}>{office.shortName || office.name}</option>)}</select></label>
-                        )}
-                        actions={(
-                            <>
-                                <button className="municipal-primary-button">Apply</button>
-                                <button type="button" onClick={clearFilters} className="municipal-secondary-button px-3" aria-label="Clear filters"><X size={15} aria-hidden="true" /></button>
-                            </>
-                        )}
-                    />
-                </form>
+                            <div className="relative">
+                                <Search
+                                    size={16}
+                                    aria-hidden="true"
+                                    className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--ink-secondary)]"
+                                />
+                                <input
+                                    id={searchId}
+                                    type="search"
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    placeholder="Filter by ID, subject, assignee…"
+                                    className="tcds-input pl-9"
+                                />
+                            </div>
+                        </div>
 
-                {currentView === 'staff_workload'
-                    ? <StaffWorkloadTable rows={staffWorkload} />
-                    : <WorkItemList records={records} title={currentTitle} />}
-            </PageFrame>
+                        <div className="w-full sm:w-44">
+                            <label htmlFor={statusId} className="sr-only">Status</label>
+                            <select
+                                id={statusId}
+                                value={status}
+                                onChange={(e) => setStatus(e.target.value)}
+                                className="tcds-input"
+                            >
+                                <option value="">Status: All</option>
+                                {filterOptions.statuses.map((val) => (
+                                    <option key={val} value={val}>{humanizeSlug(val)}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="w-full sm:w-40">
+                            <label htmlFor={priorityId} className="sr-only">Priority</label>
+                            <select
+                                id={priorityId}
+                                value={priority}
+                                onChange={(e) => setPriority(e.target.value)}
+                                className="tcds-input"
+                            >
+                                <option value="">Priority: All</option>
+                                {filterOptions.priorities.map((val) => (
+                                    <option key={val} value={val}>{humanizeSlug(val)}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {filterOptions.offices.length > 1 && (
+                            <div className="w-full sm:w-44">
+                                <label htmlFor={officeSelectId} className="sr-only">Office</label>
+                                <select
+                                    id={officeSelectId}
+                                    value={officeId}
+                                    onChange={(e) => setOfficeId(e.target.value)}
+                                    className="tcds-input"
+                                >
+                                    <option value="">Office: All</option>
+                                    {filterOptions.offices.map((office) => (
+                                        <option key={office.id} value={office.id}>{office.shortName || office.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
+
+                        <div className="flex items-center gap-2">
+                            <button type="submit" className="municipal-primary-button">
+                                Apply
+                            </button>
+                            {hasActiveFilters && (
+                                <button type="button" onClick={clearFilters} className="municipal-secondary-button">
+                                    <RotateCcw size={15} aria-hidden="true" />
+                                    <span>Reset</span>
+                                </button>
+                            )}
+                        </div>
+                    </form>
+                </search>
+
+                {/* Live operational register visible above the fold */}
+                {currentView === 'staff_workload' ? (
+                    <StaffWorkloadTable rows={staffWorkload} />
+                ) : records.data.length === 0 ? (
+                    <EmptyState
+                        icon={<FileText size={24} aria-hidden="true" />}
+                        title={`No items in ${currentTitle}`}
+                        description={
+                            hasActiveFilters
+                                ? 'No work requests match your current search or filter settings.'
+                                : 'There are currently no work requests queued in this view.'
+                        }
+                        action={
+                            hasActiveFilters ? (
+                                <button type="button" onClick={clearFilters} className="municipal-secondary-button">
+                                    Clear filters
+                                </button>
+                            ) : undefined
+                        }
+                    />
+                ) : (
+                    <section aria-labelledby="work-queue-caption">
+                        <div className="mb-2 flex flex-wrap items-center justify-between gap-2 px-1 text-xs font-medium text-[var(--ink-secondary)]">
+                            <h2 id="work-queue-caption" className="text-sm font-bold text-[var(--ink-primary)]">
+                                {currentTitle}
+                            </h2>
+                            <span>
+                                Showing {records.from ?? 1}–{records.to ?? records.data.length} of {records.total}
+                            </span>
+                        </div>
+
+                        <div tabIndex={0} role="region" aria-labelledby="work-queue-caption" className="tcds-table-region">
+                            <table className="tcds-table" data-stack-mobile="true">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Reference &amp; Subject</th>
+                                        <th scope="col">Office / Assignee</th>
+                                        <th scope="col">Priority</th>
+                                        <th scope="col">Due</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col" className="text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {records.data.map((item) => {
+                                        const href = withReturnContext(`/transactions/${item.id}`, page.url, '/transactions');
+                                        const isOverdue = item.dueState === 'overdue';
+                                        return (
+                                            <tr key={item.reference}>
+                                                <th scope="row" className="max-w-xs font-normal xl:max-w-md">
+                                                    <div className="font-mono text-xs font-bold text-[var(--brand-ink)]">
+                                                        {item.reference}
+                                                    </div>
+                                                    <Link
+                                                        href={href}
+                                                        className="mt-0.5 block text-sm font-semibold leading-snug text-[var(--ink-primary)] hover:text-[var(--brand-primary)] hover:underline"
+                                                    >
+                                                        {item.title}
+                                                    </Link>
+                                                </th>
+                                                <td data-label="Assignee" className="whitespace-nowrap">
+                                                    <div className="min-w-0">
+                                                        <div className="text-sm font-medium text-[var(--ink-primary)]">
+                                                            {item.assignedEmployee?.name || 'Unassigned'}
+                                                        </div>
+                                                        <div className="text-xs text-[var(--ink-secondary)]">
+                                                            {item.currentOffice?.shortName || item.currentOffice?.name || '—'}
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td data-label="Priority" className="whitespace-nowrap">
+                                                    <StatusBadge tone={toneForWorkState(item.priority)}>
+                                                        {humanizeSlug(item.priority)}
+                                                    </StatusBadge>
+                                                </td>
+                                                <td data-label="Due" className={`whitespace-nowrap text-xs font-medium xl:text-sm ${isOverdue ? 'font-bold text-[var(--status-danger-fg)]' : 'text-[var(--ink-secondary)]'}`}>
+                                                    {isOverdue ? `Overdue · ${formatDatePH(item.dueAt, { month: 'short', day: 'numeric' })}` : formatDatePH(item.dueAt, { month: 'short', day: 'numeric' })}
+                                                </td>
+                                                <td data-label="Status" className="whitespace-nowrap">
+                                                    <StatusBadge tone={toneForWorkState(item.status)}>
+                                                        {humanizeSlug(item.status)}
+                                                    </StatusBadge>
+                                                </td>
+                                                <td data-label="Action" className="whitespace-nowrap text-right">
+                                                    <Link
+                                                        href={href}
+                                                        className="inline-flex min-h-10 items-center gap-1 rounded-lg border border-[var(--border-control)] bg-[var(--surface-card)] px-2.5 py-1.5 text-xs font-semibold text-[var(--ink-primary)] transition-colors hover:border-[var(--brand-primary)] hover:bg-[var(--brand-soft)] xl:min-h-11 xl:px-3 xl:text-sm"
+                                                    >
+                                                        <span>{item.assignedEmployee ? 'Open' : 'Assign'}</span>
+                                                        <ArrowRight size={14} aria-hidden="true" />
+                                                    </Link>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                )}
+
+                {/* Native top-layer slide-over drawer with sticky action footer */}
+                <Dialog
+                    open={createDrawerOpen}
+                    onClose={() => setCreateDrawerOpen(false)}
+                    title="New Work Request"
+                    description="Route accountable work directly from your queue."
+                    variant="drawer-right"
+                    footer={
+                        <div className="flex w-full flex-wrap items-center justify-between gap-2.5">
+                            <button
+                                type="button"
+                                onClick={() => setCreateDrawerOpen(false)}
+                                className="municipal-secondary-button"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                form="work-request-drawer-form"
+                                className="municipal-primary-button"
+                            >
+                                <Building2 size={16} aria-hidden="true" />
+                                <span>Submit Work Request</span>
+                                <ArrowRight size={16} aria-hidden="true" />
+                            </button>
+                        </div>
+                    }
+                >
+                    <WorkRequestCreateForm
+                        compact
+                        formId="work-request-drawer-form"
+                        hideFooter
+                        departments={drawerDepartments}
+                        assignableEmployees={staffWorkload.map((s, i) => ({
+                            id: i + 1,
+                            employee_number: `EMP-${i + 1}`,
+                            full_name: s.employee,
+                            department_id: experience.department.id,
+                            position_title: s.position || 'Municipal Staff',
+                        }))}
+                        requestCategories={{
+                            planning: ['Review planning evidence', 'AIP amendment endorsement', 'Zoning clearance verification'],
+                            administrative: ['Inter-office endorsement', 'Document routing', 'Records certification'],
+                        }}
+                        actionOptions={['Review', 'Approve & Endorse', 'Verify & Certify', 'Process']}
+                        onCancel={() => setCreateDrawerOpen(false)}
+                    />
+                </Dialog>
+            </div>
         </AppLayout>
     );
 }
