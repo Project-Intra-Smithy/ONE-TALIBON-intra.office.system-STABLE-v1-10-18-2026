@@ -23,8 +23,8 @@ FROZEN_R3_FINAL_SHA="480da17d02bb58c253d5e65cbbd3be5dcc08df0c"
 FROZEN_R4_FINAL_SHA="3a51759346e094dfe57c97bf5575bf200c194f23"
 FROZEN_R5_FINAL_SHA="9869b2a23f66e0d5e4b791615a371ea49e890001"
 CANONICAL_MAIN_RECONCILED_SHA="71876d3e8f7185e11504e7d5c3546be8c14b2957"
-FROZEN_TCDS_COMPLETION_SOURCE_SHA="28ac867897ace23dacdbcb047adf0bbe12056c54"
-FROZEN_TCDS_COMPLETION_SOURCE_TREE="bfcd6d5b8113a0488618c1d97ad4f38f16e86a7f"
+FROZEN_TCDS_COMPLETION_SOURCE_SHA="c807749a4777894e19ca51ac19df05be7bb3c3a3"
+FROZEN_TCDS_COMPLETION_SOURCE_TREE="6d40395e964dc74cc6080660b43be7b2ad7a2352"
 PINNED_R3_WORKFLOW_BLOB="ac4754df6f859a7fe4a076154044124d0e228956"
 
 fail() {
@@ -98,7 +98,7 @@ for path in "${r3_source_paths[@]}"; do
   test "$actual_blob" = "${PINNED_R3_BLOBS[$path]}" || fail "Pinned R3 source-fix blob mismatch for $path (got $actual_blob expected ${PINNED_R3_BLOBS[$path]})"
 done
 
-# 6. Exact 53-file non-CI TCDS v2 full presentation port & main-reconciliation delta after frozen R5 (zero backend/PHP changes) + pinned blob equality
+# 6. Exact 55-file non-CI TCDS v2 full presentation port & self-review repairs after frozen R5 (zero backend/PHP changes) + pinned blob equality
 declare -A PINNED_TCDS_COMPLETION_BLOBS=(
   [".forge/memory/WORK-PACKAGE-REGISTER.md"]="1501f4621858964a6c85fde3e54a490a358a1b48"
   ["package-lock.json"]="803b838f24fea2d9dbbd498806670dc7d3911122"
@@ -114,18 +114,19 @@ declare -A PINNED_TCDS_COMPLETION_BLOBS=(
   ["resources/js/components/dashboard/SystemOverview.tsx"]="cbea449b2deb1309e52c5e90d6f41f33003767d8"
   ["resources/js/components/dashboard/types.ts"]="a19f1481b14ba45b9789c2d42fe12765dc16600b"
   ["resources/js/components/filters/ProgressiveFilterBar.tsx"]="86e3eeda69e7caea67abcdce940688d1f689d9cc"
+  ["resources/js/components/portal/PortalWorkspaceNav.tsx"]="e651c2beaf67b9f7dc54d869ceadd49c9c28c92b"
   ["resources/js/components/shell/MobileNavigation.tsx"]="cebb3d1787485b16411174e311bec22f32cb7a59"
   ["resources/js/components/shell/PortalSidebar.tsx"]="eecc11583c33b261770bd12a4fcde9edbd9503cd"
   ["resources/js/components/shell/PortalTools.tsx"]="4324d795c107f6723b0dd49eae42a3a9585dc5c0"
   ["resources/js/layouts/AppLayout.tsx"]="4763ed7f5833c018f09de31fa8574aafe096ff70"
   ["resources/js/lib/format.ts"]="382a0f2a7805a37d0d6dcaa8f4323a40e19520eb"
   ["resources/js/pages/Admin/Index.tsx"]="c4046c1c96c5de5d9b30b514d38937a187f930cb"
-  ["resources/js/pages/Calendar/Index.tsx"]="020f40e4becf4485b25b33970a3df97fe0dcedad"
+  ["resources/js/pages/Calendar/Index.tsx"]="ac9b81af75e0587175154f4361d45805755e0f0f"
   ["resources/js/pages/Correspondence/Index.tsx"]="886108966f98db7ba123f3fff5a91b2c04b758da"
   ["resources/js/pages/Correspondence/Show.tsx"]="e92549e8e78f9fe2100f4a0727210c27ad3d5910"
-  ["resources/js/pages/Dashboard.tsx"]="9ca20b691592d6b790fafbb76070c3f54c9cfd0e"
+  ["resources/js/pages/Dashboard.tsx"]="c7a58a7e0b12bc095c45fdc9494d9c7bc856b6de"
   ["resources/js/pages/Departments/Index.tsx"]="a61a9e476f6409d225aff396c637f85465a15297"
-  ["resources/js/pages/Documents/Index.tsx"]="037ee7203bbe669ff07d4a1d95840e62f97bdae6"
+  ["resources/js/pages/Documents/Index.tsx"]="848574bc1835ad6892baf643ee67a1e8513ed3b8"
   ["resources/js/pages/Employees/DirectoryProfile.tsx"]="15400da4b0ca296adbf1693bc08611aafb26aa4f"
   ["resources/js/pages/Employees/Index.tsx"]="cf5c2dbdcc0bec849488141a260714054882f2a9"
   ["resources/js/pages/Memoranda/Create.tsx"]="fbe4eb75442784c33217158328b4ca47a56904c6"
@@ -133,13 +134,13 @@ declare -A PINNED_TCDS_COMPLETION_BLOBS=(
   ["resources/js/pages/Memoranda/Show.tsx"]="acadf0061d36928d3135bb92fcec6a3aa6eeb51b"
   ["resources/js/pages/PPAs/Index.tsx"]="ee07ab0d4135259c79570b2026b564e6c57ace03"
   ["resources/js/pages/PlanningMaps/Index.tsx"]="eece778640f93364baf38459a7dbd6f297d9a752"
-  ["resources/js/pages/Plans/Index.tsx"]="cb176735cba51d5605f7f6f985f7f7d03606c29f"
+  ["resources/js/pages/Plans/Index.tsx"]="d22fc146b9982384ab6838522534a2c2adfc13b8"
   ["resources/js/pages/Records/Index.tsx"]="c7cf2639c294e0599ed7c87d64d9ffc0de8aa4f0"
   ["resources/js/pages/Reports/Index.tsx"]="3bfaf81c8a7ffaa88931da2146cc9e056a9bd1bc"
   ["resources/js/pages/Search/Index.tsx"]="647b7ef46c7373e180bdff8d269fe8ac391c0210"
   ["resources/js/pages/Tasks/Index.tsx"]="07e6eb70eb7665fa23044aebd3503299aa404af6"
   ["resources/js/pages/Transactions/Create.tsx"]="76e3611af1cf7a128e8133ce9801aa501131bc77"
-  ["resources/js/pages/Transactions/Index.tsx"]="19568a07162b9c5a568654d517b225491b074048"
+  ["resources/js/pages/Transactions/Index.tsx"]="4126889badd312627cc2a9ced1c428c4de9edc69"
   ["resources/js/pages/Transactions/Show.tsx"]="34db65c5a37190bd5d2a2881ddf91254173775b6"
   ["resources/js/pages/TravelOrders/Create.tsx"]="032426945dbd2bf1f3ec8423523ab10685723c3e"
   ["resources/js/pages/TravelOrders/Index.tsx"]="55c6076d3a8bce49020ee7e23581bef7b599878d"
@@ -153,9 +154,10 @@ declare -A PINNED_TCDS_COMPLETION_BLOBS=(
   ["tests/Frontend/ot-reference-shell-contract.test.mjs"]="1030a3990877f054c257f96640661bda4d1aaf83"
   ["tests/Frontend/r8-a1-search-contract.test.mjs"]="63a8810e67e32918407fbb0a54c27f78d30184b8"
   ["tests/Frontend/r8-a3-directory.test.mjs"]="06435b28fa330654544efadccc3f707d2070125d"
+  ["tests/Frontend/tcds-f01-f02-regression.test.mjs"]="82a6466afc7357b1cff4819f6e87b0c905a6a000"
 )
 mapfile -t tcds_source_paths < <(git diff --name-only "$FROZEN_R5_FINAL_SHA".."$FROZEN_TCDS_COMPLETION_SOURCE_SHA" | grep -Ev "^(\.github/workflows/ot-m3-unified-full-matrix\.yml|scripts/ci/(verify-m5-source-integrity\.sh|verify-m5-workflow-structure\.py|test-m5-source-integrity-negatives\.sh))$")
-test "${#tcds_source_paths[@]}" -eq 53 || fail "Expected exactly 53 non-CI paths in TCDS completion source commit, got ${#tcds_source_paths[@]}"
+test "${#tcds_source_paths[@]}" -eq 55 || fail "Expected exactly 55 non-CI paths in TCDS completion source commit, got ${#tcds_source_paths[@]}"
 for path in "${tcds_source_paths[@]}"; do
   [[ -n "${PINNED_TCDS_COMPLETION_BLOBS[$path]+x}" ]] || fail "Unexpected path in TCDS completion source commit: $path"
   actual_blob="$(git rev-parse "${TARGET_SHA}:${path}")"
