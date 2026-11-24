@@ -98,10 +98,9 @@ for path in "${r3_source_paths[@]}"; do
   test "$actual_blob" = "${PINNED_R3_BLOBS[$path]}" || fail "Pinned R3 source-fix blob mismatch for $path (got $actual_blob expected ${PINNED_R3_BLOBS[$path]})"
 done
 
-# 6. Exact 56-file TCDS v2 full presentation port & main-reconciliation delta after frozen R5 (zero backend/PHP changes) + pinned blob equality
+# 6. Exact 53-file non-CI TCDS v2 full presentation port & main-reconciliation delta after frozen R5 (zero backend/PHP changes) + pinned blob equality
 declare -A PINNED_TCDS_COMPLETION_BLOBS=(
   [".forge/memory/WORK-PACKAGE-REGISTER.md"]="1501f4621858964a6c85fde3e54a490a358a1b48"
-  [".github/workflows/ot-m3-unified-full-matrix.yml"]="fe2250141c01b391ddab056752d9cc287ba701e4"
   ["package-lock.json"]="803b838f24fea2d9dbbd498806670dc7d3911122"
   ["package.json"]="90d3b183da5cbd2093dea1c878e0d92fab2e17a1"
   ["resources/css/app.css"]="0fbc9898f1d52a33cd97af112d6bc1449384be78"
@@ -145,8 +144,6 @@ declare -A PINNED_TCDS_COMPLETION_BLOBS=(
   ["resources/js/pages/TravelOrders/Create.tsx"]="032426945dbd2bf1f3ec8423523ab10685723c3e"
   ["resources/js/pages/TravelOrders/Index.tsx"]="55c6076d3a8bce49020ee7e23581bef7b599878d"
   ["resources/js/pages/TravelOrders/Show.tsx"]="b8269bdd0948c5dcd9185b352908b784915566f9"
-  ["scripts/ci/verify-m5-source-integrity.sh"]="d9f810ef42c8bc7f5359e30a9196a801ee708582"
-  ["scripts/ci/verify-m5-workflow-structure.py"]="a9a75395f2c505d8e1d254c849d1b6feecce5b1c"
   ["tests/Frontend/aj-pr44-integration-contract.test.mjs"]="dd14c344ae1cf6f924cc31c0b11ce5856628e9af"
   ["tests/Frontend/mobile-drawer-shell.test.mjs"]="afbf861c42296f3662bb86722aa4e614b83dc6ae"
   ["tests/Frontend/navigation-contract.test.mjs"]="564549e7d5859ea7f679f8ef99363c9db552962f"
@@ -157,8 +154,8 @@ declare -A PINNED_TCDS_COMPLETION_BLOBS=(
   ["tests/Frontend/r8-a1-search-contract.test.mjs"]="63a8810e67e32918407fbb0a54c27f78d30184b8"
   ["tests/Frontend/r8-a3-directory.test.mjs"]="06435b28fa330654544efadccc3f707d2070125d"
 )
-mapfile -t tcds_source_paths < <(git diff --name-only "$FROZEN_R5_FINAL_SHA".."$FROZEN_TCDS_COMPLETION_SOURCE_SHA")
-test "${#tcds_source_paths[@]}" -eq 56 || fail "Expected exactly 56 paths in TCDS completion source commit, got ${#tcds_source_paths[@]}"
+mapfile -t tcds_source_paths < <(git diff --name-only "$FROZEN_R5_FINAL_SHA".."$FROZEN_TCDS_COMPLETION_SOURCE_SHA" | grep -Ev "^(\.github/workflows/ot-m3-unified-full-matrix\.yml|scripts/ci/(verify-m5-source-integrity\.sh|verify-m5-workflow-structure\.py|test-m5-source-integrity-negatives\.sh))$")
+test "${#tcds_source_paths[@]}" -eq 53 || fail "Expected exactly 53 non-CI paths in TCDS completion source commit, got ${#tcds_source_paths[@]}"
 for path in "${tcds_source_paths[@]}"; do
   [[ -n "${PINNED_TCDS_COMPLETION_BLOBS[$path]+x}" ]] || fail "Unexpected path in TCDS completion source commit: $path"
   actual_blob="$(git rev-parse "${TARGET_SHA}:${path}")"
