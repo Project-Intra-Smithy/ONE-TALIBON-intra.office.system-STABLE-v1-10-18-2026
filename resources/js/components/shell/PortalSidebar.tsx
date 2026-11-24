@@ -146,7 +146,7 @@ export default function PortalSidebar({
             </nav>
 
             <div className={`shrink-0 border-t border-[var(--surface-sidebar-border)] bg-black/15 ${compact ? 'space-y-1.5 p-2' : 'space-y-2 p-3'}`}>
-                <AppearanceControl compact={compact} />
+                {compact ? <AppearanceControl compact /> : <AppearanceControl compact={false} />}
                 <LocaleControl compact={compact} />
                 <Link
                     href="/security/account"
