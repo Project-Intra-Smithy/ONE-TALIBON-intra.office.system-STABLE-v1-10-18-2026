@@ -40,6 +40,7 @@ REQUIRED_PHASES = [
 ALLOWED_EXTRA_BRANCHES = {
     "candidate/antigravity-m5-r4-ci-reachability-r1",
     "candidate/antigravity-m5-r5-yaml-trigger-normalization-r1",
+    "candidate/antigravity-canonical-tcds-completion-r1",
 }
 
 
