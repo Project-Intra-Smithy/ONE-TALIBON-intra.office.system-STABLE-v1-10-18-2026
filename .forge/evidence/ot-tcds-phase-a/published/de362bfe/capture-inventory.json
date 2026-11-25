@@ -1,0 +1,1159 @@
+{
+  "candidate": "de362bfeddbb2b1ac3e738d1f99d4f64b536c90c",
+  "attributionBasis": "The completed clean-worktree runtime receipt and deterministic capture names from its exact candidate test scripts; these files have not been regenerated during publication.",
+  "buildManifestSha256": "3760cfb8e0495c8b382972528fc317d6ace4b032655616fe40c7be2af40a315c",
+  "captures": [
+    {
+      "file": "captures/department_head-calendar-1440-dark.png",
+      "bytes": 156916,
+      "sha256": "5b64cec35a39286543cb28df93188d26633bb8711953220e833239cef14e67b0",
+      "width": 1440,
+      "height": 1511,
+      "observedModifiedAt": "2026-11-25T19:38:15.998Z"
+    },
+    {
+      "file": "captures/department_head-calendar-1440-light.png",
+      "bytes": 156145,
+      "sha256": "576a2f463c1cf0af5552ecccae7392a8bd981c1f20abb90d0fd954ca734e7fa9",
+      "width": 1440,
+      "height": 1511,
+      "observedModifiedAt": "2026-11-25T19:36:47.281Z"
+    },
+    {
+      "file": "captures/department_head-calendar-390-dark.png",
+      "bytes": 74963,
+      "sha256": "4c9f8aab9e7e2ad1765de1af5d1acb24b9f295348c378a4019bc053058c5a7f6",
+      "width": 390,
+      "height": 1439,
+      "observedModifiedAt": "2026-11-25T19:42:28.492Z"
+    },
+    {
+      "file": "captures/department_head-calendar-390-light.png",
+      "bytes": 73890,
+      "sha256": "a6ea2c4d371b8b5011fca389c4f0e6c53931f5f5b8f80e3787a6a8ea831c43bf",
+      "width": 390,
+      "height": 1439,
+      "observedModifiedAt": "2026-11-25T19:41:14.309Z"
+    },
+    {
+      "file": "captures/department_head-calendar-768-dark.png",
+      "bytes": 88734,
+      "sha256": "c421aeff38c2a95c17086ac86b775469d3f3d797ddbe69d2a2e3bd540a2a97df",
+      "width": 768,
+      "height": 1552,
+      "observedModifiedAt": "2026-11-25T19:39:55.351Z"
+    },
+    {
+      "file": "captures/department_head-calendar-768-light.png",
+      "bytes": 87116,
+      "sha256": "6915b7cb247c3db539b286c2896eebbb15dc82d8d946bea2c1abddc2b1b378de",
+      "width": 768,
+      "height": 1552,
+      "observedModifiedAt": "2026-11-25T19:39:16.034Z"
+    },
+    {
+      "file": "captures/department_head-development-plans-1440-dark.png",
+      "bytes": 460844,
+      "sha256": "d2941700da1004d758b0ffcd7e731288a6e80496695527958e145182049bc5d7",
+      "width": 1440,
+      "height": 2841,
+      "observedModifiedAt": "2026-11-25T19:38:42.992Z"
+    },
+    {
+      "file": "captures/department_head-development-plans-1440-light.png",
+      "bytes": 455831,
+      "sha256": "2d3b772c194e5e2a0145cb0c8d06b905cbb06442713b034c10c853af9972ffd3",
+      "width": 1440,
+      "height": 2841,
+      "observedModifiedAt": "2026-11-25T19:37:23.276Z"
+    },
+    {
+      "file": "captures/department_head-development-plans-390-dark.png",
+      "bytes": 468348,
+      "sha256": "61dbee7ca19ef8c3e71e9e2f7786ecb054cc69903c87c98b285d59abe748b520",
+      "width": 390,
+      "height": 6630,
+      "observedModifiedAt": "2026-11-25T19:42:51.571Z"
+    },
+    {
+      "file": "captures/department_head-development-plans-390-light.png",
+      "bytes": 461419,
+      "sha256": "1010776b34dd85464bb9233d7c88fa2916ac6658dd2ee4756feca547d684bdd2",
+      "width": 390,
+      "height": 6630,
+      "observedModifiedAt": "2026-11-25T19:41:38.375Z"
+    },
+    {
+      "file": "captures/department_head-development-plans-768-dark.png",
+      "bytes": 366870,
+      "sha256": "c902aa5712c3d34fec844f9d59f4c9ec8c61bda72dd3b39635ad24a9cf406332",
+      "width": 768,
+      "height": 3783,
+      "observedModifiedAt": "2026-11-25T19:40:09.774Z"
+    },
+    {
+      "file": "captures/department_head-development-plans-768-light.png",
+      "bytes": 360873,
+      "sha256": "9569e7ec08584b6a4fbc50d5ca9c5339d270f2d643cf06ffb073f12feed58fe8",
+      "width": 768,
+      "height": 3783,
+      "observedModifiedAt": "2026-11-25T19:39:28.677Z"
+    },
+    {
+      "file": "captures/department_head-document-upload-studio-1440-dark.png",
+      "bytes": 465044,
+      "sha256": "7c20078b9eb05cb328668f95af752a5cfd598a30af0a51ffd203485881c9658c",
+      "width": 1440,
+      "height": 2841,
+      "observedModifiedAt": "2026-11-25T19:38:40.773Z"
+    },
+    {
+      "file": "captures/department_head-document-upload-studio-1440-light.png",
+      "bytes": 458870,
+      "sha256": "1714021c737071f005f48cda0e339d7a0e2d8282141f8fb4605be88b7a161ff6",
+      "width": 1440,
+      "height": 2841,
+      "observedModifiedAt": "2026-11-25T19:37:20.587Z"
+    },
+    {
+      "file": "captures/department_head-document-upload-studio-390-dark.png",
+      "bytes": 472996,
+      "sha256": "2225ef84731dd150ef5e948cb66d209185269a387e63d1fab785fdb1f781172f",
+      "width": 390,
+      "height": 6630,
+      "observedModifiedAt": "2026-11-25T19:42:49.455Z"
+    },
+    {
+      "file": "captures/department_head-document-upload-studio-390-light.png",
+      "bytes": 461630,
+      "sha256": "9a7297416f14ad651557343f91b657c7dd6ae3a93099599e344f1e2147adb6e9",
+      "width": 390,
+      "height": 6630,
+      "observedModifiedAt": "2026-11-25T19:41:36.379Z"
+    },
+    {
+      "file": "captures/department_head-document-upload-studio-768-dark.png",
+      "bytes": 384142,
+      "sha256": "1e11cab46f1ff1c6ea41f8a8cc917e6c9b504449740f4f42bb1757cd4e838cba",
+      "width": 768,
+      "height": 3783,
+      "observedModifiedAt": "2026-11-25T19:40:07.636Z"
+    },
+    {
+      "file": "captures/department_head-document-upload-studio-768-light.png",
+      "bytes": 377385,
+      "sha256": "159fa23372f4f09c5825c069d7821a86f228cc1c92ba486d7c15a611f32d98e3",
+      "width": 768,
+      "height": 3783,
+      "observedModifiedAt": "2026-11-25T19:39:27.586Z"
+    },
+    {
+      "file": "captures/department_head-documents-1440-dark.png",
+      "bytes": 133241,
+      "sha256": "db723a7cfeb8a0ac065209561ebea09be3c89af2161584a9c8e8e4736f941e10",
+      "width": 1440,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:38:27.473Z"
+    },
+    {
+      "file": "captures/department_head-documents-1440-light.png",
+      "bytes": 132872,
+      "sha256": "3d59c4a4ad14be9c5a30d21813bce73a3b316ff97afa567ff00b1a1a3aab2e82",
+      "width": 1440,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:36:53.289Z"
+    },
+    {
+      "file": "captures/department_head-documents-390-dark.png",
+      "bytes": 69763,
+      "sha256": "7314533a5120c71ccb4007a346f392f69d5b5fe1d5f3d9800c4c627b7e086d7e",
+      "width": 390,
+      "height": 1386,
+      "observedModifiedAt": "2026-11-25T19:42:34.513Z"
+    },
+    {
+      "file": "captures/department_head-documents-390-light.png",
+      "bytes": 68956,
+      "sha256": "ffb81b5a5a5506f6e85179e9bfdbefdceca44d46030a7f2218ed869f56c3a2bc",
+      "width": 390,
+      "height": 1386,
+      "observedModifiedAt": "2026-11-25T19:41:20.767Z"
+    },
+    {
+      "file": "captures/department_head-documents-768-dark.png",
+      "bytes": 69482,
+      "sha256": "2b1b7e73621c3bd72a080fee03027e6d8c20e00de33c309027e9e107bb8d5d61",
+      "width": 768,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:39:57.897Z"
+    },
+    {
+      "file": "captures/department_head-documents-768-light.png",
+      "bytes": 68966,
+      "sha256": "7cfcdda48949f5ca7b800317076c139dcbbf91ed2695c243425120163a1ee5ca",
+      "width": 768,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:39:21.357Z"
+    },
+    {
+      "file": "captures/department_head-map-plate-1440-dark.png",
+      "bytes": 437675,
+      "sha256": "65144d53478186d8ff6bc8231ccc41385dfb5ef878c7dbed2065e0ffbe8d4d5f",
+      "width": 1440,
+      "height": 2798,
+      "observedModifiedAt": "2026-11-25T19:38:59.491Z"
+    },
+    {
+      "file": "captures/department_head-map-plate-1440-light.png",
+      "bytes": 430915,
+      "sha256": "4c7bd1622f95b518af5818c08d22f370e5f9e3c706a8c61956e64251a0b0246f",
+      "width": 1440,
+      "height": 2798,
+      "observedModifiedAt": "2026-11-25T19:37:44.121Z"
+    },
+    {
+      "file": "captures/department_head-map-plate-390-dark.png",
+      "bytes": 362520,
+      "sha256": "efd136a2c1094aa617def3de8303541273649869ee6c1546a360aab604a2d088",
+      "width": 390,
+      "height": 5187,
+      "observedModifiedAt": "2026-11-25T19:43:08.852Z"
+    },
+    {
+      "file": "captures/department_head-map-plate-390-light.png",
+      "bytes": 356307,
+      "sha256": "39eb88a1330230dd2a0df3280e737f878b39b2b3242459faf606249cb03997cc",
+      "width": 390,
+      "height": 5187,
+      "observedModifiedAt": "2026-11-25T19:41:59.085Z"
+    },
+    {
+      "file": "captures/department_head-map-plate-768-dark.png",
+      "bytes": 353027,
+      "sha256": "364d1d4b891558103492a94b2be266ff25a340d29abe74c3d056be7ae8d8084f",
+      "width": 768,
+      "height": 3305,
+      "observedModifiedAt": "2026-11-25T19:40:36.963Z"
+    },
+    {
+      "file": "captures/department_head-map-plate-768-light.png",
+      "bytes": 347879,
+      "sha256": "b14de0804aa92d525359e0d1b39cec604b234670dd888a4e1f8291097eefeb8f",
+      "width": 768,
+      "height": 3305,
+      "observedModifiedAt": "2026-11-25T19:39:44.473Z"
+    },
+    {
+      "file": "captures/department_head-map-studio-1440-dark.png",
+      "bytes": 512289,
+      "sha256": "4c840f68d7fa229a3f6a92fc876f7022443e15933f7c788a0e4400d77dc1f23b",
+      "width": 1440,
+      "height": 2798,
+      "observedModifiedAt": "2026-11-25T19:38:58.475Z"
+    },
+    {
+      "file": "captures/department_head-map-studio-1440-light.png",
+      "bytes": 498536,
+      "sha256": "283d5bb42299ccee8b9263c7c1a352ec9d5dba7f80793ae463ac2b24855f1e90",
+      "width": 1440,
+      "height": 2798,
+      "observedModifiedAt": "2026-11-25T19:37:42.849Z"
+    },
+    {
+      "file": "captures/department_head-map-studio-390-dark.png",
+      "bytes": 354626,
+      "sha256": "d80773dc4d50d689f7d0f5d05593b9c7cbe8b320f345ff683220d9e7911e0a20",
+      "width": 390,
+      "height": 5187,
+      "observedModifiedAt": "2026-11-25T19:43:08.124Z"
+    },
+    {
+      "file": "captures/department_head-map-studio-390-light.png",
+      "bytes": 344347,
+      "sha256": "f24aada038e079e784f5682db3b3db0f5779255d336168e72d4b3a46c121e5e5",
+      "width": 390,
+      "height": 5187,
+      "observedModifiedAt": "2026-11-25T19:41:58.103Z"
+    },
+    {
+      "file": "captures/department_head-map-studio-768-dark.png",
+      "bytes": 378945,
+      "sha256": "470497d6ca54e7688cfdea61d1b69cf6423ec1b9e46c0a9ae4f44a261483b312",
+      "width": 768,
+      "height": 3305,
+      "observedModifiedAt": "2026-11-25T19:40:35.882Z"
+    },
+    {
+      "file": "captures/department_head-map-studio-768-light.png",
+      "bytes": 366293,
+      "sha256": "4417052ab40e3a812188d5e00d4993e45b41a52308faf18224ef9d931f84add5",
+      "width": 768,
+      "height": 3305,
+      "observedModifiedAt": "2026-11-25T19:39:43.913Z"
+    },
+    {
+      "file": "captures/department_head-my-department-1440-dark.png",
+      "bytes": 157522,
+      "sha256": "a2a0d9cb41742ea6b2e95eb75b8edf35b8d723b8a92a5aa058610b2760c81f91",
+      "width": 1440,
+      "height": 971,
+      "observedModifiedAt": "2026-11-25T19:38:29.921Z"
+    },
+    {
+      "file": "captures/department_head-my-department-1440-light.png",
+      "bytes": 156246,
+      "sha256": "2ed89b5b23b4a64acc85d35365e719526e4acc20e026ca5007d1692995cf8286",
+      "width": 1440,
+      "height": 971,
+      "observedModifiedAt": "2026-11-25T19:37:02.019Z"
+    },
+    {
+      "file": "captures/department_head-my-department-390-dark.png",
+      "bytes": 98352,
+      "sha256": "c82e90d4da04cdfa60cf41e56906d5a63cf48118f1eb4890c879f29b99f05ca8",
+      "width": 390,
+      "height": 1706,
+      "observedModifiedAt": "2026-11-25T19:42:40.235Z"
+    },
+    {
+      "file": "captures/department_head-my-department-390-light.png",
+      "bytes": 94961,
+      "sha256": "b72fe3e0566e567637e3d8134ce4e51b8b9c87fd3c47e995222016134f0a6e4b",
+      "width": 390,
+      "height": 1706,
+      "observedModifiedAt": "2026-11-25T19:41:26.529Z"
+    },
+    {
+      "file": "captures/department_head-my-department-768-dark.png",
+      "bytes": 103002,
+      "sha256": "c6dcd62e8cee36450f6c5988e72bd085a7a5a9b3ab8d93fd80ae5f1882e121e9",
+      "width": 768,
+      "height": 1389,
+      "observedModifiedAt": "2026-11-25T19:40:00.725Z"
+    },
+    {
+      "file": "captures/department_head-my-department-768-light.png",
+      "bytes": 100321,
+      "sha256": "d7fa41aa07c600d1fe21fec4b497272e537c610bdbd7ba5e55aaf8722b4c0d21",
+      "width": 768,
+      "height": 1389,
+      "observedModifiedAt": "2026-11-25T19:39:22.900Z"
+    },
+    {
+      "file": "captures/department_head-my-tasks-1440-dark.png",
+      "bytes": 152371,
+      "sha256": "dd55b30578bab1b2cd0600f075b89abc6f5f7bc5a7a32c75ef2c5ed87b975afc",
+      "width": 1440,
+      "height": 927,
+      "observedModifiedAt": "2026-11-25T19:38:01.561Z"
+    },
+    {
+      "file": "captures/department_head-my-tasks-1440-light.png",
+      "bytes": 142581,
+      "sha256": "7eef4b762e2ebaf2f01351a70b2efb5b82a9f54239200e1fa4d73299a221819b",
+      "width": 1440,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:36:31.738Z"
+    },
+    {
+      "file": "captures/department_head-my-tasks-390-dark.png",
+      "bytes": 80487,
+      "sha256": "ca8d404c6f8e7478370b6cfb6dec7531dc8e7d1572a937b0e4630e9d9130aba5",
+      "width": 390,
+      "height": 1334,
+      "observedModifiedAt": "2026-11-25T19:42:03.379Z"
+    },
+    {
+      "file": "captures/department_head-my-tasks-390-light.png",
+      "bytes": 78599,
+      "sha256": "05bce4c7981fc9234036342f0d1ac78570300a16fce67890d236e1bb26d7b101",
+      "width": 390,
+      "height": 1334,
+      "observedModifiedAt": "2026-11-25T19:40:42.873Z"
+    },
+    {
+      "file": "captures/department_head-my-tasks-768-dark.png",
+      "bytes": 80160,
+      "sha256": "1742672731c78851c730edc30f43917eabfc5d4e0b4be5e4d67d4d3ed45b59c2",
+      "width": 768,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:39:46.373Z"
+    },
+    {
+      "file": "captures/department_head-my-tasks-768-light.png",
+      "bytes": 78395,
+      "sha256": "21fbd0320f4727228c202f90af75844bbddc0e40224e4c4ce90898ac7bb49c94",
+      "width": 768,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:39:01.602Z"
+    },
+    {
+      "file": "captures/department_head-plan-dossier-1440-dark.png",
+      "bytes": 497629,
+      "sha256": "dcf4d9cc58b80fca2b5cf013d3bceb53a92626528f6248eb6f9c9d68027ea9cd",
+      "width": 1440,
+      "height": 2841,
+      "observedModifiedAt": "2026-11-25T19:38:39.215Z"
+    },
+    {
+      "file": "captures/department_head-plan-dossier-1440-light.png",
+      "bytes": 488576,
+      "sha256": "58417820cc1b8674f1c8e017c2e7d0f8dc3c047478cff73417a8b3add9271ef7",
+      "width": 1440,
+      "height": 2841,
+      "observedModifiedAt": "2026-11-25T19:37:18.623Z"
+    },
+    {
+      "file": "captures/department_head-plan-dossier-390-dark.png",
+      "bytes": 473456,
+      "sha256": "930e5ec194400887dbd976aa3737a0c945b07902a48564f149a05a942914be46",
+      "width": 390,
+      "height": 6630,
+      "observedModifiedAt": "2026-11-25T19:42:48.396Z"
+    },
+    {
+      "file": "captures/department_head-plan-dossier-390-light.png",
+      "bytes": 466136,
+      "sha256": "87394d8f02d7364596539ce86b1471e6eb881abe5bb06585e442177b9d9381d1",
+      "width": 390,
+      "height": 6630,
+      "observedModifiedAt": "2026-11-25T19:41:35.190Z"
+    },
+    {
+      "file": "captures/department_head-plan-dossier-768-dark.png",
+      "bytes": 386298,
+      "sha256": "e7b40db8c0f403c30084b967a38930c9dc1bfb9cbb044f7e62471dcebd546b07",
+      "width": 768,
+      "height": 3783,
+      "observedModifiedAt": "2026-11-25T19:40:06.223Z"
+    },
+    {
+      "file": "captures/department_head-plan-dossier-768-light.png",
+      "bytes": 379256,
+      "sha256": "8b8bb98946cb8cb9d58829cc8d536ad130feda9d7eb9edb65dda62a74fdde80d",
+      "width": 768,
+      "height": 3783,
+      "observedModifiedAt": "2026-11-25T19:39:26.799Z"
+    },
+    {
+      "file": "captures/department_head-plan-studio-1440-dark.png",
+      "bytes": 556757,
+      "sha256": "7223d341772c4be9120b2f3cfbe85d22f3e25d9f1359ef00742095332daba698",
+      "width": 1440,
+      "height": 2841,
+      "observedModifiedAt": "2026-11-25T19:38:37.549Z"
+    },
+    {
+      "file": "captures/department_head-plan-studio-1440-light.png",
+      "bytes": 547490,
+      "sha256": "c093d62643fde6b9fba4fffadcdf12937fb895a905dc94732f48a1d3797c3082",
+      "width": 1440,
+      "height": 2841,
+      "observedModifiedAt": "2026-11-25T19:37:16.745Z"
+    },
+    {
+      "file": "captures/department_head-plan-studio-390-dark.png",
+      "bytes": 452787,
+      "sha256": "73a6c795ddd29d9e84b1a5a23185767fd6b8968c679cd75f142e8979a530f51e",
+      "width": 390,
+      "height": 6630,
+      "observedModifiedAt": "2026-11-25T19:42:47.215Z"
+    },
+    {
+      "file": "captures/department_head-plan-studio-390-light.png",
+      "bytes": 445323,
+      "sha256": "49fe5be522b40f2ef49f3a2bc6c51da027b6639562b66e8bcc8d801bdb1ddbfd",
+      "width": 390,
+      "height": 6630,
+      "observedModifiedAt": "2026-11-25T19:41:34.021Z"
+    },
+    {
+      "file": "captures/department_head-plan-studio-768-dark.png",
+      "bytes": 427105,
+      "sha256": "ebf8f816de5b6e50d34114f0508b97571576631e9e03faa37d96360b5e056a52",
+      "width": 768,
+      "height": 3783,
+      "observedModifiedAt": "2026-11-25T19:40:04.543Z"
+    },
+    {
+      "file": "captures/department_head-plan-studio-768-light.png",
+      "bytes": 417710,
+      "sha256": "afe764222c8f394ce2be176b23152f9826d45ed0b27990f3e60d07e2230002cb",
+      "width": 768,
+      "height": 3783,
+      "observedModifiedAt": "2026-11-25T19:39:26.020Z"
+    },
+    {
+      "file": "captures/department_head-planning-maps-1440-dark.png",
+      "bytes": 433366,
+      "sha256": "42602cd40d738e49562a9f49a93bde1d766f85347f673684012bbb7f352638bd",
+      "width": 1440,
+      "height": 2798,
+      "observedModifiedAt": "2026-11-25T19:39:00.013Z"
+    },
+    {
+      "file": "captures/department_head-planning-maps-1440-light.png",
+      "bytes": 430645,
+      "sha256": "8e047ed48783f64005a8a439403dba98543b443875851532ffaac69fe194bc65",
+      "width": 1440,
+      "height": 2798,
+      "observedModifiedAt": "2026-11-25T19:37:45.045Z"
+    },
+    {
+      "file": "captures/department_head-planning-maps-390-dark.png",
+      "bytes": 362741,
+      "sha256": "ce99be7a594591de0e11c843a8955e2314c648a7533617aa9d343ead75fe19be",
+      "width": 390,
+      "height": 5187,
+      "observedModifiedAt": "2026-11-25T19:43:09.244Z"
+    },
+    {
+      "file": "captures/department_head-planning-maps-390-light.png",
+      "bytes": 358594,
+      "sha256": "0d76fddcde63426a2708334a5cba7df9dea2b26a69447eb61326fba4e76ed48f",
+      "width": 390,
+      "height": 5187,
+      "observedModifiedAt": "2026-11-25T19:41:59.690Z"
+    },
+    {
+      "file": "captures/department_head-planning-maps-768-dark.png",
+      "bytes": 330034,
+      "sha256": "bffe05d13ee6f10216688e8a101002daf366ea6f858daeb0f61ae8e1593c4f30",
+      "width": 768,
+      "height": 3305,
+      "observedModifiedAt": "2026-11-25T19:40:37.716Z"
+    },
+    {
+      "file": "captures/department_head-planning-maps-768-light.png",
+      "bytes": 325386,
+      "sha256": "d3ccae4bf99e579cd2b73bf16a3c9bf58755b95575331fd8595fb2a73f600e0a",
+      "width": 768,
+      "height": 3305,
+      "observedModifiedAt": "2026-11-25T19:39:44.873Z"
+    },
+    {
+      "file": "captures/department_head-ppa-dossier-1440-dark.png",
+      "bytes": 1533854,
+      "sha256": "bbd183437a64f77aa40b467776344829b0e380d4faea335b04fd2b3605cbea87",
+      "width": 1440,
+      "height": 8702,
+      "observedModifiedAt": "2026-11-25T19:38:54.131Z"
+    },
+    {
+      "file": "captures/department_head-ppa-dossier-1440-light.png",
+      "bytes": 1525351,
+      "sha256": "c5f3f4772e7ac0fad02cf2a3a663cb96a659a5cc4f21cf6806de67ec32d6b440",
+      "width": 1440,
+      "height": 8702,
+      "observedModifiedAt": "2026-11-25T19:37:37.512Z"
+    },
+    {
+      "file": "captures/department_head-ppa-dossier-390-dark.png",
+      "bytes": 2169588,
+      "sha256": "3618f47f1a908516eb50b8baa40f744ef50e8e941b7e988e60b5824f2d5a29a8",
+      "width": 390,
+      "height": 27629,
+      "observedModifiedAt": "2026-11-25T19:43:02.490Z"
+    },
+    {
+      "file": "captures/department_head-ppa-dossier-390-light.png",
+      "bytes": 2124584,
+      "sha256": "2bdc61baf21dbd486bf4363709a306b8d0ce03201b60cfe924fae471750df274",
+      "width": 390,
+      "height": 27629,
+      "observedModifiedAt": "2026-11-25T19:41:51.109Z"
+    },
+    {
+      "file": "captures/department_head-ppa-dossier-768-dark.png",
+      "bytes": 2261800,
+      "sha256": "183fbe16a59d7ad92e0158268cd3dccaf24f6a442999c12ff65922326845f77b",
+      "width": 768,
+      "height": 24934,
+      "observedModifiedAt": "2026-11-25T19:40:25.003Z"
+    },
+    {
+      "file": "captures/department_head-ppa-dossier-768-light.png",
+      "bytes": 2213212,
+      "sha256": "91ea1527cd1231614e4a79efb2ff26b246fa83b4eb60a8be84da97ab62be0448",
+      "width": 768,
+      "height": 24934,
+      "observedModifiedAt": "2026-11-25T19:39:37.447Z"
+    },
+    {
+      "file": "captures/department_head-ppa-studio-1440-dark.png",
+      "bytes": 1595829,
+      "sha256": "8b79f50be7621a94bd34780735898ebf973641e490eb5e8d803484a26c1f8419",
+      "width": 1440,
+      "height": 8702,
+      "observedModifiedAt": "2026-11-25T19:38:51.188Z"
+    },
+    {
+      "file": "captures/department_head-ppa-studio-1440-light.png",
+      "bytes": 1583159,
+      "sha256": "a9a19baf3875e937126c38626b428f775280193302cf73d092c354b5df3b98f5",
+      "width": 1440,
+      "height": 8702,
+      "observedModifiedAt": "2026-11-25T19:37:34.467Z"
+    },
+    {
+      "file": "captures/department_head-ppa-studio-390-dark.png",
+      "bytes": 2166331,
+      "sha256": "9761c972c6f9a7a23a8465c361fb0cfd987675b93b801dd9101f50471dad27ad",
+      "width": 390,
+      "height": 27629,
+      "observedModifiedAt": "2026-11-25T19:42:58.358Z"
+    },
+    {
+      "file": "captures/department_head-ppa-studio-390-light.png",
+      "bytes": 2124662,
+      "sha256": "d97cb935ec257f19bb6edfa141b45020a85ec4da752f7c148b2acecfd63fc712",
+      "width": 390,
+      "height": 27629,
+      "observedModifiedAt": "2026-11-25T19:41:46.940Z"
+    },
+    {
+      "file": "captures/department_head-ppa-studio-768-dark.png",
+      "bytes": 2307198,
+      "sha256": "eb79d12ab2b959f91703d6a571182537816174b1f121943e307afe820b791930",
+      "width": 768,
+      "height": 24934,
+      "observedModifiedAt": "2026-11-25T19:40:19.899Z"
+    },
+    {
+      "file": "captures/department_head-ppa-studio-768-light.png",
+      "bytes": 2255042,
+      "sha256": "1887126543b35ab889a8de643402a712d16015cf64178eeb4b5ef04a9b6b71c5",
+      "width": 768,
+      "height": 24934,
+      "observedModifiedAt": "2026-11-25T19:39:34.063Z"
+    },
+    {
+      "file": "captures/department_head-ppas-1440-dark.png",
+      "bytes": 1484028,
+      "sha256": "2d3076456ddc2c0ccc438c069fa91560b2fc2991b46db5fdd1bf960eaa709d4a",
+      "width": 1440,
+      "height": 8702,
+      "observedModifiedAt": "2026-11-25T19:38:55.832Z"
+    },
+    {
+      "file": "captures/department_head-ppas-1440-light.png",
+      "bytes": 1477950,
+      "sha256": "640595f31397bee71bec8160d37745ad387ddcc8ad1dd177954287509fb4d260",
+      "width": 1440,
+      "height": 8702,
+      "observedModifiedAt": "2026-11-25T19:37:39.109Z"
+    },
+    {
+      "file": "captures/department_head-ppas-390-dark.png",
+      "bytes": 2169706,
+      "sha256": "92fb07ba0659f65d2d091ff9e0fd7c2d26b8b0d0034329d11ae4276fe8488cff",
+      "width": 390,
+      "height": 27629,
+      "observedModifiedAt": "2026-11-25T19:43:05.262Z"
+    },
+    {
+      "file": "captures/department_head-ppas-390-light.png",
+      "bytes": 2129370,
+      "sha256": "92bc032889eb961f53aa0eaed09ed38402fc41393b610cb225a4075e28cbfbba",
+      "width": 390,
+      "height": 27629,
+      "observedModifiedAt": "2026-11-25T19:41:54.409Z"
+    },
+    {
+      "file": "captures/department_head-ppas-768-dark.png",
+      "bytes": 2246068,
+      "sha256": "1abeed11b7b153b46b2528a9f8fb0e851afacbfb92e49f8efcb4d576236ac729",
+      "width": 768,
+      "height": 24934,
+      "observedModifiedAt": "2026-11-25T19:40:29.546Z"
+    },
+    {
+      "file": "captures/department_head-ppas-768-light.png",
+      "bytes": 2198157,
+      "sha256": "fef4a16889c6b827e809698f20925c2abc7120b957e01b9392736ca84d67ef97",
+      "width": 768,
+      "height": 24934,
+      "observedModifiedAt": "2026-11-25T19:39:39.968Z"
+    },
+    {
+      "file": "captures/department_head-staff-scopes-1440-dark.png",
+      "bytes": 509513,
+      "sha256": "e44e471c3e03e14ce9ed2000d04afac0ee7e5a3b9e14b3b11c3238924aa7a114",
+      "width": 1440,
+      "height": 2841,
+      "observedModifiedAt": "2026-11-25T19:38:42.137Z"
+    },
+    {
+      "file": "captures/department_head-staff-scopes-1440-light.png",
+      "bytes": 514389,
+      "sha256": "8f656cd05a78687a2083432715d25102a885a9c4c0a152fdd806c021d0116a60",
+      "width": 1440,
+      "height": 2841,
+      "observedModifiedAt": "2026-11-25T19:37:22.407Z"
+    },
+    {
+      "file": "captures/department_head-staff-scopes-390-dark.png",
+      "bytes": 449300,
+      "sha256": "1ecc75c79d55acd0b51d27e2336a749ce359b1518833c5ea992b3507a334a16a",
+      "width": 390,
+      "height": 6630,
+      "observedModifiedAt": "2026-11-25T19:42:50.729Z"
+    },
+    {
+      "file": "captures/department_head-staff-scopes-390-light.png",
+      "bytes": 441891,
+      "sha256": "75d3d244e3af579bc94ba681ffb9e84fb7d9b3bf5470e3d60fa923ac4222e536",
+      "width": 390,
+      "height": 6630,
+      "observedModifiedAt": "2026-11-25T19:41:37.511Z"
+    },
+    {
+      "file": "captures/department_head-staff-scopes-768-dark.png",
+      "bytes": 399613,
+      "sha256": "c6d2d76717a4b423c3564dd8ac9ec883c5434776867f411920908cf5b1bae08a",
+      "width": 768,
+      "height": 3783,
+      "observedModifiedAt": "2026-11-25T19:40:08.953Z"
+    },
+    {
+      "file": "captures/department_head-staff-scopes-768-light.png",
+      "bytes": 390573,
+      "sha256": "e443f3a1dd73318bc4a482056e1d029b46e21433bd6d42304551386ebfc03f8e",
+      "width": 768,
+      "height": 3783,
+      "observedModifiedAt": "2026-11-25T19:39:28.176Z"
+    },
+    {
+      "file": "captures/department_head-transactions-1440-dark.png",
+      "bytes": 130369,
+      "sha256": "e91e253f3cec6481b9b859e19bbbfbc4f728d4f4663d7795dd2609564791b51c",
+      "width": 1440,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:38:04.135Z"
+    },
+    {
+      "file": "captures/department_head-transactions-1440-light.png",
+      "bytes": 129662,
+      "sha256": "809882b76ee994c3d72925a8ad4d8f5eda67b8a4325a01b7a70373fa8cad3ce4",
+      "width": 1440,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:36:38.054Z"
+    },
+    {
+      "file": "captures/department_head-transactions-390-dark.png",
+      "bytes": 53400,
+      "sha256": "eb5fa68d4dd3ebbbc9de8152ad15cb9f00517851af3ab8836668bf115dcf93ee",
+      "width": 390,
+      "height": 1037,
+      "observedModifiedAt": "2026-11-25T19:42:14.882Z"
+    },
+    {
+      "file": "captures/department_head-transactions-390-light.png",
+      "bytes": 52687,
+      "sha256": "c253e95420f779ab9d1c70f5b99e7669ecf861b6d796cae4f76c265e3de4c5b3",
+      "width": 390,
+      "height": 1037,
+      "observedModifiedAt": "2026-11-25T19:41:05.526Z"
+    },
+    {
+      "file": "captures/department_head-transactions-768-dark.png",
+      "bytes": 66830,
+      "sha256": "d38b9e61e7f5edc78533e2465bf201e8a03dc25487aa29c49ddd40db0593a52c",
+      "width": 768,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:39:50.353Z"
+    },
+    {
+      "file": "captures/department_head-transactions-768-light.png",
+      "bytes": 65822,
+      "sha256": "0989084933597d6a8a4cf6f107136390a4f71994161a144868d4fa67435724ab",
+      "width": 768,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:39:06.880Z"
+    },
+    {
+      "file": "captures/department_head-transactions-create-1440-dark.png",
+      "bytes": 183332,
+      "sha256": "50afa255bba7d73f31e46c168f7d70d9ec62177d614fcd23751b18cedef9bab3",
+      "width": 1440,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:38:10.645Z"
+    },
+    {
+      "file": "captures/department_head-transactions-create-1440-light.png",
+      "bytes": 185363,
+      "sha256": "566d73a93e1ab2e9d27f78c23b10a3997579415f7deb2e97c0334a2f49f99c4f",
+      "width": 1440,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:36:43.323Z"
+    },
+    {
+      "file": "captures/department_head-transactions-create-390-dark.png",
+      "bytes": 66213,
+      "sha256": "ca921354c602f2c8406e93917183c6068f1073f01cd046ab7f54456641c77af3",
+      "width": 390,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:42:21.825Z"
+    },
+    {
+      "file": "captures/department_head-transactions-create-390-light.png",
+      "bytes": 64480,
+      "sha256": "c9ae3984402a4b43bf5319ddf1ff277e8a09c12a1c7a9f5d499799847ff1cdf1",
+      "width": 390,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:41:08.289Z"
+    },
+    {
+      "file": "captures/department_head-transactions-create-768-dark.png",
+      "bytes": 101719,
+      "sha256": "f17c9eecc84a8f9fa2d5b282b9e6f1b3266bd0755ef48a3ce02712afe979b439",
+      "width": 768,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:39:53.539Z"
+    },
+    {
+      "file": "captures/department_head-transactions-create-768-light.png",
+      "bytes": 99928,
+      "sha256": "f834ae6c682354d01651e5c6e05fe282ce0cfb8235326219ce2c856dd579aa4a",
+      "width": 768,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:39:11.584Z"
+    },
+    {
+      "file": "captures/department_head-work-request-form-1440-dark.png",
+      "bytes": 183332,
+      "sha256": "50afa255bba7d73f31e46c168f7d70d9ec62177d614fcd23751b18cedef9bab3",
+      "width": 1440,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:38:09.929Z"
+    },
+    {
+      "file": "captures/department_head-work-request-form-1440-light.png",
+      "bytes": 185363,
+      "sha256": "566d73a93e1ab2e9d27f78c23b10a3997579415f7deb2e97c0334a2f49f99c4f",
+      "width": 1440,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:36:42.941Z"
+    },
+    {
+      "file": "captures/department_head-work-request-form-390-dark.png",
+      "bytes": 66213,
+      "sha256": "ca921354c602f2c8406e93917183c6068f1073f01cd046ab7f54456641c77af3",
+      "width": 390,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:42:21.557Z"
+    },
+    {
+      "file": "captures/department_head-work-request-form-390-light.png",
+      "bytes": 64480,
+      "sha256": "c9ae3984402a4b43bf5319ddf1ff277e8a09c12a1c7a9f5d499799847ff1cdf1",
+      "width": 390,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:41:08.097Z"
+    },
+    {
+      "file": "captures/department_head-work-request-form-768-dark.png",
+      "bytes": 101719,
+      "sha256": "f17c9eecc84a8f9fa2d5b282b9e6f1b3266bd0755ef48a3ce02712afe979b439",
+      "width": 768,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:39:53.351Z"
+    },
+    {
+      "file": "captures/department_head-work-request-form-768-light.png",
+      "bytes": 99928,
+      "sha256": "f834ae6c682354d01651e5c6e05fe282ce0cfb8235326219ce2c856dd579aa4a",
+      "width": 768,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:39:11.320Z"
+    },
+    {
+      "file": "captures/employee-calendar-1440-dark.png",
+      "bytes": 155861,
+      "sha256": "6b957520cd940e7031e18ecacd88ad662b89c9bf646875f70dcb19d866fcab25",
+      "width": 1440,
+      "height": 1511,
+      "observedModifiedAt": "2026-11-25T19:34:44.114Z"
+    },
+    {
+      "file": "captures/employee-calendar-1440-light.png",
+      "bytes": 155135,
+      "sha256": "6a3604d71ce265eeb19efc05b85e95470c1dc7d5fb04b251db897e138122770e",
+      "width": 1440,
+      "height": 1511,
+      "observedModifiedAt": "2026-11-25T19:34:13.451Z"
+    },
+    {
+      "file": "captures/employee-calendar-390-dark.png",
+      "bytes": 74894,
+      "sha256": "98de674dc9c6652530aa952c620197523695e5073683cf5a1888b8841e7c1c00",
+      "width": 390,
+      "height": 1439,
+      "observedModifiedAt": "2026-11-25T19:36:07.253Z"
+    },
+    {
+      "file": "captures/employee-calendar-390-light.png",
+      "bytes": 73843,
+      "sha256": "7a66a4656c7613a21761831d9e89c49900e74d939d0b6593e251cf8b4973f3aa",
+      "width": 390,
+      "height": 1439,
+      "observedModifiedAt": "2026-11-25T19:35:50.292Z"
+    },
+    {
+      "file": "captures/employee-calendar-768-dark.png",
+      "bytes": 88383,
+      "sha256": "9acfca391bfe016bf8cf91ea2166891d8323e348608e545478875db903a0cf40",
+      "width": 768,
+      "height": 1552,
+      "observedModifiedAt": "2026-11-25T19:35:33.170Z"
+    },
+    {
+      "file": "captures/employee-calendar-768-light.png",
+      "bytes": 86711,
+      "sha256": "8718447b439a52c6bfe1c5f87862e6c30d6567487e2ac26beda8f5734ca7a167",
+      "width": 768,
+      "height": 1552,
+      "observedModifiedAt": "2026-11-25T19:35:09.268Z"
+    },
+    {
+      "file": "captures/employee-documents-1440-dark.png",
+      "bytes": 132185,
+      "sha256": "cb1f93ec254ad427251741a3bce88d48e65a7b751efa4dbb7ba3514388cc510b",
+      "width": 1440,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:34:47.430Z"
+    },
+    {
+      "file": "captures/employee-documents-1440-light.png",
+      "bytes": 131613,
+      "sha256": "3b87cf239ee43504f4129e8f09a71dbbeabdf3546d7dd4406a922bcf5ac62a5e",
+      "width": 1440,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:34:23.271Z"
+    },
+    {
+      "file": "captures/employee-documents-390-dark.png",
+      "bytes": 69704,
+      "sha256": "cceb7770cb30368197c13a08ddf56f0826274b58e3c73711dc24d41519ba9b66",
+      "width": 390,
+      "height": 1386,
+      "observedModifiedAt": "2026-11-25T19:36:10.223Z"
+    },
+    {
+      "file": "captures/employee-documents-390-light.png",
+      "bytes": 68910,
+      "sha256": "a63657aa3675930a07fc60ac6f8db2b7a84f8c2a70a52d7e7dd80c41d98a6770",
+      "width": 390,
+      "height": 1386,
+      "observedModifiedAt": "2026-11-25T19:35:52.250Z"
+    },
+    {
+      "file": "captures/employee-documents-768-dark.png",
+      "bytes": 69130,
+      "sha256": "fbe70be06a5e324c04544ea7f269185df4f54c96ac5b91273df72678f214c754",
+      "width": 768,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:35:35.619Z"
+    },
+    {
+      "file": "captures/employee-documents-768-light.png",
+      "bytes": 68579,
+      "sha256": "1ab954d08c1c4c4143d0ba01bafdc1c59852de205165ad80312c372e12d007b9",
+      "width": 768,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:35:15.014Z"
+    },
+    {
+      "file": "captures/employee-my-tasks-1440-dark.png",
+      "bytes": 143330,
+      "sha256": "2ff71f536636f0f55711a4dca8eecf9321439cfb9096a7401f4e77488920280c",
+      "width": 1440,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:34:28.050Z"
+    },
+    {
+      "file": "captures/employee-my-tasks-1440-light.png",
+      "bytes": 151456,
+      "sha256": "829429212fb6e6f9f50201b9ac9511f5f86eaa9ef10bac854dba33d038166b5e",
+      "width": 1440,
+      "height": 961,
+      "observedModifiedAt": "2026-11-25T19:33:46.460Z"
+    },
+    {
+      "file": "captures/employee-my-tasks-390-dark.png",
+      "bytes": 80432,
+      "sha256": "87e175c3c519f89fe1742706c67ea41a87247161f3d98cfa7eb4b922b2a307b9",
+      "width": 390,
+      "height": 1334,
+      "observedModifiedAt": "2026-11-25T19:35:53.951Z"
+    },
+    {
+      "file": "captures/employee-my-tasks-390-light.png",
+      "bytes": 78521,
+      "sha256": "f69e854000dc2595c2fbfe1045ddf1cd72019559ab8363bdd63e5d635fbb4de1",
+      "width": 390,
+      "height": 1334,
+      "observedModifiedAt": "2026-11-25T19:35:37.827Z"
+    },
+    {
+      "file": "captures/employee-my-tasks-768-dark.png",
+      "bytes": 79827,
+      "sha256": "3899c792d0b0d25878b83e26f9dc00420f4d19805963d4dc892611473a88e54a",
+      "width": 768,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:35:20.222Z"
+    },
+    {
+      "file": "captures/employee-my-tasks-768-light.png",
+      "bytes": 91718,
+      "sha256": "375ba4147c611568a90df365d2478d00a2c3839b48ca49bec61b8ab97d0b6a0c",
+      "width": 768,
+      "height": 1013,
+      "observedModifiedAt": "2026-11-25T19:34:56.356Z"
+    },
+    {
+      "file": "captures/employee-transactions-1440-dark.png",
+      "bytes": 122482,
+      "sha256": "d3a47ce281f27be3c0b5393f6922bbc06bff4f1ba299a5a24aec89aad4cc977f",
+      "width": 1440,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:34:38.564Z"
+    },
+    {
+      "file": "captures/employee-transactions-1440-light.png",
+      "bytes": 121616,
+      "sha256": "290832d9174a7bf44f469a20f55a7f37dad82a9eda3ce6a2aec185e2d3634ffb",
+      "width": 1440,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:33:49.168Z"
+    },
+    {
+      "file": "captures/employee-transactions-390-dark.png",
+      "bytes": 51753,
+      "sha256": "29cef7734b6a2c29f89b6bf7854909086b34c8a80dff68f260829801e42590ec",
+      "width": 390,
+      "height": 1037,
+      "observedModifiedAt": "2026-11-25T19:35:59.112Z"
+    },
+    {
+      "file": "captures/employee-transactions-390-light.png",
+      "bytes": 51040,
+      "sha256": "f651d283cef98f8fce4801452610e0d1123fc88a94a1dfaabdd25d8247600768",
+      "width": 390,
+      "height": 1037,
+      "observedModifiedAt": "2026-11-25T19:35:44.215Z"
+    },
+    {
+      "file": "captures/employee-transactions-768-dark.png",
+      "bytes": 58360,
+      "sha256": "03b80f75b97ae1670756f76cb47c5a7c2691137ad3eaaea8b07891b4246a7de3",
+      "width": 768,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:35:27.061Z"
+    },
+    {
+      "file": "captures/employee-transactions-768-light.png",
+      "bytes": 57463,
+      "sha256": "8d36e2849b276eea70793da0daa1d223bed2dbb2d922e7ff07d72e040a546c48",
+      "width": 768,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:34:58.410Z"
+    },
+    {
+      "file": "captures/employee-transactions-create-1440-dark.png",
+      "bytes": 182917,
+      "sha256": "e6d1bd60e4574182bc5eeb5270e42a67750ff45d244d108e19b8b42b4ec55d7d",
+      "width": 1440,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:34:41.150Z"
+    },
+    {
+      "file": "captures/employee-transactions-create-1440-light.png",
+      "bytes": 185069,
+      "sha256": "c6a6592320e7acb29d7992c0a96260d3d5f90bc7ef5dfc5cdd8a86a5944296d3",
+      "width": 1440,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:34:06.236Z"
+    },
+    {
+      "file": "captures/employee-transactions-create-390-dark.png",
+      "bytes": 66245,
+      "sha256": "fbb2dcb549ff0d1be0ef8de22ed7328bd716df20f75842ec8fd595e37301dfc6",
+      "width": 390,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:36:06.003Z"
+    },
+    {
+      "file": "captures/employee-transactions-create-390-light.png",
+      "bytes": 64587,
+      "sha256": "39dede216f74ac92a8e533d9bdcba8c3259c402fa44a00d077090c265bfd26b4",
+      "width": 390,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:35:47.486Z"
+    },
+    {
+      "file": "captures/employee-transactions-create-768-dark.png",
+      "bytes": 101698,
+      "sha256": "eecc209322f93ae290449a829be7d0fe618cfbb5b1ad8db1c023f9e56a29ef64",
+      "width": 768,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:35:30.211Z"
+    },
+    {
+      "file": "captures/employee-transactions-create-768-light.png",
+      "bytes": 99965,
+      "sha256": "5411e7cde334dc1e7d2a2eeeebb6b3d894bb185c194e55b0092ca1606d26270c",
+      "width": 768,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:35:07.230Z"
+    },
+    {
+      "file": "captures/employee-work-request-form-1440-dark.png",
+      "bytes": 182917,
+      "sha256": "e6d1bd60e4574182bc5eeb5270e42a67750ff45d244d108e19b8b42b4ec55d7d",
+      "width": 1440,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:34:40.735Z"
+    },
+    {
+      "file": "captures/employee-work-request-form-1440-light.png",
+      "bytes": 185069,
+      "sha256": "c6a6592320e7acb29d7992c0a96260d3d5f90bc7ef5dfc5cdd8a86a5944296d3",
+      "width": 1440,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:34:05.592Z"
+    },
+    {
+      "file": "captures/employee-work-request-form-390-dark.png",
+      "bytes": 66245,
+      "sha256": "fbb2dcb549ff0d1be0ef8de22ed7328bd716df20f75842ec8fd595e37301dfc6",
+      "width": 390,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:36:05.868Z"
+    },
+    {
+      "file": "captures/employee-work-request-form-390-light.png",
+      "bytes": 64587,
+      "sha256": "39dede216f74ac92a8e533d9bdcba8c3259c402fa44a00d077090c265bfd26b4",
+      "width": 390,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:35:47.388Z"
+    },
+    {
+      "file": "captures/employee-work-request-form-768-dark.png",
+      "bytes": 101698,
+      "sha256": "eecc209322f93ae290449a829be7d0fe618cfbb5b1ad8db1c023f9e56a29ef64",
+      "width": 768,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:35:30.019Z"
+    },
+    {
+      "file": "captures/employee-work-request-form-768-light.png",
+      "bytes": 99965,
+      "sha256": "5411e7cde334dc1e7d2a2eeeebb6b3d894bb185c194e55b0092ca1606d26270c",
+      "width": 768,
+      "height": 900,
+      "observedModifiedAt": "2026-11-25T19:35:07.001Z"
+    }
+  ]
+}
