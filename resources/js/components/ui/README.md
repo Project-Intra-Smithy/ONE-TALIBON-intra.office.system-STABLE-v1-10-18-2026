@@ -1,6 +1,6 @@
 # R6 municipal UI primitives — additive interface
 
-The eight legacy primitives remain available through direct file imports. They are no longer re-exported by the TCDS barrel because no application caller uses them. Each component imports `./ui-system.css` directly; the bundler deduplicates that stylesheet. All styles use opt-in `ot-ui-*` selectors and existing `--municipal-*` variables. No global style or app route is changed.
+The eight exports are available from `resources/js/components/ui` and may be used independently. Each component imports `./ui-system.css` directly; the bundler deduplicates that stylesheet. All styles use opt-in `ot-ui-*` selectors and existing `--municipal-*` variables. No global style or app route is changed.
 
 | Export | Required props | Optional props/defaults | Semantics |
 | --- | --- | --- | --- |

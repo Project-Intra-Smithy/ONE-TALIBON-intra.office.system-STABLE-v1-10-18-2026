@@ -38,7 +38,7 @@ before(async () => {
                 let raw = ''; for await (const chunk of req) raw += chunk;
                 const payload = JSON.parse(raw || '{}'); posts.push({ path, payload });
                 await new Promise(resolve => setTimeout(resolve, 600));
-                errors = path === '/login' ? { email: 'Test server: credentials rejected', password: 'Test server: password rejected' } : payload.recovery_code ? { recovery_code: 'Test server: recovery rejected' } : { code: 'Test server: code rejected' };
+                errors = path === '/login' ? { login: 'Test server: credentials rejected', password: 'Test server: password rejected' } : payload.recovery_code ? { recovery_code: 'Test server: recovery rejected' } : { code: 'Test server: code rejected' };
             }
             const data = pageData(path === '/logout' ? '/login' : path, errors);
             if (!data.component) { res.writeHead(404); res.end(); return; }
@@ -89,11 +89,11 @@ for (const width of [320, 390, 768, 1024, 1440]) {
                     assert.equal(await page.getByRole('button', { name: 'Open portal navigation', includeHidden: true }).isVisible(), width <= 1100);
                 }
                 if (path === '/login') {
-                    assert.equal(await page.getByRole('button', { name: 'Continue with Google' }).isDisabled(), true);
-                    assert.equal(await page.locator('.employee-login__panel').evaluate(el => getComputedStyle(el).backgroundColor), 'rgba(255, 255, 255, 0.48)');
+                    assert.equal(await page.getByRole('checkbox', { name: 'Remember me (unavailable)' }).isDisabled(), true);
+                    assert.equal(await page.getByRole('form', { name: 'Employee sign-in' }).count(), 1);
                     assert.equal((await page.request.get(base + '/images/talibon/municipality-of-talibon.jpg')).status(), 200);
                 }
-                if (path === '/dashboard') assert.ok(await page.getByRole('heading', { name: 'My Tasks', exact: true }).count());
+                if (path === '/dashboard') assert.ok(await page.getByRole('heading', { name: 'My Tasks Today', exact: true }).count());
                 await page.screenshot({ path: `${out}/${path.replaceAll('/', '-') || 'home'}-${width}.png`, fullPage: true });
             } finally { await page.close(); }
         }
@@ -107,20 +107,21 @@ test('homepage keyboard, mobile navigation and actual Inertia Login link', async
         const menu = page.getByRole('button', { name: 'Open portal navigation' });
         await menu.click(); await page.keyboard.press('Escape'); assert.equal(await menu.getAttribute('aria-expanded'), 'false'); assert.equal(await menu.evaluate(el => el === document.activeElement), true);
         await menu.click(); await page.locator('#public-mobile-navigation a[href="#support"]').click(); assert.equal(await menu.getAttribute('aria-expanded'), 'false');
-        await page.locator('.public-login-link').click(); await page.waitForURL('**/login'); await page.getByLabel('Email address', { exact: true }).waitFor();
+        await page.locator('.public-login-link').click(); await page.waitForURL('**/login'); await page.getByLabel('Username or email', { exact: true }).waitFor();
     } finally { await page.close(); }
 });
 test('Login keyboard, required fields, payload, pending and server errors', async () => {
     const { page } = await mount('/login');
     try {
-        await page.keyboard.press('Tab'); assert.equal(await page.evaluate(() => document.activeElement.id), 'login-email');
+        await page.keyboard.press('Tab'); assert.equal(await page.evaluate(() => document.activeElement.textContent.trim()), 'Skip to sign-in form');
+        await page.keyboard.press('Enter'); assert.equal(await page.evaluate(() => document.activeElement.id), 'login-panel');
         await page.getByRole('button', { name: 'Sign in', exact: true }).click(); assert.equal(await page.locator('input:invalid').count(), 2);
-        await page.getByLabel('Email address', { exact: true }).fill('actor@example.test'); await page.getByLabel('Password', { exact: true }).fill('synthetic-only');
+        await page.getByLabel('Username or email', { exact: true }).fill('actor@example.test'); await page.getByLabel('Password', { exact: true }).fill('synthetic-only');
         await page.getByRole('button', { name: 'Show password' }).click(); assert.equal(await page.locator('#login-password').getAttribute('type'), 'text');
-        await page.getByLabel('Remember me on this device').check(); await page.getByRole('button', { name: 'Sign in', exact: true }).click();
-        await page.getByRole('button', { name: 'Signing in…' }).waitFor(); assert.equal(await page.locator('#login-email').isDisabled(), true);
-        await page.getByText('Test server: credentials rejected').waitFor(); assert.deepEqual(posts.at(-1), { path: '/login', payload: { email: 'actor@example.test', password: 'synthetic-only', remember: true } });
-        assert.equal(await page.locator('#login-email').getAttribute('aria-invalid'), 'true');
+        assert.equal(await page.getByRole('checkbox', { name: 'Remember me (unavailable)' }).isDisabled(), true); await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+        await page.getByRole('button', { name: 'Signing in…' }).waitFor(); assert.equal(await page.locator('#login-identity').isDisabled(), true);
+        await page.getByText('Test server: credentials rejected').waitFor(); assert.deepEqual(posts.at(-1), { path: '/login', payload: { login: 'actor@example.test', password: 'synthetic-only' } });
+        assert.equal(await page.locator('#login-identity').getAttribute('aria-invalid'), 'true');
     } finally { await page.close(); }
 });
 test('persisted dark appearance, short auth viewport and authenticated homepage destination', async () => {
@@ -131,10 +132,10 @@ test('persisted dark appearance, short auth viewport and authenticated homepage 
         assert.equal(await page.locator('.public-login-link').getAttribute('href'), '/dashboard');
         await page.locator('.public-login-link').click(); await page.waitForURL('**/dashboard');
         assert.equal(await page.locator('.public-refined').count(), 0);
-        await page.goto(base + '/login'); await page.locator('#login-email').waitFor();
+        await page.goto(base + '/login'); await page.locator('#login-identity').waitFor();
         await page.setViewportSize({ width: 320, height: 360 });
         await page.getByRole('button', { name: 'Sign in', exact: true }).scrollIntoViewIfNeeded();
-        assert.equal(await page.locator('.employee-login__panel h2').evaluate(el => getComputedStyle(el).color), 'rgb(20, 90, 67)');
+        assert.equal(await page.getByRole('heading', { name: 'Sign in to your workspace' }).count(), 1);
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
         await page.goto(base + '/security/mfa/challenge');
         await page.getByRole('button', { name: 'Sign out' }).scrollIntoViewIfNeeded();

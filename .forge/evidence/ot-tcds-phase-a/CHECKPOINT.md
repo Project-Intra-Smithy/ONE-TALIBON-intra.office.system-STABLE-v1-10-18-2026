@@ -28,8 +28,8 @@ PR71: 46f24d0f288e5584e3c45f5e8abf8466b6dc2a6a.
   endpoints, disabled remember-me, removed unverified support extension. Restyled
   canonical-only security/delivery interfaces. Replaced three blocking MFA
   confirmations with the existing accessible confirmation dialog.
-- Removed unused legacy UI re-exports after caller search; retained original
-  component files and functional tests. Scoped Tailwind source discovery.
+- Scoped Tailwind source discovery. An attempted legacy UI re-export removal was
+  rejected by the compatibility suite; the exports and original tests are restored.
 
 ## Observed local checks
 
@@ -66,3 +66,16 @@ system-admin planning authority is not municipal policy; Policy #185 remains.
 No main merge, deploy, persistent database modification, Siris activation,
 independent acceptance or release. Continue the existing assignment and branch;
 do not restart source discovery or describe this checkpoint as a finished migration.
+
+## First hosted run and repair
+
+Checkpoint e1ae9a52 hosted presentation run 45536480285 failed the legacy export
+compatibility assertion. Backend run 45536480388 passed nine original partitions;
+browser failed that same export assertion, and full PG16 ran 877 tests with one
+source-contract failure: canonical login labels must retain `Username or email`
+and `Remember me`. Labels are restored while remember-me remains disabled and
+omitted from the request. No PHP test was edited. The old auth browser suite now
+checks the actual login field and disabled remember-me while preserving required
+fields, credentials-only payload, pending state, server errors, MFA and keyboard
+assertions; 10/10 passed locally before the final wording adjustment. Contracts
+passed 125/125 after export restoration. Revalidation on the next SHA is pending.

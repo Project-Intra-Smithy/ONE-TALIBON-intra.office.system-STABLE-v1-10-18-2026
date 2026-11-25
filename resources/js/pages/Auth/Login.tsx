@@ -111,7 +111,7 @@ export default function Login() {
                             <form onSubmit={submit} aria-label="Employee sign-in" aria-busy={form.processing} className="mt-6 space-y-5">
                                 <div className="flex flex-col gap-1.5">
                                     <label htmlFor="login-identity" className="text-sm font-semibold text-[var(--ink-primary)]">
-                                        Username or municipal email
+                                        Username or email
                                     </label>
                                     <input
                                         id="login-identity"
@@ -182,7 +182,7 @@ export default function Login() {
                                         disabled
                                         className="h-5 w-5 rounded border border-[var(--border-control)] bg-[var(--surface-card)]"
                                     />
-                                    <span>Persistent sign-in is unavailable</span>
+                                    <span>Remember me (unavailable)</span>
                                 </label>
 
                                 <button
