@@ -1,5 +1,8 @@
 # Phase A implementation checkpoint — not a completion or acceptance receipt
 
+Current corrective state: [canonical convergence checkpoint](convergence/CORRECTIVE-CHECKPOINT.md).
+The historical preview-completion statements below are superseded by the corrective authority linked there.
+
 Mission: OT-TCDS-FULL-PRODUCT-INTEGRATION-R1. Executor: Codex, AI-assisted under
 accountable human owner Kirch-Nairu. Author review is non-accepting.
 

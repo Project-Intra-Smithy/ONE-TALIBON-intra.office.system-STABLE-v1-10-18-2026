@@ -1,3 +1,5 @@
+import DocumentUploadStudio from '../../../../../resources/js/components/planning/DocumentUploadStudio';
+import SupportingDocumentCard from '../../../../../resources/js/components/planning/SupportingDocumentCard';
 import { Download, Eye, FileSpreadsheet, FileText, Image as ImageIcon, Lock, Paperclip, Plus, Trash2, Upload } from 'lucide-react';
 import { type FormEvent, useId, useState } from 'react';
 import {
@@ -168,92 +170,13 @@ export default function SupportingDocsPanel({
             </div>
 
             {uploadOpen && canManageDocs && (
-                <form
-                    onSubmit={handleUploadSubmit}
-                    className="space-y-3 rounded-xl border border-[var(--brand-soft-border)] bg-[var(--surface-recessed)] p-4"
-                >
-                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--brand-ink)]">
-                        <Upload size={14} aria-hidden="true" />
-                        <span>Attach supporting file</span>
-                    </div>
-
-                    <div className="grid gap-3 sm:grid-cols-2">
-                        <FormField label="Select file (PDF, XLSX, DOCX, PNG/JPG)" htmlFor={fileInputId} className="sm:col-span-2">
-                            <input
-                                id={fileInputId}
-                                type="file"
-                                accept={ACCEPTED_ATTACHMENT_EXTENSIONS}
-                                onChange={(e) => handleFileSelect(e.target.files?.[0])}
-                                className="tcds-input py-2 text-xs"
-                            />
-                            {selectedFile && (
-                                <p className="mt-1 text-xs font-medium text-[var(--brand-ink)]">
-                                    Selected: {selectedFile.name} ({formatFileBytes(selectedFile.sizeBytes)})
-                                </p>
-                            )}
-                        </FormField>
-
-                        <FormField label="Document title" htmlFor={titleInputId} required className="sm:col-span-2">
-                            <input
-                                id={titleInputId}
-                                required
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                                placeholder="e.g., SB Res. No. 2026-045 or Program of Works — Phase 1"
-                                className="tcds-input"
-                            />
-                        </FormField>
-
-                        <FormField label="Control / Resolution Ref." htmlFor={refInputId} optional>
-                            <input
-                                id={refInputId}
-                                value={controlRef}
-                                onChange={(e) => setControlRef(e.target.value)}
-                                placeholder="e.g., MEO-POW-2027-019"
-                                className="tcds-input font-mono"
-                            />
-                        </FormField>
-
-                        <FormField label="Document category" htmlFor={catSelectId} required>
-                            <select
-                                id={catSelectId}
-                                value={category}
-                                onChange={(e) => setCategory(e.target.value as PlanningAttachmentCategory)}
-                                className="tcds-input"
-                            >
-                                {CATEGORIES.map((key) => (
-                                    <option key={key} value={key}>
-                                        {ATTACHMENT_CATEGORY_META[key].label}
-                                    </option>
-                                ))}
-                            </select>
-                        </FormField>
-
-                        <FormField label="Access visibility tier" htmlFor={visSelectId} required className="sm:col-span-2">
-                            <select
-                                id={visSelectId}
-                                value={visibility}
-                                onChange={(e) => setVisibility(e.target.value as AttachmentVisibility)}
-                                className="tcds-input"
-                            >
-                                {VISIBILITIES.map((key) => (
-                                    <option key={key} value={key}>
-                                        {ATTACHMENT_VISIBILITY_META[key].label}
-                                    </option>
-                                ))}
-                            </select>
-                        </FormField>
-                    </div>
-
-                    <div className="flex justify-end gap-2 pt-1">
-                        <Button type="button" variant="secondary" size="sm" onClick={() => setUploadOpen(false)}>
-                            Cancel
-                        </Button>
-                        <Button type="submit" size="sm">
-                            Save attachment
-                        </Button>
-                    </div>
-                </form>
+                <DocumentUploadStudio title={title} category={category} visibility={visibility} controlRef={controlRef}
+                    onTitleChange={setTitle} onCategoryChange={value=>setCategory(value as PlanningAttachmentCategory)} onVisibilityChange={value=>setVisibility(value as AttachmentVisibility)} onControlRefChange={setControlRef}
+                    onFileChange={file=>handleFileSelect(file??undefined)} onSubmit={handleUploadSubmit} onCancel={()=>setUploadOpen(false)}
+                    categories={CATEGORIES.map(value=>({value,label:ATTACHMENT_CATEGORY_META[value].label}))}
+                    visibilities={VISIBILITIES.map(value=>({value,label:ATTACHMENT_VISIBILITY_META[value].label}))}
+                    accept={ACCEPTED_ATTACHMENT_EXTENSIONS} fileLabel="Select file (PDF, XLSX, DOCX, PNG/JPG)"
+                    selectedFileLabel={selectedFile ? `${selectedFile.name} (${formatFileBytes(selectedFile.sizeBytes)})` : undefined} />
             )}
 
             {visibleDocs.length === 0 ? (
@@ -272,40 +195,8 @@ export default function SupportingDocsPanel({
                         const catMeta = ATTACHMENT_CATEGORY_META[doc.category];
                         const visMeta = ATTACHMENT_VISIBILITY_META[doc.visibility];
                         return (
-                            <li
-                                key={doc.id}
-                                className="rounded-xl border border-[var(--border-default)] bg-[var(--surface-recessed)] p-3.5"
-                            >
-                                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                                    <div className="flex min-w-0 flex-1 items-start gap-3">
-                                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[var(--border-default)] bg-[var(--surface-card)] text-[var(--brand-ink)]">
-                                            {formatIcon(doc)}
-                                        </div>
-                                        <div className="min-w-0 flex-1">
-                                            <div className="flex flex-wrap items-center gap-1.5">
-                                                <StatusBadge tone={catMeta.tone}>{catMeta.shortLabel}</StatusBadge>
-                                                <span className="rounded border border-[var(--border-control)] bg-[var(--surface-card)] px-1.5 py-0.5 font-mono text-xs font-bold text-[var(--ink-primary)]">
-                                                    {doc.formatLabel}
-                                                </span>
-                                                {doc.visibility !== 'all_lgu' && (
-                                                    <span className="inline-flex items-center gap-1 rounded-full border border-[var(--status-warn-border)] bg-[var(--status-warn-bg)] px-2 py-0.5 text-xs font-semibold text-[var(--status-warn-fg)]">
-                                                        <Lock size={10} aria-hidden="true" />
-                                                        <span>{visMeta.shortLabel}</span>
-                                                    </span>
-                                                )}
-                                            </div>
-                                            <p className="mt-1.5 text-sm font-bold leading-snug text-[var(--ink-primary)]">
-                                                {doc.title}
-                                            </p>
-                                            <p className="mt-0.5 text-xs text-[var(--ink-secondary)]">
-                                                <span className="font-mono font-semibold">{doc.controlRef}</span> · {doc.sizeLabel} · Uploaded{' '}
-                                                {formatDatePH(doc.uploadedAt)} by {doc.uploadedBy}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex shrink-0 flex-wrap items-center gap-1.5">
-                                        <button
+                            <SupportingDocumentCard key={doc.id} title={doc.title} icon={formatIcon(doc)} badges={<><StatusBadge tone={catMeta.tone}>{catMeta.shortLabel}</StatusBadge><span className="font-mono text-xs font-bold">{doc.formatLabel}</span>{doc.visibility !== 'all_lgu' && <StatusBadge tone="warn">{visMeta.shortLabel}</StatusBadge>}</>} metadata={<><span className="font-mono font-semibold">{doc.controlRef}</span> · {doc.sizeLabel} · Uploaded {formatDatePH(doc.uploadedAt)} by {doc.uploadedBy}</>} actions={<>
+<button
                                             type="button"
                                             onClick={() => setPreviewing(doc)}
                                             className="inline-flex min-h-10 items-center gap-1.5 rounded-lg border border-[var(--border-control)] bg-[var(--surface-card)] px-3 text-xs font-semibold text-[var(--ink-primary)] transition-colors hover:border-[var(--brand-primary)] hover:bg-[var(--brand-soft)]"
@@ -313,7 +204,8 @@ export default function SupportingDocsPanel({
                                             <Eye size={14} aria-hidden="true" />
                                             <span>Preview</span>
                                         </button>
-                                        <button
+
+<button
                                             type="button"
                                             onClick={() => triggerAttachmentDownload(doc)}
                                             aria-label={`Download ${doc.title}`}
@@ -322,7 +214,8 @@ export default function SupportingDocsPanel({
                                             <Download size={14} aria-hidden="true" />
                                             <span className="sr-only sm:not-sr-only">Download</span>
                                         </button>
-                                        {canManageDocs && (
+
+{canManageDocs && (
                                             <button
                                                 type="button"
                                                 onClick={() => setDeleting(doc)}
@@ -332,9 +225,7 @@ export default function SupportingDocsPanel({
                                                 <Trash2 size={14} aria-hidden="true" />
                                             </button>
                                         )}
-                                    </div>
-                                </div>
-                            </li>
+</>} />
                         );
                     })}
                 </ul>

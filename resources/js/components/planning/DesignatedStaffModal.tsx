@@ -1,3 +1,4 @@
+import PlanningStaffList from './PlanningStaffList';
 import { router } from '@inertiajs/react';
 import { ShieldCheck, Trash2, UserPlus } from 'lucide-react';
 import { type FormEvent, useState } from 'react';
@@ -177,62 +178,7 @@ export default function DesignatedStaffModal({
                             No MPDC staff designations are currently active.
                         </p>
                     ) : (
-                        <ul className="space-y-2">
-                            {designatedStaff.map((member) => (
-                                <li
-                                    key={member.id}
-                                    className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-3"
-                                >
-                                    <div>
-                                        <p className="font-bold text-[var(--municipal-text)]">
-                                            {member.fullName}
-                                        </p>
-                                        <p className="text-[11px] text-[var(--municipal-muted)]">
-                                            {member.positionTitle}
-                                        </p>
-                                    </div>
-                                    <div className="flex flex-wrap items-center gap-3">
-                                        <label className="inline-flex items-center gap-1 text-[11px]">
-                                            <input
-                                                type="checkbox"
-                                                checked={member.canManagePlans}
-                                                onChange={() =>
-                                                    handleToggleScope(member, 'canManagePlans')
-                                                }
-                                            />
-                                            Plans
-                                        </label>
-                                        <label className="inline-flex items-center gap-1 text-[11px]">
-                                            <input
-                                                type="checkbox"
-                                                checked={member.canManagePpas}
-                                                onChange={() =>
-                                                    handleToggleScope(member, 'canManagePpas')
-                                                }
-                                            />
-                                            PPAs
-                                        </label>
-                                        <label className="inline-flex items-center gap-1 text-[11px]">
-                                            <input
-                                                type="checkbox"
-                                                checked={member.canManageMaps}
-                                                onChange={() =>
-                                                    handleToggleScope(member, 'canManageMaps')
-                                                }
-                                            />
-                                            Maps
-                                        </label>
-                                        <button
-                                            type="button"
-                                            onClick={() => handleRevoke(member.id)}
-                                            className="inline-flex min-h-8 items-center gap-1 rounded border border-red-300 px-2 text-[11px] font-semibold text-red-700 hover:bg-red-50 dark:border-red-800 dark:text-red-300"
-                                        >
-                                            <Trash2 className="h-3 w-3" /> Revoke
-                                        </button>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
+                        <PlanningStaffList busy={busy} staff={designatedStaff.map(member => ({ id: member.id, name: member.fullName, detail: member.positionTitle, active: true, plans: member.canManagePlans, ppas: member.canManagePpas, maps: member.canManageMaps }))} onToggle={id => handleRevoke(Number(id))} onScope={(id, module) => { const member = designatedStaff.find(item => item.id === id); if (member) handleToggleScope(member, module === 'plans' ? 'canManagePlans' : module === 'ppas' ? 'canManagePpas' : 'canManageMaps'); }} />
                     )}
                 </div>
             </div>

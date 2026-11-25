@@ -215,6 +215,7 @@ test('server-confirmed Task mutations refresh the read workspace without optimis
 
         await page.getByRole('button', { name: /Synchronized Task/ }).first().click();
         await page.getByRole('region', { name: 'Personal Task detail' }).waitFor();
+        await page.getByRole('button', { name: 'Back to tasks' }).click();
         await actions.getByRole('button', { name: 'Start' }).click();
         await actions.getByText(/Server confirmed: Synchronized Task — in progress/).waitFor();
         await page.getByRole('list', { name: 'In Progress personal Tasks' }).getByText('Synchronized Task').waitFor();

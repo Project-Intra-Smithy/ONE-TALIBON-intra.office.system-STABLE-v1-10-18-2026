@@ -1,3 +1,6 @@
+import DocumentUploadStudio from './DocumentUploadStudio';
+import SupportingDocumentCard from './SupportingDocumentCard';
+import DocumentPreviewPresentation from './DocumentPreviewPresentation';
 import { router } from '@inertiajs/react';
 import { Eye, FileText, Trash2, Upload } from 'lucide-react';
 import { type FormEvent, useState } from 'react';
@@ -57,15 +60,19 @@ export default function SupportingDocsPanel({
     const [visibility, setVisibility] = useState('lgu_internal');
     const [file, setFile] = useState<File | null>(null);
     const [busy, setBusy] = useState(false);
+    const [submissionError,setSubmissionError]=useState('');
+    const [inspectingId,setInspectingId]=useState<string|null>(null);
 
     const matching = attachments.filter(
         (item) => item.parentType === parentType && item.parentCode === parentCode,
     );
+    const inspecting=matching.find(attachment=>attachment.publicId===inspectingId)??null;
 
     const handleUpload = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (!file || !title.trim() || busy) return;
 
+        setSubmissionError('');
         setBusy(true);
         const formData = new FormData();
         formData.append('parent_type', parentType);
@@ -82,6 +89,7 @@ export default function SupportingDocsPanel({
                 setFile(null);
                 setShowUpload(false);
             },
+            onError: errors=>setSubmissionError(Object.values(errors).join(' ')),
             onFinish: () => setBusy(false),
         });
     };
@@ -123,71 +131,13 @@ export default function SupportingDocsPanel({
             </div>
 
             {showUpload && canUpload && (
-                <form
-                    onSubmit={handleUpload}
-                    className="mt-3 space-y-2.5 rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-3 text-xs"
-                >
-                    <div className="grid gap-2 sm:grid-cols-2">
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            Document Title
-                            <input
-                                type="text"
-                                required
-                                maxLength={255}
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                                placeholder="e.g., Technical Narrative / POW"
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            />
-                        </label>
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            Category
-                            <select
-                                value={category}
-                                onChange={(e) => setCategory(e.target.value)}
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            >
-                                {Object.entries(categoryLabels).map(([key, label]) => (
-                                    <option key={key} value={key}>
-                                        {label}
-                                    </option>
-                                ))}
-                            </select>
-                        </label>
-                    </div>
-                    <div className="grid gap-2 sm:grid-cols-2">
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            Visibility Scope
-                            <select
-                                value={visibility}
-                                onChange={(e) => setVisibility(e.target.value)}
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            >
-                                <option value="lgu_internal">LGU Internal</option>
-                                <option value="office_restricted">Office Restricted</option>
-                                <option value="public_portal">Public Reference</option>
-                                {canManageExecutive && (
-                                    <option value="mpdc_executive">MPDC / Executive Only</option>
-                                )}
-                            </select>
-                        </label>
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            File (PDF, PNG, JPG, CSV · max 10 MB)
-                            <input
-                                type="file"
-                                required
-                                accept=".pdf,.png,.jpg,.jpeg,.csv,.txt"
-                                onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-                                className="mt-1 block min-h-9 w-full text-xs text-[var(--municipal-text)]"
-                            />
-                        </label>
-                    </div>
-                    <div className="flex justify-end">
-                        <Button type="submit" variant="primary" size="sm" loading={busy}>
-                            Upload to Private Storage
-                        </Button>
-                    </div>
-                </form>
+                <DocumentUploadStudio error={submissionError} title={title} category={category} visibility={visibility}
+                    onTitleChange={setTitle} onCategoryChange={setCategory} onVisibilityChange={setVisibility}
+                    onFileChange={setFile} onSubmit={handleUpload} onCancel={()=>setShowUpload(false)} busy={busy}
+                    categories={Object.entries(categoryLabels).map(([value,label])=>({value,label}))}
+                    visibilities={Object.entries(visibilityLabels).filter(([value])=>value!=='mpdc_executive'||canManageExecutive).map(([value,label])=>({value,label}))}
+                    accept=".pdf,.png,.jpg,.jpeg,.csv,.txt" fileLabel="File (PDF, PNG, JPG, CSV, TXT · max 10 MB)"
+                    selectedFileLabel={file?.name} submitLabel="Upload to Private Storage" />
             )}
 
             {matching.length === 0 ? (
@@ -197,21 +147,8 @@ export default function SupportingDocsPanel({
             ) : (
                 <ul className="mt-2.5 space-y-2">
                     {matching.map((doc) => (
-                        <li
-                            key={doc.publicId}
-                            className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-3 py-2 text-xs"
-                        >
-                            <div className="min-w-0">
-                                <p className="flex items-center gap-1.5 font-semibold text-[var(--municipal-text)]">
-                                    <FileText className="h-3.5 w-3.5 shrink-0 text-[var(--municipal-brand)]" />
-                                    <span className="truncate">{doc.title}</span>
-                                </p>
-                                <p className="mt-0.5 text-[11px] text-[var(--municipal-muted)]">
-                                    {doc.fileName} · {categoryLabels[doc.category] ?? doc.category} ·{' '}
-                                    {visibilityLabels[doc.visibility] ?? doc.visibility}
-                                </p>
-                            </div>
-                            <div className="flex items-center flex-wrap gap-2">
+                        <SupportingDocumentCard key={doc.publicId} title={doc.title} badges={<><span className="rounded-full border border-[var(--border-control)] px-2 py-1 text-xs font-bold">{categoryLabels[doc.category] ?? doc.category}</span><span className="text-xs font-semibold">{visibilityLabels[doc.visibility] ?? doc.visibility}</span></>} metadata={<>{doc.fileName} · {new Intl.NumberFormat('en-PH').format(doc.sizeBytes)} bytes</>} actions={<>
+                                <button type="button" onClick={()=>setInspectingId(doc.publicId)} className="municipal-secondary-button">Inspect metadata</button>
                                 <a
                                     href={doc.previewUrl}
                                     target="_blank"
@@ -221,13 +158,15 @@ export default function SupportingDocsPanel({
                                     <Eye className="h-3 w-3" aria-hidden="true" /> Preview
                                     <span className="sr-only"> {doc.title} (opens in a new tab)</span>
                                 </a>
-                                <a
+
+<a
                                     href={doc.downloadUrl}
                                     className="inline-flex min-h-11 items-center rounded border border-[var(--municipal-border-strong)] px-2.5 text-[11px] font-semibold text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]"
                                 >
                                     Download
                                 </a>
-                                {canDelete && (
+
+{canDelete && (
                                     <button
                                         type="button"
                                         onClick={() => handleRemove(doc.publicId)}
@@ -237,12 +176,12 @@ export default function SupportingDocsPanel({
                                         <Trash2 className="h-3 w-3" />
                                     </button>
                                 )}
-                            </div>
-                        </li>
+</>} />
                     ))}
                 </ul>
             )}
 
+            {inspecting && <DocumentPreviewPresentation key={inspecting.publicId} metadataOnly attachment={{title:inspecting.title,controlRef:inspecting.publicId,filename:inspecting.fileName,formatLabel:inspecting.fileName.split('.').pop()?.toUpperCase()??inspecting.mimeType,sizeLabel:`${new Intl.NumberFormat('en-PH').format(inspecting.sizeBytes)} bytes`,visibility:inspecting.visibility,uploadedAt:inspecting.createdAt??'',uploadedBy:'Not supplied by current record',previewFields:[['Parent reference',inspecting.parentCode],['MIME type',inspecting.mimeType],['Category',categoryLabels[inspecting.category]??inspecting.category]]}} onClose={()=>setInspectingId(null)} categoryMeta={{label:categoryLabels[inspecting.category]??inspecting.category,tone:'info'}} visibilityMeta={{label:visibilityLabels[inspecting.visibility]??inspecting.visibility,shortLabel:visibilityLabels[inspecting.visibility]??inspecting.visibility}} nativePreviewUrl={inspecting.previewUrl} onDownload={()=>window.location.assign(inspecting.downloadUrl)} />}
         </section>
     );
 }

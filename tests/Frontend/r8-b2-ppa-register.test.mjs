@@ -16,9 +16,9 @@ test('B2 retains all seven reference-data filter predicates and reset', () => {
   assert.match(filters, /Advanced filters/);
   assert.match(page, /setSelected\(null\)/);
 });
-test('B2 status badges are restricted to five PPA domain status values', () => {
+test('B2 status badges retain canonical domain values and neutral unknown fallback', () => {
   for (const status of ['Planned','For Procurement','Ongoing','Completed','On Hold']) assert.ok(register.includes(status));
-  assert.match(register, /Record<PPARecord\['status'\], string>/);
+  assert.match(register, /record\.status\]\?\?'neutral'/);
   assert.doesNotMatch(register, /percentComplete|completionPercent|progressBar|<progress/i);
 });
 test('B2 preserves mobile cards, desktop register and detail focus restoration', () => {
@@ -31,8 +31,9 @@ test('B2 preserves mobile cards, desktop register and detail focus restoration',
   assert.match(register, /aria-selected=\{selectedId === record\.id\}/);
   assert.match(register, /aria-expanded=\{selectedId === record\.id\}/);
   assert.match(register, /r8-ppas-card-meta/);
-  assert.match(detail, /panelRef\.current\?\.focus\(\)/);
-  assert.match(detail, /event\.key === 'Escape'/);
+  assert.match(detail, /<PlanDossierPresentation/);
+  assert.match(detail, /onClose=\{onClose\}/);
+  assert.match(readFileSync(new URL('../../resources/js/components/ui/Dialog.tsx', import.meta.url), 'utf8'), /showModal\(\)/);
   assert.match(page, /dataset\.ppaTrigger === id/);
   assert.match(page, /trigger\?\.focus\(\)/);
 });

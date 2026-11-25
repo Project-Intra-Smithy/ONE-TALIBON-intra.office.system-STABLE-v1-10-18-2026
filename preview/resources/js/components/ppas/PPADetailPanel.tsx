@@ -1,3 +1,6 @@
+import PpaPlanMapLinks from '../../../../../resources/js/components/ppas/PpaPlanMapLinks';
+import PlanDossierPresentation from '../../../../../resources/js/components/plans/PlanDossierPresentation';
+import PpaOverview from '../../../../../resources/js/components/ppas/PpaOverview';
 import { Link } from '@inertiajs/react';
 import {
     Archive,
@@ -73,12 +76,8 @@ export default function PPADetailPanel({
     onAddAttachment,
     onRemoveAttachment,
 }: Props) {
-    const [tab, setTab] = useState<DossierTab>('overview');
-
-    useEffect(() => {
-        setTab('overview');
-    }, [record?.id]);
-
+    const [tab,setTab]=useState<DossierTab>('overview');
+    useEffect(()=>setTab('overview'),[record?.id]);
     const recordDocs = record
         ? attachments.filter((doc) => doc.parentType === 'ppa' && doc.parentId === record.id)
         : [];
@@ -101,15 +100,7 @@ export default function PPADetailPanel({
     const hasStepping = typeof currentIndex === 'number' && typeof totalCount === 'number' && totalCount > 1;
     const canEditThis = record ? permissions.canEditRecord(record.responsibleOffice, record.status) : false;
 
-    return (
-        <Dialog
-            open={Boolean(record)}
-            onClose={onClose}
-            variant="drawer-right"
-            title={record?.title ?? 'PPA details'}
-            description={record ? `${record.id} · AIP ${record.aipRefCode} · FY ${record.year}` : undefined}
-            footer={
-                <div className="flex w-full flex-wrap items-center justify-between gap-2">
+    return <PlanDossierPresentation id="selected-ppa-detail" activeSection={tab} onSectionChange={section=>setTab(section as DossierTab)} key={record?.id ?? 'closed'} open={Boolean(record)} onClose={onClose} title={record?.title ?? 'PPA details'} description={record ? `${record.id} · ${record.year} · ${record.status}` : undefined} sectionLabel="PPA dossier sections" footer={<div className="flex w-full flex-wrap items-center justify-between gap-2">
                     {hasStepping ? (
                         <div className="flex items-center gap-1.5">
                             <Button
@@ -167,230 +158,11 @@ export default function PPADetailPanel({
                             Close
                         </Button>
                     </div>
-                </div>
-            }
-        >
-            {record && (
-                <div id="selected-ppa-detail" className="space-y-4">
-                    <div className="flex flex-wrap items-center gap-1.5">
-                        <StatusBadge tone={statusTone[record.status]}>{record.status}</StatusBadge>
-                        <StatusBadge tone="neutral">{record.sector}</StatusBadge>
-                        <StatusBadge tone={record.priority === 'High' ? 'warn' : 'neutral'}>
-                            {record.priority} priority
-                        </StatusBadge>
-                        {record.gadAttributed && <StatusBadge tone="info">GAD</StatusBadge>}
-                        {record.drrmTagged && <StatusBadge tone="warn">DRRM</StatusBadge>}
-                    </div>
-
-                    <div
-                        role="tablist"
-                        aria-label="PPA dossier sections"
-                        className="grid grid-cols-3 gap-1 rounded-xl bg-[var(--surface-recessed)] p-1"
-                    >
-                        {([
-                            ['overview', 'Overview & Budget'],
-                            ['links', 'Plan & Location'],
-                            ['docs', `Docs (${visibleDocCount})`],
-                        ] as const).map(([key, label]) => (
-                            <button
-                                key={key}
-                                type="button"
-                                role="tab"
-                                aria-selected={tab === key}
-                                onClick={() => setTab(key)}
-                                className={`min-h-9 rounded-lg border px-2 text-xs font-bold transition-colors ${
-                                    tab === key
-                                        ? 'border-[var(--brand-soft-border)] bg-[var(--brand-soft)] text-[var(--brand-ink)]'
-                                        : 'border-transparent text-[var(--ink-secondary)] hover:text-[var(--ink-primary)]'
-                                }`}
-                            >
-                                {label}
-                            </button>
-                        ))}
-                    </div>
-
-                    {tab === 'overview' && (
-                        <div className="space-y-4">
-                            <section className="rounded-xl border border-[var(--border-default)] bg-[var(--surface-recessed)] p-4">
-                                <p className="text-xs font-bold uppercase tracking-wider text-[var(--brand-ink)]">
-                                    Expected outputs (Deliverables)
-                                </p>
-                                <p className="mt-1.5 text-sm font-medium leading-6 text-[var(--ink-primary)]">
-                                    {record.expectedOutputs}
-                                </p>
-                                <p className="mt-2 border-t border-[var(--border-default)] pt-2 text-xs leading-5 text-[var(--ink-secondary)]">
-                                    {record.implementationContext}
-                                </p>
-                            </section>
-
-                            <section className="rounded-xl border border-[var(--border-default)] bg-[var(--surface-recessed)] p-4">
-                                <div className="flex flex-wrap items-center justify-between gap-2">
-                                    <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[var(--brand-ink)]">
-                                        <Landmark size={13} aria-hidden="true" />
-                                        <span>Indicative AIP Budget Breakdown</span>
-                                    </p>
-                                    <span className="text-xs font-semibold text-[var(--ink-secondary)]">
-                                        {record.fundingSource}
-                                    </span>
-                                </div>
-
-                                <dl className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
-                                    {[
-                                        ['PS', formatPhpCurrency(record.budgetPs)],
-                                        ['MOOE', formatPhpCurrency(record.budgetMooe)],
-                                        ['CO', formatPhpCurrency(record.budgetCo)],
-                                        ['Total', formatPhpCurrency(record.budgetTotal)],
-                                    ].map(([label, amount]) => (
-                                        <div
-                                            key={label}
-                                            className={`rounded-lg border p-2.5 ${
-                                                label === 'Total'
-                                                    ? 'border-[var(--brand-soft-border)] bg-[var(--brand-soft)]'
-                                                    : 'border-[var(--border-default)] bg-[var(--surface-card)]'
-                                            }`}
-                                        >
-                                            <dt className="text-xs font-bold uppercase tracking-wide text-[var(--ink-secondary)]">
-                                                {label}
-                                            </dt>
-                                            <dd
-                                                className={`mt-1 font-mono text-xs font-extrabold tabular-nums ${
-                                                    label === 'Total' ? 'text-[var(--brand-ink)]' : 'text-[var(--ink-primary)]'
-                                                }`}
-                                            >
-                                                {amount}
-                                            </dd>
-                                        </div>
-                                    ))}
-                                </dl>
-
-                                {(record.ccaAmount || record.ccmAmount) && (
-                                    <div className="mt-3 flex flex-wrap gap-2 border-t border-[var(--border-default)] pt-2.5 text-xs text-[var(--ink-secondary)]">
-                                        {record.ccaAmount ? (
-                                            <span>
-                                                Climate Adaptation (CCA): <strong className="font-mono text-[var(--ink-primary)]">{formatPhpCurrency(record.ccaAmount)}</strong>
-                                            </span>
-                                        ) : null}
-                                        {record.ccmAmount ? (
-                                            <span>
-                                                Climate Mitigation (CCM): <strong className="font-mono text-[var(--ink-primary)]">{formatPhpCurrency(record.ccmAmount)}</strong>
-                                            </span>
-                                        ) : null}
-                                    </div>
-                                )}
-                            </section>
-
-                            <dl className="grid gap-3 sm:grid-cols-2">
-                                <div className="rounded-xl border border-[var(--border-default)] bg-[var(--surface-recessed)] p-3.5">
-                                    <dt className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-[var(--ink-secondary)]">
-                                        <Building2 size={13} aria-hidden="true" className="text-[var(--brand-ink)]" />
-                                        <span>Implementing Office</span>
-                                    </dt>
-                                    <dd className="mt-1.5 text-sm font-semibold text-[var(--ink-primary)]">
-                                        {record.responsibleOffice}
-                                    </dd>
-                                </div>
-                                <div className="rounded-xl border border-[var(--border-default)] bg-[var(--surface-recessed)] p-3.5">
-                                    <dt className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-[var(--ink-secondary)]">
-                                        <CalendarRange size={13} aria-hidden="true" className="text-[var(--brand-ink)]" />
-                                        <span>Implementation Schedule</span>
-                                    </dt>
-                                    <dd className="mt-1.5 text-sm font-semibold text-[var(--ink-primary)]">
-                                        {record.scheduleStart} – {record.scheduleEnd}
-                                    </dd>
-                                </div>
-                            </dl>
-
-                            <p className="rounded-lg border border-dashed border-[var(--border-default)] px-3.5 py-2.5 text-xs leading-5 text-[var(--ink-secondary)]">
-                                Indicative AIP planning allocation — not a live accounting obligation or disbursement record. No completion percentage is recorded for PPAs; reference records do not represent verified live project progress.
-                            </p>
-                        </div>
-                    )}
-
-                    {tab === 'links' && (
-                        <div className="space-y-4">
-                            <section className="rounded-xl border border-[var(--border-default)] bg-[var(--surface-recessed)] p-4">
-                                <div className="flex items-start justify-between gap-3">
-                                    <div className="min-w-0">
-                                        <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[var(--brand-ink)]">
-                                            <BookOpen size={13} aria-hidden="true" />
-                                            <span>Parent Development Plan</span>
-                                        </p>
-                                        <h3 className="mt-1.5 text-sm font-bold text-[var(--ink-primary)]">
-                                            {linkedPlan ? `${linkedPlan.code} — ${linkedPlan.title}` : record.relatedDevelopmentPlan}
-                                        </h3>
-                                        {linkedPlan && (
-                                            <p className="mt-1 text-xs text-[var(--ink-secondary)]">
-                                                {linkedPlan.sbResolutionNo || linkedPlan.authority} · Lead: {linkedPlan.leadOffice}
-                                            </p>
-                                        )}
-                                    </div>
-                                    <Link
-                                        href={linkedPlan ? `/development-plans?open=${encodeURIComponent(linkedPlan.id)}` : '/development-plans'}
-                                        className="municipal-secondary-button shrink-0"
-                                    >
-                                        <span>Open Plan</span>
-                                        <ArrowUpRight size={14} aria-hidden="true" />
-                                    </Link>
-                                </div>
-                            </section>
-
-                            <section className="rounded-xl border border-[var(--border-default)] bg-[var(--surface-recessed)] p-4">
-                                <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[var(--brand-ink)]">
-                                    <MapPin size={13} aria-hidden="true" />
-                                    <span>Covered Talibon Barangays ({record.barangays.length})</span>
-                                </p>
-                                <div className="mt-2.5 flex flex-wrap gap-1.5">
-                                    {record.barangays.map((brgy) => (
-                                        <span
-                                            key={brgy}
-                                            className="rounded-full border border-[var(--border-default)] bg-[var(--surface-card)] px-2.5 py-1 text-xs font-semibold text-[var(--ink-primary)]"
-                                        >
-                                            {brgy}
-                                        </span>
-                                    ))}
-                                </div>
-                            </section>
-
-                            {linkedMap && (
-                                <section className="rounded-xl border border-[var(--border-default)] bg-[var(--surface-recessed)] p-4">
-                                    <div className="flex items-start justify-between gap-3">
-                                        <div className="min-w-0">
-                                            <p className="text-xs font-bold uppercase tracking-wider text-[var(--brand-ink)]">
-                                                Linked Spatial Reference Map
-                                            </p>
-                                            <h3 className="mt-1 text-sm font-bold text-[var(--ink-primary)]">
-                                                {linkedMap.title}
-                                            </h3>
-                                            <p className="mt-0.5 font-mono text-xs text-[var(--ink-secondary)]">
-                                                {linkedMap.code} · {linkedMap.scale}
-                                            </p>
-                                        </div>
-                                        <Link
-                                            href={`/planning-maps?pin=${encodeURIComponent(linkedMap.id)}`}
-                                            className="municipal-secondary-button shrink-0"
-                                        >
-                                            <span>Locate on Map</span>
-                                            <ArrowUpRight size={14} aria-hidden="true" />
-                                        </Link>
-                                    </div>
-                                </section>
-                            )}
-
-                            <button
-                                type="button"
-                                onClick={() => setTab('docs')}
-                                className="flex w-full items-center justify-between rounded-xl border border-[var(--border-default)] bg-[var(--surface-card)] px-4 py-3 text-left text-xs font-bold text-[var(--ink-primary)] transition-colors hover:border-[var(--brand-primary)] hover:bg-[var(--brand-soft)]"
-                            >
-                                <span className="flex items-center gap-2">
-                                    <Paperclip size={14} aria-hidden="true" className="text-[var(--brand-ink)]" />
-                                    <span>View attached supporting documents ({visibleDocCount})</span>
-                                </span>
-                                <ChevronRight size={14} aria-hidden="true" />
-                            </button>
-                        </div>
-                    )}
-
-                    {tab === 'docs' && (
+                </div>} sections={record ? [
+        {key:'overview',label:'Overview & Budget',content:<PpaOverview record={record} />},
+        {key:'links',label:'Plan, Map & Location',content:<PpaPlanMapLinks plan={{title:linkedPlan ? `${linkedPlan.code} — ${linkedPlan.title}` : record.relatedDevelopmentPlan,href:linkedPlan ? `/development-plans?open=${encodeURIComponent(linkedPlan.id)}` : '/development-plans',description:linkedPlan ? `${linkedPlan.sbResolutionNo || linkedPlan.authority} · Lead: ${linkedPlan.leadOffice}` : undefined,verified:Boolean(linkedPlan)}}
+            map={{title:linkedMap?.title ?? 'No spatial map linked',href:linkedMap ? `/planning-maps?pin=${encodeURIComponent(linkedMap.id)}` : '/planning-maps',verified:Boolean(linkedMap)}} barangays={record.barangays} documentCount={visibleDocCount} onDocuments={()=>setTab('docs')} />},
+        {key:'docs',label:'Supporting Docs',content:(
                         <SupportingDocsPanel
                             parentType="ppa"
                             parentId={record.id}
@@ -401,9 +173,6 @@ export default function PPADetailPanel({
                             onAddAttachment={onAddAttachment}
                             onRemoveAttachment={onRemoveAttachment}
                         />
-                    )}
-                </div>
-            )}
-        </Dialog>
-    );
+                    )},
+    ] : []} />;
 }

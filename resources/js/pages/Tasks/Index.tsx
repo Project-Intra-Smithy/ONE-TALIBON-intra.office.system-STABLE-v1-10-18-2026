@@ -6,7 +6,7 @@ import { PageHeader } from '../../components/ui';
 import AppLayout from '../../layouts/AppLayout';
 
 /** Dedicated Inertia entry; /tasks JSON endpoints own task reads and mutations. */
-export default function Index() {
+export default function Index({ taskConfirmationLabel }: { taskConfirmationLabel?: string } = {}) {
     return (
         <AppLayout title="My Tasks">
             <div className="mx-auto max-w-[1440px] space-y-5 px-4 py-5 sm:px-6">
@@ -22,7 +22,7 @@ export default function Index() {
                     }
                 />
                 <div className="space-y-5">
-                    <PersonalTaskMutationPanel />
+                    <PersonalTaskMutationPanel confirmationLabel={taskConfirmationLabel} />
                     <PersonalTaskWorkspace />
                 </div>
             </div>

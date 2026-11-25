@@ -1,3 +1,8 @@
+import PlanningDeleteAction from '../../components/planning/PlanningDeleteAction';
+import MapExplorerControls from '../../components/maps/MapExplorerControls';
+import MapGalleryCard from '../../components/maps/MapGalleryCard';
+import MapStudioView from '../../components/maps/MapStudioView';
+import MapPlateDialog from '../../components/maps/MapPlateDialog';
 import InteractiveReferenceMap from '../../components/maps/InteractiveReferenceMap';
 import { Link, router } from '@inertiajs/react';
 import { BookOpen, Compass, Layers, Map, MapPin, Plus } from 'lucide-react';
@@ -55,12 +60,14 @@ export default function PlanningMapsIndex({
     attachments = [],
     planningPermissions,
 }: Props) {
+    const [hiddenPinCategories,setHiddenPinCategories]=useState<string[]>([]);
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [searchQuery, setSearchQuery] = useState(() => typeof window === 'undefined' ? '' : new URLSearchParams(window.location.search).get('search') ?? '');
     const [selectedMapCode, setSelectedMapCode] = useState<string | null>(
         planningMaps[0]?.code ?? null,
     );
     const [showCreateModal, setShowCreateModal] = useState(false);
+    const [editingMap,setEditingMap]=useState<ServerPlanningMap|null>(null);
     const [mapCode, setMapCode] = useState('');
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('Macro & Spatial');
@@ -72,6 +79,8 @@ export default function PlanningMapsIndex({
     const [summary, setSummary] = useState('');
     const [barangaysInput, setBarangaysInput] = useState('Poblacion, San Jose');
     const [busy, setBusy] = useState(false);
+    const [submissionError,setSubmissionError]=useState('');
+    const [coordinates,setCoordinates]=useState({lat:10.1531,lng:124.3268});
 
     const filteredMaps = useMemo(() => {
         const query = searchQuery.trim().toLowerCase();
@@ -95,9 +104,14 @@ export default function PlanningMapsIndex({
     const selectedMap =
         filteredMaps.find((m) => m.code === selectedMapCode) ?? filteredMaps[0] ?? null;
 
+    const openMapStudio=(map:ServerPlanningMap|null)=>{
+        setEditingMap(map);setSubmissionError('');setMapCode(map?.code??'');setTitle(map?.title??'');setCategory(map?.category??'Macro & Spatial');setPlanCode(map?.planCode??'');setScale(map?.scale??'1:25,000');setCrs(map?.crs??'PRS92 / Luzon 1911');setCoverage(map?.coverage??'');setStatus(map?.status??'For Review');setSummary(map?.summary??'');setBarangaysInput(map?.barangays.join(', ')??'');setCoordinates({lat:map?.centerLat??10.151,lng:map?.centerLng??124.327});setShowCreateModal(true);
+    };
+
     const handleCreateMap = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (!mapCode.trim() || !title.trim() || busy) return;
+        setSubmissionError('');
         setBusy(true);
 
         const barangays = barangaysInput
@@ -105,9 +119,7 @@ export default function PlanningMapsIndex({
             .map((b) => b.trim())
             .filter(Boolean);
 
-        router.post(
-            '/planning-maps',
-            {
+        const data = {
                 map_code: mapCode.trim(),
                 title: title.trim(),
                 category,
@@ -118,8 +130,10 @@ export default function PlanningMapsIndex({
                 status,
                 summary: summary.trim() || undefined,
                 barangays,
-            },
-            {
+                center_lat: coordinates.lat,
+                center_lng: coordinates.lng,
+            };
+        const options = {
                 preserveScroll: true,
                 onSuccess: () => {
                     setMapCode('');
@@ -127,9 +141,11 @@ export default function PlanningMapsIndex({
                     setSummary('');
                     setShowCreateModal(false);
                 },
+                onError: (errors:Record<string,string>)=>setSubmissionError(Object.values(errors).join(' ')),
                 onFinish: () => setBusy(false),
-            },
-        );
+            };
+        if(editingMap) router.put(`/planning-maps/${editingMap.dbId}`,data,options);
+        else router.post('/planning-maps',data,options);
     };
 
     const [expandedPlateCode, setExpandedPlateCode] = useState<string | null>(null);
@@ -247,7 +263,7 @@ export default function PlanningMapsIndex({
                                     variant="primary"
                                     size="sm"
                                     icon={<Plus className="h-3.5 w-3.5" />}
-                                    onClick={() => setShowCreateModal(true)}
+                                    onClick={() => openMapStudio(null)}
                                 >
                                     Register Map Plate
                                 </Button>
@@ -256,6 +272,7 @@ export default function PlanningMapsIndex({
                     }
                 />
 
+                {submissionError&&!showCreateModal&&<p role="alert" className="rounded-lg border border-[var(--status-danger-border)] bg-[var(--status-danger-bg)] p-3 text-sm text-[var(--status-danger-fg)]">{submissionError}</p>}
                 <PortalWorkspaceNav
                     current="availablePlanningMaps"
                     destinations={['developmentPlans', 'availablePlanningMaps', 'ppas']}
@@ -280,7 +297,7 @@ export default function PlanningMapsIndex({
                                 type="button"
                                 aria-pressed={selectedCategory === cat}
                                 onClick={() => setSelectedCategory(cat)}
-                                className={`min-h-8 rounded-md px-2.5 text-xs font-semibold transition ${
+                                className={`min-h-11 rounded-md px-2.5 text-xs font-semibold transition ${
                                     selectedCategory === cat
                                         ? 'bg-[var(--municipal-brand)] text-white'
                                         : 'border border-[var(--municipal-border)] bg-[var(--municipal-surface)] text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]'
@@ -296,51 +313,22 @@ export default function PlanningMapsIndex({
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search map code, barangay, or plan…"
-                        className="min-h-9 w-full rounded-md border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-3 text-xs text-[var(--municipal-text)] sm:w-64"
+                        className="min-h-11 w-full rounded-md border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-3 text-xs text-[var(--municipal-text)] sm:w-64"
                     />
                 </div>
 
-                <div className="grid gap-4 lg:grid-cols-12">
+                <div className="space-y-4">
                     <section
                         aria-label="Planning map catalog"
-                        className="space-y-2.5 lg:col-span-5"
+                        className="space-y-3"
                     >
-                        {filteredMaps.map((map) => {
-                            const isSelected = selectedMap?.code === map.code;
-                            return (
-                                <button
-                                    key={map.code}
-                                    type="button"
-                                    onClick={() => setSelectedMapCode(map.code)}
-                                    aria-pressed={isSelected}
-                                    className={`municipal-panel block w-full p-3.5 text-left transition ${
-                                        isSelected
-                                            ? 'border-[var(--municipal-brand)] ring-2 ring-[var(--municipal-brand)]/20'
-                                            : 'hover:bg-[var(--municipal-hover)]'
-                                    }`}
-                                >
-                                    <div className="flex items-center justify-between gap-2 text-[11px]">
-                                        <span className="font-bold uppercase tracking-wider text-[var(--municipal-brand)]">
-                                            {map.code} · {map.category}
-                                        </span>
-                                        <span className="rounded bg-[var(--municipal-surface-muted)] px-2 py-0.5 font-semibold text-[var(--municipal-muted)]">
-                                            {map.status}
-                                        </span>
-                                    </div>
-                                    <h2 className="mt-1 text-sm font-bold text-[var(--municipal-text)]">
-                                        {map.title}
-                                    </h2>
-                                    <p className="mt-1 line-clamp-2 text-xs text-[var(--municipal-muted)]">
-                                        {map.summary}
-                                    </p>
-                                    <div className="mt-2 flex flex-wrap items-center gap-3 text-[11px] text-[var(--municipal-muted)]">
-                                        <span>Plan: {map.planCode}</span>
-                                        <span>Scale: {map.scale}</span>
-                                        <span>CRS: {map.crs}</span>
-                                    </div>
-                                </button>
-                            );
-                        })}
+                        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                            {filteredMaps.map(map=><MapGalleryCard key={map.code} code={map.code} title={map.title} description={map.summary} category={map.category} status={map.status} updatedLabel={`Updated year ${map.updatedYear}`} selected={selectedMap?.code===map.code}
+                                onInspect={()=>{setSelectedMapCode(map.code);setExpandedPlateCode(map.code);}}
+                                onEdit={planningPermissions?.canManageMaps?()=>openMapStudio(map):undefined}
+                                managementActions={planningPermissions?.canDelete?<PlanningDeleteAction title={map.code} busy={busy} disabledReason={map.status!=='Draft'?'Only draft maps can be deleted.':undefined} onDelete={()=>{setBusy(true);setSubmissionError('');router.delete(`/planning-maps/${map.dbId}`,{preserveScroll:true,onError:errors=>setSubmissionError(Object.values(errors).join(' ')),onFinish:()=>setBusy(false)});}} />:undefined}
+                                onLocate={()=>{setSelectedMapCode(map.code);document.getElementById('planning-map-explorer')?.scrollIntoView({behavior:'smooth',block:'center'});}} />)}
+                        </div>
                         {filteredMaps.length === 0 && (
                             <div className="municipal-panel border-dashed p-6 text-center text-xs text-[var(--municipal-muted)]">
                                 No planning maps match the selected category or search query.
@@ -350,7 +338,7 @@ export default function PlanningMapsIndex({
 
                     <section
                         aria-label="Selected map plate viewer"
-                        className="municipal-panel p-4 lg:col-span-7"
+                        className="tcds-card p-4"
                     >
                         {selectedMap ? (
                             <div>
@@ -395,9 +383,9 @@ export default function PlanningMapsIndex({
                                     {selectedMap.summary}
                                 </p>
 
-                                <section aria-label="Planning map explorer" className="mt-4 w-full min-w-0">
+                                <section id="planning-map-explorer" aria-label="Planning map explorer" className="mt-4 grid w-full min-w-0 gap-4 lg:grid-cols-[minmax(0,1.85fr)_minmax(290px,0.85fr)]">
                                     <InteractiveReferenceMap
-                                        pins={filteredMaps.filter(map => Number.isFinite(map.centerLat) && Number.isFinite(map.centerLng) && Math.abs(map.centerLat) <= 90 && Math.abs(map.centerLng) <= 180).map(map => ({
+                                        pins={filteredMaps.filter(map => !hiddenPinCategories.includes(map.category) && Number.isFinite(map.centerLat) && Number.isFinite(map.centerLng) && Math.abs(map.centerLat) <= 90 && Math.abs(map.centerLng) <= 180).map(map => ({
                                             id: map.code, code: map.code, title: map.title, category: map.category,
                                             color: '#176b4a', lat: map.centerLat, lng: map.centerLng,
                                         }))}
@@ -405,6 +393,7 @@ export default function PlanningMapsIndex({
                                         onSelectPin={setSelectedMapCode}
                                         ariaLabel="Interactive planning reference coordinates"
                                     />
+                                    <aside className="tcds-card p-4"><MapExplorerControls overlays={['CLUP Land Use Zones','Flood & Landslide Advisories','National Road Corridor'].map(label=>({label,checked:false}))} unavailableReason="Official overlay geometries are not supplied by the current GIS contract. The map shows reference coordinates only." categories={[...new Set(planningMaps.map(map=>map.category))].map(label=>({label,checked:!hiddenPinCategories.includes(label),color:'#176b4a',onChange:()=>setHiddenPinCategories(previous=>previous.includes(label)?previous.filter(category=>category!==label):[...previous,label])}))} /></aside>
                                 </section>
 
                                 <dl className="mt-3 grid gap-2.5 sm:grid-cols-3">
@@ -461,156 +450,23 @@ export default function PlanningMapsIndex({
                 </div>
             </PageFrame>
 
-            <Dialog
-                open={expandedPlateCode !== null && expandedPlateCode === selectedMap?.code}
-                onClose={() => setExpandedPlateCode(null)}
-                title={selectedMap?.title ?? 'Reference plate'}
-                description="Provisional schematic. Awaiting official GIS."
-                size="xl"
-            >
-                {expandedPlateCode !== null && expandedPlateCode === selectedMap?.code ? referencePlate('dialog-') : null}
-            </Dialog>
+            {expandedPlateCode !== null && expandedPlateCode === selectedMap?.code && selectedMap && <MapPlateDialog key={selectedMap.code} open onClose={()=>setExpandedPlateCode(null)} title={selectedMap.title} description="Provisional schematic. Awaiting official GIS." status={selectedMap.status} category={selectedMap.category} plate={referencePlate('dialog-')} note={selectedMap.summary} metadata={[
+                ['Covered Barangays',selectedMap.barangays.join(', ')],['Authority / Reference','Not supplied by the current server record'],['Scale & Projection',`${selectedMap.scale} · ${selectedMap.crs}`],['Map Pin Coordinates',`${selectedMap.centerLat} · ${selectedMap.centerLng}`],['Legend & Notes','Official symbology is not supplied by the current server record'],['Source Attribution & Last Update',`${selectedMap.provenanceStatus} · ${selectedMap.updatedYear}`]
+            ]} />}
 
-            <Dialog
-                variant="drawer-right"
-                open={showCreateModal}
-                onClose={() => setShowCreateModal(false)}
-                title="Register Planning Map Plate"
-                description="Create a thematic spatial reference plate in the Planning Maps Atlas."
-                size="lg"
-            >
-                <form onSubmit={handleCreateMap} className="space-y-3 text-xs">
-                    <div className="grid gap-3 sm:grid-cols-2">
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            Map Code
-                            <input
-                                type="text"
-                                required
-                                maxLength={100}
-                                value={mapCode}
-                                onChange={(e) => setMapCode(e.target.value)}
-                                placeholder="e.g., MAP-CLUP-05"
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            />
-                        </label>
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            Thematic Category
-                            <select
-                                value={category}
-                                onChange={(e) => setCategory(e.target.value)}
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            >
-                                {categories
-                                    .filter((c) => c !== 'All')
-                                    .map((cat) => (
-                                        <option key={cat} value={cat}>
-                                            {cat}
-                                        </option>
-                                    ))}
-                            </select>
-                        </label>
-                    </div>
-                    <label className="block font-semibold text-[var(--municipal-text)]">
-                        Map Plate Title
-                        <input
-                            type="text"
-                            required
-                            maxLength={255}
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            placeholder="e.g., Poblacion Urban Growth & Infrastructure Overlay"
-                            className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                        />
-                    </label>
-                    <div className="grid gap-3 sm:grid-cols-3">
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            Source Plan Code
-                            <input
-                                type="text"
-                                required
-                                value={planCode}
-                                onChange={(e) => setPlanCode(e.target.value)}
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            />
-                        </label>
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            Scale
-                            <input
-                                type="text"
-                                value={scale}
-                                onChange={(e) => setScale(e.target.value)}
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            />
-                        </label>
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            Status
-                            <select
-                                value={status}
-                                onChange={(e) => setStatus(e.target.value)}
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            >
-                                <option value="Draft">Draft</option>
-                                <option value="For Review">For Review</option>
-                                {planningPermissions?.canPublishOrArchive && (
-                                    <option value="Published">Published</option>
-                                )}
-                            </select>
-                        </label>
-                    </div>
-                    <div className="grid gap-3 sm:grid-cols-2">
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            CRS / Projection
-                            <input
-                                type="text"
-                                value={crs}
-                                onChange={(e) => setCrs(e.target.value)}
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            />
-                        </label>
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            Coverage Scope
-                            <input
-                                type="text"
-                                value={coverage}
-                                onChange={(e) => setCoverage(e.target.value)}
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            />
-                        </label>
-                    </div>
-                    <label className="block font-semibold text-[var(--municipal-text)]">
-                        Covered Barangays (comma-separated)
-                        <input
-                            type="text"
-                            value={barangaysInput}
-                            onChange={(e) => setBarangaysInput(e.target.value)}
-                            className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                        />
-                    </label>
-                    <label className="block font-semibold text-[var(--municipal-text)]">
-                        Spatial Summary & Technical Notes
-                        <textarea
-                            rows={2}
-                            maxLength={2000}
-                            value={summary}
-                            onChange={(e) => setSummary(e.target.value)}
-                            className="mt-1 block w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] p-2.5 text-xs text-[var(--municipal-text)]"
-                        />
-                    </label>
-                    <div className="flex justify-end gap-2 pt-2">
-                        <Button
-                            type="button"
-                            variant="secondary"
-                            size="sm"
-                            onClick={() => setShowCreateModal(false)}
-                        >
-                            Cancel
-                        </Button>
-                        <Button type="submit" variant="primary" size="sm" loading={busy}>
-                            Save Map Plate
-                        </Button>
-                    </div>
-                </form>
-            </Dialog>
+            <MapStudioView error={submissionError} open={showCreateModal} editing={editingMap} onClose={()=>setShowCreateModal(false)} busy={busy}
+                values={{code:mapCode,title,category,status,description:summary,imageUrl:'',sourceAttribution:'Plate image upload is unavailable in the current registry contract.',barangaysText:barangaysInput,scale,projection:crs,effectivePeriod:'',authority:'',legendNotes:'',lat:coordinates.lat,lng:coordinates.lng}}
+                onChange={(field,value)=>{
+                    if(field==='lat'||field==='lng'){setCoordinates(coords=>({...coords,[field]:Number(value)}));return;}
+                    const setters:Record<string,(value:string)=>void>={code:setMapCode,title:setTitle,category:setCategory,status:setStatus,description:setSummary,barangaysText:setBarangaysInput,scale:setScale,projection:setCrs};
+                    setters[field]?.(String(value));
+                }}
+                onSubmit={handleCreateMap} categories={Object.fromEntries(categories.filter(category=>category!=='All').map(category=>[category,{label:category}]))}
+                templates={[]} barangays={[]} statuses={['Draft','For Review',...(planningPermissions?.canPublishOrArchive?['Published','Archived']:[])].map(value=>({value,label:value,description:value==='Published'?'Visible according to server authorization':'Provisional registry record'}))}
+                onFileUpload={()=>{}} unavailable={[...(editingMap?['code' as const]:[]),'imageUrl','sourceAttribution','effectivePeriod','authority','legendNotes']}
+                coordinatePicker={<InteractiveReferenceMap pins={[]} pickMode pickedCoords={coordinates} onPickCoords={setCoordinates} ariaLabel="Click to pick map pin coordinates in Talibon" heightClass="h-52" />}
+                referenceFields={<div className="grid gap-3 sm:grid-cols-2"><label className="text-xs font-semibold">Linked Plan Reference<input required value={planCode} onChange={event=>setPlanCode(event.target.value)} className="tcds-input mt-1" /></label><label className="text-xs font-semibold">Coverage Scope<input value={coverage} onChange={event=>setCoverage(event.target.value)} className="tcds-input mt-1" /></label></div>}
+            />
         </AppLayout>
     );
 }

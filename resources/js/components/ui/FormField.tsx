@@ -60,6 +60,7 @@ export function RadioCardGroup({
     onChange,
     options,
     error,
+    disabled = false,
 }: {
     legend: string;
     name: string;
@@ -67,10 +68,11 @@ export function RadioCardGroup({
     onChange: (next: string) => void;
     options: RadioCardOption[];
     error?: string;
+    disabled?: boolean;
 }) {
     const groupId = useId();
     return (
-        <fieldset className="m-0 border-0 p-0" aria-describedby={error ? `${groupId}-error` : undefined}>
+        <fieldset disabled={disabled} className="m-0 border-0 p-0" aria-describedby={error ? `${groupId}-error` : undefined}>
             <legend className="mb-2 text-sm font-semibold text-[var(--ink-primary)]">{legend}</legend>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                 {options.map((opt) => {

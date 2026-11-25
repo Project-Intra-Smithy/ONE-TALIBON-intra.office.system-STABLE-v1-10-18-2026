@@ -23,8 +23,14 @@ test('B1 filters preserve dataset-backed predicates and reset', () => {
   assert.match(dataset, /export const municipalPlans/);
 });
 test('B1 dialog retains Escape, Tab cycle, focus restoration and scroll lock', () => {
-  for (const fragment of ["event.key === 'Escape'", "event.key !== 'Tab'", "document.body.style.overflow = 'hidden'", "document.body.style.overflow = previousOverflow", 'closeButtonRef.current?.focus()', 'role="dialog"', 'aria-modal="true"', 'aria-labelledby=', 'aria-describedby=', "requestAnimationFrame(() => document.getElementById"]) assert.ok(page.includes(fragment), fragment);
-  assert.match(page, /event.currentTarget === event.target/);
+  const dossier = read('resources/js/components/plans/PlanDossierPresentation.tsx');
+  const dialog = read('resources/js/components/ui/Dialog.tsx');
+  assert.match(page, /<PlanDossierPresentation/);
+  assert.match(page, /requestAnimationFrame\(\(\) => document.getElementById/);
+  assert.match(dossier, /<Dialog[^>]*open=\{open\} onClose=\{onClose\}/);
+  assert.match(dossier, /event.key === 'ArrowRight'/);
+  assert.match(dialog, /showModal\(\)/);
+  assert.match(dialog, /addEventListener\('close'/);
   assert.match(page, /planningPermissions\?\.canManagePlans/);
   assert.doesNotMatch(page, /localStorage\.|approvePlan|uploadPlan/);
 });

@@ -1,3 +1,4 @@
+import PlanningStaffList from '../../../../../resources/js/components/planning/PlanningStaffList';
 import { ShieldCheck, UserCheck, UserMinus } from 'lucide-react';
 import type { PlanningModule } from '../../data/municipal/planningGovernance';
 import type { DesignatedPlanningStaff } from '../../data/municipal/planningMaps';
@@ -61,72 +62,7 @@ export default function DesignatedStaffDrawer({
                     </div>
                 </div>
 
-                <ul className="divide-y divide-[var(--border-default)] rounded-xl border border-[var(--border-default)] bg-[var(--surface-card)]">
-                    {staff.map((member) => (
-                        <li key={member.id} className="space-y-3 p-3.5">
-                            <div className="flex flex-wrap items-center justify-between gap-3">
-                                <div className="min-w-0 flex-1">
-                                    <div className="flex flex-wrap items-center gap-2">
-                                        <span className="text-sm font-bold text-[var(--ink-primary)]">{member.name}</span>
-                                        <StatusBadge tone={member.active ? 'ok' : 'neutral'}>
-                                            {member.active ? 'Editor Access' : 'View Only'}
-                                        </StatusBadge>
-                                    </div>
-                                    <div className="mt-0.5 text-xs text-[var(--ink-secondary)]">
-                                        {member.position} · {member.office} · <span className="font-mono">{member.employeeNumber}</span>
-                                    </div>
-                                </div>
-                                <button
-                                    type="button"
-                                    onClick={() => onToggleStaff(member.id)}
-                                    className={member.active ? 'municipal-secondary-button' : 'municipal-primary-button'}
-                                >
-                                    {member.active ? (
-                                        <>
-                                            <UserMinus size={15} aria-hidden="true" />
-                                            <span>Revoke All</span>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <UserCheck size={15} aria-hidden="true" />
-                                            <span>Designate</span>
-                                        </>
-                                    )}
-                                </button>
-                            </div>
-
-                            {onToggleModuleScope && (
-                                <div className="flex flex-wrap items-center gap-2 border-t border-[var(--border-default)] pt-2.5">
-                                    <span className="text-xs font-semibold text-[var(--ink-secondary)]">Authorized sections:</span>
-                                    {MODULE_LABELS.map(({ key, field, label }) => {
-                                        const enabled = member.active && (member[field] ?? true);
-                                        return (
-                                            <button
-                                                key={key}
-                                                type="button"
-                                                aria-pressed={enabled}
-                                                onClick={() => onToggleModuleScope(member.id, key)}
-                                                className={`inline-flex min-h-8 items-center gap-1.5 rounded-full border px-2.5 text-xs font-semibold transition-colors ${
-                                                    enabled
-                                                        ? 'border-[var(--brand-soft-border)] bg-[var(--brand-soft)] text-[var(--brand-ink)]'
-                                                        : 'border-[var(--border-control)] bg-[var(--surface-recessed)] text-[var(--ink-secondary)] hover:text-[var(--ink-primary)]'
-                                                }`}
-                                            >
-                                                <span
-                                                    aria-hidden="true"
-                                                    className={`h-1.5 w-1.5 rounded-full ${
-                                                        enabled ? 'bg-[var(--brand-ink)]' : 'bg-[var(--ink-tertiary)]'
-                                                    }`}
-                                                />
-                                                <span>{label}</span>
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                            )}
-                        </li>
-                    ))}
-                </ul>
+                <PlanningStaffList staff={staff.map(member => ({ id: member.id, name: member.name, detail: [member.position, member.office, member.employeeNumber].filter(Boolean).join(' · '), active: member.active, plans: member.canManagePlans ?? true, ppas: member.canManagePpas ?? true, maps: member.canManageMaps ?? true }))} onToggle={id => onToggleStaff(String(id))} onScope={onToggleModuleScope ? (id, module) => onToggleModuleScope(String(id), module) : undefined} />
             </div>
         </Dialog>
     );

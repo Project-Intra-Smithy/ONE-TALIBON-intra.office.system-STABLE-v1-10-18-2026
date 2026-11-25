@@ -1,7 +1,8 @@
-import { Link, useForm } from '@inertiajs/react';
+import { Link, router, useForm } from '@inertiajs/react';
 import { ArrowLeft, ArrowRight, Building2, Paperclip } from 'lucide-react';
 import EvidenceFields from '../../components/documents/EvidenceFields';
 import OfficeCombobox from '../../components/portal/OfficeCombobox';
+import Dialog from '../../components/ui/Dialog';
 import { DateInput, ErrorSummary, FormField, PageHeader, RadioCardGroup } from '../../components/ui';
 import AppLayout from '../../layouts/AppLayout';
 import { humanizeSlug } from '../../lib/format';
@@ -308,9 +309,15 @@ export default function Create(props: WorkRequestCreateProps) {
                         </Link>
                     }
                 />
-                <div className="tcds-card p-5 sm:p-6">
-                    <WorkRequestCreateForm {...props} />
-                </div>
+                <Dialog
+                    open
+                    onClose={() => router.visit('/transactions')}
+                    title="New Work Request"
+                    description="Route accountable work directly to an authorized municipal office."
+                    variant="drawer-right"
+                >
+                    <WorkRequestCreateForm {...props} compact />
+                </Dialog>
             </div>
         </AppLayout>
     );

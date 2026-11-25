@@ -17,7 +17,7 @@ async function jsonBody(response: Response): Promise<unknown> {
     try { return await response.json(); } catch { return null; }
 }
 
-function TaskActions({ userId }: { userId: number }) {
+function TaskActions({ userId, confirmationLabel }: { userId: number; confirmationLabel: string }) {
     const [tasks, setTasks] = useState<IndividualTask[]>([]);
     const [title, setTitle] = useState('');
     const [instructions, setInstructions] = useState('');
@@ -78,7 +78,7 @@ function TaskActions({ userId }: { userId: number }) {
                     setError('The requested Task state is not confirmed by the server. Reload before continuing.');
                     return false;
                 }
-                setReceipt('Server confirmed: ' + item.title + ' — ' + item.state.replaceAll('_', ' '));
+                setReceipt(confirmationLabel + ': ' + item.title + ' — ' + item.state.replaceAll('_', ' '));
             }
             // Valid authoritative reread is the only path to clear an
             // unknown mutation outcome; stale or mismatched state stays held.
@@ -174,11 +174,11 @@ function TaskActions({ userId }: { userId: number }) {
         void mutate('/tasks', payload, 'open');
     };
 
-    return <section aria-labelledby="task-action-heading" className="municipal-panel p-4 sm:p-5">
+    return <section aria-labelledby="task-action-heading" className="tcds-card p-4 sm:p-5">
         <header className="mb-4">
             <h2 id="task-action-heading" className="text-base font-extrabold text-slate-900 dark:text-white">Personal Task actions</h2>
             <p className="mt-1 text-xs text-slate-600 dark:text-slate-300">
-                Minimal live Laravel integration: create, start and complete your own Tasks. Work Requests remain separate.
+                Create, start and complete your own tasks. Add instructions and a target date to keep your daily work organized.
             </p>
         </header>
         <form onSubmit={create} className="space-y-3">
@@ -243,8 +243,8 @@ function TaskActions({ userId }: { userId: number }) {
 }
 
 /** Reset all local Task state whenever the authenticated account changes. */
-export default function PersonalTaskMutationPanel() {
+export default function PersonalTaskMutationPanel({ confirmationLabel = 'Server confirmed' }: { confirmationLabel?: string } = {}) {
     const userId = usePage<SharedProps>().props.auth?.user?.id;
 
-    return typeof userId === 'number' ? <TaskActions key={userId} userId={userId}/> : null;
+    return typeof userId === 'number' ? <TaskActions key={userId} userId={userId} confirmationLabel={confirmationLabel}/> : null;
 }

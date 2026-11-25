@@ -14,7 +14,7 @@ export default function Index() {
         return localSpecialBodies.filter((body) => [body.name, body.mandate, body.chairRole, body.membershipSummary, body.recentAction, ...body.relatedDocuments].join(' ').toLowerCase().includes(value));
     }, [query]);
 
-    const septemberMeetings = localSpecialBodies.filter((body) => body.nextMeeting.startsWith('2026-09')).length;
+    const scheduledMeetings = localSpecialBodies.filter((body) => Boolean(body.nextMeeting && body.nextMeeting.trim().length > 0)).length;
 
     return (
         <AppLayout title="Councils, Boards & Committees">
@@ -33,7 +33,7 @@ export default function Index() {
                         </span>
                         <div>
                             <div className="text-[16px] font-extrabold leading-none tabular-nums">{localSpecialBodies.length}</div>
-                            <div className="mt-1 text-[11px] font-semibold leading-none opacity-75">Formal bodies</div>
+                            <div className="mt-1 text-xs font-semibold leading-none opacity-75">Formal bodies</div>
                         </div>
                     </div>
 
@@ -42,8 +42,8 @@ export default function Index() {
                             <CalendarDays size={15} aria-hidden="true" />
                         </span>
                         <div>
-                            <div className="text-[16px] font-extrabold leading-none tabular-nums">{septemberMeetings}</div>
-                            <div className="mt-1 text-[11px] font-semibold leading-none opacity-75">September meetings</div>
+                            <div className="text-[16px] font-extrabold leading-none tabular-nums">{scheduledMeetings}</div>
+                            <div className="mt-1 text-xs font-semibold leading-none opacity-75">Recorded reference meeting dates</div>
                         </div>
                     </div>
                 </section>
@@ -55,22 +55,22 @@ export default function Index() {
                         value={query}
                         onChange={(event) => setQuery(event.target.value)}
                         placeholder="Search body, mandate, chair role, or document"
-                        className="min-h-9 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-3 text-sm outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-100"
+                        className="min-h-9 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-3 text-sm outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-[var(--border-control)] dark:bg-[var(--surface-card)] dark:text-[var(--ink-primary)]"
                     />
                 </label>
 
                 {bodies.length ? (
-                    <section className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]" aria-labelledby="local-bodies-register-heading">
-                        <div className="flex min-h-8 items-center justify-between gap-3 border-b border-slate-100 px-3 py-1.5 text-[10px] dark:border-slate-700">
-                            <h2 id="local-bodies-register-heading" className="font-bold text-slate-900 dark:text-slate-100">Councils, boards & committees register</h2>
-                            <div className="text-slate-500 dark:text-slate-400">
-                                <span className="font-semibold text-slate-700 dark:text-slate-200">{bodies.length}</span> {bodies.length === 1 ? 'body' : 'bodies'}
+                    <section className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-[var(--border-control)] dark:bg-[var(--surface-card)]" aria-labelledby="local-bodies-register-heading">
+                        <div className="flex min-h-8 items-center justify-between gap-3 border-b border-slate-100 px-3 py-1.5 text-xs dark:border-[var(--border-control)]">
+                            <h2 id="local-bodies-register-heading" className="font-bold text-[var(--ink-primary)]">Councils, boards & committees register</h2>
+                            <div className="text-[var(--ink-secondary)]">
+                                <span className="font-semibold text-[var(--ink-secondary)]">{bodies.length}</span> {bodies.length === 1 ? 'body' : 'bodies'}
                             </div>
                         </div>
                         <LocalBodyDirectory bodies={bodies} />
                     </section>
                 ) : (
-                    <div className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500 dark:border-slate-700 dark:bg-[#142236] dark:text-slate-400">
+                    <div className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500 dark:border-[var(--border-control)] dark:bg-[var(--surface-card)] dark:text-[var(--ink-secondary)]">
                         No councils, boards, or committees match the current search.
                     </div>
                 )}

@@ -320,7 +320,7 @@ export function resolveStandalonePage(path: string, role: RoleKey, search: strin
     // A creation path is never a numeric detail ID. The isolated UI may display
     // the extracted form, but cannot persist any Work Request.
     if (path === '/transactions/create') {
-        return role === 'employee' || role === 'department_head' ? 'Transactions/Create' : 'Errors/403';
+        return role === 'employee' || role === 'mpdc_designated_staff' || role === 'department_head' ? 'Transactions/Create' : 'Errors/403';
     }
     if (/^\/(?:work-requests|transactions)\//.test(path)) {
         const detail = workRequestDetailForRole(role, path, new URLSearchParams(search));

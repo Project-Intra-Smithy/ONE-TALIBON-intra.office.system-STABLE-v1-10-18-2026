@@ -1,3 +1,5 @@
+import MapExplorerControls from '../../../../../resources/js/components/maps/MapExplorerControls';
+import MapGalleryCard from '../../../../../resources/js/components/maps/MapGalleryCard';
 import { usePage } from '@inertiajs/react';
 import {
     Archive,
@@ -366,53 +368,11 @@ export default function PlanningMapsIndex({
                     />
 
                     <aside className="tcds-card flex flex-col justify-between gap-4 p-4">
-                        <div>
-                            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--brand-ink)]">
-                                <Layers size={15} aria-hidden="true" />
-                                <span>Layer Toggles</span>
-                            </div>
-
-                            <div className="mt-3 space-y-2 border-b border-[var(--border-default)] pb-3">
-                                <label className="flex min-h-9 cursor-pointer items-center gap-2.5 text-sm font-medium text-[var(--ink-primary)]">
-                                    <input type="checkbox" checked={showZones} onChange={(e) => setShowZones(e.target.checked)} className="h-4 w-4 accent-[var(--brand-ink)]" />
-                                    <span>CLUP Land Use Zones</span>
-                                </label>
-                                <label className="flex min-h-9 cursor-pointer items-center gap-2.5 text-sm font-medium text-[var(--ink-primary)]">
-                                    <input type="checkbox" checked={showHazards} onChange={(e) => setShowHazards(e.target.checked)} className="h-4 w-4 accent-[var(--brand-ink)]" />
-                                    <span>Flood &amp; Landslide Advisories</span>
-                                </label>
-                                <label className="flex min-h-9 cursor-pointer items-center gap-2.5 text-sm font-medium text-[var(--ink-primary)]">
-                                    <input type="checkbox" checked={showRoadCorridor} onChange={(e) => setShowRoadCorridor(e.target.checked)} className="h-4 w-4 accent-[var(--brand-ink)]" />
-                                    <span>National Road Corridor</span>
-                                </label>
-                            </div>
-
-                            <div className="mt-3">
-                                <p className="text-xs font-bold uppercase tracking-wide text-[var(--ink-secondary)]">Map Pins by Category</p>
-                                <div className="mt-2 flex flex-wrap gap-1.5">
-                                    {(Object.keys(PLANNING_MAP_CATEGORY_META) as PlanningMapCategory[]).map((key) => {
-                                        const meta = PLANNING_MAP_CATEGORY_META[key];
-                                        const enabled = enabledCategories[key];
-                                        return (
-                                            <button
-                                                key={key}
-                                                type="button"
-                                                aria-pressed={enabled}
-                                                onClick={() => setEnabledCategories((prev) => ({ ...prev, [key]: !prev[key] }))}
-                                                className={`inline-flex min-h-9 items-center gap-1.5 rounded-full border px-2.5 text-xs font-semibold transition-colors ${
-                                                    enabled
-                                                        ? 'border-[var(--brand-primary)] bg-[var(--brand-soft)] text-[var(--ink-primary)]'
-                                                        : 'border-[var(--border-default)] bg-[var(--surface-recessed)] text-[var(--ink-secondary)] opacity-70'
-                                                }`}
-                                            >
-                                                <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: meta.color }} aria-hidden="true" />
-                                                <span>{meta.shortLabel}</span>
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        </div>
+                        <MapExplorerControls overlays={[
+                            {label:'CLUP Land Use Zones',checked:showZones,onChange:()=>setShowZones(value=>!value)},
+                            {label:'Flood & Landslide Advisories',checked:showHazards,onChange:()=>setShowHazards(value=>!value)},
+                            {label:'National Road Corridor',checked:showRoadCorridor,onChange:()=>setShowRoadCorridor(value=>!value)},
+                        ]} categories={(Object.keys(PLANNING_MAP_CATEGORY_META) as PlanningMapCategory[]).map(key=>({label:PLANNING_MAP_CATEGORY_META[key].shortLabel,checked:enabledCategories[key],color:PLANNING_MAP_CATEGORY_META[key].color,onChange:()=>setEnabledCategories(previous=>({...previous,[key]:!previous[key]}))}))} />
 
                         {selectedRecord && (
                             <div className="rounded-xl border border-[var(--border-default)] bg-[var(--surface-recessed)] p-3.5">
@@ -483,82 +443,10 @@ export default function PlanningMapsIndex({
                                 const cat = PLANNING_MAP_CATEGORY_META[item.category];
                                 const selected = selectedRecord?.id === item.id;
                                 return (
-                                    <article
-                                        key={item.id}
-                                        className={`tcds-card flex flex-col overflow-hidden transition-colors ${
-                                            selected ? 'border-[var(--brand-primary)] ring-1 ring-[var(--brand-primary)]' : 'hover:border-[var(--border-strong)]'
-                                        }`}
-                                    >
-                                        <button
-                                            type="button"
-                                            onClick={() => setViewingPlate(item)}
-                                            aria-label={`Inspect full map plate for ${item.title}`}
-                                            className="group relative block h-44 w-full overflow-hidden border-b border-[var(--border-default)] bg-[var(--surface-recessed)] p-2 text-left"
-                                        >
-                                            <img
-                                                src={item.imageUrl}
-                                                alt={`${item.title} (${item.code})`}
-                                                loading="lazy"
-                                                className="tcds-plate-thumb h-full w-full rounded-lg border border-[var(--border-default)] object-cover transition-transform duration-200 group-hover:scale-[1.02]"
-                                            />
-                                            <span className="absolute left-3.5 top-3.5 rounded-md bg-[var(--surface-sidebar)]/92 px-2 py-0.5 font-mono text-xs font-bold text-white backdrop-blur-sm">
-                                                {item.code}
-                                            </span>
-                                        </button>
-
-                                        <div className="flex flex-1 flex-col p-4">
-                                            <div className="flex flex-wrap items-center gap-1.5">
-                                                <StatusBadge tone={item.status === 'published' ? 'ok' : item.status === 'draft' ? 'warn' : 'neutral'}>
-                                                    {item.status === 'published' ? 'Published' : item.status === 'draft' ? 'Draft' : 'Archived'}
-                                                </StatusBadge>
-                                                <StatusBadge tone={cat.tone}>{cat.shortLabel}</StatusBadge>
-                                            </div>
-
-                                            <h3 className="mt-2 text-base font-bold leading-snug text-[var(--ink-primary)]">{item.title}</h3>
-                                            <p className="mt-1 line-clamp-2 flex-1 text-xs leading-5 text-[var(--ink-secondary)]">
-                                                {item.description}
-                                            </p>
-
-                                            <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-[var(--border-default)] pt-2.5 text-xs text-[var(--ink-secondary)]">
-                                                <span>{item.effectivePeriod}</span>
-                                                <span>Updated {formatDatePH(item.updatedAt)}</span>
-                                            </div>
-
-                                            <div className="mt-3 flex flex-wrap items-center gap-2">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setViewingPlate(item)}
-                                                    className="municipal-primary-button flex-1"
-                                                >
-                                                    <Eye size={15} aria-hidden="true" />
-                                                    <span>View Plate</span>
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setSelectedPinId(item.id)}
-                                                    className="municipal-secondary-button px-3"
-                                                    aria-label={`Locate ${item.title} on interactive map`}
-                                                    title="Locate on interactive map"
-                                                >
-                                                    <MapPin size={15} aria-hidden="true" />
-                                                </button>
-                                                {permissions.canEdit && (
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => {
-                                                            setEditingMap(item);
-                                                            setFormOpen(true);
-                                                        }}
-                                                        className="municipal-secondary-button px-3"
-                                                        aria-label={`Edit ${item.title}`}
-                                                    >
-                                                        <Pencil size={15} aria-hidden="true" />
-                                                        <span>Edit</span>
-                                                    </button>
-                                                )}
-                                            </div>
-
-                                            {canManage && (
+                                    <MapGalleryCard key={item.id} code={item.code} title={item.title} description={item.description} category={cat.shortLabel} status={item.status} imageUrl={item.imageUrl} effectivePeriod={item.effectivePeriod} updatedLabel={`Updated ${formatDatePH(item.updatedAt)}`} selected={selected}
+                                        onInspect={()=>setViewingPlate(item)} onLocate={()=>setSelectedPinId(item.id)}
+                                        onEdit={permissions.canEdit ? ()=>{setEditingMap(item);setFormOpen(true);} : undefined}
+                                        managementActions={<>{canManage && (
                                                 <div className="mt-2 flex flex-wrap items-center justify-between gap-2 border-t border-dashed border-[var(--border-default)] pt-1.5">
                                                     {item.status !== 'published' ? (
                                                         <button
@@ -590,9 +478,7 @@ export default function PlanningMapsIndex({
                                                         </button>
                                                     )}
                                                 </div>
-                                            )}
-                                        </div>
-                                    </article>
+                                            )}</>} />
                                 );
                             })}
                         </div>

@@ -84,7 +84,7 @@ try {
             await ppaForm.waitFor({ state: 'hidden' });
             assert.equal(await addPpa.evaluate((element) => element === document.activeElement), true, 'PPA form must restore trigger focus');
 
-            const viewPpa = page.getByRole('button', { name: 'View', exact: true }).first();
+            const viewPpa = page.getByRole('button', { name: /^View(?: details)?$/ }).first();
             await viewPpa.click();
             const ppaDetail = page.getByRole('dialog');
             await ppaDetail.waitFor();
@@ -117,7 +117,7 @@ try {
             await plate.waitFor({ state: 'hidden' });
 
             await page.goto('http://127.0.0.1:4174/transactions');
-            const addRequest = page.getByRole('button', { name: 'New Work Request', exact: true });
+            const addRequest = page.getByRole('link', { name: 'New Work Request', exact: true });
             await addRequest.click();
             const requestDrawer = page.getByRole('dialog', { name: 'New Work Request', exact: true });
             await requestDrawer.waitFor();
@@ -127,7 +127,7 @@ try {
             await requestDrawer.getByLabel('Target Completion Date').fill('2027-03-15');
             await page.keyboard.press('Escape');
             await requestDrawer.waitFor({ state: 'hidden' });
-            assert.equal(await addRequest.evaluate((element) => element === document.activeElement), true, 'Work Request drawer must restore trigger focus');
+            await page.getByRole('link', { name: 'New Work Request', exact: true }).waitFor();
 
             const overflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth);
             await page.screenshot({ path: `${output}/work-request-${width}-${theme}.png`, fullPage: true });

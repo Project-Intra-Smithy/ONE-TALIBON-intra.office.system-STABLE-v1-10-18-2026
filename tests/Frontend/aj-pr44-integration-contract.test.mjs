@@ -14,7 +14,7 @@ test('AJ PR44 presentation preserves canonical Task write controls and mutation-
     assert.doesNotMatch(dashboard, /<PersonalTaskWorkspace\s*\/>/);
     assert.doesNotMatch(dashboard, /<PersonalTaskMutationPanel\s*\/>/);
     assert.match(dedicatedTasks, /<PersonalTaskWorkspace\s*\/>/);
-    assert.match(dedicatedTasks, /<PersonalTaskMutationPanel\s*\/>/);
+    assert.match(dedicatedTasks, /<PersonalTaskMutationPanel\s+confirmationLabel=\{taskConfirmationLabel\}\s*\/>/);
     assert.doesNotMatch(taskPanel, /<PersonalTaskWorkspace\s*\/>/);
     assert.doesNotMatch(taskPanel, /<PersonalTaskMutationPanel\s*\/>/);
     assert.ok(taskPanel.includes('href="/my-tasks"'));

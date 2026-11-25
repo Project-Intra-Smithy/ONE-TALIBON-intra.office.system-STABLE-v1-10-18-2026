@@ -1,7 +1,11 @@
 import { X } from 'lucide-react';
 import { type ReactNode, useEffect, useId, useRef } from 'react';
 
+let scrollLocks = 0;
+let unlockedOverflow = '';
+
 type DialogProps = {
+    id?: string;
     open: boolean;
     onClose: () => void;
     title: string;
@@ -20,6 +24,7 @@ type DialogProps = {
  * Per W3C/modern-web-guidance: never add redundant role="dialog" or aria-modal.
  */
 export function Dialog({
+    id,
     open,
     onClose,
     title,
@@ -34,6 +39,17 @@ export function Dialog({
     const ref = useRef<HTMLDialogElement>(null);
     const titleId = useId();
     const descId = useId();
+
+    useEffect(() => {
+        if (!open) return;
+        if (scrollLocks === 0) unlockedOverflow = document.body.style.overflow;
+        scrollLocks += 1;
+        document.body.style.overflow = 'hidden';
+        return () => {
+            scrollLocks -= 1;
+            if (scrollLocks === 0) document.body.style.overflow = unlockedOverflow;
+        };
+    }, [open]);
 
     useEffect(() => {
         const el = ref.current;
@@ -105,7 +121,15 @@ export function Dialog({
 
     return (
         <dialog
+            id={id}
             ref={ref}
+            onKeyDown={event => {
+                if (event.key !== 'Tab') return;
+                const controls = Array.from(event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex="0"]')).filter(element => element.getClientRects().length > 0);
+                const first = controls[0], last = controls[controls.length - 1];
+                if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+                else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+            }}
             aria-labelledby={titleId}
             aria-describedby={description ? descId : undefined}
             className={variantClass}

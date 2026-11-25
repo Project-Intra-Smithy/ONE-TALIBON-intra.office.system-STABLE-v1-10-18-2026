@@ -47,11 +47,11 @@ test('plan filter behavior and safe detail focus restoration are preserved', () 
     assert.match(card, /plan\.code/);
     assert.match(card, /plan\.horizon/);
     assert.match(card, /aria-expanded=\{selected\}/);
-    assert.match(plans, /document\.body\.style\.overflow = 'hidden'/);
-    assert.match(plans, /event\.key === 'Escape'/);
-    assert.match(plans, /event\.key !== 'Tab'/);
+    const nativeDialog = readFileSync(new URL('../../resources/js/components/ui/Dialog.tsx', import.meta.url), 'utf8');
+    assert.match(nativeDialog, /document\.body\.style\.overflow = 'hidden'/);
+    assert.match(nativeDialog, /showModal\(\)/);
     assert.match(plans, /requestAnimationFrame\(\(\) => document\.getElementById/);
-    assert.match(plans, /role="dialog"/);
+    assert.match(plans, /<PlanDossierPresentation/);
     assert.match(plans, /records shown here are not validated live municipal approvals/i);
 });
 
@@ -76,8 +76,8 @@ test('PPA register and detail are responsive, keyboard reachable and preserve se
     assert.match(register, /aria-selected=\{selectedId === record\.id\}/);
     assert.match(register, /aria-expanded=\{selectedId === record\.id\}/);
     assert.match(detail, /selected-ppa-detail/);
-    assert.match(detail, /panelRef\.current\?\.focus\(\)/);
-    assert.match(detail, /event\.key === 'Escape'/);
+    assert.match(detail, /<PlanDossierPresentation/);
+    assert.match(detail, /onClose=\{onClose\}/);
     assert.match(ppas, /dataset\.ppaTrigger === id/);
     assert.match(ppas, /trigger\?\.focus\(\)/);
     assert.match(css, /\.ot-r6-ppa-layout--selected/);

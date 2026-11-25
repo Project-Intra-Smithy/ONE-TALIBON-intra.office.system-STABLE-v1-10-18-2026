@@ -1,3 +1,6 @@
+import CalendarMonthView from '../../components/calendar/CalendarMonthView';
+import CalendarToolbar from '../../components/calendar/CalendarDateToolbar';
+import CalendarEventDetails from '../../components/calendar/CalendarEventDetails';
 import { Link, router } from '@inertiajs/react';
 import {
     CalendarDays,
@@ -9,7 +12,7 @@ import {
     Tag,
     X,
 } from 'lucide-react';
-import { useState, useId, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import PageFrame from '../../components/PageFrame';
 import PageHeader from '../../components/PageHeader';
 import { calendarAnchor } from '../../compat/uiContracts';
@@ -149,19 +152,11 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
     const [selectedDate, setSelectedDate] = useState<string>(anchor);
     const [activeEvent, setActiveEvent] = useState<CalendarEvent | null>(null);
 
-    const modalId = useId();
-    const dialogRef = useRef<HTMLDialogElement>(null);
 
     useEffect(() => {
         setSelectedDate(anchor);
     }, [anchor]);
 
-    useEffect(() => {
-        if (!activeEvent) return;
-        const trigger = document.activeElement as HTMLElement | null;
-        dialogRef.current?.showModal();
-        return () => trigger?.focus();
-    }, [activeEvent]);
 
     const navigateTo = (newView: string, newDate: string) => {
         router.get(`/calendar?view=${newView}&date=${encodeURIComponent(newDate)}`, {}, {
@@ -259,7 +254,7 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
                 />
 
                 {/* Range summary */}
-                <section aria-label="Calendar range" className="municipal-panel p-4 sm:p-5">
+                <section aria-label="Calendar range" className="municipal-panel hidden p-4 sm:block sm:p-5">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                         <div>
                             <div className="text-base font-semibold">
@@ -292,225 +287,10 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
 
                 {/* Google Calendar-Style Workspace */}
                 <div className="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-[var(--surface-card)]">
-                    {/* Google Calendar Toolbar */}
-                    <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 p-4 dark:border-slate-700 sm:px-6">
-                        <div className="flex min-w-0 flex-wrap items-center gap-3">
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setSelectedDate(today);
-                                    navigateTo(view, today);
-                                }}
-                                className="inline-flex shrink-0 whitespace-nowrap min-h-[44px] items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-800 shadow-sm transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 dark:border-slate-600 dark:bg-[var(--surface-card)] dark:text-slate-100"
-                            >
-                                Today
-                            </button>
-                            <div className="inline-flex shrink-0 items-center rounded-lg border border-slate-300 bg-white dark:border-slate-600 dark:bg-[var(--surface-card)]">
-                                <button
-                                    type="button"
-                                    onClick={() => navigatePeriod(-1)}
-                                    aria-label={`Previous ${periodName}`}
-                                    className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 dark:text-slate-200"
-                                >
-                                    <ChevronLeft size={20} aria-hidden="true" />
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => navigatePeriod(1)}
-                                    aria-label={`Next ${periodName}`}
-                                    className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center border-l border-slate-200 text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 dark:border-slate-700 dark:text-slate-200"
-                                >
-                                    <ChevronRight size={20} aria-hidden="true" />
-                                </button>
-                            </div>
-                            <h2 className="ml-2 text-xl font-bold tracking-tight text-slate-900 dark:text-white" aria-live="polite">
-                                {periodTitle}
-                            </h2>
-                        </div>
-
-                        <div className="flex flex-wrap items-center gap-3">
-                            <label className="inline-flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
-                                <span className="sr-only sm:not-sr-only">Choose date</span>
-                                <input
-                                    type="date"
-                                    aria-label="Choose date"
-                                    value={selectedDate}
-                                    onChange={(e) => {
-                                        if (e.target.value) {
-                                            setSelectedDate(e.target.value);
-                                            navigateTo(view, e.target.value);
-                                        }
-                                    }}
-                                    className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-800 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 dark:border-slate-600 dark:bg-[var(--surface-card)] dark:text-slate-100"
-                                />
-                            </label>
-
-                            <div className="text-sm font-semibold text-slate-600 dark:text-slate-300">
-                                {selectedDate === today ? (
-                                    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#145a43] dark:bg-emerald-950/40 dark:text-emerald-300">
-                                        <span className="h-2 w-2 rounded-full bg-[#145a43]" /> Today
-                                    </span>
-                                ) : (
-                                    <span>Selected: {selectedDate}</span>
-                                )}
-                            </div>
-                        </div>
-                    </div>
+                    <CalendarToolbar view={periodName} title={periodTitle} date={selectedDate} onDate={date => { setSelectedDate(date); navigateTo(view, date); }} onToday={() => { setSelectedDate(today); navigateTo(view, today); }} onPrevious={() => navigatePeriod(-1)} onNext={() => navigatePeriod(1)} />
 
                     {/* View: Month View Grid (Desktop) / Compact List (Mobile) */}
-                    {view === 'month' && (
-                        <div className="p-3 sm:p-5">
-                            {/* Desktop 7-Column Grid */}
-                            <div className="aj-calendar-month-grid hidden sm:block">
-                                <div className="grid grid-cols-7 border-b border-slate-200 text-center text-xs font-bold uppercase tracking-wider text-slate-500 dark:border-slate-700 dark:text-slate-400">
-                                    {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-                                        <div key={day} className="py-2.5">
-                                            {day}
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className="grid grid-cols-7 border-l border-t border-slate-200 dark:border-slate-700">
-                                    {Array.from({ length: firstWeekday }, (_, i) => (
-                                        <div
-                                            key={`blank-${i}`}
-                                            className="min-h-[105px] border-b border-r border-slate-200 bg-slate-50/50 p-2 dark:border-slate-700 dark:bg-slate-900/20"
-                                        />
-                                    ))}
-                                    {daysInMonth.map((day) => {
-                                        const dayEvents = eventsByDate.get(day) ?? [];
-                                        const isToday = day === today;
-                                        const isSelected = day === selectedDate;
-                                        const dayNumber = Number(day.slice(-2));
-
-                                        return (
-                                            <div
-                                                key={day}
-                                                tabIndex={0}
-                                                role="button"
-                                                aria-label={`${day}, ${dayEvents.length} events`}
-                                                onClick={() => setSelectedDate(day)}
-                                                onKeyDown={(e) => {
-                                                    if (e.key === 'Enter' || e.key === ' ') {
-                                                        e.preventDefault();
-                                                        setSelectedDate(day);
-                                                    }
-                                                }}
-                                                className={`group min-h-[115px] border-b border-r border-slate-200 p-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-1 dark:border-slate-700 ${
-                                                    isSelected
-                                                        ? 'bg-emerald-50/60 ring-2 ring-inset ring-[#145a43] dark:bg-emerald-950/30'
-                                                        : 'hover:bg-slate-50 dark:hover:bg-slate-800/40'
-                                                }`}
-                                            >
-                                                <div className="flex items-center justify-between">
-                                                    <span
-                                                        className={`inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold ${
-                                                            isToday
-                                                                ? 'bg-[#145a43] text-white'
-                                                                : 'text-slate-800 dark:text-slate-200'
-                                                        }`}
-                                                    >
-                                                        {dayNumber}
-                                                    </span>
-                                                    {dayEvents.length > 0 && (
-                                                        <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">
-                                                            {dayEvents.length}
-                                                        </span>
-                                                    )}
-                                                </div>
-
-                                                <div className="mt-1.5 space-y-1">
-                                                    {dayEvents.slice(0, 3).map((event) => (
-                                                        <button
-                                                            type="button"
-                                                            key={event.id}
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                setActiveEvent(event);
-                                                            }}
-                                                            className={`block w-full truncate rounded border px-1.5 py-0.5 text-left text-[11px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 ${getEventChipClass(
-                                                                event.priority
-                                                            )}`}
-                                                        >
-                                                            {event.starts_at && !event.all_day && (
-                                                                <span className="mr-1 opacity-75">
-                                                                    {formatTimeOnly(event.starts_at, timezone)}
-                                                                </span>
-                                                            )}
-                                                            {event.title}
-                                                        </button>
-                                                    ))}
-                                                    {dayEvents.length > 3 && (
-                                                        <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400">
-                                                            +{dayEvents.length - 3} more
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-
-                            {/* Mobile Agenda / Date Picker (< 768px) */}
-                            <div className="aj-calendar-month-agenda block sm:hidden">
-                                <label className="block text-sm font-bold text-slate-700 dark:text-slate-200">
-                                    Jump to date
-                                    <input
-                                        type="date"
-                                        value={selectedDate}
-                                        onChange={(e) => {
-                                            const val = dateKey(e.target.value, timezone);
-                                            if (val) setSelectedDate(val);
-                                        }}
-                                        className="mt-1 block min-h-[44px] w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-base text-slate-900 focus:border-[#145a43] focus:ring-2 focus:ring-[#145a43]/20 dark:border-slate-600 dark:bg-[var(--surface-card)] dark:text-slate-100"
-                                    />
-                                </label>
-
-                                <div className="mt-4">
-                                    <div className="mb-2 text-xs font-bold uppercase tracking-wider text-slate-500">
-                                        Days with events in {monthTitle}
-                                    </div>
-                                    <div className="flex gap-2 overflow-x-auto pb-2">
-                                        {daysInMonth.map((day) => {
-                                            const count = (eventsByDate.get(day) ?? []).length;
-                                            const isSelected = day === selectedDate;
-                                            const isToday = day === today;
-                                            const dayNum = Number(day.slice(-2));
-
-                                            return (
-                                                <button
-                                                    type="button"
-                                                    key={day}
-                                                    aria-pressed={isSelected}
-                                                    onClick={() => setSelectedDate(day)}
-                                                    className={`inline-flex min-h-[50px] min-w-[50px] flex-col items-center justify-center rounded-xl border p-2 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 ${
-                                                        isSelected
-                                                            ? 'border-[#145a43] bg-[#145a43] text-white shadow-sm'
-                                                            : 'border-slate-200 bg-white text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100'
-                                                    }`}
-                                                >
-                                                    <span className="text-xs font-semibold">
-                                                        {new Date(`${day}T00:00:00Z`).toLocaleDateString('en-US', {
-                                                            weekday: 'narrow',
-                                                            timeZone: 'UTC',
-                                                        })}
-                                                    </span>
-                                                    <span className="text-base font-extrabold">{dayNum}</span>
-                                                    {count > 0 && (
-                                                        <span
-                                                            className={`h-1.5 w-1.5 rounded-full ${
-                                                                isSelected ? 'bg-emerald-300' : 'bg-[#145a43]'
-                                                            }`}
-                                                        />
-                                                    )}
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                    {view === 'month' && <CalendarMonthView events={safeEvents} calendar={calendar} anchor={selectedDate} selectedDay={selectedDate} onSelectDay={setSelectedDate} onSelectEvent={setActiveEvent} onNavigate={navigateTo} />}
 
                     {view === 'week' && (
                         <section aria-label={`Week of ${rangeStart}`} data-calendar-view="week" className="overflow-x-auto p-3 sm:p-5">
@@ -718,100 +498,7 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
                 </section>
             </PageFrame>
 
-            {/* Google Calendar-Style Event Details Dialog */}
-            {activeEvent && (
-                <dialog
-                    ref={dialogRef}
-                    onCancel={() => setActiveEvent(null)}
-                    onKeyDown={(event) => {
-                        if (event.key !== 'Tab') return;
-                        const controls = Array.from(event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled), a[href]'));
-                        const first = controls[0], last = controls[controls.length - 1];
-                        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
-                        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
-                    }}
-                    role="dialog"
-                    aria-modal="true"
-                    aria-labelledby={`${modalId}-title`}
-                    className="aj-calendar-dialog fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-2xl border-0 bg-transparent p-0 backdrop:bg-slate-950/60"
-                >
-                    <div
-                        className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-700 dark:bg-[var(--surface-card)]"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <div className="flex items-start justify-between gap-3">
-                            <span
-                                className={`rounded-full border px-3 py-1 text-xs font-bold uppercase ${getPriorityBadgeClass(
-                                    activeEvent.priority
-                                )}`}
-                            >
-                                {humanize(activeEvent.priority)} • {humanize(activeEvent.event_type)}
-                            </span>
-                            <button
-                                type="button"
-                                onClick={() => setActiveEvent(null)}
-                                aria-label="Close event details"
-                                className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-400 dark:hover:bg-slate-800"
-                            >
-                                <X size={20} aria-hidden="true" />
-                            </button>
-                        </div>
-
-                        <h2 id={`${modalId}-title`} className="mt-4 text-xl font-extrabold text-slate-900 dark:text-white">
-                            {activeEvent.title}
-                        </h2>
-
-                        <div className="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-                            <div className="flex items-center gap-2.5">
-                                <Clock size={16} className="text-[#145a43] dark:text-emerald-400" aria-hidden="true" />
-                                <span>
-                                    {formatDate(activeEvent.starts_at, timezone)}
-                                    {activeEvent.ends_at && ` to ${formatDate(activeEvent.ends_at, timezone)}`}
-                                    {activeEvent.all_day && ' (All day)'}
-                                </span>
-                            </div>
-
-                            {activeEvent.location && (
-                                <div className="flex items-center gap-2.5">
-                                    <MapPin size={16} className="text-[#145a43] dark:text-emerald-400" aria-hidden="true" />
-                                    <span>{activeEvent.location}</span>
-                                </div>
-                            )}
-
-                            {activeEvent.department && (
-                                <div className="flex items-center gap-2.5">
-                                    <Tag size={16} className="text-[#145a43] dark:text-emerald-400" aria-hidden="true" />
-                                    <span>{activeEvent.department.name}</span>
-                                </div>
-                            )}
-
-                            {activeEvent.description && (
-                                <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-4 leading-relaxed dark:border-slate-700 dark:bg-slate-800/60">
-                                    {activeEvent.description}
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="mt-6 flex flex-wrap justify-end gap-3 border-t border-slate-100 pt-4 dark:border-slate-700">
-                            <button
-                                type="button"
-                                onClick={() => setActiveEvent(null)}
-                                className="inline-flex min-h-[44px] items-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200"
-                            >
-                                Close
-                            </button>
-                            {activeEvent.action_url && (
-                                <Link
-                                    href={activeEvent.action_url}
-                                    className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-[#145a43] px-5 py-2 text-sm font-bold text-white shadow transition-colors hover:bg-[#0e4331]"
-                                >
-                                    Open Related Work <ExternalLink size={15} aria-hidden="true" />
-                                </Link>
-                            )}
-                        </div>
-                    </div>
-                </dialog>
-            )}
+            <CalendarEventDetails event={activeEvent} timezone={timezone} onClose={() => setActiveEvent(null)} />
         </AppLayout>
     );
 }

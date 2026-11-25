@@ -1,3 +1,4 @@
+import PlanningDeleteAction from '../../components/planning/PlanningDeleteAction';
 import { router } from '@inertiajs/react';
 import { ClipboardList, Download, Plus } from 'lucide-react';
 import { type FormEvent, useMemo, useState } from 'react';
@@ -5,12 +6,12 @@ import PageFrame from '../../components/PageFrame';
 import PageHeader from '../../components/PageHeader';
 import type { ServerPlanningAttachment } from '../../components/planning/SupportingDocsPanel';
 import PortalWorkspaceNav from '../../components/portal/PortalWorkspaceNav';
+import PPAStudioView from '../../components/ppas/PPAStudioView';
 import PPADetailPanel from '../../components/ppas/PPADetailPanel';
 import PPAFilters from '../../components/ppas/PPAFilters';
 import PPARegister from '../../components/ppas/PPARegister';
 import PPASummary from '../../components/ppas/PPASummary';
 import Button from '../../components/ui/Button';
-import Dialog from '../../components/ui/Dialog';
 import type { PPAFilters as FilterState, PPARecord } from '../../data/municipal/ppas.types';
 import AppLayout from '../../layouts/AppLayout';
 import type { PlanningPermissions } from '../Plans/Index';
@@ -48,6 +49,7 @@ export default function Index({
     }));
     const [selected, setSelected] = useState<PPARecord | null>(null);
     const [showCreateModal, setShowCreateModal] = useState(false);
+    const [editingPpa,setEditingPpa]=useState<PPARecord|null>(null);
     const [title, setTitle] = useState('');
     const [sector, setSector] = useState('Infrastructure');
     const [responsibleOffice, setResponsibleOffice] = useState(
@@ -65,6 +67,8 @@ export default function Index({
     const [drrmTagged, setDrrmTagged] = useState(false);
     const [context, setContext] = useState('');
     const [busy, setBusy] = useState(false);
+    const [submissionError,setSubmissionError]=useState('');
+    const [recordFields, setRecordFields] = useState<Record<string, string>>({});
 
     const records = useMemo(() => {
         const query = filters.query.trim().toLowerCase();
@@ -105,13 +109,24 @@ export default function Index({
         planningPermissions?.canManagePpas || planningPermissions?.canProposeOfficePpa,
     );
 
+    const openPpaStudio = (record:PPARecord|null) => {
+        setEditingPpa(record);setSubmissionError('');setSelected(null);
+        setTitle(record?.title??'');setSector(record?.sector??'Infrastructure');
+        setResponsibleOffice(record?.responsibleOffice??planningPermissions?.actorDepartmentName??'');
+        setYear(String(record?.year??2027));setRelatedPlan(record?.relatedDevelopmentPlan??'');
+        setFundingSource(record?.fundingSource??'20% Development Fund');setStatus(record?.rawStatus??record?.status??'Planned');
+        setMooeAmount(String(record?.mooeAmount??0));setCoAmount(String(record?.coAmount??0));setBarangay(record?.barangay??'');
+        setAipCode(record?.aipReferenceCode??'');setGadAttributed(record?.gadAttributed??false);setDrrmTagged(record?.drrmTagged??false);setContext(record?.implementationContext??'');
+        setRecordFields(record?{ps_amount:String(record.psAmount??0),climate_adaptation_amount:String(record.climateAdaptationAmount??0),climate_mitigation_amount:String(record.climateMitigationAmount??0),priority:record.priority,map_code:record.mapCode??'',target_quarter:record.targetQuarter??''}:{});
+        setShowCreateModal(true);
+    };
+
     const handleSubmitPpa = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (!title.trim() || busy) return;
+        setSubmissionError('');
         setBusy(true);
-        router.post(
-            '/ppas',
-            {
+        const data = {
                 title: title.trim(),
                 sector,
                 responsible_office: responsibleOffice.trim(),
@@ -126,8 +141,14 @@ export default function Index({
                 gad_attributed: gadAttributed,
                 drrm_tagged: drrmTagged,
                 implementation_context: context.trim() || undefined,
-            },
-            {
+                ps_amount: recordFields.ps_amount ? Number(recordFields.ps_amount) : undefined,
+                climate_adaptation_amount: recordFields.climate_adaptation_amount ? Number(recordFields.climate_adaptation_amount) : undefined,
+                climate_mitigation_amount: recordFields.climate_mitigation_amount ? Number(recordFields.climate_mitigation_amount) : undefined,
+                map_code: recordFields.map_code || undefined,
+                target_quarter: recordFields.target_quarter || undefined,
+                priority: recordFields.priority || undefined,
+            };
+        const options = {
                 preserveScroll: true,
                 onSuccess: () => {
                     setTitle('');
@@ -135,9 +156,11 @@ export default function Index({
                     setAipCode('');
                     setShowCreateModal(false);
                 },
+                onError: (errors:Record<string,string>)=>setSubmissionError(Object.values(errors).join(' ')),
                 onFinish: () => setBusy(false),
-            },
-        );
+            };
+        if(editingPpa?.dbId) router.put(`/ppas/${editingPpa.dbId}`,data,options);
+        else router.post('/ppas',data,options);
     };
 
     return (
@@ -171,7 +194,7 @@ export default function Index({
                                     variant="primary"
                                     size="sm"
                                     icon={<Plus className="h-3.5 w-3.5" />}
-                                    onClick={() => setShowCreateModal(true)}
+                                    onClick={() => openPpaStudio(null)}
                                 >
                                     {planningPermissions?.canManagePpas
                                         ? 'Register PPA Entry'
@@ -190,13 +213,15 @@ export default function Index({
                 </p>
                 <PPAFilters
                     filters={filters}
+                    options={{offices:[...new Set(ppaRecords.map(record=>record.responsibleOffice))].sort(),years:[...new Set(ppaRecords.map(record=>record.year))].sort(),statuses:[...new Set(ppaRecords.map(record=>record.status))].sort(),sectors:[...new Set(ppaRecords.map(record=>record.sector))].sort(),fundingSources:[...new Set(ppaRecords.map(record=>record.fundingSource))].sort()}}
+                    planOptions={[...new Set(ppaRecords.map(record=>record.relatedDevelopmentPlan))].sort().map(reference=>({value:reference,label:reference}))}
                     onChange={(next) => {
                         setFilters(next);
                         setSelected(null);
                     }}
                 />
                 <div
-                    className={`ot-r6-ppa-layout ${selected ? 'ot-r6-ppa-layout--selected' : ''}`}
+                    className="ot-r6-ppa-layout"
                 >
                     <section
                         aria-label="PPA register results"
@@ -213,13 +238,18 @@ export default function Index({
                         </div>
                         <PPARegister
                             records={records}
+                            docCountsByPpa={Object.fromEntries(records.map(record=>[record.id,attachments.filter(attachment=>attachment.parentType==='ppa'&&attachment.parentCode===record.id).length]))}
                             selectedId={selected?.id}
                             onSelect={setSelected}
                         />
                     </section>
                     {selected ? (
-                        <PPADetailPanel
+                        <PPADetailPanel managementActions={selected&&planningPermissions?.canDelete&&selected.dbId?<><PlanningDeleteAction title={selected.id} busy={busy} disabledReason={selected.provenanceStatus==='reference_sample'||!['Draft','Planned'].includes(selected.rawStatus??selected.status)?'Only non-reference draft or planned proposals can be deleted.':undefined} onDelete={()=>{setBusy(true);setSubmissionError('');router.delete(`/ppas/${selected.dbId}`,{preserveScroll:true,onSuccess:()=>setSelected(null),onError:errors=>setSubmissionError(Object.values(errors).join(' ')),onFinish:()=>setBusy(false)});}} />{submissionError&&<p role="alert" className="text-xs text-[var(--status-danger-fg)]">{submissionError}</p>}</>:undefined} onEdit={record=>openPpaStudio(record)}
                             record={selected}
+                            currentIndex={records.findIndex(record=>record.id===selected.id)}
+                            totalCount={records.length}
+                            onPrev={records.findIndex(record=>record.id===selected.id)>0 ? ()=>setSelected(records[records.findIndex(record=>record.id===selected.id)-1]) : undefined}
+                            onNext={records.findIndex(record=>record.id===selected.id)<records.length-1 ? ()=>setSelected(records[records.findIndex(record=>record.id===selected.id)+1]) : undefined}
                             attachments={attachments}
                             planningPermissions={planningPermissions}
                             onClose={() => {
@@ -257,216 +287,25 @@ export default function Index({
                 </details>
             </PageFrame>
 
-            <Dialog
-                variant="drawer-right"
-                open={showCreateModal}
-                onClose={() => setShowCreateModal(false)}
-                title={
-                    planningPermissions?.canManagePpas
-                        ? 'Register Program / Project / Activity'
-                        : 'Submit Implementing Office PPA Proposal'
-                }
-                description="Record an AIP investment entry with PS/MOOE/CO appropriation breakdown and GAD/CCET/DRRM attribution."
-                size="lg"
-            >
-                <form onSubmit={handleSubmitPpa} className="space-y-3 text-xs">
-                    <label className="block font-semibold text-[var(--municipal-text)]">
-                        Program / Project / Activity Title
-                        <input
-                            type="text"
-                            required
-                            maxLength={255}
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            placeholder="e.g., Municipal Drainage Line Rehabilitation"
-                            className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                        />
-                    </label>
-                    <div className="grid gap-3 sm:grid-cols-3">
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            Sector
-                            <select
-                                value={sector}
-                                onChange={(e) => setSector(e.target.value)}
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            >
-                                {[
-                                    'Infrastructure',
-                                    'Agriculture',
-                                    'Fisheries',
-                                    'Environment',
-                                    'Economic',
-                                    'Health',
-                                    'Social Protection',
-                                    'Disaster Risk Reduction',
-                                    'Youth',
-                                    'Tourism',
-                                    'Employment',
-                                    'Governance',
-                                ].map((s) => (
-                                    <option key={s} value={s}>
-                                        {s}
-                                    </option>
-                                ))}
-                            </select>
-                        </label>
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            Fiscal Year
-                            <input
-                                type="number"
-                                min={2024}
-                                max={2035}
-                                required
-                                value={year}
-                                onChange={(e) => setYear(e.target.value)}
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            />
-                        </label>
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            Status
-                            <select
-                                value={status}
-                                onChange={(e) => setStatus(e.target.value)}
-                                disabled={!planningPermissions?.canManagePpas}
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            >
-                                <option value="Planned">Planned</option>
-                                {planningPermissions?.canManagePpas && (
-                                    <>
-                                        <option value="For Procurement">For Procurement</option>
-                                        <option value="Ongoing">Ongoing</option>
-                                    </>
-                                )}
-                                {planningPermissions?.canPublishOrArchive && (
-                                    <>
-                                        <option value="Completed">Completed</option>
-                                        <option value="On Hold">On Hold</option>
-                                    </>
-                                )}
-                            </select>
-                        </label>
-                    </div>
-                    <div className="grid gap-3 sm:grid-cols-2">
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            Implementing Office
-                            <input
-                                type="text"
-                                required
-                                disabled={!planningPermissions?.canManagePpas}
-                                value={responsibleOffice}
-                                onChange={(e) => setResponsibleOffice(e.target.value)}
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            />
-                        </label>
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            Source Development Plan
-                            <input
-                                type="text"
-                                required
-                                value={relatedPlan}
-                                onChange={(e) => setRelatedPlan(e.target.value)}
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            />
-                        </label>
-                    </div>
-                    <div className="grid gap-3 sm:grid-cols-3">
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            Funding Source
-                            <input
-                                type="text"
-                                required
-                                value={fundingSource}
-                                onChange={(e) => setFundingSource(e.target.value)}
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            />
-                        </label>
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            MOOE Amount (PHP)
-                            <input
-                                type="number"
-                                min={0}
-                                step="0.01"
-                                value={mooeAmount}
-                                onChange={(e) => setMooeAmount(e.target.value)}
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            />
-                        </label>
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            Capital Outlay (PHP)
-                            <input
-                                type="number"
-                                min={0}
-                                step="0.01"
-                                value={coAmount}
-                                onChange={(e) => setCoAmount(e.target.value)}
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            />
-                        </label>
-                    </div>
-                    <div className="grid gap-3 sm:grid-cols-2">
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            Target Barangay
-                            <input
-                                type="text"
-                                value={barangay}
-                                onChange={(e) => setBarangay(e.target.value)}
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            />
-                        </label>
-                        <label className="block font-semibold text-[var(--municipal-text)]">
-                            AIP Reference Code
-                            <input
-                                type="text"
-                                value={aipCode}
-                                onChange={(e) => setAipCode(e.target.value)}
-                                placeholder="e.g., 8000-2027-015"
-                                className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
-                            />
-                        </label>
-                    </div>
-                    <div className="flex flex-wrap gap-4 pt-1">
-                        <label className="inline-flex items-center gap-1.5 font-semibold text-[var(--municipal-text)]">
-                            <input
-                                type="checkbox"
-                                checked={gadAttributed}
-                                onChange={(e) => setGadAttributed(e.target.checked)}
-                            />
-                            GAD Attributed
-                        </label>
-                        <label className="inline-flex items-center gap-1.5 font-semibold text-[var(--municipal-text)]">
-                            <input
-                                type="checkbox"
-                                checked={drrmTagged}
-                                onChange={(e) => setDrrmTagged(e.target.checked)}
-                            />
-                            DRRM / Resilience Tagged
-                        </label>
-                    </div>
-                    <label className="block font-semibold text-[var(--municipal-text)]">
-                        Implementation Context / Expected Output
-                        <textarea
-                            rows={2}
-                            maxLength={2000}
-                            value={context}
-                            onChange={(e) => setContext(e.target.value)}
-                            className="mt-1 block w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] p-2.5 text-xs text-[var(--municipal-text)]"
-                        />
-                    </label>
-                    <div className="flex justify-end gap-2 pt-2">
-                        <Button
-                            type="button"
-                            variant="secondary"
-                            size="sm"
-                            onClick={() => setShowCreateModal(false)}
-                        >
-                            Cancel
-                        </Button>
-                        <Button type="submit" variant="primary" size="sm" loading={busy}>
-                            Save PPA Record
-                        </Button>
-                    </div>
-                </form>
-            </Dialog>
+            <PPAStudioView error={submissionError} open={showCreateModal} editing={editingPpa} officeProposalMode={!planningPermissions?.canManagePpas} actorOfficeName={planningPermissions?.actorDepartmentName ?? ''} officeInputMode lockAipCode={false} onClose={() => setShowCreateModal(false)} busy={busy}
+                values={{title, aipRefCode:aipCode, sector, responsibleOffice, year:Number(year), linkedPlanId:'', linkedMapId:'', fundingSource, status, priority:recordFields.priority ?? 'Medium', scheduleStart:'', scheduleEnd:'', barangaysInput:barangay, expectedOutputs:'', implementationContext:context, budgetPs:recordFields.ps_amount ?? '0', budgetMooe:mooeAmount, budgetCo:coAmount, ccaAmount:recordFields.climate_adaptation_amount ?? '', gadAttributed, drrmTagged}}
+                onChange={(field,value)=>{
+                    const text = String(value);
+                    const setters: Record<string,(value:string)=>void> = {title:setTitle,aipRefCode:setAipCode,sector:setSector,responsibleOffice:setResponsibleOffice,year:setYear,fundingSource:setFundingSource,status:setStatus,barangaysInput:setBarangay,implementationContext:setContext,budgetMooe:setMooeAmount,budgetCo:setCoAmount};
+                    if(setters[field]) {setters[field](text);return;}
+                    if(field==='gadAttributed') {setGadAttributed(Boolean(value));return;}
+                    if(field==='drrmTagged') {setDrrmTagged(Boolean(value));return;}
+                    const keys:Record<string,string> = {priority:'priority',budgetPs:'ps_amount',ccaAmount:'climate_adaptation_amount'};
+                    if(keys[field]) setRecordFields(fields=>({...fields,[keys[field]]:text}));
+                }}
+                onSubmit={handleSubmitPpa} plans={[]} maps={[]} sectors={['Infrastructure','Agriculture','Fisheries','Environment','Economic','Health','Social Protection','Disaster Risk Reduction','Youth','Tourism','Employment','Governance']} offices={[]}
+                statuses={planningPermissions?.canManagePpas ? ['Planned','For Procurement','Ongoing',...(planningPermissions?.canPublishOrArchive ? ['Completed','On Hold'] : [])] : ['Planned']}
+                unavailable={['linkedPlanId','linkedMapId','scheduleStart','scheduleEnd','expectedOutputs']}
+                referenceFields={<div className="grid gap-3 sm:grid-cols-2">
+                    <label className="text-xs font-semibold">Related Development Plan Reference<input required value={relatedPlan} onChange={event=>setRelatedPlan(event.target.value)} className="tcds-input mt-1" /></label>
+                    {([['map_code','Map Reference Code'],['target_quarter','Target Quarter'],['climate_mitigation_amount','Climate Mitigation Amount']] as const).map(([name,label])=><label key={name} className="text-xs font-semibold">{label}<input type={name==='climate_mitigation_amount'?'number':'text'} min={0} step={name==='climate_mitigation_amount'?'0.01':undefined} value={recordFields[name]??''} onChange={event=>setRecordFields(fields=>({...fields,[name]:event.target.value}))} className="tcds-input mt-1" /></label>)}
+                </div>}
+            />
         </AppLayout>
     );
 }
