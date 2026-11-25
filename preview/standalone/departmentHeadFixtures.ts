@@ -307,6 +307,9 @@ export function workRequestDetailForRole(role: RoleKey, path: string, searchPara
 
 export function resolveStandalonePage(path: string, role: RoleKey, search: string): string | null {
     const state = new URLSearchParams(search).get('state') as EvaluationState | null;
+    if (path === '/work-requests/origin-delivery-exceptions') {
+        return role === 'department_head' ? 'Transactions/DeliveryExceptions' : 'Errors/403';
+    }
     if (path === '/my-department') {
         if (state === 'session_expired') return 'Errors/Status';
         if (role !== 'department_head' || state === 'restricted') return 'Errors/403';

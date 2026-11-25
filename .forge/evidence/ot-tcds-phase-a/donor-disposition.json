@@ -1743,9 +1743,9 @@
       "sha256": "bc942864aed5f748b646fc2b5c769fc56ee502012869d574198e491e203d5ebc",
       "canonical_baseline": "different",
       "preview": "preview/resources/js/pages/Admin/Index.tsx",
-      "status": "isolated donor presentation; interaction review in progress",
+      "status": "shared canonical presentation",
       "donor_blob": "169629a4beecd71d195bed7c480d208c358d19fe",
-      "preview_sha256": "1fbf27a6d8480b8cb4d4ceb148311cc9005488c7f8e3034153539e9f83c18a37"
+      "preview_sha256": "d7d988b2bf796d7130d2735eceb6d7e02130bcc96e5d3d1dbf3fd6c9452a4cf0"
     },
     {
       "donor": "resources/js/pages/Announcements/Index.tsx",
@@ -1761,9 +1761,9 @@
       "sha256": "0bf29cfc3e85a0024a930e5557bd61b33f989c3cdd8b218f584d8f60d75f4a6e",
       "canonical_baseline": "different",
       "preview": "preview/resources/js/pages/Audit/Index.tsx",
-      "status": "isolated donor presentation; interaction review in progress",
+      "status": "shared canonical presentation",
       "donor_blob": "241bb7e38e868f598e0d504da9d4d5b8182f7356",
-      "preview_sha256": "fa5bf3cd1acbfbf5a000d88366e7bf1943f1c619e5f4fc3d5d6e62d71c889452"
+      "preview_sha256": "f0244ad02df06df05d52febb2e69d28ed29c698bc3349b1280bfb7a7e8650b85"
     },
     {
       "donor": "resources/js/pages/Auth/ActivateAccount.tsx",

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-type VisitOptions = { onFinish?: () => void; onSuccess?: () => void; replace?: boolean; only?: string[]; [key: string]: unknown };
+type VisitOptions = { onFinish?: () => void; onSuccess?: () => void; onError?: (errors: Record<string, string>) => void; replace?: boolean; only?: string[]; [key: string]: unknown };
 type Page = { url: string; props: Record<string, any>; flash?: Record<string, any> };
 type QueryScalar = string | number | boolean | null | undefined;
 type QueryValue = QueryScalar | QueryScalar[];
@@ -136,8 +136,13 @@ export function Head({ title }: { title?: string; children?: React.ReactNode }) 
 }
 
 const visit = (href: string, _data?: unknown, options?: VisitOptions) => {
-    navigate(href, options?.replace === true);
-    options?.onSuccess?.();
+    if (navigate(href, options?.replace === true)) options?.onSuccess?.();
+    options?.onFinish?.();
+};
+const blockedWrite = (_href: string, _data?: unknown, options?: VisitOptions) => {
+    const message = 'Preview action unavailable. No municipal record was submitted or saved.';
+    window.dispatchEvent(new CustomEvent('ot:preview-write-blocked', { detail: message }));
+    options?.onError?.({ preview: message });
     options?.onFinish?.();
 };
 const get = (href: string, data?: QueryData, options?: VisitOptions) => {
@@ -153,7 +158,14 @@ const reload = (options?: VisitOptions) => {
     options?.onSuccess?.();
     options?.onFinish?.();
 };
-export const router = { get, post: visit, put: visit, patch: visit, delete: visit, visit, reload };
+export const router = {
+    get, post: blockedWrite, put: blockedWrite, patch: blockedWrite, delete: blockedWrite,
+    visit: (href: string, options?: VisitOptions) =>
+        options?.method && String(options.method).toLowerCase() !== 'get'
+            ? blockedWrite(href, options.data, options)
+            : visit(href, undefined, options),
+    reload,
+};
 
 export function useForm<T extends Record<string, any>>(initial: T) {
     const [data, setState] = useState<T>(initial);
@@ -161,11 +173,14 @@ export function useForm<T extends Record<string, any>>(initial: T) {
         setState((current) => (typeof key === 'object' ? { ...current, ...key } : { ...current, [key]: value }));
     const reset = (...keys: (keyof T)[]) =>
         setState((current) => (keys.length ? keys.reduce((next, key) => ({ ...next, [key]: initial[key] }), current) : initial));
-    const submit = (_method: string, href: string, options?: VisitOptions) => visit(href, data, options);
+    const submit = (method: string, href: string, options?: VisitOptions) =>
+        method.toLowerCase() === 'get' ? get(href, data as QueryData, options) : blockedWrite(href, data, options);
     return {
         data,
         setData,
         reset,
+        // Unsupported preview writes never serialize or submit transformed payloads.
+        transform: (_callback: (value: T) => unknown) => {},
         clearErrors: () => {},
         setError: () => {},
         errors: {} as Record<string, string>,
@@ -174,10 +189,10 @@ export function useForm<T extends Record<string, any>>(initial: T) {
         wasSuccessful: false,
         isDirty: JSON.stringify(data) !== JSON.stringify(initial),
         get: (href: string, options?: VisitOptions) => get(href, data as QueryData, options),
-        post: (href: string, options?: VisitOptions) => visit(href, data, options),
-        put: (href: string, options?: VisitOptions) => visit(href, data, options),
-        patch: (href: string, options?: VisitOptions) => visit(href, data, options),
-        delete: (href: string, options?: VisitOptions) => visit(href, data, options),
+        post: (href: string, options?: VisitOptions) => blockedWrite(href, data, options),
+        put: (href: string, options?: VisitOptions) => blockedWrite(href, data, options),
+        patch: (href: string, options?: VisitOptions) => blockedWrite(href, data, options),
+        delete: (href: string, options?: VisitOptions) => blockedWrite(href, data, options),
         submit,
     };
 }

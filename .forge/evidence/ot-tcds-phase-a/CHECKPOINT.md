@@ -106,3 +106,28 @@ passed. Typecheck caught a nullable-date inference and it was repaired using the
 existing IndividualTask contract. PPA targets enlarged; repeated Task/map headings
 clarified and map provenance disclosed. These checks are working-tree evidence;
 exact-next-SHA hosted validation is required. Six-wave completion remains pending.
+
+## Published comparisons and audit/preview hardening
+
+412ca310062e417060e961707a334d0c3d0a43e0 passed protected PG16 run
+45540005762 and presentation run 45540005865. Artifact 14989700118 contains raw
+responsive captures. The committed comparative/ gallery contains 72 raw images
+for donor 7afabade, PR71 46f24d0f and presentation e1bf7b0d. Visual inspection
+found tablet clipping despite zero outer-page overflow; scoped stacked record
+cards repaired it and browser assertions now check Inspect button bounds.
+
+Five loaded Forge skill files (core, dispatch, session-host, frontend and QA)
+were compared to authenticated upstream Git blobs at the approved immutable pin;
+all matched byte for byte. Ponytail full remains loaded from installed 5.3.3.
+
+Next slice shares the donor audit composition while retaining the canonical
+SourceReferenceLink function unchanged. All three source-link negatives/native
+PDF tests pass. Preview administration now shares the canonical IAM interface.
+The inherited preview Inertia adapter wrongly invoked write success callbacks;
+unsupported commands now keep the current page, invoke no success callback, and
+show an explicit blocked notice. Added the form transform compatibility boundary
+and corrected direct routing to Delivery Exceptions. Browser checks cover login,
+MFA confirmation and delivery acknowledgment, preserving form values and making
+zero network requests. Desktop catalog passed 65 requested-component checks;
+125 contracts, both typechecks and builds passed locally during this slice.
+Exact-new-SHA hosted checks remain required. No six-wave CLOSE or acceptance.

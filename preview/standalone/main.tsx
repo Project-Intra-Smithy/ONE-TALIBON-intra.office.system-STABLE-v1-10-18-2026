@@ -122,6 +122,13 @@ function App() {
     const [locationKey, setLocationKey] = useState(locationNow);
     const [role, setRole] = useState<RoleKey>(() => (localStorage.getItem('ot.synthetic.role') as RoleKey) || 'employee');
     const [writeSubmitAttempted, setWriteSubmitAttempted] = useState(false);
+    const [blockedAction, setBlockedAction] = useState<string | null>(null);
+
+    useEffect(() => {
+        const blocked = () => setBlockedAction('Preview action unavailable. No municipal record was submitted or saved.');
+        window.addEventListener('ot:preview-write-blocked', blocked);
+        return () => window.removeEventListener('ot:preview-write-blocked', blocked);
+    }, []);
 
     useEffect(() => {
         const update = () => setLocationKey(locationNow());
@@ -138,7 +145,7 @@ function App() {
     const pageName = fixturePageForRole(resolvedPageName, role);
     const isCreatePreview = WRITE_GUARDED_PAGES.has(pageName);
 
-    useEffect(() => setWriteSubmitAttempted(false), [pageName]);
+    useEffect(() => { setWriteSubmitAttempted(false); setBlockedAction(null); }, [pageName]);
 
     const Page = getLazyPage(pageName);
     const props = useMemo(() => fixtureFor(pageName, role, searchParams, path), [pageName, role, locationKey]);
@@ -171,6 +178,12 @@ function App() {
                     </div>
                 </details>
             </div>
+            {blockedAction && (
+                <aside role="status" className="isolation-write-boundary">
+                    <strong>{blockedAction}</strong>
+                    <button type="button" onClick={() => setBlockedAction(null)} aria-label="Dismiss preview action notice">Dismiss</button>
+                </aside>
+            )}
             {isCreatePreview && (
                 <aside className="isolation-write-boundary" role="status">
                     <strong>Isolated preview · No municipal records can be submitted</strong>
