@@ -57,7 +57,6 @@ export default function SupportingDocsPanel({
     const [visibility, setVisibility] = useState('lgu_internal');
     const [file, setFile] = useState<File | null>(null);
     const [busy, setBusy] = useState(false);
-    const [previewDoc, setPreviewDoc] = useState<ServerPlanningAttachment | null>(null);
 
     const matching = attachments.filter(
         (item) => item.parentType === parentType && item.parentCode === parentCode,
@@ -212,17 +211,19 @@ export default function SupportingDocsPanel({
                                     {visibilityLabels[doc.visibility] ?? doc.visibility}
                                 </p>
                             </div>
-                            <div className="flex items-center gap-2">
-                                <button
-                                    type="button"
-                                    onClick={() => setPreviewDoc(doc)}
-                                    className="inline-flex min-h-8 items-center gap-1 rounded border border-[var(--municipal-border-strong)] px-2.5 text-[11px] font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]"
+                            <div className="flex items-center flex-wrap gap-2">
+                                <a
+                                    href={doc.previewUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex min-h-11 items-center gap-1 rounded border border-[var(--municipal-border-strong)] px-2.5 text-xs font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]"
                                 >
-                                    <Eye className="h-3 w-3" /> Preview
-                                </button>
+                                    <Eye className="h-3 w-3" aria-hidden="true" /> Preview
+                                    <span className="sr-only"> {doc.title} (opens in a new tab)</span>
+                                </a>
                                 <a
                                     href={doc.downloadUrl}
-                                    className="inline-flex min-h-8 items-center rounded border border-[var(--municipal-border-strong)] px-2.5 text-[11px] font-semibold text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]"
+                                    className="inline-flex min-h-11 items-center rounded border border-[var(--municipal-border-strong)] px-2.5 text-[11px] font-semibold text-[var(--municipal-text)] hover:bg-[var(--municipal-hover)]"
                                 >
                                     Download
                                 </a>
@@ -230,7 +231,7 @@ export default function SupportingDocsPanel({
                                     <button
                                         type="button"
                                         onClick={() => handleRemove(doc.publicId)}
-                                        className="inline-flex min-h-8 items-center gap-1 rounded border border-red-300 px-2 text-[11px] font-semibold text-red-700 hover:bg-red-50 dark:border-red-800 dark:text-red-300"
+                                        className="inline-flex min-h-11 items-center gap-1 rounded border border-red-300 px-2 text-[11px] font-semibold text-red-700 hover:bg-red-50 dark:border-red-800 dark:text-red-300"
                                         aria-label={`Remove ${doc.title}`}
                                     >
                                         <Trash2 className="h-3 w-3" />
@@ -242,44 +243,6 @@ export default function SupportingDocsPanel({
                 </ul>
             )}
 
-            {previewDoc && (
-                <div
-                    role="dialog"
-                    aria-modal="true"
-                    aria-label={`Preview ${previewDoc.title}`}
-                    className="fixed inset-0 z-[150] flex items-center justify-center bg-slate-950/60 p-4"
-                    onMouseDown={(e) => {
-                        if (e.currentTarget === e.target) setPreviewDoc(null);
-                    }}
-                >
-                    <div className="flex h-[82dvh] w-full max-w-4xl flex-col overflow-hidden rounded-xl border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] shadow-2xl">
-                        <header className="flex items-center justify-between border-b border-[var(--municipal-border)] px-4 py-2.5">
-                            <div className="min-w-0">
-                                <h4 className="truncate text-sm font-bold text-[var(--municipal-text)]">
-                                    {previewDoc.title}
-                                </h4>
-                                <p className="text-[11px] text-[var(--municipal-muted)]">
-                                    {previewDoc.fileName} · {visibilityLabels[previewDoc.visibility] ?? previewDoc.visibility}
-                                </p>
-                            </div>
-                            <button
-                                type="button"
-                                onClick={() => setPreviewDoc(null)}
-                                className="min-h-9 rounded px-3 text-xs font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]"
-                            >
-                                Close Preview
-                            </button>
-                        </header>
-                        <div className="flex-1 bg-slate-900/5">
-                            <iframe
-                                title={previewDoc.title}
-                                src={previewDoc.previewUrl}
-                                className="h-full w-full border-0"
-                            />
-                        </div>
-                    </div>
-                </div>
-            )}
         </section>
     );
 }

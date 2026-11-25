@@ -131,6 +131,95 @@ export default function PlanningMapsIndex({
         );
     };
 
+    const [expandedPlateCode, setExpandedPlateCode] = useState<string | null>(null);
+    const referencePlate = (idPrefix: string) => selectedMap ? (
+        <svg
+            viewBox="0 0 640 260"
+            role="img"
+            aria-label={`Illustrative spatial reference diagram for ${selectedMap.title}`}
+            className="h-56 w-full rounded-lg border border-slate-700 bg-[#0d1f2d]"
+        >
+            <defs>
+                <pattern
+                    id={idPrefix + "talibon-grid"}
+                    width="40"
+                    height="40"
+                    patternUnits="userSpaceOnUse"
+                >
+                    <path
+                        d="M 40 0 L 0 0 0 40"
+                        fill="none"
+                        stroke="rgba(148, 163, 184, 0.14)"
+                        strokeWidth="1"
+                    />
+                </pattern>
+            </defs>
+            <rect width="640" height="260" fill={`url(#${idPrefix}talibon-grid)`} />
+            {/* Mainland & Danajon Bank island schematic */}
+            <path
+                d="M 40 230 Q 150 165 290 175 T 580 195 L 600 250 L 40 250 Z"
+                fill="rgba(20, 83, 45, 0.55)"
+                stroke="#34d399"
+                strokeWidth="1.75"
+            />
+            <ellipse
+                cx="220"
+                cy="95"
+                rx="48"
+                ry="18"
+                fill="rgba(15, 118, 110, 0.45)"
+                stroke="#2dd4bf"
+                strokeWidth="1.5"
+            />
+            <ellipse
+                cx="370"
+                cy="78"
+                rx="62"
+                ry="20"
+                fill="rgba(15, 118, 110, 0.45)"
+                stroke="#2dd4bf"
+                strokeWidth="1.5"
+            />
+            <ellipse
+                cx="500"
+                cy="108"
+                rx="42"
+                ry="15"
+                fill="rgba(15, 118, 110, 0.45)"
+                stroke="#2dd4bf"
+                strokeWidth="1.5"
+            />
+            {/* Thematic corridor overlay */}
+            <polyline
+                points="95,215 215,192 330,196 465,205"
+                fill="none"
+                stroke="#fbbf24"
+                strokeWidth="2.5"
+                strokeDasharray="6 4"
+            />
+            <circle cx="215" cy="192" r="5" fill="#f59e0b" />
+            <circle cx="330" cy="196" r="5" fill="#38bdf8" />
+            <text
+                x="224"
+                y="188"
+                fill="#f8fafc"
+                fontSize="11"
+                fontWeight="600"
+            >
+                {selectedMap.barangays[0] ?? 'Poblacion'} Sector
+            </text>
+            <text
+                x="18"
+                y="26"
+                fill="#94a3b8"
+                fontSize="10"
+                fontFamily="monospace"
+            >
+                SCHEMATIC PLATE · NOT AN OFFICIAL CADASTRAL SURVEY
+            </text>
+        </svg>
+    ) : null;
+
     return (
         <AppLayout title="Planning Maps Atlas">
             <PageFrame
@@ -290,109 +379,30 @@ export default function PlanningMapsIndex({
                                             {selectedMap.scale}
                                         </span>
                                     </div>
-                                    <svg
-                                        viewBox="0 0 640 260"
-                                        role="img"
-                                        aria-label={`Illustrative spatial reference diagram for ${selectedMap.title}`}
-                                        className="h-56 w-full rounded-lg border border-slate-700 bg-[#0d1f2d]"
-                                    >
-                                        <defs>
-                                            <pattern
-                                                id="talibon-grid"
-                                                width="40"
-                                                height="40"
-                                                patternUnits="userSpaceOnUse"
-                                            >
-                                                <path
-                                                    d="M 40 0 L 0 0 0 40"
-                                                    fill="none"
-                                                    stroke="rgba(148, 163, 184, 0.14)"
-                                                    strokeWidth="1"
-                                                />
-                                            </pattern>
-                                        </defs>
-                                        <rect width="640" height="260" fill="url(#talibon-grid)" />
-                                        {/* Mainland & Danajon Bank island schematic */}
-                                        <path
-                                            d="M 40 230 Q 150 165 290 175 T 580 195 L 600 250 L 40 250 Z"
-                                            fill="rgba(20, 83, 45, 0.55)"
-                                            stroke="#34d399"
-                                            strokeWidth="1.75"
-                                        />
-                                        <ellipse
-                                            cx="220"
-                                            cy="95"
-                                            rx="48"
-                                            ry="18"
-                                            fill="rgba(15, 118, 110, 0.45)"
-                                            stroke="#2dd4bf"
-                                            strokeWidth="1.5"
-                                        />
-                                        <ellipse
-                                            cx="370"
-                                            cy="78"
-                                            rx="62"
-                                            ry="20"
-                                            fill="rgba(15, 118, 110, 0.45)"
-                                            stroke="#2dd4bf"
-                                            strokeWidth="1.5"
-                                        />
-                                        <ellipse
-                                            cx="500"
-                                            cy="108"
-                                            rx="42"
-                                            ry="15"
-                                            fill="rgba(15, 118, 110, 0.45)"
-                                            stroke="#2dd4bf"
-                                            strokeWidth="1.5"
-                                        />
-                                        {/* Thematic corridor overlay */}
-                                        <polyline
-                                            points="95,215 215,192 330,196 465,205"
-                                            fill="none"
-                                            stroke="#fbbf24"
-                                            strokeWidth="2.5"
-                                            strokeDasharray="6 4"
-                                        />
-                                        <circle cx="215" cy="192" r="5" fill="#f59e0b" />
-                                        <circle cx="330" cy="196" r="5" fill="#38bdf8" />
-                                        <text
-                                            x="224"
-                                            y="188"
-                                            fill="#f8fafc"
-                                            fontSize="11"
-                                            fontWeight="600"
-                                        >
-                                            {selectedMap.barangays[0] ?? 'Poblacion'} Sector
-                                        </text>
-                                        <text
-                                            x="18"
-                                            y="26"
-                                            fill="#94a3b8"
-                                            fontSize="10"
-                                            fontFamily="monospace"
-                                        >
-                                            SCHEMATIC PLATE · NOT AN OFFICIAL CADASTRAL SURVEY
-                                        </text>
-                                    </svg>
+                                    {referencePlate('inline-')}
+                                    <Button className="mt-3" variant="secondary" onClick={() => setExpandedPlateCode(selectedMap.code)}>
+                                        Open reference plate
+                                    </Button>
                                 </div>
 
                                 <p className="mt-3 text-xs leading-5 text-[var(--municipal-text)]">
                                     {selectedMap.summary}
                                 </p>
 
-                                <dl className="mt-3 grid gap-2.5 sm:grid-cols-3">
+                                <section aria-label="Planning map explorer" className="mt-4 w-full min-w-0">
                                     <InteractiveReferenceMap
-                                    pins={filteredMaps.filter(map => Number.isFinite(map.centerLat) && Number.isFinite(map.centerLng) && Math.abs(map.centerLat) <= 90 && Math.abs(map.centerLng) <= 180).map(map => ({
-                                        id: map.code, code: map.code, title: map.title, category: map.category,
-                                        color: '#176b4a', lat: map.centerLat, lng: map.centerLng,
-                                    }))}
-                                    selectedPinId={selectedMap.code}
-                                    onSelectPin={setSelectedMapCode}
-                                    ariaLabel="Interactive planning reference coordinates"
-                                />
+                                        pins={filteredMaps.filter(map => Number.isFinite(map.centerLat) && Number.isFinite(map.centerLng) && Math.abs(map.centerLat) <= 90 && Math.abs(map.centerLng) <= 180).map(map => ({
+                                            id: map.code, code: map.code, title: map.title, category: map.category,
+                                            color: '#176b4a', lat: map.centerLat, lng: map.centerLng,
+                                        }))}
+                                        selectedPinId={selectedMap.code}
+                                        onSelectPin={setSelectedMapCode}
+                                        ariaLabel="Interactive planning reference coordinates"
+                                    />
+                                </section>
 
-                                <div className="rounded-lg bg-[var(--municipal-surface-subtle)] p-2.5 text-xs">
+                                <dl className="mt-3 grid gap-2.5 sm:grid-cols-3">
+                                    <div className="rounded-lg bg-[var(--municipal-surface-subtle)] p-2.5 text-xs">
                                         <dt className="flex items-center gap-1 text-[10px] font-bold uppercase text-[var(--municipal-muted)]">
                                             <Layers size={12} /> Coverage
                                         </dt>
@@ -442,6 +452,17 @@ export default function PlanningMapsIndex({
             </PageFrame>
 
             <Dialog
+                open={expandedPlateCode !== null && expandedPlateCode === selectedMap?.code}
+                onClose={() => setExpandedPlateCode(null)}
+                title={selectedMap?.title ?? 'Reference plate'}
+                description="Provisional schematic. Awaiting official GIS."
+                size="xl"
+            >
+                {expandedPlateCode !== null && expandedPlateCode === selectedMap?.code ? referencePlate('dialog-') : null}
+            </Dialog>
+
+            <Dialog
+                variant="drawer-right"
                 open={showCreateModal}
                 onClose={() => setShowCreateModal(false)}
                 title="Register Planning Map Plate"

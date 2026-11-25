@@ -440,6 +440,7 @@ export default function PlansIndex({
             )}
 
             <Dialog
+                variant="drawer-right"
                 open={showCreateModal}
                 onClose={() => setShowCreateModal(false)}
                 title="Register Development Plan Record"

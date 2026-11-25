@@ -259,6 +259,7 @@ export default function Index({
             </PageFrame>
 
             <Dialog
+                variant="drawer-right"
                 open={showCreateModal}
                 onClose={() => setShowCreateModal(false)}
                 title={

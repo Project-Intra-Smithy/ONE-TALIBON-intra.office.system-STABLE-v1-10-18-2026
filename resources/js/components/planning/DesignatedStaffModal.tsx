@@ -97,6 +97,7 @@ export default function DesignatedStaffModal({
 
     return (
         <Dialog
+            variant="drawer-right"
             open={open}
             onClose={onClose}
             title="MPDC Staff Delegation & Module Scopes"
