@@ -1,3 +1,4 @@
+import '../../../css/tcds-document-register.css';
 import { buildPortalNavigation } from '../../navigation/portalNavigation';
 import type { SharedProps } from '../../types';
 import { relatedWorkspaceKeys } from '../../components/documents/documentCenterPresentation';
@@ -216,7 +217,7 @@ export default function DocumentCenter({ records, filters, filterOptions, mode, 
                                         <span>{records.total} document{records.total === 1 ? '' : 's'}</span>
                                     </div>
 
-                                    <div tabIndex={0} role="region" aria-labelledby="doc-register-heading" className="tcds-table-region">
+                                    <div tabIndex={0} role="region" aria-labelledby="doc-register-heading" className="tcds-table-region document-register">
                                         <table className="tcds-table" data-stack-mobile="true">
                                             <thead>
                                                 <tr>

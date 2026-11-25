@@ -35,6 +35,12 @@ try {
         await confirmation.waitFor({ state: 'hidden' });
         await page.goto('http://127.0.0.1:4174/documents?mode=records');
         const inspect = page.getByRole('button', { name: 'Inspect', exact: true }).first();
+        await inspect.waitFor();
+        if (width <= 768) {
+            const clipped = await page.getByRole('button', { name: 'Inspect', exact: true }).evaluateAll(buttons =>
+                buttons.some(button => button.getBoundingClientRect().right > innerWidth || button.getBoundingClientRect().left < 0));
+            assert.equal(clipped, false, 'record actions must remain within the tablet/mobile viewport');
+        }
         await inspect.click();
         const document = page.getByRole('dialog');
         await document.waitFor();
