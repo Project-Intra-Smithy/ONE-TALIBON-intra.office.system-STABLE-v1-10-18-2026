@@ -55,7 +55,7 @@ export default function PlanningMapsIndex({
     planningPermissions,
 }: Props) {
     const [selectedCategory, setSelectedCategory] = useState('All');
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery, setSearchQuery] = useState(() => typeof window === 'undefined' ? '' : new URLSearchParams(window.location.search).get('search') ?? '');
     const [selectedMapCode, setSelectedMapCode] = useState<string | null>(
         planningMaps[0]?.code ?? null,
     );
@@ -423,10 +423,14 @@ export default function PlanningMapsIndex({
                                             Linked Plans & PPAs
                                         </dt>
                                         <dd className="mt-1 font-semibold text-[var(--municipal-text)]">
-                                            {[
-                                                ...(selectedMap.relatedPlanCodes ?? []),
-                                                ...(selectedMap.relatedPpaCodes ?? []),
-                                            ].join(', ') || selectedMap.planCode}
+                                            <ul className="flex flex-wrap gap-x-3">
+                                                {(selectedMap.relatedPlanCodes?.length ? selectedMap.relatedPlanCodes : [selectedMap.planCode]).filter(Boolean).map(code => (
+                                                    <li key={code}><Link className="inline-flex min-h-11 items-center underline" href={`/development-plans?search=${encodeURIComponent(code)}`}>{code}</Link></li>
+                                                ))}
+                                                {(selectedMap.relatedPpaCodes ?? []).map(code => (
+                                                    <li key={code}><Link className="inline-flex min-h-11 items-center underline" href={`/ppas?search=${encodeURIComponent(code)}`}>{code}</Link></li>
+                                                ))}
+                                            </ul>
                                         </dd>
                                     </div>
                                 </dl>

@@ -19,7 +19,6 @@ import Button from '../../components/ui/Button';
 import Dialog from '../../components/ui/Dialog';
 import {
     getPlanMetrics,
-    municipalPlans as defaultMunicipalPlans,
     type MunicipalPlan,
 } from '../../data/municipal/plans';
 import AppLayout from '../../layouts/AppLayout';
@@ -70,7 +69,7 @@ export default function PlansIndex({
     mpdoStaffPool = [],
 }: Props) {
     const municipalPlans: ServerPlanRecord[] =
-        serverPlans && serverPlans.length > 0 ? serverPlans : defaultMunicipalPlans;
+        serverPlans ?? [];
     const [filters, setFilters] = useState<PlanFilters>(() => ({
         ...initialFilters,
         query:
@@ -79,6 +78,7 @@ export default function PlansIndex({
                 : new URLSearchParams(window.location.search).get('search') ?? '',
     }));
     const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
+    const [dossierSection, setDossierSection] = useState<'profile' | 'relationships' | 'documents'>('profile');
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [showStaffModal, setShowStaffModal] = useState(false);
     const [createCode, setCreateCode] = useState('');
@@ -314,7 +314,10 @@ export default function PlansIndex({
                             key={plan.id}
                             plan={plan}
                             selected={selectedPlanId === plan.id}
-                            onSelect={() => setSelectedPlanId(plan.id)}
+                            onSelect={() => {
+                                setDossierSection('profile');
+                                setSelectedPlanId(plan.id);
+                            }}
                         />
                     ))}
                     {filteredPlans.length === 0 && (
@@ -390,50 +393,68 @@ export default function PlansIndex({
                         </header>
 
                         <div className="p-3 sm:p-4">
-                            <dl className="grid gap-x-5 gap-y-2.5 text-[13px] leading-5 sm:grid-cols-2">
-                                {[
-                                    ['Planning horizon', selectedPlan.horizon],
-                                    ['Lead office', selectedPlan.leadOffice],
-                                    [
-                                        'Coverage',
-                                        selectedPlan.coverageStart === selectedPlan.coverageEnd
-                                            ? String(selectedPlan.coverageStart)
-                                            : `${selectedPlan.coverageStart} - ${selectedPlan.coverageEnd}`,
-                                    ],
-                                    ['Recorded status', selectedPlan.status],
-                                    ['Document reference', selectedPlan.documentRef],
-                                    ['Authority / adoption', selectedPlan.authority],
-                                    [
-                                        'Next milestone',
-                                        `${selectedPlan.nextMilestone} / ${selectedPlan.nextMilestoneDate}`,
-                                    ],
-                                    ['Required action', selectedPlan.requiredAction],
-                                    ['Coordinating offices', selectedPlan.coordinatingOffices.join('; ')],
-                                    ['Last action', `${selectedPlan.lastAction} / ${selectedPlan.lastActionDate}`],
-                                    [
-                                        'Record completion',
-                                        `${selectedPlan.sectionsComplete} of ${selectedPlan.sectionsTotal} sections`,
-                                    ],
-                                ].map(([label, value]) => (
-                                    <div key={label} className="min-w-0">
-                                        <dt className="text-[11px] font-semibold text-[var(--municipal-text)]">
-                                            {label}
-                                        </dt>
-                                        <dd className="break-words text-[var(--municipal-muted)]">{value}</dd>
-                                    </div>
+                            <div role="group" aria-label="Dossier sections" className="mb-4 flex flex-wrap gap-2">
+                                {([['profile', 'Plan profile'], ['relationships', 'Linked planning work'], ['documents', 'Supporting documents']] as const).map(([section, label]) => (
+                                    <Button key={section} variant={dossierSection === section ? 'primary' : 'secondary'} aria-pressed={dossierSection === section} onClick={() => setDossierSection(section)}>
+                                        {label}
+                                    </Button>
                                 ))}
-                            </dl>
+                            </div>
+                            {dossierSection === 'profile' && (
+                                <dl className="grid gap-x-5 gap-y-2.5 text-[13px] leading-5 sm:grid-cols-2">
+                                    {[
+                                        ['Planning horizon', selectedPlan.horizon],
+                                        ['Lead office', selectedPlan.leadOffice],
+                                        [
+                                            'Coverage',
+                                            selectedPlan.coverageStart === selectedPlan.coverageEnd
+                                                ? String(selectedPlan.coverageStart)
+                                                : `${selectedPlan.coverageStart} - ${selectedPlan.coverageEnd}`,
+                                        ],
+                                        ['Recorded status', selectedPlan.status],
+                                        ['Document reference', selectedPlan.documentRef],
+                                        ['Authority / adoption', selectedPlan.authority],
+                                        [
+                                            'Next milestone',
+                                            `${selectedPlan.nextMilestone} / ${selectedPlan.nextMilestoneDate}`,
+                                        ],
+                                        ['Required action', selectedPlan.requiredAction],
+                                        ['Coordinating offices', selectedPlan.coordinatingOffices.join('; ')],
+                                        ['Last action', `${selectedPlan.lastAction} / ${selectedPlan.lastActionDate}`],
+                                        [
+                                            'Record completion',
+                                            `${selectedPlan.sectionsComplete} of ${selectedPlan.sectionsTotal} sections`,
+                                        ],
+                                    ].map(([label, value]) => (
+                                        <div key={label} className="min-w-0">
+                                            <dt className="text-[11px] font-semibold text-[var(--municipal-text)]">
+                                                {label}
+                                            </dt>
+                                            <dd className="break-words text-[var(--municipal-muted)]">{value}</dd>
+                                        </div>
+                                    ))}
+                                </dl>
+                            )}
 
-                            <SupportingDocsPanel
-                                parentType="plan"
-                                parentCode={selectedPlan.code}
-                                attachments={attachments}
-                                canUpload={Boolean(planningPermissions?.canManagePlans)}
-                                canManageExecutive={Boolean(
-                                    planningPermissions?.canViewExecutiveAttachments,
-                                )}
-                                canDelete={Boolean(planningPermissions?.isMpdcHead)}
-                            />
+                            {dossierSection === 'relationships' && (
+                                <nav aria-label="Related planning workspaces" className="my-4 flex flex-wrap gap-2">
+                                    <Link className="municipal-secondary-button" href={`/ppas?search=${encodeURIComponent(selectedPlan.code)}`}>Related PPAs</Link>
+                                    <Link className="municipal-secondary-button" href={`/planning-maps?search=${encodeURIComponent(selectedPlan.code)}`}>Related map plates</Link>
+                                </nav>
+                            )}
+
+                            {dossierSection === 'documents' && (
+                                <SupportingDocsPanel
+                                    parentType="plan"
+                                    parentCode={selectedPlan.code}
+                                    attachments={attachments}
+                                    canUpload={Boolean(planningPermissions?.canManagePlans)}
+                                    canManageExecutive={Boolean(
+                                        planningPermissions?.canViewExecutiveAttachments,
+                                    )}
+                                    canDelete={Boolean(planningPermissions?.isMpdcHead)}
+                                />
+                            )}
                         </div>
                     </div>
                 </div>

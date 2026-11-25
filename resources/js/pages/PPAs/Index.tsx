@@ -11,7 +11,6 @@ import PPARegister from '../../components/ppas/PPARegister';
 import PPASummary from '../../components/ppas/PPASummary';
 import Button from '../../components/ui/Button';
 import Dialog from '../../components/ui/Dialog';
-import { ppaRecords as staticPpaRecords } from '../../data/municipal/ppas';
 import type { PPAFilters as FilterState, PPARecord } from '../../data/municipal/ppas.types';
 import AppLayout from '../../layouts/AppLayout';
 import type { PlanningPermissions } from '../Plans/Index';
@@ -38,7 +37,7 @@ export default function Index({
     planningPermissions,
 }: Props) {
     const ppaRecords =
-        serverPpaRecords && serverPpaRecords.length > 0 ? serverPpaRecords : staticPpaRecords;
+        serverPpaRecords ?? [];
 
     const [filters, setFilters] = useState(() => ({
         ...initialFilters,

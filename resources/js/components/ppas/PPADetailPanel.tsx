@@ -1,3 +1,4 @@
+import { Link } from '@inertiajs/react';
 import { Building2, FileText, FolderKanban, Landmark, MapPin, ShieldCheck, X } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import type { PPARecord } from '../../data/municipal/ppas.types';
@@ -150,6 +151,17 @@ export default function PPADetailPanel({
                         </dl>
                     )}
                 </div>
+            )}
+
+            {record.relatedDevelopmentPlan && (
+                <nav aria-label="Related planning workspaces" className="my-4 flex flex-wrap gap-2">
+                    <Link className="municipal-secondary-button" href={`/development-plans?search=${encodeURIComponent(record.relatedDevelopmentPlan)}`}>
+                        Related development plan
+                    </Link>
+                    <Link className="municipal-secondary-button" href={`/planning-maps?search=${encodeURIComponent(record.relatedDevelopmentPlan)}`}>
+                        Related map plates
+                    </Link>
+                </nav>
             )}
 
             <SupportingDocsPanel
