@@ -6,7 +6,9 @@
     "overflow": false,
     "planFormEscapeAndFocus": true,
     "dossier": true,
-    "mfaCancel": true
+    "mfaCancel": true,
+    "documentInspectEscapeAndFocus": true,
+    "dateFilterUrl": true
   },
   {
     "width": 1440,
@@ -15,7 +17,9 @@
     "overflow": false,
     "planFormEscapeAndFocus": true,
     "dossier": true,
-    "mfaCancel": true
+    "mfaCancel": true,
+    "documentInspectEscapeAndFocus": true,
+    "dateFilterUrl": true
   },
   {
     "width": 768,
@@ -24,7 +28,9 @@
     "overflow": false,
     "planFormEscapeAndFocus": true,
     "dossier": true,
-    "mfaCancel": true
+    "mfaCancel": true,
+    "documentInspectEscapeAndFocus": true,
+    "dateFilterUrl": true
   },
   {
     "width": 768,
@@ -33,7 +39,9 @@
     "overflow": false,
     "planFormEscapeAndFocus": true,
     "dossier": true,
-    "mfaCancel": true
+    "mfaCancel": true,
+    "documentInspectEscapeAndFocus": true,
+    "dateFilterUrl": true
   },
   {
     "width": 390,
@@ -42,7 +50,9 @@
     "overflow": false,
     "planFormEscapeAndFocus": true,
     "dossier": true,
-    "mfaCancel": true
+    "mfaCancel": true,
+    "documentInspectEscapeAndFocus": true,
+    "dateFilterUrl": true
   },
   {
     "width": 390,
@@ -51,6 +61,8 @@
     "overflow": false,
     "planFormEscapeAndFocus": true,
     "dossier": true,
-    "mfaCancel": true
+    "mfaCancel": true,
+    "documentInspectEscapeAndFocus": true,
+    "dateFilterUrl": true
   }
 ]

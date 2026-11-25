@@ -238,7 +238,7 @@ export default function PlanningMapsIndex({
                 <PageHeader
                     eyebrow="Municipality of Talibon · MPDC Spatial Reference"
                     title="Municipal Planning Maps"
-                    subtitle="Official Talibon, Bohol cartographic plates, CLUP land-use zoning, and DRRM hazard maps accessible to all LGU personnel."
+                    subtitle="Bundled reference plates and sample overlays for interface evaluation. These are not verified official GIS data."
                     actions={
                         <>
                             {permissions.canCreate && (
@@ -424,7 +424,8 @@ export default function PlanningMapsIndex({
                                         {PLANNING_MAP_CATEGORY_META[selectedRecord.category].shortLabel}
                                     </StatusBadge>
                                 </div>
-                                <h2 className="mt-1 text-sm font-bold text-[var(--ink-primary)]">{selectedRecord.title}</h2>
+                                <h2 className="mt-1 text-sm font-bold text-[var(--ink-primary)]">Selected map reference</h2>
+                                <p className="mt-1 text-sm font-semibold text-[var(--ink-primary)]">{selectedRecord.title}</p>
                                 <p className="mt-1 flex items-center gap-1.5 font-mono text-xs text-[var(--ink-secondary)]">
                                     <MapPin size={13} aria-hidden="true" />
                                     <span>{selectedRecord.lat.toFixed(4)}° N, {selectedRecord.lng.toFixed(4)}° E</span>

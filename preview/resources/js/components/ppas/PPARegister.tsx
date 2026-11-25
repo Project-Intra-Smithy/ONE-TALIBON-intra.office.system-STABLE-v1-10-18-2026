@@ -63,7 +63,7 @@ export default function PPARegister({ records, selectedId, docCountsByPpa = {}, 
                                     <button
                                         type="button"
                                         onClick={() => onSelect(record)}
-                                        className="mt-0.5 text-left text-sm font-semibold text-[var(--ink-primary)] hover:text-[var(--brand-ink)] hover:underline"
+                                        className="mt-0.5 min-h-11 py-2 text-left text-sm font-semibold text-[var(--ink-primary)] hover:text-[var(--brand-ink)] hover:underline"
                                     >
                                         {record.title}
                                     </button>
@@ -101,7 +101,7 @@ export default function PPARegister({ records, selectedId, docCountsByPpa = {}, 
                                         onClick={() => onSelect(active ? null : record)}
                                         aria-expanded={active}
                                         aria-controls={active ? 'selected-ppa-detail' : undefined}
-                                        className="inline-flex min-h-10 items-center gap-1 whitespace-nowrap rounded-lg border border-[var(--border-control)] bg-[var(--surface-card)] px-3 py-1.5 text-xs font-semibold text-[var(--ink-primary)] transition-colors hover:border-[var(--brand-primary)] hover:bg-[var(--brand-soft)]"
+                                        className="inline-flex min-h-11 items-center gap-1 whitespace-nowrap rounded-lg border border-[var(--border-control)] bg-[var(--surface-card)] px-3 py-1.5 text-xs font-semibold text-[var(--ink-primary)] transition-colors hover:border-[var(--brand-primary)] hover:bg-[var(--brand-soft)]"
                                     >
                                         <span>View</span>
                                         <ChevronRight size={14} aria-hidden="true" />

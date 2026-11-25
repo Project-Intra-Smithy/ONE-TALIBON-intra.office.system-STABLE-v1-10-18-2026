@@ -79,3 +79,30 @@ checks the actual login field and disabled remember-me while preserving required
 fields, credentials-only payload, pending state, server errors, MFA and keyboard
 assertions; 10/10 passed locally before the final wording adjustment. Contracts
 passed 125/125 after export restoration. Revalidation on the next SHA is pending.
+
+## Validated checkpoint and next slice
+
+Exact f306430c9c16329c5c8d84dd0322741a318ef1df passed protected PG16 run
+45537137809 (11 partitions plus aggregate) and presentation run 45537137777.
+Raw 390-capture catalog and interaction artifact: 14987736965, 73,817,474 bytes,
+90-day retention. Hub receipt: #197 comment 7151666818. Catalog role review later
+found MayorOffice used department_head and could show a permission fallback;
+the next revision selects executive_oversight and asserts rendered component
+identity. Do not treat the older catalog as proof of every intended page.
+
+The next slice adopts the donor Document Center register and inspection drawer
+in the operational entry, retaining server date filters, mode-safe pagination,
+authorized related navigation, source/responsible-person metadata and existing
+private-file archive/native preview anchors. Selection derives from current
+server-projected records, so removed records cannot remain in the drawer.
+The preview shares this page and the unchanged canonical Work Request form.
+Targeted document drawer/Escape/focus/date-query browser checks passed at all
+three widths/light-dark; full contracts and build passed during implementation.
+
+Preview Personal Task mutations now simulate create/start/complete in per-role
+memory, explicitly labelled preview, with no server request and reset on reload.
+Browser mutation-cycle, duplicate/invalid/denied negatives and no-network check
+passed. Typecheck caught a nullable-date inference and it was repaired using the
+existing IndividualTask contract. PPA targets enlarged; repeated Task/map headings
+clarified and map provenance disclosed. These checks are working-tree evidence;
+exact-next-SHA hosted validation is required. Six-wave completion remains pending.

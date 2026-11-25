@@ -37,6 +37,7 @@ jobs:
           done
           node tests/Browser/phase-a-preview.mjs
           node tests/Browser/phase-a-interactions.mjs
+          node tests/Browser/phase-a-tasks.mjs
           node tests/Browser/phase-a-catalog.mjs --matrix
       - name: Preserve raw evidence
         if: always()

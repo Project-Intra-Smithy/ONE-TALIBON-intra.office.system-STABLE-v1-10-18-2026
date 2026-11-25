@@ -183,6 +183,7 @@ function App() {
                 </aside>
             )}
             <div
+                data-preview-page={pageName}
                 onSubmitCapture={isCreatePreview ? (event) => {
                     const target = event.target;
                     if (!(target instanceof HTMLFormElement) || !target.closest('.civic-page') || target.closest('search')) return;

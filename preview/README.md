@@ -10,7 +10,7 @@ HRIS and messaging designs are held reference interfaces, not enabled operations
 
 The preview uses an explicit alternate Inertia adapter and output directory.
 Unmatched fetches fail with 503; browser CSP denies network connections and native
-form submission. Fixture handlers can simulate supported actions locally. No real
+form submission. Fixture handlers simulate supported actions locally. Personal Task create/start/complete use per-role in-memory sample state, reset on reload, and explicit preview receipts. The preview CSRF sentinel has no server validity. No real
 record is saved. No external map tiles are requested. Map overlays are samples,
 not official GIS data. Bundled map plates retain donor provenance and require
 official validation before any operational use.

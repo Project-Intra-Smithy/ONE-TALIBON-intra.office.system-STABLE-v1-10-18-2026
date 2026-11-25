@@ -291,7 +291,7 @@ function TaskSession({ userId }: { userId: number }) {
                 <div>
                     <h2 id="personal-task-heading" className="flex items-center gap-2 text-lg font-bold text-[var(--ink-primary)]">
                         <ListChecks size={19} className="text-[var(--brand-ink)]" aria-hidden="true" />
-                        <span>My Tasks</span>
+                        <span>Personal task register</span>
                     </h2>
                     <p className="mt-0.5 text-sm leading-6 text-[var(--ink-secondary)]">
                         Review your tasks by status, check deadlines, and select a task to inspect full details.

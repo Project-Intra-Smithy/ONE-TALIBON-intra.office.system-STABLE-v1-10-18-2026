@@ -1124,7 +1124,7 @@
       "preview": "preview/resources/js/components/ppas/PPARegister.tsx",
       "status": "isolated donor presentation; interaction review in progress",
       "donor_blob": "8456e030dba231bf5a66cb5d19812e7f015a3c8b",
-      "preview_sha256": "cba31874418cc7057b2dd921dabc966990980669961695e21da64c4c0d16d38a"
+      "preview_sha256": "615e0d601cbff64681a1c755e8988ae8e3afefddc621f489524e5840d0f86144"
     },
     {
       "donor": "resources/js/components/ppas/PPASummary.tsx",
@@ -1277,7 +1277,7 @@
       "preview": "preview/resources/js/components/tasks/PersonalTaskMutationPanel.tsx",
       "status": "isolated donor presentation; interaction review in progress",
       "donor_blob": "d3c68a427fb2238872a614424eaf911c75251330",
-      "preview_sha256": "bec18f8ba4792e3fb15dc2bce060473fe996b9c173f3a4c5d32c889b71802c49"
+      "preview_sha256": "c9568afc77b69e060c1b4d7ce0a81d38ab5ac0b296bbfa24b237aa4f2aef3872"
     },
     {
       "donor": "resources/js/components/tasks/PersonalTaskWorkspace.tsx",
@@ -1286,7 +1286,7 @@
       "preview": "preview/resources/js/components/tasks/PersonalTaskWorkspace.tsx",
       "status": "isolated donor presentation; interaction review in progress",
       "donor_blob": "ffbffd612e64da5d8abd69ad9b0779abc55575c7",
-      "preview_sha256": "bbeabb3e173e3f460517893051c089b051e28c82ef9da2f63f43b68616ae14b5"
+      "preview_sha256": "b256700baf0f4685745f582c664947617de045c47f1a9d9856711a321e44e17a"
     },
     {
       "donor": "resources/js/components/tasks/taskReadApi.ts",
@@ -1887,9 +1887,9 @@
       "sha256": "b9d81214c7d155d5e12e84001d837fb10bff9648898f2b34d08b9cb4de22b860",
       "canonical_baseline": "different",
       "preview": "preview/resources/js/pages/Documents/Index.tsx",
-      "status": "isolated donor presentation; interaction review in progress",
+      "status": "shared canonical presentation",
       "donor_blob": "7f97821391a9264d88ac2bcb9b9ecb71655d695c",
-      "preview_sha256": "899ceddd00022b1e20e3e4a01497d5ecec8348f64e69a766012cd46a5c149b93"
+      "preview_sha256": "09b55417be745c6a6895abdaed155b45e7a99bf51ce9fd48bd89039086673812"
     },
     {
       "donor": "resources/js/pages/Employees/DirectoryProfile.tsx",
@@ -2177,7 +2177,7 @@
       "preview": "preview/resources/js/pages/PlanningMaps/Index.tsx",
       "status": "isolated donor presentation; interaction review in progress",
       "donor_blob": "01562739e00b4eb297be7b9339f01f9c2c96bac7",
-      "preview_sha256": "315f3c7ac5dead754d3e37c1476b077402b95c8393f037446bc1001504c261b8"
+      "preview_sha256": "584d2be1a5633523679cd4537fbdaf8093e256af088bb4dd392c3a9336d8340a"
     },
     {
       "donor": "resources/js/pages/Plans/Index.tsx",
@@ -2265,9 +2265,9 @@
       "sha256": "6656fdad44bf0a3e6d30c8b1f0c1392f82069927cd925da88d8b3e53361c6366",
       "canonical_baseline": "identical",
       "preview": "preview/resources/js/pages/Transactions/Create.tsx",
-      "status": "isolated donor presentation; interaction review in progress",
+      "status": "shared canonical presentation",
       "donor_blob": "76e3611af1cf7a128e8133ce9801aa501131bc77",
-      "preview_sha256": "4c6b6e2cf78c021100623645f66a9b7387cb8c7740bc002bb5236fd4eb978bc1"
+      "preview_sha256": "f7179464738a4e2a2d3d59f900f2c86699ae66a33bea8ece359c2be9a179ae51"
     },
     {
       "donor": "resources/js/pages/Transactions/Index.tsx",

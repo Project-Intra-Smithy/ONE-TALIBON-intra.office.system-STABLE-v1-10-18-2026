@@ -76,7 +76,7 @@ function TaskActions({ userId }: { userId: number }) {
                     setError('The requested Task state is not confirmed by the server. Reload before continuing.');
                     return false;
                 }
-                setReceipt('Server confirmed: ' + item.title + ' — ' + item.state.replaceAll('_', ' '));
+                setReceipt('Preview simulated: ' + item.title + ' — ' + item.state.replaceAll('_', ' '));
             }
             // Valid authoritative reread is the only path to clear an
             // unknown mutation outcome; stale or mismatched state stays held.
@@ -164,7 +164,7 @@ function TaskActions({ userId }: { userId: number }) {
         <header className="mb-4">
             <h2 id="task-action-heading" className="text-base font-extrabold text-[var(--ink-primary)]">Personal Task actions</h2>
             <p className="mt-1 text-sm text-[var(--ink-secondary)]">
-                Create, start, and complete your own personal Tasks. Inter-office Work Requests are managed separately.
+                Simulate personal Task actions locally. No municipal record is saved; reload resets these sample changes.
             </p>
         </header>
         <form onSubmit={create} className="flex flex-col gap-2 sm:flex-row">

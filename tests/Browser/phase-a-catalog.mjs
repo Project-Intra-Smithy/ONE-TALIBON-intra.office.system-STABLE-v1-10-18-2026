@@ -15,7 +15,7 @@ const matrix = process.argv.includes('--matrix')
 try {
     for (const { width, theme } of matrix) for (const item of pages) {
         const name = item.page.replace('resources/js/pages/', '').replace('.tsx', '');
-        const role = name.startsWith('Hris/') ? 'hr' : /^(Plans|PlanningMaps|PPAs)\//.test(name) ? 'mpdc_designated_staff' : /^(Admin|Audit|Property)\//.test(name) ? 'system_administration' : 'department_head';
+        const role = name === 'MayorOffice' ? 'executive_oversight' : name.startsWith('Hris/') ? 'hr' : /^(Plans|PlanningMaps|PPAs)\//.test(name) ? 'mpdc_designated_staff' : /^(Admin|Audit|Property)\//.test(name) ? 'system_administration' : 'department_head';
         const context = await browser.newContext({ viewport: { width, height: 900 }, colorScheme: theme });
         await context.addInitScript(role => localStorage.setItem('ot.synthetic.role', role), role);
         const page = await context.newPage();
@@ -26,11 +26,13 @@ try {
             await page.goto('http://127.0.0.1:4174' + path);
             await page.getByRole('region', { name: 'Isolated frontend controls' }).waitFor();
             await page.locator('.tcds-page-loading').waitFor({ state: 'hidden' });
+            const renderedPage = await page.locator('[data-preview-page]').getAttribute('data-preview-page');
+            assert.equal(renderedPage, name, 'catalog must render the requested component, not a permission fallback');
             const text = await page.locator('body').innerText();
             const overflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth);
             const screenshot = name.replaceAll('/', '-');
             await page.screenshot({ path: `${output}/${screenshot}-${width}-${theme}.png`, fullPage: true });
-            results.push({ name, role, path, sourceSha, width, theme, errors, overflow, fixtureMismatch: text.includes('Fixture adaptation required'), headings: await page.getByRole('heading').allTextContents() });
+            results.push({ name, renderedPage, role, path, sourceSha, width, theme, errors, overflow, fixtureMismatch: text.includes('Fixture adaptation required'), headings: await page.getByRole('heading').allTextContents() });
         } catch (error) {
             results.push({ name, role, path, errors, failure: error.message });
         } finally {
