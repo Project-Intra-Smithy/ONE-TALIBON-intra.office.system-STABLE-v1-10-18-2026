@@ -1,0 +1,43 @@
+name: TCDS Phase A presentation evidence
+on:
+  push:
+    branches: [candidate/antigravity-tcds-full-presentation-r1]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  presentation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run types:check && npm run types:preview
+      - run: npm run test:contracts && npm run test:ux
+      - run: npm run build && npm run build:preview
+      - run: npx playwright install --with-deps chromium
+      - name: Browser evidence
+        shell: bash
+        run: |
+          npx vite preview --config preview/vite.config.ts > /tmp/tcds-preview.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:4174/ > /dev/null; then break; fi
+            sleep 1
+          done
+          node tests/Browser/phase-a-preview.mjs
+          node tests/Browser/phase-a-interactions.mjs
+          node tests/Browser/phase-a-catalog.mjs --matrix
+      - name: Preserve raw evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tcds-phase-a-${{ github.sha }}
+          path: .forge/evidence/ot-tcds-phase-a/
+          include-hidden-files: true
+          retention-days: 90

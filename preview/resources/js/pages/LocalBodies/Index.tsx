@@ -1,0 +1,80 @@
+import { useMemo, useState } from 'react';
+import { CalendarDays, Landmark, Search } from 'lucide-react';
+import AppLayout from '../../layouts/AppLayout';
+import PageFrame from '../../components/PageFrame';
+import PageHeader from '../../components/PageHeader';
+import LocalBodyDirectory from '../../components/local-bodies/LocalBodyDirectory';
+import { localSpecialBodies } from '../../data/municipal/localBodies';
+
+export default function Index() {
+    const [query, setQuery] = useState('');
+    const bodies = useMemo(() => {
+        const value = query.trim().toLowerCase();
+        if (!value) return localSpecialBodies;
+        return localSpecialBodies.filter((body) => [body.name, body.mandate, body.chairRole, body.membershipSummary, body.recentAction, ...body.relatedDocuments].join(' ').toLowerCase().includes(value));
+    }, [query]);
+
+    const scheduledMeetings = localSpecialBodies.filter((body) => Boolean(body.nextMeeting && body.nextMeeting.trim().length > 0)).length;
+
+    return (
+        <AppLayout title="Councils, Boards & Committees">
+            <PageFrame density="compact">
+                <PageHeader
+                    eyebrow="Municipal organization"
+                    title="Councils, Boards & Committees"
+                    description="Reference directory for the municipality's formal local special bodies, with mandate, chair role, membership context, scheduled meeting, recent action, and related records."
+                    icon={Landmark}
+                />
+
+                <section className="grid gap-2 sm:grid-cols-2" aria-label="Local special bodies summary">
+                    <div className="flex min-h-[44px] items-center gap-2.5 rounded-lg border border-emerald-100 bg-emerald-50/80 px-3 py-2 text-emerald-950 dark:border-emerald-900/50 dark:bg-emerald-950/35 dark:text-emerald-200">
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-white/80 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">
+                            <Landmark size={15} aria-hidden="true" />
+                        </span>
+                        <div>
+                            <div className="text-[16px] font-extrabold leading-none tabular-nums">{localSpecialBodies.length}</div>
+                            <div className="mt-1 text-xs font-semibold leading-none opacity-75">Formal bodies</div>
+                        </div>
+                    </div>
+
+                    <div className="flex min-h-[44px] items-center gap-2.5 rounded-lg border border-amber-100 bg-amber-50/80 px-3 py-2 text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200">
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-white/80 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300">
+                            <CalendarDays size={15} aria-hidden="true" />
+                        </span>
+                        <div>
+                            <div className="text-[16px] font-extrabold leading-none tabular-nums">{scheduledMeetings}</div>
+                            <div className="mt-1 text-xs font-semibold leading-none opacity-75">Upcoming scheduled meetings</div>
+                        </div>
+                    </div>
+                </section>
+
+                <label className="relative block">
+                    <span className="sr-only">Search councils, boards, and committees</span>
+                    <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+                    <input
+                        value={query}
+                        onChange={(event) => setQuery(event.target.value)}
+                        placeholder="Search body, mandate, chair role, or document"
+                        className="min-h-9 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-3 text-sm outline-none focus:border-[var(--municipal-brand)] focus:ring-2 focus:ring-[var(--municipal-focus)]/20 dark:border-[var(--border-control)] dark:bg-[var(--surface-card)] dark:text-[var(--ink-primary)]"
+                    />
+                </label>
+
+                {bodies.length ? (
+                    <section className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-[var(--border-control)] dark:bg-[var(--surface-card)]" aria-labelledby="local-bodies-register-heading">
+                        <div className="flex min-h-8 items-center justify-between gap-3 border-b border-slate-100 px-3 py-1.5 text-xs dark:border-[var(--border-control)]">
+                            <h2 id="local-bodies-register-heading" className="font-bold text-[var(--ink-primary)]">Councils, boards & committees register</h2>
+                            <div className="text-[var(--ink-secondary)]">
+                                <span className="font-semibold text-[var(--ink-secondary)]">{bodies.length}</span> {bodies.length === 1 ? 'body' : 'bodies'}
+                            </div>
+                        </div>
+                        <LocalBodyDirectory bodies={bodies} />
+                    </section>
+                ) : (
+                    <div className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-500 dark:border-[var(--border-control)] dark:bg-[var(--surface-card)] dark:text-[var(--ink-secondary)]">
+                        No councils, boards, or committees match the current search.
+                    </div>
+                )}
+            </PageFrame>
+        </AppLayout>
+    );
+}

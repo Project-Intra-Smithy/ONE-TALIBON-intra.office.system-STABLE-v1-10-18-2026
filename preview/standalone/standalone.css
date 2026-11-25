@@ -1,0 +1,224 @@
+:root {
+  --ot-toolbar-height: 40px;
+}
+
+.isolation-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 45;
+  display: flex;
+  min-height: var(--ot-toolbar-height);
+  align-items: center;
+  gap: 14px;
+  padding: 6px 14px;
+  background: #090d0b;
+  border-bottom: 1px solid #1c2621;
+  color: #ecf2ef;
+  font: 500 12px/1.25 system-ui, -apple-system, sans-serif;
+}
+
+.isolation-toolbar strong {
+  letter-spacing: 0.08em;
+  color: #e2b959;
+  font-weight: 700;
+}
+
+.isolation-toolbar label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.isolation-toolbar select {
+  min-height: 28px;
+  border: 1px solid #355246;
+  border-radius: 6px;
+  background: #172620;
+  color: #f0f7f4;
+  padding: 2px 8px;
+  font-size: 12px;
+}
+
+.isolation-toolbar details {
+  margin-left: auto;
+  position: relative;
+}
+
+.isolation-toolbar summary {
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.isolation-toolbar summary:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.isolation-route-grid {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(160px, 1fr));
+  gap: 2px;
+  max-height: 70dvh;
+  width: min(760px, calc(100vw - 24px));
+  overflow: auto;
+  border: 1px solid #2a4037;
+  border-radius: 10px;
+  background: #0f1b16;
+  padding: 10px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+  z-index: 50;
+}
+
+.isolation-route-grid a {
+  color: #d8ece2;
+  padding: 6px 8px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.isolation-route-grid a:hover {
+  background: #1c3a2d;
+  color: #ffffff;
+}
+
+.isolation-error {
+  min-height: 70vh;
+  padding: 6vw;
+  background: var(--surface-canvas, #f7f8f6);
+  color: var(--ink-primary, #14211c);
+}
+
+.isolation-error pre {
+  margin-top: 16px;
+  overflow: auto;
+  border-radius: 8px;
+  background: #fef2f2;
+  padding: 16px;
+  color: #991b1b;
+}
+
+.isolation-write-boundary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin: 0;
+  padding: 0.7rem clamp(1rem, 3vw, 2rem);
+  border-bottom: 2px solid #c89b3c;
+  background: #fffbeb;
+  color: #6b4608;
+  font: 600 13px/1.45 system-ui, sans-serif;
+}
+
+.isolation-write-boundary strong {
+  font-weight: 700;
+}
+
+.isolation-write-boundary span {
+  flex: 1 1 20rem;
+}
+
+.isolation-write-denied {
+  color: #991b1b;
+}
+
+.dark .isolation-write-boundary {
+  background: #2f230e;
+  color: #fde68a;
+  border-bottom-color: #e2b959;
+}
+
+.dark .isolation-write-denied {
+  color: #fca5a5;
+}
+
+.isolation-write-toast {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: min(440px, calc(100vw - 2rem));
+  padding: 0.85rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid #b91c1c;
+  background: #fef2f2;
+  color: #7f1d1d;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22);
+  font: 500 13px/1.4 system-ui, sans-serif;
+}
+
+.dark .isolation-write-toast {
+  border-color: #ef4444;
+  background: #3b1316;
+  color: #fecaca;
+}
+
+.isolation-write-toast-close {
+  flex-shrink: 0;
+  min-height: 32px;
+  padding: 0.25rem 0.65rem;
+  border-radius: 0.5rem;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font: 700 12px/1 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.tcds-page-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 50vh;
+  color: var(--ink-secondary, #4a5d55);
+  font-size: 0.9375rem;
+}
+
+.tcds-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 9999px;
+  animation: tcds-spin 0.7s linear infinite;
+}
+
+@keyframes tcds-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --ot-toolbar-height: 66px;
+  }
+  .isolation-toolbar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .isolation-toolbar details {
+    margin-left: 0;
+  }
+  .isolation-route-grid {
+    grid-template-columns: 1fr;
+    left: 0;
+    right: auto;
+  }
+  .isolation-write-boundary {
+    display: block;
+    padding: 0.7rem 1rem;
+  }
+  .isolation-write-boundary span,
+  .isolation-write-boundary strong {
+    display: block;
+  }
+}

@@ -1,0 +1,32 @@
+import type { MunicipalPlan, PlanHorizon } from '../../data/municipal/plans';
+
+const horizons: PlanHorizon[] = ['Annual', 'Three-year', 'Six-year', 'Long-term', 'Sectoral'];
+
+export default function PlanCoverageSummary({ plans }: { plans: MunicipalPlan[] }) {
+    const earliest = plans.length ? Math.min(...plans.map((plan) => plan.coverageStart)) : null;
+    const latest = plans.length ? Math.max(...plans.map((plan) => plan.coverageEnd)) : null;
+
+    return (
+        <section className="min-w-0 border-t border-[var(--municipal-border)] pt-3" aria-labelledby="coverage-summary-title">
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                    <h2 id="coverage-summary-title" className="text-sm font-bold text-[var(--ink-primary)]">Coverage periods</h2>
+                    <p className="mt-1 text-xs text-[var(--ink-secondary)]">Planning horizons represented by the current register selection.</p>
+                </div>
+                <div className="text-xs font-semibold text-[var(--ink-secondary)]">{earliest && latest ? `${earliest}–${latest}` : 'No matching coverage'}</div>
+            </div>
+
+            <dl className="mt-2 flex flex-wrap gap-x-5 gap-y-2">
+                {horizons.map((horizon) => {
+                    const count = plans.filter((plan) => plan.horizon === horizon).length;
+                    return (
+                        <div key={horizon} className="flex min-w-0 items-baseline gap-2">
+                            <dt className="text-xs font-semibold text-[var(--ink-secondary)]">{horizon}</dt>
+                            <dd className="text-xs font-semibold text-[var(--brand-primary)] dark:text-[var(--ink-primary)]">{count}</dd>
+                        </div>
+                    );
+                })}
+            </dl>
+        </section>
+    );
+}

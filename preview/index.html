@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'none'; form-action 'none'; frame-src 'self' blob:; object-src 'none'; base-uri 'none'" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="Isolated synthetic-data UI/UX workspace for the ONE TALIBON municipal governance frontend." />
+    <title>ONE TALIBON · Municipal Intra-Office Portal</title>
+    <script>
+      (() => {
+        const root = document.documentElement;
+        const meta = document.querySelector('meta[name="color-scheme"]');
+        let preference = 'system';
+        try {
+          const stored = window.localStorage.getItem('talibon.appearance');
+          if (stored === 'light' || stored === 'dark') preference = stored;
+        } catch {}
+        if (meta) meta.setAttribute('content', preference === 'system' ? 'light dark' : preference);
+        const dark = preference === 'dark' || (preference === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        root.classList.toggle('dark', dark);
+        root.dataset.appearance = preference;
+      })();
+    </script>
+  </head>
+  <body class="antialiased">
+    <div id="root"></div>
+    <script type="module" src="/standalone/main.tsx"></script>
+  </body>
+</html>

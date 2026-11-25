@@ -1,0 +1,838 @@
+[
+  {
+    "name": "Admin/Index",
+    "role": "system_administration",
+    "path": "/?page=Admin%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Accounts & Access",
+      "Add user",
+      "Pending activations",
+      "Access summary",
+      "Account registry",
+      "Office digital identity",
+      "Security status",
+      "Municipal operations context"
+    ]
+  },
+  {
+    "name": "Announcements/Index",
+    "role": "department_head",
+    "path": "/?page=Announcements%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Announcements",
+      "Announcements is awaiting municipal office approval"
+    ]
+  },
+  {
+    "name": "Audit/Index",
+    "role": "system_administration",
+    "path": "/?page=Audit%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Audit & Security",
+      "Recorded events",
+      "Account Reviewed",
+      "Planning Map Published",
+      "HRIS DTR Reviewed"
+    ]
+  },
+  {
+    "name": "Auth/ActivateAccount",
+    "role": "department_head",
+    "path": "/?page=Auth%2FActivateAccount",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Activate your LGU account"
+    ]
+  },
+  {
+    "name": "Auth/Login",
+    "role": "department_head",
+    "path": "/?page=Auth%2FLogin",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "ONE TALIBON",
+      "Sign in to your workspace"
+    ]
+  },
+  {
+    "name": "Auth/MfaChallenge",
+    "role": "department_head",
+    "path": "/?page=Auth%2FMfaChallenge",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Verify your identity"
+    ]
+  },
+  {
+    "name": "Auth/MfaEnrollment",
+    "role": "department_head",
+    "path": "/?page=Auth%2FMfaEnrollment",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Set up multi-factor authentication"
+    ]
+  },
+  {
+    "name": "Auth/MfaRecoveryCodes",
+    "role": "department_head",
+    "path": "/?page=Auth%2FMfaRecoveryCodes",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Store your recovery codes"
+    ]
+  },
+  {
+    "name": "Auth/MfaSettings",
+    "role": "department_head",
+    "path": "/?page=Auth%2FMfaSettings",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Multi-factor authentication",
+      "Change password"
+    ]
+  },
+  {
+    "name": "Calendar/Index",
+    "role": "department_head",
+    "path": "/?page=Calendar%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Municipal Calendar",
+      "November 2026"
+    ]
+  },
+  {
+    "name": "Correspondence/Index",
+    "role": "department_head",
+    "path": "/?page=Correspondence%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Correspondence",
+      "Needs Action",
+      "Queued",
+      "Routed"
+    ]
+  },
+  {
+    "name": "Correspondence/Show",
+    "role": "department_head",
+    "path": "/?page=Correspondence%2FShow",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "COR-SYN-2026-001",
+      "Related work"
+    ]
+  },
+  {
+    "name": "Dashboard",
+    "role": "department_head",
+    "path": "/?page=Dashboard",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Good morning, Daniel",
+      "Priority Work Requests",
+      "My Tasks Today",
+      "Official Memoranda & Updates"
+    ]
+  },
+  {
+    "name": "Departments/Index",
+    "role": "department_head",
+    "path": "/?page=Departments%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Office Directory",
+      "Find the right office",
+      "Executive offices",
+      "Municipal Planning and Development Office",
+      "Office of the Municipal Mayor",
+      "Municipal Engineering Office",
+      "Human Resource Management Office",
+      "Municipal Treasurer’s Office",
+      "Legislative offices",
+      "Office of the Sangguniang Bayan",
+      "Office of the Municipal Vice Mayor"
+    ]
+  },
+  {
+    "name": "Departments/Workspace",
+    "role": "department_head",
+    "path": "/?page=Departments%2FWorkspace",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "My Department",
+      "Staff Workload (12)",
+      "Recent Office Activity"
+    ]
+  },
+  {
+    "name": "Documents/Index",
+    "role": "department_head",
+    "path": "/?page=Documents%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Document Center",
+      "All Authorized Records"
+    ]
+  },
+  {
+    "name": "Employees/DirectoryProfile",
+    "role": "department_head",
+    "path": "/?page=Employees%2FDirectoryProfile",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Emilio Employee"
+    ]
+  },
+  {
+    "name": "Employees/Index",
+    "role": "department_head",
+    "path": "/?page=Employees%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Employee Directory"
+    ]
+  },
+  {
+    "name": "Employees/Show",
+    "role": "department_head",
+    "path": "/?page=Employees%2FShow",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Emilio Employee",
+      "Employment record",
+      "Private profile",
+      "Performance & development",
+      "Restricted employee health vault",
+      "201-file document foundation",
+      "Active assigned work"
+    ]
+  },
+  {
+    "name": "Errors/403",
+    "role": "department_head",
+    "path": "/?page=Errors%2F403",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Restricted municipal workspace"
+    ]
+  },
+  {
+    "name": "Errors/Status",
+    "role": "department_head",
+    "path": "/?page=Errors%2FStatus",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "The portal is temporarily unavailable"
+    ]
+  },
+  {
+    "name": "Hris/Admin",
+    "role": "hr",
+    "path": "/?page=Hris%2FAdmin",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "HRIS Administration",
+      "Pending leave requests",
+      "Employee directory"
+    ]
+  },
+  {
+    "name": "Hris/Attendance",
+    "role": "hr",
+    "path": "/?page=Hris%2FAttendance",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "My Attendance",
+      "Emilio Employee"
+    ]
+  },
+  {
+    "name": "Hris/Dashboard",
+    "role": "hr",
+    "path": "/?page=Hris%2FDashboard",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "My HR Record",
+      "Apply for leave",
+      "Recent leave requests",
+      "Attendance & Biometrics"
+    ]
+  },
+  {
+    "name": "Hris/Development",
+    "role": "hr",
+    "path": "/?page=Hris%2FDevelopment",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Performance, Training & Eligibility",
+      "Record performance review",
+      "Record training or eligibility"
+    ]
+  },
+  {
+    "name": "Hris/Dtr",
+    "role": "hr",
+    "path": "/?page=Hris%2FDtr",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Daily Time Record",
+      "Recorded daily evidence"
+    ]
+  },
+  {
+    "name": "Hris/HealthAccess",
+    "role": "hr",
+    "path": "/?page=Hris%2FHealthAccess",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Employee Health Vault Access Policy",
+      "Grant restricted access",
+      "Access grant ledger"
+    ]
+  },
+  {
+    "name": "Hris/HealthVault",
+    "role": "hr",
+    "path": "/?page=Hris%2FHealthVault",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Emilio Employee · Health Vault",
+      "Authorized record view"
+    ]
+  },
+  {
+    "name": "Hris/Lifecycle/Index",
+    "role": "hr",
+    "path": "/?page=Hris%2FLifecycle%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Onboarding & Employment Movement",
+      "Start onboarding",
+      "Apply employment movement",
+      "Onboarding cases",
+      "Recent movements"
+    ]
+  },
+  {
+    "name": "Hris/Lifecycle/Show",
+    "role": "hr",
+    "path": "/?page=Hris%2FLifecycle%2FShow",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Emilio Employee",
+      "Activation checklist",
+      "Activate employment record"
+    ]
+  },
+  {
+    "name": "Hris/Offboarding/Index",
+    "role": "hr",
+    "path": "/?page=Hris%2FOffboarding%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Offboarding & Clearance",
+      "Start separation case",
+      "Offboarding cases"
+    ]
+  },
+  {
+    "name": "Hris/Offboarding/Show",
+    "role": "hr",
+    "path": "/?page=Hris%2FOffboarding%2FShow",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Emilio Employee",
+      "Clearance checklist"
+    ]
+  },
+  {
+    "name": "Hris/Payroll",
+    "role": "hr",
+    "path": "/?page=Hris%2FPayroll",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Payroll & Payslip",
+      "Restricted payroll summary"
+    ]
+  },
+  {
+    "name": "Legislation/Create",
+    "role": "department_head",
+    "path": "/?page=Legislation%2FCreate",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Add municipal issuance or legislative record"
+    ]
+  },
+  {
+    "name": "Legislation/Index",
+    "role": "department_head",
+    "path": "/?page=Legislation%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Ordinances & Issuances",
+      "Ordinances & issuances register"
+    ]
+  },
+  {
+    "name": "Legislation/Show",
+    "role": "department_head",
+    "path": "/?page=Legislation%2FShow",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Municipal Comprehensive Land Use & Zoning Implementation Ordinance"
+    ]
+  },
+  {
+    "name": "Legislation/Workspace",
+    "role": "department_head",
+    "path": "/?page=Legislation%2FWorkspace",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Vice Mayor & Sangguniang Bayan Workspace",
+      "Legislative routed work",
+      "Loaded legislative sessions"
+    ]
+  },
+  {
+    "name": "LocalBodies/Index",
+    "role": "department_head",
+    "path": "/?page=LocalBodies%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Councils, Boards & Committees",
+      "Councils, boards & committees register",
+      "Municipal Development Council",
+      "Local School Board",
+      "Local Health Board",
+      "Municipal Peace and Order Council",
+      "Municipal Disaster Risk Reduction and Management Council",
+      "Local Council for the Protection of Children",
+      "Municipal Solid Waste Management Board",
+      "Municipal Tourism Council",
+      "Municipal Fisheries and Aquatic Resources Management Council",
+      "Local Housing Board",
+      "Gender and Development Focal Point System",
+      "Local Finance Committee"
+    ]
+  },
+  {
+    "name": "MayorOffice",
+    "role": "department_head",
+    "path": "/?page=MayorOffice",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Restricted municipal workspace"
+    ]
+  },
+  {
+    "name": "Meetings/Index",
+    "role": "department_head",
+    "path": "/?page=Meetings%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Meetings",
+      "Meetings is awaiting municipal office approval"
+    ]
+  },
+  {
+    "name": "Memoranda/Create",
+    "role": "department_head",
+    "path": "/?page=Memoranda%2FCreate",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Publish Memorandum"
+    ]
+  },
+  {
+    "name": "Memoranda/Index",
+    "role": "department_head",
+    "path": "/?page=Memoranda%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Memoranda"
+    ]
+  },
+  {
+    "name": "Memoranda/Show",
+    "role": "department_head",
+    "path": "/?page=Memoranda%2FShow",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Synthetic records handling reminder"
+    ]
+  },
+  {
+    "name": "Messages/Index",
+    "role": "department_head",
+    "path": "/?page=Messages%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Office Messages",
+      "Chats",
+      "General"
+    ]
+  },
+  {
+    "name": "MunicipalSystems/Index",
+    "role": "department_head",
+    "path": "/?page=MunicipalSystems%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Municipal systems connected through one shared digital backbone.",
+      "Five working ONE TALIBON entry points",
+      "Document Routing & Correspondence",
+      "Task / Executive Dashboard",
+      "Project Monitoring",
+      "Procurement / PR Tracking",
+      "HR Employee Portal",
+      "Municipal system matrix",
+      "Shared architecture"
+    ]
+  },
+  {
+    "name": "Operations/Index",
+    "role": "department_head",
+    "path": "/?page=Operations%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Project & Procurement Tracking",
+      "Project & Procurement Tracking is awaiting municipal office approval"
+    ]
+  },
+  {
+    "name": "PPAs/Index",
+    "role": "mpdc_designated_staff",
+    "path": "/?page=PPAs%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Programs, Projects and Activities",
+      "PPA register"
+    ]
+  },
+  {
+    "name": "PlanningMaps/Index",
+    "role": "mpdc_designated_staff",
+    "path": "/?page=PlanningMaps%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Municipal Planning Maps",
+      "Municipal Base & 25-Barangay Map",
+      "Published Planning Map Plates",
+      "Municipal Base & 25-Barangay Map",
+      "CLUP General Land Use & Zoning Map",
+      "Flood, Liquefaction & Landslide Susceptibility Map",
+      "25-Barangay Political & Administrative Reference",
+      "Offshore Islands, Coastal & Hydrology Map",
+      "Priority Road Network & 20% DF Infrastructure Locator"
+    ]
+  },
+  {
+    "name": "Plans/Index",
+    "role": "mpdc_designated_staff",
+    "path": "/?page=Plans%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "LGU Plans Library",
+      "Municipal Planning Maps",
+      "CDP 2023–2028",
+      "ELA 2025–2028",
+      "CLUP 2020–2029",
+      "AIP 2027",
+      "LDIP 2026–2028",
+      "LDRRMP 2025–2027",
+      "LCCAP 2021–2030",
+      "GAD Plan 2027",
+      "SWM 2025–2034",
+      "LSP 2024–2032",
+      "LNAP 2026–2028",
+      "Tourism 2024–2028"
+    ]
+  },
+  {
+    "name": "ProjectMonitoring/Index",
+    "role": "department_head",
+    "path": "/?page=ProjectMonitoring%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Project Monitoring",
+      "Project Monitoring is awaiting municipal office approval"
+    ]
+  },
+  {
+    "name": "Property/Index",
+    "role": "system_administration",
+    "path": "/?page=Property%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "LGU Property & Asset Accountability",
+      "Registered Property (1)",
+      "Synthetic desktop workstation"
+    ]
+  },
+  {
+    "name": "Property/Lifecycle",
+    "role": "system_administration",
+    "path": "/?page=Property%2FLifecycle",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "LGU Property Lifecycle",
+      "Inventory sessions",
+      "Open maintenance",
+      "Pending disposal",
+      "Lifecycle register"
+    ]
+  },
+  {
+    "name": "Public/Home",
+    "role": "department_head",
+    "path": "/?page=Public%2FHome",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "One connected municipal workplace",
+      "Municipal workspace capabilities",
+      "Work requests",
+      "Documents",
+      "Work together with clarity",
+      "Role-aware presentation"
+    ]
+  },
+  {
+    "name": "Records/Index",
+    "role": "department_head",
+    "path": "/?page=Records%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Records",
+      "Review annual investment program evidence"
+    ]
+  },
+  {
+    "name": "Reports/Index",
+    "role": "department_head",
+    "path": "/?page=Reports%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Operational Reports",
+      "Office Workload Summary"
+    ]
+  },
+  {
+    "name": "Search/Index",
+    "role": "department_head",
+    "path": "/?page=Search%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Search ONE TALIBON",
+      "Find a workspace or reference",
+      "Browse searchable categories",
+      "My archive activity",
+      "My Sent Files",
+      "My Received Files",
+      "Quick access",
+      "Authorized records"
+    ]
+  },
+  {
+    "name": "Tasks/Index",
+    "role": "department_head",
+    "path": "/?page=Tasks%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "My Tasks",
+      "Personal Task actions",
+      "My Tasks"
+    ]
+  },
+  {
+    "name": "Transactions/Create",
+    "role": "department_head",
+    "path": "/?page=Transactions%2FCreate",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Create Work Request"
+    ]
+  },
+  {
+    "name": "Transactions/Index",
+    "role": "department_head",
+    "path": "/?page=Transactions%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Work Requests",
+      "Office queue"
+    ]
+  },
+  {
+    "name": "Transactions/Show",
+    "role": "department_head",
+    "path": "/transactions/1",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Review planning evidence for Head action 01",
+      "Routing history"
+    ]
+  },
+  {
+    "name": "TravelOrders/Create",
+    "role": "department_head",
+    "path": "/?page=TravelOrders%2FCreate",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Record Approved Travel Order"
+    ]
+  },
+  {
+    "name": "TravelOrders/Index",
+    "role": "department_head",
+    "path": "/?page=TravelOrders%2FIndex",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "Approved Travel Orders",
+      "Synthetic coordination meeting"
+    ]
+  },
+  {
+    "name": "TravelOrders/Show",
+    "role": "department_head",
+    "path": "/?page=TravelOrders%2FShow",
+    "errors": [],
+    "overflow": false,
+    "fixtureMismatch": false,
+    "headings": [
+      "TO-SYN-2026-001",
+      "Related work",
+      "Issued-to personnel",
+      "Approved document evidence",
+      "Append-only status history"
+    ]
+  }
+]

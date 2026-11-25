@@ -24,7 +24,7 @@ export default function MfaChallenge() {
                 <div className="mfa-challenge-card">
                     <header>
                         <p className="mfa-challenge-kicker">ONE TALIBON &middot; ACCOUNT VERIFICATION</p>
-                        <h1 className="mt-2 text-2xl font-semibold text-slate-950">Verify your identity</h1>
+                        <h1 className="mt-2 text-2xl font-semibold text-slate-950 dark:text-[var(--ink-primary)]">Verify your identity</h1>
                         <p className="mt-2 text-sm leading-6 text-slate-600">Enter your authenticator code to continue securely.</p>
                     </header>
 

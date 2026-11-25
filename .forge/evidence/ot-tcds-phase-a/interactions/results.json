@@ -1,0 +1,56 @@
+[
+  {
+    "width": 1440,
+    "theme": "light",
+    "errors": [],
+    "overflow": false,
+    "planFormEscapeAndFocus": true,
+    "dossier": true,
+    "mfaCancel": true
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "errors": [],
+    "overflow": false,
+    "planFormEscapeAndFocus": true,
+    "dossier": true,
+    "mfaCancel": true
+  },
+  {
+    "width": 768,
+    "theme": "light",
+    "errors": [],
+    "overflow": false,
+    "planFormEscapeAndFocus": true,
+    "dossier": true,
+    "mfaCancel": true
+  },
+  {
+    "width": 768,
+    "theme": "dark",
+    "errors": [],
+    "overflow": false,
+    "planFormEscapeAndFocus": true,
+    "dossier": true,
+    "mfaCancel": true
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "errors": [],
+    "overflow": false,
+    "planFormEscapeAndFocus": true,
+    "dossier": true,
+    "mfaCancel": true
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "errors": [],
+    "overflow": false,
+    "planFormEscapeAndFocus": true,
+    "dossier": true,
+    "mfaCancel": true
+  }
+]
