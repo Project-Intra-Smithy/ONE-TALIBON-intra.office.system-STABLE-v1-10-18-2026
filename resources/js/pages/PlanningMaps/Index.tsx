@@ -1,3 +1,4 @@
+import InteractiveReferenceMap from '../../components/maps/InteractiveReferenceMap';
 import { Link, router } from '@inertiajs/react';
 import { BookOpen, Compass, Layers, Map, MapPin, Plus } from 'lucide-react';
 import { type FormEvent, useMemo, useState } from 'react';
@@ -381,7 +382,17 @@ export default function PlanningMapsIndex({
                                 </p>
 
                                 <dl className="mt-3 grid gap-2.5 sm:grid-cols-3">
-                                    <div className="rounded-lg bg-[var(--municipal-surface-subtle)] p-2.5 text-xs">
+                                    <InteractiveReferenceMap
+                                    pins={filteredMaps.filter(map => Number.isFinite(map.centerLat) && Number.isFinite(map.centerLng) && Math.abs(map.centerLat) <= 90 && Math.abs(map.centerLng) <= 180).map(map => ({
+                                        id: map.code, code: map.code, title: map.title, category: map.category,
+                                        color: '#176b4a', lat: map.centerLat, lng: map.centerLng,
+                                    }))}
+                                    selectedPinId={selectedMap.code}
+                                    onSelectPin={setSelectedMapCode}
+                                    ariaLabel="Interactive planning reference coordinates"
+                                />
+
+                                <div className="rounded-lg bg-[var(--municipal-surface-subtle)] p-2.5 text-xs">
                                         <dt className="flex items-center gap-1 text-[10px] font-bold uppercase text-[var(--municipal-muted)]">
                                             <Layers size={12} /> Coverage
                                         </dt>
