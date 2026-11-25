@@ -28,6 +28,7 @@ export default function EvidenceFields({
             </p>
             <input
                 type="file"
+                aria-label={label}
                 multiple
                 disabled={disabled}
                 accept=".pdf,.docx,.jpg,.jpeg,.png,.webp,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png,image/webp"

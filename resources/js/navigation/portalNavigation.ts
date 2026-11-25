@@ -110,7 +110,7 @@ export const portalRoutePlan = {
     legislative: '/legislation',
     localSpecialBodies: '/local-special-bodies',
     developmentPlans: '/development-plans',
-    availablePlanningMaps: '/development-plans#available-planning-maps',
+    availablePlanningMaps: '/planning-maps',
     ppas: '/ppas',
     projectMonitoring: '/operations',
     users: '/admin/users',

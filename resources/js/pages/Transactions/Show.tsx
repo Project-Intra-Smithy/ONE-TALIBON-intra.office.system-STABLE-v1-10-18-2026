@@ -2,7 +2,6 @@ import { Link, useForm } from '@inertiajs/react';
 import {
     ArrowLeft,
     ArrowRight,
-    Building2,
     CalendarClock,
     CheckCircle2,
     Clock3,
@@ -17,6 +16,7 @@ import { useEffect, useRef, useState } from 'react';
 import EvidenceFields from '../../components/documents/EvidenceFields';
 import EvidenceList, { type EvidencePayload } from '../../components/documents/EvidenceList';
 import { StatusBadge, toneForWorkState } from '../../components/ui';
+import RelatedWorkPanel from '../../components/workflow/RelatedWorkPanel';
 import { useVisiblePolling } from '../../hooks/useVisiblePolling';
 import AppLayout from '../../layouts/AppLayout';
 import { formatDatePH, formatDateTimePH, humanizeSlug } from '../../lib/format';
@@ -545,26 +545,23 @@ export default function Show({
                             </div>
                         </section>
 
-                        <section className="tcds-card p-4">
-                            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--brand-ink)]">
-                                <Building2 size={14} aria-hidden="true" />
-                                <span>Quick Navigation</span>
-                            </div>
-                            <div className="mt-2.5 flex flex-col gap-1.5 text-xs">
-                                <Link
-                                    href={`/records?search=${encodeURIComponent(tx.reference_no)}`}
-                                    className="rounded-lg border border-[var(--border-default)] px-3 py-2 font-semibold text-[var(--ink-primary)] hover:bg-[var(--surface-hover)]"
-                                >
-                                    Search {tx.reference_no} in Records →
-                                </Link>
-                                <Link
-                                    href="/transactions?view=office_queue"
-                                    className="rounded-lg border border-[var(--border-default)] px-3 py-2 font-semibold text-[var(--ink-primary)] hover:bg-[var(--surface-hover)]"
-                                >
-                                    Open full Work Queue →
-                                </Link>
-                            </div>
-                        </section>
+                        <RelatedWorkPanel
+                            title="Related records and work"
+                            items={[
+                                {
+                                    label: `Find ${tx.reference_no} in Records`,
+                                    detail: 'Open the authorized municipal record search with this reference applied.',
+                                    href: `/records?search=${encodeURIComponent(tx.reference_no)}`,
+                                    meta: 'Records',
+                                },
+                                {
+                                    label: 'Open office Work Request queue',
+                                    detail: 'Return to the current office queue and continue accountable routing work.',
+                                    href: '/transactions?view=office_queue',
+                                    meta: 'Queue',
+                                },
+                            ]}
+                        />
                     </aside>
                 </div>
             </div>

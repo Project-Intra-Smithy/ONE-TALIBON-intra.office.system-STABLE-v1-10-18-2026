@@ -7,6 +7,7 @@ import PageHeader from '../../components/PageHeader';
 import SupportingDocsPanel, {
     type ServerPlanningAttachment,
 } from '../../components/planning/SupportingDocsPanel';
+import PortalWorkspaceNav from '../../components/portal/PortalWorkspaceNav';
 import Button from '../../components/ui/Button';
 import Dialog from '../../components/ui/Dialog';
 import AppLayout from '../../layouts/AppLayout';
@@ -253,6 +254,11 @@ export default function PlanningMapsIndex({
                             )}
                         </div>
                     }
+                />
+
+                <PortalWorkspaceNav
+                    current="availablePlanningMaps"
+                    destinations={['developmentPlans', 'availablePlanningMaps', 'ppas']}
                 />
 
                 <div

@@ -1,6 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { buildPortalNavigation } from '../../navigation/portalNavigation';
-import type { PortalDestinationKey } from '../../navigation/navigationTypes';
+import { buildPortalNavigation, type PortalDestinationKey } from '../../navigation/portalNavigation';
 import type { SharedProps } from '../../types';
 
 export default function PortalWorkspaceNav({ destinations, current }: { destinations: PortalDestinationKey[]; current: PortalDestinationKey }) {

@@ -131,3 +131,34 @@ MFA confirmation and delivery acknowledgment, preserving form values and making
 zero network requests. Desktop catalog passed 65 requested-component checks;
 125 contracts, both typechecks and builds passed locally during this slice.
 Exact-new-SHA hosted checks remain required. No six-wave CLOSE or acceptance.
+
+## Resumed six-wave Phase A candidate
+
+Codex resumed as sole implementation writer under Hub #197 comments 7155122205
+and 7155138199. The withdrawn workforce branches remain provenance only. The
+branch was fast-forwarded from 98f95fc4 to governance head 2f7178c1 without
+discarding source; the governance delta touched only the durable work register.
+
+This slice completes the remaining presentation adapters: Planning and Planning
+Maps now share the permission-filtered workspace navigation and the map route is
+the real staged `/planning-maps` entry; Work Request detail uses the shared
+server-aware related-work panel; the shared evidence picker has an explicit
+accessible name in both runtimes. A new browser suite exercises plan creation,
+dossier tabs, PPA creation/detail, supporting-document controls, planning-map
+coordinate picking and full plate zoom, plus Work Request creation, containment,
+accessible control names, Escape close and focus restoration.
+
+Observed local author validation: canonical and preview typechecks passed; 125/125
+frontend contracts, 9/9 canonical responsive UX checks and 10/10 auth/browser
+checks passed; both production builds passed. The isolated catalog passed all 390
+combinations (65 pages, 1440/768/390, light/dark) with zero page errors, fixture
+mismatches or document overflow. Preview, interaction, studio and task/write
+negative suites passed, including zero external requests from the studio flow.
+All 262 donor paths now have a terminal presentation disposition, and all 65 page
+coverage rows identify the verified matrix and operational adaptation boundary.
+Protected backend comparison to frozen PR71 remains empty. No database was used.
+
+These are working-tree author results until the candidate is committed and the
+exact SHA hosted presentation and protected-PG16 workflows pass. This checkpoint
+does not grant independent acceptance, merge, deployment, persistent database
+change or release; all existing holds remain.

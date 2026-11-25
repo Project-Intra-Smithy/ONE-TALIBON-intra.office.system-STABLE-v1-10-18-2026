@@ -67,7 +67,7 @@ test('canonical paths and permission associations are not synthetic', () => {
     assert.equal(d.municipalSystems.readiness, 'integration_pending');
     assert.equal(d.messages.permission, undefined);
     assert.equal(d.messages.readiness, 'integration_pending');
-    assert.equal(d.availablePlanningMaps.href, '/development-plans#available-planning-maps');
+    assert.equal(d.availablePlanningMaps.href, '/planning-maps');
     assert.equal(d.availablePlanningMaps.readiness, 'wired');
     assert.equal(d.availablePlanningMaps.permission, d.developmentPlans.permission);
 });

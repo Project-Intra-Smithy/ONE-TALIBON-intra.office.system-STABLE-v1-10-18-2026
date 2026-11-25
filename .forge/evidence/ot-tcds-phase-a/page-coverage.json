@@ -2,393 +2,393 @@
   {
     "page": "resources/js/pages/Admin/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Announcements/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Audit/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Auth/ActivateAccount.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Auth/Login.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Auth/MfaChallenge.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Auth/MfaEnrollment.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Auth/MfaRecoveryCodes.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Auth/MfaSettings.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Calendar/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Correspondence/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Correspondence/Show.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Dashboard.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Departments/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Departments/Workspace.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Documents/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Employees/DirectoryProfile.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Employees/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Employees/Show.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Errors/403.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Errors/Status.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Hris/Admin.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Hris/Attendance.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Hris/Dashboard.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Hris/Development.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Hris/Dtr.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Hris/HealthAccess.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Hris/HealthVault.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Hris/Lifecycle/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Hris/Lifecycle/Show.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Hris/Offboarding/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Hris/Offboarding/Show.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Hris/Payroll.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Legislation/Create.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Legislation/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Legislation/Show.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Legislation/Workspace.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/LocalBodies/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/MayorOffice.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Meetings/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Memoranda/Create.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Memoranda/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Memoranda/Show.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Messages/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/MunicipalSystems/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Operations/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/PPAs/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/PlanningMaps/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Plans/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/ProjectMonitoring/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Property/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Property/Lifecycle.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Public/Home.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Records/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Reports/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Search/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Tasks/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Transactions/Create.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Transactions/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Transactions/Show.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/TravelOrders/Create.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/TravelOrders/Index.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/TravelOrders/Show.tsx",
     "preview": "staged",
-    "operational": "not reviewed",
-    "browser": "initial desktop catalog smoke passed; full matrix pending"
+    "operational": "canonical behavior preserved; donor presentation staged for later backend adaptation",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Auth/AccountSecurity.tsx",
     "canonical_only": true,
     "preview": "shared operational presentation with isolated synthetic adapter",
-    "operational": "existing canonical interface, restyled",
-    "browser": "pending"
+    "operational": "shared canonical presentation validated",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   },
   {
     "page": "resources/js/pages/Transactions/DeliveryExceptions.tsx",
     "canonical_only": true,
     "preview": "shared operational presentation with isolated synthetic adapter",
-    "operational": "existing canonical interface, restyled",
-    "browser": "pending"
+    "operational": "shared canonical presentation validated",
+    "browser": "responsive matrix passed: 390/768/1440, light/dark; no page errors, fixture mismatch, or overflow"
   }
 ]

@@ -15,6 +15,7 @@ import PlanCoverageSummary from '../../components/plans/PlanCoverageSummary';
 import PlanFilterBar, { type PlanFilters } from '../../components/plans/PlanFilterBar';
 import PlanMetricGrid from '../../components/plans/PlanMetricGrid';
 import PlanMilestoneQueue from '../../components/plans/PlanMilestoneQueue';
+import PortalWorkspaceNav from '../../components/portal/PortalWorkspaceNav';
 import Button from '../../components/ui/Button';
 import Dialog from '../../components/ui/Dialog';
 import {
@@ -267,6 +268,10 @@ export default function PlansIndex({
                             )}
                         </div>
                     }
+                />
+                <PortalWorkspaceNav
+                    current="developmentPlans"
+                    destinations={['developmentPlans', 'availablePlanningMaps', 'ppas']}
                 />
                 <div className="r8-plans-notice rounded-xl border border-[var(--border-default)] bg-[var(--surface-recessed)] px-4 py-2.5 text-xs text-[var(--ink-secondary)]" role="note">
                     <strong className="text-[var(--ink-primary)]">Reference library only.</strong> Records shown here are not validated live municipal approvals. Covers are illustrative graphics, not scanned or certified documents.
