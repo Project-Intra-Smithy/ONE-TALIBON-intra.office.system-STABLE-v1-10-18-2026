@@ -1,5 +1,5 @@
 import PlanningDeleteAction from '../../components/planning/PlanningDeleteAction';
-import { router } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { ClipboardList, Download, Plus } from 'lucide-react';
 import { type FormEvent, useMemo, useState } from 'react';
 import PageFrame from '../../components/PageFrame';
@@ -188,6 +188,7 @@ export default function Index({
                             >
                                 <Download size={14} aria-hidden="true" /> Export AIP CSV
                             </a>
+                            {planningPermissions?.canDesignateStaff&&<Link href="/development-plans?staff=1" className="municipal-secondary-button">Staff Scopes</Link>}
                             {canSubmitPpa && (
                                 <Button
                                     type="button"
@@ -299,7 +300,7 @@ export default function Index({
                     if(keys[field]) setRecordFields(fields=>({...fields,[keys[field]]:text}));
                 }}
                 onSubmit={handleSubmitPpa} plans={[]} maps={[]} sectors={['Infrastructure','Agriculture','Fisheries','Environment','Economic','Health','Social Protection','Disaster Risk Reduction','Youth','Tourism','Employment','Governance']} offices={[]}
-                statuses={planningPermissions?.canManagePpas ? ['Planned','For Procurement','Ongoing',...(planningPermissions?.canPublishOrArchive ? ['Completed','On Hold'] : [])] : ['Planned']}
+                statuses={planningPermissions?.canManagePpas ? ['Draft','Planned','For Procurement','Ongoing',...(planningPermissions?.canPublishOrArchive ? ['Completed','On Hold'] : [])] : ['Draft','Planned']}
                 unavailable={['linkedPlanId','linkedMapId','scheduleStart','scheduleEnd','expectedOutputs']}
                 referenceFields={<div className="grid gap-3 sm:grid-cols-2">
                     <label className="text-xs font-semibold">Related Development Plan Reference<input required value={relatedPlan} onChange={event=>setRelatedPlan(event.target.value)} className="tcds-input mt-1" /></label>

@@ -257,6 +257,7 @@ export default function PlanningMapsIndex({
                             >
                                 <BookOpen size={14} aria-hidden="true" /> Development Plans
                             </Link>
+                            {planningPermissions?.canDesignateStaff&&<Link href="/development-plans?staff=1" className="municipal-secondary-button">Staff Scopes</Link>}
                             {planningPermissions?.canManageMaps && (
                                 <Button
                                     type="button"

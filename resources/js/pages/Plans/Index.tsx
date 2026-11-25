@@ -29,7 +29,8 @@ import {
 } from '../../data/municipal/plans';
 import AppLayout from '../../layouts/AppLayout';
 
-export type ServerPlanRecord = MunicipalPlan & {
+export type ServerPlanRecord = Omit<MunicipalPlan,'status'> & {
+    status: string;
     dbId?: number;
     provenanceStatus?: string;
 };
@@ -86,7 +87,7 @@ export default function PlansIndex({
     const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [editingPlan,setEditingPlan]=useState<ServerPlanRecord|null>(null);
-    const [showStaffModal, setShowStaffModal] = useState(false);
+    const [showStaffModal, setShowStaffModal] = useState(() => Boolean(planningPermissions?.canDesignateStaff && typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('staff') === '1'));
     const [createCode, setCreateCode] = useState('');
     const [createTitle, setCreateTitle] = useState('');
     const [createHorizon, setCreateHorizon] = useState('Six-year');
@@ -282,6 +283,7 @@ export default function PlansIndex({
                     </div>
                 </section>
                 <PlanFilterBar
+                    statuses={['All','Draft','For review','Updating','In force','Adopted','Due this year','Archived']}
                     filters={filters}
                     leadOffices={leadOffices}
                     resultCount={filteredPlans.length}

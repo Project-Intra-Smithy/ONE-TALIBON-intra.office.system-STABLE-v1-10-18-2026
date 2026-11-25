@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { chromium } from 'playwright';
 import { planningCrud } from './phase-a-planning-crud.mjs';
@@ -8,9 +8,12 @@ import { planningCrud } from './phase-a-planning-crud.mjs';
 const origin=process.env.PHASE_A_CANONICAL_URL,password=process.env.PHASE_A_CANONICAL_PASSWORD;
 assert.ok(origin && /^http:\/\/127\.0\.0\.1:\d+$/.test(origin),'Disposable loopback Laravel URL required');
 assert.ok(process.env.PHASE_A_CANONICAL_LOGIN&&password,'Disposable synthetic credentials required');
-const output='storage/app/qa/phase-a-canonical';
+const crudOnly=process.env.PHASE_A_CANONICAL_FOCUS==='planning-crud';
+const output=crudOnly?'storage/app/qa/phase-a-canonical-crud':'storage/app/qa/phase-a-canonical';
 await mkdir(output,{recursive:true});
 const results=[],interactions=[];
+const sourceSha=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
+const buildManifestSha256=crypto.createHash('sha256').update(await readFile('public/build/manifest.json')).digest('hex');
 let completed=false;
 const browser=await chromium.launch();
 function totp(secret){
@@ -48,7 +51,7 @@ try{
             await page.getByRole('button',{name:'Verify and continue',exact:true}).click();
         }
         await page.waitForURL('**/dashboard');
-        for(const width of [1440,768,390])for(const theme of ['light','dark']){
+        for(const width of (crudOnly?[]:[1440,768,390]))for(const theme of ['light','dark']){
             await page.setViewportSize({width,height:900});
             await page.emulateMedia({colorScheme:theme});
             const paths=['/my-tasks','/transactions','/transactions/create','/calendar','/documents',...(actor.role==='department_head'?['/my-department','/development-plans','/ppas','/planning-maps']:[])];
@@ -99,8 +102,8 @@ try{
                     await dialogCheck(page,dossier,'plan-dossier',actor.role,width,theme);
                     await dossier.getByRole('tab',{name:'Supporting Docs',exact:true}).click();
                     await dossier.getByRole('button',{name:'Attach File',exact:true}).click();
-                    await dossier.getByLabel('Document title',{exact:true}).fill('Synthetic document studio inspection');
-                    assert.equal(await dossier.getByLabel('Control / Resolution Ref.',{exact:true}).isDisabled(),true);
+                    await dossier.getByLabel('Document title').fill('Synthetic document studio inspection');
+                    assert.equal(await dossier.getByLabel('Control / Resolution Ref.').isDisabled(),true);
                     await dialogCheck(page,dossier,'document-upload-studio',actor.role,width,theme);
                     await page.keyboard.press('Escape');
                     await page.getByRole('button',{name:/^Staff Scopes/}).click();
@@ -150,5 +153,5 @@ try{
     completed=true;
 }finally{
     await browser.close();
-    await writeFile(output+'/results.json',JSON.stringify({completed,sourceSha:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),sourceWorktreeDirty:Boolean(execFileSync('git',['status','--porcelain'],{encoding:'utf8'}).trim()),results,interactions},null,2));
+    await writeFile(output+'/results.json',JSON.stringify({completed,coverage:crudOnly?'planning-crud-only':'responsive-route-and-interaction-matrix',sourceSha,buildManifestSha256,sourceWorktreeDirty:Boolean(execFileSync('git',['status','--porcelain'],{encoding:'utf8'}).trim()),results,interactions},null,2));
 }

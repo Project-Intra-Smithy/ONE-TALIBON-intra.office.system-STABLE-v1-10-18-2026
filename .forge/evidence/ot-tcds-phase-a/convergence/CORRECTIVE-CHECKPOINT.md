@@ -36,3 +36,11 @@ The new hosted canonical-runtime job uses an isolated PostgreSQL 16 service and 
 | Staff designation | Existing real employee pool and module scopes on Plans | PPA/map routes do not supply their own personnel pool; shared management route remains the source |
 
 No canonical backend file, protected test, migration, Composer dependency or release hold was changed. Only a separately initialized temporary PostgreSQL cluster has been used locally. No VPS deployment, merge, production/persistent database modification or self-acceptance is authorized or performed.
+
+## Continuation validation, 26 November 2026
+
+Implementation checkpoint `95f741f7992b3d20d96184e0f6a323376e5803c4` is remote. Both required hosted workflows could not start any job because of the account billing/spending gate; see [the exact annotations and run links](HOSTED-VALIDATION-BLOCKER.md). This prevents the required hosted validation from completing.
+
+Local repairs after that checkpoint: canonical milestone formatting tolerates the controller's non-date string contract; plan filters retain Draft/Archived; PPA editing retains raw Draft status; staff-management links from PPA/maps open the existing authorized management route. The public-homepage stylesheet now uses shared donor tokens and self-hosted fonts. The old visual color assertions were reconciled with that intended styling, and the persisted-dark check now reloads the real appearance preference rather than adding a class while leaving color-scheme light.
+
+Observed local results: 390/390 preview catalog combinations passed after the stylesheet repair; the preview interaction, studio, task and blocked-write suites passed in the earlier combined run. The corrected homepage/auth suite passed 10/10. Canonical route assertions passed 84/84 with supporting-document form and map-plate inspection, but the aggregate then failed in a new CRUD helper because its raw Inertia request omitted the asset version. That helper now reads the ordinary authenticated HTML payload. The focused real Planning create/update/delete cycles subsequently passed for all three record types, including nested confirmation scroll restoration; the wait now observes modal closure before testing effect cleanup. These are working-tree author observations, not hosted or independent acceptance. A final frozen-candidate rerun remains required.

@@ -2809,8 +2809,24 @@
       {
         "role": "department_head",
         "width": 1440,
+        "theme": "light",
+        "label": "map-plate",
+        "contained": true,
+        "namedControls": true
+      },
+      {
+        "role": "department_head",
+        "width": 1440,
         "theme": "dark",
         "label": "map-studio",
+        "contained": true,
+        "namedControls": true
+      },
+      {
+        "role": "department_head",
+        "width": 1440,
+        "theme": "dark",
+        "label": "map-plate",
         "contained": true,
         "namedControls": true
       },
@@ -2825,8 +2841,24 @@
       {
         "role": "department_head",
         "width": 768,
+        "theme": "light",
+        "label": "map-plate",
+        "contained": true,
+        "namedControls": true
+      },
+      {
+        "role": "department_head",
+        "width": 768,
         "theme": "dark",
         "label": "map-studio",
+        "contained": true,
+        "namedControls": true
+      },
+      {
+        "role": "department_head",
+        "width": 768,
+        "theme": "dark",
+        "label": "map-plate",
         "contained": true,
         "namedControls": true
       },
@@ -2841,8 +2873,24 @@
       {
         "role": "department_head",
         "width": 390,
+        "theme": "light",
+        "label": "map-plate",
+        "contained": true,
+        "namedControls": true
+      },
+      {
+        "role": "department_head",
+        "width": 390,
         "theme": "dark",
         "label": "map-studio",
+        "contained": true,
+        "namedControls": true
+      },
+      {
+        "role": "department_head",
+        "width": 390,
+        "theme": "dark",
+        "label": "map-plate",
         "contained": true,
         "namedControls": true
       }

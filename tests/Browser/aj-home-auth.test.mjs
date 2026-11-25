@@ -83,7 +83,7 @@ for (const width of [320, 390, 768, 1024, 1440]) {
                     for (const link of await page.locator('a[href^="#"]').all()) {
                         assert.equal(await page.locator(await link.getAttribute('href')).count(), 1, 'anchor target exists');
                     }
-                    assert.equal(await page.locator('.footer .brand-name').evaluate(el => getComputedStyle(el).color), 'rgb(27, 90, 63)');
+                    assert.equal(await page.locator('.footer .brand-name').evaluate(el => getComputedStyle(el).color), 'rgb(14, 77, 54)');
                     for (const id of ['home', 'capabilities', 'about-portal', 'support']) assert.equal(await page.locator(`#${id}`).count(), 1);
                     assert.equal(await page.locator('a[href="/login"]').count(), 3);
                     assert.equal(await page.getByRole('button', { name: 'Open portal navigation', includeHidden: true }).isVisible(), width <= 1100);
@@ -91,7 +91,7 @@ for (const width of [320, 390, 768, 1024, 1440]) {
                 if (path === '/login') {
                     assert.equal(await page.getByRole('checkbox', { name: 'Remember me (unavailable)' }).isDisabled(), true);
                     assert.equal(await page.getByRole('form', { name: 'Employee sign-in' }).count(), 1);
-                    assert.equal((await page.request.get(base + '/images/talibon/municipality-of-talibon.jpg')).status(), 200);
+                    assert.equal((await page.request.get(base + '/images/talibon/municipality-of-talibon.jpg', { maxRetries: 1 })).status(), 200);
                 }
                 if (path === '/dashboard') assert.ok(await page.getByRole('heading', { name: 'My Tasks Today', exact: true }).count());
                 await page.screenshot({ path: `${out}/${path.replaceAll('/', '-') || 'home'}-${width}.png`, fullPage: true });
@@ -127,8 +127,10 @@ test('Login keyboard, required fields, payload, pending and server errors', asyn
 test('persisted dark appearance, short auth viewport and authenticated homepage destination', async () => {
     const { page } = await mount('/authenticated-home', 320);
     try {
-        await page.evaluate(() => document.documentElement.classList.add('dark'));
-        assert.equal(await page.locator('.public-refined').evaluate(el => getComputedStyle(el).backgroundColor), 'rgb(248, 249, 248)');
+        await page.evaluate(() => localStorage.setItem('talibon.appearance', 'dark'));
+        await page.reload();
+        await page.locator('.public-refined').waitFor();
+        assert.equal(await page.locator('.public-refined').evaluate(el => getComputedStyle(el).backgroundColor), 'rgb(15, 20, 18)');
         assert.equal(await page.locator('.public-login-link').getAttribute('href'), '/dashboard');
         await page.locator('.public-login-link').click(); await page.waitForURL('**/dashboard');
         assert.equal(await page.locator('.public-refined').count(), 0);

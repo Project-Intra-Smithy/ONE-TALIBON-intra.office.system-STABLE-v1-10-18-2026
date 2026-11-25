@@ -1,7 +1,8 @@
 import { CalendarDays } from 'lucide-react';
 import type { MunicipalPlan } from '../../data/municipal/plans';
+import { formatDatePH } from '../../lib/format';
 
-const dateLabel = (value: string) => new Intl.DateTimeFormat('en-PH', { month: 'short', day: 'numeric' }).format(new Date(`${value}T00:00:00`));
+const dateLabel = (value: string) => formatDatePH(value, { year: undefined });
 
 export default function PlanMilestoneQueue({ plans }: { plans: Array<Omit<MunicipalPlan,'status'>&{status:string}> }) {
     const recorded = [...plans]
@@ -21,7 +22,7 @@ export default function PlanMilestoneQueue({ plans }: { plans: Array<Omit<Munici
                 {recorded.length === 0 && <p className="py-3 text-xs text-[var(--municipal-muted)]">No recorded milestones match the current filters.</p>}
                 {recorded.map((plan) => (
                     <article key={plan.id} className="grid grid-cols-[62px_minmax(0,1fr)] gap-2 border-t border-[var(--municipal-border)] py-2">
-                        <div className="text-left">
+                        <div className="break-words text-left">
                             <div className="text-xs font-bold text-[var(--municipal-brand)] dark:text-[var(--ink-primary)]">{dateLabel(plan.nextMilestoneDate)}</div>
                             <div className="mt-0.5 text-xs text-slate-400">{plan.nextMilestoneDate.slice(0, 4)}</div>
                         </div>
