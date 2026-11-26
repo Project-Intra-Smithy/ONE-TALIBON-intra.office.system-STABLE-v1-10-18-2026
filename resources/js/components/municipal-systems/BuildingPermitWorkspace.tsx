@@ -1,3 +1,4 @@
+import { MunicipalTabPanels, useMunicipalTabs } from './MunicipalTabs';
 import { useEffect, useState } from 'react';
 import {
     ArrowLeft,
@@ -335,6 +336,7 @@ function PermitFlow({ selected, onSelect }: { selected: BuildingPermitCase; onSe
 
 function CaseDetail({ permitCase, onClose }: { permitCase: BuildingPermitCase; onClose: () => void }) {
     const [step, setStep] = useState<DetailStep>('Case Summary');
+    const detailTabs = useMunicipalTabs(step, (['Case Summary', 'Clearances', 'Timeline'] as DetailStep[]));
 
     useEffect(() => {
         setStep('Case Summary');
@@ -350,13 +352,13 @@ function CaseDetail({ permitCase, onClose }: { permitCase: BuildingPermitCase; o
             footer={<div className="text-[9px] font-semibold text-[var(--ink-secondary)]">Illustrative reference data · No permit decision or regulatory action enabled</div>}
         >
             <div className="space-y-4">
-                <div className="grid grid-cols-3 gap-1.5" role="tablist" aria-label="Building permit detail steps">
+                <div className="grid grid-cols-3 gap-1.5" {...detailTabs.listProps} aria-label="Building permit detail steps">
                     {(['Case Summary', 'Clearances', 'Timeline'] as DetailStep[]).map((item, index) => (
-                        <button key={item} type="button" role="tab" aria-selected={step === item} onClick={() => setStep(item)} className={'min-h-9 rounded-lg border px-2 text-[9px] font-bold transition ' + (step === item ? 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/25 dark:text-emerald-100' : 'border-transparent text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}><span className="mr-1 text-[8px]">{index + 1}</span>{item}</button>
+                        <button key={item} type="button" {...detailTabs.tabProps(item)} onClick={() => setStep(item)} className={'min-h-9 rounded-lg border px-2 text-[9px] font-bold transition ' + (step === item ? 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/25 dark:text-emerald-100' : 'border-transparent text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}><span className="mr-1 text-[8px]">{index + 1}</span>{item}</button>
                     ))}
                 </div>
 
-                {step === 'Case Summary' && (
+                <MunicipalTabPanels tabs={detailTabs}>{step === 'Case Summary' && (
                     <div className="space-y-3">
                         <div className="flex flex-wrap items-center gap-2"><span className="text-[10px] font-extrabold text-[var(--brand-ink)]">{permitCase.reference}</span><StageBadge stage={permitCase.currentStage} /></div>
                         <dl className="grid gap-2 sm:grid-cols-2">
@@ -392,7 +394,7 @@ function CaseDetail({ permitCase, onClose }: { permitCase: BuildingPermitCase; o
                             </li>
                         ))}
                     </ol>
-                )}
+                )}</MunicipalTabPanels>
             </div>
         </DetailDrawer>
     );
@@ -400,6 +402,7 @@ function CaseDetail({ permitCase, onClose }: { permitCase: BuildingPermitCase; o
 
 export default function BuildingPermitWorkspace({ onBack }: Props) {
     const [activeTab, setActiveTab] = useState<WorkspaceTab>('Overview');
+    const viewTabs = useMunicipalTabs(activeTab, tabs);
     const [selectedCase, setSelectedCase] = useState<BuildingPermitCase>(buildingPermitCases[0]!);
     const [detailCase, setDetailCase] = useState<BuildingPermitCase | null>(null);
 
@@ -437,7 +440,7 @@ export default function BuildingPermitWorkspace({ onBack }: Props) {
                         <p className="mt-0.5 text-[10px] font-bold text-[var(--municipal-text)]">Municipal Engineering Office</p>
                         <p className="mt-0.5 text-[9px] font-semibold text-[var(--municipal-muted)]">Cross-office clearance and permit processing</p>
                     </div>
-                    <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4" aria-label="Building permit case signals">
+                    <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4" role="group" aria-label="Building permit case signals">
                         {headerSignals.map((signal) => (
                             <div key={signal.label} className={'min-h-11 rounded-lg border px-2.5 py-2 ' + signal.tone}>
                                 <div className="text-[8px] font-extrabold uppercase tracking-[0.06em] opacity-75">{signal.label}</div>
@@ -448,16 +451,16 @@ export default function BuildingPermitWorkspace({ onBack }: Props) {
                 </div>
             </header>
 
-            <nav className="flex gap-1 overflow-x-auto rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-1" role="tablist" aria-label="Building permit workflow views">
+            <nav className="flex gap-1 overflow-x-auto rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-1" {...viewTabs.listProps} aria-label="Building permit workflow views">
                 {tabs.map((tab) => (
-                    <button key={tab} type="button" role="tab" aria-selected={activeTab === tab} onClick={() => setActiveTab(tab)} className={'min-h-9 shrink-0 rounded-lg px-3 text-[10px] font-bold transition ' + (activeTab === tab ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-100' : 'text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}>{tab}</button>
+                    <button key={tab} type="button" {...viewTabs.tabProps(tab)} onClick={() => setActiveTab(tab)} className={'min-h-9 shrink-0 rounded-lg px-3 text-[10px] font-bold transition ' + (activeTab === tab ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-100' : 'text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}>{tab}</button>
                 ))}
             </nav>
 
-            {activeTab === 'Overview' && <Overview selected={selectedCase} onSelect={setSelectedCase} onOpenDetail={() => setDetailCase(selectedCase)} />}
+            <MunicipalTabPanels tabs={viewTabs}>{activeTab === 'Overview' && <Overview selected={selectedCase} onSelect={setSelectedCase} onOpenDetail={() => setDetailCase(selectedCase)} />}
             {activeTab === 'Applications' && <Applications onOpenDetail={setDetailCase} />}
             {activeTab === 'Clearance Matrix' && <ClearanceMatrix onOpenDetail={setDetailCase} />}
-            {activeTab === 'Permit Flow' && <PermitFlow selected={selectedCase} onSelect={setSelectedCase} />}
+            {activeTab === 'Permit Flow' && <PermitFlow selected={selectedCase} onSelect={setSelectedCase} />}</MunicipalTabPanels>
 
             <div className="flex items-start gap-2 rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-3 py-2 text-[9px] font-semibold leading-4 text-[var(--municipal-muted)]"><ShieldCheck size={12} className="mt-0.5 shrink-0 text-[var(--brand-ink)]" aria-hidden="true" /> Illustrative reference data only. No application submission, permit approval, issuance, inspection authority, fire approval, zoning approval, payment or applicant record is enabled.</div>
 

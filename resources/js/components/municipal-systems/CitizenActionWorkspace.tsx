@@ -1,3 +1,4 @@
+import { MunicipalTabPanels, useMunicipalTabs } from './MunicipalTabs';
 import { useEffect, useMemo, useState } from 'react';
 import {
     ArrowLeft,
@@ -61,6 +62,7 @@ function PriorityBadge({ priority }: { priority: CitizenRequestPriority }) {
 
 function RequestModal({ request, onClose }: { request: CitizenRequest; onClose: () => void }) {
     const [step, setStep] = useState<ModalStep>('Request');
+    const detailTabs = useMunicipalTabs(step, (['Request', 'Routing', 'History'] as ModalStep[]));
 
     useEffect(() => {
         setStep('Request');
@@ -87,13 +89,13 @@ function RequestModal({ request, onClose }: { request: CitizenRequest; onClose: 
                     </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-1.5" role="tablist" aria-label="Request detail steps">
+                <div className="grid grid-cols-3 gap-1.5" {...detailTabs.listProps} aria-label="Request detail steps">
                     {(['Request', 'Routing', 'History'] as ModalStep[]).map((item, index) => (
                         <button
                             key={item}
                             type="button"
-                            role="tab"
-                            aria-selected={step === item}
+                            {...detailTabs.tabProps(item)}
+
                             onClick={() => setStep(item)}
                             className={'min-h-9 rounded-lg border px-2 text-[10px] font-bold transition ' + (step === item
                                 ? 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/25 dark:text-emerald-100'
@@ -104,7 +106,7 @@ function RequestModal({ request, onClose }: { request: CitizenRequest; onClose: 
                     ))}
                 </div>
 
-                {step === 'Request' && (
+                <MunicipalTabPanels tabs={detailTabs}>{step === 'Request' && (
                     <dl className="grid gap-2 sm:grid-cols-2">
                         {[
                             ['Reference', request.reference],
@@ -155,7 +157,7 @@ function RequestModal({ request, onClose }: { request: CitizenRequest; onClose: 
                             </li>
                         ))}
                     </ol>
-                )}
+                )}</MunicipalTabPanels>
             </div>
         </DetailDrawer>
     );
@@ -427,6 +429,7 @@ function ResponseActivity({ compact = false, onSelect }: { compact?: boolean; on
 
 export default function CitizenActionWorkspace({ onBack }: Props) {
     const [activeTab, setActiveTab] = useState<WorkspaceTab>('Overview');
+    const viewTabs = useMunicipalTabs(activeTab, tabs);
     const [selectedRequest, setSelectedRequest] = useState<CitizenRequest | null>(null);
     const headerSummary = [
         {
@@ -466,7 +469,7 @@ export default function CitizenActionWorkspace({ onBack }: Props) {
                             <span className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-2 py-1 text-[8px] font-extrabold uppercase tracking-[0.08em] text-amber-800 dark:border-amber-900/60 dark:bg-amber-950/20 dark:text-amber-200">Presentation Environment</span>
                             <div className="mt-1 text-[9px] font-semibold text-[var(--municipal-muted)]">Reference data only · Actions disabled</div>
                         </div>
-                        <div className="mt-2 grid grid-cols-2 gap-1.5 xl:grid-cols-4" aria-label="Citizen desk operational summary">
+                        <div className="mt-2 grid grid-cols-2 gap-1.5 xl:grid-cols-4" role="group" aria-label="Citizen desk operational summary">
                             {headerSummary.map((counter) => (
                                 <div key={counter.label} className={'flex min-h-10 items-center justify-between gap-2 rounded-lg border px-2.5 py-1.5 xl:block ' + counter.tone}>
                                     <div className="text-[8px] font-extrabold uppercase tracking-[0.06em]">{counter.label}</div>
@@ -478,16 +481,16 @@ export default function CitizenActionWorkspace({ onBack }: Props) {
                 </div>
             </header>
 
-            <nav className="flex gap-1 overflow-x-auto rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-1" role="tablist" aria-label="Citizen action views">
+            <nav className="flex gap-1 overflow-x-auto rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-1" {...viewTabs.listProps} aria-label="Citizen action views">
                 {tabs.map((tab) => (
-                    <button key={tab} type="button" role="tab" aria-selected={activeTab === tab} onClick={() => setActiveTab(tab)} className={'min-h-9 shrink-0 rounded-lg px-3 text-[10px] font-bold transition ' + (activeTab === tab ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-100' : 'text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}>{tab}</button>
+                    <button key={tab} type="button" {...viewTabs.tabProps(tab)} onClick={() => setActiveTab(tab)} className={'min-h-9 shrink-0 rounded-lg px-3 text-[10px] font-bold transition ' + (activeTab === tab ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-100' : 'text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}>{tab}</button>
                 ))}
             </nav>
 
-            {activeTab === 'Overview' && <Overview onSelect={setSelectedRequest} />}
+            <MunicipalTabPanels tabs={viewTabs}>{activeTab === 'Overview' && <Overview onSelect={setSelectedRequest} />}
             {activeTab === 'Request Queue' && <RequestQueue onSelect={setSelectedRequest} />}
             {activeTab === 'Routing Board' && <RoutingBoard onSelect={setSelectedRequest} />}
-            {activeTab === 'Response History' && <ResponseActivity onSelect={setSelectedRequest} />}
+            {activeTab === 'Response History' && <ResponseActivity onSelect={setSelectedRequest} />}</MunicipalTabPanels>
 
             <div className="flex items-center gap-2 rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-3 py-2 text-[9px] font-semibold text-[var(--municipal-muted)]"><CheckCircle2 size={12} className="shrink-0 text-[var(--brand-ink)]" aria-hidden="true" /> Privacy-safe presentation references only. No citizen PII, staff identities or operational actions are exposed.</div>
 

@@ -1,3 +1,4 @@
+import { MunicipalTabPanels, useMunicipalTabs } from './MunicipalTabs';
 import { useEffect, useMemo, useState } from 'react';
 import {
     ArrowLeft,
@@ -305,6 +306,7 @@ function InstitutionalKnowledgeTab({ onOpen }: { onOpen: (resource: KnowledgeRes
 
 function ResourceDetail({ resource, onClose }: { resource: KnowledgeResource; onClose: () => void }) {
     const [step, setStep] = useState<DetailStep>('Resource');
+    const detailTabs = useMunicipalTabs(step, (['Resource', 'Context', 'Related'] as DetailStep[]));
     const relatedResources = resource.relatedReferences
         .map((reference) => knowledgeResources.find((candidate) => candidate.reference === reference))
         .filter((candidate): candidate is KnowledgeResource => Boolean(candidate));
@@ -324,13 +326,13 @@ function ResourceDetail({ resource, onClose }: { resource: KnowledgeResource; on
             footer={<div className="text-[9px] font-semibold text-[var(--ink-secondary)]">Illustrative reference data · No live publishing, download, certification or employee tracking enabled</div>}
         >
             <div className="space-y-4">
-                <div className="grid grid-cols-3 gap-1.5" role="tablist" aria-label="Knowledge resource detail steps">
+                <div className="grid grid-cols-3 gap-1.5" {...detailTabs.listProps} aria-label="Knowledge resource detail steps">
                     {(['Resource', 'Context', 'Related'] as DetailStep[]).map((item, index) => (
-                        <button key={item} type="button" role="tab" aria-selected={step === item} onClick={() => setStep(item)} className={'min-h-9 rounded-lg border px-2 text-[9px] font-bold transition ' + (step === item ? 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/25 dark:text-emerald-100' : 'border-transparent text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}><span className="mr-1 text-[8px]">{index + 1}</span>{item}</button>
+                        <button key={item} type="button" {...detailTabs.tabProps(item)} onClick={() => setStep(item)} className={'min-h-9 rounded-lg border px-2 text-[9px] font-bold transition ' + (step === item ? 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/25 dark:text-emerald-100' : 'border-transparent text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}><span className="mr-1 text-[8px]">{index + 1}</span>{item}</button>
                     ))}
                 </div>
 
-                {step === 'Resource' && (
+                <MunicipalTabPanels tabs={detailTabs}>{step === 'Resource' && (
                     <div className="space-y-3">
                         <div className="flex flex-wrap items-center gap-2"><span className="text-[10px] font-extrabold text-[var(--brand-ink)]">{resource.reference}</span><TypeBadge type={resource.type} /></div>
                         <dl className="grid gap-2 sm:grid-cols-2">
@@ -358,7 +360,7 @@ function ResourceDetail({ resource, onClose }: { resource: KnowledgeResource; on
                         <div><div className="text-[8px] font-extrabold uppercase tracking-[0.06em] text-[var(--municipal-muted)]">Related resources</div><div className="mt-1.5 space-y-1.5">{relatedResources.map((related) => <div key={related.reference} className="rounded-lg bg-[var(--municipal-surface-subtle)] px-3 py-2.5"><div className="text-[9px] font-extrabold text-[var(--brand-ink)]">{related.reference}</div><div className="mt-0.5 text-[10px] font-bold text-[var(--municipal-text)]">{related.title}</div><div className="mt-0.5 text-[8px] text-[var(--municipal-muted)]">{related.category} · {related.format}</div></div>)}</div></div>
                         {memoryLinks.length > 0 && <div className="border-t border-[var(--municipal-border)] pt-3"><div className="text-[8px] font-extrabold uppercase tracking-[0.06em] text-[var(--municipal-muted)]">Institutional knowledge links</div><div className="mt-1.5 space-y-1.5">{memoryLinks.map((item) => <div key={item.reference} className="rounded-lg border border-[var(--municipal-border)] px-3 py-2.5"><div className="text-[9px] font-extrabold text-[var(--brand-ink)]">{item.reference}</div><div className="mt-0.5 text-[10px] font-bold text-[var(--municipal-text)]">{item.title}</div><div className="mt-0.5 text-[8px] text-[var(--municipal-muted)]">{item.kind}</div></div>)}</div></div>}
                     </div>
-                )}
+                )}</MunicipalTabPanels>
             </div>
         </DetailDrawer>
     );
@@ -366,6 +368,7 @@ function ResourceDetail({ resource, onClose }: { resource: KnowledgeResource; on
 
 export default function TrainingKnowledgeWorkspace({ onBack }: Props) {
     const [activeTab, setActiveTab] = useState<WorkspaceTab>('Overview');
+    const viewTabs = useMunicipalTabs(activeTab, tabs);
     const [selectedResource, setSelectedResource] = useState<KnowledgeResource | null>(null);
 
     const headerSignals = [
@@ -402,7 +405,7 @@ export default function TrainingKnowledgeWorkspace({ onBack }: Props) {
                         <p className="mt-0.5 text-[10px] font-bold text-[var(--municipal-text)]">HRMO / Municipal Offices</p>
                         <p className="mt-0.5 text-[9px] font-semibold text-[var(--municipal-muted)]">Shared manuals, SOPs, templates, onboarding and institutional knowledge</p>
                     </div>
-                    <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4" aria-label="Knowledge workspace signals">
+                    <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4" role="group" aria-label="Knowledge workspace signals">
                         {headerSignals.map((signal) => (
                             <div key={signal.label} className={'min-h-11 rounded-lg border px-2.5 py-2 ' + signal.tone}><div className="text-[8px] font-extrabold uppercase tracking-[0.06em] opacity-75">{signal.label}</div><div className="mt-1 text-[15px] font-extrabold leading-none tabular-nums">{signal.value}</div></div>
                         ))}
@@ -410,14 +413,14 @@ export default function TrainingKnowledgeWorkspace({ onBack }: Props) {
                 </div>
             </header>
 
-            <nav className="flex gap-1 overflow-x-auto rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-1" role="tablist" aria-label="Training and knowledge views">
-                {tabs.map((tab) => <button key={tab} type="button" role="tab" aria-selected={activeTab === tab} onClick={() => setActiveTab(tab)} className={'min-h-9 shrink-0 rounded-lg px-3 text-[10px] font-bold transition ' + (activeTab === tab ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-100' : 'text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}>{tab}</button>)}
+            <nav className="flex gap-1 overflow-x-auto rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-1" {...viewTabs.listProps} aria-label="Training and knowledge views">
+                {tabs.map((tab) => <button key={tab} type="button" {...viewTabs.tabProps(tab)} onClick={() => setActiveTab(tab)} className={'min-h-9 shrink-0 rounded-lg px-3 text-[10px] font-bold transition ' + (activeTab === tab ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-100' : 'text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}>{tab}</button>)}
             </nav>
 
-            {activeTab === 'Overview' && <Overview onOpen={setSelectedResource} />}
+            <MunicipalTabPanels tabs={viewTabs}>{activeTab === 'Overview' && <Overview onOpen={setSelectedResource} />}
             {activeTab === 'Knowledge Library' && <KnowledgeLibraryTab onOpen={setSelectedResource} />}
             {activeTab === 'Onboarding' && <OnboardingTab onOpen={setSelectedResource} />}
-            {activeTab === 'Institutional Knowledge' && <InstitutionalKnowledgeTab onOpen={setSelectedResource} />}
+            {activeTab === 'Institutional Knowledge' && <InstitutionalKnowledgeTab onOpen={setSelectedResource} />}</MunicipalTabPanels>
 
             <div className="flex items-start gap-2 rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-3 py-2 text-[9px] font-semibold leading-4 text-[var(--municipal-muted)]"><FileText size={12} className="mt-0.5 shrink-0 text-[var(--brand-ink)]" aria-hidden="true" /> Presentation/reference only. No live LMS, employee training records, certifications, confidential manuals, active publishing, employee progress tracking or production knowledge portal is enabled.</div>
 

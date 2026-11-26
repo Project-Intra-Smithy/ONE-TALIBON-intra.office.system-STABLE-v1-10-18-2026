@@ -1,3 +1,4 @@
+import { MunicipalTabPanels, useMunicipalTabs } from './MunicipalTabs';
 import { useEffect, useMemo, useState } from 'react';
 import {
     ArrowLeft,
@@ -400,6 +401,7 @@ function AssetDetailModal({
     onClose: () => void;
 }) {
     const [step, setStep] = useState<DetailStep>('asset');
+    const detailTabs = useMunicipalTabs(step, detailSteps.map(item => item.id));
 
     useEffect(() => {
         if (open) setStep('asset');
@@ -441,13 +443,13 @@ function AssetDetailModal({
         >
             {record && (
                 <div className="space-y-4">
-                    <div role="tablist" aria-label="Asset property detail sections" className="grid grid-cols-3 gap-1 rounded-xl bg-slate-100 p-1 dark:bg-slate-900/55">
+                    <div {...detailTabs.listProps} aria-label="Asset property detail sections" className="grid grid-cols-3 gap-1 rounded-xl bg-slate-100 p-1 dark:bg-slate-900/55">
                         {detailSteps.map((item, index) => (
                             <button
                                 key={item.id}
                                 type="button"
-                                role="tab"
-                                aria-selected={step === item.id}
+                                {...detailTabs.tabProps(item.id)}
+
                                 onClick={() => setStep(item.id)}
                                 className={'min-h-9 rounded-lg px-2 text-[10px] font-bold transition '
                                     + (step === item.id
@@ -459,7 +461,7 @@ function AssetDetailModal({
                         ))}
                     </div>
 
-                    {step === 'asset' && (
+                    <MunicipalTabPanels tabs={detailTabs}>{step === 'asset' && (
                         <section aria-label="Asset identity">
                             <div className="mb-3 flex flex-wrap items-center gap-2">
                                 <span className={`inline-flex rounded-full border px-2 py-1 text-[8px] font-bold ${conditionTone(record.condition)}`}>{record.condition}</span>
@@ -540,7 +542,7 @@ function AssetDetailModal({
                                 ))}
                             </div>
                         </section>
-                    )}
+                    )}</MunicipalTabPanels>
                 </div>
             )}
         </DetailDrawer>
@@ -549,6 +551,7 @@ function AssetDetailModal({
 
 export default function AssetPropertyWorkspace({ onBack }: Props) {
     const [tab, setTab] = useState<WorkspaceTab>('Overview');
+    const viewTabs = useMunicipalTabs(tab, tabs);
     const [selectedRecord, setSelectedRecord] = useState<AssetPropertyRecord | null>(null);
 
     const selectedReferenceCount = useMemo(
@@ -561,13 +564,13 @@ export default function AssetPropertyWorkspace({ onBack }: Props) {
             <WorkspaceHeader onBack={onBack} />
 
             <div className="rounded-xl border border-slate-200 bg-white px-2 pt-1 dark:border-slate-700 dark:bg-[#142236]">
-                <div role="tablist" aria-label="Asset property workspace views" className="flex gap-1 overflow-x-auto">
+                <div {...viewTabs.listProps} aria-label="Asset property workspace views" className="flex gap-1 overflow-x-auto">
                     {tabs.map((item) => (
                         <button
                             key={item}
                             type="button"
-                            role="tab"
-                            aria-selected={tab === item}
+                            {...viewTabs.tabProps(item)}
+
                             onClick={() => setTab(item)}
                             className={'min-h-9 shrink-0 rounded-lg px-3 text-[10px] font-bold transition '
                                 + (tab === item
@@ -580,10 +583,10 @@ export default function AssetPropertyWorkspace({ onBack }: Props) {
                 </div>
             </div>
 
-            {tab === 'Overview' && <Overview onOpen={setSelectedRecord} />}
+            <MunicipalTabPanels tabs={viewTabs}>{tab === 'Overview' && <Overview onOpen={setSelectedRecord} />}
             {tab === 'Asset Register' && <FullAssetRegister onOpen={setSelectedRecord} />}
             {tab === 'Custody & Accountability' && <CustodyAccountabilityView onOpen={setSelectedRecord} />}
-            {tab === 'Condition & Lifecycle' && <ConditionLifecycleView onOpen={setSelectedRecord} />}
+            {tab === 'Condition & Lifecycle' && <ConditionLifecycleView onOpen={setSelectedRecord} />}</MunicipalTabPanels>
 
             <footer className="flex flex-col gap-1 px-1 text-[9px] text-[var(--ink-secondary)] sm:flex-row sm:items-center sm:justify-between">
                 <span>Presentation reference only · no live asset ledger, custody transaction, transfer, issuance or disposal behavior.</span>

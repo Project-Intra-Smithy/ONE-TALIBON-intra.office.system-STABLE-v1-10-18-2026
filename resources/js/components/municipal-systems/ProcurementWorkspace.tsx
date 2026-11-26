@@ -1,3 +1,4 @@
+import { MunicipalTabPanels, useMunicipalTabs } from './MunicipalTabs';
 import { useEffect, useMemo, useState } from 'react';
 import {
     Activity,
@@ -111,6 +112,7 @@ function Filters({ query, onQuery, status, onStatus, statuses }: { query: string
 
 function RequestDrawer({ record, open, onClose }: { record?: PrototypeRecord; open: boolean; onClose: () => void }) {
     const [step, setStep] = useState<DetailStep>('summary');
+    const detailTabs = useMunicipalTabs(step, detailSteps.map(item => item.id));
 
     useEffect(() => {
         if (open) setStep('summary');
@@ -154,15 +156,15 @@ function RequestDrawer({ record, open, onClose }: { record?: PrototypeRecord; op
                         </div>
                     </div>
 
-                    <div role="tablist" aria-label="Request detail sections" className="grid grid-cols-3 gap-1 rounded-xl bg-slate-100 p-1 dark:bg-slate-900/55">
+                    <div {...detailTabs.listProps} aria-label="Request detail sections" className="grid grid-cols-3 gap-1 rounded-xl bg-slate-100 p-1 dark:bg-slate-900/55">
                         {detailSteps.map((item, index) => (
-                            <button key={item.id} type="button" role="tab" aria-selected={step === item.id} onClick={() => setStep(item.id)} className={'min-h-9 rounded-lg px-2 text-[10px] font-bold transition ' + (step === item.id ? 'bg-white text-[var(--brand-ink)] shadow-sm dark:bg-[#142236] dark:text-emerald-300' : 'text-[var(--ink-secondary)] hover:text-slate-800 dark:text-[var(--ink-secondary)] dark:hover:text-slate-200')}>
+                            <button key={item.id} type="button" {...detailTabs.tabProps(item.id)} onClick={() => setStep(item.id)} className={'min-h-9 rounded-lg px-2 text-[10px] font-bold transition ' + (step === item.id ? 'bg-white text-[var(--brand-ink)] shadow-sm dark:bg-[#142236] dark:text-emerald-300' : 'text-[var(--ink-secondary)] hover:text-slate-800 dark:text-[var(--ink-secondary)] dark:hover:text-slate-200')}>
                                 <span className="mr-1 text-[9px]">{index + 1}</span>{item.label}
                             </button>
                         ))}
                     </div>
 
-                    {step === 'summary' && (
+                    <MunicipalTabPanels tabs={detailTabs}>{step === 'summary' && (
                         <section aria-label="Request summary">
                             <dl className="grid gap-3 text-[11px] sm:grid-cols-2">
                                 <div className="rounded-lg bg-slate-50 px-3 py-2.5 dark:bg-slate-900/40"><dt className="text-[var(--ink-secondary)]">Requesting office</dt><dd className="mt-1 font-semibold text-slate-800 dark:text-slate-200">{record.owner}</dd></div>
@@ -203,7 +205,7 @@ function RequestDrawer({ record, open, onClose }: { record?: PrototypeRecord; op
                                 {(record.documents ?? []).length === 0 && <div className="text-[10px] text-[var(--ink-secondary)]">No supporting references are available for this record.</div>}
                             </div>
                         </section>
-                    )}
+                    )}</MunicipalTabPanels>
                 </div>
             )}
         </DetailDrawer>
@@ -351,6 +353,7 @@ function FulfillmentBoard({ records, onOpen }: { records: PrototypeRecord[]; onO
 
 export default function ProcurementWorkspace({ prototype }: Props) {
     const [tab, setTab] = useState<Tab>('Overview');
+    const viewTabs = useMunicipalTabs(tab, (['Overview', 'Purchase Requests', 'Procurement Flow', 'Delivery & Inspection'] as Tab[]));
     const [query, setQuery] = useState('');
     const [status, setStatus] = useState('All');
     const [focusedStage, setFocusedStage] = useState('');
@@ -387,9 +390,9 @@ export default function ProcurementWorkspace({ prototype }: Props) {
     return (
         <section className="space-y-2.5" aria-label="Procurement / PR Tracking workspace">
             <CompactHeader />
-            <div className="rounded-xl border border-slate-200 bg-white px-2 pt-1 dark:border-slate-700 dark:bg-[#142236]"><div role="tablist" aria-label="Procurement views" className="flex gap-1 overflow-x-auto">{(['Overview', 'Purchase Requests', 'Procurement Flow', 'Delivery & Inspection'] as Tab[]).map((item) => <button key={item} type="button" role="tab" aria-selected={tab === item} onClick={() => selectTab(item)} className={'min-h-9 shrink-0 rounded-lg px-3 text-[10px] font-bold transition ' + (tab === item ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/35 dark:text-emerald-100' : 'text-[var(--ink-secondary)] hover:bg-[var(--surface-hover)] dark:text-[var(--ink-secondary)] dark:hover:bg-slate-900/35')}>{item}</button>)}</div></div>
+            <div className="rounded-xl border border-slate-200 bg-white px-2 pt-1 dark:border-slate-700 dark:bg-[#142236]"><div {...viewTabs.listProps} aria-label="Procurement views" className="flex gap-1 overflow-x-auto">{(['Overview', 'Purchase Requests', 'Procurement Flow', 'Delivery & Inspection'] as Tab[]).map((item) => <button key={item} type="button" {...viewTabs.tabProps(item)} onClick={() => selectTab(item)} className={'min-h-9 shrink-0 rounded-lg px-3 text-[10px] font-bold transition ' + (tab === item ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/35 dark:text-emerald-100' : 'text-[var(--ink-secondary)] hover:bg-[var(--surface-hover)] dark:text-[var(--ink-secondary)] dark:hover:bg-slate-900/35')}>{item}</button>)}</div></div>
 
-            {tab === 'Overview' && <><MetricCards metrics={prototype.metrics} /><Overview records={records} lifecycle={lifecycle} onOpen={openRecord} onStage={focusStage} /></>}
+            <MunicipalTabPanels tabs={viewTabs}>{tab === 'Overview' && <><MetricCards metrics={prototype.metrics} /><Overview records={records} lifecycle={lifecycle} onOpen={openRecord} onStage={focusStage} /></>}
 
             {tab === 'Purchase Requests' && (
                 <div className="space-y-2.5">
@@ -401,7 +404,7 @@ export default function ProcurementWorkspace({ prototype }: Props) {
 
             {tab === 'Procurement Flow' && <section className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-[#142236]"><div className="mb-3 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between"><div><h2 className="text-[12px] font-extrabold text-slate-950 dark:text-slate-100">Procurement lifecycle board</h2><p className="mt-0.5 text-[9px] text-[var(--ink-secondary)] dark:text-[var(--ink-secondary)]">Request distribution from PR through payment handoff.</p></div>{focusedStage && <button type="button" onClick={() => setFocusedStage('')} className="text-[9px] font-bold text-[var(--brand-ink)] hover:underline">Show all stages</button>}</div><FlowBoard records={records} lifecycle={lifecycle} focusedStage={focusedStage} onStage={setFocusedStage} onOpen={openRecord} /></section>}
 
-            {tab === 'Delivery & Inspection' && <section className="space-y-2.5"><div className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 dark:border-slate-700 dark:bg-[#142236]"><h2 className="text-[12px] font-extrabold text-slate-950 dark:text-slate-100">Fulfillment operations</h2><p className="mt-0.5 text-[9px] text-[var(--ink-secondary)] dark:text-[var(--ink-secondary)]">Downstream delivery, inspection and next-handoff context.</p></div><FulfillmentBoard records={fulfillmentRecords} onOpen={openRecord} /></section>}
+            {tab === 'Delivery & Inspection' && <section className="space-y-2.5"><div className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 dark:border-slate-700 dark:bg-[#142236]"><h2 className="text-[12px] font-extrabold text-slate-950 dark:text-slate-100">Fulfillment operations</h2><p className="mt-0.5 text-[9px] text-[var(--ink-secondary)] dark:text-[var(--ink-secondary)]">Downstream delivery, inspection and next-handoff context.</p></div><FulfillmentBoard records={fulfillmentRecords} onOpen={openRecord} /></section>}</MunicipalTabPanels>
 
             <footer className="px-1 text-[9px] text-[var(--ink-secondary)]">{presentationEnvironmentFooter}</footer>
             <RequestDrawer record={selectedRecord} open={drawerOpen} onClose={() => setDrawerOpen(false)} />

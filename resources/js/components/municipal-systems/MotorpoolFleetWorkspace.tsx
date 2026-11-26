@@ -1,3 +1,4 @@
+import { MunicipalTabPanels, useMunicipalTabs } from './MunicipalTabs';
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, CalendarClock, ChevronLeft, ChevronRight, Fuel, Route, Truck, Wrench } from 'lucide-react';
 import {
@@ -90,8 +91,9 @@ function VehicleDetail({ vehicle,onClose }: { vehicle:FleetVehicle|null; onClose
 }
 
 export default function MotorpoolFleetWorkspace({ onBack }: Props) {
-    const [tab,setTab]=useState<Tab>('Overview'); const [selected,setSelected]=useState<FleetVehicle|null>(null);
-    return <div className="space-y-2.5"><Header onBack={onBack}/><div role="tablist" aria-label="Fleet reference views" className={`${surface} grid gap-1 p-1 sm:grid-cols-2 xl:grid-cols-4`}>{tabs.map(t=><button key={t} role="tab" aria-selected={tab===t} onClick={()=>setTab(t)} className={`min-h-10 rounded-lg px-3 text-left text-[10px] font-bold ${tab===t?'bg-blue-50 text-blue-900':'text-[var(--ink-secondary)] hover:bg-[var(--surface-recessed)]'}`}>{t}</button>)}</div>
-        {tab==='Overview'&&<Overview onOpen={setSelected}/>} {tab==='Fleet Board'&&<FleetBoardView onOpen={setSelected}/>} {tab==='Trip Schedule'&&<TripScheduleView/>} {tab==='Maintenance & Fuel'&&<MaintenanceFuel onOpen={setSelected}/>}<div className="rounded-lg border border-dashed border-slate-200 px-3 py-2 text-[8px] text-[var(--ink-secondary)]">Presentation/reference only. No live dispatch, real trip ticket, fuel transaction, maintenance work order, GPS tracking, driver identity or operational vehicle record.</div><VehicleDetail vehicle={selected} onClose={()=>setSelected(null)}/>
+    const [tab,setTab]=useState<Tab>('Overview');
+    const viewTabs = useMunicipalTabs(tab, tabs); const [selected,setSelected]=useState<FleetVehicle|null>(null);
+    return <div className="space-y-2.5"><Header onBack={onBack}/><div {...viewTabs.listProps} aria-label="Fleet reference views" className={`${surface} grid gap-1 p-1 sm:grid-cols-2 xl:grid-cols-4`}>{tabs.map(t=><button type="button" key={t} {...viewTabs.tabProps(t)} onClick={()=>setTab(t)} className={`min-h-10 rounded-lg px-3 text-left text-[10px] font-bold ${tab===t?'bg-blue-50 text-blue-900':'text-[var(--ink-secondary)] hover:bg-[var(--surface-recessed)]'}`}>{t}</button>)}</div>
+        <MunicipalTabPanels tabs={viewTabs}>{tab==='Overview'&&<Overview onOpen={setSelected}/>} {tab==='Fleet Board'&&<FleetBoardView onOpen={setSelected}/>} {tab==='Trip Schedule'&&<TripScheduleView/>} {tab==='Maintenance & Fuel'&&<MaintenanceFuel onOpen={setSelected}/>}</MunicipalTabPanels><div className="rounded-lg border border-dashed border-slate-200 px-3 py-2 text-[8px] text-[var(--ink-secondary)]">Presentation/reference only. No live dispatch, real trip ticket, fuel transaction, maintenance work order, GPS tracking, driver identity or operational vehicle record.</div><VehicleDetail vehicle={selected} onClose={()=>setSelected(null)}/>
     </div>;
 }

@@ -1,3 +1,4 @@
+import { MunicipalTabPanels, useMunicipalTabs } from './MunicipalTabs';
 import { useEffect, useMemo, useState } from 'react';
 import {
     Activity,
@@ -431,6 +432,7 @@ function deriveTabRecords(prototype: FutureSystemPrototypeConfig, tab: string, c
 export default function FutureSystemPrototype({ prototype, onBack, backLabel = 'Back to Future Integrations' }: Props) {
     const procurement = prototype.id === 'PROCUREMENT';
     const [activeTab, setActiveTab] = useState(prototype.tabs[0]);
+    const viewTabs = useMunicipalTabs(activeTab, prototype.tabs);
     const [activeFilter, setActiveFilter] = useState('All');
     const [selectedRecordId, setSelectedRecordId] = useState(prototype.records[0]?.id ?? '');
     const [activeStage, setActiveStage] = useState('');
@@ -536,13 +538,13 @@ export default function FutureSystemPrototype({ prototype, onBack, backLabel = '
                 </header>
 
                 <div className="border-b border-slate-200 bg-slate-50/35 px-3 pt-2 dark:border-slate-700 dark:bg-slate-900/15">
-                    <div role="tablist" aria-label={`${prototype.name} views`} className="flex gap-1 overflow-x-auto">
+                    <div {...viewTabs.listProps} aria-label={`${prototype.name} views`} className="flex gap-1 overflow-x-auto">
                         {prototype.tabs.map((tab) => (
                             <button
                                 key={tab}
                                 type="button"
-                                role="tab"
-                                aria-selected={activeTab === tab}
+                                {...viewTabs.tabProps(tab)}
+
                                 onClick={() => setActiveTab(tab)}
                                 className={'min-h-9 shrink-0 rounded-t-lg px-3 text-[10px] font-bold transition focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30 '
                                     + (activeTab === tab ? 'border border-b-white border-slate-200 bg-white text-[var(--brand-ink)] dark:border-slate-700 dark:border-b-[#142236] dark:bg-[#142236]' : 'text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-900/40')}
@@ -551,7 +553,7 @@ export default function FutureSystemPrototype({ prototype, onBack, backLabel = '
                     </div>
                 </div>
 
-                <div className="space-y-3 p-3">
+                <MunicipalTabPanels tabs={viewTabs}><div className="space-y-3 p-3">
                     {activeView.mode === 'overview' && <MetricCards metrics={metrics} />}
 
                     {activeView.showLifecycle && prototype.lifecycle && (
@@ -636,7 +638,7 @@ export default function FutureSystemPrototype({ prototype, onBack, backLabel = '
                             {prototype.conservativeNote ?? presentationEnvironmentFooter}
                         </section>
                     </div>
-                </div>
+                </div></MunicipalTabPanels>
             </div>
         </section>
     );
