@@ -1,11 +1,11 @@
 {
-  "sourceSha": "95f741f7992b3d20d96184e0f6a323376e5803c4",
+  "sourceSha": "efbf3b795cf2a49908adbb8781b72610c3ecf6bc",
   "dirty": true,
-  "executableDigest": "bf9223907c43d32fd5d2d798186e5fff972fa81ec049dd4793d8ee156f56bdf6",
+  "executableDigest": "a63419699ba7ae36f91049f8d45324b07ef5b23266ed46c88465542bab4c91b0",
   "donorSha": "7afabade1fd651c2950f70006b8213ae8b7c61da",
-  "canonicalRuntimeSourceSha": "95f741f7992b3d20d96184e0f6a323376e5803c4",
-  "canonicalRuntimeCompleted": false,
-  "canonicalBuildManifestSha256": null,
+  "canonicalRuntimeSourceSha": "efbf3b795cf2a49908adbb8781b72610c3ecf6bc",
+  "canonicalRuntimeCompleted": true,
+  "canonicalBuildManifestSha256": "b7774f8fac8a4c4c20ee566af38ebe1cfeb4af79a0ec1eecba8223a49f74d75a",
   "files": [
     {
       "donor": "public/brand/municipal.logo.png",
@@ -205,7 +205,7 @@
       "previewConsumers": [],
       "directCanonicalImportFromPreview": [],
       "kind": "stylesheet",
-      "sourceHash": "b8c12f8bbaa3618ae7ac8e4be3584cd7c471feeb92bbcc5ed171a26096a7f388"
+      "sourceHash": "f78c2280e3817da6d07849cb28d4c5c5343ed4f3bc6d372333ef56537c24a588"
     },
     {
       "donor": "resources/css/print.css",
@@ -239,7 +239,7 @@
       "previewConsumers": [],
       "directCanonicalImportFromPreview": [],
       "kind": "stylesheet",
-      "sourceHash": "29463012f524fed7c6379334239fee6d3455eb18d6118eace04a64b90febce36"
+      "sourceHash": "22180bd8bb5534bcd7236421cc2414e22e1d3d7ee6c0c28a8d5a8aae8e35b37b"
     },
     {
       "donor": "resources/js/app.tsx",
@@ -2715,7 +2715,7 @@
         "resources/js/components/ppas/PPARegister.tsx"
       ],
       "kind": "presentation or runtime adapter",
-      "sourceHash": "e0cd4c8ec26621f4e474163ea04c99e1397f978c71188d9a0563535363d55ffc"
+      "sourceHash": "7b82089b3dbcb26c4047f8e75ede24fe2fc795048c1c71db0109e1b5c798f573"
     },
     {
       "donor": "resources/js/components/ppas/PPASummary.tsx",
@@ -3763,7 +3763,7 @@
       "previewConsumers": [],
       "directCanonicalImportFromPreview": [],
       "kind": "presentation or runtime adapter",
-      "sourceHash": "17a2c071e6050aa70cf6711d8fafbab978efabb60981103ebdff574979e643b3"
+      "sourceHash": "e771bf31d060afc0dcfc64f6bb68d96ec865f29ccd77b9a20d46f41d0d6370d4"
     },
     {
       "donor": "resources/js/components/system/AppErrorBoundary.tsx",
@@ -7388,7 +7388,7 @@
         "resources/js/pages/Admin/Index.tsx"
       ],
       "kind": "presentation or runtime adapter",
-      "sourceHash": "8a91971b8ffa8b53c72fbdf0914023746c73fb6324ef12450f9df61b290e7c80"
+      "sourceHash": "0d1add6dcb15a1f8529ac609129661111a1cd5eb1b2859983e34f0edc4becf50"
     },
     {
       "donor": "resources/js/pages/Announcements/Index.tsx",
@@ -7585,7 +7585,7 @@
         "resources/js/pages/Calendar/Index.tsx"
       ],
       "kind": "presentation or runtime adapter",
-      "sourceHash": "88772b884528d108bf0fc19b776190fe72dc0212cfd827fc0d477bce9e71cc1c"
+      "sourceHash": "0557b7896bec3b49217dd1c6b6e2087950fa47dd66d482f4d765eef7d9edfc15"
     },
     {
       "donor": "resources/js/pages/Correspondence/Index.tsx",
@@ -8322,7 +8322,7 @@
       ],
       "directCanonicalImportFromPreview": [],
       "kind": "presentation or runtime adapter",
-      "sourceHash": "7e752548a24c64178e3d5b62bb821dc05d82fd148d2fdaa0a0bbc4acc69ec11d"
+      "sourceHash": "913b085e81a0c4d58cd81be4aaf8dbb4388eb6cf861fa064ac9c5d9b2ce58e33"
     },
     {
       "donor": "resources/js/pages/PlanningMaps/Index.tsx",
@@ -8343,7 +8343,7 @@
         "resources/js/components/maps/MapGalleryCard.tsx"
       ],
       "kind": "presentation or runtime adapter",
-      "sourceHash": "e6343f0c8c76ea1ce2309ae27b55e570909b6a17ac8674eb3f2b6aff1319cbc7"
+      "sourceHash": "0a35e05bb21aa9f2eb71abecc730cd5445bde83afe3d9e60005b227e21b7194d"
     },
     {
       "donor": "resources/js/pages/Plans/Index.tsx",
@@ -8361,7 +8361,7 @@
       ],
       "directCanonicalImportFromPreview": [],
       "kind": "presentation or runtime adapter",
-      "sourceHash": "5fb247289afb050cf4ed4d62cc292dbb87e19fcea40d919835847d54017beeab"
+      "sourceHash": "4129691db4f0039080a9b5ad7de6f09c8aad3759b0165b76766674fd09e23463"
     },
     {
       "donor": "resources/js/pages/ProjectMonitoring/Index.tsx",
@@ -8421,7 +8421,7 @@
         "resources/js/pages/Property/Lifecycle.tsx"
       ],
       "kind": "presentation or runtime adapter",
-      "sourceHash": "e342e8f81b3ddef99ea2740ca5e9297bcf580f0c7e7ff22d9b1caf0e8b2484a5"
+      "sourceHash": "603c1e37f9a9823c2d6ee8f7615f77e668af7bbcf5f4ef928464b4d41fc1f60b"
     },
     {
       "donor": "resources/js/pages/Public/Home.tsx",
@@ -9091,7 +9091,97 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": [
+        {
+          "role": "system_admin",
+          "route": "/admin",
+          "label": "admin",
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-admin-320-light.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/admin",
+          "label": "admin",
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-admin-320-dark.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/admin",
+          "label": "admin",
+          "width": 1024,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast",
+            "th-has-data-cells"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-admin-1024-light.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/admin",
+          "label": "admin",
+          "width": 1024,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast",
+            "th-has-data-cells"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-admin-1024-dark.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/admin",
+          "label": "admin",
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast",
+            "th-has-data-cells"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-admin-1440-light.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/admin",
+          "label": "admin",
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast",
+            "th-has-data-cells"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-admin-1440-dark.png"
+        }
+      ]
     },
     {
       "page": "resources/js/pages/Announcements/Index.tsx",
@@ -9148,7 +9238,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Audit/Index.tsx",
@@ -9201,7 +9292,93 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": [
+        {
+          "role": "system_admin",
+          "route": "/audit",
+          "label": "audit",
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-audit-320-light.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/audit",
+          "label": "audit",
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-audit-320-dark.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/audit",
+          "label": "audit",
+          "width": 1024,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-audit-1024-light.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/audit",
+          "label": "audit",
+          "width": 1024,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-audit-1024-dark.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/audit",
+          "label": "audit",
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-audit-1440-light.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/audit",
+          "label": "audit",
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-audit-1440-dark.png"
+        }
+      ]
     },
     {
       "page": "resources/js/pages/Auth/AccountSecurity.tsx",
@@ -9217,7 +9394,8 @@
         "resources/js/pages/Auth/AccountSecurity.tsx"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Auth/ActivateAccount.tsx",
@@ -9258,7 +9436,8 @@
         "resources/js/components/ui/StatusBadge.tsx"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Auth/Login.tsx",
@@ -9277,7 +9456,8 @@
         "resources/js/branding/talibonAssets.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Auth/MfaChallenge.tsx",
@@ -9296,7 +9476,8 @@
         "resources/js/pages/Auth/mfa-challenge.css"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Auth/MfaEnrollment.tsx",
@@ -9306,7 +9487,8 @@
         "resources/js/pages/Auth/MfaEnrollment.tsx"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Auth/MfaRecoveryCodes.tsx",
@@ -9316,7 +9498,8 @@
         "resources/js/pages/Auth/MfaRecoveryCodes.tsx"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Auth/MfaSettings.tsx",
@@ -9337,7 +9520,8 @@
         "resources/js/components/ui/Dialog.tsx"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Calendar/Index.tsx",
@@ -9531,7 +9715,81 @@
           "errors": []
         }
       ],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": [
+        {
+          "role": "department_head",
+          "route": "/calendar",
+          "label": "calendar",
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-calendar-320-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/calendar",
+          "label": "calendar",
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-calendar-320-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/calendar",
+          "label": "calendar",
+          "width": 1024,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-calendar-1024-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/calendar",
+          "label": "calendar",
+          "width": 1024,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-calendar-1024-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/calendar",
+          "label": "calendar",
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-calendar-1440-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/calendar",
+          "label": "calendar",
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-calendar-1440-dark.png"
+        }
+      ]
     },
     {
       "page": "resources/js/pages/Correspondence/Index.tsx",
@@ -9586,7 +9844,8 @@
         "resources/js/navigation/returnContext.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Correspondence/Show.tsx",
@@ -9646,7 +9905,8 @@
         "resources/js/navigation/returnContext.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Dashboard.tsx",
@@ -9708,7 +9968,8 @@
         "resources/js/navigation/returnContext.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Departments/Index.tsx",
@@ -9763,7 +10024,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Departments/Workspace.tsx",
@@ -9894,7 +10156,81 @@
           "errors": []
         }
       ],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": [
+        {
+          "role": "department_head",
+          "route": "/my-department",
+          "label": "my-department",
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-my-department-320-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/my-department",
+          "label": "my-department",
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-my-department-320-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/my-department",
+          "label": "my-department",
+          "width": 1024,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-my-department-1024-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/my-department",
+          "label": "my-department",
+          "width": 1024,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-my-department-1024-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/my-department",
+          "label": "my-department",
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-my-department-1440-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/my-department",
+          "label": "my-department",
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-my-department-1440-dark.png"
+        }
+      ]
     },
     {
       "page": "resources/js/pages/Documents/Index.tsx",
@@ -10083,7 +10419,8 @@
           "errors": []
         }
       ],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Employees/DirectoryProfile.tsx",
@@ -10137,7 +10474,8 @@
         "resources/js/components/PageFrame.tsx"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Employees/Index.tsx",
@@ -10190,7 +10528,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Employees/Show.tsx",
@@ -10243,7 +10582,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Errors/403.tsx",
@@ -10290,7 +10630,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Errors/Status.tsx",
@@ -10300,7 +10641,8 @@
         "resources/js/pages/Errors/Status.tsx"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Hris/Admin.tsx",
@@ -10353,7 +10695,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Hris/Attendance.tsx",
@@ -10408,7 +10751,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Hris/Dashboard.tsx",
@@ -10463,7 +10807,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Hris/Development.tsx",
@@ -10516,7 +10861,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Hris/Dtr.tsx",
@@ -10569,7 +10915,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Hris/HealthAccess.tsx",
@@ -10622,7 +10969,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Hris/HealthVault.tsx",
@@ -10675,7 +11023,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Hris/Lifecycle/Index.tsx",
@@ -10728,7 +11077,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Hris/Lifecycle/Show.tsx",
@@ -10781,7 +11131,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Hris/Offboarding/Index.tsx",
@@ -10834,7 +11185,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Hris/Offboarding/Show.tsx",
@@ -10887,7 +11239,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Hris/Payroll.tsx",
@@ -10940,7 +11293,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Legislation/Create.tsx",
@@ -10995,7 +11349,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Legislation/Index.tsx",
@@ -11054,7 +11409,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Legislation/Show.tsx",
@@ -11111,7 +11467,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Legislation/Workspace.tsx",
@@ -11173,7 +11530,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/LocalBodies/Index.tsx",
@@ -11231,7 +11589,8 @@
         "resources/js/data/municipal/localBodies.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/MayorOffice.tsx",
@@ -11284,7 +11643,81 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": [
+        {
+          "role": "mayor_approver",
+          "route": "/mayor-office",
+          "label": "mayor-office",
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/mayor_approver-mayor-office-320-light.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/mayor-office",
+          "label": "mayor-office",
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/mayor_approver-mayor-office-320-dark.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/mayor-office",
+          "label": "mayor-office",
+          "width": 1024,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/mayor_approver-mayor-office-1024-light.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/mayor-office",
+          "label": "mayor-office",
+          "width": 1024,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/mayor_approver-mayor-office-1024-dark.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/mayor-office",
+          "label": "mayor-office",
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/mayor_approver-mayor-office-1440-light.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/mayor-office",
+          "label": "mayor-office",
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/mayor_approver-mayor-office-1440-dark.png"
+        }
+      ]
     },
     {
       "page": "resources/js/pages/Meetings/Index.tsx",
@@ -11341,7 +11774,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Memoranda/Create.tsx",
@@ -11397,7 +11831,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Memoranda/Index.tsx",
@@ -11454,7 +11889,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Memoranda/Show.tsx",
@@ -11511,7 +11947,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Messages/Index.tsx",
@@ -11564,7 +12001,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/MunicipalSystems/Index.tsx",
@@ -11659,7 +12097,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Operations/Index.tsx",
@@ -11709,7 +12148,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/PlanningMaps/Index.tsx",
@@ -11746,6 +12186,7 @@
         "resources/js/components/ui/StatusBadge.tsx",
         "resources/js/components/maps/MapStudioView.tsx",
         "resources/js/components/maps/InteractiveReferenceMap.tsx",
+        "resources/js/components/maps/groupMapPins.ts",
         "resources/js/components/maps/MapPlateDialog.tsx",
         "resources/js/components/portal/PortalWorkspaceNav.tsx",
         "resources/js/navigation/portalNavigation.ts",
@@ -11932,6 +12373,252 @@
           "label": "map-plate",
           "contained": true,
           "namedControls": true
+        },
+        {
+          "role": "department_head",
+          "label": "real-map-create-edit-delete"
+        }
+      ],
+      "additionalCanonicalAudits": [
+        {
+          "role": "department_head",
+          "route": "/planning-maps",
+          "label": "planning-maps",
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-planning-maps-320-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/planning-maps",
+          "label": "planning-maps-pin-choices",
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-planning-maps-pin-choices-320-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/planning-maps",
+          "label": "planning-maps-studio",
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-planning-maps-studio-320-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/planning-maps",
+          "label": "planning-maps",
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-planning-maps-320-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/planning-maps",
+          "label": "planning-maps-pin-choices",
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-planning-maps-pin-choices-320-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/planning-maps",
+          "label": "planning-maps-studio",
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-planning-maps-studio-320-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/planning-maps",
+          "label": "planning-maps",
+          "width": 1024,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-planning-maps-1024-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/planning-maps",
+          "label": "planning-maps-pin-choices",
+          "width": 1024,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-planning-maps-pin-choices-1024-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/planning-maps",
+          "label": "planning-maps-studio",
+          "width": 1024,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-planning-maps-studio-1024-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/planning-maps",
+          "label": "planning-maps",
+          "width": 1024,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-planning-maps-1024-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/planning-maps",
+          "label": "planning-maps-pin-choices",
+          "width": 1024,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-planning-maps-pin-choices-1024-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/planning-maps",
+          "label": "planning-maps-studio",
+          "width": 1024,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-planning-maps-studio-1024-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/planning-maps",
+          "label": "planning-maps",
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-planning-maps-1440-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/planning-maps",
+          "label": "planning-maps-pin-choices",
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-planning-maps-pin-choices-1440-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/planning-maps",
+          "label": "planning-maps-studio",
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-planning-maps-studio-1440-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/planning-maps",
+          "label": "planning-maps",
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-planning-maps-1440-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/planning-maps",
+          "label": "planning-maps-pin-choices",
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-planning-maps-pin-choices-1440-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/planning-maps",
+          "label": "planning-maps-studio",
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-planning-maps-studio-1440-dark.png"
         }
       ]
     },
@@ -12214,6 +12901,186 @@
           "label": "staff-scopes",
           "contained": true,
           "namedControls": true
+        },
+        {
+          "role": "department_head",
+          "label": "real-plan-create-edit-delete",
+          "immutableCode": true,
+          "fullCoverageRange": true
+        },
+        {
+          "role": "department_head",
+          "label": "real-staff-management-navigation"
+        }
+      ],
+      "additionalCanonicalAudits": [
+        {
+          "role": "department_head",
+          "route": "/development-plans",
+          "label": "development-plans",
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-development-plans-320-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/development-plans",
+          "label": "development-plans-studio",
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-development-plans-studio-320-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/development-plans",
+          "label": "development-plans",
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-development-plans-320-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/development-plans",
+          "label": "development-plans-studio",
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-development-plans-studio-320-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/development-plans",
+          "label": "development-plans",
+          "width": 1024,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-development-plans-1024-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/development-plans",
+          "label": "development-plans-studio",
+          "width": 1024,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-development-plans-studio-1024-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/development-plans",
+          "label": "development-plans",
+          "width": 1024,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-development-plans-1024-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/development-plans",
+          "label": "development-plans-studio",
+          "width": 1024,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-development-plans-studio-1024-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/development-plans",
+          "label": "development-plans",
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-development-plans-1440-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/development-plans",
+          "label": "development-plans-studio",
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-development-plans-studio-1440-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/development-plans",
+          "label": "development-plans",
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-development-plans-1440-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/development-plans",
+          "label": "development-plans-studio",
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-development-plans-studio-1440-dark.png"
         }
       ]
     },
@@ -12443,6 +13310,181 @@
           "label": "ppa-dossier",
           "contained": true,
           "namedControls": true
+        },
+        {
+          "role": "department_head",
+          "label": "real-ppa-create-edit-delete",
+          "customYearAndFunding": true
+        }
+      ],
+      "additionalCanonicalAudits": [
+        {
+          "role": "department_head",
+          "route": "/ppas",
+          "label": "ppas",
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-ppas-320-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/ppas",
+          "label": "ppas-studio",
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-ppas-studio-320-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/ppas",
+          "label": "ppas",
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-ppas-320-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/ppas",
+          "label": "ppas-studio",
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-ppas-studio-320-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/ppas",
+          "label": "ppas",
+          "width": 1024,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-ppas-1024-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/ppas",
+          "label": "ppas-studio",
+          "width": 1024,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-ppas-studio-1024-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/ppas",
+          "label": "ppas",
+          "width": 1024,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-ppas-1024-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/ppas",
+          "label": "ppas-studio",
+          "width": 1024,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-ppas-studio-1024-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/ppas",
+          "label": "ppas",
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-ppas-1440-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/ppas",
+          "label": "ppas-studio",
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-ppas-studio-1440-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/ppas",
+          "label": "ppas",
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-ppas-1440-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/ppas",
+          "label": "ppas-studio",
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-ppas-studio-1440-dark.png"
         }
       ]
     },
@@ -12500,7 +13542,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Property/Index.tsx",
@@ -12555,7 +13598,93 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": [
+        {
+          "role": "system_admin",
+          "route": "/property",
+          "label": "property",
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-property-320-light.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/property",
+          "label": "property",
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-property-320-dark.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/property",
+          "label": "property",
+          "width": 1024,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-property-1024-light.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/property",
+          "label": "property",
+          "width": 1024,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-property-1024-dark.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/property",
+          "label": "property",
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-property-1440-light.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/property",
+          "label": "property",
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-property-1440-dark.png"
+        }
+      ]
     },
     {
       "page": "resources/js/pages/Property/Lifecycle.tsx",
@@ -12610,7 +13739,99 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": [
+        {
+          "role": "system_admin",
+          "route": "/property/lifecycle",
+          "label": "property-lifecycle",
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast",
+            "th-has-data-cells"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-property-lifecycle-320-light.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/property/lifecycle",
+          "label": "property-lifecycle",
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast",
+            "th-has-data-cells"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-property-lifecycle-320-dark.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/property/lifecycle",
+          "label": "property-lifecycle",
+          "width": 1024,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast",
+            "th-has-data-cells"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-property-lifecycle-1024-light.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/property/lifecycle",
+          "label": "property-lifecycle",
+          "width": 1024,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast",
+            "th-has-data-cells"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-property-lifecycle-1024-dark.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/property/lifecycle",
+          "label": "property-lifecycle",
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast",
+            "th-has-data-cells"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-property-lifecycle-1440-light.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/property/lifecycle",
+          "label": "property-lifecycle",
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast",
+            "th-has-data-cells"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/system_admin-property-lifecycle-1440-dark.png"
+        }
+      ]
     },
     {
       "page": "resources/js/pages/Public/Home.tsx",
@@ -12637,7 +13858,8 @@
         "resources/js/components/public/PublicSecureAccess.tsx"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Records/Index.tsx",
@@ -12691,7 +13913,8 @@
         "resources/js/navigation/returnContext.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Reports/Index.tsx",
@@ -12748,7 +13971,81 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": [
+        {
+          "role": "mayor_approver",
+          "route": "/reports",
+          "label": "reports",
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/mayor_approver-reports-320-light.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/reports",
+          "label": "reports",
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/mayor_approver-reports-320-dark.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/reports",
+          "label": "reports",
+          "width": 1024,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/mayor_approver-reports-1024-light.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/reports",
+          "label": "reports",
+          "width": 1024,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/mayor_approver-reports-1024-dark.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/reports",
+          "label": "reports",
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/mayor_approver-reports-1440-light.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/reports",
+          "label": "reports",
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/mayor_approver-reports-1440-dark.png"
+        }
+      ]
     },
     {
       "page": "resources/js/pages/Search/Index.tsx",
@@ -12803,7 +14100,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Tasks/Index.tsx",
@@ -13004,6 +14302,80 @@
           "role": "department_head",
           "label": "cross-account-task-denial",
           "status": 404
+        }
+      ],
+      "additionalCanonicalAudits": [
+        {
+          "role": "department_head",
+          "route": "/my-tasks",
+          "label": "my-tasks",
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-my-tasks-320-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/my-tasks",
+          "label": "my-tasks",
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-my-tasks-320-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/my-tasks",
+          "label": "my-tasks",
+          "width": 1024,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-my-tasks-1024-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/my-tasks",
+          "label": "my-tasks",
+          "width": 1024,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-my-tasks-1024-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/my-tasks",
+          "label": "my-tasks",
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-my-tasks-1440-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/my-tasks",
+          "label": "my-tasks",
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-my-tasks-1440-dark.png"
         }
       ]
     },
@@ -13292,6 +14664,92 @@
           "contained": true,
           "namedControls": true
         }
+      ],
+      "additionalCanonicalAudits": [
+        {
+          "role": "department_head",
+          "route": "/transactions/create",
+          "label": "transactions-create",
+          "width": 320,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-transactions-create-320-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/transactions/create",
+          "label": "transactions-create",
+          "width": 320,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-transactions-create-320-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/transactions/create",
+          "label": "transactions-create",
+          "width": 1024,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-transactions-create-1024-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/transactions/create",
+          "label": "transactions-create",
+          "width": 1024,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-transactions-create-1024-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/transactions/create",
+          "label": "transactions-create",
+          "width": 1440,
+          "theme": "light",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-transactions-create-1440-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/transactions/create",
+          "label": "transactions-create",
+          "width": 1440,
+          "theme": "dark",
+          "overflow": false,
+          "violationCount": 0,
+          "incompleteRuleIds": [
+            "color-contrast"
+          ],
+          "receipt": "published/efbf3b79/accessibility-results.json",
+          "capture": "published/efbf3b79/accessibility-captures/department_head-transactions-create-1440-dark.png"
+        }
       ]
     },
     {
@@ -13446,7 +14904,8 @@
           "contained": true,
           "namedControls": true
         }
-      ]
+      ],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Transactions/Index.tsx",
@@ -13733,7 +15192,8 @@
           "contained": true,
           "namedControls": true
         }
-      ]
+      ],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/Transactions/Show.tsx",
@@ -13888,7 +15348,8 @@
           "contained": true,
           "namedControls": true
         }
-      ]
+      ],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/TravelOrders/Create.tsx",
@@ -13944,7 +15405,8 @@
         "resources/js/lib/format.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/TravelOrders/Index.tsx",
@@ -14000,7 +15462,8 @@
         "resources/js/navigation/returnContext.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     },
     {
       "page": "resources/js/pages/TravelOrders/Show.tsx",
@@ -14059,7 +15522,9 @@
         "resources/js/navigation/returnContext.ts"
       ],
       "canonicalRouteEvidence": [],
-      "canonicalInteractions": []
+      "canonicalInteractions": [],
+      "additionalCanonicalAudits": []
     }
-  ]
+  ],
+  "publicationNote": "This evidence-only worktree has artifact changes. Executable content matches sourceSha; runtime sourceWorktreeDirty is independently false. Publication dirty flag is retained truthfully."
 }

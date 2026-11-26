@@ -1,0 +1,22 @@
+
+> test:aj-home-auth
+> node --test tests/Browser/aj-home-auth.test.mjs
+
+✔ built pages: 320px homepage, Login, MFA and Dashboard (6806.4529ms)
+✔ built pages: 390px homepage, Login, MFA and Dashboard (5228.4181ms)
+✔ built pages: 768px homepage, Login, MFA and Dashboard (5580.7619ms)
+✔ built pages: 1024px homepage, Login, MFA and Dashboard (6635.4972ms)
+✔ built pages: 1440px homepage, Login, MFA and Dashboard (6804.2512ms)
+✔ homepage keyboard, mobile navigation and actual Inertia Login link (1635.5375ms)
+✔ Login keyboard, required fields, payload, pending and server errors (2441.4283ms)
+✔ persisted dark appearance, short auth viewport and authenticated homepage destination (2365.1361ms)
+✔ MFA focus, challenge/recovery payloads, pending, errors and logout (3804.0676ms)
+✔ homepage section navigation, keyboard focus and reduced motion (1956.6828ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 45544.983

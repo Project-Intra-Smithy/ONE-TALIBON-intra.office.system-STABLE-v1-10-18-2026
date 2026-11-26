@@ -1,0 +1,21 @@
+
+> test:ux
+> node --experimental-strip-types --test tests/Browser/ux-refinement.test.mjs
+
+✔ workspace responsive controls at 320px (9646.4126ms)
+✔ workspace responsive controls at 390px (3459.5312ms)
+✔ workspace responsive controls at 768px (4058.6857ms)
+✔ workspace responsive controls at 1024px (4011.8053ms)
+✔ workspace responsive controls at 1440px (4238.0387ms)
+✔ navigation respects supplied permissions for all four experiences (3711.7898ms)
+✔ Calendar dialog traps focus, closes with Escape and restores trigger focus (1212.756ms)
+✔ personal Task selection, keyboard back action and denied reads (1255.1614ms)
+✔ server-confirmed Task mutations refresh the read workspace without optimistic state (1636.8414ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 34904.3722
