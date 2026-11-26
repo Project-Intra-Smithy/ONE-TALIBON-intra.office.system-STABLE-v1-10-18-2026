@@ -3,17 +3,16 @@
 // Dependency behavior witnesses; no application records, mail delivery or external sockets.
 declare(strict_types=1);
 
-$root = getenv('DEPENDENCY_REGRESSION_ROOT') ?: dirname(__DIR__, 2);
-require $root.'/vendor/autoload.php';
-$app = require $root.'/bootstrap/app.php';
-$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
-
+use Egulias\EmailValidator\EmailValidator;
+use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request as LaravelRequest;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\View\Compilers\BladeCompiler;
+use Illuminate\View\Component;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Fragment\InlineFragmentRenderer;
@@ -22,10 +21,16 @@ use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 use Symfony\Component\Mailer\Transport\Smtp\SmtpTransport;
 use Symfony\Component\Mailer\Transport\Smtp\Stream\AbstractStream;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+
+$root = getenv('DEPENDENCY_REGRESSION_ROOT') ?: dirname(__DIR__, 2);
+require $root.'/vendor/autoload.php';
+$app = require $root.'/bootstrap/app.php';
+$app->make(Kernel::class)->bootstrap();
 
 function check(bool $condition, string $message): void
 {
@@ -34,36 +39,67 @@ function check(bool $condition, string $message): void
     }
 }
 
-class DependencySecurityComponent extends Illuminate\View\Component
+class DependencySecurityComponent extends Component
 {
-    public function render(): string { return '<span {{ $attributes }}>safe</span>'; }
+    public function render(): string
+    {
+        return '<span {{ $attributes }}>safe</span>';
+    }
 }
 class DependencySecurityStream extends AbstractStream
 {
     public bool $handshake = false;
+
     public function initialize(): void {}
-    protected function getReadConnectionDescription(): string { return 'synthetic stream'; }
-    public function isTLS(): bool { return false; }
-    public function hasPendingData(): bool { return true; }
-    public function startTLS(): bool { $this->handshake = true; return true; }
+
+    protected function getReadConnectionDescription(): string
+    {
+        return 'synthetic stream';
+    }
+
+    public function isTLS(): bool
+    {
+        return false;
+    }
+
+    public function hasPendingData(): bool
+    {
+        return true;
+    }
+
+    public function startTLS(): bool
+    {
+        $this->handshake = true;
+
+        return true;
+    }
 }
 class DependencySecuritySmtp extends EsmtpTransport
 {
     public bool $rejectEhlo = false;
+
     public DependencySecurityStream $fixtureStream;
+
     public function __construct()
     {
         parent::__construct('localhost', 25, false);
-        $this->fixtureStream = new DependencySecurityStream();
+        $this->fixtureStream = new DependencySecurityStream;
         (new ReflectionProperty(SmtpTransport::class, 'stream'))->setValue($this, $this->fixtureStream);
     }
+
     public function executeCommand(string $command, array $codes): string
     {
         if (str_starts_with($command, 'EHLO ')) {
-            if ($this->rejectEhlo) { throw new TransportException('Synthetic EHLO rejection'); }
+            if ($this->rejectEhlo) {
+                throw new TransportException('Synthetic EHLO rejection');
+            }
+
             return "250-safe\r\n250 STARTTLS\r\n";
         }
-        if ($command === "STARTTLS\r\n") { return "220 Ready\r\n"; }
+        if ($command === "STARTTLS\r\n") {
+            return "220 Ready\r\n";
+        }
+
         return parent::executeCommand($command, $codes);
     }
 }
@@ -88,13 +124,17 @@ witness('GHSA-c25c-x5r7-2v5m bounded numeric exponents', function () {
     check(Validator::make(['value' => 4], ['value' => 'numeric|multiple_of:2'])->passes(), 'Normal arithmetic regressed');
 });
 witness('GHSA-cvfq-f547-rv2g email byte limit', function () use ($app) {
-    $original = $app->make(Egulias\EmailValidator\EmailValidator::class);
-    $spy = Mockery::mock(Egulias\EmailValidator\EmailValidator::class);
-    $spy->shouldReceive('isValid')->andReturnUsing(function () { throw new RuntimeException('Oversized email reached expensive IDN validation'); });
-    $app->instance(Egulias\EmailValidator\EmailValidator::class, $spy);
+    $original = $app->make(EmailValidator::class);
+    $spy = Mockery::mock(EmailValidator::class);
+    $spy->shouldReceive('isValid')->andReturnUsing(function () {
+        throw new RuntimeException('Oversized email reached expensive IDN validation');
+    });
+    $app->instance(EmailValidator::class, $spy);
     try {
         check(Validator::make(['email' => 'a@'.str_repeat('é', 128).'.test'], ['email' => 'email'])->fails(), 'Oversized Unicode email accepted');
-    } finally { $app->instance(Egulias\EmailValidator\EmailValidator::class, $original); }
+    } finally {
+        $app->instance(EmailValidator::class, $original);
+    }
     check(Validator::make(['email' => 'qa@example.test'], ['email' => 'email'])->passes(), 'Normal email rejected');
 });
 witness('GHSA-cq3g-fj94-c8p3 empty wildcard key', function () {
@@ -111,9 +151,14 @@ witness('GHSA-hxc4-wvjf-r59p colliding optional upload', function () {
     }
 });
 witness('GHSA-6pxv-c29g-cc5h normalized mass-assignment guard', function () {
-    $model = new class extends Model {
+    $model = new class extends Model
+    {
         protected $guarded = ['is_admin'];
-        public function setIsAdminAttribute($value): void { $this->attributes['is_admin'] = $value; }
+
+        public function setIsAdminAttribute($value): void
+        {
+            $this->attributes['is_admin'] = $value;
+        }
     };
     foreach (['is-admin', 'is admin', 'is_admin'] as $key) {
         check($model->isGuarded($key), 'Guard normalization bypass: '.$key);
@@ -123,11 +168,20 @@ witness('GHSA-ch34-gjmh-c4hp literal database-rule scopes', function () {
     foreach (['NULL', 'NOT_NULL', '!another'] as $value) {
         foreach ([Rule::exists('records', 'id'), Rule::unique('records', 'id')] as $rule) {
             $conditions = $rule->where('tenant', $value)->queryConditions();
-            $query = new class {
+            $query = new class
+            {
                 public array $calls = [];
-                public function where(...$args): self { $this->calls[] = $args; return $this; }
+
+                public function where(...$args): self
+                {
+                    $this->calls[] = $args;
+
+                    return $this;
+                }
             };
-            foreach ($conditions as $condition) { $condition($query); }
+            foreach ($conditions as $condition) {
+                $condition($query);
+            }
             check($query->calls === [['tenant', '=', $value]], 'Scope became a reserved predicate');
         }
     }
@@ -156,7 +210,7 @@ witness('GHSA-5xc4-gpwg-p8wq compiled echo-format separation', function () use (
         $compiler->setEchoFormat('custom_secured_encoder(%s)');
         check($compiler->getCompiledPath('/synthetic/security-mail.blade.php') !== $original, 'Secured echo reused default cached view');
     } finally {
-        $compiler->setEchoFormat(Illuminate\View\Compilers\BladeCompiler::DEFAULT_ECHO_FORMAT);
+        $compiler->setEchoFormat(BladeCompiler::DEFAULT_ECHO_FORMAT);
     }
 });
 witness('CVE-2026-133743 untrusted forwarded fragment headers', function () {
@@ -164,50 +218,65 @@ witness('CVE-2026-133743 untrusted forwarded fragment headers', function () {
     $headers = Request::getTrustedHeaderSet();
     try {
         Request::setTrustedProxies(['10.0.0.1'], Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PROTO);
-        $kernel = new class implements HttpKernelInterface {
-            public function handle(Request $request, int $type = self::MAIN_REQUEST, bool $catch = true): Response { return new Response($request->getSchemeAndHttpHost()); }
+        $kernel = new class implements HttpKernelInterface
+        {
+            public function handle(Request $request, int $type = self::MAIN_REQUEST, bool $catch = true): Response
+            {
+                return new Response($request->getSchemeAndHttpHost());
+            }
         };
         $request = Request::create('https://safe.example.test/', server: ['REMOTE_ADDR' => '198.51.100.1', 'HTTP_X_FORWARDED_HOST' => 'unsafe.example.test', 'HTTP_X_FORWARDED_PROTO' => 'http']);
         $response = (new InlineFragmentRenderer($kernel))->render('https://safe.example.test/fragment', $request);
         check($response->getContent() === 'https://safe.example.test', 'Fragment trusted attacker headers');
-    } finally { Request::setTrustedProxies($proxies, $headers); }
+    } finally {
+        Request::setTrustedProxies($proxies, $headers);
+    }
 });
 witness('CVE-2026-133746 generated path authority', function () {
-    $routes = new RouteCollection();
+    $routes = new RouteCollection;
     $routes->add('path', new Route('/{path}', requirements: ['path' => '.+']));
     $generator = new UrlGenerator($routes, new RequestContext('', 'GET', 'safe.example.test', 'https'));
     $url = $generator->generate('path', ['path' => '/unsafe.example.test/path']);
     check(! str_starts_with($url, '//'), 'Generated path became network authority');
 });
 witness('CVE-2026-133754 host placeholder validation', function () {
-    $routes = new RouteCollection();
+    $routes = new RouteCollection;
     $routes->add('host', new Route('/', requirements: ['tenant' => '.+'], host: '{tenant}.example.test'));
-    $generator = new UrlGenerator($routes, new RequestContext());
+    $generator = new UrlGenerator($routes, new RequestContext);
     foreach (['unsafe@example', 'unsafe/example', 'unsafe。example'] as $tenant) {
-        try { $generator->generate('host', compact('tenant')); } catch (Symfony\Component\Routing\Exception\InvalidParameterException) { continue; }
+        try {
+            $generator->generate('host', compact('tenant'));
+        } catch (InvalidParameterException) {
+            continue;
+        }
         throw new RuntimeException('Unsafe host placeholder accepted');
     }
     check(str_contains($generator->generate('host', ['tenant' => 'safe']), 'safe.example.test'), 'Normal host rejected');
 });
 witness('CVE-2026-133751 required TLS survives EHLO failure', function () {
-    $transport = new DependencySecuritySmtp();
+    $transport = new DependencySecuritySmtp;
     $transport->rejectEhlo = true;
     $transport->setRequireTls(true);
-    try { $transport->executeCommand("HELO safe\r\n", [250]); } catch (TransportException $error) {
+    try {
+        $transport->executeCommand("HELO safe\r\n", [250]);
+    } catch (TransportException $error) {
         check(str_contains($error->getMessage(), 'TLS required'), 'Unexpected TLS failure');
+
         return;
     }
     throw new RuntimeException('TLS requirement bypassed');
 });
 witness('CVE-2026-133755 STARTTLS rejects injected cleartext replies', function () {
-    $transport = new DependencySecuritySmtp();
-    try { $transport->executeCommand("HELO safe\r\n", [250]); } catch (TransportException $error) {
+    $transport = new DependencySecuritySmtp;
+    try {
+        $transport->executeCommand("HELO safe\r\n", [250]);
+    } catch (TransportException $error) {
         check(str_contains($error->getMessage(), 'unexpected data'), 'Unexpected STARTTLS failure');
         check(! $transport->fixtureStream->handshake, 'Handshake began despite pending attacker data');
+
         return;
     }
     throw new RuntimeException('Injected STARTTLS data accepted');
 });
 
 exit($failures === [] ? 0 : 1);
-
