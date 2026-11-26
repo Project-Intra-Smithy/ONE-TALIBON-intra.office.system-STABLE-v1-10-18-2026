@@ -23,6 +23,7 @@ export async function verifyMunicipalTabs(page, list) {
         await page.keyboard.press(key);
         await page.waitForFunction(({ id, index }) => { const list = document.getElementById(id); return list && list.querySelectorAll('[role=tab]')[index] === document.activeElement; }, { id: await list.evaluate(n => { n.id ||= 'qa-tablist-' + crypto.randomUUID(); return n.id; }), index });
         assert.equal(await inspect(), index, key + ' selection');
+        await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
         const outline = await tabs.nth(index).evaluate(n => ({ style: getComputedStyle(n).outlineStyle, width: parseFloat(getComputedStyle(n).outlineWidth) }));
         assert.equal(outline.style, 'solid');
         assert.ok(outline.width >= 2);
