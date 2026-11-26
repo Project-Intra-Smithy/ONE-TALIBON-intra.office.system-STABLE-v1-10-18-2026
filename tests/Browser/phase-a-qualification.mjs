@@ -36,7 +36,7 @@ const interactionsOnly=process.env.PHASE_A_QUALIFICATION_INTERACTIONS_ONLY==='1'
 assert.ok(!interactionsOnly||process.env.PHASE_A_QUALIFICATION_FOCUS==='1','Interaction selection is only for explicitly focused checks');
 assert.ok(!roleFilter||process.env.PHASE_A_QUALIFICATION_FOCUS==='1','Role selection is only for explicitly focused checks');
 assert.ok(!roleFilter||roleFilter.every(role=>['employee','department_head','system_admin','mayor_approver','auth_enrollment'].includes(role)));
-async function inspect(page,role,route,width,theme){
+async function inspect(page,role,route,width,theme,stage='route'){
     const errors=[];const listener=error=>errors.push(error.message);page.on('pageerror',listener);
     try{
         const response=await page.goto(origin+route);await page.getByRole('main').first().waitFor();await page.evaluate(()=>document.fonts.ready);
@@ -45,7 +45,7 @@ async function inspect(page,role,route,width,theme){
         const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);
         await page.evaluate(axeSource);
         const axe=await page.evaluate(async()=>window.axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa','wcag22aa']}}));
-        const capture=`${role}-${route.slice(1).replaceAll(/[^a-zA-Z0-9_-]/g,'-')||'home'}-${width}-${theme}.png`;
+        const capture=`${role}-${route.slice(1).replaceAll(/[^a-zA-Z0-9_-]/g,'-')||'home'}${stage==='route'?'':'-'+stage}-${width}-${theme}.png`;
         await page.screenshot({path:output+'/'+capture,fullPage:true});
         const accessibilityTree=await page.locator('body').ariaSnapshot();
         const manualReview=await contrastReview(page,axe);
@@ -55,7 +55,7 @@ async function inspect(page,role,route,width,theme){
             await page.waitForFunction(()=>{const r=document.activeElement.getBoundingClientRect();return r.left>=-1&&r.right<=innerWidth+1&&r.top>=-1&&r.bottom<=innerHeight+1;},null,{timeout:750}).catch(()=>{});
             keyboardTrace.push(await page.evaluate(()=>{const node=document.activeElement,rect=node.getBoundingClientRect(),styles=getComputedStyle(node),hit=document.elementFromPoint(rect.left+rect.width/2,rect.top+rect.height/2);return {tag:node.tagName,name:node.tagName==='BODY'?'Document':node.getAttribute('aria-label')||node.textContent?.trim().slice(0,80),role:node.getAttribute('role'),outline:styles.outline,shadow:styles.boxShadow,inViewport:rect.left>=-1&&rect.right<=innerWidth+1&&rect.top>=-1&&rect.bottom<=innerHeight+1,unobscured:hit===node||node.contains(hit),focusRect:{x:rect.x,y:rect.y,width:rect.width,height:rect.height}};}));
         }
-        const observation={role,route,width,theme,status,renderedComponent:component,disposition:status===200?'CANONICAL PAGE RENDERED':status===403?'AUTHORIZATION DENIED: not positive page coverage':status===404?'NOT FOUND: not positive page coverage':'UNEXPECTED RESPONSE',overflow,errors,capture,accessibilityTree,manualReview,keyboardTrace,violations:axe.violations,incomplete:axe.incomplete};
+        const observation={role,route,width,theme,stage,status,renderedComponent:component,disposition:status===200?'CANONICAL PAGE RENDERED':status===403?'AUTHORIZATION DENIED: not positive page coverage':status===404?'NOT FOUND: not positive page coverage':'UNEXPECTED RESPONSE',overflow,errors,capture,accessibilityTree,manualReview,keyboardTrace,violations:axe.violations,incomplete:axe.incomplete};
         observations.push(observation);
         if(![200,403,404].includes(status)||!component||overflow||errors.length||axe.violations.length)failures.push({role,route,width,theme,status,overflow,errors,violationIds:axe.violations.map(r=>r.id)});
         save();return observation;
@@ -138,7 +138,7 @@ try{
             interactions.push({role:actor.role,label:'real-staff-designate-scope-toggle-revoke',employee:fixtures.delegateEmployee});
             if(workRequestRoute){
                 await page.keyboard.press('Escape');await page.setViewportSize({width:320,height:900});
-                await inspect(page,actor.role,workRequestRoute,320,'light');
+                await inspect(page,actor.role,workRequestRoute,320,'light','before-office-action');
                 await page.getByLabel('Assign responsible employee').selectOption(String(fixtures.delegateEmployee));
                 const assigned=page.waitForResponse(response=>response.request().method()==='POST'&&response.url()===origin+workRequestRoute+'/transition');
                 await page.getByRole('button',{name:'Assign',exact:true}).click();assert.ok([302,303].includes((await assigned).status()));
@@ -158,6 +158,7 @@ try{
         }
         await context.close();
     }
+    const captureNames=observations.map(item=>item.capture).filter(Boolean);assert.equal(new Set(captureNames).size,captureNames.length,'Each observed state must retain its own original capture');
     completed=true;
 }catch(error){failures.push({stage:'qualification interaction or authentication',error:String(error)});if(activePage&&!/\/(?:login|security|activate-account)/.test(new URL(activePage.url()).pathname))await captureInteraction(activePage,'failure');throw error;}finally{await browser.close();sourceChangedDuringRun=Boolean(execFileSync('git',['status','--porcelain'],{encoding:'utf8'}).trim())||execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim()!==sourceSha;save();}
 console.log(JSON.stringify({observations:observations.length,failures},null,2));
