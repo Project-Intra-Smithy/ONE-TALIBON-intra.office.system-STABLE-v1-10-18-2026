@@ -13,6 +13,14 @@ PATCHES = {
     "symfony/mailer": ("v8.1.5", "v8.1.12"),
     "symfony/routing": ("v8.1.11", "v8.1.12"),
 }
+# Independently resolved official release tags (Symfony annotated tags dereferenced).
+PATCH_REFERENCES = {
+    "laravel/framework": "8a8c4a84852869e13190d89f9da873cd9a70f14c",
+    "symfony/http-foundation": "8061f6d6b6ec8fc5075b5f39c8ddca83110da9c6",
+    "symfony/http-kernel": "cd6146b67375122b050c25cfb1a49b6fe6fc4adb",
+    "symfony/mailer": "535515ab0bdc7efbfb7161fe23c6bf7434e26b93",
+    "symfony/routing": "55df7515cdd7769113e46dbeba7942c1ccab8590",
+}
 ALLOWED = {
     "composer.lock",
     ".forge/memory/WORK-PACKAGE-REGISTER.md",
@@ -43,6 +51,7 @@ def check_lock(before, after):
                 require(section == "packages", "Security package moved to development scope")
                 require((old[name]["version"], package["version"]) == PATCHES[name], f"Unexpected patch version: {name}")
                 require(package["source"]["url"] == old[name]["source"]["url"], f"Source origin changed: {name}")
+                require(package["source"]["reference"] == PATCH_REFERENCES[name], f"Official release commit mismatch: {name}")
                 require(package["dist"]["reference"] == package["source"]["reference"], f"Distribution/source mismatch: {name}")
                 require(package["dist"]["url"] == old[name]["dist"]["url"].replace(old[name]["source"]["reference"], package["source"]["reference"]), f"Distribution origin changed: {name}")
                 changed.add(name)
