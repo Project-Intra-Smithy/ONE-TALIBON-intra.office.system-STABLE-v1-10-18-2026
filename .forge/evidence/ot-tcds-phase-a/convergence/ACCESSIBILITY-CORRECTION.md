@@ -12,9 +12,11 @@ The distinct findings were:
 - Quick Jump's shortcut target was 22px high. It now has a 32px minimum height within its existing search field.
 - Closely spaced map reference markers obscured one another's targets. The shared renderer now uses 44px markers and groups nearby coordinates into an explicitly named, keyboard-accessible reference list. All original records and coordinate values remain available; no data or official GIS layer is invented. Escape returns focus to the group marker; selecting a record returns focus to the map.
 - Dark primary-button hover, legacy planning text and Calendar guidance had insufficient contrast. Repairs use the intended separate brand background and readable ink tokens. Property Lifecycle's gold eyebrow is brighter against its green banner.
-- Leaflet attribution relied only on color to identify its link. The themed vendor override now underlines it. Popup surfaces use the same theme tokens.
+- Leaflet attribution relied only on color to identify its link. The themed vendor override now underlines it.
 
 The grouping helper has a regression test for coincident positions, transitive neighbors, exact spacing boundary and preservation of record identities. Follow-up audit captures are kept separately from the baseline. A working-tree audit is never attributed to the clean de362bfe candidate merely because it began from that Git parent.
+
+The frozen local checkpoint `a511900206358aab58df73ad3da7012231766599` additionally exercised the nearby-reference list. Its Leaflet popup could be clipped or obscured by map controls on narrow viewports, so that list now uses the existing native Dialog. It preserves every reference, exposes a descriptive accessible name and restores keyboard focus. A higher-volume Administration fixture also demonstrated low-contrast inactive pagination text and a read-only office list that could scroll without keyboard access; pagination text now remains readable and the list is a named, focusable region. These repairs require a new exact-candidate audit; they do not retroactively pass the a5119002 audit.
 
 ## Repeatable local check
 

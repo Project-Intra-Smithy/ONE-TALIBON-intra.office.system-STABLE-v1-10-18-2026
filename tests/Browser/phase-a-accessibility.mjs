@@ -22,7 +22,7 @@ async function audit(page,role,route,label,width,theme){
     const capture=`${role}-${label}-${width}-${theme}.png`;
     await page.screenshot({path:`${output}/${capture}`,fullPage:false});
     observations.push({role,route,label,width,theme,overflow,capture,engine:result.testEngine,violations:result.violations.map(({id,impact,help,helpUrl,nodes})=>({id,impact,help,helpUrl,nodes:nodes.map(({target,html,failureSummary})=>({target,html,failureSummary}))})),incomplete:result.incomplete.map(({id,nodes})=>({id,targets:nodes.map(node=>node.target)}))});
-    fs.writeFileSync(output+'/results.json',JSON.stringify({completed,sourceSha,sourceWorktreeDirty,buildManifestSha256,observations},null,2));
+    fs.writeFileSync(output+'/results.json',JSON.stringify({completed,passed:completed&&observations.every(item=>!item.violations.length&&!item.overflow),sourceSha,sourceWorktreeDirty,buildManifestSha256,observations},null,2));
 }
 try{
     const actors=[{role:'department_head',login:process.env.PHASE_A_HEAD_LOGIN,paths:['/my-tasks','/transactions/create','/calendar','/development-plans','/ppas','/planning-maps','/my-department']},{role:'system_admin',login:process.env.PHASE_A_ADMIN_LOGIN,paths:['/admin','/audit','/property','/property/lifecycle']},{role:'mayor_approver',login:process.env.PHASE_A_MAYOR_LOGIN,paths:['/mayor-office','/reports']}];
@@ -41,12 +41,14 @@ try{
                     const cluster=page.getByRole('button',{name:/^Select from \d+ nearby map references$/}).first();
                     assert.ok(await cluster.count(),'Reference samples must exercise grouped map-target selection');
                     if(await cluster.count()){
-                        await cluster.click();const choices=page.getByRole('group',{name:'Nearby map references',exact:true});
-                        await choices.waitFor();assert.equal(await choices.getByRole('button').first().evaluate(node=>node===document.activeElement),true);
+                        await cluster.click();const choices=page.getByRole('dialog',{name:'Nearby map references',exact:true});
+                        await choices.waitFor();
+                        const records=choices.getByRole('list',{name:'Nearby reference records'});
+                        assert.equal(await records.getByRole('button').first().evaluate(node=>node===document.activeElement),true);
                         await audit(page,actor.role,route,label+'-pin-choices',width,theme);
                         await page.keyboard.press('Escape');await choices.waitFor({state:'hidden'});
                         assert.equal(await cluster.evaluate(node=>node===document.activeElement),true);
-                        await cluster.click();await choices.getByRole('button').first().click();await choices.waitFor({state:'hidden'});
+                        await cluster.click();await records.getByRole('button').first().click();await choices.waitFor({state:'hidden'});
                     }
                 }
                 const buttonName=route==='/development-plans'?'New Plan Record':route==='/ppas'?'Register PPA Entry':route==='/planning-maps'?'Register Map Plate':null;
@@ -61,7 +63,7 @@ try{
         assert.deepEqual(errors,[]);await context.close();
     }
     completed=true;
-}finally{await browser.close();fs.writeFileSync(output+'/results.json',JSON.stringify({completed,sourceSha,sourceWorktreeDirty,buildManifestSha256,observations},null,2));}
+}finally{await browser.close();fs.writeFileSync(output+'/results.json',JSON.stringify({completed,passed:completed&&observations.every(item=>!item.violations.length&&!item.overflow),sourceSha,sourceWorktreeDirty,buildManifestSha256,observations},null,2));}
 const violations=observations.filter(item=>item.violations.length||item.overflow);
 console.log(JSON.stringify(violations.map(({role,route,label,width,theme,overflow,violations})=>({role,route,label,width,theme,overflow,violations:violations.map(item=>({id:item.id,nodes:item.nodes.length}))})),null,2));
 assert.equal(violations.length,0,'See precise axe nodes and captures in local accessibility evidence');

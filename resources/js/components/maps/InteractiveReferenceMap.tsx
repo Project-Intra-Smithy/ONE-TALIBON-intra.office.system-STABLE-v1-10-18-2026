@@ -1,5 +1,6 @@
 import { groupMapPins } from './groupMapPins';
 import L from 'leaflet';
+import { Dialog } from '../ui/Dialog';
 import { LocateFixed, Minus, Plus } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
@@ -59,6 +60,9 @@ export default function InteractiveReferenceMap({
     const mapRef = useRef<L.Map | null>(null);
     const markersLayerRef = useRef<L.LayerGroup | null>(null);
     const overlaysLayerRef = useRef<L.LayerGroup | null>(null);
+    const [openCluster, setOpenCluster] = useState<InteractiveMapPin[] | null>(null);
+    const clusterTriggerRef = useRef<HTMLElement | null>(null);
+    const closeCluster = () => { setOpenCluster(null); requestAnimationFrame(() => clusterTriggerRef.current?.focus({ preventScroll: true })); };
     const [mapTone, setMapTone] = useState<'night' | 'paper'>('night');
 
     useEffect(() => {
@@ -134,25 +138,7 @@ export default function InteractiveReferenceMap({
                 tooltip.textContent = cluster.length > 1 ? `${cluster.length} nearby references — open to select` : `${pin.code}: ${pin.title}`;
                 marker.bindTooltip(tooltip, { direction: 'top', offset: [0, -22] });
                 if (cluster.length === 1) marker.on('click', () => onSelectPin?.(pin.id));
-                else {
-                    const choices = document.createElement('div');
-                    choices.setAttribute('role', 'group');
-                    choices.setAttribute('aria-label', 'Nearby map references');
-                    for (const item of cluster) {
-                        const button = document.createElement('button');
-                        button.type = 'button';
-                        button.className = 'block min-h-11 w-full break-words border-b border-[var(--border-default)] px-2 py-2 text-left text-xs text-[var(--ink-primary)]';
-                        button.textContent = `${item.code} — ${item.title}`;
-                        button.addEventListener('click', () => { map.closePopup(); onSelectPin?.(item.id); containerRef.current?.focus(); });
-                        choices.append(button);
-                    }
-                    marker.bindPopup(choices, { maxWidth: Math.max(120, Math.min(280, map.getSize().x - 64)), autoPanPadding: [24, 24] });
-                    marker.on('popupopen', () => choices.querySelector('button')?.focus());
-                    choices.addEventListener('keydown', event => {
-                        if (event.key !== 'Escape') return;
-                        event.preventDefault(); event.stopPropagation(); map.closePopup(); marker.getElement()?.focus();
-                    });
-                }
+                else marker.on('click', () => { clusterTriggerRef.current = marker.getElement() ?? null; setOpenCluster(cluster); });
             });
             if (pickMode && pickedCoords) L.marker([pickedCoords.lat, pickedCoords.lng], {
                 icon: makeMarkerIcon('#c89b3c', '★', true), title: 'Selected map pin location', interactive: false, keyboard: false,
@@ -181,10 +167,19 @@ export default function InteractiveReferenceMap({
         >
             <div
                 ref={containerRef}
+                tabIndex={0}
                 role="application"
                 aria-label={ariaLabel}
                 className={`h-full w-full ${pickMode ? 'cursor-crosshair' : ''}`}
             />
+
+            <Dialog open={Boolean(openCluster)} onClose={closeCluster} title="Nearby map references" description="Choose a reference to inspect its recorded metadata.">
+                <ul aria-label="Nearby reference records" className="divide-y divide-[var(--border-default)]">
+                    {openCluster?.map((pin, index) => <li key={pin.id}><button type="button" autoFocus={index === 0}
+                        onClick={() => { setOpenCluster(null); onSelectPin?.(pin.id); requestAnimationFrame(() => containerRef.current?.focus({ preventScroll: true })); }}
+                        className="min-h-11 w-full break-words px-2 py-3 text-left text-sm font-semibold text-[var(--ink-primary)] hover:bg-[var(--surface-hover)]">{pin.code} — {pin.title}</button></li>)}
+                </ul>
+            </Dialog>
 
             {/* Dark-mode cartographic tone switch (Night dark-cartography vs Paper daylight OSM) */}
             <div

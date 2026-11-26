@@ -464,9 +464,4 @@
     text-decoration: underline !important;
   }
 
-  .leaflet-popup-content-wrapper,
-  .leaflet-popup-tip {
-    background: var(--surface-elevated) !important;
-    color: var(--ink-primary) !important;
-  }
 }
