@@ -83,7 +83,7 @@ for (const width of [320, 390, 768, 1024, 1440]) {
                     for (const link of await page.locator('a[href^="#"]').all()) {
                         assert.equal(await page.locator(await link.getAttribute('href')).count(), 1, 'anchor target exists');
                     }
-                    assert.equal(await page.locator('.footer .brand-name').evaluate(el => getComputedStyle(el).color), 'rgb(14, 77, 54)');
+                    assert.equal(await page.locator('.footer .brand-name').evaluate(el => getComputedStyle(el).color), 'rgb(20, 33, 28)');
                     for (const id of ['home', 'capabilities', 'about-portal', 'support']) assert.equal(await page.locator(`#${id}`).count(), 1);
                     assert.equal(await page.locator('a[href="/login"]').count(), 3);
                     assert.equal(await page.getByRole('button', { name: 'Open portal navigation', includeHidden: true }).isVisible(), width <= 1100);
