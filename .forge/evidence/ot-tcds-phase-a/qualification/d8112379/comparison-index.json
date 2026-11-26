@@ -165,7 +165,7 @@
         {
           "role": "department_head",
           "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
-          "capture": "runtime/qualification/Correspondence-Show-1440-light.png"
+          "capture": "runtime/gaps/Correspondence-Show-1440-light.png"
         }
       ],
       "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
@@ -619,7 +619,7 @@
         {
           "role": "department_head",
           "route": "/work-requests/origin-delivery-exceptions",
-          "capture": "runtime/qualification/Transactions-DeliveryExceptions-1440-light.png"
+          "capture": "runtime/gaps/Transactions-DeliveryExceptions-1440-light.png"
         }
       ],
       "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
@@ -839,7 +839,7 @@
         {
           "role": "department_head",
           "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
-          "capture": "runtime/qualification/Correspondence-Show-1440-dark.png"
+          "capture": "runtime/gaps/Correspondence-Show-1440-dark.png"
         }
       ],
       "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
@@ -1293,7 +1293,7 @@
         {
           "role": "department_head",
           "route": "/work-requests/origin-delivery-exceptions",
-          "capture": "runtime/qualification/Transactions-DeliveryExceptions-1440-dark.png"
+          "capture": "runtime/gaps/Transactions-DeliveryExceptions-1440-dark.png"
         }
       ],
       "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
@@ -1513,7 +1513,7 @@
         {
           "role": "department_head",
           "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
-          "capture": "runtime/qualification/Correspondence-Show-768-light.png"
+          "capture": "runtime/gaps/Correspondence-Show-768-light.png"
         }
       ],
       "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
@@ -1967,7 +1967,7 @@
         {
           "role": "department_head",
           "route": "/work-requests/origin-delivery-exceptions",
-          "capture": "runtime/qualification/Transactions-DeliveryExceptions-768-light.png"
+          "capture": "runtime/gaps/Transactions-DeliveryExceptions-768-light.png"
         }
       ],
       "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
@@ -2187,7 +2187,7 @@
         {
           "role": "department_head",
           "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
-          "capture": "runtime/qualification/Correspondence-Show-768-dark.png"
+          "capture": "runtime/gaps/Correspondence-Show-768-dark.png"
         }
       ],
       "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
@@ -2641,7 +2641,7 @@
         {
           "role": "department_head",
           "route": "/work-requests/origin-delivery-exceptions",
-          "capture": "runtime/qualification/Transactions-DeliveryExceptions-768-dark.png"
+          "capture": "runtime/gaps/Transactions-DeliveryExceptions-768-dark.png"
         }
       ],
       "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
@@ -2861,7 +2861,7 @@
         {
           "role": "department_head",
           "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
-          "capture": "runtime/qualification/Correspondence-Show-390-light.png"
+          "capture": "runtime/gaps/Correspondence-Show-390-light.png"
         }
       ],
       "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
@@ -3315,7 +3315,7 @@
         {
           "role": "department_head",
           "route": "/work-requests/origin-delivery-exceptions",
-          "capture": "runtime/qualification/Transactions-DeliveryExceptions-390-light.png"
+          "capture": "runtime/gaps/Transactions-DeliveryExceptions-390-light.png"
         }
       ],
       "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
@@ -3535,7 +3535,7 @@
         {
           "role": "department_head",
           "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
-          "capture": "runtime/qualification/Correspondence-Show-390-dark.png"
+          "capture": "runtime/gaps/Correspondence-Show-390-dark.png"
         }
       ],
       "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
@@ -3989,7 +3989,7 @@
         {
           "role": "department_head",
           "route": "/work-requests/origin-delivery-exceptions",
-          "capture": "runtime/qualification/Transactions-DeliveryExceptions-390-dark.png"
+          "capture": "runtime/gaps/Transactions-DeliveryExceptions-390-dark.png"
         }
       ],
       "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
