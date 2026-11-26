@@ -15,13 +15,13 @@ const surface = 'rounded-xl border border-slate-200 bg-[var(--surface-card)] dar
 
 const readinessTone: Record<FleetReadiness, string> = {
     Available: 'border-emerald-200 bg-emerald-50 text-emerald-800',
-    Scheduled: 'border-blue-200 bg-blue-50 text-blue-800 dark:text-blue-300',
+    Scheduled: 'border-blue-200 bg-blue-50 text-blue-800 dark:border-blue-900/50 dark:bg-blue-950/30 dark:text-blue-300',
     'In service reference': 'border-indigo-200 bg-indigo-50 text-indigo-800',
     'Maintenance attention': 'border-amber-200 bg-amber-50 text-amber-800',
 };
 const readinessBar: Record<FleetReadiness, string> = { Available: 'bg-emerald-500', Scheduled: 'bg-blue-500', 'In service reference': 'bg-indigo-500', 'Maintenance attention': 'bg-amber-500' };
 const tripTone: Record<TripState, string> = {
-    'Scheduled reference': 'border-blue-200 bg-blue-50 text-blue-800 dark:text-blue-300', 'In service reference': 'border-indigo-200 bg-indigo-50 text-indigo-800',
+    'Scheduled reference': 'border-blue-200 bg-blue-50 text-blue-800 dark:border-blue-900/50 dark:bg-blue-950/30 dark:text-blue-300', 'In service reference': 'border-indigo-200 bg-indigo-50 text-indigo-800',
     'Completed reference': 'border-emerald-200 bg-emerald-50 text-emerald-800', 'Awaiting vehicle reference': 'border-amber-200 bg-amber-50 text-amber-800',
 };
 const maintenanceTone: Record<MaintenanceState, string> = {
@@ -91,7 +91,7 @@ function VehicleDetail({ vehicle,onClose }: { vehicle:FleetVehicle|null; onClose
 
 export default function MotorpoolFleetWorkspace({ onBack }: Props) {
     const [tab,setTab]=useState<Tab>('Overview'); const [selected,setSelected]=useState<FleetVehicle|null>(null);
-    return <div className="space-y-2.5"><Header onBack={onBack}/><div role="tablist" className={`${surface} grid gap-1 p-1 sm:grid-cols-2 xl:grid-cols-4`}>{tabs.map(t=><button key={t} role="tab" aria-selected={tab===t} onClick={()=>setTab(t)} className={`min-h-10 rounded-lg px-3 text-left text-[10px] font-bold ${tab===t?'bg-blue-50 text-blue-900':'text-[var(--ink-secondary)] hover:bg-[var(--surface-recessed)]'}`}>{t}</button>)}</div>
+    return <div className="space-y-2.5"><Header onBack={onBack}/><div role="tablist" aria-label="Fleet reference views" className={`${surface} grid gap-1 p-1 sm:grid-cols-2 xl:grid-cols-4`}>{tabs.map(t=><button key={t} role="tab" aria-selected={tab===t} onClick={()=>setTab(t)} className={`min-h-10 rounded-lg px-3 text-left text-[10px] font-bold ${tab===t?'bg-blue-50 text-blue-900':'text-[var(--ink-secondary)] hover:bg-[var(--surface-recessed)]'}`}>{t}</button>)}</div>
         {tab==='Overview'&&<Overview onOpen={setSelected}/>} {tab==='Fleet Board'&&<FleetBoardView onOpen={setSelected}/>} {tab==='Trip Schedule'&&<TripScheduleView/>} {tab==='Maintenance & Fuel'&&<MaintenanceFuel onOpen={setSelected}/>}<div className="rounded-lg border border-dashed border-slate-200 px-3 py-2 text-[8px] text-[var(--ink-secondary)]">Presentation/reference only. No live dispatch, real trip ticket, fuel transaction, maintenance work order, GPS tracking, driver identity or operational vehicle record.</div><VehicleDetail vehicle={selected} onClose={()=>setSelected(null)}/>
     </div>;
 }

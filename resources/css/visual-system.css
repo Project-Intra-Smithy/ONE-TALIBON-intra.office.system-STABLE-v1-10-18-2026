@@ -98,8 +98,8 @@
 #portal-content :where(h1, h2, h3) { text-wrap: balance; }
 #portal-content :where(p, td, dd) { overflow-wrap: anywhere; }
 #portal-content :where(input, select, textarea):disabled { cursor: not-allowed; opacity: .6; }
-#portal-content :where(input, select, textarea):focus-visible,
-#portal-content :where(button, a):focus-visible { outline-color: var(--focus-ring); outline-offset: 3px; }
+#portal-content :where(input, select, textarea, button, a, summary, [tabindex]):focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+#portal-content [role="region"][tabindex="0"]:focus-visible { outline-offset: -3px; }
 
 @media (max-width: 639px) {
     .municipal-stat { padding: .85rem; }

@@ -349,8 +349,8 @@ export default function AppLayout({ title, presentation = 'standard', workspaceR
                         tabIndex={-1}
                         onFocusCapture={(event) => {
                             if (!(event.target instanceof HTMLElement)) return;
-                            const navigation = event.target.closest<HTMLElement>('nav, [role="tablist"]');
-                            if (navigation && navigation.scrollWidth > navigation.clientWidth) {
+                            const container = event.target.closest<HTMLElement>('nav, [role="tablist"], [role="region"][tabindex="0"]');
+                            if (container && container !== event.target && container.scrollWidth > container.clientWidth) {
                                 event.target.scrollIntoView({ block: 'nearest', inline: 'nearest' });
                             }
                         }}

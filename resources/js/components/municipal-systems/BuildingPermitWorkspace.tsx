@@ -347,12 +347,12 @@ function CaseDetail({ permitCase, onClose }: { permitCase: BuildingPermitCase; o
             title={`${permitCase.reference} · ${permitCase.projectType}`}
             eyebrow="Building permit case reference"
             size="standard"
-            footer={<div className="text-[9px] font-semibold text-slate-400">Illustrative reference data · No permit decision or regulatory action enabled</div>}
+            footer={<div className="text-[9px] font-semibold text-[var(--ink-secondary)]">Illustrative reference data · No permit decision or regulatory action enabled</div>}
         >
             <div className="space-y-4">
                 <div className="grid grid-cols-3 gap-1.5" role="tablist" aria-label="Building permit detail steps">
                     {(['Case Summary', 'Clearances', 'Timeline'] as DetailStep[]).map((item, index) => (
-                        <button key={item} type="button" role="tab" aria-selected={step === item} onClick={() => setStep(item)} className={'min-h-9 rounded-lg border px-2 text-[9px] font-bold transition ' + (step === item ? 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/25 dark:text-emerald-100' : 'border-transparent text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}><span className="mr-1 text-[8px] opacity-60">{index + 1}</span>{item}</button>
+                        <button key={item} type="button" role="tab" aria-selected={step === item} onClick={() => setStep(item)} className={'min-h-9 rounded-lg border px-2 text-[9px] font-bold transition ' + (step === item ? 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/25 dark:text-emerald-100' : 'border-transparent text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}><span className="mr-1 text-[8px]">{index + 1}</span>{item}</button>
                     ))}
                 </div>
 
