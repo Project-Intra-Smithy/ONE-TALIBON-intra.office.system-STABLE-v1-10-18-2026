@@ -44,10 +44,10 @@ try{
                         await cluster.click();const choices=page.getByRole('dialog',{name:'Nearby map references',exact:true});
                         await choices.waitFor();
                         const records=choices.getByRole('list',{name:'Nearby reference records'});
-                        assert.equal(await records.getByRole('button').first().evaluate(node=>node===document.activeElement),true);
+                        assert.equal(await choices.evaluate(node=>node.contains(document.activeElement)),true,'Native dialog must contain initial keyboard focus');
                         await audit(page,actor.role,route,label+'-pin-choices',width,theme);
                         await page.keyboard.press('Escape');await choices.waitFor({state:'hidden'});
-                        assert.equal(await cluster.evaluate(node=>node===document.activeElement),true);
+                        await page.waitForFunction(node=>node===document.activeElement,await cluster.elementHandle());
                         await cluster.click();await records.getByRole('button').first().click();await choices.waitFor({state:'hidden'});
                     }
                 }

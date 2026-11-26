@@ -175,7 +175,7 @@ export default function InteractiveReferenceMap({
 
             <Dialog open={Boolean(openCluster)} onClose={closeCluster} title="Nearby map references" description="Choose a reference to inspect its recorded metadata.">
                 <ul aria-label="Nearby reference records" className="divide-y divide-[var(--border-default)]">
-                    {openCluster?.map((pin, index) => <li key={pin.id}><button type="button" autoFocus={index === 0}
+                    {openCluster?.map(pin => <li key={pin.id}><button type="button"
                         onClick={() => { setOpenCluster(null); onSelectPin?.(pin.id); requestAnimationFrame(() => containerRef.current?.focus({ preventScroll: true })); }}
                         className="min-h-11 w-full break-words px-2 py-3 text-left text-sm font-semibold text-[var(--ink-primary)] hover:bg-[var(--surface-hover)]">{pin.code} — {pin.title}</button></li>)}
                 </ul>
