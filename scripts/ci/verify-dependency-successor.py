@@ -74,7 +74,7 @@ def self_test(before, after):
 
 
 def check_workflow():
-    frozen = subprocess.check_output(["git", "show", f"{BASE}:.github/workflows/tcds-phase-a-backend.yml"], text=True)
+    frozen = subprocess.check_output(["git", "show", f"{BASE}:.github/workflows/tcds-phase-a-backend.yml"], text=True, encoding="utf-8")
     expected = frozen.replace("name: TCDS Phase A preserved backend — Protected PG16", "name: Dependency security successor — Protected PG16")
     expected = expected.replace("branches: [candidate/antigravity-tcds-full-presentation-r1]", "branches: [candidate/ot-dependency-security-remediation-r1]")
     old_guard = '          git diff --exit-code "$baseline" HEAD -- app routes database config bootstrap composer.json composer.lock \'tests/**/*.php\' bin scripts/ci/verify-m5-source-integrity.sh scripts/ci/verify-m5-workflow-structure.py scripts/ci/test-m5-source-integrity-negatives.sh .github/workflows/ot-m3-unified-full-matrix.yml'
