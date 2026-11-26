@@ -467,3 +467,7 @@
   }
 
 }
+
+/* Portal focus must survive component utility resets; keep scroll-region rings inside their clipped viewport. */
+#portal-content :where(input, select, textarea, button, a, summary, [tabindex]):focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
+#portal-content [role="region"][tabindex="0"]:focus-visible { outline-offset: -3px; }
