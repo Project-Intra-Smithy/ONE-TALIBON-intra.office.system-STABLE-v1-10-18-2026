@@ -67,6 +67,30 @@ try{
                     return serialized?JSON.parse(serialized).component:null;
                 });
                 assert.ok(renderedComponent,path+' must identify real Inertia component');
+                if(path==='/transactions'){
+                    const options=await page.evaluate(()=>JSON.parse(document.querySelector('script[data-page]').textContent).props.creationOptions);
+                    assert.ok(options?.departments.length,'Real server creation options required');
+                    await page.getByRole('button',{name:'New Work Request',exact:true}).click();
+                    const drawer=page.getByRole('dialog',{name:'New Work Request',exact:true});
+                    assert.equal(await drawer.getByRole('combobox',{name:'Receiving Office',exact:true}).inputValue(),options.departments[0].name);
+                    await dialogCheck(page,drawer,'work-request-register-drawer',actor.role,width,theme);
+                    if(actor.role==='employee'&&width===1440&&theme==='light'){
+                        const title='Synthetic canonical register drawer request';
+                        await drawer.getByLabel('Subject',{exact:true}).fill(title);
+                        await drawer.getByRole('button',{name:'Submit Work Request',exact:true}).click();
+                        await page.waitForURL(/\/transactions\/\d+$/);
+                        const persisted=await context.request.get(page.url(),{headers:{Accept:'text/html'}});
+                        assert.equal(persisted.status(),200);
+                        const payload=JSON.parse((await persisted.text()).match(/<script[^>]*data-page[^>]*>([\s\S]*?)<\/script>/)[1]).props;
+                        assert.equal(payload.transaction.title,title);
+                        assert.equal(payload.transaction.current_department_id,options.departments[0].id);
+                        assert.ok(payload.transaction.id&&payload.transaction.reference_no);
+                        interactions.push({role:actor.role,label:'real-register-drawer-work-request-persisted',actualReceivingOfficeId:options.departments[0].id,serverRecordId:payload.transaction.id});
+                        await page.goto(origin+path);
+                    }else{
+                        await page.keyboard.press('Escape');
+                    }
+                }
                 if(path==='/transactions/create'){
                     const drawer=page.getByRole('dialog',{name:'New Work Request',exact:true});
                     await drawer.getByLabel('Subject').fill('Synthetic canonical form inspection');
