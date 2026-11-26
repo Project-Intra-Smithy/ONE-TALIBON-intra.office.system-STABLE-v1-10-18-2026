@@ -200,7 +200,7 @@ final class PlanningAuthorizationService
             throw new AuthorizationException('Only the MPDC Head may transition a plan to an adopted, published, or archived status.');
         }
 
-        // M5-APP-R2-01: Record-provenance invariant â€” reference_sample rows can never be promoted
+        // M5-APP-R2-01: Record-provenance invariant — reference_sample rows can never be promoted
         // to official/adopted status or have their non-official authority disclosure overwritten.
         if ($existing !== null && $existing->provenance_status === 'reference_sample') {
             if ($targetStatus !== null && in_array($targetStatus, self::OFFICIAL_PLAN_STATUSES, true)) {

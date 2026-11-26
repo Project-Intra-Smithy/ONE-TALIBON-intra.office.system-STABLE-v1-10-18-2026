@@ -58,7 +58,7 @@ final class DevelopmentPlanController extends Controller
                 'nextMilestone' => $plan->next_milestone ?? 'Technical review pending',
                 'nextMilestoneDate' => $plan->next_milestone_date ?? now()->addMonth()->format('Y-m-d'),
                 'requiredAction' => $plan->required_action ?? 'Awaiting MPDC review.',
-                'authority' => $plan->authority ?? 'Provisional draft â€” pending official Sangguniang Bayan adoption',
+                'authority' => $plan->authority ?? 'Provisional draft — pending official Sangguniang Bayan adoption',
                 'documentRef' => $plan->document_ref ?? $plan->code,
                 'provenanceStatus' => $plan->provenance_status,
             ])
@@ -136,7 +136,7 @@ final class DevelopmentPlanController extends Controller
                 'next_milestone' => $data['next_milestone'] ?? 'Technical review',
                 'next_milestone_date' => $data['next_milestone_date'] ?? now()->addMonth()->format('Y-m-d'),
                 'required_action' => $data['required_action'] ?? 'Submit supporting documents for MPDC review.',
-                'authority' => $data['authority'] ?? 'Provisional draft â€” pending official Sangguniang Bayan adoption',
+                'authority' => $data['authority'] ?? 'Provisional draft — pending official Sangguniang Bayan adoption',
                 'document_ref' => $data['document_ref'] ?? trim($data['code']),
                 'provenance_status' => 'provisional_draft',
                 'created_by_user_id' => $user->id,

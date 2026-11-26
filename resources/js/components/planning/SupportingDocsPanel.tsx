@@ -137,7 +137,7 @@ export default function SupportingDocsPanel({
                     onFileChange={setFile} onSubmit={handleUpload} onCancel={()=>setShowUpload(false)} busy={busy}
                     categories={Object.entries(categoryLabels).map(([value,label])=>({value,label}))}
                     visibilities={Object.entries(visibilityLabels).filter(([value])=>value!=='mpdc_executive'||canManageExecutive).map(([value,label])=>({value,label}))}
-                    accept=".pdf,.png,.jpg,.jpeg,.csv,.txt" fileLabel="File (PDF, PNG, JPG, CSV, TXT Â· max 10 MB)"
+                    accept=".pdf,.png,.jpg,.jpeg,.csv,.txt" fileLabel="File (PDF, PNG, JPG, CSV, TXT · max 10 MB)"
                     selectedFileLabel={file?.name} submitLabel="Upload to Private Storage" />
             )}
 
@@ -148,7 +148,7 @@ export default function SupportingDocsPanel({
             ) : (
                 <ul className="mt-2.5 space-y-2">
                     {matching.map((doc) => (
-                        <SupportingDocumentCard key={doc.publicId} title={doc.title} badges={<><span className="rounded-full border border-[var(--border-control)] px-2 py-1 text-xs font-bold">{categoryLabels[doc.category] ?? doc.category}</span><span className="text-xs font-semibold">{visibilityLabels[doc.visibility] ?? doc.visibility}</span></>} metadata={<>{doc.fileName} Â· {new Intl.NumberFormat('en-PH').format(doc.sizeBytes)} bytes</>} actions={<>
+                        <SupportingDocumentCard key={doc.publicId} title={doc.title} badges={<><span className="rounded-full border border-[var(--border-control)] px-2 py-1 text-xs font-bold">{categoryLabels[doc.category] ?? doc.category}</span><span className="text-xs font-semibold">{visibilityLabels[doc.visibility] ?? doc.visibility}</span></>} metadata={<>{doc.fileName} · {new Intl.NumberFormat('en-PH').format(doc.sizeBytes)} bytes</>} actions={<>
                                 <button type="button" onClick={()=>setInspectingId(doc.publicId)} className="municipal-secondary-button">Inspect metadata</button>
                                 <a
                                     href={doc.previewUrl}

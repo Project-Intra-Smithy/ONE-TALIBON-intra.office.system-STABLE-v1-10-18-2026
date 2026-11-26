@@ -216,7 +216,7 @@ jobs:
           test "$(psql -XAtc "SELECT count(*) FROM pg_trigger WHERE tgname='ops009_close_audit_integrity'")" = 1
           test "$(psql -XAtc "SELECT count(*) FROM pg_trigger WHERE tgname='ops009_origin_close_notice_guard'")" = 1
           echo OPS009_FULL_GUARDED_MIGRATION_CHAIN=PASS
-      - name: Negative SQL authorization â€” N03 staging cannot rewrite audit
+      - name: Negative SQL authorization — N03 staging cannot rewrite audit
         if: matrix.phase == 'roles'
         run: |
           set -euo pipefail
@@ -270,6 +270,21 @@ jobs:
           php -l tests/Manual/ops009-registry-bootstrap.php
           test "$(psql -XAtc "SELECT count(*) FROM public.migrations WHERE migration IN ('2026_11_22_150000_ops009_close_command_compatibility','2026_11_22_170000_ops009_g2b_close_audit_compatibility','2026_11_22_190000_ops009_r3_close_audit_provenance','2026_11_22_191000_ops009_r3_origin_notice_effect','2026_11_23_020000_ops009_origin_delivery_exception_queue')")" = 5
           echo OPS009_PROTECTED_REGRESSION_SCHEMA_READY=PASS
+      - name: Targeted Planning authority and integrity regressions
+        if: matrix.phase == 'focused'
+        env:
+          OPS009_REGISTRY_BASELINE: '1'
+        run: |
+          php artisan test --bootstrap=tests/Manual/ops009-registry-bootstrap.php tests/Feature/Planning --log-junit="$RUNNER_TEMP/planning-junit.xml"
+      - name: Preserve Planning JUnit result
+        if: always() && matrix.phase == 'focused'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: functional-planning-junit
+          path: ${{ runner.temp }}/planning-junit.xml
+          if-no-files-found: error
+          retention-days: 14
+
       - name: Focused custody, P07 quarantine & whole-system traceability regression
         if: matrix.phase == 'focused'
         env:

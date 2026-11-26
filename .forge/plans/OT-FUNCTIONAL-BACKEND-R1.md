@@ -1,4 +1,4 @@
-# OT-FUNCTIONAL-BACKEND-R1 â€” source-reconciled continuation
+# OT-FUNCTIONAL-BACKEND-R1 — source-reconciled continuation
 
 Authority: Engineer KIRCH directive recorded in Hub #197 comment 7203222356; paired register 1eda5c37 / crosslink 7203252769. Exact accepted dependency baseline a944fe3486365297b9ebb085161316bfbb962c3c. Codex sole writer; separate candidate/ot-functional-backend-r1; both accepted candidates immutable. Main and release remain held.
 
