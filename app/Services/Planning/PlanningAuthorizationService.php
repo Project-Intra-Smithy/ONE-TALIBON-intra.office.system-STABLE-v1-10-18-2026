@@ -12,6 +12,7 @@ use App\Models\PlanningMap;
 use App\Models\PpaRecord;
 use App\Models\User;
 use App\Services\AccountSessionEligibility;
+use App\Services\AuthenticationAssurance;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -71,6 +72,12 @@ final class PlanningAuthorizationService
         if ($user) {
             $eligibility = app(AccountSessionEligibility::class);
             $user = DB::transactionLevel() > 0 ? $eligibility->lock($user) : $eligibility->current($user);
+            if ($user && DB::transactionLevel() > 0 && ! request()->isMethodSafe()) {
+                $eligibility->requireSession(request(), $user);
+                if (! app(AuthenticationAssurance::class)->isSatisfiedAgainst(request(), $user)) {
+                    throw new AuthorizationException('Current multi-factor authentication assurance is required.');
+                }
+            }
         }
 
         if (! $user || ! $user->is_active) {
@@ -173,7 +180,8 @@ final class PlanningAuthorizationService
         $perms = $this->resolve($user);
 
         if ($isDelete) {
-            if (! $perms['canDelete'] || ! $perms['canManagePlans']) {
+            if (! $perms['canDelete'] || ! $perms['canManagePlans']
+                || $existing === null || in_array($existing->status, [...self::OFFICIAL_PLAN_STATUSES, 'Archived'], true)) {
                 throw new AuthorizationException('You are not authorized to remove plan records.');
             }
 
@@ -192,7 +200,7 @@ final class PlanningAuthorizationService
             throw new AuthorizationException('Only the MPDC Head may transition a plan to an adopted, published, or archived status.');
         }
 
-        // M5-APP-R2-01: Record-provenance invariant — reference_sample rows can never be promoted
+        // M5-APP-R2-01: Record-provenance invariant â€” reference_sample rows can never be promoted
         // to official/adopted status or have their non-official authority disclosure overwritten.
         if ($existing !== null && $existing->provenance_status === 'reference_sample') {
             if ($targetStatus !== null && in_array($targetStatus, self::OFFICIAL_PLAN_STATUSES, true)) {
@@ -302,7 +310,7 @@ final class PlanningAuthorizationService
         if ((! empty($data['can_manage_plans']) && ! $perms['canManagePlans'])
             || (! empty($data['can_manage_ppas']) && ! $perms['canProposeOfficePpa'])
             || (! empty($data['can_manage_maps']) && ! $perms['canManageMaps'])) {
-            throw new AuthorizationException('A designation cannot exceed the issuing Head�s office and module authority.');
+            throw new AuthorizationException('A designation cannot exceed the issuing Head’s office and module authority.');
         }
     }
 

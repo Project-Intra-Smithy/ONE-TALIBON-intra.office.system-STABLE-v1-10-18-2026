@@ -272,4 +272,57 @@ final class PlanningIntegrityTest extends TestCase
         $this->actingAs($staff)->get('/ppas')->assertOk();
         $this->actingAs($staff)->get('/development-plans')->assertOk();
     }
+
+    public function test_protected_plan_states_cannot_be_deleted_by_direct_request(): void
+    {
+        $this->seed();
+        $head = $this->actor('planning@talibon.demo');
+        $staff = $this->actor('employee@talibon.demo');
+        $this->actingAs($head)->post('/planning/designated-staff', [
+            'employee_id' => $staff->employee->id, 'can_manage_plans' => true,
+        ])->assertRedirect();
+        $this->actingAs($head)->post('/development-plans', [
+            'code' => 'RETAIN-PLAN', 'title' => 'Synthetic retained plan', 'horizon' => 'Annual',
+            'lead_office' => $head->employee->department->name,
+            'coverage_start' => 2027, 'coverage_end' => 2027, 'status' => 'Draft',
+        ])->assertRedirect();
+        $plan = DevelopmentPlan::query()->where('code', 'RETAIN-PLAN')->firstOrFail();
+        foreach (['Archived', 'Published', 'Adopted', 'In force'] as $status) {
+            $plan->update(['status' => $status]);
+            foreach ([$head, $staff] as $actor) {
+                $this->actingAs($actor)->delete("/development-plans/{$plan->id}")->assertForbidden();
+                $this->assertNotNull($plan->fresh());
+            }
+        }
+    }
+
+    public function test_epoch_and_mfa_revocation_after_middleware_deny_the_locked_mutation(): void
+    {
+        $this->seed();
+        $this->app['router']->getRoutes()->getByName('development-plans.store')
+            ->middleware(PlanningRevocationProbe::class);
+        foreach (['session_version', 'mfa_version'] as $field) {
+            PlanningRevocationProbe::$field = $field;
+            $head = $this->actor('planning@talibon.demo');
+            $this->actingAs($head)->post('/development-plans', [
+                'code' => 'STALE-'.strtoupper($field), 'title' => 'Denied stale mutation', 'horizon' => 'Annual',
+                'lead_office' => $head->employee->department->name,
+                'coverage_start' => 2027, 'coverage_end' => 2027, 'status' => 'Draft',
+            ])->assertForbidden();
+            $this->assertFalse(DevelopmentPlan::query()->where('code', 'STALE-'.strtoupper($field))->exists());
+        }
+    }
+}
+
+// Runs after the ordinary route middleware to exercise the lock-time recheck.
+final class PlanningRevocationProbe
+{
+    public static string $field = 'session_version';
+
+    public function handle($request, $next)
+    {
+        User::query()->whereKey($request->user()->id)->increment(self::$field);
+
+        return $next($request);
+    }
 }

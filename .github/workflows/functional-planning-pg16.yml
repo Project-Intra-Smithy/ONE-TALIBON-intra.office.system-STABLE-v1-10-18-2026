@@ -1,7 +1,7 @@
 # M3/M5 integration witness derived from Nox's CI-only PR62 PG16 proof.
 # Preserves protected role/install/guard and all 11 test partitions.
 # Validates bounded Planning delta; historical preservation attestation runs only on its accepted baseline.
-name: Dependency security successor — Protected PG16
+name: Functional Planning integrity - Protected PG16
 
 on:
   push:
@@ -216,7 +216,7 @@ jobs:
           test "$(psql -XAtc "SELECT count(*) FROM pg_trigger WHERE tgname='ops009_close_audit_integrity'")" = 1
           test "$(psql -XAtc "SELECT count(*) FROM pg_trigger WHERE tgname='ops009_origin_close_notice_guard'")" = 1
           echo OPS009_FULL_GUARDED_MIGRATION_CHAIN=PASS
-      - name: Negative SQL authorization — N03 staging cannot rewrite audit
+      - name: Negative SQL authorization â€” N03 staging cannot rewrite audit
         if: matrix.phase == 'roles'
         run: |
           set -euo pipefail
@@ -438,16 +438,16 @@ jobs:
             printf 'SCHEMA_PUBLIC_TABLES=%s\n' "$(psql -XAtc "SELECT count(*) FROM pg_tables WHERE schemaname='public'")"
             printf 'N03_CUSTODY_SCHEMA_PRESENT=%s\n' "$(psql -XAtc "SELECT to_regnamespace('legacy_custody') IS NOT NULL")"
             echo 'DISPOSABLE_POSTGRES_CONTAINER=GITHUB_HOSTED_JOB_SERVICE'
-            echo 'BASELINE_M5_SOURCE_INTEGRITY=PINNED_BLOB_TREE_AND_PARSED_YAML_PASS'
-            echo 'PHASE_A_PROTECTED_BACKEND=BYTE_IDENTICAL_TO_PR71'
-            echo 'M3_PHP_PINT_DEBT=RESOLVED_PASS_0_ISSUES'
+            echo 'HISTORICAL_ACCEPTED_BASELINE=a944fe3486365297b9ebb085161316bfbb962c3c'
+            echo 'FUNCTIONAL_DELTA=PLANNING_ONLY_CURRENT_CANDIDATE_REQUIRES_NEW_VALIDATION'
+            echo 'VALIDATION_OUTCOME=SEE_ACTUAL_JOB_STEP_RESULTS'
           } > "$receipt"
           cat "$receipt"
       - name: Upload original per-phase custody evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: tcds-phase-a-${{ matrix.phase }}-source-and-pg16-custody
+          name: functional-planning-${{ matrix.phase }}-source-and-pg16-custody
           path: ${{ runner.temp }}/ot-m3-matrix-${{ matrix.phase }}-custody.txt
           if-no-files-found: error
           retention-days: 14
