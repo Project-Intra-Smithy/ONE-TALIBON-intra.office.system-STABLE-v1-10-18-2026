@@ -12,6 +12,7 @@ const sourceWorktreeDirty=Boolean(execFileSync('git',['status','--porcelain'],{e
 const buildManifestSha256=crypto.createHash('sha256').update(fs.readFileSync('public/build/manifest.json')).digest('hex');
 const output=`storage/app/qa/phase-a-accessibility/${sourceSha.slice(0,12)}-${new Date().toISOString().replace(/[:.]/g,'-')}`;
 fs.mkdirSync(output,{recursive:true});console.log('Accessibility evidence: '+path.resolve(output));
+fs.copyFileSync('public/build/manifest.json',output+'/build-manifest.json');
 const axeSource=fs.readFileSync('storage/app/qa/a11y-tools/node_modules/axe-core/axe.min.js','utf8');
 const observations=[];let completed=false;
 function totp(secret){let bits='';for(const char of secret)bits+='ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'.indexOf(char).toString(2).padStart(5,'0');const bytes=[];for(let i=0;i+8<=bits.length;i+=8)bytes.push(parseInt(bits.slice(i,i+8),2));const counter=Buffer.alloc(8);counter.writeBigUInt64BE(BigInt(Math.floor(Date.now()/30000)));const digest=crypto.createHmac('sha1',Buffer.from(bytes)).update(counter).digest(),offset=digest.at(-1)&15;return String((digest.readUInt32BE(offset)&0x7fffffff)%1000000).padStart(6,'0');}

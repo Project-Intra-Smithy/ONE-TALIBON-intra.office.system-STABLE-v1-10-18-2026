@@ -105,7 +105,7 @@ export default function Index({
                                     <span
                                         className={`rounded-full px-1.5 py-0.5 text-xs font-bold leading-none tabular-nums ${
                                             active
-                                                ? 'bg-white/20 text-white'
+                                                ? 'bg-black/20 text-white'
                                                 : 'bg-[var(--surface-card)] text-[var(--ink-secondary)]'
                                         }`}
                                     >

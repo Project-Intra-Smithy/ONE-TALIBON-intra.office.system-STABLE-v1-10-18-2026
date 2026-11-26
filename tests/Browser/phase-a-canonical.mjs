@@ -11,6 +11,7 @@ assert.ok(process.env.PHASE_A_CANONICAL_LOGIN&&password,'Disposable synthetic cr
 const crudOnly=process.env.PHASE_A_CANONICAL_FOCUS==='planning-crud';
 const output=crudOnly?'storage/app/qa/phase-a-canonical-crud':'storage/app/qa/phase-a-canonical';
 await mkdir(output,{recursive:true});
+await writeFile(output+'/build-manifest.json',await readFile('public/build/manifest.json'));
 const results=[],interactions=[];
 const sourceSha=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
 const buildManifestSha256=crypto.createHash('sha256').update(await readFile('public/build/manifest.json')).digest('hex');

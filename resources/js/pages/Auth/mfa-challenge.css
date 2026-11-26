@@ -39,15 +39,16 @@
     padding: clamp(28px, 4vw, 44px);
     border: 1px solid rgba(255, 255, 255, 0.75);
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.48);
+    background: var(--surface-card);
+    background: color-mix(in srgb, var(--surface-card) 94%, transparent);
     backdrop-filter: blur(30px) saturate(130%);
     -webkit-backdrop-filter: blur(30px) saturate(130%);
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
-    color: #14283d;
+    color: var(--ink-primary);
 }
 
 .mfa-challenge-kicker {
-    color: #0e6a50;
+    color: var(--brand-ink);
     font-size: 12px;
     font-weight: 800;
     letter-spacing: .22em;
@@ -59,16 +60,16 @@
     width: 100%;
     min-height: 52px;
     padding: 12px 16px;
-    border: 1px solid rgba(20, 40, 61, 0.28);
+    border: 1px solid var(--border-control);
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.96);
-    color: #102a43;
+    background: var(--surface-card);
+    color: var(--ink-primary);
     font-size: 16px;
     transition: border-color .15s ease, box-shadow .15s ease;
 }
 
 .mfa-challenge-input:focus {
-    border-color: #0e6a50;
+    border-color: var(--focus-ring);
     box-shadow: 0 0 0 3px rgba(14, 106, 80, 0.18);
     outline: none;
 }
@@ -100,18 +101,18 @@
 }
 
 .mfa-challenge-secondary {
-    border: 1px solid rgba(14, 106, 80, 0.45);
-    background: rgba(255, 255, 255, 0.92);
-    color: #0e6a50;
+    border: 1px solid var(--border-control);
+    background: var(--surface-recessed);
+    color: var(--brand-ink);
 }
 
 .mfa-challenge-secondary:hover:not(:disabled) {
-    background: #edf5ef;
-    border-color: #0e6a50;
+    background: var(--surface-hover);
+    border-color: var(--brand-ink);
 }
 
 .mfa-challenge-signout {
-    color: #0e6a50;
+    color: var(--brand-ink);
     cursor: pointer;
     background: transparent;
     border: none;
@@ -119,13 +120,13 @@
 }
 
 .mfa-challenge-signout:hover {
-    color: #09553f;
+    color: var(--ink-primary);
     text-decoration: underline;
 }
 
 .mfa-challenge button:focus-visible,
 .mfa-challenge input:focus-visible {
-    outline: 3px solid #0b7055;
+    outline: 3px solid var(--focus-ring);
     outline-offset: 3px;
 }
 
@@ -142,5 +143,5 @@
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .mfa-challenge-card { background: #f4f7f5; }
+    .mfa-challenge-card { background: var(--surface-card); }
 }

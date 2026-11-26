@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {chromium} from 'playwright';
-import {contrastReview} from './phase-a-manual-review.mjs';
+import {contrastReview,mfaPaintReview} from './phase-a-manual-review.mjs';
 const origin=process.env.PHASE_A_CANONICAL_URL;
 assert.match(origin,/^http:\/\/127\.0\.0\.1:\d+$/);
 const sourceSha=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
@@ -12,20 +12,30 @@ const sourceWorktreeDirty=Boolean(execFileSync('git',['status','--porcelain'],{e
 const buildManifestSha256=crypto.createHash('sha256').update(fs.readFileSync('public/build/manifest.json')).digest('hex');
 const output=`storage/app/qa/phase-a-qualification/${sourceSha.slice(0,12)}-${new Date().toISOString().replace(/[:.]/g,'-')}`;
 fs.mkdirSync(output,{recursive:true});console.log('Qualification evidence: '+path.resolve(output));
+fs.copyFileSync('public/build/manifest.json',output+'/build-manifest.json');
 const axeSource=fs.readFileSync('storage/app/qa/a11y-tools/node_modules/axe-core/axe.min.js','utf8');
 const observations=[],interactions=[],failures=[],interactionCaptures=[];let completed=false,activePage=null,sourceChangedDuringRun=false,workRequestRoute=null;
 const fixtures=JSON.parse(process.env.PHASE_A_FIXTURES || '{}');
+const httpReceipts=new WeakMap();
+function trackPage(page){page.on('response',response=>{if(response.url().startsWith(origin)&&response.request().method()==='GET'&&(response.request().isNavigationRequest()||response.headers()['x-inertia']))httpReceipts.set(page,{url:response.url(),status:response.status(),cacheControl:response.headers()['cache-control']??null});});}
 function totp(secret){let bits='';for(const char of secret)bits+='ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'.indexOf(char).toString(2).padStart(5,'0');const bytes=[];for(let i=0;i+8<=bits.length;i+=8)bytes.push(parseInt(bits.slice(i,i+8),2));const counter=Buffer.alloc(8);counter.writeBigUInt64BE(BigInt(Math.floor(Date.now()/30000)));const digest=crypto.createHmac('sha1',Buffer.from(bytes)).update(counter).digest(),offset=digest.at(-1)&15;return String((digest.readUInt32BE(offset)&0x7fffffff)%1000000).padStart(6,'0');}
 function save(){fs.writeFileSync(output+'/results.json',JSON.stringify({completed,passed:completed&&!failures.length,scope:{widths,roles:roleFilter??'all',routeMatrix:!interactionsOnly,focused:process.env.PHASE_A_QUALIFICATION_FOCUS==='1'},sourceSha,sourceWorktreeDirty:sourceWorktreeDirty||sourceChangedDuringRun,buildManifestSha256,observations,interactions,interactionCaptures,failures},null,2));}
 async function captureInteraction(page,name){const file=`interaction-${name}.png`;await page.screenshot({path:output+'/'+file,fullPage:true});interactionCaptures.push({file,route:new URL(page.url()).pathname});save();}
-async function inspectSensitive(page,component,theme){
+async function inspectSensitive(page,component,theme,interactionState='baseline',role='synthetic_enrolling_department_head',safeCapture=false){
     await page.evaluate(axeSource);
     const result=await page.evaluate(async()=>window.axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa','wcag22aa']}}));
     const actual=await page.evaluate(()=>history.state?.page?.component||JSON.parse(document.querySelector('script[data-page]')?.textContent||document.querySelector('#app').getAttribute('data-page')).component);
     assert.equal(actual,component);
     const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);
+    const http=httpReceipts.get(page);assert.equal(http?.status,200);assert.equal(new URL(http.url).pathname,new URL(page.url()).pathname);
+    if(component==='Auth/MfaEnrollment'||component==='Auth/MfaRecoveryCodes')assert.ok(http.cacheControl?.includes('no-store'));
     const sanitized=items=>items.map(({id,nodes})=>({id,targets:nodes.map(node=>node.target)}));
-    observations.push({role:'synthetic_enrolling_department_head',route:new URL(page.url()).pathname,status:200,width:320,theme,renderedComponent:actual,overflow,capture:null,captureDisposition:'Sensitive transient enrollment/recovery material intentionally not captured or serialized',violations:sanitized(result.violations),incomplete:sanitized(result.incomplete)});
+    const paintBounds=component==='Auth/MfaChallenge'?await mfaPaintReview(page):[];
+    const invalidFields=await page.locator('input[aria-invalid=true]').count();
+    if((interactionState==='invalid-short-code'||interactionState==='password-error')&&invalidFields===0)failures.push({route:new URL(page.url()).pathname,interactionState,reason:'Server error does not identify the invalid control'});
+    for(const paint of paintBounds)if(!paint.disabled&&(paint.minimumContrast===null||paint.minimumContrast<paint.requiredContrast||(paint.element.startsWith('INPUT:')&&paint.inputBoundaryContrast<3)))failures.push({route:new URL(page.url()).pathname,theme,interactionState,paint});
+    let capture=null;if(safeCapture){capture=`${role}-${component.replaceAll('/','-')}-${interactionState}-320-${theme}.png`;await page.screenshot({path:output+'/'+capture,fullPage:true});}
+    observations.push({role,route:new URL(page.url()).pathname,status:http.status,http,width:320,theme,interactionState,renderedComponent:actual,overflow,invalidFields,paintBounds,capture,captureDisposition:safeCapture?'Only invalid synthetic code or masked rejected-password controls; no enrollment/recovery secrets':'Sensitive transient enrollment/recovery material intentionally not captured or serialized',violations:sanitized(result.violations),incomplete:sanitized(result.incomplete)});
     if(overflow||result.violations.length)failures.push({route:new URL(page.url()).pathname,overflow,violationIds:result.violations.map(r=>r.id)});
     save();
 }
@@ -74,11 +84,15 @@ try{
     }
     if(!roleFilter||roleFilter.includes('auth_enrollment')){
     const enrollment=await browser.newContext({viewport:{width:320,height:900},colorScheme:'light'}),enrollPage=await enrollment.newPage();
+    trackPage(enrollPage);
     await enrollPage.goto(origin+'/login');await enrollPage.getByLabel('Username or email').fill(process.env.PHASE_A_ENROLL_LOGIN);await enrollPage.getByLabel('Password',{exact:true}).fill(process.env.PHASE_A_CANONICAL_PASSWORD);await enrollPage.getByRole('button',{name:'Sign in',exact:true}).click();
     await enrollPage.waitForURL('**/security/mfa/enroll');for(const theme of ['light','dark']){await enrollPage.emulateMedia({colorScheme:theme});await inspectSensitive(enrollPage,'Auth/MfaEnrollment',theme);}
+    await enrollPage.getByLabel('Six-digit verification code').fill('123');await enrollPage.getByRole('button',{name:'Confirm MFA enrollment',exact:true}).click();await enrollPage.locator('#mfa-enrollment-code-error').waitFor();
+    for(const theme of ['light','dark']){await enrollPage.emulateMedia({colorScheme:theme});await inspectSensitive(enrollPage,'Auth/MfaEnrollment',theme,'invalid-short-code');}
     const enrollmentSecret=await enrollPage.locator('code').innerText();
     await enrollPage.getByLabel('Six-digit verification code').fill(totp(enrollmentSecret));await enrollPage.getByRole('button',{name:'Confirm MFA enrollment',exact:true}).click();
     await enrollPage.waitForURL('**/security/mfa/recovery-codes');for(const theme of ['light','dark']){await enrollPage.emulateMedia({colorScheme:theme});await inspectSensitive(enrollPage,'Auth/MfaRecoveryCodes',theme);}
+    for(const target of ['Copy codes','MFA settings'])for(const theme of ['light','dark']){await enrollPage.emulateMedia({colorScheme:theme});await enrollPage.getByRole(target==='Copy codes'?'button':'link',{name:target,exact:true}).hover();await inspectSensitive(enrollPage,'Auth/MfaRecoveryCodes',theme,'hover-'+target.replaceAll(' ','-'));}
     assert.ok((await enrollPage.locator('pre').innerText()).trim().split(/\s+/).length>=6);
     await enrollPage.getByRole('link',{name:'Continue to portal',exact:true}).click();await enrollPage.waitForURL('**/dashboard');
     interactions.push({role:'synthetic_enrolling_department_head',label:'real-mfa-enrollment-confirm-recovery-continue',secretMaterialExcluded:true});await enrollment.close();
@@ -86,10 +100,16 @@ try{
     const actors=[{role:'employee',login:process.env.PHASE_A_CANONICAL_LOGIN,routes:general},{role:'system_admin',login:process.env.PHASE_A_ADMIN_LOGIN,routes:['/admin','/audit','/reports','/property','/property/lifecycle','/legislation/create','/legislative-workspace','/memoranda/create','/travel-orders/create','/security/mfa','/security/mfa/recovery-codes']},{role:'department_head',login:process.env.PHASE_A_HEAD_LOGIN,routes:['/my-department','/operations','/transactions/create','/memoranda/create','/travel-orders/create','/work-requests/origin-delivery-exceptions','/messages','/hris/payroll']},{role:'mayor_approver',login:process.env.PHASE_A_MAYOR_LOGIN,routes:['/mayor-office','/reports','/memoranda/create','/travel-orders/create']}];
     for(const actor of actors){
         if(roleFilter&&!roleFilter.includes(actor.role))continue;
-        const context=await browser.newContext({viewport:{width:1440,height:900},colorScheme:'light'});const page=await context.newPage();activePage=page;
+        const context=await browser.newContext({viewport:{width:1440,height:900},colorScheme:'light'});const page=await context.newPage();activePage=page;trackPage(page);
         await page.goto(origin+'/login');await page.getByLabel('Username or email').fill(actor.login);await page.getByLabel('Password',{exact:true}).fill(process.env.PHASE_A_CANONICAL_PASSWORD);await page.getByRole('button',{name:'Sign in',exact:true}).click();
-        if(actor.role!=='employee'){await page.waitForURL('**/security/mfa/challenge');await inspect(page,actor.role,'/security/mfa/challenge',1440,'light');await page.getByLabel('Authenticator code',{exact:true}).fill(totp(process.env.PHASE_A_HEAD_MFA_SECRET));await page.getByRole('button',{name:'Verify and continue',exact:true}).click();}
+        if(actor.role!=='employee'){await page.waitForURL('**/security/mfa/challenge');if(actor.role==='department_head'){await page.getByLabel('Authenticator code',{exact:true}).fill('123');await page.getByRole('button',{name:'Verify and continue',exact:true}).click();await page.locator('#mfa-code-error').waitFor();await page.setViewportSize({width:320,height:900});for(const theme of ['light','dark']){await page.emulateMedia({colorScheme:theme});await inspectSensitive(page,'Auth/MfaChallenge',theme,'invalid-short-code',actor.role,true);}await page.setViewportSize({width:1440,height:900});await page.emulateMedia({colorScheme:'light'});}await inspect(page,actor.role,'/security/mfa/challenge',1440,'light');await page.getByLabel('Authenticator code',{exact:true}).fill(totp(process.env.PHASE_A_HEAD_MFA_SECRET));await page.getByRole('button',{name:'Verify and continue',exact:true}).click();}
         await page.waitForURL('**/dashboard');
+        if(actor.role==='employee'||actor.role==='system_admin'){
+            const route=actor.role==='employee'?'/security/account':'/security/mfa';await page.goto(origin+route);
+            await page.getByLabel('Current password',{exact:true}).fill('Incorrect-Current-Password!');await page.getByLabel('New password',{exact:true}).fill('Unused-Synthetic-Validation-2026!');await page.getByLabel('Confirm new password',{exact:true}).fill('Unused-Synthetic-Validation-2026!');await page.getByRole('button',{name:'Update password',exact:true}).click();await page.getByRole('alert').filter({hasText:'The current password is incorrect.'}).waitFor();
+            await page.setViewportSize({width:320,height:900});for(const theme of ['light','dark']){await page.emulateMedia({colorScheme:theme});await inspectSensitive(page,actor.role==='employee'?'Auth/AccountSecurity':'Auth/MfaSettings',theme,'password-error',actor.role,true);}await page.setViewportSize({width:1440,height:900});await page.emulateMedia({colorScheme:'light'});
+            interactions.push({role:actor.role,label:'real-password-error-feedback',changeRejected:true,invalidControlNamed:true});
+        }
         if(actor.role==='employee'){
             await page.goto(origin+'/transactions/create');
             const title='Synthetic qualification request '+Date.now();

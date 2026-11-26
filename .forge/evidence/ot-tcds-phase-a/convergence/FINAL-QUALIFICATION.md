@@ -1,5 +1,13 @@
 # Final convergence qualification — OPEN
 
+## Preserved corrective checkpoint, 26 November 2026
+
+The clean 2b096d74cabe3c0da6fc171dc052917f9e72210f expanded runtime completed 496 observations and five real interaction flows, with four failures: the same Legislative Workspace active-count badge in dark mode at four widths. Subsequent focused probes also demonstrated recovery-link hover contrast, authentication error contrast, photograph-dependent MFA card contrast and missing rejected-password field associations. These findings are failures requiring repair, not accepted exceptions.
+
+The corrective working tree repairs those foreground/hover/error states, preserves the photograph with a theme-aware 94% card surface, adds bounded contrast evidence over possible photograph backgrounds and associates existing server errors with their fields. Existing endpoints and backend behavior are unchanged. Exploratory auth11 completed 19 observations without failures and seven real interactions; it remains dirty-worktree evidence, not final exact-SHA qualification. Browser color regression and JavaScript syntax checks passed before this checkpoint. Exact frozen-source full qualification remains due. Runtime harnesses now retain the build manifest beside each receipt; the previous 2b manifest digest does not imply the original manifest file was separately preserved.
+
+At the user's request, all source and evidence were preserved during a safe pause; both owned disposable PostgreSQL clusters were cleanly stopped. Work resumes from this checkpoint under the existing authority. The next scheduled continuation is 20:00 Asia/Manila; remaining account usage is not exposed to the executor, so an exact 10% automatic stop cannot be verified.
+
 Continuation authority: Engineer KIRCH, existing Hub #197 corrective pair #7157991181/#7158012378 and direct final-qualification directive. Codex remains sole writer; OperationForge pin 0e8765de6e0e87ea9b4503714f08fa650e1a79c6 and Ponytail full. This is same-context author qualification, not independent acceptance.
 
 Starting executable candidate: efbf3b795cf2a49908adbb8781b72610c3ecf6bc. Preserve its separately published receipt packet at evidence commit 1c590bd328c3cb7aabc2a3e5697bfab17acefb7b and the original de362bfe packet at 54ea01068cc2b6e27986427d8c1dd8701a27388d. Earlier passes do not cover subsequent executable changes.

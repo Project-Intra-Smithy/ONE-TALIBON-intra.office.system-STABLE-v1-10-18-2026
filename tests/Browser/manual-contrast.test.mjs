@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright';
-import {contrastReview} from './phase-a-manual-review.mjs';
+import {contrastReview,mfaPaintReview} from './phase-a-manual-review.mjs';
 test('manual contrast evidence resolves modern CSS colors and leaves vector paint for visual review',async()=>{
     const browser=await chromium.launch();
     try{
@@ -12,5 +12,9 @@ test('manual contrast evidence resolves modern CSS colors and leaves vector pain
         assert.equal(findings[1].contrastRatio,21);
         assert.equal(findings[2].contrastRatio,null);
         assert.match(findings[2].note,/rendered plate/);
+        await page.setContent('<div class="mfa-challenge-card" style="background:rgba(0,0,0,.94)"><h1 style="color:white">Heading</h1><input name="code" style="background:black;color:white;border:1px solid #80988a"></div>');
+        const bounded=await mfaPaintReview(page);assert.ok(bounded[0].minimumContrast>18);assert.ok(bounded[1].inputBoundaryContrast>3);
+        await page.locator('.mfa-challenge-card').evaluate(node=>node.style.background='rgba(255,255,255,.48)');
+        const unsafe=await mfaPaintReview(page);assert.equal(unsafe[0].minimumContrast,1);
     }finally{await browser.close();}
 });
