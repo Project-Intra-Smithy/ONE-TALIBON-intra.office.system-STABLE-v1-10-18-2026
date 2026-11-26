@@ -1,28 +1,31 @@
-import { useEffect, useRef } from 'react';
-import { Building2, FileText, FolderKanban, Landmark, X } from 'lucide-react';
+import type {ReactNode} from 'react';
+import PpaPlanMapLinks from './PpaPlanMapLinks';
+import { useState } from 'react';
+import { Link } from '@inertiajs/react';
 import type { PPARecord } from '../../data/municipal/ppas.types';
+import type { PlanningPermissions } from '../../pages/Plans/Index';
+import PlanDossierPresentation from '../plans/PlanDossierPresentation';
+import PpaOverview from './PpaOverview';
+import SupportingDocsPanel, { type ServerPlanningAttachment } from '../planning/SupportingDocsPanel';
+import { Button, StatusBadge, toneForWorkState } from '../ui';
 
-export default function PPADetailPanel({ record, onClose }: { record: PPARecord | null; onClose: () => void }) {
-    const panelRef = useRef<HTMLElement>(null);
-    useEffect(() => {
-        if (!record) return;
-        const frame = window.requestAnimationFrame(() => {
-            panelRef.current?.focus();
-            panelRef.current?.scrollIntoView({ block: 'nearest' });
-        });
-        return () => window.cancelAnimationFrame(frame);
-    }, [record?.id]);
-    if (!record) return null;
-    const fields = [
-        ['Responsible office', record.responsibleOffice, Building2],
-        ['Development plan', record.relatedDevelopmentPlan, FileText],
-        ['Funding source', record.fundingSource, Landmark],
-        ['Related projects', String(record.relatedProjectCount), FolderKanban],
-    ] as const;
-    return <aside id="selected-ppa-detail" ref={panelRef} tabIndex={-1} onKeyDown={(event) => { if (event.key === 'Escape') { event.preventDefault(); onClose(); } }} className="municipal-panel ot-r6-ppa-detail r8-ppas-detail min-w-0 p-3" aria-label="Selected PPA details">
-        <div className="flex items-start justify-between gap-4"><div><div className="text-[11px] font-bold uppercase tracking-wide text-[var(--municipal-brand)]">{record.id} / {record.year}</div><h2 className="mt-0.5 text-base font-bold">{record.title}</h2><div className="mt-1 text-xs text-[var(--municipal-muted)]">{record.sector} / {record.status} / {record.priority} priority</div></div><button type="button" onClick={onClose} className="flex min-h-11 min-w-11 items-center justify-center rounded-md text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30" aria-label="Close details"><X size={17} /></button></div>
-        <p className="mt-2 text-xs leading-5 text-[var(--municipal-muted)]">Reference record · Not verified live implementation progress</p>
-        <p className="mt-2 text-sm leading-5 text-[var(--municipal-text)]">{record.implementationContext}</p>
-        <dl className="mt-3 grid gap-2 sm:grid-cols-2">{fields.map(([label, value, Icon]) => <div key={label} className="rounded-[var(--municipal-radius-surface)] bg-[var(--municipal-surface-subtle)] p-2.5"><dt className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-muted)]"><Icon size={13} aria-hidden="true" />{label}</dt><dd className="mt-1 text-xs font-semibold leading-5">{value}</dd></div>)}</dl>
-    </aside>;
+type Props={managementActions?:ReactNode;onEdit?:(record:PPARecord)=>void;record:PPARecord|null;onClose:()=>void;attachments?:ServerPlanningAttachment[];planningPermissions?:PlanningPermissions;currentIndex?:number;totalCount?:number;onPrev?:()=>void;onNext?:()=>void};
+export default function PPADetailPanel({managementActions,onEdit,record,onClose,attachments=[],planningPermissions,currentIndex,totalCount,onPrev,onNext}:Props){
+    const [activeSection,setActiveSection]=useState('overview');
+    if(!record)return null;
+    const canUploadToPpa=Boolean(planningPermissions?.canManagePpas || (planningPermissions?.canProposeOfficePpa && (record.implementingDepartmentId===planningPermissions.actorDepartmentId || record.responsibleOffice.toLowerCase()===(planningPermissions.actorDepartmentName??'').toLowerCase())));
+    const canEdit=Boolean(record.dbId&&(planningPermissions?.canManagePpas||(planningPermissions?.canProposeOfficePpa&&['Draft','Planned'].includes(record.rawStatus??record.status)&&(record.implementingDepartmentId===planningPermissions.actorDepartmentId||record.responsibleOffice.toLowerCase()===(planningPermissions.actorDepartmentName??'').toLowerCase()))));
+    return <PlanDossierPresentation activeSection={activeSection} onSectionChange={setActiveSection} id="selected-ppa-detail" key={record.id} open onClose={onClose} title={record.title} description={`${record.id} / ${record.year}${record.aipReferenceCode ? ' · AIP '+record.aipReferenceCode : ''}`} sectionLabel="PPA dossier sections"
+        footer={<div className="flex w-full flex-wrap items-center justify-between gap-2"><div className="flex items-center gap-2"><Button variant="secondary" disabled={!onPrev} onClick={onPrev}>Previous PPA</Button><span className="text-xs">{currentIndex!==undefined&&totalCount ? `${currentIndex+1} of ${totalCount}` : 'Selected record'}</span><Button variant="secondary" disabled={!onNext} onClick={onNext}>Next PPA</Button></div><div className="flex flex-wrap gap-2">{managementActions}{canEdit&&onEdit&&<Button variant="secondary" onClick={()=>onEdit(record)}>Edit PPA</Button>}<Button variant="secondary" onClick={onClose}>Close details</Button></div></div>}
+        sections={[
+            {key:'overview',label:'Overview & Budget',content:<section aria-label="Selected PPA details" className="space-y-4">
+                <p role="note" className="text-xs text-[var(--ink-secondary)]">Reference record · Not verified live implementation progress</p>
+                <div className="flex flex-wrap gap-2"><StatusBadge tone={toneForWorkState(record.status)}>{record.status}</StatusBadge><StatusBadge tone="neutral">{record.sector}</StatusBadge><StatusBadge tone="neutral">{record.priority} priority</StatusBadge>{record.gadAttributed&&<StatusBadge tone="info">GAD</StatusBadge>}{record.drrmTagged&&<StatusBadge tone="warn">DRRM</StatusBadge>}</div>
+                <PpaOverview record={{implementationContext:record.implementationContext,fundingSource:record.fundingSource,budgetPs:record.psAmount,budgetMooe:record.mooeAmount,budgetCo:record.coAmount,budgetTotal:record.appropriationAmount,ccaAmount:record.climateAdaptationAmount,ccmAmount:record.climateMitigationAmount,responsibleOffice:record.responsibleOffice}} />
+                <dl className="grid gap-3 sm:grid-cols-2">{[['Related projects',record.relatedProjectCount],['Target quarter',record.targetQuarter??'Not supplied'],['Barangay',record.barangay??'Not supplied'],['Location',record.location??'Not supplied']].map(([label,value])=><div key={String(label)} className="rounded-xl border border-[var(--border-default)] p-3"><dt className="text-xs font-bold text-[var(--ink-secondary)]">{label}</dt><dd className="mt-1 text-sm">{value}</dd></div>)}</dl>
+            </section>},
+            {key:'links',label:'Plan, Map & Location',content:<PpaPlanMapLinks plan={{title:record.relatedDevelopmentPlan,href:`/development-plans?search=${encodeURIComponent(record.relatedDevelopmentPlan)}`}} map={{title:record.mapCode??'Spatial-map reference not supplied',href:`/planning-maps?search=${encodeURIComponent(record.mapCode??record.relatedDevelopmentPlan)}`}} barangays={record.barangay?[record.barangay]:undefined} documentCount={attachments.filter(item=>item.parentType==='ppa'&&item.parentCode===record.id).length} onDocuments={()=>setActiveSection('docs')} />},
+            {key:'docs',label:'Supporting Docs',content:<SupportingDocsPanel parentType="ppa" parentCode={record.id} attachments={attachments} canUpload={canUploadToPpa} canManageExecutive={Boolean(planningPermissions?.canViewExecutiveAttachments)} canDelete={Boolean(planningPermissions?.isMpdcHead)} />},
+        ]}
+    />;
 }

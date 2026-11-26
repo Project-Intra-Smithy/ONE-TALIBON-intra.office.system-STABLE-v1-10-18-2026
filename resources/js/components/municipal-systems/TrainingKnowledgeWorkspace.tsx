@@ -1,3 +1,4 @@
+import { MunicipalTabPanels, useMunicipalTabs } from './MunicipalTabs';
 import { useEffect, useMemo, useState } from 'react';
 import {
     ArrowLeft,
@@ -62,7 +63,7 @@ function FeaturedResources({ onOpen }: { onOpen: (resource: KnowledgeResource) =
     return (
         <section aria-label="Featured essential knowledge resources">
             <div className="mb-2 flex items-center gap-2">
-                <Sparkles size={14} className="text-[var(--municipal-brand)]" aria-hidden="true" />
+                <Sparkles size={14} className="text-[var(--brand-ink)]" aria-hidden="true" />
                 <div>
                     <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]">Featured / Essential Resources</div>
                     <p className="mt-0.5 text-[9px] text-[var(--municipal-muted)]">Quick reference shelf for common learning and office context.</p>
@@ -72,10 +73,10 @@ function FeaturedResources({ onOpen }: { onOpen: (resource: KnowledgeResource) =
                 {featured.map((resource) => (
                     <button key={resource.reference} type="button" onClick={() => onOpen(resource)} className="group rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-3 text-left transition hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-sm dark:hover:border-emerald-900/70">
                         <div className="flex items-start justify-between gap-2">
-                            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-[var(--municipal-brand)] dark:bg-emerald-950/20"><BookOpen size={15} aria-hidden="true" /></span>
+                            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-[var(--brand-ink)] dark:bg-emerald-950/20"><BookOpen size={15} aria-hidden="true" /></span>
                             <TypeBadge type={resource.type} />
                         </div>
-                        <div className="mt-3 text-[9px] font-extrabold uppercase tracking-[0.06em] text-[var(--municipal-brand)]">{resource.reference}</div>
+                        <div className="mt-3 text-[9px] font-extrabold uppercase tracking-[0.06em] text-[var(--brand-ink)]">{resource.reference}</div>
                         <div className="mt-1 text-[12px] font-extrabold leading-4 text-[var(--municipal-text)]">{resource.title}</div>
                         <div className="mt-2 text-[9px] leading-4 text-[var(--municipal-muted)]">{resource.owningOffice} · {resource.topic}</div>
                         <div className="mt-2 flex items-center justify-between gap-2 border-t border-[var(--municipal-border)] pt-2 text-[9px] font-semibold text-[var(--municipal-muted)]"><span>{resource.format}</span><ChevronRight size={12} className="transition group-hover:translate-x-0.5" aria-hidden="true" /></div>
@@ -91,7 +92,7 @@ function CategoryNav({ active, onChange }: { active: LibraryCategory; onChange: 
 
     return (
         <aside className="rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-2.5" aria-label="Knowledge categories">
-            <div className="flex items-center gap-2 px-1 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]"><Layers3 size={13} className="text-[var(--municipal-brand)]" aria-hidden="true" /> Categories</div>
+            <div className="flex items-center gap-2 px-1 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]"><Layers3 size={13} className="text-[var(--brand-ink)]" aria-hidden="true" /> Categories</div>
             <div className="mt-2 space-y-0.5">
                 {items.map((category) => {
                     const count = category === 'All resources'
@@ -116,7 +117,7 @@ function ResourceList({ resources, onOpen, compact = false }: { resources: Knowl
             {resources.map((resource) => (
                 <button key={resource.reference} type="button" onClick={() => onOpen(resource)} className="grid w-full gap-2 px-3 py-3 text-left transition hover:bg-[var(--municipal-hover)] sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
                     <div className="min-w-0">
-                        <div className="flex flex-wrap items-center gap-2"><span className="text-[9px] font-extrabold uppercase tracking-[0.06em] text-[var(--municipal-brand)]">{resource.reference}</span><TypeBadge type={resource.type} /></div>
+                        <div className="flex flex-wrap items-center gap-2"><span className="text-[9px] font-extrabold uppercase tracking-[0.06em] text-[var(--brand-ink)]">{resource.reference}</span><TypeBadge type={resource.type} /></div>
                         <div className="mt-1 text-[11px] font-extrabold text-[var(--municipal-text)]">{resource.title}</div>
                         <div className="mt-1 text-[9px] leading-4 text-[var(--municipal-muted)]">{resource.owningOffice} · {resource.topic}</div>
                         {!compact && <p className="mt-1 line-clamp-2 text-[9px] leading-4 text-[var(--municipal-muted)]">{resource.summary}</p>}
@@ -140,7 +141,7 @@ function LibraryPanel({ category, onOpen }: { category: LibraryCategory; onOpen:
     return (
         <section className="overflow-hidden rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)]" aria-label="Knowledge library overview">
             <header className="flex items-center justify-between gap-3 border-b border-[var(--municipal-border)] px-3 py-2.5">
-                <div><div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]"><Library size={14} className="text-[var(--municipal-brand)]" aria-hidden="true" /> Knowledge Library</div><div className="mt-0.5 text-[9px] text-[var(--municipal-muted)]">{category} · {resources.length} reference items</div></div>
+                <div><div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]"><Library size={14} className="text-[var(--brand-ink)]" aria-hidden="true" /> Knowledge Library</div><div className="mt-0.5 text-[9px] text-[var(--municipal-muted)]">{category} · {resources.length} reference items</div></div>
             </header>
             <ResourceList resources={resources.slice(0, 6)} onOpen={onOpen} compact />
         </section>
@@ -153,11 +154,11 @@ function RecentPopular({ onOpen }: { onOpen: (resource: KnowledgeResource) => vo
 
     const miniList = (label: string, resources: KnowledgeResource[]) => (
         <div>
-            <div className="text-[8px] font-extrabold uppercase tracking-[0.07em] text-slate-400">{label}</div>
+            <div className="text-[8px] font-extrabold uppercase tracking-[0.07em] text-[var(--ink-secondary)]">{label}</div>
             <div className="mt-1 divide-y divide-[var(--municipal-border)]">
                 {resources.map((resource) => (
-                    <button key={label + resource.reference} type="button" onClick={() => onOpen(resource)} className="block w-full py-2 text-left hover:text-[var(--municipal-brand)]">
-                        <span className="block text-[9px] font-extrabold text-[var(--municipal-brand)]">{resource.reference}</span>
+                    <button key={label + resource.reference} type="button" onClick={() => onOpen(resource)} className="block w-full py-2 text-left hover:text-[var(--brand-ink)]">
+                        <span className="block text-[9px] font-extrabold text-[var(--brand-ink)]">{resource.reference}</span>
                         <span className="mt-0.5 block text-[10px] font-bold leading-4 text-[var(--municipal-text)]">{resource.title}</span>
                         <span className="mt-0.5 block text-[8px] text-[var(--municipal-muted)]">{resource.updatedReference}</span>
                     </button>
@@ -168,7 +169,7 @@ function RecentPopular({ onOpen }: { onOpen: (resource: KnowledgeResource) => vo
 
     return (
         <aside className="rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-3" aria-label="Recent and popular knowledge resources">
-            <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]"><History size={13} className="text-[var(--municipal-brand)]" aria-hidden="true" /> Recent / Popular</div>
+            <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]"><History size={13} className="text-[var(--brand-ink)]" aria-hidden="true" /> Recent / Popular</div>
             <div className="mt-2 space-y-3">{miniList('Recently updated', recent)}<div className="border-t border-[var(--municipal-border)] pt-3">{miniList('Popular references', popular)}</div></div>
         </aside>
     );
@@ -177,17 +178,17 @@ function RecentPopular({ onOpen }: { onOpen: (resource: KnowledgeResource) => vo
 function OnboardingPathSurface({ onOpen }: { onOpen: (resource: KnowledgeResource) => void }) {
     return (
         <section className="rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-3" aria-label="Municipal onboarding path">
-            <div className="flex items-center gap-2"><GraduationCap size={14} className="text-[var(--municipal-brand)]" aria-hidden="true" /><div><div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]">Onboarding Path</div><p className="mt-0.5 text-[9px] text-[var(--municipal-muted)]">Guided reference sequence only · no employee completion tracking.</p></div></div>
+            <div className="flex items-center gap-2"><GraduationCap size={14} className="text-[var(--brand-ink)]" aria-hidden="true" /><div><div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]">Onboarding Path</div><p className="mt-0.5 text-[9px] text-[var(--municipal-muted)]">Guided reference sequence only · no employee completion tracking.</p></div></div>
             <ol className="mt-3 grid gap-2 lg:grid-cols-5">
                 {onboardingPath.map((item, index) => {
                     const resource = knowledgeResources.find((candidate) => candidate.reference === item.reference);
                     return (
                         <li key={item.reference} className="relative rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] p-2.5">
-                            <div className="flex items-start justify-between gap-2"><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--municipal-surface)] text-[9px] font-extrabold tabular-nums text-[var(--municipal-brand)]">{index + 1}</span><span className={'rounded-full border px-1.5 py-0.5 text-[8px] font-bold ' + onboardingStateTone[item.state]}>{item.state}</span></div>
+                            <div className="flex items-start justify-between gap-2"><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--municipal-surface)] text-[9px] font-extrabold tabular-nums text-[var(--brand-ink)]">{index + 1}</span><span className={'rounded-full border px-1.5 py-0.5 text-[8px] font-bold ' + onboardingStateTone[item.state]}>{item.state}</span></div>
                             <div className="mt-2 text-[10px] font-extrabold leading-4 text-[var(--municipal-text)]">{item.title}</div>
                             <div className="mt-1 text-[8px] leading-3 text-[var(--municipal-muted)]">{item.officeContext}</div>
                             <p className="mt-2 text-[9px] leading-4 text-[var(--municipal-muted)]">{item.learningContext}</p>
-                            {resource && <button type="button" onClick={() => onOpen(resource)} className="mt-2 inline-flex items-center gap-1 text-[9px] font-bold text-[var(--municipal-brand)]">View reference <ChevronRight size={10} aria-hidden="true" /></button>}
+                            {resource && <button type="button" onClick={() => onOpen(resource)} className="mt-2 inline-flex items-center gap-1 text-[9px] font-bold text-[var(--brand-ink)]">View reference <ChevronRight size={10} aria-hidden="true" /></button>}
                         </li>
                     );
                 })}
@@ -272,11 +273,11 @@ function InstitutionalKnowledgeTab({ onOpen }: { onOpen: (resource: KnowledgeRes
     return (
         <div className="grid gap-2.5 xl:grid-cols-[minmax(0,1fr)_320px]">
             <section className="rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-3" aria-label="Institutional knowledge continuity shelf">
-                <div className="flex items-center gap-2"><BookOpen size={14} className="text-[var(--municipal-brand)]" aria-hidden="true" /><div><div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]">Organizational Memory</div><p className="mt-0.5 text-[9px] text-[var(--municipal-muted)]">Office guides, handover references, process notes and reusable learning context.</p></div></div>
+                <div className="flex items-center gap-2"><BookOpen size={14} className="text-[var(--brand-ink)]" aria-hidden="true" /><div><div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]">Organizational Memory</div><p className="mt-0.5 text-[9px] text-[var(--municipal-muted)]">Office guides, handover references, process notes and reusable learning context.</p></div></div>
                 <div className="mt-3 grid gap-2 md:grid-cols-2">
                     {institutionalKnowledge.map((item) => (
                         <article key={item.reference} className="rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] p-3">
-                            <div className="flex items-start justify-between gap-2"><div className="text-[9px] font-extrabold text-[var(--municipal-brand)]">{item.reference}</div><span className="rounded-full border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2 py-1 text-[8px] font-bold text-[var(--municipal-muted)]">{item.kind}</span></div>
+                            <div className="flex items-start justify-between gap-2"><div className="text-[9px] font-extrabold text-[var(--brand-ink)]">{item.reference}</div><span className="rounded-full border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-2 py-1 text-[8px] font-bold text-[var(--municipal-muted)]">{item.kind}</span></div>
                             <h3 className="mt-2 text-[11px] font-extrabold text-[var(--municipal-text)]">{item.title}</h3>
                             <div className="mt-1 text-[8px] font-semibold text-[var(--municipal-muted)]">{item.owningOffice}</div>
                             <p className="mt-2 text-[9px] leading-4 text-[var(--municipal-muted)]">{item.continuityContext}</p>
@@ -295,7 +296,7 @@ function InstitutionalKnowledgeTab({ onOpen }: { onOpen: (resource: KnowledgeRes
                 <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]">Continuity Shelf</div>
                 <p className="mt-1 text-[9px] leading-4 text-[var(--municipal-muted)]">Institutional knowledge here demonstrates how organizational memory could be organized without becoming an HR record system or live publishing portal.</p>
                 <div className="mt-3 space-y-2">
-                    {['Office guides', 'Handover references', 'Process notes', 'Templates', 'Recorded learning'].map((label) => <div key={label} className="flex items-center gap-2 rounded-lg bg-[var(--municipal-surface-subtle)] px-2.5 py-2 text-[10px] font-semibold text-[var(--municipal-text)]"><CircleDot size={10} className="shrink-0 text-[var(--municipal-brand)]" aria-hidden="true" />{label}</div>)}
+                    {['Office guides', 'Handover references', 'Process notes', 'Templates', 'Recorded learning'].map((label) => <div key={label} className="flex items-center gap-2 rounded-lg bg-[var(--municipal-surface-subtle)] px-2.5 py-2 text-[10px] font-semibold text-[var(--municipal-text)]"><CircleDot size={10} className="shrink-0 text-[var(--brand-ink)]" aria-hidden="true" />{label}</div>)}
                 </div>
                 <div className="mt-3 border-t border-[var(--municipal-border)] pt-2 text-[9px] leading-4 text-[var(--municipal-muted)]">No confidential procedures, employee history or production knowledge publishing is exposed.</div>
             </aside>
@@ -305,6 +306,7 @@ function InstitutionalKnowledgeTab({ onOpen }: { onOpen: (resource: KnowledgeRes
 
 function ResourceDetail({ resource, onClose }: { resource: KnowledgeResource; onClose: () => void }) {
     const [step, setStep] = useState<DetailStep>('Resource');
+    const detailTabs = useMunicipalTabs(step, (['Resource', 'Context', 'Related'] as DetailStep[]));
     const relatedResources = resource.relatedReferences
         .map((reference) => knowledgeResources.find((candidate) => candidate.reference === reference))
         .filter((candidate): candidate is KnowledgeResource => Boolean(candidate));
@@ -321,18 +323,18 @@ function ResourceDetail({ resource, onClose }: { resource: KnowledgeResource; on
             title={`${resource.reference} · ${resource.title}`}
             eyebrow="Knowledge resource reference"
             size="standard"
-            footer={<div className="text-[9px] font-semibold text-slate-400">Illustrative reference data · No live publishing, download, certification or employee tracking enabled</div>}
+            footer={<div className="text-[9px] font-semibold text-[var(--ink-secondary)]">Illustrative reference data · No live publishing, download, certification or employee tracking enabled</div>}
         >
             <div className="space-y-4">
-                <div className="grid grid-cols-3 gap-1.5" role="tablist" aria-label="Knowledge resource detail steps">
+                <div className="grid grid-cols-3 gap-1.5" {...detailTabs.listProps} aria-label="Knowledge resource detail steps">
                     {(['Resource', 'Context', 'Related'] as DetailStep[]).map((item, index) => (
-                        <button key={item} type="button" role="tab" aria-selected={step === item} onClick={() => setStep(item)} className={'min-h-9 rounded-lg border px-2 text-[9px] font-bold transition ' + (step === item ? 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/25 dark:text-emerald-100' : 'border-transparent text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}><span className="mr-1 text-[8px] opacity-60">{index + 1}</span>{item}</button>
+                        <button key={item} type="button" {...detailTabs.tabProps(item)} onClick={() => setStep(item)} className={'min-h-9 rounded-lg border px-2 text-[9px] font-bold transition ' + (step === item ? 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/25 dark:text-emerald-100' : 'border-transparent text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}><span className="mr-1 text-[8px]">{index + 1}</span>{item}</button>
                     ))}
                 </div>
 
-                {step === 'Resource' && (
+                <MunicipalTabPanels tabs={detailTabs}>{step === 'Resource' && (
                     <div className="space-y-3">
-                        <div className="flex flex-wrap items-center gap-2"><span className="text-[10px] font-extrabold text-[var(--municipal-brand)]">{resource.reference}</span><TypeBadge type={resource.type} /></div>
+                        <div className="flex flex-wrap items-center gap-2"><span className="text-[10px] font-extrabold text-[var(--brand-ink)]">{resource.reference}</span><TypeBadge type={resource.type} /></div>
                         <dl className="grid gap-2 sm:grid-cols-2">
                             {[
                                 ['Title', resource.title],
@@ -355,10 +357,10 @@ function ResourceDetail({ resource, onClose }: { resource: KnowledgeResource; on
 
                 {step === 'Related' && (
                     <div className="space-y-3">
-                        <div><div className="text-[8px] font-extrabold uppercase tracking-[0.06em] text-[var(--municipal-muted)]">Related resources</div><div className="mt-1.5 space-y-1.5">{relatedResources.map((related) => <div key={related.reference} className="rounded-lg bg-[var(--municipal-surface-subtle)] px-3 py-2.5"><div className="text-[9px] font-extrabold text-[var(--municipal-brand)]">{related.reference}</div><div className="mt-0.5 text-[10px] font-bold text-[var(--municipal-text)]">{related.title}</div><div className="mt-0.5 text-[8px] text-[var(--municipal-muted)]">{related.category} · {related.format}</div></div>)}</div></div>
-                        {memoryLinks.length > 0 && <div className="border-t border-[var(--municipal-border)] pt-3"><div className="text-[8px] font-extrabold uppercase tracking-[0.06em] text-[var(--municipal-muted)]">Institutional knowledge links</div><div className="mt-1.5 space-y-1.5">{memoryLinks.map((item) => <div key={item.reference} className="rounded-lg border border-[var(--municipal-border)] px-3 py-2.5"><div className="text-[9px] font-extrabold text-[var(--municipal-brand)]">{item.reference}</div><div className="mt-0.5 text-[10px] font-bold text-[var(--municipal-text)]">{item.title}</div><div className="mt-0.5 text-[8px] text-[var(--municipal-muted)]">{item.kind}</div></div>)}</div></div>}
+                        <div><div className="text-[8px] font-extrabold uppercase tracking-[0.06em] text-[var(--municipal-muted)]">Related resources</div><div className="mt-1.5 space-y-1.5">{relatedResources.map((related) => <div key={related.reference} className="rounded-lg bg-[var(--municipal-surface-subtle)] px-3 py-2.5"><div className="text-[9px] font-extrabold text-[var(--brand-ink)]">{related.reference}</div><div className="mt-0.5 text-[10px] font-bold text-[var(--municipal-text)]">{related.title}</div><div className="mt-0.5 text-[8px] text-[var(--municipal-muted)]">{related.category} · {related.format}</div></div>)}</div></div>
+                        {memoryLinks.length > 0 && <div className="border-t border-[var(--municipal-border)] pt-3"><div className="text-[8px] font-extrabold uppercase tracking-[0.06em] text-[var(--municipal-muted)]">Institutional knowledge links</div><div className="mt-1.5 space-y-1.5">{memoryLinks.map((item) => <div key={item.reference} className="rounded-lg border border-[var(--municipal-border)] px-3 py-2.5"><div className="text-[9px] font-extrabold text-[var(--brand-ink)]">{item.reference}</div><div className="mt-0.5 text-[10px] font-bold text-[var(--municipal-text)]">{item.title}</div><div className="mt-0.5 text-[8px] text-[var(--municipal-muted)]">{item.kind}</div></div>)}</div></div>}
                     </div>
-                )}
+                )}</MunicipalTabPanels>
             </div>
         </DetailDrawer>
     );
@@ -366,6 +368,7 @@ function ResourceDetail({ resource, onClose }: { resource: KnowledgeResource; on
 
 export default function TrainingKnowledgeWorkspace({ onBack }: Props) {
     const [activeTab, setActiveTab] = useState<WorkspaceTab>('Overview');
+    const viewTabs = useMunicipalTabs(activeTab, tabs);
     const [selectedResource, setSelectedResource] = useState<KnowledgeResource | null>(null);
 
     const headerSignals = [
@@ -396,13 +399,13 @@ export default function TrainingKnowledgeWorkspace({ onBack }: Props) {
             <header className="rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-4 py-3">
                 <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(430px,520px)] lg:items-center">
                     <div className="min-w-0">
-                        {onBack && <button type="button" onClick={onBack} className="mb-1 inline-flex min-h-7 items-center gap-1.5 text-[9px] font-bold text-[var(--municipal-muted)] transition hover:text-[var(--municipal-brand)] focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30"><ArrowLeft size={12} aria-hidden="true" /> Future Integrations</button>}
-                        <div className="text-[9px] font-extrabold uppercase tracking-[0.1em] text-[var(--municipal-brand)]">Knowledge & Learning</div>
-                        <div className="mt-0.5 flex items-center gap-2"><GraduationCap size={17} className="shrink-0 text-[var(--municipal-brand)]" aria-hidden="true" /><h1 className="text-[21px] font-extrabold tracking-tight text-[var(--municipal-text)]">Training / Knowledge Management</h1></div>
+                        {onBack && <button type="button" onClick={onBack} className="mb-1 inline-flex min-h-7 items-center gap-1.5 text-[9px] font-bold text-[var(--municipal-muted)] transition hover:text-[var(--brand-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30"><ArrowLeft size={12} aria-hidden="true" /> Future Integrations</button>}
+                        <div className="text-[9px] font-extrabold uppercase tracking-[0.1em] text-[var(--brand-ink)]">Knowledge & Learning</div>
+                        <div className="mt-0.5 flex items-center gap-2"><GraduationCap size={17} className="shrink-0 text-[var(--brand-ink)]" aria-hidden="true" /><h1 className="text-[21px] font-extrabold tracking-tight text-[var(--municipal-text)]">Training / Knowledge Management</h1></div>
                         <p className="mt-0.5 text-[10px] font-bold text-[var(--municipal-text)]">HRMO / Municipal Offices</p>
                         <p className="mt-0.5 text-[9px] font-semibold text-[var(--municipal-muted)]">Shared manuals, SOPs, templates, onboarding and institutional knowledge</p>
                     </div>
-                    <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4" aria-label="Knowledge workspace signals">
+                    <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4" role="group" aria-label="Knowledge workspace signals">
                         {headerSignals.map((signal) => (
                             <div key={signal.label} className={'min-h-11 rounded-lg border px-2.5 py-2 ' + signal.tone}><div className="text-[8px] font-extrabold uppercase tracking-[0.06em] opacity-75">{signal.label}</div><div className="mt-1 text-[15px] font-extrabold leading-none tabular-nums">{signal.value}</div></div>
                         ))}
@@ -410,16 +413,16 @@ export default function TrainingKnowledgeWorkspace({ onBack }: Props) {
                 </div>
             </header>
 
-            <nav className="flex gap-1 overflow-x-auto rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-1" role="tablist" aria-label="Training and knowledge views">
-                {tabs.map((tab) => <button key={tab} type="button" role="tab" aria-selected={activeTab === tab} onClick={() => setActiveTab(tab)} className={'min-h-9 shrink-0 rounded-lg px-3 text-[10px] font-bold transition ' + (activeTab === tab ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-100' : 'text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}>{tab}</button>)}
+            <nav className="flex gap-1 overflow-x-auto rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-1" {...viewTabs.listProps} aria-label="Training and knowledge views">
+                {tabs.map((tab) => <button key={tab} type="button" {...viewTabs.tabProps(tab)} onClick={() => setActiveTab(tab)} className={'min-h-9 shrink-0 rounded-lg px-3 text-[10px] font-bold transition ' + (activeTab === tab ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-100' : 'text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}>{tab}</button>)}
             </nav>
 
-            {activeTab === 'Overview' && <Overview onOpen={setSelectedResource} />}
+            <MunicipalTabPanels tabs={viewTabs}>{activeTab === 'Overview' && <Overview onOpen={setSelectedResource} />}
             {activeTab === 'Knowledge Library' && <KnowledgeLibraryTab onOpen={setSelectedResource} />}
             {activeTab === 'Onboarding' && <OnboardingTab onOpen={setSelectedResource} />}
-            {activeTab === 'Institutional Knowledge' && <InstitutionalKnowledgeTab onOpen={setSelectedResource} />}
+            {activeTab === 'Institutional Knowledge' && <InstitutionalKnowledgeTab onOpen={setSelectedResource} />}</MunicipalTabPanels>
 
-            <div className="flex items-start gap-2 rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-3 py-2 text-[9px] font-semibold leading-4 text-[var(--municipal-muted)]"><FileText size={12} className="mt-0.5 shrink-0 text-[var(--municipal-brand)]" aria-hidden="true" /> Presentation/reference only. No live LMS, employee training records, certifications, confidential manuals, active publishing, employee progress tracking or production knowledge portal is enabled.</div>
+            <div className="flex items-start gap-2 rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-3 py-2 text-[9px] font-semibold leading-4 text-[var(--municipal-muted)]"><FileText size={12} className="mt-0.5 shrink-0 text-[var(--brand-ink)]" aria-hidden="true" /> Presentation/reference only. No live LMS, employee training records, certifications, confidential manuals, active publishing, employee progress tracking or production knowledge portal is enabled.</div>
 
             {selectedResource && <ResourceDetail resource={selectedResource} onClose={() => setSelectedResource(null)} />}
         </section>

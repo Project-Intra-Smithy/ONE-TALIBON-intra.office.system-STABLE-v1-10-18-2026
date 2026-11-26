@@ -268,7 +268,7 @@ export const municipalPlans: MunicipalPlan[] = [
 export const planStatuses: Array<'All' | PlanStatus> = ['All', 'In force', 'For review', 'Updating', 'Adopted', 'Due this year'];
 export const planHorizons: Array<'All' | PlanHorizon> = ['All', 'Annual', 'Three-year', 'Six-year', 'Long-term', 'Sectoral'];
 
-export function getPlanMetrics(plans: MunicipalPlan[]) {
+export function getPlanMetrics(plans: Array<Pick<MunicipalPlan,'nextMilestoneDate'>&{status:string}>) {
     return {
         total: plans.length,
         inForce: plans.filter((plan) => plan.status === 'In force' || plan.status === 'Adopted').length,

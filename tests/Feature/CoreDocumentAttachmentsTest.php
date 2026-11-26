@@ -10,15 +10,21 @@ use App\Models\Department;
 use App\Models\Document;
 use App\Models\DocumentLink;
 use App\Models\Employee;
+use App\Models\PlanFamily;
 use App\Models\TransactionEvent;
 use App\Models\User;
 use App\Models\WorkflowTransaction;
+use App\Services\CorrespondenceEvidenceService;
 use App\Services\TransactionWorkflowService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia as Assert;
+use RuntimeException;
 use Tests\TestCase;
 
 class CoreDocumentAttachmentsTest extends TestCase
@@ -29,7 +35,8 @@ class CoreDocumentAttachmentsTest extends TestCase
     {
         parent::setUp();
         config()->set('messaging_release.restricted_uat', false);
-        Storage::fake('documents');
+        $syntheticDisk = Storage::fake('documents');
+        config(['filesystems.disks.documents.root' => rtrim($syntheticDisk->path(''), '/')]);
     }
 
     public function test_transaction_creation_persists_private_hashed_evidence_and_exact_links(): void
@@ -123,6 +130,14 @@ class CoreDocumentAttachmentsTest extends TestCase
             Document::query()->where('original_name', 'brief.docx')->value('mime_type'),
         );
         $this->assertSame('image/png', Document::query()->where('original_name', 'photo.png')->value('mime_type'));
+        foreach (['brief.docx', 'photo.png'] as $name) {
+            $document = Document::query()->where('original_name', $name)->sole();
+            $bytes = Storage::disk('documents')->get($document->storage_path);
+            $this->assertSame(hash('sha256', $bytes), $document->checksum_sha256);
+            $response = $this->actingAs($creator)->get('/documents/'.$document->public_id.'/download')
+                ->assertOk()->assertHeader('Content-Type', $document->mime_type);
+            $this->assertSame($bytes, $response->streamedContent());
+        }
     }
 
     public function test_spoofed_pdf_and_non_docx_zip_are_rejected_before_transaction_mutation(): void
@@ -395,6 +410,374 @@ class CoreDocumentAttachmentsTest extends TestCase
             ->assertJsonMissingPath('evidence')
             ->assertJsonMissingPath('documents')
             ->assertJsonMissingPath('transaction.documents');
+    }
+
+    public function test_classify_reclassifies_only_eligible_legacy_path_evidence_and_quarantines_registry_contradictory_and_plan_rows(): void
+    {
+        $origin = $this->department('COMPAT-FULL');
+        $head = $this->human('department_head', $origin);
+        $record = $this->record('Full custody schema reclassification compatibility');
+        $service = app(CorrespondenceEvidenceService::class);
+
+        $record = $service->register(
+            $head,
+            $record,
+            (string) Str::uuid(),
+            [UploadedFile::fake()->createWithContent('legit-legacy.pdf', "%PDF-1.7\nlegit\n%%EOF")],
+        );
+
+        $legitDoc = Document::query()->where('original_name', 'legit-legacy.pdf')->sole();
+        $registeredEvent = CorrespondenceEvent::query()
+            ->where('correspondence_record_id', $record->id)
+            ->where('event', 'registered')
+            ->sole();
+
+        $legacyCtwDoc = $this->linkedCorrespondenceDocument($head, $registeredEvent, 'legacy-ctw.pdf', 'LEGACY_CTW');
+        $everPlanDoc = $this->linkedCorrespondenceDocument($head, $record, 'ever-plan.pdf', 'EVER_PLAN');
+        $receiptDoc = $this->linkedCorrespondenceDocument($head, $record, 'plan-receipt.pdf', 'LEGACY_CTW', withReceipt: true);
+        $bindingDoc = $this->linkedCorrespondenceDocument($head, $record, 'plan-binding.pdf', 'LEGACY_CTW', withBinding: true);
+
+        $registryDoc = null;
+        $contradictoryDoc = null;
+        $hasCustodyColumns = Schema::hasColumn('documents', 'custody_mode')
+            && Schema::hasColumn('documents', 'custody_operation_id');
+
+        DB::beginTransaction();
+        try {
+            if ($hasCustodyColumns) {
+                $registryDoc = $this->linkedCorrespondenceDocument($head, $record, 'registry-v1.pdf', 'LEGACY_CTW');
+                $contradictoryDoc = $this->linkedCorrespondenceDocument($head, $registeredEvent, 'contradictory.pdf', 'LEGACY_CTW');
+
+                DB::statement('ALTER TABLE documents DISABLE TRIGGER a_n03_public_guard');
+                DB::statement('ALTER TABLE documents DROP CONSTRAINT n03_document_item');
+                DB::statement('ALTER TABLE documents DROP CONSTRAINT n03_mode_check');
+                try {
+                    DB::table('documents')->where('id', $registryDoc->id)->update([
+                        'custody_mode' => 'REGISTRY_V1',
+                        'custody_operation_id' => (string) Str::uuid(),
+                        'custody_ordinal' => 1,
+                        'storage_disk' => 'legacy_registry_v1',
+                        'storage_path' => null,
+                    ]);
+                    DB::table('documents')->where('id', $contradictoryDoc->id)->update([
+                        'custody_mode' => 'LEGACY_PATH',
+                        'custody_operation_id' => (string) Str::uuid(),
+                    ]);
+                } finally {
+                    DB::statement('ALTER TABLE documents ENABLE TRIGGER a_n03_public_guard');
+                }
+            }
+
+            $classified = $service->classify(
+                $head,
+                $record->fresh(),
+                CorrespondenceClassification::Restricted,
+                (string) Str::uuid(),
+                'Restricted classification under full schema.',
+                [],
+            );
+
+            $this->assertSame(CorrespondenceLifecycleState::Classified, $classified->lifecycle_state);
+            $this->assertSame(CorrespondenceClassification::Restricted, $classified->classification);
+            $this->assertSame('restricted', $legitDoc->fresh()->classification);
+            $this->assertSame('restricted', $legacyCtwDoc->fresh()->classification);
+            $this->assertSame('internal', $everPlanDoc->fresh()->classification);
+            $this->assertSame('internal', $receiptDoc->fresh()->classification);
+            $this->assertSame('internal', $bindingDoc->fresh()->classification);
+
+            if ($registryDoc !== null && $contradictoryDoc !== null) {
+                $this->assertSame('internal', $registryDoc->fresh()->classification);
+                $this->assertSame('internal', $contradictoryDoc->fresh()->classification);
+            }
+        } finally {
+            DB::rollBack();
+        }
+    }
+
+    public function test_classify_reclassifies_eligible_legacy_evidence_when_both_custody_columns_are_absent_and_quarantines_plan_rows(): void
+    {
+        $origin = $this->department('COMPAT-LEGACY-ONLY');
+        $head = $this->human('department_head', $origin);
+        $record = $this->record('Legacy-only schema reclassification compatibility');
+        $service = app(CorrespondenceEvidenceService::class);
+
+        $record = $service->register(
+            $head,
+            $record,
+            (string) Str::uuid(),
+            [UploadedFile::fake()->createWithContent('legacy-only.pdf', "%PDF-1.7\nlegacy-only\n%%EOF")],
+        );
+
+        $legitDoc = Document::query()->where('original_name', 'legacy-only.pdf')->sole();
+        $registeredEvent = CorrespondenceEvent::query()
+            ->where('correspondence_record_id', $record->id)
+            ->where('event', 'registered')
+            ->sole();
+
+        $legacyCtwDoc = $this->linkedCorrespondenceDocument($head, $registeredEvent, 'legacy-only-ctw.pdf', 'LEGACY_CTW');
+        $everPlanDoc = $this->linkedCorrespondenceDocument($head, $record, 'legacy-only-plan.pdf', 'EVER_PLAN');
+        $receiptDoc = $this->linkedCorrespondenceDocument($head, $record, 'legacy-only-receipt.pdf', 'LEGACY_CTW', withReceipt: true);
+        $bindingDoc = $this->linkedCorrespondenceDocument($head, $record, 'legacy-only-binding.pdf', 'LEGACY_CTW', withBinding: true);
+
+        $hasCustodyColumns = Schema::hasColumn('documents', 'custody_mode')
+            && Schema::hasColumn('documents', 'custody_operation_id');
+
+        DB::beginTransaction();
+        try {
+            if ($hasCustodyColumns) {
+                DB::statement('ALTER TABLE documents DISABLE TRIGGER a_n03_public_guard');
+                DB::statement('ALTER TABLE documents RENAME COLUMN custody_mode TO compat_hidden_custody_mode');
+                DB::statement('ALTER TABLE documents RENAME COLUMN custody_operation_id TO compat_hidden_custody_op');
+            }
+
+            $classified = $service->classify(
+                $head,
+                $record->fresh(),
+                CorrespondenceClassification::Confidential,
+                (string) Str::uuid(),
+                'Confidential classification under legacy-only schema.',
+                [],
+            );
+
+            $this->assertSame(CorrespondenceLifecycleState::Classified, $classified->lifecycle_state);
+            $this->assertSame(CorrespondenceClassification::Confidential, $classified->classification);
+            $this->assertSame('confidential', $legitDoc->fresh()->classification);
+            $this->assertSame('confidential', $legacyCtwDoc->fresh()->classification);
+            $this->assertSame('internal', $everPlanDoc->fresh()->classification);
+            $this->assertSame('internal', $receiptDoc->fresh()->classification);
+            $this->assertSame('internal', $bindingDoc->fresh()->classification);
+        } finally {
+            DB::rollBack();
+        }
+    }
+
+    public function test_classify_fails_closed_and_rolls_back_atomically_on_partial_custody_or_missing_provenance_schema(): void
+    {
+        $origin = $this->department('COMPAT-PARTIAL');
+        $head = $this->human('department_head', $origin);
+        $record = $this->record('Partial schema rollback verification');
+        $service = app(CorrespondenceEvidenceService::class);
+
+        $record = $service->register(
+            $head,
+            $record,
+            (string) Str::uuid(),
+            [UploadedFile::fake()->createWithContent('partial-guard.pdf', "%PDF-1.7\npartial\n%%EOF")],
+        );
+
+        $document = Document::query()->where('original_name', 'partial-guard.pdf')->sole();
+        $initialFiles = Storage::disk('documents')->allFiles();
+
+        $mutations = [
+            'missing_security_domain' => 'ALTER TABLE documents RENAME COLUMN security_domain TO compat_hidden_domain',
+            'missing_origin_receipts' => 'ALTER TABLE plan_document_origin_receipts RENAME TO compat_hidden_receipts',
+            'missing_typed_bindings' => 'ALTER TABLE plan_document_bindings RENAME TO compat_hidden_bindings',
+        ];
+
+        if (Schema::hasColumn('documents', 'custody_mode') && Schema::hasColumn('documents', 'custody_operation_id')) {
+            $mutations['partial_custody_mode_missing'] = 'ALTER TABLE documents RENAME COLUMN custody_mode TO compat_hidden_mode';
+            $mutations['partial_custody_operation_missing'] = 'ALTER TABLE documents RENAME COLUMN custody_operation_id TO compat_hidden_op';
+        }
+
+        foreach ($mutations as $case => $ddl) {
+            DB::beginTransaction();
+            try {
+                DB::statement($ddl);
+                $failed = false;
+
+                try {
+                    $service->classify(
+                        $head,
+                        $record->fresh(),
+                        CorrespondenceClassification::Restricted,
+                        (string) Str::uuid(),
+                        'Should fail closed on '.$case,
+                        [UploadedFile::fake()->createWithContent('extra-'.$case.'.pdf', "%PDF-1.7\nextra\n%%EOF")],
+                    );
+                } catch (RuntimeException $exception) {
+                    $this->assertSame(
+                        'Unable to verify document custody schema for evidence reclassification.',
+                        $exception->getMessage(),
+                        $case,
+                    );
+                    $failed = true;
+                }
+
+                $this->assertTrue($failed, 'Expected fail-closed RuntimeException for '.$case);
+                $this->assertSame(CorrespondenceLifecycleState::Registered, $record->fresh()->lifecycle_state, $case);
+                $this->assertNull($record->fresh()->classified_at, $case);
+                $this->assertSame('internal', $document->fresh()->classification, $case);
+                $this->assertSame(
+                    0,
+                    CorrespondenceEvent::query()
+                        ->where('correspondence_record_id', $record->id)
+                        ->where('event', 'classified')
+                        ->count(),
+                    $case,
+                );
+                $this->assertSame(
+                    0,
+                    DB::table('outbox_messages')
+                        ->where('event_type', 'correspondence.classified')
+                        ->where('aggregate_id', $record->public_id)
+                        ->count(),
+                    $case,
+                );
+                $this->assertSame(
+                    0,
+                    DB::table('audit_logs')
+                        ->where('action', 'correspondence.classified')
+                        ->where('entity_id', $record->id)
+                        ->count(),
+                    $case,
+                );
+                $this->assertSame(1, Document::query()->count(), $case);
+                $this->assertSame($initialFiles, Storage::disk('documents')->allFiles(), $case);
+            } finally {
+                DB::rollBack();
+            }
+        }
+    }
+
+    public function test_unauthorized_actor_cannot_classify_or_reclassify_linked_correspondence_evidence(): void
+    {
+        $origin = $this->department('COMPAT-AUTH-ORIGIN');
+        $foreign = $this->department('COMPAT-AUTH-FOREIGN');
+        $head = $this->human('department_head', $origin);
+        $staff = $this->human('department_staff', $origin);
+        $foreignHead = $this->human('department_head', $foreign);
+        $record = $this->record('Authorization boundary on reclassification');
+        $service = app(CorrespondenceEvidenceService::class);
+
+        $record = $service->register(
+            $head,
+            $record,
+            (string) Str::uuid(),
+            [UploadedFile::fake()->createWithContent('auth-guard.pdf', "%PDF-1.7\nauth\n%%EOF")],
+        );
+
+        $document = Document::query()->where('original_name', 'auth-guard.pdf')->sole();
+
+        foreach ([$staff, $foreignHead] as $unauthorized) {
+            $this->actingAs($unauthorized)
+                ->post('/correspondence/'.$record->public_id.'/workspace/classify', [
+                    'classification' => 'restricted',
+                    'remarks' => 'Unauthorized reclassification attempt.',
+                ])
+                ->assertForbidden();
+
+            $denied = false;
+            try {
+                $service->classify(
+                    $unauthorized,
+                    $record->fresh(),
+                    CorrespondenceClassification::Restricted,
+                    (string) Str::uuid(),
+                    'Direct unauthorized service call.',
+                    [],
+                );
+            } catch (AuthorizationException) {
+                $denied = true;
+            }
+
+            $this->assertTrue($denied);
+            $this->assertSame(CorrespondenceLifecycleState::Registered, $record->fresh()->lifecycle_state);
+            $this->assertSame('internal', $document->fresh()->classification);
+            $this->assertSame(
+                0,
+                CorrespondenceEvent::query()
+                    ->where('correspondence_record_id', $record->id)
+                    ->where('event', 'classified')
+                    ->count(),
+            );
+        }
+    }
+
+    private function linkedCorrespondenceDocument(
+        User $uploader,
+        CorrespondenceRecord|CorrespondenceEvent $linkable,
+        string $name,
+        ?string $securityDomain,
+        bool $withReceipt = false,
+        bool $withBinding = false,
+    ): Document {
+        $bytes = "%PDF-1.7\n".$name."\n%%EOF";
+        $path = 'compat-synthetic/'.Str::uuid().'.pdf';
+        Storage::disk('documents')->put($path, $bytes);
+
+        $document = Document::query()->create([
+            'title' => $name,
+            'original_name' => $name,
+            'document_type' => 'supporting_document',
+            'classification' => 'internal',
+            'storage_disk' => 'documents',
+            'storage_path' => $path,
+            'mime_type' => 'application/pdf',
+            'size_bytes' => strlen($bytes),
+            'checksum_sha256' => hash('sha256', $bytes),
+            'owner_department_id' => $uploader->employee->department_id,
+            'uploaded_by_user_id' => $uploader->id,
+        ]);
+
+        if ($securityDomain === 'EVER_PLAN') {
+            DB::statement('ALTER TABLE documents DISABLE TRIGGER kirion_plan_document_guard_trigger');
+            DB::statement('ALTER TABLE documents DISABLE TRIGGER kirion_plan_stamp_origin_trigger');
+            try {
+                DB::table('documents')->where('id', $document->id)->update(['security_domain' => 'EVER_PLAN']);
+            } finally {
+                DB::statement('ALTER TABLE documents ENABLE TRIGGER kirion_plan_document_guard_trigger');
+                DB::statement('ALTER TABLE documents ENABLE TRIGGER kirion_plan_stamp_origin_trigger');
+            }
+        } elseif ($securityDomain !== null) {
+            DB::table('documents')->where('id', $document->id)->update(['security_domain' => $securityDomain]);
+        }
+
+        if ($withReceipt) {
+            DB::statement('ALTER TABLE plan_document_origin_receipts DISABLE TRIGGER kirion_plan_receipt_guard_trigger');
+            try {
+                DB::table('plan_document_origin_receipts')->insert([
+                    'document_id' => $document->id,
+                    'origin' => 'EVER_PLAN',
+                    'sealed_at' => now(),
+                ]);
+            } finally {
+                DB::statement('ALTER TABLE plan_document_origin_receipts ENABLE TRIGGER kirion_plan_receipt_guard_trigger');
+            }
+        }
+
+        if ($withBinding) {
+            $family = PlanFamily::query()->create(['title' => 'Synthetic Compat Family '.Str::random(6)]);
+            $edition = $family->editions()->create(['edition_label' => 'Synthetic Compat Edition']);
+            DB::statement('ALTER TABLE plan_document_bindings DISABLE TRIGGER kirion_plan_typed_binding_guard_trigger');
+            try {
+                DB::table('plan_document_bindings')->insert([
+                    'plan_edition_id' => $edition->id,
+                    'document_id' => $document->id,
+                    'role' => 'master',
+                    'revision_no' => 1,
+                    'binding_state' => 'QUARANTINED',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            } finally {
+                DB::statement('ALTER TABLE plan_document_bindings ENABLE TRIGGER kirion_plan_typed_binding_guard_trigger');
+            }
+        }
+
+        DB::statement('ALTER TABLE document_links DISABLE TRIGGER kirion_plan_generic_link_guard_trigger');
+        try {
+            DocumentLink::query()->create([
+                'document_id' => $document->id,
+                'linkable_type' => $linkable->getMorphClass(),
+                'linkable_id' => $linkable->id,
+                'relationship' => 'supporting_document',
+                'created_by_user_id' => $uploader->id,
+            ]);
+        } finally {
+            DB::statement('ALTER TABLE document_links ENABLE TRIGGER kirion_plan_generic_link_guard_trigger');
+        }
+
+        return $document->fresh();
     }
 
     private function department(string $suffix): Department

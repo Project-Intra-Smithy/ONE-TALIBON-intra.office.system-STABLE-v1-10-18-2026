@@ -21,8 +21,7 @@ final class MfaChallengeController extends Controller
         private readonly AuthenticationAttemptLimiter $limiter,
         private readonly MfaService $mfa,
         private readonly AuditLogger $audit,
-    ) {
-    }
+    ) {}
 
     public function create(Request $request): Response|RedirectResponse
     {
@@ -51,6 +50,7 @@ final class MfaChallengeController extends Controller
             $user,
             $data['code'] ?? null,
             $data['recovery_code'] ?? null,
+            $request,
         );
 
         if ($proof === null) {

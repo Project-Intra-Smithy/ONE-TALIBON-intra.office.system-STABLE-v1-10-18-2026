@@ -202,31 +202,31 @@ export default function GISWorkspace({ prototype, onBack }: Props) {
                     <div className="min-w-0">
                         <div className="text-[9px] font-extrabold uppercase tracking-[0.1em] text-emerald-700 dark:text-emerald-300">GIS / spatial reference</div>
                         <h1 className="mt-0.5 text-[21px] font-extrabold tracking-tight text-slate-950 dark:text-slate-100">GIS / Mapping Portal</h1>
-                        <p className="mt-0.5 text-[10px] font-semibold text-slate-500 dark:text-slate-400">Planning / Engineering · Talibon, Bohol geographic reference workspace</p>
+                        <p className="mt-0.5 text-[10px] font-semibold text-[var(--ink-secondary)] dark:text-[var(--ink-secondary)]">Planning / Engineering · Talibon, Bohol geographic reference workspace</p>
                     </div>
                     <div className="shrink-0 text-left lg:text-right">
                         <span className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-2 py-1 text-[8px] font-extrabold uppercase tracking-[0.08em] text-amber-800 dark:border-amber-900/60 dark:bg-amber-950/20 dark:text-amber-200">{presentationEnvironmentLabel}</span>
-                        <div className="mt-1 text-[9px] font-semibold text-slate-400">{presentationEnvironmentDetail}</div>
+                        <div className="mt-1 text-[9px] font-semibold text-[var(--ink-secondary)]">{presentationEnvironmentDetail}</div>
                     </div>
                 </div>
             </header>
 
             <div className="grid gap-2 xl:grid-cols-[210px_minmax(0,1fr)_280px]">
                 <aside className="rounded-xl border border-slate-200 bg-white p-2.5 dark:border-slate-700 dark:bg-[#142236]">
-                    <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-slate-500"><Layers3 size={13} className="text-[var(--municipal-brand)]" aria-hidden="true" /> Layers</div>
+                    <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--ink-secondary)]"><Layers3 size={13} className="text-[var(--brand-ink)]" aria-hidden="true" /> Layers</div>
                     <div className="mt-2 space-y-1">
                         {layers.map((layer) => (
                             <button key={layer.label} type="button" onClick={() => chooseLayer(layer.label)} className={'flex min-h-9 w-full items-center justify-between rounded-lg px-2.5 text-left text-[10px] font-semibold transition ' + (activeLayer === layer.label ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-200' : 'text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-900/40')}>
-                                <span>{layerLabel(layer.label)}</span><span className="rounded-full bg-white px-1.5 py-0.5 text-[8px] text-slate-500 dark:bg-slate-800 dark:text-slate-300">{layer.recordIds.length}</span>
+                                <span>{layerLabel(layer.label)}</span><span className="rounded-full bg-white px-1.5 py-0.5 text-[8px] text-[var(--ink-secondary)] dark:bg-slate-800 dark:text-slate-300">{layer.recordIds.length}</span>
                             </button>
                         ))}
                     </div>
                     <div className="mt-3 border-t border-slate-100 pt-3 dark:border-slate-700">
-                        <div className="text-[9px] font-bold uppercase tracking-wide text-slate-400">Locations in layer</div>
+                        <div className="text-[9px] font-bold uppercase tracking-wide text-[var(--ink-secondary)]">Locations in layer</div>
                         <div className="mt-1.5 space-y-1">
                             {activeRecords.map((record) => (
                                 <button key={record.id} type="button" onClick={() => setSelectedId(record.id)} className={'w-full rounded-lg border px-2 py-2 text-left transition ' + (selectedRecord?.id === record.id ? 'border-emerald-200 bg-emerald-50/60 dark:border-emerald-900/60 dark:bg-emerald-950/20' : 'border-slate-200 hover:border-emerald-200 dark:border-slate-700')}>
-                                    <div className="text-[8px] font-extrabold uppercase tracking-wide text-slate-400">{record.id}</div>
+                                    <div className="text-[8px] font-extrabold uppercase tracking-wide text-[var(--ink-secondary)]">{record.id}</div>
                                     <div className="mt-0.5 text-[9px] font-bold text-slate-700 dark:text-slate-200">{record.title}</div>
                                 </button>
                             ))}
@@ -235,21 +235,21 @@ export default function GISWorkspace({ prototype, onBack }: Props) {
                 </aside>
 
                 <div className="relative min-h-[480px] overflow-hidden rounded-xl border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-900" style={{ height: '68vh', maxHeight: '760px' }}>
-                    <div ref={mapNodeRef} className="absolute inset-0" aria-label="Google map focused on Talibon, Bohol" />
+                    <div ref={mapNodeRef} className="absolute inset-0" role="region" aria-label="Map viewport focused on Talibon, Bohol" />
                     {mapState === 'loading' && (
                         <div className="absolute inset-0 flex items-center justify-center bg-slate-50/90 dark:bg-slate-900/90">
-                            <div className="text-center"><RefreshCw size={22} className="mx-auto animate-spin text-[var(--municipal-brand)]" aria-hidden="true" /><div className="mt-2 text-[11px] font-bold text-slate-700 dark:text-slate-200">Loading Talibon map…</div></div>
+                            <div className="text-center"><RefreshCw size={22} className="mx-auto animate-spin text-[var(--brand-ink)]" aria-hidden="true" /><div className="mt-2 text-[11px] font-bold text-slate-700 dark:text-slate-200">Loading Talibon map…</div></div>
                         </div>
                     )}
                     {mapState === 'error' && (
                         <div className="absolute inset-0 flex items-center justify-center bg-slate-100/95 dark:bg-slate-900/95">
                             <div className="max-w-sm px-5 text-center">
-                                <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white/85 text-slate-400 shadow-sm dark:border-slate-700 dark:bg-slate-800/70">
+                                <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white/85 text-[var(--ink-secondary)] shadow-sm dark:border-slate-700 dark:bg-slate-800/70">
                                     <MapPin size={20} aria-hidden="true" />
                                 </span>
                                 <div className="mt-3 text-[13px] font-bold text-slate-700 dark:text-slate-200">Map preview unavailable</div>
-                                <p className="mt-1.5 text-[10px] leading-4 text-slate-500 dark:text-slate-400">Map services are not enabled in this presentation environment.</p>
-                                <p className="mt-1 text-[9px] leading-4 text-slate-400 dark:text-slate-500">Layer controls and location references remain available for review.</p>
+                                <p className="mt-1.5 text-[10px] leading-4 text-[var(--ink-secondary)] dark:text-[var(--ink-secondary)]">Map services are not enabled in this presentation environment.</p>
+                                <p className="mt-1 text-[9px] leading-4 text-[var(--ink-secondary)] dark:text-[var(--ink-secondary)]">Layer controls and location references remain available for review.</p>
                                 {hasConfiguredMapKey && (
                                     <button type="button" onClick={() => setAttempt((value) => value + 1)} className="mt-3 min-h-8 rounded-lg border border-slate-300 bg-white px-3 text-[9px] font-semibold text-slate-600 transition hover:bg-slate-50 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-300">Retry map</button>
                                 )}
@@ -257,27 +257,27 @@ export default function GISWorkspace({ prototype, onBack }: Props) {
                         </div>
                     )}
                     <div className="pointer-events-none absolute left-3 top-3 rounded-lg border border-slate-200 bg-white/92 px-3 py-2 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-900/90">
-                        <div className="text-[8px] font-extrabold uppercase tracking-[0.08em] text-slate-400">Talibon, Bohol</div>
+                        <div className="text-[8px] font-extrabold uppercase tracking-[0.08em] text-[var(--ink-secondary)]">Talibon, Bohol</div>
                         <div className="mt-0.5 text-[10px] font-bold text-slate-700 dark:text-slate-200">{layerLabel(activeLayer)} layer · {activeRecords.length} reference location{activeRecords.length === 1 ? '' : 's'}</div>
                     </div>
                 </div>
 
                 <aside className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-[#142236]">
-                    <div className="text-[9px] font-extrabold uppercase tracking-[0.08em] text-slate-400">Location details</div>
+                    <div className="text-[9px] font-extrabold uppercase tracking-[0.08em] text-[var(--ink-secondary)]">Location details</div>
                     {selectedRecord ? (
                         <div className="mt-2">
-                            <div className="text-[10px] font-extrabold text-[var(--municipal-brand)]">{selectedRecord.id}</div>
+                            <div className="text-[10px] font-extrabold text-[var(--brand-ink)]">{selectedRecord.id}</div>
                             <h2 className="mt-0.5 text-[14px] font-extrabold text-slate-950 dark:text-slate-100">{selectedRecord.title}</h2>
-                            <div className="mt-1 text-[10px] text-slate-500 dark:text-slate-400">{selectedRecord.subtitle}</div>
+                            <div className="mt-1 text-[10px] text-[var(--ink-secondary)] dark:text-[var(--ink-secondary)]">{selectedRecord.subtitle}</div>
                             <dl className="mt-4 space-y-3 text-[10px]">
-                                <div><dt className="text-slate-400">Layer / category</dt><dd className="mt-0.5 font-semibold text-slate-700 dark:text-slate-200">{layerLabel(selectedRecord.layer ?? activeLayer)}</dd></div>
-                                <div><dt className="text-slate-400">Responsible office</dt><dd className="mt-0.5 font-semibold text-slate-700 dark:text-slate-200">{selectedRecord.owner}</dd></div>
-                                <div><dt className="text-slate-400">Planning / reference status</dt><dd className="mt-0.5 font-semibold text-slate-700 dark:text-slate-200">{selectedRecord.stage}</dd></div>
-                                <div><dt className="text-slate-400">Context</dt><dd className="mt-0.5 font-semibold leading-4 text-slate-700 dark:text-slate-200">{selectedRecord.note}</dd></div>
+                                <div><dt className="text-[var(--ink-secondary)]">Layer / category</dt><dd className="mt-0.5 font-semibold text-slate-700 dark:text-slate-200">{layerLabel(selectedRecord.layer ?? activeLayer)}</dd></div>
+                                <div><dt className="text-[var(--ink-secondary)]">Responsible office</dt><dd className="mt-0.5 font-semibold text-slate-700 dark:text-slate-200">{selectedRecord.owner}</dd></div>
+                                <div><dt className="text-[var(--ink-secondary)]">Planning / reference status</dt><dd className="mt-0.5 font-semibold text-slate-700 dark:text-slate-200">{selectedRecord.stage}</dd></div>
+                                <div><dt className="text-[var(--ink-secondary)]">Context</dt><dd className="mt-0.5 font-semibold leading-4 text-slate-700 dark:text-slate-200">{selectedRecord.note}</dd></div>
                             </dl>
                             <div className="mt-4 rounded-lg border border-amber-100 bg-amber-50/70 px-2.5 py-2 text-[9px] leading-4 text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/20 dark:text-amber-200">Reference overlay positions are approximate for presentation review and do not represent survey-grade or authoritative municipal coordinates.</div>
                         </div>
-                    ) : <div className="mt-3 text-[10px] text-slate-500">Select a location reference from the active layer.</div>}
+                    ) : <div className="mt-3 text-[10px] text-[var(--ink-secondary)]">Select a location reference from the active layer.</div>}
                 </aside>
             </div>
         </section>

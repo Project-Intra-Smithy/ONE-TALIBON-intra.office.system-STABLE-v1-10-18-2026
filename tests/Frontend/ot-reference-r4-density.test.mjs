@@ -11,12 +11,12 @@ const metrics = source('resources/js/components/dashboard/MetricGroup.tsx');
 const css = source('resources/css/ot-reference-dashboard.css');
 
 test('one compact municipal toolbar retains all valid in-page jump destinations', () => {
-    assert.match(dashboard, /className="ot-dashboard-toolbar"/);
-    assert.match(dashboard, /aria-label="Jump to work section"/);
-    for (const destination of ['#work-overview', '#dashboard-correspondence', '#personal-tasks']) {
-        assert.ok(dashboard.includes(`href="${destination}"`));
+    assert.match(dashboard, /greetingForPhilippineTime\(\)/);
+    assert.match(dashboard, /Philippine Standard Time/);
+    for (const destination of ['/transactions', '/my-tasks', '/memoranda']) {
+        assert.ok(dashboard.includes(`href="${destination}"`), `Missing dashboard link ${destination}`);
     }
-    assert.match(dashboard, /<MunicipalContext\s*\/>/);
+    assert.match(dashboard, /<KpiCard/);
 });
 
 test('R4 panel treatment is explicitly scoped to dashboard and does not alter source data', () => {
@@ -28,7 +28,8 @@ test('R4 panel treatment is explicitly scoped to dashboard and does not alter so
     assert.match(upper, /items=\{recentWork\}/);
     assert.match(upper, /<ActivityRail system=/);
     assert.match(upper, /groups\.map\(/);
-    assert.match(dashboard, /secondaryGroups\.map\(/);
+    assert.match(dashboard, /kpiTiles\.map\(/);
+    assert.match(dashboard, /className="tcds-table"/);
 });
 
 test('compact header does not change the expanded recent-work variant used by other pages', () => {
@@ -50,5 +51,5 @@ test('responsive and accessible theme variants are present', () => {
     assert.match(css, /@media \(max-width:767px\)/);
     assert.match(css, /\.dark \.ot-reference-dashboard \.ot-dashboard-panel-heading/);
     assert.match(css, /@media \(prefers-contrast:more\)/);
-    assert.match(dashboard, /tabIndex=\{-1\}/);
+    assert.match(upper, /tabIndex=\{-1\}/);
 });

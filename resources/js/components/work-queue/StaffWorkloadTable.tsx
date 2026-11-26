@@ -5,7 +5,7 @@ export default function StaffWorkloadTable({ rows }: { rows: StaffWorkload[] }) 
     return (
         <section className="municipal-panel overflow-hidden" aria-labelledby="my-work-staff-workload">
             <div className="employee-panel-header flex items-center gap-2 border-b border-[var(--municipal-border)]">
-                <Users size={16} className="text-[var(--municipal-brand)]" aria-hidden="true" />
+                <Users size={16} className="text-[var(--brand-ink)]" aria-hidden="true" />
                 <h2 id="my-work-staff-workload" className="employee-section-title">Bounded staff workload</h2>
             </div>
             <div className="overflow-x-auto">

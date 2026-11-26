@@ -10,6 +10,8 @@ final class TransactionCapabilities
 
     public const TRANSITION = 'transaction.transition';
 
+    public const CLOSE = 'transaction.close';
+
     public const ASSIGN = 'transaction.assign';
 
     public const MAYOR_DECISION = 'transaction.mayor_decision';
@@ -19,10 +21,9 @@ final class TransactionCapabilities
      */
     private const ROLE_CAPABILITIES = [
         'system_admin' => [
+            // Technical administration retains read-only municipal visibility.
+            // Municipal workflow authority must come from an eligible office role.
             self::VIEW_ALL,
-            self::TRANSITION,
-            self::ASSIGN,
-            self::MAYOR_DECISION,
         ],
         'mayor_approver' => [
             self::VIEW_ALL,
@@ -35,6 +36,7 @@ final class TransactionCapabilities
         ],
         'department_head' => [
             self::TRANSITION,
+            self::CLOSE,
             self::ASSIGN,
         ],
         'department_staff' => [

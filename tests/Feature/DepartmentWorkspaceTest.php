@@ -93,6 +93,33 @@ class DepartmentWorkspaceTest extends TestCase
         $this->assertStringNotContainsString('NOT-PROJECTED-REMARK-', $response->getContent());
     }
 
+    public function test_dedicated_department_and_task_pages_preserve_existing_authority(): void
+    {
+        $office = $this->department('DEDICATED');
+        $head = $this->human('department_head', $office);
+        $staff = $this->human('department_staff', $office);
+        $admin = $this->human('system_admin', $office);
+
+        $this->get('/my-tasks')->assertRedirect('/login');
+        $this->get('/my-department')->assertRedirect('/login');
+
+        $this->asAssured($head)->get('/my-department')
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Departments/Workspace')
+                ->where('department.id', $office->id)
+                ->has('metrics')
+                ->has('staffWorkload')
+                ->has('recentActivity'));
+
+        $this->asAssured($staff)->get('/my-department')->assertForbidden();
+        $this->asAssured($admin)->get('/my-department')->assertForbidden();
+
+        $this->asAssured($staff)->get('/my-tasks')
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page->component('Tasks/Index'));
+    }
+
     public function test_normal_employee_and_system_admin_do_not_receive_department_head_projection(): void
     {
         $office = $this->department('ACCESS');

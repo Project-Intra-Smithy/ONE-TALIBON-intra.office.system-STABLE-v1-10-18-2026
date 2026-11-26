@@ -1,0 +1,88 @@
+import assert from 'node:assert/strict';
+
+/** Exercises existing server contracts using only synthetic records in the guarded disposable runtime. */
+export async function planningCrud(page,context,origin,interactions) {
+    const suffix=Date.now().toString(36),planCode=`QA-PLAN-${suffix}`,mapCode=`QA-MAP-${suffix}`;
+    const props=async path=>{const response=await context.request.get(origin+path,{headers:{Accept:'text/html'}});assert.equal(response.status(),200);const serialized=(await response.text()).match(/<script[^>]*data-page[^>]*>([\s\S]*?)<\/script>/)?.[1];assert.ok(serialized,'Real Inertia page payload required');return JSON.parse(serialized).props;};
+    const save=async (name)=>{const form=page.getByRole('dialog');await form.getByRole('button',{name,exact:true}).click();await form.waitFor({state:'hidden'});};
+    const remove=async title=>{
+        await page.getByRole('button',{name:`Delete ${title}`,exact:true}).click();
+        const confirmation=page.getByRole('dialog',{name:`Delete ${title}?`,exact:true});
+        await confirmation.getByRole('button',{name:'Delete record',exact:true}).click();
+        await confirmation.waitFor({state:'hidden'});
+        await page.waitForLoadState('networkidle');
+        await page.waitForFunction(()=>!document.querySelector('dialog[open]'));
+        await page.waitForFunction(()=>document.body.style.overflow!=='hidden');
+    };
+    await page.setViewportSize({width:1440,height:900});
+    await page.goto(origin+'/development-plans');
+    await page.getByRole('button',{name:'New Plan Record',exact:true}).click();
+    let form=page.getByRole('dialog');
+    await form.getByLabel('Plan Code & Period').fill(planCode);
+    await form.getByLabel('Official Plan Title').fill('Synthetic canonical plan');
+    await form.getByLabel('Document Control Ref.').fill(planCode);
+    await form.getByLabel('Lifecycle Status').selectOption('Draft');
+    await form.getByLabel('Coverage Start Year').fill('2000');
+    await form.getByLabel('Coverage End Year').fill('2100');
+    await save('Create plan');
+    let plan=(await props('/development-plans')).plans.find(record=>record.code===planCode);
+    assert.ok(plan?.dbId,'Created plan must have a real database identifier');
+    assert.equal(plan.coverageStart,2000);assert.equal(plan.coverageEnd,2100);
+    await page.getByRole('button',{name:`View details for ${planCode}`,exact:true}).click();
+    await page.getByRole('button',{name:'Edit Plan',exact:true}).click();
+    form=page.getByRole('dialog');
+    assert.equal(await form.getByLabel('Plan Code & Period').isDisabled(),true);
+    await form.getByLabel('Official Plan Title').fill('Synthetic canonical plan revised');
+    await save('Save plan changes');
+    assert.equal((await props('/development-plans')).plans.find(record=>record.code===planCode).title,'Synthetic canonical plan revised');
+    await page.getByRole('button',{name:`View details for ${planCode}`,exact:true}).click();
+    await remove(planCode);
+    assert.equal((await props('/development-plans')).plans.some(record=>record.code===planCode),false);
+    assert.equal(await page.evaluate(()=>document.body.style.overflow),'','Nested deletion dialog must release its scroll lock');
+    interactions.push({role:'department_head',label:'real-plan-create-edit-delete',immutableCode:true,fullCoverageRange:true});
+
+    await page.goto(origin+'/ppas');
+    await page.getByRole('button',{name:'Register PPA Entry',exact:true}).click();
+    form=page.getByRole('dialog');
+    await form.getByLabel('Program / Project / Activity Title').fill(`Synthetic PPA ${suffix}`);
+    await form.getByLabel('Related Development Plan Reference').fill('Synthetic test reference');
+    await form.getByLabel('Budget / Program Year').selectOption('2035');
+    await form.getByLabel('Funding Source').fill('Synthetic external funding source');
+    await save('Save PPA');
+    const ppa=(await props('/ppas')).ppaRecords.find(record=>record.title===`Synthetic PPA ${suffix}`);
+    assert.ok(ppa?.dbId);
+    assert.equal(ppa.year,2035);assert.equal(ppa.fundingSource,'Synthetic external funding source');
+    await page.locator(`[data-ppa-trigger="${ppa.id}"]:visible`).click();
+    await page.getByRole('button',{name:'Edit PPA',exact:true}).click();
+    form=page.getByRole('dialog');
+    await form.getByLabel('Program / Project / Activity Title').fill(`Synthetic PPA revised ${suffix}`);
+    await save('Save changes');
+    assert.equal((await props('/ppas')).ppaRecords.find(record=>record.id===ppa.id).title,`Synthetic PPA revised ${suffix}`);
+    await page.locator(`[data-ppa-trigger="${ppa.id}"]:visible`).click();
+    await remove(ppa.id);
+    assert.equal((await props('/ppas')).ppaRecords.some(record=>record.id===ppa.id),false);
+    interactions.push({role:'department_head',label:'real-ppa-create-edit-delete',customYearAndFunding:true});
+
+    await page.goto(origin+'/planning-maps');
+    await page.getByRole('button',{name:'Register Map Plate',exact:true}).click();
+    form=page.getByRole('dialog');
+    await form.getByLabel('Map Code').fill(mapCode);
+    await form.getByLabel('Map Title').fill('Synthetic reference map');
+    await form.getByLabel('Linked Plan Reference').fill('Synthetic test reference');
+    await form.getByRole('radio',{name:/Draft/}).check();
+    await save('Save Planning Map');
+    assert.ok((await props('/planning-maps')).planningMaps.find(record=>record.code===mapCode)?.dbId);
+    await page.getByRole('button',{name:'Edit Synthetic reference map',exact:true}).click();
+    form=page.getByRole('dialog');
+    await form.getByLabel('Map Title').fill('Synthetic reference map revised');
+    await save('Save Map Changes');
+    assert.equal((await props('/planning-maps')).planningMaps.find(record=>record.code===mapCode).title,'Synthetic reference map revised');
+    await remove(mapCode);
+    assert.equal((await props('/planning-maps')).planningMaps.some(record=>record.code===mapCode),false);
+    interactions.push({role:'department_head',label:'real-map-create-edit-delete'});
+    await page.getByRole('link',{name:'Staff Scopes',exact:true}).click();
+    await page.getByRole('dialog',{name:'MPDC Staff Delegation & Module Scopes',exact:true}).waitFor();
+    await page.getByLabel('Active MPDC Employee').waitFor();
+    await page.keyboard.press('Escape');
+    interactions.push({role:'department_head',label:'real-staff-management-navigation'});
+}

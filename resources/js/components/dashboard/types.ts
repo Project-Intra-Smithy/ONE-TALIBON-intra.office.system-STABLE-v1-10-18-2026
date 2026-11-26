@@ -213,4 +213,5 @@ export type DashboardProps = {
     officeOverview?: OfficeOverviewData;
     executiveOverview?: ExecutiveOverviewData;
     systemOverview?: SystemOverviewData;
+    municipalDashboard?: { announcements?: Array<{ id: string | number; office?: string; title: string; body?: string; summary?: string }> } | null;
 };

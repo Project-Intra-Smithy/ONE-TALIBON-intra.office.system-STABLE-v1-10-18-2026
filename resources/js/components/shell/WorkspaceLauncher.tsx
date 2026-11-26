@@ -44,7 +44,7 @@ export default function WorkspaceLauncher({ groups }: { groups: PortalNavigation
                 aria-controls="workspace-sections"
                 title="Workspace sections"
                 onClick={() => setOpen((value) => !value)}
-                className="flex h-11 w-11 items-center justify-center rounded-lg text-[var(--municipal-brand-deep)] hover:bg-[var(--municipal-brand-soft)] dark:text-[var(--municipal-brand)]"
+                className="flex h-11 w-11 items-center justify-center rounded-lg text-[var(--municipal-brand-deep)] hover:bg-[var(--municipal-brand-soft)] dark:text-[var(--brand-ink)]"
             >
                 <Grid3X3 size={19} aria-hidden="true" />
             </button>
@@ -89,11 +89,11 @@ export default function WorkspaceLauncher({ groups }: { groups: PortalNavigation
                                                     aria-current={active ? 'page' : undefined}
                                                     className={`flex items-center gap-2 rounded-lg p-3 text-sm font-semibold ${
                                                         active
-                                                            ? 'bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand-deep)] dark:text-[var(--municipal-brand)]'
+                                                            ? 'bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand-deep)] dark:text-[var(--brand-ink)]'
                                                             : 'bg-[var(--municipal-surface-subtle)] hover:bg-[var(--municipal-hover)]'
                                                     }`}
                                                 >
-                                                    <Icon size={17} className="shrink-0 text-[var(--municipal-brand)]" aria-hidden="true" />
+                                                    <Icon size={17} className="shrink-0 text-[var(--brand-ink)]" aria-hidden="true" />
                                                     <span>{label}</span>
                                                 </Link>
                                             );

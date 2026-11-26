@@ -22,7 +22,7 @@ export default function GroupIdentity({ offices, size = 'md' }: Props) {
             {visible.map((office, index) => (
                 <div
                     key={office}
-                    className={`${dimensions} flex items-center justify-center rounded-full border-2 border-[var(--municipal-surface)] bg-[var(--municipal-brand-soft)] font-bold text-[var(--municipal-brand)]`}
+                    className={`${dimensions} flex items-center justify-center rounded-full border-2 border-[var(--municipal-surface)] bg-[var(--municipal-brand-soft)] font-bold text-[var(--brand-ink)]`}
                     style={{ zIndex: visible.length - index }}
                     title={office}
                 >

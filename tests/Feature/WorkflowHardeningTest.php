@@ -45,21 +45,33 @@ class WorkflowHardeningTest extends TestCase
         $this->seed();
 
         $admin = $this->user('admin@talibon.demo');
+        $authorizedMayor = $this->user('mayor@talibon.demo');
         $engineering = $this->user('engineering@talibon.demo');
-        $mayor = $this->department('MAYOR');
-        $transaction = $this->transaction($engineering, $mayor, 'submitted');
+        $mayorOffice = $this->department('MAYOR');
+        $transaction = $this->transaction($engineering, $mayorOffice, 'submitted');
+        $workflow = app(TransactionWorkflowService::class);
 
+        // Authorization precedes state validation: platform administration
+        // never grants municipal executive decision power.
         try {
-            app(TransactionWorkflowService::class)->transition(
-                $admin,
-                $transaction,
-                'approve',
-            );
-            $this->fail('Expected approve from submitted to be rejected.');
+            $workflow->transition($admin, $transaction, 'approve');
+            $this->fail('Expected administrator approval to be denied.');
+        } catch (AuthorizationException) {
+            $this->assertSame('submitted', $transaction->fresh()->status);
+            $this->assertNull($transaction->fresh()->completed_at);
+            $this->assertSame(0, $transaction->events()->count());
+        }
+
+        // A genuinely authorized executive must separately satisfy the
+        // workflow state machine; submitted is not an approvable state.
+        try {
+            $workflow->transition($authorizedMayor, $transaction, 'approve');
+            $this->fail('Expected premature executive approval to be rejected.');
         } catch (ValidationException $exception) {
             $this->assertArrayHasKey('action', $exception->errors());
             $this->assertSame('submitted', $transaction->fresh()->status);
             $this->assertNull($transaction->fresh()->completed_at);
+            $this->assertSame(0, $transaction->events()->count());
         }
     }
 

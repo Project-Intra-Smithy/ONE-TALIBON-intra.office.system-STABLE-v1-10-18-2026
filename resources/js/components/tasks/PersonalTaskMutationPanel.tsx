@@ -17,9 +17,11 @@ async function jsonBody(response: Response): Promise<unknown> {
     try { return await response.json(); } catch { return null; }
 }
 
-function TaskActions({ userId }: { userId: number }) {
+function TaskActions({ userId, confirmationLabel }: { userId: number; confirmationLabel: string }) {
     const [tasks, setTasks] = useState<IndividualTask[]>([]);
     const [title, setTitle] = useState('');
+    const [instructions, setInstructions] = useState('');
+    const [dueDate, setDueDate] = useState('');
     const [loading, setLoading] = useState(true);
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -76,7 +78,7 @@ function TaskActions({ userId }: { userId: number }) {
                     setError('The requested Task state is not confirmed by the server. Reload before continuing.');
                     return false;
                 }
-                setReceipt('Server confirmed: ' + item.title + ' — ' + item.state.replaceAll('_', ' '));
+                setReceipt(confirmationLabel + ': ' + item.title + ' — ' + item.state.replaceAll('_', ' '));
             }
             // Valid authoritative reread is the only path to clear an
             // unknown mutation outcome; stale or mismatched state stays held.
@@ -133,7 +135,11 @@ function TaskActions({ userId }: { userId: number }) {
 
             setUnknownOutcome(true);
             if (await refresh(undefined, { id: task.id, state: expectedState })) {
-                if (expectedState === 'open') setTitle('');
+                if (expectedState === 'open') {
+                    setTitle('');
+                    setInstructions('');
+                    setDueDate('');
+                }
                 window.dispatchEvent(new CustomEvent(TASK_SYNC_EVENT, {
                     detail: { userId, taskId: task.id, state: expectedState },
                 }));
@@ -157,28 +163,51 @@ function TaskActions({ userId }: { userId: number }) {
             setError('Enter a Task title of 1–255 characters.');
             return;
         }
-        void mutate('/tasks', { title: cleaned }, 'open');
+        const payload: Record<string, string> = { title: cleaned };
+        const cleanedInstructions = instructions.trim();
+        if (cleanedInstructions.length > 0) {
+            payload.instructions = cleanedInstructions;
+        }
+        if (dueDate.trim().length > 0) {
+            payload.due_at = `${dueDate.trim()}T17:00:00+08:00`;
+        }
+        void mutate('/tasks', payload, 'open');
     };
 
-    return <section aria-labelledby="task-action-heading" className="municipal-panel p-4 sm:p-5">
+    return <section aria-labelledby="task-action-heading" className="tcds-card p-4 sm:p-5">
         <header className="mb-4">
             <h2 id="task-action-heading" className="text-base font-extrabold text-slate-900 dark:text-white">Personal Task actions</h2>
             <p className="mt-1 text-xs text-slate-600 dark:text-slate-300">
-                Minimal live Laravel integration: create, start and complete your own Tasks. Work Requests remain separate.
+                Create, start and complete your own tasks. Add instructions and a target date to keep your daily work organized.
             </p>
         </header>
-        <form onSubmit={create} className="flex flex-col gap-2 sm:flex-row">
-            <label className="flex-1 text-xs font-semibold text-slate-700 dark:text-slate-200">
-                Task title
-                <input aria-label="New personal Task title" maxLength={255} value={title}
-                    onChange={(event) => setTitle(event.target.value)}
-                    placeholder="Enter a personal Task"
+        <form onSubmit={create} className="space-y-3">
+            <div className="flex flex-col gap-2 sm:flex-row">
+                <label className="flex-1 text-xs font-semibold text-slate-700 dark:text-slate-200">
+                    Task title
+                    <input aria-label="New personal Task title" maxLength={255} value={title}
+                        onChange={(event) => setTitle(event.target.value)}
+                        placeholder="Enter a personal Task"
+                        className="mt-1 block min-h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white"/>
+                </label>
+                <label className="sm:w-48 text-xs font-semibold text-slate-700 dark:text-slate-200">
+                    Target date (optional)
+                    <input aria-label="New personal Task target date" type="date" value={dueDate}
+                        onChange={(event) => setDueDate(event.target.value)}
+                        className="mt-1 block min-h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white"/>
+                </label>
+                <button type="submit" disabled={busy || loading || unknownOutcome || accessDenied}
+                    className="self-end rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-50">
+                    Create Task
+                </button>
+            </div>
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-200">
+                Instructions / working notes (optional)
+                <input aria-label="New personal Task instructions" maxLength={2000} value={instructions}
+                    onChange={(event) => setInstructions(event.target.value)}
+                    placeholder="Optional notes, reference numbers, or steps for this personal task"
                     className="mt-1 block min-h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white"/>
             </label>
-            <button type="submit" disabled={busy || loading || unknownOutcome || accessDenied}
-                className="self-end rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-50">
-                Create Task
-            </button>
         </form>
         <div role="status" aria-live="polite" className="mt-3 text-sm text-emerald-700 dark:text-emerald-300">{receipt}</div>
         {error && <p role="alert" className="mt-3 text-sm text-red-700 dark:text-red-300">{error}</p>}
@@ -214,8 +243,8 @@ function TaskActions({ userId }: { userId: number }) {
 }
 
 /** Reset all local Task state whenever the authenticated account changes. */
-export default function PersonalTaskMutationPanel() {
+export default function PersonalTaskMutationPanel({ confirmationLabel = 'Server confirmed' }: { confirmationLabel?: string } = {}) {
     const userId = usePage<SharedProps>().props.auth?.user?.id;
 
-    return typeof userId === 'number' ? <TaskActions key={userId} userId={userId}/> : null;
+    return typeof userId === 'number' ? <TaskActions key={userId} userId={userId} confirmationLabel={confirmationLabel}/> : null;
 }
