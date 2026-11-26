@@ -1,3 +1,5 @@
+import Dialog from '../../components/ui/Dialog';
+import { WorkRequestCreateForm, type WorkRequestCreateProps } from './Create';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ArrowRight, FileText, Plus, RotateCcw, Search } from 'lucide-react';
 import { type FormEvent, useEffect, useId, useState } from 'react';
@@ -20,10 +22,12 @@ type Props = {
     };
     staffWorkload: StaffWorkload[];
     originDeliveryQueueAvailable?: boolean;
+    creationOptions?: Pick<WorkRequestCreateProps, 'departments' | 'assignableEmployees' | 'requestCategories' | 'actionOptions'> | null;
 };
 
-export default function Index({ records, filters, scopeGroups, filterOptions, experience, staffWorkload, originDeliveryQueueAvailable = false }: Props) {
+export default function Index({ records, filters, scopeGroups, filterOptions, experience, staffWorkload, originDeliveryQueueAvailable = false, creationOptions }: Props) {
     const page = usePage();
+    const [showCreate, setShowCreate] = useState(false);
     const currentView = filters.view || 'all';
     const [search, setSearch] = useState(filters.search);
     const [status, setStatus] = useState(filters.status);
@@ -86,10 +90,13 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
                     subtitle={`${experience.department.shortName || experience.department.name} · ${experience.hasOfficeScope ? 'Office & personal queues' : 'Personal queues'}`}
                     actions={
                         <div className="flex flex-wrap items-center gap-2">
-                            <Link href="/transactions/create" className="municipal-primary-button">
+                            {creationOptions ? <button type="button" onClick={() => setShowCreate(true)} className="municipal-primary-button">
+                                <Plus size={16} aria-hidden="true" />
+                                New Work Request
+                            </button> : creationOptions === undefined ? <Link href="/transactions/create" className="municipal-primary-button">
                                 <Plus size={16} aria-hidden="true" />
                                 <span>New Work Request</span>
-                            </Link>
+                            </Link> : null}
                             {originDeliveryQueueAvailable && (
                                 <Link href="/work-requests/origin-delivery-exceptions" className="municipal-secondary-button">
                                     Origin notice exceptions
@@ -325,6 +332,9 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
                 )}
 
             </div>
+            {creationOptions && <Dialog open={showCreate} onClose={() => setShowCreate(false)} title="New Work Request" description="Route accountable work directly to an authorized municipal office." variant="drawer-right">
+                <WorkRequestCreateForm {...creationOptions} compact onCancel={() => setShowCreate(false)} />
+            </Dialog>}
         </AppLayout>
     );
 }

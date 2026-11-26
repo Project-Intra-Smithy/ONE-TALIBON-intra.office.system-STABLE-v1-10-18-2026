@@ -4,9 +4,9 @@ import test from 'node:test';
 
 const read = (path) => readFileSync(new URL('../../' + path, import.meta.url), 'utf8');
 
-test('F01: Transactions/Index routes New Work Request to canonical /transactions/create with zero fabricated drawer values', () => {
+test('F01: authorized creation options drive the shared form with canonical fallback and zero fabricated values', () => {
     const indexPage = read('resources/js/pages/Transactions/Index.tsx');
-    // Primary action must link directly to canonical server-authorized create route
+    // The existing canonical create route remains a compatibility fallback.
     assert.match(indexPage, /<Link\s+href="\/transactions\/create"[^>]*>[\s\S]*?New Work Request/);
     // Zero fabricated employee IDs, employee numbers, synthetic categories, or hardcoded action options
     assert.doesNotMatch(indexPage, /EMP-\$\{/);
@@ -14,7 +14,9 @@ test('F01: Transactions/Index routes New Work Request to canonical /transactions
     assert.doesNotMatch(indexPage, /branch:\s*['"]executive['"]/);
     assert.doesNotMatch(indexPage, /Approve & Endorse/);
     assert.doesNotMatch(indexPage, /Verify & Certify/);
-    assert.doesNotMatch(indexPage, /<WorkRequestCreateForm/);
+    assert.match(indexPage, /<WorkRequestCreateForm \{\.\.\.creationOptions\}/);
+    assert.match(indexPage, /creationOptions \?/);
+    assert.match(indexPage, /creationOptions === undefined/);
     // Preserves C2 conditional origin delivery exception queue link
     assert.match(indexPage, /originDeliveryQueueAvailable && \(/);
     assert.match(indexPage, /href="\/work-requests\/origin-delivery-exceptions"/);

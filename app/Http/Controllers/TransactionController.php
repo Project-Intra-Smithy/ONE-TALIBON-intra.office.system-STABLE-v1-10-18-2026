@@ -6,13 +6,13 @@ use App\Http\Requests\StoreWorkRequestRequest;
 use App\Http\Requests\TransactionIndexRequest;
 use App\Http\Requests\TransitionWorkRequestRequest;
 use App\Models\Department;
-use App\Models\Employee;
 use App\Models\WorkflowTransaction;
 use App\Services\DocumentEvidenceQuery;
 use App\Services\TransactionEvidenceService;
 use App\Services\TransactionLiveQuery;
 use App\Services\TransactionVisibilityQuery;
 use App\Services\WorkQueueQuery;
+use App\Services\WorkRequestCreationOptions;
 use App\Support\ValidatedListReturn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -27,6 +27,7 @@ class TransactionController extends Controller
     public function index(
         TransactionIndexRequest $request,
         WorkQueueQuery $queue,
+        WorkRequestCreationOptions $creationOptions,
     ): Response {
         $this->authorize('viewAny', WorkflowTransaction::class);
 
@@ -35,33 +36,16 @@ class TransactionController extends Controller
             && Schema::hasTable('ops009_origin_delivery_exceptions')
             && Schema::hasTable('ops009_origin_delivery_exception_actions');
 
+        $workspace['creationOptions'] = $request->user()->can('create', WorkflowTransaction::class)
+            ? $creationOptions->for($request->user())
+            : null;
+
         return Inertia::render('Transactions/Index', $workspace);
     }
 
-    public function create(Request $request): Response
+    public function create(Request $request, WorkRequestCreationOptions $creationOptions): Response
     {
-        $this->authorize('create', WorkflowTransaction::class);
-        $departmentId = $request->user()->employee?->department_id;
-
-        $departments = Department::query()
-            ->activeRoutable()
-            ->when($departmentId, fn ($query) => $query->where('id', '!=', $departmentId))
-            ->orderBy('branch')
-            ->orderBy('sort_order')
-            ->orderBy('name')
-            ->get(['id', 'code', 'name', 'short_name', 'branch', 'office_type']);
-
-        return Inertia::render('Transactions/Create', [
-            'departments' => $departments,
-            'assignableEmployees' => Employee::query()
-                ->whereIn('department_id', $departments->pluck('id'))
-                ->where('employment_status', 'active')
-                ->orderBy('department_id')
-                ->orderBy('full_name')
-                ->get(['id', 'employee_number', 'full_name', 'department_id', 'position_title']),
-            'requestCategories' => config('work_requests.categories', []),
-            'actionOptions' => config('work_requests.actions', []),
-        ]);
+        return Inertia::render('Transactions/Create', $creationOptions->for($request->user()));
     }
 
     public function store(StoreWorkRequestRequest $request, TransactionEvidenceService $evidence): RedirectResponse

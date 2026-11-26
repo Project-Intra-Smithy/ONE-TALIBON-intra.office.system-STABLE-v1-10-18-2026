@@ -67,6 +67,35 @@ try{
                     return serialized?JSON.parse(serialized).component:null;
                 });
                 assert.ok(renderedComponent,path+' must identify real Inertia component');
+                if(path==='/transactions'){
+                    const options=await page.evaluate(()=>JSON.parse(document.querySelector('script[data-page]').textContent).props.creationOptions);
+                    assert.ok(options?.departments.length,'Real server creation options required');
+                    await page.getByRole('button',{name:'New Work Request',exact:true}).click();
+                    const drawer=page.getByRole('dialog',{name:'New Work Request',exact:true});
+                    assert.equal(await drawer.getByRole('combobox',{name:'Receiving Office',exact:true}).inputValue(),options.departments[0].name);
+                    await dialogCheck(page,drawer,'work-request-register-drawer',actor.role,width,theme);
+                    if(actor.role==='employee'&&width===1440&&theme==='light'){
+                        const title='Synthetic canonical register drawer request';
+                        await drawer.getByLabel('Subject').fill(title);
+                        await drawer.getByLabel('Target Completion Date').fill(new Date(Date.now()+7*86400000).toISOString().slice(0,10));
+                        await drawer.getByRole('button',{name:'Submit Work Request',exact:true}).click();
+                        await page.waitForURL(/\/transactions\/\d+$/).catch(async error=>{
+                            const invalid=await page.locator('form[aria-label="Create Work Request"]').evaluateAll(forms=>forms.flatMap(form=>[...form.elements].filter(field=>field.validity&&!field.validity.valid).map(field=>({name:field.name,message:field.validationMessage}))));
+                            const alerts=await page.getByRole('alert').allTextContents();
+                            throw new Error('Register drawer submission failed: '+JSON.stringify({url:page.url(),invalid,alerts,cause:error.message.split('\n')[0]}));
+                        });
+                        const persisted=await context.request.get(page.url(),{headers:{Accept:'text/html'}});
+                        assert.equal(persisted.status(),200);
+                        const payload=JSON.parse((await persisted.text()).match(/<script[^>]*data-page[^>]*>([\s\S]*?)<\/script>/)[1]).props;
+                        assert.equal(payload.transaction.title,title);
+                        assert.equal(payload.transaction.current_department_id,options.departments[0].id);
+                        assert.ok(payload.transaction.id&&payload.transaction.reference_no);
+                        interactions.push({role:actor.role,label:'real-register-drawer-work-request-persisted',actualReceivingOfficeId:options.departments[0].id,serverRecordId:payload.transaction.id});
+                        await page.goto(origin+path);
+                    }else{
+                        await page.keyboard.press('Escape');
+                    }
+                }
                 if(path==='/transactions/create'){
                     const drawer=page.getByRole('dialog',{name:'New Work Request',exact:true});
                     await drawer.getByLabel('Subject').fill('Synthetic canonical form inspection');
