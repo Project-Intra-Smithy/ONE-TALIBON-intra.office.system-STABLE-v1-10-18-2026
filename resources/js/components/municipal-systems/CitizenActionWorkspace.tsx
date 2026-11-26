@@ -73,7 +73,7 @@ function RequestModal({ request, onClose }: { request: CitizenRequest; onClose: 
             title={`${request.reference} · ${request.concern}`}
             eyebrow="Citizen request details"
             size="standard"
-            footer={<div className="text-[9px] font-semibold text-slate-400">Reference data only · Actions disabled</div>}
+            footer={<div className="text-[9px] font-semibold text-[var(--ink-secondary)]">Reference data only · Actions disabled</div>}
         >
             <div className="space-y-4">
                 <div className="flex flex-col gap-2 border-b border-slate-100 pb-4 dark:border-slate-700 sm:flex-row sm:items-start sm:justify-between">
@@ -267,7 +267,7 @@ function DeskSnapshot() {
     return (
         <aside className="rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-3" aria-label="Desk snapshot">
             <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]">Desk Snapshot</div>
-            <div className="mt-2 text-[9px] font-bold uppercase tracking-[0.06em] text-slate-400">Assigned references</div>
+            <div className="mt-2 text-[9px] font-bold uppercase tracking-[0.06em] text-[var(--ink-secondary)]">Assigned references</div>
             <div className="mt-1 divide-y divide-[var(--municipal-border)]">
                 {assigned.map(([label, count]) => (
                     <div key={label} className="flex items-center justify-between gap-2 py-2 text-[10px]">
@@ -277,7 +277,7 @@ function DeskSnapshot() {
                 ))}
             </div>
             <div className="mt-3 border-t border-[var(--municipal-border)] pt-2.5">
-                <div className="text-[9px] font-bold uppercase tracking-[0.06em] text-slate-400">Current mix</div>
+                <div className="text-[9px] font-bold uppercase tracking-[0.06em] text-[var(--ink-secondary)]">Current mix</div>
                 <div className="mt-1 space-y-1">
                     {mix.map(([label, count]) => (
                         <div key={label} className="flex items-center justify-between gap-2 rounded-lg bg-[var(--municipal-surface-subtle)] px-2.5 py-2 text-[10px]">
@@ -469,7 +469,7 @@ export default function CitizenActionWorkspace({ onBack }: Props) {
                         <div className="mt-2 grid grid-cols-2 gap-1.5 xl:grid-cols-4" aria-label="Citizen desk operational summary">
                             {headerSummary.map((counter) => (
                                 <div key={counter.label} className={'flex min-h-10 items-center justify-between gap-2 rounded-lg border px-2.5 py-1.5 xl:block ' + counter.tone}>
-                                    <div className="text-[8px] font-extrabold uppercase tracking-[0.06em] opacity-75">{counter.label}</div>
+                                    <div className="text-[8px] font-extrabold uppercase tracking-[0.06em]">{counter.label}</div>
                                     <div className="text-[15px] font-extrabold leading-none tabular-nums xl:mt-1">{counter.value}</div>
                                 </div>
                             ))}

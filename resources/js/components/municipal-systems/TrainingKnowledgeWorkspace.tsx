@@ -153,7 +153,7 @@ function RecentPopular({ onOpen }: { onOpen: (resource: KnowledgeResource) => vo
 
     const miniList = (label: string, resources: KnowledgeResource[]) => (
         <div>
-            <div className="text-[8px] font-extrabold uppercase tracking-[0.07em] text-slate-400">{label}</div>
+            <div className="text-[8px] font-extrabold uppercase tracking-[0.07em] text-[var(--ink-secondary)]">{label}</div>
             <div className="mt-1 divide-y divide-[var(--municipal-border)]">
                 {resources.map((resource) => (
                     <button key={label + resource.reference} type="button" onClick={() => onOpen(resource)} className="block w-full py-2 text-left hover:text-[var(--brand-ink)]">
@@ -321,7 +321,7 @@ function ResourceDetail({ resource, onClose }: { resource: KnowledgeResource; on
             title={`${resource.reference} · ${resource.title}`}
             eyebrow="Knowledge resource reference"
             size="standard"
-            footer={<div className="text-[9px] font-semibold text-slate-400">Illustrative reference data · No live publishing, download, certification or employee tracking enabled</div>}
+            footer={<div className="text-[9px] font-semibold text-[var(--ink-secondary)]">Illustrative reference data · No live publishing, download, certification or employee tracking enabled</div>}
         >
             <div className="space-y-4">
                 <div className="grid grid-cols-3 gap-1.5" role="tablist" aria-label="Knowledge resource detail steps">

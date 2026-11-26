@@ -5,6 +5,7 @@ import { readdirSync } from 'node:fs';
 import { execFileSync, spawn } from 'node:child_process';
 
 assert.equal(process.env.PHASE_A_DISPOSABLE, '1', 'Explicit disposable runtime opt-in required');
+assert.ok(!(process.env.PHASE_A_QUALIFICATION === '1' && process.env.PHASE_A_MUNICIPAL_INTERACTIONS === '1'), 'Choose one explicit runtime suite');
 assert.equal(process.env.DB_HOST, '127.0.0.1');
 assert.equal(process.env.DB_DATABASE, 'talibon_portal_test');
 assert.ok(process.env.GITHUB_ACTIONS === 'true' || process.env.PHASE_A_DISPOSABLE_PGDATA, 'Hosted disposable service or exact local temporary PGDATA required');
@@ -64,7 +65,7 @@ try {
     }
     assert.ok(ready, 'Disposable Laravel runtime did not become ready');
     await new Promise((resolve, reject) => {
-        const test = spawn(process.execPath, [process.env.PHASE_A_QUALIFICATION === '1' ? 'tests/Browser/phase-a-qualification.mjs' : 'tests/Browser/phase-a-accessibility.mjs'], { env, stdio: 'inherit', windowsHide: true });
+        const test = spawn(process.execPath, [process.env.PHASE_A_QUALIFICATION === '1' ? 'tests/Browser/phase-a-qualification.mjs' : process.env.PHASE_A_MUNICIPAL_INTERACTIONS === '1' ? 'tests/Browser/phase-a-municipal-interactions.mjs' : 'tests/Browser/phase-a-accessibility.mjs'], { env, stdio: 'inherit', windowsHide: true });
         test.on('error', reject);
         test.on('exit', code => code === 0 ? resolve() : reject(new Error(`Canonical browser validation failed (${code})`)));
     });

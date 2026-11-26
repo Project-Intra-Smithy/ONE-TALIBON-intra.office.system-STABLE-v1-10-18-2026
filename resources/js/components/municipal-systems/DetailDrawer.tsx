@@ -23,6 +23,7 @@ export default function DetailDrawer({ open, onClose, title, eyebrow, children, 
             className={`max-h-[92vh] max-w-[calc(100vw-16px)] sm:max-h-[84vh] ${size === 'compact' ? 'sm:max-w-[660px]' : 'sm:max-w-[880px]'}`}
             bodyClassName="flex min-h-0 flex-1 flex-col overflow-hidden"
         >
+            {open && <>
             <header className="flex shrink-0 items-start justify-between gap-4 border-b border-[var(--border-default)] px-4 py-3 sm:px-5">
                 <div className="min-w-0">
                     {eyebrow && <div className="text-[9px] font-extrabold uppercase tracking-[0.09em] text-[var(--ink-secondary)]">{eyebrow}</div>}
@@ -34,6 +35,7 @@ export default function DetailDrawer({ open, onClose, title, eyebrow, children, 
             </header>
             <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-5">{children}</div>
             {footer && <footer className="shrink-0 border-t border-[var(--border-default)] bg-[var(--surface-recessed)] px-4 py-3 sm:px-5">{footer}</footer>}
+            </>}
         </Dialog>
     );
 }
