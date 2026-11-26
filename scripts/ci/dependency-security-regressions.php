@@ -52,6 +52,13 @@ class DependencySecurityStream extends AbstractStream
 
     public function initialize(): void {}
 
+    public function write(string $bytes, bool $debug = true): void {}
+
+    public function readLine(): string
+    {
+        return "250 Synthetic plaintext fallback accepted\r\n";
+    }
+
     protected function getReadConnectionDescription(): string
     {
         return 'synthetic stream';

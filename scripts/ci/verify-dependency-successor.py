@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """Bound the dependency lane while preserving every frozen product/test blob."""
 import copy
+import hashlib
 import json
 import subprocess
 import sys
 
 BASE = "9ea015a8a3a6131a18ac6bb800edc9dbad0f065a"
+# Canonical JSON digest of the reviewed five-package successor lock, including autoload metadata.
+APPROVED_LOCK_DIGEST = "41fad68cd4d3e326faee97ceed7fb8576b74ada4b905ad4697a955064652041f"
 PATCHES = {
     "laravel/framework": ("v13.40.0", "v13.44.1"),
     "symfony/http-foundation": ("v8.1.11", "v8.1.12"),
@@ -45,6 +48,7 @@ def check_lock(before, after):
     for section in ("packages", "packages-dev"):
         old = {p["name"]: p for p in before[section]}
         new = {p["name"]: p for p in after[section]}
+        require(len(old) == len(before[section]) and len(new) == len(after[section]), "Duplicate package name")
         require(old.keys() == new.keys(), "Package added or removed")
         for name, package in new.items():
             if name in PATCHES:
@@ -60,16 +64,27 @@ def check_lock(before, after):
                 normalize = lambda p: {k: v for k, v in p.items() if k != "published-time"}
                 require(normalize(old[name]) == normalize(package), f"Unrelated package changed: {name}")
     require(changed == PATCHES.keys(), "Security patch inventory incomplete")
+    canonical = json.dumps(after, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    require(hashlib.sha256(canonical).hexdigest() == APPROVED_LOCK_DIGEST, "Unapproved lock contents or package metadata")
 
 
 def self_test(before, after):
     check_lock(before, after)
+    def stale_source(lock):
+        package = next(p for p in lock["packages"] if p["name"] == "laravel/framework")
+        predecessor = next(p for p in before["packages"] if p["name"] == package["name"])
+        package["source"] = copy.deepcopy(predecessor["source"])
+        package["dist"] = copy.deepcopy(predecessor["dist"])
+
     mutations = [
         lambda d: d["packages"][0].update(version="999.0.0"),
         lambda d: d["packages-dev"].pop(),
         lambda d: d.update(**{"content-hash": "changed"}),
         lambda d: next(p for p in d["packages"] if p["name"] == "laravel/framework").update(version="v13.40.0"),
         lambda d: next(p for p in d["packages"] if p["name"] == "symfony/mailer")["dist"].update(url="https://untrusted.invalid/archive.zip"),
+        stale_source,
+        lambda d: next(p for p in d["packages"] if p["name"] == "laravel/framework")["autoload"].update(files=["unapproved.php"]),
+        lambda d: d["packages"].append(copy.deepcopy(d["packages"][0])),
     ]
     for mutate in mutations:
         altered = copy.deepcopy(after)
@@ -79,7 +94,7 @@ def self_test(before, after):
         except ValueError:
             continue
         raise ValueError("Hostile lock mutation accepted")
-    print("Dependency lock negatives: 5/5 rejected")
+    print(f"Dependency lock negatives: {len(mutations)}/{len(mutations)} rejected (including all three NOX-DEP-001 cases)")
 
 
 def check_workflow():
