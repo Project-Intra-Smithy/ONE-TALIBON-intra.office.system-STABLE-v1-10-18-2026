@@ -8,13 +8,17 @@ use App\Http\Controllers\Controller;
 use App\Models\PlanningAttachment;
 use App\Services\AuditLogger;
 use App\Services\Planning\PlanningAuthorizationService;
-use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use PDOException;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Throwable;
 
 final class PlanningAttachmentController extends Controller
 {
@@ -67,39 +71,57 @@ final class PlanningAttachmentController extends Controller
 
         $uploadedFile = $request->file('file');
         $rawBytes = file_get_contents($uploadedFile->getRealPath());
-        $checksum = hash('sha256', (string) $rawBytes);
+        if ($rawBytes === false) {
+            throw new RuntimeException('Unable to read planning attachment bytes.');
+        }
+        $checksum = hash('sha256', $rawBytes);
         $publicId = (string) Str::uuid();
         $safeOriginal = preg_replace('/[^A-Za-z0-9._-]/', '_', $uploadedFile->getClientOriginalName()) ?: 'attachment.pdf';
         $storagePath = sprintf('planning/%s/%s/%s-%s', $data['parent_type'], Str::slug($data['parent_code']), $publicId, $safeOriginal);
 
-        Storage::disk('documents')->put($storagePath, (string) $rawBytes);
+        if (! Storage::disk('documents')->put($storagePath, $rawBytes)) {
+            throw new RuntimeException('Unable to store planning attachment bytes.');
+        }
 
-        $attachment = PlanningAttachment::query()->create([
-            'public_id' => $publicId,
-            'parent_type' => $data['parent_type'],
-            'parent_code' => trim($data['parent_code']),
-            'title' => trim($data['title']),
-            'file_name' => $safeOriginal,
-            'mime_type' => (string) ($uploadedFile->getMimeType() ?: 'application/pdf'),
-            'size_bytes' => strlen((string) $rawBytes),
-            'checksum_sha256' => $checksum,
-            'storage_disk' => 'documents',
-            'storage_path' => $storagePath,
-            'category' => $data['category'],
-            'visibility' => $data['visibility'],
-            'owner_department_id' => $perms['actorDepartmentId'],
-            'uploaded_by_user_id' => $user->id,
-        ]);
+        try {
+            return DB::transaction(function () use ($user, $data, $uploadedFile, $rawBytes, $checksum, $publicId, $safeOriginal, $storagePath): RedirectResponse {
+                $perms = $this->authorization->authorizeAttachmentUpload($user, $data['parent_type'], $data['parent_code'], $data['visibility']);
 
-        $this->audit->record(
-            actor: $user,
-            action: 'planning.attachment.uploaded',
-            summary: "Uploaded planning attachment {$attachment->title} ({$attachment->file_name}) for {$attachment->parent_type}:{$attachment->parent_code}.",
-            entityType: PlanningAttachment::class,
-            entityId: $attachment->id,
-        );
+                $attachment = PlanningAttachment::query()->create([
+                    'public_id' => $publicId,
+                    'parent_type' => $data['parent_type'],
+                    'parent_code' => trim($data['parent_code']),
+                    'title' => trim($data['title']),
+                    'file_name' => $safeOriginal,
+                    'mime_type' => (string) ($uploadedFile->getMimeType() ?: 'application/pdf'),
+                    'size_bytes' => strlen((string) $rawBytes),
+                    'checksum_sha256' => $checksum,
+                    'storage_disk' => 'documents',
+                    'storage_path' => $storagePath,
+                    'category' => $data['category'],
+                    'visibility' => $data['visibility'],
+                    'owner_department_id' => $perms['actorDepartmentId'],
+                    'uploaded_by_user_id' => $user->id,
+                ]);
 
-        return back()->with('status', "Supporting document {$attachment->title} uploaded.");
+                $this->audit->record(
+                    actor: $user,
+                    action: 'planning.attachment.uploaded',
+                    summary: "Uploaded planning attachment {$attachment->title} ({$attachment->file_name}) for {$attachment->parent_type}:{$attachment->parent_code}.",
+                    entityType: PlanningAttachment::class,
+                    entityId: $attachment->id,
+                );
+
+                return back()->with('status', "Supporting document {$attachment->title} uploaded.");
+            }, attempts: 3);
+        } catch (Throwable $exception) {
+            // A failed row/audit transaction must not leave unregistered private bytes.
+            // A connection/COMMIT failure can be ambiguous: retain private bytes for reconciliation.
+            if (! $exception instanceof QueryException && ! $exception instanceof PDOException) {
+                Storage::disk('documents')->delete($storagePath);
+            }
+            throw $exception;
+        }
     }
 
     public function preview(Request $request, PlanningAttachment $attachment): StreamedResponse
@@ -114,30 +136,26 @@ final class PlanningAttachmentController extends Controller
 
     public function destroy(Request $request, PlanningAttachment $attachment): RedirectResponse
     {
-        $user = $request->user();
-        $perms = $this->authorization->resolve($user);
+        return DB::transaction(function () use ($request, $attachment): RedirectResponse {
+            $this->authorization->resolve($request->user());
+            $attachment = $attachment->newQuery()->lockForUpdate()->findOrFail($attachment->id);
+            $user = $request->user();
+            $this->authorization->authorizeAttachmentArchive($user, $attachment);
 
-        $canArchive = $perms['isMpdcHead']
-            || ($perms['isDesignatedStaff'] && (int) $attachment->uploaded_by_user_id === (int) $user->id)
-            || ($perms['canProposeOfficePpa'] && (int) $attachment->uploaded_by_user_id === (int) $user->id);
+            $attachment->update([
+                'archived_at' => now(),
+            ]);
 
-        if (! $canArchive) {
-            throw new AuthorizationException('You are not authorized to remove this planning attachment.');
-        }
+            $this->audit->record(
+                actor: $user,
+                action: 'planning.attachment.archived',
+                summary: "Archived planning attachment {$attachment->title} ({$attachment->public_id}).",
+                entityType: PlanningAttachment::class,
+                entityId: $attachment->id,
+            );
 
-        $attachment->update([
-            'archived_at' => now(),
-        ]);
-
-        $this->audit->record(
-            actor: $user,
-            action: 'planning.attachment.archived',
-            summary: "Archived planning attachment {$attachment->title} ({$attachment->public_id}).",
-            entityType: PlanningAttachment::class,
-            entityId: $attachment->id,
-        );
-
-        return back()->with('status', 'Supporting document removed.');
+            return back()->with('status', 'Supporting document removed.');
+        }, attempts: 3);
     }
 
     private function streamAttachment(Request $request, PlanningAttachment $attachment, bool $inline): StreamedResponse

@@ -11,6 +11,7 @@ use App\Services\AuditLogger;
 use App\Services\Planning\PlanningAuthorizationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
@@ -38,6 +39,7 @@ final class PpaController extends Controller
             ->orderBy('ppa_code')
             ->get()
             ->map(fn (PpaRecord $ppa): array => [
+                ...$this->authorization->recordCapabilities($permissions, $ppa),
                 'id' => $ppa->ppa_code,
                 'dbId' => $ppa->id,
                 'title' => $ppa->title,
@@ -86,6 +88,7 @@ final class PpaController extends Controller
                 'category' => $attachment->category,
                 'visibility' => $attachment->visibility,
                 'previewUrl' => "/planning/attachments/{$attachment->public_id}/preview",
+                'canArchive' => $this->authorization->canArchiveAttachment($user, $attachment),
                 'downloadUrl' => "/planning/attachments/{$attachment->public_id}/download",
                 'createdAt' => $attachment->created_at?->toIso8601String(),
             ])
@@ -100,220 +103,246 @@ final class PpaController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $user = $request->user();
-        $data = $request->validate([
-            'ppa_code' => ['nullable', 'string', 'max:100', 'unique:ppa_records,ppa_code'],
-            'title' => ['required', 'string', 'max:255'],
-            'sector' => ['required', 'string', 'max:100'],
-            'responsible_office' => ['nullable', 'string', 'max:255'],
-            'year' => ['required', 'integer', 'min:2020', 'max:2100'],
-            'related_development_plan' => ['required', 'string', 'max:255'],
-            'funding_source' => ['required', 'string', 'max:120'],
-            'status' => ['nullable', 'string', Rule::in(self::ALLOWED_STATUSES)],
-            'priority' => ['nullable', 'string', Rule::in(self::ALLOWED_PRIORITIES)],
-            'implementation_context' => ['nullable', 'string', 'max:2000'],
-            'location' => ['nullable', 'string', 'max:255'],
-            'barangay' => ['nullable', 'string', 'max:120'],
-            'appropriation_amount' => ['nullable', 'numeric', 'min:0'],
-            'ps_amount' => ['nullable', 'numeric', 'min:0'],
-            'mooe_amount' => ['nullable', 'numeric', 'min:0'],
-            'co_amount' => ['nullable', 'numeric', 'min:0'],
-            'climate_adaptation_amount' => ['nullable', 'numeric', 'min:0'],
-            'climate_mitigation_amount' => ['nullable', 'numeric', 'min:0'],
-            'gad_attributed' => ['nullable', 'boolean'],
-            'drrm_tagged' => ['nullable', 'boolean'],
-            'aip_reference_code' => ['nullable', 'string', 'max:120'],
-            'target_quarter' => ['nullable', 'string', 'max:32'],
-            'map_code' => ['nullable', 'string', 'max:100'],
-        ]);
+        return DB::transaction(function () use ($request): RedirectResponse {
+            $this->authorization->resolve($request->user());
+            $user = $request->user();
+            $data = $request->validate([
+                'ppa_code' => ['nullable', 'string', 'max:100', 'unique:ppa_records,ppa_code'],
+                'title' => ['required', 'string', 'max:255'],
+                'sector' => ['required', 'string', 'max:100'],
+                'responsible_office' => ['nullable', 'string', 'max:255'],
+                'year' => ['required', 'integer', 'min:2020', 'max:2100'],
+                'related_development_plan' => ['required', 'string', 'max:255'],
+                'funding_source' => ['required', 'string', 'max:120'],
+                'status' => ['nullable', 'string', Rule::in(self::ALLOWED_STATUSES)],
+                'priority' => ['nullable', 'string', Rule::in(self::ALLOWED_PRIORITIES)],
+                'implementation_context' => ['nullable', 'string', 'max:2000'],
+                'location' => ['nullable', 'string', 'max:255'],
+                'barangay' => ['nullable', 'string', 'max:120'],
+                'appropriation_amount' => ['nullable', 'numeric', 'min:0'],
+                'ps_amount' => ['nullable', 'numeric', 'min:0'],
+                'mooe_amount' => ['nullable', 'numeric', 'min:0'],
+                'co_amount' => ['nullable', 'numeric', 'min:0'],
+                'climate_adaptation_amount' => ['nullable', 'numeric', 'min:0'],
+                'climate_mitigation_amount' => ['nullable', 'numeric', 'min:0'],
+                'gad_attributed' => ['nullable', 'boolean'],
+                'drrm_tagged' => ['nullable', 'boolean'],
+                'aip_reference_code' => ['nullable', 'string', 'max:120'],
+                'target_quarter' => ['nullable', 'string', 'max:32'],
+                'map_code' => ['nullable', 'string', 'max:100'],
+            ]);
 
-        $targetStatus = $data['status'] ?? 'Planned';
-        $perms = $this->authorization->authorizePpaMutation($user, targetStatus: $targetStatus);
+            $targetStatus = $data['status'] ?? 'Planned';
+            $perms = $this->authorization->authorizePpaMutation($user, targetStatus: $targetStatus);
 
-        // If Implementing Office Head (and not MPDC manager), lock responsible_office to their own office and status to Planned/Draft
-        $responsibleOffice = $perms['canManagePpas']
-            ? trim((string) ($data['responsible_office'] ?? $perms['actorDepartmentName'] ?? 'Municipal Planning and Development Office'))
-            : (string) $perms['actorDepartmentName'];
+            // If Implementing Office Head (and not MPDC manager), lock responsible_office to their own office and status to Planned/Draft
+            $responsibleOffice = $perms['canManagePpas']
+                ? trim((string) ($data['responsible_office'] ?? $perms['actorDepartmentName'] ?? 'Municipal Planning and Development Office'))
+                : (string) $perms['actorDepartmentName'];
 
-        $ps = (float) ($data['ps_amount'] ?? 0);
-        $mooe = (float) ($data['mooe_amount'] ?? 0);
-        $co = (float) ($data['co_amount'] ?? 0);
-        $appropriation = isset($data['appropriation_amount']) && (float) $data['appropriation_amount'] > 0
-            ? (float) $data['appropriation_amount']
-            : ($ps + $mooe + $co);
+            $office = $this->authorization->officeIdentity($responsibleOffice, 'responsible_office');
 
-        $code = isset($data['ppa_code']) && trim($data['ppa_code']) !== ''
-            ? trim($data['ppa_code'])
-            : sprintf('PPA-%d-%03d', (int) $data['year'], PpaRecord::query()->where('year', (int) $data['year'])->count() + 101);
+            $ps = (float) ($data['ps_amount'] ?? 0);
+            $mooe = (float) ($data['mooe_amount'] ?? 0);
+            $co = (float) ($data['co_amount'] ?? 0);
+            $appropriation = isset($data['appropriation_amount']) && (float) $data['appropriation_amount'] > 0
+                ? (float) $data['appropriation_amount']
+                : ($ps + $mooe + $co);
 
-        $ppa = PpaRecord::query()->create([
-            'ppa_code' => $code,
-            'title' => trim($data['title']),
-            'sector' => trim($data['sector']),
-            'responsible_office' => $responsibleOffice,
-            'implementing_department_id' => $perms['actorDepartmentId'],
-            'year' => (int) $data['year'],
-            'related_development_plan' => trim($data['related_development_plan']),
-            'funding_source' => trim($data['funding_source']),
-            'status' => $targetStatus,
-            'related_project_count' => 0,
-            'priority' => $data['priority'] ?? 'Routine',
-            'implementation_context' => $data['implementation_context'] ?? 'Submitted through the Local Development Planning Suite.',
-            'location' => $data['location'] ?? 'Municipality of Talibon',
-            'barangay' => $data['barangay'] ?? 'Poblacion',
-            'appropriation_amount' => $appropriation,
-            'ps_amount' => $ps,
-            'mooe_amount' => $mooe,
-            'co_amount' => $co,
-            'climate_adaptation_amount' => (float) ($data['climate_adaptation_amount'] ?? 0),
-            'climate_mitigation_amount' => (float) ($data['climate_mitigation_amount'] ?? 0),
-            'gad_attributed' => (bool) ($data['gad_attributed'] ?? false),
-            'drrm_tagged' => (bool) ($data['drrm_tagged'] ?? false),
-            'aip_reference_code' => $data['aip_reference_code'] ?? null,
-            'target_quarter' => $data['target_quarter'] ?? 'Q4 '.$data['year'],
-            'map_code' => $data['map_code'] ?? null,
-            'provenance_status' => 'provisional_draft',
-            'created_by_user_id' => $user->id,
-            'updated_by_user_id' => $user->id,
-        ]);
+            $code = isset($data['ppa_code']) && trim($data['ppa_code']) !== ''
+                ? trim($data['ppa_code'])
+                : sprintf('PPA-%d-%03d', (int) $data['year'], PpaRecord::query()->where('year', (int) $data['year'])->count() + 101);
 
-        $this->audit->record(
-            actor: $user,
-            action: 'planning.ppa.created',
-            summary: "Created PPA record {$ppa->ppa_code} ({$ppa->title}).",
-            entityType: PpaRecord::class,
-            entityId: $ppa->id,
-        );
+            $ppa = PpaRecord::query()->create([
+                'ppa_code' => $code,
+                'title' => trim($data['title']),
+                'sector' => trim($data['sector']),
+                'responsible_office' => $responsibleOffice,
+                'implementing_department_id' => $office->id,
+                'year' => (int) $data['year'],
+                'related_development_plan' => trim($data['related_development_plan']),
+                'funding_source' => trim($data['funding_source']),
+                'status' => $targetStatus,
+                'related_project_count' => 0,
+                'priority' => $data['priority'] ?? 'Routine',
+                'implementation_context' => $data['implementation_context'] ?? 'Submitted through the Local Development Planning Suite.',
+                'location' => $data['location'] ?? 'Municipality of Talibon',
+                'barangay' => $data['barangay'] ?? 'Poblacion',
+                'appropriation_amount' => $appropriation,
+                'ps_amount' => $ps,
+                'mooe_amount' => $mooe,
+                'co_amount' => $co,
+                'climate_adaptation_amount' => (float) ($data['climate_adaptation_amount'] ?? 0),
+                'climate_mitigation_amount' => (float) ($data['climate_mitigation_amount'] ?? 0),
+                'gad_attributed' => (bool) ($data['gad_attributed'] ?? false),
+                'drrm_tagged' => (bool) ($data['drrm_tagged'] ?? false),
+                'aip_reference_code' => $data['aip_reference_code'] ?? null,
+                'target_quarter' => $data['target_quarter'] ?? 'Q4 '.$data['year'],
+                'map_code' => $data['map_code'] ?? null,
+                'provenance_status' => 'provisional_draft',
+                'created_by_user_id' => $user->id,
+                'updated_by_user_id' => $user->id,
+            ]);
 
-        return back()->with('status', "PPA record {$ppa->ppa_code} saved.");
+            $this->audit->record(
+                actor: $user,
+                action: 'planning.ppa.created',
+                summary: "Created PPA record {$ppa->ppa_code} ({$ppa->title}).",
+                entityType: PpaRecord::class,
+                entityId: $ppa->id,
+            );
+
+            return back()->with('status', "PPA record {$ppa->ppa_code} saved.");
+
+        }, attempts: 3);
     }
 
     public function update(Request $request, PpaRecord $ppa): RedirectResponse
     {
-        $user = $request->user();
-        $data = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'sector' => ['required', 'string', 'max:100'],
-            'responsible_office' => ['nullable', 'string', 'max:255'],
-            'year' => ['required', 'integer', 'min:2020', 'max:2100'],
-            'related_development_plan' => ['required', 'string', 'max:255'],
-            'funding_source' => ['required', 'string', 'max:120'],
-            'status' => ['required', 'string', Rule::in(self::ALLOWED_STATUSES)],
-            'priority' => ['nullable', 'string', Rule::in(self::ALLOWED_PRIORITIES)],
-            'implementation_context' => ['nullable', 'string', 'max:2000'],
-            'location' => ['nullable', 'string', 'max:255'],
-            'barangay' => ['nullable', 'string', 'max:120'],
-            'appropriation_amount' => ['nullable', 'numeric', 'min:0'],
-            'ps_amount' => ['nullable', 'numeric', 'min:0'],
-            'mooe_amount' => ['nullable', 'numeric', 'min:0'],
-            'co_amount' => ['nullable', 'numeric', 'min:0'],
-            'climate_adaptation_amount' => ['nullable', 'numeric', 'min:0'],
-            'climate_mitigation_amount' => ['nullable', 'numeric', 'min:0'],
-            'gad_attributed' => ['nullable', 'boolean'],
-            'drrm_tagged' => ['nullable', 'boolean'],
-            'aip_reference_code' => ['nullable', 'string', 'max:120'],
-            'target_quarter' => ['nullable', 'string', 'max:32'],
-            'map_code' => ['nullable', 'string', 'max:100'],
-        ]);
+        return DB::transaction(function () use ($request, $ppa): RedirectResponse {
+            $this->authorization->resolve($request->user());
+            $ppa = $ppa->newQuery()->lockForUpdate()->findOrFail($ppa->id);
+            $user = $request->user();
+            $data = $request->validate([
+                'title' => ['required', 'string', 'max:255'],
+                'sector' => ['required', 'string', 'max:100'],
+                'responsible_office' => ['nullable', 'string', 'max:255'],
+                'year' => ['required', 'integer', 'min:2020', 'max:2100'],
+                'related_development_plan' => ['required', 'string', 'max:255'],
+                'funding_source' => ['required', 'string', 'max:120'],
+                'status' => ['required', 'string', Rule::in(self::ALLOWED_STATUSES)],
+                'priority' => ['nullable', 'string', Rule::in(self::ALLOWED_PRIORITIES)],
+                'implementation_context' => ['nullable', 'string', 'max:2000'],
+                'location' => ['nullable', 'string', 'max:255'],
+                'barangay' => ['nullable', 'string', 'max:120'],
+                'appropriation_amount' => ['nullable', 'numeric', 'min:0'],
+                'ps_amount' => ['nullable', 'numeric', 'min:0'],
+                'mooe_amount' => ['nullable', 'numeric', 'min:0'],
+                'co_amount' => ['nullable', 'numeric', 'min:0'],
+                'climate_adaptation_amount' => ['nullable', 'numeric', 'min:0'],
+                'climate_mitigation_amount' => ['nullable', 'numeric', 'min:0'],
+                'gad_attributed' => ['nullable', 'boolean'],
+                'drrm_tagged' => ['nullable', 'boolean'],
+                'aip_reference_code' => ['nullable', 'string', 'max:120'],
+                'target_quarter' => ['nullable', 'string', 'max:32'],
+                'map_code' => ['nullable', 'string', 'max:100'],
+            ]);
 
-        $perms = $this->authorization->authorizePpaMutation($user, existing: $ppa, targetStatus: $data['status']);
+            $perms = $this->authorization->authorizePpaMutation($user, existing: $ppa, targetStatus: $data['status']);
+            $office = $perms['canManagePpas'] && isset($data['responsible_office'])
+                ? $this->authorization->officeIdentity($data['responsible_office'], 'responsible_office')
+                : null;
+            if ($office !== null && (int) $office->id !== (int) $ppa->implementing_department_id) {
+                throw ValidationException::withMessages(['responsible_office' => 'Office reassignment requires a separately authorized reconciliation; the recorded office identity is preserved.']);
+            }
 
-        $ps = (float) ($data['ps_amount'] ?? $ppa->ps_amount);
-        $mooe = (float) ($data['mooe_amount'] ?? $ppa->mooe_amount);
-        $co = (float) ($data['co_amount'] ?? $ppa->co_amount);
-        $appropriation = isset($data['appropriation_amount']) && (float) $data['appropriation_amount'] > 0
-            ? (float) $data['appropriation_amount']
-            : ($ps + $mooe + $co);
+            $ps = (float) ($data['ps_amount'] ?? $ppa->ps_amount);
+            $mooe = (float) ($data['mooe_amount'] ?? $ppa->mooe_amount);
+            $co = (float) ($data['co_amount'] ?? $ppa->co_amount);
+            $appropriation = isset($data['appropriation_amount']) && (float) $data['appropriation_amount'] > 0
+                ? (float) $data['appropriation_amount']
+                : ($ps + $mooe + $co);
 
-        $ppa->update([
-            'title' => trim($data['title']),
-            'sector' => trim($data['sector']),
-            'responsible_office' => $perms['canManagePpas'] && isset($data['responsible_office'])
-                ? trim($data['responsible_office'])
-                : $ppa->responsible_office,
-            'year' => (int) $data['year'],
-            'related_development_plan' => trim($data['related_development_plan']),
-            'funding_source' => trim($data['funding_source']),
-            'status' => $data['status'],
-            'priority' => $data['priority'] ?? $ppa->priority,
-            'implementation_context' => $data['implementation_context'] ?? $ppa->implementation_context,
-            'location' => $data['location'] ?? $ppa->location,
-            'barangay' => $data['barangay'] ?? $ppa->barangay,
-            'appropriation_amount' => $appropriation,
-            'ps_amount' => $ps,
-            'mooe_amount' => $mooe,
-            'co_amount' => $co,
-            'climate_adaptation_amount' => (float) ($data['climate_adaptation_amount'] ?? $ppa->climate_adaptation_amount),
-            'climate_mitigation_amount' => (float) ($data['climate_mitigation_amount'] ?? $ppa->climate_mitigation_amount),
-            'gad_attributed' => (bool) ($data['gad_attributed'] ?? $ppa->gad_attributed),
-            'drrm_tagged' => (bool) ($data['drrm_tagged'] ?? $ppa->drrm_tagged),
-            'aip_reference_code' => $data['aip_reference_code'] ?? $ppa->aip_reference_code,
-            'target_quarter' => $data['target_quarter'] ?? $ppa->target_quarter,
-            'map_code' => $data['map_code'] ?? $ppa->map_code,
-            'updated_by_user_id' => $user->id,
-        ]);
+            $ppa->update([
+                'title' => trim($data['title']),
+                'sector' => trim($data['sector']),
+                'responsible_office' => $office?->name ?? $ppa->responsible_office,
+                'implementing_department_id' => $office?->id ?? $ppa->implementing_department_id,
+                'year' => (int) $data['year'],
+                'related_development_plan' => trim($data['related_development_plan']),
+                'funding_source' => trim($data['funding_source']),
+                'status' => $data['status'],
+                'priority' => $data['priority'] ?? $ppa->priority,
+                'implementation_context' => $data['implementation_context'] ?? $ppa->implementation_context,
+                'location' => $data['location'] ?? $ppa->location,
+                'barangay' => $data['barangay'] ?? $ppa->barangay,
+                'appropriation_amount' => $appropriation,
+                'ps_amount' => $ps,
+                'mooe_amount' => $mooe,
+                'co_amount' => $co,
+                'climate_adaptation_amount' => (float) ($data['climate_adaptation_amount'] ?? $ppa->climate_adaptation_amount),
+                'climate_mitigation_amount' => (float) ($data['climate_mitigation_amount'] ?? $ppa->climate_mitigation_amount),
+                'gad_attributed' => (bool) ($data['gad_attributed'] ?? $ppa->gad_attributed),
+                'drrm_tagged' => (bool) ($data['drrm_tagged'] ?? $ppa->drrm_tagged),
+                'aip_reference_code' => $data['aip_reference_code'] ?? $ppa->aip_reference_code,
+                'target_quarter' => $data['target_quarter'] ?? $ppa->target_quarter,
+                'map_code' => $data['map_code'] ?? $ppa->map_code,
+                'updated_by_user_id' => $user->id,
+            ]);
 
-        $this->audit->record(
-            actor: $user,
-            action: 'planning.ppa.updated',
-            summary: "Updated PPA record {$ppa->ppa_code}.",
-            entityType: PpaRecord::class,
-            entityId: $ppa->id,
-        );
+            $this->audit->record(
+                actor: $user,
+                action: 'planning.ppa.updated',
+                summary: "Updated PPA record {$ppa->ppa_code}.",
+                entityType: PpaRecord::class,
+                entityId: $ppa->id,
+            );
 
-        return back()->with('status', "PPA record {$ppa->ppa_code} updated.");
+            return back()->with('status', "PPA record {$ppa->ppa_code} updated.");
+
+        }, attempts: 3);
     }
 
     public function updateStatus(Request $request, PpaRecord $ppa): RedirectResponse
     {
-        $user = $request->user();
-        $data = $request->validate([
-            'status' => ['required', 'string', Rule::in(self::ALLOWED_STATUSES)],
-        ]);
+        return DB::transaction(function () use ($request, $ppa): RedirectResponse {
+            $this->authorization->resolve($request->user());
+            $ppa = $ppa->newQuery()->lockForUpdate()->findOrFail($ppa->id);
+            $user = $request->user();
+            $data = $request->validate([
+                'status' => ['required', 'string', Rule::in(self::ALLOWED_STATUSES)],
+            ]);
 
-        $this->authorization->authorizePpaMutation($user, existing: $ppa, targetStatus: $data['status']);
+            $this->authorization->authorizePpaMutation($user, existing: $ppa, targetStatus: $data['status']);
 
-        $previousStatus = $ppa->status;
-        $ppa->update([
-            'status' => $data['status'],
-            'updated_by_user_id' => $user->id,
-        ]);
+            $previousStatus = $ppa->status;
+            $ppa->update([
+                'status' => $data['status'],
+                'updated_by_user_id' => $user->id,
+            ]);
 
-        $this->audit->record(
-            actor: $user,
-            action: 'planning.ppa.status_changed',
-            summary: "Changed PPA {$ppa->ppa_code} status from {$previousStatus} to {$ppa->status}.",
-            entityType: PpaRecord::class,
-            entityId: $ppa->id,
-        );
+            $this->audit->record(
+                actor: $user,
+                action: 'planning.ppa.status_changed',
+                summary: "Changed PPA {$ppa->ppa_code} status from {$previousStatus} to {$ppa->status}.",
+                entityType: PpaRecord::class,
+                entityId: $ppa->id,
+            );
 
-        return back()->with('status', "PPA {$ppa->ppa_code} status updated to {$ppa->status}.");
+            return back()->with('status', "PPA {$ppa->ppa_code} status updated to {$ppa->status}.");
+
+        }, attempts: 3);
     }
 
     public function destroy(Request $request, PpaRecord $ppa): RedirectResponse
     {
-        $user = $request->user();
-        $this->authorization->authorizePpaMutation($user, existing: $ppa, isDelete: true);
+        return DB::transaction(function () use ($request, $ppa): RedirectResponse {
+            $this->authorization->resolve($request->user());
+            $ppa = $ppa->newQuery()->lockForUpdate()->findOrFail($ppa->id);
+            $user = $request->user();
+            $this->authorization->authorizePpaMutation($user, existing: $ppa, isDelete: true);
 
-        if (! in_array($ppa->status, ['Draft', 'Planned'], true) || $ppa->provenance_status === 'reference_sample') {
-            throw ValidationException::withMessages([
-                'ppa' => 'Only non-reference draft/planned PPA proposals can be deleted.',
-            ]);
-        }
+            if (! in_array($ppa->status, ['Draft', 'Planned'], true) || $ppa->provenance_status === 'reference_sample') {
+                throw ValidationException::withMessages([
+                    'ppa' => 'Only non-reference draft/planned PPA proposals can be deleted.',
+                ]);
+            }
 
-        $code = $ppa->ppa_code;
-        $id = $ppa->id;
-        $ppa->delete();
+            $code = $ppa->ppa_code;
+            $id = $ppa->id;
+            $ppa->delete();
 
-        $this->audit->record(
-            actor: $user,
-            action: 'planning.ppa.deleted',
-            summary: "Deleted draft PPA {$code}.",
-            entityType: PpaRecord::class,
-            entityId: $id,
-        );
+            $this->audit->record(
+                actor: $user,
+                action: 'planning.ppa.deleted',
+                summary: "Deleted draft PPA {$code}.",
+                entityType: PpaRecord::class,
+                entityId: $id,
+            );
 
-        return back()->with('status', "Draft PPA {$code} deleted.");
+            return back()->with('status', "Draft PPA {$code} deleted.");
+
+        }, attempts: 3);
     }
 
     public function exportCsv(Request $request): StreamedResponse

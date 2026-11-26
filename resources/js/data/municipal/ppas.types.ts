@@ -4,6 +4,9 @@ export type PPAPriority = 'High' | 'Medium' | 'Routine';
 export type PPARecord = {
     id: string;
     dbId?: number;
+    canEdit?: boolean;
+    canDelete?: boolean;
+    canUploadAttachments?: boolean;
     title: string;
     sector: string;
     responsibleOffice: string;

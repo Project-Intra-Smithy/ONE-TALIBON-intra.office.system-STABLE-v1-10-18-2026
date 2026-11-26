@@ -29,6 +29,7 @@ type Props = {
     onClose: () => void;
     designatedStaff: DesignatedStaffMember[];
     mpdoStaffPool: MpdoStaffCandidate[];
+    allowedModules?: ('plans' | 'ppas' | 'maps')[];
 };
 
 export default function DesignatedStaffModal({
@@ -36,12 +37,14 @@ export default function DesignatedStaffModal({
     onClose,
     designatedStaff,
     mpdoStaffPool,
+    allowedModules = ['plans', 'ppas', 'maps'],
 }: Props) {
     const [employeeId, setEmployeeId] = useState<string>('');
     const [canPlans, setCanPlans] = useState(false);
     const [canPpas, setCanPpas] = useState(false);
     const [canMaps, setCanMaps] = useState(false);
     const [busy, setBusy] = useState(false);
+    const [submissionError, setSubmissionError] = useState('');
 
     const handleDesignate = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -64,6 +67,7 @@ export default function DesignatedStaffModal({
                     setCanPpas(false);
                     setCanMaps(false);
                 },
+                onError: errors => setSubmissionError(Object.values(errors).join(' ')),
                 onFinish: () => setBusy(false),
             },
         );
@@ -83,7 +87,8 @@ export default function DesignatedStaffModal({
 
         router.put(`/planning/designated-staff/${member.id}`, next, {
             preserveScroll: true,
-            onFinish: () => setBusy(false),
+            onError: errors => setSubmissionError(Object.values(errors).join(' ')),
+                onFinish: () => setBusy(false),
         });
     };
 
@@ -92,7 +97,8 @@ export default function DesignatedStaffModal({
         setBusy(true);
         router.delete(`/planning/designated-staff/${id}`, {
             preserveScroll: true,
-            onFinish: () => setBusy(false),
+            onError: errors => setSubmissionError(Object.values(errors).join(' ')),
+                onFinish: () => setBusy(false),
         });
     };
 
@@ -101,28 +107,29 @@ export default function DesignatedStaffModal({
             variant="drawer-right"
             open={open}
             onClose={onClose}
-            title="MPDC Staff Delegation & Module Scopes"
-            description="Assign granular planning module scopes to active MPDC staff. All boolean module scopes default to off unless explicitly granted."
+            title="Office Planning Staff & Module Scopes"
+            description="Assign granular planning module scopes to active staff in your office. All boolean module scopes default to off unless explicitly granted."
             size="lg"
         >
             <div className="space-y-4 text-xs">
+                {submissionError && <p role="alert">{submissionError}</p>}
                 <form
                     onSubmit={handleDesignate}
                     className="space-y-3 rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface-muted)] p-3.5"
                 >
                     <h4 className="flex items-center gap-1.5 font-bold text-[var(--municipal-text)]">
                         <UserPlus className="h-4 w-4 text-[var(--brand-ink)]" />
-                        Designate MPDC Staff Member
+                        Designate Office Staff Member
                     </h4>
                     <label className="block font-semibold text-[var(--municipal-text)]">
-                        Active MPDC Employee
+                        Active Office Employee
                         <select
                             required
                             value={employeeId}
                             onChange={(e) => setEmployeeId(e.target.value)}
                             className="mt-1 block min-h-9 w-full rounded border border-[var(--municipal-border-strong)] bg-[var(--municipal-surface)] px-2.5 text-xs text-[var(--municipal-text)]"
                         >
-                            <option value="">Select active MPDC staff member…</option>
+                            <option value="">Select active staff in your office member…</option>
                             {mpdoStaffPool.map((emp) => (
                                 <option key={emp.employeeId} value={emp.employeeId}>
                                     {emp.fullName} — {emp.positionTitle}
@@ -138,7 +145,7 @@ export default function DesignatedStaffModal({
                             <label className="inline-flex items-center gap-1.5 text-[var(--municipal-text)]">
                                 <input
                                     type="checkbox"
-                                    checked={canPlans}
+                                    disabled={!allowedModules.includes('plans')} checked={canPlans}
                                     onChange={(e) => setCanPlans(e.target.checked)}
                                 />
                                 Development Plans (Draft / Review)
@@ -146,7 +153,7 @@ export default function DesignatedStaffModal({
                             <label className="inline-flex items-center gap-1.5 text-[var(--municipal-text)]">
                                 <input
                                     type="checkbox"
-                                    checked={canPpas}
+                                    disabled={!allowedModules.includes('ppas')} checked={canPpas}
                                     onChange={(e) => setCanPpas(e.target.checked)}
                                 />
                                 PPA Register (Draft / Review)
@@ -154,7 +161,7 @@ export default function DesignatedStaffModal({
                             <label className="inline-flex items-center gap-1.5 text-[var(--municipal-text)]">
                                 <input
                                     type="checkbox"
-                                    checked={canMaps}
+                                    disabled={!allowedModules.includes('maps')} checked={canMaps}
                                     onChange={(e) => setCanMaps(e.target.checked)}
                                 />
                                 Planning Maps (Draft / Review)
@@ -171,14 +178,14 @@ export default function DesignatedStaffModal({
                 <div className="space-y-2">
                     <h4 className="flex items-center gap-1.5 font-bold text-[var(--municipal-text)]">
                         <ShieldCheck className="h-4 w-4 text-[var(--brand-ink)]" />
-                        Active Designated MPDC Staff ({designatedStaff.length})
+                        Active Designated Planning Staff ({designatedStaff.length})
                     </h4>
                     {designatedStaff.length === 0 ? (
                         <p className="rounded-lg border border-dashed border-[var(--municipal-border)] p-4 text-center text-[var(--municipal-muted)]">
-                            No MPDC staff designations are currently active.
+                            No office planning designations are currently active.
                         </p>
                     ) : (
-                        <PlanningStaffList busy={busy} staff={designatedStaff.map(member => ({ id: member.id, name: member.fullName, detail: member.positionTitle, active: true, plans: member.canManagePlans, ppas: member.canManagePpas, maps: member.canManageMaps }))} onToggle={id => handleRevoke(Number(id))} onScope={(id, module) => { const member = designatedStaff.find(item => item.id === id); if (member) handleToggleScope(member, module === 'plans' ? 'canManagePlans' : module === 'ppas' ? 'canManagePpas' : 'canManageMaps'); }} />
+                        <PlanningStaffList allowedModules={allowedModules} busy={busy} staff={designatedStaff.map(member => ({ id: member.id, name: member.fullName, detail: member.positionTitle, active: true, plans: member.canManagePlans, ppas: member.canManagePpas, maps: member.canManageMaps }))} onToggle={id => handleRevoke(Number(id))} onScope={(id, module) => { const member = designatedStaff.find(item => item.id === id); if (member) handleToggleScope(member, module === 'plans' ? 'canManagePlans' : module === 'ppas' ? 'canManagePpas' : 'canManageMaps'); }} />
                     )}
                 </div>
             </div>

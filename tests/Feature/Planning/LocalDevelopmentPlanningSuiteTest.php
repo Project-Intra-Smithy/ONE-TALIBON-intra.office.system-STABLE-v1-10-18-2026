@@ -43,7 +43,7 @@ final class LocalDevelopmentPlanningSuiteTest extends TestCase
         $this->assertFalse($perms['canDelete']);
         $this->assertFalse($perms['canDesignateStaff']);
         $this->assertFalse($perms['canUploadAttachments']);
-        $this->assertFalse($perms['canViewExecutiveAttachments']);
+        $this->assertTrue($perms['canViewExecutiveAttachments']);
 
         // 1. system_admin denied on Plan creation
         $this->actingAs($admin)->post('/development-plans', [
@@ -80,7 +80,7 @@ final class LocalDevelopmentPlanningSuiteTest extends TestCase
             'can_manage_plans' => true,
         ])->assertForbidden();
 
-        // 5. MPDC Head creates a genuine draft plan and uploads an mpdc_executive attachment; system_admin is denied preview & download
+        // 5. MPDC Head creates a genuine draft plan and uploads an mpdc_executive attachment; eligible system_admin retains internal read access without mutation authority
         $this->actingAs($mpdcHead)->post('/development-plans', [
             'code' => 'MPDC-EXEC-DRAFT-2027',
             'title' => 'Executive Draft Working Plan',
@@ -102,8 +102,8 @@ final class LocalDevelopmentPlanningSuiteTest extends TestCase
         ])->assertRedirect();
 
         $attachment = PlanningAttachment::query()->where('title', 'Executive Draft Review Notes')->firstOrFail();
-        $this->actingAs($admin)->get("/planning/attachments/{$attachment->public_id}/preview")->assertForbidden();
-        $this->actingAs($admin)->get("/planning/attachments/{$attachment->public_id}/download")->assertForbidden();
+        $this->actingAs($admin)->get("/planning/attachments/{$attachment->public_id}/preview")->assertOk();
+        $this->actingAs($admin)->get("/planning/attachments/{$attachment->public_id}/download")->assertOk();
     }
 
     public function test_mpdc_head_full_crud_and_designated_staff_granular_boolean_scopes(): void
@@ -154,13 +154,18 @@ final class LocalDevelopmentPlanningSuiteTest extends TestCase
         $plan = DevelopmentPlan::query()->where('code', 'SECT-PLAN-2027')->firstOrFail();
         $this->assertSame('provisional_draft', $plan->provenance_status);
 
-        // Designated staff CANNOT publish/adopt an official plan or delete a plan
+        // Designated staff cannot publish/adopt; Engineer #7203434407 permits scoped draft removal.
         $this->actingAs($mpdcStaff)->post("/development-plans/{$plan->id}/status", [
             'status' => 'In force',
             'authority' => 'SB Resolution No. 2027-01',
         ])->assertForbidden();
 
-        $this->actingAs($mpdcStaff)->delete("/development-plans/{$plan->id}")->assertForbidden();
+        $removable = $plan->replicate();
+        $removable->code = 'SCOPED-REMOVAL';
+        $removable->plan_key = 'scoped-removal';
+        $removable->save();
+        $this->actingAs($mpdcStaff)->delete("/development-plans/{$removable->id}")->assertRedirect();
+        $this->assertNull($removable->fresh());
 
         // Designated staff with can_manage_ppas = false is denied on PPA creation and Map creation
         $this->actingAs($mpdcStaff)->post('/ppas', [
@@ -251,9 +256,9 @@ final class LocalDevelopmentPlanningSuiteTest extends TestCase
         $preview->assertOk();
         $this->assertSame($pdfContent, $preview->streamedContent());
 
-        // Foreign Office Head (Budget) and undesignated employee are denied on office_restricted attachment
-        $this->actingAs($budgetHead)->get("/planning/attachments/{$attachment->public_id}/preview")->assertForbidden();
-        $this->actingAs($ordinaryEmployee)->get("/planning/attachments/{$attachment->public_id}/download")->assertForbidden();
+        // Engineer #7203434407: cross-office personnel retain internal supporting-document reads.
+        $this->actingAs($budgetHead)->get("/planning/attachments/{$attachment->public_id}/preview")->assertOk();
+        $this->actingAs($ordinaryEmployee)->get("/planning/attachments/{$attachment->public_id}/download")->assertOk();
     }
 
     public function test_csv_export_neutralizes_spreadsheet_formula_injection_and_streams_aip_columns(): void

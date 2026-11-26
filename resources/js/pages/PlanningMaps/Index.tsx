@@ -21,6 +21,9 @@ import type { PlanningPermissions } from '../Plans/Index';
 export type ServerPlanningMap = {
     id: string;
     dbId: number;
+    canEdit?: boolean;
+    canDelete?: boolean;
+    canUploadAttachments?: boolean;
     code: string;
     title: string;
     category: string;
@@ -326,8 +329,8 @@ export default function PlanningMapsIndex({
                         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                             {filteredMaps.map(map=><MapGalleryCard key={map.code} code={map.code} title={map.title} description={map.summary} category={map.category} status={map.status} updatedLabel={`Updated year ${map.updatedYear}`} selected={selectedMap?.code===map.code}
                                 onInspect={()=>{setSelectedMapCode(map.code);setExpandedPlateCode(map.code);}}
-                                onEdit={planningPermissions?.canManageMaps?()=>openMapStudio(map):undefined}
-                                managementActions={planningPermissions?.canDelete?<PlanningDeleteAction title={map.code} busy={busy} disabledReason={map.status!=='Draft'?'Only draft maps can be deleted.':undefined} onDelete={()=>{setBusy(true);setSubmissionError('');router.delete(`/planning-maps/${map.dbId}`,{preserveScroll:true,onError:errors=>setSubmissionError(Object.values(errors).join(' ')),onFinish:()=>setBusy(false)});}} />:undefined}
+                                onEdit={map.canEdit?()=>openMapStudio(map):undefined}
+                                managementActions={map.canDelete?<PlanningDeleteAction title={map.code} busy={busy} disabledReason={map.status!=='Draft'?'Only draft maps can be deleted.':undefined} onDelete={()=>{setBusy(true);setSubmissionError('');router.delete(`/planning-maps/${map.dbId}`,{preserveScroll:true,onError:errors=>setSubmissionError(Object.values(errors).join(' ')),onFinish:()=>setBusy(false)});}} />:undefined}
                                 onLocate={()=>{setSelectedMapCode(map.code);document.getElementById('planning-map-explorer')?.scrollIntoView({behavior:'smooth',block:'center'});}} />)}
                         </div>
                         {filteredMaps.length === 0 && (
@@ -435,7 +438,7 @@ export default function PlanningMapsIndex({
                                     parentType="map"
                                     parentCode={selectedMap.code}
                                     attachments={attachments}
-                                    canUpload={Boolean(planningPermissions?.canManageMaps)}
+                                    canUpload={Boolean(selectedMap?.canUploadAttachments)}
                                     canManageExecutive={Boolean(
                                         planningPermissions?.canViewExecutiveAttachments,
                                     )}

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Planning;
 
 use App\Http\Controllers\Controller;
-use App\Models\Department;
 use App\Models\DesignatedPlanningStaff;
 use App\Models\DevelopmentPlan;
 use App\Models\Employee;
@@ -14,6 +13,7 @@ use App\Services\AuditLogger;
 use App\Services\Planning\PlanningAuthorizationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -40,6 +40,7 @@ final class DevelopmentPlanController extends Controller
             ->orderBy('id')
             ->get()
             ->map(fn (DevelopmentPlan $plan): array => [
+                ...$this->authorization->recordCapabilities($permissions, $plan),
                 'id' => $plan->plan_key,
                 'dbId' => $plan->id,
                 'code' => $plan->code,
@@ -83,213 +84,235 @@ final class DevelopmentPlanController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $user = $request->user();
-        $data = $request->validate([
-            'code' => ['required', 'string', 'max:100', 'unique:development_plans,code'],
-            'title' => ['required', 'string', 'max:255'],
-            'horizon' => ['required', 'string', Rule::in(self::ALLOWED_HORIZONS)],
-            'lead_office' => ['required', 'string', 'max:255'],
-            'coordinating_offices' => ['nullable', 'array'],
-            'coordinating_offices.*' => ['string', 'max:255'],
-            'coverage_start' => ['required', 'integer', 'min:2000', 'max:2100'],
-            'coverage_end' => ['required', 'integer', 'min:2000', 'max:2100', 'gte:coverage_start'],
-            'status' => ['required', 'string', Rule::in(self::ALLOWED_STATUSES)],
-            'sections_complete' => ['nullable', 'integer', 'min:0', 'max:100'],
-            'sections_total' => ['nullable', 'integer', 'min:1', 'max:100'],
-            'last_action' => ['nullable', 'string', 'max:255'],
-            'last_action_date' => ['nullable', 'string', 'max:32'],
-            'next_milestone' => ['nullable', 'string', 'max:255'],
-            'next_milestone_date' => ['nullable', 'string', 'max:32'],
-            'required_action' => ['nullable', 'string', 'max:2000'],
-            'authority' => ['nullable', 'string', 'max:255'],
-            'document_ref' => ['nullable', 'string', 'max:120'],
-        ]);
-
-        $perms = $this->authorization->authorizePlanMutation($user, $data['status']);
-
-        if (in_array($data['status'], ['In force', 'Adopted'], true) && trim((string) ($data['authority'] ?? '')) === '') {
-            throw ValidationException::withMessages([
-                'authority' => 'An adoption/authority reference is required when setting a plan to In force or Adopted.',
+        return DB::transaction(function () use ($request): RedirectResponse {
+            $this->authorization->resolve($request->user());
+            $user = $request->user();
+            $data = $request->validate([
+                'code' => ['required', 'string', 'max:100', 'unique:development_plans,code'],
+                'title' => ['required', 'string', 'max:255'],
+                'horizon' => ['required', 'string', Rule::in(self::ALLOWED_HORIZONS)],
+                'lead_office' => ['required', 'string', 'max:255'],
+                'coordinating_offices' => ['nullable', 'array'],
+                'coordinating_offices.*' => ['string', 'max:255'],
+                'coverage_start' => ['required', 'integer', 'min:2000', 'max:2100'],
+                'coverage_end' => ['required', 'integer', 'min:2000', 'max:2100', 'gte:coverage_start'],
+                'status' => ['required', 'string', Rule::in(self::ALLOWED_STATUSES)],
+                'sections_complete' => ['nullable', 'integer', 'min:0', 'max:100'],
+                'sections_total' => ['nullable', 'integer', 'min:1', 'max:100'],
+                'last_action' => ['nullable', 'string', 'max:255'],
+                'last_action_date' => ['nullable', 'string', 'max:32'],
+                'next_milestone' => ['nullable', 'string', 'max:255'],
+                'next_milestone_date' => ['nullable', 'string', 'max:32'],
+                'required_action' => ['nullable', 'string', 'max:2000'],
+                'authority' => ['nullable', 'string', 'max:255'],
+                'document_ref' => ['nullable', 'string', 'max:120'],
             ]);
-        }
 
-        $planKey = 'plan-'.Str::slug($data['code']).'-'.Str::lower(Str::random(4));
-        $plan = DevelopmentPlan::query()->create([
-            'plan_key' => $planKey,
-            'code' => trim($data['code']),
-            'title' => trim($data['title']),
-            'horizon' => $data['horizon'],
-            'lead_office' => trim($data['lead_office']),
-            'lead_department_id' => $perms['actorDepartmentId'],
-            'coordinating_offices' => $data['coordinating_offices'] ?? [],
-            'coverage_start' => (int) $data['coverage_start'],
-            'coverage_end' => (int) $data['coverage_end'],
-            'status' => $data['status'],
-            'sections_complete' => (int) ($data['sections_complete'] ?? 1),
-            'sections_total' => max(1, (int) ($data['sections_total'] ?? 10)),
-            'last_action' => $data['last_action'] ?? 'Plan record created',
-            'last_action_date' => $data['last_action_date'] ?? now()->format('Y-m-d'),
-            'next_milestone' => $data['next_milestone'] ?? 'Technical review',
-            'next_milestone_date' => $data['next_milestone_date'] ?? now()->addMonth()->format('Y-m-d'),
-            'required_action' => $data['required_action'] ?? 'Submit supporting documents for MPDC review.',
-            'authority' => $data['authority'] ?? 'Provisional draft — pending official Sangguniang Bayan adoption',
-            'document_ref' => $data['document_ref'] ?? trim($data['code']),
-            'provenance_status' => 'provisional_draft',
-            'created_by_user_id' => $user->id,
-            'updated_by_user_id' => $user->id,
-        ]);
+            $perms = $this->authorization->authorizePlanMutation($user, $data['status']);
 
-        $this->audit->record(
-            actor: $user,
-            action: 'planning.plan.created',
-            summary: "Created development plan {$plan->code} ({$plan->title}).",
-            entityType: DevelopmentPlan::class,
-            entityId: $plan->id,
-        );
+            if (in_array($data['status'], ['In force', 'Adopted'], true) && trim((string) ($data['authority'] ?? '')) === '') {
+                throw ValidationException::withMessages([
+                    'authority' => 'An adoption/authority reference is required when setting a plan to In force or Adopted.',
+                ]);
+            }
 
-        return back()->with('status', "Development plan {$plan->code} saved.");
+            $office = $this->authorization->officeIdentity($data['lead_office'], 'lead_office');
+            $planKey = 'plan-'.Str::slug($data['code']).'-'.Str::lower(Str::random(4));
+            $plan = DevelopmentPlan::query()->create([
+                'plan_key' => $planKey,
+                'code' => trim($data['code']),
+                'title' => trim($data['title']),
+                'horizon' => $data['horizon'],
+                'lead_office' => $office->name,
+                'lead_department_id' => $office->id,
+                'coordinating_offices' => $data['coordinating_offices'] ?? [],
+                'coverage_start' => (int) $data['coverage_start'],
+                'coverage_end' => (int) $data['coverage_end'],
+                'status' => $data['status'],
+                'sections_complete' => (int) ($data['sections_complete'] ?? 1),
+                'sections_total' => max(1, (int) ($data['sections_total'] ?? 10)),
+                'last_action' => $data['last_action'] ?? 'Plan record created',
+                'last_action_date' => $data['last_action_date'] ?? now()->format('Y-m-d'),
+                'next_milestone' => $data['next_milestone'] ?? 'Technical review',
+                'next_milestone_date' => $data['next_milestone_date'] ?? now()->addMonth()->format('Y-m-d'),
+                'required_action' => $data['required_action'] ?? 'Submit supporting documents for MPDC review.',
+                'authority' => $data['authority'] ?? 'Provisional draft — pending official Sangguniang Bayan adoption',
+                'document_ref' => $data['document_ref'] ?? trim($data['code']),
+                'provenance_status' => 'provisional_draft',
+                'created_by_user_id' => $user->id,
+                'updated_by_user_id' => $user->id,
+            ]);
+
+            $this->audit->record(
+                actor: $user,
+                action: 'planning.plan.created',
+                summary: "Created development plan {$plan->code} ({$plan->title}).",
+                entityType: DevelopmentPlan::class,
+                entityId: $plan->id,
+            );
+
+            return back()->with('status', "Development plan {$plan->code} saved.");
+
+        }, attempts: 3);
     }
 
     public function update(Request $request, DevelopmentPlan $plan): RedirectResponse
     {
-        $user = $request->user();
-        $data = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'horizon' => ['required', 'string', Rule::in(self::ALLOWED_HORIZONS)],
-            'lead_office' => ['required', 'string', 'max:255'],
-            'coordinating_offices' => ['nullable', 'array'],
-            'coordinating_offices.*' => ['string', 'max:255'],
-            'coverage_start' => ['required', 'integer', 'min:2000', 'max:2100'],
-            'coverage_end' => ['required', 'integer', 'min:2000', 'max:2100', 'gte:coverage_start'],
-            'status' => ['required', 'string', Rule::in(self::ALLOWED_STATUSES)],
-            'sections_complete' => ['nullable', 'integer', 'min:0', 'max:100'],
-            'sections_total' => ['nullable', 'integer', 'min:1', 'max:100'],
-            'last_action' => ['nullable', 'string', 'max:255'],
-            'last_action_date' => ['nullable', 'string', 'max:32'],
-            'next_milestone' => ['nullable', 'string', 'max:255'],
-            'next_milestone_date' => ['nullable', 'string', 'max:32'],
-            'required_action' => ['nullable', 'string', 'max:2000'],
-            'authority' => ['nullable', 'string', 'max:255'],
-            'document_ref' => ['nullable', 'string', 'max:120'],
-        ]);
+        return DB::transaction(function () use ($request, $plan): RedirectResponse {
+            $this->authorization->resolve($request->user());
+            $plan = $plan->newQuery()->lockForUpdate()->findOrFail($plan->id);
+            $user = $request->user();
+            $data = $request->validate([
+                'title' => ['required', 'string', 'max:255'],
+                'horizon' => ['required', 'string', Rule::in(self::ALLOWED_HORIZONS)],
+                'lead_office' => ['required', 'string', 'max:255'],
+                'coordinating_offices' => ['nullable', 'array'],
+                'coordinating_offices.*' => ['string', 'max:255'],
+                'coverage_start' => ['required', 'integer', 'min:2000', 'max:2100'],
+                'coverage_end' => ['required', 'integer', 'min:2000', 'max:2100', 'gte:coverage_start'],
+                'status' => ['required', 'string', Rule::in(self::ALLOWED_STATUSES)],
+                'sections_complete' => ['nullable', 'integer', 'min:0', 'max:100'],
+                'sections_total' => ['nullable', 'integer', 'min:1', 'max:100'],
+                'last_action' => ['nullable', 'string', 'max:255'],
+                'last_action_date' => ['nullable', 'string', 'max:32'],
+                'next_milestone' => ['nullable', 'string', 'max:255'],
+                'next_milestone_date' => ['nullable', 'string', 'max:32'],
+                'required_action' => ['nullable', 'string', 'max:2000'],
+                'authority' => ['nullable', 'string', 'max:255'],
+                'document_ref' => ['nullable', 'string', 'max:120'],
+            ]);
 
-        $requestedAuthority = $request->exists('authority')
-            ? (string) ($data['authority'] ?? '')
-            : null;
+            $requestedAuthority = $request->exists('authority')
+                ? (string) ($data['authority'] ?? '')
+                : null;
 
-        $this->authorization->authorizePlanMutation(
-            user: $user,
-            targetStatus: $data['status'],
-            existing: $plan,
-            requestedAuthority: $requestedAuthority,
-        );
+            $this->authorization->authorizePlanMutation(
+                user: $user,
+                targetStatus: $data['status'],
+                existing: $plan,
+                requestedAuthority: $requestedAuthority,
+            );
 
-        $plan->update([
-            'title' => trim($data['title']),
-            'horizon' => $data['horizon'],
-            'lead_office' => trim($data['lead_office']),
-            'coordinating_offices' => $data['coordinating_offices'] ?? $plan->coordinating_offices,
-            'coverage_start' => (int) $data['coverage_start'],
-            'coverage_end' => (int) $data['coverage_end'],
-            'status' => $data['status'],
-            'sections_complete' => (int) ($data['sections_complete'] ?? $plan->sections_complete),
-            'sections_total' => max(1, (int) ($data['sections_total'] ?? $plan->sections_total)),
-            'last_action' => $data['last_action'] ?? $plan->last_action,
-            'last_action_date' => $data['last_action_date'] ?? now()->format('Y-m-d'),
-            'next_milestone' => $data['next_milestone'] ?? $plan->next_milestone,
-            'next_milestone_date' => $data['next_milestone_date'] ?? $plan->next_milestone_date,
-            'required_action' => $data['required_action'] ?? $plan->required_action,
-            'authority' => $plan->provenance_status === 'reference_sample'
-                ? $plan->authority
-                : ($data['authority'] ?? $plan->authority),
-            'document_ref' => $data['document_ref'] ?? $plan->document_ref,
-            'updated_by_user_id' => $user->id,
-        ]);
+            $office = $this->authorization->officeIdentity($data['lead_office'], 'lead_office');
+            $plan->update([
+                'title' => trim($data['title']),
+                'horizon' => $data['horizon'],
+                'lead_office' => $office->name,
+                'lead_department_id' => $office->id,
+                'coordinating_offices' => $data['coordinating_offices'] ?? $plan->coordinating_offices,
+                'coverage_start' => (int) $data['coverage_start'],
+                'coverage_end' => (int) $data['coverage_end'],
+                'status' => $data['status'],
+                'sections_complete' => (int) ($data['sections_complete'] ?? $plan->sections_complete),
+                'sections_total' => max(1, (int) ($data['sections_total'] ?? $plan->sections_total)),
+                'last_action' => $data['last_action'] ?? $plan->last_action,
+                'last_action_date' => $data['last_action_date'] ?? now()->format('Y-m-d'),
+                'next_milestone' => $data['next_milestone'] ?? $plan->next_milestone,
+                'next_milestone_date' => $data['next_milestone_date'] ?? $plan->next_milestone_date,
+                'required_action' => $data['required_action'] ?? $plan->required_action,
+                'authority' => $plan->provenance_status === 'reference_sample'
+                    ? $plan->authority
+                    : ($data['authority'] ?? $plan->authority),
+                'document_ref' => $data['document_ref'] ?? $plan->document_ref,
+                'updated_by_user_id' => $user->id,
+            ]);
 
-        $this->audit->record(
-            actor: $user,
-            action: 'planning.plan.updated',
-            summary: "Updated development plan {$plan->code}.",
-            entityType: DevelopmentPlan::class,
-            entityId: $plan->id,
-        );
+            $this->audit->record(
+                actor: $user,
+                action: 'planning.plan.updated',
+                summary: "Updated development plan {$plan->code}.",
+                entityType: DevelopmentPlan::class,
+                entityId: $plan->id,
+            );
 
-        return back()->with('status', "Development plan {$plan->code} updated.");
+            return back()->with('status', "Development plan {$plan->code} updated.");
+
+        }, attempts: 3);
     }
 
     public function updateStatus(Request $request, DevelopmentPlan $plan): RedirectResponse
     {
-        $user = $request->user();
-        $data = $request->validate([
-            'status' => ['required', 'string', Rule::in(self::ALLOWED_STATUSES)],
-            'authority' => ['nullable', 'string', 'max:255'],
-        ]);
-
-        $requestedAuthority = $request->exists('authority') && $data['authority'] !== null
-            ? (string) $data['authority']
-            : null;
-
-        $this->authorization->authorizePlanMutation(
-            user: $user,
-            targetStatus: $data['status'],
-            existing: $plan,
-            requestedAuthority: $requestedAuthority,
-        );
-
-        $authority = isset($data['authority']) && trim($data['authority']) !== ''
-            ? trim($data['authority'])
-            : $plan->authority;
-
-        if (in_array($data['status'], ['In force', 'Adopted'], true) && trim((string) $authority) === '') {
-            throw ValidationException::withMessages([
-                'authority' => 'An adoption/authority reference is required when setting a plan to In force or Adopted.',
+        return DB::transaction(function () use ($request, $plan): RedirectResponse {
+            $this->authorization->resolve($request->user());
+            $plan = $plan->newQuery()->lockForUpdate()->findOrFail($plan->id);
+            $user = $request->user();
+            $data = $request->validate([
+                'status' => ['required', 'string', Rule::in(self::ALLOWED_STATUSES)],
+                'authority' => ['nullable', 'string', 'max:255'],
             ]);
-        }
 
-        $previousStatus = $plan->status;
-        $plan->update([
-            'status' => $data['status'],
-            'authority' => $authority,
-            'last_action' => "Status updated to {$data['status']}",
-            'last_action_date' => now()->format('Y-m-d'),
-            'updated_by_user_id' => $user->id,
-        ]);
+            $requestedAuthority = $request->exists('authority') && $data['authority'] !== null
+                ? (string) $data['authority']
+                : null;
 
-        $this->audit->record(
-            actor: $user,
-            action: 'planning.plan.status_changed',
-            summary: "Changed development plan {$plan->code} status from {$previousStatus} to {$plan->status}.",
-            entityType: DevelopmentPlan::class,
-            entityId: $plan->id,
-        );
+            $this->authorization->authorizePlanMutation(
+                user: $user,
+                targetStatus: $data['status'],
+                existing: $plan,
+                requestedAuthority: $requestedAuthority,
+            );
 
-        return back()->with('status', "Development plan {$plan->code} status updated to {$plan->status}.");
+            $authority = isset($data['authority']) && trim($data['authority']) !== ''
+                ? trim($data['authority'])
+                : $plan->authority;
+
+            if (in_array($data['status'], ['In force', 'Adopted'], true) && trim((string) $authority) === '') {
+                throw ValidationException::withMessages([
+                    'authority' => 'An adoption/authority reference is required when setting a plan to In force or Adopted.',
+                ]);
+            }
+
+            $previousStatus = $plan->status;
+            $plan->update([
+                'status' => $data['status'],
+                'authority' => $authority,
+                'last_action' => "Status updated to {$data['status']}",
+                'last_action_date' => now()->format('Y-m-d'),
+                'updated_by_user_id' => $user->id,
+            ]);
+
+            $this->audit->record(
+                actor: $user,
+                action: 'planning.plan.status_changed',
+                summary: "Changed development plan {$plan->code} status from {$previousStatus} to {$plan->status}.",
+                entityType: DevelopmentPlan::class,
+                entityId: $plan->id,
+            );
+
+            return back()->with('status', "Development plan {$plan->code} status updated to {$plan->status}.");
+
+        }, attempts: 3);
     }
 
     public function destroy(Request $request, DevelopmentPlan $plan): RedirectResponse
     {
-        $user = $request->user();
-        $this->authorization->authorizePlanMutation($user, isDelete: true);
+        return DB::transaction(function () use ($request, $plan): RedirectResponse {
+            $this->authorization->resolve($request->user());
+            $plan = $plan->newQuery()->lockForUpdate()->findOrFail($plan->id);
+            $user = $request->user();
+            $this->authorization->authorizePlanMutation($user, isDelete: true);
 
-        if (in_array($plan->status, ['In force', 'Adopted'], true) || $plan->provenance_status === 'reference_sample') {
-            throw ValidationException::withMessages([
-                'plan' => 'Official or baseline reference plans cannot be deleted; archive or update their status instead.',
-            ]);
-        }
+            if (in_array($plan->status, ['In force', 'Adopted'], true) || $plan->provenance_status === 'reference_sample') {
+                throw ValidationException::withMessages([
+                    'plan' => 'Official or baseline reference plans cannot be deleted; archive or update their status instead.',
+                ]);
+            }
 
-        $code = $plan->code;
-        $id = $plan->id;
-        $plan->delete();
+            $code = $plan->code;
+            $id = $plan->id;
+            $plan->delete();
 
-        $this->audit->record(
-            actor: $user,
-            action: 'planning.plan.deleted',
-            summary: "Deleted draft development plan {$code}.",
-            entityType: DevelopmentPlan::class,
-            entityId: $id,
-        );
+            $this->audit->record(
+                actor: $user,
+                action: 'planning.plan.deleted',
+                summary: "Deleted draft development plan {$code}.",
+                entityType: DevelopmentPlan::class,
+                entityId: $id,
+            );
 
-        return back()->with('status', "Draft development plan {$code} deleted.");
+            return back()->with('status', "Draft development plan {$code} deleted.");
+
+        }, attempts: 3);
     }
 
     private function presentAttachment(PlanningAttachment $attachment): array
@@ -305,6 +328,7 @@ final class DevelopmentPlanController extends Controller
             'category' => $attachment->category,
             'visibility' => $attachment->visibility,
             'previewUrl' => "/planning/attachments/{$attachment->public_id}/preview",
+            'canArchive' => $this->authorization->canArchiveAttachment(request()->user(), $attachment),
             'downloadUrl' => "/planning/attachments/{$attachment->public_id}/download",
             'createdAt' => $attachment->created_at?->toIso8601String(),
         ];
@@ -321,6 +345,7 @@ final class DevelopmentPlanController extends Controller
 
         return DesignatedPlanningStaff::query()
             ->with(['employee', 'user'])
+            ->where('department_id', $this->authorization->resolve(request()->user())['actorDepartmentId'])
             ->whereNull('revoked_at')
             ->orderBy('id')
             ->get()
@@ -347,14 +372,13 @@ final class DevelopmentPlanController extends Controller
             return [];
         }
 
-        $mpdoIds = Department::query()
-            ->whereIn('code', PlanningAuthorizationService::MPDO_CODES)
-            ->pluck('id');
+        $officeId = $this->authorization->resolve(request()->user())['actorDepartmentId'];
 
         return Employee::query()
             ->with('user')
-            ->whereIn('department_id', $mpdoIds)
+            ->where('department_id', $officeId)
             ->where('employment_status', 'active')
+            ->whereNull('separation_date')
             ->whereNotNull('user_id')
             ->orderBy('full_name')
             ->get()
