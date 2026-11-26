@@ -3,7 +3,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
-const output = '.forge/evidence/ot-tcds-phase-a/catalog';
+const output = `${process.env.PHASE_A_EVIDENCE_ROOT ?? '.forge/evidence/ot-tcds-phase-a'}/catalog`;
 await mkdir(output, { recursive: true });
 const pages = JSON.parse(await readFile('.forge/evidence/ot-tcds-phase-a/page-coverage.json', 'utf8'));
 const browser = await chromium.launch();

@@ -79,7 +79,7 @@ function RequestModal({ request, onClose }: { request: CitizenRequest; onClose: 
                 <div className="flex flex-col gap-2 border-b border-slate-100 pb-4 dark:border-slate-700 sm:flex-row sm:items-start sm:justify-between">
                     <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-brand)]">{request.reference}</span>
+                            <span className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--brand-ink)]">{request.reference}</span>
                             <PriorityBadge priority={request.priority} />
                             <StatusBadge status={request.status} />
                         </div>
@@ -223,7 +223,7 @@ function PriorityInbox({ requests, label, onSelect }: { requests: CitizenRequest
         <section className="overflow-hidden rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)]" aria-label="Priority inbox">
             <header className="flex items-center justify-between gap-3 border-b border-[var(--municipal-border)] px-3 py-2.5">
                 <div>
-                    <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]"><Inbox size={14} className="text-[var(--municipal-brand)]" aria-hidden="true" /> Priority Inbox</div>
+                    <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]"><Inbox size={14} className="text-[var(--brand-ink)]" aria-hidden="true" /> Priority Inbox</div>
                     <div className="mt-0.5 text-[9px] text-[var(--municipal-muted)]">{label} · {ordered.length} visible</div>
                 </div>
             </header>
@@ -237,7 +237,7 @@ function PriorityInbox({ requests, label, onSelect }: { requests: CitizenRequest
                             + (request.priority === 'High' ? 'border-l-amber-400 bg-amber-50/30 dark:bg-amber-950/10' : 'border-l-slate-200 dark:border-l-slate-700')}
                     >
                         <div className="min-w-0">
-                            <div className="text-[9px] font-extrabold uppercase tracking-[0.06em] text-[var(--municipal-brand)]">{request.reference}</div>
+                            <div className="text-[9px] font-extrabold uppercase tracking-[0.06em] text-[var(--brand-ink)]">{request.reference}</div>
                             <div className="mt-0.5 text-[12px] font-bold text-[var(--municipal-text)]">{request.concern}</div>
                             <div className="mt-1 text-[9px] text-[var(--municipal-muted)]">{request.category} · {request.assignedReference}</div>
                         </div>
@@ -339,7 +339,7 @@ function RequestQueue({ onSelect }: { onSelect: (request: CitizenRequest) => voi
                     <tbody className="divide-y divide-[var(--municipal-border)]">
                         {visible.map((request) => (
                             <tr key={request.reference} onClick={() => onSelect(request)} className={'cursor-pointer transition hover:bg-[var(--municipal-hover)] ' + (request.priority === 'High' ? 'bg-amber-50/25 dark:bg-amber-950/10' : '')}>
-                                <td className={'border-l-2 px-3 py-3 text-[10px] font-extrabold text-[var(--municipal-brand)] ' + (request.priority === 'High' ? 'border-l-amber-400' : 'border-l-slate-200 dark:border-l-slate-700')}>{request.reference}</td><td className="px-3 py-3 text-[11px] font-bold text-[var(--municipal-text)]">{request.concern}</td><td className="px-3 py-3 text-[10px] text-[var(--municipal-muted)]">{request.category}</td><td className="px-3 py-3"><PriorityBadge priority={request.priority} /></td><td className="px-3 py-3"><StatusBadge status={request.status} /></td><td className="px-3 py-3 text-[10px] font-semibold text-[var(--municipal-text)]">{request.assignedReference}</td>
+                                <td className={'border-l-2 px-3 py-3 text-[10px] font-extrabold text-[var(--brand-ink)] ' + (request.priority === 'High' ? 'border-l-amber-400' : 'border-l-slate-200 dark:border-l-slate-700')}>{request.reference}</td><td className="px-3 py-3 text-[11px] font-bold text-[var(--municipal-text)]">{request.concern}</td><td className="px-3 py-3 text-[10px] text-[var(--municipal-muted)]">{request.category}</td><td className="px-3 py-3"><PriorityBadge priority={request.priority} /></td><td className="px-3 py-3"><StatusBadge status={request.status} /></td><td className="px-3 py-3 text-[10px] font-semibold text-[var(--municipal-text)]">{request.assignedReference}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -348,7 +348,7 @@ function RequestQueue({ onSelect }: { onSelect: (request: CitizenRequest) => voi
 
             <div className="divide-y divide-[var(--municipal-border)] md:hidden">
                 {visible.map((request) => (
-                    <button key={request.reference} type="button" onClick={() => onSelect(request)} className={'w-full border-l-2 p-3 text-left hover:bg-[var(--municipal-hover)] ' + (request.priority === 'High' ? 'border-l-amber-400 bg-amber-50/25 dark:bg-amber-950/10' : 'border-l-slate-200 dark:border-l-slate-700')}><div className="flex items-start justify-between gap-2"><div><div className="text-[10px] font-extrabold text-[var(--municipal-brand)]">{request.reference}</div><div className="mt-1 text-[11px] font-bold text-[var(--municipal-text)]">{request.concern}</div></div><ChevronRight size={14} className="mt-1 shrink-0 text-[var(--municipal-muted)]" /></div><div className="mt-2 flex flex-wrap gap-1.5"><PriorityBadge priority={request.priority} /><StatusBadge status={request.status} /></div><div className="mt-2 text-[9px] text-[var(--municipal-muted)]">{request.category} · {request.assignedReference}</div></button>
+                    <button key={request.reference} type="button" onClick={() => onSelect(request)} className={'w-full border-l-2 p-3 text-left hover:bg-[var(--municipal-hover)] ' + (request.priority === 'High' ? 'border-l-amber-400 bg-amber-50/25 dark:bg-amber-950/10' : 'border-l-slate-200 dark:border-l-slate-700')}><div className="flex items-start justify-between gap-2"><div><div className="text-[10px] font-extrabold text-[var(--brand-ink)]">{request.reference}</div><div className="mt-1 text-[11px] font-bold text-[var(--municipal-text)]">{request.concern}</div></div><ChevronRight size={14} className="mt-1 shrink-0 text-[var(--municipal-muted)]" /></div><div className="mt-2 flex flex-wrap gap-1.5"><PriorityBadge priority={request.priority} /><StatusBadge status={request.status} /></div><div className="mt-2 text-[9px] text-[var(--municipal-muted)]">{request.category} · {request.assignedReference}</div></button>
                 ))}
             </div>
             {visible.length === 0 && <div className="p-8 text-center text-[11px] text-[var(--municipal-muted)]">No request references match the current filters.</div>}
@@ -368,7 +368,7 @@ function RoutingBoard({ onSelect }: { onSelect: (request: CitizenRequest) => voi
                             <div className="mt-2 space-y-2">
                                 {requests.map((request) => (
                                     <button key={request.reference} type="button" onClick={() => onSelect(request)} className={'w-full rounded-lg border border-[var(--municipal-border)] border-l-2 bg-[var(--municipal-surface-subtle)] p-2.5 text-left transition hover:border-emerald-200 dark:hover:border-emerald-900/70 ' + (request.priority === 'High' ? 'border-l-amber-400' : 'border-l-slate-300 dark:border-l-slate-600')}>
-                                        <div className="flex items-start justify-between gap-2"><span className="text-[9px] font-extrabold text-[var(--municipal-brand)]">{request.reference}</span><PriorityBadge priority={request.priority} /></div>
+                                        <div className="flex items-start justify-between gap-2"><span className="text-[9px] font-extrabold text-[var(--brand-ink)]">{request.reference}</span><PriorityBadge priority={request.priority} /></div>
                                         <div className="mt-1.5 text-[10px] font-bold leading-4 text-[var(--municipal-text)]">{request.concern}</div>
                                         <div className="mt-2 flex items-start gap-1.5 text-[9px] leading-4 text-[var(--municipal-muted)]"><Building2 size={11} className="mt-0.5 shrink-0" aria-hidden="true" /><span>{request.assignedReference}</span></div>
                                     </button>
@@ -387,15 +387,15 @@ function ResponseActivity({ compact = false, onSelect }: { compact?: boolean; on
     if (compact) {
         return (
             <section className="rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-3" aria-label="Recent response activity">
-                <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]"><History size={14} className="text-[var(--municipal-brand)]" aria-hidden="true" /> Recent Response Activity</div>
+                <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]"><History size={14} className="text-[var(--brand-ink)]" aria-hidden="true" /> Recent Response Activity</div>
                 <div className="mt-2 grid divide-y divide-[var(--municipal-border)] lg:grid-cols-3 lg:divide-x lg:divide-y-0">
                     {citizenResponseActivity.slice(0, 3).map((activity) => {
                         const request = citizenRequests.find((item) => item.reference === activity.reference);
                         if (!request) return null;
                         return (
                             <button key={activity.reference + activity.label} type="button" onClick={() => onSelect(request)} className="flex min-w-0 items-start gap-2 px-2 py-2.5 text-left transition first:pl-0 last:pr-0 hover:bg-[var(--municipal-hover)]">
-                                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-[var(--municipal-brand)] dark:bg-emerald-950/20"><MessageSquareText size={11} aria-hidden="true" /></span>
-                                <span className="min-w-0"><span className="block text-[9px] font-extrabold text-[var(--municipal-brand)]">{activity.reference}</span><span className="mt-0.5 block text-[10px] font-bold text-[var(--municipal-text)]">{activity.label}</span><span className="mt-0.5 block text-[9px] leading-4 text-[var(--municipal-muted)]">{activity.detail}</span></span>
+                                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-[var(--brand-ink)] dark:bg-emerald-950/20"><MessageSquareText size={11} aria-hidden="true" /></span>
+                                <span className="min-w-0"><span className="block text-[9px] font-extrabold text-[var(--brand-ink)]">{activity.reference}</span><span className="mt-0.5 block text-[10px] font-bold text-[var(--municipal-text)]">{activity.label}</span><span className="mt-0.5 block text-[9px] leading-4 text-[var(--municipal-muted)]">{activity.detail}</span></span>
                             </button>
                         );
                     })}
@@ -406,7 +406,7 @@ function ResponseActivity({ compact = false, onSelect }: { compact?: boolean; on
 
     return (
         <section className="rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-3" aria-label="Response history">
-            <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]"><History size={14} className="text-[var(--municipal-brand)]" aria-hidden="true" /> Response History</div>
+            <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]"><History size={14} className="text-[var(--brand-ink)]" aria-hidden="true" /> Response History</div>
             <div className="relative mt-3 ml-2 border-l border-[var(--municipal-border)] pl-5">
                 {citizenResponseActivity.map((activity) => {
                     const request = citizenRequests.find((item) => item.reference === activity.reference);
@@ -414,7 +414,7 @@ function ResponseActivity({ compact = false, onSelect }: { compact?: boolean; on
                     return (
                         <button key={activity.reference + activity.label} type="button" onClick={() => onSelect(request)} className="relative block w-full pb-4 text-left last:pb-0">
                             <span className="absolute -left-[25px] top-1 h-2 w-2 rounded-full border-2 border-[var(--municipal-surface)] bg-[var(--municipal-brand)] ring-1 ring-emerald-200 dark:ring-emerald-900" />
-                            <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5"><span className="text-[9px] font-extrabold text-[var(--municipal-brand)]">{activity.reference}</span><span className="text-[11px] font-bold text-[var(--municipal-text)]">{activity.label}</span></span>
+                            <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5"><span className="text-[9px] font-extrabold text-[var(--brand-ink)]">{activity.reference}</span><span className="text-[11px] font-bold text-[var(--municipal-text)]">{activity.label}</span></span>
                             <span className="mt-0.5 block max-w-3xl text-[10px] leading-4 text-[var(--municipal-muted)]">{activity.detail}</span>
                         </button>
                     );
@@ -456,8 +456,8 @@ export default function CitizenActionWorkspace({ onBack }: Props) {
             <header className="rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-4 py-3">
                 <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(420px,520px)] lg:items-center">
                     <div className="min-w-0">
-                        {onBack && <button type="button" onClick={onBack} className="mb-1 inline-flex min-h-7 items-center gap-1.5 text-[9px] font-bold text-[var(--municipal-muted)] transition hover:text-[var(--municipal-brand)] focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30"><ArrowLeft size={12} aria-hidden="true" /> Future Integrations</button>}
-                        <div className="text-[9px] font-extrabold uppercase tracking-[0.1em] text-[var(--municipal-brand)]">Public Service Desk</div>
+                        {onBack && <button type="button" onClick={onBack} className="mb-1 inline-flex min-h-7 items-center gap-1.5 text-[9px] font-bold text-[var(--municipal-muted)] transition hover:text-[var(--brand-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30"><ArrowLeft size={12} aria-hidden="true" /> Future Integrations</button>}
+                        <div className="text-[9px] font-extrabold uppercase tracking-[0.1em] text-[var(--brand-ink)]">Public Service Desk</div>
                         <h1 className="mt-0.5 text-[21px] font-extrabold tracking-tight text-[var(--municipal-text)]">Citizen Request / Action Center</h1>
                         <p className="mt-0.5 text-[10px] font-semibold text-[var(--municipal-muted)]">Citizen concern intake, routing and response coordination</p>
                     </div>
@@ -489,7 +489,7 @@ export default function CitizenActionWorkspace({ onBack }: Props) {
             {activeTab === 'Routing Board' && <RoutingBoard onSelect={setSelectedRequest} />}
             {activeTab === 'Response History' && <ResponseActivity onSelect={setSelectedRequest} />}
 
-            <div className="flex items-center gap-2 rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-3 py-2 text-[9px] font-semibold text-[var(--municipal-muted)]"><CheckCircle2 size={12} className="shrink-0 text-[var(--municipal-brand)]" aria-hidden="true" /> Privacy-safe presentation references only. No citizen PII, staff identities or operational actions are exposed.</div>
+            <div className="flex items-center gap-2 rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-3 py-2 text-[9px] font-semibold text-[var(--municipal-muted)]"><CheckCircle2 size={12} className="shrink-0 text-[var(--brand-ink)]" aria-hidden="true" /> Privacy-safe presentation references only. No citizen PII, staff identities or operational actions are exposed.</div>
 
             {selectedRequest && <RequestModal request={selectedRequest} onClose={() => setSelectedRequest(null)} />}
         </section>

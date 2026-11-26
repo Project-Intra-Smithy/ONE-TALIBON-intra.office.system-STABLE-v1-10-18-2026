@@ -23,7 +23,7 @@ export default function PlanMilestoneQueue({ plans }: { plans: Array<Omit<Munici
                 {recorded.map((plan) => (
                     <article key={plan.id} className="grid grid-cols-[62px_minmax(0,1fr)] gap-2 border-t border-[var(--municipal-border)] py-2">
                         <div className="break-words text-left">
-                            <div className="text-xs font-bold text-[var(--municipal-brand)] dark:text-[var(--ink-primary)]">{dateLabel(plan.nextMilestoneDate)}</div>
+                            <div className="text-xs font-bold text-[var(--brand-ink)] dark:text-[var(--ink-primary)]">{dateLabel(plan.nextMilestoneDate)}</div>
                             <div className="mt-0.5 text-xs text-slate-400">{plan.nextMilestoneDate.slice(0, 4)}</div>
                         </div>
                         <div className="min-w-0">

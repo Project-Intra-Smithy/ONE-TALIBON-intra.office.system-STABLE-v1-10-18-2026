@@ -35,11 +35,14 @@ php(bootstrap + `
     app(App\\Services\\Planning\\PlanningSuiteInitializer::class)->seedReferenceSamples(true);
     echo 'SYNTHETIC_CANONICAL_ACTORS_READY';`);
 if (process.env.PHASE_A_QUALIFICATION === '1') {
+    env.PHASE_A_ENROLL_LOGIN=`qa.enroll.${suffix}`;
     env.PHASE_A_FIXTURES = php(bootstrap + `
         $owner=App\\Models\\User::where('username',getenv('PHASE_A_CANONICAL_LOGIN'))->firstOrFail();
         $head=App\\Models\\User::where('username',getenv('PHASE_A_HEAD_LOGIN'))->firstOrFail();
         $mayor=App\\Models\\User::where('username',getenv('PHASE_A_MAYOR_LOGIN'))->firstOrFail();
         $suffix=bin2hex(random_bytes(5));
+        $enrolling=App\\Models\\User::create(['name'=>'Synthetic enrollment actor','username'=>getenv('PHASE_A_ENROLL_LOGIN'),'password'=>getenv('PHASE_A_CANONICAL_PASSWORD'),'role'=>'department_head','is_active'=>true,'account_status'=>'active']);
+        App\\Models\\Employee::create(['employee_number'=>'QA-ENROLL-'.$suffix,'full_name'=>$enrolling->name,'user_id'=>$enrolling->id,'department_id'=>$head->employee->department_id,'position_title'=>'Synthetic enrollment actor','employment_status'=>'active']);
         $staff=App\\Models\\User::create(['name'=>'Synthetic qualification delegate '.$suffix,'username'=>'qa.delegate.'.$suffix,'password'=>getenv('PHASE_A_CANONICAL_PASSWORD'),'role'=>'department_staff','is_active'=>true,'account_status'=>'active']);
         $staffEmployee=App\\Models\\Employee::create(['employee_number'=>'QA-DELEGATE-'.$suffix,'full_name'=>$staff->name,'user_id'=>$staff->id,'department_id'=>$head->employee->department_id,'position_title'=>'Synthetic qualification delegate','employment_status'=>'active']);
         $law=App\\Models\\LegislativeRecord::create(['record_type'=>'ordinance','record_number'=>'QA-LAW-'.$suffix,'title'=>'Synthetic qualification ordinance','summary'=>'Synthetic non-operational record.','year'=>2026,'status'=>'active','issuing_body'=>'Synthetic test body','created_by_user_id'=>$mayor->id]);

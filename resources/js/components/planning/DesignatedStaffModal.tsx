@@ -111,7 +111,7 @@ export default function DesignatedStaffModal({
                     className="space-y-3 rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface-muted)] p-3.5"
                 >
                     <h4 className="flex items-center gap-1.5 font-bold text-[var(--municipal-text)]">
-                        <UserPlus className="h-4 w-4 text-[var(--municipal-brand)]" />
+                        <UserPlus className="h-4 w-4 text-[var(--brand-ink)]" />
                         Designate MPDC Staff Member
                     </h4>
                     <label className="block font-semibold text-[var(--municipal-text)]">
@@ -170,7 +170,7 @@ export default function DesignatedStaffModal({
 
                 <div className="space-y-2">
                     <h4 className="flex items-center gap-1.5 font-bold text-[var(--municipal-text)]">
-                        <ShieldCheck className="h-4 w-4 text-[var(--municipal-brand)]" />
+                        <ShieldCheck className="h-4 w-4 text-[var(--brand-ink)]" />
                         Active Designated MPDC Staff ({designatedStaff.length})
                     </h4>
                     {designatedStaff.length === 0 ? (

@@ -213,7 +213,7 @@ export default function GISWorkspace({ prototype, onBack }: Props) {
 
             <div className="grid gap-2 xl:grid-cols-[210px_minmax(0,1fr)_280px]">
                 <aside className="rounded-xl border border-slate-200 bg-white p-2.5 dark:border-slate-700 dark:bg-[#142236]">
-                    <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-slate-500"><Layers3 size={13} className="text-[var(--municipal-brand)]" aria-hidden="true" /> Layers</div>
+                    <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-slate-500"><Layers3 size={13} className="text-[var(--brand-ink)]" aria-hidden="true" /> Layers</div>
                     <div className="mt-2 space-y-1">
                         {layers.map((layer) => (
                             <button key={layer.label} type="button" onClick={() => chooseLayer(layer.label)} className={'flex min-h-9 w-full items-center justify-between rounded-lg px-2.5 text-left text-[10px] font-semibold transition ' + (activeLayer === layer.label ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-200' : 'text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-900/40')}>
@@ -238,7 +238,7 @@ export default function GISWorkspace({ prototype, onBack }: Props) {
                     <div ref={mapNodeRef} className="absolute inset-0" aria-label="Google map focused on Talibon, Bohol" />
                     {mapState === 'loading' && (
                         <div className="absolute inset-0 flex items-center justify-center bg-slate-50/90 dark:bg-slate-900/90">
-                            <div className="text-center"><RefreshCw size={22} className="mx-auto animate-spin text-[var(--municipal-brand)]" aria-hidden="true" /><div className="mt-2 text-[11px] font-bold text-slate-700 dark:text-slate-200">Loading Talibon map…</div></div>
+                            <div className="text-center"><RefreshCw size={22} className="mx-auto animate-spin text-[var(--brand-ink)]" aria-hidden="true" /><div className="mt-2 text-[11px] font-bold text-slate-700 dark:text-slate-200">Loading Talibon map…</div></div>
                         </div>
                     )}
                     {mapState === 'error' && (
@@ -266,7 +266,7 @@ export default function GISWorkspace({ prototype, onBack }: Props) {
                     <div className="text-[9px] font-extrabold uppercase tracking-[0.08em] text-slate-400">Location details</div>
                     {selectedRecord ? (
                         <div className="mt-2">
-                            <div className="text-[10px] font-extrabold text-[var(--municipal-brand)]">{selectedRecord.id}</div>
+                            <div className="text-[10px] font-extrabold text-[var(--brand-ink)]">{selectedRecord.id}</div>
                             <h2 className="mt-0.5 text-[14px] font-extrabold text-slate-950 dark:text-slate-100">{selectedRecord.title}</h2>
                             <div className="mt-1 text-[10px] text-slate-500 dark:text-slate-400">{selectedRecord.subtitle}</div>
                             <dl className="mt-4 space-y-3 text-[10px]">

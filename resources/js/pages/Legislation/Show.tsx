@@ -36,7 +36,7 @@ export default function Show({ record }: { record: RecordItem; canManage: boolea
             <PageFrame density="compact">
                 <Link
                     href="/legislation"
-                    className="inline-flex min-h-8 items-center gap-1.5 rounded-md px-1 text-xs font-semibold text-[var(--municipal-brand)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]/30"
+                    className="inline-flex min-h-8 items-center gap-1.5 rounded-md px-1 text-xs font-semibold text-[var(--brand-ink)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]/30"
                 >
                     <ArrowLeft size={14} aria-hidden="true" />
                     Back to Ordinances & Issuances
@@ -44,7 +44,7 @@ export default function Show({ record }: { record: RecordItem; canManage: boolea
 
                 <article className="municipal-panel overflow-hidden">
                     <header className="border-b border-[var(--municipal-border)] px-4 py-4 sm:px-5">
-                        <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-[var(--municipal-brand)]">
+                        <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-ink)]">
                             <Gavel size={13} aria-hidden="true" />
                             Controlled municipal issuance
                         </div>
@@ -55,7 +55,7 @@ export default function Show({ record }: { record: RecordItem; canManage: boolea
 
                         <div className="mt-3 flex flex-wrap items-center gap-2">
                             <LegislativeRecordStatus status={record.status} />
-                            <span className="rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-brand-soft)] px-2 py-1 text-xs font-bold uppercase tracking-wide text-[var(--municipal-brand)]">
+                            <span className="rounded-md border border-[var(--municipal-border)] bg-[var(--municipal-brand-soft)] px-2 py-1 text-xs font-bold uppercase tracking-wide text-[var(--brand-ink)]">
                                 {recordType}
                             </span>
                             {displayYear ? (

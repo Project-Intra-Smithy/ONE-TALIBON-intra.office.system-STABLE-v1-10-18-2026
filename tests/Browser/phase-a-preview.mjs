@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 
 const origin = 'http://127.0.0.1:4174';
-const output = '.forge/evidence/ot-tcds-phase-a/browser';
+const output = `${process.env.PHASE_A_EVIDENCE_ROOT ?? '.forge/evidence/ot-tcds-phase-a'}/browser`;
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch();
 const results = [];

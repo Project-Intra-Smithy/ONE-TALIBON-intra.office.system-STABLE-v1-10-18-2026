@@ -153,7 +153,7 @@ export default function SupportingDocsPanel({
                                     href={doc.previewUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex min-h-11 items-center gap-1 rounded border border-[var(--municipal-border-strong)] px-2.5 text-xs font-semibold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)]"
+                                    className="inline-flex min-h-11 items-center gap-1 rounded border border-[var(--municipal-border-strong)] px-2.5 text-xs font-semibold text-[var(--brand-ink)] hover:bg-[var(--municipal-hover)]"
                                 >
                                     <Eye className="h-3 w-3" aria-hidden="true" /> Preview
                                     <span className="sr-only"> {doc.title} (opens in a new tab)</span>

@@ -166,7 +166,7 @@ export default function Show({
                 ) : null}
 
                 <div>
-                    <Link href="/memoranda" className="inline-flex min-h-9 items-center text-xs font-bold text-[var(--municipal-brand)]">← Back to Official Memoranda</Link>
+                    <Link href="/memoranda" className="inline-flex min-h-9 items-center text-xs font-bold text-[var(--brand-ink)]">← Back to Official Memoranda</Link>
                 </div>
             </PageFrame>
         </AppLayout>

@@ -355,12 +355,13 @@ export default function Show({
 
                                 {permissions.canAssign && (
                                     <div className="mt-3 rounded-lg border border-[var(--border-default)] bg-[var(--surface-recessed)] p-3">
-                                        <div className="flex items-center gap-1.5 text-xs font-bold text-[var(--ink-primary)]">
+                                        <label htmlFor="wr-responsible-employee" className="flex items-center gap-1.5 text-xs font-bold text-[var(--ink-primary)]">
                                             <UserRoundCheck size={14} aria-hidden="true" />
                                             <span>Assign responsible employee</span>
-                                        </div>
+                                        </label>
                                         <div className="mt-2 flex gap-2">
                                             <select
+                                                id="wr-responsible-employee"
                                                 value={form.data.assigned_employee_id}
                                                 onChange={(e) => form.setData('assigned_employee_id', e.target.value ? Number(e.target.value) : '')}
                                                 className="tcds-input min-w-0 flex-1"
@@ -409,6 +410,7 @@ export default function Show({
                                         </button>
                                         <div className="flex min-w-0 basis-full gap-2 sm:min-w-[260px] sm:flex-1 sm:basis-auto">
                                             <select
+                                                aria-label="Forward to department"
                                                 value={form.data.target_department_id}
                                                 onChange={(e) => form.setData('target_department_id', e.target.value ? Number(e.target.value) : '')}
                                                 className="tcds-input min-w-0 flex-1"

@@ -11,7 +11,7 @@ export default function LocalBodyDirectory({ bodies }: { bodies: LocalSpecialBod
                 >
                     <div className="min-w-0">
                         <div className="flex min-w-0 items-start gap-2">
-                            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[var(--municipal-brand-soft)] text-[var(--municipal-brand)]">
+                            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[var(--municipal-brand-soft)] text-[var(--brand-ink)]">
                                 <Landmark size={14} aria-hidden="true" />
                             </div>
                             <div className="min-w-0 flex-1">
@@ -19,7 +19,7 @@ export default function LocalBodyDirectory({ bodies }: { bodies: LocalSpecialBod
                                     <span className="shrink-0 text-[9px] font-bold uppercase tracking-[0.05em] text-[var(--ink-secondary)]">{body.id}</span>
                                     <h3 className="min-w-0 break-words text-[13px] font-bold leading-4 text-slate-950 dark:text-slate-100">{body.name}</h3>
                                 </div>
-                                <div className="mt-0.5 break-words text-[10px] font-semibold leading-4 text-[var(--municipal-brand)]">Chair: {body.chairRole}</div>
+                                <div className="mt-0.5 break-words text-[10px] font-semibold leading-4 text-[var(--brand-ink)]">Chair: {body.chairRole}</div>
                             </div>
                         </div>
                         <p className="mt-1 text-[10px] leading-4 text-slate-600 dark:text-slate-300">{body.mandate}</p>

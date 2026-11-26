@@ -90,11 +90,11 @@ function WorkflowStages({ lifecycle, records, activeStage, onSelect }: {
         <section className="rounded-xl border border-slate-200 bg-slate-50/55 p-2.5 dark:border-slate-700 dark:bg-slate-900/25" aria-label="Workflow stages">
             <div className="mb-2 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2 text-[10px] font-bold text-slate-800 dark:text-slate-100">
-                    <GitBranch size={14} className="text-[var(--municipal-brand)]" aria-hidden="true" />
+                    <GitBranch size={14} className="text-[var(--brand-ink)]" aria-hidden="true" />
                     Workflow stages
                 </div>
                 {activeStage && (
-                    <button type="button" onClick={() => onSelect('')} className="text-[9px] font-bold text-[var(--municipal-brand)] hover:underline">
+                    <button type="button" onClick={() => onSelect('')} className="text-[9px] font-bold text-[var(--brand-ink)] hover:underline">
                         Show all stages
                     </button>
                 )}
@@ -213,7 +213,7 @@ function RegisterTable({ records, selectedId, onSelect, delivery = false }: {
                                     </>
                                 ) : (
                                     <>
-                                        <td className="px-3 py-2.5 align-middle text-[10px] font-bold text-[var(--municipal-brand)]">{record.stage}</td>
+                                        <td className="px-3 py-2.5 align-middle text-[10px] font-bold text-[var(--brand-ink)]">{record.stage}</td>
                                         <td className="px-3 py-2.5 align-middle"><span className={`inline-flex rounded-full px-2 py-1 text-[9px] font-bold ${statusTone(record.status)}`}>{record.status}</span></td>
                                         <td className="px-3 py-2.5 align-middle text-[10px] font-semibold text-slate-700 dark:text-slate-200">{record.amount ?? record.meta}</td>
                                         <td className="px-3 py-2.5 align-middle text-[9px] text-slate-500 dark:text-slate-400">{record.updated ?? '—'}</td>
@@ -234,7 +234,7 @@ function RequestDetails({ record, procurement }: { record?: PrototypeRecord; pro
     return (
         <section className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900/20">
             <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">
-                <Database size={13} className="text-[var(--municipal-brand)]" aria-hidden="true" />
+                <Database size={13} className="text-[var(--brand-ink)]" aria-hidden="true" />
                 {procurement ? 'Request details' : 'Record details'}
             </div>
             <div className="mt-2 text-[10px] font-extrabold uppercase tracking-wide text-slate-400">{record.id}</div>
@@ -243,7 +243,7 @@ function RequestDetails({ record, procurement }: { record?: PrototypeRecord; pro
             <dl className="mt-3 grid gap-2 text-[10px] sm:grid-cols-2 xl:grid-cols-1">
                 <div><dt className="text-slate-400">{procurement ? 'Requesting office' : 'Owner / source'}</dt><dd className="font-semibold text-slate-700 dark:text-slate-200">{record.owner}</dd></div>
                 <div><dt className="text-slate-400">Status</dt><dd><span className={`inline-flex rounded-full px-2 py-1 text-[9px] font-bold ${statusTone(record.status)}`}>{record.status}</span></dd></div>
-                <div><dt className="text-slate-400">Current stage</dt><dd className="font-semibold text-[var(--municipal-brand)]">{record.stage}</dd></div>
+                <div><dt className="text-slate-400">Current stage</dt><dd className="font-semibold text-[var(--brand-ink)]">{record.stage}</dd></div>
                 <div><dt className="text-slate-400">{procurement ? 'Estimated amount' : 'Reference'}</dt><dd className="font-semibold text-slate-700 dark:text-slate-200">{record.amount ?? record.meta}</dd></div>
                 {record.updated && <div><dt className="text-slate-400">Last activity</dt><dd className="font-semibold text-slate-700 dark:text-slate-200">{record.updated}</dd></div>}
                 {record.nextAction && <div><dt className="text-slate-400">Next action</dt><dd className="font-semibold text-slate-700 dark:text-slate-200">{record.nextAction}</dd></div>}
@@ -257,7 +257,7 @@ function ReferenceList({ title, items }: { title: string; items: string[] }) {
     return (
         <section className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900/20">
             <div className="flex items-center gap-2 text-[10px] font-bold text-slate-950 dark:text-slate-100">
-                <FileText size={13} className="text-[var(--municipal-brand)]" aria-hidden="true" /> {title}
+                <FileText size={13} className="text-[var(--brand-ink)]" aria-hidden="true" /> {title}
             </div>
             <div className="mt-2 space-y-1.5">
                 {items.map((item) => <div key={item} className="rounded-lg bg-slate-50 px-2.5 py-2 text-[10px] text-slate-600 dark:bg-slate-900/45 dark:text-slate-300">{item}</div>)}
@@ -270,7 +270,7 @@ function ActivityList({ items }: { items: string[] }) {
     return (
         <section className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900/20">
             <div className="flex items-center gap-2 text-[10px] font-bold text-slate-950 dark:text-slate-100">
-                <Activity size={13} className="text-[var(--municipal-brand)]" aria-hidden="true" /> Recent activity
+                <Activity size={13} className="text-[var(--brand-ink)]" aria-hidden="true" /> Recent activity
             </div>
             <ol className="mt-2 space-y-2">
                 {items.map((item, index) => (
@@ -335,7 +335,7 @@ function MapCanvas({ prototype, activeLayer, onLayer, selectedId, onRecord }: {
     return (
         <div className="grid gap-2 lg:grid-cols-[210px_minmax(0,1fr)]">
             <section className="rounded-xl border border-slate-200 bg-white p-2.5 dark:border-slate-700 dark:bg-slate-900/20">
-                <div className="flex items-center gap-2 text-[10px] font-bold text-slate-950 dark:text-slate-100"><Layers3 size={13} className="text-[var(--municipal-brand)]" aria-hidden="true" /> Map layers</div>
+                <div className="flex items-center gap-2 text-[10px] font-bold text-slate-950 dark:text-slate-100"><Layers3 size={13} className="text-[var(--brand-ink)]" aria-hidden="true" /> Map layers</div>
                 <div className="mt-2 space-y-1">
                     {layers.map((item) => (
                         <button
@@ -356,7 +356,7 @@ function MapCanvas({ prototype, activeLayer, onLayer, selectedId, onRecord }: {
 
             <section className="relative min-h-[330px] overflow-hidden rounded-xl border border-slate-200 bg-[linear-gradient(90deg,rgba(15,23,42,.05)_1px,transparent_1px),linear-gradient(rgba(15,23,42,.05)_1px,transparent_1px)] bg-[size:32px_32px] dark:border-slate-700 dark:bg-slate-900/55">
                 <div className="absolute inset-x-0 top-0 flex items-center justify-between border-b border-slate-200/70 bg-white/90 px-3 py-2 backdrop-blur dark:border-slate-700 dark:bg-slate-900/85">
-                    <span className="flex items-center gap-2 text-[10px] font-bold text-slate-700 dark:text-slate-200"><MapPinned size={13} className="text-[var(--municipal-brand)]" aria-hidden="true" /> {layer?.label ?? 'Map'} layer</span>
+                    <span className="flex items-center gap-2 text-[10px] font-bold text-slate-700 dark:text-slate-200"><MapPinned size={13} className="text-[var(--brand-ink)]" aria-hidden="true" /> {layer?.label ?? 'Map'} layer</span>
                     <span className="text-[9px] font-semibold text-slate-400">{markers.length} location{markers.length === 1 ? '' : 's'}</span>
                 </div>
                 {markers.map((record, index) => {
@@ -545,7 +545,7 @@ export default function FutureSystemPrototype({ prototype, onBack, backLabel = '
                                 aria-selected={activeTab === tab}
                                 onClick={() => setActiveTab(tab)}
                                 className={'min-h-9 shrink-0 rounded-t-lg px-3 text-[10px] font-bold transition focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30 '
-                                    + (activeTab === tab ? 'border border-b-white border-slate-200 bg-white text-[var(--municipal-brand)] dark:border-slate-700 dark:border-b-[#142236] dark:bg-[#142236]' : 'text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-900/40')}
+                                    + (activeTab === tab ? 'border border-b-white border-slate-200 bg-white text-[var(--brand-ink)] dark:border-slate-700 dark:border-b-[#142236] dark:bg-[#142236]' : 'text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-900/40')}
                             >{tab}</button>
                         ))}
                     </div>
@@ -627,7 +627,7 @@ export default function FutureSystemPrototype({ prototype, onBack, backLabel = '
 
                     <div className="grid gap-2 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,.6fr)]">
                         <section className="rounded-xl border border-slate-200 p-3 dark:border-slate-700">
-                            <div className="flex items-center gap-2 text-[10px] font-bold text-slate-950 dark:text-slate-100"><Network size={13} className="text-[var(--municipal-brand)]" aria-hidden="true" /> ONE TALIBON connection points</div>
+                            <div className="flex items-center gap-2 text-[10px] font-bold text-slate-950 dark:text-slate-100"><Network size={13} className="text-[var(--brand-ink)]" aria-hidden="true" /> ONE TALIBON connection points</div>
                             <div className="mt-2 flex flex-wrap gap-1.5">
                                 {prototype.integrationPoints.map((point) => <span key={point} className="rounded-full bg-slate-100 px-2.5 py-1 text-[9px] font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">{point}</span>)}
                             </div>

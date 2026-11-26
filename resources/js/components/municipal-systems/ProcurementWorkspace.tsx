@@ -156,7 +156,7 @@ function RequestDrawer({ record, open, onClose }: { record?: PrototypeRecord; op
 
                     <div role="tablist" aria-label="Request detail sections" className="grid grid-cols-3 gap-1 rounded-xl bg-slate-100 p-1 dark:bg-slate-900/55">
                         {detailSteps.map((item, index) => (
-                            <button key={item.id} type="button" role="tab" aria-selected={step === item.id} onClick={() => setStep(item.id)} className={'min-h-9 rounded-lg px-2 text-[10px] font-bold transition ' + (step === item.id ? 'bg-white text-[var(--municipal-brand)] shadow-sm dark:bg-[#142236] dark:text-emerald-300' : 'text-slate-500 hover:text-slate-800 dark:text-[var(--ink-secondary)] dark:hover:text-slate-200')}>
+                            <button key={item.id} type="button" role="tab" aria-selected={step === item.id} onClick={() => setStep(item.id)} className={'min-h-9 rounded-lg px-2 text-[10px] font-bold transition ' + (step === item.id ? 'bg-white text-[var(--brand-ink)] shadow-sm dark:bg-[#142236] dark:text-emerald-300' : 'text-slate-500 hover:text-slate-800 dark:text-[var(--ink-secondary)] dark:hover:text-slate-200')}>
                                 <span className="mr-1 text-[9px] opacity-55">{index + 1}</span>{item.label}
                             </button>
                         ))}
@@ -168,7 +168,7 @@ function RequestDrawer({ record, open, onClose }: { record?: PrototypeRecord; op
                                 <div className="rounded-lg bg-slate-50 px-3 py-2.5 dark:bg-slate-900/40"><dt className="text-[var(--ink-secondary)]">Requesting office</dt><dd className="mt-1 font-semibold text-slate-800 dark:text-slate-200">{record.owner}</dd></div>
                                 <div className="rounded-lg bg-slate-50 px-3 py-2.5 dark:bg-slate-900/40"><dt className="text-[var(--ink-secondary)]">Estimated amount</dt><dd className="mt-1 font-semibold text-slate-800 dark:text-slate-200">{record.amount ?? record.meta}</dd></div>
                                 <div className="rounded-lg bg-slate-50 px-3 py-2.5 dark:bg-slate-900/40"><dt className="text-[var(--ink-secondary)]">Status</dt><dd className="mt-1"><span className={`inline-flex rounded-full px-2 py-1 text-[9px] font-bold ${statusTone(record.status)}`}>{record.status}</span></dd></div>
-                                <div className="rounded-lg bg-slate-50 px-3 py-2.5 dark:bg-slate-900/40"><dt className="text-[var(--ink-secondary)]">Current stage</dt><dd className="mt-1 font-bold text-[var(--municipal-brand)]">{record.stage}</dd></div>
+                                <div className="rounded-lg bg-slate-50 px-3 py-2.5 dark:bg-slate-900/40"><dt className="text-[var(--ink-secondary)]">Current stage</dt><dd className="mt-1 font-bold text-[var(--brand-ink)]">{record.stage}</dd></div>
                                 <div className="rounded-lg border border-slate-200 px-3 py-2.5 dark:border-slate-700 sm:col-span-2"><dt className="text-[var(--ink-secondary)]">Last activity</dt><dd className="mt-1 font-semibold text-slate-700 dark:text-slate-300">{record.history?.at(-1) ?? record.updated ?? 'Reference updated'}</dd></div>
                                 <div className="rounded-lg border border-slate-200 px-3 py-2.5 dark:border-slate-700 sm:col-span-2"><dt className="text-[var(--ink-secondary)]">Next handoff</dt><dd className="mt-1 font-semibold leading-5 text-slate-700 dark:text-slate-300">{record.nextAction ?? record.note}</dd></div>
                             </dl>
@@ -232,7 +232,7 @@ function Overview({ records, lifecycle, onOpen, onStage }: { records: PrototypeR
                                 <span className="truncate text-[11px] font-bold text-slate-950 dark:text-slate-100">{record.title}</span>
                                 <span className="truncate text-[9px] font-semibold text-slate-500 dark:text-[var(--ink-secondary)]">{record.owner}</span>
                                 <span><span className={`inline-flex rounded-full px-2 py-1 text-[8px] font-bold ${statusTone(record.status)}`}>{record.status}</span></span>
-                                <span className="text-[9px] font-bold text-[var(--municipal-brand)]">{record.stage}</span>
+                                <span className="text-[9px] font-bold text-[var(--brand-ink)]">{record.stage}</span>
                                 <span className="text-right text-[10px] font-semibold text-slate-700 dark:text-slate-200">{record.amount}</span>
                             </button>
                         ))}
@@ -268,7 +268,7 @@ function Overview({ records, lifecycle, onOpen, onStage }: { records: PrototypeR
             </section>
 
             <section className="rounded-xl border border-slate-200 bg-slate-50/60 p-2.5 dark:border-slate-700 dark:bg-slate-900/25">
-                <div className="mb-2 flex items-center gap-2 text-[10px] font-bold text-slate-700 dark:text-slate-200"><GitBranch size={13} className="text-[var(--municipal-brand)]" aria-hidden="true" /> Procurement lifecycle</div>
+                <div className="mb-2 flex items-center gap-2 text-[10px] font-bold text-slate-700 dark:text-slate-200"><GitBranch size={13} className="text-[var(--brand-ink)]" aria-hidden="true" /> Procurement lifecycle</div>
                 <div className="grid gap-1.5 sm:grid-cols-4 xl:grid-cols-7">
                     {lifecycle.map((stage, index) => {
                         const count = records.filter((record) => record.stage === stage).length;
@@ -299,7 +299,7 @@ function PurchaseRegister({ records, onOpen }: { records: PrototypeRecord[]; onO
                                 <td className="px-2.5 py-2.5 text-[9px] font-extrabold text-slate-600 dark:text-slate-300">{record.id}</td>
                                 <td className="px-2.5 py-2.5"><div className="truncate text-[11px] font-bold text-slate-950 dark:text-slate-100">{record.title}</div><div className="mt-0.5 truncate text-[9px] text-[var(--ink-secondary)]">{record.subtitle}</div></td>
                                 <td className="px-2.5 py-2.5 text-[10px] font-semibold text-slate-600 dark:text-slate-300"><span className="line-clamp-2">{record.owner}</span></td>
-                                <td className="px-2.5 py-2.5 text-[10px] font-bold text-[var(--municipal-brand)]">{record.stage}</td>
+                                <td className="px-2.5 py-2.5 text-[10px] font-bold text-[var(--brand-ink)]">{record.stage}</td>
                                 <td className="px-2.5 py-2.5"><span className={`inline-flex rounded-full px-2 py-1 text-[8px] font-bold ${statusTone(record.status)}`}>{record.status}</span></td>
                                 <td className="px-2.5 py-2.5 text-[10px] font-semibold text-slate-700 dark:text-slate-200">{record.amount}</td>
                                 <td className="px-2.5 py-2.5 text-[9px] text-slate-500 dark:text-[var(--ink-secondary)]">{record.updated ?? record.history?.at(-1) ?? 'Reference updated'}</td>
@@ -399,7 +399,7 @@ export default function ProcurementWorkspace({ prototype }: Props) {
                 </div>
             )}
 
-            {tab === 'Procurement Flow' && <section className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-[#142236]"><div className="mb-3 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between"><div><h2 className="text-[12px] font-extrabold text-slate-950 dark:text-slate-100">Procurement lifecycle board</h2><p className="mt-0.5 text-[9px] text-slate-500 dark:text-[var(--ink-secondary)]">Request distribution from PR through payment handoff.</p></div>{focusedStage && <button type="button" onClick={() => setFocusedStage('')} className="text-[9px] font-bold text-[var(--municipal-brand)] hover:underline">Show all stages</button>}</div><FlowBoard records={records} lifecycle={lifecycle} focusedStage={focusedStage} onStage={setFocusedStage} onOpen={openRecord} /></section>}
+            {tab === 'Procurement Flow' && <section className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-[#142236]"><div className="mb-3 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between"><div><h2 className="text-[12px] font-extrabold text-slate-950 dark:text-slate-100">Procurement lifecycle board</h2><p className="mt-0.5 text-[9px] text-slate-500 dark:text-[var(--ink-secondary)]">Request distribution from PR through payment handoff.</p></div>{focusedStage && <button type="button" onClick={() => setFocusedStage('')} className="text-[9px] font-bold text-[var(--brand-ink)] hover:underline">Show all stages</button>}</div><FlowBoard records={records} lifecycle={lifecycle} focusedStage={focusedStage} onStage={setFocusedStage} onOpen={openRecord} /></section>}
 
             {tab === 'Delivery & Inspection' && <section className="space-y-2.5"><div className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 dark:border-slate-700 dark:bg-[#142236]"><h2 className="text-[12px] font-extrabold text-slate-950 dark:text-slate-100">Fulfillment operations</h2><p className="mt-0.5 text-[9px] text-slate-500 dark:text-[var(--ink-secondary)]">Downstream delivery, inspection and next-handoff context.</p></div><FulfillmentBoard records={fulfillmentRecords} onOpen={openRecord} /></section>}
 

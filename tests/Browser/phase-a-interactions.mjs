@@ -2,7 +2,7 @@ import { chromium } from 'playwright';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 
-const output = '.forge/evidence/ot-tcds-phase-a/interactions';
+const output = `${process.env.PHASE_A_EVIDENCE_ROOT ?? '.forge/evidence/ot-tcds-phase-a'}/interactions`;
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch();
 const results = [];

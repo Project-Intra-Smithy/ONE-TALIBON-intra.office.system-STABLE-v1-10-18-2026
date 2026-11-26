@@ -32,7 +32,7 @@ function sizeLabel(bytes?: number | null): string {
 
 export default function EvidenceList({ items, emptyLabel, compact = false }: Props) {
     if (items.length === 0) {
-        return emptyLabel ? <div className="text-[10px] text-slate-400 sm:text-xs">{emptyLabel}</div> : null;
+        return emptyLabel ? <div className="text-[10px] text-[var(--ink-secondary)] sm:text-xs">{emptyLabel}</div> : null;
     }
 
     return (
@@ -47,7 +47,7 @@ export default function EvidenceList({ items, emptyLabel, compact = false }: Pro
                             ) : (
                                 <div className="truncate text-[11px] font-semibold text-slate-800 sm:text-xs">{item.name}</div>
                             )}
-                            <div className="mt-0.5 text-[9px] text-slate-400 sm:text-[10px]">
+                            <div className="mt-0.5 text-[9px] text-[var(--ink-secondary)] sm:text-[10px]">
                                 {sizeLabel(item.sizeBytes)} · {item.relationship.replaceAll('_', ' ')} · {item.classification}
                                 {item.uploadedBy ? ` · ${item.uploadedBy}` : ''}
                             </div>

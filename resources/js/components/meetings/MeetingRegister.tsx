@@ -38,7 +38,7 @@ export default function MeetingRegister({
                 className={`grid w-full min-w-0 gap-2 text-left transition hover:bg-[var(--municipal-hover)] ${compact ? 'px-3 py-1.5' : 'px-3 py-2'} ${preview ? 'lg:grid-cols-[82px_minmax(0,1fr)_96px_minmax(150px,.8fr)_24px]' : 'lg:grid-cols-[92px_minmax(260px,1.6fr)_84px_minmax(180px,.9fr)_96px_24px]'} lg:items-center`}
             >
                 <div className="min-w-0">
-                    <div className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-brand)]">{meeting.id}</div>
+                    <div className="text-[10px] font-bold uppercase tracking-wide text-[var(--brand-ink)]">{meeting.id}</div>
                     <div className="mt-0.5 text-[9px] text-[var(--municipal-muted)]">{formatDate(meeting.date)}</div>
                 </div>
 
@@ -61,7 +61,7 @@ export default function MeetingRegister({
                     </div>
                 ) : null}
 
-                <ArrowRight size={13} className="justify-self-end text-[var(--municipal-brand)]" aria-hidden="true" />
+                <ArrowRight size={13} className="justify-self-end text-[var(--brand-ink)]" aria-hidden="true" />
             </button>
         ))}
     </div>;
