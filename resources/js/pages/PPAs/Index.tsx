@@ -288,7 +288,7 @@ export default function Index({
                 </details>
             </PageFrame>
 
-            <PPAStudioView error={submissionError} open={showCreateModal} editing={editingPpa} officeProposalMode={!planningPermissions?.canManagePpas} actorOfficeName={planningPermissions?.actorDepartmentName ?? ''} officeInputMode lockAipCode={false} onClose={() => setShowCreateModal(false)} busy={busy}
+            <PPAStudioView fundingInputMode years={Array.from({length:81},(_,index)=>2020+index)} error={submissionError} open={showCreateModal} editing={editingPpa} officeProposalMode={!planningPermissions?.canManagePpas} actorOfficeName={planningPermissions?.actorDepartmentName ?? ''} officeInputMode lockAipCode={false} onClose={() => setShowCreateModal(false)} busy={busy}
                 values={{title, aipRefCode:aipCode, sector, responsibleOffice, year:Number(year), linkedPlanId:'', linkedMapId:'', fundingSource, status, priority:recordFields.priority ?? 'Medium', scheduleStart:'', scheduleEnd:'', barangaysInput:barangay, expectedOutputs:'', implementationContext:context, budgetPs:recordFields.ps_amount ?? '0', budgetMooe:mooeAmount, budgetCo:coAmount, ccaAmount:recordFields.climate_adaptation_amount ?? '', gadAttributed, drrmTagged}}
                 onChange={(field,value)=>{
                     const text = String(value);

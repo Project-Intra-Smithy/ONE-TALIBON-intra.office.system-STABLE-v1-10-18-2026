@@ -22,9 +22,12 @@ export async function planningCrud(page,context,origin,interactions) {
     await form.getByLabel('Official Plan Title').fill('Synthetic canonical plan');
     await form.getByLabel('Document Control Ref.').fill(planCode);
     await form.getByLabel('Lifecycle Status').selectOption('Draft');
+    await form.getByLabel('Coverage Start Year').fill('2000');
+    await form.getByLabel('Coverage End Year').fill('2100');
     await save('Create plan');
     let plan=(await props('/development-plans')).plans.find(record=>record.code===planCode);
     assert.ok(plan?.dbId,'Created plan must have a real database identifier');
+    assert.equal(plan.coverageStart,2000);assert.equal(plan.coverageEnd,2100);
     await page.getByRole('button',{name:`View details for ${planCode}`,exact:true}).click();
     await page.getByRole('button',{name:'Edit Plan',exact:true}).click();
     form=page.getByRole('dialog');
@@ -36,16 +39,19 @@ export async function planningCrud(page,context,origin,interactions) {
     await remove(planCode);
     assert.equal((await props('/development-plans')).plans.some(record=>record.code===planCode),false);
     assert.equal(await page.evaluate(()=>document.body.style.overflow),'','Nested deletion dialog must release its scroll lock');
-    interactions.push({role:'department_head',label:'real-plan-create-edit-delete',immutableCode:true});
+    interactions.push({role:'department_head',label:'real-plan-create-edit-delete',immutableCode:true,fullCoverageRange:true});
 
     await page.goto(origin+'/ppas');
     await page.getByRole('button',{name:'Register PPA Entry',exact:true}).click();
     form=page.getByRole('dialog');
     await form.getByLabel('Program / Project / Activity Title').fill(`Synthetic PPA ${suffix}`);
     await form.getByLabel('Related Development Plan Reference').fill('Synthetic test reference');
+    await form.getByLabel('Budget / Program Year').selectOption('2035');
+    await form.getByLabel('Funding Source').fill('Synthetic external funding source');
     await save('Save PPA');
     const ppa=(await props('/ppas')).ppaRecords.find(record=>record.title===`Synthetic PPA ${suffix}`);
     assert.ok(ppa?.dbId);
+    assert.equal(ppa.year,2035);assert.equal(ppa.fundingSource,'Synthetic external funding source');
     await page.locator(`[data-ppa-trigger="${ppa.id}"]:visible`).click();
     await page.getByRole('button',{name:'Edit PPA',exact:true}).click();
     form=page.getByRole('dialog');
@@ -55,7 +61,7 @@ export async function planningCrud(page,context,origin,interactions) {
     await page.locator(`[data-ppa-trigger="${ppa.id}"]:visible`).click();
     await remove(ppa.id);
     assert.equal((await props('/ppas')).ppaRecords.some(record=>record.id===ppa.id),false);
-    interactions.push({role:'department_head',label:'real-ppa-create-edit-delete'});
+    interactions.push({role:'department_head',label:'real-ppa-create-edit-delete',customYearAndFunding:true});
 
     await page.goto(origin+'/planning-maps');
     await page.getByRole('button',{name:'Register Map Plate',exact:true}).click();

@@ -28,12 +28,12 @@ export type PPAStudioValues = {
 const FUNDING_SOURCES = ['20% Development Fund', 'General Fund', 'LDRRM Fund', 'GAD Fund', 'Special Education Fund (SEF)', 'Economic Enterprise Fund', 'National / External Grant'];
 const PRIORITIES = ['High', 'Medium', 'Routine'];
 const formatPhpCurrency = (value: number) => new Intl.NumberFormat('en-PH', {style:'currency', currency:'PHP', maximumFractionDigits:0}).format(value);
-export default function PPAStudioView({ open, editing, officeProposalMode, actorOfficeName, onClose, values, onChange, onSubmit: handleSubmit, plans, maps: DEFAULT_PLANNING_MAPS, sectors, offices, statuses: allowedStatuses, unavailable = [], busy = false, error, referenceFields, officeInputMode = false, lockAipCode = officeProposalMode }: {
+export default function PPAStudioView({ open, editing, officeProposalMode, actorOfficeName, onClose, values, onChange, onSubmit: handleSubmit, plans, maps: DEFAULT_PLANNING_MAPS, sectors, offices, statuses: allowedStatuses, unavailable = [], busy = false, error, referenceFields, officeInputMode = false, fundingInputMode = false, years = [2025, 2026, 2027, 2028], lockAipCode = officeProposalMode }: {
     open: boolean; editing: {id:string} | null; officeProposalMode: boolean; actorOfficeName: string; onClose: () => void;
     values: PPAStudioValues; onChange: (field: keyof PPAStudioValues, value: string | number | boolean) => void;
     onSubmit: (event: FormEvent<HTMLFormElement>) => void;
     plans: Array<{id:string;code:string;title:string}>; maps: Array<{id:string;code:string;title:string}>;
-    sectors: string[]; offices: string[]; statuses: string[]; unavailable?: Array<keyof PPAStudioValues>; busy?: boolean; error?: string; referenceFields?: ReactNode; officeInputMode?: boolean; lockAipCode?: boolean;
+    sectors: string[]; offices: string[]; statuses: string[]; unavailable?: Array<keyof PPAStudioValues>; busy?: boolean; error?: string; referenceFields?: ReactNode; officeInputMode?: boolean; fundingInputMode?: boolean; years?: readonly number[]; lockAipCode?: boolean;
 }) {
     const formId = useId();
     const { title, aipRefCode, sector, responsibleOffice, year, linkedPlanId, linkedMapId, fundingSource, status, priority, scheduleStart, scheduleEnd, barangaysInput, expectedOutputs, implementationContext, budgetPs, budgetMooe, budgetCo, ccaAmount, gadAttributed, drrmTagged } = values;
@@ -129,7 +129,7 @@ export default function PPAStudioView({ open, editing, officeProposalMode, actor
                             onChange={(e) => setYear(Number(e.target.value))}
                             className="tcds-input"
                         >
-                            {[2025, 2026, 2027, 2028].map((y) => (
+                            {years.map((y) => (
                                 <option key={y} value={y}>{y}</option>
                             ))}
                         </select>
@@ -203,6 +203,7 @@ export default function PPAStudioView({ open, editing, officeProposalMode, actor
                     </FormField>
 
                     <FormField label="Funding Source" htmlFor={`${formId}-funding`} required>
+                        {fundingInputMode ? <input id={`${formId}-funding`} required maxLength={120} value={fundingSource} disabled={unavailable.includes('fundingSource')} onChange={event=>setFundingSource(event.target.value)} className="tcds-input" /> : (
                         <select
                             id={`${formId}-funding`}
                             disabled={unavailable.includes('fundingSource')} value={fundingSource}
@@ -213,6 +214,7 @@ export default function PPAStudioView({ open, editing, officeProposalMode, actor
                                 <option key={source} value={source}>{source}</option>
                             ))}
                         </select>
+                        )}
                     </FormField>
 
                     <FormField label="Lifecycle Status" htmlFor={`${formId}-status`} required>

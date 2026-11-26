@@ -351,7 +351,7 @@ export default function PlansIndex({
                 />
             )}
 
-            <PlanStudioView error={submissionError} open={showCreateModal} editing={editingPlan} onClose={() => setShowCreateModal(false)} busy={busy}
+            <PlanStudioView coverageBounds={{min:2000,max:2100}} error={submissionError} open={showCreateModal} editing={editingPlan} onClose={() => setShowCreateModal(false)} busy={busy}
                 values={{ code: createCode, title: createTitle, horizon: createHorizon, coverageStart: createStart, coverageEnd: createEnd, status: createStatus, leadOffice: createLeadOffice, coordinatingInput: recordFields.coordinating_offices ?? '', documentRef: recordFields.document_ref ?? '', authority: createAuthority, sbResolutionNo: '', sbAdoptedDate: '', mdcResolutionNo: '', higherReviewRef: '', sectionsComplete: recordFields.sections_complete ?? '', sectionsTotal: recordFields.sections_total ?? '', nextMilestone: recordFields.next_milestone ?? '', nextMilestoneDate: recordFields.next_milestone_date ?? '', requiredAction: createRequiredAction, linkedMapIds: [] }}
                 onChange={(field, value) => {
                     if (typeof value !== 'string') return;

@@ -24,12 +24,12 @@ export type PlanStudioValues = {
     requiredAction: string;
     linkedMapIds: string[];
 };
-export default function PlanStudioView({ open, editing, onClose, values, onChange, onSubmit: handleSubmit, maps: DEFAULT_PLANNING_MAPS, horizons: HORIZONS, statuses: EDITABLE_STATUSES, unavailable = [], busy = false, error }: {
+export default function PlanStudioView({ open, editing, onClose, values, onChange, onSubmit: handleSubmit, maps: DEFAULT_PLANNING_MAPS, horizons: HORIZONS, statuses: EDITABLE_STATUSES, unavailable = [], busy = false, error, coverageBounds }: {
     open: boolean; editing: { code: string } | null; onClose: () => void;
     values: PlanStudioValues; onChange: (field: keyof PlanStudioValues, value: string | string[]) => void;
     onSubmit: (event: FormEvent<HTMLFormElement>) => void;
     maps: Array<{id: string; code: string}>; horizons: string[]; statuses: string[];
-    unavailable?: Array<keyof PlanStudioValues>; busy?: boolean; error?: string;
+    unavailable?: Array<keyof PlanStudioValues>; busy?: boolean; error?: string; coverageBounds?: { min: number; max: number };
 }) {
     const formId = useId();
     const { code, title, horizon, coverageStart, coverageEnd, status, leadOffice, coordinatingInput, documentRef, authority, sbResolutionNo, sbAdoptedDate, mdcResolutionNo, higherReviewRef, sectionsComplete, sectionsTotal, nextMilestone, nextMilestoneDate, requiredAction, linkedMapIds } = values;
@@ -113,8 +113,9 @@ export default function PlanStudioView({ open, editing, onClose, values, onChang
                         <input
                             id={`${formId}-start`}
                             type="number"
-                            min="2015"
-                            max="2045"
+                            required
+                            min={coverageBounds?.min ?? 2015}
+                            max={coverageBounds?.max ?? 2045}
                             disabled={unavailable.includes('coverageStart')} value={coverageStart}
                             onChange={(e) => setCoverageStart(e.target.value)}
                             className="tcds-input font-mono"
@@ -125,8 +126,9 @@ export default function PlanStudioView({ open, editing, onClose, values, onChang
                         <input
                             id={`${formId}-end`}
                             type="number"
-                            min="2015"
-                            max="2050"
+                            required
+                            min={coverageBounds?.min ?? 2015}
+                            max={coverageBounds?.max ?? 2050}
                             disabled={unavailable.includes('coverageEnd')} value={coverageEnd}
                             onChange={(e) => setCoverageEnd(e.target.value)}
                             className="tcds-input font-mono"
