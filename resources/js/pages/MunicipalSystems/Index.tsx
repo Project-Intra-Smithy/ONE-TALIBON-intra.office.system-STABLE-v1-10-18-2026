@@ -168,7 +168,7 @@ export default function Index({ referenceSurface }: Props) {
                                     <h1 className="mt-1 text-[17px] font-black leading-tight tracking-tight text-slate-950 dark:text-white sm:text-[19px] xl:text-[22px] 2xl:text-[24px]">
                                         Municipal systems connected through one shared digital backbone.
                                     </h1>
-                                    <p className="mt-0.5 text-[9px] text-slate-500 dark:text-[var(--ink-secondary)] xl:text-[10px]">
+                                    <p className="mt-0.5 text-[9px] text-[var(--ink-secondary)] xl:text-[10px]">
                                         Current rollout, future municipal workspaces and reusable platform foundations.
                                     </p>
                                 </div>
@@ -178,7 +178,7 @@ export default function Index({ referenceSurface }: Props) {
                                         <div className="text-[17px] font-black tabular-nums text-emerald-700 dark:text-emerald-300 xl:text-[21px]">
                                             {initialRollout.length}
                                         </div>
-                                        <div className="text-[7px] font-extrabold uppercase tracking-[0.05em] text-slate-500 dark:text-[var(--ink-secondary)] xl:text-[8px]">
+                                        <div className="text-[7px] font-extrabold uppercase tracking-[0.05em] text-[var(--ink-secondary)] xl:text-[8px]">
                                             Rollout Priorities
                                         </div>
                                     </div>
@@ -186,7 +186,7 @@ export default function Index({ referenceSurface }: Props) {
                                         <div className="text-[17px] font-black tabular-nums text-amber-700 dark:text-amber-300 xl:text-[21px]">
                                             {municipalSystems.length}
                                         </div>
-                                        <div className="text-[7px] font-extrabold uppercase tracking-[0.05em] text-slate-500 dark:text-[var(--ink-secondary)] xl:text-[8px]">
+                                        <div className="text-[7px] font-extrabold uppercase tracking-[0.05em] text-[var(--ink-secondary)] xl:text-[8px]">
                                             Future Systems
                                         </div>
                                     </div>
@@ -194,7 +194,7 @@ export default function Index({ referenceSurface }: Props) {
                                         <div className="flex h-[21px] items-center justify-center text-emerald-700 dark:text-emerald-300 xl:h-[26px]">
                                             <Network size={16} aria-hidden="true" />
                                         </div>
-                                        <div className="text-[7px] font-extrabold uppercase tracking-[0.05em] text-slate-500 dark:text-[var(--ink-secondary)] xl:text-[8px]">
+                                        <div className="text-[7px] font-extrabold uppercase tracking-[0.05em] text-[var(--ink-secondary)] xl:text-[8px]">
                                             Shared Backbone
                                         </div>
                                     </div>
@@ -248,7 +248,7 @@ export default function Index({ referenceSurface }: Props) {
                                             <h3 className="mt-1.5 line-clamp-2 text-[10px] font-extrabold leading-3.5 text-slate-950 dark:text-slate-100 xl:mt-2 xl:text-[11px] xl:leading-4">
                                                 {item.name}
                                             </h3>
-                                            <p className="mt-1 line-clamp-2 text-[8px] leading-3 text-slate-500 dark:text-[var(--ink-secondary)] xl:text-[9px] xl:leading-3.5">
+                                            <p className="mt-1 line-clamp-2 text-[8px] leading-3 text-[var(--ink-secondary)] xl:text-[9px] xl:leading-3.5">
                                                 {entry.value}
                                             </p>
 
@@ -380,7 +380,7 @@ export default function Index({ referenceSurface }: Props) {
                                     </div>
                                     <div className="mt-1 grid gap-x-2 gap-y-1 sm:grid-cols-2 xl:grid-cols-1 xl:gap-y-1.5">
                                         {supportingFoundations.map((item) => (
-                                            <div key={item} className="flex min-w-0 items-start gap-1.5 text-[7px] leading-3 text-slate-500 dark:text-[var(--ink-secondary)] xl:text-[8px] xl:leading-3.5">
+                                            <div key={item} className="flex min-w-0 items-start gap-1.5 text-[7px] leading-3 text-[var(--ink-secondary)] xl:text-[8px] xl:leading-3.5">
                                                 <span className="mt-1 h-1 w-1 shrink-0 rounded-full bg-emerald-500 xl:h-1.5 xl:w-1.5" aria-hidden="true" />
                                                 <span className="line-clamp-1">{item}</span>
                                             </div>

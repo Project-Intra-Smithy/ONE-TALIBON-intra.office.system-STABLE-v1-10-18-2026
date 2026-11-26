@@ -149,13 +149,13 @@ export default function Index({
                                 Ordinances &amp; issuances register
                             </h2>
                         </div>
-                        <div className="text-xs text-[var(--ink-secondary)]" aria-label="Loaded legislative result context" aria-live="polite">
+                        <div className="text-xs text-[var(--ink-secondary)]" role="status" aria-label="Loaded legislative result context" aria-live="polite">
                             Showing <strong className="font-semibold text-[var(--ink-primary)]">{rangeStart}–{rangeEnd}</strong> of{' '}
                             <strong className="font-semibold text-[var(--ink-primary)]">{records.length}</strong> loaded
                         </div>
                     </div>
 
-                    <div className="divide-y divide-[var(--border-default)]" aria-label="Legislative records">
+                    <div className="divide-y divide-[var(--border-default)]" role="region" aria-label="Legislative records">
                         {visibleRecords.map((record) => (
                             <Link
                                 key={record.id}

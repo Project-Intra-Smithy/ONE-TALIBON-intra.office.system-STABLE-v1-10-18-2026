@@ -106,6 +106,7 @@ export default function Index({ departments, summary, directoryEntries, director
                         <div
                             className="shrink-0 rounded-xl border border-[var(--border-default)] bg-[var(--surface-recessed)] px-4 py-2.5 text-center"
                             aria-label={`${entries.length} catalog entries`}
+                            role="group"
                         >
                             <div className="text-2xl font-extrabold tabular-nums text-[var(--ink-primary)]">{entries.length}</div>
                             <div className="text-xs font-semibold text-[var(--ink-secondary)]">
@@ -180,7 +181,7 @@ export default function Index({ departments, summary, directoryEntries, director
                             }
                         />
                     ) : (
-                        <div className="space-y-5" aria-label="Office directory grouped results">
+                        <div className="space-y-5" role="region" aria-label="Office directory grouped results">
                             {groupedVisible.map(({ groupName, entries: groupItems }, index) => (
                                 <section
                                     key={groupName}
