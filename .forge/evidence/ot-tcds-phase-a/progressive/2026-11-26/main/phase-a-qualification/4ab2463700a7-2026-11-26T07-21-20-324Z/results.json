@@ -1,0 +1,2889 @@
+{
+  "completed": true,
+  "passed": true,
+  "scope": {
+    "widths": [
+      320
+    ],
+    "roles": [
+      "department_head"
+    ],
+    "focused": true
+  },
+  "sourceSha": "4ab2463700a715427d591649b5bc0c3316507dee",
+  "sourceWorktreeDirty": true,
+  "buildManifestSha256": "0b0925f9b2bd2d5eb8f744070290e0571fa156486d45f39cfdb7443ed2d173c1",
+  "observations": [
+    {
+      "role": "department_head",
+      "route": "/security/mfa/challenge",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "renderedComponent": "Auth/MfaChallenge",
+      "disposition": "CANONICAL PAGE RENDERED",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-security-mfa-challenge-1440-light.png",
+      "accessibilityTree": "- main:\n  - paragraph: ONE TALIBON · ACCOUNT VERIFICATION\n  - heading \"Verify your identity\" [level=1]\n  - paragraph: Enter your authenticator code to continue securely.\n  - form \"Authenticator verification\":\n    - text: Authenticator code\n    - textbox \"Authenticator code\"\n    - button \"Verify and continue\"\n  - separator\n  - form \"Recovery verification\":\n    - img\n    - text: One-time recovery code\n    - textbox \"One-time recovery code\"\n    - alert\n    - button \"Use recovery code\"\n  - button \"Sign out\":\n    - img\n    - text: Sign out",
+      "manualReview": [
+        {
+          "selector": ".mfa-challenge-kicker",
+          "tag": "P",
+          "text": "ONE TALIBON · ACCOUNT VERIFICATION",
+          "color": "rgb(14, 106, 80)",
+          "background": [
+            134.5176470588235,
+            152.77254901960782,
+            157.98823529411766
+          ],
+          "contrastRatio": 2.2081292511763984,
+          "fontSize": "12px",
+          "fontWeight": "800",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": "h1",
+          "tag": "H1",
+          "text": "Verify your identity",
+          "color": "oklch(0.129 0.042 264.695)",
+          "background": [
+            134.5176470588235,
+            152.77254901960782,
+            157.98823529411766
+          ],
+          "contrastRatio": 6.774154055984588,
+          "fontSize": "24px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".leading-6",
+          "tag": "P",
+          "text": "Enter your authenticator code to continue securely.",
+          "color": "oklch(0.446 0.043 257.281)",
+          "background": [
+            134.5176470588235,
+            152.77254901960782,
+            157.98823529411766
+          ],
+          "contrastRatio": 2.5487524924687768,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": "form[aria-label=\"Authenticator verification\"] > label > .mb-1\\.5.text-slate-700",
+          "tag": "SPAN",
+          "text": "Authenticator code",
+          "color": "oklch(0.372 0.044 257.287)",
+          "background": [
+            134.5176470588235,
+            152.77254901960782,
+            157.98823529411766
+          ],
+          "contrastRatio": 3.4806445746925943,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".text-lg",
+          "tag": "INPUT",
+          "text": "",
+          "color": "rgb(16, 42, 67)",
+          "background": [
+            250.27520184544406,
+            250.99108035371012,
+            251.19561707035754
+          ],
+          "contrastRatio": 14.13140413631351,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".mfa-challenge-primary",
+          "tag": "BUTTON",
+          "text": "Verify and continue",
+          "color": "rgb(255, 255, 255)",
+          "background": [
+            14,
+            106,
+            80
+          ],
+          "contrastRatio": 6.570459538394891,
+          "fontSize": "15px",
+          "fontWeight": "700",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".flex",
+          "tag": "SPAN",
+          "text": "One-time recovery code",
+          "color": "oklch(0.372 0.044 257.287)",
+          "background": [
+            134.5176470588235,
+            152.77254901960782,
+            157.98823529411766
+          ],
+          "contrastRatio": 3.4806445746925943,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".uppercase",
+          "tag": "INPUT",
+          "text": "",
+          "color": "rgb(16, 42, 67)",
+          "background": [
+            250.27520184544406,
+            250.99108035371012,
+            251.19561707035754
+          ],
+          "contrastRatio": 14.13140413631351,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".mfa-challenge-secondary",
+          "tag": "BUTTON",
+          "text": "Use recovery code",
+          "color": "rgb(14, 106, 80)",
+          "background": [
+            245.55040369088812,
+            246.98216070742023,
+            247.3912341407151
+          ],
+          "contrastRatio": 6.117524868369629,
+          "fontSize": "15px",
+          "fontWeight": "700",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".mfa-challenge-signout",
+          "tag": "BUTTON",
+          "text": "Sign out",
+          "color": "rgb(14, 106, 80)",
+          "background": [
+            134.5176470588235,
+            152.77254901960782,
+            157.98823529411766
+          ],
+          "contrastRatio": 2.2081292511763984,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        }
+      ],
+      "keyboardTrace": [],
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "bold",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"mfa-challenge-kicker\">ONE TALIBON · ACCOUNT VERIFICATION</p>",
+              "target": [
+                ".mfa-challenge-kicker"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "18.0pt (24px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "3:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h1 class=\"mt-2 text-2xl font-semibold text-slate-950 dark:text-[var(--ink-primary)]\">Verify your identity</h1>",
+              "target": [
+                "h1"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"mt-2 text-sm leading-6 text-slate-600\">Enter your authenticator code to continue securely.</p>",
+              "target": [
+                ".leading-6"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"mb-1.5 block text-sm font-medium text-slate-700\">Authenticator code</span>",
+              "target": [
+                "form[aria-label=\"Authenticator verification\"] > label > .mb-1\\.5.text-slate-700"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<input aria-invalid=\"false\" inputmode=\"numeric\" autocomplete=\"one-time-code\" maxlength=\"6\" class=\"mfa-challenge-input font-mono text-lg tracking-[0.25em]\" value=\"\" name=\"code\">",
+              "target": [
+                ".text-lg"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "bold",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button class=\"mfa-challenge-primary\">Verify and continue</button>",
+              "target": [
+                ".mfa-challenge-primary"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"mb-1.5 flex items-center gap-2 text-sm font-medium text-slate-700\">",
+              "target": [
+                ".flex"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<input aria-invalid=\"false\" aria-describedby=\"mfa-recovery-errors\" autocomplete=\"off\" class=\"mfa-challenge-input font-mono text-sm uppercase\" value=\"\" name=\"recovery_code\">",
+              "target": [
+                ".uppercase"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "bold",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button class=\"mfa-challenge-secondary\">Use recovery code</button>",
+              "target": [
+                ".mfa-challenge-secondary"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button type=\"button\" class=\"mfa-challenge-signout mt-5 inline-flex items-center gap-2 text-sm font-medium\">",
+              "target": [
+                ".mfa-challenge-signout"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/my-department",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "renderedComponent": "Departments/Workspace",
+      "disposition": "CANONICAL PAGE RENDERED",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-my-department-320-light.png",
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: My Department\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - paragraph: Department head workspace\n  - heading \"My Department\" [level=1]\n  - paragraph: Synthetic MPDO Test Office · Authorized office workload, staff capacity, and activity\n  - link \"Needs Head Action\":\n    - /url: /transactions?view=needs_action\n  - link \"Office Directory\":\n    - /url: /departments?view=directory\n  - region \"Authorized department metrics\":\n    - link \"Active Office Work 0\":\n      - /url: /transactions?view=office_queue\n      - text: Active Office Work\n      - strong: \"0\"\n    - link \"Incoming 0\":\n      - /url: /transactions?view=office_queue\n      - text: Incoming\n      - strong: \"0\"\n    - link \"Outgoing 0\":\n      - /url: /transactions?view=office_queue\n      - text: Outgoing\n      - strong: \"0\"\n    - link \"In Progress 0\":\n      - /url: /transactions?view=office_queue\n      - text: In Progress\n      - strong: \"0\"\n    - link \"Waiting Externally 0\":\n      - /url: /transactions?view=office_queue\n      - text: Waiting Externally\n      - strong: \"0\"\n    - link \"Office Overdue 0\":\n      - /url: /transactions?view=escalations\n      - text: Office Overdue\n      - strong: \"0\"\n    - link \"Unassigned 0\":\n      - /url: /transactions?view=unassigned\n      - text: Unassigned\n      - strong: \"0\"\n    - link \"Recently Completed 0\":\n      - /url: /reports?report=completed-work&office_id=4\n      - text: Recently Completed\n      - strong: \"0\"\n    - link \"Escalations 0\":\n      - /url: /transactions?view=escalations\n      - text: Escalations\n      - strong: \"0\"\n  - region \"Staff Workload (0)\":\n    - heading \"Staff Workload (0)\" [level=2]\n    - link \"Assign queue\":\n      - /url: /transactions?view=unassigned\n    - paragraph: No staff workload records available.\n  - region \"Recent authorized department activity\":\n    - heading \"Recent authorized department activity\" [level=2]\n    - link \"Office queue\":\n      - /url: /transactions?view=office_queue\n    - paragraph: No recent office activity recorded.\n  - group: Status breakdown and oldest unresolved work\n  - note: Department-specific approvals, signatures and routing changes remain unavailable pending validated authority.\n  - navigation \"Related department workspaces\":\n    - link \"Office Work\":\n      - /url: /transactions?view=office_queue\n    - link \"Correspondence\":\n      - /url: /correspondence\n    - link \"Records\":\n      - /url: /records\n    - link \"Reports\":\n      - /url: /reports\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal\n- navigation \"Mobile workspace navigation\":\n  - link \"Home\":\n    - /url: /dashboard\n  - link \"Tasks\":\n    - /url: /my-tasks\n  - link \"Requests\":\n    - /url: /transactions\n  - link \"Inbox\":\n    - /url: /correspondence\n  - button \"Open more navigation options\": More",
+      "manualReview": [],
+      "keyboardTrace": [
+        {
+          "tag": "A",
+          "name": "Skip to main content",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 16,
+            "y": 5.019385814666748,
+            "width": 172.828125,
+            "height": 46.46875
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open navigation",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": false,
+          "focusRect": {
+            "x": 12,
+            "y": 5.5,
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open quick jump and search",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": false,
+          "focusRect": {
+            "x": 123,
+            "y": 5.5,
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open notifications",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 169,
+            "y": 5.5,
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open portal applications",
+          "role": null,
+          "outline": "rgb(74, 93, 85) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 215,
+            "y": 5.5,
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Needs Head Action",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 16,
+            "y": 192,
+            "width": 183.484375,
+            "height": 44
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Office Directory",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 16,
+            "y": 244,
+            "width": 162.40625,
+            "height": 44
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Active Office Work0",
+          "role": null,
+          "outline": "rgb(20, 33, 28) solid 3px",
+          "shadow": "rgba(14, 33, 25, 0.05) 0px 1px 2px 0px, rgba(14, 33, 25, 0.03) 0px 1px 1px 0px",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 16,
+            "y": 325,
+            "width": 138,
+            "height": 115.5
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Incoming0",
+          "role": null,
+          "outline": "rgb(20, 33, 28) solid 3px",
+          "shadow": "rgba(14, 33, 25, 0.05) 0px 1px 2px 0px, rgba(14, 33, 25, 0.03) 0px 1px 1px 0px",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 166,
+            "y": 325,
+            "width": 138,
+            "height": 115.5
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Outgoing0",
+          "role": null,
+          "outline": "rgb(20, 33, 28) solid 3px",
+          "shadow": "rgba(14, 33, 25, 0.05) 0px 1px 2px 0px, rgba(14, 33, 25, 0.03) 0px 1px 1px 0px",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 16,
+            "y": 452.5,
+            "width": 138,
+            "height": 95.5
+          }
+        },
+        {
+          "tag": "A",
+          "name": "In Progress0",
+          "role": null,
+          "outline": "rgb(20, 33, 28) solid 3px",
+          "shadow": "rgba(14, 33, 25, 0.05) 0px 1px 2px 0px, rgba(14, 33, 25, 0.03) 0px 1px 1px 0px",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 166,
+            "y": 452.5,
+            "width": 138,
+            "height": 95.5
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Waiting Externally0",
+          "role": null,
+          "outline": "rgb(20, 33, 28) solid 3px",
+          "shadow": "rgba(14, 33, 25, 0.05) 0px 1px 2px 0px, rgba(14, 33, 25, 0.03) 0px 1px 1px 0px",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 16,
+            "y": 560,
+            "width": 138,
+            "height": 115.5
+          }
+        }
+      ],
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/operations",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "renderedComponent": "ProjectMonitoring/Index",
+      "disposition": "CANONICAL PAGE RENDERED",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-operations-320-light.png",
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: Project Monitoring\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - text: Pending authoritative LGU input\n  - heading \"Project Monitoring\" [level=1]\n  - paragraph: Project monitoring is de-exposed until LGU lifecycle and KPI authority is confirmed.\n  - note \"Project Monitoring authority status\":\n    - text: What is missing\n    - paragraph: Authoritative project lifecycle, responsible process owners, progress rules, reporting fields and official KPI definitions.\n    - text: Current product treatment\n    - paragraph: Static project examples, progress percentages and portfolio summaries are not projected as live municipal authority.\n    - text: Required authority / contract\n    - paragraph: PROJ-001, WF-001, WF-002 and KPI-001; any resulting backend/API contract belongs to P06.\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal\n- navigation \"Mobile workspace navigation\":\n  - link \"Home\":\n    - /url: /dashboard\n  - link \"Tasks\":\n    - /url: /my-tasks\n  - link \"Requests\":\n    - /url: /transactions\n  - link \"Inbox\":\n    - /url: /correspondence\n  - button \"Open more navigation options\": More",
+      "manualReview": [],
+      "keyboardTrace": [
+        {
+          "tag": "A",
+          "name": "Skip to main content",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 16,
+            "y": 5.027984619140625,
+            "width": 172.828125,
+            "height": 46.46875
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open navigation",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 12,
+            "y": 5.5,
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open quick jump and search",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 123,
+            "y": 5.5,
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open notifications",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 169,
+            "y": 5.5,
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open portal applications",
+          "role": null,
+          "outline": "rgb(74, 93, 85) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 215,
+            "y": 5.5,
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Home",
+          "role": null,
+          "outline": "rgb(74, 93, 85) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 6,
+            "y": 846,
+            "width": 61.59375,
+            "height": 48
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Tasks",
+          "role": null,
+          "outline": "rgb(74, 93, 85) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 67.59375,
+            "y": 846,
+            "width": 61.59375,
+            "height": 48
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Requests",
+          "role": null,
+          "outline": "rgb(74, 93, 85) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 129.1875,
+            "y": 846,
+            "width": 61.59375,
+            "height": 48
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Inbox",
+          "role": null,
+          "outline": "rgb(74, 93, 85) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 190.78125,
+            "y": 846,
+            "width": 61.59375,
+            "height": 48
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open more navigation options",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 252.375,
+            "y": 846,
+            "width": 61.59375,
+            "height": 48
+          }
+        },
+        {
+          "tag": "BODY",
+          "name": "Document",
+          "role": null,
+          "outline": "rgb(20, 33, 28) none 0px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 0,
+            "y": 0,
+            "width": 320,
+            "height": 900
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Skip to main content",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 16,
+            "y": 5.010143280029297,
+            "width": 172.828125,
+            "height": 46.46875
+          }
+        }
+      ],
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "renderedComponent": "Transactions/Create",
+      "disposition": "CANONICAL PAGE RENDERED",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-transactions-create-320-light.png",
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: Create Work Request\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - paragraph: Work Requests · New request\n  - heading \"Create Work Request\" [level=1]\n  - paragraph: Route accountable work to the correct municipal office and responsible staff member.\n  - link \"Back to Work Requests\":\n    - /url: /transactions\n  - dialog \"New Work Request\":\n    - heading \"New Work Request\" [level=2]\n    - paragraph: Route accountable work directly to an authorized municipal office.\n    - button \"Close New Work Request\"\n    - form \"Create Work Request\":\n      - text: Request Category\n      - combobox \"Request Category\":\n        - option \"Planning & Development\" [selected]\n        - option \"Zoning / Land Use\"\n        - option \"Procurement\"\n        - option \"ICT / Digital Systems\"\n        - option \"Other\"\n      - text: Request Type\n      - combobox \"Request Type\":\n        - option \"CLUP / Zoning\" [selected]\n        - option \"CDP\"\n        - option \"LDIP\"\n        - option \"AIP\"\n        - option \"Project Proposal\"\n        - option \"Project Monitoring\"\n        - option \"GIS / Mapping\"\n        - option \"CBMS / Data\"\n        - option \"Local Special Bodies\"\n        - option \"Technical Review\"\n        - option \"Development Permit\"\n        - option \"Planning Certification\"\n      - text: Action Required\n      - combobox \"Action Required\":\n        - option \"For Information\" [selected]\n        - option \"For Review\"\n        - option \"For Comment\"\n        - option \"For Recommendation\"\n        - option \"For Approval\"\n        - option \"For Signature\"\n        - option \"For Compliance\"\n        - option \"For Appropriate Action\"\n        - option \"For Inspection\"\n        - option \"For Validation\"\n        - option \"For Certification\"\n        - option \"For Endorsement\"\n        - option \"For Processing\"\n        - option \"For Implementation\"\n        - option \"For Monitoring\"\n        - option \"For Filing / Record\"\n      - text: Receiving Office\n      - combobox \"Receiving Office\": Synthetic Mayor Office\n      - paragraph: \"Selected: Synthetic Mayor Office\"\n      - text: Assigned Person(optional)\n      - combobox \"Assigned Person(optional)\":\n        - option \"Unassigned / office queue\" [selected]\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n      - group \"Priority\":\n        - text: Priority\n        - radio \"Normal Standard queue\" [checked]\n        - text: Normal Standard queue\n        - radio \"High Priority review\"\n        - text: High Priority review\n        - radio \"Urgent Immediate action\"\n        - text: Urgent Immediate action\n      - text: Target Completion Date\n      - textbox \"Target Completion Date\"\n      - button \"Open calendar date picker\"\n      - group \"Quick date presets\":\n        - button \"Today\"\n        - button \"Tomorrow\"\n        - button \"+3 days\"\n        - button \"+1 week\"\n        - button \"+2 weeks\"\n      - text: Subject\n      - paragraph: Write a concise summary of what requires office action.\n      - textbox \"Subject\"\n      - text: Instructions / Details(optional)\n      - textbox \"Instructions / Details(optional)\"\n      - group: Supporting attachment (optional) Add file\n      - link \"Cancel\":\n        - /url: /transactions\n      - button \"Submit Work Request\"\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal\n- navigation \"Mobile workspace navigation\":\n  - link \"Home\":\n    - /url: /dashboard\n  - link \"Tasks\":\n    - /url: /my-tasks\n  - link \"Requests\":\n    - /url: /transactions\n  - link \"Inbox\":\n    - /url: /correspondence\n  - button \"Open more navigation options\": More",
+      "manualReview": [
+        {
+          "selector": "#wr-category",
+          "tag": "SELECT",
+          "text": "Planning & DevelopmentZoning / Land UseProcurementICT / Digital SystemsOther",
+          "color": "rgb(20, 33, 28)",
+          "background": [
+            255,
+            255,
+            255
+          ],
+          "contrastRatio": 16.61319910975379,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "note": "Closed native select computed paint; OS popup rendering requires separate assistive-technology review"
+        },
+        {
+          "selector": "#wr-type",
+          "tag": "SELECT",
+          "text": "CLUP / ZoningCDPLDIPAIPProject ProposalProject MonitoringGIS / MappingCBMS / DataLocal Special BodiesTechnical ReviewDev",
+          "color": "rgb(20, 33, 28)",
+          "background": [
+            255,
+            255,
+            255
+          ],
+          "contrastRatio": 16.61319910975379,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "note": "Closed native select computed paint; OS popup rendering requires separate assistive-technology review"
+        },
+        {
+          "selector": "#wr-action",
+          "tag": "SELECT",
+          "text": "For InformationFor ReviewFor CommentFor RecommendationFor ApprovalFor SignatureFor ComplianceFor Appropriate ActionFor I",
+          "color": "rgb(20, 33, 28)",
+          "background": [
+            255,
+            255,
+            255
+          ],
+          "contrastRatio": 16.61319910975379,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "note": "Closed native select computed paint; OS popup rendering requires separate assistive-technology review"
+        },
+        {
+          "selector": "#wr-assignee",
+          "tag": "SELECT",
+          "text": "Unassigned / office queueSynthetic Phase A mayor_approver · Synthetic Test mayor_approverSynthetic Phase A mayor_approve",
+          "color": "rgb(20, 33, 28)",
+          "background": [
+            255,
+            255,
+            255
+          ],
+          "contrastRatio": 16.61319910975379,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "note": "Closed native select computed paint; OS popup rendering requires separate assistive-technology review"
+        }
+      ],
+      "keyboardTrace": [
+        {
+          "tag": "SELECT",
+          "name": "Planning & DevelopmentZoning / Land UseProcurementICT / Digital SystemsOther",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 21,
+            "y": 147,
+            "width": 279,
+            "height": 44
+          }
+        },
+        {
+          "tag": "SELECT",
+          "name": "CLUP / ZoningCDPLDIPAIPProject ProposalProject MonitoringGIS / MappingCBMS / Dat",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 21,
+            "y": 233,
+            "width": 279,
+            "height": 44
+          }
+        },
+        {
+          "tag": "SELECT",
+          "name": "For InformationFor ReviewFor CommentFor RecommendationFor ApprovalFor SignatureF",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 21,
+            "y": 319,
+            "width": 279,
+            "height": 44
+          }
+        },
+        {
+          "tag": "INPUT",
+          "name": "",
+          "role": "combobox",
+          "outline": "oklch(0.508 0.118 165.612) solid 2px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 21,
+            "y": 407,
+            "width": 279,
+            "height": 50
+          }
+        },
+        {
+          "tag": "SELECT",
+          "name": "Unassigned / office queueSynthetic Phase A mayor_approver · Synthetic Test mayor",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 21,
+            "y": 531,
+            "width": 279,
+            "height": 44
+          }
+        },
+        {
+          "tag": "INPUT",
+          "name": "",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 34,
+            "y": 639.75,
+            "width": 16,
+            "height": 16
+          }
+        },
+        {
+          "tag": "INPUT",
+          "name": "",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 21,
+            "y": 833.5,
+            "width": 279,
+            "height": 44
+          }
+        },
+        {
+          "tag": "INPUT",
+          "name": "",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 21,
+            "y": 833.5,
+            "width": 279,
+            "height": 44
+          }
+        },
+        {
+          "tag": "INPUT",
+          "name": "",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 21,
+            "y": 833.5,
+            "width": 279,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open calendar date picker",
+          "role": null,
+          "outline": "rgb(74, 93, 85) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 258,
+            "y": 835.5,
+            "width": 40,
+            "height": 40
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Today",
+          "role": null,
+          "outline": "rgb(72, 93, 89) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 21,
+            "y": 867.5,
+            "width": 55.609375,
+            "height": 32
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Tomorrow",
+          "role": null,
+          "outline": "rgb(74, 93, 85) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 82.609375,
+            "y": 867.5,
+            "width": 78.4375,
+            "height": 32
+          }
+        }
+      ],
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select id=\"wr-category\" name=\"request_category\" class=\"tcds-input\" required=\"\">",
+                      "target": [
+                        "#wr-category"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select id=\"wr-category\" name=\"request_category\" class=\"tcds-input\" required=\"\">",
+              "target": [
+                "#wr-category"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select id=\"wr-type\" name=\"request_type\" class=\"tcds-input\" required=\"\">",
+                      "target": [
+                        "#wr-type"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select id=\"wr-type\" name=\"request_type\" class=\"tcds-input\" required=\"\">",
+              "target": [
+                "#wr-type"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select id=\"wr-action\" name=\"action_required\" class=\"tcds-input\" required=\"\">",
+                      "target": [
+                        "#wr-action"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select id=\"wr-action\" name=\"action_required\" class=\"tcds-input\" required=\"\">",
+              "target": [
+                "#wr-action"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select id=\"wr-assignee\" name=\"assigned_employee_id\" class=\"tcds-input\">",
+                      "target": [
+                        "#wr-assignee"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select id=\"wr-assignee\" name=\"assigned_employee_id\" class=\"tcds-input\">",
+              "target": [
+                "#wr-assignee"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/memoranda/create",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "renderedComponent": "Memoranda/Create",
+      "disposition": "CANONICAL PAGE RENDERED",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-memoranda-create-320-light.png",
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: Publish Memorandum\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - paragraph: Central issuance\n  - heading \"Publish Memorandum\" [level=1]\n  - paragraph: Recipients are resolved at publication time so delivery and acknowledgement remain auditable.\n  - link \"Back to Memoranda\":\n    - /url: /memoranda\n  - text: Memo number\n  - textbox \"Memo number\": MPDO-MEMO-2026-001\n  - text: Classification\n  - combobox \"Classification\":\n    - option \"Internal\" [selected]\n    - option \"Public\"\n    - option \"Confidential\"\n  - text: Title\n  - textbox \"Title\"\n  - text: Memorandum content\n  - textbox \"Memorandum content\"\n  - text: Audience\n  - button \"departments\"\n  - button \"employees\"\n  - checkbox \"Synthetic MPDO Test Office\"\n  - text: Synthetic MPDO Test Office\n  - checkbox \"Require employee acknowledgement\" [checked]\n  - text: Require employee acknowledgement\n  - link \"Cancel\":\n    - /url: /memoranda\n  - button \"Publish & Deliver\" [disabled]\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal\n- navigation \"Mobile workspace navigation\":\n  - link \"Home\":\n    - /url: /dashboard\n  - link \"Tasks\":\n    - /url: /my-tasks\n  - link \"Requests\":\n    - /url: /transactions\n  - link \"Inbox\":\n    - /url: /correspondence\n  - button \"Open more navigation options\": More",
+      "manualReview": [
+        {
+          "selector": "select",
+          "tag": "SELECT",
+          "text": "InternalPublicConfidential",
+          "color": "rgb(20, 33, 28)",
+          "background": [
+            255,
+            255,
+            255
+          ],
+          "contrastRatio": 16.61319910975379,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "note": "Closed native select computed paint; OS popup rendering requires separate assistive-technology review"
+        }
+      ],
+      "keyboardTrace": [
+        {
+          "tag": "A",
+          "name": "Skip to main content",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 16,
+            "y": 5.003446102142334,
+            "width": 172.828125,
+            "height": 46.46875
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open navigation",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": false,
+          "focusRect": {
+            "x": 12,
+            "y": 5.5,
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open quick jump and search",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 123,
+            "y": 5.5,
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open notifications",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 169,
+            "y": 5.5,
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open portal applications",
+          "role": null,
+          "outline": "rgb(74, 93, 85) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 215,
+            "y": 5.5,
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Back to Memoranda",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 16,
+            "y": 216,
+            "width": 187.59375,
+            "height": 44
+          }
+        },
+        {
+          "tag": "INPUT",
+          "name": "",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 37,
+            "y": 340,
+            "width": 246,
+            "height": 44
+          }
+        },
+        {
+          "tag": "SELECT",
+          "name": "InternalPublicConfidential",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 37,
+            "y": 422,
+            "width": 246,
+            "height": 44
+          }
+        },
+        {
+          "tag": "INPUT",
+          "name": "",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 37,
+            "y": 504,
+            "width": 246,
+            "height": 44
+          }
+        },
+        {
+          "tag": "TEXTAREA",
+          "name": "",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 37,
+            "y": 586,
+            "width": 246,
+            "height": 176.328125
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "departments",
+          "role": null,
+          "outline": "rgb(14, 77, 54) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 37,
+            "y": 800.328125,
+            "width": 246,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "employees",
+          "role": null,
+          "outline": "rgb(74, 93, 85) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": false,
+          "focusRect": {
+            "x": 37,
+            "y": 852.328125,
+            "width": 246,
+            "height": 44
+          }
+        }
+      ],
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select class=\"tcds-input\"><option value=\"internal\">Internal</option><option value=\"public\">Public</option><option value=\"confidential\">Confidential</option></select>",
+                      "target": [
+                        "select"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select class=\"tcds-input\"><option value=\"internal\">Internal</option><option value=\"public\">Public</option><option value=\"confidential\">Confidential</option></select>",
+              "target": [
+                "select"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/travel-orders/create",
+      "width": 320,
+      "theme": "light",
+      "status": 403,
+      "renderedComponent": "Errors/Status",
+      "disposition": "AUTHORIZATION DENIED: not positive page coverage",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-travel-orders-create-320-light.png",
+      "accessibilityTree": "- main:\n  - region \"You cannot open this page\":\n    - paragraph: Access denied\n    - heading \"You cannot open this page\" [level=1]\n    - paragraph: Your current account does not have permission to access this resource.\n    - text: Request ID\n    - code: f8973263-8911-42f3-ae28-cad47e355b59\n    - button \"Retry\"\n    - button \"Go back\"\n    - link \"Return to dashboard\":\n      - /url: /dashboard",
+      "manualReview": [],
+      "keyboardTrace": [
+        {
+          "tag": "BUTTON",
+          "name": "Retry",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 536,
+            "width": 70.28125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Go back",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 121.28125,
+            "y": 536,
+            "width": 87.453125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Return to dashboard",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 590,
+            "width": 168.484375,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BODY",
+          "name": "Document",
+          "role": null,
+          "outline": "rgb(20, 33, 28) none 0px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 0,
+            "y": 0,
+            "width": 320,
+            "height": 900
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Retry",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 536,
+            "width": 70.28125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Go back",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 121.28125,
+            "y": 536,
+            "width": 87.453125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Return to dashboard",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 590,
+            "width": 168.484375,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BODY",
+          "name": "Document",
+          "role": null,
+          "outline": "rgb(20, 33, 28) none 0px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 0,
+            "y": 0,
+            "width": 320,
+            "height": 900
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Retry",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 536,
+            "width": 70.28125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Go back",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 121.28125,
+            "y": 536,
+            "width": 87.453125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Return to dashboard",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 590,
+            "width": 168.484375,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BODY",
+          "name": "Document",
+          "role": null,
+          "outline": "rgb(20, 33, 28) none 0px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 0,
+            "y": 0,
+            "width": 320,
+            "height": 900
+          }
+        }
+      ],
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/work-requests/origin-delivery-exceptions",
+      "width": 320,
+      "theme": "light",
+      "status": 404,
+      "renderedComponent": "Errors/Status",
+      "disposition": "NOT FOUND: not positive page coverage",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-work-requests-origin-delivery-exceptions-320-light.png",
+      "accessibilityTree": "- main:\n  - region \"We could not find that page\":\n    - paragraph: Page not found\n    - heading \"We could not find that page\" [level=1]\n    - paragraph: The address may be incorrect, or the page may no longer be available.\n    - text: Request ID\n    - code: f696e1b9-e05b-44de-994b-26a9982f51bc\n    - button \"Retry\"\n    - button \"Go back\"\n    - link \"Return to dashboard\":\n      - /url: /dashboard",
+      "manualReview": [],
+      "keyboardTrace": [
+        {
+          "tag": "BUTTON",
+          "name": "Retry",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 536,
+            "width": 70.28125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Go back",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 121.28125,
+            "y": 536,
+            "width": 87.453125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Return to dashboard",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 590,
+            "width": 168.484375,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BODY",
+          "name": "Document",
+          "role": null,
+          "outline": "rgb(20, 33, 28) none 0px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 0,
+            "y": 0,
+            "width": 320,
+            "height": 900
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Retry",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 536,
+            "width": 70.28125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Go back",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 121.28125,
+            "y": 536,
+            "width": 87.453125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Return to dashboard",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 590,
+            "width": 168.484375,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BODY",
+          "name": "Document",
+          "role": null,
+          "outline": "rgb(20, 33, 28) none 0px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 0,
+            "y": 0,
+            "width": 320,
+            "height": 900
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Retry",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 536,
+            "width": 70.28125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Go back",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 121.28125,
+            "y": 536,
+            "width": 87.453125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Return to dashboard",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 590,
+            "width": 168.484375,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BODY",
+          "name": "Document",
+          "role": null,
+          "outline": "rgb(20, 33, 28) none 0px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 0,
+            "y": 0,
+            "width": 320,
+            "height": 900
+          }
+        }
+      ],
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/messages",
+      "width": 320,
+      "theme": "light",
+      "status": 403,
+      "renderedComponent": "Errors/Status",
+      "disposition": "AUTHORIZATION DENIED: not positive page coverage",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-messages-320-light.png",
+      "accessibilityTree": "- main:\n  - region \"You cannot open this page\":\n    - paragraph: Access denied\n    - heading \"You cannot open this page\" [level=1]\n    - paragraph: Your current account does not have permission to access this resource.\n    - text: Request ID\n    - code: 405f9405-ad73-45d4-8f8d-2199a5067c95\n    - button \"Retry\"\n    - button \"Go back\"\n    - link \"Return to dashboard\":\n      - /url: /dashboard",
+      "manualReview": [],
+      "keyboardTrace": [
+        {
+          "tag": "BUTTON",
+          "name": "Retry",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 536,
+            "width": 70.28125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Go back",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 121.28125,
+            "y": 536,
+            "width": 87.453125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Return to dashboard",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 590,
+            "width": 168.484375,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BODY",
+          "name": "Document",
+          "role": null,
+          "outline": "rgb(20, 33, 28) none 0px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 0,
+            "y": 0,
+            "width": 320,
+            "height": 900
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Retry",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 536,
+            "width": 70.28125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Go back",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 121.28125,
+            "y": 536,
+            "width": 87.453125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Return to dashboard",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 590,
+            "width": 168.484375,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BODY",
+          "name": "Document",
+          "role": null,
+          "outline": "rgb(20, 33, 28) none 0px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 0,
+            "y": 0,
+            "width": 320,
+            "height": 900
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Retry",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 536,
+            "width": 70.28125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Go back",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 121.28125,
+            "y": 536,
+            "width": 87.453125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Return to dashboard",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 590,
+            "width": 168.484375,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BODY",
+          "name": "Document",
+          "role": null,
+          "outline": "rgb(20, 33, 28) none 0px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 0,
+            "y": 0,
+            "width": 320,
+            "height": 900
+          }
+        }
+      ],
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/hris/payroll",
+      "width": 320,
+      "theme": "light",
+      "status": 404,
+      "renderedComponent": "Errors/Status",
+      "disposition": "NOT FOUND: not positive page coverage",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-hris-payroll-320-light.png",
+      "accessibilityTree": "- main:\n  - region \"We could not find that page\":\n    - paragraph: Page not found\n    - heading \"We could not find that page\" [level=1]\n    - paragraph: The address may be incorrect, or the page may no longer be available.\n    - text: Request ID\n    - code: 25e908ef-074a-4ff8-80c5-28d3d70e3dfd\n    - button \"Retry\"\n    - button \"Go back\"\n    - link \"Return to dashboard\":\n      - /url: /dashboard",
+      "manualReview": [],
+      "keyboardTrace": [
+        {
+          "tag": "BUTTON",
+          "name": "Retry",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 536,
+            "width": 70.28125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Go back",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 121.28125,
+            "y": 536,
+            "width": 87.453125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Return to dashboard",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 590,
+            "width": 168.484375,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BODY",
+          "name": "Document",
+          "role": null,
+          "outline": "rgb(20, 33, 28) none 0px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 0,
+            "y": 0,
+            "width": 320,
+            "height": 900
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Retry",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 536,
+            "width": 70.28125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Go back",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 121.28125,
+            "y": 536,
+            "width": 87.453125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Return to dashboard",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 590,
+            "width": 168.484375,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BODY",
+          "name": "Document",
+          "role": null,
+          "outline": "rgb(20, 33, 28) none 0px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 0,
+            "y": 0,
+            "width": 320,
+            "height": 900
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Retry",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 536,
+            "width": 70.28125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Go back",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 121.28125,
+            "y": 536,
+            "width": 87.453125,
+            "height": 44
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Return to dashboard",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 41,
+            "y": 590,
+            "width": 168.484375,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BODY",
+          "name": "Document",
+          "role": null,
+          "outline": "rgb(20, 33, 28) none 0px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 0,
+            "y": 0,
+            "width": 320,
+            "height": 900
+          }
+        }
+      ],
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/my-department",
+      "width": 320,
+      "theme": "dark",
+      "status": 200,
+      "renderedComponent": "Departments/Workspace",
+      "disposition": "CANONICAL PAGE RENDERED",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-my-department-320-dark.png",
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: My Department\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - paragraph: Department head workspace\n  - heading \"My Department\" [level=1]\n  - paragraph: Synthetic MPDO Test Office · Authorized office workload, staff capacity, and activity\n  - link \"Needs Head Action\":\n    - /url: /transactions?view=needs_action\n  - link \"Office Directory\":\n    - /url: /departments?view=directory\n  - region \"Authorized department metrics\":\n    - link \"Active Office Work 0\":\n      - /url: /transactions?view=office_queue\n      - text: Active Office Work\n      - strong: \"0\"\n    - link \"Incoming 0\":\n      - /url: /transactions?view=office_queue\n      - text: Incoming\n      - strong: \"0\"\n    - link \"Outgoing 0\":\n      - /url: /transactions?view=office_queue\n      - text: Outgoing\n      - strong: \"0\"\n    - link \"In Progress 0\":\n      - /url: /transactions?view=office_queue\n      - text: In Progress\n      - strong: \"0\"\n    - link \"Waiting Externally 0\":\n      - /url: /transactions?view=office_queue\n      - text: Waiting Externally\n      - strong: \"0\"\n    - link \"Office Overdue 0\":\n      - /url: /transactions?view=escalations\n      - text: Office Overdue\n      - strong: \"0\"\n    - link \"Unassigned 0\":\n      - /url: /transactions?view=unassigned\n      - text: Unassigned\n      - strong: \"0\"\n    - link \"Recently Completed 0\":\n      - /url: /reports?report=completed-work&office_id=4\n      - text: Recently Completed\n      - strong: \"0\"\n    - link \"Escalations 0\":\n      - /url: /transactions?view=escalations\n      - text: Escalations\n      - strong: \"0\"\n  - region \"Staff Workload (0)\":\n    - heading \"Staff Workload (0)\" [level=2]\n    - link \"Assign queue\":\n      - /url: /transactions?view=unassigned\n    - paragraph: No staff workload records available.\n  - region \"Recent authorized department activity\":\n    - heading \"Recent authorized department activity\" [level=2]\n    - link \"Office queue\":\n      - /url: /transactions?view=office_queue\n    - paragraph: No recent office activity recorded.\n  - group: Status breakdown and oldest unresolved work\n  - note: Department-specific approvals, signatures and routing changes remain unavailable pending validated authority.\n  - navigation \"Related department workspaces\":\n    - link \"Office Work\":\n      - /url: /transactions?view=office_queue\n    - link \"Correspondence\":\n      - /url: /correspondence\n    - link \"Records\":\n      - /url: /records\n    - link \"Reports\":\n      - /url: /reports\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal\n- navigation \"Mobile workspace navigation\":\n  - link \"Home\":\n    - /url: /dashboard\n  - link \"Tasks\":\n    - /url: /my-tasks\n  - link \"Requests\":\n    - /url: /transactions\n  - link \"Inbox\":\n    - /url: /correspondence\n  - button \"Open more navigation options\": More",
+      "manualReview": [],
+      "keyboardTrace": [],
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/operations",
+      "width": 320,
+      "theme": "dark",
+      "status": 200,
+      "renderedComponent": "ProjectMonitoring/Index",
+      "disposition": "CANONICAL PAGE RENDERED",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-operations-320-dark.png",
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: Project Monitoring\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - text: Pending authoritative LGU input\n  - heading \"Project Monitoring\" [level=1]\n  - paragraph: Project monitoring is de-exposed until LGU lifecycle and KPI authority is confirmed.\n  - note \"Project Monitoring authority status\":\n    - text: What is missing\n    - paragraph: Authoritative project lifecycle, responsible process owners, progress rules, reporting fields and official KPI definitions.\n    - text: Current product treatment\n    - paragraph: Static project examples, progress percentages and portfolio summaries are not projected as live municipal authority.\n    - text: Required authority / contract\n    - paragraph: PROJ-001, WF-001, WF-002 and KPI-001; any resulting backend/API contract belongs to P06.\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal\n- navigation \"Mobile workspace navigation\":\n  - link \"Home\":\n    - /url: /dashboard\n  - link \"Tasks\":\n    - /url: /my-tasks\n  - link \"Requests\":\n    - /url: /transactions\n  - link \"Inbox\":\n    - /url: /correspondence\n  - button \"Open more navigation options\": More",
+      "manualReview": [],
+      "keyboardTrace": [],
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "width": 320,
+      "theme": "dark",
+      "status": 200,
+      "renderedComponent": "Transactions/Create",
+      "disposition": "CANONICAL PAGE RENDERED",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-transactions-create-320-dark.png",
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: Create Work Request\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - paragraph: Work Requests · New request\n  - heading \"Create Work Request\" [level=1]\n  - paragraph: Route accountable work to the correct municipal office and responsible staff member.\n  - link \"Back to Work Requests\":\n    - /url: /transactions\n  - dialog \"New Work Request\":\n    - heading \"New Work Request\" [level=2]\n    - paragraph: Route accountable work directly to an authorized municipal office.\n    - button \"Close New Work Request\"\n    - form \"Create Work Request\":\n      - text: Request Category\n      - combobox \"Request Category\":\n        - option \"Planning & Development\" [selected]\n        - option \"Zoning / Land Use\"\n        - option \"Procurement\"\n        - option \"ICT / Digital Systems\"\n        - option \"Other\"\n      - text: Request Type\n      - combobox \"Request Type\":\n        - option \"CLUP / Zoning\" [selected]\n        - option \"CDP\"\n        - option \"LDIP\"\n        - option \"AIP\"\n        - option \"Project Proposal\"\n        - option \"Project Monitoring\"\n        - option \"GIS / Mapping\"\n        - option \"CBMS / Data\"\n        - option \"Local Special Bodies\"\n        - option \"Technical Review\"\n        - option \"Development Permit\"\n        - option \"Planning Certification\"\n      - text: Action Required\n      - combobox \"Action Required\":\n        - option \"For Information\" [selected]\n        - option \"For Review\"\n        - option \"For Comment\"\n        - option \"For Recommendation\"\n        - option \"For Approval\"\n        - option \"For Signature\"\n        - option \"For Compliance\"\n        - option \"For Appropriate Action\"\n        - option \"For Inspection\"\n        - option \"For Validation\"\n        - option \"For Certification\"\n        - option \"For Endorsement\"\n        - option \"For Processing\"\n        - option \"For Implementation\"\n        - option \"For Monitoring\"\n        - option \"For Filing / Record\"\n      - text: Receiving Office\n      - combobox \"Receiving Office\": Synthetic Mayor Office\n      - paragraph: \"Selected: Synthetic Mayor Office\"\n      - text: Assigned Person(optional)\n      - combobox \"Assigned Person(optional)\":\n        - option \"Unassigned / office queue\" [selected]\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A mayor_approver · Synthetic Test mayor_approver\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n        - option \"Synthetic Phase A system_admin · Synthetic Test system_admin\"\n      - group \"Priority\":\n        - text: Priority\n        - radio \"Normal Standard queue\" [checked]\n        - text: Normal Standard queue\n        - radio \"High Priority review\"\n        - text: High Priority review\n        - radio \"Urgent Immediate action\"\n        - text: Urgent Immediate action\n      - text: Target Completion Date\n      - textbox \"Target Completion Date\"\n      - button \"Open calendar date picker\"\n      - group \"Quick date presets\":\n        - button \"Today\"\n        - button \"Tomorrow\"\n        - button \"+3 days\"\n        - button \"+1 week\"\n        - button \"+2 weeks\"\n      - text: Subject\n      - paragraph: Write a concise summary of what requires office action.\n      - textbox \"Subject\"\n      - text: Instructions / Details(optional)\n      - textbox \"Instructions / Details(optional)\"\n      - group: Supporting attachment (optional) Add file\n      - link \"Cancel\":\n        - /url: /transactions\n      - button \"Submit Work Request\"\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal\n- navigation \"Mobile workspace navigation\":\n  - link \"Home\":\n    - /url: /dashboard\n  - link \"Tasks\":\n    - /url: /my-tasks\n  - link \"Requests\":\n    - /url: /transactions\n  - link \"Inbox\":\n    - /url: /correspondence\n  - button \"Open more navigation options\": More",
+      "manualReview": [
+        {
+          "selector": "#wr-category",
+          "tag": "SELECT",
+          "text": "Planning & DevelopmentZoning / Land UseProcurementICT / Digital SystemsOther",
+          "color": "rgb(236, 242, 239)",
+          "background": [
+            17,
+            24,
+            21
+          ],
+          "contrastRatio": 15.887381513977214,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "note": "Closed native select computed paint; OS popup rendering requires separate assistive-technology review"
+        },
+        {
+          "selector": "#wr-type",
+          "tag": "SELECT",
+          "text": "CLUP / ZoningCDPLDIPAIPProject ProposalProject MonitoringGIS / MappingCBMS / DataLocal Special BodiesTechnical ReviewDev",
+          "color": "rgb(236, 242, 239)",
+          "background": [
+            17,
+            24,
+            21
+          ],
+          "contrastRatio": 15.887381513977214,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "note": "Closed native select computed paint; OS popup rendering requires separate assistive-technology review"
+        },
+        {
+          "selector": "#wr-action",
+          "tag": "SELECT",
+          "text": "For InformationFor ReviewFor CommentFor RecommendationFor ApprovalFor SignatureFor ComplianceFor Appropriate ActionFor I",
+          "color": "rgb(236, 242, 239)",
+          "background": [
+            17,
+            24,
+            21
+          ],
+          "contrastRatio": 15.887381513977214,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "note": "Closed native select computed paint; OS popup rendering requires separate assistive-technology review"
+        },
+        {
+          "selector": "#wr-assignee",
+          "tag": "SELECT",
+          "text": "Unassigned / office queueSynthetic Phase A mayor_approver · Synthetic Test mayor_approverSynthetic Phase A mayor_approve",
+          "color": "rgb(236, 242, 239)",
+          "background": [
+            17,
+            24,
+            21
+          ],
+          "contrastRatio": 15.887381513977214,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "note": "Closed native select computed paint; OS popup rendering requires separate assistive-technology review"
+        }
+      ],
+      "keyboardTrace": [],
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select id=\"wr-category\" name=\"request_category\" class=\"tcds-input\" required=\"\">",
+                      "target": [
+                        "#wr-category"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select id=\"wr-category\" name=\"request_category\" class=\"tcds-input\" required=\"\">",
+              "target": [
+                "#wr-category"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select id=\"wr-type\" name=\"request_type\" class=\"tcds-input\" required=\"\">",
+                      "target": [
+                        "#wr-type"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select id=\"wr-type\" name=\"request_type\" class=\"tcds-input\" required=\"\">",
+              "target": [
+                "#wr-type"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select id=\"wr-action\" name=\"action_required\" class=\"tcds-input\" required=\"\">",
+                      "target": [
+                        "#wr-action"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select id=\"wr-action\" name=\"action_required\" class=\"tcds-input\" required=\"\">",
+              "target": [
+                "#wr-action"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select id=\"wr-assignee\" name=\"assigned_employee_id\" class=\"tcds-input\">",
+                      "target": [
+                        "#wr-assignee"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select id=\"wr-assignee\" name=\"assigned_employee_id\" class=\"tcds-input\">",
+              "target": [
+                "#wr-assignee"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/memoranda/create",
+      "width": 320,
+      "theme": "dark",
+      "status": 200,
+      "renderedComponent": "Memoranda/Create",
+      "disposition": "CANONICAL PAGE RENDERED",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-memoranda-create-320-dark.png",
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: Publish Memorandum\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - paragraph: Central issuance\n  - heading \"Publish Memorandum\" [level=1]\n  - paragraph: Recipients are resolved at publication time so delivery and acknowledgement remain auditable.\n  - link \"Back to Memoranda\":\n    - /url: /memoranda\n  - text: Memo number\n  - textbox \"Memo number\": MPDO-MEMO-2026-001\n  - text: Classification\n  - combobox \"Classification\":\n    - option \"Internal\" [selected]\n    - option \"Public\"\n    - option \"Confidential\"\n  - text: Title\n  - textbox \"Title\"\n  - text: Memorandum content\n  - textbox \"Memorandum content\"\n  - text: Audience\n  - button \"departments\"\n  - button \"employees\"\n  - checkbox \"Synthetic MPDO Test Office\"\n  - text: Synthetic MPDO Test Office\n  - checkbox \"Require employee acknowledgement\" [checked]\n  - text: Require employee acknowledgement\n  - link \"Cancel\":\n    - /url: /memoranda\n  - button \"Publish & Deliver\" [disabled]\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal\n- navigation \"Mobile workspace navigation\":\n  - link \"Home\":\n    - /url: /dashboard\n  - link \"Tasks\":\n    - /url: /my-tasks\n  - link \"Requests\":\n    - /url: /transactions\n  - link \"Inbox\":\n    - /url: /correspondence\n  - button \"Open more navigation options\": More",
+      "manualReview": [
+        {
+          "selector": "select",
+          "tag": "SELECT",
+          "text": "InternalPublicConfidential",
+          "color": "rgb(236, 242, 239)",
+          "background": [
+            17,
+            24,
+            21
+          ],
+          "contrastRatio": 15.887381513977214,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "note": "Closed native select computed paint; OS popup rendering requires separate assistive-technology review"
+        }
+      ],
+      "keyboardTrace": [],
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select class=\"tcds-input\"><option value=\"internal\">Internal</option><option value=\"public\">Public</option><option value=\"confidential\">Confidential</option></select>",
+                      "target": [
+                        "select"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select class=\"tcds-input\"><option value=\"internal\">Internal</option><option value=\"public\">Public</option><option value=\"confidential\">Confidential</option></select>",
+              "target": [
+                "select"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/travel-orders/create",
+      "width": 320,
+      "theme": "dark",
+      "status": 403,
+      "renderedComponent": "Errors/Status",
+      "disposition": "AUTHORIZATION DENIED: not positive page coverage",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-travel-orders-create-320-dark.png",
+      "accessibilityTree": "- main:\n  - region \"You cannot open this page\":\n    - paragraph: Access denied\n    - heading \"You cannot open this page\" [level=1]\n    - paragraph: Your current account does not have permission to access this resource.\n    - text: Request ID\n    - code: 28a135f3-fffd-47bf-a70c-99943681e73f\n    - button \"Retry\"\n    - button \"Go back\"\n    - link \"Return to dashboard\":\n      - /url: /dashboard",
+      "manualReview": [],
+      "keyboardTrace": [],
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/work-requests/origin-delivery-exceptions",
+      "width": 320,
+      "theme": "dark",
+      "status": 404,
+      "renderedComponent": "Errors/Status",
+      "disposition": "NOT FOUND: not positive page coverage",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-work-requests-origin-delivery-exceptions-320-dark.png",
+      "accessibilityTree": "- main:\n  - region \"We could not find that page\":\n    - paragraph: Page not found\n    - heading \"We could not find that page\" [level=1]\n    - paragraph: The address may be incorrect, or the page may no longer be available.\n    - text: Request ID\n    - code: 8fa7cfeb-ffa1-4f2a-9845-25d799459490\n    - button \"Retry\"\n    - button \"Go back\"\n    - link \"Return to dashboard\":\n      - /url: /dashboard",
+      "manualReview": [],
+      "keyboardTrace": [],
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/messages",
+      "width": 320,
+      "theme": "dark",
+      "status": 403,
+      "renderedComponent": "Errors/Status",
+      "disposition": "AUTHORIZATION DENIED: not positive page coverage",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-messages-320-dark.png",
+      "accessibilityTree": "- main:\n  - region \"You cannot open this page\":\n    - paragraph: Access denied\n    - heading \"You cannot open this page\" [level=1]\n    - paragraph: Your current account does not have permission to access this resource.\n    - text: Request ID\n    - code: a172248a-ea3c-45fd-a235-54e1679b4e29\n    - button \"Retry\"\n    - button \"Go back\"\n    - link \"Return to dashboard\":\n      - /url: /dashboard",
+      "manualReview": [],
+      "keyboardTrace": [],
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/hris/payroll",
+      "width": 320,
+      "theme": "dark",
+      "status": 404,
+      "renderedComponent": "Errors/Status",
+      "disposition": "NOT FOUND: not positive page coverage",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-hris-payroll-320-dark.png",
+      "accessibilityTree": "- main:\n  - region \"We could not find that page\":\n    - paragraph: Page not found\n    - heading \"We could not find that page\" [level=1]\n    - paragraph: The address may be incorrect, or the page may no longer be available.\n    - text: Request ID\n    - code: f5d96238-5a7d-4f62-b4b3-85cdfa6be4c4\n    - button \"Retry\"\n    - button \"Go back\"\n    - link \"Return to dashboard\":\n      - /url: /dashboard",
+      "manualReview": [],
+      "keyboardTrace": [],
+      "violations": [],
+      "incomplete": []
+    }
+  ],
+  "interactions": [
+    {
+      "role": "department_head",
+      "label": "real-supporting-document-upload-private-preview",
+      "authenticatedBytesMatch": true,
+      "anonymousDenied": true,
+      "route": "/planning/attachments/47b30df5-a535-4bfe-9dde-56a20373ab4d/preview"
+    },
+    {
+      "role": "department_head",
+      "label": "real-staff-designate-scope-toggle-revoke",
+      "employee": 87
+    }
+  ],
+  "interactionCaptures": [
+    {
+      "file": "interaction-document-upload-ready.png",
+      "route": "/development-plans"
+    },
+    {
+      "file": "interaction-document-metadata.png",
+      "route": "/development-plans"
+    },
+    {
+      "file": "interaction-staff-designated.png",
+      "route": "/development-plans"
+    }
+  ],
+  "failures": []
+}

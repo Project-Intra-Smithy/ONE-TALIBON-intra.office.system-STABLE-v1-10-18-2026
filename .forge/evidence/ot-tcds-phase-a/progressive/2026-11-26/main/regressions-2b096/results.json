@@ -1,0 +1,72 @@
+{
+  "sourceSha": "2b096d74cabe3c0da6fc171dc052917f9e72210f",
+  "completed": true,
+  "passed": true,
+  "results": [
+    {
+      "label": "canonical-types",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "preview-types",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "-p",
+        "preview/tsconfig.json"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "frontend-contracts",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--experimental-strip-types",
+        "--test",
+        "tests/Frontend/aj-pr44-integration-contract.test.mjs",
+        "tests/Frontend/appearance-bootstrap.test.mjs",
+        "tests/Frontend/audit-source-reference.test.mjs",
+        "tests/Frontend/calendar-view-contract.test.mjs",
+        "tests/Frontend/m4-c1-c2-c3-preservation.test.mjs",
+        "tests/Frontend/m4-planning-suite-contract.test.mjs",
+        "tests/Frontend/map-pin-targets.test.mjs",
+        "tests/Frontend/mobile-drawer-shell.test.mjs",
+        "tests/Frontend/navigation-contract.test.mjs",
+        "tests/Frontend/ot-r6-dashboard-contract.test.mjs",
+        "tests/Frontend/ot-r6-module-ux.test.mjs",
+        "tests/Frontend/ot-r6-ui-primitives.test.mjs",
+        "tests/Frontend/ot-reference-r4-density.test.mjs",
+        "tests/Frontend/ot-reference-r5-panels.test.mjs",
+        "tests/Frontend/ot-reference-shell-contract.test.mjs",
+        "tests/Frontend/ot-reference-visual-refinement.test.mjs",
+        "tests/Frontend/preview-isolation.test.mjs",
+        "tests/Frontend/r8-a1-search-contract.test.mjs",
+        "tests/Frontend/r8-a2-document-center-contract.test.mjs",
+        "tests/Frontend/r8-a3-directory.test.mjs",
+        "tests/Frontend/r8-b1-plans-library.test.mjs",
+        "tests/Frontend/r8-b2-ppa-register.test.mjs",
+        "tests/Frontend/schedule-presentation.test.mjs",
+        "tests/Frontend/task-read-contract.test.mjs",
+        "tests/Frontend/tcds-f01-f02-regression.test.mjs",
+        "tests/Frontend/ui-contracts.test.mjs",
+        "tests/Frontend/work-request-return-context.test.mjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "modern-color-review-unit",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--test",
+        "tests/Browser/manual-contrast.test.mjs"
+      ],
+      "exitCode": 0
+    }
+  ]
+}

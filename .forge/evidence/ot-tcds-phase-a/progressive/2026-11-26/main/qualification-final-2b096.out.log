@@ -1,0 +1,86 @@
+Qualification evidence: C:\dev\TAL\ot-tcds-phase-a\storage\app\qa\phase-a-qualification\2b096d74cabe-2026-11-26T07-40-00-670Z
+Qualification employee 320px light complete
+Qualification employee 320px dark complete
+Qualification employee 390px light complete
+Qualification employee 390px dark complete
+Qualification employee 768px light complete
+Qualification employee 768px dark complete
+Qualification employee 1440px light complete
+Qualification employee 1440px dark complete
+Qualification system_admin 320px light complete
+Qualification system_admin 320px dark complete
+Qualification system_admin 390px light complete
+Qualification system_admin 390px dark complete
+Qualification system_admin 768px light complete
+Qualification system_admin 768px dark complete
+Qualification system_admin 1440px light complete
+Qualification system_admin 1440px dark complete
+Qualification department_head 320px light complete
+Qualification department_head 320px dark complete
+Qualification department_head 390px light complete
+Qualification department_head 390px dark complete
+Qualification department_head 768px light complete
+Qualification department_head 768px dark complete
+Qualification department_head 1440px light complete
+Qualification department_head 1440px dark complete
+Qualification mayor_approver 320px light complete
+Qualification mayor_approver 320px dark complete
+Qualification mayor_approver 390px light complete
+Qualification mayor_approver 390px dark complete
+Qualification mayor_approver 768px light complete
+Qualification mayor_approver 768px dark complete
+Qualification mayor_approver 1440px light complete
+Qualification mayor_approver 1440px dark complete
+{
+  "observations": 496,
+  "failures": [
+    {
+      "role": "employee",
+      "route": "/legislation",
+      "width": 320,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "violationIds": [
+        "color-contrast"
+      ]
+    },
+    {
+      "role": "employee",
+      "route": "/legislation",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "violationIds": [
+        "color-contrast"
+      ]
+    },
+    {
+      "role": "employee",
+      "route": "/legislation",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "violationIds": [
+        "color-contrast"
+      ]
+    },
+    {
+      "role": "employee",
+      "route": "/legislation",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "violationIds": [
+        "color-contrast"
+      ]
+    }
+  ]
+}

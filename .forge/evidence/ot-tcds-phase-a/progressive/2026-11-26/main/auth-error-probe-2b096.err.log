@@ -1,0 +1,28 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: See preserved qualification failures
+
+1 !== 0
+
+    at file:///C:/dev/TAL/ot-tcds-phase-a/storage/app/qa/auth-error-probe-browser.mjs:165:8 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.22.1
+file:///C:/dev/TAL/ot-tcds-phase-a/storage/app/qa/auth-error-probe-runtime.mjs:69
+        test.on('exit', code => code === 0 ? resolve() : reject(new Error(`Canonical browser validation failed (${code})`)));
+                                                                ^
+
+Error: Canonical browser validation failed (1)
+    at ChildProcess.<anonymous> (file:///C:/dev/TAL/ot-tcds-phase-a/storage/app/qa/auth-error-probe-runtime.mjs:69:65)
+    at ChildProcess.emit (node:events:514:28)
+    at ChildProcess._handle.onexit (node:internal/child_process:324:12)
+
+Node.js v24.22.1

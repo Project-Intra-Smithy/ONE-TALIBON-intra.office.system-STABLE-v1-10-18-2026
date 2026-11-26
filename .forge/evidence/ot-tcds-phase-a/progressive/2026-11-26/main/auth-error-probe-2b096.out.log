@@ -1,0 +1,13 @@
+Qualification evidence: C:\dev\TAL\ot-tcds-phase-a\storage\app\qa\phase-a-qualification\2b096d74cabe-2026-11-26T07-55-58-082Z
+{
+  "observations": 4,
+  "failures": [
+    {
+      "route": "/security/mfa/enroll",
+      "overflow": false,
+      "violationIds": [
+        "color-contrast"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <meta name="csrf-token" content="[REDACTED-CSRF]">
+    <title inertia>Talibon Intra-Office Portal</title>
+    <script>
+        (() => {
+            const root = document.documentElement;
+            let preference = 'system';
+
+            try {
+                const stored = window.localStorage.getItem('talibon.appearance');
+                if (stored === 'light' || stored === 'dark' || stored === 'system') {
+                    preference = stored;
+                }
+            } catch {
+                // Storage may be blocked; use the system preference without interrupting bootstrap.
+            }
+
+            const dark = preference === 'dark'
+                || (preference === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            root.classList.toggle('dark', dark);
+            root.dataset.appearance = preference;
+            root.style.colorScheme = dark ? 'dark' : 'light';
+        })();
+    </script>
+        <link rel="preload" as="style" href="http://127.0.0.1:8075/build/assets/app-CvuSL1Qk.css" /><link rel="modulepreload" as="script" href="http://127.0.0.1:8075/build/assets/app-DilurUGQ.js" /><link rel="stylesheet" href="http://127.0.0.1:8075/build/assets/app-CvuSL1Qk.css" /><script type="module" src="http://127.0.0.1:8075/build/assets/app-DilurUGQ.js"></script>    </head>
+<body class="antialiased">
+    <script data-page="app" type="application/json">{"component":"Auth\/Login","props":{"errors":{},"appName":"Talibon Intra-Office Portal","workspaceExperience":null,"auth":{"user":null},"permissions":{"reports":false,"navigation":{"systemAdministration":false,"dashboard":false,"transactions":false,"correspondence":false,"records":false,"travelOrders":false,"reports":false,"mayorOffice":false,"memoranda":false,"departments":false,"audit":false}},"flash":{"success":null,"error":null}},"url":"\/login","version":"7c71e25fd8fd0844a7582d7d3fcff99d","sharedProps":["errors","appName","workspaceExperience","auth","permissions","flash"]}</script><div id="app"></div></body>
+</html>

@@ -1,0 +1,53 @@
+{
+  "sourceSha": "2b096d74cabe3c0da6fc171dc052917f9e72210f",
+  "sourceWorktreeDirty": false,
+  "buildManifestSha256": "b9e891fec0282ca7e531587ce25ceb9c9b9e7d3fb6064bb45301c8868791c467",
+  "completed": true,
+  "passed": false,
+  "observations": [
+    {
+      "role": "employee",
+      "route": "/security/account",
+      "width": 320,
+      "theme": "dark",
+      "status": 200,
+      "renderedComponent": "Auth/AccountSecurity",
+      "capture": "employee-password-error-dark.png",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".text-red-700"
+            ]
+          ]
+        }
+      ],
+      "incomplete": [],
+      "invalidFieldCount": 0,
+      "passwordChangeRejected": true
+    },
+    {
+      "role": "system_admin",
+      "route": "/security/mfa",
+      "width": 320,
+      "theme": "dark",
+      "status": 200,
+      "renderedComponent": "Auth/MfaSettings",
+      "capture": "system_admin-password-error-dark.png",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".text-red-700"
+            ]
+          ]
+        }
+      ],
+      "incomplete": [],
+      "invalidFieldCount": 0,
+      "passwordChangeRejected": true
+    }
+  ]
+}

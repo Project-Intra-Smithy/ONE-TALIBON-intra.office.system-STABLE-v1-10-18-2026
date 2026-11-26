@@ -1,0 +1,51 @@
+{
+  "completed": true,
+  "passed": true,
+  "sourceSha": "4f56b5dbf4fb17629d87aaac7f56fef65e1082ce",
+  "sourceWorktreeDirty": true,
+  "buildManifestSha256": "a6900b4a3010dff912e91de87de12b3dc56e4e4d2a2b2fc16666ef3a621e7f23",
+  "observations": [
+    {
+      "role": "system_admin",
+      "route": "/admin",
+      "label": "admin",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-admin-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".lg\\:grid-cols-3 > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(6) > select"
+            ],
+            [
+              "label:nth-child(1) > select"
+            ],
+            [
+              ".p-4.sm\\:p-5:nth-child(1) > .sm\\:grid-cols-2 > label:nth-child(2) > select"
+            ],
+            [
+              ".xl\\:grid-cols-\\[minmax\\(0\\,1\\.5fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_auto\\] > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(3) > select"
+            ],
+            [
+              "label:nth-child(4) > select"
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

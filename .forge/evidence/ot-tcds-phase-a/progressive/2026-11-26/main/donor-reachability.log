@@ -1,0 +1,253 @@
+[
+  {
+    "donor": "resources/css/app.css",
+    "originalConsumers": 1,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/css/base.css",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/css/print.css",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/css/tokens.css",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/app.tsx",
+    "originalConsumers": 1,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/ActivityRail.tsx",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/DashboardHeader.tsx",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/MetricGroup.tsx",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/MunicipalContext.tsx",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/dashboardShortcuts.ts",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/r7/R7LowerRegion.tsx",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/r7/R7UpperRegion.tsx",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/r7/lower/R7DocumentsPanel.tsx",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/r7/lower/R7EventsPanel.tsx",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/r7/lower/R7QuickLinksPanel.tsx",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/r7/lower/R7TaskPanel.tsx",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/rolePresentation.ts",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/dashboard/types.ts",
+    "originalConsumers": 2,
+    "directCanonicalImports": [
+      "resources/js/components/dashboard/types.ts"
+    ]
+  },
+  {
+    "donor": "resources/js/components/documents/DocumentCollectionNav.tsx",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/documents/DocumentMetadataPanel.tsx",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/documents/DocumentRegister.tsx",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/legislative/types.ts",
+    "originalConsumers": 2,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/maps/DesignatedStaffDrawer.tsx",
+    "originalConsumers": 3,
+    "directCanonicalImports": [
+      "resources/js/components/planning/PlanningStaffList.tsx"
+    ]
+  },
+  {
+    "donor": "resources/js/components/maps/PlanningMapFormDrawer.tsx",
+    "originalConsumers": 1,
+    "directCanonicalImports": [
+      "resources/js/components/maps/MapStudioView.tsx"
+    ]
+  },
+  {
+    "donor": "resources/js/components/maps/PlanningMapPlateModal.tsx",
+    "originalConsumers": 1,
+    "directCanonicalImports": [
+      "resources/js/components/maps/MapPlateDialog.tsx"
+    ]
+  },
+  {
+    "donor": "resources/js/components/maps/TalibonInteractiveMap.tsx",
+    "originalConsumers": 2,
+    "directCanonicalImports": [
+      "resources/js/components/maps/InteractiveReferenceMap.tsx"
+    ]
+  },
+  {
+    "donor": "resources/js/components/planning/DocumentPreviewModal.tsx",
+    "originalConsumers": 2,
+    "directCanonicalImports": [
+      "resources/js/components/planning/DocumentPreviewPresentation.tsx"
+    ]
+  },
+  {
+    "donor": "resources/js/components/plans/PlanDossierModal.tsx",
+    "originalConsumers": 1,
+    "directCanonicalImports": [
+      "resources/js/components/plans/PlanLinkedPpas.tsx",
+      "resources/js/components/plans/PlanProfile.tsx",
+      "resources/js/components/plans/PlanChaptersMaps.tsx",
+      "resources/js/components/plans/PlanDossierPresentation.tsx"
+    ]
+  },
+  {
+    "donor": "resources/js/components/plans/PlanFormDrawer.tsx",
+    "originalConsumers": 1,
+    "directCanonicalImports": [
+      "resources/js/components/plans/PlanStudioView.tsx"
+    ]
+  },
+  {
+    "donor": "resources/js/components/portal/PortalSearchField.tsx",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/portal/StatusBadge.tsx",
+    "originalConsumers": 1,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/ppas/PPAFormDrawer.tsx",
+    "originalConsumers": 1,
+    "directCanonicalImports": [
+      "resources/js/components/ppas/PPAStudioView.tsx"
+    ]
+  },
+  {
+    "donor": "resources/js/components/public/types.ts",
+    "originalConsumers": 1,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/system/AppErrorBoundary.tsx",
+    "originalConsumers": 1,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/ui/README.md",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/work-queue/WorkItemList.tsx",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/work-queue/WorkScopeTabs.tsx",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/components/work-queue/types.ts",
+    "originalConsumers": 1,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/data/municipal/meetings.json",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/data/municipal/planningGovernance.ts",
+    "originalConsumers": 3,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/data/municipal/planningMaps.ts",
+    "originalConsumers": 55,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/data/municipal/ppas.types.ts",
+    "originalConsumers": 3,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/navigation/navigationTypes.ts",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/types.ts",
+    "originalConsumers": 55,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/js/vite-env.d.ts",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  },
+  {
+    "donor": "resources/views/app.blade.php",
+    "originalConsumers": 0,
+    "directCanonicalImports": []
+  }
+]

@@ -1,0 +1,18 @@
+Qualification evidence: C:\dev\TAL\ot-tcds-phase-a\storage\app\qa\phase-a-qualification\4ab2463700a7-2026-11-26T07-29-31-398Z
+{
+  "observations": 2,
+  "failures": [
+    {
+      "role": "department_head",
+      "route": "/transactions/3",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "violationIds": [
+        "select-name"
+      ]
+    }
+  ]
+}

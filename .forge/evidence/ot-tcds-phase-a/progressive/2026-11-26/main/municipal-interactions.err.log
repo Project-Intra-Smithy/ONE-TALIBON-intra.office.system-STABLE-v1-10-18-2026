@@ -1,0 +1,23 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('dialog').getByRole('tab', { name: 'Summary', exact: true })[22m
+
+    at C:\dev\TAL\ot-tcds-phase-a\storage\app\qa\municipal-interactions-browser.mjs:11:124 {
+  name: 'TimeoutError'
+}
+
+Node.js v24.22.1
+file:///C:/dev/TAL/ot-tcds-phase-a/storage/app/qa/municipal-interactions-runtime.mjs:69
+        test.on('exit', code => code === 0 ? resolve() : reject(new Error(`Canonical browser validation failed (${code})`)));
+                                                                ^
+
+Error: Canonical browser validation failed (1)
+    at ChildProcess.<anonymous> (file:///C:/dev/TAL/ot-tcds-phase-a/storage/app/qa/municipal-interactions-runtime.mjs:69:65)
+    at ChildProcess.emit (node:events:514:28)
+    at ChildProcess._handle.onexit (node:internal/child_process:324:12)
+
+Node.js v24.22.1

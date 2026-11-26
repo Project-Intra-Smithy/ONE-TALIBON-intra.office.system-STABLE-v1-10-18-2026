@@ -1,0 +1,8 @@
+file:///C:/dev/TAL/ot-tcds-phase-a/storage/app/qa/run-final-followups.mjs:7
+while(true){if(fs.existsSync(receiptPath)){receipt=JSON.parse(fs.readFileSync(receiptPath));if(receipt.failures.length)throw new Error('Expanded canonical qualification has failures; inspect its raw receipt');if(receipt.completed)break;}if(Date.now()>deadline)throw new Error('Expanded qualification not complete');await wait(2000);}
+                                                                                                                             ^
+
+Error: Expanded canonical qualification has failures; inspect its raw receipt
+    at file:///C:/dev/TAL/ot-tcds-phase-a/storage/app/qa/run-final-followups.mjs:7:126
+
+Node.js v24.22.1

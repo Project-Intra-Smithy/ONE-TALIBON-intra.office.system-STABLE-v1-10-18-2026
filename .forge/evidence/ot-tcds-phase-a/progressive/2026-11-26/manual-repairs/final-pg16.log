@@ -1,0 +1,15 @@
+2026-11-26 17:27:57.933 +08 [23132] LOG:  starting PostgreSQL 16.15, compiled by Visual C++ build 1944, 64-bit
+2026-11-26 17:27:57.935 +08 [23132] LOG:  listening on IPv4 address "127.0.0.1", port 55476
+2026-11-26 17:27:58.030 +08 [19952] LOG:  database system was shut down at 2026-11-26 17:27:47 +08
+2026-11-26 17:27:58.067 +08 [23132] LOG:  database system is ready to accept connections
+2026-11-26 17:32:58.028 +08 [6868] LOG:  checkpoint starting: time
+2026-11-26 17:35:53.027 +08 [6868] LOG:  checkpoint complete: wrote 1575 buffers (9.6%); 1 WAL file(s) added, 0 removed, 0 recycled; write=173.470 s, sync=1.390 s, total=175.000 s; sync files=867, longest=0.023 s, average=0.002 s; distance=8155 kB, estimate=8155 kB; lsn=0/1D8E0F0, redo lsn=0/1D6E3A8
+2026-11-26 17:36:09.956 +08 [5016] LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2026-11-26 17:36:10.779 +08 [23132] LOG:  received fast shutdown request
+2026-11-26 17:36:10.782 +08 [23132] LOG:  aborting any active transactions
+2026-11-26 17:36:10.793 +08 [23132] LOG:  background worker "logical replication launcher" (PID 13720) exited with exit code 1
+2026-11-26 17:36:10.797 +08 [6868] LOG:  shutting down
+2026-11-26 17:36:10.799 +08 [6868] LOG:  checkpoint starting: shutdown immediate
+2026-11-26 17:36:10.863 +08 [6868] LOG:  checkpoint complete: wrote 27 buffers (0.2%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.026 s, sync=0.026 s, total=0.067 s; sync files=22, longest=0.003 s, average=0.002 s; distance=135 kB, estimate=7353 kB; lsn=0/1D90100, redo lsn=0/1D90100
+2026-11-26 17:36:11.016 +08 [23132] LOG:  database system is shut down

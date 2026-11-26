@@ -1,0 +1,233 @@
+{
+  "completed": false,
+  "passed": false,
+  "sourceSha": "c8e5bbdd71fb4f23c74013fe4de8353a75998a63",
+  "sourceWorktreeDirty": false,
+  "buildManifestSha256": "a0df3d54849453dbf22526bb07016229433360917e2bbdae755a6f9d3020dee1",
+  "observations": [
+    {
+      "role": "department_head",
+      "route": "/my-tasks",
+      "label": "my-tasks",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-my-tasks-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "label": "transactions-create",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-transactions-create-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#wr-category"
+            ],
+            [
+              "#wr-type"
+            ],
+            [
+              "#wr-action"
+            ],
+            [
+              "#wr-assignee"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/calendar",
+      "label": "calendar",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-calendar-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans-studio",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-studio-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_8_-horizon"
+            ],
+            [
+              "#_r_8_-status"
+            ],
+            [
+              ".py-3\\.5 > .gap-2 > .disabled\\:opacity-55.border-\\[var\\(--border-control\\)\\].cursor-pointer"
+            ],
+            [
+              "button[form=\"_r_8_\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".r8-ppas-cards"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas-studio",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-studio-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_b_-year"
+            ],
+            [
+              "#_r_b_-sector"
+            ],
+            [
+              ".disabled\\:cursor-not-allowed.disabled\\:opacity-55.cursor-pointer:nth-child(1)"
+            ],
+            [
+              "button[form=\"_r_b_\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

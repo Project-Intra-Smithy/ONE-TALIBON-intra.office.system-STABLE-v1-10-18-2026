@@ -1,0 +1,25 @@
+{
+  "completed": false,
+  "passed": false,
+  "scope": {
+    "widths": [
+      320
+    ],
+    "roles": [
+      "auth_enrollment"
+    ],
+    "focused": true
+  },
+  "sourceSha": "4ab2463700a715427d591649b5bc0c3316507dee",
+  "sourceWorktreeDirty": true,
+  "buildManifestSha256": "0b0925f9b2bd2d5eb8f744070290e0571fa156486d45f39cfdb7443ed2d173c1",
+  "observations": [],
+  "interactions": [],
+  "interactionCaptures": [],
+  "failures": [
+    {
+      "stage": "qualification interaction or authentication",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'Auth/Login'\n- 'Auth/MfaEnrollment'\n        ^\n"
+    }
+  ]
+}

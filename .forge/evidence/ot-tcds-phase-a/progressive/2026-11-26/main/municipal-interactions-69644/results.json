@@ -1,0 +1,117 @@
+{
+  "sourceSha": "69644e2069ad5b8f4df51b959cf3e11c8451f577",
+  "sourceWorktreeDirty": false,
+  "completed": false,
+  "observations": [],
+  "focus": [
+    {
+      "theme": "light",
+      "step": 0,
+      "insideDialog": true,
+      "name": "1Summary"
+    },
+    {
+      "theme": "light",
+      "step": 1,
+      "insideDialog": true,
+      "name": "2Activity"
+    },
+    {
+      "theme": "light",
+      "step": 2,
+      "insideDialog": true,
+      "name": "3Documents"
+    },
+    {
+      "theme": "light",
+      "step": 3,
+      "insideDialog": true,
+      "name": "Close"
+    },
+    {
+      "theme": "light",
+      "step": 4,
+      "insideDialog": true,
+      "name": "Next"
+    },
+    {
+      "theme": "light",
+      "step": 5,
+      "insideDialog": false,
+      "name": "Home"
+    },
+    {
+      "theme": "light",
+      "step": 6,
+      "insideDialog": false,
+      "name": "Tasks"
+    },
+    {
+      "theme": "light",
+      "step": 7,
+      "insideDialog": false,
+      "name": "Requests"
+    },
+    {
+      "theme": "light",
+      "step": 8,
+      "insideDialog": false,
+      "name": "Inbox"
+    },
+    {
+      "theme": "light",
+      "step": 9,
+      "insideDialog": false,
+      "name": "Open more navigation options"
+    },
+    {
+      "theme": "light",
+      "step": 10,
+      "insideDialog": false,
+      "name": "{\"component\":\"MunicipalSystems\\/Index\",\"props\":{\"errors\":{},\"appName\":\"Talibon I"
+    },
+    {
+      "theme": "light",
+      "step": 11,
+      "insideDialog": false,
+      "name": "Skip to main content"
+    },
+    {
+      "theme": "light",
+      "step": 12,
+      "insideDialog": false,
+      "name": "Open navigation"
+    },
+    {
+      "theme": "light",
+      "step": 13,
+      "insideDialog": false,
+      "name": "Open quick jump and search"
+    },
+    {
+      "theme": "light",
+      "step": 14,
+      "insideDialog": false,
+      "name": "Open notifications"
+    },
+    {
+      "theme": "light",
+      "step": 15,
+      "insideDialog": false,
+      "name": "Open portal applications"
+    },
+    {
+      "theme": "light",
+      "step": 16,
+      "insideDialog": false,
+      "name": "Overview"
+    },
+    {
+      "theme": "light",
+      "step": 17,
+      "insideDialog": false,
+      "name": "Purchase Requests"
+    }
+  ],
+  "errors": []
+}

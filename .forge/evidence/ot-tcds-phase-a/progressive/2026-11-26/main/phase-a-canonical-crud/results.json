@@ -1,0 +1,23 @@
+{
+  "completed": true,
+  "coverage": "planning-crud-only",
+  "sourceSha": "95f741f7992b3d20d96184e0f6a323376e5803c4",
+  "buildManifestSha256": "093528b57eef2d3906046e3dcfe13e2abebceb12fb458e3cf5afcf61c1d7a9f1",
+  "sourceWorktreeDirty": true,
+  "results": [],
+  "interactions": [
+    {
+      "role": "department_head",
+      "label": "real-plan-create-edit-delete",
+      "immutableCode": true
+    },
+    {
+      "role": "department_head",
+      "label": "real-ppa-create-edit-delete"
+    },
+    {
+      "role": "department_head",
+      "label": "real-map-create-edit-delete"
+    }
+  ]
+}

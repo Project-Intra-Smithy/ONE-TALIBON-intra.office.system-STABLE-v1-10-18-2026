@@ -1,0 +1,16 @@
+import fs from 'node:fs';
+import crypto from 'node:crypto';
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+assert.equal(execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),'2b096d74cabe3c0da6fc171dc052917f9e72210f');
+assert.equal(execFileSync('git',['status','--porcelain'],{encoding:'utf8'}).trim(),'');
+const manifest=crypto.createHash('sha256').update(fs.readFileSync('public/build/manifest.json')).digest('hex');
+let browser=fs.readFileSync('tests/Browser/phase-a-qualification.mjs','utf8');
+browser=browser.replace("from './phase-a-manual-review.mjs'","from '../../../tests/Browser/phase-a-manual-review.mjs'");
+browser=browser.replace('async function inspectSensitive(page,component,theme){',"async function inspectSensitive(page,component,theme){if(component==='Auth/MfaRecoveryCodes')await page.getByRole('button',{name:'Copy codes',exact:true}).hover();");
+browser=browser.replace('overflow,capture:null,captureDisposition:',"overflow,interactionState:component==='Auth/MfaRecoveryCodes'?'copy-codes-hover':'baseline',capture:null,captureDisposition:");
+fs.writeFileSync('storage/app/qa/hover-probe-browser.mjs',browser);
+let driver=fs.readFileSync('tests/Browser/phase-a-accessibility-runtime.mjs','utf8');
+driver=driver.replace("execFileSync(process.execPath, ['node_modules/vite/bin/vite.js', 'build'], { env, stdio: 'pipe' });",`assert.equal(crypto.createHash('sha256').update((await import('node:fs')).readFileSync('public/build/manifest.json')).digest('hex'),'${manifest}');`);
+driver=driver.replaceAll('8075','8077').replace("'tests/Browser/phase-a-qualification.mjs'","'storage/app/qa/hover-probe-browser.mjs'");
+fs.writeFileSync('storage/app/qa/hover-probe-runtime.mjs',driver);

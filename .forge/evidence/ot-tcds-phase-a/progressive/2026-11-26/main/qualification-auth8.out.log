@@ -1,0 +1,13 @@
+Qualification evidence: C:\dev\TAL\ot-tcds-phase-a\storage\app\qa\phase-a-qualification\4ab2463700a7-2026-11-26T07-25-26-983Z
+{
+  "observations": 4,
+  "failures": [
+    {
+      "route": "/security/mfa/recovery-codes",
+      "overflow": false,
+      "violationIds": [
+        "color-contrast"
+      ]
+    }
+  ]
+}

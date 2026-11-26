@@ -1,0 +1,1916 @@
+{
+  "completed": false,
+  "passed": false,
+  "sourceSha": "4ab2463700a715427d591649b5bc0c3316507dee",
+  "sourceWorktreeDirty": false,
+  "buildManifestSha256": "ce6b28cebd4337f7225d85e6e25ac399093547325b32527cdd0eedd8561d550e",
+  "observations": [
+    {
+      "role": "guest",
+      "route": "/",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "renderedComponent": "Public/Home",
+      "disposition": "CANONICAL PAGE RENDERED",
+      "overflow": false,
+      "errors": [],
+      "capture": "guest-home-320-light.png",
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#public-content\"\n- banner \"One Talibon. One workspace.\":\n  - img \"Talibon Municipal Hall, front entrance with Philippine flags\"\n  - link \"ONE TALIBON home\":\n    - /url: \"#home\"\n    - text: ONE TALIBON\n  - link \"Employee Login\":\n    - /url: /login\n  - button \"Open portal navigation\"\n  - paragraph: LGU INTRA-OFFICE PORTAL\n  - heading \"One Talibon. One workspace.\" [level=1]\n  - paragraph: Municipal work, connected across offices. Manage documents, memoranda, schedules, projects, requests, and office coordination in one secure workspace.\n  - link \"Employee Login\":\n    - /url: /login\n  - link \"About the Portal\":\n    - /url: \"#about-portal\"\n  - paragraph: Authorized municipal personnel only. Protected operational records remain inside authenticated access.\n- main:\n  - region \"Portal Capabilities\":\n    - paragraph: Internal portal capabilities\n    - heading \"Portal Capabilities\" [level=2]\n    - paragraph: Core tools for moving municipal work between offices.\n    - text: Available to authorized employees\n    - list:\n      - listitem:\n        - heading \"Inter-Office Transactions\" [level=3]\n        - paragraph: Route requests, endorsements, and actions between offices.\n      - listitem:\n        - heading \"Documents & Memoranda\" [level=3]\n        - paragraph: Manage official documents, memoranda, records, and correspondence.\n      - listitem:\n        - heading \"Employees & Offices\" [level=3]\n        - paragraph: Find office and personnel information in one workspace.\n      - listitem:\n        - heading \"Calendar & Coordination\" [level=3]\n        - paragraph: Coordinate meetings, deadlines, activities, and schedules.\n      - listitem:\n        - heading \"Notifications & Follow-Up\" [level=3]\n        - paragraph: Track work that needs review, action, or follow-up.\n  - region \"Built for municipal coordination.\":\n    - img \"Municipality of Talibon seal\"\n    - paragraph: About the Portal\n    - heading \"Built for municipal coordination.\" [level=2]\n    - paragraph: ONE TALIBON is the LGU’s shared intra-office workspace for coordinating official work, information, documents, schedules, and processes across municipal offices.\n    - paragraph: Municipality of Talibon, Bohol\n    - term: Access boundary\n    - definition: Internal records, transactions, approvals, and employee information require authenticated access.\n    - term: Municipality of Talibon\n    - definition: Public contact details await municipal confirmation.\n  - region \"Secure municipal workspace.\":\n    - paragraph: Secure Access\n    - heading \"Secure municipal workspace.\" [level=2]\n    - paragraph: Official work continues inside the authenticated LGU Intra-Office Portal.\n    - list:\n      - listitem: Authorized personnel only\n      - listitem: Protected internal workspace\n      - listitem: No live operational records on this page\n    - link \"Employee Login\":\n      - /url: /login\n- contentinfo:\n  - link \"ONE TALIBON\":\n    - /url: \"#home\"\n  - text: Municipality of Talibon, Bohol Talibon, Bohol, Philippines\n  - navigation \"Footer\":\n    - link \"About the Portal\":\n      - /url: \"#about-portal\"\n    - link \"Internal Capabilities\":\n      - /url: \"#capabilities\"\n    - link \"Help / Support\":\n      - /url: \"#support\"\n  - text: ONE TALIBON · Municipality of Talibon, Bohol Intra-Office Portal · Authorized municipal personnel",
+      "manualReview": [
+        {
+          "selector": "a[aria-label=\"ONE TALIBON home\"] > span > .brand-name",
+          "tag": "SPAN",
+          "text": "ONE TALIBON",
+          "color": "rgb(255, 255, 255)",
+          "background": [
+            26,
+            42,
+            34
+          ],
+          "contrastRatio": 15.019237444420092,
+          "fontSize": "15px",
+          "fontWeight": "700",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".btn-sm",
+          "tag": "A",
+          "text": "Employee Login",
+          "color": "rgb(11, 61, 43)",
+          "background": [
+            255,
+            255,
+            255
+          ],
+          "contrastRatio": 12.23341006463796,
+          "fontSize": "13px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".hero-body > .label",
+          "tag": "P",
+          "text": "LGU INTRA-OFFICE PORTAL",
+          "color": "rgba(255, 255, 255, 0.78)",
+          "background": [
+            26,
+            42,
+            34
+          ],
+          "contrastRatio": 9.666657620412419,
+          "fontSize": "12px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": "#public-hero-title",
+          "tag": "H1",
+          "text": "One Talibon. One workspace.",
+          "color": "rgb(255, 255, 255)",
+          "background": [
+            26,
+            42,
+            34
+          ],
+          "contrastRatio": 15.019237444420092,
+          "fontSize": "44px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".hero-lede",
+          "tag": "P",
+          "text": "Municipal work, connected across offices. Manage documents, memoranda, schedules, projects, requests, and office coordin",
+          "color": "rgba(255, 255, 255, 0.88)",
+          "background": [
+            26,
+            42,
+            34
+          ],
+          "contrastRatio": 11.919001975896249,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".hero-actions > .btn-light.btn[href$=\"login\"]",
+          "tag": "A",
+          "text": "Employee Login",
+          "color": "rgb(11, 61, 43)",
+          "background": [
+            255,
+            255,
+            255
+          ],
+          "contrastRatio": 12.23341006463796,
+          "fontSize": "15px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".btn-ghost",
+          "tag": "A",
+          "text": "About the Portal",
+          "color": "rgb(255, 255, 255)",
+          "background": [
+            26,
+            42,
+            34
+          ],
+          "contrastRatio": 15.019237444420092,
+          "fontSize": "15px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".hero-note > .wrap > p",
+          "tag": "P",
+          "text": "Authorized municipal personnel only. Protected operational records remain inside authenticated access.",
+          "color": "rgba(255, 255, 255, 0.8)",
+          "background": [
+            26,
+            42,
+            34
+          ],
+          "contrastRatio": 10.093618828302553,
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        }
+      ],
+      "keyboardTrace": [
+        {
+          "tag": "A",
+          "name": "Skip to main content",
+          "role": null,
+          "outline": "rgb(18, 60, 42) solid 2px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "A",
+          "name": "ONE TALIBON home",
+          "role": null,
+          "outline": "rgb(255, 255, 255) solid 2px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "A",
+          "name": "Employee Login",
+          "role": null,
+          "outline": "rgb(11, 61, 43) solid 2px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open portal navigation",
+          "role": null,
+          "outline": "rgb(255, 255, 255) solid 2px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "A",
+          "name": "Employee Login",
+          "role": null,
+          "outline": "rgb(11, 61, 43) solid 2px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "A",
+          "name": "About the Portal",
+          "role": null,
+          "outline": "rgb(255, 255, 255) solid 2px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "A",
+          "name": "Employee Login",
+          "role": null,
+          "outline": "rgb(11, 61, 43) solid 2px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "A",
+          "name": "ONE TALIBONMunicipal Public Portal",
+          "role": null,
+          "outline": "rgb(20, 33, 28) solid 2px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "A",
+          "name": "About the Portal",
+          "role": null,
+          "outline": "rgb(74, 93, 85) solid 2px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "A",
+          "name": "Internal Capabilities",
+          "role": null,
+          "outline": "rgb(74, 93, 85) solid 2px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "A",
+          "name": "Help / Support",
+          "role": null,
+          "outline": "rgb(74, 93, 85) solid 2px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "BODY",
+          "name": "{\"component\":\"Public\\/Home\",\"props\":{\"errors\":{},\"appName\":\"Talibon Intra-Office",
+          "role": null,
+          "outline": "rgb(20, 33, 28) none 0px",
+          "shadow": "none",
+          "inViewport": false
+        }
+      ],
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "bold",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header id=\"home\" tabindex=\"-1\" class=\"hero\" aria-labelledby=\"public-hero-title\">",
+                      "target": [
+                        "#home"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"brand-name\">ONE TALIBON</span>",
+              "target": [
+                "a[aria-label=\"ONE TALIBON home\"] > span > .brand-name"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header id=\"home\" tabindex=\"-1\" class=\"hero\" aria-labelledby=\"public-hero-title\">",
+                      "target": [
+                        "#home"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"btn btn-light btn-sm public-login-link\" href=\"/login\">Employee Login</a>",
+              "target": [
+                ".btn-sm"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header id=\"home\" tabindex=\"-1\" class=\"hero\" aria-labelledby=\"public-hero-title\">",
+                      "target": [
+                        "#home"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"label\">LGU INTRA-OFFICE PORTAL</p>",
+              "target": [
+                ".hero-body > .label"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "33.0pt (44px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "3:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header id=\"home\" tabindex=\"-1\" class=\"hero\" aria-labelledby=\"public-hero-title\">",
+                      "target": [
+                        "#home"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h1 id=\"public-hero-title\">One Talibon. One workspace.</h1>",
+              "target": [
+                "#public-hero-title"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header id=\"home\" tabindex=\"-1\" class=\"hero\" aria-labelledby=\"public-hero-title\">",
+                      "target": [
+                        "#home"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"hero-lede\">Municipal work, connected across offices. Manage documents, memoranda, schedules, projects, requests, and office coordination in one secure workspace.</p>",
+              "target": [
+                ".hero-lede"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header id=\"home\" tabindex=\"-1\" class=\"hero\" aria-labelledby=\"public-hero-title\">",
+                      "target": [
+                        "#home"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"btn btn-light\" href=\"/login\">",
+              "target": [
+                ".hero-actions > .btn-light.btn[href$=\"login\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header id=\"home\" tabindex=\"-1\" class=\"hero\" aria-labelledby=\"public-hero-title\">",
+                      "target": [
+                        "#home"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a href=\"#about-portal\" class=\"btn btn-ghost\">About the Portal</a>",
+              "target": [
+                ".btn-ghost"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header id=\"home\" tabindex=\"-1\" class=\"hero\" aria-labelledby=\"public-hero-title\">",
+                      "target": [
+                        "#home"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p>Authorized municipal personnel only. Protected operational records remain inside authenticated access.</p>",
+              "target": [
+                ".hero-note > .wrap > p"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "role": "guest",
+      "route": "/login",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "renderedComponent": "Auth/Login",
+      "disposition": "CANONICAL PAGE RENDERED",
+      "overflow": false,
+      "errors": [],
+      "capture": "guest-login-320-light.png",
+      "accessibilityTree": "- link \"Skip to sign-in form\":\n  - /url: \"#login-panel\"\n- region \"Municipality of Talibon Portal Identity\":\n  - img \"Official seal of the Municipality of Talibon\"\n  - paragraph: Republic of the Philippines\n  - paragraph: Municipality of Talibon, Province of Bohol\n  - heading \"ONE TALIBON\" [level=1]\n  - paragraph: Municipal Intra-Office Portal\n- main:\n  - link \"Back to Public Portal\":\n    - /url: /\n  - region \"Sign in to your workspace\":\n    - paragraph: Staff Sign In\n    - heading \"Sign in to your workspace\" [level=2]\n    - paragraph: Use your assigned municipal account credentials.\n    - form \"Employee sign-in\":\n      - text: Username or email\n      - textbox \"Username or email\"\n      - text: Password\n      - textbox \"Password\"\n      - button \"Show password\"\n      - checkbox \"Remember me (unavailable)\" [disabled]\n      - text: Remember me (unavailable)\n      - button \"Sign in\"\n      - status\n    - text: or\n    - link \"First time here? Activate your LGU account\":\n      - /url: /activate-account\n  - paragraph: Contact your authorized account administrator",
+      "manualReview": [
+        {
+          "selector": ".tracking-\\[0\\.14em\\]",
+          "tag": "P",
+          "text": "Republic of the Philippines",
+          "color": "rgb(226, 189, 98)",
+          "background": [
+            10,
+            54,
+            38
+          ],
+          "contrastRatio": 7.452154249300412,
+          "fontSize": "12px",
+          "fontWeight": "700",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".text-white.font-semibold",
+          "tag": "P",
+          "text": "Municipality of Talibon, Province of Bohol",
+          "color": "rgb(255, 255, 255)",
+          "background": [
+            10,
+            54,
+            38
+          ],
+          "contrastRatio": 13.388068900871595,
+          "fontSize": "14px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": "h1",
+          "tag": "H1",
+          "text": "ONE TALIBON",
+          "color": "rgb(255, 255, 255)",
+          "background": [
+            10,
+            54,
+            38
+          ],
+          "contrastRatio": 13.388068900871595,
+          "fontSize": "24px",
+          "fontWeight": "800",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".mt-1",
+          "tag": "P",
+          "text": "Municipal Intra-Office Portal",
+          "color": "rgb(212, 236, 224)",
+          "background": [
+            10,
+            54,
+            38
+          ],
+          "contrastRatio": 10.757603095974435,
+          "fontSize": "14px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".municipal-secondary-button",
+          "tag": "A",
+          "text": "First time here? Activate your LGU account",
+          "color": "rgb(20, 33, 28)",
+          "background": [
+            255,
+            255,
+            255
+          ],
+          "contrastRatio": 16.61319910975379,
+          "fontSize": "14px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        }
+      ],
+      "keyboardTrace": [
+        {
+          "tag": "A",
+          "name": "Skip to sign-in form",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": false
+        },
+        {
+          "tag": "A",
+          "name": "Back to Public Portal",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "INPUT",
+          "name": "",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "INPUT",
+          "name": "",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Show password",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Sign in",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "A",
+          "name": "First time here? Activate your LGU account",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "BODY",
+          "name": "{\"component\":\"Auth\\/Login\",\"props\":{\"errors\":{},\"appName\":\"Talibon Intra-Office ",
+          "role": null,
+          "outline": "rgb(20, 33, 28) none 0px",
+          "shadow": "none",
+          "inViewport": false
+        },
+        {
+          "tag": "A",
+          "name": "Skip to sign-in form",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": false
+        },
+        {
+          "tag": "A",
+          "name": "Back to Public Portal",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "INPUT",
+          "name": "",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "INPUT",
+          "name": "",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        }
+      ],
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div aria-hidden=\"true\" class=\"pointer-events-none absolute inset-0 bg-gradient-to-br from-[#0a3626]/95 via-[#0e4d36]/88 to-[#07261b]/95\"></div>",
+                      "target": [
+                        ".bg-gradient-to-br"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"text-xs font-bold uppercase tracking-[0.14em] text-[#e2bd62]\">Republic of the Philippines</p>",
+              "target": [
+                ".tracking-\\[0\\.14em\\]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div aria-hidden=\"true\" class=\"pointer-events-none absolute inset-0 bg-gradient-to-br from-[#0a3626]/95 via-[#0e4d36]/88 to-[#07261b]/95\"></div>",
+                      "target": [
+                        ".bg-gradient-to-br"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"text-sm font-semibold text-white\">Municipality of Talibon, Province of Bohol</p>",
+              "target": [
+                ".text-white.font-semibold"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "18.0pt (24px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "3:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div aria-hidden=\"true\" class=\"pointer-events-none absolute inset-0 bg-gradient-to-br from-[#0a3626]/95 via-[#0e4d36]/88 to-[#07261b]/95\"></div>",
+                      "target": [
+                        ".bg-gradient-to-br"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h1 class=\"text-2xl font-extrabold tracking-tight text-white sm:text-3xl lg:text-5xl\">ONE TALIBON</h1>",
+              "target": [
+                "h1"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div aria-hidden=\"true\" class=\"pointer-events-none absolute inset-0 bg-gradient-to-br from-[#0a3626]/95 via-[#0e4d36]/88 to-[#07261b]/95\"></div>",
+                      "target": [
+                        ".bg-gradient-to-br"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"mt-1 text-sm font-semibold text-[#d4ece0] sm:text-base lg:mt-2 lg:text-2xl\">Municipal Intra-Office Portal</p>",
+              "target": [
+                ".mt-1"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<a class=\"municipal-secondary-button min-h-12 w-full text-center text-sm\" href=\"/activate-account\">First time here? Activate your LGU account</a>",
+                      "target": [
+                        ".municipal-secondary-button"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"municipal-secondary-button min-h-12 w-full text-center text-sm\" href=\"/activate-account\">First time here? Activate your LGU account</a>",
+              "target": [
+                ".municipal-secondary-button"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "role": "guest",
+      "route": "/activate-account",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "renderedComponent": "Auth/ActivateAccount",
+      "disposition": "CANONICAL PAGE RENDERED",
+      "overflow": false,
+      "errors": [],
+      "capture": "guest-activate-account-320-light.png",
+      "accessibilityTree": "- link \"Skip to activation form\":\n  - /url: \"#activate-main\"\n- main:\n  - link \"Back to Public Portal\":\n    - /url: /\n  - link \"Sign in\":\n    - /url: /login\n  - region \"Activate your LGU account\":\n    - paragraph: Accounts & Access\n    - heading \"Activate your LGU account\" [level=1]\n    - paragraph: Enter the one-time activation code provided by your Municipal MIS Administrator.\n    - text: Activation code\n    - paragraph: Enter the code exactly as issued (dashes optional).\n    - textbox \"Activation code\"\n    - text: Choose password\n    - paragraph: At least 12 characters with uppercase, lowercase, a number, and a symbol.\n    - textbox \"Choose password\"\n    - text: Confirm password\n    - textbox \"Confirm password\"\n    - button \"Activate account\"",
+      "manualReview": [],
+      "keyboardTrace": [
+        {
+          "tag": "A",
+          "name": "Skip to activation form",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": false
+        },
+        {
+          "tag": "A",
+          "name": "Back to Public Portal",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "A",
+          "name": "Sign in",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "INPUT",
+          "name": "",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "INPUT",
+          "name": "",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "INPUT",
+          "name": "",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Activate account",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "BODY",
+          "name": "{\"component\":\"Auth\\/ActivateAccount\",\"props\":{\"errors\":{},\"appName\":\"Talibon Int",
+          "role": null,
+          "outline": "rgb(20, 33, 28) none 0px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "A",
+          "name": "Skip to activation form",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": false
+        },
+        {
+          "tag": "A",
+          "name": "Back to Public Portal",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "A",
+          "name": "Sign in",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "INPUT",
+          "name": "",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        }
+      ],
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "guest",
+      "route": "/not-a-real-phase-a-route",
+      "width": 320,
+      "theme": "light",
+      "status": 404,
+      "renderedComponent": "Errors/Status",
+      "disposition": "NOT FOUND: not positive page coverage",
+      "overflow": false,
+      "errors": [],
+      "capture": "guest-not-a-real-phase-a-route-320-light.png",
+      "accessibilityTree": "- main:\n  - region \"We could not find that page\":\n    - paragraph: Page not found\n    - heading \"We could not find that page\" [level=1]\n    - paragraph: The address may be incorrect, or the page may no longer be available.\n    - text: Request ID\n    - code: b5bb0d94-c7c4-401b-bef5-f63d9ce6a369\n    - button \"Retry\"\n    - button \"Go back\"\n    - link \"Return to dashboard\":\n      - /url: /dashboard",
+      "manualReview": [],
+      "keyboardTrace": [
+        {
+          "tag": "BUTTON",
+          "name": "Retry",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Go back",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "A",
+          "name": "Return to dashboard",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "BODY",
+          "name": "{\"component\":\"Errors\\/Status\",\"props\":{\"status\":404,\"requestId\":\"b5bb0d94-c7c4-4",
+          "role": null,
+          "outline": "rgb(20, 33, 28) none 0px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Retry",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Go back",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "A",
+          "name": "Return to dashboard",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "BODY",
+          "name": "{\"component\":\"Errors\\/Status\",\"props\":{\"status\":404,\"requestId\":\"b5bb0d94-c7c4-4",
+          "role": null,
+          "outline": "rgb(20, 33, 28) none 0px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Retry",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Go back",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "A",
+          "name": "Return to dashboard",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true
+        },
+        {
+          "tag": "BODY",
+          "name": "{\"component\":\"Errors\\/Status\",\"props\":{\"status\":404,\"requestId\":\"b5bb0d94-c7c4-4",
+          "role": null,
+          "outline": "rgb(20, 33, 28) none 0px",
+          "shadow": "none",
+          "inViewport": true
+        }
+      ],
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "guest",
+      "route": "/",
+      "width": 320,
+      "theme": "dark",
+      "status": 200,
+      "renderedComponent": "Public/Home",
+      "disposition": "CANONICAL PAGE RENDERED",
+      "overflow": false,
+      "errors": [],
+      "capture": "guest-home-320-dark.png",
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#public-content\"\n- banner \"One Talibon. One workspace.\":\n  - img \"Talibon Municipal Hall, front entrance with Philippine flags\"\n  - link \"ONE TALIBON home\":\n    - /url: \"#home\"\n    - text: ONE TALIBON\n  - link \"Employee Login\":\n    - /url: /login\n  - button \"Open portal navigation\"\n  - paragraph: LGU INTRA-OFFICE PORTAL\n  - heading \"One Talibon. One workspace.\" [level=1]\n  - paragraph: Municipal work, connected across offices. Manage documents, memoranda, schedules, projects, requests, and office coordination in one secure workspace.\n  - link \"Employee Login\":\n    - /url: /login\n  - link \"About the Portal\":\n    - /url: \"#about-portal\"\n  - paragraph: Authorized municipal personnel only. Protected operational records remain inside authenticated access.\n- main:\n  - region \"Portal Capabilities\":\n    - paragraph: Internal portal capabilities\n    - heading \"Portal Capabilities\" [level=2]\n    - paragraph: Core tools for moving municipal work between offices.\n    - text: Available to authorized employees\n    - list:\n      - listitem:\n        - heading \"Inter-Office Transactions\" [level=3]\n        - paragraph: Route requests, endorsements, and actions between offices.\n      - listitem:\n        - heading \"Documents & Memoranda\" [level=3]\n        - paragraph: Manage official documents, memoranda, records, and correspondence.\n      - listitem:\n        - heading \"Employees & Offices\" [level=3]\n        - paragraph: Find office and personnel information in one workspace.\n      - listitem:\n        - heading \"Calendar & Coordination\" [level=3]\n        - paragraph: Coordinate meetings, deadlines, activities, and schedules.\n      - listitem:\n        - heading \"Notifications & Follow-Up\" [level=3]\n        - paragraph: Track work that needs review, action, or follow-up.\n  - region \"Built for municipal coordination.\":\n    - img \"Municipality of Talibon seal\"\n    - paragraph: About the Portal\n    - heading \"Built for municipal coordination.\" [level=2]\n    - paragraph: ONE TALIBON is the LGU’s shared intra-office workspace for coordinating official work, information, documents, schedules, and processes across municipal offices.\n    - paragraph: Municipality of Talibon, Bohol\n    - term: Access boundary\n    - definition: Internal records, transactions, approvals, and employee information require authenticated access.\n    - term: Municipality of Talibon\n    - definition: Public contact details await municipal confirmation.\n  - region \"Secure municipal workspace.\":\n    - paragraph: Secure Access\n    - heading \"Secure municipal workspace.\" [level=2]\n    - paragraph: Official work continues inside the authenticated LGU Intra-Office Portal.\n    - list:\n      - listitem: Authorized personnel only\n      - listitem: Protected internal workspace\n      - listitem: No live operational records on this page\n    - link \"Employee Login\":\n      - /url: /login\n- contentinfo:\n  - link \"ONE TALIBON\":\n    - /url: \"#home\"\n  - text: Municipality of Talibon, Bohol Talibon, Bohol, Philippines\n  - navigation \"Footer\":\n    - link \"About the Portal\":\n      - /url: \"#about-portal\"\n    - link \"Internal Capabilities\":\n      - /url: \"#capabilities\"\n    - link \"Help / Support\":\n      - /url: \"#support\"\n  - text: ONE TALIBON · Municipality of Talibon, Bohol Intra-Office Portal · Authorized municipal personnel",
+      "manualReview": [
+        {
+          "selector": "a[aria-label=\"ONE TALIBON home\"] > span > .brand-name",
+          "tag": "SPAN",
+          "text": "ONE TALIBON",
+          "color": "rgb(255, 255, 255)",
+          "background": [
+            26,
+            42,
+            34
+          ],
+          "contrastRatio": 15.019237444420092,
+          "fontSize": "15px",
+          "fontWeight": "700",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".btn-sm",
+          "tag": "A",
+          "text": "Employee Login",
+          "color": "rgb(18, 43, 32)",
+          "background": [
+            255,
+            255,
+            255
+          ],
+          "contrastRatio": 15.084827125675407,
+          "fontSize": "13px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".hero-body > .label",
+          "tag": "P",
+          "text": "LGU INTRA-OFFICE PORTAL",
+          "color": "rgba(255, 255, 255, 0.78)",
+          "background": [
+            26,
+            42,
+            34
+          ],
+          "contrastRatio": 9.666657620412419,
+          "fontSize": "12px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": "#public-hero-title",
+          "tag": "H1",
+          "text": "One Talibon. One workspace.",
+          "color": "rgb(255, 255, 255)",
+          "background": [
+            26,
+            42,
+            34
+          ],
+          "contrastRatio": 15.019237444420092,
+          "fontSize": "44px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".hero-lede",
+          "tag": "P",
+          "text": "Municipal work, connected across offices. Manage documents, memoranda, schedules, projects, requests, and office coordin",
+          "color": "rgba(255, 255, 255, 0.88)",
+          "background": [
+            26,
+            42,
+            34
+          ],
+          "contrastRatio": 11.919001975896249,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".hero-actions > .btn-light.btn[href$=\"login\"]",
+          "tag": "A",
+          "text": "Employee Login",
+          "color": "rgb(18, 43, 32)",
+          "background": [
+            255,
+            255,
+            255
+          ],
+          "contrastRatio": 15.084827125675407,
+          "fontSize": "15px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".btn-ghost",
+          "tag": "A",
+          "text": "About the Portal",
+          "color": "rgb(255, 255, 255)",
+          "background": [
+            26,
+            42,
+            34
+          ],
+          "contrastRatio": 15.019237444420092,
+          "fontSize": "15px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".hero-note > .wrap > p",
+          "tag": "P",
+          "text": "Authorized municipal personnel only. Protected operational records remain inside authenticated access.",
+          "color": "rgba(255, 255, 255, 0.8)",
+          "background": [
+            26,
+            42,
+            34
+          ],
+          "contrastRatio": 10.093618828302553,
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        }
+      ],
+      "keyboardTrace": [],
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "bold",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header id=\"home\" tabindex=\"-1\" class=\"hero\" aria-labelledby=\"public-hero-title\">",
+                      "target": [
+                        "#home"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"brand-name\">ONE TALIBON</span>",
+              "target": [
+                "a[aria-label=\"ONE TALIBON home\"] > span > .brand-name"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header id=\"home\" tabindex=\"-1\" class=\"hero\" aria-labelledby=\"public-hero-title\">",
+                      "target": [
+                        "#home"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"btn btn-light btn-sm public-login-link\" href=\"/login\">Employee Login</a>",
+              "target": [
+                ".btn-sm"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header id=\"home\" tabindex=\"-1\" class=\"hero\" aria-labelledby=\"public-hero-title\">",
+                      "target": [
+                        "#home"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"label\">LGU INTRA-OFFICE PORTAL</p>",
+              "target": [
+                ".hero-body > .label"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "33.0pt (44px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "3:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header id=\"home\" tabindex=\"-1\" class=\"hero\" aria-labelledby=\"public-hero-title\">",
+                      "target": [
+                        "#home"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h1 id=\"public-hero-title\">One Talibon. One workspace.</h1>",
+              "target": [
+                "#public-hero-title"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header id=\"home\" tabindex=\"-1\" class=\"hero\" aria-labelledby=\"public-hero-title\">",
+                      "target": [
+                        "#home"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"hero-lede\">Municipal work, connected across offices. Manage documents, memoranda, schedules, projects, requests, and office coordination in one secure workspace.</p>",
+              "target": [
+                ".hero-lede"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header id=\"home\" tabindex=\"-1\" class=\"hero\" aria-labelledby=\"public-hero-title\">",
+                      "target": [
+                        "#home"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"btn btn-light\" href=\"/login\">",
+              "target": [
+                ".hero-actions > .btn-light.btn[href$=\"login\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header id=\"home\" tabindex=\"-1\" class=\"hero\" aria-labelledby=\"public-hero-title\">",
+                      "target": [
+                        "#home"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a href=\"#about-portal\" class=\"btn btn-ghost\">About the Portal</a>",
+              "target": [
+                ".btn-ghost"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<header id=\"home\" tabindex=\"-1\" class=\"hero\" aria-labelledby=\"public-hero-title\">",
+                      "target": [
+                        "#home"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p>Authorized municipal personnel only. Protected operational records remain inside authenticated access.</p>",
+              "target": [
+                ".hero-note > .wrap > p"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "role": "guest",
+      "route": "/login",
+      "width": 320,
+      "theme": "dark",
+      "status": 200,
+      "renderedComponent": "Auth/Login",
+      "disposition": "CANONICAL PAGE RENDERED",
+      "overflow": false,
+      "errors": [],
+      "capture": "guest-login-320-dark.png",
+      "accessibilityTree": "- link \"Skip to sign-in form\":\n  - /url: \"#login-panel\"\n- region \"Municipality of Talibon Portal Identity\":\n  - img \"Official seal of the Municipality of Talibon\"\n  - paragraph: Republic of the Philippines\n  - paragraph: Municipality of Talibon, Province of Bohol\n  - heading \"ONE TALIBON\" [level=1]\n  - paragraph: Municipal Intra-Office Portal\n- main:\n  - link \"Back to Public Portal\":\n    - /url: /\n  - region \"Sign in to your workspace\":\n    - paragraph: Staff Sign In\n    - heading \"Sign in to your workspace\" [level=2]\n    - paragraph: Use your assigned municipal account credentials.\n    - form \"Employee sign-in\":\n      - text: Username or email\n      - textbox \"Username or email\"\n      - text: Password\n      - textbox \"Password\"\n      - button \"Show password\"\n      - checkbox \"Remember me (unavailable)\" [disabled]\n      - text: Remember me (unavailable)\n      - button \"Sign in\"\n      - status\n    - text: or\n    - link \"First time here? Activate your LGU account\":\n      - /url: /activate-account\n  - paragraph: Contact your authorized account administrator",
+      "manualReview": [
+        {
+          "selector": ".tracking-\\[0\\.14em\\]",
+          "tag": "P",
+          "text": "Republic of the Philippines",
+          "color": "rgb(226, 189, 98)",
+          "background": [
+            10,
+            54,
+            38
+          ],
+          "contrastRatio": 7.452154249300412,
+          "fontSize": "12px",
+          "fontWeight": "700",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".text-white.font-semibold",
+          "tag": "P",
+          "text": "Municipality of Talibon, Province of Bohol",
+          "color": "rgb(255, 255, 255)",
+          "background": [
+            10,
+            54,
+            38
+          ],
+          "contrastRatio": 13.388068900871595,
+          "fontSize": "14px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": "h1",
+          "tag": "H1",
+          "text": "ONE TALIBON",
+          "color": "rgb(255, 255, 255)",
+          "background": [
+            10,
+            54,
+            38
+          ],
+          "contrastRatio": 13.388068900871595,
+          "fontSize": "24px",
+          "fontWeight": "800",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".mt-1",
+          "tag": "P",
+          "text": "Municipal Intra-Office Portal",
+          "color": "rgb(212, 236, 224)",
+          "background": [
+            10,
+            54,
+            38
+          ],
+          "contrastRatio": 10.757603095974435,
+          "fontSize": "14px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".municipal-secondary-button",
+          "tag": "A",
+          "text": "First time here? Activate your LGU account",
+          "color": "rgb(236, 242, 239)",
+          "background": [
+            22,
+            30,
+            26
+          ],
+          "contrastRatio": 14.994105689134654,
+          "fontSize": "14px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        }
+      ],
+      "keyboardTrace": [],
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div aria-hidden=\"true\" class=\"pointer-events-none absolute inset-0 bg-gradient-to-br from-[#0a3626]/95 via-[#0e4d36]/88 to-[#07261b]/95\"></div>",
+                      "target": [
+                        ".bg-gradient-to-br"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"text-xs font-bold uppercase tracking-[0.14em] text-[#e2bd62]\">Republic of the Philippines</p>",
+              "target": [
+                ".tracking-\\[0\\.14em\\]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div aria-hidden=\"true\" class=\"pointer-events-none absolute inset-0 bg-gradient-to-br from-[#0a3626]/95 via-[#0e4d36]/88 to-[#07261b]/95\"></div>",
+                      "target": [
+                        ".bg-gradient-to-br"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"text-sm font-semibold text-white\">Municipality of Talibon, Province of Bohol</p>",
+              "target": [
+                ".text-white.font-semibold"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "18.0pt (24px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "3:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div aria-hidden=\"true\" class=\"pointer-events-none absolute inset-0 bg-gradient-to-br from-[#0a3626]/95 via-[#0e4d36]/88 to-[#07261b]/95\"></div>",
+                      "target": [
+                        ".bg-gradient-to-br"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h1 class=\"text-2xl font-extrabold tracking-tight text-white sm:text-3xl lg:text-5xl\">ONE TALIBON</h1>",
+              "target": [
+                "h1"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div aria-hidden=\"true\" class=\"pointer-events-none absolute inset-0 bg-gradient-to-br from-[#0a3626]/95 via-[#0e4d36]/88 to-[#07261b]/95\"></div>",
+                      "target": [
+                        ".bg-gradient-to-br"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"mt-1 text-sm font-semibold text-[#d4ece0] sm:text-base lg:mt-2 lg:text-2xl\">Municipal Intra-Office Portal</p>",
+              "target": [
+                ".mt-1"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<a class=\"municipal-secondary-button min-h-12 w-full text-center text-sm\" href=\"/activate-account\">First time here? Activate your LGU account</a>",
+                      "target": [
+                        ".municipal-secondary-button"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a class=\"municipal-secondary-button min-h-12 w-full text-center text-sm\" href=\"/activate-account\">First time here? Activate your LGU account</a>",
+              "target": [
+                ".municipal-secondary-button"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "role": "guest",
+      "route": "/activate-account",
+      "width": 320,
+      "theme": "dark",
+      "status": 200,
+      "renderedComponent": "Auth/ActivateAccount",
+      "disposition": "CANONICAL PAGE RENDERED",
+      "overflow": false,
+      "errors": [],
+      "capture": "guest-activate-account-320-dark.png",
+      "accessibilityTree": "- link \"Skip to activation form\":\n  - /url: \"#activate-main\"\n- main:\n  - link \"Back to Public Portal\":\n    - /url: /\n  - link \"Sign in\":\n    - /url: /login\n  - region \"Activate your LGU account\":\n    - paragraph: Accounts & Access\n    - heading \"Activate your LGU account\" [level=1]\n    - paragraph: Enter the one-time activation code provided by your Municipal MIS Administrator.\n    - text: Activation code\n    - paragraph: Enter the code exactly as issued (dashes optional).\n    - textbox \"Activation code\"\n    - text: Choose password\n    - paragraph: At least 12 characters with uppercase, lowercase, a number, and a symbol.\n    - textbox \"Choose password\"\n    - text: Confirm password\n    - textbox \"Confirm password\"\n    - button \"Activate account\"",
+      "manualReview": [],
+      "keyboardTrace": [],
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "guest",
+      "route": "/not-a-real-phase-a-route",
+      "width": 320,
+      "theme": "dark",
+      "status": 404,
+      "renderedComponent": "Errors/Status",
+      "disposition": "NOT FOUND: not positive page coverage",
+      "overflow": false,
+      "errors": [],
+      "capture": "guest-not-a-real-phase-a-route-320-dark.png",
+      "accessibilityTree": "- main:\n  - region \"We could not find that page\":\n    - paragraph: Page not found\n    - heading \"We could not find that page\" [level=1]\n    - paragraph: The address may be incorrect, or the page may no longer be available.\n    - text: Request ID\n    - code: 5406ca0e-cb84-40df-8bfc-052573f8b347\n    - button \"Retry\"\n    - button \"Go back\"\n    - link \"Return to dashboard\":\n      - /url: /dashboard",
+      "manualReview": [],
+      "keyboardTrace": [],
+      "violations": [],
+      "incomplete": []
+    }
+  ],
+  "interactions": [],
+  "failures": [
+    {
+      "stage": "qualification interaction or authentication",
+      "error": "TimeoutError: locator.fill: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel('Subject', { exact: true })\u001b[22m\n"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+import fs from 'node:fs';
+import crypto from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+import assert from 'node:assert/strict';
+import {chromium} from 'playwright';
+const origin=process.env.PHASE_A_CANONICAL_URL;assert.match(origin,/^http:\/\/127\.0\.0\.1:\d+$/);
+const sourceSha=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();assert.equal(sourceSha,'2b096d74cabe3c0da6fc171dc052917f9e72210f');
+const output='storage/app/qa/password-errors-2b096';fs.mkdirSync(output,{recursive:true});const observations=[];
+const axe=fs.readFileSync('storage/app/qa/a11y-tools/node_modules/axe-core/axe.min.js','utf8');
+function totp(secret){let bits='';for(const c of secret)bits+='ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'.indexOf(c).toString(2).padStart(5,'0');const bytes=[];for(let i=0;i+8<=bits.length;i+=8)bytes.push(parseInt(bits.slice(i,i+8),2));const counter=Buffer.alloc(8);counter.writeBigUInt64BE(BigInt(Math.floor(Date.now()/30000)));const hash=crypto.createHmac('sha1',Buffer.from(bytes)).update(counter).digest(),offset=hash.at(-1)&15;return String((hash.readUInt32BE(offset)&0x7fffffff)%1000000).padStart(6,'0');}
+const browser=await chromium.launch();let completed=false;
+try{for(const actor of [{role:'employee',login:process.env.PHASE_A_CANONICAL_LOGIN,route:'/security/account'},{role:'system_admin',login:process.env.PHASE_A_ADMIN_LOGIN,route:'/security/mfa'}]){
+const context=await browser.newContext({viewport:{width:320,height:900},colorScheme:'dark'}),page=await context.newPage();await page.goto(origin+'/login');await page.getByLabel('Username or email').fill(actor.login);await page.getByLabel('Password',{exact:true}).fill(process.env.PHASE_A_CANONICAL_PASSWORD);await page.getByRole('button',{name:'Sign in',exact:true}).click();
+if(actor.role==='system_admin'){await page.waitForURL('**/security/mfa/challenge');await page.getByLabel('Authenticator code',{exact:true}).fill(totp(process.env.PHASE_A_HEAD_MFA_SECRET));await page.getByRole('button',{name:'Verify and continue',exact:true}).click();}await page.waitForURL('**/dashboard');await page.goto(origin+actor.route);
+await page.getByLabel('Current password',{exact:true}).fill('Incorrect-Current-Password!');await page.getByLabel('New password',{exact:true}).fill('Unused-Synthetic-Validation-2026!');await page.getByLabel('Confirm new password',{exact:true}).fill('Unused-Synthetic-Validation-2026!');await page.getByRole('button',{name:'Update password',exact:true}).click();await page.getByRole('alert').filter({hasText:'The current password is incorrect.'}).waitFor();
+await page.evaluate(axe);const result=await page.evaluate(async()=>window.axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa','wcag22aa']}}));const capture=actor.role+'-password-error-dark.png';await page.screenshot({path:output+'/'+capture,fullPage:true});
+observations.push({role:actor.role,route:actor.route,width:320,theme:'dark',status:200,renderedComponent:await page.evaluate(()=>history.state?.page?.component||JSON.parse(document.querySelector('script[data-page]').textContent).component),capture,violations:result.violations.map(({id,nodes})=>({id,targets:nodes.map(n=>n.target)})),incomplete:result.incomplete.map(({id,nodes})=>({id,targets:nodes.map(n=>n.target)})),invalidFieldCount:await page.locator('input[aria-invalid=true]').count(),passwordChangeRejected:true});await context.close();}completed=true;
+}finally{await browser.close();fs.writeFileSync(output+'/results.json',JSON.stringify({sourceSha,sourceWorktreeDirty:Boolean(execFileSync('git',['status','--porcelain'],{encoding:'utf8'}).trim()),buildManifestSha256:crypto.createHash('sha256').update(fs.readFileSync('public/build/manifest.json')).digest('hex'),completed,passed:completed&&observations.every(o=>!o.violations.length),observations},null,2));}
+console.log(JSON.stringify(observations,null,2));assert.ok(observations.every(o=>!o.violations.length));

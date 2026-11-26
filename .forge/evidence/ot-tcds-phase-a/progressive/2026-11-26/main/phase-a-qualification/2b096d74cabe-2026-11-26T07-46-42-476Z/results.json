@@ -1,0 +1,101 @@
+{
+  "completed": true,
+  "passed": false,
+  "scope": {
+    "widths": [
+      320
+    ],
+    "roles": [
+      "auth_enrollment"
+    ],
+    "routeMatrix": false,
+    "focused": true
+  },
+  "sourceSha": "2b096d74cabe3c0da6fc171dc052917f9e72210f",
+  "sourceWorktreeDirty": false,
+  "buildManifestSha256": "b9e891fec0282ca7e531587ce25ceb9c9b9e7d3fb6064bb45301c8868791c467",
+  "observations": [
+    {
+      "role": "synthetic_enrolling_department_head",
+      "route": "/security/mfa/enroll",
+      "status": 200,
+      "width": 320,
+      "theme": "light",
+      "renderedComponent": "Auth/MfaEnrollment",
+      "overflow": false,
+      "interactionState": "baseline",
+      "capture": null,
+      "captureDisposition": "Sensitive transient enrollment/recovery material intentionally not captured or serialized",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "synthetic_enrolling_department_head",
+      "route": "/security/mfa/enroll",
+      "status": 200,
+      "width": 320,
+      "theme": "dark",
+      "renderedComponent": "Auth/MfaEnrollment",
+      "overflow": false,
+      "interactionState": "baseline",
+      "capture": null,
+      "captureDisposition": "Sensitive transient enrollment/recovery material intentionally not captured or serialized",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "synthetic_enrolling_department_head",
+      "route": "/security/mfa/recovery-codes",
+      "status": 200,
+      "width": 320,
+      "theme": "light",
+      "renderedComponent": "Auth/MfaRecoveryCodes",
+      "overflow": false,
+      "interactionState": "copy-codes-hover",
+      "capture": null,
+      "captureDisposition": "Sensitive transient enrollment/recovery material intentionally not captured or serialized",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "synthetic_enrolling_department_head",
+      "route": "/security/mfa/recovery-codes",
+      "status": 200,
+      "width": 320,
+      "theme": "dark",
+      "renderedComponent": "Auth/MfaRecoveryCodes",
+      "overflow": false,
+      "interactionState": "copy-codes-hover",
+      "capture": null,
+      "captureDisposition": "Sensitive transient enrollment/recovery material intentionally not captured or serialized",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "button"
+            ]
+          ]
+        }
+      ],
+      "incomplete": []
+    }
+  ],
+  "interactions": [
+    {
+      "role": "synthetic_enrolling_department_head",
+      "label": "real-mfa-enrollment-confirm-recovery-continue",
+      "secretMaterialExcluded": true
+    }
+  ],
+  "interactionCaptures": [],
+  "failures": [
+    {
+      "route": "/security/mfa/recovery-codes",
+      "overflow": false,
+      "violationIds": [
+        "color-contrast"
+      ]
+    }
+  ]
+}

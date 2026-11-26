@@ -1,0 +1,4 @@
+import fs from 'node:fs';
+const runtime=fs.readFileSync('storage/app/qa/keyboard-queue-runtime.mjs','utf8').replaceAll('keyboard-queue-browser.mjs','keyboard-queue-experiment-browser.mjs');fs.writeFileSync('storage/app/qa/keyboard-queue-experiment-runtime.mjs',runtime);
+let b=fs.readFileSync('storage/app/qa/keyboard-queue-browser.mjs','utf8').replaceAll('keyboard-queue-69644','keyboard-queue-experiment').replace("await page.getByRole('main').first().waitFor();","await page.getByRole('main').first().waitFor();await page.evaluate(()=>{const nav=document.querySelector('nav[aria-label=\"Work Request queues\"]');nav.addEventListener('focusin',event=>{const button=event.target.closest('button');button?.scrollIntoView({block:'nearest',inline:'nearest'});});});").replace('completed:true,traces','completed:true,experimentalInjectedFocusHandler:true,traces');
+fs.writeFileSync('storage/app/qa/keyboard-queue-experiment-browser.mjs',b);

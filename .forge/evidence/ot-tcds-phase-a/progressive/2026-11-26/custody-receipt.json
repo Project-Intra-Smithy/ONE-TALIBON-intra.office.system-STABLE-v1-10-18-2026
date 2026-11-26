@@ -1,0 +1,15 @@
+{
+  "phaseA": "OPEN",
+  "pr72Head": "de362bfeddbb2b1ac3e738d1f99d4f64b536c90c",
+  "capturedAt": "2026-11-26T18:06:43.2632610+08:00",
+  "sourceHead": "d7b980af5fb16802cdb36e484b240186be23e780",
+  "backendProtectedDiffExit": 0,
+  "backendAnchor": "46f24d0f288e5584e3c45f5e8abf8466b6dc2a6a",
+  "latestWipValidated": false,
+  "release": "HOLD",
+  "parentValidatedFocusedHead": "e4598c4e3697803033a964bbd708da2472e173c1",
+  "sourceWorktreesClean": true,
+  "priorCandidate": "69644e2069ad5b8f4df51b959cf3e11c8451f577",
+  "ownedDisposableClusters": "55474,55475,55476: cleanly stopped, data preserved",
+  "phaseAWorkflowDiffExit": 0
+}

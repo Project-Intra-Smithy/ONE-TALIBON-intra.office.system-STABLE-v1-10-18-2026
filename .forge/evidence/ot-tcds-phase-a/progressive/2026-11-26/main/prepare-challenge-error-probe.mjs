@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+let browser=fs.readFileSync('tests/Browser/phase-a-qualification.mjs','utf8').replace("from './phase-a-manual-review.mjs'","from '../../../tests/Browser/phase-a-manual-review.mjs'");
+const before="await page.waitForURL('**/security/mfa/challenge');await inspect(page,actor.role,'/security/mfa/challenge',1440,'light');";
+assert.ok(browser.includes(before));
+browser=browser.replace(before,"await page.waitForURL('**/security/mfa/challenge');await page.getByLabel('Authenticator code',{exact:true}).fill('123');await page.getByRole('button',{name:'Verify and continue',exact:true}).click();await page.locator('#mfa-code-error').waitFor();await page.setViewportSize({width:320,height:900});for(const theme of ['light','dark']){await page.emulateMedia({colorScheme:theme});await inspectSensitive(page,'Auth/MfaChallenge',theme);await captureInteraction(page,'invalid-challenge-'+theme);}await page.setViewportSize({width:1440,height:900});await page.emulateMedia({colorScheme:'light'});await inspect(page,actor.role,'/security/mfa/challenge',1440,'light');");
+browser=browser.replace("        await page.waitForURL('**/dashboard');\r\n        if(actor.role==='employee'){","        await page.waitForURL('**/dashboard');await context.close();continue;\r\n        if(actor.role==='employee'){");
+browser=browser.replace("        await page.waitForURL('**/dashboard');\n        if(actor.role==='employee'){","        await page.waitForURL('**/dashboard');await context.close();continue;\n        if(actor.role==='employee'){");
+browser=browser.replace("role:'synthetic_enrolling_department_head'","role:'department_head'").replace('overflow,capture:null,captureDisposition:',"overflow,interactionState:'invalid-short-code',capture:null,captureDisposition:");
+fs.writeFileSync('storage/app/qa/challenge-error-probe-browser.mjs',browser);
+fs.writeFileSync('storage/app/qa/challenge-error-probe-runtime.mjs',fs.readFileSync('storage/app/qa/hover-probe-runtime.mjs','utf8').replace('storage/app/qa/hover-probe-browser.mjs','storage/app/qa/challenge-error-probe-browser.mjs'));

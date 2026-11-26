@@ -1,0 +1,1068 @@
+{
+  "completed": true,
+  "passed": false,
+  "scope": {
+    "widths": [
+      320
+    ],
+    "roles": [
+      "employee",
+      "department_head"
+    ],
+    "routeMatrix": false,
+    "focused": true
+  },
+  "sourceSha": "4ab2463700a715427d591649b5bc0c3316507dee",
+  "sourceWorktreeDirty": true,
+  "buildManifestSha256": "2f352f88db02d709b05400212a3134806ba90fba20ee9f42c2b0d3f39dfc5b5c",
+  "observations": [
+    {
+      "role": "department_head",
+      "route": "/security/mfa/challenge",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "renderedComponent": "Auth/MfaChallenge",
+      "disposition": "CANONICAL PAGE RENDERED",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-security-mfa-challenge-1440-light.png",
+      "accessibilityTree": "- main:\n  - paragraph: ONE TALIBON · ACCOUNT VERIFICATION\n  - heading \"Verify your identity\" [level=1]\n  - paragraph: Enter your authenticator code to continue securely.\n  - form \"Authenticator verification\":\n    - text: Authenticator code\n    - textbox \"Authenticator code\"\n    - button \"Verify and continue\"\n  - separator\n  - form \"Recovery verification\":\n    - img\n    - text: One-time recovery code\n    - textbox \"One-time recovery code\"\n    - alert\n    - button \"Use recovery code\"\n  - button \"Sign out\":\n    - img\n    - text: Sign out",
+      "manualReview": [
+        {
+          "selector": ".mfa-challenge-kicker",
+          "tag": "P",
+          "text": "ONE TALIBON · ACCOUNT VERIFICATION",
+          "color": "rgb(14, 106, 80)",
+          "background": [
+            134.5176470588235,
+            152.77254901960782,
+            157.98823529411766
+          ],
+          "contrastRatio": 2.2081292511763984,
+          "fontSize": "12px",
+          "fontWeight": "800",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": "h1",
+          "tag": "H1",
+          "text": "Verify your identity",
+          "color": "oklch(0.129 0.042 264.695)",
+          "background": [
+            134.5176470588235,
+            152.77254901960782,
+            157.98823529411766
+          ],
+          "contrastRatio": 6.774154055984588,
+          "fontSize": "24px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".leading-6",
+          "tag": "P",
+          "text": "Enter your authenticator code to continue securely.",
+          "color": "oklch(0.446 0.043 257.281)",
+          "background": [
+            134.5176470588235,
+            152.77254901960782,
+            157.98823529411766
+          ],
+          "contrastRatio": 2.5487524924687768,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": "form[aria-label=\"Authenticator verification\"] > label > .mb-1\\.5.text-slate-700",
+          "tag": "SPAN",
+          "text": "Authenticator code",
+          "color": "oklch(0.372 0.044 257.287)",
+          "background": [
+            134.5176470588235,
+            152.77254901960782,
+            157.98823529411766
+          ],
+          "contrastRatio": 3.4806445746925943,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".text-lg",
+          "tag": "INPUT",
+          "text": "",
+          "color": "rgb(16, 42, 67)",
+          "background": [
+            250.27520184544406,
+            250.99108035371012,
+            251.19561707035754
+          ],
+          "contrastRatio": 14.13140413631351,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".mfa-challenge-primary",
+          "tag": "BUTTON",
+          "text": "Verify and continue",
+          "color": "rgb(255, 255, 255)",
+          "background": [
+            14,
+            106,
+            80
+          ],
+          "contrastRatio": 6.570459538394891,
+          "fontSize": "15px",
+          "fontWeight": "700",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".flex",
+          "tag": "SPAN",
+          "text": "One-time recovery code",
+          "color": "oklch(0.372 0.044 257.287)",
+          "background": [
+            134.5176470588235,
+            152.77254901960782,
+            157.98823529411766
+          ],
+          "contrastRatio": 3.4806445746925943,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".uppercase",
+          "tag": "INPUT",
+          "text": "",
+          "color": "rgb(16, 42, 67)",
+          "background": [
+            250.27520184544406,
+            250.99108035371012,
+            251.19561707035754
+          ],
+          "contrastRatio": 14.13140413631351,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".mfa-challenge-secondary",
+          "tag": "BUTTON",
+          "text": "Use recovery code",
+          "color": "rgb(14, 106, 80)",
+          "background": [
+            245.55040369088812,
+            246.98216070742023,
+            247.3912341407151
+          ],
+          "contrastRatio": 6.117524868369629,
+          "fontSize": "15px",
+          "fontWeight": "700",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".mfa-challenge-signout",
+          "tag": "BUTTON",
+          "text": "Sign out",
+          "color": "rgb(14, 106, 80)",
+          "background": [
+            134.5176470588235,
+            152.77254901960782,
+            157.98823529411766
+          ],
+          "contrastRatio": 2.2081292511763984,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        }
+      ],
+      "keyboardTrace": [],
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "bold",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"mfa-challenge-kicker\">ONE TALIBON · ACCOUNT VERIFICATION</p>",
+              "target": [
+                ".mfa-challenge-kicker"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "18.0pt (24px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "3:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h1 class=\"mt-2 text-2xl font-semibold text-slate-950 dark:text-[var(--ink-primary)]\">Verify your identity</h1>",
+              "target": [
+                "h1"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"mt-2 text-sm leading-6 text-slate-600\">Enter your authenticator code to continue securely.</p>",
+              "target": [
+                ".leading-6"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"mb-1.5 block text-sm font-medium text-slate-700\">Authenticator code</span>",
+              "target": [
+                "form[aria-label=\"Authenticator verification\"] > label > .mb-1\\.5.text-slate-700"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<input aria-invalid=\"false\" inputmode=\"numeric\" autocomplete=\"one-time-code\" maxlength=\"6\" class=\"mfa-challenge-input font-mono text-lg tracking-[0.25em]\" value=\"\" name=\"code\">",
+              "target": [
+                ".text-lg"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "bold",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button class=\"mfa-challenge-primary\">Verify and continue</button>",
+              "target": [
+                ".mfa-challenge-primary"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"mb-1.5 flex items-center gap-2 text-sm font-medium text-slate-700\">",
+              "target": [
+                ".flex"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<input aria-invalid=\"false\" aria-describedby=\"mfa-recovery-errors\" autocomplete=\"off\" class=\"mfa-challenge-input font-mono text-sm uppercase\" value=\"\" name=\"recovery_code\">",
+              "target": [
+                ".uppercase"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "bold",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button class=\"mfa-challenge-secondary\">Use recovery code</button>",
+              "target": [
+                ".mfa-challenge-secondary"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button type=\"button\" class=\"mfa-challenge-signout mt-5 inline-flex items-center gap-2 text-sm font-medium\">",
+              "target": [
+                ".mfa-challenge-signout"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/3",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "renderedComponent": "Transactions/Show",
+      "disposition": "CANONICAL PAGE RENDERED",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-transactions-3-320-light.png",
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: TAL-2026-000003\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - link \"Back to Work Requests\":\n    - /url: /transactions\n  - status: Checking updates…\n  - text: TAL-2026-000003 · Internal Request\n  - heading \"Synthetic qualification request 1795678177975\" [level=1]\n  - paragraph: Synthetic instructions for canonical presentation validation.\n  - text: Submitted Normal On Track\n  - term: Origin\n  - definition: QA Origin\n  - term: Current Office\n  - definition: Synthetic MPDO\n  - term: Responsible Officer\n  - definition: Unassigned\n  - term: Due\n  - definition: Dec 31, 2099\n  - term: Time in Office\n  - definition: 18 seconds\n  - text: Workflow actions\n  - textbox \"Review note / routing remarks\"\n  - img\n  - text: Evidence for this workflow action\n  - paragraph: Optional. PDF, DOCX, JPEG, PNG, or WebP. Files are stored privately and remain subject to the parent record's authorization.\n  - button \"Evidence for this workflow action\"\n  - text: Assign responsible employee\n  - combobox:\n    - option \"Choose employee…\" [selected]\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic Phase A department_head · Synthetic Test department_head\"\n    - option \"Synthetic enrollment actor · Synthetic enrollment actor\"\n    - option \"Synthetic enrollment actor · Synthetic enrollment actor\"\n    - option \"Synthetic enrollment actor · Synthetic enrollment actor\"\n    - option \"Synthetic enrollment actor · Synthetic enrollment actor\"\n    - option \"Synthetic qualification delegate 214ccbdf1e · Synthetic qualification delegate\"\n    - option \"Synthetic qualification delegate 3732885a2f · Synthetic qualification delegate\"\n    - option \"Synthetic qualification delegate 4d6df928a2 · Synthetic qualification delegate\"\n    - option \"Synthetic qualification delegate bdfedafbd2 · Synthetic qualification delegate\"\n    - option \"Synthetic qualification delegate c846cded26 · Synthetic qualification delegate\"\n    - option \"Synthetic qualification delegate ccbba65087 · Synthetic qualification delegate\"\n    - option \"Synthetic qualification delegate d9d71b11d4 · Synthetic qualification delegate\"\n    - option \"Synthetic qualification delegate f7bd61a15c · Synthetic qualification delegate\"\n  - button \"Assign\" [disabled]\n  - button \"Mark for Review\"\n  - button \"Request Information\"\n  - button \"Return to Origin\"\n  - combobox:\n    - option \"Forward to department…\" [selected]\n    - option \"Synthetic Mayor Office\"\n    - option \"Synthetic Phase A Origin\"\n    - option \"Synthetic QAORIGIN\"\n    - option \"Synthetic QATARGET\"\n  - button \"Forward\" [disabled]\n  - region \"Routing history\":\n    - heading \"Routing history\" [level=2]\n    - paragraph: Append-only workflow evidence · updates automatically\n    - text: 1 event Submitted QA Origin → Synthetic MPDO · By Synthetic Phase A employee\n    - time: Nov 26, 2026, 3:29 PM\n  - complementary:\n    - text: Filing & Accountability\n    - term: Received\n    - definition: Nov 26, 2026, 3:29 PM\n    - term: Created by\n    - definition: Synthetic Phase A employee\n    - term: Origin office\n    - definition: Synthetic Phase A Origin\n    - text: Transaction evidence No supporting files attached to this request.\n    - region \"Related records and work\":\n      - heading \"Related records and work\" [level=2]\n      - paragraph: Nearby authorized work and the shortest route back to your queue.\n      - link \"Find TAL-2026-000003 in Records Records Open the authorized municipal record search with this reference applied.\":\n        - /url: /records?search=TAL-2026-000003\n      - link \"Open office Work Request queue Queue Return to the current office queue and continue accountable routing work.\":\n        - /url: /transactions?view=office_queue\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal\n- navigation \"Mobile workspace navigation\":\n  - link \"Home\":\n    - /url: /dashboard\n  - link \"Tasks\":\n    - /url: /my-tasks\n  - link \"Requests\":\n    - /url: /transactions\n  - link \"Inbox\":\n    - /url: /correspondence\n  - button \"Open more navigation options\": More",
+      "manualReview": [
+        {
+          "selector": ".mt-2 > select",
+          "tag": "SELECT",
+          "text": "Choose employee…Synthetic Phase A department_head · Synthetic Test department_headSynthetic Phase A department_head · Sy",
+          "color": "rgb(20, 33, 28)",
+          "background": [
+            255,
+            255,
+            255
+          ],
+          "contrastRatio": 16.61319910975379,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "note": "Closed native select computed paint; OS popup rendering requires separate assistive-technology review"
+        },
+        {
+          "selector": ".basis-full > select",
+          "tag": "SELECT",
+          "text": "Forward to department…Synthetic Mayor OfficeSynthetic Phase A OriginSynthetic QAORIGINSynthetic QATARGET",
+          "color": "rgb(20, 33, 28)",
+          "background": [
+            255,
+            255,
+            255
+          ],
+          "contrastRatio": 16.61319910975379,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "note": "Closed native select computed paint; OS popup rendering requires separate assistive-technology review"
+        }
+      ],
+      "keyboardTrace": [
+        {
+          "tag": "A",
+          "name": "Skip to main content",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 16,
+            "y": 5.012375354766846,
+            "width": 172.828125,
+            "height": 46.46875
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open navigation",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": false,
+          "focusRect": {
+            "x": 12,
+            "y": 5.5,
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open quick jump and search",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": false,
+          "focusRect": {
+            "x": 123,
+            "y": 5.5,
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open notifications",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 169,
+            "y": 5.5,
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Open portal applications",
+          "role": null,
+          "outline": "rgb(74, 93, 85) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 215,
+            "y": 5.5,
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "tag": "A",
+          "name": "Back to Work Requests",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 16,
+            "y": 72,
+            "width": 173.234375,
+            "height": 36
+          }
+        },
+        {
+          "tag": "TEXTAREA",
+          "name": "Review note / routing remarks",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 36,
+            "y": 605,
+            "width": 251,
+            "height": 80
+          }
+        },
+        {
+          "tag": "INPUT",
+          "name": "Evidence for this workflow action",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 49,
+            "y": 791.046875,
+            "width": 225,
+            "height": 31.5
+          }
+        },
+        {
+          "tag": "SELECT",
+          "name": "Choose employee…Synthetic Phase A department_head · Synthetic Test department_he",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": false,
+          "focusRect": {
+            "x": 49,
+            "y": 855.546875,
+            "width": 138.140625,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Mark for Review",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 36,
+            "y": 427.546875,
+            "width": 161.765625,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Request Information",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 36,
+            "y": 479.546875,
+            "width": 189.921875,
+            "height": 44
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Return to Origin",
+          "role": null,
+          "outline": "rgb(11, 87, 208) solid 3px",
+          "shadow": "none",
+          "inViewport": true,
+          "unobscured": true,
+          "focusRect": {
+            "x": 36,
+            "y": 531.546875,
+            "width": 160.109375,
+            "height": 44
+          }
+        }
+      ],
+      "violations": [
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "tags": [
+            "cat.forms",
+            "wcag2a",
+            "wcag412",
+            "section508",
+            "section508.22.n",
+            "TTv5",
+            "TT5.c",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "ACT",
+            "RGAAv4",
+            "RGAA-11.1.1"
+          ],
+          "description": "Ensure select element has an accessible name",
+          "help": "Select element must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/select-name?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "implicit-label",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Element does not have an implicit (wrapped) <label>"
+                },
+                {
+                  "id": "explicit-label",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Element does not have an explicit <label>"
+                },
+                {
+                  "id": "aria-label",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-label attribute does not exist or is empty"
+                },
+                {
+                  "id": "aria-labelledby",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+                },
+                {
+                  "id": "non-empty-title",
+                  "data": {
+                    "messageKey": "noAttr"
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Element has no title attribute"
+                },
+                {
+                  "id": "presentational-role",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "critical",
+              "html": "<select class=\"tcds-input min-w-0 flex-1\">",
+              "target": [
+                ".mt-2 > select"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+            },
+            {
+              "any": [
+                {
+                  "id": "implicit-label",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Element does not have an implicit (wrapped) <label>"
+                },
+                {
+                  "id": "explicit-label",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Element does not have an explicit <label>"
+                },
+                {
+                  "id": "aria-label",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-label attribute does not exist or is empty"
+                },
+                {
+                  "id": "aria-labelledby",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty"
+                },
+                {
+                  "id": "non-empty-title",
+                  "data": {
+                    "messageKey": "noAttr"
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Element has no title attribute"
+                },
+                {
+                  "id": "presentational-role",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "critical",
+              "html": "<select class=\"tcds-input min-w-0 flex-1\"><option value=\"\">Forward to department…</option><option value=\"5\">Synthetic Mayor Office</option><option value=\"3\">Synthetic Phase A Origin</option><option value=\"1\">Synthetic QAORIGIN</option><option value=\"2\">Synthetic QATARGET</option></select>",
+              "target": [
+                ".basis-full > select"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select class=\"tcds-input min-w-0 flex-1\">",
+                      "target": [
+                        ".mt-2 > select"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select class=\"tcds-input min-w-0 flex-1\">",
+              "target": [
+                ".mt-2 > select"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select class=\"tcds-input min-w-0 flex-1\"><option value=\"\">Forward to department…</option><option value=\"5\">Synthetic Mayor Office</option><option value=\"3\">Synthetic Phase A Origin</option><option value=\"1\">Synthetic QAORIGIN</option><option value=\"2\">Synthetic QATARGET</option></select>",
+                      "target": [
+                        ".basis-full > select"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select class=\"tcds-input min-w-0 flex-1\"><option value=\"\">Forward to department…</option><option value=\"5\">Synthetic Mayor Office</option><option value=\"3\">Synthetic Phase A Origin</option><option value=\"1\">Synthetic QAORIGIN</option><option value=\"2\">Synthetic QATARGET</option></select>",
+              "target": [
+                ".basis-full > select"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "interactions": [
+    {
+      "role": "employee",
+      "label": "real-work-request-create-and-detail",
+      "route": "/transactions/3",
+      "keyboardOfficeSelection": true
+    },
+    {
+      "role": "department_head",
+      "label": "real-supporting-document-upload-private-preview",
+      "authenticatedBytesMatch": true,
+      "anonymousDenied": true,
+      "route": "/planning/attachments/d709c5b1-d827-4fd8-991e-bd2f0aa5c932/preview"
+    },
+    {
+      "role": "department_head",
+      "label": "real-staff-designate-scope-toggle-revoke",
+      "employee": 105
+    },
+    {
+      "role": "department_head",
+      "label": "real-work-request-office-review",
+      "repeatReviewSuppressed": true
+    }
+  ],
+  "interactionCaptures": [
+    {
+      "file": "interaction-work-request-created.png",
+      "route": "/transactions/3"
+    },
+    {
+      "file": "interaction-document-upload-ready.png",
+      "route": "/development-plans"
+    },
+    {
+      "file": "interaction-document-metadata.png",
+      "route": "/development-plans"
+    },
+    {
+      "file": "interaction-staff-designated.png",
+      "route": "/development-plans"
+    },
+    {
+      "file": "interaction-work-request-marked-for-review.png",
+      "route": "/transactions/3"
+    }
+  ],
+  "failures": [
+    {
+      "role": "department_head",
+      "route": "/transactions/3",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "errors": [],
+      "violationIds": [
+        "select-name"
+      ]
+    }
+  ]
+}

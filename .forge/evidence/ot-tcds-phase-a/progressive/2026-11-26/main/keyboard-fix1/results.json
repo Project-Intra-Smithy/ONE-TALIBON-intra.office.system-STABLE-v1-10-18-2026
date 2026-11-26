@@ -1,0 +1,679 @@
+{
+  "sourceSha": "20d3e523ababfef8888356c968ad8392660ad02d",
+  "sourceWorktreeDirty": true,
+  "completed": true,
+  "traces": [
+    {
+      "route": "/dashboard",
+      "step": 0,
+      "tag": "A",
+      "name": "Skip to main content",
+      "bounds": {
+        "x": 16,
+        "y": 4.990357875823975,
+        "width": 172.828125,
+        "height": 46.46875
+      },
+      "hitTag": "A",
+      "hitClass": "tcds-skip-link",
+      "hitText": "Skip to main content",
+      "unobscured": true
+    },
+    {
+      "route": "/dashboard",
+      "step": 1,
+      "tag": "BUTTON",
+      "name": "Open navigation",
+      "bounds": {
+        "x": 12,
+        "y": 5.5,
+        "width": 44,
+        "height": 44
+      },
+      "hitTag": "line",
+      "hitClass": {},
+      "hitText": "",
+      "unobscured": true
+    },
+    {
+      "route": "/dashboard",
+      "step": 2,
+      "tag": "BUTTON",
+      "name": "Open quick jump and search",
+      "bounds": {
+        "x": 123,
+        "y": 5.5,
+        "width": 44,
+        "height": 44
+      },
+      "hitTag": "svg",
+      "hitClass": {},
+      "hitText": "",
+      "unobscured": true
+    },
+    {
+      "route": "/dashboard",
+      "step": 3,
+      "tag": "BUTTON",
+      "name": "Open notifications",
+      "bounds": {
+        "x": 169,
+        "y": 5.5,
+        "width": 44,
+        "height": 44
+      },
+      "hitTag": "svg",
+      "hitClass": {},
+      "hitText": "",
+      "unobscured": true
+    },
+    {
+      "route": "/dashboard",
+      "step": 4,
+      "tag": "BUTTON",
+      "name": "Open portal applications",
+      "bounds": {
+        "x": 215,
+        "y": 5.5,
+        "width": 44,
+        "height": 44
+      },
+      "hitTag": "svg",
+      "hitClass": {},
+      "hitText": "",
+      "unobscured": true
+    },
+    {
+      "route": "/dashboard",
+      "step": 5,
+      "tag": "A",
+      "name": "New Work Request",
+      "bounds": {
+        "x": 16,
+        "y": 194,
+        "width": 182.0625,
+        "height": 44
+      },
+      "hitTag": "SPAN",
+      "hitClass": "",
+      "hitText": "New Work Request",
+      "unobscured": true
+    },
+    {
+      "route": "/dashboard",
+      "step": 6,
+      "tag": "A",
+      "name": "Open My Tasks",
+      "bounds": {
+        "x": 16,
+        "y": 248,
+        "width": 156.65625,
+        "height": 44
+      },
+      "hitTag": "SPAN",
+      "hitClass": "",
+      "hitText": "Open My Tasks",
+      "unobscured": true
+    },
+    {
+      "route": "/dashboard",
+      "step": 7,
+      "tag": "A",
+      "name": "Needs Action0Authorized workload",
+      "bounds": {
+        "x": 16,
+        "y": 312,
+        "width": 138,
+        "height": 151.5
+      },
+      "hitTag": "SPAN",
+      "hitClass": "text-sm font-semibold text-[var(--ink-secondary)]",
+      "hitText": "Needs Action",
+      "unobscured": true
+    },
+    {
+      "route": "/dashboard",
+      "step": 8,
+      "tag": "A",
+      "name": "Assigned to Me0Authorized workload",
+      "bounds": {
+        "x": 166,
+        "y": 312,
+        "width": 138,
+        "height": 151.5
+      },
+      "hitTag": "SPAN",
+      "hitClass": "text-sm font-semibold text-[var(--ink-secondary)]",
+      "hitText": "Assigned to Me",
+      "unobscured": true
+    },
+    {
+      "route": "/dashboard",
+      "step": 9,
+      "tag": "A",
+      "name": "Due Soon0Authorized workload",
+      "bounds": {
+        "x": 16,
+        "y": 475.5,
+        "width": 138,
+        "height": 131.5
+      },
+      "hitTag": "SPAN",
+      "hitClass": "text-sm font-semibold text-[var(--ink-secondary)]",
+      "hitText": "Due Soon",
+      "unobscured": true
+    },
+    {
+      "route": "/dashboard",
+      "step": 10,
+      "tag": "A",
+      "name": "Overdue0Authorized workload",
+      "bounds": {
+        "x": 166,
+        "y": 475.5,
+        "width": 138,
+        "height": 131.5
+      },
+      "hitTag": "SPAN",
+      "hitClass": "text-sm font-semibold text-[var(--ink-secondary)]",
+      "hitText": "Overdue",
+      "unobscured": true
+    },
+    {
+      "route": "/dashboard",
+      "step": 11,
+      "tag": "A",
+      "name": "View all",
+      "bounds": {
+        "x": 33,
+        "y": 674,
+        "width": 70.8125,
+        "height": 36
+      },
+      "hitTag": "SPAN",
+      "hitClass": "",
+      "hitText": "View all",
+      "unobscured": true
+    },
+    {
+      "route": "/dashboard",
+      "step": 12,
+      "tag": "A",
+      "name": "All tasks",
+      "bounds": {
+        "x": 229.328125,
+        "y": 440,
+        "width": 57.671875,
+        "height": 20
+      },
+      "hitTag": "A",
+      "hitClass": "text-sm font-semibold text-[var(--brand-ink)] hover:underline",
+      "hitText": "All tasks",
+      "unobscured": true
+    },
+    {
+      "route": "/dashboard",
+      "step": 13,
+      "tag": "A",
+      "name": "Memoranda",
+      "bounds": {
+        "x": 208.40625,
+        "y": 599,
+        "width": 78.59375,
+        "height": 20
+      },
+      "hitTag": "A",
+      "hitClass": "text-sm font-semibold text-[var(--brand-ink)] hover:underline",
+      "hitText": "Memoranda",
+      "unobscured": true
+    },
+    {
+      "route": "/employees",
+      "step": 0,
+      "tag": "A",
+      "name": "Skip to main content",
+      "bounds": {
+        "x": 16,
+        "y": 5.023845195770264,
+        "width": 172.828125,
+        "height": 46.46875
+      },
+      "hitTag": "A",
+      "hitClass": "tcds-skip-link",
+      "hitText": "Skip to main content",
+      "unobscured": true
+    },
+    {
+      "route": "/employees",
+      "step": 1,
+      "tag": "BUTTON",
+      "name": "Open navigation",
+      "bounds": {
+        "x": 12,
+        "y": 5.5,
+        "width": 44,
+        "height": 44
+      },
+      "hitTag": "line",
+      "hitClass": {},
+      "hitText": "",
+      "unobscured": true
+    },
+    {
+      "route": "/employees",
+      "step": 2,
+      "tag": "BUTTON",
+      "name": "Open quick jump and search",
+      "bounds": {
+        "x": 123,
+        "y": 5.5,
+        "width": 44,
+        "height": 44
+      },
+      "hitTag": "svg",
+      "hitClass": {},
+      "hitText": "",
+      "unobscured": true
+    },
+    {
+      "route": "/employees",
+      "step": 3,
+      "tag": "BUTTON",
+      "name": "Open notifications",
+      "bounds": {
+        "x": 169,
+        "y": 5.5,
+        "width": 44,
+        "height": 44
+      },
+      "hitTag": "svg",
+      "hitClass": {},
+      "hitText": "",
+      "unobscured": true
+    },
+    {
+      "route": "/employees",
+      "step": 4,
+      "tag": "BUTTON",
+      "name": "Open portal applications",
+      "bounds": {
+        "x": 215,
+        "y": 5.5,
+        "width": 44,
+        "height": 44
+      },
+      "hitTag": "svg",
+      "hitClass": {},
+      "hitText": "",
+      "unobscured": true
+    },
+    {
+      "route": "/employees",
+      "step": 5,
+      "tag": "A",
+      "name": "My attendance",
+      "bounds": {
+        "x": 16,
+        "y": 216,
+        "width": 154.125,
+        "height": 44
+      },
+      "hitTag": "SPAN",
+      "hitClass": "",
+      "hitText": "My attendance",
+      "unobscured": true
+    },
+    {
+      "route": "/employees",
+      "step": 6,
+      "tag": "INPUT",
+      "name": "",
+      "bounds": {
+        "x": 31,
+        "y": 642.5,
+        "width": 258,
+        "height": 44
+      },
+      "hitTag": "INPUT",
+      "hitClass": "tcds-input pl-9",
+      "hitText": "",
+      "unobscured": true
+    },
+    {
+      "route": "/employees",
+      "step": 7,
+      "tag": "SELECT",
+      "name": "All officesSynthetic MPDOSynthetic MayorQA Origin",
+      "bounds": {
+        "x": 31,
+        "y": 696.5,
+        "width": 258,
+        "height": 44
+      },
+      "hitTag": "SELECT",
+      "hitClass": "tcds-input",
+      "hitText": "All officesSynthetic MPDOSynthetic MayorQA Origin",
+      "unobscured": true
+    },
+    {
+      "route": "/employees",
+      "step": 8,
+      "tag": "BUTTON",
+      "name": "Search",
+      "bounds": {
+        "x": 31,
+        "y": 750.5,
+        "width": 80.625,
+        "height": 44
+      },
+      "hitTag": "BUTTON",
+      "hitClass": "municipal-primary-button",
+      "hitText": "Search",
+      "unobscured": true
+    },
+    {
+      "route": "/employees",
+      "step": 9,
+      "tag": "BUTTON",
+      "name": "Reset",
+      "bounds": {
+        "x": 119.625,
+        "y": 750.5,
+        "width": 94.171875,
+        "height": 44
+      },
+      "hitTag": "SPAN",
+      "hitClass": "",
+      "hitText": "Reset",
+      "unobscured": true
+    },
+    {
+      "route": "/employees",
+      "step": 10,
+      "tag": "DIV",
+      "name": "Employee directory results",
+      "bounds": {
+        "x": 17,
+        "y": 71.5,
+        "width": 286,
+        "height": 3564.71875
+      },
+      "hitTag": "TH",
+      "hitClass": "",
+      "hitText": "Employee",
+      "unobscured": true
+    },
+    {
+      "route": "/employees",
+      "step": 11,
+      "tag": "A",
+      "name": "Synthetic Phase A department_head",
+      "bounds": {
+        "x": 33,
+        "y": 131.6875,
+        "width": 129.015625,
+        "height": 17
+      },
+      "hitTag": "A",
+      "hitClass": "font-semibold text-[var(--brand-ink)] hover:underline",
+      "hitText": "Synthetic Phase A department_head",
+      "unobscured": true
+    },
+    {
+      "route": "/employees",
+      "step": 12,
+      "tag": "A",
+      "name": "Synthetic Phase A department_head",
+      "bounds": {
+        "x": 33,
+        "y": 224.375,
+        "width": 129.015625,
+        "height": 17
+      },
+      "hitTag": "A",
+      "hitClass": "font-semibold text-[var(--brand-ink)] hover:underline",
+      "hitText": "Synthetic Phase A department_head",
+      "unobscured": true
+    },
+    {
+      "route": "/employees",
+      "step": 13,
+      "tag": "A",
+      "name": "Synthetic Phase A department_head",
+      "bounds": {
+        "x": 33,
+        "y": 317.0625,
+        "width": 129.015625,
+        "height": 17
+      },
+      "hitTag": "A",
+      "hitClass": "font-semibold text-[var(--brand-ink)] hover:underline",
+      "hitText": "Synthetic Phase A department_head",
+      "unobscured": true
+    },
+    {
+      "route": "/development-plans",
+      "step": 0,
+      "tag": "A",
+      "name": "Skip to main content",
+      "bounds": {
+        "x": 16,
+        "y": 5.037211894989014,
+        "width": 172.828125,
+        "height": 46.46875
+      },
+      "hitTag": "A",
+      "hitClass": "tcds-skip-link",
+      "hitText": "Skip to main content",
+      "unobscured": true
+    },
+    {
+      "route": "/development-plans",
+      "step": 1,
+      "tag": "BUTTON",
+      "name": "Open navigation",
+      "bounds": {
+        "x": 12,
+        "y": 5.5,
+        "width": 44,
+        "height": 44
+      },
+      "hitTag": "line",
+      "hitClass": {},
+      "hitText": "",
+      "unobscured": true
+    },
+    {
+      "route": "/development-plans",
+      "step": 2,
+      "tag": "BUTTON",
+      "name": "Open quick jump and search",
+      "bounds": {
+        "x": 123,
+        "y": 5.5,
+        "width": 44,
+        "height": 44
+      },
+      "hitTag": "svg",
+      "hitClass": {},
+      "hitText": "",
+      "unobscured": true
+    },
+    {
+      "route": "/development-plans",
+      "step": 3,
+      "tag": "BUTTON",
+      "name": "Open notifications",
+      "bounds": {
+        "x": 169,
+        "y": 5.5,
+        "width": 44,
+        "height": 44
+      },
+      "hitTag": "svg",
+      "hitClass": {},
+      "hitText": "",
+      "unobscured": true
+    },
+    {
+      "route": "/development-plans",
+      "step": 4,
+      "tag": "BUTTON",
+      "name": "Open portal applications",
+      "bounds": {
+        "x": 215,
+        "y": 5.5,
+        "width": 44,
+        "height": 44
+      },
+      "hitTag": "svg",
+      "hitClass": {},
+      "hitText": "",
+      "unobscured": true
+    },
+    {
+      "route": "/development-plans",
+      "step": 5,
+      "tag": "A",
+      "name": "Planning Maps Atlas",
+      "bounds": {
+        "x": 16,
+        "y": 232.5,
+        "width": 161.890625,
+        "height": 36
+      },
+      "hitTag": "A",
+      "hitClass": "municipal-action inline-flex min-h-9 items-center gap-1.5 px-3 text-xs font-semibold",
+      "hitText": "Planning Maps Atlas",
+      "unobscured": true
+    },
+    {
+      "route": "/development-plans",
+      "step": 6,
+      "tag": "A",
+      "name": "Development Plans",
+      "bounds": {
+        "x": 16,
+        "y": 301.5,
+        "width": 181.03125,
+        "height": 44
+      },
+      "hitTag": "SPAN",
+      "hitClass": "",
+      "hitText": "Development Plans",
+      "unobscured": true
+    },
+    {
+      "route": "/development-plans",
+      "step": 7,
+      "tag": "A",
+      "name": "Available Planning Maps",
+      "bounds": {
+        "x": 16,
+        "y": 353.5,
+        "width": 215.171875,
+        "height": 44
+      },
+      "hitTag": "SPAN",
+      "hitClass": "",
+      "hitText": "Available Planning Maps",
+      "unobscured": true
+    },
+    {
+      "route": "/development-plans",
+      "step": 8,
+      "tag": "A",
+      "name": "PPAs",
+      "bounds": {
+        "x": 16,
+        "y": 405.5,
+        "width": 88.265625,
+        "height": 44
+      },
+      "hitTag": "SPAN",
+      "hitClass": "",
+      "hitText": "PPAs",
+      "unobscured": true
+    },
+    {
+      "route": "/development-plans",
+      "step": 9,
+      "tag": "A",
+      "name": "Open Spatial Reference Atlas",
+      "bounds": {
+        "x": 87,
+        "y": 757.5,
+        "width": 200.40625,
+        "height": 44
+      },
+      "hitTag": "A",
+      "hitClass": "municipal-secondary-button shrink-0 text-xs",
+      "hitText": "Open Spatial Reference Atlas",
+      "unobscured": true
+    },
+    {
+      "route": "/development-plans",
+      "step": 10,
+      "tag": "INPUT",
+      "name": "",
+      "bounds": {
+        "x": 33,
+        "y": 427.5,
+        "width": 254,
+        "height": 44
+      },
+      "hitTag": "INPUT",
+      "hitClass": "min-h-11 tcds-input pl-9",
+      "hitText": "",
+      "unobscured": true
+    },
+    {
+      "route": "/development-plans",
+      "step": 11,
+      "tag": "SELECT",
+      "name": "AllDraftFor reviewUpdatingIn forceAdoptedDue this yearArchived",
+      "bounds": {
+        "x": 33,
+        "y": 505.5,
+        "width": 254,
+        "height": 44
+      },
+      "hitTag": "SELECT",
+      "hitClass": "min-h-11 tcds-input",
+      "hitText": "AllDraftFor reviewUpdatingIn forceAdoptedDue this yearArchived",
+      "unobscured": true
+    },
+    {
+      "route": "/development-plans",
+      "step": 12,
+      "tag": "SELECT",
+      "name": "AllAnnualThree-yearSix-yearLong-termSectoral",
+      "bounds": {
+        "x": 33,
+        "y": 583.5,
+        "width": 254,
+        "height": 44
+      },
+      "hitTag": "SELECT",
+      "hitClass": "min-h-11 tcds-input",
+      "hitText": "AllAnnualThree-yearSix-yearLong-termSectoral",
+      "unobscured": true
+    },
+    {
+      "route": "/development-plans",
+      "step": 13,
+      "tag": "SELECT",
+      "name": "AllGAD Focal Point SystemMunicipal Disaster Risk Reduction and Management Office",
+      "bounds": {
+        "x": 33,
+        "y": 661.5,
+        "width": 254,
+        "height": 44
+      },
+      "hitTag": "SELECT",
+      "hitClass": "min-h-11 tcds-input",
+      "hitText": "AllGAD Focal Point SystemMunicipal Disaster Risk Reduction and Management Office",
+      "unobscured": true
+    }
+  ]
+}

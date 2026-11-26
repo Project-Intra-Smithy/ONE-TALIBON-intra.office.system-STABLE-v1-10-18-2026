@@ -1,0 +1,1575 @@
+{
+  "completed": false,
+  "sourceSha": "de362bfeddbb2b1ac3e738d1f99d4f64b536c90c",
+  "observations": [
+    {
+      "role": "department_head",
+      "route": "/my-tasks",
+      "label": "my-tasks",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-my-tasks-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "label": "transactions-create",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-transactions-create-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#wr-category"
+            ],
+            [
+              "#wr-type"
+            ],
+            [
+              "#wr-action"
+            ],
+            [
+              "#wr-assignee"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/calendar",
+      "label": "calendar",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-calendar-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans-studio",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-studio-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_8_-horizon"
+            ],
+            [
+              "#_r_8_-status"
+            ],
+            [
+              ".py-3\\.5 > .gap-2 > .disabled\\:opacity-55.border-\\[var\\(--border-control\\)\\].cursor-pointer"
+            ],
+            [
+              "button[form=\"_r_8_\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".r8-ppas-cards"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas-studio",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-studio-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_b_-year"
+            ],
+            [
+              "#_r_b_-sector"
+            ],
+            [
+              ".disabled\\:cursor-not-allowed.disabled\\:opacity-55.cursor-pointer:nth-child(1)"
+            ],
+            [
+              "button[form=\"_r_b_\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.4:1 with the surrounding text. (Minimum contrast is 3:1, link text: #0e4d36, surrounding text: #4a5d55)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-studio",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-studio-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.4:1 with the surrounding text. (Minimum contrast is 3:1, link text: #0e4d36, surrounding text: #4a5d55)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#pm-category"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/my-department",
+      "label": "my-department",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-my-department-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/my-tasks",
+      "label": "my-tasks",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-my-tasks-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "label": "transactions-create",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-transactions-create-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#wr-category"
+            ],
+            [
+              "#wr-type"
+            ],
+            [
+              "#wr-action"
+            ],
+            [
+              "#wr-assignee"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/calendar",
+      "label": "calendar",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-calendar-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-development-plans-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans-studio",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-development-plans-studio-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_8_-horizon"
+            ],
+            [
+              "#_r_8_-status"
+            ],
+            [
+              ".py-3\\.5 > .gap-2 > .disabled\\:opacity-55.border-\\[var\\(--border-control\\)\\].cursor-pointer"
+            ],
+            [
+              "button[form=\"_r_8_\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-ppas-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".r8-ppas-cards"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas-studio",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-ppas-studio-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_b_-year"
+            ],
+            [
+              "#_r_b_-sector"
+            ],
+            [
+              ".disabled\\:cursor-not-allowed.disabled\\:opacity-55.cursor-pointer:nth-child(1)"
+            ],
+            [
+              "button[form=\"_r_b_\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-planning-maps-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.36:1 with the surrounding text. (Minimum contrast is 3:1, link text: #5ee0aa, surrounding text: #9fb1a8)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-studio",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-planning-maps-studio-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.36:1 with the surrounding text. (Minimum contrast is 3:1, link text: #5ee0aa, surrounding text: #9fb1a8)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#pm-category"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/my-department",
+      "label": "my-department",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-my-department-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/my-tasks",
+      "label": "my-tasks",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-my-tasks-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "label": "transactions-create",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-transactions-create-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#wr-category"
+            ],
+            [
+              "#wr-type"
+            ],
+            [
+              "#wr-action"
+            ],
+            [
+              "#wr-assignee"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/calendar",
+      "label": "calendar",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-calendar-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.text-\\[var\\(--surface-sidebar-muted\\)\\]"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .flex-1.min-w-0.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans-studio",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-studio-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_8_-horizon"
+            ],
+            [
+              "#_r_8_-status"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".r8-ppas-cards"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .pt-1.mb-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].relative[href$=\"employees\"] > .flex-1.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas-studio",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-studio-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_b_-year"
+            ],
+            [
+              "#_r_b_-sector"
+            ],
+            [
+              "#_r_b_-funding"
+            ],
+            [
+              "#_r_b_-status"
+            ],
+            [
+              "#_r_b_-priority"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.4:1 with the surrounding text. (Minimum contrast is 3:1, link text: #0e4d36, surrounding text: #4a5d55)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .min-w-0.flex-1.truncate"
+            ],
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-studio",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-studio-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.4:1 with the surrounding text. (Minimum contrast is 3:1, link text: #0e4d36, surrounding text: #4a5d55)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#pm-category"
+            ],
+            [
+              "label[for=\"pm-desc\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/my-department",
+      "label": "my-department",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-my-department-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/my-tasks",
+      "label": "my-tasks",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-my-tasks-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "label": "transactions-create",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-transactions-create-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#wr-category"
+            ],
+            [
+              "#wr-type"
+            ],
+            [
+              "#wr-action"
+            ],
+            [
+              "#wr-assignee"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/calendar",
+      "label": "calendar",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-calendar-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-development-plans-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.text-\\[var\\(--surface-sidebar-muted\\)\\]"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .flex-1.min-w-0.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans-studio",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-development-plans-studio-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_8_-horizon"
+            ],
+            [
+              "#_r_8_-status"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-ppas-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".r8-ppas-cards"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .pt-1.mb-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].relative[href$=\"employees\"] > .flex-1.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas-studio",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-ppas-studio-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_b_-year"
+            ],
+            [
+              "#_r_b_-sector"
+            ],
+            [
+              "#_r_b_-funding"
+            ],
+            [
+              "#_r_b_-status"
+            ],
+            [
+              "#_r_b_-priority"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-planning-maps-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.36:1 with the surrounding text. (Minimum contrast is 3:1, link text: #5ee0aa, surrounding text: #9fb1a8)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .min-w-0.flex-1.truncate"
+            ],
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-studio",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-planning-maps-studio-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.36:1 with the surrounding text. (Minimum contrast is 3:1, link text: #5ee0aa, surrounding text: #9fb1a8)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#pm-category"
+            ],
+            [
+              "label[for=\"pm-desc\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/my-department",
+      "label": "my-department",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-my-department-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/my-tasks",
+      "label": "my-tasks",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-my-tasks-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "label": "transactions-create",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-transactions-create-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#wr-category"
+            ],
+            [
+              "#wr-type"
+            ],
+            [
+              "#wr-action"
+            ],
+            [
+              "#wr-assignee"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/calendar",
+      "label": "calendar",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-calendar-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.text-\\[var\\(--surface-sidebar-muted\\)\\]"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .flex-1.min-w-0.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans-studio",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-studio-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_8_-horizon"
+            ],
+            [
+              "#_r_8_-status"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .pt-1.mb-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].relative[href$=\"employees\"] > .flex-1.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas-studio",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-studio-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_b_-year"
+            ],
+            [
+              "#_r_b_-sector"
+            ],
+            [
+              "#_r_b_-funding"
+            ],
+            [
+              "#_r_b_-status"
+            ],
+            [
+              "#_r_b_-priority"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.4:1 with the surrounding text. (Minimum contrast is 3:1, link text: #0e4d36, surrounding text: #4a5d55)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .min-w-0.flex-1.truncate"
+            ],
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-studio",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-studio-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.4:1 with the surrounding text. (Minimum contrast is 3:1, link text: #0e4d36, surrounding text: #4a5d55)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#pm-category"
+            ],
+            [
+              "label[for=\"pm-desc\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/my-department",
+      "label": "my-department",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-my-department-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/my-tasks",
+      "label": "my-tasks",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-my-tasks-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "label": "transactions-create",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-transactions-create-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#wr-category"
+            ],
+            [
+              "#wr-type"
+            ],
+            [
+              "#wr-action"
+            ],
+            [
+              "#wr-assignee"
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,668 @@
+{
+  "completed": true,
+  "passed": true,
+  "scope": {
+    "widths": [
+      320
+    ],
+    "roles": [
+      "department_head"
+    ],
+    "routeMatrix": false,
+    "focused": true
+  },
+  "sourceSha": "2b096d74cabe3c0da6fc171dc052917f9e72210f",
+  "sourceWorktreeDirty": false,
+  "buildManifestSha256": "b9e891fec0282ca7e531587ce25ceb9c9b9e7d3fb6064bb45301c8868791c467",
+  "observations": [
+    {
+      "role": "department_head",
+      "route": "/security/mfa/challenge",
+      "status": 200,
+      "width": 320,
+      "theme": "light",
+      "renderedComponent": "Auth/MfaChallenge",
+      "overflow": false,
+      "interactionState": "invalid-short-code",
+      "capture": null,
+      "captureDisposition": "Sensitive transient enrollment/recovery material intentionally not captured or serialized",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".mfa-challenge-kicker"
+            ],
+            [
+              "h1"
+            ],
+            [
+              ".leading-6"
+            ],
+            [
+              "form[aria-label=\"Authenticator verification\"] > label > .mb-1\\.5.text-slate-700.font-medium"
+            ],
+            [
+              ".text-lg"
+            ],
+            [
+              "#mfa-code-error"
+            ],
+            [
+              ".mfa-challenge-primary"
+            ],
+            [
+              ".flex"
+            ],
+            [
+              ".uppercase"
+            ],
+            [
+              ".mfa-challenge-secondary"
+            ],
+            [
+              ".mfa-challenge-signout"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/security/mfa/challenge",
+      "status": 200,
+      "width": 320,
+      "theme": "dark",
+      "renderedComponent": "Auth/MfaChallenge",
+      "overflow": false,
+      "interactionState": "invalid-short-code",
+      "capture": null,
+      "captureDisposition": "Sensitive transient enrollment/recovery material intentionally not captured or serialized",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".mfa-challenge-kicker"
+            ],
+            [
+              "h1"
+            ],
+            [
+              ".leading-6"
+            ],
+            [
+              "form[aria-label=\"Authenticator verification\"] > label > .mb-1\\.5.text-slate-700.font-medium"
+            ],
+            [
+              ".text-lg"
+            ],
+            [
+              "#mfa-code-error"
+            ],
+            [
+              ".mfa-challenge-primary"
+            ],
+            [
+              ".flex"
+            ],
+            [
+              ".uppercase"
+            ],
+            [
+              ".mfa-challenge-secondary"
+            ],
+            [
+              ".mfa-challenge-signout"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/security/mfa/challenge",
+      "width": 1440,
+      "theme": "light",
+      "stage": "route",
+      "status": 200,
+      "renderedComponent": "Auth/MfaChallenge",
+      "disposition": "CANONICAL PAGE RENDERED",
+      "overflow": false,
+      "errors": [],
+      "capture": "department_head-security-mfa-challenge-1440-light.png",
+      "accessibilityTree": "- main:\n  - paragraph: ONE TALIBON · ACCOUNT VERIFICATION\n  - heading \"Verify your identity\" [level=1]\n  - paragraph: Enter your authenticator code to continue securely.\n  - form \"Authenticator verification\":\n    - text: Authenticator code\n    - textbox \"Authenticator code\"\n    - button \"Verify and continue\"\n  - separator\n  - form \"Recovery verification\":\n    - img\n    - text: One-time recovery code\n    - textbox \"One-time recovery code\"\n    - alert\n    - button \"Use recovery code\"\n  - button \"Sign out\":\n    - img\n    - text: Sign out",
+      "manualReview": [
+        {
+          "selector": ".mfa-challenge-kicker",
+          "tag": "P",
+          "text": "ONE TALIBON · ACCOUNT VERIFICATION",
+          "color": "rgb(14, 106, 80)",
+          "background": [
+            134.5176470588235,
+            152.77254901960782,
+            157.98823529411766
+          ],
+          "contrastRatio": 2.2081292511763984,
+          "fontSize": "12px",
+          "fontWeight": "800",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": "h1",
+          "tag": "H1",
+          "text": "Verify your identity",
+          "color": "oklch(0.129 0.042 264.695)",
+          "background": [
+            134.5176470588235,
+            152.77254901960782,
+            157.98823529411766
+          ],
+          "contrastRatio": 6.774154055984588,
+          "fontSize": "24px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".leading-6",
+          "tag": "P",
+          "text": "Enter your authenticator code to continue securely.",
+          "color": "oklch(0.446 0.043 257.281)",
+          "background": [
+            134.5176470588235,
+            152.77254901960782,
+            157.98823529411766
+          ],
+          "contrastRatio": 2.5487524924687768,
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": "form[aria-label=\"Authenticator verification\"] > label > .mb-1\\.5.text-slate-700",
+          "tag": "SPAN",
+          "text": "Authenticator code",
+          "color": "oklch(0.372 0.044 257.287)",
+          "background": [
+            134.5176470588235,
+            152.77254901960782,
+            157.98823529411766
+          ],
+          "contrastRatio": 3.4806445746925943,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".text-lg",
+          "tag": "INPUT",
+          "text": "",
+          "color": "rgb(16, 42, 67)",
+          "background": [
+            250.27520184544406,
+            250.99108035371012,
+            251.19561707035754
+          ],
+          "contrastRatio": 14.13140413631351,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".mfa-challenge-primary",
+          "tag": "BUTTON",
+          "text": "Verify and continue",
+          "color": "rgb(255, 255, 255)",
+          "background": [
+            9,
+            85,
+            63
+          ],
+          "contrastRatio": 8.813192467736165,
+          "fontSize": "15px",
+          "fontWeight": "700",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".flex",
+          "tag": "SPAN",
+          "text": "One-time recovery code",
+          "color": "oklch(0.372 0.044 257.287)",
+          "background": [
+            134.5176470588235,
+            152.77254901960782,
+            157.98823529411766
+          ],
+          "contrastRatio": 3.4806445746925943,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".uppercase",
+          "tag": "INPUT",
+          "text": "",
+          "color": "rgb(16, 42, 67)",
+          "background": [
+            250.27520184544406,
+            250.99108035371012,
+            251.19561707035754
+          ],
+          "contrastRatio": 14.13140413631351,
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".mfa-challenge-secondary",
+          "tag": "BUTTON",
+          "text": "Use recovery code",
+          "color": "rgb(14, 106, 80)",
+          "background": [
+            245.55040369088812,
+            246.98216070742023,
+            247.3912341407151
+          ],
+          "contrastRatio": 6.117524868369629,
+          "fontSize": "15px",
+          "fontWeight": "700",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        },
+        {
+          "selector": ".mfa-challenge-signout",
+          "tag": "BUTTON",
+          "text": "Sign out",
+          "color": "rgb(14, 106, 80)",
+          "background": [
+            134.5176470588235,
+            152.77254901960782,
+            157.98823529411766
+          ],
+          "contrastRatio": 2.2081292511763984,
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "opacityChain": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        }
+      ],
+      "keyboardTrace": [],
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "bold",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"mfa-challenge-kicker\">ONE TALIBON · ACCOUNT VERIFICATION</p>",
+              "target": [
+                ".mfa-challenge-kicker"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "18.0pt (24px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "3:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h1 class=\"mt-2 text-2xl font-semibold text-slate-950 dark:text-[var(--ink-primary)]\">Verify your identity</h1>",
+              "target": [
+                "h1"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"mt-2 text-sm leading-6 text-slate-600\">Enter your authenticator code to continue securely.</p>",
+              "target": [
+                ".leading-6"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"mb-1.5 block text-sm font-medium text-slate-700\">Authenticator code</span>",
+              "target": [
+                "form[aria-label=\"Authenticator verification\"] > label > .mb-1\\.5.text-slate-700"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<input aria-invalid=\"false\" inputmode=\"numeric\" autocomplete=\"one-time-code\" maxlength=\"6\" class=\"mfa-challenge-input font-mono text-lg tracking-[0.25em]\" value=\"\" name=\"code\">",
+              "target": [
+                ".text-lg"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "bold",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button class=\"mfa-challenge-primary\">Verify and continue</button>",
+              "target": [
+                ".mfa-challenge-primary"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"mb-1.5 flex items-center gap-2 text-sm font-medium text-slate-700\">",
+              "target": [
+                ".flex"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<input aria-invalid=\"false\" aria-describedby=\"mfa-recovery-errors\" autocomplete=\"off\" class=\"mfa-challenge-input font-mono text-sm uppercase\" value=\"\" name=\"recovery_code\">",
+              "target": [
+                ".uppercase"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "11.3pt (15px)",
+                    "fontWeight": "bold",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button class=\"mfa-challenge-secondary\">Use recovery code</button>",
+              "target": [
+                ".mfa-challenge-secondary"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "pseudoContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<main class=\"mfa-challenge\">",
+                      "target": [
+                        "main"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a pseudo element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button type=\"button\" class=\"mfa-challenge-signout mt-5 inline-flex items-center gap-2 text-sm font-medium\">",
+              "target": [
+                ".mfa-challenge-signout"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a pseudo element"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "interactions": [],
+  "interactionCaptures": [
+    {
+      "file": "interaction-invalid-challenge-light.png",
+      "route": "/security/mfa/challenge"
+    },
+    {
+      "file": "interaction-invalid-challenge-dark.png",
+      "route": "/security/mfa/challenge"
+    }
+  ],
+  "failures": []
+}

@@ -1,0 +1,23 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+locator.fill: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for getByLabel('Subject', { exact: true })[22m
+
+    at C:\dev\TAL\ot-tcds-phase-a\tests\Browser\phase-a-qualification.mjs:63:59 {
+  name: 'TimeoutError'
+}
+
+Node.js v24.22.1
+file:///C:/dev/TAL/ot-tcds-phase-a/tests/Browser/phase-a-accessibility-runtime.mjs:66
+        test.on('exit', code => code === 0 ? resolve() : reject(new Error(`Canonical browser validation failed (${code})`)));
+                                                                ^
+
+Error: Canonical browser validation failed (1)
+    at ChildProcess.<anonymous> (file:///C:/dev/TAL/ot-tcds-phase-a/tests/Browser/phase-a-accessibility-runtime.mjs:66:65)
+    at ChildProcess.emit (node:events:514:28)
+    at ChildProcess._handle.onexit (node:internal/child_process:324:12)
+
+Node.js v24.22.1

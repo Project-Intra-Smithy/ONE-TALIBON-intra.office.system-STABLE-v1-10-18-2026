@@ -1,0 +1,34 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+const candidate='efbf3b795cf2a49908adbb8781b72610c3ecf6bc';
+const root='C:/dev/TAL/ot-tcds-evidence-efbf3b79/.forge/evidence/ot-tcds-phase-a/published/efbf3b79';
+const core='storage/app/qa/phase-a-canonical-efbf3b79';
+const audit='storage/app/qa/phase-a-accessibility/efbf3b795cf2-2026-11-26T02-44-48-784Z';
+const read=p=>fs.readFileSync(p);
+const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+const receipt=JSON.parse(read(core+'/results.json')),a11y=JSON.parse(read(audit+'/results.json'));
+assert.equal(execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),candidate);
+assert.equal(execFileSync('git',['status','--porcelain'],{encoding:'utf8'}).trim(),'');
+for(const r of [receipt,a11y]){assert.equal(r.completed,true);assert.equal(r.sourceSha,candidate);assert.equal(r.sourceWorktreeDirty,false);assert.equal(r.buildManifestSha256,sha(read('public/build/manifest.json')));}
+assert.equal(receipt.results.length,84);assert.equal(receipt.interactions.length,66);
+assert.ok(receipt.results.every(r=>r.status===200&&!r.overflow&&!r.errors.length));
+assert.equal(a11y.passed,true);assert.equal(a11y.observations.length,102);assert.ok(a11y.observations.every(r=>!r.overflow&&!r.violations.length));
+fs.mkdirSync(root,{recursive:true});
+const names=new Set(receipt.results.map(r=>`${r.role}-${r.path.slice(1).replaceAll('/','-')}-${r.width}-${r.theme}.png`));
+for(const r of receipt.interactions)if(r.width)names.add(`${r.role}-${r.label}-${r.width}-${r.theme}.png`);
+assert.equal(names.size,144);
+const inventory=[];
+function capture(source,file){const bytes=read(source);assert.equal(bytes.subarray(0,8).toString('hex'),'89504e470d0a1a0a');fs.mkdirSync(path.dirname(root+'/'+file),{recursive:true});fs.writeFileSync(root+'/'+file,bytes);inventory.push({file,bytes:bytes.length,sha256:sha(bytes),width:bytes.readUInt32BE(16),height:bytes.readUInt32BE(20),observedModifiedAt:fs.statSync(source).mtime.toISOString()});}
+for(const name of [...names].sort())capture(core+'/'+name,'canonical-captures/'+name);
+for(const r of a11y.observations)capture(audit+'/'+r.capture,'accessibility-captures/'+r.capture);
+assert.equal(inventory.length,246);
+for(const [source,file] of [[core+'/results.json','canonical-runtime-results.json'],[audit+'/results.json','accessibility-results.json'],['public/build/manifest.json','build-manifest.json'],['storage/app/qa/run-core-efbf3b79.mjs','canonical-runtime-driver.mjs'],['storage/app/qa/core-efbf3b79.mjs','canonical-browser-driver.mjs']])fs.copyFileSync(source,root+'/'+file);
+fs.writeFileSync(root+'/interaction-results.json',JSON.stringify(receipt.interactions,null,2)+'\n');
+fs.writeFileSync(root+'/capture-inventory.json',JSON.stringify({candidate,buildManifestSha256:receipt.buildManifestSha256,attributionBasis:'Original bytes from clean exact-candidate runtime receipts; no captures regenerated during publication.',captures:inventory},null,2)+'\n');
+for(const file of ['aj-home-efbf3b79.log','ux-efbf3b79.log'])fs.copyFileSync('storage/app/qa/'+file,root+'/'+file);
+const files=['canonical-runtime-results.json','accessibility-results.json','build-manifest.json','canonical-runtime-driver.mjs','canonical-browser-driver.mjs','interaction-results.json','capture-inventory.json','README.md','verify-packet.mjs','hosted-canonical-annotations.json','hosted-backend-annotations.json','aj-home-efbf3b79.log','ux-efbf3b79.log',...inventory.map(r=>r.file)];
+fs.writeFileSync(root+'/SHA256SUMS',files.map(file=>`${sha(read(root+'/'+file))}  ${file}`).join('\n')+'\n');
+console.log(JSON.stringify({candidate,captures:inventory.length,coveredFiles:files.length,manifest:receipt.buildManifestSha256,bytes:inventory.reduce((s,r)=>s+r.bytes,0)}));

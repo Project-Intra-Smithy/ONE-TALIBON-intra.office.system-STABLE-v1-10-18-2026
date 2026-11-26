@@ -1,0 +1,2 @@
+import fs from 'node:fs';
+let runtime=fs.readFileSync('tests/Browser/phase-a-accessibility-runtime.mjs','utf8').replaceAll('8075','8077').replace("process.env.PHASE_A_QUALIFICATION === '1' ? 'tests/Browser/phase-a-qualification.mjs' : 'tests/Browser/phase-a-accessibility.mjs'","'tests/Browser/phase-a-focus-and-semantics.mjs'");fs.writeFileSync('storage/app/qa/focus-semantics-runtime.mjs',runtime);

@@ -1,0 +1,4968 @@
+{
+  "completed": true,
+  "sourceSha": "de362bfeddbb2b1ac3e738d1f99d4f64b536c90c",
+  "observations": [
+    {
+      "role": "department_head",
+      "route": "/my-tasks",
+      "label": "my-tasks",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-my-tasks-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "label": "transactions-create",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-transactions-create-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#wr-category"
+            ],
+            [
+              "#wr-type"
+            ],
+            [
+              "#wr-action"
+            ],
+            [
+              "#wr-assignee"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/calendar",
+      "label": "calendar",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-calendar-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".pl-2\\.5"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans-studio",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-studio-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_8_-horizon"
+            ],
+            [
+              "#_r_8_-status"
+            ],
+            [
+              ".py-3\\.5 > .gap-2 > .disabled\\:opacity-55.border-\\[var\\(--border-control\\)\\].cursor-pointer"
+            ],
+            [
+              "button[form=\"_r_8_\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".r8-ppas-cards"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas-studio",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-studio-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_b_-year"
+            ],
+            [
+              "#_r_b_-sector"
+            ],
+            [
+              ".disabled\\:cursor-not-allowed.disabled\\:opacity-55.cursor-pointer:nth-child(1)"
+            ],
+            [
+              "button[form=\"_r_b_\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.4:1 with the surrounding text. (Minimum contrast is 3:1, link text: #0e4d36, surrounding text: #4a5d55)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".leaflet-marker-icon.tcds-leaflet-pin.leaflet-interactive:nth-child(2)"
+              ],
+              "html": "<div class=\"leaflet-marker-icon ...\" title=\"Coastal Storm Surge ...\" tabindex=\"0\" role=\"button\" style=\"margin-left: -15px; ...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size because it is partially obscured (smallest space is 19px by 30px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 17.8px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-studio",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-studio-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.4:1 with the surrounding text. (Minimum contrast is 3:1, link text: #0e4d36, surrounding text: #4a5d55)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#pm-category"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/my-department",
+      "label": "my-department",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-my-department-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/my-tasks",
+      "label": "my-tasks",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-my-tasks-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "label": "transactions-create",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-transactions-create-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#wr-category"
+            ],
+            [
+              "#wr-type"
+            ],
+            [
+              "#wr-action"
+            ],
+            [
+              "#wr-assignee"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/calendar",
+      "label": "calendar",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-calendar-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".pl-2\\.5"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".text-slate-500.font-semibold.text-xs"
+              ],
+              "html": "<span class=\"text-xs font-semibold text-slate-500\">Click an event for complete details</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.57 (foreground color: #62748e, background color: #161e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-development-plans-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".flex-wrap.gap-2 > .hover\\:bg-\\[var\\(--brand-primary-hover\\)\\].bg-\\[var\\(--brand-primary\\)\\].disabled\\:opacity-55"
+              ],
+              "html": "<button type=\"button\" class=\"inline-flex shrink-0...\">",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.01 (foreground color: #ffffff, background color: #209064, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".group-open\\:hidden"
+              ],
+              "html": "<span class=\"text-xs text-[var(--municipal-brand)] group-open:hidden\">Show</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #197a54, background color: #161e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans-studio",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-development-plans-studio-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_8_-horizon"
+            ],
+            [
+              "#_r_8_-status"
+            ],
+            [
+              ".py-3\\.5 > .gap-2 > .disabled\\:opacity-55.border-\\[var\\(--border-control\\)\\].cursor-pointer"
+            ],
+            [
+              "button[form=\"_r_8_\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-ppas-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".group-open\\:hidden"
+              ],
+              "html": "<span class=\"text-[var(--municipal-brand)] group-open:hidden\">Show</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #197a54, background color: #161e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".r8-ppas-cards"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas-studio",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-ppas-studio-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_b_-year"
+            ],
+            [
+              "#_r_b_-sector"
+            ],
+            [
+              ".disabled\\:cursor-not-allowed.disabled\\:opacity-55.cursor-pointer:nth-child(1)"
+            ],
+            [
+              "button[form=\"_r_b_\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-planning-maps-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".text-\\[var\\(--municipal-brand\\)\\] > span:nth-child(1)"
+              ],
+              "html": "<span>MAP-CLUP-01</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #197a54, background color: #161e1a, font size: 8.3pt (11px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".text-\\[var\\(--municipal-brand\\)\\] > span:nth-child(3)"
+              ],
+              "html": "<span>Macro &amp; Spatial</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #197a54, background color: #161e1a, font size: 8.3pt (11px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".text-\\[var\\(--municipal-brand\\)\\] > span:nth-child(5)"
+              ],
+              "html": "<span>Provenance: awaiting_official_gis</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #197a54, background color: #161e1a, font size: 8.3pt (11px), font weight: bold). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.36:1 with the surrounding text. (Minimum contrast is 3:1, link text: #5ee0aa, surrounding text: #9fb1a8)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".leaflet-marker-icon.tcds-leaflet-pin.leaflet-interactive:nth-child(2)"
+              ],
+              "html": "<div class=\"leaflet-marker-icon ...\" title=\"Coastal Storm Surge ...\" tabindex=\"0\" role=\"button\" style=\"margin-left: -15px; ...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size because it is partially obscured (smallest space is 19px by 30px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 17.8px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".text-\\[var\\(--municipal-brand\\)\\] > span:nth-child(2)"
+            ],
+            [
+              ".text-\\[var\\(--municipal-brand\\)\\] > span:nth-child(4)"
+            ],
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-studio",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-planning-maps-studio-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.36:1 with the surrounding text. (Minimum contrast is 3:1, link text: #5ee0aa, surrounding text: #9fb1a8)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#pm-category"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/my-department",
+      "label": "my-department",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-my-department-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/my-tasks",
+      "label": "my-tasks",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-my-tasks-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "label": "transactions-create",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-transactions-create-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#wr-category"
+            ],
+            [
+              "#wr-type"
+            ],
+            [
+              "#wr-action"
+            ],
+            [
+              "#wr-assignee"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/calendar",
+      "label": "calendar",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-calendar-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".pl-2\\.5"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.text-\\[var\\(--surface-sidebar-muted\\)\\]"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .flex-1.min-w-0.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans-studio",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-studio-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_8_-horizon"
+            ],
+            [
+              "#_r_8_-status"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".r8-ppas-cards"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .pt-1.mb-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].relative[href$=\"employees\"] > .flex-1.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas-studio",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-studio-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_b_-year"
+            ],
+            [
+              "#_r_b_-sector"
+            ],
+            [
+              "#_r_b_-funding"
+            ],
+            [
+              "#_r_b_-status"
+            ],
+            [
+              "#_r_b_-priority"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.4:1 with the surrounding text. (Minimum contrast is 3:1, link text: #0e4d36, surrounding text: #4a5d55)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            },
+            {
+              "target": [
+                ".leaflet-marker-icon.tcds-leaflet-pin.leaflet-interactive:nth-child(2)"
+              ],
+              "html": "<div class=\"leaflet-marker-icon ...\" title=\"Coastal Storm Surge ...\" tabindex=\"0\" role=\"button\" style=\"margin-left: -15px; ...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size because it is partially obscured (smallest space is 19px by 30px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 17.8px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .min-w-0.flex-1.truncate"
+            ],
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-studio",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-studio-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.4:1 with the surrounding text. (Minimum contrast is 3:1, link text: #0e4d36, surrounding text: #4a5d55)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#pm-category"
+            ],
+            [
+              "label[for=\"pm-desc\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/my-department",
+      "label": "my-department",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-my-department-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/my-tasks",
+      "label": "my-tasks",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-my-tasks-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "label": "transactions-create",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-transactions-create-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#wr-category"
+            ],
+            [
+              "#wr-type"
+            ],
+            [
+              "#wr-action"
+            ],
+            [
+              "#wr-assignee"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/calendar",
+      "label": "calendar",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-calendar-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".pl-2\\.5"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".text-slate-500.font-semibold.text-xs"
+              ],
+              "html": "<span class=\"text-xs font-semibold text-slate-500\">Click an event for complete details</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.57 (foreground color: #62748e, background color: #161e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-development-plans-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".group-open\\:hidden"
+              ],
+              "html": "<span class=\"text-xs text-[var(--municipal-brand)] group-open:hidden\">Show</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #197a54, background color: #161e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.text-\\[var\\(--surface-sidebar-muted\\)\\]"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .flex-1.min-w-0.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans-studio",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-development-plans-studio-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_8_-horizon"
+            ],
+            [
+              "#_r_8_-status"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-ppas-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".group-open\\:hidden"
+              ],
+              "html": "<span class=\"text-[var(--municipal-brand)] group-open:hidden\">Show</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #197a54, background color: #161e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".r8-ppas-cards"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .pt-1.mb-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].relative[href$=\"employees\"] > .flex-1.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas-studio",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-ppas-studio-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_b_-year"
+            ],
+            [
+              "#_r_b_-sector"
+            ],
+            [
+              "#_r_b_-funding"
+            ],
+            [
+              "#_r_b_-status"
+            ],
+            [
+              "#_r_b_-priority"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-planning-maps-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".flex-wrap.gap-2.items-center > .hover\\:bg-\\[var\\(--brand-primary-hover\\)\\].bg-\\[var\\(--brand-primary\\)\\].border-\\[var\\(--brand-primary\\)\\]"
+              ],
+              "html": "<button type=\"button\" class=\"inline-flex shrink-0...\">",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.11 (foreground color: #ffffff, background color: #1f8e63, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".text-\\[var\\(--municipal-brand\\)\\] > span:nth-child(1)"
+              ],
+              "html": "<span>MAP-CLUP-01</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #197a54, background color: #161e1a, font size: 8.3pt (11px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".text-\\[var\\(--municipal-brand\\)\\] > span:nth-child(3)"
+              ],
+              "html": "<span>Macro &amp; Spatial</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #197a54, background color: #161e1a, font size: 8.3pt (11px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".text-\\[var\\(--municipal-brand\\)\\] > span:nth-child(5)"
+              ],
+              "html": "<span>Provenance: awaiting_official_gis</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #197a54, background color: #161e1a, font size: 8.3pt (11px), font weight: bold). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.36:1 with the surrounding text. (Minimum contrast is 3:1, link text: #5ee0aa, surrounding text: #9fb1a8)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            },
+            {
+              "target": [
+                ".leaflet-marker-icon.tcds-leaflet-pin.leaflet-interactive:nth-child(2)"
+              ],
+              "html": "<div class=\"leaflet-marker-icon ...\" title=\"Coastal Storm Surge ...\" tabindex=\"0\" role=\"button\" style=\"margin-left: -15px; ...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size because it is partially obscured (smallest space is 19px by 30px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 17.8px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .min-w-0.flex-1.truncate"
+            ],
+            [
+              ".text-\\[var\\(--municipal-brand\\)\\] > span:nth-child(2)"
+            ],
+            [
+              ".text-\\[var\\(--municipal-brand\\)\\] > span:nth-child(4)"
+            ],
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-studio",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-planning-maps-studio-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.36:1 with the surrounding text. (Minimum contrast is 3:1, link text: #5ee0aa, surrounding text: #9fb1a8)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#pm-category"
+            ],
+            [
+              "label[for=\"pm-desc\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/my-department",
+      "label": "my-department",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-my-department-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A department_head · Synthetic MPDO\" aria-label=\"Synthetic Phase A department_head, Synthetic MPDO\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/my-tasks",
+      "label": "my-tasks",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-my-tasks-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "label": "transactions-create",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-transactions-create-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#wr-category"
+            ],
+            [
+              "#wr-type"
+            ],
+            [
+              "#wr-action"
+            ],
+            [
+              "#wr-assignee"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/calendar",
+      "label": "calendar",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-calendar-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".pl-2\\.5"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.text-\\[var\\(--surface-sidebar-muted\\)\\]"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .flex-1.min-w-0.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans-studio",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-studio-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_8_-horizon"
+            ],
+            [
+              "#_r_8_-status"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .pt-1.mb-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].relative[href$=\"employees\"] > .flex-1.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas-studio",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-studio-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_b_-year"
+            ],
+            [
+              "#_r_b_-sector"
+            ],
+            [
+              "#_r_b_-funding"
+            ],
+            [
+              "#_r_b_-status"
+            ],
+            [
+              "#_r_b_-priority"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.4:1 with the surrounding text. (Minimum contrast is 3:1, link text: #0e4d36, surrounding text: #4a5d55)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            },
+            {
+              "target": [
+                ".leaflet-marker-icon.tcds-leaflet-pin.leaflet-interactive:nth-child(2)"
+              ],
+              "html": "<div class=\"leaflet-marker-icon ...\" title=\"Coastal Storm Surge ...\" tabindex=\"0\" role=\"button\" style=\"margin-left: -15px; ...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size because it is partially obscured (smallest space is 19px by 30px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 17.8px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .min-w-0.flex-1.truncate"
+            ],
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-studio",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-studio-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.4:1 with the surrounding text. (Minimum contrast is 3:1, link text: #0e4d36, surrounding text: #4a5d55)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#pm-category"
+            ],
+            [
+              "label[for=\"pm-desc\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/my-department",
+      "label": "my-department",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-my-department-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/my-tasks",
+      "label": "my-tasks",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-my-tasks-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "label": "transactions-create",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-transactions-create-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#wr-category"
+            ],
+            [
+              "#wr-type"
+            ],
+            [
+              "#wr-action"
+            ],
+            [
+              "#wr-assignee"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/calendar",
+      "label": "calendar",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-calendar-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".text-slate-500.font-semibold.text-xs"
+              ],
+              "html": "<span class=\"text-xs font-semibold text-slate-500\">Click an event for complete details</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.57 (foreground color: #62748e, background color: #161e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".pl-2\\.5"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-development-plans-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".group-open\\:hidden"
+              ],
+              "html": "<span class=\"text-xs text-[var(--municipal-brand)] group-open:hidden\">Show</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #197a54, background color: #161e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.text-\\[var\\(--surface-sidebar-muted\\)\\]"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .flex-1.min-w-0.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans-studio",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-development-plans-studio-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_8_-horizon"
+            ],
+            [
+              "#_r_8_-status"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-ppas-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".group-open\\:hidden"
+              ],
+              "html": "<span class=\"text-[var(--municipal-brand)] group-open:hidden\">Show</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #197a54, background color: #161e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .pt-1.mb-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].relative[href$=\"employees\"] > .flex-1.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas-studio",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-ppas-studio-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_b_-year"
+            ],
+            [
+              "#_r_b_-sector"
+            ],
+            [
+              "#_r_b_-funding"
+            ],
+            [
+              "#_r_b_-status"
+            ],
+            [
+              "#_r_b_-priority"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-planning-maps-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".flex-wrap.gap-2.items-center > .hover\\:bg-\\[var\\(--brand-primary-hover\\)\\].bg-\\[var\\(--brand-primary\\)\\].border-\\[var\\(--brand-primary\\)\\]"
+              ],
+              "html": "<button type=\"button\" class=\"inline-flex shrink-0...\">",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.21 (foreground color: #ffffff, background color: #1f8c61, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".text-\\[var\\(--municipal-brand\\)\\] > span:nth-child(1)"
+              ],
+              "html": "<span>MAP-CLUP-01</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #197a54, background color: #161e1a, font size: 8.3pt (11px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".text-\\[var\\(--municipal-brand\\)\\] > span:nth-child(3)"
+              ],
+              "html": "<span>Macro &amp; Spatial</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #197a54, background color: #161e1a, font size: 8.3pt (11px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".text-\\[var\\(--municipal-brand\\)\\] > span:nth-child(5)"
+              ],
+              "html": "<span>Provenance: awaiting_official_gis</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.2 (foreground color: #197a54, background color: #161e1a, font size: 8.3pt (11px), font weight: bold). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.36:1 with the surrounding text. (Minimum contrast is 3:1, link text: #5ee0aa, surrounding text: #9fb1a8)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            },
+            {
+              "target": [
+                ".leaflet-marker-icon.tcds-leaflet-pin.leaflet-interactive:nth-child(2)"
+              ],
+              "html": "<div class=\"leaflet-marker-icon ...\" title=\"Coastal Storm Surge ...\" tabindex=\"0\" role=\"button\" style=\"margin-left: -15px; ...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size because it is partially obscured (smallest space is 19px by 30px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 17.8px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .min-w-0.flex-1.truncate"
+            ],
+            [
+              ".text-\\[var\\(--municipal-brand\\)\\] > span:nth-child(2)"
+            ],
+            [
+              ".text-\\[var\\(--municipal-brand\\)\\] > span:nth-child(4)"
+            ],
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-studio",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-planning-maps-studio-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "link-in-text-block",
+          "impact": "serious",
+          "help": "Links must be distinguishable without relying on color",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/link-in-text-block?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                "a[href$=\"leafletjs.com\"]"
+              ],
+              "html": "<a href=\"https://leafletjs.com\" title=\"A JavaScript library for interactive maps\">",
+              "failureSummary": "Fix any of the following:\n  The link has insufficient color contrast of 1.36:1 with the surrounding text. (Minimum contrast is 3:1, link text: #5ee0aa, surrounding text: #9fb1a8)\n  The link has no styling (such as underline) to distinguish it from the surrounding text"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#pm-category"
+            ],
+            [
+              "label[for=\"pm-desc\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/my-department",
+      "label": "my-department",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-my-department-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/admin",
+      "label": "admin",
+      "width": 320,
+      "theme": "light",
+      "overflow": true,
+      "capture": "system_admin-admin-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A system_admin · Synthetic Mayor\" aria-label=\"Synthetic Phase A system_admin, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "impact": "serious",
+          "help": "Scrollable region must have keyboard access",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/scrollable-region-focusable?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".max-h-\\[420px\\]"
+              ],
+              "html": "<div class=\"max-h-[420px] divide-y divide-[var(--border-default)] overflow-y-auto rounded-xl border border-[var(--border-default)] bg-[var(--surface-card)]\">",
+              "failureSummary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".lg\\:grid-cols-3 > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(6) > select"
+            ],
+            [
+              "label:nth-child(1) > select"
+            ],
+            [
+              ".p-4.sm\\:p-5:nth-child(1) > .sm\\:grid-cols-2 > label:nth-child(2) > select"
+            ],
+            [
+              ".xl\\:grid-cols-\\[minmax\\(0\\,1\\.5fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_auto\\] > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(3) > select"
+            ],
+            [
+              "label:nth-child(4) > select"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/audit",
+      "label": "audit",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-audit-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A system_admin · Synthetic Mayor\" aria-label=\"Synthetic Phase A system_admin, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_0_"
+            ],
+            [
+              "#_r_2_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property",
+      "label": "property",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-property-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A system_admin · Synthetic Mayor\" aria-label=\"Synthetic Phase A system_admin, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#prop-dept"
+            ],
+            [
+              "#prop-cond"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property/lifecycle",
+      "label": "property-lifecycle",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-property-lifecycle-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A system_admin · Synthetic Mayor\" aria-label=\"Synthetic Phase A system_admin, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".text-\\[var\\(--accent-gold\\)\\]"
+              ],
+              "html": "<div class=\"text-xs font-bold uppercase tracking-wider text-[var(--accent-gold)]\">General Services Office · Asset Lifecycle</div>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.84 (foreground color: #c89b3c, background color: #0e4d36, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "label:nth-child(2) > select"
+            ],
+            [
+              "select[aria-label=\"Select open session\"]"
+            ],
+            [
+              "select[aria-label=\"Select asset record\"]"
+            ],
+            [
+              "select[aria-label=\"Observed condition\"]"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              "table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/admin",
+      "label": "admin",
+      "width": 320,
+      "theme": "dark",
+      "overflow": true,
+      "capture": "system_admin-admin-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A system_admin · Synthetic Mayor\" aria-label=\"Synthetic Phase A system_admin, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "impact": "serious",
+          "help": "Scrollable region must have keyboard access",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/scrollable-region-focusable?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".max-h-\\[420px\\]"
+              ],
+              "html": "<div class=\"max-h-[420px] divide-y divide-[var(--border-default)] overflow-y-auto rounded-xl border border-[var(--border-default)] bg-[var(--surface-card)]\">",
+              "failureSummary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".lg\\:grid-cols-3 > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(6) > select"
+            ],
+            [
+              "label:nth-child(1) > select"
+            ],
+            [
+              ".p-4.sm\\:p-5:nth-child(1) > .sm\\:grid-cols-2 > label:nth-child(2) > select"
+            ],
+            [
+              ".xl\\:grid-cols-\\[minmax\\(0\\,1\\.5fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_auto\\] > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(3) > select"
+            ],
+            [
+              "label:nth-child(4) > select"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/audit",
+      "label": "audit",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-audit-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A system_admin · Synthetic Mayor\" aria-label=\"Synthetic Phase A system_admin, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_0_"
+            ],
+            [
+              "#_r_2_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property",
+      "label": "property",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-property-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A system_admin · Synthetic Mayor\" aria-label=\"Synthetic Phase A system_admin, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#prop-dept"
+            ],
+            [
+              "#prop-cond"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property/lifecycle",
+      "label": "property-lifecycle",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-property-lifecycle-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A system_admin · Synthetic Mayor\" aria-label=\"Synthetic Phase A system_admin, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "label:nth-child(2) > select"
+            ],
+            [
+              "select[aria-label=\"Select open session\"]"
+            ],
+            [
+              "select[aria-label=\"Select asset record\"]"
+            ],
+            [
+              "select[aria-label=\"Observed condition\"]"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              "table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/admin",
+      "label": "admin",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-admin-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A system_admin · Synthetic Mayor\" aria-label=\"Synthetic Phase A system_admin, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".lg\\:grid-cols-3 > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(6) > select"
+            ],
+            [
+              "label:nth-child(1) > select"
+            ],
+            [
+              ".p-4.sm\\:p-5:nth-child(1) > .sm\\:grid-cols-2 > label:nth-child(2) > select"
+            ],
+            [
+              ".xl\\:grid-cols-\\[minmax\\(0\\,1\\.5fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_auto\\] > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(3) > select"
+            ],
+            [
+              "label:nth-child(4) > select"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              ".min-w-full"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/audit",
+      "label": "audit",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-audit-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A system_admin · Synthetic Mayor\" aria-label=\"Synthetic Phase A system_admin, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_0_"
+            ],
+            [
+              "#_r_2_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property",
+      "label": "property",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-property-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A system_admin · Synthetic Mayor\" aria-label=\"Synthetic Phase A system_admin, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#prop-dept"
+            ],
+            [
+              "#prop-cond"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property/lifecycle",
+      "label": "property-lifecycle",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-property-lifecycle-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A system_admin · Synthetic Mayor\" aria-label=\"Synthetic Phase A system_admin, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".text-\\[var\\(--accent-gold\\)\\]"
+              ],
+              "html": "<div class=\"text-xs font-bold uppercase tracking-wider text-[var(--accent-gold)]\">General Services Office · Asset Lifecycle</div>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.84 (foreground color: #c89b3c, background color: #0e4d36, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "label:nth-child(2) > select"
+            ],
+            [
+              "select[aria-label=\"Select open session\"]"
+            ],
+            [
+              "select[aria-label=\"Select asset record\"]"
+            ],
+            [
+              "select[aria-label=\"Observed condition\"]"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              "table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/admin",
+      "label": "admin",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-admin-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A system_admin · Synthetic Mayor\" aria-label=\"Synthetic Phase A system_admin, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".lg\\:grid-cols-3 > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(6) > select"
+            ],
+            [
+              "label:nth-child(1) > select"
+            ],
+            [
+              ".p-4.sm\\:p-5:nth-child(1) > .sm\\:grid-cols-2 > label:nth-child(2) > select"
+            ],
+            [
+              ".xl\\:grid-cols-\\[minmax\\(0\\,1\\.5fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_auto\\] > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(3) > select"
+            ],
+            [
+              "label:nth-child(4) > select"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              ".min-w-full"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/audit",
+      "label": "audit",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-audit-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A system_admin · Synthetic Mayor\" aria-label=\"Synthetic Phase A system_admin, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_0_"
+            ],
+            [
+              "#_r_2_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property",
+      "label": "property",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-property-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A system_admin · Synthetic Mayor\" aria-label=\"Synthetic Phase A system_admin, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#prop-dept"
+            ],
+            [
+              "#prop-cond"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property/lifecycle",
+      "label": "property-lifecycle",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-property-lifecycle-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A system_admin · Synthetic Mayor\" aria-label=\"Synthetic Phase A system_admin, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "label:nth-child(2) > select"
+            ],
+            [
+              "select[aria-label=\"Select open session\"]"
+            ],
+            [
+              "select[aria-label=\"Select asset record\"]"
+            ],
+            [
+              "select[aria-label=\"Observed condition\"]"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              "table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/admin",
+      "label": "admin",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-admin-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".lg\\:grid-cols-3 > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(6) > select"
+            ],
+            [
+              "label:nth-child(1) > select"
+            ],
+            [
+              ".p-4.sm\\:p-5:nth-child(1) > .sm\\:grid-cols-2 > label:nth-child(2) > select"
+            ],
+            [
+              ".xl\\:grid-cols-\\[minmax\\(0\\,1\\.5fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_auto\\] > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(3) > select"
+            ],
+            [
+              "label:nth-child(4) > select"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              ".min-w-full"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/audit",
+      "label": "audit",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-audit-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_0_"
+            ],
+            [
+              "#_r_2_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property",
+      "label": "property",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-property-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#prop-dept"
+            ],
+            [
+              "#prop-cond"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property/lifecycle",
+      "label": "property-lifecycle",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-property-lifecycle-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".text-\\[var\\(--accent-gold\\)\\]"
+              ],
+              "html": "<div class=\"text-xs font-bold uppercase tracking-wider text-[var(--accent-gold)]\">General Services Office · Asset Lifecycle</div>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.84 (foreground color: #c89b3c, background color: #0e4d36, font size: 9.0pt (12px), font weight: bold). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "label:nth-child(2) > select"
+            ],
+            [
+              "select[aria-label=\"Select open session\"]"
+            ],
+            [
+              "select[aria-label=\"Select asset record\"]"
+            ],
+            [
+              "select[aria-label=\"Observed condition\"]"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              "table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/admin",
+      "label": "admin",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-admin-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".lg\\:grid-cols-3 > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(6) > select"
+            ],
+            [
+              "label:nth-child(1) > select"
+            ],
+            [
+              ".p-4.sm\\:p-5:nth-child(1) > .sm\\:grid-cols-2 > label:nth-child(2) > select"
+            ],
+            [
+              ".xl\\:grid-cols-\\[minmax\\(0\\,1\\.5fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_auto\\] > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(3) > select"
+            ],
+            [
+              "label:nth-child(4) > select"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              ".min-w-full"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/audit",
+      "label": "audit",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-audit-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_0_"
+            ],
+            [
+              "#_r_2_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property",
+      "label": "property",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-property-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#prop-dept"
+            ],
+            [
+              "#prop-cond"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property/lifecycle",
+      "label": "property-lifecycle",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-property-lifecycle-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "label:nth-child(2) > select"
+            ],
+            [
+              "select[aria-label=\"Select open session\"]"
+            ],
+            [
+              "select[aria-label=\"Select asset record\"]"
+            ],
+            [
+              "select[aria-label=\"Observed condition\"]"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              "table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/mayor-office",
+      "label": "mayor-office",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "mayor_approver-mayor-office-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A mayor_approver · Synthetic Mayor\" aria-label=\"Synthetic Phase A mayor_approver, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/reports",
+      "label": "reports",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "mayor_approver-reports-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A mayor_approver · Synthetic Mayor\" aria-label=\"Synthetic Phase A mayor_approver, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/mayor-office",
+      "label": "mayor-office",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "mayor_approver-mayor-office-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A mayor_approver · Synthetic Mayor\" aria-label=\"Synthetic Phase A mayor_approver, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/reports",
+      "label": "reports",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "mayor_approver-reports-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A mayor_approver · Synthetic Mayor\" aria-label=\"Synthetic Phase A mayor_approver, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/mayor-office",
+      "label": "mayor-office",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "mayor_approver-mayor-office-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A mayor_approver · Synthetic Mayor\" aria-label=\"Synthetic Phase A mayor_approver, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/reports",
+      "label": "reports",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "mayor_approver-reports-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A mayor_approver · Synthetic Mayor\" aria-label=\"Synthetic Phase A mayor_approver, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/mayor-office",
+      "label": "mayor-office",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "mayor_approver-mayor-office-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A mayor_approver · Synthetic Mayor\" aria-label=\"Synthetic Phase A mayor_approver, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/reports",
+      "label": "reports",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "mayor_approver-reports-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".border-l"
+              ],
+              "html": "<div title=\"Synthetic Phase A mayor_approver · Synthetic Mayor\" aria-label=\"Synthetic Phase A mayor_approver, Synthetic Mayor\" class=\"flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3\">",
+              "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on \"div\" elements with no valid role attribute."
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": []
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/mayor-office",
+      "label": "mayor-office",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "mayor_approver-mayor-office-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/reports",
+      "label": "reports",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "mayor_approver-reports-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/mayor-office",
+      "label": "mayor-office",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "mayor_approver-mayor-office-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/reports",
+      "label": "reports",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "mayor_approver-reports-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".right-1\\.5"
+              ],
+              "html": "<button type=\"button\" aria-label=\"Open Quick Jump comm...\" title=\"Quick Jump (Ctrl+K)\" class=\"absolute right-1.5 t...\">",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size (53.6px by 22px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 22px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".border-l"
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+e1ae9a5269ad20ca471bfccee36eb660892cabdf feat(tcds): establish isolated donor preview and shared authentication
+f306430c9c16329c5c8d84dd0322741a318ef1df fix(tcds): preserve authentication and UI compatibility contracts
+2e0b14cfe2338fd62c9fb0c00740102196cb6508 feat(tcds): share document drawers and simulate preview Task actions
+e1bf7b0df4a9924cf739f808daece1bbe4f846e8 fix(tcds): keep record actions visible on tablet layouts
+412ca310062e417060e961707a334d0c3d0a43e0 docs(tcds): publish pinned donor before and candidate raw comparisons
+33f0c1a368d1cbe051639ea233449cf59fc7b35c feat(tcds): share audit presentation and reject unsupported preview writes
+df1ba8885a1794e54a38855e42726962bd47bec8 Share offline Planning Maps renderer across runtimes
+a6be326a23e0bab8a345e604af3f3003d26bf93f Separate map explorer and improve planning drawers
+98f95fc4c30f1bded103419b38df415b291530a2 Connect canonical planning dossiers and related registers
+ac7b787595933b9e46acee0840cecee882110345 docs(forge): sync workforce handoff on PR72
+e398a9e78b7ecc3a98566b22dc48b9f808f35041 Merge canonical workforce handoff memory without executable changes
+ed732dc60df93aedc7e7b30ea4a5d31565aa41eb docs(forge): sync Codex resumption on PR72
+2f7178c1ce536ff969e820dc915a4d8a00990982 Merge canonical Codex resumption memory without executable changes
+afc32cf9eb0b9f5f09880aa3c309e37d18c2324c Complete Phase A presentation reconciliation
+77571b46f661738edb41cecbd66bccf438a54454 docs(forge): synchronize Phase A corrective continuation
+38e4eda9cc0c817e5c0cf134bbbcea29e5e242ea Merge canonical Phase A corrective memory without executable changes
+95f741f7992b3d20d96184e0f6a323376e5803c4 Integrate shared donor presentation into canonical frontend adapters
+de362bfeddbb2b1ac3e738d1f99d4f64b536c90c Repair canonical validation journeys and preserve hosted CI blocker evidence
+a511900206358aab58df73ad3da7012231766599 Repair audited accessibility defects in shared canonical presentation
+c8e5bbdd71fb4f23c74013fe4de8353a75998a63 Keep grouped map references and account registries accessible
+4f56b5dbf4fb17629d87aaac7f56fef65e1082ce Verify native map-dialog focus containment and return
+a1f4f66bebd4c59dae2ce282649a4fcd32fde067 Bound Administration sections at narrow viewports
+efbf3b795cf2a49908adbb8781b72610c3ecf6bc Preserve canonical Planning year and funding contracts
+4ab2463700a715427d591649b5bc0c3316507dee Expand canonical qualification and repair demonstrated presentation defects
+f955ef0d0636fdca4e74b06f1a9f6e19c74fb96b Qualify canonical journeys and reconcile shared foreground and control semantics
+2b096d74cabe3c0da6fc171dc052917f9e72210f Keep pre-action and post-action canonical captures distinct
+20d3e523ababfef8888356c968ad8392660ad02d fix: preserve authentication accessibility qualification repairs
+69644e2069ad5b8f4df51b959cf3e11c8451f577 fix: keep mobile keyboard focus clear of fixed navigation
+e4598c4e3697803033a964bbd708da2472e173c1 fix: reconcile queue focus and remaining presentation semantics
+d7b980af5fb16802cdb36e484b240186be23e780 wip: checkpoint native shared drawer adapter pending validation

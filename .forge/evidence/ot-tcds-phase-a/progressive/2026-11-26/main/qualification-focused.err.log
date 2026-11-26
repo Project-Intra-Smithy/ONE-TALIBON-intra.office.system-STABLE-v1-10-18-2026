@@ -1,0 +1,274 @@
+node:internal/errors:986
+  const err = new Error(message);
+              ^
+
+Error: Command failed: php -r require 'vendor/autoload.php'; $app=require 'bootstrap/app.php'; $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap(); if (getenv('APP_ENV')!=='testing' || getenv('DB_HOST')!=='127.0.0.1' || getenv('DB_DATABASE')!=='talibon_portal_test' || Illuminate\Support\Facades\DB::connection()->getDriverName()!=='pgsql') exit(2);
+    $directory=Illuminate\Support\Facades\DB::selectOne('show data_directory')->data_directory;
+    if(getenv('GITHUB_ACTIONS')!=='true' && str_replace('\\','/',realpath($directory))!==str_replace('\\','/',realpath(getenv('PHASE_A_DISPOSABLE_PGDATA'))))exit(3);
+    if((int)Illuminate\Support\Facades\DB::selectOne("select current_setting('server_version_num')::int as version")->version<160000 || (int)Illuminate\Support\Facades\DB::selectOne("select current_setting('server_version_num')::int as version")->version>=170000)exit(5);
+    echo 'DISPOSABLE_PG16_CONFIRMED';
+PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] connection to server at "127.0.0.1", port 55474 failed: FATAL:  the database system is starting up in C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php:67
+Stack trace:
+#0 C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php(67): PDO::connect('pgsql:host=127....', 'postgres', Object(SensitiveParameterValue), Array)
+#1 C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\Connectors\Connector.php(44): Illuminate\Database\Connectors\Connector->createPdoConnection('pgsql:host=127....', 'postgres', Object(SensitiveParameterValue), Array)
+#2 C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\Connectors\PostgresConnector.php(35): Illuminate\Database\Connectors\Connector->createConnection('pgsql:host=127....', Array, Array)
+#3 C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\Connectors\ConnectionFactory.php(220): Illuminate\Database\Connectors\PostgresConnector->connect(Array)
+#4 [internal function]: Illuminate\Database\Connectors\ConnectionFactory->{closure:Illuminate\Database\Connectors\ConnectionFactory::createPdoResolverWithHosts():213}()
+#5 C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\Connection.php(1333): call_user_func(Object(Closure))
+#6 C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\Connection.php(1371): Illuminate\Database\Connection->getPdo()
+#7 C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\Connection.php(549): Illuminate\Database\Connection->getReadPdo()
+#8 C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\Connection.php(442): Illuminate\Database\Connection->getPdoForSelect(true)
+#9 C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\Connection.php(853): Illuminate\Database\Connection->{closure:Illuminate\Database\Connection::select():433}('show data_direc...', Array)
+#10 C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\Connection.php(820): Illuminate\Database\Connection->runQueryCallback('show data_direc...', Array, Object(Closure))
+#11 C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\Connection.php(433): Illuminate\Database\Connection->run('show data_direc...', Array, Object(Closure))
+#12 C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\Connection.php(378): Illuminate\Database\Connection->select('show data_direc...', Array, true)
+#13 C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\DatabaseManager.php(502): Illuminate\Database\Connection->selectOne('show data_direc...')
+#14 C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Support\Facades\Facade.php(364): Illuminate\Database\DatabaseManager->__call('selectOne', Array)
+#15 Command line code(2): Illuminate\Support\Facades\Facade::__callStatic('selectOne', Array)
+#16 {main}
+
+Next Illuminate\Database\QueryException: SQLSTATE[08006] [7] connection to server at "127.0.0.1", port 55474 failed: FATAL:  the database system is starting up (Connection: pgsql, Host: 127.0.0.1, Port: 55474, Database: talibon_portal_test, SQL: show data_directory) in C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\Connection.php:864
+Stack trace:
+#0 C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\Connection.php(820): Illuminate\Database\Connection->runQueryCallback('show data_direc...', Array, Object(Closure))
+#1 C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\Connection.php(433): Illuminate\Database\Connection->run('show data_direc...', Array, Object(Closure))
+#2 C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\Connection.php(378): Illuminate\Database\Connection->select('show data_direc...', Array, true)
+#3 C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\DatabaseManager.php(502): Illuminate\Database\Connection->selectOne('show data_direc...')
+#4 C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Support\Facades\Facade.php(364): Illuminate\Database\DatabaseManager->__call('selectOne', Array)
+#5 Command line code(2): Illuminate\Support\Facades\Facade::__callStatic('selectOne', Array)
+#6 {main}
+  thrown in C:\dev\TAL\ot-tcds-phase-a\vendor\laravel\framework\src\Illuminate\Database\Connection.php on line 864
+
+    at genericNodeError (node:internal/errors:986:15)
+    at wrappedFn (node:internal/errors:540:14)
+    at checkExecSyncError (node:child_process:943:11)
+    at execFileSync (node:child_process:979:15)
+    at php (file:///C:/dev/TAL/ot-tcds-phase-a/tests/Browser/phase-a-accessibility-runtime.mjs:15:21)
+    at file:///C:/dev/TAL/ot-tcds-phase-a/tests/Browser/phase-a-accessibility-runtime.mjs:17:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+    at async node:internal/modules/esm/loader:647:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  status: 255,
+  signal: null,
+  output: [
+    null,
+    '\n' +
+      'Fatal error: Uncaught PDOException: SQLSTATE[08006] [7] connection to server at "127.0.0.1", port 55474 failed: FATAL:  the database system is starting up in C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php:67\n' +
+      'Stack trace:\n' +
+      "#0 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php(67): PDO::connect('pgsql:host=127....', 'postgres', Object(SensitiveParameterValue), Array)\n" +
+      "#1 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php(44): Illuminate\\Database\\Connectors\\Connector->createPdoConnection('pgsql:host=127....', 'postgres', Object(SensitiveParameterValue), Array)\n" +
+      "#2 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\PostgresConnector.php(35): Illuminate\\Database\\Connectors\\Connector->createConnection('pgsql:host=127....', Array, Array)\n" +
+      '#3 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\ConnectionFactory.php(220): Illuminate\\Database\\Connectors\\PostgresConnector->connect(Array)\n' +
+      '#4 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->{closure:Illuminate\\Database\\Connectors\\ConnectionFactory::createPdoResolverWithHosts():213}()\n' +
+      '#5 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(1333): call_user_func(Object(Closure))\n' +
+      '#6 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(1371): Illuminate\\Database\\Connection->getPdo()\n' +
+      '#7 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(549): Illuminate\\Database\\Connection->getReadPdo()\n' +
+      '#8 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(442): Illuminate\\Database\\Connection->getPdoForSelect(true)\n' +
+      "#9 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(853): Illuminate\\Database\\Connection->{closure:Illuminate\\Database\\Connection::select():433}('show data_direc...', Array)\n" +
+      "#10 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(820): Illuminate\\Database\\Connection->runQueryCallback('show data_direc...', Array, Object(Closure))\n" +
+      "#11 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(433): Illuminate\\Database\\Connection->run('show data_direc...', Array, Object(Closure))\n" +
+      "#12 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(378): Illuminate\\Database\\Connection->select('show data_direc...', Array, true)\n" +
+      "#13 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(502): Illuminate\\Database\\Connection->selectOne('show data_direc...')\n" +
+      "#14 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Facades\\Facade.php(364): Illuminate\\Database\\DatabaseManager->__call('selectOne', Array)\n" +
+      "#15 Command line code(2): Illuminate\\Support\\Facades\\Facade::__callStatic('selectOne', Array)\n" +
+      '#16 {main}\n' +
+      '\n' +
+      'Next Illuminate\\Database\\QueryException: SQLSTATE[08006] [7] connection to server at "127.0.0.1", port 55474 failed: FATAL:  the database system is starting up (Connection: pgsql, Host: 127.0.0.1, Port: 55474, Database: talibon_portal_test, SQL: show data_directory) in C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:864\n' +
+      'Stack trace:\n' +
+      "#0 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(820): Illuminate\\Database\\Connection->runQueryCallback('show data_direc...', Array, Object(Closure))\n" +
+      "#1 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(433): Illuminate\\Database\\Connection->run('show data_direc...', Array, Object(Closure))\n" +
+      "#2 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(378): Illuminate\\Database\\Connection->select('show data_direc...', Array, true)\n" +
+      "#3 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(502): Illuminate\\Database\\Connection->selectOne('show data_direc...')\n" +
+      "#4 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Facades\\Facade.php(364): Illuminate\\Database\\DatabaseManager->__call('selectOne', Array)\n" +
+      "#5 Command line code(2): Illuminate\\Support\\Facades\\Facade::__callStatic('selectOne', Array)\n" +
+      '#6 {main}\n' +
+      '  thrown in C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php on line 864\n' +
+      '\r\n' +
+      'In Connection.php line 864:\r\n' +
+      '                                                                                                                       \r\n' +
+      '  Uncaught PDOException: SQLSTATE[08006] [7] connection to server at "127.0.0.1", port 55474 failed: FATAL:  the data  \r\n' +
+      '  base system is starting up in C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connector  \r\n' +
+      '  s\\Connector.php:67                                                                                                   \r\n' +
+      '  Stack trace:                                                                                                         \r\n' +
+      '  #0 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php(67): PDO::c  \r\n' +
+      "  onnect('pgsql:host=127....', 'postgres', Object(SensitiveParameterValue), Array)                                     \r\n" +
+      '  #1 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php(44): Illumi  \r\n' +
+      "  nate\\Database\\Connectors\\Connector->createPdoConnection('pgsql:host=127....', 'postgres', Object(SensitiveParameter  \r\n" +
+      '  Value), Array)                                                                                                       \r\n' +
+      '  #2 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\PostgresConnector.php(35)  \r\n' +
+      "  : Illuminate\\Database\\Connectors\\Connector->createConnection('pgsql:host=127....', Array, Array)                     \r\n" +
+      '  #3 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\ConnectionFactory.php(220  \r\n' +
+      '  ): Illuminate\\Database\\Connectors\\PostgresConnector->connect(Array)                                                  \r\n' +
+      '  #4 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->{closure:Illuminate\\Database\\Connectors\\C  \r\n' +
+      '  onnectionFactory::createPdoResolverWithHosts():213}()                                                                \r\n' +
+      '  #5 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(1333): call_user_func  \r\n' +
+      '  (Object(Closure))                                                                                                    \r\n' +
+      '  #6 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(1371): Illuminate\\Dat  \r\n' +
+      '  abase\\Connection->getPdo()                                                                                           \r\n' +
+      '  #7 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(549): Illuminate\\Data  \r\n' +
+      '  base\\Connection->getReadPdo()                                                                                        \r\n' +
+      '  #8 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(442): Illuminate\\Data  \r\n' +
+      '  base\\Connection->getPdoForSelect(true)                                                                               \r\n' +
+      '  #9 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(853): Illuminate\\Data  \r\n' +
+      "  base\\Connection->{closure:Illuminate\\Database\\Connection::select():433}('show data_direc...', Array)                 \r\n" +
+      '  #10 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(820): Illuminate\\Dat  \r\n' +
+      "  abase\\Connection->runQueryCallback('show data_direc...', Array, Object(Closure))                                     \r\n" +
+      '  #11 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(433): Illuminate\\Dat  \r\n' +
+      "  abase\\Connection->run('show data_direc...', Array, Object(Closure))                                                  \r\n" +
+      '  #12 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(378): Illuminate\\Dat  \r\n' +
+      "  abase\\Connection->select('show data_direc...', Array, true)                                                          \r\n" +
+      '  #13 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(502): Illuminat  \r\n' +
+      "  e\\Database\\Connection->selectOne('show data_direc...')                                                               \r\n" +
+      '  #14 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Facades\\Facade.php(364): Illuminate\\  \r\n' +
+      "  Database\\DatabaseManager->__call('selectOne', Array)                                                                 \r\n" +
+      "  #15 Command line code(2): Illuminate\\Support\\Facades\\Facade::__callStatic('selectOne', Array)                        \r\n" +
+      '  #16 {main}                                                                                                           \r\n' +
+      '                                                                                                                       \r\n' +
+      '  Next Illuminate\\Database\\QueryException: SQLSTATE[08006] [7] connection to server at "127.0.0.1", port 55474 failed  \r\n' +
+      '  : FATAL:  the database system is starting up (Connection: pgsql, Host: 127.0.0.1, Port: 55474, Database: talibon_po  \r\n' +
+      '  rtal_test, SQL: show data_directory) in C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database  \r\n' +
+      '  \\Connection.php:864                                                                                                  \r\n' +
+      '  Stack trace:                                                                                                         \r\n' +
+      '  #0 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.p'... 1603 more characters,
+    'PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] connection to server at "127.0.0.1", port 55474 failed: FATAL:  the database system is starting up in C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php:67\n' +
+      'Stack trace:\n' +
+      "#0 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php(67): PDO::connect('pgsql:host=127....', 'postgres', Object(SensitiveParameterValue), Array)\n" +
+      "#1 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php(44): Illuminate\\Database\\Connectors\\Connector->createPdoConnection('pgsql:host=127....', 'postgres', Object(SensitiveParameterValue), Array)\n" +
+      "#2 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\PostgresConnector.php(35): Illuminate\\Database\\Connectors\\Connector->createConnection('pgsql:host=127....', Array, Array)\n" +
+      '#3 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\ConnectionFactory.php(220): Illuminate\\Database\\Connectors\\PostgresConnector->connect(Array)\n' +
+      '#4 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->{closure:Illuminate\\Database\\Connectors\\ConnectionFactory::createPdoResolverWithHosts():213}()\n' +
+      '#5 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(1333): call_user_func(Object(Closure))\n' +
+      '#6 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(1371): Illuminate\\Database\\Connection->getPdo()\n' +
+      '#7 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(549): Illuminate\\Database\\Connection->getReadPdo()\n' +
+      '#8 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(442): Illuminate\\Database\\Connection->getPdoForSelect(true)\n' +
+      "#9 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(853): Illuminate\\Database\\Connection->{closure:Illuminate\\Database\\Connection::select():433}('show data_direc...', Array)\n" +
+      "#10 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(820): Illuminate\\Database\\Connection->runQueryCallback('show data_direc...', Array, Object(Closure))\n" +
+      "#11 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(433): Illuminate\\Database\\Connection->run('show data_direc...', Array, Object(Closure))\n" +
+      "#12 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(378): Illuminate\\Database\\Connection->select('show data_direc...', Array, true)\n" +
+      "#13 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(502): Illuminate\\Database\\Connection->selectOne('show data_direc...')\n" +
+      "#14 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Facades\\Facade.php(364): Illuminate\\Database\\DatabaseManager->__call('selectOne', Array)\n" +
+      "#15 Command line code(2): Illuminate\\Support\\Facades\\Facade::__callStatic('selectOne', Array)\n" +
+      '#16 {main}\n' +
+      '\n' +
+      'Next Illuminate\\Database\\QueryException: SQLSTATE[08006] [7] connection to server at "127.0.0.1", port 55474 failed: FATAL:  the database system is starting up (Connection: pgsql, Host: 127.0.0.1, Port: 55474, Database: talibon_portal_test, SQL: show data_directory) in C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:864\n' +
+      'Stack trace:\n' +
+      "#0 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(820): Illuminate\\Database\\Connection->runQueryCallback('show data_direc...', Array, Object(Closure))\n" +
+      "#1 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(433): Illuminate\\Database\\Connection->run('show data_direc...', Array, Object(Closure))\n" +
+      "#2 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(378): Illuminate\\Database\\Connection->select('show data_direc...', Array, true)\n" +
+      "#3 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(502): Illuminate\\Database\\Connection->selectOne('show data_direc...')\n" +
+      "#4 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Facades\\Facade.php(364): Illuminate\\Database\\DatabaseManager->__call('selectOne', Array)\n" +
+      "#5 Command line code(2): Illuminate\\Support\\Facades\\Facade::__callStatic('selectOne', Array)\n" +
+      '#6 {main}\n' +
+      '  thrown in C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php on line 864\n'
+  ],
+  pid: 13252,
+  stdout: '\n' +
+    'Fatal error: Uncaught PDOException: SQLSTATE[08006] [7] connection to server at "127.0.0.1", port 55474 failed: FATAL:  the database system is starting up in C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php:67\n' +
+    'Stack trace:\n' +
+    "#0 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php(67): PDO::connect('pgsql:host=127....', 'postgres', Object(SensitiveParameterValue), Array)\n" +
+    "#1 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php(44): Illuminate\\Database\\Connectors\\Connector->createPdoConnection('pgsql:host=127....', 'postgres', Object(SensitiveParameterValue), Array)\n" +
+    "#2 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\PostgresConnector.php(35): Illuminate\\Database\\Connectors\\Connector->createConnection('pgsql:host=127....', Array, Array)\n" +
+    '#3 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\ConnectionFactory.php(220): Illuminate\\Database\\Connectors\\PostgresConnector->connect(Array)\n' +
+    '#4 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->{closure:Illuminate\\Database\\Connectors\\ConnectionFactory::createPdoResolverWithHosts():213}()\n' +
+    '#5 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(1333): call_user_func(Object(Closure))\n' +
+    '#6 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(1371): Illuminate\\Database\\Connection->getPdo()\n' +
+    '#7 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(549): Illuminate\\Database\\Connection->getReadPdo()\n' +
+    '#8 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(442): Illuminate\\Database\\Connection->getPdoForSelect(true)\n' +
+    "#9 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(853): Illuminate\\Database\\Connection->{closure:Illuminate\\Database\\Connection::select():433}('show data_direc...', Array)\n" +
+    "#10 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(820): Illuminate\\Database\\Connection->runQueryCallback('show data_direc...', Array, Object(Closure))\n" +
+    "#11 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(433): Illuminate\\Database\\Connection->run('show data_direc...', Array, Object(Closure))\n" +
+    "#12 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(378): Illuminate\\Database\\Connection->select('show data_direc...', Array, true)\n" +
+    "#13 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(502): Illuminate\\Database\\Connection->selectOne('show data_direc...')\n" +
+    "#14 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Facades\\Facade.php(364): Illuminate\\Database\\DatabaseManager->__call('selectOne', Array)\n" +
+    "#15 Command line code(2): Illuminate\\Support\\Facades\\Facade::__callStatic('selectOne', Array)\n" +
+    '#16 {main}\n' +
+    '\n' +
+    'Next Illuminate\\Database\\QueryException: SQLSTATE[08006] [7] connection to server at "127.0.0.1", port 55474 failed: FATAL:  the database system is starting up (Connection: pgsql, Host: 127.0.0.1, Port: 55474, Database: talibon_portal_test, SQL: show data_directory) in C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:864\n' +
+    'Stack trace:\n' +
+    "#0 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(820): Illuminate\\Database\\Connection->runQueryCallback('show data_direc...', Array, Object(Closure))\n" +
+    "#1 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(433): Illuminate\\Database\\Connection->run('show data_direc...', Array, Object(Closure))\n" +
+    "#2 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(378): Illuminate\\Database\\Connection->select('show data_direc...', Array, true)\n" +
+    "#3 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(502): Illuminate\\Database\\Connection->selectOne('show data_direc...')\n" +
+    "#4 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Facades\\Facade.php(364): Illuminate\\Database\\DatabaseManager->__call('selectOne', Array)\n" +
+    "#5 Command line code(2): Illuminate\\Support\\Facades\\Facade::__callStatic('selectOne', Array)\n" +
+    '#6 {main}\n' +
+    '  thrown in C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php on line 864\n' +
+    '\r\n' +
+    'In Connection.php line 864:\r\n' +
+    '                                                                                                                       \r\n' +
+    '  Uncaught PDOException: SQLSTATE[08006] [7] connection to server at "127.0.0.1", port 55474 failed: FATAL:  the data  \r\n' +
+    '  base system is starting up in C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connector  \r\n' +
+    '  s\\Connector.php:67                                                                                                   \r\n' +
+    '  Stack trace:                                                                                                         \r\n' +
+    '  #0 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php(67): PDO::c  \r\n' +
+    "  onnect('pgsql:host=127....', 'postgres', Object(SensitiveParameterValue), Array)                                     \r\n" +
+    '  #1 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php(44): Illumi  \r\n' +
+    "  nate\\Database\\Connectors\\Connector->createPdoConnection('pgsql:host=127....', 'postgres', Object(SensitiveParameter  \r\n" +
+    '  Value), Array)                                                                                                       \r\n' +
+    '  #2 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\PostgresConnector.php(35)  \r\n' +
+    "  : Illuminate\\Database\\Connectors\\Connector->createConnection('pgsql:host=127....', Array, Array)                     \r\n" +
+    '  #3 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\ConnectionFactory.php(220  \r\n' +
+    '  ): Illuminate\\Database\\Connectors\\PostgresConnector->connect(Array)                                                  \r\n' +
+    '  #4 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->{closure:Illuminate\\Database\\Connectors\\C  \r\n' +
+    '  onnectionFactory::createPdoResolverWithHosts():213}()                                                                \r\n' +
+    '  #5 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(1333): call_user_func  \r\n' +
+    '  (Object(Closure))                                                                                                    \r\n' +
+    '  #6 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(1371): Illuminate\\Dat  \r\n' +
+    '  abase\\Connection->getPdo()                                                                                           \r\n' +
+    '  #7 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(549): Illuminate\\Data  \r\n' +
+    '  base\\Connection->getReadPdo()                                                                                        \r\n' +
+    '  #8 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(442): Illuminate\\Data  \r\n' +
+    '  base\\Connection->getPdoForSelect(true)                                                                               \r\n' +
+    '  #9 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(853): Illuminate\\Data  \r\n' +
+    "  base\\Connection->{closure:Illuminate\\Database\\Connection::select():433}('show data_direc...', Array)                 \r\n" +
+    '  #10 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(820): Illuminate\\Dat  \r\n' +
+    "  abase\\Connection->runQueryCallback('show data_direc...', Array, Object(Closure))                                     \r\n" +
+    '  #11 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(433): Illuminate\\Dat  \r\n' +
+    "  abase\\Connection->run('show data_direc...', Array, Object(Closure))                                                  \r\n" +
+    '  #12 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(378): Illuminate\\Dat  \r\n' +
+    "  abase\\Connection->select('show data_direc...', Array, true)                                                          \r\n" +
+    '  #13 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(502): Illuminat  \r\n' +
+    "  e\\Database\\Connection->selectOne('show data_direc...')                                                               \r\n" +
+    '  #14 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Facades\\Facade.php(364): Illuminate\\  \r\n' +
+    "  Database\\DatabaseManager->__call('selectOne', Array)                                                                 \r\n" +
+    "  #15 Command line code(2): Illuminate\\Support\\Facades\\Facade::__callStatic('selectOne', Array)                        \r\n" +
+    '  #16 {main}                                                                                                           \r\n' +
+    '                                                                                                                       \r\n' +
+    '  Next Illuminate\\Database\\QueryException: SQLSTATE[08006] [7] connection to server at "127.0.0.1", port 55474 failed  \r\n' +
+    '  : FATAL:  the database system is starting up (Connection: pgsql, Host: 127.0.0.1, Port: 55474, Database: talibon_po  \r\n' +
+    '  rtal_test, SQL: show data_directory) in C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database  \r\n' +
+    '  \\Connection.php:864                                                                                                  \r\n' +
+    '  Stack trace:                                                                                                         \r\n' +
+    '  #0 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.p'... 1603 more characters,
+  stderr: 'PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] connection to server at "127.0.0.1", port 55474 failed: FATAL:  the database system is starting up in C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php:67\n' +
+    'Stack trace:\n' +
+    "#0 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php(67): PDO::connect('pgsql:host=127....', 'postgres', Object(SensitiveParameterValue), Array)\n" +
+    "#1 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\Connector.php(44): Illuminate\\Database\\Connectors\\Connector->createPdoConnection('pgsql:host=127....', 'postgres', Object(SensitiveParameterValue), Array)\n" +
+    "#2 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\PostgresConnector.php(35): Illuminate\\Database\\Connectors\\Connector->createConnection('pgsql:host=127....', Array, Array)\n" +
+    '#3 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connectors\\ConnectionFactory.php(220): Illuminate\\Database\\Connectors\\PostgresConnector->connect(Array)\n' +
+    '#4 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->{closure:Illuminate\\Database\\Connectors\\ConnectionFactory::createPdoResolverWithHosts():213}()\n' +
+    '#5 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(1333): call_user_func(Object(Closure))\n' +
+    '#6 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(1371): Illuminate\\Database\\Connection->getPdo()\n' +
+    '#7 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(549): Illuminate\\Database\\Connection->getReadPdo()\n' +
+    '#8 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(442): Illuminate\\Database\\Connection->getPdoForSelect(true)\n' +
+    "#9 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(853): Illuminate\\Database\\Connection->{closure:Illuminate\\Database\\Connection::select():433}('show data_direc...', Array)\n" +
+    "#10 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(820): Illuminate\\Database\\Connection->runQueryCallback('show data_direc...', Array, Object(Closure))\n" +
+    "#11 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(433): Illuminate\\Database\\Connection->run('show data_direc...', Array, Object(Closure))\n" +
+    "#12 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(378): Illuminate\\Database\\Connection->select('show data_direc...', Array, true)\n" +
+    "#13 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(502): Illuminate\\Database\\Connection->selectOne('show data_direc...')\n" +
+    "#14 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Facades\\Facade.php(364): Illuminate\\Database\\DatabaseManager->__call('selectOne', Array)\n" +
+    "#15 Command line code(2): Illuminate\\Support\\Facades\\Facade::__callStatic('selectOne', Array)\n" +
+    '#16 {main}\n' +
+    '\n' +
+    'Next Illuminate\\Database\\QueryException: SQLSTATE[08006] [7] connection to server at "127.0.0.1", port 55474 failed: FATAL:  the database system is starting up (Connection: pgsql, Host: 127.0.0.1, Port: 55474, Database: talibon_portal_test, SQL: show data_directory) in C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:864\n' +
+    'Stack trace:\n' +
+    "#0 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(820): Illuminate\\Database\\Connection->runQueryCallback('show data_direc...', Array, Object(Closure))\n" +
+    "#1 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(433): Illuminate\\Database\\Connection->run('show data_direc...', Array, Object(Closure))\n" +
+    "#2 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(378): Illuminate\\Database\\Connection->select('show data_direc...', Array, true)\n" +
+    "#3 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\DatabaseManager.php(502): Illuminate\\Database\\Connection->selectOne('show data_direc...')\n" +
+    "#4 C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Facades\\Facade.php(364): Illuminate\\Database\\DatabaseManager->__call('selectOne', Array)\n" +
+    "#5 Command line code(2): Illuminate\\Support\\Facades\\Facade::__callStatic('selectOne', Array)\n" +
+    '#6 {main}\n' +
+    '  thrown in C:\\dev\\TAL\\ot-tcds-phase-a\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php on line 864\n'
+}
+
+Node.js v24.22.1

@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+const source=process.cwd(),root='C:/dev/TAL/ot-tcds-evidence-efbf3b79';
+const receipt=JSON.parse(fs.readFileSync('storage/app/qa/phase-a-canonical-efbf3b79/results.json'));
+assert.equal(receipt.completed,true);assert.equal(receipt.sourceWorktreeDirty,false);
+fs.mkdirSync(root+'/storage/app/qa/phase-a-canonical',{recursive:true});
+fs.writeFileSync(root+'/storage/app/qa/phase-a-canonical/results.json',JSON.stringify(receipt));
+execFileSync(process.execPath,[path.join(source,'scripts/qa/phase-a-source-crosswalk.mjs')],{cwd:root,stdio:'inherit'});
+const audit=JSON.parse(fs.readFileSync('storage/app/qa/phase-a-accessibility/efbf3b795cf2-2026-11-26T02-44-48-784Z/results.json'));
+const crossPath=root+'/.forge/evidence/ot-tcds-phase-a/convergence/source-crosswalk.json',cross=JSON.parse(fs.readFileSync(crossPath));
+cross.publicationNote='This evidence-only worktree has artifact changes. Executable content matches sourceSha; runtime sourceWorktreeDirty is independently false. Publication dirty flag is retained truthfully.';
+for(const page of cross.pages)page.additionalCanonicalAudits=audit.observations.filter(r=>`resources/js/pages/${r.renderedComponent}.tsx`===page.page).map(r=>({role:r.role,route:r.route,label:r.label,width:r.width,theme:r.theme,overflow:r.overflow,violationCount:r.violations.length,incompleteRuleIds:r.incomplete.map(i=>i.id),receipt:'published/efbf3b79/accessibility-results.json',capture:'published/efbf3b79/accessibility-captures/'+r.capture}));
+fs.writeFileSync(crossPath,JSON.stringify(cross,null,2)+'\n');
+fs.writeFileSync(root+'/.forge/evidence/ot-tcds-phase-a/page-coverage.json',JSON.stringify(cross.pages,null,2)+'\n');
+console.log(JSON.stringify({candidate:cross.sourceSha,coreObservedPages:new Set(receipt.results.map(r=>r.renderedComponent)).size,unionObservedPages:new Set([...receipt.results,...audit.observations].map(r=>r.renderedComponent)).size,donorFiles:cross.files.length,pages:cross.pages.length}));

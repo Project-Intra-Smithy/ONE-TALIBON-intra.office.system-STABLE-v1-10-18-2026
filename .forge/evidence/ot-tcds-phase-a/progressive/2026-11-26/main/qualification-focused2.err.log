@@ -1,0 +1,15 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Disposable Laravel runtime did not become ready
+    at file:///C:/dev/TAL/ot-tcds-phase-a/tests/Browser/phase-a-accessibility-runtime.mjs:62:12 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.22.1

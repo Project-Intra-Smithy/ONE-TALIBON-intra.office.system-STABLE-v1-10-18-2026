@@ -1,0 +1,3212 @@
+{
+  "completed": true,
+  "sourceSha": "a511900206358aab58df73ad3da7012231766599",
+  "sourceWorktreeDirty": false,
+  "buildManifestSha256": "f73a6d2022cdc355f6001d852003f2ed0d2cb56a4c98ba7e1ba637c634c73ebe",
+  "observations": [
+    {
+      "role": "department_head",
+      "route": "/my-tasks",
+      "label": "my-tasks",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-my-tasks-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "label": "transactions-create",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-transactions-create-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#wr-category"
+            ],
+            [
+              "#wr-type"
+            ],
+            [
+              "#wr-action"
+            ],
+            [
+              "#wr-assignee"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/calendar",
+      "label": "calendar",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-calendar-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans-studio",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-studio-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_8_-horizon"
+            ],
+            [
+              "#_r_8_-status"
+            ],
+            [
+              ".py-3\\.5 > .gap-2 > .disabled\\:opacity-55.border-\\[var\\(--border-control\\)\\].cursor-pointer"
+            ],
+            [
+              "button[form=\"_r_8_\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".r8-ppas-cards"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas-studio",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-studio-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_b_-year"
+            ],
+            [
+              "#_r_b_-sector"
+            ],
+            [
+              ".disabled\\:cursor-not-allowed.disabled\\:opacity-55.cursor-pointer:nth-child(1)"
+            ],
+            [
+              "button[form=\"_r_b_\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-pin-choices",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-pin-choices-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".break-words.px-2.border-b:nth-child(2)"
+              ],
+              "html": "<button type=\"button\" class=\"block min-h-11 w-full break-words border-b border-[var(--border-default)] px-2 py-2 text-left text-xs text-[var(--ink-primary)]\">MAP-DRRM-02 — Coastal Storm Surge &amp; Flood Susceptibility Plate</button>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.15 (foreground color: #818785, background color: #eeeeee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".break-words.px-2.border-b:nth-child(3)"
+              ],
+              "html": "<button type=\"button\" class=\"block min-h-11 w-full break-words border-b border-[var(--border-default)] px-2 py-2 text-left text-xs text-[var(--ink-primary)]\">MAP-INFRA-03 — Municipal Road Network &amp; Farm-to-Market Corridor Plate</button>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.15 (foreground color: #818785, background color: #eeeeee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".leaflet-popup-close-button"
+              ],
+              "html": "<a class=\"leaflet-popup-close-button\" role=\"button\" aria-label=\"Close popup\" href=\"#close\"><span aria-hidden=\"true\">×</span></a>",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size because it is partially obscured (smallest space is 16.7px by 24px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 16.8px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ],
+            [
+              "div[aria-describedby=\"leaflet-tooltip-31\"] > div"
+            ],
+            [
+              ".leaflet-marker-icon.tcds-leaflet-pin.leaflet-interactive:nth-child(2) > div"
+            ],
+            [
+              ".break-words.px-2.border-b:nth-child(1)"
+            ],
+            [
+              ".leaflet-popup-close-button > span[aria-hidden=\"true\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-studio",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-studio-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#pm-category"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/my-department",
+      "label": "my-department",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-my-department-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/my-tasks",
+      "label": "my-tasks",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-my-tasks-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "label": "transactions-create",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-transactions-create-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#wr-category"
+            ],
+            [
+              "#wr-type"
+            ],
+            [
+              "#wr-action"
+            ],
+            [
+              "#wr-assignee"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/calendar",
+      "label": "calendar",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-calendar-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-development-plans-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans-studio",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-development-plans-studio-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_8_-horizon"
+            ],
+            [
+              "#_r_8_-status"
+            ],
+            [
+              ".py-3\\.5 > .gap-2 > .disabled\\:opacity-55.border-\\[var\\(--border-control\\)\\].cursor-pointer"
+            ],
+            [
+              "button[form=\"_r_8_\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-ppas-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".r8-ppas-cards"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas-studio",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-ppas-studio-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_b_-year"
+            ],
+            [
+              "#_r_b_-sector"
+            ],
+            [
+              ".disabled\\:cursor-not-allowed.disabled\\:opacity-55.cursor-pointer:nth-child(1)"
+            ],
+            [
+              "button[form=\"_r_b_\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-planning-maps-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-pin-choices",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-planning-maps-pin-choices-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/target-size?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".leaflet-popup-close-button"
+              ],
+              "html": "<a class=\"leaflet-popup-close-button\" role=\"button\" aria-label=\"Close popup\" href=\"#close\"><span aria-hidden=\"true\">×</span></a>",
+              "failureSummary": "Fix any of the following:\n  Target has insufficient size because it is partially obscured (smallest space is 18.9px by 24px, should be at least 24px by 24px)\n  Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 19px instead of at least 24px."
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "targets": [
+            [
+              "div[aria-describedby=\"leaflet-tooltip-31\"]"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ],
+            [
+              "div[aria-describedby=\"leaflet-tooltip-31\"] > div"
+            ],
+            [
+              ".leaflet-marker-icon.tcds-leaflet-pin.leaflet-interactive:nth-child(2) > div"
+            ],
+            [
+              ".break-words.px-2.border-b:nth-child(1)"
+            ],
+            [
+              ".leaflet-popup-close-button > span[aria-hidden=\"true\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-studio",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-planning-maps-studio-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#pm-category"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/my-department",
+      "label": "my-department",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-my-department-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/my-tasks",
+      "label": "my-tasks",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-my-tasks-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "label": "transactions-create",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-transactions-create-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#wr-category"
+            ],
+            [
+              "#wr-type"
+            ],
+            [
+              "#wr-action"
+            ],
+            [
+              "#wr-assignee"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/calendar",
+      "label": "calendar",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-calendar-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.text-\\[var\\(--surface-sidebar-muted\\)\\]"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .flex-1.min-w-0.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans-studio",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-studio-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_8_-horizon"
+            ],
+            [
+              "#_r_8_-status"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".r8-ppas-cards"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .pt-1.mb-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].relative[href$=\"employees\"] > .flex-1.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas-studio",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-studio-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_b_-year"
+            ],
+            [
+              "#_r_b_-sector"
+            ],
+            [
+              "#_r_b_-funding"
+            ],
+            [
+              "#_r_b_-status"
+            ],
+            [
+              "#_r_b_-priority"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .min-w-0.flex-1.truncate"
+            ],
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-pin-choices",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-pin-choices-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".break-words.px-2.border-b:nth-child(3)"
+              ],
+              "html": "<button type=\"button\" class=\"block min-h-11 w-full break-words border-b border-[var(--border-default)] px-2 py-2 text-left text-xs text-[var(--ink-primary)]\">MAP-INFRA-03 — Municipal Road Network &amp; Farm-to-Market Corridor Plate</button>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.01 (foreground color: #707875, background color: #f1f1f1, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .min-w-0.flex-1.truncate"
+            ],
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ],
+            [
+              "div[aria-describedby=\"leaflet-tooltip-31\"] > div"
+            ],
+            [
+              ".leaflet-marker-icon.tcds-leaflet-pin.leaflet-interactive:nth-child(2) > div"
+            ],
+            [
+              ".break-words.px-2.border-b:nth-child(1)"
+            ],
+            [
+              ".break-words.px-2.border-b:nth-child(2)"
+            ],
+            [
+              ".leaflet-popup-close-button > span[aria-hidden=\"true\"]"
+            ],
+            [
+              ".top-14"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-studio",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-studio-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#pm-category"
+            ],
+            [
+              "label[for=\"pm-desc\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/my-department",
+      "label": "my-department",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-my-department-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/my-tasks",
+      "label": "my-tasks",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-my-tasks-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "label": "transactions-create",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-transactions-create-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#wr-category"
+            ],
+            [
+              "#wr-type"
+            ],
+            [
+              "#wr-action"
+            ],
+            [
+              "#wr-assignee"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/calendar",
+      "label": "calendar",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-calendar-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-development-plans-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.text-\\[var\\(--surface-sidebar-muted\\)\\]"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .flex-1.min-w-0.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans-studio",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-development-plans-studio-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_8_-horizon"
+            ],
+            [
+              "#_r_8_-status"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-ppas-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "targets": [
+            [
+              ".r8-ppas-cards"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .pt-1.mb-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].relative[href$=\"employees\"] > .flex-1.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas-studio",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-ppas-studio-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_b_-year"
+            ],
+            [
+              "#_r_b_-sector"
+            ],
+            [
+              "#_r_b_-funding"
+            ],
+            [
+              "#_r_b_-status"
+            ],
+            [
+              "#_r_b_-priority"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-planning-maps-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .min-w-0.flex-1.truncate"
+            ],
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-pin-choices",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-planning-maps-pin-choices-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".break-words.px-2.border-b:nth-child(3)"
+              ],
+              "html": "<button type=\"button\" class=\"block min-h-11 w-full break-words border-b border-[var(--border-default)] px-2 py-2 text-left text-xs text-[var(--ink-primary)]\">MAP-INFRA-03 — Municipal Road Network &amp; Farm-to-Market Corridor Plate</button>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.98 (foreground color: #b5bab7, background color: #7d827f, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .min-w-0.flex-1.truncate"
+            ],
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ],
+            [
+              "div[aria-describedby=\"leaflet-tooltip-31\"] > div"
+            ],
+            [
+              ".leaflet-marker-icon.tcds-leaflet-pin.leaflet-interactive:nth-child(2) > div"
+            ],
+            [
+              ".break-words.px-2.border-b:nth-child(1)"
+            ],
+            [
+              ".break-words.px-2.border-b:nth-child(2)"
+            ],
+            [
+              ".leaflet-popup-close-button > span[aria-hidden=\"true\"]"
+            ],
+            [
+              ".top-14"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-studio",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-planning-maps-studio-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#pm-category"
+            ],
+            [
+              "label[for=\"pm-desc\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/my-department",
+      "label": "my-department",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-my-department-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/my-tasks",
+      "label": "my-tasks",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-my-tasks-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "label": "transactions-create",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-transactions-create-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#wr-category"
+            ],
+            [
+              "#wr-type"
+            ],
+            [
+              "#wr-action"
+            ],
+            [
+              "#wr-assignee"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/calendar",
+      "label": "calendar",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-calendar-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.text-\\[var\\(--surface-sidebar-muted\\)\\]"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .flex-1.min-w-0.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans-studio",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-development-plans-studio-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_8_-horizon"
+            ],
+            [
+              "#_r_8_-status"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .pt-1.mb-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].relative[href$=\"employees\"] > .flex-1.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas-studio",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-ppas-studio-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_b_-year"
+            ],
+            [
+              "#_r_b_-sector"
+            ],
+            [
+              "#_r_b_-funding"
+            ],
+            [
+              "#_r_b_-status"
+            ],
+            [
+              "#_r_b_-priority"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .min-w-0.flex-1.truncate"
+            ],
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-pin-choices",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-pin-choices-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".break-words.px-2.border-b:nth-child(2)"
+              ],
+              "html": "<button type=\"button\" class=\"block min-h-11 w-full break-words border-b border-[var(--border-default)] px-2 py-2 text-left text-xs text-[var(--ink-primary)]\">MAP-DRRM-02 — Coastal Storm Surge &amp; Flood Susceptibility Plate</button>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.49 (foreground color: #919795, background color: #ebebeb, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".break-words.px-2.border-b:nth-child(3)"
+              ],
+              "html": "<button type=\"button\" class=\"block min-h-11 w-full break-words border-b border-[var(--border-default)] px-2 py-2 text-left text-xs text-[var(--ink-primary)]\">MAP-INFRA-03 — Municipal Road Network &amp; Farm-to-Market Corridor Plate</button>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.49 (foreground color: #919795, background color: #ebebeb, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .min-w-0.flex-1.truncate"
+            ],
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ],
+            [
+              "div[aria-describedby=\"leaflet-tooltip-31\"] > div"
+            ],
+            [
+              ".leaflet-marker-icon.tcds-leaflet-pin.leaflet-interactive:nth-child(2) > div"
+            ],
+            [
+              ".break-words.px-2.border-b:nth-child(1)"
+            ],
+            [
+              ".leaflet-popup-close-button > span[aria-hidden=\"true\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-studio",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-planning-maps-studio-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#pm-category"
+            ],
+            [
+              "label[for=\"pm-desc\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/my-department",
+      "label": "my-department",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "department_head-my-department-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/my-tasks",
+      "label": "my-tasks",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-my-tasks-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/transactions/create",
+      "label": "transactions-create",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-transactions-create-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#wr-category"
+            ],
+            [
+              "#wr-type"
+            ],
+            [
+              "#wr-action"
+            ],
+            [
+              "#wr-assignee"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/calendar",
+      "label": "calendar",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-calendar-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-development-plans-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.text-\\[var\\(--surface-sidebar-muted\\)\\]"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .flex-1.min-w-0.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/development-plans",
+      "label": "development-plans-studio",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-development-plans-studio-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_8_-horizon"
+            ],
+            [
+              "#_r_8_-status"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-ppas-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .pt-1.mb-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].relative[href$=\"employees\"] > .flex-1.truncate"
+            ],
+            [
+              "#_r_5_"
+            ],
+            [
+              "#_r_6_"
+            ],
+            [
+              "#_r_7_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/ppas",
+      "label": "ppas-studio",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-ppas-studio-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_b_-year"
+            ],
+            [
+              "#_r_b_-sector"
+            ],
+            [
+              "#_r_b_-funding"
+            ],
+            [
+              "#_r_b_-status"
+            ],
+            [
+              "#_r_b_-priority"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-planning-maps-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .min-w-0.flex-1.truncate"
+            ],
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-pin-choices",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-planning-maps-pin-choices-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".break-words.px-2.border-b:nth-child(2)"
+              ],
+              "html": "<button type=\"button\" class=\"block min-h-11 w-full break-words border-b border-[var(--border-default)] px-2 py-2 text-left text-xs text-[var(--ink-primary)]\">MAP-DRRM-02 — Coastal Storm Surge &amp; Flood Susceptibility Plate</button>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.6 (foreground color: #b5b9b7, background color: #8d918f, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".break-words.px-2.border-b:nth-child(3)"
+              ],
+              "html": "<button type=\"button\" class=\"block min-h-11 w-full break-words border-b border-[var(--border-default)] px-2 py-2 text-left text-xs text-[var(--ink-primary)]\">MAP-INFRA-03 — Municipal Road Network &amp; Farm-to-Market Corridor Plate</button>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.6 (foreground color: #b5b9b7, background color: #8d918f, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "section[aria-label=\"Employee Directory\"] > .mb-1.pt-1.tracking-wider"
+            ],
+            [
+              ".hover\\:bg-\\[var\\(--surface-sidebar-hover\\)\\].text-\\[var\\(--surface-sidebar-ink\\)\\][href$=\"employees\"] > .min-w-0.flex-1.truncate"
+            ],
+            [
+              "text[x=\"224\"]"
+            ],
+            [
+              "text[x=\"18\"]"
+            ],
+            [
+              "div[aria-describedby=\"leaflet-tooltip-31\"] > div"
+            ],
+            [
+              ".leaflet-marker-icon.tcds-leaflet-pin.leaflet-interactive:nth-child(2) > div"
+            ],
+            [
+              ".break-words.px-2.border-b:nth-child(1)"
+            ],
+            [
+              ".leaflet-popup-close-button > span[aria-hidden=\"true\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/planning-maps",
+      "label": "planning-maps-studio",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-planning-maps-studio-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#pm-category"
+            ],
+            [
+              "label[for=\"pm-desc\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "department_head",
+      "route": "/my-department",
+      "label": "my-department",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "department_head-my-department-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "system_admin",
+      "route": "/admin",
+      "label": "admin",
+      "width": 320,
+      "theme": "light",
+      "overflow": true,
+      "capture": "system_admin-admin-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".opacity-60"
+              ],
+              "html": "<span class=\"inline-flex min-h-10 items-center rounded-lg px-3 py-1.5 text-xs text-[var(--ink-secondary)] opacity-60\">« Previous</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.77 (foreground color: #929e99, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "impact": "serious",
+          "help": "Scrollable region must have keyboard access",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/scrollable-region-focusable?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".max-h-\\[420px\\]"
+              ],
+              "html": "<div class=\"max-h-[420px] divide-y divide-[var(--border-default)] overflow-y-auto rounded-xl border border-[var(--border-default)] bg-[var(--surface-card)]\">",
+              "failureSummary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".lg\\:grid-cols-3 > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(6) > select"
+            ],
+            [
+              "label:nth-child(1) > select"
+            ],
+            [
+              ".p-4.sm\\:p-5:nth-child(1) > .sm\\:grid-cols-2 > label:nth-child(2) > select"
+            ],
+            [
+              ".xl\\:grid-cols-\\[minmax\\(0\\,1\\.5fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_auto\\] > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(3) > select"
+            ],
+            [
+              "label:nth-child(4) > select"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/audit",
+      "label": "audit",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-audit-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_0_"
+            ],
+            [
+              "#_r_2_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property",
+      "label": "property",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-property-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#prop-dept"
+            ],
+            [
+              "#prop-cond"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property/lifecycle",
+      "label": "property-lifecycle",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-property-lifecycle-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "label:nth-child(2) > select"
+            ],
+            [
+              "select[aria-label=\"Select open session\"]"
+            ],
+            [
+              "select[aria-label=\"Select asset record\"]"
+            ],
+            [
+              "select[aria-label=\"Observed condition\"]"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              "table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/admin",
+      "label": "admin",
+      "width": 320,
+      "theme": "dark",
+      "overflow": true,
+      "capture": "system_admin-admin-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".opacity-60"
+              ],
+              "html": "<span class=\"inline-flex min-h-10 items-center rounded-lg px-3 py-1.5 text-xs text-[var(--ink-secondary)] opacity-60\">« Previous</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.57 (foreground color: #68766f, background color: #161e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "impact": "serious",
+          "help": "Scrollable region must have keyboard access",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/scrollable-region-focusable?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".max-h-\\[420px\\]"
+              ],
+              "html": "<div class=\"max-h-[420px] divide-y divide-[var(--border-default)] overflow-y-auto rounded-xl border border-[var(--border-default)] bg-[var(--surface-card)]\">",
+              "failureSummary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".lg\\:grid-cols-3 > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(6) > select"
+            ],
+            [
+              "label:nth-child(1) > select"
+            ],
+            [
+              ".p-4.sm\\:p-5:nth-child(1) > .sm\\:grid-cols-2 > label:nth-child(2) > select"
+            ],
+            [
+              ".xl\\:grid-cols-\\[minmax\\(0\\,1\\.5fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_auto\\] > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(3) > select"
+            ],
+            [
+              "label:nth-child(4) > select"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/audit",
+      "label": "audit",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-audit-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_0_"
+            ],
+            [
+              "#_r_2_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property",
+      "label": "property",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-property-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#prop-dept"
+            ],
+            [
+              "#prop-cond"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property/lifecycle",
+      "label": "property-lifecycle",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-property-lifecycle-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "label:nth-child(2) > select"
+            ],
+            [
+              "select[aria-label=\"Select open session\"]"
+            ],
+            [
+              "select[aria-label=\"Select asset record\"]"
+            ],
+            [
+              "select[aria-label=\"Observed condition\"]"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              "table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/admin",
+      "label": "admin",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-admin-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".opacity-60"
+              ],
+              "html": "<span class=\"inline-flex min-h-10 items-center rounded-lg px-3 py-1.5 text-xs text-[var(--ink-secondary)] opacity-60\">« Previous</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.77 (foreground color: #929e99, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".lg\\:grid-cols-3 > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(6) > select"
+            ],
+            [
+              "label:nth-child(1) > select"
+            ],
+            [
+              ".p-4.sm\\:p-5:nth-child(1) > .sm\\:grid-cols-2 > label:nth-child(2) > select"
+            ],
+            [
+              ".xl\\:grid-cols-\\[minmax\\(0\\,1\\.5fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_auto\\] > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(3) > select"
+            ],
+            [
+              "label:nth-child(4) > select"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              ".min-w-full"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/audit",
+      "label": "audit",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-audit-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_0_"
+            ],
+            [
+              "#_r_2_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property",
+      "label": "property",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-property-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#prop-dept"
+            ],
+            [
+              "#prop-cond"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property/lifecycle",
+      "label": "property-lifecycle",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-property-lifecycle-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "label:nth-child(2) > select"
+            ],
+            [
+              "select[aria-label=\"Select open session\"]"
+            ],
+            [
+              "select[aria-label=\"Select asset record\"]"
+            ],
+            [
+              "select[aria-label=\"Observed condition\"]"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              "table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/admin",
+      "label": "admin",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-admin-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".opacity-60"
+              ],
+              "html": "<span class=\"inline-flex min-h-10 items-center rounded-lg px-3 py-1.5 text-xs text-[var(--ink-secondary)] opacity-60\">« Previous</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.57 (foreground color: #68766f, background color: #161e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".lg\\:grid-cols-3 > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(6) > select"
+            ],
+            [
+              "label:nth-child(1) > select"
+            ],
+            [
+              ".p-4.sm\\:p-5:nth-child(1) > .sm\\:grid-cols-2 > label:nth-child(2) > select"
+            ],
+            [
+              ".xl\\:grid-cols-\\[minmax\\(0\\,1\\.5fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_auto\\] > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(3) > select"
+            ],
+            [
+              "label:nth-child(4) > select"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              ".min-w-full"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/audit",
+      "label": "audit",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-audit-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_0_"
+            ],
+            [
+              "#_r_2_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property",
+      "label": "property",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-property-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#prop-dept"
+            ],
+            [
+              "#prop-cond"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property/lifecycle",
+      "label": "property-lifecycle",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-property-lifecycle-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "label:nth-child(2) > select"
+            ],
+            [
+              "select[aria-label=\"Select open session\"]"
+            ],
+            [
+              "select[aria-label=\"Select asset record\"]"
+            ],
+            [
+              "select[aria-label=\"Observed condition\"]"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              "table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/admin",
+      "label": "admin",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-admin-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".opacity-60"
+              ],
+              "html": "<span class=\"inline-flex min-h-10 items-center rounded-lg px-3 py-1.5 text-xs text-[var(--ink-secondary)] opacity-60\">« Previous</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.77 (foreground color: #929e99, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".lg\\:grid-cols-3 > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(6) > select"
+            ],
+            [
+              "label:nth-child(1) > select"
+            ],
+            [
+              ".p-4.sm\\:p-5:nth-child(1) > .sm\\:grid-cols-2 > label:nth-child(2) > select"
+            ],
+            [
+              ".xl\\:grid-cols-\\[minmax\\(0\\,1\\.5fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_auto\\] > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(3) > select"
+            ],
+            [
+              "label:nth-child(4) > select"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              ".min-w-full"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/audit",
+      "label": "audit",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-audit-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_0_"
+            ],
+            [
+              "#_r_2_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property",
+      "label": "property",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-property-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#prop-dept"
+            ],
+            [
+              "#prop-cond"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property/lifecycle",
+      "label": "property-lifecycle",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "system_admin-property-lifecycle-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "label:nth-child(2) > select"
+            ],
+            [
+              "select[aria-label=\"Select open session\"]"
+            ],
+            [
+              "select[aria-label=\"Select asset record\"]"
+            ],
+            [
+              "select[aria-label=\"Observed condition\"]"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              "table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/admin",
+      "label": "admin",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-admin-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "target": [
+                ".opacity-60"
+              ],
+              "html": "<span class=\"inline-flex min-h-10 items-center rounded-lg px-3 py-1.5 text-xs text-[var(--ink-secondary)] opacity-60\">« Previous</span>",
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.57 (foreground color: #68766f, background color: #161e1a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".lg\\:grid-cols-3 > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(6) > select"
+            ],
+            [
+              "label:nth-child(1) > select"
+            ],
+            [
+              ".p-4.sm\\:p-5:nth-child(1) > .sm\\:grid-cols-2 > label:nth-child(2) > select"
+            ],
+            [
+              ".xl\\:grid-cols-\\[minmax\\(0\\,1\\.5fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_minmax\\(0\\,0\\.85fr\\)_auto\\] > label:nth-child(2) > select"
+            ],
+            [
+              "label:nth-child(3) > select"
+            ],
+            [
+              "label:nth-child(4) > select"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              ".min-w-full"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/audit",
+      "label": "audit",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-audit-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#_r_0_"
+            ],
+            [
+              "#_r_2_"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property",
+      "label": "property",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-property-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#prop-dept"
+            ],
+            [
+              "#prop-cond"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "system_admin",
+      "route": "/property/lifecycle",
+      "label": "property-lifecycle",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "system_admin-property-lifecycle-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "label:nth-child(2) > select"
+            ],
+            [
+              "select[aria-label=\"Select open session\"]"
+            ],
+            [
+              "select[aria-label=\"Select asset record\"]"
+            ],
+            [
+              "select[aria-label=\"Observed condition\"]"
+            ]
+          ]
+        },
+        {
+          "id": "th-has-data-cells",
+          "targets": [
+            [
+              "table"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/mayor-office",
+      "label": "mayor-office",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "mayor_approver-mayor-office-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/reports",
+      "label": "reports",
+      "width": 320,
+      "theme": "light",
+      "overflow": false,
+      "capture": "mayor_approver-reports-320-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/mayor-office",
+      "label": "mayor-office",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "mayor_approver-mayor-office-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/reports",
+      "label": "reports",
+      "width": 320,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "mayor_approver-reports-320-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/mayor-office",
+      "label": "mayor-office",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "mayor_approver-mayor-office-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/reports",
+      "label": "reports",
+      "width": 1024,
+      "theme": "light",
+      "overflow": false,
+      "capture": "mayor_approver-reports-1024-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/mayor-office",
+      "label": "mayor-office",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "mayor_approver-mayor-office-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/reports",
+      "label": "reports",
+      "width": 1024,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "mayor_approver-reports-1024-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/mayor-office",
+      "label": "mayor-office",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "mayor_approver-mayor-office-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/reports",
+      "label": "reports",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "capture": "mayor_approver-reports-1440-light.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/mayor-office",
+      "label": "mayor-office",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "mayor_approver-mayor-office-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "role": "mayor_approver",
+      "route": "/reports",
+      "label": "reports",
+      "width": 1440,
+      "theme": "dark",
+      "overflow": false,
+      "capture": "mayor_approver-reports-1440-dark.png",
+      "engine": {
+        "name": "axe-core",
+        "version": "4.14.1"
+      },
+      "violations": [],
+      "incomplete": []
+    }
+  ]
+}
