@@ -362,7 +362,7 @@ function CalendarWorkspace({ events, calendar }: { events: CalendarEvent[]; cale
                             <h3 className="text-base font-bold text-slate-900 dark:text-white">
                                 Events on {selectedDate} ({selectedDayEvents.length})
                             </h3>
-                            <span className="text-xs font-semibold text-slate-500">
+                            <span className="text-xs font-semibold text-[var(--ink-secondary)]">
                                 Click an event for complete details
                             </span>
                         </div>

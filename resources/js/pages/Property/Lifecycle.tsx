@@ -86,7 +86,7 @@ export default function PropertyLifecycle({
         <AppLayout title="Property Lifecycle">
             <div className="mx-auto max-w-[1440px] space-y-5 px-4 py-5 sm:px-6">
                 <section className="rounded-2xl bg-[var(--surface-sidebar)] p-6 text-white sm:p-7">
-                    <div className="text-xs font-bold uppercase tracking-wider text-[var(--accent-gold)]">
+                    <div className="text-xs font-bold uppercase tracking-wider text-amber-200">
                         General Services Office · Asset Lifecycle
                     </div>
                     <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">

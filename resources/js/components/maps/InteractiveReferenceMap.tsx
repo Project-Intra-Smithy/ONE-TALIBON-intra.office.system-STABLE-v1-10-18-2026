@@ -1,3 +1,4 @@
+import { groupMapPins } from './groupMapPins';
 import L from 'leaflet';
 import { LocateFixed, Minus, Plus } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -32,7 +33,7 @@ export type InteractiveMapProps = {
 function makeMarkerIcon(color: string, label: string, selected: boolean) {
     color = /^#[\da-f]{3}(?:[\da-f]{3})?$/i.test(color) ? color : '#176b4a';
     label = label.replace(/[<>&"']/g, '');
-    const size = selected ? 34 : 30;
+    const size = 44;
     const ring = selected ? '0 0 0 4px rgba(200, 155, 60, 0.45), 0 4px 10px rgba(0,0,0,0.35)' : '0 2px 6px rgba(0,0,0,0.28)';
     return L.divIcon({
         className: 'tcds-leaflet-pin',
@@ -118,28 +119,48 @@ export default function InteractiveReferenceMap({
         const group = markersLayerRef.current;
         const map = mapRef.current;
         if (!group || !map) return;
-        group.clearLayers();
-
-        pins.forEach((pin, idx) => {
-            const isSelected = pin.id === selectedPinId;
-            const shortBadge = String(idx + 1);
-            const marker = L.marker([pin.lat, pin.lng], {
-                icon: makeMarkerIcon(pin.color, shortBadge, isSelected),
-                title: pin.title,
+        const renderMarkers = () => {
+            group.clearLayers();
+            groupMapPins(pins, pin => map.latLngToContainerPoint([pin.lat, pin.lng])).forEach(cluster => {
+                const pin = cluster[0];
+                const selected = cluster.some(item => item.id === selectedPinId);
+                const markerLabel = cluster.length > 1 ? `Select from ${cluster.length} nearby map references` : `${pin.code}: ${pin.title}`;
+                const marker = L.marker([pin.lat, pin.lng], {
+                    icon: makeMarkerIcon(pin.color, cluster.length > 1 ? String(cluster.length) : String(pins.indexOf(pin) + 1), selected),
+                    title: markerLabel,
+                }).addTo(group);
+                marker.getElement()?.setAttribute('aria-label', markerLabel);
+                const tooltip = document.createElement('span');
+                tooltip.textContent = cluster.length > 1 ? `${cluster.length} nearby references — open to select` : `${pin.code}: ${pin.title}`;
+                marker.bindTooltip(tooltip, { direction: 'top', offset: [0, -22] });
+                if (cluster.length === 1) marker.on('click', () => onSelectPin?.(pin.id));
+                else {
+                    const choices = document.createElement('div');
+                    choices.setAttribute('role', 'group');
+                    choices.setAttribute('aria-label', 'Nearby map references');
+                    for (const item of cluster) {
+                        const button = document.createElement('button');
+                        button.type = 'button';
+                        button.className = 'block min-h-11 w-full break-words border-b border-[var(--border-default)] px-2 py-2 text-left text-xs text-[var(--ink-primary)]';
+                        button.textContent = `${item.code} — ${item.title}`;
+                        button.addEventListener('click', () => { map.closePopup(); onSelectPin?.(item.id); containerRef.current?.focus(); });
+                        choices.append(button);
+                    }
+                    marker.bindPopup(choices, { maxWidth: Math.max(120, Math.min(280, map.getSize().x - 64)), autoPanPadding: [24, 24] });
+                    marker.on('popupopen', () => choices.querySelector('button')?.focus());
+                    choices.addEventListener('keydown', event => {
+                        if (event.key !== 'Escape') return;
+                        event.preventDefault(); event.stopPropagation(); map.closePopup(); marker.getElement()?.focus();
+                    });
+                }
             });
-            const tooltip = document.createElement('span');
-            tooltip.textContent = `${pin.code}: ${pin.title}`;
-            marker.bindTooltip(tooltip, { direction: 'top', offset: [0, -14] });
-            marker.on('click', () => onSelectPin?.(pin.id));
-            marker.addTo(group);
-        });
-
-        if (pickMode && pickedCoords) {
-            L.marker([pickedCoords.lat, pickedCoords.lng], {
-                icon: makeMarkerIcon('#c89b3c', '★', true),
-                title: 'Selected map pin location',
+            if (pickMode && pickedCoords) L.marker([pickedCoords.lat, pickedCoords.lng], {
+                icon: makeMarkerIcon('#c89b3c', '★', true), title: 'Selected map pin location', interactive: false, keyboard: false,
             }).addTo(group);
-        }
+        };
+        renderMarkers();
+        map.on('zoomend', renderMarkers);
+        return () => { map.off('zoomend', renderMarkers); group.clearLayers(); };
     }, [pins, selectedPinId, onSelectPin, pickMode, pickedCoords]);
 
     // Pan softly when selected pin changes

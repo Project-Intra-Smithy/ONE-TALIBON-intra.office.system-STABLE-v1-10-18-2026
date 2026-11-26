@@ -275,10 +275,10 @@ export default function Index({
                 <details className="group municipal-panel">
                     <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-xs font-semibold marker:hidden">
                         <span>PPA summary</span>
-                        <span className="text-[var(--municipal-brand)] group-open:hidden">
+                        <span className="text-[var(--brand-ink)] group-open:hidden">
                             Show
                         </span>
-                        <span className="hidden text-[var(--municipal-brand)] group-open:inline">
+                        <span className="hidden text-[var(--brand-ink)] group-open:inline">
                             Hide
                         </span>
                     </summary>

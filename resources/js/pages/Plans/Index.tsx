@@ -322,8 +322,8 @@ export default function PlansIndex({
                 <details className="group municipal-panel min-w-0 rounded-lg text-[var(--municipal-muted)]">
                     <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-[13px] font-semibold marker:hidden">
                         <span>Planning context · filtered reference records</span>
-                        <span className="text-xs text-[var(--municipal-brand)] group-open:hidden">Show</span>
-                        <span className="hidden text-xs text-[var(--municipal-brand)] group-open:inline">Hide</span>
+                        <span className="text-xs text-[var(--brand-ink)] group-open:hidden">Show</span>
+                        <span className="hidden text-xs text-[var(--brand-ink)] group-open:inline">Hide</span>
                     </summary>
                     <div className="space-y-3 border-t border-[var(--municipal-border)] p-3">
                         <PlanMetricGrid metrics={metrics} />

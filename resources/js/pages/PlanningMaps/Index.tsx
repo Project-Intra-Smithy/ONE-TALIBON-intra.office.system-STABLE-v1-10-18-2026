@@ -345,7 +345,7 @@ export default function PlanningMapsIndex({
                             <div>
                                 <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[var(--municipal-border)] pb-3">
                                     <div>
-                                        <div className="flex flex-wrap items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-[var(--municipal-brand)]">
+                                        <div className="flex flex-wrap items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-[var(--brand-ink)]">
                                             <span>{selectedMap.code}</span>
                                             <span>·</span>
                                             <span>{selectedMap.category}</span>

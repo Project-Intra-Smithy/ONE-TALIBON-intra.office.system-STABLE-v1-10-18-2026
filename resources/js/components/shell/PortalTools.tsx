@@ -46,7 +46,7 @@ export function RecordsSearch({ onOpenCommandPalette }: { onOpenCommandPalette?:
                             onClick={onOpenCommandPalette}
                             aria-label="Open Quick Jump command palette (Ctrl+K)"
                             title="Quick Jump (Ctrl+K)"
-                            className="absolute right-1.5 top-1/2 hidden -translate-y-1/2 items-center rounded border border-[var(--border-default)] bg-[var(--surface-card)] px-1.5 py-0.5 font-mono text-xs font-semibold text-[var(--ink-secondary)] transition-colors hover:border-[var(--brand-ink)] hover:text-[var(--ink-primary)] lg:inline-flex"
+                            className="absolute right-1.5 top-1/2 hidden min-h-8 -translate-y-1/2 items-center rounded border border-[var(--border-default)] bg-[var(--surface-card)] px-1.5 py-0.5 font-mono text-xs font-semibold text-[var(--ink-secondary)] transition-colors hover:border-[var(--brand-ink)] hover:text-[var(--ink-primary)] lg:inline-flex"
                         >
                             Ctrl K
                         </button>
@@ -122,6 +122,7 @@ export function PortalIdentity({ user }: { user: AuthUser | null }) {
 
     return (
         <div
+            role="group"
             title={`${user.name}${dept ? ` · ${dept}` : ''}`}
             aria-label={`${user.name}${dept ? `, ${dept}` : ''}`}
             className="flex min-w-0 items-center gap-2 border-l border-[var(--border-default)] pl-2.5 xl:pl-3"
