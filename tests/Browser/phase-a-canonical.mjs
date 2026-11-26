@@ -76,7 +76,7 @@ try{
                     await dialogCheck(page,drawer,'work-request-register-drawer',actor.role,width,theme);
                     if(actor.role==='employee'&&width===1440&&theme==='light'){
                         const title='Synthetic canonical register drawer request';
-                        await drawer.getByLabel('Subject',{exact:true}).fill(title);
+                        await drawer.getByLabel('Subject').fill(title);
                         await drawer.getByRole('button',{name:'Submit Work Request',exact:true}).click();
                         await page.waitForURL(/\/transactions\/\d+$/);
                         const persisted=await context.request.get(page.url(),{headers:{Accept:'text/html'}});
