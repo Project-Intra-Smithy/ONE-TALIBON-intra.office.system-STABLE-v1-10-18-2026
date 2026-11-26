@@ -25,13 +25,13 @@ const tripTone: Record<TripState, string> = {
     'Completed reference': 'border-emerald-200 bg-emerald-50 text-emerald-800', 'Awaiting vehicle reference': 'border-amber-200 bg-amber-50 text-amber-800',
 };
 const maintenanceTone: Record<MaintenanceState, string> = {
-    'Current reference': 'text-emerald-700 dark:text-emerald-300', 'Inspection attention': 'text-amber-700 dark:text-amber-300', 'Service attention': 'text-rose-700 dark:text-rose-300', 'Maintenance reference': 'text-blue-700 dark:text-blue-300',
+    'Current reference': 'text-emerald-700 dark:text-emerald-300', 'Inspection attention': 'text-amber-800 dark:text-amber-300', 'Service attention': 'text-rose-700 dark:text-rose-300', 'Maintenance reference': 'text-blue-700 dark:text-blue-300',
 };
 
 function Header({ onBack }: Props) {
     const signals = [
-        ['Fleet in view', fleetSummary.fleetInView, 'text-slate-900'], ['Available', fleetSummary.available, 'text-emerald-700 dark:text-emerald-300'],
-        ['Scheduled', fleetSummary.scheduled, 'text-blue-700 dark:text-blue-300'], ['Maintenance attention', fleetSummary.maintenanceAttention, 'text-amber-700 dark:text-amber-300'],
+        ['Fleet in view', fleetSummary.fleetInView, 'text-slate-900 dark:text-slate-100'], ['Available', fleetSummary.available, 'text-emerald-700 dark:text-emerald-300'],
+        ['Scheduled', fleetSummary.scheduled, 'text-blue-700 dark:text-blue-300'], ['Maintenance attention', fleetSummary.maintenanceAttention, 'text-amber-800 dark:text-amber-300'],
     ] as const;
     return <header className={`${surface} px-3 py-3 sm:px-4`}><div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(410px,520px)] lg:items-center">
         <div className="min-w-0"><div className="flex items-center gap-2"><button type="button" onClick={onBack} aria-label="Back to Future Integrations" className="grid h-8 w-8 place-items-center rounded-lg border border-slate-200 text-[var(--ink-secondary)] dark:border-slate-700"><ArrowLeft size={14}/></button><span className="text-[9px] font-extrabold uppercase tracking-[.12em] text-blue-700 dark:text-blue-300">Fleet operations</span></div>
@@ -61,7 +61,7 @@ function Overview({ onOpen }: { onOpen:(v:FleetVehicle)=>void }) {
     return <div className="space-y-2.5"><ReadinessRail/><div className="grid items-start gap-2.5 xl:grid-cols-[minmax(0,2.45fr)_minmax(280px,.9fr)]"><FleetBoard onOpen={onOpen} compact/><div className="space-y-2.5">
         <section className={`${surface} bg-[var(--surface-recessed)]/55 p-3 dark:bg-slate-900/25`}><h2 className="text-[11px] font-extrabold">Today / upcoming trip schedule</h2><p className="text-[9px] text-[var(--ink-secondary)]">Dispatch-planning references only; no ticket issuance.</p><div className="mt-2 space-y-2">{[...todayTrips.slice(0,2),...upcomingTrips.slice(0,1)].map(t=><TripCard key={t.id} trip={t}/>)}</div></section>
         <section className={`${surface} p-3`}><h2 className="flex items-center gap-2 text-[11px] font-extrabold"><Wrench size={14} className="text-amber-600"/>Maintenance attention</h2><div className="mt-2 space-y-1.5">{maintenanceAttentionVehicles.map(v=><button key={v.id} type="button" onClick={()=>onOpen(v)} className="w-full rounded-lg border border-amber-100 bg-[var(--status-warn-bg)] px-2.5 py-2 text-left"><div className="flex justify-between"><b className="text-[9px] text-[var(--ink-secondary)]">{v.id}</b><span className={`text-[8px] font-bold ${maintenanceTone[v.maintenanceState]}`}>{v.maintenanceState}</span></div><div className="text-[9px] font-bold">{v.type}</div><div className="text-[8px] text-[var(--ink-secondary)]">{v.nextAttention}</div></button>)}</div></section>
-        <section className={`${surface} p-3`}><h2 className="text-[11px] font-extrabold">Recent trip / fuel references</h2><div className="mt-2 divide-y divide-slate-100">{recentTrips.map(t=><div key={t.id} className="py-2 text-[9px]"><b className="text-blue-700 dark:text-blue-300">{t.id}</b><p className="text-[var(--ink-secondary)]">{t.vehicleLabel} · {t.destinationContext}</p></div>)}{fleetVehicles.filter(v=>v.fuelReferenceState!=='Reference current').slice(0,2).map(v=><div key={v.id} className="py-2 text-[9px]"><b className="text-amber-700 dark:text-amber-300">{v.fuelReferenceState}</b><p className="text-[var(--ink-secondary)]">{v.id} · {v.fuelReference}</p></div>)}</div></section>
+        <section className={`${surface} p-3`}><h2 className="text-[11px] font-extrabold">Recent trip / fuel references</h2><div className="mt-2 divide-y divide-slate-100">{recentTrips.map(t=><div key={t.id} className="py-2 text-[9px]"><b className="text-blue-700 dark:text-blue-300">{t.id}</b><p className="text-[var(--ink-secondary)]">{t.vehicleLabel} · {t.destinationContext}</p></div>)}{fleetVehicles.filter(v=>v.fuelReferenceState!=='Reference current').slice(0,2).map(v=><div key={v.id} className="py-2 text-[9px]"><b className="text-amber-800 dark:text-amber-300">{v.fuelReferenceState}</b><p className="text-[var(--ink-secondary)]">{v.id} · {v.fuelReference}</p></div>)}</div></section>
     </div></div></div>;
 }
 
