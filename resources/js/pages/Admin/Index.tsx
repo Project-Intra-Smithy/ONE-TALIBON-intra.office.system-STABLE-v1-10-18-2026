@@ -260,7 +260,7 @@ function AccountActions({ row }: { row: RegistryRow }) {
 
 function Section({ title, description, icon, children }: { title: string; description: string; icon: ReactNode; children: ReactNode }) {
     return (
-        <section className={`rounded-xl border p-4 transition-colors sm:p-5 ${insetSurface}`}>
+        <section className={`min-w-0 rounded-xl border p-4 transition-colors sm:p-5 ${insetSurface}`}>
             <div className="mb-4 flex items-start gap-3">
                 <div className="mt-0.5 rounded-xl bg-[var(--brand-soft)] p-2 text-[var(--brand-ink)]">{icon}</div>
                 <div className="min-w-0">

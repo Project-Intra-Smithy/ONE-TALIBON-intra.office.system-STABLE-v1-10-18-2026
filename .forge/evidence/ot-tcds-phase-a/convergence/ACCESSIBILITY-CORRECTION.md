@@ -20,6 +20,8 @@ The frozen local checkpoint `a511900206358aab58df73ad3da7012231766599` additiona
 
 ## Repeatable local check
 
+At `4f56b5dbf4fb17629d87aaac7f56fef65e1082ce`, all 102 observations had zero automated accessibility violations. The responsive check still correctly failed two Administration observations at 320px. A focused DOM diagnostic traced a 3.6px overflow to the office/security grid sections' implicit minimum content width. Adding `min-w-0` to the existing Section helper passed the focused 320px rerun without hiding or removing content. Final frozen-candidate validation remains required for that subsequent repair.
+
 `tests/Browser/phase-a-accessibility-runtime.mjs` is a separate opt-in local runtime harness. The existing CI workflows and canonical runtime harness are unchanged. It requires the same explicit disposable PostgreSQL opt-in, database name and actual local PGDATA identity, verifies PostgreSQL 16, builds the canonical entry, creates synthetic actors, serves Laravel on loopback and closes its server afterwards. It does not bypass authentication or MFA.
 
 Install the audit engine only under the ignored QA directory:
