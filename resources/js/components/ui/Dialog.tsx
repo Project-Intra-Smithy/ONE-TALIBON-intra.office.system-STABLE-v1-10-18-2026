@@ -14,6 +14,8 @@ type DialogProps = {
     size?: 'md' | 'lg' | 'xl';
     lightDismiss?: boolean;
     hideHeader?: boolean;
+    className?: string;
+    bodyClassName?: string;
     children: ReactNode;
     footer?: ReactNode;
 };
@@ -33,6 +35,8 @@ export function Dialog({
     size = 'md',
     lightDismiss = true,
     hideHeader = false,
+    className = '',
+    bodyClassName = 'min-h-0 flex-1 overflow-y-auto px-5 py-4',
     children,
     footer,
 }: DialogProps) {
@@ -132,7 +136,7 @@ export function Dialog({
             }}
             aria-labelledby={titleId}
             aria-describedby={description ? descId : undefined}
-            className={variantClass}
+            className={`${variantClass} ${className}`}
             {...({ closedby: lightDismiss ? 'any' : 'closerequest' } as Record<string, string>)}
         >
             <div className="flex h-full max-h-[inherit] flex-col">
@@ -161,7 +165,7 @@ export function Dialog({
                     </div>
                 )}
 
-                <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4">
+                <div className={bodyClassName}>
                     {children}
                 </div>
 
