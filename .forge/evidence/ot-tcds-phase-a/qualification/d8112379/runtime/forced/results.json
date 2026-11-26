@@ -1,0 +1,351 @@
+{
+  "sourceSha": "d811237976c6732809f4a8b6afabaf651c964808",
+  "sourceWorktreeDirty": false,
+  "buildManifestSha256": "d07ffbee5caa9d72872fdde5bc39799bc531292ed3ab785b8e14f1f225de1d36",
+  "completed": true,
+  "passed": true,
+  "scope": "Chromium forced-colors media; not native Windows screen-reader acceptance",
+  "observations": [
+    {
+      "route": "/dashboard",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(55, 0, 110)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a class=\"municipal-primary-button\" href=\"/transactions/create\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-plus\" aria-hidden=\"true\"><path d=\"M5 12h14\"></path><path d=\"M12 5v14\"></path></svg><span>New Work Request</span></a>",
+        "name": "New Work Request"
+      },
+      "capture": "dashboard-320-light.png"
+    },
+    {
+      "route": "/my-tasks",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(11, 87, 208)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a class=\"municipal-primary-button\" href=\"/transactions\"><span>Work Requests</span><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-arrow-right\" aria-hidden=\"true\"><path d=\"M5 12h14\"></path><path d=\"m12 5 7 7-7 7\"></path></svg></a>",
+        "name": "Work Requests"
+      },
+      "capture": "my-tasks-320-light.png"
+    },
+    {
+      "route": "/transactions",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(11, 87, 208)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a class=\"municipal-primary-button\" href=\"/transactions/create\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-plus\" aria-hidden=\"true\"><path d=\"M5 12h14\"></path><path d=\"M12 5v14\"></path></svg><span>New Work Request</span></a>",
+        "name": "New Work Request"
+      },
+      "capture": "transactions-320-light.png"
+    },
+    {
+      "route": "/development-plans",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(11, 87, 208)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a class=\"municipal-action inline-flex min-h-9 items-center gap-1.5 px-3 text-xs font-semibold\" href=\"/planning-maps\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-map\" aria-hidden=\"true\"><path d=\"M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788",
+        "name": "Planning Maps Atlas"
+      },
+      "capture": "development-plans-320-light.png"
+    },
+    {
+      "route": "/municipal-systems",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(11, 87, 208)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a aria-label=\"Open Correspondence: Document Routing &amp; Correspondence\" class=\"group flex min-h-[108px] min-w-0 flex-col rounded-xl border border-slate-200 bg-white p-2.5 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30 dark:border-slate-700 dark:bg-[#142236] dark:hover:border-emerald-900/70 xl:min-h-[128px] xl:p-3 2xl:min-h-[136px]\" href=\"/correspondence\"><div class=\"flex items-start ju",
+        "name": "Open Correspondence: Document Routing & Correspondence"
+      },
+      "capture": "municipal-systems-320-light.png"
+    },
+    {
+      "route": "/dashboard",
+      "width": 320,
+      "theme": "dark",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(26, 235, 255)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a class=\"municipal-primary-button\" href=\"/transactions/create\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-plus\" aria-hidden=\"true\"><path d=\"M5 12h14\"></path><path d=\"M12 5v14\"></path></svg><span>New Work Request</span></a>",
+        "name": "New Work Request"
+      },
+      "capture": "dashboard-320-dark.png"
+    },
+    {
+      "route": "/my-tasks",
+      "width": 320,
+      "theme": "dark",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(94, 224, 170)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a class=\"municipal-primary-button\" href=\"/transactions\"><span>Work Requests</span><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-arrow-right\" aria-hidden=\"true\"><path d=\"M5 12h14\"></path><path d=\"m12 5 7 7-7 7\"></path></svg></a>",
+        "name": "Work Requests"
+      },
+      "capture": "my-tasks-320-dark.png"
+    },
+    {
+      "route": "/transactions",
+      "width": 320,
+      "theme": "dark",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(94, 224, 170)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a class=\"municipal-primary-button\" href=\"/transactions/create\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-plus\" aria-hidden=\"true\"><path d=\"M5 12h14\"></path><path d=\"M12 5v14\"></path></svg><span>New Work Request</span></a>",
+        "name": "New Work Request"
+      },
+      "capture": "transactions-320-dark.png"
+    },
+    {
+      "route": "/development-plans",
+      "width": 320,
+      "theme": "dark",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(94, 224, 170)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a class=\"municipal-action inline-flex min-h-9 items-center gap-1.5 px-3 text-xs font-semibold\" href=\"/planning-maps\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-map\" aria-hidden=\"true\"><path d=\"M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788",
+        "name": "Planning Maps Atlas"
+      },
+      "capture": "development-plans-320-dark.png"
+    },
+    {
+      "route": "/municipal-systems",
+      "width": 320,
+      "theme": "dark",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(94, 224, 170)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a aria-label=\"Open Correspondence: Document Routing &amp; Correspondence\" class=\"group flex min-h-[108px] min-w-0 flex-col rounded-xl border border-slate-200 bg-white p-2.5 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30 dark:border-slate-700 dark:bg-[#142236] dark:hover:border-emerald-900/70 xl:min-h-[128px] xl:p-3 2xl:min-h-[136px]\" href=\"/correspondence\"><div class=\"flex items-start ju",
+        "name": "Open Correspondence: Document Routing & Correspondence"
+      },
+      "capture": "municipal-systems-320-dark.png"
+    },
+    {
+      "route": "/dashboard",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(55, 0, 110)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a class=\"municipal-primary-button\" href=\"/transactions/create\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-plus\" aria-hidden=\"true\"><path d=\"M5 12h14\"></path><path d=\"M12 5v14\"></path></svg><span>New Work Request</span></a>",
+        "name": "New Work Request"
+      },
+      "capture": "dashboard-1440-light.png"
+    },
+    {
+      "route": "/my-tasks",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(11, 87, 208)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a class=\"municipal-primary-button\" href=\"/transactions\"><span>Work Requests</span><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-arrow-right\" aria-hidden=\"true\"><path d=\"M5 12h14\"></path><path d=\"m12 5 7 7-7 7\"></path></svg></a>",
+        "name": "Work Requests"
+      },
+      "capture": "my-tasks-1440-light.png"
+    },
+    {
+      "route": "/transactions",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(11, 87, 208)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a class=\"municipal-primary-button\" href=\"/transactions/create\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-plus\" aria-hidden=\"true\"><path d=\"M5 12h14\"></path><path d=\"M12 5v14\"></path></svg><span>New Work Request</span></a>",
+        "name": "New Work Request"
+      },
+      "capture": "transactions-1440-light.png"
+    },
+    {
+      "route": "/development-plans",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(11, 87, 208)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a class=\"municipal-action inline-flex min-h-9 items-center gap-1.5 px-3 text-xs font-semibold\" href=\"/planning-maps\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-map\" aria-hidden=\"true\"><path d=\"M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788",
+        "name": "Planning Maps Atlas"
+      },
+      "capture": "development-plans-1440-light.png"
+    },
+    {
+      "route": "/municipal-systems",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(11, 87, 208)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a aria-label=\"Open Correspondence: Document Routing &amp; Correspondence\" class=\"group flex min-h-[108px] min-w-0 flex-col rounded-xl border border-slate-200 bg-white p-2.5 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30 dark:border-slate-700 dark:bg-[#142236] dark:hover:border-emerald-900/70 xl:min-h-[128px] xl:p-3 2xl:min-h-[136px]\" href=\"/correspondence\"><div class=\"flex items-start ju",
+        "name": "Open Correspondence: Document Routing & Correspondence"
+      },
+      "capture": "municipal-systems-1440-light.png"
+    },
+    {
+      "route": "/dashboard",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(26, 235, 255)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a class=\"municipal-primary-button\" href=\"/transactions/create\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-plus\" aria-hidden=\"true\"><path d=\"M5 12h14\"></path><path d=\"M12 5v14\"></path></svg><span>New Work Request</span></a>",
+        "name": "New Work Request"
+      },
+      "capture": "dashboard-1440-dark.png"
+    },
+    {
+      "route": "/my-tasks",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(94, 224, 170)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a class=\"municipal-primary-button\" href=\"/transactions\"><span>Work Requests</span><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-arrow-right\" aria-hidden=\"true\"><path d=\"M5 12h14\"></path><path d=\"m12 5 7 7-7 7\"></path></svg></a>",
+        "name": "Work Requests"
+      },
+      "capture": "my-tasks-1440-dark.png"
+    },
+    {
+      "route": "/transactions",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(94, 224, 170)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a class=\"municipal-primary-button\" href=\"/transactions/create\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-plus\" aria-hidden=\"true\"><path d=\"M5 12h14\"></path><path d=\"M12 5v14\"></path></svg><span>New Work Request</span></a>",
+        "name": "New Work Request"
+      },
+      "capture": "transactions-1440-dark.png"
+    },
+    {
+      "route": "/development-plans",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(94, 224, 170)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a class=\"municipal-action inline-flex min-h-9 items-center gap-1.5 px-3 text-xs font-semibold\" href=\"/planning-maps\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-map\" aria-hidden=\"true\"><path d=\"M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788",
+        "name": "Planning Maps Atlas"
+      },
+      "capture": "development-plans-1440-dark.png"
+    },
+    {
+      "route": "/municipal-systems",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "paint": {
+        "forced": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3,
+        "outlineColor": "rgb(94, 224, 170)",
+        "active": true,
+        "focusVisible": true,
+        "html": "<a aria-label=\"Open Correspondence: Document Routing &amp; Correspondence\" class=\"group flex min-h-[108px] min-w-0 flex-col rounded-xl border border-slate-200 bg-white p-2.5 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30 dark:border-slate-700 dark:bg-[#142236] dark:hover:border-emerald-900/70 xl:min-h-[128px] xl:p-3 2xl:min-h-[136px]\" href=\"/correspondence\"><div class=\"flex items-start ju",
+        "name": "Open Correspondence: Document Routing & Correspondence"
+      },
+      "capture": "municipal-systems-1440-dark.png"
+    }
+  ],
+  "errors": []
+}

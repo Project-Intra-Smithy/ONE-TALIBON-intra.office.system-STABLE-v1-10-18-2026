@@ -1,0 +1,647 @@
+{
+  "sourceSha": "d811237976c6732809f4a8b6afabaf651c964808",
+  "rawReceipt": "storage/app/qa/manual-svg-select-d81123-r2/results.json",
+  "scope": "Supplemental closed-select paint review; no popup or screen-reader acceptance.",
+  "findings": [
+    {
+      "route": "/transactions/create",
+      "width": 320,
+      "theme": "light",
+      "name": "wr-category",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/transactions/create",
+      "width": 320,
+      "theme": "light",
+      "name": "wr-type",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/transactions/create",
+      "width": 320,
+      "theme": "light",
+      "name": "wr-action",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/transactions/create",
+      "width": 320,
+      "theme": "light",
+      "name": "wr-assignee",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/development-plans",
+      "width": 320,
+      "theme": "light",
+      "name": "_r_5_",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/development-plans",
+      "width": 320,
+      "theme": "light",
+      "name": "_r_6_",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/development-plans",
+      "width": 320,
+      "theme": "light",
+      "name": "_r_7_",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/ppas",
+      "width": 320,
+      "theme": "light",
+      "name": "Responsible office",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/ppas",
+      "width": 320,
+      "theme": "light",
+      "name": "Year",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/ppas",
+      "width": 320,
+      "theme": "light",
+      "name": "Status",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/transactions/create",
+      "width": 320,
+      "theme": "dark",
+      "name": "wr-category",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/transactions/create",
+      "width": 320,
+      "theme": "dark",
+      "name": "wr-type",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/transactions/create",
+      "width": 320,
+      "theme": "dark",
+      "name": "wr-action",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/transactions/create",
+      "width": 320,
+      "theme": "dark",
+      "name": "wr-assignee",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/development-plans",
+      "width": 320,
+      "theme": "dark",
+      "name": "_r_5_",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/development-plans",
+      "width": 320,
+      "theme": "dark",
+      "name": "_r_6_",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/development-plans",
+      "width": 320,
+      "theme": "dark",
+      "name": "_r_7_",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/ppas",
+      "width": 320,
+      "theme": "dark",
+      "name": "Responsible office",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/ppas",
+      "width": 320,
+      "theme": "dark",
+      "name": "Year",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/ppas",
+      "width": 320,
+      "theme": "dark",
+      "name": "Status",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/transactions/create",
+      "width": 1440,
+      "theme": "light",
+      "name": "wr-category",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/transactions/create",
+      "width": 1440,
+      "theme": "light",
+      "name": "wr-type",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/transactions/create",
+      "width": 1440,
+      "theme": "light",
+      "name": "wr-action",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/transactions/create",
+      "width": 1440,
+      "theme": "light",
+      "name": "wr-assignee",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/development-plans",
+      "width": 1440,
+      "theme": "light",
+      "name": "_r_5_",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/development-plans",
+      "width": 1440,
+      "theme": "light",
+      "name": "_r_6_",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/development-plans",
+      "width": 1440,
+      "theme": "light",
+      "name": "_r_7_",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/ppas",
+      "width": 1440,
+      "theme": "light",
+      "name": "Responsible office",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/ppas",
+      "width": 1440,
+      "theme": "light",
+      "name": "Year",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/ppas",
+      "width": 1440,
+      "theme": "light",
+      "name": "Status",
+      "color": "rgb(20, 33, 28)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "ratio": 16.61319910975379,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/transactions/create",
+      "width": 1440,
+      "theme": "dark",
+      "name": "wr-category",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/transactions/create",
+      "width": 1440,
+      "theme": "dark",
+      "name": "wr-type",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/transactions/create",
+      "width": 1440,
+      "theme": "dark",
+      "name": "wr-action",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/transactions/create",
+      "width": 1440,
+      "theme": "dark",
+      "name": "wr-assignee",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/development-plans",
+      "width": 1440,
+      "theme": "dark",
+      "name": "_r_5_",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/development-plans",
+      "width": 1440,
+      "theme": "dark",
+      "name": "_r_6_",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/development-plans",
+      "width": 1440,
+      "theme": "dark",
+      "name": "_r_7_",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/ppas",
+      "width": 1440,
+      "theme": "dark",
+      "name": "Responsible office",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/ppas",
+      "width": 1440,
+      "theme": "dark",
+      "name": "Year",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    },
+    {
+      "route": "/ppas",
+      "width": 1440,
+      "theme": "dark",
+      "name": "Status",
+      "color": "rgb(236, 242, 239)",
+      "backgroundColor": "rgb(17, 24, 21)",
+      "ratio": 15.887381513977214,
+      "required": 4.5,
+      "arrowGeometry": {
+        "size": "16px 16px",
+        "position": "right 12px 50%",
+        "paddingEnd": "36px"
+      },
+      "disposition": "Closed-select foreground/background contrast measured; separate arrow image sits in reserved end padding. OS popup unverified."
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+✔ built pages: 320px homepage, Login, MFA and Dashboard (6595.4386ms)
+✔ built pages: 390px homepage, Login, MFA and Dashboard (5290.5479ms)
+✔ built pages: 768px homepage, Login, MFA and Dashboard (5608.8173ms)
+✔ built pages: 1024px homepage, Login, MFA and Dashboard (7889.9054ms)
+✔ built pages: 1440px homepage, Login, MFA and Dashboard (8747.4402ms)
+✔ homepage keyboard, mobile navigation and actual Inertia Login link (1619.1783ms)
+✔ Login keyboard, required fields, payload, pending and server errors (2720.8213ms)
+✔ persisted dark appearance, short auth viewport and authenticated homepage destination (2498.6182ms)
+✔ MFA focus, challenge/recovery payloads, pending, errors and logout (3946.4041ms)
+✔ homepage section navigation, keyboard focus and reduced motion (2049.2932ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 50023.1887

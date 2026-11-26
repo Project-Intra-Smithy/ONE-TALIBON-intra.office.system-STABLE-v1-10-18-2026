@@ -1,0 +1,9 @@
+BEGIN
+SET
+DO
+ROLLBACK
+                  result                   
+-------------------------------------------
+ N03_G3_DISPOSABLE_READER_CATALOG_VERIFIED
+(1 row)
+

@@ -1,0 +1,9 @@
+BEGIN
+SET
+DO
+ROLLBACK
+               result               
+------------------------------------
+ N03_K2_DISPOSABLE_CATALOG_VERIFIED
+(1 row)
+

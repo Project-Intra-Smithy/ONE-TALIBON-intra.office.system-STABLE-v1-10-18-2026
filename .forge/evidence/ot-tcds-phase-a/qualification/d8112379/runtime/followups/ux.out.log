@@ -1,0 +1,17 @@
+✔ workspace responsive controls at 320px (12051.4893ms)
+✔ workspace responsive controls at 390px (3635.4157ms)
+✔ workspace responsive controls at 768px (3649.8059ms)
+✔ workspace responsive controls at 1024px (3631.9467ms)
+✔ workspace responsive controls at 1440px (3587.3892ms)
+✔ navigation respects supplied permissions for all four experiences (2947.4429ms)
+✔ Calendar dialog traps focus, closes with Escape and restores trigger focus (940.4454ms)
+✔ personal Task selection, keyboard back action and denied reads (916.5687ms)
+✔ server-confirmed Task mutations refresh the read workspace without optimistic state (1483.7994ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 35117.3754

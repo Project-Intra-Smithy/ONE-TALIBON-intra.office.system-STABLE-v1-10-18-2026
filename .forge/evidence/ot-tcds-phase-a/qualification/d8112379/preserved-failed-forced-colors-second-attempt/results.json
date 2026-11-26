@@ -1,0 +1,10 @@
+{
+  "sourceSha": "d811237976c6732809f4a8b6afabaf651c964808",
+  "sourceWorktreeDirty": false,
+  "buildManifestSha256": "d07ffbee5caa9d72872fdde5bc39799bc531292ed3ab785b8e14f1f225de1d36",
+  "completed": false,
+  "passed": false,
+  "scope": "Chromium forced-colors media; not native Windows screen-reader acceptance",
+  "observations": [],
+  "errors": []
+}

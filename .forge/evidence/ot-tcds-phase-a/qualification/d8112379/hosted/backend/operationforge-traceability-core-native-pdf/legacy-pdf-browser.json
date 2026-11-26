@@ -1,0 +1,13 @@
+{
+  "sha": "d811237976c6732809f4a8b6afabaf651c964808",
+  "synthetic": true,
+  "stages": [
+    "guest and password-only retrieval denied",
+    "real MFA enrollment completed through dashboard continuation",
+    "real new tab, inline navigation, native PDF embed, screenshot, verified same-session bytes, no download",
+    "explicit attachment download exact bytes",
+    "real authenticated session logout invalidates PDF retrieval"
+  ],
+  "completed": true,
+  "visualInspection": "PENDING"
+}

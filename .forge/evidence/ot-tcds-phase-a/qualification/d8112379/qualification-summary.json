@@ -1,0 +1,149 @@
+{
+  "sourceSha": "d811237976c6732809f4a8b6afabaf651c964808",
+  "phaseA": "OPEN: independent acceptance required",
+  "counts": {
+    "canonicalRoutes": 84,
+    "canonicalInteractions": 66,
+    "additionalCanonicalStates": 16,
+    "additionalAuthorizedReadJourneys": 2,
+    "expandedObservations": 508,
+    "municipalStates": 666,
+    "modalKeyboardSteps": 864,
+    "navigationFocusChecks": 336,
+    "municipalInteractions": 156,
+    "axeObservations": 102,
+    "focusObservations": 8,
+    "workRequestQueueFocus": 16,
+    "forcedColorStates": 20,
+    "manualPaintStates": 16,
+    "previewCatalog": 390,
+    "comparisonPairs": 277,
+    "donorFiles": 262,
+    "catalogPages": 65
+  },
+  "qualifiedPages": [
+    "resources/js/pages/Admin/Index.tsx",
+    "resources/js/pages/Announcements/Index.tsx",
+    "resources/js/pages/Audit/Index.tsx",
+    "resources/js/pages/Auth/AccountSecurity.tsx",
+    "resources/js/pages/Auth/ActivateAccount.tsx",
+    "resources/js/pages/Auth/Login.tsx",
+    "resources/js/pages/Auth/MfaChallenge.tsx",
+    "resources/js/pages/Auth/MfaEnrollment.tsx",
+    "resources/js/pages/Auth/MfaRecoveryCodes.tsx",
+    "resources/js/pages/Auth/MfaSettings.tsx",
+    "resources/js/pages/Calendar/Index.tsx",
+    "resources/js/pages/Correspondence/Index.tsx",
+    "resources/js/pages/Correspondence/Show.tsx",
+    "resources/js/pages/Dashboard.tsx",
+    "resources/js/pages/Departments/Index.tsx",
+    "resources/js/pages/Departments/Workspace.tsx",
+    "resources/js/pages/Documents/Index.tsx",
+    "resources/js/pages/Employees/DirectoryProfile.tsx",
+    "resources/js/pages/Employees/Index.tsx",
+    "resources/js/pages/Hris/Attendance.tsx",
+    "resources/js/pages/Legislation/Create.tsx",
+    "resources/js/pages/Legislation/Index.tsx",
+    "resources/js/pages/Legislation/Show.tsx",
+    "resources/js/pages/Legislation/Workspace.tsx",
+    "resources/js/pages/LocalBodies/Index.tsx",
+    "resources/js/pages/MayorOffice.tsx",
+    "resources/js/pages/Meetings/Index.tsx",
+    "resources/js/pages/Memoranda/Create.tsx",
+    "resources/js/pages/Memoranda/Index.tsx",
+    "resources/js/pages/Memoranda/Show.tsx",
+    "resources/js/pages/MunicipalSystems/Index.tsx",
+    "resources/js/pages/PlanningMaps/Index.tsx",
+    "resources/js/pages/Plans/Index.tsx",
+    "resources/js/pages/PPAs/Index.tsx",
+    "resources/js/pages/ProjectMonitoring/Index.tsx",
+    "resources/js/pages/Property/Index.tsx",
+    "resources/js/pages/Property/Lifecycle.tsx",
+    "resources/js/pages/Public/Home.tsx",
+    "resources/js/pages/Records/Index.tsx",
+    "resources/js/pages/Reports/Index.tsx",
+    "resources/js/pages/Search/Index.tsx",
+    "resources/js/pages/Tasks/Index.tsx",
+    "resources/js/pages/Transactions/Create.tsx",
+    "resources/js/pages/Transactions/DeliveryExceptions.tsx",
+    "resources/js/pages/Transactions/Index.tsx",
+    "resources/js/pages/Transactions/Show.tsx",
+    "resources/js/pages/TravelOrders/Create.tsx",
+    "resources/js/pages/TravelOrders/Index.tsx",
+    "resources/js/pages/TravelOrders/Show.tsx"
+  ],
+  "notQualifiedPages": [
+    {
+      "page": "resources/js/pages/Employees/Show.tsx",
+      "disposition": "NO DISCOVERED ACTIVE ROUTE / RUNTIME NOT VERIFIED: source/archive presentation; dynamic controller renders require actual receipts"
+    },
+    {
+      "page": "resources/js/pages/Errors/403.tsx",
+      "disposition": "NO DISCOVERED ACTIVE ROUTE / RUNTIME NOT VERIFIED: source/archive presentation; dynamic controller renders require actual receipts"
+    },
+    {
+      "page": "resources/js/pages/Errors/Status.tsx",
+      "disposition": "CANONICAL ERROR RESPONSE OBSERVED: inspect actual error status/route receipts"
+    },
+    {
+      "page": "resources/js/pages/Hris/Admin.tsx",
+      "disposition": "NO DISCOVERED ACTIVE ROUTE / RUNTIME NOT VERIFIED: source/archive presentation; dynamic controller renders require actual receipts"
+    },
+    {
+      "page": "resources/js/pages/Hris/Dashboard.tsx",
+      "disposition": "NO DISCOVERED ACTIVE ROUTE / RUNTIME NOT VERIFIED: source/archive presentation; dynamic controller renders require actual receipts"
+    },
+    {
+      "page": "resources/js/pages/Hris/Development.tsx",
+      "disposition": "NO DISCOVERED ACTIVE ROUTE / RUNTIME NOT VERIFIED: source/archive presentation; dynamic controller renders require actual receipts"
+    },
+    {
+      "page": "resources/js/pages/Hris/Dtr.tsx",
+      "disposition": "NO DISCOVERED ACTIVE ROUTE / RUNTIME NOT VERIFIED: source/archive presentation; dynamic controller renders require actual receipts"
+    },
+    {
+      "page": "resources/js/pages/Hris/HealthAccess.tsx",
+      "disposition": "NO DISCOVERED ACTIVE ROUTE / RUNTIME NOT VERIFIED: source/archive presentation; dynamic controller renders require actual receipts"
+    },
+    {
+      "page": "resources/js/pages/Hris/HealthVault.tsx",
+      "disposition": "NO DISCOVERED ACTIVE ROUTE / RUNTIME NOT VERIFIED: source/archive presentation; dynamic controller renders require actual receipts"
+    },
+    {
+      "page": "resources/js/pages/Hris/Lifecycle/Index.tsx",
+      "disposition": "NO DISCOVERED ACTIVE ROUTE / RUNTIME NOT VERIFIED: source/archive presentation; dynamic controller renders require actual receipts"
+    },
+    {
+      "page": "resources/js/pages/Hris/Lifecycle/Show.tsx",
+      "disposition": "NO DISCOVERED ACTIVE ROUTE / RUNTIME NOT VERIFIED: source/archive presentation; dynamic controller renders require actual receipts"
+    },
+    {
+      "page": "resources/js/pages/Hris/Offboarding/Index.tsx",
+      "disposition": "NO DISCOVERED ACTIVE ROUTE / RUNTIME NOT VERIFIED: source/archive presentation; dynamic controller renders require actual receipts"
+    },
+    {
+      "page": "resources/js/pages/Hris/Offboarding/Show.tsx",
+      "disposition": "NO DISCOVERED ACTIVE ROUTE / RUNTIME NOT VERIFIED: source/archive presentation; dynamic controller renders require actual receipts"
+    },
+    {
+      "page": "resources/js/pages/Hris/Payroll.tsx",
+      "disposition": "NO DISCOVERED ACTIVE ROUTE / RUNTIME NOT VERIFIED: source/archive presentation; dynamic controller renders require actual receipts"
+    },
+    {
+      "page": "resources/js/pages/Messages/Index.tsx",
+      "disposition": "HELD #191: canonical middleware denies execution; synthetic presentation only"
+    },
+    {
+      "page": "resources/js/pages/Operations/Index.tsx",
+      "disposition": "NO DISCOVERED ACTIVE ROUTE / RUNTIME NOT VERIFIED: source/archive presentation; dynamic controller renders require actual receipts"
+    }
+  ],
+  "limitations": [
+    "Same-context author qualification; no independent acceptance.",
+    "Native screen-reader and OS-native popup behavior remain unverified.",
+    "Backend contract requirements remain as documented; no backend expansion or official map-image contract.",
+    "Existing Composer dependency advisories retained; no protected backend/dependency changes."
+  ],
+  "originalArtifactCount": 2676,
+  "originalPngCount": 2532
+}

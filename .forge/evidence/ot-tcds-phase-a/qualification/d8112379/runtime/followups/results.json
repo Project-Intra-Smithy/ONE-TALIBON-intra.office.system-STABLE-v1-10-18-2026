@@ -1,0 +1,37 @@
+{
+  "sourceSha": "d811237976c6732809f4a8b6afabaf651c964808",
+  "completed": true,
+  "passed": true,
+  "buildManifestSha256": "d07ffbee5caa9d72872fdde5bc39799bc531292ed3ab785b8e14f1f225de1d36",
+  "results": [
+    {
+      "label": "accessibility",
+      "args": [
+        "storage/app/qa/followups-final-d81123/accessibility-runtime.mjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "forced-colors-r3",
+      "exitCode": 0,
+      "receipt": "storage/app/qa/forced-colors-d81123-r3/results.json"
+    },
+    {
+      "label": "homepage-auth",
+      "args": [
+        "--test",
+        "tests/Browser/aj-home-auth.test.mjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "ux",
+      "args": [
+        "--experimental-strip-types",
+        "--test",
+        "tests/Browser/ux-refinement.test.mjs"
+      ],
+      "exitCode": 0
+    }
+  ]
+}

@@ -1,0 +1,754 @@
+{
+  "sourceSha": "d811237976c6732809f4a8b6afabaf651c964808",
+  "sourceWorktreeDirty": false,
+  "completed": true,
+  "passed": true,
+  "buildManifestSha256": "b0fbc1dd18d0a2e42ad9cb9a2b7917cdc088b24a36a2a902f0152db0277f8be9",
+  "observations": [
+    {
+      "route": "/transactions/create",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "selects": [
+        {
+          "name": "wr-category",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "Planning & Development"
+        },
+        {
+          "name": "wr-type",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "CLUP / Zoning"
+        },
+        {
+          "name": "wr-action",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "For Information"
+        },
+        {
+          "name": "wr-assignee",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "Unassigned / office queue"
+        }
+      ],
+      "capture": "transactions-create-320-light.png"
+    },
+    {
+      "route": "/development-plans",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "selects": [
+        {
+          "name": "_r_5_",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All"
+        },
+        {
+          "name": "_r_6_",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All"
+        },
+        {
+          "name": "_r_7_",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All"
+        }
+      ],
+      "capture": "development-plans-320-light.png"
+    },
+    {
+      "route": "/ppas",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "selects": [
+        {
+          "name": "Responsible office",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All offices"
+        },
+        {
+          "name": "Year",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All years"
+        },
+        {
+          "name": "Status",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All statuses"
+        }
+      ],
+      "capture": "ppas-320-light.png"
+    },
+    {
+      "route": "/planning-maps",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "selects": [],
+      "capture": "planning-maps-320-light.png",
+      "plate": {
+        "texts": [
+          {
+            "text": "Poblacion Sector",
+            "fill": "rgb(248, 250, 252)",
+            "font": "600 11px \"Public Sans Variable\", \"Public Sans\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "x": 224,
+            "y": 188,
+            "bounds": {
+              "x": 224,
+              "y": 176.67257690429688,
+              "width": 89.229736328125,
+              "height": 14.159286499023438
+            },
+            "rectangleMinimumContrast": 1.8373983520848254,
+            "glyphPixels": 210,
+            "minimumContrast": 11.09154031064758,
+            "requiredContrast": 4.5
+          },
+          {
+            "text": "SCHEMATIC PLATE · NOT AN OFFICIAL CADASTRAL SURVEY",
+            "fill": "rgb(148, 163, 184)",
+            "font": "400 10px monospace",
+            "x": 18,
+            "y": 26,
+            "bounds": {
+              "x": 18,
+              "y": 17.504426956176758,
+              "width": 302.43756103515625,
+              "height": 11.327433586120605
+            },
+            "rectangleMinimumContrast": 5.8137041287226605,
+            "glyphPixels": 422,
+            "minimumContrast": 5.8137041287226605,
+            "requiredContrast": 4.5
+          }
+        ],
+        "background": "rgb(13, 31, 45)",
+        "note": "Actual SVG shapes rasterized without text; both conservative rectangle and loaded-font canvas glyph-mask minima retained. Glyph minima sample mask alpha >=80%, excluding antialias edges.",
+        "capture": "plate-backdrop-320-light.png"
+      }
+    },
+    {
+      "route": "/transactions/create",
+      "width": 320,
+      "theme": "dark",
+      "status": 200,
+      "selects": [
+        {
+          "name": "wr-category",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "Planning & Development"
+        },
+        {
+          "name": "wr-type",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "CLUP / Zoning"
+        },
+        {
+          "name": "wr-action",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "For Information"
+        },
+        {
+          "name": "wr-assignee",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "Unassigned / office queue"
+        }
+      ],
+      "capture": "transactions-create-320-dark.png"
+    },
+    {
+      "route": "/development-plans",
+      "width": 320,
+      "theme": "dark",
+      "status": 200,
+      "selects": [
+        {
+          "name": "_r_5_",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All"
+        },
+        {
+          "name": "_r_6_",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All"
+        },
+        {
+          "name": "_r_7_",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All"
+        }
+      ],
+      "capture": "development-plans-320-dark.png"
+    },
+    {
+      "route": "/ppas",
+      "width": 320,
+      "theme": "dark",
+      "status": 200,
+      "selects": [
+        {
+          "name": "Responsible office",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All offices"
+        },
+        {
+          "name": "Year",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All years"
+        },
+        {
+          "name": "Status",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All statuses"
+        }
+      ],
+      "capture": "ppas-320-dark.png"
+    },
+    {
+      "route": "/planning-maps",
+      "width": 320,
+      "theme": "dark",
+      "status": 200,
+      "selects": [],
+      "capture": "planning-maps-320-dark.png",
+      "plate": {
+        "texts": [
+          {
+            "text": "Poblacion Sector",
+            "fill": "rgb(248, 250, 252)",
+            "font": "600 11px \"Public Sans Variable\", \"Public Sans\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "x": 224,
+            "y": 188,
+            "bounds": {
+              "x": 224,
+              "y": 176.67257690429688,
+              "width": 89.229736328125,
+              "height": 14.159286499023438
+            },
+            "rectangleMinimumContrast": 1.8373983520848254,
+            "glyphPixels": 210,
+            "minimumContrast": 11.09154031064758,
+            "requiredContrast": 4.5
+          },
+          {
+            "text": "SCHEMATIC PLATE · NOT AN OFFICIAL CADASTRAL SURVEY",
+            "fill": "rgb(148, 163, 184)",
+            "font": "400 10px monospace",
+            "x": 18,
+            "y": 26,
+            "bounds": {
+              "x": 18,
+              "y": 17.504426956176758,
+              "width": 302.43756103515625,
+              "height": 11.327433586120605
+            },
+            "rectangleMinimumContrast": 5.8137041287226605,
+            "glyphPixels": 422,
+            "minimumContrast": 5.8137041287226605,
+            "requiredContrast": 4.5
+          }
+        ],
+        "background": "rgb(13, 31, 45)",
+        "note": "Actual SVG shapes rasterized without text; both conservative rectangle and loaded-font canvas glyph-mask minima retained. Glyph minima sample mask alpha >=80%, excluding antialias edges.",
+        "capture": "plate-backdrop-320-dark.png"
+      }
+    },
+    {
+      "route": "/transactions/create",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "selects": [
+        {
+          "name": "wr-category",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "Planning & Development"
+        },
+        {
+          "name": "wr-type",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "CLUP / Zoning"
+        },
+        {
+          "name": "wr-action",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "For Information"
+        },
+        {
+          "name": "wr-assignee",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "Unassigned / office queue"
+        }
+      ],
+      "capture": "transactions-create-1440-light.png"
+    },
+    {
+      "route": "/development-plans",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "selects": [
+        {
+          "name": "_r_5_",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All"
+        },
+        {
+          "name": "_r_6_",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All"
+        },
+        {
+          "name": "_r_7_",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All"
+        }
+      ],
+      "capture": "development-plans-1440-light.png"
+    },
+    {
+      "route": "/ppas",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "selects": [
+        {
+          "name": "Responsible office",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All offices"
+        },
+        {
+          "name": "Year",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All years"
+        },
+        {
+          "name": "Status",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All statuses"
+        }
+      ],
+      "capture": "ppas-1440-light.png"
+    },
+    {
+      "route": "/planning-maps",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "selects": [],
+      "capture": "planning-maps-1440-light.png",
+      "plate": {
+        "texts": [
+          {
+            "text": "Poblacion Sector",
+            "fill": "rgb(248, 250, 252)",
+            "font": "600 11px \"Public Sans Variable\", \"Public Sans\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "x": 224,
+            "y": 188,
+            "bounds": {
+              "x": 224,
+              "y": 177.45945739746094,
+              "width": 88.31460571289062,
+              "height": 12.882888793945312
+            },
+            "rectangleMinimumContrast": 6.236721480351791,
+            "glyphPixels": 210,
+            "minimumContrast": 11.09154031064758,
+            "requiredContrast": 4.5
+          },
+          {
+            "text": "SCHEMATIC PLATE · NOT AN OFFICIAL CADASTRAL SURVEY",
+            "fill": "rgb(148, 163, 184)",
+            "font": "400 10px monospace",
+            "x": 18,
+            "y": 26,
+            "bounds": {
+              "x": 18,
+              "y": 17.801799774169922,
+              "width": 300.78277587890625,
+              "height": 11.711711883544922
+            },
+            "rectangleMinimumContrast": 5.8137041287226605,
+            "glyphPixels": 422,
+            "minimumContrast": 5.8137041287226605,
+            "requiredContrast": 4.5
+          }
+        ],
+        "background": "rgb(13, 31, 45)",
+        "note": "Actual SVG shapes rasterized without text; both conservative rectangle and loaded-font canvas glyph-mask minima retained. Glyph minima sample mask alpha >=80%, excluding antialias edges.",
+        "capture": "plate-backdrop-1440-light.png"
+      }
+    },
+    {
+      "route": "/transactions/create",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "selects": [
+        {
+          "name": "wr-category",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "Planning & Development"
+        },
+        {
+          "name": "wr-type",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "CLUP / Zoning"
+        },
+        {
+          "name": "wr-action",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "For Information"
+        },
+        {
+          "name": "wr-assignee",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "Unassigned / office queue"
+        }
+      ],
+      "capture": "transactions-create-1440-dark.png"
+    },
+    {
+      "route": "/development-plans",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "selects": [
+        {
+          "name": "_r_5_",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All"
+        },
+        {
+          "name": "_r_6_",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All"
+        },
+        {
+          "name": "_r_7_",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All"
+        }
+      ],
+      "capture": "development-plans-1440-dark.png"
+    },
+    {
+      "route": "/ppas",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "selects": [
+        {
+          "name": "Responsible office",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All offices"
+        },
+        {
+          "name": "Year",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All years"
+        },
+        {
+          "name": "Status",
+          "color": "rgb(236, 242, 239)",
+          "backgroundColor": "rgb(17, 24, 21)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239fb1a8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All statuses"
+        }
+      ],
+      "capture": "ppas-1440-dark.png"
+    },
+    {
+      "route": "/planning-maps",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "selects": [],
+      "capture": "planning-maps-1440-dark.png",
+      "plate": {
+        "texts": [
+          {
+            "text": "Poblacion Sector",
+            "fill": "rgb(248, 250, 252)",
+            "font": "600 11px \"Public Sans Variable\", \"Public Sans\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "x": 224,
+            "y": 188,
+            "bounds": {
+              "x": 224,
+              "y": 177.45945739746094,
+              "width": 88.31460571289062,
+              "height": 12.882888793945312
+            },
+            "rectangleMinimumContrast": 6.236721480351791,
+            "glyphPixels": 210,
+            "minimumContrast": 11.09154031064758,
+            "requiredContrast": 4.5
+          },
+          {
+            "text": "SCHEMATIC PLATE · NOT AN OFFICIAL CADASTRAL SURVEY",
+            "fill": "rgb(148, 163, 184)",
+            "font": "400 10px monospace",
+            "x": 18,
+            "y": 26,
+            "bounds": {
+              "x": 18,
+              "y": 17.801799774169922,
+              "width": 300.78277587890625,
+              "height": 11.711711883544922
+            },
+            "rectangleMinimumContrast": 5.8137041287226605,
+            "glyphPixels": 422,
+            "minimumContrast": 5.8137041287226605,
+            "requiredContrast": 4.5
+          }
+        ],
+        "background": "rgb(13, 31, 45)",
+        "note": "Actual SVG shapes rasterized without text; both conservative rectangle and loaded-font canvas glyph-mask minima retained. Glyph minima sample mask alpha >=80%, excluding antialias edges.",
+        "capture": "plate-backdrop-1440-dark.png"
+      }
+    }
+  ],
+  "scope": "Author manual paint follow-up with actual canonical captures; native select popup and assistive technology remain unverified. Closed-select raw paint and arrow geometry are retained for inspection."
+}

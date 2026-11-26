@@ -1,0 +1,409 @@
+{
+  "sourceSha": "d811237976c6732809f4a8b6afabaf651c964808",
+  "sourceWorktreeDirty": false,
+  "completed": true,
+  "passed": true,
+  "buildManifestSha256": "d07ffbee5caa9d72872fdde5bc39799bc531292ed3ab785b8e14f1f225de1d36",
+  "scope": "Positive canonical reads with existing department-head/office contract and original guarded ledger installation. No workflow mutations or municipal authority inferred.",
+  "observations": [
+    {
+      "role": "department_head",
+      "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
+      "status": 200,
+      "renderedComponent": "Correspondence/Show",
+      "width": 320,
+      "theme": "light",
+      "capture": "Correspondence-Show-320-light.png",
+      "overflow": false,
+      "violations": [],
+      "incomplete": [],
+      "manualReview": [],
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: Correspondence · QA-GAP-qa.phasea.head.dd8dbe5419\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - link \"Back to Inbox & Routing\":\n    - /url: /correspondence\n  - text: Correspondence review workspace Municipal correspondence · Synthetic MPDO\n  - heading \"QA-GAP-qa.phasea.head.dd8dbe5419\" [level=1]\n  - paragraph: Synthetic authorized correspondence read\n  - text: Queued Internal Required action\n  - heading \"Register correspondence\" [level=2]\n  - paragraph: Registration assigns the official municipal correspondence reference and moves this record into the municipal register.\n  - img\n  - text: Registration evidence\n  - paragraph: Optional. PDF, DOCX, JPEG, PNG, or WebP. Files are stored privately and remain subject to the parent record's authorization.\n  - button \"Registration evidence\"\n  - button \"Register correspondence\":\n    - img\n    - text: Register correspondence\n  - text: Correspondence details Summary\n  - paragraph: No summary recorded.\n  - text: Sender Synthetic route coverage sender Organization — Source External Channel — Routing & lifecycle trace No routing or lifecycle events recorded yet.\n  - complementary:\n    - text: Current accountability Receiving office Synthetic MPDO Current office Synthetic MPDO Workflow ref — Workflow status — Assignee Unassigned Record identity & dates Municipal ref — External ref QA-GAP-qa.phasea.head.dd8dbe5419 Received Nov 26, 2026, 10:08 PM Registered —\n    - region \"Related work\":\n      - heading \"Related work\" [level=2]\n      - paragraph: Nearby authorized work and the shortest route back to your queue.\n      - link \"Back to Inbox & Routing Return to the authorized Correspondence queue.\":\n        - /url: /correspondence\n      - link \"Search reference in Records Locate related municipal records using this exact reference.\":\n        - /url: /records?search=QA-GAP-qa.phasea.head.dd8dbe5419\n      - link \"Open Work Queue Move to inter-office work requiring your action.\":\n        - /url: /transactions?view=needs_my_action\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal\n- navigation \"Mobile workspace navigation\":\n  - link \"Home\":\n    - /url: /dashboard\n  - link \"Tasks\":\n    - /url: /my-tasks\n  - link \"Requests\":\n    - /url: /transactions\n  - link \"Inbox\":\n    - /url: /correspondence\n  - button \"Open more navigation options\": More"
+    },
+    {
+      "role": "department_head",
+      "route": "/work-requests/origin-delivery-exceptions",
+      "status": 200,
+      "renderedComponent": "Transactions/DeliveryExceptions",
+      "width": 320,
+      "theme": "light",
+      "capture": "Transactions-DeliveryExceptions-320-light.png",
+      "overflow": false,
+      "violations": [],
+      "incomplete": [],
+      "manualReview": [],
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: Origin notice exceptions\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - text: Work Requests · restricted origin-office head queue\n  - heading \"Origin notice exceptions\" [level=1]\n  - paragraph: These are traceable delivery gaps, not sent notifications or municipal sign-off. An eligible office Head must acknowledge and document the follow-up. Actions are append-only.\n  - link \"Back to Work Requests\":\n    - /url: /transactions\n  - paragraph: No visible delivery exceptions for your current authorized office.\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal\n- navigation \"Mobile workspace navigation\":\n  - link \"Home\":\n    - /url: /dashboard\n  - link \"Tasks\":\n    - /url: /my-tasks\n  - link \"Requests\":\n    - /url: /transactions\n  - link \"Inbox\":\n    - /url: /correspondence\n  - button \"Open more navigation options\": More"
+    },
+    {
+      "role": "department_head",
+      "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
+      "status": 200,
+      "renderedComponent": "Correspondence/Show",
+      "width": 320,
+      "theme": "dark",
+      "capture": "Correspondence-Show-320-dark.png",
+      "overflow": false,
+      "violations": [],
+      "incomplete": [],
+      "manualReview": [],
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: Correspondence · QA-GAP-qa.phasea.head.dd8dbe5419\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - link \"Back to Inbox & Routing\":\n    - /url: /correspondence\n  - text: Correspondence review workspace Municipal correspondence · Synthetic MPDO\n  - heading \"QA-GAP-qa.phasea.head.dd8dbe5419\" [level=1]\n  - paragraph: Synthetic authorized correspondence read\n  - text: Queued Internal Required action\n  - heading \"Register correspondence\" [level=2]\n  - paragraph: Registration assigns the official municipal correspondence reference and moves this record into the municipal register.\n  - img\n  - text: Registration evidence\n  - paragraph: Optional. PDF, DOCX, JPEG, PNG, or WebP. Files are stored privately and remain subject to the parent record's authorization.\n  - button \"Registration evidence\"\n  - button \"Register correspondence\":\n    - img\n    - text: Register correspondence\n  - text: Correspondence details Summary\n  - paragraph: No summary recorded.\n  - text: Sender Synthetic route coverage sender Organization — Source External Channel — Routing & lifecycle trace No routing or lifecycle events recorded yet.\n  - complementary:\n    - text: Current accountability Receiving office Synthetic MPDO Current office Synthetic MPDO Workflow ref — Workflow status — Assignee Unassigned Record identity & dates Municipal ref — External ref QA-GAP-qa.phasea.head.dd8dbe5419 Received Nov 26, 2026, 10:08 PM Registered —\n    - region \"Related work\":\n      - heading \"Related work\" [level=2]\n      - paragraph: Nearby authorized work and the shortest route back to your queue.\n      - link \"Back to Inbox & Routing Return to the authorized Correspondence queue.\":\n        - /url: /correspondence\n      - link \"Search reference in Records Locate related municipal records using this exact reference.\":\n        - /url: /records?search=QA-GAP-qa.phasea.head.dd8dbe5419\n      - link \"Open Work Queue Move to inter-office work requiring your action.\":\n        - /url: /transactions?view=needs_my_action\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal\n- navigation \"Mobile workspace navigation\":\n  - link \"Home\":\n    - /url: /dashboard\n  - link \"Tasks\":\n    - /url: /my-tasks\n  - link \"Requests\":\n    - /url: /transactions\n  - link \"Inbox\":\n    - /url: /correspondence\n  - button \"Open more navigation options\": More"
+    },
+    {
+      "role": "department_head",
+      "route": "/work-requests/origin-delivery-exceptions",
+      "status": 200,
+      "renderedComponent": "Transactions/DeliveryExceptions",
+      "width": 320,
+      "theme": "dark",
+      "capture": "Transactions-DeliveryExceptions-320-dark.png",
+      "overflow": false,
+      "violations": [],
+      "incomplete": [],
+      "manualReview": [],
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: Origin notice exceptions\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - text: Work Requests · restricted origin-office head queue\n  - heading \"Origin notice exceptions\" [level=1]\n  - paragraph: These are traceable delivery gaps, not sent notifications or municipal sign-off. An eligible office Head must acknowledge and document the follow-up. Actions are append-only.\n  - link \"Back to Work Requests\":\n    - /url: /transactions\n  - paragraph: No visible delivery exceptions for your current authorized office.\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal\n- navigation \"Mobile workspace navigation\":\n  - link \"Home\":\n    - /url: /dashboard\n  - link \"Tasks\":\n    - /url: /my-tasks\n  - link \"Requests\":\n    - /url: /transactions\n  - link \"Inbox\":\n    - /url: /correspondence\n  - button \"Open more navigation options\": More"
+    },
+    {
+      "role": "department_head",
+      "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
+      "status": 200,
+      "renderedComponent": "Correspondence/Show",
+      "width": 390,
+      "theme": "light",
+      "capture": "Correspondence-Show-390-light.png",
+      "overflow": false,
+      "violations": [],
+      "incomplete": [],
+      "manualReview": [],
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: Correspondence · QA-GAP-qa.phasea.head.dd8dbe5419\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - link \"Back to Inbox & Routing\":\n    - /url: /correspondence\n  - text: Correspondence review workspace Municipal correspondence · Synthetic MPDO\n  - heading \"QA-GAP-qa.phasea.head.dd8dbe5419\" [level=1]\n  - paragraph: Synthetic authorized correspondence read\n  - text: Queued Internal Required action\n  - heading \"Register correspondence\" [level=2]\n  - paragraph: Registration assigns the official municipal correspondence reference and moves this record into the municipal register.\n  - img\n  - text: Registration evidence\n  - paragraph: Optional. PDF, DOCX, JPEG, PNG, or WebP. Files are stored privately and remain subject to the parent record's authorization.\n  - button \"Registration evidence\"\n  - button \"Register correspondence\":\n    - img\n    - text: Register correspondence\n  - text: Correspondence details Summary\n  - paragraph: No summary recorded.\n  - text: Sender Synthetic route coverage sender Organization — Source External Channel — Routing & lifecycle trace No routing or lifecycle events recorded yet.\n  - complementary:\n    - text: Current accountability Receiving office Synthetic MPDO Current office Synthetic MPDO Workflow ref — Workflow status — Assignee Unassigned Record identity & dates Municipal ref — External ref QA-GAP-qa.phasea.head.dd8dbe5419 Received Nov 26, 2026, 10:08 PM Registered —\n    - region \"Related work\":\n      - heading \"Related work\" [level=2]\n      - paragraph: Nearby authorized work and the shortest route back to your queue.\n      - link \"Back to Inbox & Routing Return to the authorized Correspondence queue.\":\n        - /url: /correspondence\n      - link \"Search reference in Records Locate related municipal records using this exact reference.\":\n        - /url: /records?search=QA-GAP-qa.phasea.head.dd8dbe5419\n      - link \"Open Work Queue Move to inter-office work requiring your action.\":\n        - /url: /transactions?view=needs_my_action\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal\n- navigation \"Mobile workspace navigation\":\n  - link \"Home\":\n    - /url: /dashboard\n  - link \"Tasks\":\n    - /url: /my-tasks\n  - link \"Requests\":\n    - /url: /transactions\n  - link \"Inbox\":\n    - /url: /correspondence\n  - button \"Open more navigation options\": More"
+    },
+    {
+      "role": "department_head",
+      "route": "/work-requests/origin-delivery-exceptions",
+      "status": 200,
+      "renderedComponent": "Transactions/DeliveryExceptions",
+      "width": 390,
+      "theme": "light",
+      "capture": "Transactions-DeliveryExceptions-390-light.png",
+      "overflow": false,
+      "violations": [],
+      "incomplete": [],
+      "manualReview": [],
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: Origin notice exceptions\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - text: Work Requests · restricted origin-office head queue\n  - heading \"Origin notice exceptions\" [level=1]\n  - paragraph: These are traceable delivery gaps, not sent notifications or municipal sign-off. An eligible office Head must acknowledge and document the follow-up. Actions are append-only.\n  - link \"Back to Work Requests\":\n    - /url: /transactions\n  - paragraph: No visible delivery exceptions for your current authorized office.\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal\n- navigation \"Mobile workspace navigation\":\n  - link \"Home\":\n    - /url: /dashboard\n  - link \"Tasks\":\n    - /url: /my-tasks\n  - link \"Requests\":\n    - /url: /transactions\n  - link \"Inbox\":\n    - /url: /correspondence\n  - button \"Open more navigation options\": More"
+    },
+    {
+      "role": "department_head",
+      "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
+      "status": 200,
+      "renderedComponent": "Correspondence/Show",
+      "width": 390,
+      "theme": "dark",
+      "capture": "Correspondence-Show-390-dark.png",
+      "overflow": false,
+      "violations": [],
+      "incomplete": [],
+      "manualReview": [],
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: Correspondence · QA-GAP-qa.phasea.head.dd8dbe5419\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - link \"Back to Inbox & Routing\":\n    - /url: /correspondence\n  - text: Correspondence review workspace Municipal correspondence · Synthetic MPDO\n  - heading \"QA-GAP-qa.phasea.head.dd8dbe5419\" [level=1]\n  - paragraph: Synthetic authorized correspondence read\n  - text: Queued Internal Required action\n  - heading \"Register correspondence\" [level=2]\n  - paragraph: Registration assigns the official municipal correspondence reference and moves this record into the municipal register.\n  - img\n  - text: Registration evidence\n  - paragraph: Optional. PDF, DOCX, JPEG, PNG, or WebP. Files are stored privately and remain subject to the parent record's authorization.\n  - button \"Registration evidence\"\n  - button \"Register correspondence\":\n    - img\n    - text: Register correspondence\n  - text: Correspondence details Summary\n  - paragraph: No summary recorded.\n  - text: Sender Synthetic route coverage sender Organization — Source External Channel — Routing & lifecycle trace No routing or lifecycle events recorded yet.\n  - complementary:\n    - text: Current accountability Receiving office Synthetic MPDO Current office Synthetic MPDO Workflow ref — Workflow status — Assignee Unassigned Record identity & dates Municipal ref — External ref QA-GAP-qa.phasea.head.dd8dbe5419 Received Nov 26, 2026, 10:08 PM Registered —\n    - region \"Related work\":\n      - heading \"Related work\" [level=2]\n      - paragraph: Nearby authorized work and the shortest route back to your queue.\n      - link \"Back to Inbox & Routing Return to the authorized Correspondence queue.\":\n        - /url: /correspondence\n      - link \"Search reference in Records Locate related municipal records using this exact reference.\":\n        - /url: /records?search=QA-GAP-qa.phasea.head.dd8dbe5419\n      - link \"Open Work Queue Move to inter-office work requiring your action.\":\n        - /url: /transactions?view=needs_my_action\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal\n- navigation \"Mobile workspace navigation\":\n  - link \"Home\":\n    - /url: /dashboard\n  - link \"Tasks\":\n    - /url: /my-tasks\n  - link \"Requests\":\n    - /url: /transactions\n  - link \"Inbox\":\n    - /url: /correspondence\n  - button \"Open more navigation options\": More"
+    },
+    {
+      "role": "department_head",
+      "route": "/work-requests/origin-delivery-exceptions",
+      "status": 200,
+      "renderedComponent": "Transactions/DeliveryExceptions",
+      "width": 390,
+      "theme": "dark",
+      "capture": "Transactions-DeliveryExceptions-390-dark.png",
+      "overflow": false,
+      "violations": [],
+      "incomplete": [],
+      "manualReview": [],
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: Origin notice exceptions\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - text: Work Requests · restricted origin-office head queue\n  - heading \"Origin notice exceptions\" [level=1]\n  - paragraph: These are traceable delivery gaps, not sent notifications or municipal sign-off. An eligible office Head must acknowledge and document the follow-up. Actions are append-only.\n  - link \"Back to Work Requests\":\n    - /url: /transactions\n  - paragraph: No visible delivery exceptions for your current authorized office.\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal\n- navigation \"Mobile workspace navigation\":\n  - link \"Home\":\n    - /url: /dashboard\n  - link \"Tasks\":\n    - /url: /my-tasks\n  - link \"Requests\":\n    - /url: /transactions\n  - link \"Inbox\":\n    - /url: /correspondence\n  - button \"Open more navigation options\": More"
+    },
+    {
+      "role": "department_head",
+      "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
+      "status": 200,
+      "renderedComponent": "Correspondence/Show",
+      "width": 768,
+      "theme": "light",
+      "capture": "Correspondence-Show-768-light.png",
+      "overflow": false,
+      "violations": [],
+      "incomplete": [],
+      "manualReview": [],
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: Correspondence · QA-GAP-qa.phasea.head.dd8dbe5419 Synthetic MPDO Test Office\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - link \"Back to Inbox & Routing\":\n    - /url: /correspondence\n  - text: Correspondence review workspace Municipal correspondence · Synthetic MPDO\n  - heading \"QA-GAP-qa.phasea.head.dd8dbe5419\" [level=1]\n  - paragraph: Synthetic authorized correspondence read\n  - text: Queued Internal Required action\n  - heading \"Register correspondence\" [level=2]\n  - paragraph: Registration assigns the official municipal correspondence reference and moves this record into the municipal register.\n  - img\n  - text: Registration evidence\n  - paragraph: Optional. PDF, DOCX, JPEG, PNG, or WebP. Files are stored privately and remain subject to the parent record's authorization.\n  - button \"Registration evidence\"\n  - button \"Register correspondence\":\n    - img\n    - text: Register correspondence\n  - text: Correspondence details Summary\n  - paragraph: No summary recorded.\n  - text: Sender Synthetic route coverage sender Organization — Source External Channel — Routing & lifecycle trace No routing or lifecycle events recorded yet.\n  - complementary:\n    - text: Current accountability Receiving office Synthetic MPDO Current office Synthetic MPDO Workflow ref — Workflow status — Assignee Unassigned Record identity & dates Municipal ref — External ref QA-GAP-qa.phasea.head.dd8dbe5419 Received Nov 26, 2026, 10:08 PM Registered —\n    - region \"Related work\":\n      - heading \"Related work\" [level=2]\n      - paragraph: Nearby authorized work and the shortest route back to your queue.\n      - link \"Back to Inbox & Routing Return to the authorized Correspondence queue.\":\n        - /url: /correspondence\n      - link \"Search reference in Records Locate related municipal records using this exact reference.\":\n        - /url: /records?search=QA-GAP-qa.phasea.head.dd8dbe5419\n      - link \"Open Work Queue Move to inter-office work requiring your action.\":\n        - /url: /transactions?view=needs_my_action\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal"
+    },
+    {
+      "role": "department_head",
+      "route": "/work-requests/origin-delivery-exceptions",
+      "status": 200,
+      "renderedComponent": "Transactions/DeliveryExceptions",
+      "width": 768,
+      "theme": "light",
+      "capture": "Transactions-DeliveryExceptions-768-light.png",
+      "overflow": false,
+      "violations": [],
+      "incomplete": [],
+      "manualReview": [],
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: Origin notice exceptions Synthetic MPDO Test Office\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - text: Work Requests · restricted origin-office head queue\n  - heading \"Origin notice exceptions\" [level=1]\n  - paragraph: These are traceable delivery gaps, not sent notifications or municipal sign-off. An eligible office Head must acknowledge and document the follow-up. Actions are append-only.\n  - link \"Back to Work Requests\":\n    - /url: /transactions\n  - paragraph: No visible delivery exceptions for your current authorized office.\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal"
+    },
+    {
+      "role": "department_head",
+      "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
+      "status": 200,
+      "renderedComponent": "Correspondence/Show",
+      "width": 768,
+      "theme": "dark",
+      "capture": "Correspondence-Show-768-dark.png",
+      "overflow": false,
+      "violations": [],
+      "incomplete": [],
+      "manualReview": [],
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: Correspondence · QA-GAP-qa.phasea.head.dd8dbe5419 Synthetic MPDO Test Office\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - link \"Back to Inbox & Routing\":\n    - /url: /correspondence\n  - text: Correspondence review workspace Municipal correspondence · Synthetic MPDO\n  - heading \"QA-GAP-qa.phasea.head.dd8dbe5419\" [level=1]\n  - paragraph: Synthetic authorized correspondence read\n  - text: Queued Internal Required action\n  - heading \"Register correspondence\" [level=2]\n  - paragraph: Registration assigns the official municipal correspondence reference and moves this record into the municipal register.\n  - img\n  - text: Registration evidence\n  - paragraph: Optional. PDF, DOCX, JPEG, PNG, or WebP. Files are stored privately and remain subject to the parent record's authorization.\n  - button \"Registration evidence\"\n  - button \"Register correspondence\":\n    - img\n    - text: Register correspondence\n  - text: Correspondence details Summary\n  - paragraph: No summary recorded.\n  - text: Sender Synthetic route coverage sender Organization — Source External Channel — Routing & lifecycle trace No routing or lifecycle events recorded yet.\n  - complementary:\n    - text: Current accountability Receiving office Synthetic MPDO Current office Synthetic MPDO Workflow ref — Workflow status — Assignee Unassigned Record identity & dates Municipal ref — External ref QA-GAP-qa.phasea.head.dd8dbe5419 Received Nov 26, 2026, 10:08 PM Registered —\n    - region \"Related work\":\n      - heading \"Related work\" [level=2]\n      - paragraph: Nearby authorized work and the shortest route back to your queue.\n      - link \"Back to Inbox & Routing Return to the authorized Correspondence queue.\":\n        - /url: /correspondence\n      - link \"Search reference in Records Locate related municipal records using this exact reference.\":\n        - /url: /records?search=QA-GAP-qa.phasea.head.dd8dbe5419\n      - link \"Open Work Queue Move to inter-office work requiring your action.\":\n        - /url: /transactions?view=needs_my_action\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal"
+    },
+    {
+      "role": "department_head",
+      "route": "/work-requests/origin-delivery-exceptions",
+      "status": 200,
+      "renderedComponent": "Transactions/DeliveryExceptions",
+      "width": 768,
+      "theme": "dark",
+      "capture": "Transactions-DeliveryExceptions-768-dark.png",
+      "overflow": false,
+      "violations": [],
+      "incomplete": [],
+      "manualReview": [],
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- banner:\n  - button \"Open navigation\"\n  - text: Origin notice exceptions Synthetic MPDO Test Office\n  - button \"Open quick jump and search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\"\n- main:\n  - text: Work Requests · restricted origin-office head queue\n  - heading \"Origin notice exceptions\" [level=1]\n  - paragraph: These are traceable delivery gaps, not sent notifications or municipal sign-off. An eligible office Head must acknowledge and document the follow-up. Actions are append-only.\n  - link \"Back to Work Requests\":\n    - /url: /transactions\n  - paragraph: No visible delivery exceptions for your current authorized office.\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal"
+    },
+    {
+      "role": "department_head",
+      "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
+      "status": 200,
+      "renderedComponent": "Correspondence/Show",
+      "width": 1440,
+      "theme": "light",
+      "capture": "Correspondence-Show-1440-light.png",
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<section class=\"tcds-card p-4\">",
+                      "target": [
+                        "aside > .tcds-card.p-4:nth-child(2)"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<div class=\"text-xs font-semibold sm:text-sm text-[var(--ink-primary)]\">QA-GAP-qa.phasea.head.dd8dbe5419</div>",
+              "target": [
+                ".tcds-card.p-4:nth-child(2) > .mt-2 > .gap-1.last\\:border-b-0.sm\\:grid-cols-\\[132px_minmax\\(0\\,1fr\\)\\]:nth-child(2) > .sm\\:text-sm.text-\\[var\\(--ink-primary\\)\\].font-semibold"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            }
+          ]
+        }
+      ],
+      "manualReview": [
+        {
+          "selector": ".tcds-card.p-4:nth-child(2) > .mt-2 > .gap-1.last\\:border-b-0.sm\\:grid-cols-\\[132px_minmax\\(0\\,1fr\\)\\]:nth-child(2) > .sm\\:text-sm.text-\\[var\\(--ink-primary\\)\\].font-semibold",
+          "tag": "DIV",
+          "text": "QA-GAP-qa.phasea.head.dd8dbe5419",
+          "color": "rgb(20, 33, 28)",
+          "background": [
+            255,
+            255,
+            255
+          ],
+          "paintedInk": [
+            20,
+            33,
+            28
+          ],
+          "contrastRatio": 16.61319910975379,
+          "requiredContrast": 4.5,
+          "fontSize": "14px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "unresolvedPaint": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        }
+      ],
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- complementary \"Primary workspace navigation\":\n  - img \"Official seal of the Municipality of Talibon\"\n  - text: ONE TALIBON Municipality of Talibon\n  - button \"Collapse navigation\" [expanded]\n  - navigation \"Primary navigation\":\n    - region \"Dashboard\":\n      - link \"Dashboard\":\n        - /url: /dashboard\n      - link \"Search Portal\":\n        - /url: /portal-search\n    - region \"Departments & Offices\":\n      - text: Departments & Offices\n      - link \"Departments & Offices\":\n        - /url: /departments\n    - region \"Development Planning\":\n      - button \"Development Planning\"\n    - region \"Document Management\":\n      - text: Document Management\n      - link \"Document Center\":\n        - /url: /documents\n      - link \"Municipal Records\":\n        - /url: /records\n      - link \"Official Memoranda\":\n        - /url: /memoranda\n    - region \"Work & Routing\":\n      - text: Work & Routing\n      - link \"My Department\":\n        - /url: /my-department\n      - link \"My Tasks\":\n        - /url: /my-tasks\n      - link \"Work Requests\":\n        - /url: /transactions\n      - link \"Correspondence\":\n        - /url: /correspondence\n    - region \"Schedule & Coordination\":\n      - text: Schedule & Coordination\n      - link \"Calendar\":\n        - /url: /calendar\n    - region \"Employee Directory\":\n      - text: Employee Directory\n      - link \"Employee Directory\":\n        - /url: /employees\n  - 'button \"Appearance: System (Light). Choose theme\"': Appearance · System (Light)\n  - group \"Language\":\n    - text: Language\n    - button \"EN\" [pressed]\n    - button \"CEB\"\n    - button \"FIL\"\n  - link \"Account security\":\n    - /url: /security/account\n  - img \"Signed in as Synthetic Phase A department_head · Synthetic Test department_head · Synthetic MPDO\": SD\n  - text: Synthetic Phase A department_head Synthetic MPDO · Synthetic Test department_head\n  - button \"Sign out\"\n- banner:\n  - text: Correspondence · QA-GAP-qa.phasea.head.dd8dbe5419 Synthetic MPDO Test Office\n  - search:\n    - form \"Search municipal records\":\n      - text: Search municipal records\n      - searchbox \"Search municipal records\"\n      - button \"Open Quick Jump command palette (Ctrl+K)\": Ctrl K\n      - button \"Search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\": Synthetic Phase A department_head Synthetic MPDO\n- main:\n  - link \"Back to Inbox & Routing\":\n    - /url: /correspondence\n  - text: Correspondence review workspace Municipal correspondence · Synthetic MPDO\n  - heading \"QA-GAP-qa.phasea.head.dd8dbe5419\" [level=1]\n  - paragraph: Synthetic authorized correspondence read\n  - text: Queued Internal Required action\n  - heading \"Register correspondence\" [level=2]\n  - paragraph: Registration assigns the official municipal correspondence reference and moves this record into the municipal register.\n  - img\n  - text: Registration evidence\n  - paragraph: Optional. PDF, DOCX, JPEG, PNG, or WebP. Files are stored privately and remain subject to the parent record's authorization.\n  - button \"Registration evidence\"\n  - button \"Register correspondence\":\n    - img\n    - text: Register correspondence\n  - text: Correspondence details Summary\n  - paragraph: No summary recorded.\n  - text: Sender Synthetic route coverage sender Organization — Source External Channel — Routing & lifecycle trace No routing or lifecycle events recorded yet.\n  - complementary:\n    - text: Current accountability Receiving office Synthetic MPDO Current office Synthetic MPDO Workflow ref — Workflow status — Assignee Unassigned Record identity & dates Municipal ref — External ref QA-GAP-qa.phasea.head.dd8dbe5419 Received Nov 26, 2026, 10:08 PM Registered —\n    - region \"Related work\":\n      - heading \"Related work\" [level=2]\n      - paragraph: Nearby authorized work and the shortest route back to your queue.\n      - link \"Back to Inbox & Routing Return to the authorized Correspondence queue.\":\n        - /url: /correspondence\n      - link \"Search reference in Records Locate related municipal records using this exact reference.\":\n        - /url: /records?search=QA-GAP-qa.phasea.head.dd8dbe5419\n      - link \"Open Work Queue Move to inter-office work requiring your action.\":\n        - /url: /transactions?view=needs_my_action\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal"
+    },
+    {
+      "role": "department_head",
+      "route": "/work-requests/origin-delivery-exceptions",
+      "status": 200,
+      "renderedComponent": "Transactions/DeliveryExceptions",
+      "width": 1440,
+      "theme": "light",
+      "capture": "Transactions-DeliveryExceptions-1440-light.png",
+      "overflow": false,
+      "violations": [],
+      "incomplete": [],
+      "manualReview": [],
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- complementary \"Primary workspace navigation\":\n  - img \"Official seal of the Municipality of Talibon\"\n  - text: ONE TALIBON Municipality of Talibon\n  - button \"Collapse navigation\" [expanded]\n  - navigation \"Primary navigation\":\n    - region \"Dashboard\":\n      - link \"Dashboard\":\n        - /url: /dashboard\n      - link \"Search Portal\":\n        - /url: /portal-search\n    - region \"Departments & Offices\":\n      - text: Departments & Offices\n      - link \"Departments & Offices\":\n        - /url: /departments\n    - region \"Development Planning\":\n      - button \"Development Planning\"\n    - region \"Document Management\":\n      - text: Document Management\n      - link \"Document Center\":\n        - /url: /documents\n      - link \"Municipal Records\":\n        - /url: /records\n      - link \"Official Memoranda\":\n        - /url: /memoranda\n    - region \"Work & Routing\":\n      - text: Work & Routing\n      - link \"My Department\":\n        - /url: /my-department\n      - link \"My Tasks\":\n        - /url: /my-tasks\n      - link \"Work Requests\":\n        - /url: /transactions\n      - link \"Correspondence\":\n        - /url: /correspondence\n    - region \"Schedule & Coordination\":\n      - text: Schedule & Coordination\n      - link \"Calendar\":\n        - /url: /calendar\n    - region \"Employee Directory\":\n      - text: Employee Directory\n      - link \"Employee Directory\":\n        - /url: /employees\n  - 'button \"Appearance: System (Light). Choose theme\"': Appearance · System (Light)\n  - group \"Language\":\n    - text: Language\n    - button \"EN\" [pressed]\n    - button \"CEB\"\n    - button \"FIL\"\n  - link \"Account security\":\n    - /url: /security/account\n  - img \"Signed in as Synthetic Phase A department_head · Synthetic Test department_head · Synthetic MPDO\": SD\n  - text: Synthetic Phase A department_head Synthetic MPDO · Synthetic Test department_head\n  - button \"Sign out\"\n- banner:\n  - text: Origin notice exceptions Synthetic MPDO Test Office\n  - search:\n    - form \"Search municipal records\":\n      - text: Search municipal records\n      - searchbox \"Search municipal records\"\n      - button \"Open Quick Jump command palette (Ctrl+K)\": Ctrl K\n      - button \"Search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\": Synthetic Phase A department_head Synthetic MPDO\n- main:\n  - text: Work Requests · restricted origin-office head queue\n  - heading \"Origin notice exceptions\" [level=1]\n  - paragraph: These are traceable delivery gaps, not sent notifications or municipal sign-off. An eligible office Head must acknowledge and document the follow-up. Actions are append-only.\n  - link \"Back to Work Requests\":\n    - /url: /transactions\n  - paragraph: No visible delivery exceptions for your current authorized office.\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal"
+    },
+    {
+      "role": "department_head",
+      "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
+      "status": 200,
+      "renderedComponent": "Correspondence/Show",
+      "width": 1440,
+      "theme": "dark",
+      "capture": "Correspondence-Show-1440-dark.png",
+      "overflow": false,
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<section class=\"tcds-card p-4\">",
+                      "target": [
+                        "aside > .tcds-card.p-4:nth-child(2)"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<div class=\"text-xs font-semibold sm:text-sm text-[var(--ink-primary)]\">QA-GAP-qa.phasea.head.dd8dbe5419</div>",
+              "target": [
+                ".tcds-card.p-4:nth-child(2) > .mt-2 > .gap-1.last\\:border-b-0.sm\\:grid-cols-\\[132px_minmax\\(0\\,1fr\\)\\]:nth-child(2) > .sm\\:text-sm.text-\\[var\\(--ink-primary\\)\\].font-semibold"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            }
+          ]
+        }
+      ],
+      "manualReview": [
+        {
+          "selector": ".tcds-card.p-4:nth-child(2) > .mt-2 > .gap-1.last\\:border-b-0.sm\\:grid-cols-\\[132px_minmax\\(0\\,1fr\\)\\]:nth-child(2) > .sm\\:text-sm.text-\\[var\\(--ink-primary\\)\\].font-semibold",
+          "tag": "DIV",
+          "text": "QA-GAP-qa.phasea.head.dd8dbe5419",
+          "color": "rgb(236, 242, 239)",
+          "background": [
+            22,
+            30,
+            26
+          ],
+          "paintedInk": [
+            236,
+            242,
+            239
+          ],
+          "contrastRatio": 14.994105689134654,
+          "requiredContrast": 4.5,
+          "fontSize": "14px",
+          "fontWeight": "600",
+          "opacityChain": [],
+          "unresolvedPaint": [],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": null
+        }
+      ],
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- complementary \"Primary workspace navigation\":\n  - img \"Official seal of the Municipality of Talibon\"\n  - text: ONE TALIBON Municipality of Talibon\n  - button \"Collapse navigation\" [expanded]\n  - navigation \"Primary navigation\":\n    - region \"Dashboard\":\n      - link \"Dashboard\":\n        - /url: /dashboard\n      - link \"Search Portal\":\n        - /url: /portal-search\n    - region \"Departments & Offices\":\n      - text: Departments & Offices\n      - link \"Departments & Offices\":\n        - /url: /departments\n    - region \"Development Planning\":\n      - button \"Development Planning\"\n    - region \"Document Management\":\n      - text: Document Management\n      - link \"Document Center\":\n        - /url: /documents\n      - link \"Municipal Records\":\n        - /url: /records\n      - link \"Official Memoranda\":\n        - /url: /memoranda\n    - region \"Work & Routing\":\n      - text: Work & Routing\n      - link \"My Department\":\n        - /url: /my-department\n      - link \"My Tasks\":\n        - /url: /my-tasks\n      - link \"Work Requests\":\n        - /url: /transactions\n      - link \"Correspondence\":\n        - /url: /correspondence\n    - region \"Schedule & Coordination\":\n      - text: Schedule & Coordination\n      - link \"Calendar\":\n        - /url: /calendar\n    - region \"Employee Directory\":\n      - text: Employee Directory\n      - link \"Employee Directory\":\n        - /url: /employees\n  - 'button \"Appearance: System (Dark). Choose theme\"': Appearance · System (Dark)\n  - group \"Language\":\n    - text: Language\n    - button \"EN\" [pressed]\n    - button \"CEB\"\n    - button \"FIL\"\n  - link \"Account security\":\n    - /url: /security/account\n  - img \"Signed in as Synthetic Phase A department_head · Synthetic Test department_head · Synthetic MPDO\": SD\n  - text: Synthetic Phase A department_head Synthetic MPDO · Synthetic Test department_head\n  - button \"Sign out\"\n- banner:\n  - text: Correspondence · QA-GAP-qa.phasea.head.dd8dbe5419 Synthetic MPDO Test Office\n  - search:\n    - form \"Search municipal records\":\n      - text: Search municipal records\n      - searchbox \"Search municipal records\"\n      - button \"Open Quick Jump command palette (Ctrl+K)\": Ctrl K\n      - button \"Search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\": Synthetic Phase A department_head Synthetic MPDO\n- main:\n  - link \"Back to Inbox & Routing\":\n    - /url: /correspondence\n  - text: Correspondence review workspace Municipal correspondence · Synthetic MPDO\n  - heading \"QA-GAP-qa.phasea.head.dd8dbe5419\" [level=1]\n  - paragraph: Synthetic authorized correspondence read\n  - text: Queued Internal Required action\n  - heading \"Register correspondence\" [level=2]\n  - paragraph: Registration assigns the official municipal correspondence reference and moves this record into the municipal register.\n  - img\n  - text: Registration evidence\n  - paragraph: Optional. PDF, DOCX, JPEG, PNG, or WebP. Files are stored privately and remain subject to the parent record's authorization.\n  - button \"Registration evidence\"\n  - button \"Register correspondence\":\n    - img\n    - text: Register correspondence\n  - text: Correspondence details Summary\n  - paragraph: No summary recorded.\n  - text: Sender Synthetic route coverage sender Organization — Source External Channel — Routing & lifecycle trace No routing or lifecycle events recorded yet.\n  - complementary:\n    - text: Current accountability Receiving office Synthetic MPDO Current office Synthetic MPDO Workflow ref — Workflow status — Assignee Unassigned Record identity & dates Municipal ref — External ref QA-GAP-qa.phasea.head.dd8dbe5419 Received Nov 26, 2026, 10:08 PM Registered —\n    - region \"Related work\":\n      - heading \"Related work\" [level=2]\n      - paragraph: Nearby authorized work and the shortest route back to your queue.\n      - link \"Back to Inbox & Routing Return to the authorized Correspondence queue.\":\n        - /url: /correspondence\n      - link \"Search reference in Records Locate related municipal records using this exact reference.\":\n        - /url: /records?search=QA-GAP-qa.phasea.head.dd8dbe5419\n      - link \"Open Work Queue Move to inter-office work requiring your action.\":\n        - /url: /transactions?view=needs_my_action\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal"
+    },
+    {
+      "role": "department_head",
+      "route": "/work-requests/origin-delivery-exceptions",
+      "status": 200,
+      "renderedComponent": "Transactions/DeliveryExceptions",
+      "width": 1440,
+      "theme": "dark",
+      "capture": "Transactions-DeliveryExceptions-1440-dark.png",
+      "overflow": false,
+      "violations": [],
+      "incomplete": [],
+      "manualReview": [],
+      "accessibilityTree": "- link \"Skip to main content\":\n  - /url: \"#portal-content\"\n- complementary \"Primary workspace navigation\":\n  - img \"Official seal of the Municipality of Talibon\"\n  - text: ONE TALIBON Municipality of Talibon\n  - button \"Collapse navigation\" [expanded]\n  - navigation \"Primary navigation\":\n    - region \"Dashboard\":\n      - link \"Dashboard\":\n        - /url: /dashboard\n      - link \"Search Portal\":\n        - /url: /portal-search\n    - region \"Departments & Offices\":\n      - text: Departments & Offices\n      - link \"Departments & Offices\":\n        - /url: /departments\n    - region \"Development Planning\":\n      - button \"Development Planning\"\n    - region \"Document Management\":\n      - text: Document Management\n      - link \"Document Center\":\n        - /url: /documents\n      - link \"Municipal Records\":\n        - /url: /records\n      - link \"Official Memoranda\":\n        - /url: /memoranda\n    - region \"Work & Routing\":\n      - text: Work & Routing\n      - link \"My Department\":\n        - /url: /my-department\n      - link \"My Tasks\":\n        - /url: /my-tasks\n      - link \"Work Requests\":\n        - /url: /transactions\n      - link \"Correspondence\":\n        - /url: /correspondence\n    - region \"Schedule & Coordination\":\n      - text: Schedule & Coordination\n      - link \"Calendar\":\n        - /url: /calendar\n    - region \"Employee Directory\":\n      - text: Employee Directory\n      - link \"Employee Directory\":\n        - /url: /employees\n  - 'button \"Appearance: System (Dark). Choose theme\"': Appearance · System (Dark)\n  - group \"Language\":\n    - text: Language\n    - button \"EN\" [pressed]\n    - button \"CEB\"\n    - button \"FIL\"\n  - link \"Account security\":\n    - /url: /security/account\n  - img \"Signed in as Synthetic Phase A department_head · Synthetic Test department_head · Synthetic MPDO\": SD\n  - text: Synthetic Phase A department_head Synthetic MPDO · Synthetic Test department_head\n  - button \"Sign out\"\n- banner:\n  - text: Origin notice exceptions Synthetic MPDO Test Office\n  - search:\n    - form \"Search municipal records\":\n      - text: Search municipal records\n      - searchbox \"Search municipal records\"\n      - button \"Open Quick Jump command palette (Ctrl+K)\": Ctrl K\n      - button \"Search\"\n  - button \"Open notifications\"\n  - button \"Open portal applications\"\n  - group \"Synthetic Phase A department_head, Synthetic MPDO\": Synthetic Phase A department_head Synthetic MPDO\n- main:\n  - text: Work Requests · restricted origin-office head queue\n  - heading \"Origin notice exceptions\" [level=1]\n  - paragraph: These are traceable delivery gaps, not sent notifications or municipal sign-off. An eligible office Head must acknowledge and document the follow-up. Actions are append-only.\n  - link \"Back to Work Requests\":\n    - /url: /transactions\n  - paragraph: No visible delivery exceptions for your current authorized office.\n- contentinfo: Municipality of Talibon · Province of Bohol ONE TALIBON · Intra-Office Portal"
+    }
+  ],
+  "interactions": [
+    {
+      "role": "department_head",
+      "label": "authorized-correspondence-workspace-read",
+      "renderedComponent": "Correspondence/Show",
+      "status": 200
+    },
+    {
+      "role": "department_head",
+      "label": "installed-protected-ledger-delivery-exception-queue-read",
+      "renderedComponent": "Transactions/DeliveryExceptions",
+      "status": 200
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,21 @@
+BEGIN
+SET
+SET
+           set_config            
+---------------------------------
+ EXCLUSIVE_G2_PG16_TMPFS_QA_ONLY
+(1 row)
+
+DO
+REVOKE
+REVOKE
+REVOKE
+GRANT
+GRANT
+DO
+COMMIT
+                     result                     
+------------------------------------------------
+ G2_DISPOSABLE_CUSTODY_ROLE_EXTENSION_INSTALLED
+(1 row)
+

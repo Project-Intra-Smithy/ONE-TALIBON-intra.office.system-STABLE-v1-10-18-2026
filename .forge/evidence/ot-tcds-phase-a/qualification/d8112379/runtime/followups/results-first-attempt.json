@@ -1,0 +1,20 @@
+{
+  "sourceSha": "d811237976c6732809f4a8b6afabaf651c964808",
+  "completed": false,
+  "results": [
+    {
+      "label": "accessibility",
+      "args": [
+        "storage/app/qa/followups-final-d81123/accessibility-runtime.mjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "forced-colors",
+      "args": [
+        "storage/app/qa/followups-final-d81123/forced-runtime.mjs"
+      ],
+      "exitCode": 1
+    }
+  ]
+}

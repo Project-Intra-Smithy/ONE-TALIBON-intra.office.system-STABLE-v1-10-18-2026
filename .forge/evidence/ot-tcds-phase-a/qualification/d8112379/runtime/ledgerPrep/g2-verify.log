@@ -1,0 +1,25 @@
+BEGIN
+SET
+SET
+DO
+RESET
+SET
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+DO
+RESET
+SET
+DO
+RESET
+ROLLBACK
+                           result                           
+------------------------------------------------------------
+ G2_DISPOSABLE_CUSTODY_ROLE_MATRIX_VERIFIED_AND_ROLLED_BACK
+(1 row)
+
+psql:tests/Manual/sql/G2_DISPOSABLE_PG16_CUSTODY_ROLE_VERIFY_R1.sql:21: NOTICE:  PASS app custody SELECT denied SQLSTATE 42501
+psql:tests/Manual/sql/G2_DISPOSABLE_PG16_CUSTODY_ROLE_VERIFY_R1.sql:21: NOTICE:  PASS app custody INSERT denied SQLSTATE 42501
+psql:tests/Manual/sql/G2_DISPOSABLE_PG16_CUSTODY_ROLE_VERIFY_R1.sql:57: NOTICE:  PASS custody metadata UPDATE denied SQLSTATE 42501
+psql:tests/Manual/sql/G2_DISPOSABLE_PG16_CUSTODY_ROLE_VERIFY_R1.sql:57: NOTICE:  PASS custody evidence DELETE denied SQLSTATE 42501
+psql:tests/Manual/sql/G2_DISPOSABLE_PG16_CUSTODY_ROLE_VERIFY_R1.sql:68: NOTICE:  PASS repair custody mutation denied SQLSTATE 42501

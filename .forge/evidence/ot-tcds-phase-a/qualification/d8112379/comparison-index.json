@@ -1,0 +1,4073 @@
+{
+  "sourceSha": "d811237976c6732809f4a8b6afabaf651c964808",
+  "comparisons": [
+    {
+      "component": "Admin/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Admin-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/admin",
+          "capture": "runtime/qualification/system_admin-admin-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Announcements/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Announcements-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/announcements",
+          "capture": "runtime/qualification/employee-announcements-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Audit/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Audit-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/audit",
+          "capture": "runtime/qualification/system_admin-audit-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/AccountSecurity",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Auth-AccountSecurity-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/security/account",
+          "capture": "runtime/qualification/employee-security-account-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/ActivateAccount",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Auth-ActivateAccount-1440-light.png",
+      "canonical": [
+        {
+          "role": "guest",
+          "route": "/activate-account",
+          "capture": "runtime/qualification/guest-activate-account-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/Login",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Auth-Login-1440-light.png",
+      "canonical": [
+        {
+          "role": "guest",
+          "route": "/login",
+          "capture": "runtime/qualification/guest-login-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/MfaChallenge",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Auth-MfaChallenge-1440-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/security/mfa/challenge",
+          "capture": "runtime/qualification/system_admin-security-mfa-challenge-1440-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/security/mfa/challenge",
+          "capture": "runtime/qualification/department_head-security-mfa-challenge-1440-light.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/security/mfa/challenge",
+          "capture": "runtime/qualification/mayor_approver-security-mfa-challenge-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/MfaSettings",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Auth-MfaSettings-1440-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/security/mfa",
+          "capture": "runtime/qualification/system_admin-security-mfa-1440-light.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/security/mfa/recovery-codes",
+          "capture": "runtime/qualification/system_admin-security-mfa-recovery-codes-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Calendar/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Calendar-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/calendar",
+          "capture": "runtime/qualification/employee-calendar-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Correspondence/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Correspondence-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/correspondence",
+          "capture": "runtime/qualification/employee-correspondence-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Correspondence/Show",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Correspondence-Show-1440-light.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
+          "capture": "runtime/qualification/Correspondence-Show-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Dashboard",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Dashboard-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/dashboard",
+          "capture": "runtime/qualification/employee-dashboard-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Departments/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Departments-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/departments",
+          "capture": "runtime/qualification/employee-departments-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Departments/Workspace",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Departments-Workspace-1440-light.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/my-department",
+          "capture": "runtime/qualification/department_head-my-department-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Documents/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Documents-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/documents",
+          "capture": "runtime/qualification/employee-documents-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Employees/DirectoryProfile",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Employees-DirectoryProfile-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/employees/166",
+          "capture": "runtime/qualification/employee-employees-166-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Employees/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Employees-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/employees",
+          "capture": "runtime/qualification/employee-employees-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Hris/Attendance",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Hris-Attendance-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/hris/attendance",
+          "capture": "runtime/qualification/employee-hris-attendance-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Create",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Legislation-Create-1440-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/legislation/create",
+          "capture": "runtime/qualification/system_admin-legislation-create-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Legislation-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/legislation",
+          "capture": "runtime/qualification/employee-legislation-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Show",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Legislation-Show-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/legislation/19",
+          "capture": "runtime/qualification/employee-legislation-19-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Workspace",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Legislation-Workspace-1440-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/legislative-workspace",
+          "capture": "runtime/qualification/system_admin-legislative-workspace-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "LocalBodies/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/LocalBodies-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/local-special-bodies",
+          "capture": "runtime/qualification/employee-local-special-bodies-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "MayorOffice",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/MayorOffice-1440-light.png",
+      "canonical": [
+        {
+          "role": "mayor_approver",
+          "route": "/mayor-office",
+          "capture": "runtime/qualification/mayor_approver-mayor-office-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Meetings/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Meetings-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/meetings",
+          "capture": "runtime/qualification/employee-meetings-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Memoranda/Create",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Memoranda-Create-1440-light.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/memoranda/create",
+          "capture": "runtime/qualification/department_head-memoranda-create-1440-light.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/memoranda/create",
+          "capture": "runtime/qualification/mayor_approver-memoranda-create-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Memoranda/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Memoranda-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/memoranda",
+          "capture": "runtime/qualification/employee-memoranda-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Memoranda/Show",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Memoranda-Show-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/memoranda/19",
+          "capture": "runtime/qualification/employee-memoranda-19-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "MunicipalSystems/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/MunicipalSystems-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/procurement",
+          "capture": "runtime/qualification/employee-procurement-1440-light.png"
+        },
+        {
+          "role": "employee",
+          "route": "/municipal-systems",
+          "capture": "runtime/qualification/employee-municipal-systems-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "PlanningMaps/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/PlanningMaps-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/planning-maps",
+          "capture": "runtime/qualification/employee-planning-maps-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Plans/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Plans-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/development-plans",
+          "capture": "runtime/qualification/employee-development-plans-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "PPAs/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/PPAs-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/ppas",
+          "capture": "runtime/qualification/employee-ppas-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "ProjectMonitoring/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/ProjectMonitoring-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/operations",
+          "capture": "runtime/qualification/department_head-operations-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Property/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Property-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/property",
+          "capture": "runtime/qualification/system_admin-property-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Property/Lifecycle",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Property-Lifecycle-1440-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/property/lifecycle",
+          "capture": "runtime/qualification/system_admin-property-lifecycle-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Public/Home",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Public-Home-1440-light.png",
+      "canonical": [
+        {
+          "role": "guest",
+          "route": "/",
+          "capture": "runtime/qualification/guest-home-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Records/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Records-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/records",
+          "capture": "runtime/qualification/employee-records-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Reports/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Reports-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/reports",
+          "capture": "runtime/qualification/system_admin-reports-1440-light.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/reports",
+          "capture": "runtime/qualification/mayor_approver-reports-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Search/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Search-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/portal-search?q=Synthetic",
+          "capture": "runtime/qualification/employee-portal-search-q-Synthetic-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Tasks/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Tasks-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/my-tasks",
+          "capture": "runtime/qualification/employee-my-tasks-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/Create",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Transactions-Create-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/transactions/create",
+          "capture": "runtime/qualification/employee-transactions-create-1440-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/transactions/create",
+          "capture": "runtime/qualification/department_head-transactions-create-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/DeliveryExceptions",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Transactions-DeliveryExceptions-1440-light.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/work-requests/origin-delivery-exceptions",
+          "capture": "runtime/qualification/Transactions-DeliveryExceptions-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Transactions-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/transactions",
+          "capture": "runtime/qualification/employee-transactions-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/Show",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Transactions-Show-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/transactions/14",
+          "capture": "runtime/qualification/employee-transactions-14-1440-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/transactions/14",
+          "capture": "runtime/qualification/department_head-transactions-14-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "TravelOrders/Create",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/TravelOrders-Create-1440-light.png",
+      "canonical": [
+        {
+          "role": "mayor_approver",
+          "route": "/travel-orders/create",
+          "capture": "runtime/qualification/mayor_approver-travel-orders-create-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "TravelOrders/Index",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/TravelOrders-Index-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/travel-orders",
+          "capture": "runtime/qualification/employee-travel-orders-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "TravelOrders/Show",
+      "width": 1440,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/TravelOrders-Show-1440-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/travel-orders/db8f4b6f-28bb-45f6-b171-555419dcb7fc",
+          "capture": "runtime/qualification/employee-travel-orders-db8f4b6f-28bb-45f6-b171-555419dcb7fc-1440-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Admin/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Admin-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/admin",
+          "capture": "runtime/qualification/system_admin-admin-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Announcements/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Announcements-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/announcements",
+          "capture": "runtime/qualification/employee-announcements-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Audit/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Audit-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/audit",
+          "capture": "runtime/qualification/system_admin-audit-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/AccountSecurity",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Auth-AccountSecurity-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/security/account",
+          "capture": "runtime/qualification/employee-security-account-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/ActivateAccount",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Auth-ActivateAccount-1440-dark.png",
+      "canonical": [
+        {
+          "role": "guest",
+          "route": "/activate-account",
+          "capture": "runtime/qualification/guest-activate-account-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/Login",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Auth-Login-1440-dark.png",
+      "canonical": [
+        {
+          "role": "guest",
+          "route": "/login",
+          "capture": "runtime/qualification/guest-login-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/MfaSettings",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Auth-MfaSettings-1440-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/security/mfa",
+          "capture": "runtime/qualification/system_admin-security-mfa-1440-dark.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/security/mfa/recovery-codes",
+          "capture": "runtime/qualification/system_admin-security-mfa-recovery-codes-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Calendar/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Calendar-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/calendar",
+          "capture": "runtime/qualification/employee-calendar-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Correspondence/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Correspondence-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/correspondence",
+          "capture": "runtime/qualification/employee-correspondence-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Correspondence/Show",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Correspondence-Show-1440-dark.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
+          "capture": "runtime/qualification/Correspondence-Show-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Dashboard",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Dashboard-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/dashboard",
+          "capture": "runtime/qualification/employee-dashboard-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Departments/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Departments-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/departments",
+          "capture": "runtime/qualification/employee-departments-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Departments/Workspace",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Departments-Workspace-1440-dark.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/my-department",
+          "capture": "runtime/qualification/department_head-my-department-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Documents/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Documents-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/documents",
+          "capture": "runtime/qualification/employee-documents-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Employees/DirectoryProfile",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Employees-DirectoryProfile-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/employees/166",
+          "capture": "runtime/qualification/employee-employees-166-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Employees/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Employees-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/employees",
+          "capture": "runtime/qualification/employee-employees-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Hris/Attendance",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Hris-Attendance-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/hris/attendance",
+          "capture": "runtime/qualification/employee-hris-attendance-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Create",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Legislation-Create-1440-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/legislation/create",
+          "capture": "runtime/qualification/system_admin-legislation-create-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Legislation-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/legislation",
+          "capture": "runtime/qualification/employee-legislation-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Show",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Legislation-Show-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/legislation/19",
+          "capture": "runtime/qualification/employee-legislation-19-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Workspace",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Legislation-Workspace-1440-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/legislative-workspace",
+          "capture": "runtime/qualification/system_admin-legislative-workspace-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "LocalBodies/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/LocalBodies-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/local-special-bodies",
+          "capture": "runtime/qualification/employee-local-special-bodies-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "MayorOffice",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/MayorOffice-1440-dark.png",
+      "canonical": [
+        {
+          "role": "mayor_approver",
+          "route": "/mayor-office",
+          "capture": "runtime/qualification/mayor_approver-mayor-office-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Meetings/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Meetings-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/meetings",
+          "capture": "runtime/qualification/employee-meetings-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Memoranda/Create",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Memoranda-Create-1440-dark.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/memoranda/create",
+          "capture": "runtime/qualification/department_head-memoranda-create-1440-dark.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/memoranda/create",
+          "capture": "runtime/qualification/mayor_approver-memoranda-create-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Memoranda/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Memoranda-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/memoranda",
+          "capture": "runtime/qualification/employee-memoranda-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Memoranda/Show",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Memoranda-Show-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/memoranda/19",
+          "capture": "runtime/qualification/employee-memoranda-19-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "MunicipalSystems/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/MunicipalSystems-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/procurement",
+          "capture": "runtime/qualification/employee-procurement-1440-dark.png"
+        },
+        {
+          "role": "employee",
+          "route": "/municipal-systems",
+          "capture": "runtime/qualification/employee-municipal-systems-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "PlanningMaps/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/PlanningMaps-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/planning-maps",
+          "capture": "runtime/qualification/employee-planning-maps-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Plans/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Plans-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/development-plans",
+          "capture": "runtime/qualification/employee-development-plans-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "PPAs/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/PPAs-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/ppas",
+          "capture": "runtime/qualification/employee-ppas-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "ProjectMonitoring/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/ProjectMonitoring-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/operations",
+          "capture": "runtime/qualification/department_head-operations-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Property/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Property-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/property",
+          "capture": "runtime/qualification/system_admin-property-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Property/Lifecycle",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Property-Lifecycle-1440-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/property/lifecycle",
+          "capture": "runtime/qualification/system_admin-property-lifecycle-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Public/Home",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Public-Home-1440-dark.png",
+      "canonical": [
+        {
+          "role": "guest",
+          "route": "/",
+          "capture": "runtime/qualification/guest-home-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Records/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Records-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/records",
+          "capture": "runtime/qualification/employee-records-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Reports/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Reports-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/reports",
+          "capture": "runtime/qualification/system_admin-reports-1440-dark.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/reports",
+          "capture": "runtime/qualification/mayor_approver-reports-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Search/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Search-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/portal-search?q=Synthetic",
+          "capture": "runtime/qualification/employee-portal-search-q-Synthetic-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Tasks/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Tasks-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/my-tasks",
+          "capture": "runtime/qualification/employee-my-tasks-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/Create",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Transactions-Create-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/transactions/create",
+          "capture": "runtime/qualification/employee-transactions-create-1440-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/transactions/create",
+          "capture": "runtime/qualification/department_head-transactions-create-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/DeliveryExceptions",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Transactions-DeliveryExceptions-1440-dark.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/work-requests/origin-delivery-exceptions",
+          "capture": "runtime/qualification/Transactions-DeliveryExceptions-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Transactions-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/transactions",
+          "capture": "runtime/qualification/employee-transactions-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/Show",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Transactions-Show-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/transactions/14",
+          "capture": "runtime/qualification/employee-transactions-14-1440-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/transactions/14",
+          "capture": "runtime/qualification/department_head-transactions-14-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "TravelOrders/Create",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/TravelOrders-Create-1440-dark.png",
+      "canonical": [
+        {
+          "role": "mayor_approver",
+          "route": "/travel-orders/create",
+          "capture": "runtime/qualification/mayor_approver-travel-orders-create-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "TravelOrders/Index",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/TravelOrders-Index-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/travel-orders",
+          "capture": "runtime/qualification/employee-travel-orders-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "TravelOrders/Show",
+      "width": 1440,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/TravelOrders-Show-1440-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/travel-orders/db8f4b6f-28bb-45f6-b171-555419dcb7fc",
+          "capture": "runtime/qualification/employee-travel-orders-db8f4b6f-28bb-45f6-b171-555419dcb7fc-1440-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Admin/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Admin-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/admin",
+          "capture": "runtime/qualification/system_admin-admin-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Announcements/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Announcements-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/announcements",
+          "capture": "runtime/qualification/employee-announcements-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Audit/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Audit-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/audit",
+          "capture": "runtime/qualification/system_admin-audit-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/AccountSecurity",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Auth-AccountSecurity-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/security/account",
+          "capture": "runtime/qualification/employee-security-account-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/ActivateAccount",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Auth-ActivateAccount-768-light.png",
+      "canonical": [
+        {
+          "role": "guest",
+          "route": "/activate-account",
+          "capture": "runtime/qualification/guest-activate-account-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/Login",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Auth-Login-768-light.png",
+      "canonical": [
+        {
+          "role": "guest",
+          "route": "/login",
+          "capture": "runtime/qualification/guest-login-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/MfaSettings",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Auth-MfaSettings-768-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/security/mfa",
+          "capture": "runtime/qualification/system_admin-security-mfa-768-light.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/security/mfa/recovery-codes",
+          "capture": "runtime/qualification/system_admin-security-mfa-recovery-codes-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Calendar/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Calendar-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/calendar",
+          "capture": "runtime/qualification/employee-calendar-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Correspondence/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Correspondence-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/correspondence",
+          "capture": "runtime/qualification/employee-correspondence-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Correspondence/Show",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Correspondence-Show-768-light.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
+          "capture": "runtime/qualification/Correspondence-Show-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Dashboard",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Dashboard-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/dashboard",
+          "capture": "runtime/qualification/employee-dashboard-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Departments/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Departments-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/departments",
+          "capture": "runtime/qualification/employee-departments-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Departments/Workspace",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Departments-Workspace-768-light.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/my-department",
+          "capture": "runtime/qualification/department_head-my-department-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Documents/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Documents-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/documents",
+          "capture": "runtime/qualification/employee-documents-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Employees/DirectoryProfile",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Employees-DirectoryProfile-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/employees/166",
+          "capture": "runtime/qualification/employee-employees-166-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Employees/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Employees-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/employees",
+          "capture": "runtime/qualification/employee-employees-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Hris/Attendance",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Hris-Attendance-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/hris/attendance",
+          "capture": "runtime/qualification/employee-hris-attendance-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Create",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Legislation-Create-768-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/legislation/create",
+          "capture": "runtime/qualification/system_admin-legislation-create-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Legislation-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/legislation",
+          "capture": "runtime/qualification/employee-legislation-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Show",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Legislation-Show-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/legislation/19",
+          "capture": "runtime/qualification/employee-legislation-19-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Workspace",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Legislation-Workspace-768-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/legislative-workspace",
+          "capture": "runtime/qualification/system_admin-legislative-workspace-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "LocalBodies/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/LocalBodies-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/local-special-bodies",
+          "capture": "runtime/qualification/employee-local-special-bodies-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "MayorOffice",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/MayorOffice-768-light.png",
+      "canonical": [
+        {
+          "role": "mayor_approver",
+          "route": "/mayor-office",
+          "capture": "runtime/qualification/mayor_approver-mayor-office-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Meetings/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Meetings-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/meetings",
+          "capture": "runtime/qualification/employee-meetings-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Memoranda/Create",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Memoranda-Create-768-light.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/memoranda/create",
+          "capture": "runtime/qualification/department_head-memoranda-create-768-light.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/memoranda/create",
+          "capture": "runtime/qualification/mayor_approver-memoranda-create-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Memoranda/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Memoranda-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/memoranda",
+          "capture": "runtime/qualification/employee-memoranda-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Memoranda/Show",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Memoranda-Show-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/memoranda/19",
+          "capture": "runtime/qualification/employee-memoranda-19-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "MunicipalSystems/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/MunicipalSystems-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/procurement",
+          "capture": "runtime/qualification/employee-procurement-768-light.png"
+        },
+        {
+          "role": "employee",
+          "route": "/municipal-systems",
+          "capture": "runtime/qualification/employee-municipal-systems-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "PlanningMaps/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/PlanningMaps-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/planning-maps",
+          "capture": "runtime/qualification/employee-planning-maps-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Plans/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Plans-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/development-plans",
+          "capture": "runtime/qualification/employee-development-plans-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "PPAs/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/PPAs-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/ppas",
+          "capture": "runtime/qualification/employee-ppas-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "ProjectMonitoring/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/ProjectMonitoring-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/operations",
+          "capture": "runtime/qualification/department_head-operations-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Property/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Property-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/property",
+          "capture": "runtime/qualification/system_admin-property-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Property/Lifecycle",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Property-Lifecycle-768-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/property/lifecycle",
+          "capture": "runtime/qualification/system_admin-property-lifecycle-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Public/Home",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Public-Home-768-light.png",
+      "canonical": [
+        {
+          "role": "guest",
+          "route": "/",
+          "capture": "runtime/qualification/guest-home-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Records/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Records-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/records",
+          "capture": "runtime/qualification/employee-records-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Reports/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Reports-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/reports",
+          "capture": "runtime/qualification/system_admin-reports-768-light.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/reports",
+          "capture": "runtime/qualification/mayor_approver-reports-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Search/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Search-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/portal-search?q=Synthetic",
+          "capture": "runtime/qualification/employee-portal-search-q-Synthetic-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Tasks/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Tasks-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/my-tasks",
+          "capture": "runtime/qualification/employee-my-tasks-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/Create",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Transactions-Create-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/transactions/create",
+          "capture": "runtime/qualification/employee-transactions-create-768-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/transactions/create",
+          "capture": "runtime/qualification/department_head-transactions-create-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/DeliveryExceptions",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Transactions-DeliveryExceptions-768-light.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/work-requests/origin-delivery-exceptions",
+          "capture": "runtime/qualification/Transactions-DeliveryExceptions-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Transactions-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/transactions",
+          "capture": "runtime/qualification/employee-transactions-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/Show",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Transactions-Show-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/transactions/14",
+          "capture": "runtime/qualification/employee-transactions-14-768-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/transactions/14",
+          "capture": "runtime/qualification/department_head-transactions-14-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "TravelOrders/Create",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/TravelOrders-Create-768-light.png",
+      "canonical": [
+        {
+          "role": "mayor_approver",
+          "route": "/travel-orders/create",
+          "capture": "runtime/qualification/mayor_approver-travel-orders-create-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "TravelOrders/Index",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/TravelOrders-Index-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/travel-orders",
+          "capture": "runtime/qualification/employee-travel-orders-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "TravelOrders/Show",
+      "width": 768,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/TravelOrders-Show-768-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/travel-orders/db8f4b6f-28bb-45f6-b171-555419dcb7fc",
+          "capture": "runtime/qualification/employee-travel-orders-db8f4b6f-28bb-45f6-b171-555419dcb7fc-768-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Admin/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Admin-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/admin",
+          "capture": "runtime/qualification/system_admin-admin-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Announcements/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Announcements-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/announcements",
+          "capture": "runtime/qualification/employee-announcements-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Audit/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Audit-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/audit",
+          "capture": "runtime/qualification/system_admin-audit-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/AccountSecurity",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Auth-AccountSecurity-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/security/account",
+          "capture": "runtime/qualification/employee-security-account-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/ActivateAccount",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Auth-ActivateAccount-768-dark.png",
+      "canonical": [
+        {
+          "role": "guest",
+          "route": "/activate-account",
+          "capture": "runtime/qualification/guest-activate-account-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/Login",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Auth-Login-768-dark.png",
+      "canonical": [
+        {
+          "role": "guest",
+          "route": "/login",
+          "capture": "runtime/qualification/guest-login-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/MfaSettings",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Auth-MfaSettings-768-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/security/mfa",
+          "capture": "runtime/qualification/system_admin-security-mfa-768-dark.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/security/mfa/recovery-codes",
+          "capture": "runtime/qualification/system_admin-security-mfa-recovery-codes-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Calendar/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Calendar-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/calendar",
+          "capture": "runtime/qualification/employee-calendar-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Correspondence/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Correspondence-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/correspondence",
+          "capture": "runtime/qualification/employee-correspondence-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Correspondence/Show",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Correspondence-Show-768-dark.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
+          "capture": "runtime/qualification/Correspondence-Show-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Dashboard",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Dashboard-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/dashboard",
+          "capture": "runtime/qualification/employee-dashboard-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Departments/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Departments-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/departments",
+          "capture": "runtime/qualification/employee-departments-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Departments/Workspace",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Departments-Workspace-768-dark.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/my-department",
+          "capture": "runtime/qualification/department_head-my-department-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Documents/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Documents-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/documents",
+          "capture": "runtime/qualification/employee-documents-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Employees/DirectoryProfile",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Employees-DirectoryProfile-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/employees/166",
+          "capture": "runtime/qualification/employee-employees-166-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Employees/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Employees-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/employees",
+          "capture": "runtime/qualification/employee-employees-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Hris/Attendance",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Hris-Attendance-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/hris/attendance",
+          "capture": "runtime/qualification/employee-hris-attendance-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Create",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Legislation-Create-768-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/legislation/create",
+          "capture": "runtime/qualification/system_admin-legislation-create-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Legislation-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/legislation",
+          "capture": "runtime/qualification/employee-legislation-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Show",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Legislation-Show-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/legislation/19",
+          "capture": "runtime/qualification/employee-legislation-19-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Workspace",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Legislation-Workspace-768-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/legislative-workspace",
+          "capture": "runtime/qualification/system_admin-legislative-workspace-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "LocalBodies/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/LocalBodies-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/local-special-bodies",
+          "capture": "runtime/qualification/employee-local-special-bodies-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "MayorOffice",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/MayorOffice-768-dark.png",
+      "canonical": [
+        {
+          "role": "mayor_approver",
+          "route": "/mayor-office",
+          "capture": "runtime/qualification/mayor_approver-mayor-office-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Meetings/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Meetings-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/meetings",
+          "capture": "runtime/qualification/employee-meetings-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Memoranda/Create",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Memoranda-Create-768-dark.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/memoranda/create",
+          "capture": "runtime/qualification/department_head-memoranda-create-768-dark.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/memoranda/create",
+          "capture": "runtime/qualification/mayor_approver-memoranda-create-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Memoranda/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Memoranda-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/memoranda",
+          "capture": "runtime/qualification/employee-memoranda-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Memoranda/Show",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Memoranda-Show-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/memoranda/19",
+          "capture": "runtime/qualification/employee-memoranda-19-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "MunicipalSystems/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/MunicipalSystems-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/procurement",
+          "capture": "runtime/qualification/employee-procurement-768-dark.png"
+        },
+        {
+          "role": "employee",
+          "route": "/municipal-systems",
+          "capture": "runtime/qualification/employee-municipal-systems-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "PlanningMaps/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/PlanningMaps-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/planning-maps",
+          "capture": "runtime/qualification/employee-planning-maps-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Plans/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Plans-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/development-plans",
+          "capture": "runtime/qualification/employee-development-plans-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "PPAs/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/PPAs-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/ppas",
+          "capture": "runtime/qualification/employee-ppas-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "ProjectMonitoring/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/ProjectMonitoring-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/operations",
+          "capture": "runtime/qualification/department_head-operations-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Property/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Property-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/property",
+          "capture": "runtime/qualification/system_admin-property-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Property/Lifecycle",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Property-Lifecycle-768-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/property/lifecycle",
+          "capture": "runtime/qualification/system_admin-property-lifecycle-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Public/Home",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Public-Home-768-dark.png",
+      "canonical": [
+        {
+          "role": "guest",
+          "route": "/",
+          "capture": "runtime/qualification/guest-home-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Records/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Records-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/records",
+          "capture": "runtime/qualification/employee-records-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Reports/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Reports-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/reports",
+          "capture": "runtime/qualification/system_admin-reports-768-dark.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/reports",
+          "capture": "runtime/qualification/mayor_approver-reports-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Search/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Search-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/portal-search?q=Synthetic",
+          "capture": "runtime/qualification/employee-portal-search-q-Synthetic-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Tasks/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Tasks-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/my-tasks",
+          "capture": "runtime/qualification/employee-my-tasks-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/Create",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Transactions-Create-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/transactions/create",
+          "capture": "runtime/qualification/employee-transactions-create-768-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/transactions/create",
+          "capture": "runtime/qualification/department_head-transactions-create-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/DeliveryExceptions",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Transactions-DeliveryExceptions-768-dark.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/work-requests/origin-delivery-exceptions",
+          "capture": "runtime/qualification/Transactions-DeliveryExceptions-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Transactions-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/transactions",
+          "capture": "runtime/qualification/employee-transactions-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/Show",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Transactions-Show-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/transactions/14",
+          "capture": "runtime/qualification/employee-transactions-14-768-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/transactions/14",
+          "capture": "runtime/qualification/department_head-transactions-14-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "TravelOrders/Create",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/TravelOrders-Create-768-dark.png",
+      "canonical": [
+        {
+          "role": "mayor_approver",
+          "route": "/travel-orders/create",
+          "capture": "runtime/qualification/mayor_approver-travel-orders-create-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "TravelOrders/Index",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/TravelOrders-Index-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/travel-orders",
+          "capture": "runtime/qualification/employee-travel-orders-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "TravelOrders/Show",
+      "width": 768,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/TravelOrders-Show-768-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/travel-orders/db8f4b6f-28bb-45f6-b171-555419dcb7fc",
+          "capture": "runtime/qualification/employee-travel-orders-db8f4b6f-28bb-45f6-b171-555419dcb7fc-768-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Admin/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Admin-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/admin",
+          "capture": "runtime/qualification/system_admin-admin-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Announcements/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Announcements-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/announcements",
+          "capture": "runtime/qualification/employee-announcements-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Audit/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Audit-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/audit",
+          "capture": "runtime/qualification/system_admin-audit-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/AccountSecurity",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Auth-AccountSecurity-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/security/account",
+          "capture": "runtime/qualification/employee-security-account-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/ActivateAccount",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Auth-ActivateAccount-390-light.png",
+      "canonical": [
+        {
+          "role": "guest",
+          "route": "/activate-account",
+          "capture": "runtime/qualification/guest-activate-account-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/Login",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Auth-Login-390-light.png",
+      "canonical": [
+        {
+          "role": "guest",
+          "route": "/login",
+          "capture": "runtime/qualification/guest-login-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/MfaSettings",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Auth-MfaSettings-390-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/security/mfa",
+          "capture": "runtime/qualification/system_admin-security-mfa-390-light.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/security/mfa/recovery-codes",
+          "capture": "runtime/qualification/system_admin-security-mfa-recovery-codes-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Calendar/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Calendar-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/calendar",
+          "capture": "runtime/qualification/employee-calendar-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Correspondence/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Correspondence-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/correspondence",
+          "capture": "runtime/qualification/employee-correspondence-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Correspondence/Show",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Correspondence-Show-390-light.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
+          "capture": "runtime/qualification/Correspondence-Show-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Dashboard",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Dashboard-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/dashboard",
+          "capture": "runtime/qualification/employee-dashboard-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Departments/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Departments-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/departments",
+          "capture": "runtime/qualification/employee-departments-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Departments/Workspace",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Departments-Workspace-390-light.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/my-department",
+          "capture": "runtime/qualification/department_head-my-department-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Documents/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Documents-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/documents",
+          "capture": "runtime/qualification/employee-documents-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Employees/DirectoryProfile",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Employees-DirectoryProfile-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/employees/166",
+          "capture": "runtime/qualification/employee-employees-166-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Employees/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Employees-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/employees",
+          "capture": "runtime/qualification/employee-employees-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Hris/Attendance",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Hris-Attendance-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/hris/attendance",
+          "capture": "runtime/qualification/employee-hris-attendance-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Create",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Legislation-Create-390-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/legislation/create",
+          "capture": "runtime/qualification/system_admin-legislation-create-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Legislation-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/legislation",
+          "capture": "runtime/qualification/employee-legislation-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Show",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Legislation-Show-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/legislation/19",
+          "capture": "runtime/qualification/employee-legislation-19-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Workspace",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Legislation-Workspace-390-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/legislative-workspace",
+          "capture": "runtime/qualification/system_admin-legislative-workspace-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "LocalBodies/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/LocalBodies-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/local-special-bodies",
+          "capture": "runtime/qualification/employee-local-special-bodies-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "MayorOffice",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/MayorOffice-390-light.png",
+      "canonical": [
+        {
+          "role": "mayor_approver",
+          "route": "/mayor-office",
+          "capture": "runtime/qualification/mayor_approver-mayor-office-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Meetings/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Meetings-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/meetings",
+          "capture": "runtime/qualification/employee-meetings-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Memoranda/Create",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Memoranda-Create-390-light.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/memoranda/create",
+          "capture": "runtime/qualification/department_head-memoranda-create-390-light.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/memoranda/create",
+          "capture": "runtime/qualification/mayor_approver-memoranda-create-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Memoranda/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Memoranda-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/memoranda",
+          "capture": "runtime/qualification/employee-memoranda-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Memoranda/Show",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Memoranda-Show-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/memoranda/19",
+          "capture": "runtime/qualification/employee-memoranda-19-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "MunicipalSystems/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/MunicipalSystems-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/procurement",
+          "capture": "runtime/qualification/employee-procurement-390-light.png"
+        },
+        {
+          "role": "employee",
+          "route": "/municipal-systems",
+          "capture": "runtime/qualification/employee-municipal-systems-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "PlanningMaps/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/PlanningMaps-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/planning-maps",
+          "capture": "runtime/qualification/employee-planning-maps-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Plans/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Plans-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/development-plans",
+          "capture": "runtime/qualification/employee-development-plans-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "PPAs/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/PPAs-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/ppas",
+          "capture": "runtime/qualification/employee-ppas-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "ProjectMonitoring/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/ProjectMonitoring-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/operations",
+          "capture": "runtime/qualification/department_head-operations-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Property/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Property-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/property",
+          "capture": "runtime/qualification/system_admin-property-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Property/Lifecycle",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Property-Lifecycle-390-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/property/lifecycle",
+          "capture": "runtime/qualification/system_admin-property-lifecycle-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Public/Home",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Public-Home-390-light.png",
+      "canonical": [
+        {
+          "role": "guest",
+          "route": "/",
+          "capture": "runtime/qualification/guest-home-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Records/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Records-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/records",
+          "capture": "runtime/qualification/employee-records-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Reports/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Reports-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/reports",
+          "capture": "runtime/qualification/system_admin-reports-390-light.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/reports",
+          "capture": "runtime/qualification/mayor_approver-reports-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Search/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Search-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/portal-search?q=Synthetic",
+          "capture": "runtime/qualification/employee-portal-search-q-Synthetic-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Tasks/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Tasks-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/my-tasks",
+          "capture": "runtime/qualification/employee-my-tasks-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/Create",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Transactions-Create-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/transactions/create",
+          "capture": "runtime/qualification/employee-transactions-create-390-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/transactions/create",
+          "capture": "runtime/qualification/department_head-transactions-create-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/DeliveryExceptions",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Transactions-DeliveryExceptions-390-light.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/work-requests/origin-delivery-exceptions",
+          "capture": "runtime/qualification/Transactions-DeliveryExceptions-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Transactions-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/transactions",
+          "capture": "runtime/qualification/employee-transactions-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/Show",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/Transactions-Show-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/transactions/14",
+          "capture": "runtime/qualification/employee-transactions-14-390-light.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/transactions/14",
+          "capture": "runtime/qualification/department_head-transactions-14-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "TravelOrders/Create",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/TravelOrders-Create-390-light.png",
+      "canonical": [
+        {
+          "role": "mayor_approver",
+          "route": "/travel-orders/create",
+          "capture": "runtime/qualification/mayor_approver-travel-orders-create-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "TravelOrders/Index",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/TravelOrders-Index-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/travel-orders",
+          "capture": "runtime/qualification/employee-travel-orders-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "TravelOrders/Show",
+      "width": 390,
+      "theme": "light",
+      "preview": "runtime/preview/catalog/TravelOrders-Show-390-light.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/travel-orders/db8f4b6f-28bb-45f6-b171-555419dcb7fc",
+          "capture": "runtime/qualification/employee-travel-orders-db8f4b6f-28bb-45f6-b171-555419dcb7fc-390-light.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Admin/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Admin-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/admin",
+          "capture": "runtime/qualification/system_admin-admin-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Announcements/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Announcements-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/announcements",
+          "capture": "runtime/qualification/employee-announcements-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Audit/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Audit-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/audit",
+          "capture": "runtime/qualification/system_admin-audit-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/AccountSecurity",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Auth-AccountSecurity-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/security/account",
+          "capture": "runtime/qualification/employee-security-account-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/ActivateAccount",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Auth-ActivateAccount-390-dark.png",
+      "canonical": [
+        {
+          "role": "guest",
+          "route": "/activate-account",
+          "capture": "runtime/qualification/guest-activate-account-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/Login",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Auth-Login-390-dark.png",
+      "canonical": [
+        {
+          "role": "guest",
+          "route": "/login",
+          "capture": "runtime/qualification/guest-login-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Auth/MfaSettings",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Auth-MfaSettings-390-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/security/mfa",
+          "capture": "runtime/qualification/system_admin-security-mfa-390-dark.png"
+        },
+        {
+          "role": "system_admin",
+          "route": "/security/mfa/recovery-codes",
+          "capture": "runtime/qualification/system_admin-security-mfa-recovery-codes-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Calendar/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Calendar-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/calendar",
+          "capture": "runtime/qualification/employee-calendar-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Correspondence/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Correspondence-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/correspondence",
+          "capture": "runtime/qualification/employee-correspondence-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Correspondence/Show",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Correspondence-Show-390-dark.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/correspondence/c8edef80-b87a-44d8-a3f8-a9e97b641c1a/workspace",
+          "capture": "runtime/qualification/Correspondence-Show-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Dashboard",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Dashboard-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/dashboard",
+          "capture": "runtime/qualification/employee-dashboard-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Departments/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Departments-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/departments",
+          "capture": "runtime/qualification/employee-departments-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Departments/Workspace",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Departments-Workspace-390-dark.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/my-department",
+          "capture": "runtime/qualification/department_head-my-department-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Documents/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Documents-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/documents",
+          "capture": "runtime/qualification/employee-documents-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Employees/DirectoryProfile",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Employees-DirectoryProfile-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/employees/166",
+          "capture": "runtime/qualification/employee-employees-166-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Employees/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Employees-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/employees",
+          "capture": "runtime/qualification/employee-employees-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Hris/Attendance",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Hris-Attendance-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/hris/attendance",
+          "capture": "runtime/qualification/employee-hris-attendance-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Create",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Legislation-Create-390-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/legislation/create",
+          "capture": "runtime/qualification/system_admin-legislation-create-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Legislation-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/legislation",
+          "capture": "runtime/qualification/employee-legislation-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Show",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Legislation-Show-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/legislation/19",
+          "capture": "runtime/qualification/employee-legislation-19-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Legislation/Workspace",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Legislation-Workspace-390-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/legislative-workspace",
+          "capture": "runtime/qualification/system_admin-legislative-workspace-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "LocalBodies/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/LocalBodies-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/local-special-bodies",
+          "capture": "runtime/qualification/employee-local-special-bodies-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "MayorOffice",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/MayorOffice-390-dark.png",
+      "canonical": [
+        {
+          "role": "mayor_approver",
+          "route": "/mayor-office",
+          "capture": "runtime/qualification/mayor_approver-mayor-office-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Meetings/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Meetings-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/meetings",
+          "capture": "runtime/qualification/employee-meetings-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Memoranda/Create",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Memoranda-Create-390-dark.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/memoranda/create",
+          "capture": "runtime/qualification/department_head-memoranda-create-390-dark.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/memoranda/create",
+          "capture": "runtime/qualification/mayor_approver-memoranda-create-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Memoranda/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Memoranda-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/memoranda",
+          "capture": "runtime/qualification/employee-memoranda-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Memoranda/Show",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Memoranda-Show-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/memoranda/19",
+          "capture": "runtime/qualification/employee-memoranda-19-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "MunicipalSystems/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/MunicipalSystems-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/procurement",
+          "capture": "runtime/qualification/employee-procurement-390-dark.png"
+        },
+        {
+          "role": "employee",
+          "route": "/municipal-systems",
+          "capture": "runtime/qualification/employee-municipal-systems-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "PlanningMaps/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/PlanningMaps-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/planning-maps",
+          "capture": "runtime/qualification/employee-planning-maps-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Plans/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Plans-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/development-plans",
+          "capture": "runtime/qualification/employee-development-plans-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "PPAs/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/PPAs-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/ppas",
+          "capture": "runtime/qualification/employee-ppas-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "ProjectMonitoring/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/ProjectMonitoring-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/operations",
+          "capture": "runtime/qualification/department_head-operations-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Property/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Property-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/property",
+          "capture": "runtime/qualification/system_admin-property-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Property/Lifecycle",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Property-Lifecycle-390-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/property/lifecycle",
+          "capture": "runtime/qualification/system_admin-property-lifecycle-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Public/Home",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Public-Home-390-dark.png",
+      "canonical": [
+        {
+          "role": "guest",
+          "route": "/",
+          "capture": "runtime/qualification/guest-home-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Records/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Records-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/records",
+          "capture": "runtime/qualification/employee-records-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Reports/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Reports-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "system_admin",
+          "route": "/reports",
+          "capture": "runtime/qualification/system_admin-reports-390-dark.png"
+        },
+        {
+          "role": "mayor_approver",
+          "route": "/reports",
+          "capture": "runtime/qualification/mayor_approver-reports-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Search/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Search-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/portal-search?q=Synthetic",
+          "capture": "runtime/qualification/employee-portal-search-q-Synthetic-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Tasks/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Tasks-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/my-tasks",
+          "capture": "runtime/qualification/employee-my-tasks-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/Create",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Transactions-Create-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/transactions/create",
+          "capture": "runtime/qualification/employee-transactions-create-390-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/transactions/create",
+          "capture": "runtime/qualification/department_head-transactions-create-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/DeliveryExceptions",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Transactions-DeliveryExceptions-390-dark.png",
+      "canonical": [
+        {
+          "role": "department_head",
+          "route": "/work-requests/origin-delivery-exceptions",
+          "capture": "runtime/qualification/Transactions-DeliveryExceptions-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Transactions-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/transactions",
+          "capture": "runtime/qualification/employee-transactions-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "Transactions/Show",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/Transactions-Show-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/transactions/14",
+          "capture": "runtime/qualification/employee-transactions-14-390-dark.png"
+        },
+        {
+          "role": "department_head",
+          "route": "/transactions/14",
+          "capture": "runtime/qualification/department_head-transactions-14-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "TravelOrders/Create",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/TravelOrders-Create-390-dark.png",
+      "canonical": [
+        {
+          "role": "mayor_approver",
+          "route": "/travel-orders/create",
+          "capture": "runtime/qualification/mayor_approver-travel-orders-create-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "TravelOrders/Index",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/TravelOrders-Index-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/travel-orders",
+          "capture": "runtime/qualification/employee-travel-orders-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    },
+    {
+      "component": "TravelOrders/Show",
+      "width": 390,
+      "theme": "dark",
+      "preview": "runtime/preview/catalog/TravelOrders-Show-390-dark.png",
+      "canonical": [
+        {
+          "role": "employee",
+          "route": "/travel-orders/db8f4b6f-28bb-45f6-b171-555419dcb7fc",
+          "capture": "runtime/qualification/employee-travel-orders-db8f4b6f-28bb-45f6-b171-555419dcb7fc-390-dark.png"
+        }
+      ],
+      "scope": "Same-candidate canonical-versus-synthetic presentation comparison; actual server and synthetic fixture data differ. Not a pixel-equivalence or backend-completeness claim."
+    }
+  ]
+}

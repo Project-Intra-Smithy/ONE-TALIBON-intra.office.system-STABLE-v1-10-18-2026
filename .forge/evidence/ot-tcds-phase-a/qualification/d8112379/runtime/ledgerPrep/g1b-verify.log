@@ -1,0 +1,53 @@
+BEGIN
+SET
+DO
+SET
+DO
+SET
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE FUNCTION
+DO
+RESET
+SET
+DO
+RESET
+SET
+DO
+RESET
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+SET
+INSERT 0 1
+UPDATE 1
+INSERT 0 1
+DELETE 1
+DELETE 1
+DO
+RESET
+SET
+UPDATE 1
+INSERT 0 1
+DO
+RESET
+SET
+DO
+RESET
+ROLLBACK
+                            result                            
+--------------------------------------------------------------
+ G1B_DISPOSABLE_ROLE_POLICY_VERIFIED_AND_FIXTURES_ROLLED_BACK
+(1 row)
+
+psql:tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql:38: NOTICE:  PASS migration DDL without SET ROLE denied SQLSTATE 42501
+psql:tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql:68: NOTICE:  PASS unauthorized replacement denied SQLSTATE 42501
+psql:tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql:100: NOTICE:  PASS app provenance denied SQLSTATE 42501
+psql:tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql:100: NOTICE:  PASS app receipt delete denied SQLSTATE 42501
+psql:tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql:100: NOTICE:  PASS app DDL denied SQLSTATE 42501
+psql:tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql:100: NOTICE:  PASS generic Plan link denied SQLSTATE 23514
+psql:tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql:115: NOTICE:  PASS custody storage denied SQLSTATE 42501
+psql:tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql:115: NOTICE:  PASS downgrade denied SQLSTATE 23514
+psql:tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql:115: NOTICE:  PASS custody binding delete denied SQLSTATE 42501
+psql:tests/Manual/sql/G1B_DISPOSABLE_PG16_ROLE_VERIFY_R1.sql:122: NOTICE:  PASS repair denied SQLSTATE 42501

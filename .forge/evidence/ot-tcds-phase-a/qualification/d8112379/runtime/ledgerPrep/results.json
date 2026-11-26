@@ -1,0 +1,94 @@
+{
+  "sourceSha": "d811237976c6732809f4a8b6afabaf651c964808",
+  "disposablePgdata": "C:/Users/arane/AppData/Local/Temp/ot-phase-a-final-pg16-5b93cd358baf47128029f88ce6dd2a7b/data",
+  "port": 55476,
+  "completed": true,
+  "passed": true,
+  "scope": "Original protected CI role/lease/migration installation for canonical read-route verification only. No protected source edits, no persistent DB, no lease/role guard bypass, no new backend development.",
+  "results": [
+    {
+      "label": "g1b-install",
+      "exitCode": 0
+    },
+    {
+      "label": "g2-install",
+      "exitCode": 0
+    },
+    {
+      "label": "g1b-verify",
+      "exitCode": 0
+    },
+    {
+      "label": "g2-verify",
+      "exitCode": 0
+    },
+    {
+      "label": "g2a-migrate",
+      "exitCode": 0
+    },
+    {
+      "label": "g2a-install",
+      "exitCode": 0
+    },
+    {
+      "label": "g2a-verify",
+      "exitCode": 0
+    },
+    {
+      "label": "g2b-migrate",
+      "exitCode": 0
+    },
+    {
+      "label": "g2b-install",
+      "exitCode": 0
+    },
+    {
+      "label": "g2b-verify",
+      "exitCode": 0
+    },
+    {
+      "label": "k2-migrate",
+      "exitCode": 0
+    },
+    {
+      "label": "k2-install",
+      "exitCode": 0
+    },
+    {
+      "label": "k2-verify",
+      "exitCode": 0
+    },
+    {
+      "label": "g3-migrate",
+      "exitCode": 0
+    },
+    {
+      "label": "g3-install",
+      "exitCode": 0
+    },
+    {
+      "label": "g3-verify",
+      "exitCode": 0
+    },
+    {
+      "label": "2026_11_22_150000_ops009_close_command_compatibility",
+      "exitCode": 0
+    },
+    {
+      "label": "2026_11_22_170000_ops009_g2b_close_audit_compatibility",
+      "exitCode": 0
+    },
+    {
+      "label": "2026_11_22_190000_ops009_r3_close_audit_provenance",
+      "exitCode": 0
+    },
+    {
+      "label": "2026_11_22_191000_ops009_r3_origin_notice_effect",
+      "exitCode": 0
+    },
+    {
+      "label": "2026_11_23_020000_ops009_origin_delivery_exception_queue",
+      "exitCode": 0
+    }
+  ]
+}

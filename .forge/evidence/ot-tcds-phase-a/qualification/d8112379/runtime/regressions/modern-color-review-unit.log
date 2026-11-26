@@ -1,0 +1,10 @@
+✔ gradient paint evidence measures actual pixels and rejects a low-contrast stop (15708.8522ms)
+✔ manual contrast evidence resolves modern CSS colors and leaves vector paint for visual review (18212.086ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 23595.6585

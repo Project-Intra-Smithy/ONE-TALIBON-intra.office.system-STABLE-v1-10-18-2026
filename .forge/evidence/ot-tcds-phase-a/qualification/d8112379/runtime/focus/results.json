@@ -1,0 +1,1569 @@
+{
+  "sourceSha": "d811237976c6732809f4a8b6afabaf651c964808",
+  "sourceWorktreeDirty": false,
+  "completed": true,
+  "passed": true,
+  "buildManifestSha256": "b0fbc1dd18d0a2e42ad9cb9a2b7917cdc088b24a36a2a902f0152db0277f8be9",
+  "observations": [
+    {
+      "route": "/transactions",
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div data-presentation=\"standard\" data-workspace-shell=\"true\" class=\"min-h-[calc(100dvh-var(--ot-toolbar-height,0px))] bg-[var(--surface-canvas)] text-[var(--ink-primary)] lg:grid lg:transition-[grid-template-columns] lg:duration-150 lg:ease-out lg:grid-cols-[264px_minmax(0,1fr)]\">",
+                      "target": [
+                        ".min-h-\\[calc\\(100dvh-var\\(--ot-toolbar-height\\,0px\\)\\)\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>Due Soon</span>",
+              "target": [
+                ".whitespace-nowrap.border-transparent.bg-transparent:nth-child(3) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div data-presentation=\"standard\" data-workspace-shell=\"true\" class=\"min-h-[calc(100dvh-var(--ot-toolbar-height,0px))] bg-[var(--surface-canvas)] text-[var(--ink-primary)] lg:grid lg:transition-[grid-template-columns] lg:duration-150 lg:ease-out lg:grid-cols-[264px_minmax(0,1fr)]\">",
+                      "target": [
+                        ".min-h-\\[calc\\(100dvh-var\\(--ot-toolbar-height\\,0px\\)\\)\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>Overdue</span>",
+              "target": [
+                ".whitespace-nowrap.border-transparent.bg-transparent:nth-child(4) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div data-presentation=\"standard\" data-workspace-shell=\"true\" class=\"min-h-[calc(100dvh-var(--ot-toolbar-height,0px))] bg-[var(--surface-canvas)] text-[var(--ink-primary)] lg:grid lg:transition-[grid-template-columns] lg:duration-150 lg:ease-out lg:grid-cols-[264px_minmax(0,1fr)]\">",
+                      "target": [
+                        ".min-h-\\[calc\\(100dvh-var\\(--ot-toolbar-height\\,0px\\)\\)\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>Recently Updated</span>",
+              "target": [
+                ".whitespace-nowrap.border-transparent.bg-transparent:nth-child(5) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div data-presentation=\"standard\" data-workspace-shell=\"true\" class=\"min-h-[calc(100dvh-var(--ot-toolbar-height,0px))] bg-[var(--surface-canvas)] text-[var(--ink-primary)] lg:grid lg:transition-[grid-template-columns] lg:duration-150 lg:ease-out lg:grid-cols-[264px_minmax(0,1fr)]\">",
+                      "target": [
+                        ".min-h-\\[calc\\(100dvh-var\\(--ot-toolbar-height\\,0px\\)\\)\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>Completed</span>",
+              "target": [
+                ".whitespace-nowrap.border-transparent.bg-transparent:nth-child(6) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div data-presentation=\"standard\" data-workspace-shell=\"true\" class=\"min-h-[calc(100dvh-var(--ot-toolbar-height,0px))] bg-[var(--surface-canvas)] text-[var(--ink-primary)] lg:grid lg:transition-[grid-template-columns] lg:duration-150 lg:ease-out lg:grid-cols-[264px_minmax(0,1fr)]\">",
+                      "target": [
+                        ".min-h-\\[calc\\(100dvh-var\\(--ot-toolbar-height\\,0px\\)\\)\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>My Requests</span>",
+              "target": [
+                ".whitespace-nowrap.border-transparent.bg-transparent:nth-child(7) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div data-presentation=\"standard\" data-workspace-shell=\"true\" class=\"min-h-[calc(100dvh-var(--ot-toolbar-height,0px))] bg-[var(--surface-canvas)] text-[var(--ink-primary)] lg:grid lg:transition-[grid-template-columns] lg:duration-150 lg:ease-out lg:grid-cols-[264px_minmax(0,1fr)]\">",
+                      "target": [
+                        ".min-h-\\[calc\\(100dvh-var\\(--ot-toolbar-height\\,0px\\)\\)\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>Waiting on Others</span>",
+              "target": [
+                ".whitespace-nowrap.border-transparent.bg-transparent:nth-child(8) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select id=\"_r_1_\" class=\"tcds-input\"><option value=\"\">Status: All</option></select>",
+                      "target": [
+                        "#_r_1_"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select id=\"_r_1_\" class=\"tcds-input\"><option value=\"\">Status: All</option></select>",
+              "target": [
+                "#_r_1_"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select id=\"_r_2_\" class=\"tcds-input\"><option value=\"\">Priority: All</option><option value=\"normal\">Normal</option><option value=\"high\">High</option><option value=\"urgent\">Urgent</option></select>",
+                      "target": [
+                        "#_r_2_"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select id=\"_r_2_\" class=\"tcds-input\"><option value=\"\">Priority: All</option><option value=\"normal\">Normal</option><option value=\"high\">High</option><option value=\"urgent\">Urgent</option></select>",
+              "target": [
+                "#_r_2_"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/departments",
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select id=\"_r_1_\" class=\"tcds-input\">",
+                      "target": [
+                        "#_r_1_"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select id=\"_r_1_\" class=\"tcds-input\">",
+              "target": [
+                "#_r_1_"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/legislation",
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "route": "/municipal-systems",
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "6.0pt (8px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<section class=\"rounded-xl border border-emerald-200 bg-gradient-to-r from-white via-emerald-50/55 to-amber-50/35 px-3 py-2.5 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10 xl:px-4 xl:py-3\">",
+                      "target": [
+                        ".bg-gradient-to-r"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<div class=\"flex items-center gap-2 text-[8px] font-black uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300 xl:text-[9px]\">",
+              "target": [
+                ".tracking-\\[0\\.14em\\]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.8pt (17px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<section class=\"rounded-xl border border-emerald-200 bg-gradient-to-r from-white via-emerald-50/55 to-amber-50/35 px-3 py-2.5 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10 xl:px-4 xl:py-3\">",
+                      "target": [
+                        ".bg-gradient-to-r"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h1 class=\"mt-1 text-[17px] font-black leading-tight tracking-tight text-slate-950 dark:text-white sm:text-[19px] xl:text-[22px] 2xl:text-[24px]\">Municipal systems connected through one shared digital backbone.</h1>",
+              "target": [
+                "h1"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "6.8pt (9px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<section class=\"rounded-xl border border-emerald-200 bg-gradient-to-r from-white via-emerald-50/55 to-amber-50/35 px-3 py-2.5 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10 xl:px-4 xl:py-3\">",
+                      "target": [
+                        ".bg-gradient-to-r"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"mt-0.5 text-[9px] text-[var(--ink-secondary)] xl:text-[10px]\">Current rollout, future municipal workspaces and reusable platform foundations.</p>",
+              "target": [
+                ".xl\\:text-\\[10px\\]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.8pt (17px)",
+                    "fontWeight": "bold",
+                    "messageKey": "shortTextContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"grid grid-cols-3 overflow-hidden rounded-lg border border-slate-200 bg-white/85 dark:border-slate-700 dark:bg-slate-900/45\">",
+                      "target": [
+                        ".grid-cols-3"
+                      ]
+                    },
+                    {
+                      "html": "<section class=\"rounded-xl border border-emerald-200 bg-gradient-to-r from-white via-emerald-50/55 to-amber-50/35 px-3 py-2.5 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10 xl:px-4 xl:py-3\">",
+                      "target": [
+                        ".bg-gradient-to-r"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element content is too short to determine if it is actual text content"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<div class=\"text-[17px] font-black tabular-nums text-emerald-700 dark:text-emerald-300 xl:text-[21px]\">5</div>",
+              "target": [
+                ".xl\\:py-2\\.5.text-center.px-2\\.5:nth-child(1) > .xl\\:text-\\[21px\\].text-\\[17px\\].tabular-nums"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "5.3pt (7px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"grid grid-cols-3 overflow-hidden rounded-lg border border-slate-200 bg-white/85 dark:border-slate-700 dark:bg-slate-900/45\">",
+                      "target": [
+                        ".grid-cols-3"
+                      ]
+                    },
+                    {
+                      "html": "<section class=\"rounded-xl border border-emerald-200 bg-gradient-to-r from-white via-emerald-50/55 to-amber-50/35 px-3 py-2.5 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10 xl:px-4 xl:py-3\">",
+                      "target": [
+                        ".bg-gradient-to-r"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<div class=\"text-[7px] font-extrabold uppercase tracking-[0.05em] text-[var(--ink-secondary)] xl:text-[8px]\">Rollout Priorities</div>",
+              "target": [
+                ".xl\\:py-2\\.5.text-center.px-2\\.5:nth-child(1) > .tracking-\\[0\\.05em\\].xl\\:text-\\[8px\\].text-\\[7px\\]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.8pt (17px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"grid grid-cols-3 overflow-hidden rounded-lg border border-slate-200 bg-white/85 dark:border-slate-700 dark:bg-slate-900/45\">",
+                      "target": [
+                        ".grid-cols-3"
+                      ]
+                    },
+                    {
+                      "html": "<section class=\"rounded-xl border border-emerald-200 bg-gradient-to-r from-white via-emerald-50/55 to-amber-50/35 px-3 py-2.5 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10 xl:px-4 xl:py-3\">",
+                      "target": [
+                        ".bg-gradient-to-r"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<div class=\"text-[17px] font-black tabular-nums text-amber-700 dark:text-amber-300 xl:text-[21px]\">14</div>",
+              "target": [
+                ".text-amber-700.dark\\:text-amber-300.xl\\:text-\\[21px\\]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "5.3pt (7px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"grid grid-cols-3 overflow-hidden rounded-lg border border-slate-200 bg-white/85 dark:border-slate-700 dark:bg-slate-900/45\">",
+                      "target": [
+                        ".grid-cols-3"
+                      ]
+                    },
+                    {
+                      "html": "<section class=\"rounded-xl border border-emerald-200 bg-gradient-to-r from-white via-emerald-50/55 to-amber-50/35 px-3 py-2.5 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10 xl:px-4 xl:py-3\">",
+                      "target": [
+                        ".bg-gradient-to-r"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<div class=\"text-[7px] font-extrabold uppercase tracking-[0.05em] text-[var(--ink-secondary)] xl:text-[8px]\">Future Systems</div>",
+              "target": [
+                ".border-x > .tracking-\\[0\\.05em\\].xl\\:text-\\[8px\\].text-\\[7px\\]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "5.3pt (7px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"grid grid-cols-3 overflow-hidden rounded-lg border border-slate-200 bg-white/85 dark:border-slate-700 dark:bg-slate-900/45\">",
+                      "target": [
+                        ".grid-cols-3"
+                      ]
+                    },
+                    {
+                      "html": "<section class=\"rounded-xl border border-emerald-200 bg-gradient-to-r from-white via-emerald-50/55 to-amber-50/35 px-3 py-2.5 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10 xl:px-4 xl:py-3\">",
+                      "target": [
+                        ".bg-gradient-to-r"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<div class=\"text-[7px] font-extrabold uppercase tracking-[0.05em] text-[var(--ink-secondary)] xl:text-[8px]\">Shared Backbone</div>",
+              "target": [
+                ".xl\\:py-2\\.5.text-center.px-2\\.5:nth-child(3) > .tracking-\\[0\\.05em\\].xl\\:text-\\[8px\\].text-\\[7px\\]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            }
+          ]
+        }
+      ],
+      "captionContrast": [
+        {
+          "selector": "#qa-rollout-caption",
+          "tag": "P",
+          "text": "Current rollout, future municipal workspaces and reusable platform foundations.",
+          "color": "rgb(74, 93, 85)",
+          "background": [
+            247,
+            248,
+            246
+          ],
+          "paintedInk": [
+            74,
+            93,
+            85
+          ],
+          "contrastRatio": null,
+          "requiredContrast": 4.5,
+          "fontSize": "9px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "unresolvedPaint": [
+            {
+              "tag": "SECTION",
+              "backgroundImage": "linear-gradient(to right, rgb(255, 255, 255) 0%, oklab(0.979 -0.0203862 0.00504016 / 0.55) 50%, oklab(0.987 -0.00202336 0.0219068 / 0.35) 100%)",
+              "filter": "none",
+              "mixBlendMode": "normal"
+            }
+          ],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": "Images, filters or blend modes require actual paint review; no CSS-only contrast pass inferred."
+        }
+      ],
+      "captionGradientBound": {
+        "gradient": "linear-gradient(to right, rgb(255, 255, 255) 0%, oklab(0.979 -0.0203862 0.00504016 / 0.55) 50%, oklab(0.987 -0.00202336 0.0219068 / 0.35) 100%)",
+        "backdrop": [
+          247,
+          248,
+          246
+        ],
+        "foreground": [
+          74,
+          93,
+          85,
+          1
+        ],
+        "width": 320,
+        "height": 199,
+        "minimumContrast": 6.592118636387819,
+        "pixels": 63680,
+        "requiredContrast": 4.5,
+        "note": "Actual browser raster of the computed gradient at the original section dimensions over its verified flat ancestor backdrop. Every pixel measured; raw swatch retained separately. Original page capture remains the visual reference.",
+        "capture": "caption-gradient-light.png"
+      }
+    },
+    {
+      "route": "/transactions",
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div data-presentation=\"standard\" data-workspace-shell=\"true\" class=\"min-h-[calc(100dvh-var(--ot-toolbar-height,0px))] bg-[var(--surface-canvas)] text-[var(--ink-primary)] lg:grid lg:transition-[grid-template-columns] lg:duration-150 lg:ease-out lg:grid-cols-[264px_minmax(0,1fr)]\">",
+                      "target": [
+                        ".min-h-\\[calc\\(100dvh-var\\(--ot-toolbar-height\\,0px\\)\\)\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>Due Soon</span>",
+              "target": [
+                ".whitespace-nowrap.border-transparent.bg-transparent:nth-child(3) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div data-presentation=\"standard\" data-workspace-shell=\"true\" class=\"min-h-[calc(100dvh-var(--ot-toolbar-height,0px))] bg-[var(--surface-canvas)] text-[var(--ink-primary)] lg:grid lg:transition-[grid-template-columns] lg:duration-150 lg:ease-out lg:grid-cols-[264px_minmax(0,1fr)]\">",
+                      "target": [
+                        ".min-h-\\[calc\\(100dvh-var\\(--ot-toolbar-height\\,0px\\)\\)\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>Overdue</span>",
+              "target": [
+                ".whitespace-nowrap.border-transparent.bg-transparent:nth-child(4) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div data-presentation=\"standard\" data-workspace-shell=\"true\" class=\"min-h-[calc(100dvh-var(--ot-toolbar-height,0px))] bg-[var(--surface-canvas)] text-[var(--ink-primary)] lg:grid lg:transition-[grid-template-columns] lg:duration-150 lg:ease-out lg:grid-cols-[264px_minmax(0,1fr)]\">",
+                      "target": [
+                        ".min-h-\\[calc\\(100dvh-var\\(--ot-toolbar-height\\,0px\\)\\)\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>Recently Updated</span>",
+              "target": [
+                ".whitespace-nowrap.border-transparent.bg-transparent:nth-child(5) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div data-presentation=\"standard\" data-workspace-shell=\"true\" class=\"min-h-[calc(100dvh-var(--ot-toolbar-height,0px))] bg-[var(--surface-canvas)] text-[var(--ink-primary)] lg:grid lg:transition-[grid-template-columns] lg:duration-150 lg:ease-out lg:grid-cols-[264px_minmax(0,1fr)]\">",
+                      "target": [
+                        ".min-h-\\[calc\\(100dvh-var\\(--ot-toolbar-height\\,0px\\)\\)\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>Completed</span>",
+              "target": [
+                ".whitespace-nowrap.border-transparent.bg-transparent:nth-child(6) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div data-presentation=\"standard\" data-workspace-shell=\"true\" class=\"min-h-[calc(100dvh-var(--ot-toolbar-height,0px))] bg-[var(--surface-canvas)] text-[var(--ink-primary)] lg:grid lg:transition-[grid-template-columns] lg:duration-150 lg:ease-out lg:grid-cols-[264px_minmax(0,1fr)]\">",
+                      "target": [
+                        ".min-h-\\[calc\\(100dvh-var\\(--ot-toolbar-height\\,0px\\)\\)\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>My Requests</span>",
+              "target": [
+                ".whitespace-nowrap.border-transparent.bg-transparent:nth-child(7) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div data-presentation=\"standard\" data-workspace-shell=\"true\" class=\"min-h-[calc(100dvh-var(--ot-toolbar-height,0px))] bg-[var(--surface-canvas)] text-[var(--ink-primary)] lg:grid lg:transition-[grid-template-columns] lg:duration-150 lg:ease-out lg:grid-cols-[264px_minmax(0,1fr)]\">",
+                      "target": [
+                        ".min-h-\\[calc\\(100dvh-var\\(--ot-toolbar-height\\,0px\\)\\)\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span>Waiting on Others</span>",
+              "target": [
+                ".whitespace-nowrap.border-transparent.bg-transparent:nth-child(8) > span:nth-child(1)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select id=\"_r_1_\" class=\"tcds-input\"><option value=\"\">Status: All</option></select>",
+                      "target": [
+                        "#_r_1_"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select id=\"_r_1_\" class=\"tcds-input\"><option value=\"\">Status: All</option></select>",
+              "target": [
+                "#_r_1_"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select id=\"_r_2_\" class=\"tcds-input\"><option value=\"\">Priority: All</option><option value=\"normal\">Normal</option><option value=\"high\">High</option><option value=\"urgent\">Urgent</option></select>",
+                      "target": [
+                        "#_r_2_"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select id=\"_r_2_\" class=\"tcds-input\"><option value=\"\">Priority: All</option><option value=\"normal\">Normal</option><option value=\"high\">High</option><option value=\"urgent\">Urgent</option></select>",
+              "target": [
+                "#_r_2_"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/departments",
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgImage",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select id=\"_r_1_\" class=\"tcds-input\">",
+                      "target": [
+                        "#_r_1_"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background image"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select id=\"_r_1_\" class=\"tcds-input\">",
+              "target": [
+                "#_r_1_"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background image"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/legislation",
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "route": "/municipal-systems",
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "6.0pt (8px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<section class=\"rounded-xl border border-emerald-200 bg-gradient-to-r from-white via-emerald-50/55 to-amber-50/35 px-3 py-2.5 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10 xl:px-4 xl:py-3\">",
+                      "target": [
+                        ".bg-gradient-to-r"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<div class=\"flex items-center gap-2 text-[8px] font-black uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300 xl:text-[9px]\">",
+              "target": [
+                ".tracking-\\[0\\.14em\\]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.8pt (17px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<section class=\"rounded-xl border border-emerald-200 bg-gradient-to-r from-white via-emerald-50/55 to-amber-50/35 px-3 py-2.5 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10 xl:px-4 xl:py-3\">",
+                      "target": [
+                        ".bg-gradient-to-r"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<h1 class=\"mt-1 text-[17px] font-black leading-tight tracking-tight text-slate-950 dark:text-white sm:text-[19px] xl:text-[22px] 2xl:text-[24px]\">Municipal systems connected through one shared digital backbone.</h1>",
+              "target": [
+                "h1"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "6.8pt (9px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<section class=\"rounded-xl border border-emerald-200 bg-gradient-to-r from-white via-emerald-50/55 to-amber-50/35 px-3 py-2.5 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10 xl:px-4 xl:py-3\">",
+                      "target": [
+                        ".bg-gradient-to-r"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"mt-0.5 text-[9px] text-[var(--ink-secondary)] xl:text-[10px]\">Current rollout, future municipal workspaces and reusable platform foundations.</p>",
+              "target": [
+                ".xl\\:text-\\[10px\\]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.8pt (17px)",
+                    "fontWeight": "bold",
+                    "messageKey": "shortTextContent",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"grid grid-cols-3 overflow-hidden rounded-lg border border-slate-200 bg-white/85 dark:border-slate-700 dark:bg-slate-900/45\">",
+                      "target": [
+                        ".grid-cols-3"
+                      ]
+                    },
+                    {
+                      "html": "<section class=\"rounded-xl border border-emerald-200 bg-gradient-to-r from-white via-emerald-50/55 to-amber-50/35 px-3 py-2.5 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10 xl:px-4 xl:py-3\">",
+                      "target": [
+                        ".bg-gradient-to-r"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element content is too short to determine if it is actual text content"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<div class=\"text-[17px] font-black tabular-nums text-emerald-700 dark:text-emerald-300 xl:text-[21px]\">5</div>",
+              "target": [
+                ".xl\\:py-2\\.5.text-center.px-2\\.5:nth-child(1) > .xl\\:text-\\[21px\\].text-\\[17px\\].tabular-nums"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "5.3pt (7px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"grid grid-cols-3 overflow-hidden rounded-lg border border-slate-200 bg-white/85 dark:border-slate-700 dark:bg-slate-900/45\">",
+                      "target": [
+                        ".grid-cols-3"
+                      ]
+                    },
+                    {
+                      "html": "<section class=\"rounded-xl border border-emerald-200 bg-gradient-to-r from-white via-emerald-50/55 to-amber-50/35 px-3 py-2.5 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10 xl:px-4 xl:py-3\">",
+                      "target": [
+                        ".bg-gradient-to-r"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<div class=\"text-[7px] font-extrabold uppercase tracking-[0.05em] text-[var(--ink-secondary)] xl:text-[8px]\">Rollout Priorities</div>",
+              "target": [
+                ".xl\\:py-2\\.5.text-center.px-2\\.5:nth-child(1) > .tracking-\\[0\\.05em\\].xl\\:text-\\[8px\\].text-\\[7px\\]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.8pt (17px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"grid grid-cols-3 overflow-hidden rounded-lg border border-slate-200 bg-white/85 dark:border-slate-700 dark:bg-slate-900/45\">",
+                      "target": [
+                        ".grid-cols-3"
+                      ]
+                    },
+                    {
+                      "html": "<section class=\"rounded-xl border border-emerald-200 bg-gradient-to-r from-white via-emerald-50/55 to-amber-50/35 px-3 py-2.5 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10 xl:px-4 xl:py-3\">",
+                      "target": [
+                        ".bg-gradient-to-r"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<div class=\"text-[17px] font-black tabular-nums text-amber-700 dark:text-amber-300 xl:text-[21px]\">14</div>",
+              "target": [
+                ".text-amber-700.dark\\:text-amber-300.xl\\:text-\\[21px\\]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "5.3pt (7px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"grid grid-cols-3 overflow-hidden rounded-lg border border-slate-200 bg-white/85 dark:border-slate-700 dark:bg-slate-900/45\">",
+                      "target": [
+                        ".grid-cols-3"
+                      ]
+                    },
+                    {
+                      "html": "<section class=\"rounded-xl border border-emerald-200 bg-gradient-to-r from-white via-emerald-50/55 to-amber-50/35 px-3 py-2.5 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10 xl:px-4 xl:py-3\">",
+                      "target": [
+                        ".bg-gradient-to-r"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<div class=\"text-[7px] font-extrabold uppercase tracking-[0.05em] text-[var(--ink-secondary)] xl:text-[8px]\">Future Systems</div>",
+              "target": [
+                ".border-x > .tracking-\\[0\\.05em\\].xl\\:text-\\[8px\\].text-\\[7px\\]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "5.3pt (7px)",
+                    "fontWeight": "bold",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"grid grid-cols-3 overflow-hidden rounded-lg border border-slate-200 bg-white/85 dark:border-slate-700 dark:bg-slate-900/45\">",
+                      "target": [
+                        ".grid-cols-3"
+                      ]
+                    },
+                    {
+                      "html": "<section class=\"rounded-xl border border-emerald-200 bg-gradient-to-r from-white via-emerald-50/55 to-amber-50/35 px-3 py-2.5 shadow-sm dark:border-emerald-900/60 dark:from-[#142236] dark:via-emerald-950/15 dark:to-amber-950/10 xl:px-4 xl:py-3\">",
+                      "target": [
+                        ".bg-gradient-to-r"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<div class=\"text-[7px] font-extrabold uppercase tracking-[0.05em] text-[var(--ink-secondary)] xl:text-[8px]\">Shared Backbone</div>",
+              "target": [
+                ".xl\\:py-2\\.5.text-center.px-2\\.5:nth-child(3) > .tracking-\\[0\\.05em\\].xl\\:text-\\[8px\\].text-\\[7px\\]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            }
+          ]
+        }
+      ],
+      "captionContrast": [
+        {
+          "selector": "#qa-rollout-caption",
+          "tag": "P",
+          "text": "Current rollout, future municipal workspaces and reusable platform foundations.",
+          "color": "rgb(159, 177, 168)",
+          "background": [
+            15,
+            20,
+            18
+          ],
+          "paintedInk": [
+            159,
+            177,
+            168
+          ],
+          "contrastRatio": null,
+          "requiredContrast": 4.5,
+          "fontSize": "9px",
+          "fontWeight": "400",
+          "opacityChain": [],
+          "unresolvedPaint": [
+            {
+              "tag": "SECTION",
+              "backgroundImage": "linear-gradient(to right, rgb(20, 34, 54) 0%, oklab(0.262 -0.0505697 0.00661093 / 0.15) 50%, oklab(0.279 0.0538405 0.0550473 / 0.1) 100%)",
+              "filter": "none",
+              "mixBlendMode": "normal"
+            }
+          ],
+          "disabled": false,
+          "backgroundImage": "none",
+          "note": "Images, filters or blend modes require actual paint review; no CSS-only contrast pass inferred."
+        }
+      ],
+      "captionGradientBound": {
+        "gradient": "linear-gradient(to right, rgb(20, 34, 54) 0%, oklab(0.262 -0.0505697 0.00661093 / 0.15) 50%, oklab(0.279 0.0538405 0.0550473 / 0.1) 100%)",
+        "backdrop": [
+          15,
+          20,
+          18
+        ],
+        "foreground": [
+          159,
+          177,
+          168,
+          1
+        ],
+        "width": 320,
+        "height": 199,
+        "minimumContrast": 7.111071091348048,
+        "pixels": 63680,
+        "requiredContrast": 4.5,
+        "note": "Actual browser raster of the computed gradient at the original section dimensions over its verified flat ancestor backdrop. Every pixel measured; raw swatch retained separately. Original page capture remains the visual reference.",
+        "capture": "caption-gradient-dark.png"
+      }
+    }
+  ],
+  "focus": [
+    {
+      "theme": "light",
+      "name": "Needs My Action0",
+      "x": 16,
+      "right": 186.15625,
+      "unobscured": true
+    },
+    {
+      "theme": "light",
+      "name": "Assigned to Me0",
+      "x": 144.15625,
+      "right": 304.28125,
+      "unobscured": true
+    },
+    {
+      "theme": "light",
+      "name": "Due Soon0",
+      "x": 99.28125,
+      "right": 220.75,
+      "unobscured": true
+    },
+    {
+      "theme": "light",
+      "name": "Overdue0",
+      "x": 189.75,
+      "right": 303.921875,
+      "unobscured": true
+    },
+    {
+      "theme": "light",
+      "name": "Recently Updated0",
+      "x": 71.921875,
+      "right": 248.234375,
+      "unobscured": true
+    },
+    {
+      "theme": "light",
+      "name": "Completed0",
+      "x": 173.234375,
+      "right": 303.953125,
+      "unobscured": true
+    },
+    {
+      "theme": "light",
+      "name": "My Requests0",
+      "x": 87.953125,
+      "right": 231.953125,
+      "unobscured": true
+    },
+    {
+      "theme": "light",
+      "name": "Waiting on Others0",
+      "x": 126.953125,
+      "right": 303.5625,
+      "unobscured": true
+    },
+    {
+      "theme": "dark",
+      "name": "Needs My Action0",
+      "x": 16,
+      "right": 186.15625,
+      "unobscured": true
+    },
+    {
+      "theme": "dark",
+      "name": "Assigned to Me0",
+      "x": 144.15625,
+      "right": 304.28125,
+      "unobscured": true
+    },
+    {
+      "theme": "dark",
+      "name": "Due Soon0",
+      "x": 99.28125,
+      "right": 220.75,
+      "unobscured": true
+    },
+    {
+      "theme": "dark",
+      "name": "Overdue0",
+      "x": 189.75,
+      "right": 303.921875,
+      "unobscured": true
+    },
+    {
+      "theme": "dark",
+      "name": "Recently Updated0",
+      "x": 71.921875,
+      "right": 248.234375,
+      "unobscured": true
+    },
+    {
+      "theme": "dark",
+      "name": "Completed0",
+      "x": 173.234375,
+      "right": 303.953125,
+      "unobscured": true
+    },
+    {
+      "theme": "dark",
+      "name": "My Requests0",
+      "x": 87.953125,
+      "right": 231.953125,
+      "unobscured": true
+    },
+    {
+      "theme": "dark",
+      "name": "Waiting on Others0",
+      "x": 126.953125,
+      "right": 303.5625,
+      "unobscured": true
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "route": "/planning-maps",
+  "width": 320,
+  "theme": "light",
+  "status": 200,
+  "selects": [],
+  "capture": "planning-maps-320-light.png",
+  "plate": {
+    "texts": [
+      {
+        "text": "Poblacion Sector",
+        "fill": "rgb(248, 250, 252)",
+        "font": "600 11px \"Public Sans Variable\", \"Public Sans\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+        "x": 224,
+        "y": 188,
+        "bounds": {
+          "x": 224,
+          "y": 176.67257690429688,
+          "width": 89.229736328125,
+          "height": 14.159286499023438
+        },
+        "rectangleMinimumContrast": 1.8373983520848254,
+        "glyphPixels": 210,
+        "minimumContrast": 11.09154031064758,
+        "requiredContrast": 4.5
+      },
+      {
+        "text": "SCHEMATIC PLATE · NOT AN OFFICIAL CADASTRAL SURVEY",
+        "fill": "rgb(148, 163, 184)",
+        "font": "400 10px monospace",
+        "x": 18,
+        "y": 26,
+        "bounds": {
+          "x": 18,
+          "y": 17.504426956176758,
+          "width": 302.43756103515625,
+          "height": 11.327433586120605
+        },
+        "rectangleMinimumContrast": 5.8137041287226605,
+        "glyphPixels": 422,
+        "minimumContrast": 5.8137041287226605,
+        "requiredContrast": 4.5
+      }
+    ],
+    "background": "rgb(13, 31, 45)",
+    "note": "Actual SVG shapes rasterized without text; both conservative rectangle and loaded-font canvas glyph-mask minima retained. Glyph minima sample mask alpha >=80%, excluding antialias edges.",
+    "capture": "plate-backdrop-320-light.png"
+  }
+}

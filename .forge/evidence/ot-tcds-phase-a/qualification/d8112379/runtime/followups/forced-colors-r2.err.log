@@ -1,0 +1,28 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert.ok(paint.outlineWidth>=2)
+
+    at file:///C:/dev/TAL/ot-tcds-manual-repairs/storage/app/qa/forced-colors-d81123.mjs:2:2013 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.22.1
+file:///C:/dev/TAL/ot-tcds-manual-repairs/storage/app/qa/followups-final-d81123/forced-runtime.mjs:70
+        test.on('exit', code => code === 0 ? resolve() : reject(new Error(`Canonical browser validation failed (${code})`)));
+                                                                ^
+
+Error: Canonical browser validation failed (1)
+    at ChildProcess.<anonymous> (file:///C:/dev/TAL/ot-tcds-manual-repairs/storage/app/qa/followups-final-d81123/forced-runtime.mjs:70:65)
+    at ChildProcess.emit (node:events:514:28)
+    at ChildProcess._handle.onexit (node:internal/child_process:324:12)
+
+Node.js v24.22.1

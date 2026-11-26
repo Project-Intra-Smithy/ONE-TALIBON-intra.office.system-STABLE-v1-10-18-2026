@@ -1,0 +1,7 @@
+{
+  "createdAt": "2026-11-26T14:10:51.254Z",
+  "jsonFiles": 65,
+  "populatedSensitiveValueKeys": 0,
+  "hits": [],
+  "scope": "Targeted populated credential-value-key scan; not a general secret-free certificate. Sensitive enrollment/recovery values are intentionally absent from the source browser receipts."
+}

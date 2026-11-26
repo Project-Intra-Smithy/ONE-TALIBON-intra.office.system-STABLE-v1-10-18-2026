@@ -1,0 +1,147 @@
+{
+  "sourceSha": "d811237976c6732809f4a8b6afabaf651c964808",
+  "sourceWorktreeDirty": false,
+  "completed": false,
+  "passed": false,
+  "buildManifestSha256": "b0fbc1dd18d0a2e42ad9cb9a2b7917cdc088b24a36a2a902f0152db0277f8be9",
+  "observations": [
+    {
+      "route": "/transactions/create",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "selects": [
+        {
+          "name": "wr-category",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "Planning & Development"
+        },
+        {
+          "name": "wr-type",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "CLUP / Zoning"
+        },
+        {
+          "name": "wr-action",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "For Information"
+        },
+        {
+          "name": "wr-assignee",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "Unassigned / office queue"
+        }
+      ],
+      "capture": "transactions-create-320-light.png"
+    },
+    {
+      "route": "/development-plans",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "selects": [
+        {
+          "name": "_r_5_",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All"
+        },
+        {
+          "name": "_r_6_",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All"
+        },
+        {
+          "name": "_r_7_",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All"
+        }
+      ],
+      "capture": "development-plans-320-light.png"
+    },
+    {
+      "route": "/ppas",
+      "width": 320,
+      "theme": "light",
+      "status": 200,
+      "selects": [
+        {
+          "name": "Responsible office",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All offices"
+        },
+        {
+          "name": "Year",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All years"
+        },
+        {
+          "name": "Status",
+          "color": "rgb(20, 33, 28)",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5d55' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+          "backgroundPosition": "right 12px 50%",
+          "backgroundSize": "16px 16px",
+          "paddingInlineEnd": "36px",
+          "appearance": "none",
+          "selected": "All statuses"
+        }
+      ],
+      "capture": "ppas-320-light.png"
+    }
+  ],
+  "scope": "Author manual paint follow-up with actual canonical captures; native select popup and assistive technology remain unverified. Closed-select raw paint and arrow geometry are retained for inspection."
+}
