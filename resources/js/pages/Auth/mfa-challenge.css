@@ -86,7 +86,8 @@
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
-    transition: background-color .15s ease, border-color .15s ease;
+    /* Theme switches must not interpolate a light surface beneath dark-theme ink. */
+    transition: border-color .15s ease;
 }
 
 .mfa-challenge-primary {

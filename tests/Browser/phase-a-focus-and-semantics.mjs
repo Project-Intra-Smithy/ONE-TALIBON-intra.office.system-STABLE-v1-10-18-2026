@@ -5,6 +5,7 @@ import crypto from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {chromium} from 'playwright';
 import {contrastReview} from './phase-a-manual-review.mjs';
+import {gradientCaptionReview} from './phase-a-gradient-caption.mjs';
 const origin=process.env.PHASE_A_CANONICAL_URL;assert.match(origin,/^http:\/\/127\.0\.0\.1:\d+$/);
 const sourceSha=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
 assert.equal(execFileSync('git',['status','--porcelain'],{encoding:'utf8'}).trim(),'','Freeze the source before this regression');
@@ -21,7 +22,7 @@ observations.push({route,theme,status:response.status(),violations:audit.violati
 assert.equal(audit.violations.length,0,route);assert.equal(audit.incomplete.filter(x=>x.id==='aria-prohibited-attr').length,0,route+' unresolved naming semantics');
 if(route==='/municipal-systems'){
 await page.getByText('Current rollout, future municipal workspaces and reusable platform foundations.',{exact:true}).evaluate(node=>node.id='qa-rollout-caption');
-const contrast=await contrastReview(page,{incomplete:[{id:'color-contrast',nodes:[{target:['#qa-rollout-caption']}]}]});observations.at(-1).captionContrast=contrast;assert.ok(contrast[0].contrastRatio>=4.5);
+const contrast=await contrastReview(page,{incomplete:[{id:'color-contrast',nodes:[{target:['#qa-rollout-caption']}]}]});observations.at(-1).captionContrast=contrast;const gradient=await gradientCaptionReview(page);const swatch=`caption-gradient-${theme}.png`;fs.writeFileSync(output+'/'+swatch,Buffer.from(gradient.captureBase64,'base64'));delete gradient.captureBase64;observations.at(-1).captionGradientBound={...gradient,capture:swatch};assert.ok(gradient.minimumContrast>=gradient.requiredContrast);
 }
 if(route==='/transactions'){
 const buttons=page.getByRole('navigation',{name:'Work Request queues',exact:true}).getByRole('button');await buttons.first().focus();
