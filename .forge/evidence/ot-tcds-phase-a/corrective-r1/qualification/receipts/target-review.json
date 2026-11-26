@@ -1,0 +1,63 @@
+{
+  "sourceSha": "9ea015a8a3a6131a18ac6bb800edc9dbad0f065a",
+  "sourceWorktreeDirty": false,
+  "buildManifestSha256": "8a82ce17a0ce63dff3321e5e0a53296c82cf76aba660d7918a362e1dab29c197",
+  "completed": true,
+  "passed": true,
+  "scope": "Author targeted geometry and actual keyboard focus review; original scrolled axe findings preserved, independent review required",
+  "checks": [
+    {
+      "theme": "light",
+      "width": 320,
+      "scrolledViolationIds": [
+        "target-size"
+      ],
+      "hidden": {
+        "width": 32,
+        "height": 32,
+        "top": -11,
+        "bottom": 21,
+        "headerBottom": 56,
+        "entirelyAboveOrBehindHeader": true
+      },
+      "atRestViolationIds": [],
+      "focused": {
+        "focused": true,
+        "top": 69,
+        "bottom": 101,
+        "headerBottom": 56,
+        "fullyClear": true,
+        "hitCenter": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3
+      }
+    },
+    {
+      "theme": "dark",
+      "width": 320,
+      "scrolledViolationIds": [
+        "target-size"
+      ],
+      "hidden": {
+        "width": 32,
+        "height": 32,
+        "top": -11,
+        "bottom": 21,
+        "headerBottom": 56,
+        "entirelyAboveOrBehindHeader": true
+      },
+      "atRestViolationIds": [],
+      "focused": {
+        "focused": true,
+        "top": 69,
+        "bottom": 101,
+        "headerBottom": 56,
+        "fullyClear": true,
+        "hitCenter": true,
+        "outlineStyle": "solid",
+        "outlineWidth": 3
+      }
+    }
+  ],
+  "toolIssue": "https://github.com/dequelabs/axe-core/issues/3720"
+}

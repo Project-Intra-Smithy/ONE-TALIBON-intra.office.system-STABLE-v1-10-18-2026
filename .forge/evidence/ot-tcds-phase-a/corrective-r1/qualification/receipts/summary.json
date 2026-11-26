@@ -1,0 +1,44 @@
+{
+  "sourceSha": "9ea015a8a3a6131a18ac6bb800edc9dbad0f065a",
+  "predecessor": "d811237976c6732809f4a8b6afabaf651c964808",
+  "disposition": "PHASE_A_CORRECTIVE_SUCCESSOR_READY_FOR_INDEPENDENT_ACCEPTANCE",
+  "phaseA": "OPEN: independent acceptance and release holds remain",
+  "municipalAutomation": {
+    "passed": false,
+    "completed": true,
+    "scrolledTargetSizeFindings": 2,
+    "authorDisposition": "Reviewed tool limitation supported by geometry, at-rest audit and keyboard-focus review; independent confirmation required. Original failed result retained."
+  },
+  "counts": {
+    "canonicalRoutes": 84,
+    "canonicalInteractions": 66,
+    "supplementalStates": 16,
+    "expandedObservations": 508,
+    "municipalStates": 666,
+    "municipalTabChecks": 78,
+    "previewTabChecks": 156,
+    "previewMatrixStates": 12,
+    "modalKeyboardSteps": 864,
+    "navigationFocusChecks": 336,
+    "municipalInteractions": 156,
+    "axeObservations": 102,
+    "forcedColorStates": 20,
+    "previewCatalog": 390,
+    "frontendContracts": 128
+  },
+  "privateOriginalArtifacts": 2559,
+  "privateOriginalPngs": 2423,
+  "confidentiality": {
+    "privateReviewerPacketPublished": false,
+    "rawCapturesAndFailedLogs": "Retained in private archive, outside Git. Only two individually inspected synthetic-reference captures published.",
+    "publicJsonScreen": "Targeted credential-value/provider-token/private-key/developer-path screen, plus controlled synthetic source provenance; not a whole-history secret-free certificate.",
+    "absoluteDeveloperPathsPublished": false
+  },
+  "limitations": [
+    "Two scrolled target-size findings remain in the original automation result; author review attributes them to sticky-grid tool behavior, requiring independent confirmation.",
+    "Native screen-reader and OS-popup qualification remains separate.",
+    "Historical confidentiality and dependency remediation remain separately governed; no release-security acceptance.",
+    "Original30s local navigation attempts failed/partially completed; reruns use disclosed120s local-only navigation deadline with byte-identical assertions after removing declared adaptations.",
+    "One generic fallback tablist is source/type checked; thirteen actual tablists are browser exercised."
+  ]
+}

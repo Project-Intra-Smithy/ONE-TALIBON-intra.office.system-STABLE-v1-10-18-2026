@@ -1,0 +1,3114 @@
+{
+  "baseline": "46f24d0f288e5584e3c45f5e8abf8466b6dc2a6a",
+  "predecessor": "d811237976c6732809f4a8b6afabaf651c964808",
+  "successor": "9ea015a8a3a6131a18ac6bb800edc9dbad0f065a",
+  "protectedBlobPaths": 616,
+  "changedProtectedPaths": [],
+  "workflowDefinitionsUnchangedFromPredecessor": true,
+  "blobs": [
+    {
+      "path": "app/Console/Commands/BootstrapFirstAdminCommand.php",
+      "baseline": "d788db95ffaa120c5802438f502e96c116dd4cd9",
+      "successor": "d788db95ffaa120c5802438f502e96c116dd4cd9"
+    },
+    {
+      "path": "app/Console/Commands/IntegrationClientCreateCommand.php",
+      "baseline": "b898c6e4a724b2805aff81ab514430bb3245d8a9",
+      "successor": "b898c6e4a724b2805aff81ab514430bb3245d8a9"
+    },
+    {
+      "path": "app/Console/Commands/IntegrationCredentialIssueCommand.php",
+      "baseline": "7c3c4cb169c36fdab6f2bda4d3310d2ddd78cfd5",
+      "successor": "7c3c4cb169c36fdab6f2bda4d3310d2ddd78cfd5"
+    },
+    {
+      "path": "app/Console/Commands/IntegrationCredentialRevokeCommand.php",
+      "baseline": "d81fe1a63364751b8a83323be48021af03574486",
+      "successor": "d81fe1a63364751b8a83323be48021af03574486"
+    },
+    {
+      "path": "app/Domain/Authorization/AuthorizationContext.php",
+      "baseline": "97e2be567e5cbb7240077a05699ef4b2e6226ca9",
+      "successor": "97e2be567e5cbb7240077a05699ef4b2e6226ca9"
+    },
+    {
+      "path": "app/Domain/Authorization/CapabilitySet.php",
+      "baseline": "8bc9d503629dda0d2d9a48f43ebc57b101d16393",
+      "successor": "8bc9d503629dda0d2d9a48f43ebc57b101d16393"
+    },
+    {
+      "path": "app/Domain/Correspondence/CorrespondenceClassification.php",
+      "baseline": "c31541d7483e7b805c5a556afc78a8393f630e1d",
+      "successor": "c31541d7483e7b805c5a556afc78a8393f630e1d"
+    },
+    {
+      "path": "app/Domain/Correspondence/CorrespondenceLifecycleState.php",
+      "baseline": "8dd0f09100f1bf9054b380abd0029b7de37cf5e9",
+      "successor": "8dd0f09100f1bf9054b380abd0029b7de37cf5e9"
+    },
+    {
+      "path": "app/Domain/Custody/BrokerCloseAck.php",
+      "baseline": "6be9d75955e376b0292e6c89390189e4eba4edbb",
+      "successor": "6be9d75955e376b0292e6c89390189e4eba4edbb"
+    },
+    {
+      "path": "app/Domain/Custody/BrokerDisposeReceipt.php",
+      "baseline": "6b27a3c73153e08a5d3d76a1c2225d87f560a77b",
+      "successor": "6b27a3c73153e08a5d3d76a1c2225d87f560a77b"
+    },
+    {
+      "path": "app/Domain/Custody/BrokerReadObject.php",
+      "baseline": "3a21c49edda5f08d43acc9f77a8b8c1fd89d5428",
+      "successor": "3a21c49edda5f08d43acc9f77a8b8c1fd89d5428"
+    },
+    {
+      "path": "app/Domain/Custody/CommandOutcome.php",
+      "baseline": "6887fc4149e6b67f8affba44127ef084b20cb0e6",
+      "successor": "6887fc4149e6b67f8affba44127ef084b20cb0e6"
+    },
+    {
+      "path": "app/Domain/Custody/Exceptions/CustodyFenceClosedException.php",
+      "baseline": "3c5fbce9c01598fbcb0496e5f01ed8ad595bfe3e",
+      "successor": "3c5fbce9c01598fbcb0496e5f01ed8ad595bfe3e"
+    },
+    {
+      "path": "app/Domain/Custody/Exceptions/CustodyIdempotencyMismatchException.php",
+      "baseline": "55be9139a33f48c15edd56fe188e35bb92c61013",
+      "successor": "55be9139a33f48c15edd56fe188e35bb92c61013"
+    },
+    {
+      "path": "app/Domain/Custody/Exceptions/CustodyOperationAbortedException.php",
+      "baseline": "da0de07a6f3857b2a478e5e9f06638ed3a45af7f",
+      "successor": "da0de07a6f3857b2a478e5e9f06638ed3a45af7f"
+    },
+    {
+      "path": "app/Domain/Custody/Exceptions/CustodyOperationPendingException.php",
+      "baseline": "30992a591031ce7e417ec7e8dd7edb670ea98709",
+      "successor": "30992a591031ce7e417ec7e8dd7edb670ea98709"
+    },
+    {
+      "path": "app/Domain/Custody/Exceptions/CustodyOperationUncertainException.php",
+      "baseline": "d727fe0a8d9765bcbac46b229768f799f46d676d",
+      "successor": "d727fe0a8d9765bcbac46b229768f799f46d676d"
+    },
+    {
+      "path": "app/Domain/Custody/Exceptions/CustodyViolationException.php",
+      "baseline": "f04a200e597ea0bbef55f37634cb408af0b05410",
+      "successor": "f04a200e597ea0bbef55f37634cb408af0b05410"
+    },
+    {
+      "path": "app/Domain/Custody/ProducedSourceEvent.php",
+      "baseline": "bc0dca89146e3cddd91e8d992198a01f7d0bbe89",
+      "successor": "bc0dca89146e3cddd91e8d992198a01f7d0bbe89"
+    },
+    {
+      "path": "app/Domain/Custody/StagingReceipt.php",
+      "baseline": "4cb5c9fd6c0108ecca94ae7bec3bc85f1b52fae0",
+      "successor": "4cb5c9fd6c0108ecca94ae7bec3bc85f1b52fae0"
+    },
+    {
+      "path": "app/Domain/Custody/VerifiedCommandActor.php",
+      "baseline": "238410f6d13ef9a4e80e31fa94ac0618d8d51ebd",
+      "successor": "238410f6d13ef9a4e80e31fa94ac0618d8d51ebd"
+    },
+    {
+      "path": "app/Domain/Identity/ConfirmedMfaEnrollment.php",
+      "baseline": "8f78df42a064a8efb36628bd28fa677d7f0e03aa",
+      "successor": "8f78df42a064a8efb36628bd28fa677d7f0e03aa"
+    },
+    {
+      "path": "app/Domain/Identity/PrivilegedRolePolicy.php",
+      "baseline": "b28b5dfa070e6e31aab8da89cf661e4814d4ef34",
+      "successor": "b28b5dfa070e6e31aab8da89cf661e4814d4ef34"
+    },
+    {
+      "path": "app/Domain/Identity/VerifiedMunicipalActor.php",
+      "baseline": "401ea2f0c6bb03f9ae01eda7d29e08360e9d6a51",
+      "successor": "401ea2f0c6bb03f9ae01eda7d29e08360e9d6a51"
+    },
+    {
+      "path": "app/Domain/Integration/IntegrationAuthenticationException.php",
+      "baseline": "b4bbc05a5e1e1ee88dd1571e7160ee563c9c46c7",
+      "successor": "b4bbc05a5e1e1ee88dd1571e7160ee563c9c46c7"
+    },
+    {
+      "path": "app/Domain/Integration/IntegrationAuthenticationFailure.php",
+      "baseline": "1d3c1c73eb15f6a1fa3faa026eed4d60f9b0f1b7",
+      "successor": "1d3c1c73eb15f6a1fa3faa026eed4d60f9b0f1b7"
+    },
+    {
+      "path": "app/Domain/Integration/IntegrationClientContext.php",
+      "baseline": "d8a0321ee6132a159a87b804bf4f75ca75707028",
+      "successor": "d8a0321ee6132a159a87b804bf4f75ca75707028"
+    },
+    {
+      "path": "app/Domain/Integration/IntegrationErrorCode.php",
+      "baseline": "2e6e44989ff3084fd2f0b426ab70d70e3ce9d180",
+      "successor": "2e6e44989ff3084fd2f0b426ab70d70e3ce9d180"
+    },
+    {
+      "path": "app/Domain/Integration/IntegrationIdempotencyDecision.php",
+      "baseline": "ea15478f105a7789eb8b3ee4902768a3f68503cf",
+      "successor": "ea15478f105a7789eb8b3ee4902768a3f68503cf"
+    },
+    {
+      "path": "app/Domain/Integration/IntegrationIdempotencyDecisionType.php",
+      "baseline": "c909f60895c74e65cd8ad9499a30209a0fde0657",
+      "successor": "c909f60895c74e65cd8ad9499a30209a0fde0657"
+    },
+    {
+      "path": "app/Domain/Integration/IntegrationIdempotencyExecutionRejected.php",
+      "baseline": "8ba264ef941ca4b681230af66803cc47bd474115",
+      "successor": "8ba264ef941ca4b681230af66803cc47bd474115"
+    },
+    {
+      "path": "app/Domain/Integration/IntegrationIdempotencyStatus.php",
+      "baseline": "6c6514d8538bdeb4c526c3fa8651ff088b77e903",
+      "successor": "6c6514d8538bdeb4c526c3fa8651ff088b77e903"
+    },
+    {
+      "path": "app/Domain/Integration/IntegrationOperation.php",
+      "baseline": "d9a4ac4ebf88545de3fc35c93508853a507968e5",
+      "successor": "d9a4ac4ebf88545de3fc35c93508853a507968e5"
+    },
+    {
+      "path": "app/Domain/Integration/IntegrationRequestAttributes.php",
+      "baseline": "72749c42bbb21d457d3f5e192aea65f803862480",
+      "successor": "72749c42bbb21d457d3f5e192aea65f803862480"
+    },
+    {
+      "path": "app/Domain/Integration/IntegrationScope.php",
+      "baseline": "511e5a65554cb62c6ebb15ccc9144eadb0bcf76e",
+      "successor": "511e5a65554cb62c6ebb15ccc9144eadb0bcf76e"
+    },
+    {
+      "path": "app/Domain/Integration/IssuedIntegrationCredential.php",
+      "baseline": "21128f9587cf422e38158f326d0bfe6083809cd1",
+      "successor": "21128f9587cf422e38158f326d0bfe6083809cd1"
+    },
+    {
+      "path": "app/Domain/Outbox/OutboxMessageStatus.php",
+      "baseline": "4efdd6295c71926f70fa848c71bdcad356afeb34",
+      "successor": "4efdd6295c71926f70fa848c71bdcad356afeb34"
+    },
+    {
+      "path": "app/Domain/Tasks/TaskCoreAccess.php",
+      "baseline": "e733f4daa4f960c1fe5e94416e7c69e8879ce7ae",
+      "successor": "e733f4daa4f960c1fe5e94416e7c69e8879ce7ae"
+    },
+    {
+      "path": "app/Domain/Tasks/TaskCoreService.php",
+      "baseline": "4e243044dd1f408b038c33d9dd602f8b42f05386",
+      "successor": "4e243044dd1f408b038c33d9dd602f8b42f05386"
+    },
+    {
+      "path": "app/Domain/Tasks/TaskLifecycleState.php",
+      "baseline": "49b75bc22563b476e3fb07bb6eee96d253efeccf",
+      "successor": "49b75bc22563b476e3fb07bb6eee96d253efeccf"
+    },
+    {
+      "path": "app/Domain/TravelOrders/TravelOrderStatus.php",
+      "baseline": "f69e561f73507468d774413aa6fc0fbe65c6dcdb",
+      "successor": "f69e561f73507468d774413aa6fc0fbe65c6dcdb"
+    },
+    {
+      "path": "app/Domain/Workflow/Authorization/TransactionAccessDecider.php",
+      "baseline": "c882f0cdb1c67630a9c2bb3c108fe70009ddb54d",
+      "successor": "c882f0cdb1c67630a9c2bb3c108fe70009ddb54d"
+    },
+    {
+      "path": "app/Domain/Workflow/Authorization/TransactionActorEligibility.php",
+      "baseline": "5c78091336409b623f9f2e63ee958cde067f20d8",
+      "successor": "5c78091336409b623f9f2e63ee958cde067f20d8"
+    },
+    {
+      "path": "app/Domain/Workflow/Authorization/TransactionAuthorizationContextFactory.php",
+      "baseline": "7b178b81eef925404f5be850c6e79b83ec21872f",
+      "successor": "7b178b81eef925404f5be850c6e79b83ec21872f"
+    },
+    {
+      "path": "app/Domain/Workflow/Authorization/TransactionCapabilities.php",
+      "baseline": "d4667e980e644b29754ab18e1a4f89f308a8fdde",
+      "successor": "d4667e980e644b29754ab18e1a4f89f308a8fdde"
+    },
+    {
+      "path": "app/Domain/Workflow/Events/WorkflowTransactionCreated.php",
+      "baseline": "b9a999c4f4dfae2b3d4fcbc2b3b01a16f6ce76f4",
+      "successor": "b9a999c4f4dfae2b3d4fcbc2b3b01a16f6ce76f4"
+    },
+    {
+      "path": "app/Domain/Workflow/Events/WorkflowTransactionTransitioned.php",
+      "baseline": "e610cc78770c63c13f384ab5476bb3926672e591",
+      "successor": "e610cc78770c63c13f384ab5476bb3926672e591"
+    },
+    {
+      "path": "app/Domain/Workflow/Listeners/AuditWorkflowTransactionMutation.php",
+      "baseline": "4c9bd5efb479bb7700865c279da353e7042d99b1",
+      "successor": "4c9bd5efb479bb7700865c279da353e7042d99b1"
+    },
+    {
+      "path": "app/Domain/Workflow/Listeners/NotifyWorkflowTransactionMutation.php",
+      "baseline": "0d2d32c97db9f29435a956dd0c9066f6c7110685",
+      "successor": "0d2d32c97db9f29435a956dd0c9066f6c7110685"
+    },
+    {
+      "path": "app/Domain/Workflow/Listeners/SyncWorkflowTransactionCalendar.php",
+      "baseline": "001bc235ab8b83a03628db1721c9f85656b92794",
+      "successor": "001bc235ab8b83a03628db1721c9f85656b92794"
+    },
+    {
+      "path": "app/Domain/Workflow/ResolvedWorkflowTransition.php",
+      "baseline": "60284c7ba58d2bf13569db760841228d4bd7445a",
+      "successor": "60284c7ba58d2bf13569db760841228d4bd7445a"
+    },
+    {
+      "path": "app/Domain/Workflow/SlaResolver.php",
+      "baseline": "42a34dfae51dd37f1cc67ebfdde1688272f1d38a",
+      "successor": "42a34dfae51dd37f1cc67ebfdde1688272f1d38a"
+    },
+    {
+      "path": "app/Domain/Workflow/WorkflowDefinition.php",
+      "baseline": "1da02670505b8bcd3ecd3edecc8d2837332de452",
+      "successor": "1da02670505b8bcd3ecd3edecc8d2837332de452"
+    },
+    {
+      "path": "app/Domain/Workflow/WorkflowDefinitionResolver.php",
+      "baseline": "6c7a6f075385171968756d110c3e3fdef8c831ba",
+      "successor": "6c7a6f075385171968756d110c3e3fdef8c831ba"
+    },
+    {
+      "path": "app/Domain/Workflow/WorkflowDestinationResolver.php",
+      "baseline": "fd8f5b44f27aefdd17d4a3b01fb519cc7f18316e",
+      "successor": "fd8f5b44f27aefdd17d4a3b01fb519cc7f18316e"
+    },
+    {
+      "path": "app/Domain/Workflow/WorkflowTransitionRule.php",
+      "baseline": "e1c9219f39be51d29814bc6eadc6c25e26bac76d",
+      "successor": "e1c9219f39be51d29814bc6eadc6c25e26bac76d"
+    },
+    {
+      "path": "app/Http/Controllers/AdminDashboardController.php",
+      "baseline": "d7f1a6c0d3264226f33eb302bc0ab4f3ce314279",
+      "successor": "d7f1a6c0d3264226f33eb302bc0ab4f3ce314279"
+    },
+    {
+      "path": "app/Http/Controllers/AdminEmployeeRegistrationController.php",
+      "baseline": "3f6011195d119cd16c3e0d8e5762bb89c7478937",
+      "successor": "3f6011195d119cd16c3e0d8e5762bb89c7478937"
+    },
+    {
+      "path": "app/Http/Controllers/Api/V1/CorrespondenceIntegrationController.php",
+      "baseline": "0079a6e0ef18e67b46f273a7962cee3a973db7cc",
+      "successor": "0079a6e0ef18e67b46f273a7962cee3a973db7cc"
+    },
+    {
+      "path": "app/Http/Controllers/Api/V1/IntegrationProofWriteController.php",
+      "baseline": "24ee2701b57fa59887606480b058f3541b8e8682",
+      "successor": "24ee2701b57fa59887606480b058f3541b8e8682"
+    },
+    {
+      "path": "app/Http/Controllers/Api/V1/IntegrationSelfController.php",
+      "baseline": "9ab3b03c8a877ff6afa36b8d731e7786296f0c21",
+      "successor": "9ab3b03c8a877ff6afa36b8d731e7786296f0c21"
+    },
+    {
+      "path": "app/Http/Controllers/AuditController.php",
+      "baseline": "cdb74af1b050fd6afd729f011c4b267447d1ac10",
+      "successor": "cdb74af1b050fd6afd729f011c4b267447d1ac10"
+    },
+    {
+      "path": "app/Http/Controllers/Auth/AccountSecurityController.php",
+      "baseline": "bc09994d121c73344d452c88d3f807757dfb7cfa",
+      "successor": "bc09994d121c73344d452c88d3f807757dfb7cfa"
+    },
+    {
+      "path": "app/Http/Controllers/Auth/AuthenticatedSessionController.php",
+      "baseline": "6a121a997d48e575ca38500288dd9221fea34e20",
+      "successor": "6a121a997d48e575ca38500288dd9221fea34e20"
+    },
+    {
+      "path": "app/Http/Controllers/Auth/MfaChallengeController.php",
+      "baseline": "b7e8853a94a7435c1ed2125d5f3a0657c1f7d357",
+      "successor": "b7e8853a94a7435c1ed2125d5f3a0657c1f7d357"
+    },
+    {
+      "path": "app/Http/Controllers/Auth/MfaEnrollmentController.php",
+      "baseline": "1d055ac8dace83f078d013904b68de3810c03b39",
+      "successor": "1d055ac8dace83f078d013904b68de3810c03b39"
+    },
+    {
+      "path": "app/Http/Controllers/Auth/MfaSecurityController.php",
+      "baseline": "c397f8cc4ebb98fdf58204403c4c8ad8ac471c98",
+      "successor": "c397f8cc4ebb98fdf58204403c4c8ad8ac471c98"
+    },
+    {
+      "path": "app/Http/Controllers/Auth/PasswordChangeController.php",
+      "baseline": "6ca12c85b5934d05dabd88d4d8cb02a6fbf53947",
+      "successor": "6ca12c85b5934d05dabd88d4d8cb02a6fbf53947"
+    },
+    {
+      "path": "app/Http/Controllers/CalendarController.php",
+      "baseline": "8e721bd7372f5dd1dbc208c9d589b65708146127",
+      "successor": "8e721bd7372f5dd1dbc208c9d589b65708146127"
+    },
+    {
+      "path": "app/Http/Controllers/Controller.php",
+      "baseline": "ef916e5b829a4757d2a9871fc8a2c101e4cd1327",
+      "successor": "ef916e5b829a4757d2a9871fc8a2c101e4cd1327"
+    },
+    {
+      "path": "app/Http/Controllers/CorrespondenceLifecycleController.php",
+      "baseline": "2691e5f8b47d690b6b2e8e498b3f875b4e1e01bc",
+      "successor": "2691e5f8b47d690b6b2e8e498b3f875b4e1e01bc"
+    },
+    {
+      "path": "app/Http/Controllers/CorrespondenceWorkspaceActionController.php",
+      "baseline": "33461ef4d3bae78a50eff47c06a573d8de88f933",
+      "successor": "33461ef4d3bae78a50eff47c06a573d8de88f933"
+    },
+    {
+      "path": "app/Http/Controllers/CorrespondenceWorkspaceController.php",
+      "baseline": "972d8a1185402f6b4ec817619ff060dd7bf81e45",
+      "successor": "972d8a1185402f6b4ec817619ff060dd7bf81e45"
+    },
+    {
+      "path": "app/Http/Controllers/DashboardController.php",
+      "baseline": "52c3011cd9df197f8322b187685fcb32b842ac7a",
+      "successor": "52c3011cd9df197f8322b187685fcb32b842ac7a"
+    },
+    {
+      "path": "app/Http/Controllers/DepartmentController.php",
+      "baseline": "35d9f597918cb04d750cd009a53f753730b9ed35",
+      "successor": "35d9f597918cb04d750cd009a53f753730b9ed35"
+    },
+    {
+      "path": "app/Http/Controllers/DocumentCenterController.php",
+      "baseline": "c45e60d6f07a1d9c7b1505686e8c665e0c535c53",
+      "successor": "c45e60d6f07a1d9c7b1505686e8c665e0c535c53"
+    },
+    {
+      "path": "app/Http/Controllers/DocumentController.php",
+      "baseline": "2e95c6cd485cd66fa9a4f3914496d1a56716b880",
+      "successor": "2e95c6cd485cd66fa9a4f3914496d1a56716b880"
+    },
+    {
+      "path": "app/Http/Controllers/DtrController.php",
+      "baseline": "0535968998bdf9caf3c8a1bd1b54f5559fda0c0b",
+      "successor": "0535968998bdf9caf3c8a1bd1b54f5559fda0c0b"
+    },
+    {
+      "path": "app/Http/Controllers/EmployeeAttendanceController.php",
+      "baseline": "ab5756ab9dab828153394c31b73fe1dbaf5d4638",
+      "successor": "ab5756ab9dab828153394c31b73fe1dbaf5d4638"
+    },
+    {
+      "path": "app/Http/Controllers/EmployeeDirectoryController.php",
+      "baseline": "b18a630f7b62a2641d0fcf9d3bc9f1ba6a852270",
+      "successor": "b18a630f7b62a2641d0fcf9d3bc9f1ba6a852270"
+    },
+    {
+      "path": "app/Http/Controllers/EmployeeDirectoryProfileController.php",
+      "baseline": "f0868ec92b3ef6585d6fe5be637c8a333c27a46a",
+      "successor": "f0868ec92b3ef6585d6fe5be637c8a333c27a46a"
+    },
+    {
+      "path": "app/Http/Controllers/EmployeeHealthVaultController.php",
+      "baseline": "9edf16920b7e764291d8aca9b2115c647bdaa7f9",
+      "successor": "9edf16920b7e764291d8aca9b2115c647bdaa7f9"
+    },
+    {
+      "path": "app/Http/Controllers/EmployeePresenceController.php",
+      "baseline": "2828ad725a8cdbdbf57dbf2adb72bec3c5cbb8fc",
+      "successor": "2828ad725a8cdbdbf57dbf2adb72bec3c5cbb8fc"
+    },
+    {
+      "path": "app/Http/Controllers/EmployeeProfileController.php",
+      "baseline": "97f64e6f9feb61b63e58165e9ddef2986429ced3",
+      "successor": "97f64e6f9feb61b63e58165e9ddef2986429ced3"
+    },
+    {
+      "path": "app/Http/Controllers/HealthAccessController.php",
+      "baseline": "d3286d3eab2416f41974746c428da5aef54d8caf",
+      "successor": "d3286d3eab2416f41974746c428da5aef54d8caf"
+    },
+    {
+      "path": "app/Http/Controllers/HrisAdminController.php",
+      "baseline": "8c3e79d2f59bd59d9a452db874d3393d9849eaee",
+      "successor": "8c3e79d2f59bd59d9a452db874d3393d9849eaee"
+    },
+    {
+      "path": "app/Http/Controllers/HrisController.php",
+      "baseline": "9b31fc8d5f671eaf6494ef451a2db71c065a9f59",
+      "successor": "9b31fc8d5f671eaf6494ef451a2db71c065a9f59"
+    },
+    {
+      "path": "app/Http/Controllers/HrisDevelopmentController.php",
+      "baseline": "5fabedb89023455dfebbeb01877519e762f33f3d",
+      "successor": "5fabedb89023455dfebbeb01877519e762f33f3d"
+    },
+    {
+      "path": "app/Http/Controllers/HrisLifecycleController.php",
+      "baseline": "3ad734f84f865f7c48626dee49e1f663dbbecf92",
+      "successor": "3ad734f84f865f7c48626dee49e1f663dbbecf92"
+    },
+    {
+      "path": "app/Http/Controllers/HrisOffboardingController.php",
+      "baseline": "f20f6fa3b0c1186268faff9095c22dd414bf8f5f",
+      "successor": "f20f6fa3b0c1186268faff9095c22dd414bf8f5f"
+    },
+    {
+      "path": "app/Http/Controllers/LeaveRequestController.php",
+      "baseline": "c88edb1591edda040b53bce45f3c651be108f6ec",
+      "successor": "c88edb1591edda040b53bce45f3c651be108f6ec"
+    },
+    {
+      "path": "app/Http/Controllers/LegislativeRecordController.php",
+      "baseline": "448223baf7e4b13bb3660836aaec82755e415825",
+      "successor": "448223baf7e4b13bb3660836aaec82755e415825"
+    },
+    {
+      "path": "app/Http/Controllers/LegislativeWorkspaceController.php",
+      "baseline": "484583ee034a2aa7439800be465dc2f244a2b0ec",
+      "successor": "484583ee034a2aa7439800be465dc2f244a2b0ec"
+    },
+    {
+      "path": "app/Http/Controllers/MayorOfficeController.php",
+      "baseline": "74017b6fa458d88b9a338af1d03db12baa575df1",
+      "successor": "74017b6fa458d88b9a338af1d03db12baa575df1"
+    },
+    {
+      "path": "app/Http/Controllers/MayorOfficeLiveController.php",
+      "baseline": "bf034867e92099cd6811410e8bc00e0a2443f578",
+      "successor": "bf034867e92099cd6811410e8bc00e0a2443f578"
+    },
+    {
+      "path": "app/Http/Controllers/MemorandumController.php",
+      "baseline": "1aa1ab5419341912e213fd2d79577b79ce3f5261",
+      "successor": "1aa1ab5419341912e213fd2d79577b79ce3f5261"
+    },
+    {
+      "path": "app/Http/Controllers/Messaging/ListMessagesController.php",
+      "baseline": "c9542f9860a386b1812cae694d2ec65192b78a23",
+      "successor": "c9542f9860a386b1812cae694d2ec65192b78a23"
+    },
+    {
+      "path": "app/Http/Controllers/Messaging/StoreMessageController.php",
+      "baseline": "f83391b8d36e61ce716d11106fdedd37316cbddc",
+      "successor": "f83391b8d36e61ce716d11106fdedd37316cbddc"
+    },
+    {
+      "path": "app/Http/Controllers/NotificationFeedController.php",
+      "baseline": "9deb81c7c14d9bd0f1a331a6c35611be7d950675",
+      "successor": "9deb81c7c14d9bd0f1a331a6c35611be7d950675"
+    },
+    {
+      "path": "app/Http/Controllers/OperationsMonitoringController.php",
+      "baseline": "08485163b933314f48937d59e4523c9f2834b573",
+      "successor": "08485163b933314f48937d59e4523c9f2834b573"
+    },
+    {
+      "path": "app/Http/Controllers/OriginDeliveryExceptionController.php",
+      "baseline": "3ff9656e1a378159c6a73eefc45ba43aa89a588c",
+      "successor": "3ff9656e1a378159c6a73eefc45ba43aa89a588c"
+    },
+    {
+      "path": "app/Http/Controllers/PayrollController.php",
+      "baseline": "8da4e04db8067f570d2466139e7eaf113b343117",
+      "successor": "8da4e04db8067f570d2466139e7eaf113b343117"
+    },
+    {
+      "path": "app/Http/Controllers/Planning/DesignatedPlanningStaffController.php",
+      "baseline": "a5c788f956625f3aa1cb1a7a259919500c6a20eb",
+      "successor": "a5c788f956625f3aa1cb1a7a259919500c6a20eb"
+    },
+    {
+      "path": "app/Http/Controllers/Planning/DevelopmentPlanController.php",
+      "baseline": "8991af0ff6dc6b23cde84eaa1b2cd6212686b276",
+      "successor": "8991af0ff6dc6b23cde84eaa1b2cd6212686b276"
+    },
+    {
+      "path": "app/Http/Controllers/Planning/PlanningAttachmentController.php",
+      "baseline": "dee386781d983c81eef107e8ea12686525764618",
+      "successor": "dee386781d983c81eef107e8ea12686525764618"
+    },
+    {
+      "path": "app/Http/Controllers/Planning/PlanningMapController.php",
+      "baseline": "c3f721c7ca316d22ef84adcda07a3b7136dda60e",
+      "successor": "c3f721c7ca316d22ef84adcda07a3b7136dda60e"
+    },
+    {
+      "path": "app/Http/Controllers/Planning/PpaController.php",
+      "baseline": "2437781b15c7a77b4179f143db836c9b4ea4462c",
+      "successor": "2437781b15c7a77b4179f143db836c9b4ea4462c"
+    },
+    {
+      "path": "app/Http/Controllers/PlatformNotificationController.php",
+      "baseline": "6e2774728e0fdb8496b17bab31c61d07fb5cacd7",
+      "successor": "6e2774728e0fdb8496b17bab31c61d07fb5cacd7"
+    },
+    {
+      "path": "app/Http/Controllers/PortalSearchController.php",
+      "baseline": "9d2f8528214941d1c3867c8f4b96a1836775742d",
+      "successor": "9d2f8528214941d1c3867c8f4b96a1836775742d"
+    },
+    {
+      "path": "app/Http/Controllers/PropertyController.php",
+      "baseline": "5f35ba4d83c7be40a38cdd3525d3cd6687f8f242",
+      "successor": "5f35ba4d83c7be40a38cdd3525d3cd6687f8f242"
+    },
+    {
+      "path": "app/Http/Controllers/PropertyLifecycleController.php",
+      "baseline": "2f66e9d038c3dac2c4a5c7b13debcfcea96f13ef",
+      "successor": "2f66e9d038c3dac2c4a5c7b13debcfcea96f13ef"
+    },
+    {
+      "path": "app/Http/Controllers/PublicPortalController.php",
+      "baseline": "03877c32d76bd9cc1aa73db0fabc7c01f3a584c4",
+      "successor": "03877c32d76bd9cc1aa73db0fabc7c01f3a584c4"
+    },
+    {
+      "path": "app/Http/Controllers/RecordsController.php",
+      "baseline": "493ac07385040c08ad0709876d0a5913a0e04d82",
+      "successor": "493ac07385040c08ad0709876d0a5913a0e04d82"
+    },
+    {
+      "path": "app/Http/Controllers/ReportsController.php",
+      "baseline": "183630ccbf5990735eb578d3dbaab7f78aa442b2",
+      "successor": "183630ccbf5990735eb578d3dbaab7f78aa442b2"
+    },
+    {
+      "path": "app/Http/Controllers/StaffActivationController.php",
+      "baseline": "48d3dec3f9551f1f515d638a88d219d04c48a583",
+      "successor": "48d3dec3f9551f1f515d638a88d219d04c48a583"
+    },
+    {
+      "path": "app/Http/Controllers/Tasks/IndividualTaskController.php",
+      "baseline": "cd656ca2d49ca734ed2947895ec4b1d68b18c3ab",
+      "successor": "cd656ca2d49ca734ed2947895ec4b1d68b18c3ab"
+    },
+    {
+      "path": "app/Http/Controllers/TransactionController.php",
+      "baseline": "0b9ee2872d638523f60a7765cb83240217a11655",
+      "successor": "0b9ee2872d638523f60a7765cb83240217a11655"
+    },
+    {
+      "path": "app/Http/Controllers/TransactionLiveController.php",
+      "baseline": "d54c65d4a72877d17da5e0c0d68d16bb69b0db7e",
+      "successor": "d54c65d4a72877d17da5e0c0d68d16bb69b0db7e"
+    },
+    {
+      "path": "app/Http/Controllers/TravelOrderController.php",
+      "baseline": "ff270f5abf72d3683c85fa51716cbebe234e4cd4",
+      "successor": "ff270f5abf72d3683c85fa51716cbebe234e4cd4"
+    },
+    {
+      "path": "app/Http/Middleware/AssignIntegrationCorrelationId.php",
+      "baseline": "a4fd284a31f7f6fd242d3e83bcc0a2e3c264945d",
+      "successor": "a4fd284a31f7f6fd242d3e83bcc0a2e3c264945d"
+    },
+    {
+      "path": "app/Http/Middleware/AssignRequestId.php",
+      "baseline": "27c52c166a51d3260c13af87ba3889601e9b2b89",
+      "successor": "27c52c166a51d3260c13af87ba3889601e9b2b89"
+    },
+    {
+      "path": "app/Http/Middleware/AuditIntegrationRequest.php",
+      "baseline": "93a91d146649a191648074a6bb1fb0df6dda8676",
+      "successor": "93a91d146649a191648074a6bb1fb0df6dda8676"
+    },
+    {
+      "path": "app/Http/Middleware/AuthenticateIntegrationClient.php",
+      "baseline": "0d4be9efdd6446d732fe6ec609a24cc840751116",
+      "successor": "0d4be9efdd6446d732fe6ec609a24cc840751116"
+    },
+    {
+      "path": "app/Http/Middleware/DenyUnapprovedMessaging.php",
+      "baseline": "97fdd7e9ed2391b31e05a020622ae3593410f41f",
+      "successor": "97fdd7e9ed2391b31e05a020622ae3593410f41f"
+    },
+    {
+      "path": "app/Http/Middleware/DenyUnverifiedCorrespondenceMutations.php",
+      "baseline": "bb60e0b85aca759bc994eeb3593954ad7b110690",
+      "successor": "bb60e0b85aca759bc994eeb3593954ad7b110690"
+    },
+    {
+      "path": "app/Http/Middleware/EnsureTaskJsonAccept.php",
+      "baseline": "4d604eb1f7b7a0e757e30f739be4422c3f934dda",
+      "successor": "4d604eb1f7b7a0e757e30f739be4422c3f934dda"
+    },
+    {
+      "path": "app/Http/Middleware/ExecuteIdempotentIntegrationRequest.php",
+      "baseline": "fde887fd696ade7c07840724b3beff61f55a9f3b",
+      "successor": "fde887fd696ade7c07840724b3beff61f55a9f3b"
+    },
+    {
+      "path": "app/Http/Middleware/HandleInertiaRequests.php",
+      "baseline": "8fb01a47890181ba593e453f6f1748fdfd721d03",
+      "successor": "8fb01a47890181ba593e453f6f1748fdfd721d03"
+    },
+    {
+      "path": "app/Http/Middleware/RequireActiveAccount.php",
+      "baseline": "f02b417f4f0251af13543347ea441b901516c58c",
+      "successor": "f02b417f4f0251af13543347ea441b901516c58c"
+    },
+    {
+      "path": "app/Http/Middleware/RequireHrisAdmin.php",
+      "baseline": "003561cd12d3e5e873dc2caef01e250fa9e677db",
+      "successor": "003561cd12d3e5e873dc2caef01e250fa9e677db"
+    },
+    {
+      "path": "app/Http/Middleware/RequireIntegrationScope.php",
+      "baseline": "a5d3059bf3bef873cf64ba44109a13ad353a2f79",
+      "successor": "a5d3059bf3bef873cf64ba44109a13ad353a2f79"
+    },
+    {
+      "path": "app/Http/Middleware/RequireMfaAssurance.php",
+      "baseline": "765f7dd72036947b00771a9baa41134528fa143d",
+      "successor": "765f7dd72036947b00771a9baa41134528fa143d"
+    },
+    {
+      "path": "app/Http/Middleware/RequireMfaSubject.php",
+      "baseline": "e0f6d2ac8d084490320f474a369e25cc77c3053b",
+      "successor": "e0f6d2ac8d084490320f474a369e25cc77c3053b"
+    },
+    {
+      "path": "app/Http/Middleware/ThrottleIntegrationClient.php",
+      "baseline": "0bde87c532ed96ea9baee367362e8066b865972f",
+      "successor": "0bde87c532ed96ea9baee367362e8066b865972f"
+    },
+    {
+      "path": "app/Http/Middleware/ThrottleIntegrationIngress.php",
+      "baseline": "754a971d2bfb4a2fc379339f6ec75b09880398ab",
+      "successor": "754a971d2bfb4a2fc379339f6ec75b09880398ab"
+    },
+    {
+      "path": "app/Http/Middleware/TrustConfiguredProxies.php",
+      "baseline": "b19b6f58f67e44793d07ded6048f68ca65344928",
+      "successor": "b19b6f58f67e44793d07ded6048f68ca65344928"
+    },
+    {
+      "path": "app/Http/Requests/Api/V1/CorrespondenceReceiveRequest.php",
+      "baseline": "5e09490a7374d31c16e0846e3d040f863b62796c",
+      "successor": "5e09490a7374d31c16e0846e3d040f863b62796c"
+    },
+    {
+      "path": "app/Http/Requests/Api/V1/IntegrationProofWriteRequest.php",
+      "baseline": "c6fae42f0d047aefc20dca15f1c29441c15be59f",
+      "successor": "c6fae42f0d047aefc20dca15f1c29441c15be59f"
+    },
+    {
+      "path": "app/Http/Requests/Api/V1/IntegrationSelfRequest.php",
+      "baseline": "36b8bfd199205ff1daf80293ba28058f5d11b281",
+      "successor": "36b8bfd199205ff1daf80293ba28058f5d11b281"
+    },
+    {
+      "path": "app/Http/Requests/CorePortalReportRequest.php",
+      "baseline": "fbc8c33ec07791d48f3a9eadcc647b9aa8b1f56c",
+      "successor": "fbc8c33ec07791d48f3a9eadcc647b9aa8b1f56c"
+    },
+    {
+      "path": "app/Http/Requests/CorrespondenceActRequest.php",
+      "baseline": "dcde026e92a3d9ce60cf5aeea1370b1465b0c189",
+      "successor": "dcde026e92a3d9ce60cf5aeea1370b1465b0c189"
+    },
+    {
+      "path": "app/Http/Requests/CorrespondenceClassifyRequest.php",
+      "baseline": "1573794340c095c9a70cdc985ce6a33124ba5a5c",
+      "successor": "1573794340c095c9a70cdc985ce6a33124ba5a5c"
+    },
+    {
+      "path": "app/Http/Requests/CorrespondenceIndexRequest.php",
+      "baseline": "1d9ee3e0a8af825cfeb41142fa8999ae9a39d080",
+      "successor": "1d9ee3e0a8af825cfeb41142fa8999ae9a39d080"
+    },
+    {
+      "path": "app/Http/Requests/CorrespondenceRouteRequest.php",
+      "baseline": "81a87a0fc8ab6b6fc90d773ae4e2db942351bb4a",
+      "successor": "81a87a0fc8ab6b6fc90d773ae4e2db942351bb4a"
+    },
+    {
+      "path": "app/Http/Requests/CorrespondenceWorkspaceActRequest.php",
+      "baseline": "3ace91d98be707aa17b06f979325bba4dde96c3f",
+      "successor": "3ace91d98be707aa17b06f979325bba4dde96c3f"
+    },
+    {
+      "path": "app/Http/Requests/CorrespondenceWorkspaceClassifyRequest.php",
+      "baseline": "60988dbcbd4082fb64c35895d59d3f75d5fb7c69",
+      "successor": "60988dbcbd4082fb64c35895d59d3f75d5fb7c69"
+    },
+    {
+      "path": "app/Http/Requests/CorrespondenceWorkspaceRegisterRequest.php",
+      "baseline": "daba7e0c7db18fdaabf6648b66f298c6aba2bc71",
+      "successor": "daba7e0c7db18fdaabf6648b66f298c6aba2bc71"
+    },
+    {
+      "path": "app/Http/Requests/CorrespondenceWorkspaceRouteRequest.php",
+      "baseline": "d8845c677e854145213f92a42ba97ef2acef1e7c",
+      "successor": "d8845c677e854145213f92a42ba97ef2acef1e7c"
+    },
+    {
+      "path": "app/Http/Requests/Messaging/StoreMessageRequest.php",
+      "baseline": "fae67311a50dd67937e8db314498604c06803c6d",
+      "successor": "fae67311a50dd67937e8db314498604c06803c6d"
+    },
+    {
+      "path": "app/Http/Requests/RecordsIndexRequest.php",
+      "baseline": "61247410f37000e1a381042bf93690500b800923",
+      "successor": "61247410f37000e1a381042bf93690500b800923"
+    },
+    {
+      "path": "app/Http/Requests/StoreWorkRequestRequest.php",
+      "baseline": "3c9c48a10bb733f9fc50983de9890d5284334b81",
+      "successor": "3c9c48a10bb733f9fc50983de9890d5284334b81"
+    },
+    {
+      "path": "app/Http/Requests/TransactionIndexRequest.php",
+      "baseline": "8753f6c827e3b7ca757f77eb4fa634eeb78284a1",
+      "successor": "8753f6c827e3b7ca757f77eb4fa634eeb78284a1"
+    },
+    {
+      "path": "app/Http/Requests/TransitionWorkRequestRequest.php",
+      "baseline": "590c083c94f8d4b5d93b748f95da564fd02ba512",
+      "successor": "590c083c94f8d4b5d93b748f95da564fd02ba512"
+    },
+    {
+      "path": "app/Http/Requests/TravelOrderIndexRequest.php",
+      "baseline": "05e425b0a37fc10dd87aa7c5f1b4c25d4bde5b6b",
+      "successor": "05e425b0a37fc10dd87aa7c5f1b4c25d4bde5b6b"
+    },
+    {
+      "path": "app/Http/Requests/TravelOrderStatusRequest.php",
+      "baseline": "7cd6bc8048824b3f9ddc172ebf591a77333a7a05",
+      "successor": "7cd6bc8048824b3f9ddc172ebf591a77333a7a05"
+    },
+    {
+      "path": "app/Http/Requests/TravelOrderStoreRequest.php",
+      "baseline": "efd25b1ea319cdcb581b00d039ce261c10ff881a",
+      "successor": "efd25b1ea319cdcb581b00d039ce261c10ff881a"
+    },
+    {
+      "path": "app/Http/Resources/Messaging/MessageResource.php",
+      "baseline": "f860c36a7d607a4a41b202be58589e1577f90bc1",
+      "successor": "f860c36a7d607a4a41b202be58589e1577f90bc1"
+    },
+    {
+      "path": "app/Messaging/MessagingChannels.php",
+      "baseline": "09cfaff162d45907c100503d8e69e919453dcfbd",
+      "successor": "09cfaff162d45907c100503d8e69e919453dcfbd"
+    },
+    {
+      "path": "app/Models/Asset.php",
+      "baseline": "02b992b4d82b248a21ce6a33ff01442a922812f9",
+      "successor": "02b992b4d82b248a21ce6a33ff01442a922812f9"
+    },
+    {
+      "path": "app/Models/AssetAssignment.php",
+      "baseline": "676ba8c70229f2148cdcaab1421265314a9d4bd2",
+      "successor": "676ba8c70229f2148cdcaab1421265314a9d4bd2"
+    },
+    {
+      "path": "app/Models/AssetDisposal.php",
+      "baseline": "09e9745be848bc2dee28fefd449c4b4ae74a8c89",
+      "successor": "09e9745be848bc2dee28fefd449c4b4ae74a8c89"
+    },
+    {
+      "path": "app/Models/AssetEvent.php",
+      "baseline": "e3fed3f8c367288ac13da5d216c71222c53edadd",
+      "successor": "e3fed3f8c367288ac13da5d216c71222c53edadd"
+    },
+    {
+      "path": "app/Models/AssetInventoryScan.php",
+      "baseline": "d6007813a6f905199927a1599e5becaaff71ee52",
+      "successor": "d6007813a6f905199927a1599e5becaaff71ee52"
+    },
+    {
+      "path": "app/Models/AssetInventorySession.php",
+      "baseline": "796208380b9dd1cc3a1d09f7f407611f50711c12",
+      "successor": "796208380b9dd1cc3a1d09f7f407611f50711c12"
+    },
+    {
+      "path": "app/Models/AssetMaintenanceRecord.php",
+      "baseline": "497ba6d0872c1e0a6338046576a038dc29e83c0c",
+      "successor": "497ba6d0872c1e0a6338046576a038dc29e83c0c"
+    },
+    {
+      "path": "app/Models/AssetReconciliation.php",
+      "baseline": "4898b301a8e66d20e79c5636a836f511088f941b",
+      "successor": "4898b301a8e66d20e79c5636a836f511088f941b"
+    },
+    {
+      "path": "app/Models/AttendanceLog.php",
+      "baseline": "3810c27f6981783715630b17f4ab744c23a7d5b6",
+      "successor": "3810c27f6981783715630b17f4ab744c23a7d5b6"
+    },
+    {
+      "path": "app/Models/AuditLog.php",
+      "baseline": "a4d68556ff222b4ffd20ec53f71ecd4df1c94efd",
+      "successor": "a4d68556ff222b4ffd20ec53f71ecd4df1c94efd"
+    },
+    {
+      "path": "app/Models/CalendarEvent.php",
+      "baseline": "75e8c52e1553c9720832ce33bf6d7313458fb508",
+      "successor": "75e8c52e1553c9720832ce33bf6d7313458fb508"
+    },
+    {
+      "path": "app/Models/CorrespondenceEvent.php",
+      "baseline": "dd900b6d02bc89db62f6be9f26d7efb8624340e6",
+      "successor": "dd900b6d02bc89db62f6be9f26d7efb8624340e6"
+    },
+    {
+      "path": "app/Models/CorrespondenceRecord.php",
+      "baseline": "2065053b7248a42c9eac8ea333d34a5a7b0c47f7",
+      "successor": "2065053b7248a42c9eac8ea333d34a5a7b0c47f7"
+    },
+    {
+      "path": "app/Models/Department.php",
+      "baseline": "b66ef7417b8485377e60bf0ab419df476d17bc19",
+      "successor": "b66ef7417b8485377e60bf0ab419df476d17bc19"
+    },
+    {
+      "path": "app/Models/DesignatedPlanningStaff.php",
+      "baseline": "b4818a247bfead051536effa81a8e9995ce5a6ad",
+      "successor": "b4818a247bfead051536effa81a8e9995ce5a6ad"
+    },
+    {
+      "path": "app/Models/DevelopmentPlan.php",
+      "baseline": "4e6eaea207655e45bf3bf9dd69f109da8c5ebe1e",
+      "successor": "4e6eaea207655e45bf3bf9dd69f109da8c5ebe1e"
+    },
+    {
+      "path": "app/Models/Document.php",
+      "baseline": "98c0ffd4e233584cad9b52636866d0de31d426ac",
+      "successor": "98c0ffd4e233584cad9b52636866d0de31d426ac"
+    },
+    {
+      "path": "app/Models/DocumentLink.php",
+      "baseline": "bdec52d6c804202c394eed33035454d885d18241",
+      "successor": "bdec52d6c804202c394eed33035454d885d18241"
+    },
+    {
+      "path": "app/Models/DtrDailySummary.php",
+      "baseline": "9dae7d58332a8e8ddae282174191b50b703f4416",
+      "successor": "9dae7d58332a8e8ddae282174191b50b703f4416"
+    },
+    {
+      "path": "app/Models/DtrPeriod.php",
+      "baseline": "e3d32212a125881e45757686d07af1d3e1d0c72d",
+      "successor": "e3d32212a125881e45757686d07af1d3e1d0c72d"
+    },
+    {
+      "path": "app/Models/Employee.php",
+      "baseline": "d82dbde326bc333247821d954ebaf9489f006ed7",
+      "successor": "d82dbde326bc333247821d954ebaf9489f006ed7"
+    },
+    {
+      "path": "app/Models/EmployeeDevelopmentRecord.php",
+      "baseline": "8bb79fc3d76082194c0b013a15d4fc26994ad8ef",
+      "successor": "8bb79fc3d76082194c0b013a15d4fc26994ad8ef"
+    },
+    {
+      "path": "app/Models/EmployeeHealthAccessGrant.php",
+      "baseline": "22e7215481ad79e33ce417712a2fbd1101320f18",
+      "successor": "22e7215481ad79e33ce417712a2fbd1101320f18"
+    },
+    {
+      "path": "app/Models/EmployeeHealthRecord.php",
+      "baseline": "60b320e311c4c89154c10d2822d98ebb77934d21",
+      "successor": "60b320e311c4c89154c10d2822d98ebb77934d21"
+    },
+    {
+      "path": "app/Models/EmployeeMovement.php",
+      "baseline": "16dc453eb91573ee63cf421e21e388876030ef66",
+      "successor": "16dc453eb91573ee63cf421e21e388876030ef66"
+    },
+    {
+      "path": "app/Models/EmployeeMovementTask.php",
+      "baseline": "f673f686ca0442aa5260cefce7efcfee89c4e853",
+      "successor": "f673f686ca0442aa5260cefce7efcfee89c4e853"
+    },
+    {
+      "path": "app/Models/IntegrationClient.php",
+      "baseline": "4366412b84de9cc88358a224248f5fa90cc8dbc8",
+      "successor": "4366412b84de9cc88358a224248f5fa90cc8dbc8"
+    },
+    {
+      "path": "app/Models/IntegrationClientCredential.php",
+      "baseline": "cf5b29e11defe3088c264f4b6901ccee6e8b537e",
+      "successor": "cf5b29e11defe3088c264f4b6901ccee6e8b537e"
+    },
+    {
+      "path": "app/Models/IntegrationIdempotencyRecord.php",
+      "baseline": "9370a62f377a1dfbe0872ef6dd3dd6de8040b012",
+      "successor": "9370a62f377a1dfbe0872ef6dd3dd6de8040b012"
+    },
+    {
+      "path": "app/Models/IntegrationProofWrite.php",
+      "baseline": "1e5f9f94a98e2abe5591955948b139e51546ee36",
+      "successor": "1e5f9f94a98e2abe5591955948b139e51546ee36"
+    },
+    {
+      "path": "app/Models/LeaveCreditAccount.php",
+      "baseline": "3b20b03fbca5e3cf1e7a77c15115c6b2c92d46b5",
+      "successor": "3b20b03fbca5e3cf1e7a77c15115c6b2c92d46b5"
+    },
+    {
+      "path": "app/Models/LeaveCreditTransaction.php",
+      "baseline": "4ea804519a1c068a390999ded1eea8d54dd4b786",
+      "successor": "4ea804519a1c068a390999ded1eea8d54dd4b786"
+    },
+    {
+      "path": "app/Models/LeaveRequest.php",
+      "baseline": "705b47cf879e26e66e4fe96ada5ace692d14a4e9",
+      "successor": "705b47cf879e26e66e4fe96ada5ace692d14a4e9"
+    },
+    {
+      "path": "app/Models/LeaveType.php",
+      "baseline": "c0207c277c9b67eff482e1ebb8cf6023cfc4eac9",
+      "successor": "c0207c277c9b67eff482e1ebb8cf6023cfc4eac9"
+    },
+    {
+      "path": "app/Models/LegislativeAgendaItem.php",
+      "baseline": "fbf1eef019b5ea1f040753bcf6bb54de48335bc1",
+      "successor": "fbf1eef019b5ea1f040753bcf6bb54de48335bc1"
+    },
+    {
+      "path": "app/Models/LegislativeRecord.php",
+      "baseline": "9ea8ec70063ae8b85730db521e1d77c9be04ed0a",
+      "successor": "9ea8ec70063ae8b85730db521e1d77c9be04ed0a"
+    },
+    {
+      "path": "app/Models/LegislativeSession.php",
+      "baseline": "b0ee2d8091e4689b37ec370c08150b9d96d574ab",
+      "successor": "b0ee2d8091e4689b37ec370c08150b9d96d574ab"
+    },
+    {
+      "path": "app/Models/MemoRecipient.php",
+      "baseline": "038380f1393503af760409241825a9f7d4ebcf95",
+      "successor": "038380f1393503af760409241825a9f7d4ebcf95"
+    },
+    {
+      "path": "app/Models/Memorandum.php",
+      "baseline": "e1de8031e60baa291fac7223260d8823ceb85ca2",
+      "successor": "e1de8031e60baa291fac7223260d8823ceb85ca2"
+    },
+    {
+      "path": "app/Models/Message.php",
+      "baseline": "23d7a4e27f3b09dfbb8210da563acf0e9fbd2cb9",
+      "successor": "23d7a4e27f3b09dfbb8210da563acf0e9fbd2cb9"
+    },
+    {
+      "path": "app/Models/OffboardingCase.php",
+      "baseline": "30b221bb65f17163cb1b5562968225b19a4b676e",
+      "successor": "30b221bb65f17163cb1b5562968225b19a4b676e"
+    },
+    {
+      "path": "app/Models/OffboardingTask.php",
+      "baseline": "be1668e63acb027706f1bcfc4dc7d2aae62e05f5",
+      "successor": "be1668e63acb027706f1bcfc4dc7d2aae62e05f5"
+    },
+    {
+      "path": "app/Models/OnboardingCase.php",
+      "baseline": "cd7ed5f2bfddcccc4b3924cb757365a6d54db2ef",
+      "successor": "cd7ed5f2bfddcccc4b3924cb757365a6d54db2ef"
+    },
+    {
+      "path": "app/Models/OnboardingTask.php",
+      "baseline": "ce2b604f1636dccf08d3f31a4708d38301eb6b5d",
+      "successor": "ce2b604f1636dccf08d3f31a4708d38301eb6b5d"
+    },
+    {
+      "path": "app/Models/OperationalItem.php",
+      "baseline": "155e0cdd2acf2a49fdffdd14dd04239f9cb9162f",
+      "successor": "155e0cdd2acf2a49fdffdd14dd04239f9cb9162f"
+    },
+    {
+      "path": "app/Models/OutboxMessage.php",
+      "baseline": "2b4f96df29ef68c32e7e147bbae8f12cf3ff5636",
+      "successor": "2b4f96df29ef68c32e7e147bbae8f12cf3ff5636"
+    },
+    {
+      "path": "app/Models/PayrollEntry.php",
+      "baseline": "66f17ebbc51f8d08c7298804632a01f6a82de0c3",
+      "successor": "66f17ebbc51f8d08c7298804632a01f6a82de0c3"
+    },
+    {
+      "path": "app/Models/PayrollPeriod.php",
+      "baseline": "a08e26480e116cc4633900f26e6146c899cbc510",
+      "successor": "a08e26480e116cc4633900f26e6146c899cbc510"
+    },
+    {
+      "path": "app/Models/PerformanceRecord.php",
+      "baseline": "854e4b927f4b0f2721d7b67522ed662c15da1175",
+      "successor": "854e4b927f4b0f2721d7b67522ed662c15da1175"
+    },
+    {
+      "path": "app/Models/PlanCustodyEvent.php",
+      "baseline": "241c30bce67d516330486252272cf9c4f3e5b454",
+      "successor": "241c30bce67d516330486252272cf9c4f3e5b454"
+    },
+    {
+      "path": "app/Models/PlanCustodyGeneration.php",
+      "baseline": "50825cf8cdf45ece42e87e9ada50bac126b82ca9",
+      "successor": "50825cf8cdf45ece42e87e9ada50bac126b82ca9"
+    },
+    {
+      "path": "app/Models/PlanCustodyScanEvidence.php",
+      "baseline": "cd5fd19b106f2cc835e6f86a2b40b02c86f65a24",
+      "successor": "cd5fd19b106f2cc835e6f86a2b40b02c86f65a24"
+    },
+    {
+      "path": "app/Models/PlanDocumentBinding.php",
+      "baseline": "b624864fc6b1d543d0b463863ca23ee4a6904f01",
+      "successor": "b624864fc6b1d543d0b463863ca23ee4a6904f01"
+    },
+    {
+      "path": "app/Models/PlanEdition.php",
+      "baseline": "9840b70e43c0c72077c7686cdb3eb7453f7ca2f8",
+      "successor": "9840b70e43c0c72077c7686cdb3eb7453f7ca2f8"
+    },
+    {
+      "path": "app/Models/PlanFamily.php",
+      "baseline": "225a95aa302346318025de1a2f9355142a6ffe9d",
+      "successor": "225a95aa302346318025de1a2f9355142a6ffe9d"
+    },
+    {
+      "path": "app/Models/PlanningAttachment.php",
+      "baseline": "1aa3a008bd56454b5cde87a9998ea82c25fb89b5",
+      "successor": "1aa3a008bd56454b5cde87a9998ea82c25fb89b5"
+    },
+    {
+      "path": "app/Models/PlanningMap.php",
+      "baseline": "2d83075d65a43c637ba4f5c40fb2b4d39692d94d",
+      "successor": "2d83075d65a43c637ba4f5c40fb2b4d39692d94d"
+    },
+    {
+      "path": "app/Models/PlatformNotification.php",
+      "baseline": "e52556f33a1ca567fa69bdea551ca9a83db75f2a",
+      "successor": "e52556f33a1ca567fa69bdea551ca9a83db75f2a"
+    },
+    {
+      "path": "app/Models/PpaRecord.php",
+      "baseline": "446d0ef1ea238be06bef431a831098193ed40c7c",
+      "successor": "446d0ef1ea238be06bef431a831098193ed40c7c"
+    },
+    {
+      "path": "app/Models/StaffActivationInvitation.php",
+      "baseline": "86216c7a48510d0e26970eb789b1c4a5f4bb8bb2",
+      "successor": "86216c7a48510d0e26970eb789b1c4a5f4bb8bb2"
+    },
+    {
+      "path": "app/Models/Task.php",
+      "baseline": "21c32cc2334973ab1216747c2937ad14b23c5f11",
+      "successor": "21c32cc2334973ab1216747c2937ad14b23c5f11"
+    },
+    {
+      "path": "app/Models/TaskEvent.php",
+      "baseline": "37b3321bd5a038ad83c08d45fcea1ca93a3409bf",
+      "successor": "37b3321bd5a038ad83c08d45fcea1ca93a3409bf"
+    },
+    {
+      "path": "app/Models/TransactionEvent.php",
+      "baseline": "f0c6e8525c609cfcbbf1c7fbf95bdbcefa50c216",
+      "successor": "f0c6e8525c609cfcbbf1c7fbf95bdbcefa50c216"
+    },
+    {
+      "path": "app/Models/TravelOrder.php",
+      "baseline": "80adfce531e8bf7edbffda999150c571d80117f7",
+      "successor": "80adfce531e8bf7edbffda999150c571d80117f7"
+    },
+    {
+      "path": "app/Models/TravelOrderEvent.php",
+      "baseline": "f03df52476672cca95703490b8be3851d0111600",
+      "successor": "f03df52476672cca95703490b8be3851d0111600"
+    },
+    {
+      "path": "app/Models/User.php",
+      "baseline": "b35cf155e74f86b9b9f6d4f56029958de6caff80",
+      "successor": "b35cf155e74f86b9b9f6d4f56029958de6caff80"
+    },
+    {
+      "path": "app/Models/WorkflowTransaction.php",
+      "baseline": "cb539d07a19edee600a0021d457a82eb3b556a34",
+      "successor": "cb539d07a19edee600a0021d457a82eb3b556a34"
+    },
+    {
+      "path": "app/PlanCustody/Contracts/CustodySecurityGate.php",
+      "baseline": "55b4d802cbb47eb7d54c03bdde7a1924c7b20f61",
+      "successor": "55b4d802cbb47eb7d54c03bdde7a1924c7b20f61"
+    },
+    {
+      "path": "app/PlanCustody/Contracts/GenerationIdSource.php",
+      "baseline": "1f89d56af139f965986219895870f36f504d4dcb",
+      "successor": "1f89d56af139f965986219895870f36f504d4dcb"
+    },
+    {
+      "path": "app/PlanCustody/Contracts/ImmutableObjectStore.php",
+      "baseline": "00a2a4d0fe6cf01fd43a891e7e6814ae054832ca",
+      "successor": "00a2a4d0fe6cf01fd43a891e7e6814ae054832ca"
+    },
+    {
+      "path": "app/PlanCustody/Contracts/ScannerEvidenceVerifier.php",
+      "baseline": "4e804e84a0371d788461c9d79825fd5ab630d106",
+      "successor": "4e804e84a0371d788461c9d79825fd5ab630d106"
+    },
+    {
+      "path": "app/PlanCustody/Data/CustodySecurityContext.php",
+      "baseline": "8b1dd4cb78d5624483111cc461ba0beb8eabd6bf",
+      "successor": "8b1dd4cb78d5624483111cc461ba0beb8eabd6bf"
+    },
+    {
+      "path": "app/PlanCustody/Data/ScanEvidence.php",
+      "baseline": "bae06d4097a48db7f2807b754f6ab1a5aeeee1d0",
+      "successor": "bae06d4097a48db7f2807b754f6ab1a5aeeee1d0"
+    },
+    {
+      "path": "app/PlanCustody/Data/StageGeneration.php",
+      "baseline": "aeb0b3fdeccfe66a719ce38edb8cb970c2efe963",
+      "successor": "aeb0b3fdeccfe66a719ce38edb8cb970c2efe963"
+    },
+    {
+      "path": "app/PlanCustody/DenyAllCustodySecurityGate.php",
+      "baseline": "a8dcdba6982a124d7f848a6db0447b41372809b5",
+      "successor": "a8dcdba6982a124d7f848a6db0447b41372809b5"
+    },
+    {
+      "path": "app/PlanCustody/DenyAllScannerEvidenceVerifier.php",
+      "baseline": "a32a464ac530e103d7b0f2e8d242818a53f59f2b",
+      "successor": "a32a464ac530e103d7b0f2e8d242818a53f59f2b"
+    },
+    {
+      "path": "app/PlanCustody/Exceptions/CustodyViolation.php",
+      "baseline": "cb83f98833610cdbec1be9cdabaaa564544a3d4c",
+      "successor": "cb83f98833610cdbec1be9cdabaaa564544a3d4c"
+    },
+    {
+      "path": "app/PlanCustody/Exceptions/ObjectCollision.php",
+      "baseline": "8a548dc0d742f5ebe1548a1404e792d7ef85c151",
+      "successor": "8a548dc0d742f5ebe1548a1404e792d7ef85c151"
+    },
+    {
+      "path": "app/PlanCustody/Exceptions/OrphanedCustodyObject.php",
+      "baseline": "6cb8ce4195c8819224c4f896cdf7156df849ff6b",
+      "successor": "6cb8ce4195c8819224c4f896cdf7156df849ff6b"
+    },
+    {
+      "path": "app/PlanCustody/LocalImmutableObjectStore.php",
+      "baseline": "0353c421ce873794bb66126ae383158f34616381",
+      "successor": "0353c421ce873794bb66126ae383158f34616381"
+    },
+    {
+      "path": "app/PlanCustody/PlanCustodyService.php",
+      "baseline": "13ecba3addfac96c38b111523681aa8f64bea1cd",
+      "successor": "13ecba3addfac96c38b111523681aa8f64bea1cd"
+    },
+    {
+      "path": "app/PlanCustody/RandomGenerationIdSource.php",
+      "baseline": "84a6fa5b3bbe5874697bcba782867197c1277ed8",
+      "successor": "84a6fa5b3bbe5874697bcba782867197c1277ed8"
+    },
+    {
+      "path": "app/Policies/TransactionPolicy.php",
+      "baseline": "9d127856484bb1a34b3ed438942c93b58348eba0",
+      "successor": "9d127856484bb1a34b3ed438942c93b58348eba0"
+    },
+    {
+      "path": "app/Providers/AppServiceProvider.php",
+      "baseline": "ae171f7fa508fcd805621a33ed2b4169563bcd37",
+      "successor": "ae171f7fa508fcd805621a33ed2b4169563bcd37"
+    },
+    {
+      "path": "app/Services/AccountRegistryQuery.php",
+      "baseline": "7555ee5cda6e77bed369786a007a3cbf87f36560",
+      "successor": "7555ee5cda6e77bed369786a007a3cbf87f36560"
+    },
+    {
+      "path": "app/Services/AccountSessionEligibility.php",
+      "baseline": "5e780e2dcf5b1131a589ba2913923279149fbc18",
+      "successor": "5e780e2dcf5b1131a589ba2913923279149fbc18"
+    },
+    {
+      "path": "app/Services/ActivationCredentialBroker.php",
+      "baseline": "4b9f4624669531372fc21a53dbdb91f62f74760d",
+      "successor": "4b9f4624669531372fc21a53dbdb91f62f74760d"
+    },
+    {
+      "path": "app/Services/ApplicationErrorResponse.php",
+      "baseline": "f8cdd96f840c5076b62322259a88df087df68df6",
+      "successor": "f8cdd96f840c5076b62322259a88df087df68df6"
+    },
+    {
+      "path": "app/Services/AssetAccountabilityService.php",
+      "baseline": "3126b5563a2368059d2fdca63091b65050c13bfd",
+      "successor": "3126b5563a2368059d2fdca63091b65050c13bfd"
+    },
+    {
+      "path": "app/Services/AssetLifecycleService.php",
+      "baseline": "3ab9a1a7c4a8de928e09aa75151726a429f2d843",
+      "successor": "3ab9a1a7c4a8de928e09aa75151726a429f2d843"
+    },
+    {
+      "path": "app/Services/AuditLogger.php",
+      "baseline": "a514a38f5fa97e99788a692052fde525b97b2496",
+      "successor": "a514a38f5fa97e99788a692052fde525b97b2496"
+    },
+    {
+      "path": "app/Services/AuthenticationAssurance.php",
+      "baseline": "b6f806791ba7e30237e5d664d035f023f40d8cc8",
+      "successor": "b6f806791ba7e30237e5d664d035f023f40d8cc8"
+    },
+    {
+      "path": "app/Services/AuthenticationAttemptLimiter.php",
+      "baseline": "53ab3606ef18d9c10c4643d0bed66b9cda9ce838",
+      "successor": "53ab3606ef18d9c10c4643d0bed66b9cda9ce838"
+    },
+    {
+      "path": "app/Services/CalendarService.php",
+      "baseline": "ecf629e95fdd13db6cf69e41f34d971342453d10",
+      "successor": "ecf629e95fdd13db6cf69e41f34d971342453d10"
+    },
+    {
+      "path": "app/Services/CalendarWorkspaceQueryService.php",
+      "baseline": "f93f362aec4b6aeea680db38dacc8848bd64b773",
+      "successor": "f93f362aec4b6aeea680db38dacc8848bd64b773"
+    },
+    {
+      "path": "app/Services/CommonCoordination/CalendarResponsibilityReader.php",
+      "baseline": "ca3901320343a68e0dd9be5de623341ef4b3ae4a",
+      "successor": "ca3901320343a68e0dd9be5de623341ef4b3ae4a"
+    },
+    {
+      "path": "app/Services/CommonCoordination/CommonCoordinationReader.php",
+      "baseline": "2e48ed1aa796adacd8ff08a6ee66641b67c74a24",
+      "successor": "2e48ed1aa796adacd8ff08a6ee66641b67c74a24"
+    },
+    {
+      "path": "app/Services/CommonCoordination/CoordinationActor.php",
+      "baseline": "5e274c829787d66225106ac197e6d77d5816d854",
+      "successor": "5e274c829787d66225106ac197e6d77d5816d854"
+    },
+    {
+      "path": "app/Services/CommonCoordination/NotificationContextReader.php",
+      "baseline": "f66ed1f954983bec1aab0725a8a010e01c276482",
+      "successor": "f66ed1f954983bec1aab0725a8a010e01c276482"
+    },
+    {
+      "path": "app/Services/CommonEvidence/AuthorizedArchiveSql.php",
+      "baseline": "b0f22a6abb9009ba1d4f175fe9caf5ccd98debcc",
+      "successor": "b0f22a6abb9009ba1d4f175fe9caf5ccd98debcc"
+    },
+    {
+      "path": "app/Services/CommonEvidence/CorrespondenceEvidenceScope.php",
+      "baseline": "2ce5e0d272c9b53d1094944f30a5081b495b4a92",
+      "successor": "2ce5e0d272c9b53d1094944f30a5081b495b4a92"
+    },
+    {
+      "path": "app/Services/CommonEvidence/DocumentTraceabilityQuery.php",
+      "baseline": "18b631c491b7a0fa495b4b1d2515b45fd86433fd",
+      "successor": "18b631c491b7a0fa495b4b1d2515b45fd86433fd"
+    },
+    {
+      "path": "app/Services/CommonEvidence/LegacyEvidenceEligibility.php",
+      "baseline": "57131bb5f8a52a3672a5dea1aa1dada30dd2d4a0",
+      "successor": "57131bb5f8a52a3672a5dea1aa1dada30dd2d4a0"
+    },
+    {
+      "path": "app/Services/CommonReferences/CommonSourceReferencePresenter.php",
+      "baseline": "b627093cdf7e4f798a0de9d2c459b364a83bce3e",
+      "successor": "b627093cdf7e4f798a0de9d2c459b364a83bce3e"
+    },
+    {
+      "path": "app/Services/CommonReferences/CommonSourceReferenceResolver.php",
+      "baseline": "b66f7da0584c8778933334ae244508077bed9ba9",
+      "successor": "b66f7da0584c8778933334ae244508077bed9ba9"
+    },
+    {
+      "path": "app/Services/CommonReferences/ReferenceResolution.php",
+      "baseline": "c4e3b1f7e8e5095a2ef718fe23b5f2509c632bfd",
+      "successor": "c4e3b1f7e8e5095a2ef718fe23b5f2509c632bfd"
+    },
+    {
+      "path": "app/Services/CommonReferences/ReferenceStatus.php",
+      "baseline": "85c19868b19a413bd61f886a8c99c563c98d0016",
+      "successor": "85c19868b19a413bd61f886a8c99c563c98d0016"
+    },
+    {
+      "path": "app/Services/CommonReferences/SourceKind.php",
+      "baseline": "ec4898724a49cc99718f20a44ace90502508f761",
+      "successor": "ec4898724a49cc99718f20a44ace90502508f761"
+    },
+    {
+      "path": "app/Services/CommonReferences/SourceTarget.php",
+      "baseline": "b7e67bfb386874c910f3004c41ca765167bb87f4",
+      "successor": "b7e67bfb386874c910f3004c41ca765167bb87f4"
+    },
+    {
+      "path": "app/Services/CommonSearch/AcceptedP0Source.php",
+      "baseline": "2c474aea254d4927abecbde1d3420b1dd4b22d13",
+      "successor": "2c474aea254d4927abecbde1d3420b1dd4b22d13"
+    },
+    {
+      "path": "app/Services/CommonSearch/AuthorizedSourceSearch.php",
+      "baseline": "53f428b6002e2446738ff747110e82d4832f0b6e",
+      "successor": "53f428b6002e2446738ff747110e82d4832f0b6e"
+    },
+    {
+      "path": "app/Services/CommonWork/CommonWorkItem.php",
+      "baseline": "ad14c88b78e85e15ea0bb8a06aedd57e10275943",
+      "successor": "ad14c88b78e85e15ea0bb8a06aedd57e10275943"
+    },
+    {
+      "path": "app/Services/CommonWork/CommonWorkSource.php",
+      "baseline": "fecf720a7529daf7dc687a72e85626b1b8ec5d8c",
+      "successor": "fecf720a7529daf7dc687a72e85626b1b8ec5d8c"
+    },
+    {
+      "path": "app/Services/CommonWork/UnifiedMyWorkQuery.php",
+      "baseline": "2e9839fe4c3259dd03eb475d2ec197b70fa20c4a",
+      "successor": "2e9839fe4c3259dd03eb475d2ec197b70fa20c4a"
+    },
+    {
+      "path": "app/Services/CoreEvidenceRules.php",
+      "baseline": "6ed93bb89b278adb7bbd3bd2fb756f324b4c40f1",
+      "successor": "6ed93bb89b278adb7bbd3bd2fb756f324b4c40f1"
+    },
+    {
+      "path": "app/Services/CorrespondenceAccessDecider.php",
+      "baseline": "da51a31b68dcc03fe09cc224948d929c39fea722",
+      "successor": "da51a31b68dcc03fe09cc224948d929c39fea722"
+    },
+    {
+      "path": "app/Services/CorrespondenceDetailPresenter.php",
+      "baseline": "e685ef3f4d44ffade78baf1883d5cbb601b33798",
+      "successor": "e685ef3f4d44ffade78baf1883d5cbb601b33798"
+    },
+    {
+      "path": "app/Services/CorrespondenceEventRecorder.php",
+      "baseline": "c83c16b7ea27ea92af07adf76a5d423f3a84f347",
+      "successor": "c83c16b7ea27ea92af07adf76a5d423f3a84f347"
+    },
+    {
+      "path": "app/Services/CorrespondenceEvidenceService.php",
+      "baseline": "23e018c3ebe6148b14afd8afa78fe01269c0468b",
+      "successor": "23e018c3ebe6148b14afd8afa78fe01269c0468b"
+    },
+    {
+      "path": "app/Services/CorrespondenceInboxQuery.php",
+      "baseline": "e54d4e6dc287de9f0ddf3df58d3c0ddba79dc632",
+      "successor": "e54d4e6dc287de9f0ddf3df58d3c0ddba79dc632"
+    },
+    {
+      "path": "app/Services/CorrespondenceLifecycleService.php",
+      "baseline": "cd2bcca7b8fa70fc74e458f8bb2aa342df78fdf4",
+      "successor": "cd2bcca7b8fa70fc74e458f8bb2aa342df78fdf4"
+    },
+    {
+      "path": "app/Services/CorrespondenceReceiveService.php",
+      "baseline": "f5398efaa016122301fa83b58d0591f07a795ee7",
+      "successor": "f5398efaa016122301fa83b58d0591f07a795ee7"
+    },
+    {
+      "path": "app/Services/CorrespondenceReferenceNumberService.php",
+      "baseline": "f7de65cfc190935cff89dceb5b263710dbdffc2e",
+      "successor": "f7de65cfc190935cff89dceb5b263710dbdffc2e"
+    },
+    {
+      "path": "app/Services/CorrespondenceRoutingService.php",
+      "baseline": "e7670131a87a5d675a9e1bba843b6ee3e7f5329a",
+      "successor": "e7670131a87a5d675a9e1bba843b6ee3e7f5329a"
+    },
+    {
+      "path": "app/Services/CorrespondenceTraceQuery.php",
+      "baseline": "dba57dffb7b5026aa2da73e0188f832b42817455",
+      "successor": "dba57dffb7b5026aa2da73e0188f832b42817455"
+    },
+    {
+      "path": "app/Services/CorrespondenceWorkflowStateMapper.php",
+      "baseline": "8d59ad366b6ec7e1d8d50def4e236be1b3dbedca",
+      "successor": "8d59ad366b6ec7e1d8d50def4e236be1b3dbedca"
+    },
+    {
+      "path": "app/Services/Custody/AuthorityFence.php",
+      "baseline": "50ad9e879304e46bec0155deec4e2ae6a28e3a6b",
+      "successor": "50ad9e879304e46bec0155deec4e2ae6a28e3a6b"
+    },
+    {
+      "path": "app/Services/Custody/AuthorityReadClaim.php",
+      "baseline": "2a00505f59555e87c9ce38be3b23e4ec04c6fddc",
+      "successor": "2a00505f59555e87c9ce38be3b23e4ec04c6fddc"
+    },
+    {
+      "path": "app/Services/Custody/Broker/BrokerRootAttestation.php",
+      "baseline": "ef2020d001cfee75fa337cb750682fce6810f2f7",
+      "successor": "ef2020d001cfee75fa337cb750682fce6810f2f7"
+    },
+    {
+      "path": "app/Services/Custody/Broker/LocalImmutableBrokerEngine.php",
+      "baseline": "bbc5c052f25ef92772b24260ad2a12f23cadb98c",
+      "successor": "bbc5c052f25ef92772b24260ad2a12f23cadb98c"
+    },
+    {
+      "path": "app/Services/Custody/Broker/ProcessStorageBrokerClient.php",
+      "baseline": "62dbb68d9ff9c45fdb303bdf470f1ecc15722bcc",
+      "successor": "62dbb68d9ff9c45fdb303bdf470f1ecc15722bcc"
+    },
+    {
+      "path": "app/Services/Custody/Contracts/StorageBrokerClient.php",
+      "baseline": "f00f0c6ad67f32bf121974beb0f3ed0226efcc27",
+      "successor": "f00f0c6ad67f32bf121974beb0f3ed0226efcc27"
+    },
+    {
+      "path": "app/Services/Custody/ExternalWatermarkAuthority.php",
+      "baseline": "5920279b11fbc320202fa90b291cc15d5d38e51f",
+      "successor": "5920279b11fbc320202fa90b291cc15d5d38e51f"
+    },
+    {
+      "path": "app/Services/Custody/LegacyCustodyCommandService.php",
+      "baseline": "228ecddd96e47672b9e9cba03acfe8df82888814",
+      "successor": "228ecddd96e47672b9e9cba03acfe8df82888814"
+    },
+    {
+      "path": "app/Services/Custody/LegacyCustodyCompensationService.php",
+      "baseline": "52da61f240c9ce16975c61160c420fbabbb38f71",
+      "successor": "52da61f240c9ce16975c61160c420fbabbb38f71"
+    },
+    {
+      "path": "app/Services/Custody/LegacyCustodyReconciler.php",
+      "baseline": "02a45af0d5341d140f9c6f6bc48eb716c716ad52",
+      "successor": "02a45af0d5341d140f9c6f6bc48eb716c716ad52"
+    },
+    {
+      "path": "app/Services/Custody/LegacyCustodyReplayService.php",
+      "baseline": "4e92c8b9ad95c3a0d7174a75997427c30dc4e0f6",
+      "successor": "4e92c8b9ad95c3a0d7174a75997427c30dc4e0f6"
+    },
+    {
+      "path": "app/Services/Custody/LegacyCustodyStageService.php",
+      "baseline": "3c81c7b3346c7c54603922eb8a0eb1a13a4f19a4",
+      "successor": "3c81c7b3346c7c54603922eb8a0eb1a13a4f19a4"
+    },
+    {
+      "path": "app/Services/Custody/RegistryDocumentRetrievalService.php",
+      "baseline": "8256d114275c8e44aa69ca6516129073899636f0",
+      "successor": "8256d114275c8e44aa69ca6516129073899636f0"
+    },
+    {
+      "path": "app/Services/Custody/WorkRequestCloseDocumentPdf.php",
+      "baseline": "4db652f4b65b2f5b23ea73bd371f7fd82af191db",
+      "successor": "4db652f4b65b2f5b23ea73bd371f7fd82af191db"
+    },
+    {
+      "path": "app/Services/Custody/WorkRequestN03CloseService.php",
+      "baseline": "2095c157227186905621a2832314e8ff0479d6c0",
+      "successor": "2095c157227186905621a2832314e8ff0479d6c0"
+    },
+    {
+      "path": "app/Services/DashboardCorrespondenceQuery.php",
+      "baseline": "02d4af657a0797e4269bd26b3ce856f81b4bbf8c",
+      "successor": "02d4af657a0797e4269bd26b3ce856f81b4bbf8c"
+    },
+    {
+      "path": "app/Services/DashboardExecutiveQuery.php",
+      "baseline": "493bb227d56ffdfa66dd2b4ec943e6b870805f06",
+      "successor": "493bb227d56ffdfa66dd2b4ec943e6b870805f06"
+    },
+    {
+      "path": "app/Services/DashboardExperienceResolver.php",
+      "baseline": "88250a3c3934d8478b587444b654d16b7e5f7a80",
+      "successor": "88250a3c3934d8478b587444b654d16b7e5f7a80"
+    },
+    {
+      "path": "app/Services/DashboardOfficeQuery.php",
+      "baseline": "2481bf7678fe57a5a3d110db1bd04d21f8ee10d2",
+      "successor": "2481bf7678fe57a5a3d110db1bd04d21f8ee10d2"
+    },
+    {
+      "path": "app/Services/DashboardPersonalQuery.php",
+      "baseline": "3b8fe21f3397f0f154f50e7b189c1a3e43245c29",
+      "successor": "3b8fe21f3397f0f154f50e7b189c1a3e43245c29"
+    },
+    {
+      "path": "app/Services/DashboardTransactionQuery.php",
+      "baseline": "a888bcaf7978f5e8e738afed7177bd6b41cc219d",
+      "successor": "a888bcaf7978f5e8e738afed7177bd6b41cc219d"
+    },
+    {
+      "path": "app/Services/DashboardWorkPresenter.php",
+      "baseline": "1b3f8b407f374ffa4d5f022a1704d94d94a66258",
+      "successor": "1b3f8b407f374ffa4d5f022a1704d94d94a66258"
+    },
+    {
+      "path": "app/Services/DashboardWorkspaceQuery.php",
+      "baseline": "2f09662349010c1ea0b81ae984d018ab7039e01e",
+      "successor": "2f09662349010c1ea0b81ae984d018ab7039e01e"
+    },
+    {
+      "path": "app/Services/DepartmentWorkspaceQuery.php",
+      "baseline": "8b42f3c48d484e157d8cee9ab828e4109e5a2598",
+      "successor": "8b42f3c48d484e157d8cee9ab828e4109e5a2598"
+    },
+    {
+      "path": "app/Services/DocumentAccessService.php",
+      "baseline": "6230ce005764407a993d553d075ab205ccede7ed",
+      "successor": "6230ce005764407a993d553d075ab205ccede7ed"
+    },
+    {
+      "path": "app/Services/DocumentArchiveQuery.php",
+      "baseline": "4bb57d49ad9101bfb563261e5c9bd1e981796788",
+      "successor": "4bb57d49ad9101bfb563261e5c9bd1e981796788"
+    },
+    {
+      "path": "app/Services/DocumentAttachmentService.php",
+      "baseline": "64e4b96a2e3abb34e2e4aa82641be05305fb94eb",
+      "successor": "64e4b96a2e3abb34e2e4aa82641be05305fb94eb"
+    },
+    {
+      "path": "app/Services/DocumentEvidenceQuery.php",
+      "baseline": "4d794e9aa64f72171addf2dea72c1971dc89493b",
+      "successor": "4d794e9aa64f72171addf2dea72c1971dc89493b"
+    },
+    {
+      "path": "app/Services/DtrService.php",
+      "baseline": "d54f7b0543809acb0ed3aeac5dc3d2885df51768",
+      "successor": "d54f7b0543809acb0ed3aeac5dc3d2885df51768"
+    },
+    {
+      "path": "app/Services/EmployeeDevelopmentService.php",
+      "baseline": "389ce6408d7aaae5b1d64e96e73ccca5da1384bc",
+      "successor": "389ce6408d7aaae5b1d64e96e73ccca5da1384bc"
+    },
+    {
+      "path": "app/Services/EmployeeHealthVaultService.php",
+      "baseline": "6de5e923817ad37a971bd404dd541585cdfe863e",
+      "successor": "6de5e923817ad37a971bd404dd541585cdfe863e"
+    },
+    {
+      "path": "app/Services/EmployeeLifecycleService.php",
+      "baseline": "615cdcc1167d8f33f6d4eb0863695ab9d7c6a62e",
+      "successor": "615cdcc1167d8f33f6d4eb0863695ab9d7c6a62e"
+    },
+    {
+      "path": "app/Services/EmployeeOffboardingService.php",
+      "baseline": "e5e2e36e3ac9fe466882d8b333f8869f572cfd60",
+      "successor": "e5e2e36e3ac9fe466882d8b333f8869f572cfd60"
+    },
+    {
+      "path": "app/Services/IntegrationClientService.php",
+      "baseline": "0d5e28c81607e6e3e19b0140de67470b64e74bff",
+      "successor": "0d5e28c81607e6e3e19b0140de67470b64e74bff"
+    },
+    {
+      "path": "app/Services/IntegrationCredentialService.php",
+      "baseline": "e4f1a34e7daf872abbf5d5eee2dc89967f8f8587",
+      "successor": "e4f1a34e7daf872abbf5d5eee2dc89967f8f8587"
+    },
+    {
+      "path": "app/Services/IntegrationErrorResponse.php",
+      "baseline": "edb8e53d56c04b327a6b8a25453a9cd57a61f512",
+      "successor": "edb8e53d56c04b327a6b8a25453a9cd57a61f512"
+    },
+    {
+      "path": "app/Services/IntegrationIdempotencyResponse.php",
+      "baseline": "a528b584976008c56327e9888f0c2fb9f24bb6d6",
+      "successor": "a528b584976008c56327e9888f0c2fb9f24bb6d6"
+    },
+    {
+      "path": "app/Services/IntegrationIdempotencyService.php",
+      "baseline": "65ffd16370c8535fa658912838b0a514a0068c15",
+      "successor": "65ffd16370c8535fa658912838b0a514a0068c15"
+    },
+    {
+      "path": "app/Services/IntegrationProofWriteService.php",
+      "baseline": "d2f6bd707867aae60a20ee178585c048ec236260",
+      "successor": "d2f6bd707867aae60a20ee178585c048ec236260"
+    },
+    {
+      "path": "app/Services/IntegrationRequestFingerprint.php",
+      "baseline": "cce8dc02a0973393c844e9b90d1701c1eca9cff4",
+      "successor": "cce8dc02a0973393c844e9b90d1701c1eca9cff4"
+    },
+    {
+      "path": "app/Services/LeaveService.php",
+      "baseline": "a7c6e03e3e685f90aa7579f533369b4f912a0241",
+      "successor": "a7c6e03e3e685f90aa7579f533369b4f912a0241"
+    },
+    {
+      "path": "app/Services/LegacyDocumentBytes.php",
+      "baseline": "b6164982181fcea96e6ac40dd6af802a32dc9bef",
+      "successor": "b6164982181fcea96e6ac40dd6af802a32dc9bef"
+    },
+    {
+      "path": "app/Services/LegacyPdfPreview.php",
+      "baseline": "bb3b315fde221617a691d8f280c0535fc89896ab",
+      "successor": "bb3b315fde221617a691d8f280c0535fc89896ab"
+    },
+    {
+      "path": "app/Services/MayorOfficeWorkspaceQuery.php",
+      "baseline": "104c26b304b091f884b7e53bb8a961d34beccc6b",
+      "successor": "104c26b304b091f884b7e53bb8a961d34beccc6b"
+    },
+    {
+      "path": "app/Services/MemorandumAuthority.php",
+      "baseline": "7318ef65c742c2bf5e180e293e43e0b0594cb2a1",
+      "successor": "7318ef65c742c2bf5e180e293e43e0b0594cb2a1"
+    },
+    {
+      "path": "app/Services/MemorandumService.php",
+      "baseline": "ff1ed9a29ea859bec163ddce946fdd54276fbefb",
+      "successor": "ff1ed9a29ea859bec163ddce946fdd54276fbefb"
+    },
+    {
+      "path": "app/Services/MfaRecoveryCodeBroker.php",
+      "baseline": "f93ef55a658d05f740801077675bf4c7ee092cd2",
+      "successor": "f93ef55a658d05f740801077675bf4c7ee092cd2"
+    },
+    {
+      "path": "app/Services/MfaService.php",
+      "baseline": "5ca160683602c455d7c365766c0c6afd3ac58a97",
+      "successor": "5ca160683602c455d7c365766c0c6afd3ac58a97"
+    },
+    {
+      "path": "app/Services/NotificationFeedQuery.php",
+      "baseline": "374d53bb3c622344a33cb80a68f910b04e673f75",
+      "successor": "374d53bb3c622344a33cb80a68f910b04e673f75"
+    },
+    {
+      "path": "app/Services/OfficeDirectoryCatalog.php",
+      "baseline": "d92721fc6e296ef83d4c1b84333a4d3b9da723a3",
+      "successor": "d92721fc6e296ef83d4c1b84333a4d3b9da723a3"
+    },
+    {
+      "path": "app/Services/OutboxDispatcher.php",
+      "baseline": "2dbc8f8319ed7a31990d9a87f0bbecd2d8c882a7",
+      "successor": "2dbc8f8319ed7a31990d9a87f0bbecd2d8c882a7"
+    },
+    {
+      "path": "app/Services/PlanDocumentOriginGuard.php",
+      "baseline": "8c92fecdf9d92aff49e19678f0848427b91b5e03",
+      "successor": "8c92fecdf9d92aff49e19678f0848427b91b5e03"
+    },
+    {
+      "path": "app/Services/Planning/PlanningAuthorizationService.php",
+      "baseline": "5cb74880dff28fdb08ff8d28aceb77d82993ee5e",
+      "successor": "5cb74880dff28fdb08ff8d28aceb77d82993ee5e"
+    },
+    {
+      "path": "app/Services/Planning/PlanningSuiteInitializer.php",
+      "baseline": "26fbfcc615e14093695266acdd938980241a7a4e",
+      "successor": "26fbfcc615e14093695266acdd938980241a7a4e"
+    },
+    {
+      "path": "app/Services/PlatformNotificationService.php",
+      "baseline": "2ae8239810f336a0eeaaad54778133ac993965bc",
+      "successor": "2ae8239810f336a0eeaaad54778133ac993965bc"
+    },
+    {
+      "path": "app/Services/PortalNavigationAccess.php",
+      "baseline": "f4987b6b6f309f380649903b92ce2c9af6d2fa4a",
+      "successor": "f4987b6b6f309f380649903b92ce2c9af6d2fa4a"
+    },
+    {
+      "path": "app/Services/RecordsResultPresenter.php",
+      "baseline": "76c9dfc010a45246c5d9f055c7c0ee23b1f0b146",
+      "successor": "76c9dfc010a45246c5d9f055c7c0ee23b1f0b146"
+    },
+    {
+      "path": "app/Services/RecordsSearchQuery.php",
+      "baseline": "78000aa2c7737b738bc4ec5afe2507b02f22a157",
+      "successor": "78000aa2c7737b738bc4ec5afe2507b02f22a157"
+    },
+    {
+      "path": "app/Services/Reports/CorePortalCsvExporter.php",
+      "baseline": "ee01fd8a85ca68cc6839c3b0b6bb1081e5716590",
+      "successor": "ee01fd8a85ca68cc6839c3b0b6bb1081e5716590"
+    },
+    {
+      "path": "app/Services/Reports/CorePortalReportAccess.php",
+      "baseline": "a82550a737bf4b5c05f69155aee2438432196533",
+      "successor": "a82550a737bf4b5c05f69155aee2438432196533"
+    },
+    {
+      "path": "app/Services/Reports/CorePortalReportCatalog.php",
+      "baseline": "d262afaae4f4e45ed3032470e99601844c1bdc58",
+      "successor": "d262afaae4f4e45ed3032470e99601844c1bdc58"
+    },
+    {
+      "path": "app/Services/Reports/CorePortalReportService.php",
+      "baseline": "8e6d70dd201513243beb4f92168c1c5e39025fd6",
+      "successor": "8e6d70dd201513243beb4f92168c1c5e39025fd6"
+    },
+    {
+      "path": "app/Services/Reports/CorrespondenceStatusReportQuery.php",
+      "baseline": "71a08cf64b65d8938b885c195eb35d99e638e9ce",
+      "successor": "71a08cf64b65d8938b885c195eb35d99e638e9ce"
+    },
+    {
+      "path": "app/Services/Reports/DocumentMovementReportQuery.php",
+      "baseline": "e20e1b86f9e53894194171ee842381a9a4893e95",
+      "successor": "e20e1b86f9e53894194171ee842381a9a4893e95"
+    },
+    {
+      "path": "app/Services/Reports/ReportValuePresenter.php",
+      "baseline": "da8cc15c25706984d3bc87808a304b150486e209",
+      "successor": "da8cc15c25706984d3bc87808a304b150486e209"
+    },
+    {
+      "path": "app/Services/Reports/TransactionOperationalReportQuery.php",
+      "baseline": "6fda3ba50d2369a75c02a1cedcd3337538f0c220",
+      "successor": "6fda3ba50d2369a75c02a1cedcd3337538f0c220"
+    },
+    {
+      "path": "app/Services/SensitiveInertiaResponse.php",
+      "baseline": "70715547fc634be5f55107b239c1d8c671023384",
+      "successor": "70715547fc634be5f55107b239c1d8c671023384"
+    },
+    {
+      "path": "app/Services/StaffActivationService.php",
+      "baseline": "196709b24f7c64d616c0e0b7ecf05f9ee07bab84",
+      "successor": "196709b24f7c64d616c0e0b7ecf05f9ee07bab84"
+    },
+    {
+      "path": "app/Services/SystemAdministrationAccess.php",
+      "baseline": "a10f33fd71a0bedf6aa911266a7384e97395a354",
+      "successor": "a10f33fd71a0bedf6aa911266a7384e97395a354"
+    },
+    {
+      "path": "app/Services/SystemAdministrationQuery.php",
+      "baseline": "658340fd6fda3fea5413e6abb49d65132ab845a3",
+      "successor": "658340fd6fda3fea5413e6abb49d65132ab845a3"
+    },
+    {
+      "path": "app/Services/TaskActivity/TaskActivityFeed.php",
+      "baseline": "5a7c88c58fd0d8e277dce0d5a7c2e3608f7fca34",
+      "successor": "5a7c88c58fd0d8e277dce0d5a7c2e3608f7fca34"
+    },
+    {
+      "path": "app/Services/TaskActivity/TaskActivityOverview.php",
+      "baseline": "7c451c7b9190686b6c88af48d9fdc873444d04c7",
+      "successor": "7c451c7b9190686b6c88af48d9fdc873444d04c7"
+    },
+    {
+      "path": "app/Services/TaskActivity/TaskActivityReader.php",
+      "baseline": "552797d89787960d8daad8bc489727559b5488bd",
+      "successor": "552797d89787960d8daad8bc489727559b5488bd"
+    },
+    {
+      "path": "app/Services/TransactionEvidenceService.php",
+      "baseline": "bd1606e77638bea2deaaf3a47bc301eb08978ea0",
+      "successor": "bd1606e77638bea2deaaf3a47bc301eb08978ea0"
+    },
+    {
+      "path": "app/Services/TransactionLiveQuery.php",
+      "baseline": "8d06ab7bc10f675474f3a85f5fe8638acbf80124",
+      "successor": "8d06ab7bc10f675474f3a85f5fe8638acbf80124"
+    },
+    {
+      "path": "app/Services/TransactionVisibilityQuery.php",
+      "baseline": "9bd6a86e9d8d597fb8a3be77bace484ddf2b5b96",
+      "successor": "9bd6a86e9d8d597fb8a3be77bace484ddf2b5b96"
+    },
+    {
+      "path": "app/Services/TransactionWorkflowService.php",
+      "baseline": "551b56a50da24098e5bdd1895f4f0a799969ea23",
+      "successor": "551b56a50da24098e5bdd1895f4f0a799969ea23"
+    },
+    {
+      "path": "app/Services/TransactionalOutbox.php",
+      "baseline": "89d49607d2faf7f1e630d30fe428545bc299c57a",
+      "successor": "89d49607d2faf7f1e630d30fe428545bc299c57a"
+    },
+    {
+      "path": "app/Services/TravelOrderAccess.php",
+      "baseline": "665d2ddadce0d54e62e572c554ceadb7f0a83d6a",
+      "successor": "665d2ddadce0d54e62e572c554ceadb7f0a83d6a"
+    },
+    {
+      "path": "app/Services/TravelOrderService.php",
+      "baseline": "da62464ff442f822e2368e5bad9575894e694b34",
+      "successor": "da62464ff442f822e2368e5bad9575894e694b34"
+    },
+    {
+      "path": "app/Services/TravelOrderWorkspaceQuery.php",
+      "baseline": "3ce7629cdd8469d182dec9a5d97c286d091b9b0b",
+      "successor": "3ce7629cdd8469d182dec9a5d97c286d091b9b0b"
+    },
+    {
+      "path": "app/Services/WorkQueueExperienceResolver.php",
+      "baseline": "7d12a37e4a5ca57ce5588fe7dd79b943dd175639",
+      "successor": "7d12a37e4a5ca57ce5588fe7dd79b943dd175639"
+    },
+    {
+      "path": "app/Services/WorkQueueItemPresenter.php",
+      "baseline": "4f6f1703f06a13eb1abcb934b266d08ca9da73f8",
+      "successor": "4f6f1703f06a13eb1abcb934b266d08ca9da73f8"
+    },
+    {
+      "path": "app/Services/WorkQueueQuery.php",
+      "baseline": "894f43586ce0d9e657afb17968e16a33c9324872",
+      "successor": "894f43586ce0d9e657afb17968e16a33c9324872"
+    },
+    {
+      "path": "app/Support/ValidatedListReturn.php",
+      "baseline": "8800e168979ecf394da40bb0f2965d431fc0eeb4",
+      "successor": "8800e168979ecf394da40bb0f2965d431fc0eeb4"
+    },
+    {
+      "path": "app/Support/ViteHotFileGuard.php",
+      "baseline": "e8f1d172df50587f5dbd63f8d65ca3a4824c530f",
+      "successor": "e8f1d172df50587f5dbd63f8d65ca3a4824c530f"
+    },
+    {
+      "path": "bin/legacy-custody-broker",
+      "baseline": "4e8283f1fb5023d374176b4713708691fecdcae4",
+      "successor": "4e8283f1fb5023d374176b4713708691fecdcae4"
+    },
+    {
+      "path": "bootstrap/app.php",
+      "baseline": "cf542c071c34eb6a9d7e75bdb8ff4dd7afa1b7d4",
+      "successor": "cf542c071c34eb6a9d7e75bdb8ff4dd7afa1b7d4"
+    },
+    {
+      "path": "bootstrap/cache/.gitignore",
+      "baseline": "d6b7ef32c8478a48c3994dcadc86837f4371184d",
+      "successor": "d6b7ef32c8478a48c3994dcadc86837f4371184d"
+    },
+    {
+      "path": "bootstrap/providers.php",
+      "baseline": "38b258d1855b5e767bde3df168106f468088472f",
+      "successor": "38b258d1855b5e767bde3df168106f468088472f"
+    },
+    {
+      "path": "composer.json",
+      "baseline": "b8d3b4c706a70b52ca7a97cb17a56847054e2c27",
+      "successor": "b8d3b4c706a70b52ca7a97cb17a56847054e2c27"
+    },
+    {
+      "path": "composer.lock",
+      "baseline": "c65302d4ea16d9ee980a2a5c7dc197f1f1e4e387",
+      "successor": "c65302d4ea16d9ee980a2a5c7dc197f1f1e4e387"
+    },
+    {
+      "path": "config/app.php",
+      "baseline": "2b9130952f46876140903af78c93098854a2ae0f",
+      "successor": "2b9130952f46876140903af78c93098854a2ae0f"
+    },
+    {
+      "path": "config/auth.php",
+      "baseline": "b430191f36e9be002ef7a67c91a20f32f3381e86",
+      "successor": "b430191f36e9be002ef7a67c91a20f32f3381e86"
+    },
+    {
+      "path": "config/cache.php",
+      "baseline": "b5af96ec1dfa1ad44643af499c4a6d0a9b0651b6",
+      "successor": "b5af96ec1dfa1ad44643af499c4a6d0a9b0651b6"
+    },
+    {
+      "path": "config/database.php",
+      "baseline": "6d40d6af22bd1afdc9eb8ec9cf5ad27605c42d85",
+      "successor": "6d40d6af22bd1afdc9eb8ec9cf5ad27605c42d85"
+    },
+    {
+      "path": "config/documents.php",
+      "baseline": "f22f6229417cda04f44edf6c838503a14965e3c3",
+      "successor": "f22f6229417cda04f44edf6c838503a14965e3c3"
+    },
+    {
+      "path": "config/filesystems.php",
+      "baseline": "7dd329713394abdef31573c31ee21e94edca27b0",
+      "successor": "7dd329713394abdef31573c31ee21e94edca27b0"
+    },
+    {
+      "path": "config/hashing.php",
+      "baseline": "641f07fa893e25200117498b46c33921c8952ad0",
+      "successor": "641f07fa893e25200117498b46c33921c8952ad0"
+    },
+    {
+      "path": "config/identity.php",
+      "baseline": "456914625bd63ebc2f7f51f9e05f1961dabc903e",
+      "successor": "456914625bd63ebc2f7f51f9e05f1961dabc903e"
+    },
+    {
+      "path": "config/legacy_custody.php",
+      "baseline": "55033a6cc306f8482198cef6bb2b0b705b8b75d9",
+      "successor": "55033a6cc306f8482198cef6bb2b0b705b8b75d9"
+    },
+    {
+      "path": "config/logging.php",
+      "baseline": "fcc503fed51eb88111c85eb8ad81a14068552ab4",
+      "successor": "fcc503fed51eb88111c85eb8ad81a14068552ab4"
+    },
+    {
+      "path": "config/messaging_release.php",
+      "baseline": "9d314c7b5fe34093de7272ba2f8a53dbcd68e293",
+      "successor": "9d314c7b5fe34093de7272ba2f8a53dbcd68e293"
+    },
+    {
+      "path": "config/office_directory.php",
+      "baseline": "ef946a1e7268098b485a1784c96456029c9db9a5",
+      "successor": "ef946a1e7268098b485a1784c96456029c9db9a5"
+    },
+    {
+      "path": "config/office_identity.php",
+      "baseline": "e74916bd794fe846e119dd9b4b05b7999590cb96",
+      "successor": "e74916bd794fe846e119dd9b4b05b7999590cb96"
+    },
+    {
+      "path": "config/plan_custody.php",
+      "baseline": "8b12d2aa079e508ec8e7e62cc76663cf854f89f7",
+      "successor": "8b12d2aa079e508ec8e7e62cc76663cf854f89f7"
+    },
+    {
+      "path": "config/prototype.php",
+      "baseline": "9b40136121141e251a21be7fb50e550b05891e32",
+      "successor": "9b40136121141e251a21be7fb50e550b05891e32"
+    },
+    {
+      "path": "config/public_portal.php",
+      "baseline": "6a4eb6eb3d64ef6c0b7b5a6cf63be0e955ded376",
+      "successor": "6a4eb6eb3d64ef6c0b7b5a6cf63be0e955ded376"
+    },
+    {
+      "path": "config/queue.php",
+      "baseline": "c78f2be5c268e5100980360b2e3d80b50840b554",
+      "successor": "c78f2be5c268e5100980360b2e3d80b50840b554"
+    },
+    {
+      "path": "config/session.php",
+      "baseline": "12c55b327a37dd3f1bfa894ece86e34bd7cb5551",
+      "successor": "12c55b327a37dd3f1bfa894ece86e34bd7cb5551"
+    },
+    {
+      "path": "config/view.php",
+      "baseline": "8912f30f91773098703ab780c8cce91c84376f7a",
+      "successor": "8912f30f91773098703ab780c8cce91c84376f7a"
+    },
+    {
+      "path": "config/work_requests.php",
+      "baseline": "d1d92a89ab7269f9940295c24ceeb29864dcfe56",
+      "successor": "d1d92a89ab7269f9940295c24ceeb29864dcfe56"
+    },
+    {
+      "path": "config/workflow.php",
+      "baseline": "a08417d33ffa0a40d456b6def9d91921cea0c021",
+      "successor": "a08417d33ffa0a40d456b6def9d91921cea0c021"
+    },
+    {
+      "path": "database/migrations/0001_01_01_000000_create_users_table.php",
+      "baseline": "5209881e425e421f41f2b4a9fa214477ad204270",
+      "successor": "5209881e425e421f41f2b4a9fa214477ad204270"
+    },
+    {
+      "path": "database/migrations/2026_08_18_000100_create_departments_table.php",
+      "baseline": "93acdba8db65e891b52e12a430e7f9db31dff23b",
+      "successor": "93acdba8db65e891b52e12a430e7f9db31dff23b"
+    },
+    {
+      "path": "database/migrations/2026_08_18_000200_create_employees_table.php",
+      "baseline": "fa47b68e6b874039b903ebc37a58d506b9ef0aea",
+      "successor": "fa47b68e6b874039b903ebc37a58d506b9ef0aea"
+    },
+    {
+      "path": "database/migrations/2026_08_18_001000_create_transactions_table.php",
+      "baseline": "141f1546b01274f3e869ff8c56ccc5348359c068",
+      "successor": "141f1546b01274f3e869ff8c56ccc5348359c068"
+    },
+    {
+      "path": "database/migrations/2026_08_18_001100_create_transaction_events_table.php",
+      "baseline": "121a90d2e4b00146f6fa49a702b080d296d460d8",
+      "successor": "121a90d2e4b00146f6fa49a702b080d296d460d8"
+    },
+    {
+      "path": "database/migrations/2026_08_18_001200_create_audit_logs_table.php",
+      "baseline": "301f6f28e34cf2cc7d0fc8a684cc3e6dec47bfa5",
+      "successor": "301f6f28e34cf2cc7d0fc8a684cc3e6dec47bfa5"
+    },
+    {
+      "path": "database/migrations/2026_08_18_002000_create_memoranda_table.php",
+      "baseline": "e2329cb94561b042ea789ca0d3265ffdaa97f5ca",
+      "successor": "e2329cb94561b042ea789ca0d3265ffdaa97f5ca"
+    },
+    {
+      "path": "database/migrations/2026_08_18_002100_create_memo_recipients_table.php",
+      "baseline": "1ed5ffe660a0391ba2b4e45814ecb533b1c88baf",
+      "successor": "1ed5ffe660a0391ba2b4e45814ecb533b1c88baf"
+    },
+    {
+      "path": "database/migrations/2026_08_18_003000_create_legislative_records_table.php",
+      "baseline": "5769d52c52a22191d2df4d51b9bd16a3e174a266",
+      "successor": "5769d52c52a22191d2df4d51b9bd16a3e174a266"
+    },
+    {
+      "path": "database/migrations/2026_08_18_004000_create_hris_leave_and_attendance_tables.php",
+      "baseline": "92f6c4eb8ee3dbfd1e56568cfc9d2973b1ac513f",
+      "successor": "92f6c4eb8ee3dbfd1e56568cfc9d2973b1ac513f"
+    },
+    {
+      "path": "database/migrations/2026_08_19_000100_make_employee_user_optional.php",
+      "baseline": "633d014887ae453285b308ea936d0de5e5a58453",
+      "successor": "633d014887ae453285b308ea936d0de5e5a58453"
+    },
+    {
+      "path": "database/migrations/2026_08_19_000110_add_employee_identity_fields.php",
+      "baseline": "8ed029331cd649a632fd9251279d06e93ce20146",
+      "successor": "8ed029331cd649a632fd9251279d06e93ce20146"
+    },
+    {
+      "path": "database/migrations/2026_08_19_000200_add_transaction_accountability_fields.php",
+      "baseline": "edff7ae547bc042bdbe8f7fcaf66533a13b38fbc",
+      "successor": "edff7ae547bc042bdbe8f7fcaf66533a13b38fbc"
+    },
+    {
+      "path": "database/migrations/2026_08_19_000300_create_operational_items_table.php",
+      "baseline": "b8fac642cf4ad849cf6480c57c01a8bf1885aa9d",
+      "successor": "b8fac642cf4ad849cf6480c57c01a8bf1885aa9d"
+    },
+    {
+      "path": "database/migrations/2026_08_19_000400_create_payroll_prototype_tables.php",
+      "baseline": "369211ac0590230d58966459a411b916bf90eb0a",
+      "successor": "369211ac0590230d58966459a411b916bf90eb0a"
+    },
+    {
+      "path": "database/migrations/2026_08_19_010000_add_phase1_office_routing_metadata.php",
+      "baseline": "d6238ea6150eb1f47f5ff71c6eb08c5d021003c2",
+      "successor": "d6238ea6150eb1f47f5ff71c6eb08c5d021003c2"
+    },
+    {
+      "path": "database/migrations/2026_08_19_011000_create_platform_notifications_table.php",
+      "baseline": "747c202a6bd0257309bc544f18a0ab0c58e35fc6",
+      "successor": "747c202a6bd0257309bc544f18a0ab0c58e35fc6"
+    },
+    {
+      "path": "database/migrations/2026_08_19_011100_create_calendar_events_table.php",
+      "baseline": "e00c2a6e332c3a427e56cca68d2f3c6386e09763",
+      "successor": "e00c2a6e332c3a427e56cca68d2f3c6386e09763"
+    },
+    {
+      "path": "database/migrations/2026_08_19_011200_create_shared_documents_tables.php",
+      "baseline": "52747551d61cfc9745e4d6395e6bbaa8b8b001b8",
+      "successor": "52747551d61cfc9745e4d6395e6bbaa8b8b001b8"
+    },
+    {
+      "path": "database/migrations/2026_08_19_012000_add_phase1_employee_profile_fields.php",
+      "baseline": "78744cc25687a5c772dcc92d801e26edc18a8e34",
+      "successor": "78744cc25687a5c772dcc92d801e26edc18a8e34"
+    },
+    {
+      "path": "database/migrations/2026_08_19_013000_create_employee_lifecycle_tables.php",
+      "baseline": "3e2983300c33969c291c6df7fdf3f30d997fa927",
+      "successor": "3e2983300c33969c291c6df7fdf3f30d997fa927"
+    },
+    {
+      "path": "database/migrations/2026_08_19_013100_create_property_accountability_tables.php",
+      "baseline": "63c1b778d80e71d6b5fde8471a5d4d192036f9de",
+      "successor": "63c1b778d80e71d6b5fde8471a5d4d192036f9de"
+    },
+    {
+      "path": "database/migrations/2026_08_19_014000_create_phase1_dtr_and_payroll_context.php",
+      "baseline": "cf11fbe2bc11390aa0f6b6bae381ad438c510f2a",
+      "successor": "cf11fbe2bc11390aa0f6b6bae381ad438c510f2a"
+    },
+    {
+      "path": "database/migrations/2026_08_19_016000_create_employee_development_and_health_tables.php",
+      "baseline": "d57e3d70c16a2320b576a01d40507fbb16266058",
+      "successor": "d57e3d70c16a2320b576a01d40507fbb16266058"
+    },
+    {
+      "path": "database/migrations/2026_08_22_017000_create_offboarding_tables.php",
+      "baseline": "570e2368733363aff515c2363d5cfb494e197574",
+      "successor": "570e2368733363aff515c2363d5cfb494e197574"
+    },
+    {
+      "path": "database/migrations/2026_08_22_020000_create_property_lifecycle_tables.php",
+      "baseline": "804f9cd02d5832d46c16254f269d0ab75aa33ac0",
+      "successor": "804f9cd02d5832d46c16254f269d0ab75aa33ac0"
+    },
+    {
+      "path": "database/migrations/2026_08_22_030000_create_legislative_sessions_and_agenda.php",
+      "baseline": "4dcf84e902a8d3915c10faa9dda8f1e28ce250b8",
+      "successor": "4dcf84e902a8d3915c10faa9dda8f1e28ce250b8"
+    },
+    {
+      "path": "database/migrations/2026_08_22_130000_add_mfa_fields_to_users_table.php",
+      "baseline": "cc757921787a16b795302012c0c02b7e30ea6add",
+      "successor": "cc757921787a16b795302012c0c02b7e30ea6add"
+    },
+    {
+      "path": "database/migrations/2026_08_22_144500_add_mfa_version_to_users_table.php",
+      "baseline": "0d1a9bb7fdff0b2dc1c63590bf014476d7a08640",
+      "successor": "0d1a9bb7fdff0b2dc1c63590bf014476d7a08640"
+    },
+    {
+      "path": "database/migrations/2026_08_23_090000_create_integration_client_tables.php",
+      "baseline": "f9422e86b8162aa8ef8ea7da4bc9b462bbf965a6",
+      "successor": "f9422e86b8162aa8ef8ea7da4bc9b462bbf965a6"
+    },
+    {
+      "path": "database/migrations/2026_08_23_090100_add_integration_client_to_audit_logs.php",
+      "baseline": "613cd0a2cd54ea0302f77ba3b3b4af0cfa52df02",
+      "successor": "613cd0a2cd54ea0302f77ba3b3b4af0cfa52df02"
+    },
+    {
+      "path": "database/migrations/2026_08_23_150000_create_integration_idempotency_records_table.php",
+      "baseline": "2b426dc779a95c9c0c0f19a534b7e9a8e850a025",
+      "successor": "2b426dc779a95c9c0c0f19a534b7e9a8e850a025"
+    },
+    {
+      "path": "database/migrations/2026_08_23_150100_create_outbox_messages_table.php",
+      "baseline": "053a94973aa2436d6fda1e80023d27de7f1c3995",
+      "successor": "053a94973aa2436d6fda1e80023d27de7f1c3995"
+    },
+    {
+      "path": "database/migrations/2026_08_23_150200_create_integration_proof_writes_table.php",
+      "baseline": "00c6bd39aee3362f8697202bb503aaff64834936",
+      "successor": "00c6bd39aee3362f8697202bb503aaff64834936"
+    },
+    {
+      "path": "database/migrations/2026_08_23_170000_create_correspondence_records_table.php",
+      "baseline": "1e4486291cfd73b32b31ab9ed19f79ce9371f1fc",
+      "successor": "1e4486291cfd73b32b31ab9ed19f79ce9371f1fc"
+    },
+    {
+      "path": "database/migrations/2026_08_23_170100_create_correspondence_events_table.php",
+      "baseline": "14fd60eb354b20f0a13fba8fb21d0abf00200dd0",
+      "successor": "14fd60eb354b20f0a13fba8fb21d0abf00200dd0"
+    },
+    {
+      "path": "database/migrations/2026_08_23_170200_create_correspondence_reference_counters_table.php",
+      "baseline": "31c33e54dfcc974636866c043f6846e159e36205",
+      "successor": "31c33e54dfcc974636866c043f6846e159e36205"
+    },
+    {
+      "path": "database/migrations/2026_08_24_010000_add_route_action_fields_to_correspondence_records.php",
+      "baseline": "3934519ec9eca55186305086a81fd7cfe2b64cb3",
+      "successor": "3934519ec9eca55186305086a81fd7cfe2b64cb3"
+    },
+    {
+      "path": "database/migrations/2026_08_27_120000_create_travel_orders_tables.php",
+      "baseline": "557076105c98528ce7bfbd9b7e3462e43572956e",
+      "successor": "557076105c98528ce7bfbd9b7e3462e43572956e"
+    },
+    {
+      "path": "database/migrations/2026_09_24_012300_create_prototype_messages_table.php",
+      "baseline": "af7d32091788eca08d1ffed0e5aabbe6d2656238",
+      "successor": "af7d32091788eca08d1ffed0e5aabbe6d2656238"
+    },
+    {
+      "path": "database/migrations/2026_09_30_000100_add_work_request_fields_to_transactions.php",
+      "baseline": "2470da84c5d80f7823495fac99ec0ecad64d73d5",
+      "successor": "2470da84c5d80f7823495fac99ec0ecad64d73d5"
+    },
+    {
+      "path": "database/migrations/2026_09_30_183000_add_work_request_queue_indexes.php",
+      "baseline": "d6e287f7ad787fec06b258abd2b9c8a05e6fdc5f",
+      "successor": "d6e287f7ad787fec06b258abd2b9c8a05e6fdc5f"
+    },
+    {
+      "path": "database/migrations/2026_09_30_184000_add_assignment_audit_to_transaction_events.php",
+      "baseline": "bb81e5cb3d9d15a0a4728abbf26da49155f7db1c",
+      "successor": "bb81e5cb3d9d15a0a4728abbf26da49155f7db1c"
+    },
+    {
+      "path": "database/migrations/2026_10_08_000000_create_tasks_table.php",
+      "baseline": "5b994c6f9448caab354089abc1d4e470e79e6b49",
+      "successor": "5b994c6f9448caab354089abc1d4e470e79e6b49"
+    },
+    {
+      "path": "database/migrations/2026_10_09_000000_extend_tasks_for_w02_core.php",
+      "baseline": "ad428151fd9ff515aba205a34c1940d6afe9aa39",
+      "successor": "ad428151fd9ff515aba205a34c1940d6afe9aa39"
+    },
+    {
+      "path": "database/migrations/2026_10_09_000100_create_task_events_table.php",
+      "baseline": "dd14d0a582fab2d9c78d1a57a5cb11362c0b067c",
+      "successor": "dd14d0a582fab2d9c78d1a57a5cb11362c0b067c"
+    },
+    {
+      "path": "database/migrations/2026_10_19_230000_add_user_last_seen_for_portal_presence.php",
+      "baseline": "a145339afb35d241f77e59bada4db1d7841e849f",
+      "successor": "a145339afb35d241f77e59bada4db1d7841e849f"
+    },
+    {
+      "path": "database/migrations/2026_10_20_040000_create_portal_presence_sessions_table.php",
+      "baseline": "07d7d276e6198dac195509f2b5a3bc4235276e5e",
+      "successor": "07d7d276e6198dac195509f2b5a3bc4235276e5e"
+    },
+    {
+      "path": "database/migrations/2026_10_28_010000_create_plan_catalog_foundation_tables.php",
+      "baseline": "f98e887571e38bbf7ea24bc7b77342edf22c378b",
+      "successor": "f98e887571e38bbf7ea24bc7b77342edf22c378b"
+    },
+    {
+      "path": "database/migrations/2026_10_28_011000_add_plan_origin_and_quarantined_bindings.php",
+      "baseline": "566e3e2b35a040368c4d01b6d2563647dead8a4b",
+      "successor": "566e3e2b35a040368c4d01b6d2563647dead8a4b"
+    },
+    {
+      "path": "database/migrations/2026_10_28_012000_create_plan_custody_foundation.php",
+      "baseline": "d198a25b0ae9bd0c35cad5a03b6ec144507af246",
+      "successor": "d198a25b0ae9bd0c35cad5a03b6ec144507af246"
+    },
+    {
+      "path": "database/migrations/2026_11_11_000100_create_permanent_iam_tables.php",
+      "baseline": "71ba41356ab03c15d3a56ca0a436292c5f768fbb",
+      "successor": "71ba41356ab03c15d3a56ca0a436292c5f768fbb"
+    },
+    {
+      "path": "database/migrations/2026_11_19_200000_create_legacy_custody_foundation.php",
+      "baseline": "89e2bbdf17417afde1599d1447774e300b65f1fa",
+      "successor": "89e2bbdf17417afde1599d1447774e300b65f1fa"
+    },
+    {
+      "path": "database/migrations/2026_11_20_000100_add_activation_disclosure_marker.php",
+      "baseline": "bf85ad8d851b029e95285da89185c56a70397f55",
+      "successor": "bf85ad8d851b029e95285da89185c56a70397f55"
+    },
+    {
+      "path": "database/migrations/2026_11_20_000200_enforce_iam_identity_integrity.php",
+      "baseline": "2746a8a1ac6b26dda0b107bf8ad4931bf69d6486",
+      "successor": "2746a8a1ac6b26dda0b107bf8ad4931bf69d6486"
+    },
+    {
+      "path": "database/migrations/2026_11_20_010000_extend_legacy_custody_g2b_command_provenance.php",
+      "baseline": "35de4efd41bd9b386fe1fd194d13d2908592c6b5",
+      "successor": "35de4efd41bd9b386fe1fd194d13d2908592c6b5"
+    },
+    {
+      "path": "database/migrations/2026_11_20_020000_create_legacy_custody_k2_tombstones.php",
+      "baseline": "088b280defdd3da16291da1f06ac46c9575b0462",
+      "successor": "088b280defdd3da16291da1f06ac46c9575b0462"
+    },
+    {
+      "path": "database/migrations/2026_11_20_030000_create_legacy_custody_g3_g5_extensions.php",
+      "baseline": "8e46c7b007bc79a04632b07672870068d36f6338",
+      "successor": "8e46c7b007bc79a04632b07672870068d36f6338"
+    },
+    {
+      "path": "database/migrations/2026_11_22_150000_ops009_close_command_compatibility.php",
+      "baseline": "9535c9de0a8b2d34a0a9c8c1b3aad519afb03472",
+      "successor": "9535c9de0a8b2d34a0a9c8c1b3aad519afb03472"
+    },
+    {
+      "path": "database/migrations/2026_11_22_170000_ops009_g2b_close_audit_compatibility.php",
+      "baseline": "f08373734ac244d0b9f4dff44de36b7533cf956b",
+      "successor": "f08373734ac244d0b9f4dff44de36b7533cf956b"
+    },
+    {
+      "path": "database/migrations/2026_11_22_190000_ops009_r3_close_audit_provenance.php",
+      "baseline": "80fa06253b356da8e9693ace43dff84fe032a984",
+      "successor": "80fa06253b356da8e9693ace43dff84fe032a984"
+    },
+    {
+      "path": "database/migrations/2026_11_22_191000_ops009_r3_origin_notice_effect.php",
+      "baseline": "f0d6d7d67336f5457bdc14fa32786a4010eed115",
+      "successor": "f0d6d7d67336f5457bdc14fa32786a4010eed115"
+    },
+    {
+      "path": "database/migrations/2026_11_23_020000_ops009_origin_delivery_exception_queue.php",
+      "baseline": "0297403989bf4b99adf95abf0e06092f4c7d6854",
+      "successor": "0297403989bf4b99adf95abf0e06092f4c7d6854"
+    },
+    {
+      "path": "database/migrations/2026_11_24_010000_create_local_development_planning_suite_tables.php",
+      "baseline": "cb4733c8b0cad1991dfc177ce02c8d887fcd4596",
+      "successor": "cb4733c8b0cad1991dfc177ce02c8d887fcd4596"
+    },
+    {
+      "path": "database/seeders/DatabaseSeeder.php",
+      "baseline": "970e5784ace1238a2d913b0e9406aafc76814dfc",
+      "successor": "970e5784ace1238a2d913b0e9406aafc76814dfc"
+    },
+    {
+      "path": "database/seeders/F4BrowserQaCorrespondenceSeeder.php",
+      "baseline": "d2a816a423ef3a44c57dea31a4315a7b655def49",
+      "successor": "d2a816a423ef3a44c57dea31a4315a7b655def49"
+    },
+    {
+      "path": "database/seeders/F5BrowserQaSeeder.php",
+      "baseline": "6400f29e2b225a8a559b2e632cfd67cc2a00403c",
+      "successor": "6400f29e2b225a8a559b2e632cfd67cc2a00403c"
+    },
+    {
+      "path": "database/seeders/HrisDemoSeeder.php",
+      "baseline": "532b7b112f1103030f60c4d083e8167c47aedcef",
+      "successor": "532b7b112f1103030f60c4d083e8167c47aedcef"
+    },
+    {
+      "path": "database/seeders/HrisDevelopmentDemoSeeder.php",
+      "baseline": "7016f4a74f758ee624679e794796fdd474640cbd",
+      "successor": "7016f4a74f758ee624679e794796fdd474640cbd"
+    },
+    {
+      "path": "database/seeders/LegislativeDemoSeeder.php",
+      "baseline": "9b504fdda7a9928a5716a06cdea17679750b501b",
+      "successor": "9b504fdda7a9928a5716a06cdea17679750b501b"
+    },
+    {
+      "path": "database/seeders/MemorandumDemoSeeder.php",
+      "baseline": "2d8e6e8d5fee28cf8c3a3e1a0fb159bc7d3b4789",
+      "successor": "2d8e6e8d5fee28cf8c3a3e1a0fb159bc7d3b4789"
+    },
+    {
+      "path": "database/seeders/MunicipalMeetingCalendarSeeder.php",
+      "baseline": "4ac895076f5e45c3a3f52e203501ed9b35a03742",
+      "successor": "4ac895076f5e45c3a3f52e203501ed9b35a03742"
+    },
+    {
+      "path": "database/seeders/MunicipalityStructureSeeder.php",
+      "baseline": "74376befc746106ca0ef2fcc6abec2e20ac9107e",
+      "successor": "74376befc746106ca0ef2fcc6abec2e20ac9107e"
+    },
+    {
+      "path": "database/seeders/OperationsMonitoringDemoSeeder.php",
+      "baseline": "39e3da30c86d6f354f77aa8fab4c51763f25b5cf",
+      "successor": "39e3da30c86d6f354f77aa8fab4c51763f25b5cf"
+    },
+    {
+      "path": "database/seeders/PayrollDemoSeeder.php",
+      "baseline": "0dd2d6e19ca9806188b769a777a00faba584e95c",
+      "successor": "0dd2d6e19ca9806188b769a777a00faba584e95c"
+    },
+    {
+      "path": "database/seeders/PlanningReferenceSampleSeeder.php",
+      "baseline": "4c840d4c0ba636729bf99030f70f0255dbaf30d2",
+      "successor": "4c840d4c0ba636729bf99030f70f0255dbaf30d2"
+    },
+    {
+      "path": "database/seeders/PrototypeMessagingDemoSeeder.php",
+      "baseline": "71f6f4d98b520d6f2260debee0856575a782dcdd",
+      "successor": "71f6f4d98b520d6f2260debee0856575a782dcdd"
+    },
+    {
+      "path": "database/seeders/WorkflowDemoSeeder.php",
+      "baseline": "f472c14e78b5b47c076683e999ad06f93e0fcfd9",
+      "successor": "f472c14e78b5b47c076683e999ad06f93e0fcfd9"
+    },
+    {
+      "path": "database/seeders/WorkforceDemoSeeder.php",
+      "baseline": "cc23b14a705a4f8348e6335dcb075dc40a050e01",
+      "successor": "cc23b14a705a4f8348e6335dcb075dc40a050e01"
+    },
+    {
+      "path": "phpunit.xml",
+      "baseline": "0d7bfba000b82f3337168ea1c0f93c99ec68074e",
+      "successor": "0d7bfba000b82f3337168ea1c0f93c99ec68074e"
+    },
+    {
+      "path": "routes/api.php",
+      "baseline": "b6350d188d7bb7274e38ae7a864c49d6d496d12b",
+      "successor": "b6350d188d7bb7274e38ae7a864c49d6d496d12b"
+    },
+    {
+      "path": "routes/console.php",
+      "baseline": "d99e71cc597f301f18af2cec11d5355b5f27d963",
+      "successor": "d99e71cc597f301f18af2cec11d5355b5f27d963"
+    },
+    {
+      "path": "routes/web.php",
+      "baseline": "c1da2baa28408c1f2af356a4bd63ee7bb621c49e",
+      "successor": "c1da2baa28408c1f2af356a4bd63ee7bb621c49e"
+    },
+    {
+      "path": "tests/Browser/h1-mutation-probe.php",
+      "baseline": "a4b3783d111fb6e0ea49a4ef05d3775744e4f253",
+      "successor": "a4b3783d111fb6e0ea49a4ef05d3775744e4f253"
+    },
+    {
+      "path": "tests/Browser/iam-pr48-fixture.php",
+      "baseline": "f5a4aad48540fdfee898f4de9dd6e2f697a2a40f",
+      "successor": "f5a4aad48540fdfee898f4de9dd6e2f697a2a40f"
+    },
+    {
+      "path": "tests/Browser/legacy-pdf-inline-fixture.php",
+      "baseline": "90e01e63604fd2faa9c58ffcfba09989bc98884f",
+      "successor": "90e01e63604fd2faa9c58ffcfba09989bc98884f"
+    },
+    {
+      "path": "tests/Concurrency/h5-memorandum-concurrency.php",
+      "baseline": "f1ec10e334eba5f7328bb6f100db3388221d0d40",
+      "successor": "f1ec10e334eba5f7328bb6f100db3388221d0d40"
+    },
+    {
+      "path": "tests/Concurrency/h5-memorandum-worker.php",
+      "baseline": "b94cf5d12337e9aff9e70098b1daa38cc1f40a31",
+      "successor": "b94cf5d12337e9aff9e70098b1daa38cc1f40a31"
+    },
+    {
+      "path": "tests/Feature/AuditSourceReferenceReadModelTest.php",
+      "baseline": "5691149c156f04394ec5e9ab6bdfb940c19c87ac",
+      "successor": "5691149c156f04394ec5e9ab6bdfb940c19c87ac"
+    },
+    {
+      "path": "tests/Feature/AuthenticationRuntimeContractTest.php",
+      "baseline": "71d8eec6760040a11f276957b94bcbd60a07112a",
+      "successor": "71d8eec6760040a11f276957b94bcbd60a07112a"
+    },
+    {
+      "path": "tests/Feature/Bh1RuntimePerformanceTest.php",
+      "baseline": "8110fbdcda136c66389c30d72664ff0af25811d5",
+      "successor": "8110fbdcda136c66389c30d72664ff0af25811d5"
+    },
+    {
+      "path": "tests/Feature/Bh2FastRenderHardeningTest.php",
+      "baseline": "5738bd7042fb65c6cf0a95786cc5f514ec32cadf",
+      "successor": "5738bd7042fb65c6cf0a95786cc5f514ec32cadf"
+    },
+    {
+      "path": "tests/Feature/CalendarWorkspaceTest.php",
+      "baseline": "25fae875cefc3306b9a928d9e83d154008037208",
+      "successor": "25fae875cefc3306b9a928d9e83d154008037208"
+    },
+    {
+      "path": "tests/Feature/CommonCoordination/CommonCoordinationReaderTest.php",
+      "baseline": "1df27d334f53e38fdb5bfbe21cdfc1a0151218e4",
+      "successor": "1df27d334f53e38fdb5bfbe21cdfc1a0151218e4"
+    },
+    {
+      "path": "tests/Feature/CommonSearch/AuthorizedSourceSearchTest.php",
+      "baseline": "72827a8408e2f5a506af098a9ba27b0799b81757",
+      "successor": "72827a8408e2f5a506af098a9ba27b0799b81757"
+    },
+    {
+      "path": "tests/Feature/CommonWork/UnifiedMyWorkQueryExtendedTest.php",
+      "baseline": "3e834605984e6c28608996f71af133fe4873d704",
+      "successor": "3e834605984e6c28608996f71af133fe4873d704"
+    },
+    {
+      "path": "tests/Feature/CommonWork/UnifiedMyWorkQueryTest.php",
+      "baseline": "be689b5207af910d11a638108e4b6dc3b0846d58",
+      "successor": "be689b5207af910d11a638108e4b6dc3b0846d58"
+    },
+    {
+      "path": "tests/Feature/CoreDocumentAttachmentsTest.php",
+      "baseline": "e8c449076d7b3fa6cc3e0667546d29508efdfcf4",
+      "successor": "e8c449076d7b3fa6cc3e0667546d29508efdfcf4"
+    },
+    {
+      "path": "tests/Feature/CorePortalReportsTest.php",
+      "baseline": "f71fa065705eb83a85cacbdd44dbd52c06ce8b6c",
+      "successor": "f71fa065705eb83a85cacbdd44dbd52c06ce8b6c"
+    },
+    {
+      "path": "tests/Feature/CorePortalTimestampPersistenceTest.php",
+      "baseline": "70ea08b852265a8f20d7dd707fd26d98f9b8fa35",
+      "successor": "70ea08b852265a8f20d7dd707fd26d98f9b8fa35"
+    },
+    {
+      "path": "tests/Feature/CorrespondenceCoreATest.php",
+      "baseline": "5905630f1c900250f63d2209f8fbc87013682e6f",
+      "successor": "5905630f1c900250f63d2209f8fbc87013682e6f"
+    },
+    {
+      "path": "tests/Feature/CorrespondenceCoreBTest.php",
+      "baseline": "14e6a65429d93133235027107109f6bd444c8a59",
+      "successor": "14e6a65429d93133235027107109f6bd444c8a59"
+    },
+    {
+      "path": "tests/Feature/CorrespondenceDetailWorkspaceTest.php",
+      "baseline": "0ca8ce3142075e772999b7ed6e18b07d458722eb",
+      "successor": "0ca8ce3142075e772999b7ed6e18b07d458722eb"
+    },
+    {
+      "path": "tests/Feature/CorrespondenceTraceabilityTest.php",
+      "baseline": "b5397496c74cd06687ff494271013d0dc46d4841",
+      "successor": "b5397496c74cd06687ff494271013d0dc46d4841"
+    },
+    {
+      "path": "tests/Feature/CorrespondenceWorkspaceActionsTest.php",
+      "baseline": "1efa9d37aea258a41bd9d78c0ea4714367b494dc",
+      "successor": "1efa9d37aea258a41bd9d78c0ea4714367b494dc"
+    },
+    {
+      "path": "tests/Feature/CorrespondenceWorkspaceTest.php",
+      "baseline": "80077ff077e8c60e13451c4eca159922acc9a39e",
+      "successor": "80077ff077e8c60e13451c4eca159922acc9a39e"
+    },
+    {
+      "path": "tests/Feature/CurrentPortalNavigationTest.php",
+      "baseline": "92630461c3d907f39dc1b51aa333699068838e6c",
+      "successor": "92630461c3d907f39dc1b51aa333699068838e6c"
+    },
+    {
+      "path": "tests/Feature/DashboardWorkspaceTest.php",
+      "baseline": "669355e7113ea353b5f4f1e782493f4f5df06be1",
+      "successor": "669355e7113ea353b5f4f1e782493f4f5df06be1"
+    },
+    {
+      "path": "tests/Feature/DepartmentWorkspaceTest.php",
+      "baseline": "c87bc1311a0c71ef23f6d213aaa8ac69ac02526b",
+      "successor": "c87bc1311a0c71ef23f6d213aaa8ac69ac02526b"
+    },
+    {
+      "path": "tests/Feature/DocumentAccessPrecedenceTest.php",
+      "baseline": "3c56ee5c3fe09eb2c0cf4a2fc1b8f1ba4173a690",
+      "successor": "3c56ee5c3fe09eb2c0cf4a2fc1b8f1ba4173a690"
+    },
+    {
+      "path": "tests/Feature/EmployeeProfileProvenanceQuarantineTest.php",
+      "baseline": "f6bc120a6eb96e27a6cd6b1a7b89aa16934f4d9e",
+      "successor": "f6bc120a6eb96e27a6cd6b1a7b89aa16934f4d9e"
+    },
+    {
+      "path": "tests/Feature/H4SystemAdminActionCompletenessTest.php",
+      "baseline": "7434a5835291a41817d4de5c8d6e1c1a475da32f",
+      "successor": "7434a5835291a41817d4de5c8d6e1c1a475da32f"
+    },
+    {
+      "path": "tests/Feature/HrisSecurityTest.php",
+      "baseline": "200292051f9f4af30c26c7e1e07c094791d2a776",
+      "successor": "200292051f9f4af30c26c7e1e07c094791d2a776"
+    },
+    {
+      "path": "tests/Feature/IntegrationFoundationBTest.php",
+      "baseline": "9b639c1d5aafbd41d88affc388d09a14219facc4",
+      "successor": "9b639c1d5aafbd41d88affc388d09a14219facc4"
+    },
+    {
+      "path": "tests/Feature/IntegrationFoundationTest.php",
+      "baseline": "41682f49d928a2ed58bb7e9d8ba583ab10a6565c",
+      "successor": "41682f49d928a2ed58bb7e9d8ba583ab10a6565c"
+    },
+    {
+      "path": "tests/Feature/LeaveCreditTest.php",
+      "baseline": "0ff2e28e121faabf3b327c334edb1eaf1a2cba95",
+      "successor": "0ff2e28e121faabf3b327c334edb1eaf1a2cba95"
+    },
+    {
+      "path": "tests/Feature/LegacyCustodyFoundationTest.php",
+      "baseline": "960a225a8daad679adfe7110afdec7052b99bb6c",
+      "successor": "960a225a8daad679adfe7110afdec7052b99bb6c"
+    },
+    {
+      "path": "tests/Feature/LegacyCustodyG2BTransactionCorrespondenceCommandTest.php",
+      "baseline": "dea852438b5519ece11366f3500ec7f4e122aedd",
+      "successor": "dea852438b5519ece11366f3500ec7f4e122aedd"
+    },
+    {
+      "path": "tests/Feature/LegacyCustodyG2BTravelOrderCommandTest.php",
+      "baseline": "c4c6c8cc4803d0a6d6d1d41d0d08b64b914a3cbc",
+      "successor": "c4c6c8cc4803d0a6d6d1d41d0d08b64b914a3cbc"
+    },
+    {
+      "path": "tests/Feature/LegacyCustodyG3EgressAndWatermarkTest.php",
+      "baseline": "e303aa0c80d4b2f32478bc79cb7faa7d4bf7d2b0",
+      "successor": "e303aa0c80d4b2f32478bc79cb7faa7d4bf7d2b0"
+    },
+    {
+      "path": "tests/Feature/LegacyCustodyK2ReconciliationTest.php",
+      "baseline": "626edaf4af826f7f0112518d6e7586fee721b989",
+      "successor": "626edaf4af826f7f0112518d6e7586fee721b989"
+    },
+    {
+      "path": "tests/Feature/LegacyCustodyK3BrokerIsolationTest.php",
+      "baseline": "ea202cca880a480b04429378e78d83fe8e1726f7",
+      "successor": "ea202cca880a480b04429378e78d83fe8e1726f7"
+    },
+    {
+      "path": "tests/Feature/LegacyDocumentCustodyIntegrityTest.php",
+      "baseline": "bfea423b364b4976eb0bd56fe6464666071f8ab4",
+      "successor": "bfea423b364b4976eb0bd56fe6464666071f8ab4"
+    },
+    {
+      "path": "tests/Feature/LegacyPdfPreviewTest.php",
+      "baseline": "efc375d271dbd69aa3ee6c4338f7931f37392790",
+      "successor": "efc375d271dbd69aa3ee6c4338f7931f37392790"
+    },
+    {
+      "path": "tests/Feature/M6ExecutivePrototypeTest.php",
+      "baseline": "e142d8da9e98226dbc5cd6ec2f8602621345b239",
+      "successor": "e142d8da9e98226dbc5cd6ec2f8602621345b239"
+    },
+    {
+      "path": "tests/Feature/MeetingCalendarProjectionTest.php",
+      "baseline": "79d311cf46092722cc5a9753558644d18fe8c7da",
+      "successor": "79d311cf46092722cc5a9753558644d18fe8c7da"
+    },
+    {
+      "path": "tests/Feature/MemorandumDeliveryTest.php",
+      "baseline": "1f2e56e8c4902a364e21a9854e67bde7ba7f5272",
+      "successor": "1f2e56e8c4902a364e21a9854e67bde7ba7f5272"
+    },
+    {
+      "path": "tests/Feature/Messaging/MessageListTest.php",
+      "baseline": "5e5a6b2a7ce0cb0b6dd5fdddef997d1f0b202b73",
+      "successor": "5e5a6b2a7ce0cb0b6dd5fdddef997d1f0b202b73"
+    },
+    {
+      "path": "tests/Feature/Messaging/MessageStoreTest.php",
+      "baseline": "b8ec7cba9daa7cc31fefec1cd8fd53af7173594c",
+      "successor": "b8ec7cba9daa7cc31fefec1cd8fd53af7173594c"
+    },
+    {
+      "path": "tests/Feature/Messaging/MessagingAccessTest.php",
+      "baseline": "f1a3772c8bec53f0de143a5784fc8f4301d713e5",
+      "successor": "f1a3772c8bec53f0de143a5784fc8f4301d713e5"
+    },
+    {
+      "path": "tests/Feature/Messaging/RestrictedUatMessagingGateTest.php",
+      "baseline": "aed93cfd170044eac2bd8bec5227719af4ef1199",
+      "successor": "aed93cfd170044eac2bd8bec5227719af4ef1199"
+    },
+    {
+      "path": "tests/Feature/MfaSecurityControlsTest.php",
+      "baseline": "2b1a5a17a9e1bd53561ef71303c1d6e14350c253",
+      "successor": "2b1a5a17a9e1bd53561ef71303c1d6e14350c253"
+    },
+    {
+      "path": "tests/Feature/MunicipalWorkflowTest.php",
+      "baseline": "06ef23e2a4110335971f174d52b269f4da03b0f8",
+      "successor": "06ef23e2a4110335971f174d52b269f4da03b0f8"
+    },
+    {
+      "path": "tests/Feature/OPS009C01N03SimultaneousCloseTest.php",
+      "baseline": "cc1857594be9fb826f341b390611c27915813ae3",
+      "successor": "cc1857594be9fb826f341b390611c27915813ae3"
+    },
+    {
+      "path": "tests/Feature/OPS009C02CustodyCloseTest.php",
+      "baseline": "225b64fe9bb0d0b89c5dbe20f4401e7e217a848a",
+      "successor": "225b64fe9bb0d0b89c5dbe20f4401e7e217a848a"
+    },
+    {
+      "path": "tests/Feature/OfficeDirectoryCatalogTest.php",
+      "baseline": "f8793cfb3ec39d50d32c316fbd8cb1d160fd3fc1",
+      "successor": "f8793cfb3ec39d50d32c316fbd8cb1d160fd3fc1"
+    },
+    {
+      "path": "tests/Feature/P0DestinationRevocation/P0DestinationRevocationTest.php",
+      "baseline": "9f8e85ed84b8874d4d91d6be2f01e33db43b9cd7",
+      "successor": "9f8e85ed84b8874d4d91d6be2f01e33db43b9cd7"
+    },
+    {
+      "path": "tests/Feature/PeopleDirectoryScopeTest.php",
+      "baseline": "9992d508e9bb09cd5d14feb083ac60dd811e897e",
+      "successor": "9992d508e9bb09cd5d14feb083ac60dd811e897e"
+    },
+    {
+      "path": "tests/Feature/PerformanceLiveEndpointsTest.php",
+      "baseline": "d02e5c46dffd0f1f5c0eec34c5fad5d66a1be5cd",
+      "successor": "d02e5c46dffd0f1f5c0eec34c5fad5d66a1be5cd"
+    },
+    {
+      "path": "tests/Feature/PermanentIamConcurrencyTest.php",
+      "baseline": "02768be0ca5097e32dca5d6630a56d93bfac542e",
+      "successor": "02768be0ca5097e32dca5d6630a56d93bfac542e"
+    },
+    {
+      "path": "tests/Feature/PermanentIamLifecycleTest.php",
+      "baseline": "bf8cbe4c600a742f189b38bba740b3312eb1f8ed",
+      "successor": "bf8cbe4c600a742f189b38bba740b3312eb1f8ed"
+    },
+    {
+      "path": "tests/Feature/PermanentIamPasswordConcurrencyTest.php",
+      "baseline": "f7ad245fb1c76c660a9b459bdcfaad74dbc6bdab",
+      "successor": "f7ad245fb1c76c660a9b459bdcfaad74dbc6bdab"
+    },
+    {
+      "path": "tests/Feature/PermanentIamSessionSecurityTest.php",
+      "baseline": "e307fd2bab24c8e8bde7dc334e88042ebf16e91f",
+      "successor": "e307fd2bab24c8e8bde7dc334e88042ebf16e91f"
+    },
+    {
+      "path": "tests/Feature/Phase1DevelopmentHealthSecurityTest.php",
+      "baseline": "74427ec327a213945cf80ae0629426023a0c2702",
+      "successor": "74427ec327a213945cf80ae0629426023a0c2702"
+    },
+    {
+      "path": "tests/Feature/Phase1DtrPayrollIntegrationTest.php",
+      "baseline": "7961802f64368839d70e44d5fcb6845bf4204347",
+      "successor": "7961802f64368839d70e44d5fcb6845bf4204347"
+    },
+    {
+      "path": "tests/Feature/Phase1EmployeeProfileTest.php",
+      "baseline": "d3266aa88d34a66c1b93fbb93cff0db33a29114d",
+      "successor": "d3266aa88d34a66c1b93fbb93cff0db33a29114d"
+    },
+    {
+      "path": "tests/Feature/Phase1ExecutiveLegislativeWorkspaceTest.php",
+      "baseline": "f810f2eafbe8c5163dd1db75661f34d6feca1233",
+      "successor": "f810f2eafbe8c5163dd1db75661f34d6feca1233"
+    },
+    {
+      "path": "tests/Feature/Phase1IntegratedAcceptanceTest.php",
+      "baseline": "8dfee72e90ffe0464aa1dc3a212b167e2d0f9809",
+      "successor": "8dfee72e90ffe0464aa1dc3a212b167e2d0f9809"
+    },
+    {
+      "path": "tests/Feature/Phase1LifecyclePropertyDomainTest.php",
+      "baseline": "543700e6354ce647561f772cf61ac98bb8484b04",
+      "successor": "543700e6354ce647561f772cf61ac98bb8484b04"
+    },
+    {
+      "path": "tests/Feature/Phase1LifecyclePropertyHttpTest.php",
+      "baseline": "4091ca032494a06f7d73ab32bc72527adeb4e9f0",
+      "successor": "4091ca032494a06f7d73ab32bc72527adeb4e9f0"
+    },
+    {
+      "path": "tests/Feature/Phase1OffboardingTest.php",
+      "baseline": "e44a02b9ac294e8ee12c53401fe48d28b47283aa",
+      "successor": "e44a02b9ac294e8ee12c53401fe48d28b47283aa"
+    },
+    {
+      "path": "tests/Feature/Phase1OrganizationRoutingTest.php",
+      "baseline": "5445fa2b80ba2db42e0b9dbb44b4ad5d08541d22",
+      "successor": "5445fa2b80ba2db42e0b9dbb44b4ad5d08541d22"
+    },
+    {
+      "path": "tests/Feature/Phase1PropertyInventoryIntegrityTest.php",
+      "baseline": "d0c7e9071935dd2e2252779f65348ebb436af50e",
+      "successor": "d0c7e9071935dd2e2252779f65348ebb436af50e"
+    },
+    {
+      "path": "tests/Feature/Phase1PropertyLifecycleTest.php",
+      "baseline": "0039169e0c3a5144183aa5e36ca4c61f0c4f329e",
+      "successor": "0039169e0c3a5144183aa5e36ca4c61f0c4f329e"
+    },
+    {
+      "path": "tests/Feature/Phase1ReportingAuditSecurityTest.php",
+      "baseline": "4302924d0a3be6572e0ef0885c522b0b991362d8",
+      "successor": "4302924d0a3be6572e0ef0885c522b0b991362d8"
+    },
+    {
+      "path": "tests/Feature/Phase1SharedPlatformServicesTest.php",
+      "baseline": "94c5602eaaab0201a18958a66dd8c41618bc1ea3",
+      "successor": "94c5602eaaab0201a18958a66dd8c41618bc1ea3"
+    },
+    {
+      "path": "tests/Feature/PlanCatalogFoundationTest.php",
+      "baseline": "75dd64da9032cca48b0e23e3d2725fa75a1fc90b",
+      "successor": "75dd64da9032cca48b0e23e3d2725fa75a1fc90b"
+    },
+    {
+      "path": "tests/Feature/PlanCustodyFoundationTest.php",
+      "baseline": "51d94cabd61a217b8d2eed51198fd89c2b9e4a9f",
+      "successor": "51d94cabd61a217b8d2eed51198fd89c2b9e4a9f"
+    },
+    {
+      "path": "tests/Feature/PlanDocumentOriginIsolationTest.php",
+      "baseline": "245a0c9c98c03931620d45141f3153b284333882",
+      "successor": "245a0c9c98c03931620d45141f3153b284333882"
+    },
+    {
+      "path": "tests/Feature/PlanLegacyCallerBoundaryTest.php",
+      "baseline": "ef6c092e23a069bf3306f3026ba2ef3f505be451",
+      "successor": "ef6c092e23a069bf3306f3026ba2ef3f505be451"
+    },
+    {
+      "path": "tests/Feature/PlanLegacyOriginGuardHardeningTest.php",
+      "baseline": "2738a23d58cb85075956e84ccf725fb10b727bad",
+      "successor": "2738a23d58cb85075956e84ccf725fb10b727bad"
+    },
+    {
+      "path": "tests/Feature/Planning/LocalDevelopmentPlanningSuiteTest.php",
+      "baseline": "6ff06a05e5f3d528423024d6bb35078f4bd53dec",
+      "successor": "6ff06a05e5f3d528423024d6bb35078f4bd53dec"
+    },
+    {
+      "path": "tests/Feature/PortalNavigationAccessTest.php",
+      "baseline": "615f9ef10bf2e361357df24b545feb76b1afccb8",
+      "successor": "615f9ef10bf2e361357df24b545feb76b1afccb8"
+    },
+    {
+      "path": "tests/Feature/PostgresTimezonePersistenceTest.php",
+      "baseline": "59fb76f251e24d4c9e1c6fcebb3a06fb0a78be48",
+      "successor": "59fb76f251e24d4c9e1c6fcebb3a06fb0a78be48"
+    },
+    {
+      "path": "tests/Feature/PrivilegedMfaAuthenticationTest.php",
+      "baseline": "b85760ba2b876be8aaa55633b4a2e84edeec87d5",
+      "successor": "b85760ba2b876be8aaa55633b4a2e84edeec87d5"
+    },
+    {
+      "path": "tests/Feature/ProjectMonitoringAccessTest.php",
+      "baseline": "2cea3ceeaef4b2672f0a0f02f3ef54b88d963ed9",
+      "successor": "2cea3ceeaef4b2672f0a0f02f3ef54b88d963ed9"
+    },
+    {
+      "path": "tests/Feature/PrototypeAuthenticationTest.php",
+      "baseline": "11b2fccfd75c375c275805ac404ada1b03aaee1c",
+      "successor": "11b2fccfd75c375c275805ac404ada1b03aaee1c"
+    },
+    {
+      "path": "tests/Feature/PrototypeMessaging/PrototypeMessagingDemoSeederTest.php",
+      "baseline": "633ccceec9c71c68f075738ae9fc45631d0a35df",
+      "successor": "633ccceec9c71c68f075738ae9fc45631d0a35df"
+    },
+    {
+      "path": "tests/Feature/PublicPortalTest.php",
+      "baseline": "6a8f0ed1e6b3acda9baa9bd2c0e9e65d9a36c8dc",
+      "successor": "6a8f0ed1e6b3acda9baa9bd2c0e9e65d9a36c8dc"
+    },
+    {
+      "path": "tests/Feature/RecordsSearchTest.php",
+      "baseline": "b9de3dba774ddc3dd0fb64e17a56daa2841eda97",
+      "successor": "b9de3dba774ddc3dd0fb64e17a56daa2841eda97"
+    },
+    {
+      "path": "tests/Feature/RepresentativeRoleExperienceTest.php",
+      "baseline": "401f83ec4e99def61ead62e628258e6dc4d43fe9",
+      "successor": "401f83ec4e99def61ead62e628258e6dc4d43fe9"
+    },
+    {
+      "path": "tests/Feature/RestrictedUatRouteGuardTest.php",
+      "baseline": "54f01eea3f9cf8da49f5898bfd339eaa898785fd",
+      "successor": "54f01eea3f9cf8da49f5898bfd339eaa898785fd"
+    },
+    {
+      "path": "tests/Feature/RouteAuthorityTest.php",
+      "baseline": "9c33e0744a7b9ba2d8884b40dc9c40c562200d39",
+      "successor": "9c33e0744a7b9ba2d8884b40dc9c40c562200d39"
+    },
+    {
+      "path": "tests/Feature/RuntimeRecoveryTest.php",
+      "baseline": "074ca21e4065049e6bbf026ffc6f5676d9d6b39e",
+      "successor": "074ca21e4065049e6bbf026ffc6f5676d9d6b39e"
+    },
+    {
+      "path": "tests/Feature/Security/RestrictedUatCorrespondenceDenialTest.php",
+      "baseline": "603e123aa5d09e0ad1e4f4d7fc22b0bf9343fa70",
+      "successor": "603e123aa5d09e0ad1e4f4d7fc22b0bf9343fa70"
+    },
+    {
+      "path": "tests/Feature/Support/ViteHotFileGuardTest.php",
+      "baseline": "b99b5b021e74a195ef5f223bf1db47aa825fe036",
+      "successor": "b99b5b021e74a195ef5f223bf1db47aa825fe036"
+    },
+    {
+      "path": "tests/Feature/SystemAdministrationBackendTest.php",
+      "baseline": "08ecaa1975f0d45cca6f2c5b57376d9539a17903",
+      "successor": "08ecaa1975f0d45cca6f2c5b57376d9539a17903"
+    },
+    {
+      "path": "tests/Feature/SystemAdministrationNavigationBoundaryTest.php",
+      "baseline": "e0d4ecf62e8092f77c4402f01c31199d5565239b",
+      "successor": "e0d4ecf62e8092f77c4402f01c31199d5565239b"
+    },
+    {
+      "path": "tests/Feature/SystemAdministrationNavigationCompatibilityTest.php",
+      "baseline": "b7004e7e4540853b2722a386b2c6b1316efe53af",
+      "successor": "b7004e7e4540853b2722a386b2c6b1316efe53af"
+    },
+    {
+      "path": "tests/Feature/SystemAdministrationNavigationContractTest.php",
+      "baseline": "095d36624e182a7cbdfa617d71c7e7521f12f74f",
+      "successor": "095d36624e182a7cbdfa617d71c7e7521f12f74f"
+    },
+    {
+      "path": "tests/Feature/Tasks/IndividualTaskHttpTest.php",
+      "baseline": "afec6e10b971f4b4f122ea46233cef2f2a41c200",
+      "successor": "afec6e10b971f4b4f122ea46233cef2f2a41c200"
+    },
+    {
+      "path": "tests/Feature/Tasks/TaskActivityPg16Fixture.php",
+      "baseline": "986ff440be342a2cec36e565eb3599c033c9b245",
+      "successor": "986ff440be342a2cec36e565eb3599c033c9b245"
+    },
+    {
+      "path": "tests/Feature/Tasks/TaskActivityPg16OverviewTest.php",
+      "baseline": "dd8f63bd16ea4ae4c151af391672176ec9cf3bc4",
+      "successor": "dd8f63bd16ea4ae4c151af391672176ec9cf3bc4"
+    },
+    {
+      "path": "tests/Feature/Tasks/TaskActivityPg16ReaderFeedTest.php",
+      "baseline": "33149eefdc0afd556d7489860dbfdae8eb326b1c",
+      "successor": "33149eefdc0afd556d7489860dbfdae8eb326b1c"
+    },
+    {
+      "path": "tests/Feature/Tasks/TaskConcurrentConnectionTest.php",
+      "baseline": "9a10807c359c1515eae07fdf14bda4afe0feeba0",
+      "successor": "9a10807c359c1515eae07fdf14bda4afe0feeba0"
+    },
+    {
+      "path": "tests/Feature/Tasks/TaskCoreServiceTest.php",
+      "baseline": "71b564cfea187da3a5567c7507d2a29f103f5fb3",
+      "successor": "71b564cfea187da3a5567c7507d2a29f103f5fb3"
+    },
+    {
+      "path": "tests/Feature/Tasks/TaskDomainFoundationTest.php",
+      "baseline": "215e9c3819eda3a645b3c060da9d7fa7042b9bf0",
+      "successor": "215e9c3819eda3a645b3c060da9d7fa7042b9bf0"
+    },
+    {
+      "path": "tests/Feature/Tasks/TaskJsonContractBoundaryTest.php",
+      "baseline": "878ed28a411616aa368b9ace3e197a3eb675e700",
+      "successor": "878ed28a411616aa368b9ace3e197a3eb675e700"
+    },
+    {
+      "path": "tests/Feature/TestEnvironmentIsolationTest.php",
+      "baseline": "cba661f96bfae8d594c9a51485e1c9898b8c0d92",
+      "successor": "cba661f96bfae8d594c9a51485e1c9898b8c0d92"
+    },
+    {
+      "path": "tests/Feature/TransactionAuthorizationNormalizationTest.php",
+      "baseline": "0c669b6825c29ebe4688c8379c7c4bbbbaada789",
+      "successor": "0c669b6825c29ebe4688c8379c7c4bbbbaada789"
+    },
+    {
+      "path": "tests/Feature/TravelOrderDomainTest.php",
+      "baseline": "1220cf0a8881c4b0f4cdd1eb0fb1a14125df3ecf",
+      "successor": "1220cf0a8881c4b0f4cdd1eb0fb1a14125df3ecf"
+    },
+    {
+      "path": "tests/Feature/TravelOrderRecordsFederationTest.php",
+      "baseline": "6de8b349e6e949659051d48b4a618b8e256c1434",
+      "successor": "6de8b349e6e949659051d48b4a618b8e256c1434"
+    },
+    {
+      "path": "tests/Feature/TravelOrderRepresentativeRoleTest.php",
+      "baseline": "0cb44772390e29f9058b76ffa5201b5cce1dbfd7",
+      "successor": "0cb44772390e29f9058b76ffa5201b5cce1dbfd7"
+    },
+    {
+      "path": "tests/Feature/TravelOrderWorkspaceTest.php",
+      "baseline": "3cd866acb6202d7e9e7639a66d20cd8daec9b4a8",
+      "successor": "3cd866acb6202d7e9e7639a66d20cd8daec9b4a8"
+    },
+    {
+      "path": "tests/Feature/W03ContextContinuityTest.php",
+      "baseline": "a3c7d383b2b7961cdd076e1b5cef18e9c971fa0b",
+      "successor": "a3c7d383b2b7961cdd076e1b5cef18e9c971fa0b"
+    },
+    {
+      "path": "tests/Feature/WholeSystemTraceabilityJourneyTest.php",
+      "baseline": "4fe50016a624e458226ebf2237ad81e37e3bc4e2",
+      "successor": "4fe50016a624e458226ebf2237ad81e37e3bc4e2"
+    },
+    {
+      "path": "tests/Feature/WorkQueueTest.php",
+      "baseline": "f3096a14eb40b9982a55a0920f0ed6907c6bf758",
+      "successor": "f3096a14eb40b9982a55a0920f0ed6907c6bf758"
+    },
+    {
+      "path": "tests/Feature/WorkRequestBackendValidationTest.php",
+      "baseline": "0a79ef0f79e39cb83f8073379c184e2bf9a70b94",
+      "successor": "0a79ef0f79e39cb83f8073379c184e2bf9a70b94"
+    },
+    {
+      "path": "tests/Feature/WorkRequestPresentationTest.php",
+      "baseline": "2d632d3a887f4c7b2861bfc0295e3dad10effa0c",
+      "successor": "2d632d3a887f4c7b2861bfc0295e3dad10effa0c"
+    },
+    {
+      "path": "tests/Feature/WorkRequests/OrdinaryWorkRequestClosureTest.php",
+      "baseline": "0e177c3a7b8f1a63741a6e75c8b9f9e82822ab27",
+      "successor": "0e177c3a7b8f1a63741a6e75c8b9f9e82822ab27"
+    },
+    {
+      "path": "tests/Feature/WorkRequests/OriginDeliveryExceptionQueueGuardTest.php",
+      "baseline": "ded70a80eb86d571f09b0684a9bf65369dfecf66",
+      "successor": "ded70a80eb86d571f09b0684a9bf65369dfecf66"
+    },
+    {
+      "path": "tests/Feature/WorkRequests/WorkRequestAllowedActionsAndInformationRoundtripTest.php",
+      "baseline": "b10125c7677dc4d7dee4cd1b8c9ff910c2549058",
+      "successor": "b10125c7677dc4d7dee4cd1b8c9ff910c2549058"
+    },
+    {
+      "path": "tests/Feature/WorkRequests/WorkRequestRevocationTest.php",
+      "baseline": "e01bcd22b827c02827a8502292ef209b4a766011",
+      "successor": "e01bcd22b827c02827a8502292ef209b4a766011"
+    },
+    {
+      "path": "tests/Feature/WorkflowDefinitionNormalizationTest.php",
+      "baseline": "bfc4c98ec2c784d75d1cff49113ddc1329ead5ea",
+      "successor": "bfc4c98ec2c784d75d1cff49113ddc1329ead5ea"
+    },
+    {
+      "path": "tests/Feature/WorkflowDomainEventBoundaryTest.php",
+      "baseline": "afab13e0d9bfeb4d599289d9827a6cda3d1ecbff",
+      "successor": "afab13e0d9bfeb4d599289d9827a6cda3d1ecbff"
+    },
+    {
+      "path": "tests/Feature/WorkflowHardeningTest.php",
+      "baseline": "f8878ae4f5e9fd16bd4bc941291785e333e46a82",
+      "successor": "f8878ae4f5e9fd16bd4bc941291785e333e46a82"
+    },
+    {
+      "path": "tests/Feature/WorkforceShowcasePersonaTest.php",
+      "baseline": "00cc0ff8a25489a185c28450a92db257868f7905",
+      "successor": "00cc0ff8a25489a185c28450a92db257868f7905"
+    },
+    {
+      "path": "tests/Feature/WorkspaceExperienceSharedPropTest.php",
+      "baseline": "fc4a89f13df26751ee3c4efdf0c7463564aeadcb",
+      "successor": "fc4a89f13df26751ee3c4efdf0c7463564aeadcb"
+    },
+    {
+      "path": "tests/HistoricalContracts/Phase1EmployeePrivateProfileHistoricalContractTest.php",
+      "baseline": "f7748957a2a0efd84fcf32f8a2ed7981ac67078c",
+      "successor": "f7748957a2a0efd84fcf32f8a2ed7981ac67078c"
+    },
+    {
+      "path": "tests/Manual/G1BOperationalLaravelCompatibility.php",
+      "baseline": "fecfba16becf8e5f8bfae4d90ad9d6b67734e27b",
+      "successor": "fecfba16becf8e5f8bfae4d90ad9d6b67734e27b"
+    },
+    {
+      "path": "tests/Manual/G2NoxIdempotencyWorker.php",
+      "baseline": "654a406439db366158e3d4e9c966be0a6302bbc6",
+      "successor": "654a406439db366158e3d4e9c966be0a6302bbc6"
+    },
+    {
+      "path": "tests/Manual/G2NoxScanReplayWorker.php",
+      "baseline": "ef5e19f5655235a1549023d3ba0356c383b0bfe7",
+      "successor": "ef5e19f5655235a1549023d3ba0356c383b0bfe7"
+    },
+    {
+      "path": "tests/Manual/G2OperationalCustodyRoleCompatibility.php",
+      "baseline": "5872100f3dbbbbdfba2be4bd917d459d0c52bce2",
+      "successor": "5872100f3dbbbbdfba2be4bd917d459d0c52bce2"
+    },
+    {
+      "path": "tests/Manual/PlanMigrationRepeatabilityTest.php",
+      "baseline": "f798843de41b0e77550ee07e2919f0748f6eef00",
+      "successor": "f798843de41b0e77550ee07e2919f0748f6eef00"
+    },
+    {
+      "path": "tests/Manual/ops009-c01-n03-worker.php",
+      "baseline": "2f9bb20edaecdee197d75f3d986a9a9878192875",
+      "successor": "2f9bb20edaecdee197d75f3d986a9a9878192875"
+    },
+    {
+      "path": "tests/Manual/ops009-legacy-bootstrap.php",
+      "baseline": "90e170da6b00302a56e6968c22bf06941e04c15c",
+      "successor": "90e170da6b00302a56e6968c22bf06941e04c15c"
+    },
+    {
+      "path": "tests/Manual/ops009-registry-bootstrap.php",
+      "baseline": "d2d0f5fee91fa893ca19a7996dbfdc96bf9d2ba6",
+      "successor": "d2d0f5fee91fa893ca19a7996dbfdc96bf9d2ba6"
+    },
+    {
+      "path": "tests/TestCase.php",
+      "baseline": "16f288aa0b34f0d7f73aeecdebc520d2e65bc99a",
+      "successor": "16f288aa0b34f0d7f73aeecdebc520d2e65bc99a"
+    },
+    {
+      "path": "tests/integration/f01/fixture.php",
+      "baseline": "6a958ee91906c5935b92bed0ae323b25feea15c3",
+      "successor": "6a958ee91906c5935b92bed0ae323b25feea15c3"
+    }
+  ],
+  "commits": [
+    "59e5a949809323e6956b0d92cfe1ed6553638301 checkpoint: preserve bounded municipal accessibility corrections at requested pause",
+    "0a79b78e9489c9fd98fe58842e072935fa1f45c2 fix: qualify municipal named groups and complete shared tab interaction contracts",
+    "9ea015a8a3a6131a18ac6bb800edc9dbad0f065a test: measure municipal focus outlines after browser paint settles"
+  ],
+  "changedFiles": [
+    ".forge/evidence/ot-tcds-phase-a/corrective-r1/IMPLEMENTATION.md",
+    ".forge/evidence/ot-tcds-phase-a/corrective-r1/PAUSED.md",
+    "preview/standalone/fixtures.ts",
+    "preview/standalone/main.tsx",
+    "resources/js/components/municipal-systems/AssetPropertyWorkspace.tsx",
+    "resources/js/components/municipal-systems/BudgetMonitoringWorkspace.tsx",
+    "resources/js/components/municipal-systems/BuildingPermitWorkspace.tsx",
+    "resources/js/components/municipal-systems/CitizenActionWorkspace.tsx",
+    "resources/js/components/municipal-systems/FutureSystemPrototype.tsx",
+    "resources/js/components/municipal-systems/MotorpoolFleetWorkspace.tsx",
+    "resources/js/components/municipal-systems/MunicipalTabs.tsx",
+    "resources/js/components/municipal-systems/ProcurementWorkspace.tsx",
+    "resources/js/components/municipal-systems/TrainingKnowledgeWorkspace.tsx",
+    "tests/Browser/municipal-tab-assertions.mjs",
+    "tests/Browser/phase-a-municipal-corrective.mjs",
+    "tests/Browser/phase-a-municipal-interactions.mjs",
+    "tests/Frontend/municipal-accessibility-corrective.test.mjs"
+  ]
+}

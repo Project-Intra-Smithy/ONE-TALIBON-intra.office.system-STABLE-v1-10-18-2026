@@ -1,0 +1,12 @@
+{
+  "sourceSha": "9ea015a8a3a6131a18ac6bb800edc9dbad0f065a",
+  "manifestSha256": [
+    "8a82ce17a0ce63dff3321e5e0a53296c82cf76aba660d7918a362e1dab29c197",
+    "d447de8f624a4ea780343944ec41d5aade96ed6128f305795614a3fe6da8e620"
+  ],
+  "entries": 128,
+  "normalization": "Only relative shared node_modules prefix ../ot-tcds-phase-a/node_modules/ becomes node_modules/, then entry key sorting.",
+  "normalizedManifestsEqual": true,
+  "normalizedSha256": "f727a936cd7dfdd96229c40151b8253707de18a27686fd238b208752cf0c15fe",
+  "originalManifestsPreserved": true
+}

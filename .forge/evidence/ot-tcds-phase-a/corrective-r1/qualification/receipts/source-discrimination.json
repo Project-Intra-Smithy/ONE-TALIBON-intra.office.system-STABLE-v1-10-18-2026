@@ -1,0 +1,21 @@
+{
+  "predecessor": {
+    "tests": 2,
+    "pass": 0,
+    "fail": 2,
+    "originalLogSha256": "9bb9ed936ecf56ee87cc0417987152be7113e7c62dcc580a16918e44b612b35e"
+  },
+  "successor": "9ea015a8a3a6131a18ac6bb800edc9dbad0f065a",
+  "tests": [
+    "municipal generic containers never declare prohibited accessible names",
+    "all fourteen declared municipal tablists consume the shared keyboard and panel contract"
+  ],
+  "initialCorrection": {
+    "tests": 2,
+    "pass": 2,
+    "fail": 0,
+    "originalLogSha256": "fbe409a220fdda7cdb1eef90cce58059caf6e08e3b6a40f95d925ef8ade6c1be"
+  },
+  "finalSuccessor": "The unchanged assertions are also included in the exact-successor 128-test frontend contract receipt.",
+  "originalLogs": "Preserved privately; this structured receipt omits local filesystem stack paths."
+}

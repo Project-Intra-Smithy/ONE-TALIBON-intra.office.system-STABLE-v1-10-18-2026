@@ -1,0 +1,131 @@
+{
+  "sourceSha": "9ea015a8a3a6131a18ac6bb800edc9dbad0f065a",
+  "invalidGenericNames": [],
+  "declaredSharedTablists": 14,
+  "lists": [
+    {
+      "file": "resources/js/components/municipal-systems/AssetPropertyWorkspace.tsx",
+      "line": 446,
+      "name": "\"Asset property detail sections\"",
+      "contract": "shared roving tab/associated panel"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/AssetPropertyWorkspace.tsx",
+      "line": 567,
+      "name": "\"Asset property workspace views\"",
+      "contract": "shared roving tab/associated panel"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/BudgetMonitoringWorkspace.tsx",
+      "line": 276,
+      "name": "\"Budget line detail sections\"",
+      "contract": "shared roving tab/associated panel"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/BudgetMonitoringWorkspace.tsx",
+      "line": 295,
+      "name": "\"Budget monitoring views\"",
+      "contract": "shared roving tab/associated panel"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/BuildingPermitWorkspace.tsx",
+      "line": 355,
+      "name": "\"Building permit detail steps\"",
+      "contract": "shared roving tab/associated panel"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/BuildingPermitWorkspace.tsx",
+      "line": 454,
+      "name": "\"Building permit workflow views\"",
+      "contract": "shared roving tab/associated panel"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/CitizenActionWorkspace.tsx",
+      "line": 92,
+      "name": "\"Request detail steps\"",
+      "contract": "shared roving tab/associated panel"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/CitizenActionWorkspace.tsx",
+      "line": 484,
+      "name": "\"Citizen action views\"",
+      "contract": "shared roving tab/associated panel"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/FutureSystemPrototype.tsx",
+      "line": 541,
+      "name": "{`${prototype.name} views`}",
+      "contract": "shared roving tab/associated panel"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/MotorpoolFleetWorkspace.tsx",
+      "line": 96,
+      "name": "\"Fleet reference views\"",
+      "contract": "shared roving tab/associated panel"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/ProcurementWorkspace.tsx",
+      "line": 159,
+      "name": "\"Request detail sections\"",
+      "contract": "shared roving tab/associated panel"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/ProcurementWorkspace.tsx",
+      "line": 393,
+      "name": "\"Procurement views\"",
+      "contract": "shared roving tab/associated panel"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/TrainingKnowledgeWorkspace.tsx",
+      "line": 329,
+      "name": "\"Knowledge resource detail steps\"",
+      "contract": "shared roving tab/associated panel"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/TrainingKnowledgeWorkspace.tsx",
+      "line": 416,
+      "name": "\"Training and knowledge views\"",
+      "contract": "shared roving tab/associated panel"
+    }
+  ],
+  "files": [
+    {
+      "file": "resources/js/components/municipal-systems/AssetPropertyWorkspace.tsx",
+      "sha256": "79a931d381115a46129e1d32f8a22c9cdaa0ddb4aa0a725b984bdd940ae2e3c0"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/BudgetMonitoringWorkspace.tsx",
+      "sha256": "954097195800c704ca6b5c32a13eee55b983855d2d42c723d57ca4d331f58eb8"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/BuildingPermitWorkspace.tsx",
+      "sha256": "e5e64cf9dda38f8197f53b90cd0edce76dbfbc676a8291e5f4ff73e8b9b16ccc"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/CitizenActionWorkspace.tsx",
+      "sha256": "185361bee58bb98809140a497b085292b2248e829d3c2b66d6a4b4a7d8084e7b"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/FutureSystemPrototype.tsx",
+      "sha256": "12da93249ad7a8e0eb0e3b9d62567ddfb5cfabd36e888340026b471302e8f443"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/MotorpoolFleetWorkspace.tsx",
+      "sha256": "177d042798a8d7c990a7770e68d564b884abd491ffb418e69b0f22d6efb96aa8"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/MunicipalTabs.tsx",
+      "sha256": "c4ec4317fe3917b4bb0e8486d59ec54a3415ab814b314bb19fbb1d4c1d420789"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/ProcurementWorkspace.tsx",
+      "sha256": "dd23f335421eaf01fd759252bd587a5a8d60cf2f04515882d481ccca89305c66"
+    },
+    {
+      "file": "resources/js/components/municipal-systems/TrainingKnowledgeWorkspace.tsx",
+      "sha256": "320a2b99f9ce18c064e3fa2d4292c442c36051a50b2fb7fb7dee65919076f87e"
+    }
+  ],
+  "ordinaryButtons": "Existing aria-pressed view filters and action buttons retained; no blanket role conversion.",
+  "runtimeBoundary": "13 reachable tablists; generic fallback also reconciled and statically/type checked."
+}

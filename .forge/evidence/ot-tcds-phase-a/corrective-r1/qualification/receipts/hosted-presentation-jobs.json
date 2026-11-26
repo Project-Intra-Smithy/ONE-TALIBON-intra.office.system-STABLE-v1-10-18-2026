@@ -1,0 +1,178 @@
+{
+  "jobs": [
+    {
+      "conclusion": "success",
+      "html_url": "https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45854499041/job/140029227337",
+      "id": 140029227337,
+      "name": "presentation",
+      "status": "completed",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm ci --no-audit --no-fund",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm run types:check && npm run types:preview",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npx playwright install --with-deps chromium",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm run test:contracts && npm run test:ux",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm run build && npm run build:preview",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm run test:aj-home-auth",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Browser evidence",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Preserve raw evidence",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "conclusion": "success",
+      "html_url": "https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45854499041/job/140029227776",
+      "id": 140029227776,
+      "name": "canonical-runtime",
+      "status": "completed",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Initialize containers",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run composer install --no-interaction --prefer-dist --no-progress --no-scripts",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run cp .env.example .env",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm ci --no-audit --no-fund",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npx playwright install --with-deps chromium",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Real canonical application on disposable PostgreSQL",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Source consumption and observed route evidence",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Preserve canonical evidence separately",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Stop containers",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "status": "completed"
+        }
+      ]
+    }
+  ],
+  "total_count": 2
+}

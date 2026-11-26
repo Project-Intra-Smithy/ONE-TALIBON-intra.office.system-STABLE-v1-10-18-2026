@@ -1,0 +1,11 @@
+{
+  "sourceSha": "9ea015a8a3a6131a18ac6bb800edc9dbad0f065a",
+  "originalMunicipalTestSha256": "8ac309fe2ea1b1a679d674476ca674a42101d4531eb42156e91de23e0650bdf9",
+  "localMunicipalTestSha256": "578348213f9a130d1623ea292961d48fef097486a8a297c042227fac8b2793a0",
+  "change": "Navigation deadline120000ms for demonstrated local30s timeouts; relative import relocation only otherwise. All semantics/contrast/ARIA/interaction/focus/overflow/count assertions unchanged. No CI or executable source change.",
+  "originalFailure": "municipal-interactions/9ea015a8a3a6-1795708817942/results.json",
+  "municipalAssertionsByteIdenticalAfterRemovingDeclaredAdaptations": true,
+  "expandedAssertionsByteIdenticalAfterRemovingDeclaredAdaptations": true,
+  "originalExpandedTestSha256": "cb012f2b88a8cea96f5b3b506224ee2e6113bb11c6ab24b1ebf0088d26e2a400",
+  "localExpandedTestSha256": "f39863b0ebd765f341e268b0a9d4a96ea1ef14bcdc30a39a5faf1b7855b61eaa"
+}

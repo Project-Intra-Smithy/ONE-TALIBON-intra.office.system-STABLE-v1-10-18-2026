@@ -1,0 +1,29 @@
+{
+  "predecessor": "d811237976c6732809f4a8b6afabaf651c964808",
+  "successor": "9ea015a8a3a6131a18ac6bb800edc9dbad0f065a",
+  "JANE_A01": {
+    "predecessorAffectedStates": 90,
+    "bySystem": {
+      "FUT-05": 30,
+      "FUT-07": 30,
+      "FUT-15": 30
+    },
+    "successorProhibitedAttributeStates": 0,
+    "namedGroups": [
+      "Building permit case signals",
+      "Citizen desk operational summary",
+      "Knowledge workspace signals"
+    ]
+  },
+  "JANE_A02": {
+    "declaredTablists": 14,
+    "reachableTablists": 13,
+    "canonicalBehaviorChecks": 78,
+    "previewBehaviorChecks": 156,
+    "previewMatrixStates": 12,
+    "sourcePredecessorRejected": true,
+    "browserPredecessorRejected": true,
+    "genericFallback": "Uses same contract; statically and type checked, not an activated municipal route."
+  },
+  "boundary": "Same-context author qualification; targeted independent re-acceptance required."
+}

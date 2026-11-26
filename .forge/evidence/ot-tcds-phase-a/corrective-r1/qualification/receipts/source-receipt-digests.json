@@ -1,0 +1,77 @@
+{
+  "sourceSha": "9ea015a8a3a6131a18ac6bb800edc9dbad0f065a",
+  "originals": [
+    {
+      "key": "municipal",
+      "file": "raw/municipal/results.json",
+      "bytes": 4796397,
+      "sha256": "8b63283da92ff3a127517e07354274544ef8650bcbf095c5b66d104a73a6589e"
+    },
+    {
+      "key": "targetReview",
+      "file": "raw/targetReview/target-review.json",
+      "bytes": 1597,
+      "sha256": "0335ecef649af5afa78eae50af053821ef942b51ec1f945ef4e8cd44d9c9af67"
+    },
+    {
+      "key": "expanded",
+      "file": "raw/expanded/results.json",
+      "bytes": 5607474,
+      "sha256": "cab84f046311d033b0e8f7a36e337b9d7f410a3f3f795ac1398393be6d178ef8"
+    },
+    {
+      "key": "core",
+      "file": "raw/core/results.json",
+      "bytes": 37682,
+      "sha256": "8168b81fd2a7f72a8a52d4014fadfd027cd0c6a64e32b0f9094620835e2a5c90"
+    },
+    {
+      "key": "axe",
+      "file": "raw/axe/results.json",
+      "bytes": 2014363,
+      "sha256": "49f09829ad954f4a64a1ad791db81bc6e9c572771a02ad80612c4dc909d103b3"
+    },
+    {
+      "key": "focus",
+      "file": "raw/focus/results.json",
+      "bytes": 67834,
+      "sha256": "790c5f9c4f43dc8cf0903df478ee572235d62481cd3240001c4731b12fe90874"
+    },
+    {
+      "key": "forced",
+      "file": "raw/forced/results.json",
+      "bytes": 18005,
+      "sha256": "ecddf6c5c5986838ffd14d09481e3687e327232ab0d0e177e8272cf5bf4a342d"
+    },
+    {
+      "key": "previewTabs",
+      "file": "raw/previewTabs/results.json",
+      "bytes": 51628,
+      "sha256": "15653a5d08f2ba65f2b79f7b2f1f1d47d07bdba1204834c34988e56e32ca4bd3"
+    },
+    {
+      "key": "preview",
+      "file": "raw/preview/results.json",
+      "bytes": 1168,
+      "sha256": "dcc3af2eb2b0c47a66ddc1366f7b80dd8ffe7c503fbed95272aa906aaf9bbd13"
+    },
+    {
+      "key": "regressions",
+      "file": "raw/regressions/results.json",
+      "bytes": 2659,
+      "sha256": "20c8154b4fa4b5b7aa70be2f2685200b37c04cc2cb5a813398aeee3d659ddb8e"
+    },
+    {
+      "key": "followups",
+      "file": "raw/followups/results.json",
+      "bytes": 1027,
+      "sha256": "a3fbf254e89b79086ff04e5587552b3f555e33049e0cec1bdd7ce34a427cefc9"
+    },
+    {
+      "key": "supplemental",
+      "file": "raw/supplemental/results.json",
+      "bytes": 53599,
+      "sha256": "16380dac09574e8d167b520a260d255c2776ea12710368a60679c508edaf2d9b"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "sourceSha": "9ea015a8a3a6131a18ac6bb800edc9dbad0f065a",
+  "completed": true,
+  "passed": true,
+  "results": [
+    {
+      "label": "build",
+      "args": [
+        "node_modules/vite/bin/vite.js",
+        "build",
+        "--config",
+        "preview/vite.config.ts"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "phase-a-preview",
+      "args": [
+        "tests/Browser/phase-a-preview.mjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "phase-a-interactions",
+      "args": [
+        "tests/Browser/phase-a-interactions.mjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "phase-a-studios",
+      "args": [
+        "tests/Browser/phase-a-studios.mjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "phase-a-tasks",
+      "args": [
+        "tests/Browser/phase-a-tasks.mjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "phase-a-blocked-writes",
+      "args": [
+        "tests/Browser/phase-a-blocked-writes.mjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "phase-a-catalog",
+      "args": [
+        "tests/Browser/phase-a-catalog.mjs",
+        "--matrix"
+      ],
+      "exitCode": 0
+    }
+  ]
+}

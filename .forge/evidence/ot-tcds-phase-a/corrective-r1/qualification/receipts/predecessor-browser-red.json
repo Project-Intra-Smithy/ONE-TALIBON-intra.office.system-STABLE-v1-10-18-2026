@@ -1,0 +1,24 @@
+{
+  "sourceSha": "d811237976c6732809f4a8b6afabaf651c964808",
+  "scope": "Expected predecessor failure, not a product pass",
+  "results": [
+    {
+      "id": "FUT-05",
+      "namedGroup": 0,
+      "tabContractRejected": true,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n4 !== 1\n"
+    },
+    {
+      "id": "FUT-07",
+      "namedGroup": 0,
+      "tabContractRejected": true,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n4 !== 1\n"
+    },
+    {
+      "id": "FUT-15",
+      "namedGroup": 0,
+      "tabContractRejected": true,
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n4 !== 1\n"
+    }
+  ]
+}

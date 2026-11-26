@@ -1,0 +1,46 @@
+{
+  "sourceSha": "9ea015a8a3a6131a18ac6bb800edc9dbad0f065a",
+  "completed": true,
+  "passed": true,
+  "buildManifestSha256": "d447de8f624a4ea780343944ec41d5aade96ed6128f305795614a3fe6da8e620",
+  "results": [
+    {
+      "label": "accessibility",
+      "args": [
+        "storage/app/qa/followups-final-9ea015/accessibility-runtime.mjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "focus-semantics",
+      "args": [
+        "storage/app/qa/followups-final-9ea015/focus-runtime.mjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "forced-colors",
+      "args": [
+        "storage/app/qa/followups-final-9ea015/forced-runtime.mjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "homepage-auth",
+      "args": [
+        "--test",
+        "tests/Browser/aj-home-auth.test.mjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "ux",
+      "args": [
+        "--experimental-strip-types",
+        "--test",
+        "tests/Browser/ux-refinement.test.mjs"
+      ],
+      "exitCode": 0
+    }
+  ]
+}

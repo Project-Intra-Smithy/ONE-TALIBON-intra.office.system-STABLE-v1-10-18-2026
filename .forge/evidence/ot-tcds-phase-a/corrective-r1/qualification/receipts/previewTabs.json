@@ -1,0 +1,2577 @@
+{
+  "sourceSha": "9ea015a8a3a6131a18ac6bb800edc9dbad0f065a",
+  "sourceWorktreeDirty": false,
+  "completed": true,
+  "passed": true,
+  "runtime": "isolated preview; synthetic fixture data only",
+  "checks": [
+    {
+      "name": "Procurement views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "name": "Request detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget monitoring views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget line detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit workflow views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Citizen action views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Request detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property workspace views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-12",
+      "name": "Fleet reference views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Training and knowledge views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Knowledge resource detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "matrixState": {
+        "width": 320,
+        "theme": "light",
+        "forcedColors": "none"
+      },
+      "capture": "municipal-320-light-none.png"
+    },
+    {
+      "name": "Procurement views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "name": "Request detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget monitoring views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget line detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit workflow views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Citizen action views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Request detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property workspace views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-12",
+      "name": "Fleet reference views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Training and knowledge views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Knowledge resource detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "matrixState": {
+        "width": 320,
+        "theme": "light",
+        "forcedColors": "active"
+      },
+      "capture": "municipal-320-light-active.png"
+    },
+    {
+      "name": "Procurement views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "name": "Request detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget monitoring views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget line detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit workflow views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Citizen action views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Request detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property workspace views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-12",
+      "name": "Fleet reference views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Training and knowledge views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Knowledge resource detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "matrixState": {
+        "width": 320,
+        "theme": "dark",
+        "forcedColors": "none"
+      },
+      "capture": "municipal-320-dark-none.png"
+    },
+    {
+      "name": "Procurement views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "name": "Request detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget monitoring views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget line detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit workflow views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Citizen action views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Request detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property workspace views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-12",
+      "name": "Fleet reference views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Training and knowledge views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Knowledge resource detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "matrixState": {
+        "width": 320,
+        "theme": "dark",
+        "forcedColors": "active"
+      },
+      "capture": "municipal-320-dark-active.png"
+    },
+    {
+      "name": "Procurement views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "name": "Request detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget monitoring views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget line detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit workflow views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Citizen action views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Request detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property workspace views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-12",
+      "name": "Fleet reference views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Training and knowledge views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Knowledge resource detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "matrixState": {
+        "width": 768,
+        "theme": "light",
+        "forcedColors": "none"
+      },
+      "capture": "municipal-768-light-none.png"
+    },
+    {
+      "name": "Procurement views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "name": "Request detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget monitoring views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget line detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit workflow views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Citizen action views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Request detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property workspace views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-12",
+      "name": "Fleet reference views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Training and knowledge views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Knowledge resource detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "matrixState": {
+        "width": 768,
+        "theme": "light",
+        "forcedColors": "active"
+      },
+      "capture": "municipal-768-light-active.png"
+    },
+    {
+      "name": "Procurement views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "name": "Request detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget monitoring views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget line detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit workflow views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Citizen action views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Request detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property workspace views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-12",
+      "name": "Fleet reference views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Training and knowledge views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Knowledge resource detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "matrixState": {
+        "width": 768,
+        "theme": "dark",
+        "forcedColors": "none"
+      },
+      "capture": "municipal-768-dark-none.png"
+    },
+    {
+      "name": "Procurement views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "name": "Request detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget monitoring views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget line detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit workflow views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Citizen action views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Request detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property workspace views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-12",
+      "name": "Fleet reference views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Training and knowledge views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Knowledge resource detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "matrixState": {
+        "width": 768,
+        "theme": "dark",
+        "forcedColors": "active"
+      },
+      "capture": "municipal-768-dark-active.png"
+    },
+    {
+      "name": "Procurement views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "name": "Request detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget monitoring views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget line detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit workflow views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Citizen action views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Request detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property workspace views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-12",
+      "name": "Fleet reference views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Training and knowledge views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Knowledge resource detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "matrixState": {
+        "width": 1440,
+        "theme": "light",
+        "forcedColors": "none"
+      },
+      "capture": "municipal-1440-light-none.png"
+    },
+    {
+      "name": "Procurement views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "name": "Request detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget monitoring views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget line detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit workflow views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Citizen action views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Request detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property workspace views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-12",
+      "name": "Fleet reference views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Training and knowledge views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Knowledge resource detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "matrixState": {
+        "width": 1440,
+        "theme": "light",
+        "forcedColors": "active"
+      },
+      "capture": "municipal-1440-light-active.png"
+    },
+    {
+      "name": "Procurement views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "name": "Request detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget monitoring views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget line detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit workflow views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Citizen action views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Request detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property workspace views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-12",
+      "name": "Fleet reference views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Training and knowledge views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Knowledge resource detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "matrixState": {
+        "width": 1440,
+        "theme": "dark",
+        "forcedColors": "none"
+      },
+      "capture": "municipal-1440-dark-none.png"
+    },
+    {
+      "name": "Procurement views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "name": "Request detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget monitoring views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-02",
+      "name": "Budget line detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit workflow views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-05",
+      "name": "Building permit detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Citizen action views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-07",
+      "name": "Request detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property workspace views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-10",
+      "name": "Asset property detail sections",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-12",
+      "name": "Fleet reference views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Training and knowledge views",
+      "tabs": 4,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "system": "FUT-15",
+      "name": "Knowledge resource detail steps",
+      "tabs": 3,
+      "keys": [
+        "Home",
+        "ArrowLeft wrap",
+        "ArrowRight wrap",
+        "End",
+        "Tab exit",
+        "Enter",
+        "Space"
+      ],
+      "panelAssociations": true,
+      "rovingFocus": true
+    },
+    {
+      "matrixState": {
+        "width": 1440,
+        "theme": "dark",
+        "forcedColors": "active"
+      },
+      "capture": "municipal-1440-dark-active.png"
+    }
+  ]
+}

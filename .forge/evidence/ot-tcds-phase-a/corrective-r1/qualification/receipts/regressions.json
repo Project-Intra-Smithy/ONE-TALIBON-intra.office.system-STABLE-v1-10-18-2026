@@ -1,0 +1,104 @@
+{
+  "sourceSha": "9ea015a8a3a6131a18ac6bb800edc9dbad0f065a",
+  "completed": true,
+  "passed": true,
+  "results": [
+    {
+      "label": "canonical-types",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "preview-types",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "-p",
+        "preview/tsconfig.json"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "frontend-contracts",
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--test",
+        "tests/Frontend/aj-pr44-integration-contract.test.mjs",
+        "tests/Frontend/appearance-bootstrap.test.mjs",
+        "tests/Frontend/audit-source-reference.test.mjs",
+        "tests/Frontend/calendar-view-contract.test.mjs",
+        "tests/Frontend/m4-c1-c2-c3-preservation.test.mjs",
+        "tests/Frontend/m4-planning-suite-contract.test.mjs",
+        "tests/Frontend/map-pin-targets.test.mjs",
+        "tests/Frontend/mobile-drawer-shell.test.mjs",
+        "tests/Frontend/municipal-accessibility-corrective.test.mjs",
+        "tests/Frontend/navigation-contract.test.mjs",
+        "tests/Frontend/ot-r6-dashboard-contract.test.mjs",
+        "tests/Frontend/ot-r6-module-ux.test.mjs",
+        "tests/Frontend/ot-r6-ui-primitives.test.mjs",
+        "tests/Frontend/ot-reference-r4-density.test.mjs",
+        "tests/Frontend/ot-reference-r5-panels.test.mjs",
+        "tests/Frontend/ot-reference-shell-contract.test.mjs",
+        "tests/Frontend/ot-reference-visual-refinement.test.mjs",
+        "tests/Frontend/preview-isolation.test.mjs",
+        "tests/Frontend/r8-a1-search-contract.test.mjs",
+        "tests/Frontend/r8-a2-document-center-contract.test.mjs",
+        "tests/Frontend/r8-a3-directory.test.mjs",
+        "tests/Frontend/r8-b1-plans-library.test.mjs",
+        "tests/Frontend/r8-b2-ppa-register.test.mjs",
+        "tests/Frontend/schedule-presentation.test.mjs",
+        "tests/Frontend/task-read-contract.test.mjs",
+        "tests/Frontend/tcds-f01-f02-regression.test.mjs",
+        "tests/Frontend/ui-contracts.test.mjs",
+        "tests/Frontend/work-request-return-context.test.mjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "label": "modern-color-review-unit",
+      "command": [
+        "node",
+        "--test",
+        "tests/Browser/manual-contrast.test.mjs",
+        "tests/Browser/gradient-caption.test.mjs"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "publication": {
+    "originalReceiptSha256": "20c8154b4fa4b5b7aa70be2f2685200b37c04cc2cb5a813398aeee3d659ddb8e",
+    "redactions": [
+      {
+        "jsonPath": "results.0.command.0",
+        "kind": "absolute tool executable path",
+        "originalValueSha256": "9fc98d629f2c0874ab3eb8d89d492417a2a0b86a41510a7bb810f62ffca18290",
+        "published": "node"
+      },
+      {
+        "jsonPath": "results.1.command.0",
+        "kind": "absolute tool executable path",
+        "originalValueSha256": "9fc98d629f2c0874ab3eb8d89d492417a2a0b86a41510a7bb810f62ffca18290",
+        "published": "node"
+      },
+      {
+        "jsonPath": "results.2.command.0",
+        "kind": "absolute tool executable path",
+        "originalValueSha256": "9fc98d629f2c0874ab3eb8d89d492417a2a0b86a41510a7bb810f62ffca18290",
+        "published": "node"
+      },
+      {
+        "jsonPath": "results.3.command.0",
+        "kind": "absolute tool executable path",
+        "originalValueSha256": "9fc98d629f2c0874ab3eb8d89d492417a2a0b86a41510a7bb810f62ffca18290",
+        "published": "node"
+      }
+    ],
+    "note": "Original byte receipt retained privately; this public derivative replaces only absolute executable paths."
+  }
+}
