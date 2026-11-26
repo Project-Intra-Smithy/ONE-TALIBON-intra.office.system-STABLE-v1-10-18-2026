@@ -72,12 +72,7 @@ final class PlanningAuthorizationService
         if ($user) {
             $eligibility = app(AccountSessionEligibility::class);
             $user = DB::transactionLevel() > 0 ? $eligibility->lock($user) : $eligibility->current($user);
-            if ($user && DB::transactionLevel() > 0 && ! request()->isMethodSafe()) {
-                $eligibility->requireSession(request(), $user);
-                if (! app(AuthenticationAssurance::class)->isSatisfiedAgainst(request(), $user)) {
-                    throw new AuthorizationException('Current multi-factor authentication assurance is required.');
-                }
-            }
+
         }
 
         if (! $user || ! $user->is_active) {
@@ -137,6 +132,21 @@ final class PlanningAuthorizationService
             'canDelete' => $any, 'canUploadAttachments' => $any];
     }
 
+    private function mutationPermissions(User $user): array
+    {
+        $perms = $this->resolve($user);
+        if (DB::transactionLevel() > 0 && ! request()->isMethodSafe()) {
+            // resolve() holds the canonical identity locks until the mutation commits.
+            $current = User::query()->findOrFail($user->id);
+            app(AccountSessionEligibility::class)->requireSession(request(), $current);
+            if (! app(AuthenticationAssurance::class)->isSatisfiedAgainst(request(), $current)) {
+                throw new AuthorizationException('Current multi-factor authentication assurance is required.');
+            }
+        }
+
+        return $perms;
+    }
+
     public function recordCapabilities(array $perms, DevelopmentPlan|PpaRecord|PlanningMap $record): array
     {
         if ($record instanceof DevelopmentPlan) {
@@ -177,7 +187,7 @@ final class PlanningAuthorizationService
         ?DevelopmentPlan $existing = null,
         ?string $requestedAuthority = null,
     ): array {
-        $perms = $this->resolve($user);
+        $perms = $this->mutationPermissions($user);
 
         if ($isDelete) {
             if (! $perms['canDelete'] || ! $perms['canManagePlans']
@@ -221,7 +231,7 @@ final class PlanningAuthorizationService
 
     public function authorizePpaMutation(User $user, ?PpaRecord $existing = null, ?string $targetStatus = null, bool $isDelete = false): array
     {
-        $perms = $this->resolve($user);
+        $perms = $this->mutationPermissions($user);
 
         if ($isDelete) {
             if (! $perms['canDelete']) {
@@ -266,7 +276,7 @@ final class PlanningAuthorizationService
 
     public function authorizeMapMutation(User $user, ?string $targetStatus = null, bool $isDelete = false, ?PlanningMap $existing = null): array
     {
-        $perms = $this->resolve($user);
+        $perms = $this->mutationPermissions($user);
 
         if ($isDelete) {
             if (! $perms['canDelete'] || ! $perms['canManageMaps']) {
@@ -293,7 +303,7 @@ final class PlanningAuthorizationService
 
     public function authorizeStaffDesignation(User $user, ?DesignatedPlanningStaff $existing = null): array
     {
-        $perms = $this->resolve($user);
+        $perms = $this->mutationPermissions($user);
         if (! $perms['canDesignateStaff']) {
             throw new AuthorizationException('Only an authorized Department Head may manage their office planning designations.');
         }
@@ -326,7 +336,7 @@ final class PlanningAuthorizationService
 
     public function authorizeAttachmentUpload(User $user, string $parentType, string $parentCode, string $visibility): array
     {
-        $perms = $this->resolve($user);
+        $perms = $this->mutationPermissions($user);
         if (! $perms['canUploadAttachments']) {
             throw new AuthorizationException('You are not authorized to upload planning supporting documents.');
         }
