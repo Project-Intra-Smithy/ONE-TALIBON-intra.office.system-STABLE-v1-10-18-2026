@@ -74,7 +74,7 @@ const routeMap: Record<string, string> = {
     '/meetings': 'Meetings/Index',
     '/operations': 'Operations/Index',
     '/project-monitoring': 'ProjectMonitoring/Index',
-    '/procurement': 'Operations/Index',
+    '/procurement': 'MunicipalSystems/Index',
 };
 
 const featured = Object.entries(routeMap);
