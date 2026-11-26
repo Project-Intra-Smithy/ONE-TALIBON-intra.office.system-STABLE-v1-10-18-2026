@@ -45,7 +45,7 @@ for (const file of walk('app/Http/Controllers').filter(file => file.endsWith('.p
         const prefix = text.slice(0, match.index);
         const method = [...prefix.matchAll(/function\s+(\w+)\s*\(/g)].at(-1)?.[1];
         const controller = path.basename(file, '.php');
-        const routeDeclarations = routes.split(/\r?\n/).filter(line => line.includes(`${controller}::class`) && new RegExp(`['"]${method}['"]`).test(line)).map(line => line.trim());
+        const routeDeclarations = routes.split(/\r?\n/).filter(line => line.includes(`${controller}::class`) && (method === '__invoke' || new RegExp(`['"]${method}['"]`).test(line))).map(line => line.trim());
         const page = `resources/js/pages/${match[1]}.tsx`;
         producers.set(page, [...(producers.get(page) ?? []), { file, method, routeDeclarations }]);
     }
@@ -66,10 +66,21 @@ const files = donor.files.map(entry => {
     const previewConsumers = [...previewGraphs].filter(([, closure]) => preview && closure.has(preview)).map(([page]) => ({ page: `preview/${page}` }));
     return { donor: canonical, donorBlob: entry.donor_blob, canonicalExists: fs.existsSync(canonical), canonicalConsumers: consumers, previewConsumers, directCanonicalImportFromPreview: preview && fs.existsSync(preview) ? imports(preview).filter(file => !file.startsWith('preview/')) : [], kind: canonical.startsWith('public/') ? 'static asset; served by path, not a JavaScript import' : /\.css$/.test(canonical) ? 'stylesheet' : /\.tsx$/.test(canonical) ? 'presentation or runtime adapter' : 'data/type/configuration; inspect runtime consumers', sourceHash: fs.existsSync(canonical) ? digest([canonical]) : null };
 });
-const runtimePath = 'storage/app/qa/phase-a-canonical/results.json';
-const runtime = fs.existsSync(runtimePath) ? JSON.parse(read(runtimePath)) : null;
-const coverage = pages.filter(page => fs.existsSync(`preview/${page}`)).map(page => ({ page, producers: producers.get(page) ?? [], preview: `preview/${page}`, sharedCanonicalModules: [...(previewGraphs.get(page) ?? [])].filter(file => !file.startsWith('preview/') && pageGraphs.get(page).has(file)), canonicalRouteEvidence: (runtime?.results ?? []).filter(result => `resources/js/pages/${result.renderedComponent}.tsx` === page), canonicalInteractions: (runtime?.interactions ?? []).filter(result => { const module = page.split('/').at(-2); return module === 'Plans' ? /plan-|staff/.test(result.label) : module === 'PPAs' ? /ppa-/.test(result.label) : module === 'PlanningMaps' ? /map-/.test(result.label) : module === 'Tasks' ? /task/.test(result.label) : module === 'Transactions' ? /work-request/.test(result.label) : false; }) }));
+const runtimePaths = process.env.PHASE_A_RUNTIME_RECEIPTS ? JSON.parse(process.env.PHASE_A_RUNTIME_RECEIPTS) : ['storage/app/qa/phase-a-canonical/results.json'];
+assert.ok(Array.isArray(runtimePaths) && runtimePaths.every(file => typeof file === 'string'));
+const receipts = runtimePaths.filter(file => fs.existsSync(file)).map(file => ({file, ...JSON.parse(read(file))}));
+const runtime = receipts[0] ?? null;
+const observations = receipts.flatMap(receipt => (receipt.results ?? receipt.observations ?? []).map(result => ({...result,receipt:receipt.file,sourceSha:receipt.sourceSha,completed:receipt.completed,sourceWorktreeDirty:receipt.sourceWorktreeDirty})));
+const interactions = receipts.flatMap(receipt => (receipt.interactions ?? []).map(result => ({...result,receipt:receipt.file,sourceSha:receipt.sourceSha})));
+const coverage = pages.filter(page => fs.existsSync(`preview/${page}`)).map(page => {
+    const pageProducers = producers.get(page) ?? [];
+    const observed = observations.filter(result => `resources/js/pages/${result.renderedComponent}.tsx` === page);
+    const held = page.includes('/Messages/');
+    const routed = pageProducers.some(producer => producer.routeDeclarations.length);
+    return {page,producers:pageProducers,preview:`preview/${page}`,sharedCanonicalModules:[...(previewGraphs.get(page) ?? [])].filter(file => !file.startsWith('preview/') && pageGraphs.get(page).has(file)),canonicalRouteEvidence:observed,canonicalInteractions:interactions.filter(result => {const module=page.split('/').at(-2);return module==='Plans'?/plan-|staff/.test(result.label):module==='PPAs'?/ppa-/.test(result.label):module==='PlanningMaps'?/map-/.test(result.label):module==='Tasks'?/task/.test(result.label):module==='Transactions'?/work-request/.test(result.label):false;}),disposition:held?'HELD #191: canonical middleware denies execution; synthetic presentation only':!routed?'NO ACTIVE ROUTE: source/archive presentation only; runtime NOT VERIFIED':observed.some(result=>result.status===200)?'CANONICAL RUNTIME OBSERVED: inspect exact receipts for assertions and limitations':'ACTIVE ROUTE / RUNTIME NOT VERIFIED',adapter:/(?:Plans|PPAs|PlanningMaps)\/Index/.test(page)?'Separate authorized server and synthetic orchestration, shared presentation components':'Canonical page consumed directly by isolated preview',contractRequirements:/(?:Plans|PPAs|PlanningMaps)\/Index/.test(page)?'convergence/CORRECTIVE-CHECKPOINT.md#outstanding-contract-requirements':null};
+});
 const report = { sourceSha: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), dirty: Boolean(execFileSync('git', ['status', '--porcelain'], { encoding: 'utf8' }).trim()), executableDigest: digest([...new Set([...walk('resources/js'), ...walk('preview/resources/js'), ...walk('preview/standalone')])]), donorSha: donor.donor_sha, canonicalRuntimeSourceSha: runtime?.sourceSha ?? null, canonicalRuntimeCompleted: runtime?.completed ?? false, canonicalBuildManifestSha256: runtime?.buildManifestSha256 ?? null, files, pages: coverage };
+report.runtimeReceipts = receipts.map(({file,sourceSha,sourceWorktreeDirty,completed,passed,buildManifestSha256})=>({file,sourceSha,sourceWorktreeDirty,completed,passed,buildManifestSha256}));
 assert.equal(files.length, 262, 'Every frozen donor path must remain accounted for');
 assert.equal(coverage.length, 65, 'Every frozen donor page must remain accounted for');
 fs.mkdirSync('.forge/evidence/ot-tcds-phase-a/convergence', { recursive: true });

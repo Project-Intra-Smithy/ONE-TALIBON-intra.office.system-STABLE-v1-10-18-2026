@@ -34,17 +34,34 @@ php(bootstrap + `
     }
     app(App\\Services\\Planning\\PlanningSuiteInitializer::class)->seedReferenceSamples(true);
     echo 'SYNTHETIC_CANONICAL_ACTORS_READY';`);
-const server = spawn('php', ['-S', '127.0.0.1:8075', '-t', '.', path.resolve('vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php')], { cwd: path.resolve('public'), env, stdio: 'ignore', windowsHide: true });
+if (process.env.PHASE_A_QUALIFICATION === '1') {
+    env.PHASE_A_FIXTURES = php(bootstrap + `
+        $owner=App\\Models\\User::where('username',getenv('PHASE_A_CANONICAL_LOGIN'))->firstOrFail();
+        $head=App\\Models\\User::where('username',getenv('PHASE_A_HEAD_LOGIN'))->firstOrFail();
+        $mayor=App\\Models\\User::where('username',getenv('PHASE_A_MAYOR_LOGIN'))->firstOrFail();
+        $suffix=bin2hex(random_bytes(5));
+        $staff=App\\Models\\User::create(['name'=>'Synthetic qualification delegate '.$suffix,'username'=>'qa.delegate.'.$suffix,'password'=>getenv('PHASE_A_CANONICAL_PASSWORD'),'role'=>'department_staff','is_active'=>true,'account_status'=>'active']);
+        $staffEmployee=App\\Models\\Employee::create(['employee_number'=>'QA-DELEGATE-'.$suffix,'full_name'=>$staff->name,'user_id'=>$staff->id,'department_id'=>$head->employee->department_id,'position_title'=>'Synthetic qualification delegate','employment_status'=>'active']);
+        $law=App\\Models\\LegislativeRecord::create(['record_type'=>'ordinance','record_number'=>'QA-LAW-'.$suffix,'title'=>'Synthetic qualification ordinance','summary'=>'Synthetic non-operational record.','year'=>2026,'status'=>'active','issuing_body'=>'Synthetic test body','created_by_user_id'=>$mayor->id]);
+        $travel=App\\Models\\TravelOrder::create(['reference_number'=>'QA-TO-'.$suffix,'issuance_date'=>today(),'purpose'=>'Synthetic qualification travel','destination'=>'Synthetic destination','department_id'=>$owner->employee->department_id,'travel_start_date'=>today(),'travel_end_date'=>today(),'status'=>'approved','recorded_by_user_id'=>$mayor->id]);
+        $travel->issuedTo()->attach($owner->employee->id);
+        $memo=App\\Models\\Memorandum::create(['memo_number'=>'QA-MEMO-'.$suffix,'title'=>'Synthetic qualification memorandum','body'=>'Synthetic non-operational memorandum.','issued_by_user_id'=>$mayor->id,'issued_by_department_id'=>$mayor->employee->department_id,'audience_type'=>'employees','classification'=>'internal','status'=>'published','requires_acknowledgement'=>true,'published_at'=>now()]);
+        App\\Models\\MemoRecipient::create(['memorandum_id'=>$memo->id,'user_id'=>$owner->id,'delivered_at'=>now()]);
+        $correspondence=App\\Models\\CorrespondenceRecord::create(['public_id'=>(string)Illuminate\\Support\\Str::uuid(),'external_reference_no'=>'QA-COR-'.$suffix,'source'=>'external','sender_name'=>'Synthetic sender','subject'=>'Synthetic qualification correspondence','received_at'=>now(),'receiving_department_id'=>$owner->employee->department_id,'classification'=>'internal','lifecycle_state'=>'received']);
+        App\\Models\\Asset::create(['property_number'=>'QA-ASSET-'.$suffix,'qr_value'=>'QA-QR-'.$suffix,'category'=>'Synthetic equipment','description'=>'Synthetic qualification asset','current_department_id'=>$owner->employee->department_id]);
+        echo json_encode(['employee'=>$owner->employee->id,'law'=>$law->id,'travel'=>$travel->public_id,'memo'=>$memo->id,'correspondence'=>$correspondence->public_id,'delegateEmployee'=>$staffEmployee->id,'delegateName'=>$staff->name]);`);
+}
+const server = spawn('php', ['-d', 'max_execution_time=120', '-S', '127.0.0.1:8075', '-t', '.', path.resolve('vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php')], { cwd: path.resolve('public'), env, stdio: 'ignore', windowsHide: true });
 try {
     let ready = false;
-    const deadline = Date.now() + 60000;
-    for (let attempt = 0; attempt < 40 && Date.now() < deadline; attempt++) {
+    const deadline = Date.now() + 180000;
+    for (let attempt = 0; attempt < 120 && Date.now() < deadline; attempt++) {
         try { const response = await fetch(`${env.APP_URL}/login`, {signal:AbortSignal.timeout(5000)}); if (response.ok && (await response.text()).includes('data-page')) { ready = true; break; } } catch {}
         await new Promise(resolve => setTimeout(resolve, 250));
     }
     assert.ok(ready, 'Disposable Laravel runtime did not become ready');
     await new Promise((resolve, reject) => {
-        const test = spawn(process.execPath, ['tests/Browser/phase-a-accessibility.mjs'], { env, stdio: 'inherit', windowsHide: true });
+        const test = spawn(process.execPath, [process.env.PHASE_A_QUALIFICATION === '1' ? 'tests/Browser/phase-a-qualification.mjs' : 'tests/Browser/phase-a-accessibility.mjs'], { env, stdio: 'inherit', windowsHide: true });
         test.on('error', reject);
         test.on('exit', code => code === 0 ? resolve() : reject(new Error(`Canonical browser validation failed (${code})`)));
     });

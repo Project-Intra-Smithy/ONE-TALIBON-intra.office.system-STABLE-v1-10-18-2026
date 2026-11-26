@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {chromium} from 'playwright';
+import {contrastReview} from './phase-a-manual-review.mjs';
 const origin=process.env.PHASE_A_CANONICAL_URL;
 assert.match(origin,/^http:\/\/127\.0\.0\.1:\d+$/);
 const sourceSha=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
@@ -23,7 +24,7 @@ async function audit(page,role,route,label,width,theme){
     const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);
     const capture=`${role}-${label}-${width}-${theme}.png`;
     await page.screenshot({path:`${output}/${capture}`,fullPage:false});
-    observations.push({role,route,renderedComponent,label,width,theme,overflow,capture,engine:result.testEngine,violations:result.violations.map(({id,impact,help,helpUrl,nodes})=>({id,impact,help,helpUrl,nodes:nodes.map(({target,html,failureSummary})=>({target,html,failureSummary}))})),incomplete:result.incomplete.map(({id,nodes})=>({id,targets:nodes.map(node=>node.target)}))});
+    observations.push({role,route,renderedComponent,label,width,theme,overflow,capture,engine:result.testEngine,manualReview:await contrastReview(page,result),accessibilityTree:await page.locator('body').ariaSnapshot(),violations:result.violations.map(({id,impact,help,helpUrl,nodes})=>({id,impact,help,helpUrl,nodes:nodes.map(({target,html,failureSummary})=>({target,html,failureSummary}))})),incomplete:result.incomplete.map(({id,nodes})=>({id,targets:nodes.map(node=>node.target)}))});
     fs.writeFileSync(output+'/results.json',JSON.stringify({completed,passed:completed&&observations.every(item=>!item.violations.length&&!item.overflow),sourceSha,sourceWorktreeDirty,buildManifestSha256,observations},null,2));
 }
 try{

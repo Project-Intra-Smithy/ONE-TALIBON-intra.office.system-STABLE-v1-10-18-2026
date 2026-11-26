@@ -289,7 +289,7 @@ export default function PortalSearch({ archiveActivity }: { archiveActivity: Arc
                                             <span
                                                 className={`rounded-full px-2 py-0.5 text-xs font-bold leading-none ${
                                                     active
-                                                        ? 'bg-white/20 text-white'
+                                                        ? 'bg-black/20 text-white'
                                                         : 'bg-[var(--surface-card)] text-[var(--ink-secondary)]'
                                                 }`}
                                             >

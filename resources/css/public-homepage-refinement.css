@@ -156,7 +156,7 @@
   .public-refined .footer { background: var(--surface); border-top: 1px solid var(--line); }
   .public-refined .footer-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 48px; padding-block: 56px 40px; align-items: start; }
   .public-refined .footer .brand img { width: 36px; height: 36px; }
-  .public-refined .footer .brand-name { color: var(--green); font-size: 18px; }
+  .public-refined .footer .brand-name { color: var(--ink); font-size: 18px; }
   .public-refined .footer .brand-sub { color: var(--muted); opacity: 1; }
   .public-refined .address { margin-top: 20px; font-size: 14px; color: var(--muted); line-height: 1.7; }
   .public-refined .footer-links { display: flex; flex-wrap: wrap; gap: 8px 32px; font-size: 14px; color: var(--muted); }
