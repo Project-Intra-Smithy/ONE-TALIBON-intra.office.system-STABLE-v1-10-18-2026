@@ -99,7 +99,7 @@ function RequestModal({ request, onClose }: { request: CitizenRequest; onClose: 
                                 ? 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/25 dark:text-emerald-100'
                                 : 'border-transparent text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}
                         >
-                            <span className="mr-1 text-[9px] opacity-60">{index + 1}</span>{item}
+                            <span className="mr-1 text-[9px]">{index + 1}</span>{item}
                         </button>
                     ))}
                 </div>

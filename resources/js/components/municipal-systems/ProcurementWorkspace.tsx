@@ -157,7 +157,7 @@ function RequestDrawer({ record, open, onClose }: { record?: PrototypeRecord; op
                     <div role="tablist" aria-label="Request detail sections" className="grid grid-cols-3 gap-1 rounded-xl bg-slate-100 p-1 dark:bg-slate-900/55">
                         {detailSteps.map((item, index) => (
                             <button key={item.id} type="button" role="tab" aria-selected={step === item.id} onClick={() => setStep(item.id)} className={'min-h-9 rounded-lg px-2 text-[10px] font-bold transition ' + (step === item.id ? 'bg-white text-[var(--brand-ink)] shadow-sm dark:bg-[#142236] dark:text-emerald-300' : 'text-[var(--ink-secondary)] hover:text-slate-800 dark:text-[var(--ink-secondary)] dark:hover:text-slate-200')}>
-                                <span className="mr-1 text-[9px] opacity-55">{index + 1}</span>{item.label}
+                                <span className="mr-1 text-[9px]">{index + 1}</span>{item.label}
                             </button>
                         ))}
                     </div>
@@ -289,14 +289,14 @@ function Overview({ records, lifecycle, onOpen, onStage }: { records: PrototypeR
 function PurchaseRegister({ records, onOpen }: { records: PrototypeRecord[]; onOpen: (id: string) => void }) {
     return (
         <div className="overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-[#142236]">
-            <div className="overflow-x-auto">
+            <div tabIndex={0} role="region" aria-label="Purchase request register" className="overflow-x-auto">
                 <table className="w-full min-w-[760px] table-fixed text-left">
                     <colgroup><col className="w-[12%]" /><col className="w-[23%]" /><col className="w-[18%]" /><col className="w-[12%]" /><col className="w-[13%]" /><col className="w-[10%]" /><col className="w-[12%]" /></colgroup>
                     <thead className="bg-slate-50 text-[9px] font-bold uppercase tracking-[0.06em] text-[var(--ink-secondary)] dark:bg-slate-900/40 dark:text-[var(--ink-secondary)]"><tr><th className="px-2.5 py-2.5">PR No.</th><th className="px-2.5 py-2.5">Request</th><th className="px-2.5 py-2.5">Requesting office</th><th className="px-2.5 py-2.5">Current stage</th><th className="px-2.5 py-2.5">Status</th><th className="px-2.5 py-2.5">Amount</th><th className="px-2.5 py-2.5">Updated / context</th></tr></thead>
                     <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
                         {records.map((record) => (
                             <tr key={record.id} onClick={() => onOpen(record.id)} className="cursor-pointer transition hover:bg-emerald-50/35 dark:hover:bg-slate-900/35">
-                                <td className="px-2.5 py-2.5 text-[9px] font-extrabold text-slate-600 dark:text-slate-300">{record.id}</td>
+                                <td className="px-2.5 py-2.5 text-[9px] font-extrabold text-slate-600 dark:text-slate-300"><button type="button" aria-label={`Inspect purchase request ${record.id}: ${record.title}`} onClick={(event) => { event.stopPropagation(); onOpen(record.id); }} className="min-h-9 text-left hover:underline">{record.id}</button></td>
                                 <td className="px-2.5 py-2.5"><div className="truncate text-[11px] font-bold text-slate-950 dark:text-slate-100">{record.title}</div><div className="mt-0.5 truncate text-[9px] text-[var(--ink-secondary)]">{record.subtitle}</div></td>
                                 <td className="px-2.5 py-2.5 text-[10px] font-semibold text-slate-600 dark:text-slate-300"><span className="line-clamp-2">{record.owner}</span></td>
                                 <td className="px-2.5 py-2.5 text-[10px] font-bold text-[var(--brand-ink)]">{record.stage}</td>
@@ -341,7 +341,7 @@ function FulfillmentBoard({ records, onOpen }: { records: PrototypeRecord[]; onO
             {records.map((record) => (
                 <button key={record.id} type="button" onClick={() => onOpen(record.id)} className="rounded-xl border border-slate-200 bg-white p-3 text-left transition hover:border-emerald-200 hover:bg-emerald-50/20 dark:border-slate-700 dark:bg-[#142236] dark:hover:border-emerald-900/70">
                     <div className="flex items-start justify-between gap-3"><div className="min-w-0"><div className="text-[9px] font-extrabold uppercase tracking-wide text-[var(--ink-secondary)]">{record.id}</div><div className="mt-0.5 text-[13px] font-extrabold text-slate-950 dark:text-slate-100">{record.title}</div><div className="mt-1 text-[10px] text-[var(--ink-secondary)] dark:text-[var(--ink-secondary)]">{record.owner}</div></div><div className="text-right text-[12px] font-extrabold text-slate-800 dark:text-slate-200">{record.amount}</div></div>
-                    <div className="mt-3 grid gap-2 sm:grid-cols-2"><div className="rounded-lg bg-sky-50 px-2.5 py-2 dark:bg-sky-950/20"><div className="text-[8px] font-bold uppercase tracking-wide text-sky-600 dark:text-sky-300">Delivery status</div><div className="mt-1 text-[10px] font-bold text-sky-900 dark:text-sky-100">{record.deliveryStatus ?? 'Delivery reference pending'}</div></div><div className="rounded-lg bg-violet-50 px-2.5 py-2 dark:bg-violet-950/20"><div className="text-[8px] font-bold uppercase tracking-wide text-violet-600 dark:text-violet-300">Inspection status</div><div className="mt-1 text-[10px] font-bold text-violet-900 dark:text-violet-100">{record.inspectionStatus ?? 'Inspection reference pending'}</div></div></div>
+                    <div className="mt-3 grid gap-2 sm:grid-cols-2"><div className="rounded-lg bg-sky-50 px-2.5 py-2 dark:bg-sky-950/20"><div className="text-[8px] font-bold uppercase tracking-wide text-sky-800 dark:text-sky-300">Delivery status</div><div className="mt-1 text-[10px] font-bold text-sky-900 dark:text-sky-100">{record.deliveryStatus ?? 'Delivery reference pending'}</div></div><div className="rounded-lg bg-violet-50 px-2.5 py-2 dark:bg-violet-950/20"><div className="text-[8px] font-bold uppercase tracking-wide text-violet-600 dark:text-violet-300">Inspection status</div><div className="mt-1 text-[10px] font-bold text-violet-900 dark:text-violet-100">{record.inspectionStatus ?? 'Inspection reference pending'}</div></div></div>
                     <div className="mt-3 grid gap-2 border-t border-slate-100 pt-3 text-[10px] dark:border-slate-700 sm:grid-cols-2"><div><span className="block text-[8px] font-bold uppercase tracking-wide text-[var(--ink-secondary)]">Reference context</span><span className="mt-0.5 block font-semibold text-slate-600 dark:text-slate-300">Delivery / inspection references</span></div><div><span className="block text-[8px] font-bold uppercase tracking-wide text-[var(--ink-secondary)]">Next handoff</span><span className="mt-0.5 block font-semibold text-slate-600 dark:text-slate-300">{record.nextAction}</span></div></div>
                 </button>
             ))}

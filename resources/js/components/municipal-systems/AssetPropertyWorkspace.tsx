@@ -100,7 +100,7 @@ function WorkspaceHeader({ onBack }: { onBack: () => void }) {
                         <button
                             type="button"
                             onClick={onBack}
-                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-[var(--ink-secondary)] transition hover:bg-slate-50 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-[var(--ink-secondary)] transition hover:bg-[var(--surface-hover)] hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                             aria-label="Back to Future Integrations"
                         >
                             <ArrowLeft size={14} aria-hidden="true" />
@@ -199,7 +199,7 @@ function AssetRegisterTable({
                             onClick={() => onOpen(record)}
                             className="cursor-pointer transition hover:bg-blue-50/25 dark:hover:bg-slate-900/35"
                         >
-                            <td className="px-3 py-2.5 text-[9px] font-extrabold text-slate-600 dark:text-slate-300">{record.id}</td>
+                            <td className="px-3 py-2.5 text-[9px] font-extrabold text-slate-600 dark:text-slate-300"><button type="button" aria-label={`Inspect asset ${record.id}: ${record.name}`} onClick={(event) => { event.stopPropagation(); onOpen(record); }} className="min-h-9 text-left hover:underline">{record.id}</button></td>
                             <td className="px-3 py-2.5 text-[10px] font-bold text-slate-900 dark:text-slate-100">{record.name}</td>
                             <td className="px-3 py-2.5 text-[9px] font-semibold text-[var(--ink-secondary)] dark:text-[var(--ink-secondary)]">{record.category}</td>
                             <td className="px-3 py-2.5 text-[9px] font-semibold text-slate-600 dark:text-slate-300">{record.office}</td>
@@ -423,11 +423,11 @@ function AssetDetailModal({
                     <div className="text-[9px] font-semibold text-[var(--ink-secondary)]">Step {stepIndex + 1} of {detailSteps.length} · reference only</div>
                     <div className="flex flex-wrap justify-end gap-2">
                         {stepIndex > 0 && (
-                            <button type="button" onClick={() => moveStep(-1)} className="inline-flex min-h-9 items-center gap-1 rounded-lg border border-slate-300 bg-white px-3 text-[10px] font-bold text-slate-600 hover:bg-slate-50 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-200">
+                            <button type="button" onClick={() => moveStep(-1)} className="inline-flex min-h-9 items-center gap-1 rounded-lg border border-slate-300 bg-white px-3 text-[10px] font-bold text-slate-600 hover:bg-[var(--surface-hover)] dark:border-slate-600 dark:bg-[#142236] dark:text-slate-200">
                                 <ChevronLeft size={13} aria-hidden="true" /> Back
                             </button>
                         )}
-                        <button type="button" onClick={onClose} className="min-h-9 rounded-lg border border-slate-300 bg-white px-3 text-[10px] font-bold text-slate-600 hover:bg-slate-50 dark:border-slate-600 dark:bg-[#142236] dark:text-slate-200">
+                        <button type="button" onClick={onClose} className="min-h-9 rounded-lg border border-slate-300 bg-white px-3 text-[10px] font-bold text-slate-600 hover:bg-[var(--surface-hover)] dark:border-slate-600 dark:bg-[#142236] dark:text-slate-200">
                             Close
                         </button>
                         {stepIndex < detailSteps.length - 1 && (
@@ -454,7 +454,7 @@ function AssetDetailModal({
                                         ? 'bg-white text-blue-800 shadow-sm dark:bg-[#142236] dark:text-blue-300'
                                         : 'text-[var(--ink-secondary)] hover:text-slate-800 dark:text-[var(--ink-secondary)] dark:hover:text-slate-200')}
                             >
-                                <span className="mr-1 text-[9px] opacity-55">{index + 1}</span>{item.label}
+                                <span className="mr-1 text-[9px]">{index + 1}</span>{item.label}
                             </button>
                         ))}
                     </div>
@@ -572,7 +572,7 @@ export default function AssetPropertyWorkspace({ onBack }: Props) {
                             className={'min-h-9 shrink-0 rounded-lg px-3 text-[10px] font-bold transition '
                                 + (tab === item
                                     ? 'bg-blue-50 text-blue-900 dark:bg-blue-950/35 dark:text-blue-100'
-                                    : 'text-[var(--ink-secondary)] hover:bg-slate-50 dark:text-[var(--ink-secondary)] dark:hover:bg-slate-900/35')}
+                                    : 'text-[var(--ink-secondary)] hover:bg-[var(--surface-hover)] dark:text-[var(--ink-secondary)] dark:hover:bg-slate-900/35')}
                         >
                             {item}
                         </button>

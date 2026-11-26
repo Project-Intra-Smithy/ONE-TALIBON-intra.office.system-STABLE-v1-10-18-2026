@@ -118,7 +118,6 @@ export default function Index({ records, filters, scopeGroups, filterOptions, ex
                                 key={view.key}
                                 type="button"
                                 aria-pressed={active}
-                                onFocus={(event) => event.currentTarget.scrollIntoView({ block: 'nearest', inline: 'nearest' })}
                                 onClick={() => selectView(view.key)}
                                 className={`inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-lg border px-3 py-2 text-sm font-semibold transition-colors ${
                                     active
