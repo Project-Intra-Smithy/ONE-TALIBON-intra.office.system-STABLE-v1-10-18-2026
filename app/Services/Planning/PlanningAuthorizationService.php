@@ -4,13 +4,19 @@ declare(strict_types=1);
 
 namespace App\Services\Planning;
 
+use App\Models\Department;
 use App\Models\DesignatedPlanningStaff;
 use App\Models\DevelopmentPlan;
 use App\Models\PlanningAttachment;
 use App\Models\PlanningMap;
 use App\Models\PpaRecord;
 use App\Models\User;
+use App\Services\AccountSessionEligibility;
+use App\Services\AuthenticationAssurance;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 final class PlanningAuthorizationService
 {
@@ -63,123 +69,115 @@ final class PlanningAuthorizationService
             'actorDepartmentName' => null,
         ];
 
+        if ($user) {
+            $eligibility = app(AccountSessionEligibility::class);
+            $user = DB::transactionLevel() > 0 ? $eligibility->lock($user) : $eligibility->current($user);
+
+        }
+
         if (! $user || ! $user->is_active) {
             return $denied;
         }
 
-        // Policy #185: system_admin has zero municipal planning decision authority.
-        if ($user->role === 'system_admin') {
-            return $denied;
-        }
-
+        // Engineer decision #7203434407: internal reads do not require a designation.
+        $denied['canViewExecutiveAttachments'] = true;
         $employee = $user->employee()->with('department')->first();
-        if (! $employee || $employee->employment_status !== 'active') {
-            return $denied;
-        }
-
-        $department = $employee->department;
-        if (! $department || ! $department->is_active) {
+        $department = $employee?->department;
+        if (! $employee || ! $department || ! $department->is_active) {
             return $denied;
         }
 
         $departmentId = (int) $department->id;
         $departmentCode = strtoupper(trim((string) $department->code));
-        $departmentName = (string) $department->name;
+        $context = [...$denied, 'actorDepartmentId' => $departmentId,
+            'actorDepartmentCode' => $departmentCode, 'actorDepartmentName' => $department->name];
+        if ($user->role === 'system_admin') {
+            return $context;
+        }
         $isMpdoOffice = in_array($departmentCode, self::MPDO_CODES, true);
-
-        // 1. MPDC / MPDO Head
-        if ($user->role === 'department_head' && $isMpdoOffice) {
-            return [
-                'isMpdcHead' => true,
-                'isDesignatedStaff' => false,
-                'isImplementingOfficeHead' => false,
-                'canManagePlans' => true,
-                'canManagePpas' => true,
-                'canManageMaps' => true,
-                'canProposeOfficePpa' => true,
-                'canPublishOrArchive' => true,
-                'canDelete' => true,
-                'canDesignateStaff' => true,
-                'canUploadAttachments' => true,
-                'canViewExecutiveAttachments' => true,
-                'actorDepartmentId' => $departmentId,
-                'actorDepartmentCode' => $departmentCode,
-                'actorDepartmentName' => $departmentName,
-            ];
+        if ($user->role === 'department_head') {
+            return [...$context,
+                'isMpdcHead' => $isMpdoOffice,
+                'isImplementingOfficeHead' => ! $isMpdoOffice && $department->is_routable,
+                'canManagePlans' => $isMpdoOffice, 'canManagePpas' => $isMpdoOffice,
+                'canManageMaps' => $isMpdoOffice,
+                'canProposeOfficePpa' => $isMpdoOffice || (bool) $department->is_routable,
+                'canPublishOrArchive' => $isMpdoOffice,
+                'canDelete' => $isMpdoOffice || (bool) $department->is_routable,
+                'canDesignateStaff' => $isMpdoOffice || (bool) $department->is_routable,
+                'canUploadAttachments' => $isMpdoOffice || (bool) $department->is_routable];
         }
 
-        // 2. Designated MPDC / MPDO Staff (active designation in MPDO with granular boolean scopes)
-        if ($isMpdoOffice) {
-            $designation = DesignatedPlanningStaff::query()
-                ->where('user_id', $user->id)
-                ->where('department_id', $departmentId)
-                ->whereNull('revoked_at')
-                ->first();
+        $designation = DesignatedPlanningStaff::query()
+            ->where('user_id', $user->id)->where('department_id', $departmentId)
+            ->where('employee_id', $employee->id)->whereNull('revoked_at')
+            ->when(DB::transactionLevel() > 0, fn ($query) => $query->lockForUpdate())->first();
+        if (! $designation) {
+            return $context;
+        }
+        $issuer = User::query()->find($designation->designated_by_user_id);
+        $issuer = $issuer ? app(AccountSessionEligibility::class)->current($issuer) : null;
+        if (! $issuer || $issuer->role !== 'department_head'
+            || (int) $issuer->employee?->department_id !== $departmentId) {
+            return $context;
+        }
+        $canPlans = $isMpdoOffice && (bool) $designation->can_manage_plans;
+        $canPpas = ($isMpdoOffice || $department->is_routable) && (bool) $designation->can_manage_ppas;
+        $canMaps = $isMpdoOffice && (bool) $designation->can_manage_maps;
+        $any = $canPlans || $canPpas || $canMaps;
 
-            if ($designation) {
-                $canPlans = (bool) $designation->can_manage_plans;
-                $canPpas = (bool) $designation->can_manage_ppas;
-                $canMaps = (bool) $designation->can_manage_maps;
-                $hasAnyScope = $canPlans || $canPpas || $canMaps;
+        return [...$context, 'isDesignatedStaff' => $any,
+            'canManagePlans' => $canPlans, 'canManagePpas' => $isMpdoOffice && $canPpas,
+            'canManageMaps' => $canMaps, 'canProposeOfficePpa' => $canPpas,
+            'canDelete' => $any, 'canUploadAttachments' => $any];
+    }
 
-                return [
-                    'isMpdcHead' => false,
-                    'isDesignatedStaff' => $hasAnyScope,
-                    'isImplementingOfficeHead' => false,
-                    'canManagePlans' => $canPlans,
-                    'canManagePpas' => $canPpas,
-                    'canManageMaps' => $canMaps,
-                    'canProposeOfficePpa' => $canPpas,
-                    'canPublishOrArchive' => false,
-                    'canDelete' => false,
-                    'canDesignateStaff' => false,
-                    'canUploadAttachments' => $hasAnyScope,
-                    'canViewExecutiveAttachments' => $hasAnyScope,
-                    'actorDepartmentId' => $departmentId,
-                    'actorDepartmentCode' => $departmentCode,
-                    'actorDepartmentName' => $departmentName,
-                ];
+    private function mutationPermissions(User $user): array
+    {
+        $perms = $this->resolve($user);
+        if (DB::transactionLevel() > 0 && ! request()->isMethodSafe()) {
+            // resolve() holds the canonical identity locks until the mutation commits.
+            $current = User::query()->findOrFail($user->id);
+            app(AccountSessionEligibility::class)->requireSession(request(), $current);
+            if (! app(AuthenticationAssurance::class)->isSatisfiedAgainst(request(), $current)) {
+                throw new AuthorizationException('Current multi-factor authentication assurance is required.');
             }
         }
 
-        // 3. Implementing Office Head (non-MPDO department_head)
-        if ($user->role === 'department_head' && ! $isMpdoOffice && $department->is_routable) {
-            return [
-                'isMpdcHead' => false,
-                'isDesignatedStaff' => false,
-                'isImplementingOfficeHead' => true,
-                'canManagePlans' => false,
-                'canManagePpas' => false,
-                'canManageMaps' => false,
-                'canProposeOfficePpa' => true,
-                'canPublishOrArchive' => false,
-                'canDelete' => false,
-                'canDesignateStaff' => false,
-                'canUploadAttachments' => true,
-                'canViewExecutiveAttachments' => false,
-                'actorDepartmentId' => $departmentId,
-                'actorDepartmentCode' => $departmentCode,
-                'actorDepartmentName' => $departmentName,
-            ];
+        return $perms;
+    }
+
+    public function recordCapabilities(array $perms, DevelopmentPlan|PpaRecord|PlanningMap $record): array
+    {
+        if ($record instanceof DevelopmentPlan) {
+            $protected = in_array($record->status, [...self::OFFICIAL_PLAN_STATUSES, 'Archived'], true);
+            $edit = $perms['canManagePlans'] && (! $protected || $perms['canPublishOrArchive']);
+            $remove = $perms['canManagePlans'] && ! $protected;
+        } elseif ($record instanceof PlanningMap) {
+            $protected = in_array($record->status, ['Published', 'Archived'], true);
+            $edit = $perms['canManageMaps'] && (! $protected || $perms['canPublishOrArchive']);
+            $remove = $perms['canManageMaps'] && $record->status === 'Draft';
+        } else {
+            $ownProposal = $perms['canProposeOfficePpa'] && $record->implementing_department_id !== null
+                && (int) $record->implementing_department_id === $perms['actorDepartmentId']
+                && in_array($record->status, ['Draft', 'Planned'], true);
+            $edit = $ownProposal || ($perms['canManagePpas']
+                && (! in_array($record->status, ['Completed', 'On Hold'], true) || $perms['canPublishOrArchive']));
+            $remove = $edit && in_array($record->status, ['Draft', 'Planned'], true);
         }
 
-        // 4. Mayor Approver can view executive planning attachments (read-only on planning suite CRUD)
-        if ($user->role === 'mayor_approver' && $departmentCode === 'MAYOR') {
-            return [
-                ...$denied,
-                'canViewExecutiveAttachments' => true,
-                'actorDepartmentId' => $departmentId,
-                'actorDepartmentCode' => $departmentCode,
-                'actorDepartmentName' => $departmentName,
-            ];
+        return ['canEdit' => $edit, 'canUploadAttachments' => $edit,
+            'canDelete' => $perms['canDelete'] && $remove && $record->provenance_status !== 'reference_sample'];
+    }
+
+    public function officeIdentity(string $name, string $field): Department
+    {
+        $matches = Department::query()->where('is_active', true)->where('name', trim($name))->limit(2)->get();
+        if ($matches->count() !== 1) {
+            throw ValidationException::withMessages([$field => 'Choose one unambiguous active office from the current directory.']);
         }
 
-        return [
-            ...$denied,
-            'actorDepartmentId' => $departmentId,
-            'actorDepartmentCode' => $departmentCode,
-            'actorDepartmentName' => $departmentName,
-        ];
+        return $matches->first();
     }
 
     public function authorizePlanMutation(
@@ -189,11 +187,12 @@ final class PlanningAuthorizationService
         ?DevelopmentPlan $existing = null,
         ?string $requestedAuthority = null,
     ): array {
-        $perms = $this->resolve($user);
+        $perms = $this->mutationPermissions($user);
 
         if ($isDelete) {
-            if (! $perms['canDelete']) {
-                throw new AuthorizationException('Only the MPDC Head may delete non-official draft plan records.');
+            if (! $perms['canDelete'] || ! $perms['canManagePlans']
+                || $existing === null || in_array($existing->status, [...self::OFFICIAL_PLAN_STATUSES, 'Archived'], true)) {
+                throw new AuthorizationException('You are not authorized to remove plan records.');
             }
 
             return $perms;
@@ -201,6 +200,10 @@ final class PlanningAuthorizationService
 
         if (! $perms['canManagePlans']) {
             throw new AuthorizationException('You are not authorized to create or modify development plans.');
+        }
+
+        if ($existing !== null && in_array($existing->status, [...self::OFFICIAL_PLAN_STATUSES, 'Archived'], true) && ! $perms['canPublishOrArchive']) {
+            throw new AuthorizationException('Only the MPDC Head may modify an official or archived plan.');
         }
 
         if ($targetStatus !== null && in_array($targetStatus, ['In force', 'Adopted', 'Published', 'Archived'], true) && ! $perms['canPublishOrArchive']) {
@@ -228,17 +231,22 @@ final class PlanningAuthorizationService
 
     public function authorizePpaMutation(User $user, ?PpaRecord $existing = null, ?string $targetStatus = null, bool $isDelete = false): array
     {
-        $perms = $this->resolve($user);
+        $perms = $this->mutationPermissions($user);
 
         if ($isDelete) {
             if (! $perms['canDelete']) {
                 throw new AuthorizationException('Only the MPDC Head may delete draft PPA records.');
             }
 
+            $this->authorizePpaMutation($user, existing: $existing);
+
             return $perms;
         }
 
         if ($perms['canManagePpas']) {
+            if ($existing !== null && in_array($existing->status, ['Completed', 'On Hold'], true) && ! $perms['canPublishOrArchive']) {
+                throw new AuthorizationException('Only the MPDC Head may modify a finalized or held PPA.');
+            }
             if ($targetStatus !== null && in_array($targetStatus, ['Completed', 'On Hold'], true) && ! $perms['canPublishOrArchive']) {
                 throw new AuthorizationException('Only the MPDC Head may finalize or place PPA records on hold.');
             }
@@ -255,9 +263,7 @@ final class PlanningAuthorizationService
             if ($existing !== null) {
                 $sameDepartment = $existing->implementing_department_id !== null
                     && (int) $existing->implementing_department_id === $perms['actorDepartmentId'];
-                $sameOfficeName = strcasecmp(trim($existing->responsible_office), trim((string) $perms['actorDepartmentName'])) === 0;
-
-                if ((! $sameDepartment && ! $sameOfficeName) || ! in_array($existing->status, ['Draft', 'Planned'], true)) {
+                if (! $sameDepartment || ! in_array($existing->status, ['Draft', 'Planned'], true)) {
                     throw new AuthorizationException('Implementing Office Heads may only modify Draft or Planned PPA proposals belonging to their own office.');
                 }
             }
@@ -268,13 +274,13 @@ final class PlanningAuthorizationService
         throw new AuthorizationException('You are not authorized to create or modify PPA records.');
     }
 
-    public function authorizeMapMutation(User $user, ?string $targetStatus = null, bool $isDelete = false): array
+    public function authorizeMapMutation(User $user, ?string $targetStatus = null, bool $isDelete = false, ?PlanningMap $existing = null): array
     {
-        $perms = $this->resolve($user);
+        $perms = $this->mutationPermissions($user);
 
         if ($isDelete) {
-            if (! $perms['canDelete']) {
-                throw new AuthorizationException('Only the MPDC Head may delete draft planning map records.');
+            if (! $perms['canDelete'] || ! $perms['canManageMaps']) {
+                throw new AuthorizationException('You are not authorized to remove planning map records.');
             }
 
             return $perms;
@@ -284,6 +290,10 @@ final class PlanningAuthorizationService
             throw new AuthorizationException('You are not authorized to create or modify planning maps.');
         }
 
+        if ($existing !== null && in_array($existing->status, ['Published', 'Archived'], true) && ! $perms['canPublishOrArchive']) {
+            throw new AuthorizationException('Only the MPDC Head may modify a published or archived map.');
+        }
+
         if ($targetStatus !== null && in_array($targetStatus, ['Published', 'Archived'], true) && ! $perms['canPublishOrArchive']) {
             throw new AuthorizationException('Only the MPDC Head may publish or archive planning maps.');
         }
@@ -291,14 +301,27 @@ final class PlanningAuthorizationService
         return $perms;
     }
 
-    public function authorizeStaffDesignation(User $user): array
+    public function authorizeStaffDesignation(User $user, ?DesignatedPlanningStaff $existing = null): array
     {
-        $perms = $this->resolve($user);
+        $perms = $this->mutationPermissions($user);
         if (! $perms['canDesignateStaff']) {
-            throw new AuthorizationException('Only the MPDC Head may designate or revoke MPDC planning staff scopes.');
+            throw new AuthorizationException('Only an authorized Department Head may manage their office planning designations.');
+        }
+
+        if ($existing !== null && (int) $existing->department_id !== $perms['actorDepartmentId']) {
+            throw new AuthorizationException('Planning staff designations belong to the issuing office.');
         }
 
         return $perms;
+    }
+
+    public function authorizeDesignationScopes(array $perms, array $data): void
+    {
+        if ((! empty($data['can_manage_plans']) && ! $perms['canManagePlans'])
+            || (! empty($data['can_manage_ppas']) && ! $perms['canProposeOfficePpa'])
+            || (! empty($data['can_manage_maps']) && ! $perms['canManageMaps'])) {
+            throw new AuthorizationException('A designation cannot exceed the issuing Head’s office and module authority.');
+        }
     }
 
     public function canViewAttachment(User $user, PlanningAttachment $attachment): bool
@@ -307,21 +330,13 @@ final class PlanningAuthorizationService
             return false;
         }
 
-        $perms = $this->resolve($user);
-
-        return match ($attachment->visibility) {
-            'public_portal', 'lgu_internal' => $user->is_active,
-            'office_restricted' => $perms['isMpdcHead']
-                || $perms['isDesignatedStaff']
-                || ($perms['actorDepartmentId'] !== null && (int) $attachment->owner_department_id === $perms['actorDepartmentId']),
-            'mpdc_executive' => $perms['canViewExecutiveAttachments'],
-            default => false,
-        };
+        return app(AccountSessionEligibility::class)->current($user) !== null
+            && in_array($attachment->visibility, ['public_portal', 'lgu_internal', 'office_restricted', 'mpdc_executive'], true);
     }
 
     public function authorizeAttachmentUpload(User $user, string $parentType, string $parentCode, string $visibility): array
     {
-        $perms = $this->resolve($user);
+        $perms = $this->mutationPermissions($user);
         if (! $perms['canUploadAttachments']) {
             throw new AuthorizationException('You are not authorized to upload planning supporting documents.');
         }
@@ -331,60 +346,30 @@ final class PlanningAuthorizationService
         }
 
         return match ($parentType) {
-            'plan' => $this->authorizePlanAttachmentUpload($perms, $parentCode),
-            'ppa' => $this->authorizePpaAttachmentUpload($perms, $parentCode),
-            'map' => $this->authorizeMapAttachmentUpload($perms, $parentCode),
+            'plan' => $this->authorizePlanMutation($user, existing: DevelopmentPlan::query()->where(fn ($query) => $query->where('code', $parentCode)->orWhere('plan_key', $parentCode))->when(DB::transactionLevel() > 0, fn ($query) => $query->lockForUpdate())->firstOrFail()),
+            'ppa' => $this->authorizePpaMutation($user, existing: PpaRecord::query()->where('ppa_code', $parentCode)->when(DB::transactionLevel() > 0, fn ($query) => $query->lockForUpdate())->firstOrFail()),
+            'map' => $this->authorizeMapMutation($user, existing: PlanningMap::query()->where('map_code', $parentCode)->when(DB::transactionLevel() > 0, fn ($query) => $query->lockForUpdate())->firstOrFail()),
             default => throw new AuthorizationException('Unsupported planning attachment parent type.'),
         };
     }
 
-    private function authorizePlanAttachmentUpload(array $perms, string $parentCode): array
+    public function canArchiveAttachment(User $user, PlanningAttachment $attachment): bool
     {
-        if (! $perms['canManagePlans']) {
-            throw new AuthorizationException('You are not authorized to attach documents to development plans.');
-        }
+        try {
+            $this->authorizeAttachmentArchive($user, $attachment);
 
-        if (! DevelopmentPlan::query()->where('code', $parentCode)->orWhere('plan_key', $parentCode)->exists()) {
-            throw new AuthorizationException('Target development plan record does not exist.');
+            return true;
+        } catch (AuthorizationException|ModelNotFoundException) {
+            return false;
         }
-
-        return $perms;
     }
 
-    private function authorizePpaAttachmentUpload(array $perms, string $parentCode): array
+    public function authorizeAttachmentArchive(User $user, PlanningAttachment $attachment): void
     {
-        $ppa = PpaRecord::query()->where('ppa_code', $parentCode)->first();
-        if (! $ppa) {
-            throw new AuthorizationException('Target PPA record does not exist.');
+        if ($attachment->archived_at !== null || ! $this->canViewAttachment($user, $attachment)) {
+            throw new AuthorizationException('You are not authorized to remove this planning attachment.');
         }
 
-        if ($perms['canManagePpas']) {
-            return $perms;
-        }
-
-        if ($perms['canProposeOfficePpa']) {
-            $sameDepartment = $ppa->implementing_department_id !== null
-                && (int) $ppa->implementing_department_id === $perms['actorDepartmentId'];
-            $sameOfficeName = strcasecmp(trim($ppa->responsible_office), trim((string) $perms['actorDepartmentName'])) === 0;
-
-            if ($sameDepartment || $sameOfficeName) {
-                return $perms;
-            }
-        }
-
-        throw new AuthorizationException('You are not authorized to attach documents to this PPA record.');
-    }
-
-    private function authorizeMapAttachmentUpload(array $perms, string $parentCode): array
-    {
-        if (! $perms['canManageMaps']) {
-            throw new AuthorizationException('You are not authorized to attach documents to planning maps.');
-        }
-
-        if (! PlanningMap::query()->where('map_code', $parentCode)->exists()) {
-            throw new AuthorizationException('Target planning map record does not exist.');
-        }
-
-        return $perms;
+        $this->authorizeAttachmentUpload($user, $attachment->parent_type, $attachment->parent_code, $attachment->visibility);
     }
 }

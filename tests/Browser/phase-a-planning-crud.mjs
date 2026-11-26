@@ -36,6 +36,16 @@ export async function planningCrud(page,context,origin,interactions) {
     await save('Save plan changes');
     assert.equal((await props('/development-plans')).plans.find(record=>record.code===planCode).title,'Synthetic canonical plan revised');
     await page.getByRole('button',{name:`View details for ${planCode}`,exact:true}).click();
+    await page.getByRole('button',{name:'Edit Plan',exact:true}).click();
+    await page.getByRole('dialog').getByLabel('Lifecycle Status').selectOption('Archived');
+    await save('Save plan changes');
+    assert.equal((await props('/development-plans')).plans.find(record=>record.code===planCode).canDelete,false);
+    await page.getByRole('button',{name:`View details for ${planCode}`,exact:true}).click();
+    assert.equal(await page.getByRole('button',{name:`Delete ${planCode}`,exact:true}).count(),0,'Archived record must not offer deletion');
+    await page.getByRole('button',{name:'Edit Plan',exact:true}).click();
+    await page.getByRole('dialog').getByLabel('Lifecycle Status').selectOption('Draft');
+    await save('Save plan changes');
+    await page.getByRole('button',{name:`View details for ${planCode}`,exact:true}).click();
     await remove(planCode);
     assert.equal((await props('/development-plans')).plans.some(record=>record.code===planCode),false);
     assert.equal(await page.evaluate(()=>document.body.style.overflow),'','Nested deletion dialog must release its scroll lock');
@@ -81,8 +91,8 @@ export async function planningCrud(page,context,origin,interactions) {
     assert.equal((await props('/planning-maps')).planningMaps.some(record=>record.code===mapCode),false);
     interactions.push({role:'department_head',label:'real-map-create-edit-delete'});
     await page.getByRole('link',{name:'Staff Scopes',exact:true}).click();
-    await page.getByRole('dialog',{name:'MPDC Staff Delegation & Module Scopes',exact:true}).waitFor();
-    await page.getByLabel('Active MPDC Employee').waitFor();
+    await page.getByRole('dialog',{name:'Office Planning Staff & Module Scopes',exact:true}).waitFor();
+    await page.getByLabel('Active Office Employee').waitFor();
     await page.keyboard.press('Escape');
     interactions.push({role:'department_head',label:'real-staff-management-navigation'});
 }

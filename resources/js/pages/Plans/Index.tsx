@@ -31,6 +31,9 @@ import AppLayout from '../../layouts/AppLayout';
 
 export type ServerPlanRecord = Omit<MunicipalPlan,'status'> & {
     status: string;
+    canEdit?: boolean;
+    canDelete?: boolean;
+    canUploadAttachments?: boolean;
     dbId?: number;
     provenanceStatus?: string;
 };
@@ -345,9 +348,9 @@ export default function PlansIndex({
                         { key: 'profile', label: 'Profile & Adoption', content: <PlanProfile plan={selectedPlan} /> },
                         { key: 'ppas', label: 'Linked PPAs', content: <PlanLinkedPpas planCode={selectedPlan.code} registerHref={`/ppas?search=${encodeURIComponent(selectedPlan.code)}`} /> },
                         { key: 'chapters', label: 'Chapters & Maps', content: <PlanChaptersMaps plan={selectedPlan} linkedMaps={[]} linksUnavailable /> },
-                        { key: 'documents', label: 'Supporting Docs', content: <SupportingDocsPanel parentType="plan" parentCode={selectedPlan.code} attachments={attachments} canUpload={Boolean(planningPermissions?.canManagePlans)} canManageExecutive={Boolean(planningPermissions?.canViewExecutiveAttachments)} canDelete={Boolean(planningPermissions?.isMpdcHead)} /> },
+                        { key: 'documents', label: 'Supporting Docs', content: <SupportingDocsPanel parentType="plan" parentCode={selectedPlan.code} attachments={attachments} canUpload={selectedPlan.canUploadAttachments ?? Boolean(planningPermissions?.canManagePlans)} canManageExecutive={Boolean(planningPermissions?.canViewExecutiveAttachments)} canDelete={Boolean(planningPermissions?.isMpdcHead)} /> },
                     ]}
-                    footer={<div className="flex flex-wrap gap-2">{planningPermissions?.canManagePlans&&selectedPlan.dbId&&<Button variant="secondary" onClick={()=>openPlanStudio(selectedPlan)}>Edit Plan</Button>}{planningPermissions?.canDelete&&selectedPlan.dbId&&<PlanningDeleteAction title={selectedPlan.code} busy={busy} disabledReason={selectedPlan.provenanceStatus==='reference_sample'||['In force','Adopted'].includes(selectedPlan.status)?'Official and reference plans cannot be deleted.':undefined} onDelete={()=>{setBusy(true);setSubmissionError('');router.delete(`/development-plans/${selectedPlan.dbId}`,{preserveScroll:true,onSuccess:closePlanDetails,onError:errors=>setSubmissionError(Object.values(errors).join(' ')),onFinish:()=>setBusy(false)});}} />}{submissionError&&<p role="alert" className="text-xs text-[var(--status-danger-fg)]">{submissionError}</p>}<Button variant="secondary" onClick={closePlanDetails}>Close</Button></div>}
+                    footer={<div className="flex flex-wrap gap-2">{(selectedPlan.canEdit ?? planningPermissions?.canManagePlans)&&selectedPlan.dbId&&<Button variant="secondary" onClick={()=>openPlanStudio(selectedPlan)}>Edit Plan</Button>}{selectedPlan.canDelete&&selectedPlan.dbId&&<PlanningDeleteAction title={selectedPlan.code} busy={busy} disabledReason={selectedPlan.provenanceStatus==='reference_sample'||['In force','Adopted'].includes(selectedPlan.status)?'Official and reference plans cannot be deleted.':undefined} onDelete={()=>{setBusy(true);setSubmissionError('');router.delete(`/development-plans/${selectedPlan.dbId}`,{preserveScroll:true,onSuccess:closePlanDetails,onError:errors=>setSubmissionError(Object.values(errors).join(' ')),onFinish:()=>setBusy(false)});}} />}{submissionError&&<p role="alert" className="text-xs text-[var(--status-danger-fg)]">{submissionError}</p>}<Button variant="secondary" onClick={closePlanDetails}>Close</Button></div>}
                 />
             )}
 
@@ -368,6 +371,7 @@ export default function PlansIndex({
             <DesignatedStaffModal
                 open={showStaffModal}
                 onClose={() => setShowStaffModal(false)}
+                allowedModules={planningPermissions?.isMpdcHead ? ['plans', 'ppas', 'maps'] : ['ppas']}
                 designatedStaff={designatedStaff}
                 mpdoStaffPool={mpdoStaffPool}
             />

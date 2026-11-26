@@ -18,6 +18,7 @@ export type ServerPlanningAttachment = {
     visibility: string;
     previewUrl: string;
     downloadUrl: string;
+    canArchive?: boolean;
     createdAt?: string | null;
 };
 
@@ -166,7 +167,7 @@ export default function SupportingDocsPanel({
                                     Download
                                 </a>
 
-{canDelete && (
+{(doc.canArchive ?? canDelete) && (
                                     <button
                                         type="button"
                                         onClick={() => handleRemove(doc.publicId)}

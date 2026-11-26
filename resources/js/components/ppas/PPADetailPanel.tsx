@@ -13,8 +13,8 @@ type Props={managementActions?:ReactNode;onEdit?:(record:PPARecord)=>void;record
 export default function PPADetailPanel({managementActions,onEdit,record,onClose,attachments=[],planningPermissions,currentIndex,totalCount,onPrev,onNext}:Props){
     const [activeSection,setActiveSection]=useState('overview');
     if(!record)return null;
-    const canUploadToPpa=Boolean(planningPermissions?.canManagePpas || (planningPermissions?.canProposeOfficePpa && (record.implementingDepartmentId===planningPermissions.actorDepartmentId || record.responsibleOffice.toLowerCase()===(planningPermissions.actorDepartmentName??'').toLowerCase())));
-    const canEdit=Boolean(record.dbId&&(planningPermissions?.canManagePpas||(planningPermissions?.canProposeOfficePpa&&['Draft','Planned'].includes(record.rawStatus??record.status)&&(record.implementingDepartmentId===planningPermissions.actorDepartmentId||record.responsibleOffice.toLowerCase()===(planningPermissions.actorDepartmentName??'').toLowerCase()))));
+    const canUploadToPpa=record.canUploadAttachments ?? false;
+    const canEdit=record.canEdit ?? false;
     return <PlanDossierPresentation activeSection={activeSection} onSectionChange={setActiveSection} id="selected-ppa-detail" key={record.id} open onClose={onClose} title={record.title} description={`${record.id} / ${record.year}${record.aipReferenceCode ? ' · AIP '+record.aipReferenceCode : ''}`} sectionLabel="PPA dossier sections"
         footer={<div className="flex w-full flex-wrap items-center justify-between gap-2"><div className="flex items-center gap-2"><Button variant="secondary" disabled={!onPrev} onClick={onPrev}>Previous PPA</Button><span className="text-xs">{currentIndex!==undefined&&totalCount ? `${currentIndex+1} of ${totalCount}` : 'Selected record'}</span><Button variant="secondary" disabled={!onNext} onClick={onNext}>Next PPA</Button></div><div className="flex flex-wrap gap-2">{managementActions}{canEdit&&onEdit&&<Button variant="secondary" onClick={()=>onEdit(record)}>Edit PPA</Button>}<Button variant="secondary" onClick={onClose}>Close details</Button></div></div>}
         sections={[
