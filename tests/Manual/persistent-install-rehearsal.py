@@ -184,6 +184,22 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
         check(mode+'_rollback_custody', sql("SELECT to_regnamespace('legacy_custody') IS NULL").stdout.strip() == 't')
         check(mode+'_rollback_ledger', int(sql('SELECT count(*) FROM migrations').stdout.strip()) == len(ledger))
         sql('ALTER TABLE migrations DISABLE ROW LEVEL SECURITY')
+        if mode=='upgrade':
+            initial_cases=[
+                ('initial_unknown_view','CREATE VIEW public.legacy_unknown_view AS SELECT id FROM users','DROP VIEW public.legacy_unknown_view'),
+                ('initial_unknown_routine',"CREATE FUNCTION public.legacy_unknown_function() RETURNS int LANGUAGE SQL AS 'SELECT 1'; ALTER FUNCTION public.legacy_unknown_function() OWNER TO legacy_owner",'DROP FUNCTION public.legacy_unknown_function()'),
+                ('initial_runtime_owned_table','ALTER TABLE public.users OWNER TO legacy_runtime','ALTER TABLE public.users OWNER TO legacy_owner'),
+                ('initial_default_drift','ALTER DEFAULT PRIVILEGES FOR ROLE legacy_owner GRANT SELECT ON TABLES TO legacy_runtime','ALTER DEFAULT PRIVILEGES FOR ROLE legacy_owner REVOKE SELECT ON TABLES FROM legacy_runtime'),
+                ('initial_shared_global_read','GRANT pg_read_all_data TO legacy_runtime WITH SET TRUE','REVOKE pg_read_all_data FROM legacy_runtime'),
+                ('initial_unregistered_control','CREATE SCHEMA deployment_control','DROP SCHEMA deployment_control'),
+            ]
+            for name,change,undo in initial_cases:
+                sql(change)
+                check(mode+'_'+name,install(target,1).returncode==1)
+                check(mode+'_'+name+'_rollback',sql("SELECT (SELECT count(*) FROM migrations)=54 AND (SELECT count(*) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%')=0").stdout.strip()=='t')
+                sql(undo)
+            # Authorized legacy/PUBLIC drift on canonical objects is reconciled, not inherited.
+            sql('GRANT SELECT(password) ON users TO legacy_runtime WITH GRANT OPTION; GRANT SELECT ON users TO PUBLIC; GRANT TEMPORARY,CREATE ON DATABASE '+db+' TO legacy_runtime')
         check(mode+'_install', '"status":"INSTALLED"' in install(target).stdout)
         check(mode+'_all_migrations_once', sql('SELECT count(*)=count(DISTINCT migration) FROM migrations').stdout.strip() == 't')
         check(mode+'_complete_ledger', int(sql('SELECT count(*) FROM migrations').stdout.strip()) == len(all_paths))
@@ -200,6 +216,9 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
         connections = "<?php require 'vendor/autoload.php'; $a=require 'bootstrap/app.php'; $a->make(Illuminate\\Contracts\\Console\\Kernel::class)->bootstrap(); $out=[]; foreach (['pgsql','n03_stage','n03_command','n03_reconcile','n03_reader'] as $name) { $out[$name]=Illuminate\\Support\\Facades\\DB::connection($name)->selectOne('SELECT current_user AS role')->role; } echo json_encode($out);"
         check(mode+'_laravel_runtime_connections', json.loads(run([php],app_env,input=connections).stdout) ==
               {'pgsql':'kirion_g1b_app', **{name:name for name in ['n03_stage','n03_command','n03_reconcile','n03_reader']}})
+        check(mode+'_positive_runtime_directory',sql('SELECT count(*) FROM public.users',runtime).returncode==0)
+        if mode=='upgrade':
+            check(mode+'_positive_runtime_task_write',sql("BEGIN; INSERT INTO tasks(title,state,created_by_user_id,created_at,updated_at) SELECT 'Synthetic privilege witness','open',id,now(),now() FROM users LIMIT 1; ROLLBACK",runtime).returncode==0)
         for name, query in [('ddl','CREATE TABLE public.forbidden(id int)'), ('audit_update','UPDATE public.audit_logs SET action=action WHERE false'), ('custody_read','SELECT * FROM legacy_custody.operations'), ('migration_write',"DELETE FROM public.migrations WHERE false"), ('owner_escalation','SET ROLE kirion_g1b_owner')]:
             check(mode+'_runtime_denies_'+name, sql(query, runtime, allowed=(3,)).returncode == 3)
         reader = dict(env, PGUSER='n03_reader', PGPASSWORD=credentials['n03_reader'])
@@ -236,6 +255,9 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
             ('registry_identity',"UPDATE deployment_control.installations SET installation_id='00000000-0000-4000-8000-000000000001'","UPDATE deployment_control.installations SET installation_id='"+target['previous_installation']['installation_id']+"'"),
             ('registry_schema_owner','ALTER SCHEMA deployment_control OWNER TO n03_reader','ALTER SCHEMA deployment_control OWNER TO postgres'),
             ('registry_table_owner','ALTER TABLE deployment_control.installations OWNER TO n03_reader','ALTER TABLE deployment_control.installations OWNER TO postgres'),
+            ('sequence_owner','ALTER SEQUENCE users_id_seq OWNED BY NONE; ALTER SEQUENCE users_id_seq OWNER TO n03_reader','ALTER SEQUENCE users_id_seq OWNER TO kirion_g1b_owner; ALTER SEQUENCE users_id_seq OWNED BY users.id'),
+            ('type_grant_option','GRANT USAGE ON TYPE users TO n03_reader WITH GRANT OPTION','REVOKE USAGE ON TYPE users FROM n03_reader'),
+            ('role_startup','ALTER ROLE n03_reader IN DATABASE '+db+" SET search_path='pg_catalog'",'ALTER ROLE n03_reader IN DATABASE '+db+' RESET ALL'),
             ('registry_shape','ALTER TABLE deployment_control.installations ADD COLUMN untrusted boolean','ALTER TABLE deployment_control.installations DROP COLUMN untrusted'),
         ]
         for name,change,undo in drift_cases:
@@ -266,6 +288,8 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
         extra.unlink()
         missing=package/'bin/legacy-custody-broker'; original=missing.read_bytes(); missing.unlink()
         check(mode+'_missing_executable',install(target,1).returncode==1); missing.write_bytes(original)
+        for name in ['PHPRC','PHP_INI_SCAN_DIR','LD_PRELOAD','OTEL_TRACES_EXPORTER']:
+            check(mode+'_runtime_instrumentation_'+name,install(target,1,dict(env,**{name:'untrusted-canary'})).returncode==1)
         check(mode+'_wrong_independent_pin',run(invocation(pin='0'*64),env,allowed=(1,)).returncode==1)
         trusted_launcher=launcher.read_bytes(); launcher.write_bytes(trusted_launcher+b'\nraise RuntimeError("UNTRUSTED")\n')
         check(mode+'_tampered_trust_anchor',run(invocation(),env,allowed=(1,)).returncode==1); launcher.write_bytes(trusted_launcher)

@@ -126,9 +126,10 @@ def main():
     probe=json.loads(subprocess.check_output([args.php,'-r',"echo json_encode(['prepend'=>ini_get('auto_prepend_file'),'append'=>ini_get('auto_append_file'),'preload'=>ini_get('opcache.preload'),'ffi_preload'=>ini_get('ffi.preload'),'ini'=>php_ini_loaded_file(),'scanned'=>php_ini_scanned_files(),'extensions'=>get_loaded_extensions()]);"],env=probe_env,text=True))
     if any(probe.get(k) for k in ['prepend','append','preload','ffi_preload']):
         refuse('Unsupported PHP startup instrumentation')
-    allowed_extensions={'core','date','libxml','openssl','pcre','zlib','filter','hash','json','pcntl','random','reflection','spl','session','standard','sodium','pdo','xml','calendar','ctype','curl','dom','mbstring','fileinfo','ftp','gd','gettext','iconv','intl','exif','mysqli','pdo_mysql','pdo_pgsql','pgsql','pdo_sqlite','phar','posix','readline','shmop','simplexml','sockets','sqlite3','sysvmsg','sysvsem','sysvshm','tokenizer','xmlreader','xmlwriter','xsl','zip','bcmath','com_dotnet','mysqlnd','ffi','zend opcache'}
-    if any(ext.lower() not in allowed_extensions for ext in probe['extensions']):
-        refuse('Unsupported PHP extension')
+    allowed_extensions={'core','date','libxml','openssl','pcre','zlib','filter','hash','json','pcntl','random','reflection','spl','session','standard','sodium','pdo','xml','calendar','ctype','curl','dom','mbstring','fileinfo','ftp','gd','gettext','iconv','intl','exif','mysqli','pdo_mysql','pdo_pgsql','pgsql','pdo_sqlite','phar','posix','readline','shmop','simplexml','sockets','sqlite3','sysvmsg','sysvsem','sysvshm','tokenizer','xmlreader','xmlwriter','xsl','zip','bcmath','com_dotnet','mysqlnd','ffi','bz2','dba','gmp','ldap','odbc','pdo_dblib','pdo_odbc','pspell','snmp','soap','tidy','enchant','zend opcache'}
+    unsupported=[ext for ext in probe['extensions'] if ext.lower() not in allowed_extensions]
+    if unsupported:
+        refuse('Unsupported PHP extension: '+','.join(unsupported))
     for ini in [probe.get('ini'), *(probe.get('scanned') or '').replace('\n','').split(',')]:
         if ini and ini.strip():
             secure_path(ini.strip())
@@ -144,7 +145,7 @@ def main():
     $bad=['auto_prepend_file','auto_append_file','opcache.preload','ffi.preload'];
     foreach($bad as $setting) { if(ini_get($setting)) { exit(81); } }
     foreach(get_loaded_extensions() as $ext) {
-      if(!in_array(strtolower($ext),['core','date','libxml','openssl','pcre','zlib','filter','hash','json','pcntl','random','reflection','spl','session','standard','sodium','pdo','xml','calendar','ctype','curl','dom','mbstring','fileinfo','ftp','gd','gettext','iconv','intl','exif','mysqli','pdo_mysql','pdo_pgsql','pgsql','pdo_sqlite','phar','posix','readline','shmop','simplexml','sockets','sqlite3','sysvmsg','sysvsem','sysvshm','tokenizer','xmlreader','xmlwriter','xsl','zip','bcmath','com_dotnet','mysqlnd','ffi','zend opcache'],true)) { exit(82); }
+      if(!in_array(strtolower($ext),['core','date','libxml','openssl','pcre','zlib','filter','hash','json','pcntl','random','reflection','spl','session','standard','sodium','pdo','xml','calendar','ctype','curl','dom','mbstring','fileinfo','ftp','gd','gettext','iconv','intl','exif','mysqli','pdo_mysql','pdo_pgsql','pgsql','pdo_sqlite','phar','posix','readline','shmop','simplexml','sockets','sqlite3','sysvmsg','sysvsem','sysvshm','tokenizer','xmlreader','xmlwriter','xsl','zip','bcmath','com_dotnet','mysqlnd','ffi','bz2','dba','gmp','ldap','odbc','pdo_dblib','pdo_odbc','pspell','snmp','soap','tidy','enchant','zend opcache'],true)) { exit(82); }
     }
     require $argv[2].'/vendor/autoload.php';
     $app=require $argv[2].'/bootstrap/app.php';
