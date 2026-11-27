@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class PlanningMap extends Model
 {
     protected $fillable = [
-        'map_code',
+        'map_code', 'development_plan_id', 'plate_attachment_id', 'source_attribution', 'effective_period', 'authority', 'legend_notes',
         'title',
         'category',
         'plan_code',

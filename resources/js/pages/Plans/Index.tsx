@@ -35,6 +35,8 @@ export type ServerPlanRecord = Omit<MunicipalPlan,'status'> & {
     canDelete?: boolean;
     canUploadAttachments?: boolean;
     dbId?: number;
+    linkedPpas?: Array<{id:string;title:string;office:string;budget?:string|null;href:string}>;
+    chapterNotes?: string[]; sbResolutionNo?: string; sbAdoptedDate?: string; mdcResolutionNo?: string; higherReviewRef?: string; linkedMapIds?: number[];
     provenanceStatus?: string;
 };
 
@@ -57,6 +59,7 @@ export type PlanningPermissions = {
 };
 
 type Props = {
+    mapOptions?: Array<{id:number;code:string;title:string}>;
     plans?: ServerPlanRecord[];
     attachments?: ServerPlanningAttachment[];
     planningPermissions?: PlanningPermissions;
@@ -72,7 +75,7 @@ const initialFilters: PlanFilters = {
 };
 
 export default function PlansIndex({
-    plans: serverPlans,
+    plans: serverPlans, mapOptions = [],
     attachments = [],
     planningPermissions,
     designatedStaff = [],
@@ -153,7 +156,7 @@ export default function PlansIndex({
         setCreateHorizon(plan?.horizon ?? 'Six-year'); setCreateLeadOffice(plan?.leadOffice ?? planningPermissions?.actorDepartmentName ?? '');
         setCreateStart(String(plan?.coverageStart ?? 2026)); setCreateEnd(String(plan?.coverageEnd ?? 2031));
         setCreateStatus(plan?.status ?? 'For review'); setCreateAuthority(plan?.authority ?? ''); setCreateRequiredAction(plan?.requiredAction ?? '');
-        setRecordFields(plan ? {coordinating_offices:plan.coordinatingOffices.join(', '),document_ref:plan.documentRef,sections_complete:String(plan.sectionsComplete),sections_total:String(plan.sectionsTotal),next_milestone:plan.nextMilestone,next_milestone_date:plan.nextMilestoneDate} : {});
+        setRecordFields(plan ? {chapters:(plan.chapterNotes??[]).join('\n'),adoption_reference:plan.sbResolutionNo??'',adoption_date:plan.sbAdoptedDate??'',mdc_reference:plan.mdcResolutionNo??'',higher_review_reference:plan.higherReviewRef??'',linked_map_ids:(plan.linkedMapIds??[]).join(','),coordinating_offices:plan.coordinatingOffices.join(', '),document_ref:plan.documentRef,sections_complete:String(plan.sectionsComplete),sections_total:String(plan.sectionsTotal),next_milestone:plan.nextMilestone,next_milestone_date:plan.nextMilestoneDate} : {});
         setSelectedPlanId(null); setShowCreateModal(true);
     };
 
@@ -163,6 +166,9 @@ export default function PlansIndex({
         setSubmissionError('');
         setBusy(true);
         const data = {
+                chapters: (recordFields.chapters??'').split('\n').map(s=>s.trim()).filter(Boolean),
+                adoption_reference: recordFields.adoption_reference || null, adoption_date: recordFields.adoption_date || null, mdc_reference: recordFields.mdc_reference || null, higher_review_reference: recordFields.higher_review_reference || null,
+                linked_map_ids: (recordFields.linked_map_ids??'').split(',').filter(Boolean).map(Number),
                 code: createCode.trim(),
                 title: createTitle.trim(),
                 horizon: createHorizon,
@@ -215,6 +221,7 @@ export default function PlansIndex({
     return (
         <AppLayout title="LGU Plans Library">
             <PageFrame width="wide" density="compact" className="civic-page ot-r6-modules ot-r6-plans r8-plans">
+                <Link href="/planning/attachment-custody" className="municipal-secondary-button">Planning document custody</Link>
                 <PageHeader
                     eyebrow="Municipality of Talibon · Planning references"
                     title="LGU Plans Library"
@@ -346,8 +353,8 @@ export default function PlansIndex({
                     onClose={closePlanDetails}
                     sections={[
                         { key: 'profile', label: 'Profile & Adoption', content: <PlanProfile plan={selectedPlan} /> },
-                        { key: 'ppas', label: 'Linked PPAs', content: <PlanLinkedPpas planCode={selectedPlan.code} registerHref={`/ppas?search=${encodeURIComponent(selectedPlan.code)}`} /> },
-                        { key: 'chapters', label: 'Chapters & Maps', content: <PlanChaptersMaps plan={selectedPlan} linkedMaps={[]} linksUnavailable /> },
+                        { key: 'ppas', label: 'Linked PPAs', content: <PlanLinkedPpas records={selectedPlan.linkedPpas} planCode={selectedPlan.code} registerHref={`/ppas?search=${encodeURIComponent(selectedPlan.code)}`} /> },
+                        { key: 'chapters', label: 'Chapters & Maps', content: <PlanChaptersMaps plan={selectedPlan} linkedMaps={mapOptions.filter(m=>selectedPlan.linkedMapIds?.includes(m.id)).map(m=>({id:String(m.id),code:m.code,title:m.title,scale:'See map record',effectivePeriod:'See map record',href:`/planning-maps?search=${encodeURIComponent(m.code)}`}))} /> },
                         { key: 'documents', label: 'Supporting Docs', content: <SupportingDocsPanel parentType="plan" parentCode={selectedPlan.code} parentRecordId={selectedPlan.dbId} attachments={attachments} canUpload={selectedPlan.canUploadAttachments ?? Boolean(planningPermissions?.canManagePlans)} canManageExecutive={Boolean(planningPermissions?.canViewExecutiveAttachments)} canDelete={Boolean(planningPermissions?.isMpdcHead)} /> },
                     ]}
                     footer={<div className="flex flex-wrap gap-2">{(selectedPlan.canEdit ?? planningPermissions?.canManagePlans)&&selectedPlan.dbId&&<Button variant="secondary" onClick={()=>openPlanStudio(selectedPlan)}>Edit Plan</Button>}{selectedPlan.canDelete&&selectedPlan.dbId&&<PlanningDeleteAction title={selectedPlan.code} busy={busy} disabledReason={selectedPlan.provenanceStatus==='reference_sample'||['In force','Adopted'].includes(selectedPlan.status)?'Official and reference plans cannot be deleted.':undefined} onDelete={()=>{setBusy(true);setSubmissionError('');router.delete(`/development-plans/${selectedPlan.dbId}`,{preserveScroll:true,onSuccess:closePlanDetails,onError:errors=>setSubmissionError(Object.values(errors).join(' ')),onFinish:()=>setBusy(false)});}} />}{submissionError&&<p role="alert" className="text-xs text-[var(--status-danger-fg)]">{submissionError}</p>}<Button variant="secondary" onClick={closePlanDetails}>Close</Button></div>}
@@ -355,17 +362,19 @@ export default function PlansIndex({
             )}
 
             <PlanStudioView coverageBounds={{min:2000,max:2100}} error={submissionError} open={showCreateModal} editing={editingPlan} onClose={() => setShowCreateModal(false)} busy={busy}
-                values={{ code: createCode, title: createTitle, horizon: createHorizon, coverageStart: createStart, coverageEnd: createEnd, status: createStatus, leadOffice: createLeadOffice, coordinatingInput: recordFields.coordinating_offices ?? '', documentRef: recordFields.document_ref ?? '', authority: createAuthority, sbResolutionNo: '', sbAdoptedDate: '', mdcResolutionNo: '', higherReviewRef: '', sectionsComplete: recordFields.sections_complete ?? '', sectionsTotal: recordFields.sections_total ?? '', nextMilestone: recordFields.next_milestone ?? '', nextMilestoneDate: recordFields.next_milestone_date ?? '', requiredAction: createRequiredAction, linkedMapIds: [] }}
+                values={{ code: createCode, title: createTitle, horizon: createHorizon, coverageStart: createStart, coverageEnd: createEnd, status: createStatus, leadOffice: createLeadOffice, coordinatingInput: recordFields.coordinating_offices ?? '', documentRef: recordFields.document_ref ?? '', authority: createAuthority, sbResolutionNo: recordFields.adoption_reference??'', sbAdoptedDate: recordFields.adoption_date??'', mdcResolutionNo: recordFields.mdc_reference??'', higherReviewRef: recordFields.higher_review_reference??'', sectionsComplete: recordFields.sections_complete ?? '', sectionsTotal: recordFields.sections_total ?? '', nextMilestone: recordFields.next_milestone ?? '', nextMilestoneDate: recordFields.next_milestone_date ?? '', requiredAction: createRequiredAction, linkedMapIds: (recordFields.linked_map_ids??'').split(',').filter(Boolean) }}
                 onChange={(field, value) => {
+                    if(field==='linkedMapIds'){setRecordFields(fields=>({...fields,linked_map_ids:(value as string[]).join(',')}));return;}
                     if (typeof value !== 'string') return;
                     const setters: Record<string, (value: string) => void> = { code: setCreateCode, title: setCreateTitle, horizon: setCreateHorizon, coverageStart: setCreateStart, coverageEnd: setCreateEnd, status: setCreateStatus, leadOffice: setCreateLeadOffice, authority: setCreateAuthority, requiredAction: setCreateRequiredAction };
                     if (setters[field]) { setters[field](value); return; }
-                    const keys: Record<string, string> = { coordinatingInput: 'coordinating_offices', documentRef: 'document_ref', sectionsComplete: 'sections_complete', sectionsTotal: 'sections_total', nextMilestone: 'next_milestone', nextMilestoneDate: 'next_milestone_date' };
+                    const keys: Record<string, string> = {sbResolutionNo:'adoption_reference',sbAdoptedDate:'adoption_date',mdcResolutionNo:'mdc_reference',higherReviewRef:'higher_review_reference', coordinatingInput: 'coordinating_offices', documentRef: 'document_ref', sectionsComplete: 'sections_complete', sectionsTotal: 'sections_total', nextMilestone: 'next_milestone', nextMilestoneDate: 'next_milestone_date' };
                     if (keys[field]) setRecordFields(fields => ({ ...fields, [keys[field]]: value }));
                 }}
-                onSubmit={handleCreatePlan} maps={[]} horizons={['Annual', 'Three-year', 'Six-year', 'Long-term', 'Sectoral']}
+                chapterNotes={recordFields.chapters??''} onChapterNotesChange={value=>setRecordFields(fields=>({...fields,chapters:value}))}
+                onSubmit={handleCreatePlan} maps={mapOptions.map(m=>({...m,id:String(m.id)}))} horizons={['Annual', 'Three-year', 'Six-year', 'Long-term', 'Sectoral']}
                 statuses={['Draft','For review', 'Updating', 'Due this year', ...(planningPermissions?.canPublishOrArchive ? ['Archived',...(editingPlan?.provenanceStatus==='reference_sample'?[]:['In force', 'Adopted'])] : [])]}
-                unavailable={[...(editingPlan?['code' as const]:[]),...(editingPlan?.provenanceStatus==='reference_sample'?['authority' as const]:[]),'sbResolutionNo', 'sbAdoptedDate', 'mdcResolutionNo', 'higherReviewRef', 'linkedMapIds']}
+                unavailable={[...(editingPlan?['code' as const]:[]),...(editingPlan?.provenanceStatus==='reference_sample'?['authority' as const]:[]),...(!planningPermissions?.canPublishOrArchive||editingPlan?.provenanceStatus==='reference_sample'?['sbResolutionNo' as const, 'sbAdoptedDate' as const, 'mdcResolutionNo' as const, 'higherReviewRef' as const]:[])]}
             />
 
             <DesignatedStaffModal

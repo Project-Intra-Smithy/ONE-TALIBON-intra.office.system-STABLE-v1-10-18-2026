@@ -55,7 +55,7 @@ try{
         for(const width of (crudOnly?[]:[1440,768,390]))for(const theme of ['light','dark']){
             await page.setViewportSize({width,height:900});
             await page.emulateMedia({colorScheme:theme});
-            const paths=['/my-tasks','/transactions','/transactions/create','/calendar','/documents',...(actor.role==='department_head'?['/my-department','/development-plans','/ppas','/planning-maps']:[])];
+            const paths=['/my-tasks','/transactions','/transactions/create','/calendar','/documents','/planning/attachment-custody',...(actor.role==='department_head'?['/my-department','/development-plans','/ppas','/planning-maps']:[])];
             for(const path of paths){
                 const response=await page.goto(origin+path);
                 assert.equal(response.status(),200,path+' HTTP status');
@@ -124,7 +124,7 @@ try{
                     await page.getByRole('button',{name:'New Plan Record',exact:true}).click();
                     const form=page.getByRole('dialog',{name:'Add Development Plan',exact:true});
                     await dialogCheck(page,form,'plan-studio',actor.role,width,theme);
-                    assert.ok(await form.locator('input:disabled').count()>=4);
+                    assert.equal(await form.getByLabel(/SB Adoption Resolution \/ Ord\./).isEnabled(),true); // Newly persisted Head-only adoption metadata.
                     await page.keyboard.press('Escape');
                     await page.getByRole('button',{name:/^View details for /}).first().click();
                     const dossier=page.getByRole('dialog');

@@ -1,5 +1,13 @@
 # KIRION FORGE — WORK PACKAGE MEMORY REGISTER
 
+## 2026-11-27 — Engineer-approved autonomous completion
+
+PR76 a869f426 is explicitly Engineer-approved. [Continuation7210511242](https://github.com/Project-Intra-Smithy/engineering-hub/issues/197#issuecomment-7210511242), [owning memory](OT-FUNCTIONAL-COMPLETION-R1.md). Codex sole writer, Kirch accountable; candidate/ot-functional-completion-r1 from evidence45fb3f64 (same executable as approved a869). Complete remaining N11/history/dossier/N13 and authorized integration/validation autonomously; no routine audit/approval stops. Preserve accepted/reviewed sources, exclusions and release holds. Canonical-main propagation remains held by explicit no-merge authority. NEXT: exact persistence and custody implementation.
+
+## 2026-11-27 — functional corrective checkpoint
+
+Existing functional START7203222356 / memory1eda5c37 / crosslink7203252769 continues. Planning policy7203434407 resolved universal eligible internal reads. Actual browser Nox R1 Work Request delta PASS, Planning/integrated HOLD; corrective continuation7209476631 / memory191341c3 / crosslink7209480434. [Current engineering receipt](OT-FUNCTIONAL-ENGINEERING-20261127.md), [custody memory](OT-FUNCTIONAL-CUSTODY-R2.md). Draft PR76 executable a869f4261ef171b6ac09632f773c6c72edbbfee1; independent browser Nox R2 source RESOLVED and final bounded security acceptance PASS. PG16 SUCCESS12/12 (896/12,482; focused27/423); presentation/canonical SUCCESS2/2; actual browser Nox final evidence-completion PASS. Kirch remains acceptance owner; Siris whole-system QA and production held. Accepted and reviewed predecessor refs preserved. Docs-only successor evidence publication; canonical-main propagation explicitly held, no canonical-sync claim or package CLOSE.
+
 This is the **canonical backend package start/close index**. Governing rules: [WORK-PACKAGE-START-CLOSE-PROTOCOL.md](WORK-PACKAGE-START-CLOSE-PROTOCOL.md) and [Engineering Hub #63](https://github.com/Project-Intra-Smithy/engineering-hub/issues/63). Other repositories maintain their **own** discoverable per-package memory index; this file cannot substitute for frontend or Engineering Hub repository memory.
 
 **Update on every package START, substantive handoff or CLOSE.** Issue comment and repo-memory commit must be crosslinked. Rows are succinct pointers, not duplicated work transcripts. Status is scoped and never auto-awards release/CI/QA. Last independently verified product `main` **before protocol publication**: `7b4ebb838982f6262b9fef65d18ba57488ebf941` (10 October 2026); re-resolve before every future work.

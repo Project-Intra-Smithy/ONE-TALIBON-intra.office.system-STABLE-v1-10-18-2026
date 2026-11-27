@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Planning;
 
 use App\Http\Controllers\Controller;
+use App\Models\DevelopmentPlan;
 use App\Models\PlanningAttachment;
 use App\Models\PlanningMap;
+use App\Models\User;
 use App\Services\AuditLogger;
 use App\Services\Planning\PlanningAttachmentCustody;
 use App\Services\Planning\PlanningAuthorizationService;
+use App\Services\Planning\PlanningDossier;
+use App\Services\Planning\PlanningReferences;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,16 +55,19 @@ final class PlanningMapController extends Controller
                 'title' => $map->title,
                 'category' => $map->category,
                 'planCode' => $map->plan_code,
-                'scale' => $map->scale,
-                'crs' => $map->crs,
-                'coverage' => $map->coverage,
+                'scale' => $map->scale ?? 'Not supplied',
+                'crs' => $map->crs ?? 'Not supplied',
+                'coverage' => $map->coverage ?? 'Not supplied',
                 'updatedYear' => $map->updated_year,
                 'status' => $map->status,
                 'provenanceStatus' => $map->provenance_status,
+                'developmentPlanId' => $map->development_plan_id, 'plateAttachmentId' => $map->plate_attachment_id,
+                'sourceAttribution' => $map->source_attribution, 'effectivePeriod' => $map->effective_period, 'authority' => $map->authority, 'legendNotes' => $map->legend_notes,
+                'platePreviewUrl' => $this->platePreview($map, $user),
                 'summary' => $map->summary ?? '',
-                'centerLat' => (float) $map->center_lat,
-                'centerLng' => (float) $map->center_lng,
-                'defaultZoom' => (int) $map->default_zoom,
+                'centerLat' => $map->center_lat === null ? null : (float) $map->center_lat,
+                'centerLng' => $map->center_lng === null ? null : (float) $map->center_lng,
+                'defaultZoom' => $map->default_zoom,
                 'barangays' => $map->barangays ?? [],
                 'relatedPlanCodes' => $map->related_plan_codes ?? [],
                 'relatedPpaCodes' => $map->related_ppa_codes ?? [],
@@ -74,7 +81,7 @@ final class PlanningMapController extends Controller
             ->get()
             ->filter(fn (PlanningAttachment $attachment): bool => $this->authorization->canViewAttachment($user, $attachment))
             ->map(fn (PlanningAttachment $attachment): array => [
-                'publicId' => $attachment->public_id,
+                'publicId' => $attachment->public_id, 'attachmentId' => $attachment->id,
                 'parentType' => $attachment->parent_type,
                 'parentCode' => $attachment->parent_code,
                 'parentRecordId' => $attachment->parent_record_id,
@@ -93,6 +100,7 @@ final class PlanningMapController extends Controller
 
         return Inertia::render('PlanningMaps/Index', [
             'planningMaps' => $maps,
+            'planOptions' => DevelopmentPlan::query()->orderBy('code')->get(['id', 'code', 'title']),
             'attachments' => $attachments,
             'planningPermissions' => $permissions,
         ]);
@@ -107,7 +115,11 @@ final class PlanningMapController extends Controller
                 'map_code' => ['required', 'string', 'max:100', 'unique:planning_maps,map_code'],
                 'title' => ['required', 'string', 'max:255'],
                 'category' => ['required', 'string', Rule::in(self::ALLOWED_CATEGORIES)],
-                'plan_code' => ['required', 'string', 'max:100'],
+                'plan_code' => ['required_without:development_plan_id', 'nullable', 'string', 'max:100'],
+                'development_plan_id' => ['nullable', 'integer', 'min:1'],
+                'plate_attachment_id' => ['nullable', 'integer', 'min:1'],
+                'source_attribution' => ['nullable', 'string', 'max:1000'], 'effective_period' => ['nullable', 'string', 'max:255'],
+                'authority' => ['nullable', 'string', 'max:255'], 'legend_notes' => ['nullable', 'string', 'max:10000'],
                 'scale' => ['nullable', 'string', 'max:64'],
                 'crs' => ['nullable', 'string', 'max:64'],
                 'coverage' => ['nullable', 'string', 'max:255'],
@@ -129,28 +141,31 @@ final class PlanningMapController extends Controller
             app(PlanningAttachmentCustody::class)->assertIdentifiersAvailable('map', [trim($data['map_code'])], 'map_code');
 
             $map = PlanningMap::query()->create([
+                ...array_intersect_key($data, array_flip(['source_attribution', 'effective_period', 'authority', 'legend_notes'])),
+                ...app(PlanningReferences::class)->links(array_intersect_key($data, ['development_plan_id' => true])),
                 'map_code' => trim($data['map_code']),
                 'title' => trim($data['title']),
                 'category' => $data['category'],
-                'plan_code' => trim($data['plan_code']),
-                'scale' => $data['scale'] ?? '1:25,000',
-                'crs' => $data['crs'] ?? 'PRS92 / Luzon 1911',
-                'coverage' => $data['coverage'] ?? 'Municipality-wide (25 Barangays)',
-                'updated_year' => (int) ($data['updated_year'] ?? now()->year),
+                'plan_code' => trim((string) ($data['plan_code'] ?? '')) ?: DevelopmentPlan::query()->findOrFail($data['development_plan_id'])->code,
+                'scale' => $data['scale'] ?? null,
+                'crs' => $data['crs'] ?? null,
+                'coverage' => $data['coverage'] ?? null,
+                'updated_year' => $data['updated_year'] ?? null,
                 'status' => $data['status'],
                 'provenance_status' => 'awaiting_official_gis',
                 'summary' => $data['summary'] ?? 'Provisional thematic map overlay awaiting official GIS verification.',
-                'center_lat' => (float) ($data['center_lat'] ?? 10.153100),
-                'center_lng' => (float) ($data['center_lng'] ?? 124.326800),
-                'default_zoom' => (int) ($data['default_zoom'] ?? 12),
-                'barangays' => $data['barangays'] ?? ['Poblacion'],
-                'related_plan_codes' => $data['related_plan_codes'] ?? [trim($data['plan_code'])],
+                'center_lat' => $data['center_lat'] ?? null,
+                'center_lng' => $data['center_lng'] ?? null,
+                'default_zoom' => $data['default_zoom'] ?? null,
+                'barangays' => $data['barangays'] ?? [],
+                'related_plan_codes' => $data['related_plan_codes'] ?? [],
                 'related_ppa_codes' => $data['related_ppa_codes'] ?? [],
                 'lead_department_id' => $perms['actorDepartmentId'],
                 'created_by_user_id' => $user->id,
                 'updated_by_user_id' => $user->id,
             ]);
 
+            app(PlanningDossier::class)->plate($map, $data);
             $this->audit->record(
                 actor: $user,
                 action: 'planning.map.created',
@@ -173,7 +188,11 @@ final class PlanningMapController extends Controller
             $data = $request->validate([
                 'title' => ['required', 'string', 'max:255'],
                 'category' => ['required', 'string', Rule::in(self::ALLOWED_CATEGORIES)],
-                'plan_code' => ['required', 'string', 'max:100'],
+                'plan_code' => ['required_without:development_plan_id', 'nullable', 'string', 'max:100'],
+                'development_plan_id' => ['nullable', 'integer', 'min:1'],
+                'plate_attachment_id' => ['nullable', 'integer', 'min:1'],
+                'source_attribution' => ['nullable', 'string', 'max:1000'], 'effective_period' => ['nullable', 'string', 'max:255'],
+                'authority' => ['nullable', 'string', 'max:255'], 'legend_notes' => ['nullable', 'string', 'max:10000'],
                 'scale' => ['nullable', 'string', 'max:64'],
                 'crs' => ['nullable', 'string', 'max:64'],
                 'coverage' => ['nullable', 'string', 'max:255'],
@@ -194,24 +213,27 @@ final class PlanningMapController extends Controller
             $this->authorization->authorizeMapMutation($user, $data['status'], existing: $planningMap);
 
             $planningMap->update([
+                ...array_intersect_key($data, array_flip(['source_attribution', 'effective_period', 'authority', 'legend_notes'])),
+                ...app(PlanningReferences::class)->links(array_intersect_key($data, ['development_plan_id' => true])),
                 'title' => trim($data['title']),
                 'category' => $data['category'],
-                'plan_code' => trim($data['plan_code']),
+                'plan_code' => trim((string) ($data['plan_code'] ?? '')) ?: DevelopmentPlan::query()->findOrFail($data['development_plan_id'])->code,
                 'scale' => $data['scale'] ?? $planningMap->scale,
                 'crs' => $data['crs'] ?? $planningMap->crs,
                 'coverage' => $data['coverage'] ?? $planningMap->coverage,
-                'updated_year' => (int) ($data['updated_year'] ?? $planningMap->updated_year),
+                'updated_year' => array_key_exists('updated_year', $data) ? $data['updated_year'] : $planningMap->updated_year,
                 'status' => $data['status'],
                 'summary' => $data['summary'] ?? $planningMap->summary,
-                'center_lat' => (float) ($data['center_lat'] ?? $planningMap->center_lat),
-                'center_lng' => (float) ($data['center_lng'] ?? $planningMap->center_lng),
-                'default_zoom' => (int) ($data['default_zoom'] ?? $planningMap->default_zoom),
+                'center_lat' => array_key_exists('center_lat', $data) ? $data['center_lat'] : $planningMap->center_lat,
+                'center_lng' => array_key_exists('center_lng', $data) ? $data['center_lng'] : $planningMap->center_lng,
+                'default_zoom' => array_key_exists('default_zoom', $data) ? $data['default_zoom'] : $planningMap->default_zoom,
                 'barangays' => $data['barangays'] ?? $planningMap->barangays,
                 'related_plan_codes' => $data['related_plan_codes'] ?? $planningMap->related_plan_codes,
                 'related_ppa_codes' => $data['related_ppa_codes'] ?? $planningMap->related_ppa_codes,
                 'updated_by_user_id' => $user->id,
             ]);
 
+            app(PlanningDossier::class)->plate($planningMap, $data);
             $this->audit->record(
                 actor: $user,
                 action: 'planning.map.updated',
@@ -286,5 +308,17 @@ final class PlanningMapController extends Controller
             return back()->with('status', "Draft planning map {$code} deleted.");
 
         }, attempts: 3);
+    }
+
+    private function platePreview(PlanningMap $map, User $user): ?string
+    {
+        if ($map->plate_attachment_id === null) {
+            return null;
+        }
+        $attachment = PlanningAttachment::query()->find($map->plate_attachment_id);
+
+        return $attachment && $attachment->parent_type === 'map' && $attachment->parent_record_id === $map->id
+            && $this->authorization->canViewAttachment($user, $attachment)
+                ? route('planning.attachments.preview', $attachment) : null;
     }
 }

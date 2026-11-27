@@ -1,8 +1,9 @@
+import {planningAmount} from '../../lib/planningMoney';
 import {ChevronRight,FolderKanban,Paperclip} from 'lucide-react';
 import {EmptyState,StatusBadge} from '../ui';
-export type PPARegisterRecord={id:string;title:string;responsibleOffice:string;relatedDevelopmentPlan:string;fundingSource:string;year:number;status:string;priority:string;aipReferenceCode?:string|null;aipRefCode?:string;appropriationAmount?:number;budgetTotal?:number};
+export type PPARegisterRecord={amounts?:Record<string,string|null>;id:string;title:string;responsibleOffice:string;relatedDevelopmentPlan:string;fundingSource:string;year:number;status:string;priority:string;aipReferenceCode?:string|null;aipRefCode?:string;appropriationAmount?:number;budgetTotal?:number};
 const tones:Record<string,'neutral'|'warn'|'info'|'ok'|'danger'>={Draft:'neutral','For MPDC Review':'warn',Planned:'neutral','For Procurement':'warn',Ongoing:'info',Completed:'ok','On Hold':'danger',Archived:'neutral'};
-const allocation=(record:PPARegisterRecord)=>{const amount=record.appropriationAmount??record.budgetTotal;return amount===undefined?'Allocation unavailable':new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP',notation:'compact',maximumFractionDigits:1}).format(amount);};
+const allocation=(record:PPARegisterRecord)=>{if(record.amounts)return planningAmount(record.amounts.appropriation_amount);const amount=record.appropriationAmount??record.budgetTotal;return amount===undefined?'Allocation unavailable':new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP',notation:'compact',maximumFractionDigits:1}).format(amount);};
 export default function PPARegister<T extends PPARegisterRecord>({records,selectedId,docCountsByPpa,onSelect}:{records:T[];selectedId?:string;docCountsByPpa?:Record<string,number>;onSelect:(record:T|null)=>void}){
     if(!records.length)return <EmptyState icon={<FolderKanban size={24} aria-hidden="true" />} title="No PPAs match the current filters" description="Adjust the search or filter criteria to view other reference records." />;
     const docs=(record:T)=>docCountsByPpa?.[record.id];

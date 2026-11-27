@@ -34,6 +34,7 @@ use App\Http\Controllers\OriginDeliveryExceptionController;
 use App\Http\Controllers\Planning\DesignatedPlanningStaffController;
 use App\Http\Controllers\Planning\DevelopmentPlanController;
 use App\Http\Controllers\Planning\PlanningAttachmentController;
+use App\Http\Controllers\Planning\PlanningCustodyController;
 use App\Http\Controllers\Planning\PlanningMapController;
 use App\Http\Controllers\Planning\PpaController;
 use App\Http\Controllers\PlatformNotificationController;
@@ -144,6 +145,8 @@ Route::middleware(['auth', 'active', 'mfa.assured'])->group(function (): void {
     Route::put('/planning/designated-staff/{staff}', [DesignatedPlanningStaffController::class, 'update'])->whereNumber('staff')->name('planning.designated-staff.update');
     Route::delete('/planning/designated-staff/{staff}', [DesignatedPlanningStaffController::class, 'destroy'])->whereNumber('staff')->name('planning.designated-staff.destroy');
 
+    Route::get('/planning/attachment-custody', [PlanningCustodyController::class, 'index'])->name('planning.custody.index');
+    Route::post('/planning/attachment-custody/{attachment}/reconcile', [PlanningCustodyController::class, 'reconcile'])->whereUuid('attachment')->name('planning.custody.reconcile');
     Route::post('/planning/attachments', [PlanningAttachmentController::class, 'store'])->name('planning.attachments.store');
     Route::get('/planning/attachments/{attachment}/preview', [PlanningAttachmentController::class, 'preview'])->whereUuid('attachment')->name('planning.attachments.preview');
     Route::get('/planning/attachments/{attachment}/download', [PlanningAttachmentController::class, 'download'])->whereUuid('attachment')->name('planning.attachments.download');
