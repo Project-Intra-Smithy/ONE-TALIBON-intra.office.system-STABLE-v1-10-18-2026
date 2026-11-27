@@ -1,0 +1,237 @@
+{
+  "source_sha": "34116e7ed8321c14c2a48b3542d68ce3ebddd7b8",
+  "checks": [
+    {
+      "case": "fresh_refuses_database",
+      "pass": true
+    },
+    {
+      "case": "fresh_refuses_system_identifier",
+      "pass": true
+    },
+    {
+      "case": "fresh_refuses_source_sha",
+      "pass": true
+    },
+    {
+      "case": "fresh_refuses_bootstrap_role",
+      "pass": true
+    },
+    {
+      "case": "fresh_refuses_app_key_sha256",
+      "pass": true
+    },
+    {
+      "case": "fresh_refuses_expected_migrations",
+      "pass": true
+    },
+    {
+      "case": "fresh_persistent_refuses_testing",
+      "pass": true
+    },
+    {
+      "case": "fresh_ordinary_migrate_still_denied",
+      "pass": true
+    },
+    {
+      "case": "fresh_late_failure_rolls_back",
+      "pass": true
+    },
+    {
+      "case": "fresh_rollback_roles",
+      "pass": true
+    },
+    {
+      "case": "fresh_rollback_custody",
+      "pass": true
+    },
+    {
+      "case": "fresh_rollback_ledger",
+      "pass": true
+    },
+    {
+      "case": "fresh_install",
+      "pass": true
+    },
+    {
+      "case": "fresh_all_migrations_once",
+      "pass": true
+    },
+    {
+      "case": "fresh_complete_ledger",
+      "pass": true
+    },
+    {
+      "case": "fresh_real_runtime_connection",
+      "pass": true
+    },
+    {
+      "case": "fresh_laravel_runtime_connections",
+      "pass": true
+    },
+    {
+      "case": "fresh_runtime_denies_ddl",
+      "pass": true
+    },
+    {
+      "case": "fresh_runtime_denies_audit_update",
+      "pass": true
+    },
+    {
+      "case": "fresh_runtime_denies_custody_read",
+      "pass": true
+    },
+    {
+      "case": "fresh_runtime_denies_migration_write",
+      "pass": true
+    },
+    {
+      "case": "fresh_runtime_denies_owner_escalation",
+      "pass": true
+    },
+    {
+      "case": "fresh_reader_denies_mfa",
+      "pass": true
+    },
+    {
+      "case": "fresh_idempotent_rerun",
+      "pass": true
+    },
+    {
+      "case": "fresh_no_credential_rotation",
+      "pass": true
+    },
+    {
+      "case": "fresh_all_tables_owner",
+      "pass": true
+    },
+    {
+      "case": "upgrade_nonempty_admin_fixture",
+      "pass": true
+    },
+    {
+      "case": "upgrade_admin_and_employee_present",
+      "pass": true
+    },
+    {
+      "case": "upgrade_exact_54_migration_baseline",
+      "pass": true
+    },
+    {
+      "case": "upgrade_refuses_database",
+      "pass": true
+    },
+    {
+      "case": "upgrade_refuses_system_identifier",
+      "pass": true
+    },
+    {
+      "case": "upgrade_refuses_source_sha",
+      "pass": true
+    },
+    {
+      "case": "upgrade_refuses_bootstrap_role",
+      "pass": true
+    },
+    {
+      "case": "upgrade_refuses_app_key_sha256",
+      "pass": true
+    },
+    {
+      "case": "upgrade_refuses_expected_migrations",
+      "pass": true
+    },
+    {
+      "case": "upgrade_persistent_refuses_testing",
+      "pass": true
+    },
+    {
+      "case": "upgrade_ordinary_migrate_still_denied",
+      "pass": true
+    },
+    {
+      "case": "upgrade_late_failure_rolls_back",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rollback_roles",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rollback_custody",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rollback_ledger",
+      "pass": true
+    },
+    {
+      "case": "upgrade_install",
+      "pass": true
+    },
+    {
+      "case": "upgrade_all_migrations_once",
+      "pass": true
+    },
+    {
+      "case": "upgrade_complete_ledger",
+      "pass": true
+    },
+    {
+      "case": "upgrade_admin_password_mfa_employee_preserved",
+      "pass": true
+    },
+    {
+      "case": "upgrade_password_and_mfa_decrypt",
+      "pass": true
+    },
+    {
+      "case": "upgrade_real_runtime_connection",
+      "pass": true
+    },
+    {
+      "case": "upgrade_laravel_runtime_connections",
+      "pass": true
+    },
+    {
+      "case": "upgrade_runtime_denies_ddl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_runtime_denies_audit_update",
+      "pass": true
+    },
+    {
+      "case": "upgrade_runtime_denies_custody_read",
+      "pass": true
+    },
+    {
+      "case": "upgrade_runtime_denies_migration_write",
+      "pass": true
+    },
+    {
+      "case": "upgrade_runtime_denies_owner_escalation",
+      "pass": true
+    },
+    {
+      "case": "upgrade_reader_denies_mfa",
+      "pass": true
+    },
+    {
+      "case": "upgrade_legacy_runtime_revoked",
+      "pass": true
+    },
+    {
+      "case": "upgrade_idempotent_rerun",
+      "pass": true
+    },
+    {
+      "case": "upgrade_no_credential_rotation",
+      "pass": true
+    },
+    {
+      "case": "upgrade_all_tables_owner",
+      "pass": true
+    }
+  ]
+}

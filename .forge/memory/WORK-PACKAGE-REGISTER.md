@@ -1294,3 +1294,6 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 
 ## OT-VPS-OPERATIONAL-QA-R1 — corrective continuation START
 - [Engineer-authorized continuation7218647858](https://github.com/Project-Intra-Smithy/engineering-hub/issues/197#issuecomment-7218647858); candidate/ot-persistent-deployment-r1, frozen PR78 preserved. Codex sole executor, Kirch accountable; persistent PG16 install/upgrade and protected-role controls + fresh/upgrade/negative qualification. [Mission memory](OT-FUNCTIONAL-COMPLETION-R1.md). NEXT implement, qualify and obtain targeted acceptance, then resume direct deployment. No main propagation under existing exception.
+
+## OT-VPS-OPERATIONAL-QA-R1 — qualified persistent successor / acceptance pending
+- [Checkpoint7219294498](https://github.com/Project-Intra-Smithy/engineering-hub/issues/197#issuecomment-7219294498); draft PR79 frozen34116e7e, exact15/15hosted and both58-check fresh/upgrade rehearsals PASS. [Receipt](../evidence/ot-vps-operational-qa-r1/34116e7e/README.md). PR78/main/VPS unchanged; no mission CLOSE. Nox targeted review requested, acceptance not received. NEXT Maintainer/Engineer targeted acceptance, then Codex resumes direct deployment/fixtures/smoke/access. Canonical-main exception retained.

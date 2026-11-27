@@ -1,0 +1,80 @@
+[
+  {
+    "id": 15201115720,
+    "name": "functional-work-request-focused-source-and-pg16-custody",
+    "digest": "sha256:5f325d8d7c57c953cebfb8e61feaec2cd7d1adb5a0ca12c5f1361e1162b7feea",
+    "size_in_bytes": 6411
+  },
+  {
+    "id": 15200995708,
+    "name": "functional-work-request-junit",
+    "digest": "sha256:3a125930ca8e69056ff2dbe5872a2546fc531d7466717a701b4921de0e528a4b",
+    "size_in_bytes": 2935
+  },
+  {
+    "id": 15200980972,
+    "name": "operationforge-traceability-core-native-pdf",
+    "digest": "sha256:382d947863bbce89c65a9d9db2fd8475d638a67521a0ad23715d169dbb282abc",
+    "size_in_bytes": 16497
+  },
+  {
+    "id": 15200426459,
+    "name": "functional-work-request-browser-source-and-pg16-custody",
+    "digest": "sha256:0c50f448eab656f619646501a828bf144137afe29ed7eeccbac6dee6155935cd",
+    "size_in_bytes": 6409
+  },
+  {
+    "id": 15200321186,
+    "name": "functional-work-request-p0-cross-session-source-and-pg16-custody",
+    "digest": "sha256:a936c9aa5088be9a7487fcfe0f26a14b4f60e99994439adfad98ecee5932d8eb",
+    "size_in_bytes": 6432
+  },
+  {
+    "id": 15200321179,
+    "name": "functional-work-request-c01-source-and-pg16-custody",
+    "digest": "sha256:9dad59602d0a8c34a604bc3eaa6df7aaef0eaa63cb9d8406b8ce8d1f6d224697",
+    "size_in_bytes": 6401
+  },
+  {
+    "id": 15199946538,
+    "name": "functional-work-request-full-source-and-pg16-custody",
+    "digest": "sha256:1b2ecb6bed5465318ef781e3089bac3e6fee24da46d671bb3bcf619ea43acb78",
+    "size_in_bytes": 6403
+  },
+  {
+    "id": 15199731981,
+    "name": "functional-work-request-iam-cross-session-source-and-pg16-custody",
+    "digest": "sha256:1fe3c7679d8a97b35bb3d5bb24eb6c19e6cfcd6fe8067c541a604acb35137336",
+    "size_in_bytes": 6434
+  },
+  {
+    "id": 15199642595,
+    "name": "functional-work-request-task-cross-session-source-and-pg16-custody",
+    "digest": "sha256:8078628d3011fadaedbdf78ebfc4d2cdb2e5dd9146d2b62e6902001adffcddbd",
+    "size_in_bytes": 6437
+  },
+  {
+    "id": 15199453331,
+    "name": "functional-work-request-broker-source-and-pg16-custody",
+    "digest": "sha256:179c18c1c4a49da64cc6e57b339750822d90c4e7ae8cea6b1844662689e128cc",
+    "size_in_bytes": 6347
+  },
+  {
+    "id": 15199443219,
+    "name": "functional-work-request-c02-source-and-pg16-custody",
+    "digest": "sha256:8cad2935a90e9765eaedb97dd89c018baff5cddd7752de7a10aa362725e78bfb",
+    "size_in_bytes": 6401
+  },
+  {
+    "id": 15199288904,
+    "name": "functional-work-request-roles-source-and-pg16-custody",
+    "digest": "sha256:ba5cc10f5ca505daa14ea537e95b5b1541e91c83239af7e5ba32c3ea8b4c3e95",
+    "size_in_bytes": 6405
+  },
+  {
+    "id": 15199154471,
+    "name": "functional-work-request-g2a-roles-source-and-pg16-custody",
+    "digest": "sha256:99c7a78cbacc2472bb45b8c06385e9f076c5276b96ab0884413ddac5a4ae134d",
+    "size_in_bytes": 6413
+  }
+]
