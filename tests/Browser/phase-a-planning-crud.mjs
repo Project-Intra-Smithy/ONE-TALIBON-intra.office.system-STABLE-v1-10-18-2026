@@ -25,7 +25,7 @@ export async function planningCrud(page,context,origin,interactions) {
     await form.getByLabel('Coverage Start Year').fill('2000');
     await form.getByLabel('Coverage End Year').fill('2100');
     await form.getByLabel('Chapter notes (one per line)').fill('Synthetic chapter evidence');
-    await form.getByLabel('SB Adoption Resolution / Ord.',{exact:true}).fill('Synthetic reference only');
+    await form.getByLabel(/SB Adoption Resolution \/ Ord\./).fill('Synthetic reference only');
     await save('Create plan');
     let plan=(await props('/development-plans')).plans.find(record=>record.code===planCode);
     assert.ok(plan?.dbId,'Created plan must have a real database identifier');

@@ -56,7 +56,7 @@ return new class extends Migration
         foreach (['scale', 'crs', 'coverage', 'updated_year', 'center_lat', 'center_lng', 'default_zoom'] as $column) {
             DB::statement("ALTER TABLE planning_maps ALTER COLUMN {$column} DROP NOT NULL, ALTER COLUMN {$column} DROP DEFAULT");
         }
-        DB::unprepared("CREATE FUNCTION planning_reconciliation_immutable() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'Planning reconciliation evidence is immutable'; END $$; CREATE TRIGGER planning_reconciliation_immutable BEFORE UPDATE OR DELETE ON planning_attachment_reconciliations FOR EACH ROW EXECUTE FUNCTION planning_reconciliation_immutable(); CREATE TRIGGER planning_reconciliation_no_truncate BEFORE TRUNCATE ON planning_attachment_reconciliations FOR EACH STATEMENT EXECUTE FUNCTION planning_reconciliation_immutable()");
+        DB::unprepared("CREATE FUNCTION planning_reconciliation_immutable() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN IF TG_OP = 'TRUNCATE' AND NOT EXISTS (SELECT 1 FROM planning_attachment_reconciliations) THEN RETURN NULL; END IF; RAISE EXCEPTION 'Planning reconciliation evidence is immutable'; END $$; CREATE TRIGGER planning_reconciliation_immutable BEFORE UPDATE OR DELETE ON planning_attachment_reconciliations FOR EACH ROW EXECUTE FUNCTION planning_reconciliation_immutable(); CREATE TRIGGER planning_reconciliation_no_truncate BEFORE TRUNCATE ON planning_attachment_reconciliations FOR EACH STATEMENT EXECUTE FUNCTION planning_reconciliation_immutable()");
     }
 
     public function down(): void

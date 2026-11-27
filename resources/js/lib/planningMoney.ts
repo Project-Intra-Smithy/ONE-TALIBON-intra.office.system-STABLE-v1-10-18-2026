@@ -1,6 +1,6 @@
 export function planningAmount(value: string | null | undefined): string {
     if (value == null || value === '') return 'Not supplied';
-    if (!/^\d{1,13}(?:\.\d{1,2})?$/.test(value)) return 'Invalid amount';
+    if (!/^\d+(?:\.\d{1,2})?$/.test(value)) return 'Invalid amount';
     const [whole, fraction = ''] = value.split('.');
     return `₱${BigInt(whole).toLocaleString('en-PH')}.${fraction.padEnd(2, '0')}`;
 }

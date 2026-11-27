@@ -124,7 +124,7 @@ try{
                     await page.getByRole('button',{name:'New Plan Record',exact:true}).click();
                     const form=page.getByRole('dialog',{name:'Add Development Plan',exact:true});
                     await dialogCheck(page,form,'plan-studio',actor.role,width,theme);
-                    assert.equal(await form.getByLabel('SB Adoption Resolution / Ord.',{exact:true}).isEnabled(),true); // Newly persisted Head-only adoption metadata.
+                    assert.equal(await form.getByLabel(/SB Adoption Resolution \/ Ord\./).isEnabled(),true); // Newly persisted Head-only adoption metadata.
                     await page.keyboard.press('Escape');
                     await page.getByRole('button',{name:/^View details for /}).first().click();
                     const dossier=page.getByRole('dialog');

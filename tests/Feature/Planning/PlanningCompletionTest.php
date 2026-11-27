@@ -12,6 +12,7 @@ use App\Models\PpaRecord;
 use App\Models\User;
 use App\Services\AuditLogger;
 use App\Services\Planning\PlanningReferences;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -162,6 +163,15 @@ final class PlanningCompletionTest extends TestCase
         $this->assertSame($plan->code, $attachment->fresh()->parent_code);
         $this->post('/planning/attachment-custody/'.$attachment->public_id.'/reconcile', $data)->assertSessionHasErrors('parent_record_id');
         $this->assertDatabaseCount('planning_attachment_reconciliations', 1);
+        foreach (["UPDATE planning_attachment_reconciliations SET evidence_reference = 'Forged'", 'DELETE FROM planning_attachment_reconciliations', 'TRUNCATE planning_attachment_reconciliations'] as $sql) {
+            try {
+                DB::transaction(fn () => DB::statement($sql));
+                $this->fail('Reconciliation evidence mutation was accepted.');
+            } catch (QueryException $exception) {
+                $this->assertSame('P0001', $exception->errorInfo[0]);
+            }
+        }
+
         $this->delete('/planning/attachments/'.$attachment->public_id)->assertRedirect()->assertSessionHasNoErrors();
         $this->assertNotNull($attachment->fresh()->archived_at);
     }
