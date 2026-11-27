@@ -129,10 +129,10 @@ def main():
     ap.add_argument('--verify-only', action='store_true')
     args = ap.parse_args()
     # One canonical namespace is carried from verification into execution.
-    args.package = args.package.resolve(strict=True)
-    args.php = str(Path(args.php).resolve(strict=True))
     if not Path(args.php).is_absolute() or not args.ini or not args.ini.is_absolute():
         refuse('Absolute trusted PHP executable and explicit private INI are required')
+    args.package = args.package.resolve(strict=True)
+    args.php = str(Path(args.php).resolve(strict=True))
     if hashlib.sha256(Path(args.php).read_bytes()).hexdigest()!=args.php_sha256 or hashlib.sha256(args.ini.read_bytes()).hexdigest()!=args.ini_sha256:
         refuse('Independent PHP runtime/configuration digest mismatch')
     manifest = verify(args.package, args.manifest, args.sha256)

@@ -1,0 +1,178 @@
+[
+  {
+    "name": "pg_catalog.pg_subscription.oid",
+    "acl": [
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_subscription.subbinary",
+    "acl": [
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_subscription.subdbid",
+    "acl": [
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_subscription.subdisableonerr",
+    "acl": [
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_subscription.subenabled",
+    "acl": [
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_subscription.subname",
+    "acl": [
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_subscription.suborigin",
+    "acl": [
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_subscription.subowner",
+    "acl": [
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_subscription.subpasswordrequired",
+    "acl": [
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_subscription.subpublications",
+    "acl": [
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_subscription.subrunasowner",
+    "acl": [
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_subscription.subskiplsn",
+    "acl": [
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_subscription.subslotname",
+    "acl": [
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_subscription.substream",
+    "acl": [
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_subscription.subsynccommit",
+    "acl": [
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_subscription.subtwophasestate",
+    "acl": [
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "SELECT",
+        false
+      ]
+    ]
+  }
+]

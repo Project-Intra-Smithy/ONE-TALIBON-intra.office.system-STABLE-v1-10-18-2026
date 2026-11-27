@@ -131,6 +131,7 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
 
         sql('CREATE DATABASE '+db)
         env['PGDATABASE'] = db
+        report['server_version_num'] = sql("SELECT current_setting('server_version_num')").stdout.strip()
         if mode == 'contract':
             fixture_env = dict(env, APP_ENV='testing', N03_DISPOSABLE_LEASE='EXCLUSIVE_PG16_SYNTHETIC_ONLY')
             result = run([php,'tests/Manual/build-security-contract.php'],fixture_env)
@@ -148,6 +149,11 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
                         assert hashlib.sha256(blob).hexdigest()==part['sha256']
                         rows.extend(json.loads(blob))
                     assert len(rows)==section['rows'];reproduced[section['name']]=rows
+                for part in index['runtime_profiles'][report['server_version_num']]:
+                    blob=(source/'database/deployment'/part['file']).read_bytes()
+                    assert hashlib.sha256(blob).hexdigest()==part['sha256']
+                    reproduced['system_routine_security'].extend(json.loads(blob))
+                reproduced['system_routine_security'].sort(key=lambda row:json.dumps(row,separators=(',',':')))
                 if canonical!=json.dumps(reproduced,separators=(',',':')):
                     differences=[]
                     for name,rows in contract.items():
@@ -156,8 +162,11 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
                     (args.output/'contract-difference.json').write_text(json.dumps(differences,indent=2),encoding='utf-8')
                     print('Independent policy differences:',','.join(x['section'] for x in differences))
                 check('independent_canonical_contract_matches',canonical==json.dumps(reproduced,separators=(',',':')))
-                (args.output/'contract-comparison.json').write_text(json.dumps({'source_sha':report['source_sha'],'canonical_sha256':hashlib.sha256(canonical.encode()).hexdigest(),'independently_regenerated':True,'matches':True},indent=2))
+                (args.output/'contract-comparison.json').write_text(json.dumps({'source_sha':report['source_sha'],'server_version_num':report['server_version_num'],'canonical_sha256':hashlib.sha256(canonical.encode()).hexdigest(),'independently_regenerated':True,'matches':True},indent=2))
             else:
+                if report['server_version_num'] != '160015':
+                    raise RuntimeError('Record the base contract only with the qualified PG16.15 fixture; runtime additions require independent review')
+                profiles=json.loads((source/'database/deployment/security-contract.json').read_text(encoding='utf-8'))['runtime_profiles']
                 index={'format':3,'sections':[]};folder=source/'database/deployment/security-contract';folder.mkdir(exist_ok=True)
                 for name,rows in contract.items():
                     parts=[]
@@ -165,6 +174,7 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
                         file=folder/(name+'-'+str(i//100)+'.json');file.write_text(json.dumps(rows[i:i+100],indent=2)+'\n',encoding='utf-8',newline='\n')
                         parts.append({'file':file.relative_to(source/'database/deployment').as_posix(),'sha256':hashlib.sha256(file.read_bytes()).hexdigest()})
                     index['sections'].append({'name':name,'rows':len(rows),'parts':parts})
+                index['runtime_profiles']=profiles
                 (source/'database/deployment/security-contract.json').write_text(json.dumps(index,indent=2)+'\n',encoding='utf-8',newline='\n')
             check('canonical_disposable_contract_derived',len(contract['roles'])==9 and len(contract['effective_columns'])>1000)
             continue
@@ -223,6 +233,19 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
             # Ordinary migrate created only its repository, not application schema.
             target['expected_migrations'] = []
         invalid = dict(target)
+        system_cases=[
+            ('system_schema_acl','GRANT CREATE ON SCHEMA pg_catalog TO PUBLIC','REVOKE CREATE ON SCHEMA pg_catalog FROM PUBLIC'),
+            ('system_column_acl','REVOKE SELECT(oid) ON pg_catalog.pg_subscription FROM PUBLIC','GRANT SELECT(oid) ON pg_catalog.pg_subscription TO PUBLIC'),
+            ('system_type_acl','REVOKE USAGE ON TYPE pg_catalog.pg_lsn FROM PUBLIC','GRANT USAGE ON TYPE pg_catalog.pg_lsn TO PUBLIC'),
+            ('system_routine_acl','REVOKE EXECUTE ON FUNCTION pg_catalog.abs(integer) FROM PUBLIC','GRANT EXECUTE ON FUNCTION pg_catalog.abs(integer) TO PUBLIC'),
+        ]
+        if report['server_version_num']=='160016':
+            system_cases.append(('minor_routine_acl','REVOKE EXECUTE ON FUNCTION pg_catalog.binary_upgrade_set_next_attribute_versions(pg_lsn[]) FROM PUBLIC','GRANT EXECUTE ON FUNCTION pg_catalog.binary_upgrade_set_next_attribute_versions(pg_lsn[]) TO PUBLIC'))
+        for name,change,undo in system_cases:
+            sql(change)
+            check(mode+'_initial_'+name,install(target,1).returncode==1)
+            check(mode+'_initial_'+name+'_rollback',sql("SELECT (SELECT count(*) FROM migrations)="+str(len(ledger))+" AND (SELECT count(*) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%')=0").stdout.strip()=='t')
+            sql(undo)
         sql('ALTER TABLE migrations ENABLE ROW LEVEL SECURITY')
         late=install(invalid,1)
         if 'complete security postflight' not in late.stdout:
@@ -332,6 +355,7 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
             ('user_collation',"CREATE COLLATION public.qa_collation (provider=libc,locale='C')",'DROP COLLATION public.qa_collation'),
         ]
         drift_cases.extend(unsupported_cases)
+        drift_cases.extend(('catalog_'+name,change,undo) for name,change,undo in system_cases)
         for name,change,undo in drift_cases:
             sql(change)
             drift_before=metadata_fingerprint()

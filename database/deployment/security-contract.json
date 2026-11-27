@@ -2,6 +2,60 @@
   "format": 3,
   "sections": [
     {
+      "name": "system_schema_security",
+      "rows": 2,
+      "parts": [
+        {
+          "file": "security-contract/system_schema_security-0.json",
+          "sha256": "247d10f73fe267022b6c09da67172d48db2cdce4d32038494d0bc15d33df2ab4"
+        }
+      ]
+    },
+    {
+      "name": "system_column_acl",
+      "rows": 16,
+      "parts": [
+        {
+          "file": "security-contract/system_column_acl-0.json",
+          "sha256": "a228895fc5d5a233652a2141d2d5a7e52cd5b8f796e8328ddab03ea78bc62c10"
+        }
+      ]
+    },
+    {
+      "name": "system_type_security",
+      "rows": 613,
+      "parts": [
+        {
+          "file": "security-contract/system_type_security-0.json",
+          "sha256": "419241724a162038f5910bc0c7124b701ae141331d38bb942ccfa349f33bb55b"
+        },
+        {
+          "file": "security-contract/system_type_security-1.json",
+          "sha256": "72563d8abede0322dc12c0db6f44be604e0bae707140c25fdb3831c68d56cb68"
+        },
+        {
+          "file": "security-contract/system_type_security-2.json",
+          "sha256": "bc48d5157165db4a93664e00556a6354a6ba4b5c63ec888ed43bbc463a66619b"
+        },
+        {
+          "file": "security-contract/system_type_security-3.json",
+          "sha256": "56b507f6166d710efce84e6dae450b5a2e3bac0523008eb364ac57471565da8a"
+        },
+        {
+          "file": "security-contract/system_type_security-4.json",
+          "sha256": "756dbdfbe3cfcc3a11cf11d722acfed1a42d8a561892921fc3077e508a385b1c"
+        },
+        {
+          "file": "security-contract/system_type_security-5.json",
+          "sha256": "07b023335218f546ec5308b774a1d4880d2240d05bd3e089c15b75ddb7e8f1e8"
+        },
+        {
+          "file": "security-contract/system_type_security-6.json",
+          "sha256": "7cf75c7bc3e2900436d7be543c76638625f4c8ced8af3c99660fe0748d74edb3"
+        }
+      ]
+    },
+    {
       "name": "system_routine_security",
       "rows": 3297,
       "parts": [
@@ -1153,5 +1207,14 @@
         }
       ]
     }
-  ]
+  ],
+  "runtime_profiles": {
+    "160015": [],
+    "160016": [
+      {
+        "file": "security-contract/pg_minor_routines-0.json",
+        "sha256": "02a474cef0b1724208c53f153cde46928173e17ee27f59a2500ef34fa16278cb"
+      }
+    ]
+  }
 }

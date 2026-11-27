@@ -34,6 +34,22 @@ final class SecurityCatalog
             $contract[$section['name']] = $rows;
         }
 
+        $version = (string) DB::selectOne("SELECT current_setting('server_version_num') AS version")->version;
+        if (! array_key_exists($version, $index['runtime_profiles'] ?? [])) {
+            throw new RuntimeException('Unqualified PostgreSQL catalog version.');
+        }
+        foreach ($index['runtime_profiles'][$version] as $part) {
+            if (! preg_match('/^security-contract\/[a-z_]+-[0-9]+\.json$/D', $part['file'])) {
+                throw new RuntimeException('Canonical runtime profile path drift.');
+            }
+            $bytes = file_get_contents(database_path('deployment/'.$part['file']));
+            if (! hash_equals($part['sha256'], hash('sha256', $bytes))) {
+                throw new RuntimeException('Canonical runtime profile digest mismatch.');
+            }
+            array_push($contract['system_routine_security'], ...json_decode($bytes, true, 128, JSON_THROW_ON_ERROR));
+        }
+        usort($contract['system_routine_security'], static fn ($a, $b) => strcmp(json_encode($a), json_encode($b)));
+
         return $contract;
     }
 

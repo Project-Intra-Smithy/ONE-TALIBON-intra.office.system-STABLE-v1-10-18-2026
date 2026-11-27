@@ -45,7 +45,7 @@ final class SupportedPg16
         'user_text_dicts' => 'SELECT * FROM pg_ts_dict WHERE oid>=16384',
         'user_text_parsers' => 'SELECT * FROM pg_ts_parser WHERE oid>=16384',
         'user_text_templates' => 'SELECT * FROM pg_ts_template WHERE oid>=16384',
-        'user_collations' => "SELECT * FROM pg_collation WHERE collnamespace<>'pg_catalog'::regnamespace",
+        'user_collations' => "SELECT * FROM pg_collation WHERE oid>=16384 OR collnamespace<>'pg_catalog'::regnamespace",
         'system_relations' => "SELECT c.* FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname IN ('pg_catalog','information_schema') AND c.oid>=16384",
         'system_routines' => "SELECT p.* FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname IN ('pg_catalog','information_schema') AND p.oid>=16384",
         'system_types' => "SELECT t.* FROM pg_type t JOIN pg_namespace n ON n.oid=t.typnamespace WHERE n.nspname IN ('pg_catalog','information_schema') AND t.oid>=16384",
@@ -68,6 +68,9 @@ final class SupportedPg16
 
     public function verify(): void
     {
+        if (! in_array((int) DB::selectOne("SELECT current_setting('server_version_num') AS version")->version, [160015, 160016], true)) {
+            throw new RuntimeException('Unqualified PostgreSQL catalog version.');
+        }
         if (DB::selectOne("SELECT current_setting('allow_system_table_mods') AS value")->value !== 'off') {
             throw new RuntimeException('System catalog modification mode is unsupported.');
         }
