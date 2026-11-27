@@ -215,6 +215,7 @@ final class LocalDevelopmentPlanningSuiteTest extends TestCase
             'related_development_plan' => 'Local Development Investment Program',
             'funding_source' => '20% Development Fund',
             'status' => 'Planned',
+            'ps_amount' => '0.00',
             'mooe_amount' => 150000,
             'co_amount' => 1850000,
         ])->assertRedirect();

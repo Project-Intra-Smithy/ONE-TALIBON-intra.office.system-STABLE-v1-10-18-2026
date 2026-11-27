@@ -284,7 +284,7 @@ export default function PPAStudioView({ open, editing, officeProposalMode, actor
                                 id={`${formId}-ps`}
                                 type="number"
                                 min="0"
-                                step="10000"
+                                step="0.01"
                                 disabled={unavailable.includes('budgetPs')} value={budgetPs}
                                 onChange={(e) => setBudgetPs(e.target.value)}
                                 className="tcds-input font-mono"
@@ -295,7 +295,7 @@ export default function PPAStudioView({ open, editing, officeProposalMode, actor
                                 id={`${formId}-mooe`}
                                 type="number"
                                 min="0"
-                                step="10000"
+                                step="0.01"
                                 disabled={unavailable.includes('budgetMooe')} value={budgetMooe}
                                 onChange={(e) => setBudgetMooe(e.target.value)}
                                 className="tcds-input font-mono"
@@ -306,7 +306,7 @@ export default function PPAStudioView({ open, editing, officeProposalMode, actor
                                 id={`${formId}-co`}
                                 type="number"
                                 min="0"
-                                step="10000"
+                                step="0.01"
                                 disabled={unavailable.includes('budgetCo')} value={budgetCo}
                                 onChange={(e) => setBudgetCo(e.target.value)}
                                 className="tcds-input font-mono"
@@ -319,7 +319,7 @@ export default function PPAStudioView({ open, editing, officeProposalMode, actor
                                 id={`${formId}-cca`}
                                 type="number"
                                 min="0"
-                                step="10000"
+                                step="0.01"
                                 disabled={unavailable.includes('ccaAmount')} value={ccaAmount}
                                 onChange={(e) => setCcaAmount(e.target.value)}
                                 placeholder="0"
