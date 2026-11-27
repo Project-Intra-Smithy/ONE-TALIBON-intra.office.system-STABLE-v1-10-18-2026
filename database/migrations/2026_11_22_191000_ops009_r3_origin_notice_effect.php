@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Deployment\PersistentInstaller;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
@@ -12,10 +13,10 @@ return new class extends Migration
     public function up(): void
     {
         // Experimental, disposable-PG16-only R3 path; no production upgrade.
-        if (! app()->environment('testing')
+        if (! PersistentInstaller::active() && (! app()->environment('testing')
             || getenv('N03_DISPOSABLE_LEASE') !== 'EXCLUSIVE_PG16_SYNTHETIC_ONLY'
             || DB::getDriverName() !== 'pgsql'
-            || DB::connection()->getDatabaseName() !== 'talibon_portal_test') {
+            || DB::connection()->getDatabaseName() !== 'talibon_portal_test')) {
             throw new RuntimeException('OPS009 R3 origin notice requires exclusive disposable PG16 testing lease.');
         }
 
@@ -48,10 +49,10 @@ return new class extends Migration
                   AND a.oid='public.ops009_close_audit_bindings'::regclass
                 SQL);
             if ($pre === null
-                || $pre->database_name !== 'talibon_portal_test'
+                || $pre->database_name !== PersistentInstaller::database()
                 || (int) $pre->version_number < 160000 || (int) $pre->version_number >= 170000
                 || $pre->superuser !== 'on'
-                || $pre->session_role !== 'postgres' || $pre->execution_role !== 'postgres'
+                || $pre->session_role !== PersistentInstaller::bootstrapRole() || $pre->execution_role !== PersistentInstaller::bootstrapRole()
                 || $pre->notification_owner !== 'kirion_g1b_owner'
                 || $pre->audit_binding_owner !== 'kirion_g1b_owner'
                 || (int) $pre->audit_migration !== 1 || (int) $pre->deferred_audit !== 1

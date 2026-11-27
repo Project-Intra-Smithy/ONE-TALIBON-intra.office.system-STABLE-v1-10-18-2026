@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Deployment\PersistentInstaller;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
@@ -9,12 +10,12 @@ return new class extends Migration
 {
     public function up(): void
     {
-        if (! app()->environment('testing') || getenv('N03_DISPOSABLE_LEASE') !== 'EXCLUSIVE_PG16_SYNTHETIC_ONLY'
-            || DB::getDriverName() !== 'pgsql' || DB::connection()->getDatabaseName() !== 'talibon_portal_test') {
+        if (! PersistentInstaller::active() && (! app()->environment('testing') || getenv('N03_DISPOSABLE_LEASE') !== 'EXCLUSIVE_PG16_SYNTHETIC_ONLY'
+            || DB::getDriverName() !== 'pgsql' || DB::connection()->getDatabaseName() !== 'talibon_portal_test')) {
             throw new RuntimeException('N03 requires a leased synthetic PG16 database.');
         }
         $guard = DB::selectOne("SELECT current_database() AS db, current_setting('server_version_num')::integer AS version, current_setting('is_superuser') AS bootstrap, to_regnamespace('legacy_custody') IS NULL AS absent");
-        if ($guard->db !== 'talibon_portal_test' || $guard->version < 160000 || $guard->version >= 170000 || $guard->bootstrap !== 'on' || ! $guard->absent) {
+        if ($guard->db !== PersistentInstaller::database() || $guard->version < 160000 || $guard->version >= 170000 || $guard->bootstrap !== 'on' || ! $guard->absent) {
             throw new RuntimeException('N03 migration environment or schema drift.');
         }
         DB::unprepared(<<<'SQL'

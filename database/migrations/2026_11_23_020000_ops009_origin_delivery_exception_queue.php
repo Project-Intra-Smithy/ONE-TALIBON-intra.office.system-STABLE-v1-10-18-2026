@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Deployment\PersistentInstaller;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
@@ -16,10 +17,10 @@ return new class extends Migration
 
     public function up(): void
     {
-        if (! app()->environment('testing')
+        if (! PersistentInstaller::active() && (! app()->environment('testing')
             || getenv('N03_DISPOSABLE_LEASE') !== 'EXCLUSIVE_PG16_SYNTHETIC_ONLY'
             || DB::getDriverName() !== 'pgsql'
-            || DB::connection()->getDatabaseName() !== 'talibon_portal_test') {
+            || DB::connection()->getDatabaseName() !== 'talibon_portal_test')) {
             throw new RuntimeException('OPS009 exception queue requires leased disposable PostgreSQL 16.');
         }
 
@@ -35,11 +36,11 @@ return new class extends Migration
                        ('n03_command','kirion_g1b_owner','kirion_g1b_app')) AS roles_ready
             SQL);
 
-        if ($guard === null || $guard->db !== 'talibon_portal_test'
+        if ($guard === null || $guard->db !== PersistentInstaller::database()
             || (int) $guard->version < 160000 || (int) $guard->version >= 170000
             || $guard->superuser !== 'on'
-            || $guard->session_role !== 'postgres'
-            || $guard->execution_role !== 'postgres'
+            || $guard->session_role !== PersistentInstaller::bootstrapRole()
+            || $guard->execution_role !== PersistentInstaller::bootstrapRole()
             || ! $guard->audit_ready || ! $guard->notice_ready
             || ! $guard->tables_absent || (int) $guard->roles_ready !== 3) {
             throw new RuntimeException('OPS009 delivery-gap migration refused authority, role or schema drift.');

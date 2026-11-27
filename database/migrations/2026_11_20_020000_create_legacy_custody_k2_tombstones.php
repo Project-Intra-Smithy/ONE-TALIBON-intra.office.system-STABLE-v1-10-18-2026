@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Deployment\PersistentInstaller;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
@@ -9,10 +10,10 @@ return new class extends Migration
 {
     public function up(): void
     {
-        if (! app()->environment('testing')
+        if (! PersistentInstaller::active() && (! app()->environment('testing')
             || getenv('N03_DISPOSABLE_LEASE') !== 'EXCLUSIVE_PG16_SYNTHETIC_ONLY'
             || DB::getDriverName() !== 'pgsql'
-            || DB::connection()->getDatabaseName() !== 'talibon_portal_test') {
+            || DB::connection()->getDatabaseName() !== 'talibon_portal_test')) {
             throw new RuntimeException('N03 K2 requires a leased synthetic PG16 database.');
         }
 
@@ -26,7 +27,7 @@ return new class extends Migration
                     to_regclass('legacy_custody.compensation_outcomes') IS NULL AS outcomes_absent"
         );
 
-        if ($guard->db !== 'talibon_portal_test'
+        if ($guard->db !== PersistentInstaller::database()
             || $guard->version < 160000
             || $guard->version >= 170000
             || $guard->bootstrap !== 'on'

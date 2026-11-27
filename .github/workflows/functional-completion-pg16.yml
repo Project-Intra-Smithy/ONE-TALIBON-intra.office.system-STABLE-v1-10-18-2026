@@ -5,7 +5,7 @@ name: Functional completion - Protected PG16
 
 on:
   push:
-    branches: [candidate/ot-functional-completion-r1]
+    branches: [candidate/ot-functional-completion-r1, candidate/ot-persistent-deployment-r1]
   workflow_dispatch:
 
 permissions:
@@ -62,7 +62,9 @@ jobs:
       - name: Verify accepted dependency baseline and bounded functional delta
         run: |
           set -euo pipefail
-          python3 scripts/ci/verify-functional-completion-successor.py
+          python3 scripts/ci/verify-persistent-successor.py
+          git worktree add --detach "$RUNNER_TEMP/accepted-functional" ad1d6d60e31e06a49c7eb15fdfbc192dc776179d
+          (cd "$RUNNER_TEMP/accepted-functional" && python3 scripts/ci/verify-functional-completion-successor.py)
           git worktree add --detach "$RUNNER_TEMP/accepted-security" a944fe3486365297b9ebb085161316bfbb962c3c
           (cd "$RUNNER_TEMP/accepted-security" && python3 scripts/ci/verify-dependency-successor.py && python3 scripts/ci/verify-dependency-successor.py --self-test && bash scripts/ci/verify-m5-source-integrity.sh 46f24d0f288e5584e3c45f5e8abf8466b6dc2a6a)
           if [ "${{ matrix.phase }}" = "broker" ]; then

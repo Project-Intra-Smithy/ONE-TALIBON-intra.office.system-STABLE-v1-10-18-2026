@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Deployment\PersistentInstaller;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
@@ -13,10 +14,10 @@ return new class extends Migration
     {
         // This is a bounded disposable-PG16 compatibility proof, NOT a
         // production or persistent-registry migration.
-        if (! app()->environment('testing')
+        if (! PersistentInstaller::active() && (! app()->environment('testing')
             || getenv('N03_DISPOSABLE_LEASE') !== 'EXCLUSIVE_PG16_SYNTHETIC_ONLY'
             || DB::getDriverName() !== 'pgsql'
-            || DB::connection()->getDatabaseName() !== 'talibon_portal_test') {
+            || DB::connection()->getDatabaseName() !== 'talibon_portal_test')) {
             throw new RuntimeException('OPS009 close compatibility requires an exclusive synthetic PG16 testing lease.');
         }
 
@@ -39,12 +40,12 @@ return new class extends Migration
                 SQL);
 
             if ($guard === null
-                || $guard->database_name !== 'talibon_portal_test'
+                || $guard->database_name !== PersistentInstaller::database()
                 || (int) $guard->version_number < 160000
                 || (int) $guard->version_number >= 170000
                 || $guard->superuser !== 'on'
-                || $guard->session_role !== 'postgres'
-                || $guard->execution_role !== 'postgres'
+                || $guard->session_role !== PersistentInstaller::bootstrapRole()
+                || $guard->execution_role !== PersistentInstaller::bootstrapRole()
                 || ! $guard->schema_present
                 || ! $guard->operations_present
                 || (int) $guard->ordinary_roles !== 3

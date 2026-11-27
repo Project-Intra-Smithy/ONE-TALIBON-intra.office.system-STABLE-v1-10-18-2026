@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Deployment\PersistentInstaller;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
@@ -9,10 +10,10 @@ return new class extends Migration
 {
     public function up(): void
     {
-        if (! app()->environment('testing')
+        if (! PersistentInstaller::active() && (! app()->environment('testing')
             || getenv('N03_DISPOSABLE_LEASE') !== 'EXCLUSIVE_PG16_SYNTHETIC_ONLY'
             || DB::getDriverName() !== 'pgsql'
-            || DB::connection()->getDatabaseName() !== 'talibon_portal_test') {
+            || DB::connection()->getDatabaseName() !== 'talibon_portal_test')) {
             throw new RuntimeException('N03 G2B requires a leased synthetic PG16 database.');
         }
 
@@ -20,7 +21,7 @@ return new class extends Migration
             "SELECT current_database() AS db, current_setting('server_version_num')::integer AS version, current_setting('is_superuser') AS bootstrap, to_regnamespace('legacy_custody') IS NOT NULL AS present, to_regclass('legacy_custody.command_results') IS NOT NULL AS command_results_present"
         );
 
-        if ($guard->db !== 'talibon_portal_test'
+        if ($guard->db !== PersistentInstaller::database()
             || $guard->version < 160000
             || $guard->version >= 170000
             || $guard->bootstrap !== 'on'

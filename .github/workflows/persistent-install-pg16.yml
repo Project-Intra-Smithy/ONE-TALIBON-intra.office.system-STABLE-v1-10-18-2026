@@ -1,0 +1,37 @@
+name: Persistent installation - PG16 fresh and upgrade
+on:
+  push:
+    branches: [candidate/ot-persistent-deployment-r1]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  persistent:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql, fileinfo, zip
+          coverage: none
+          tools: composer:v2
+      - run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Bounded deployment source and shared policy integrity
+        run: python3 scripts/ci/verify-persistent-successor.py
+      - name: PostgreSQL 16 installation
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y postgresql-16
+      - name: Fresh and preserved-administrator upgrade on new loopback clusters
+        run: python3 tests/Manual/persistent-install-rehearsal.py --pg-bin /usr/lib/postgresql/16/bin --output "$RUNNER_TEMP/persistent-evidence"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: persistent-install-evidence
+          path: ${{ runner.temp }}/persistent-evidence/persistent-rehearsal.json
+          if-no-files-found: error
