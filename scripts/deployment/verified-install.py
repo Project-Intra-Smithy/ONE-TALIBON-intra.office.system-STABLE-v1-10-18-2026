@@ -21,6 +21,14 @@ def refuse(message):
     raise RuntimeError(message)
 
 
+def windows_directory():
+    directory = ctypes.create_unicode_buffer(32768)
+    length = ctypes.windll.kernel32.GetWindowsDirectoryW(directory, len(directory))
+    if not 0 < length < len(directory):
+        refuse('Unverifiable Windows system directory')
+    return Path(directory.value)
+
+
 def secure_path(path, secret=False):
     global _windows_actor
     path = Path(path)
@@ -49,7 +57,7 @@ def secure_path(path, secret=False):
     try:
         # Current user's SID is supplied by the OS token through a constant, profile-free query.
         if _windows_actor is None:
-            _windows_actor = subprocess.check_output([str(Path(os.environ.get('SystemRoot',r'C:\Windows'))/'System32/whoami.exe'), '/user', '/fo', 'csv', '/nh'], text=True).strip().split(',')[-1].strip('"')
+            _windows_actor = subprocess.check_output([str(windows_directory()/'System32/whoami.exe'), '/user', '/fo', 'csv', '/nh'], text=True).strip().split(',')[-1].strip('"')
         allowed = {_windows_actor, 'S-1-5-18', 'S-1-5-32-544'}
         owner_sid = sid_text(owner)
         if owner_sid not in allowed:
@@ -165,9 +173,7 @@ def main():
         refuse('Unsupported TLS trust path')
     env.update(APP_DEBUG='false',APP_URL='https://deployment.invalid',DB_CONNECTION='pgsql',CACHE_STORE='array',SESSION_DRIVER='array',QUEUE_CONNECTION='sync',LOG_CHANNEL='stderr',APP_RUNNING_IN_CONSOLE='true')
     if os.name == 'nt':
-        system = Path(ambient.get('SystemRoot',r'C:\Windows')).resolve(strict=True)
-        if system.name.lower() != 'windows':
-            refuse('Unsupported Windows system root')
+        system = windows_directory().resolve(strict=True)
         env['SystemRoot'] = str(system)
         env['WINDIR'] = str(system)
     # OS executable lookup is unnecessary: PHP is an absolute, operator-trusted runtime.

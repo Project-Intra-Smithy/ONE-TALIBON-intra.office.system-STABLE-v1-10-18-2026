@@ -212,7 +212,7 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
         credentials_file.chmod(0o600)
 
         def invocation(target_file=manifest_file, credential_file=credentials_file, pin=manifest_digest, package_path=package):
-            return [sys.executable,'-c',TRUSTED_BOOT,str(launcher),build_receipt['launcher_sha256'],
+            return [sys.executable,'-I','-S','-c',TRUSTED_BOOT,str(launcher),build_receipt['launcher_sha256'],
                     '--package',str(package_path),'--manifest',str(build/'package-manifest.json'),'--sha256',pin,
                     '--target',str(target_file),'--credentials',str(credential_file),'--php',php,'--ini',str(provisioning_ini),'--php-sha256',php_digest,'--ini-sha256',ini_digest]
 
@@ -397,6 +397,13 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
         provisioning_ini.write_bytes(ini_original)
         normalized=install(target,0,dict(env,**cache_vars))
         check(mode+'_external_executable_paths_contained', '"status":"INSTALLED"' in normalized.stdout and not canary.exists())
+        (root/'hashlib.py').write_text('from pathlib import Path\nPath('+repr(str(canary))+').write_text("EXECUTED")\n',encoding='utf-8')
+        startup_env=dict(env,PYTHONPATH=str(root),PYTHONHOME=str(root),PYTHONSTARTUP=str(root/'hashlib.py'))
+        if os.name=='nt':
+            startup_env.update(SystemRoot=str(root/'Windows'),WINDIR=str(root/'Windows'))
+        check(mode+'_outer_runtime_environment_contained','"status":"INSTALLED"' in install(target,0,startup_env).stdout and not canary.exists())
+        relative_php=invocation();relative_php[relative_php.index('--php')+1]=Path(php).name
+        check(mode+'_relative_php_refused',run(relative_php,env,allowed=(1,)).returncode==1)
         for setting in ['log_statement=all','log_min_error_statement=error','log_parameter_max_length=-1','pgaudit.log=all']:
             key,value=setting.split('=',1)
             sql('ALTER ROLE postgres IN DATABASE '+db+' SET "'+key+'" TO \''+value+"'")

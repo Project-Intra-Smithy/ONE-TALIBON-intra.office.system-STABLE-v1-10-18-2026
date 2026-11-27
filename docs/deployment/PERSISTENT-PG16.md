@@ -10,7 +10,7 @@ The supported entrypoint is the independently authenticated, external `scripts/d
 
 In a trusted CI/build checkout at the exact accepted successor: install locked Composer dependencies, build locked frontend assets, verify source/qualification and run `python scripts/deployment/build-package.py --output /private/release-build`. This constructs a runtime projection from Git archive, includes every installed dependency and build byte plus Composer caches, and publishes an external complete SHA256 inventory, Git source/tree/ancestor, package-manifest digest and launcher digest. The builder refuses dirty tracked source or cached runtime configuration. Inspect/reconcile dependency provenance in that trusted locked build; do not run the builder against an untrusted downloaded/running package to create its own authority.
 
-The independent acceptance/evidence channel supplies both digest pins. Transfer the approved package, external manifest and external launcher; authenticate the launcher bytes using a trusted OS/Python hash check before consuming them. The following outer trust step consumes the same bytes it hashes, avoiding a check/re-read race:
+The independent acceptance/evidence channel supplies both digest pins. Transfer the approved package, external manifest and external launcher; authenticate the launcher bytes using a trusted OS/Python hash check before consuming them. Start the absolute operator-trusted Python executable with `-I -S` so ambient Python paths, home, startup and site customization cannot execute before the hash check. The following outer trust step consumes the same bytes it hashes, avoiding a check/re-read race:
 
 ```python
 # Executed by the operator's trusted Python, with independently obtained literal pins.
@@ -18,7 +18,9 @@ blob = external_launcher.read_bytes()
 assert hashlib.sha256(blob).hexdigest() == independently_accepted_launcher_sha256
 sys.argv = [str(external_launcher), '--package', str(package), '--manifest', str(external_manifest),
             '--sha256', independently_accepted_package_manifest_sha256,
-            '--target', str(private_target), '--credentials', str(private_credentials), '--php', trusted_php]
+            '--target', str(private_target), '--credentials', str(private_credentials), '--php', trusted_php,
+            '--php-sha256', independently_accepted_php_sha256, '--ini', str(private_ini),
+            '--ini-sha256', independently_accepted_ini_sha256]
 exec(compile(blob, str(external_launcher), 'exec'), {'__name__': '__main__', '__file__': str(external_launcher)})
 ```
 
