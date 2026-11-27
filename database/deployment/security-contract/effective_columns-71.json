@@ -1,0 +1,502 @@
+[
+  {
+    "rolname": "n03_reader",
+    "name": "public.correspondence_records.registered_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.correspondence_records.registered_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.correspondence_records.routed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.correspondence_records.routed_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.correspondence_records.sender_contact",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.correspondence_records.sender_name",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.correspondence_records.sender_organization",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.correspondence_records.source",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.correspondence_records.subject",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.correspondence_records.summary",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.correspondence_records.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.correspondence_records.workflow_transaction_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.correspondence_reference_counters.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.correspondence_reference_counters.last_value",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.correspondence_reference_counters.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.correspondence_reference_counters.year",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.departments.branch",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.departments.code",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.departments.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.departments.id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.departments.is_active",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.departments.is_routable",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.departments.name",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.departments.office_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.departments.parent_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.departments.short_name",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.departments.sort_order",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.departments.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.designated_planning_staff.can_manage_maps",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.designated_planning_staff.can_manage_plans",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.designated_planning_staff.can_manage_ppas",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.designated_planning_staff.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.designated_planning_staff.department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.designated_planning_staff.designated_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.designated_planning_staff.employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.designated_planning_staff.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.designated_planning_staff.revoked_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.designated_planning_staff.revoked_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.designated_planning_staff.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.designated_planning_staff.user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.adoption_date",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.adoption_reference",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.authority",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.chapters",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.code",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.coordinating_offices",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.coverage_end",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.coverage_start",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.created_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.document_ref",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.higher_review_reference",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.horizon",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.last_action",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.last_action_date",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.lead_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.lead_office",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.mdc_reference",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.next_milestone",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.next_milestone_date",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.plan_key",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.provenance_status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.required_action",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.sections_complete",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.sections_total",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.development_plans.updated_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.document_links.created_at",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.document_links.created_by_user_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.document_links.document_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.document_links.id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.document_links.linkable_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.document_links.linkable_type",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.document_links.relationship",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.document_links.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.checksum_sha256",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.classification",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.created_at",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.custody_mode",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.custody_operation_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.custody_ordinal",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.document_type",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.metadata",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.mime_type",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.original_name",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.owner_department_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.public_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.retention_code",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.security_domain",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.size_bytes",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.storage_disk",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.storage_path",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.title",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.updated_at",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.documents.uploaded_by_user_id",
+    "rights": "{t,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "public.dtr_daily_summaries.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  }
+]

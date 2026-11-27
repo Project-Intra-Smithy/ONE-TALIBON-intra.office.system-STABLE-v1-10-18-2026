@@ -1,0 +1,502 @@
+[
+  {
+    "name": "public.legislative_agenda_items.legislative_agenda_items_legislative_session_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (legislative_session_id) REFERENCES legislative_sessions(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.legislative_agenda_items.legislative_agenda_items_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.legislative_agenda_items.legislative_agenda_items_transaction_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.legislative_agenda_items.legislative_agenda_sequence_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (legislative_session_id, sequence_no)"
+  },
+  {
+    "name": "public.legislative_records.legislative_records_created_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.legislative_records.legislative_records_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.legislative_records.legislative_records_record_number_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (record_number)"
+  },
+  {
+    "name": "public.legislative_sessions.legislative_sessions_created_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.legislative_sessions.legislative_sessions_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.legislative_sessions.legislative_sessions_session_code_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (session_code)"
+  },
+  {
+    "name": "public.memo_recipients.memo_recipients_memorandum_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (memorandum_id) REFERENCES memoranda(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.memo_recipients.memo_recipients_memorandum_id_user_id_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (memorandum_id, user_id)"
+  },
+  {
+    "name": "public.memo_recipients.memo_recipients_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.memo_recipients.memo_recipients_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.memoranda.memoranda_issued_by_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (issued_by_department_id) REFERENCES departments(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.memoranda.memoranda_issued_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (issued_by_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.memoranda.memoranda_memo_number_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (memo_number)"
+  },
+  {
+    "name": "public.memoranda.memoranda_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.migrations.migrations_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.offboarding_cases.offboarding_cases_completed_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (completed_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.offboarding_cases.offboarding_cases_employee_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.offboarding_cases.offboarding_cases_initiated_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (initiated_by_user_id) REFERENCES users(id)"
+  },
+  {
+    "name": "public.offboarding_cases.offboarding_cases_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.offboarding_tasks.offboarding_tasks_completed_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (completed_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.offboarding_tasks.offboarding_tasks_offboarding_case_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (offboarding_case_id) REFERENCES offboarding_cases(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.offboarding_tasks.offboarding_tasks_offboarding_case_id_task_key_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (offboarding_case_id, task_key)"
+  },
+  {
+    "name": "public.offboarding_tasks.offboarding_tasks_owner_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (owner_department_id) REFERENCES departments(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.offboarding_tasks.offboarding_tasks_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.onboarding_cases.onboarding_cases_completed_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (completed_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.onboarding_cases.onboarding_cases_employee_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.onboarding_cases.onboarding_cases_employee_id_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (employee_id)"
+  },
+  {
+    "name": "public.onboarding_cases.onboarding_cases_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.onboarding_cases.onboarding_cases_started_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (started_by_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.onboarding_cases.onboarding_cases_supervisor_employee_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (supervisor_employee_id) REFERENCES employees(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.onboarding_cases.onboarding_cases_target_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (target_department_id) REFERENCES departments(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.onboarding_tasks.onboarding_tasks_completed_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (completed_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.onboarding_tasks.onboarding_tasks_onboarding_case_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (onboarding_case_id) REFERENCES onboarding_cases(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.onboarding_tasks.onboarding_tasks_onboarding_case_id_task_key_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (onboarding_case_id, task_key)"
+  },
+  {
+    "name": "public.onboarding_tasks.onboarding_tasks_owner_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (owner_department_id) REFERENCES departments(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.onboarding_tasks.onboarding_tasks_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.operational_items.operational_items_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.operational_items.operational_items_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.operational_items.operational_items_reference_no_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (reference_no)"
+  },
+  {
+    "name": "public.operational_items.operational_items_responsible_employee_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (responsible_employee_id) REFERENCES employees(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.ops009_close_audit_bindings.ops009_close_audit_bindings_audit_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (audit_id) REFERENCES audit_logs(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.ops009_close_audit_bindings.ops009_close_audit_bindings_operation_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (operation_id) REFERENCES legacy_custody.operations(operation_id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.ops009_close_audit_bindings.ops009_close_audit_bindings_operation_id_key",
+    "convalidated": true,
+    "definition": "UNIQUE (operation_id)"
+  },
+  {
+    "name": "public.ops009_close_audit_bindings.ops009_close_audit_bindings_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (audit_id)"
+  },
+  {
+    "name": "public.ops009_close_audit_bindings.ops009_close_audit_bindings_transaction_event_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (transaction_event_id) REFERENCES transaction_events(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.ops009_close_audit_bindings.ops009_close_audit_bindings_transaction_event_id_key",
+    "convalidated": true,
+    "definition": "UNIQUE (transaction_event_id)"
+  },
+  {
+    "name": "public.ops009_close_audit_bindings.ops009_close_audit_bindings_transaction_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.ops009_close_audit_bindings.ops009_close_audit_bindings_transaction_id_key",
+    "convalidated": true,
+    "definition": "UNIQUE (transaction_id)"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions.ops009_origin_delivery_exception_actio_actor_department_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (actor_department_id) REFERENCES departments(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions.ops009_origin_delivery_exception_action_exception_id_action_key",
+    "convalidated": true,
+    "definition": "UNIQUE (exception_id, action)"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions.ops009_origin_delivery_exception_actions_action_check",
+    "convalidated": true,
+    "definition": "CHECK (action = ANY (ARRAY['acknowledge'::text, 'resolve'::text]))"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions.ops009_origin_delivery_exception_actions_actor_user_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (actor_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions.ops009_origin_delivery_exception_actions_exception_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (exception_id) REFERENCES ops009_origin_delivery_exceptions(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions.ops009_origin_delivery_exception_actions_note_check",
+    "convalidated": true,
+    "definition": "CHECK (length(btrim(note)) >= 1 AND length(btrim(note)) <= 2000)"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exception_actions.ops009_origin_delivery_exception_actions_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.ops009_origin_delivery_exceptions_custodian_role_check",
+    "convalidated": true,
+    "definition": "CHECK (custodian_role = 'department_head'::text)"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.ops009_origin_delivery_exceptions_operation_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (operation_id) REFERENCES legacy_custody.operations(operation_id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.ops009_origin_delivery_exceptions_operation_id_key",
+    "convalidated": true,
+    "definition": "UNIQUE (operation_id)"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.ops009_origin_delivery_exceptions_origin_department_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (origin_department_id) REFERENCES departments(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.ops009_origin_delivery_exceptions_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.ops009_origin_delivery_exceptions_reason_check",
+    "convalidated": true,
+    "definition": "CHECK (reason = 'NO_ELIGIBLE_ORIGIN_RECIPIENT'::text)"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.ops009_origin_delivery_exceptions_transaction_event_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (transaction_event_id) REFERENCES transaction_events(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.ops009_origin_delivery_exceptions_transaction_event_id_key",
+    "convalidated": true,
+    "definition": "UNIQUE (transaction_event_id)"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.ops009_origin_delivery_exceptions_transaction_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.ops009_origin_delivery_exceptions.ops009_origin_delivery_exceptions_transaction_id_key",
+    "convalidated": true,
+    "definition": "UNIQUE (transaction_id)"
+  },
+  {
+    "name": "public.outbox_messages.outbox_messages_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.outbox_messages.outbox_messages_public_id_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (public_id)"
+  },
+  {
+    "name": "public.password_reset_tokens.password_reset_tokens_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (email)"
+  },
+  {
+    "name": "public.payroll_entries.payroll_entries_employee_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.payroll_entries.payroll_entries_payroll_period_id_employee_id_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (payroll_period_id, employee_id)"
+  },
+  {
+    "name": "public.payroll_entries.payroll_entries_payroll_period_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (payroll_period_id) REFERENCES payroll_periods(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.payroll_entries.payroll_entries_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.payroll_periods.payroll_periods_dtr_period_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (dtr_period_id) REFERENCES dtr_periods(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.payroll_periods.payroll_periods_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.performance_records.performance_records_created_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.performance_records.performance_records_employee_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.performance_records.performance_records_evaluator_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (evaluator_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.performance_records.performance_records_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.plan_custody_events.plan_custody_events_event_id_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (event_id)"
+  },
+  {
+    "name": "public.plan_custody_events.plan_custody_events_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.plan_custody_events.plan_custody_events_plan_custody_generation_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (plan_custody_generation_id) REFERENCES plan_custody_generations(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.plan_custody_generations.plan_custody_generation_integrity_check",
+    "convalidated": true,
+    "definition": "CHECK (integrity_status::text = 'VERIFIED'::text)"
+  },
+  {
+    "name": "public.plan_custody_generations.plan_custody_generation_media_check",
+    "convalidated": true,
+    "definition": "CHECK (media_type::text = 'application/pdf'::text)"
+  },
+  {
+    "name": "public.plan_custody_generations.plan_custody_generation_sha_check",
+    "convalidated": true,
+    "definition": "CHECK (sha256 ~ '^[0-9a-f]{64}$'::text)"
+  },
+  {
+    "name": "public.plan_custody_generations.plan_custody_generation_size_check",
+    "convalidated": true,
+    "definition": "CHECK (size_bytes > 0)"
+  },
+  {
+    "name": "public.plan_custody_generations.plan_custody_generation_state_check",
+    "convalidated": true,
+    "definition": "CHECK (custody_state::text = 'QUARANTINED'::text)"
+  },
+  {
+    "name": "public.plan_custody_generations.plan_custody_generations_generation_id_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (generation_id)"
+  },
+  {
+    "name": "public.plan_custody_generations.plan_custody_generations_idempotency_key_hash_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (idempotency_key_hash)"
+  },
+  {
+    "name": "public.plan_custody_generations.plan_custody_generations_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.plan_custody_generations.plan_custody_generations_storage_locator_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (storage_locator)"
+  },
+  {
+    "name": "public.plan_custody_scan_evidence.plan_custody_scan_decision_check",
+    "convalidated": true,
+    "definition": "CHECK (decision::text = ANY (ARRAY['CLEAN'::character varying, 'REJECTED'::character varying, 'ERROR'::character varying]::text[]))"
+  },
+  {
+    "name": "public.plan_custody_scan_evidence.plan_custody_scan_evidence_evidence_id_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (evidence_id)"
+  },
+  {
+    "name": "public.plan_custody_scan_evidence.plan_custody_scan_evidence_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.plan_custody_scan_evidence.plan_custody_scan_evidence_plan_custody_generation_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (plan_custody_generation_id) REFERENCES plan_custody_generations(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.plan_custody_scan_evidence.plan_custody_scan_generation_evidence_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (plan_custody_generation_id, evidence_id)"
+  },
+  {
+    "name": "public.plan_custody_scan_evidence.plan_custody_scan_sha_check",
+    "convalidated": true,
+    "definition": "CHECK (scanned_sha256 ~ '^[0-9a-f]{64}$'::text)"
+  }
+]

@@ -1,3 +1,4 @@
+import { MunicipalTabPanels, useMunicipalTabs } from './MunicipalTabs';
 import { useEffect, useState } from 'react';
 import {
     ArrowLeft,
@@ -84,7 +85,7 @@ function SelectedClearanceMatrix({ permitCase }: { permitCase: BuildingPermitCas
         <section className="rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-3" aria-label="Selected case clearance matrix">
             <div className="flex items-center justify-between gap-3 border-b border-[var(--municipal-border)] pb-2.5">
                 <div>
-                    <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]"><ShieldCheck size={14} className="text-[var(--municipal-brand)]" aria-hidden="true" /> Clearance Matrix</div>
+                    <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]"><ShieldCheck size={14} className="text-[var(--brand-ink)]" aria-hidden="true" /> Clearance Matrix</div>
                     <div className="mt-0.5 text-[9px] font-semibold text-[var(--municipal-muted)]">{permitCase.reference} · dependency references</div>
                 </div>
             </div>
@@ -108,7 +109,7 @@ function CaseList({ selected, onSelect }: { selected: BuildingPermitCase; onSele
     return (
         <aside className="overflow-hidden rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)]" aria-label="Permit case list">
             <div className="border-b border-[var(--municipal-border)] px-3 py-2.5">
-                <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]"><FileText size={14} className="text-[var(--municipal-brand)]" aria-hidden="true" /> Case List</div>
+                <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]"><FileText size={14} className="text-[var(--brand-ink)]" aria-hidden="true" /> Case List</div>
                 <div className="mt-0.5 text-[9px] text-[var(--municipal-muted)]">Illustrative regulatory references</div>
             </div>
             <div className="divide-y divide-[var(--municipal-border)]">
@@ -125,7 +126,7 @@ function CaseList({ selected, onSelect }: { selected: BuildingPermitCase; onSele
                                     : 'border-l-transparent hover:bg-[var(--municipal-hover)]')}
                         >
                             <div className="flex items-start justify-between gap-2">
-                                <span className="text-[9px] font-extrabold uppercase tracking-[0.06em] text-[var(--municipal-brand)]">{permitCase.reference}</span>
+                                <span className="text-[9px] font-extrabold uppercase tracking-[0.06em] text-[var(--brand-ink)]">{permitCase.reference}</span>
                                 <ChevronRight size={12} className="mt-0.5 shrink-0 text-[var(--municipal-muted)]" aria-hidden="true" />
                             </div>
                             <div className="mt-1 text-[11px] font-bold leading-4 text-[var(--municipal-text)]">{permitCase.projectType}</div>
@@ -145,7 +146,7 @@ function CaseDossier({ permitCase, onOpenDetail }: { permitCase: BuildingPermitC
                 <div className="min-w-0">
                     <div className="text-[9px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]">Selected Permit Case</div>
                     <div className="mt-1 flex flex-wrap items-center gap-2">
-                        <span className="text-[12px] font-extrabold text-[var(--municipal-brand)]">{permitCase.reference}</span>
+                        <span className="text-[12px] font-extrabold text-[var(--brand-ink)]">{permitCase.reference}</span>
                         <StageBadge stage={permitCase.currentStage} />
                     </div>
                     <h2 className="mt-1 text-[17px] font-extrabold tracking-tight text-[var(--municipal-text)]">{permitCase.projectType}</h2>
@@ -178,7 +179,7 @@ function CaseDossier({ permitCase, onOpenDetail }: { permitCase: BuildingPermitC
                 <div className="mt-1.5 grid gap-1.5 sm:grid-cols-2">
                     {permitCase.requiredReferences.map((reference) => (
                         <div key={reference} className="flex items-start gap-2 rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-2.5 py-2 text-[9px] leading-4 text-[var(--municipal-text)]">
-                            <CircleDot size={10} className="mt-0.5 shrink-0 text-[var(--municipal-brand)]" aria-hidden="true" />
+                            <CircleDot size={10} className="mt-0.5 shrink-0 text-[var(--brand-ink)]" aria-hidden="true" />
                             <span>{reference}</span>
                         </div>
                     ))}
@@ -223,7 +224,7 @@ function Applications({ onOpenDetail }: { onOpenDetail: (permitCase: BuildingPer
                     <tbody className="divide-y divide-[var(--municipal-border)]">
                         {buildingPermitCases.map((permitCase) => (
                             <tr key={permitCase.reference} className="hover:bg-[var(--municipal-hover)]">
-                                <td className="px-3 py-3 align-top"><button type="button" onClick={() => onOpenDetail(permitCase)} className="text-[10px] font-extrabold text-[var(--municipal-brand)] hover:underline">{permitCase.reference}</button></td>
+                                <td className="px-3 py-3 align-top"><button type="button" onClick={() => onOpenDetail(permitCase)} className="text-[10px] font-extrabold text-[var(--brand-ink)] hover:underline">{permitCase.reference}</button></td>
                                 <td className="px-3 py-3 align-top text-[10px] font-bold text-[var(--municipal-text)]">{permitCase.projectType}</td>
                                 <td className="px-3 py-3 align-top"><StageBadge stage={permitCase.currentStage} /></td>
                                 <td className="px-3 py-3 align-top"><ReferenceBadge state={permitCase.referenceStates.engineering} /></td>
@@ -240,7 +241,7 @@ function Applications({ onOpenDetail }: { onOpenDetail: (permitCase: BuildingPer
             <div className="divide-y divide-[var(--municipal-border)] lg:hidden">
                 {buildingPermitCases.map((permitCase) => (
                     <button key={permitCase.reference} type="button" onClick={() => onOpenDetail(permitCase)} className="w-full p-3 text-left hover:bg-[var(--municipal-hover)]">
-                        <div className="flex items-start justify-between gap-2"><div><div className="text-[9px] font-extrabold text-[var(--municipal-brand)]">{permitCase.reference}</div><div className="mt-1 text-[11px] font-bold text-[var(--municipal-text)]">{permitCase.projectType}</div></div><ChevronRight size={13} className="mt-1 shrink-0 text-[var(--municipal-muted)]" aria-hidden="true" /></div>
+                        <div className="flex items-start justify-between gap-2"><div><div className="text-[9px] font-extrabold text-[var(--brand-ink)]">{permitCase.reference}</div><div className="mt-1 text-[11px] font-bold text-[var(--municipal-text)]">{permitCase.projectType}</div></div><ChevronRight size={13} className="mt-1 shrink-0 text-[var(--municipal-muted)]" aria-hidden="true" /></div>
                         <div className="mt-2"><StageBadge stage={permitCase.currentStage} /></div>
                         <div className="mt-2 grid grid-cols-2 gap-1.5 text-[9px]">
                             {clearanceLanes.map(({ key }) => <div key={key} className="rounded-lg bg-[var(--municipal-surface-subtle)] px-2 py-1.5"><div className="font-bold text-[var(--municipal-muted)]">{clearanceLabels[key]}</div><div className="mt-1"><ReferenceBadge state={permitCase.referenceStates[key]} /></div></div>)}
@@ -268,7 +269,7 @@ function ClearanceMatrix({ onOpenDetail }: { onOpenDetail: (permitCase: Building
                     <tbody className="divide-y divide-[var(--municipal-border)]">
                         {buildingPermitCases.map((permitCase) => (
                             <tr key={permitCase.reference} className="hover:bg-[var(--municipal-hover)]">
-                                <td className="px-3 py-3"><button type="button" onClick={() => onOpenDetail(permitCase)} className="text-left"><span className="block text-[10px] font-extrabold text-[var(--municipal-brand)]">{permitCase.reference}</span><span className="mt-0.5 block text-[9px] font-semibold text-[var(--municipal-text)]">{permitCase.projectType}</span></button></td>
+                                <td className="px-3 py-3"><button type="button" onClick={() => onOpenDetail(permitCase)} className="text-left"><span className="block text-[10px] font-extrabold text-[var(--brand-ink)]">{permitCase.reference}</span><span className="mt-0.5 block text-[9px] font-semibold text-[var(--municipal-text)]">{permitCase.projectType}</span></button></td>
                                 <td className="px-3 py-3"><ReferenceBadge state={permitCase.referenceStates.engineering} /></td>
                                 <td className="px-3 py-3"><ReferenceBadge state={permitCase.referenceStates.zoning} /></td>
                                 <td className="px-3 py-3"><ReferenceBadge state={permitCase.referenceStates.fire} /></td>
@@ -283,7 +284,7 @@ function ClearanceMatrix({ onOpenDetail }: { onOpenDetail: (permitCase: Building
             <div className="divide-y divide-[var(--municipal-border)] md:hidden">
                 {buildingPermitCases.map((permitCase) => (
                     <div key={permitCase.reference} className="p-3">
-                        <button type="button" onClick={() => onOpenDetail(permitCase)} className="text-left"><span className="block text-[10px] font-extrabold text-[var(--municipal-brand)]">{permitCase.reference}</span><span className="mt-0.5 block text-[10px] font-bold text-[var(--municipal-text)]">{permitCase.projectType}</span></button>
+                        <button type="button" onClick={() => onOpenDetail(permitCase)} className="text-left"><span className="block text-[10px] font-extrabold text-[var(--brand-ink)]">{permitCase.reference}</span><span className="mt-0.5 block text-[10px] font-bold text-[var(--municipal-text)]">{permitCase.projectType}</span></button>
                         <div className="mt-2 grid gap-1.5">
                             {clearanceLanes.map(({ key }) => <div key={key} className="flex items-center justify-between gap-2 rounded-lg bg-[var(--municipal-surface-subtle)] px-2.5 py-2"><span className="text-[9px] font-bold text-[var(--municipal-text)]">{clearanceLabels[key]}</span><ReferenceBadge state={permitCase.referenceStates[key]} /></div>)}
                             <div className="flex items-center justify-between gap-2 rounded-lg bg-[var(--municipal-surface-subtle)] px-2.5 py-2"><span className="text-[9px] font-bold text-[var(--municipal-text)]">Permit processing</span><ReferenceBadge state={permitCase.referenceStates.permitProcessing} /></div>
@@ -299,11 +300,11 @@ function PermitFlow({ selected, onSelect }: { selected: BuildingPermitCase; onSe
     return (
         <div className="grid gap-2.5 lg:grid-cols-[240px_minmax(0,1fr)]">
             <aside className="rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-2.5" aria-label="Permit flow case selection">
-                <div className="flex items-center gap-2 px-1 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]"><Workflow size={14} className="text-[var(--municipal-brand)]" aria-hidden="true" /> Permit Flow Cases</div>
+                <div className="flex items-center gap-2 px-1 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[var(--municipal-muted)]"><Workflow size={14} className="text-[var(--brand-ink)]" aria-hidden="true" /> Permit Flow Cases</div>
                 <div className="mt-2 space-y-1">
                     {buildingPermitCases.map((permitCase) => (
                         <button key={permitCase.reference} type="button" onClick={() => onSelect(permitCase)} className={'w-full rounded-lg px-2.5 py-2 text-left transition ' + (selected.reference === permitCase.reference ? 'bg-emerald-50 text-emerald-950 dark:bg-emerald-950/25 dark:text-emerald-100' : 'hover:bg-[var(--municipal-hover)]')}>
-                            <span className="block text-[9px] font-extrabold text-[var(--municipal-brand)]">{permitCase.reference}</span><span className="mt-0.5 block text-[9px] font-semibold">{permitCase.projectType}</span>
+                            <span className="block text-[9px] font-extrabold text-[var(--brand-ink)]">{permitCase.reference}</span><span className="mt-0.5 block text-[9px] font-semibold">{permitCase.projectType}</span>
                         </button>
                     ))}
                 </div>
@@ -335,6 +336,7 @@ function PermitFlow({ selected, onSelect }: { selected: BuildingPermitCase; onSe
 
 function CaseDetail({ permitCase, onClose }: { permitCase: BuildingPermitCase; onClose: () => void }) {
     const [step, setStep] = useState<DetailStep>('Case Summary');
+    const detailTabs = useMunicipalTabs(step, (['Case Summary', 'Clearances', 'Timeline'] as DetailStep[]));
 
     useEffect(() => {
         setStep('Case Summary');
@@ -347,18 +349,18 @@ function CaseDetail({ permitCase, onClose }: { permitCase: BuildingPermitCase; o
             title={`${permitCase.reference} · ${permitCase.projectType}`}
             eyebrow="Building permit case reference"
             size="standard"
-            footer={<div className="text-[9px] font-semibold text-slate-400">Illustrative reference data · No permit decision or regulatory action enabled</div>}
+            footer={<div className="text-[9px] font-semibold text-[var(--ink-secondary)]">Illustrative reference data · No permit decision or regulatory action enabled</div>}
         >
             <div className="space-y-4">
-                <div className="grid grid-cols-3 gap-1.5" role="tablist" aria-label="Building permit detail steps">
+                <div className="grid grid-cols-3 gap-1.5" {...detailTabs.listProps} aria-label="Building permit detail steps">
                     {(['Case Summary', 'Clearances', 'Timeline'] as DetailStep[]).map((item, index) => (
-                        <button key={item} type="button" role="tab" aria-selected={step === item} onClick={() => setStep(item)} className={'min-h-9 rounded-lg border px-2 text-[9px] font-bold transition ' + (step === item ? 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/25 dark:text-emerald-100' : 'border-transparent text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}><span className="mr-1 text-[8px] opacity-60">{index + 1}</span>{item}</button>
+                        <button key={item} type="button" {...detailTabs.tabProps(item)} onClick={() => setStep(item)} className={'min-h-9 rounded-lg border px-2 text-[9px] font-bold transition ' + (step === item ? 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/25 dark:text-emerald-100' : 'border-transparent text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}><span className="mr-1 text-[8px]">{index + 1}</span>{item}</button>
                     ))}
                 </div>
 
-                {step === 'Case Summary' && (
+                <MunicipalTabPanels tabs={detailTabs}>{step === 'Case Summary' && (
                     <div className="space-y-3">
-                        <div className="flex flex-wrap items-center gap-2"><span className="text-[10px] font-extrabold text-[var(--municipal-brand)]">{permitCase.reference}</span><StageBadge stage={permitCase.currentStage} /></div>
+                        <div className="flex flex-wrap items-center gap-2"><span className="text-[10px] font-extrabold text-[var(--brand-ink)]">{permitCase.reference}</span><StageBadge stage={permitCase.currentStage} /></div>
                         <dl className="grid gap-2 sm:grid-cols-2">
                             {[
                                 ['Project / application', permitCase.projectType],
@@ -392,7 +394,7 @@ function CaseDetail({ permitCase, onClose }: { permitCase: BuildingPermitCase; o
                             </li>
                         ))}
                     </ol>
-                )}
+                )}</MunicipalTabPanels>
             </div>
         </DetailDrawer>
     );
@@ -400,6 +402,7 @@ function CaseDetail({ permitCase, onClose }: { permitCase: BuildingPermitCase; o
 
 export default function BuildingPermitWorkspace({ onBack }: Props) {
     const [activeTab, setActiveTab] = useState<WorkspaceTab>('Overview');
+    const viewTabs = useMunicipalTabs(activeTab, tabs);
     const [selectedCase, setSelectedCase] = useState<BuildingPermitCase>(buildingPermitCases[0]!);
     const [detailCase, setDetailCase] = useState<BuildingPermitCase | null>(null);
 
@@ -431,13 +434,13 @@ export default function BuildingPermitWorkspace({ onBack }: Props) {
             <header className="rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] px-4 py-3">
                 <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(430px,520px)] lg:items-center">
                     <div className="min-w-0">
-                        {onBack && <button type="button" onClick={onBack} className="mb-1 inline-flex min-h-7 items-center gap-1.5 text-[9px] font-bold text-[var(--municipal-muted)] transition hover:text-[var(--municipal-brand)] focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30"><ArrowLeft size={12} aria-hidden="true" /> Future Integrations</button>}
-                        <div className="text-[9px] font-extrabold uppercase tracking-[0.1em] text-[var(--municipal-brand)]">Regulatory Casework</div>
-                        <div className="mt-0.5 flex items-center gap-2"><Building2 size={17} className="shrink-0 text-[var(--municipal-brand)]" aria-hidden="true" /><h1 className="text-[21px] font-extrabold tracking-tight text-[var(--municipal-text)]">Building Permit Workflow</h1></div>
+                        {onBack && <button type="button" onClick={onBack} className="mb-1 inline-flex min-h-7 items-center gap-1.5 text-[9px] font-bold text-[var(--municipal-muted)] transition hover:text-[var(--brand-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30"><ArrowLeft size={12} aria-hidden="true" /> Future Integrations</button>}
+                        <div className="text-[9px] font-extrabold uppercase tracking-[0.1em] text-[var(--brand-ink)]">Regulatory Casework</div>
+                        <div className="mt-0.5 flex items-center gap-2"><Building2 size={17} className="shrink-0 text-[var(--brand-ink)]" aria-hidden="true" /><h1 className="text-[21px] font-extrabold tracking-tight text-[var(--municipal-text)]">Building Permit Workflow</h1></div>
                         <p className="mt-0.5 text-[10px] font-bold text-[var(--municipal-text)]">Municipal Engineering Office</p>
                         <p className="mt-0.5 text-[9px] font-semibold text-[var(--municipal-muted)]">Cross-office clearance and permit processing</p>
                     </div>
-                    <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4" aria-label="Building permit case signals">
+                    <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4" role="group" aria-label="Building permit case signals">
                         {headerSignals.map((signal) => (
                             <div key={signal.label} className={'min-h-11 rounded-lg border px-2.5 py-2 ' + signal.tone}>
                                 <div className="text-[8px] font-extrabold uppercase tracking-[0.06em] opacity-75">{signal.label}</div>
@@ -448,18 +451,18 @@ export default function BuildingPermitWorkspace({ onBack }: Props) {
                 </div>
             </header>
 
-            <nav className="flex gap-1 overflow-x-auto rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-1" role="tablist" aria-label="Building permit workflow views">
+            <nav className="flex gap-1 overflow-x-auto rounded-xl border border-[var(--municipal-border)] bg-[var(--municipal-surface)] p-1" {...viewTabs.listProps} aria-label="Building permit workflow views">
                 {tabs.map((tab) => (
-                    <button key={tab} type="button" role="tab" aria-selected={activeTab === tab} onClick={() => setActiveTab(tab)} className={'min-h-9 shrink-0 rounded-lg px-3 text-[10px] font-bold transition ' + (activeTab === tab ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-100' : 'text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}>{tab}</button>
+                    <button key={tab} type="button" {...viewTabs.tabProps(tab)} onClick={() => setActiveTab(tab)} className={'min-h-9 shrink-0 rounded-lg px-3 text-[10px] font-bold transition ' + (activeTab === tab ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-100' : 'text-[var(--municipal-muted)] hover:bg-[var(--municipal-hover)]')}>{tab}</button>
                 ))}
             </nav>
 
-            {activeTab === 'Overview' && <Overview selected={selectedCase} onSelect={setSelectedCase} onOpenDetail={() => setDetailCase(selectedCase)} />}
+            <MunicipalTabPanels tabs={viewTabs}>{activeTab === 'Overview' && <Overview selected={selectedCase} onSelect={setSelectedCase} onOpenDetail={() => setDetailCase(selectedCase)} />}
             {activeTab === 'Applications' && <Applications onOpenDetail={setDetailCase} />}
             {activeTab === 'Clearance Matrix' && <ClearanceMatrix onOpenDetail={setDetailCase} />}
-            {activeTab === 'Permit Flow' && <PermitFlow selected={selectedCase} onSelect={setSelectedCase} />}
+            {activeTab === 'Permit Flow' && <PermitFlow selected={selectedCase} onSelect={setSelectedCase} />}</MunicipalTabPanels>
 
-            <div className="flex items-start gap-2 rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-3 py-2 text-[9px] font-semibold leading-4 text-[var(--municipal-muted)]"><ShieldCheck size={12} className="mt-0.5 shrink-0 text-[var(--municipal-brand)]" aria-hidden="true" /> Illustrative reference data only. No application submission, permit approval, issuance, inspection authority, fire approval, zoning approval, payment or applicant record is enabled.</div>
+            <div className="flex items-start gap-2 rounded-lg border border-[var(--municipal-border)] bg-[var(--municipal-surface-subtle)] px-3 py-2 text-[9px] font-semibold leading-4 text-[var(--municipal-muted)]"><ShieldCheck size={12} className="mt-0.5 shrink-0 text-[var(--brand-ink)]" aria-hidden="true" /> Illustrative reference data only. No application submission, permit approval, issuance, inspection authority, fire approval, zoning approval, payment or applicant record is enabled.</div>
 
             {detailCase && <CaseDetail permitCase={detailCase} onClose={() => setDetailCase(null)} />}
         </section>

@@ -1,0 +1,502 @@
+[
+  {
+    "name": "deployment_control.installations.installations_authority_check",
+    "convalidated": true,
+    "definition": "CHECK (jsonb_typeof(authority) = 'object'::text)"
+  },
+  {
+    "name": "deployment_control.installations.installations_format_check",
+    "convalidated": true,
+    "definition": "CHECK (format = 3)"
+  },
+  {
+    "name": "deployment_control.installations.installations_installation_id_key",
+    "convalidated": true,
+    "definition": "UNIQUE (installation_id)"
+  },
+  {
+    "name": "deployment_control.installations.installations_ledger_sha256_check",
+    "convalidated": true,
+    "definition": "CHECK (ledger_sha256 ~ '^[a-f0-9]{64}$'::text)"
+  },
+  {
+    "name": "deployment_control.installations.installations_package_sha256_check",
+    "convalidated": true,
+    "definition": "CHECK (package_sha256 ~ '^[a-f0-9]{64}$'::text)"
+  },
+  {
+    "name": "deployment_control.installations.installations_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (singleton)"
+  },
+  {
+    "name": "deployment_control.installations.installations_singleton_check",
+    "convalidated": true,
+    "definition": "CHECK (singleton)"
+  },
+  {
+    "name": "deployment_control.installations.installations_source_sha_check",
+    "convalidated": true,
+    "definition": "CHECK (source_sha ~ '^[a-f0-9]{40}$'::text)"
+  },
+  {
+    "name": "deployment_control.installations.installations_tree_sha_check",
+    "convalidated": true,
+    "definition": "CHECK (tree_sha ~ '^[a-f0-9]{40}$'::text)"
+  },
+  {
+    "name": "legacy_custody.bindings.bindings_document_id_document_public_id_operation_id_ordin_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (document_id, document_public_id, operation_id, ordinal) REFERENCES documents(id, public_id, custody_operation_id, custody_ordinal) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.bindings.bindings_fence_no_check",
+    "convalidated": true,
+    "definition": "CHECK (fence_no = 1)"
+  },
+  {
+    "name": "legacy_custody.bindings.bindings_generation_id_key",
+    "convalidated": true,
+    "definition": "UNIQUE (generation_id)"
+  },
+  {
+    "name": "legacy_custody.bindings.bindings_operation_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (operation_id) REFERENCES legacy_custody.command_results(operation_id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.bindings.bindings_operation_id_ordinal_generation_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (operation_id, ordinal, generation_id) REFERENCES legacy_custody.generations(operation_id, ordinal, generation_id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.bindings.bindings_operation_id_ordinal_key",
+    "convalidated": true,
+    "definition": "UNIQUE (operation_id, ordinal)"
+  },
+  {
+    "name": "legacy_custody.bindings.bindings_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (document_id)"
+  },
+  {
+    "name": "legacy_custody.bindings.bindings_upload_audit_id_key",
+    "convalidated": true,
+    "definition": "UNIQUE (upload_audit_id)"
+  },
+  {
+    "name": "legacy_custody.bindings.bindings_upload_audit_id_operation_id_document_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (upload_audit_id, operation_id, document_id) REFERENCES audit_logs(id, custody_operation_id, entity_id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.bindings.n03_command_complete",
+    "convalidated": true,
+    "definition": "TRIGGER DEFERRABLE INITIALLY DEFERRED"
+  },
+  {
+    "name": "legacy_custody.classification_events.classification_events_actor_user_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (actor_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.classification_events.classification_events_audit_log_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (audit_log_id) REFERENCES audit_logs(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.classification_events.classification_events_audit_log_id_key",
+    "convalidated": true,
+    "definition": "UNIQUE (audit_log_id)"
+  },
+  {
+    "name": "legacy_custody.classification_events.classification_events_correspondence_event_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (correspondence_event_id) REFERENCES correspondence_events(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.classification_events.classification_events_correspondence_record_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (correspondence_record_id) REFERENCES correspondence_records(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.classification_events.classification_events_document_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (document_id) REFERENCES legacy_custody.bindings(document_id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.classification_events.classification_events_new_classification_check",
+    "convalidated": true,
+    "definition": "CHECK (new_classification = ANY (ARRAY['public'::text, 'internal'::text, 'confidential'::text, 'restricted'::text]))"
+  },
+  {
+    "name": "legacy_custody.classification_events.classification_events_office_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (office_id) REFERENCES departments(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.classification_events.classification_events_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (classification_event_id)"
+  },
+  {
+    "name": "legacy_custody.classification_events.classification_events_prior_classification_check",
+    "convalidated": true,
+    "definition": "CHECK (prior_classification = ANY (ARRAY['public'::text, 'internal'::text, 'confidential'::text, 'restricted'::text]))"
+  },
+  {
+    "name": "legacy_custody.command_results.command_results_correspondence_event_id_correspondence_id__fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (correspondence_event_id, correspondence_id, actor_user_id, event_action, office_id, correlation_id, municipal_actor) REFERENCES correspondence_events(id, correspondence_record_id, actor_user_id, event, office_department_id, correlation_id, n03_municipal_actor) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.command_results.command_results_correspondence_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (correspondence_id) REFERENCES correspondence_records(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.command_results.command_results_fence_no_check",
+    "convalidated": true,
+    "definition": "CHECK (fence_no = 1)"
+  },
+  {
+    "name": "legacy_custody.command_results.command_results_operation_id_actor_user_id_office_id_corre_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (operation_id, actor_user_id, office_id, correlation_id) REFERENCES legacy_custody.operations(operation_id, actor_user_id, office_id, correlation_id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.command_results.command_results_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (operation_id)"
+  },
+  {
+    "name": "legacy_custody.command_results.command_results_source_kind_check",
+    "convalidated": true,
+    "definition": "CHECK (source_kind = ANY (ARRAY['transaction'::text, 'correspondence'::text, 'travel'::text]))"
+  },
+  {
+    "name": "legacy_custody.command_results.command_results_transaction_event_id_transaction_id_actor__fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (transaction_event_id, transaction_id, actor_user_id, event_action) REFERENCES transaction_events(id, transaction_id, actor_user_id, action) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.command_results.command_results_transaction_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.command_results.command_results_travel_event_id_travel_id_actor_user_id_ev_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (travel_event_id, travel_id, actor_user_id, event_action) REFERENCES travel_order_events(id, travel_order_id, actor_user_id, event) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.command_results.command_results_travel_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (travel_id) REFERENCES travel_orders(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.command_results.n03_command_complete",
+    "convalidated": true,
+    "definition": "TRIGGER DEFERRABLE INITIALLY DEFERRED"
+  },
+  {
+    "name": "legacy_custody.command_results.n03_command_results_unique_correspondence_event",
+    "convalidated": true,
+    "definition": "UNIQUE (correspondence_event_id)"
+  },
+  {
+    "name": "legacy_custody.command_results.n03_command_results_unique_transaction_event",
+    "convalidated": true,
+    "definition": "UNIQUE (transaction_event_id)"
+  },
+  {
+    "name": "legacy_custody.command_results.n03_command_results_unique_travel_event",
+    "convalidated": true,
+    "definition": "UNIQUE (travel_event_id)"
+  },
+  {
+    "name": "legacy_custody.compensation_outcomes.compensation_outcomes_broker_receipt_ref_check",
+    "convalidated": true,
+    "definition": "CHECK (broker_receipt_ref <> ''::text)"
+  },
+  {
+    "name": "legacy_custody.compensation_outcomes.compensation_outcomes_disposition_check",
+    "convalidated": true,
+    "definition": "CHECK (disposition = ANY (ARRAY['DISPOSED'::text, 'ABSENT_VERIFIED'::text, 'QUARANTINED'::text]))"
+  },
+  {
+    "name": "legacy_custody.compensation_outcomes.compensation_outcomes_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (outcome_id)"
+  },
+  {
+    "name": "legacy_custody.compensation_outcomes.compensation_outcomes_tombstone_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (tombstone_id) REFERENCES legacy_custody.compensation_tombstones(tombstone_id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.compensation_outcomes.compensation_outcomes_tombstone_id_key",
+    "convalidated": true,
+    "definition": "UNIQUE (tombstone_id)"
+  },
+  {
+    "name": "legacy_custody.compensation_tombstones.compensation_tombstones_close_ack_id_check",
+    "convalidated": true,
+    "definition": "CHECK (close_ack_id <> ''::text)"
+  },
+  {
+    "name": "legacy_custody.compensation_tombstones.compensation_tombstones_generation_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (generation_id) REFERENCES legacy_custody.generations(generation_id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.compensation_tombstones.compensation_tombstones_generation_id_key",
+    "convalidated": true,
+    "definition": "UNIQUE (generation_id)"
+  },
+  {
+    "name": "legacy_custody.compensation_tombstones.compensation_tombstones_locator_check",
+    "convalidated": true,
+    "definition": "CHECK (locator <> ''::text)"
+  },
+  {
+    "name": "legacy_custody.compensation_tombstones.compensation_tombstones_namespace_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (namespace_id) REFERENCES legacy_custody.namespaces(namespace_id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.compensation_tombstones.compensation_tombstones_operation_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (operation_id) REFERENCES legacy_custody.operations(operation_id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.compensation_tombstones.compensation_tombstones_operation_id_generation_id_namespa_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (operation_id, generation_id, namespace_id, locator, provider_object_identity) REFERENCES legacy_custody.generations(operation_id, generation_id, namespace_id, locator, provider_object_identity) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.compensation_tombstones.compensation_tombstones_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (tombstone_id)"
+  },
+  {
+    "name": "legacy_custody.compensation_tombstones.compensation_tombstones_provider_object_identity_check",
+    "convalidated": true,
+    "definition": "CHECK (provider_object_identity <> ''::text)"
+  },
+  {
+    "name": "legacy_custody.generations.generations_namespace_id_locator_key",
+    "convalidated": true,
+    "definition": "UNIQUE (namespace_id, locator)"
+  },
+  {
+    "name": "legacy_custody.generations.generations_namespace_id_provider_object_identity_key",
+    "convalidated": true,
+    "definition": "UNIQUE (namespace_id, provider_object_identity)"
+  },
+  {
+    "name": "legacy_custody.generations.generations_operation_id_ordinal_generation_id_key",
+    "convalidated": true,
+    "definition": "UNIQUE (operation_id, ordinal, generation_id)"
+  },
+  {
+    "name": "legacy_custody.generations.generations_operation_id_ordinal_generation_id_namespace_i_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (operation_id, ordinal, generation_id, namespace_id, epoch, locator, size_bytes, sha256, mime_type) REFERENCES legacy_custody.operation_items(operation_id, ordinal, generation_id, namespace_id, epoch, locator, size_bytes, sha256, mime_type) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.generations.generations_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (generation_id)"
+  },
+  {
+    "name": "legacy_custody.generations.generations_provider_object_identity_check",
+    "convalidated": true,
+    "definition": "CHECK (provider_object_identity <> ''::text)"
+  },
+  {
+    "name": "legacy_custody.generations.generations_staged_fence_check",
+    "convalidated": true,
+    "definition": "CHECK (staged_fence = 1)"
+  },
+  {
+    "name": "legacy_custody.generations.generations_staging_receipt_id_key",
+    "convalidated": true,
+    "definition": "UNIQUE (staging_receipt_id)"
+  },
+  {
+    "name": "legacy_custody.generations.n03_generation_compensation_tuple",
+    "convalidated": true,
+    "definition": "UNIQUE (operation_id, generation_id, namespace_id, locator, provider_object_identity)"
+  },
+  {
+    "name": "legacy_custody.namespaces.namespaces_backend_kind_check",
+    "convalidated": true,
+    "definition": "CHECK (backend_kind <> ''::text)"
+  },
+  {
+    "name": "legacy_custody.namespaces.namespaces_backend_kind_provider_identity_key",
+    "convalidated": true,
+    "definition": "UNIQUE (backend_kind, provider_identity)"
+  },
+  {
+    "name": "legacy_custody.namespaces.namespaces_backend_kind_root_claim_key",
+    "convalidated": true,
+    "definition": "UNIQUE (backend_kind, root_claim)"
+  },
+  {
+    "name": "legacy_custody.namespaces.namespaces_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (namespace_id)"
+  },
+  {
+    "name": "legacy_custody.namespaces.namespaces_provider_identity_check",
+    "convalidated": true,
+    "definition": "CHECK (provider_identity <> ''::text)"
+  },
+  {
+    "name": "legacy_custody.namespaces.namespaces_root_claim_check",
+    "convalidated": true,
+    "definition": "CHECK (root_claim <> ''::text)"
+  },
+  {
+    "name": "legacy_custody.operation_events.operation_events_evidence_ref_check",
+    "convalidated": true,
+    "definition": "CHECK (evidence_ref <> ''::text)"
+  },
+  {
+    "name": "legacy_custody.operation_events.operation_events_fence_no_check",
+    "convalidated": true,
+    "definition": "CHECK (fence_no = ANY (ARRAY[1::bigint, 2::bigint]))"
+  },
+  {
+    "name": "legacy_custody.operation_events.operation_events_operation_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (operation_id) REFERENCES legacy_custody.operations(operation_id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.operation_events.operation_events_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (event_id)"
+  },
+  {
+    "name": "legacy_custody.operation_gates.n03_reservation_complete",
+    "convalidated": true,
+    "definition": "TRIGGER DEFERRABLE INITIALLY DEFERRED"
+  },
+  {
+    "name": "legacy_custody.operation_gates.operation_gates_check",
+    "convalidated": true,
+    "definition": "CHECK (state = 'OPEN'::text AND fence_no = 1 OR state = 'CLOSED'::text AND fence_no = 2)"
+  },
+  {
+    "name": "legacy_custody.operation_gates.operation_gates_lock_stub_check",
+    "convalidated": true,
+    "definition": "CHECK (lock_stub = 0)"
+  },
+  {
+    "name": "legacy_custody.operation_gates.operation_gates_operation_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (operation_id) REFERENCES legacy_custody.operations(operation_id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.operation_gates.operation_gates_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (operation_id)"
+  },
+  {
+    "name": "legacy_custody.operation_items.n03_reservation_complete",
+    "convalidated": true,
+    "definition": "TRIGGER DEFERRABLE INITIALLY DEFERRED"
+  },
+  {
+    "name": "legacy_custody.operation_items.operation_items_check",
+    "convalidated": true,
+    "definition": "CHECK (locator = (((('objects/'::text || \"left\"(generation_id::text, 2)) || '/'::text) || generation_id::text) || '.blob'::text))"
+  },
+  {
+    "name": "legacy_custody.operation_items.operation_items_generation_id_key",
+    "convalidated": true,
+    "definition": "UNIQUE (generation_id)"
+  },
+  {
+    "name": "legacy_custody.operation_items.operation_items_mime_type_check",
+    "convalidated": true,
+    "definition": "CHECK (mime_type = ANY (ARRAY['application/pdf'::text, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'::text, 'image/jpeg'::text, 'image/png'::text, 'image/webp'::text]))"
+  },
+  {
+    "name": "legacy_custody.operation_items.operation_items_namespace_id_locator_key",
+    "convalidated": true,
+    "definition": "UNIQUE (namespace_id, locator)"
+  },
+  {
+    "name": "legacy_custody.operation_items.operation_items_operation_id_namespace_id_epoch_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (operation_id, namespace_id, epoch) REFERENCES legacy_custody.operations(operation_id, namespace_id, epoch) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.operation_items.operation_items_operation_id_ordinal_generation_id_namespac_key",
+    "convalidated": true,
+    "definition": "UNIQUE (operation_id, ordinal, generation_id, namespace_id, epoch, locator, size_bytes, sha256, mime_type)"
+  },
+  {
+    "name": "legacy_custody.operation_items.operation_items_ordinal_check",
+    "convalidated": true,
+    "definition": "CHECK (ordinal >= 1 AND ordinal <= 5)"
+  },
+  {
+    "name": "legacy_custody.operation_items.operation_items_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (operation_id, ordinal)"
+  },
+  {
+    "name": "legacy_custody.operation_items.operation_items_sha256_check",
+    "convalidated": true,
+    "definition": "CHECK (sha256 ~ '^[0-9a-f]{64}$'::text)"
+  },
+  {
+    "name": "legacy_custody.operation_items.operation_items_size_bytes_check",
+    "convalidated": true,
+    "definition": "CHECK (size_bytes >= 1 AND size_bytes <= 15728640)"
+  },
+  {
+    "name": "legacy_custody.operations.n03_reservation_complete",
+    "convalidated": true,
+    "definition": "TRIGGER DEFERRABLE INITIALLY DEFERRED"
+  },
+  {
+    "name": "legacy_custody.operations.operations_actor_user_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (actor_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.operations.operations_check",
+    "convalidated": true,
+    "definition": "CHECK (command_kind = 'transaction_create'::text AND command_action = 'create'::text OR command_kind = 'correspondence_register'::text AND command_action = 'register'::text OR command_kind = 'correspondence_classify'::text AND command_action = 'classify'::text OR command_kind = 'correspondence_route'::text AND command_action = 'route'::text OR command_kind = 'correspondence_act'::text AND command_action = 'act'::text OR command_kind = 'travel_record'::text AND command_action = 'record'::text OR command_kind = 'travel_status'::text AND command_action = 'status'::text OR command_kind = 'transaction_transition'::text AND (command_action = ANY (ARRAY['forward'::text, 'send_to_mayor'::text, 'return_origin'::text, 'request_information'::text, 'assign'::text, 'mark_review'::text, 'approve'::text, 'disapprove'::text, 'close'::text])))"
+  },
+  {
+    "name": "legacy_custody.operations.operations_epoch_check",
+    "convalidated": true,
+    "definition": "CHECK (epoch > 0)"
+  },
+  {
+    "name": "legacy_custody.operations.operations_idempotency_hash_check",
+    "convalidated": true,
+    "definition": "CHECK (idempotency_hash ~ '^[0-9a-f]{64}$'::text)"
+  },
+  {
+    "name": "legacy_custody.operations.operations_item_count_check",
+    "convalidated": true,
+    "definition": "CHECK (item_count >= 1 AND item_count <= 5)"
+  },
+  {
+    "name": "legacy_custody.operations.operations_manifest_digest_check",
+    "convalidated": true,
+    "definition": "CHECK (manifest_digest ~ '^[0-9a-f]{64}$'::text)"
+  },
+  {
+    "name": "legacy_custody.operations.operations_namespace_id_actor_user_id_office_id_service_ide_key",
+    "convalidated": true,
+    "definition": "UNIQUE (namespace_id, actor_user_id, office_id, service_identity, command_kind, idempotency_hash)"
+  }
+]

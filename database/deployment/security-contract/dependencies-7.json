@@ -1,0 +1,502 @@
+[
+  {
+    "object": "constraint n03_reservation_complete on table legacy_custody.operation_items",
+    "reference": "trigger n03_reservation_complete on table legacy_custody.operation_items",
+    "deptype": "i"
+  },
+  {
+    "object": "constraint n03_reservation_complete on table legacy_custody.operations",
+    "reference": "table legacy_custody.operations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint n03_reservation_complete on table legacy_custody.operations",
+    "reference": "trigger n03_reservation_complete on table legacy_custody.operations",
+    "deptype": "i"
+  },
+  {
+    "object": "constraint n03_transaction_event_tuple on table transaction_events",
+    "reference": "column action of table transaction_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint n03_transaction_event_tuple on table transaction_events",
+    "reference": "column actor_user_id of table transaction_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint n03_transaction_event_tuple on table transaction_events",
+    "reference": "column id of table transaction_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint n03_transaction_event_tuple on table transaction_events",
+    "reference": "column transaction_id of table transaction_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint n03_travel_event_tuple on table travel_order_events",
+    "reference": "column actor_user_id of table travel_order_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint n03_travel_event_tuple on table travel_order_events",
+    "reference": "column event of table travel_order_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint n03_travel_event_tuple on table travel_order_events",
+    "reference": "column id of table travel_order_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint n03_travel_event_tuple on table travel_order_events",
+    "reference": "column travel_order_id of table travel_order_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint namespaces_backend_kind_check on table legacy_custody.namespaces",
+    "reference": "column backend_kind of table legacy_custody.namespaces",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint namespaces_backend_kind_check on table legacy_custody.namespaces",
+    "reference": "column backend_kind of table legacy_custody.namespaces",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint namespaces_backend_kind_provider_identity_key on table legacy_custody.namespaces",
+    "reference": "column backend_kind of table legacy_custody.namespaces",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint namespaces_backend_kind_provider_identity_key on table legacy_custody.namespaces",
+    "reference": "column provider_identity of table legacy_custody.namespaces",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint namespaces_backend_kind_root_claim_key on table legacy_custody.namespaces",
+    "reference": "column backend_kind of table legacy_custody.namespaces",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint namespaces_backend_kind_root_claim_key on table legacy_custody.namespaces",
+    "reference": "column root_claim of table legacy_custody.namespaces",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint namespaces_pkey on table legacy_custody.namespaces",
+    "reference": "column namespace_id of table legacy_custody.namespaces",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint namespaces_provider_identity_check on table legacy_custody.namespaces",
+    "reference": "column provider_identity of table legacy_custody.namespaces",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint namespaces_provider_identity_check on table legacy_custody.namespaces",
+    "reference": "column provider_identity of table legacy_custody.namespaces",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint namespaces_root_claim_check on table legacy_custody.namespaces",
+    "reference": "column root_claim of table legacy_custody.namespaces",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint namespaces_root_claim_check on table legacy_custody.namespaces",
+    "reference": "column root_claim of table legacy_custody.namespaces",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint offboarding_cases_completed_by_user_id_foreign on table offboarding_cases",
+    "reference": "column completed_by_user_id of table offboarding_cases",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint offboarding_cases_completed_by_user_id_foreign on table offboarding_cases",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint offboarding_cases_completed_by_user_id_foreign on table offboarding_cases",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint offboarding_cases_employee_id_foreign on table offboarding_cases",
+    "reference": "column employee_id of table offboarding_cases",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint offboarding_cases_employee_id_foreign on table offboarding_cases",
+    "reference": "column id of table employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint offboarding_cases_employee_id_foreign on table offboarding_cases",
+    "reference": "index employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint offboarding_cases_initiated_by_user_id_foreign on table offboarding_cases",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint offboarding_cases_initiated_by_user_id_foreign on table offboarding_cases",
+    "reference": "column initiated_by_user_id of table offboarding_cases",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint offboarding_cases_initiated_by_user_id_foreign on table offboarding_cases",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint offboarding_cases_pkey on table offboarding_cases",
+    "reference": "column id of table offboarding_cases",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint offboarding_tasks_completed_by_user_id_foreign on table offboarding_tasks",
+    "reference": "column completed_by_user_id of table offboarding_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint offboarding_tasks_completed_by_user_id_foreign on table offboarding_tasks",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint offboarding_tasks_completed_by_user_id_foreign on table offboarding_tasks",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint offboarding_tasks_offboarding_case_id_foreign on table offboarding_tasks",
+    "reference": "column id of table offboarding_cases",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint offboarding_tasks_offboarding_case_id_foreign on table offboarding_tasks",
+    "reference": "column offboarding_case_id of table offboarding_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint offboarding_tasks_offboarding_case_id_foreign on table offboarding_tasks",
+    "reference": "index offboarding_cases_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint offboarding_tasks_offboarding_case_id_task_key_unique on table offboarding_tasks",
+    "reference": "column offboarding_case_id of table offboarding_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint offboarding_tasks_offboarding_case_id_task_key_unique on table offboarding_tasks",
+    "reference": "column task_key of table offboarding_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint offboarding_tasks_owner_department_id_foreign on table offboarding_tasks",
+    "reference": "column id of table departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint offboarding_tasks_owner_department_id_foreign on table offboarding_tasks",
+    "reference": "column owner_department_id of table offboarding_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint offboarding_tasks_owner_department_id_foreign on table offboarding_tasks",
+    "reference": "index departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint offboarding_tasks_pkey on table offboarding_tasks",
+    "reference": "column id of table offboarding_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint onboarding_cases_completed_by_user_id_foreign on table onboarding_cases",
+    "reference": "column completed_by_user_id of table onboarding_cases",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint onboarding_cases_completed_by_user_id_foreign on table onboarding_cases",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint onboarding_cases_completed_by_user_id_foreign on table onboarding_cases",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint onboarding_cases_employee_id_foreign on table onboarding_cases",
+    "reference": "column employee_id of table onboarding_cases",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint onboarding_cases_employee_id_foreign on table onboarding_cases",
+    "reference": "column id of table employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint onboarding_cases_employee_id_foreign on table onboarding_cases",
+    "reference": "index employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint onboarding_cases_employee_id_unique on table onboarding_cases",
+    "reference": "column employee_id of table onboarding_cases",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint onboarding_cases_pkey on table onboarding_cases",
+    "reference": "column id of table onboarding_cases",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint onboarding_cases_started_by_user_id_foreign on table onboarding_cases",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint onboarding_cases_started_by_user_id_foreign on table onboarding_cases",
+    "reference": "column started_by_user_id of table onboarding_cases",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint onboarding_cases_started_by_user_id_foreign on table onboarding_cases",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint onboarding_cases_supervisor_employee_id_foreign on table onboarding_cases",
+    "reference": "column id of table employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint onboarding_cases_supervisor_employee_id_foreign on table onboarding_cases",
+    "reference": "column supervisor_employee_id of table onboarding_cases",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint onboarding_cases_supervisor_employee_id_foreign on table onboarding_cases",
+    "reference": "index employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint onboarding_cases_target_department_id_foreign on table onboarding_cases",
+    "reference": "column id of table departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint onboarding_cases_target_department_id_foreign on table onboarding_cases",
+    "reference": "column target_department_id of table onboarding_cases",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint onboarding_cases_target_department_id_foreign on table onboarding_cases",
+    "reference": "index departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint onboarding_tasks_completed_by_user_id_foreign on table onboarding_tasks",
+    "reference": "column completed_by_user_id of table onboarding_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint onboarding_tasks_completed_by_user_id_foreign on table onboarding_tasks",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint onboarding_tasks_completed_by_user_id_foreign on table onboarding_tasks",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint onboarding_tasks_onboarding_case_id_foreign on table onboarding_tasks",
+    "reference": "column id of table onboarding_cases",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint onboarding_tasks_onboarding_case_id_foreign on table onboarding_tasks",
+    "reference": "column onboarding_case_id of table onboarding_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint onboarding_tasks_onboarding_case_id_foreign on table onboarding_tasks",
+    "reference": "index onboarding_cases_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint onboarding_tasks_onboarding_case_id_task_key_unique on table onboarding_tasks",
+    "reference": "column onboarding_case_id of table onboarding_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint onboarding_tasks_onboarding_case_id_task_key_unique on table onboarding_tasks",
+    "reference": "column task_key of table onboarding_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint onboarding_tasks_owner_department_id_foreign on table onboarding_tasks",
+    "reference": "column id of table departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint onboarding_tasks_owner_department_id_foreign on table onboarding_tasks",
+    "reference": "column owner_department_id of table onboarding_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint onboarding_tasks_owner_department_id_foreign on table onboarding_tasks",
+    "reference": "index departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint onboarding_tasks_pkey on table onboarding_tasks",
+    "reference": "column id of table onboarding_tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_events_evidence_ref_check on table legacy_custody.operation_events",
+    "reference": "column evidence_ref of table legacy_custody.operation_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_events_evidence_ref_check on table legacy_custody.operation_events",
+    "reference": "column evidence_ref of table legacy_custody.operation_events",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operation_events_fence_no_check on table legacy_custody.operation_events",
+    "reference": "column fence_no of table legacy_custody.operation_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_events_fence_no_check on table legacy_custody.operation_events",
+    "reference": "column fence_no of table legacy_custody.operation_events",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operation_events_operation_id_fkey on table legacy_custody.operation_events",
+    "reference": "column operation_id of table legacy_custody.operation_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_events_operation_id_fkey on table legacy_custody.operation_events",
+    "reference": "column operation_id of table legacy_custody.operations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operation_events_operation_id_fkey on table legacy_custody.operation_events",
+    "reference": "index legacy_custody.operations_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operation_events_pkey on table legacy_custody.operation_events",
+    "reference": "column event_id of table legacy_custody.operation_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_gates_check on table legacy_custody.operation_gates",
+    "reference": "column fence_no of table legacy_custody.operation_gates",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_gates_check on table legacy_custody.operation_gates",
+    "reference": "column fence_no of table legacy_custody.operation_gates",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operation_gates_check on table legacy_custody.operation_gates",
+    "reference": "column state of table legacy_custody.operation_gates",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_gates_check on table legacy_custody.operation_gates",
+    "reference": "column state of table legacy_custody.operation_gates",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operation_gates_lock_stub_check on table legacy_custody.operation_gates",
+    "reference": "column lock_stub of table legacy_custody.operation_gates",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_gates_lock_stub_check on table legacy_custody.operation_gates",
+    "reference": "column lock_stub of table legacy_custody.operation_gates",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operation_gates_operation_id_fkey on table legacy_custody.operation_gates",
+    "reference": "column operation_id of table legacy_custody.operation_gates",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_gates_operation_id_fkey on table legacy_custody.operation_gates",
+    "reference": "column operation_id of table legacy_custody.operations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operation_gates_operation_id_fkey on table legacy_custody.operation_gates",
+    "reference": "index legacy_custody.operations_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operation_gates_pkey on table legacy_custody.operation_gates",
+    "reference": "column operation_id of table legacy_custody.operation_gates",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_check on table legacy_custody.operation_items",
+    "reference": "column generation_id of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_check on table legacy_custody.operation_items",
+    "reference": "column generation_id of table legacy_custody.operation_items",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operation_items_check on table legacy_custody.operation_items",
+    "reference": "column locator of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_check on table legacy_custody.operation_items",
+    "reference": "column locator of table legacy_custody.operation_items",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operation_items_generation_id_key on table legacy_custody.operation_items",
+    "reference": "column generation_id of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_mime_type_check on table legacy_custody.operation_items",
+    "reference": "column mime_type of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_mime_type_check on table legacy_custody.operation_items",
+    "reference": "column mime_type of table legacy_custody.operation_items",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint operation_items_namespace_id_locator_key on table legacy_custody.operation_items",
+    "reference": "column locator of table legacy_custody.operation_items",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint operation_items_namespace_id_locator_key on table legacy_custody.operation_items",
+    "reference": "column namespace_id of table legacy_custody.operation_items",
+    "deptype": "a"
+  }
+]

@@ -1,0 +1,502 @@
+[
+  {
+    "name": "legacy_custody.operations.operations_namespace_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (namespace_id) REFERENCES legacy_custody.namespaces(namespace_id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.operations.operations_office_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (office_id) REFERENCES departments(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.operations.operations_operation_id_actor_user_id_office_id_correlation_key",
+    "convalidated": true,
+    "definition": "UNIQUE (operation_id, actor_user_id, office_id, correlation_id)"
+  },
+  {
+    "name": "legacy_custody.operations.operations_operation_id_namespace_id_epoch_key",
+    "convalidated": true,
+    "definition": "UNIQUE (operation_id, namespace_id, epoch)"
+  },
+  {
+    "name": "legacy_custody.operations.operations_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (operation_id)"
+  },
+  {
+    "name": "legacy_custody.operations.operations_service_identity_check",
+    "convalidated": true,
+    "definition": "CHECK (service_identity <> ''::text)"
+  },
+  {
+    "name": "legacy_custody.ownership_links.n03_command_complete",
+    "convalidated": true,
+    "definition": "TRIGGER DEFERRABLE INITIALLY DEFERRED"
+  },
+  {
+    "name": "legacy_custody.ownership_links.ownership_links_binding_document_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (binding_document_id) REFERENCES legacy_custody.bindings(document_id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.ownership_links.ownership_links_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (binding_document_id, linkable_type, source_id, relationship)"
+  },
+  {
+    "name": "legacy_custody.ownership_links.ownership_links_public_document_link_id_binding_document_i_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (public_document_link_id, binding_document_id, linkable_type, source_id, relationship, created_by_user_id) REFERENCES document_links(id, document_id, linkable_type, linkable_id, relationship, created_by_user_id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.ownership_links.ownership_links_public_document_link_id_key",
+    "convalidated": true,
+    "definition": "UNIQUE (public_document_link_id)"
+  },
+  {
+    "name": "legacy_custody.terminal_receipts.n03_command_complete",
+    "convalidated": true,
+    "definition": "TRIGGER DEFERRABLE INITIALLY DEFERRED"
+  },
+  {
+    "name": "legacy_custody.terminal_receipts.terminal_receipts_actor_user_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (actor_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.terminal_receipts.terminal_receipts_check",
+    "convalidated": true,
+    "definition": "CHECK (outcome = 'COMMITTED'::text AND fence_no = 1 OR outcome = 'ABORTED'::text AND fence_no = 2)"
+  },
+  {
+    "name": "legacy_custody.terminal_receipts.terminal_receipts_evidence_ref_check",
+    "convalidated": true,
+    "definition": "CHECK (evidence_ref <> ''::text)"
+  },
+  {
+    "name": "legacy_custody.terminal_receipts.terminal_receipts_manifest_digest_check",
+    "convalidated": true,
+    "definition": "CHECK (manifest_digest ~ '^[0-9a-f]{64}$'::text)"
+  },
+  {
+    "name": "legacy_custody.terminal_receipts.terminal_receipts_operation_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (operation_id) REFERENCES legacy_custody.operations(operation_id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.terminal_receipts.terminal_receipts_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (operation_id)"
+  },
+  {
+    "name": "legacy_custody.terminal_receipts.terminal_receipts_receipt_uuid_key",
+    "convalidated": true,
+    "definition": "UNIQUE (receipt_uuid)"
+  },
+  {
+    "name": "legacy_custody.terminal_receipts.terminal_receipts_service_identity_check",
+    "convalidated": true,
+    "definition": "CHECK (service_identity <> ''::text)"
+  },
+  {
+    "name": "legacy_custody.watermark_checkpoints.watermark_checkpoints_actor_user_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (actor_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.watermark_checkpoints.watermark_checkpoints_checkpoint_seq_check",
+    "convalidated": true,
+    "definition": "CHECK (checkpoint_seq > 0)"
+  },
+  {
+    "name": "legacy_custody.watermark_checkpoints.watermark_checkpoints_epoch_check",
+    "convalidated": true,
+    "definition": "CHECK (epoch > 0)"
+  },
+  {
+    "name": "legacy_custody.watermark_checkpoints.watermark_checkpoints_event_kind_check",
+    "convalidated": true,
+    "definition": "CHECK (event_kind = ANY (ARRAY['AUTHORITY_REVOKE'::text, 'OPERATION_COMMIT'::text, 'OPERATION_ABORT'::text, 'COMPENSATION_TOMBSTONE'::text, 'EPOCH_ADVANCE'::text]))"
+  },
+  {
+    "name": "legacy_custody.watermark_checkpoints.watermark_checkpoints_namespace_id_fkey",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (namespace_id) REFERENCES legacy_custody.namespaces(namespace_id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "legacy_custody.watermark_checkpoints.watermark_checkpoints_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (checkpoint_seq)"
+  },
+  {
+    "name": "legacy_custody.watermark_checkpoints.watermark_checkpoints_state_anchor_digest_check",
+    "convalidated": true,
+    "definition": "CHECK (state_anchor_digest ~ '^[0-9a-f]{64}$'::text)"
+  },
+  {
+    "name": "public.asset_assignments.asset_assignments_asset_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.asset_assignments.asset_assignments_created_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.asset_assignments.asset_assignments_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.asset_assignments.asset_assignments_employee_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.asset_assignments.asset_assignments_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.asset_disposals.asset_disposals_asset_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.asset_disposals.asset_disposals_decided_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (decided_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.asset_disposals.asset_disposals_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.asset_disposals.asset_disposals_recommended_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (recommended_by_user_id) REFERENCES users(id)"
+  },
+  {
+    "name": "public.asset_events.asset_events_actor_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (actor_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.asset_events.asset_events_asset_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.asset_events.asset_events_from_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (from_department_id) REFERENCES departments(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.asset_events.asset_events_from_employee_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (from_employee_id) REFERENCES employees(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.asset_events.asset_events_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.asset_events.asset_events_to_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (to_department_id) REFERENCES departments(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.asset_events.asset_events_to_employee_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (to_employee_id) REFERENCES employees(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.asset_inventory_scans.asset_inventory_scan_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (asset_inventory_session_id, asset_id)"
+  },
+  {
+    "name": "public.asset_inventory_scans.asset_inventory_scans_asset_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.asset_inventory_scans.asset_inventory_scans_asset_inventory_session_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (asset_inventory_session_id) REFERENCES asset_inventory_sessions(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.asset_inventory_scans.asset_inventory_scans_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.asset_inventory_scans.asset_inventory_scans_scanned_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (scanned_by_user_id) REFERENCES users(id)"
+  },
+  {
+    "name": "public.asset_inventory_sessions.asset_inventory_sessions_closed_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (closed_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.asset_inventory_sessions.asset_inventory_sessions_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.asset_inventory_sessions.asset_inventory_sessions_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.asset_inventory_sessions.asset_inventory_sessions_session_code_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (session_code)"
+  },
+  {
+    "name": "public.asset_inventory_sessions.asset_inventory_sessions_started_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (started_by_user_id) REFERENCES users(id)"
+  },
+  {
+    "name": "public.asset_maintenance_records.asset_maintenance_records_asset_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.asset_maintenance_records.asset_maintenance_records_created_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES users(id)"
+  },
+  {
+    "name": "public.asset_maintenance_records.asset_maintenance_records_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.asset_reconciliations.asset_reconciliations_asset_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.asset_reconciliations.asset_reconciliations_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.asset_reconciliations.asset_reconciliations_reconciled_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (reconciled_by_user_id) REFERENCES users(id)"
+  },
+  {
+    "name": "public.assets.assets_accountable_employee_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (accountable_employee_id) REFERENCES employees(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.assets.assets_current_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (current_department_id) REFERENCES departments(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.assets.assets_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.assets.assets_property_number_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (property_number)"
+  },
+  {
+    "name": "public.assets.assets_qr_value_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (qr_value)"
+  },
+  {
+    "name": "public.attendance_logs.attendance_logs_employee_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.attendance_logs.attendance_logs_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.audit_logs.audit_logs_actor_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (actor_department_id) REFERENCES departments(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.audit_logs.audit_logs_actor_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (actor_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.audit_logs.audit_logs_integration_client_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (integration_client_id) REFERENCES integration_clients(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.audit_logs.audit_logs_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.audit_logs.n03_audit_document",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (entity_id, custody_operation_id) REFERENCES documents(id, custody_operation_id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.audit_logs.n03_audit_marked",
+    "convalidated": true,
+    "definition": "CHECK (custody_operation_id IS NULL OR entity_id IS NOT NULL AND actor_user_id IS NOT NULL AND actor_department_id IS NOT NULL AND correlation_id IS NOT NULL AND entity_type IS NOT NULL AND entity_type::text = 'document'::text AND action::text = 'document.uploaded'::text AND outcome::text = 'allowed'::text AND integration_client_id IS NULL)"
+  },
+  {
+    "name": "public.audit_logs.n03_audit_tuple",
+    "convalidated": true,
+    "definition": "UNIQUE (id, custody_operation_id, entity_id)"
+  },
+  {
+    "name": "public.audit_logs.n03_public_complete",
+    "convalidated": true,
+    "definition": "TRIGGER DEFERRABLE INITIALLY DEFERRED"
+  },
+  {
+    "name": "public.audit_logs.ops009_close_audit_integrity",
+    "convalidated": true,
+    "definition": "TRIGGER DEFERRABLE INITIALLY DEFERRED"
+  },
+  {
+    "name": "public.calendar_events.calendar_events_created_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.calendar_events.calendar_events_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.calendar_events.calendar_events_event_key_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (event_key)"
+  },
+  {
+    "name": "public.calendar_events.calendar_events_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.calendar_events.calendar_events_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.correspondence_events.correspondence_events_actor_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (actor_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.correspondence_events.correspondence_events_correspondence_record_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (correspondence_record_id) REFERENCES correspondence_records(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.correspondence_events.correspondence_events_integration_client_actor_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (integration_client_actor_id) REFERENCES integration_clients(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.correspondence_events.correspondence_events_office_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (office_department_id) REFERENCES departments(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.correspondence_events.correspondence_events_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.correspondence_events.n03_correspondence_event_tuple",
+    "convalidated": true,
+    "definition": "UNIQUE (id, correspondence_record_id, actor_user_id, event, office_department_id, correlation_id, n03_municipal_actor)"
+  },
+  {
+    "name": "public.correspondence_records.correspondence_records_action_started_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (action_started_by_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.correspondence_records.correspondence_records_classified_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (classified_by_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.correspondence_records.correspondence_records_external_reference_no_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (external_reference_no)"
+  },
+  {
+    "name": "public.correspondence_records.correspondence_records_municipal_reference_no_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (municipal_reference_no)"
+  },
+  {
+    "name": "public.correspondence_records.correspondence_records_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.correspondence_records.correspondence_records_public_id_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (public_id)"
+  },
+  {
+    "name": "public.correspondence_records.correspondence_records_receiving_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (receiving_department_id) REFERENCES departments(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.correspondence_records.correspondence_records_receiving_integration_client_credential_",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (receiving_integration_client_credential_id) REFERENCES integration_client_credentials(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.correspondence_records.correspondence_records_receiving_integration_client_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (receiving_integration_client_id) REFERENCES integration_clients(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.correspondence_records.correspondence_records_registered_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (registered_by_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.correspondence_records.correspondence_records_routed_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (routed_by_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.correspondence_records.correspondence_records_workflow_transaction_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (workflow_transaction_id) REFERENCES transactions(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.correspondence_records.correspondence_records_workflow_transaction_id_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (workflow_transaction_id)"
+  },
+  {
+    "name": "public.correspondence_reference_counters.correspondence_reference_counters_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (year)"
+  }
+]

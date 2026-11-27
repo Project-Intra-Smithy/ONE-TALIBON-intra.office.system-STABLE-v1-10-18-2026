@@ -1,0 +1,28 @@
+[
+  {
+    "owner": "@bootstrap",
+    "schema": "*",
+    "defaclobjtype": "f",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ]
+    ]
+  },
+  {
+    "owner": "kirion_g1b_owner",
+    "schema": "*",
+    "defaclobjtype": "f",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_owner",
+        "EXECUTE",
+        false
+      ]
+    ]
+  }
+]

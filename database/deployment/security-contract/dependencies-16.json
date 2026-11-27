@@ -1,0 +1,502 @@
+[
+  {
+    "object": "function ops009_verify_close_audit()",
+    "reference": "language plpgsql",
+    "deptype": "n"
+  },
+  {
+    "object": "function ops009_verify_close_audit()",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "function planning_ppa_identifiers_immutable()",
+    "reference": "language plpgsql",
+    "deptype": "n"
+  },
+  {
+    "object": "function planning_ppa_identifiers_immutable()",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "function planning_reconciliation_immutable()",
+    "reference": "language plpgsql",
+    "deptype": "n"
+  },
+  {
+    "object": "function planning_reconciliation_immutable()",
+    "reference": "schema public",
+    "deptype": "n"
+  },
+  {
+    "object": "index asset_assignments_assignment_type_index",
+    "reference": "column assignment_type of table asset_assignments",
+    "deptype": "a"
+  },
+  {
+    "object": "index asset_assignments_pkey",
+    "reference": "constraint asset_assignments_pkey on table asset_assignments",
+    "deptype": "i"
+  },
+  {
+    "object": "index asset_assignments_returned_at_index",
+    "reference": "column returned_at of table asset_assignments",
+    "deptype": "a"
+  },
+  {
+    "object": "index asset_disposals_pkey",
+    "reference": "constraint asset_disposals_pkey on table asset_disposals",
+    "deptype": "i"
+  },
+  {
+    "object": "index asset_events_event_type_index",
+    "reference": "column event_type of table asset_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index asset_events_pkey",
+    "reference": "constraint asset_events_pkey on table asset_events",
+    "deptype": "i"
+  },
+  {
+    "object": "index asset_inventory_scan_unique",
+    "reference": "constraint asset_inventory_scan_unique on table asset_inventory_scans",
+    "deptype": "i"
+  },
+  {
+    "object": "index asset_inventory_scans_pkey",
+    "reference": "constraint asset_inventory_scans_pkey on table asset_inventory_scans",
+    "deptype": "i"
+  },
+  {
+    "object": "index asset_inventory_sessions_pkey",
+    "reference": "constraint asset_inventory_sessions_pkey on table asset_inventory_sessions",
+    "deptype": "i"
+  },
+  {
+    "object": "index asset_inventory_sessions_session_code_unique",
+    "reference": "constraint asset_inventory_sessions_session_code_unique on table asset_inventory_sessions",
+    "deptype": "i"
+  },
+  {
+    "object": "index asset_maintenance_records_pkey",
+    "reference": "constraint asset_maintenance_records_pkey on table asset_maintenance_records",
+    "deptype": "i"
+  },
+  {
+    "object": "index asset_reconciliations_pkey",
+    "reference": "constraint asset_reconciliations_pkey on table asset_reconciliations",
+    "deptype": "i"
+  },
+  {
+    "object": "index assets_category_index",
+    "reference": "column category of table assets",
+    "deptype": "a"
+  },
+  {
+    "object": "index assets_condition_index",
+    "reference": "column condition of table assets",
+    "deptype": "a"
+  },
+  {
+    "object": "index assets_pkey",
+    "reference": "constraint assets_pkey on table assets",
+    "deptype": "i"
+  },
+  {
+    "object": "index assets_property_number_unique",
+    "reference": "constraint assets_property_number_unique on table assets",
+    "deptype": "i"
+  },
+  {
+    "object": "index assets_qr_value_unique",
+    "reference": "constraint assets_qr_value_unique on table assets",
+    "deptype": "i"
+  },
+  {
+    "object": "index assets_reconciliation_status_index",
+    "reference": "column reconciliation_status of table assets",
+    "deptype": "a"
+  },
+  {
+    "object": "index assets_serial_number_index",
+    "reference": "column serial_number of table assets",
+    "deptype": "a"
+  },
+  {
+    "object": "index assets_status_index",
+    "reference": "column status of table assets",
+    "deptype": "a"
+  },
+  {
+    "object": "index assets_warranty_until_index",
+    "reference": "column warranty_until of table assets",
+    "deptype": "a"
+  },
+  {
+    "object": "index attendance_logs_employee_id_occurred_at_index",
+    "reference": "column employee_id of table attendance_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index attendance_logs_employee_id_occurred_at_index",
+    "reference": "column occurred_at of table attendance_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index attendance_logs_event_type_index",
+    "reference": "column event_type of table attendance_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index attendance_logs_external_reference_index",
+    "reference": "column external_reference of table attendance_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index attendance_logs_occurred_at_index",
+    "reference": "column occurred_at of table attendance_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index attendance_logs_pkey",
+    "reference": "constraint attendance_logs_pkey on table attendance_logs",
+    "deptype": "i"
+  },
+  {
+    "object": "index audit_logs_action_index",
+    "reference": "column action of table audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index audit_logs_correlation_id_index",
+    "reference": "column correlation_id of table audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index audit_logs_created_at_index",
+    "reference": "column created_at of table audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index audit_logs_entity_id_index",
+    "reference": "column entity_id of table audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index audit_logs_entity_type_index",
+    "reference": "column entity_type of table audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index audit_logs_outcome_index",
+    "reference": "column outcome of table audit_logs",
+    "deptype": "a"
+  },
+  {
+    "object": "index audit_logs_pkey",
+    "reference": "constraint audit_logs_pkey on table audit_logs",
+    "deptype": "i"
+  },
+  {
+    "object": "index calendar_events_department_id_starts_at_index",
+    "reference": "column department_id of table calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index calendar_events_department_id_starts_at_index",
+    "reference": "column starts_at of table calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index calendar_events_event_key_unique",
+    "reference": "constraint calendar_events_event_key_unique on table calendar_events",
+    "deptype": "i"
+  },
+  {
+    "object": "index calendar_events_event_type_index",
+    "reference": "column event_type of table calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index calendar_events_pkey",
+    "reference": "constraint calendar_events_pkey on table calendar_events",
+    "deptype": "i"
+  },
+  {
+    "object": "index calendar_events_priority_index",
+    "reference": "column priority of table calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index calendar_events_scope_index",
+    "reference": "column scope of table calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index calendar_events_source_domain_index",
+    "reference": "column source_domain of table calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index calendar_events_source_domain_source_id_index",
+    "reference": "column source_domain of table calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index calendar_events_source_domain_source_id_index",
+    "reference": "column source_id of table calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index calendar_events_starts_at_index",
+    "reference": "column starts_at of table calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index calendar_events_status_index",
+    "reference": "column status of table calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index calendar_events_user_id_starts_at_index",
+    "reference": "column starts_at of table calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index calendar_events_user_id_starts_at_index",
+    "reference": "column user_id of table calendar_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index correspondence_events_correlation_id_index",
+    "reference": "column correlation_id of table correspondence_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index correspondence_events_correspondence_record_id_occurred_at_inde",
+    "reference": "column correspondence_record_id of table correspondence_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index correspondence_events_correspondence_record_id_occurred_at_inde",
+    "reference": "column occurred_at of table correspondence_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index correspondence_events_event_index",
+    "reference": "column event of table correspondence_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index correspondence_events_occurred_at_index",
+    "reference": "column occurred_at of table correspondence_events",
+    "deptype": "a"
+  },
+  {
+    "object": "index correspondence_events_pkey",
+    "reference": "constraint correspondence_events_pkey on table correspondence_events",
+    "deptype": "i"
+  },
+  {
+    "object": "index correspondence_records_classification_index",
+    "reference": "column classification of table correspondence_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index correspondence_records_external_reference_no_unique",
+    "reference": "constraint correspondence_records_external_reference_no_unique on table correspondence_records",
+    "deptype": "i"
+  },
+  {
+    "object": "index correspondence_records_lifecycle_state_index",
+    "reference": "column lifecycle_state of table correspondence_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index correspondence_records_municipal_reference_no_unique",
+    "reference": "constraint correspondence_records_municipal_reference_no_unique on table correspondence_records",
+    "deptype": "i"
+  },
+  {
+    "object": "index correspondence_records_originating_external_reference_index",
+    "reference": "column originating_external_reference of table correspondence_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index correspondence_records_pkey",
+    "reference": "constraint correspondence_records_pkey on table correspondence_records",
+    "deptype": "i"
+  },
+  {
+    "object": "index correspondence_records_public_id_unique",
+    "reference": "constraint correspondence_records_public_id_unique on table correspondence_records",
+    "deptype": "i"
+  },
+  {
+    "object": "index correspondence_records_received_at_index",
+    "reference": "column received_at of table correspondence_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index correspondence_records_receiving_department_id_lifecycle_state_",
+    "reference": "column lifecycle_state of table correspondence_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index correspondence_records_receiving_department_id_lifecycle_state_",
+    "reference": "column receiving_department_id of table correspondence_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index correspondence_records_receiving_integration_client_id_lifecycl",
+    "reference": "column lifecycle_state of table correspondence_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index correspondence_records_receiving_integration_client_id_lifecycl",
+    "reference": "column receiving_integration_client_id of table correspondence_records",
+    "deptype": "a"
+  },
+  {
+    "object": "index correspondence_records_workflow_transaction_id_unique",
+    "reference": "constraint correspondence_records_workflow_transaction_id_unique on table correspondence_records",
+    "deptype": "i"
+  },
+  {
+    "object": "index correspondence_reference_counters_pkey",
+    "reference": "constraint correspondence_reference_counters_pkey on table correspondence_reference_counters",
+    "deptype": "i"
+  },
+  {
+    "object": "index departments_branch_index",
+    "reference": "column branch of table departments",
+    "deptype": "a"
+  },
+  {
+    "object": "index departments_code_unique",
+    "reference": "constraint departments_code_unique on table departments",
+    "deptype": "i"
+  },
+  {
+    "object": "index departments_is_active_index",
+    "reference": "column is_active of table departments",
+    "deptype": "a"
+  },
+  {
+    "object": "index departments_is_routable_index",
+    "reference": "column is_routable of table departments",
+    "deptype": "a"
+  },
+  {
+    "object": "index departments_office_type_index",
+    "reference": "column office_type of table departments",
+    "deptype": "a"
+  },
+  {
+    "object": "index departments_pkey",
+    "reference": "constraint departments_pkey on table departments",
+    "deptype": "i"
+  },
+  {
+    "object": "index departments_sort_order_index",
+    "reference": "column sort_order of table departments",
+    "deptype": "a"
+  },
+  {
+    "object": "index deployment_control.installations_installation_id_key",
+    "reference": "constraint installations_installation_id_key on table deployment_control.installations",
+    "deptype": "i"
+  },
+  {
+    "object": "index deployment_control.installations_pkey",
+    "reference": "constraint installations_pkey on table deployment_control.installations",
+    "deptype": "i"
+  },
+  {
+    "object": "index designated_planning_staff_pkey",
+    "reference": "constraint designated_planning_staff_pkey on table designated_planning_staff",
+    "deptype": "i"
+  },
+  {
+    "object": "index designated_planning_staff_user_id_revoked_at_index",
+    "reference": "column revoked_at of table designated_planning_staff",
+    "deptype": "a"
+  },
+  {
+    "object": "index designated_planning_staff_user_id_revoked_at_index",
+    "reference": "column user_id of table designated_planning_staff",
+    "deptype": "a"
+  },
+  {
+    "object": "index development_plans_code_unique",
+    "reference": "constraint development_plans_code_unique on table development_plans",
+    "deptype": "i"
+  },
+  {
+    "object": "index development_plans_pkey",
+    "reference": "constraint development_plans_pkey on table development_plans",
+    "deptype": "i"
+  },
+  {
+    "object": "index development_plans_plan_key_unique",
+    "reference": "constraint development_plans_plan_key_unique on table development_plans",
+    "deptype": "i"
+  },
+  {
+    "object": "index document_links_linkable_type_linkable_id_index",
+    "reference": "column linkable_id of table document_links",
+    "deptype": "a"
+  },
+  {
+    "object": "index document_links_linkable_type_linkable_id_index",
+    "reference": "column linkable_type of table document_links",
+    "deptype": "a"
+  },
+  {
+    "object": "index document_links_pkey",
+    "reference": "constraint document_links_pkey on table document_links",
+    "deptype": "i"
+  },
+  {
+    "object": "index document_links_unique",
+    "reference": "constraint document_links_unique on table document_links",
+    "deptype": "i"
+  },
+  {
+    "object": "index documents_classification_index",
+    "reference": "column classification of table documents",
+    "deptype": "a"
+  },
+  {
+    "object": "index documents_document_type_index",
+    "reference": "column document_type of table documents",
+    "deptype": "a"
+  },
+  {
+    "object": "index documents_pkey",
+    "reference": "constraint documents_pkey on table documents",
+    "deptype": "i"
+  },
+  {
+    "object": "index documents_public_id_unique",
+    "reference": "constraint documents_public_id_unique on table documents",
+    "deptype": "i"
+  },
+  {
+    "object": "index dtr_daily_employee_date_unique",
+    "reference": "constraint dtr_daily_employee_date_unique on table dtr_daily_summaries",
+    "deptype": "i"
+  },
+  {
+    "object": "index dtr_daily_summaries_employee_id_work_date_index",
+    "reference": "column employee_id of table dtr_daily_summaries",
+    "deptype": "a"
+  },
+  {
+    "object": "index dtr_daily_summaries_employee_id_work_date_index",
+    "reference": "column work_date of table dtr_daily_summaries",
+    "deptype": "a"
+  }
+]

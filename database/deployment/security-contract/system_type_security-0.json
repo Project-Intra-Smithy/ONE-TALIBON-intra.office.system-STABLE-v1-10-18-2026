@@ -1,0 +1,1802 @@
+[
+  {
+    "name": "information_schema.__pg_foreign_data_wrappers",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.__pg_foreign_servers",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.__pg_foreign_table_columns",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.__pg_foreign_tables",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.__pg_user_mappings",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._administrable_role_authorizations",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._applicable_roles",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._attributes",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._cardinal_number",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._character_data",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._character_sets",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._check_constraint_routine_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._check_constraints",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._collation_character_set_applicability",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._collations",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._column_column_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._column_domain_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._column_options",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._column_privileges",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._column_udt_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._columns",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._constraint_column_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._constraint_table_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._data_type_privileges",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._domain_constraints",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._domain_udt_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._domains",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._element_types",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._enabled_roles",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._foreign_data_wrapper_options",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._foreign_data_wrappers",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._foreign_server_options",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._foreign_servers",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._foreign_table_options",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._foreign_tables",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._information_schema_catalog_name",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._key_column_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._parameters",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._pg_foreign_data_wrappers",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._pg_foreign_servers",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._pg_foreign_table_columns",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._pg_foreign_tables",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._pg_user_mappings",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._referential_constraints",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._role_column_grants",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._role_routine_grants",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._role_table_grants",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._role_udt_grants",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._role_usage_grants",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._routine_column_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._routine_privileges",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._routine_routine_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._routine_sequence_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._routine_table_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._routines",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._schemata",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._sequences",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._sql_features",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._sql_identifier",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._sql_implementation_info",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._sql_parts",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._sql_sizing",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._table_constraints",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._table_privileges",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._tables",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._time_stamp",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._transforms",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._triggered_update_columns",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._triggers",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._udt_privileges",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._usage_privileges",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._user_defined_types",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._user_mapping_options",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._user_mappings",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._view_column_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._view_routine_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._view_table_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._views",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema._yes_or_no",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.administrable_role_authorizations",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.applicable_roles",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.attributes",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.cardinal_number",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.character_data",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.character_sets",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.check_constraint_routine_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.check_constraints",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.collation_character_set_applicability",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.collations",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.column_column_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.column_domain_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.column_options",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.column_privileges",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.column_udt_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.columns",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.constraint_column_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.constraint_table_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.data_type_privileges",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.domain_constraints",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "information_schema.domain_udt_usage",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  }
+]

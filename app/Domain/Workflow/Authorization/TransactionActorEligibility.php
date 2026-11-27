@@ -26,6 +26,7 @@ final class TransactionActorEligibility
         $user = User::query()
             ->whereKey($claimed->getKey())
             ->where('is_active', true)
+            ->where('account_status', 'active')
             ->first(['id', 'role', 'is_active']);
 
         if (! $user) {
@@ -36,6 +37,7 @@ final class TransactionActorEligibility
             ->with('department:id,code,is_active')
             ->where('user_id', $user->id)
             ->where('employment_status', 'active')
+            ->whereNull('separation_date')
             ->first(['id', 'user_id', 'department_id', 'employment_status']);
 
         if (! $employee || ! $employee->department || ! $employee->department->is_active) {

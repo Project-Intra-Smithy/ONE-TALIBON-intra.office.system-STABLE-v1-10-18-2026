@@ -1,6 +1,6 @@
 import type { PPARecord } from '../../data/municipal/ppas.types';
 
-export default function PPASummary({ records }: { records: PPARecord[] }) {
+export default function PPASummary({ records }: { records: Array<Pick<PPARecord,'relatedProjectCount'>&{status:string}> }) {
     const ongoing = records.filter((item) => item.status === 'Ongoing').length;
     const completed = records.filter((item) => item.status === 'Completed').length;
     const procurement = records.filter((item) => item.status === 'For Procurement').length;

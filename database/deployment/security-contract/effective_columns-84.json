@@ -1,0 +1,502 @@
+[
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movement_tasks.owner_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movement_tasks.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movement_tasks.task_key",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movement_tasks.title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movement_tasks.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movements.applied_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movements.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movements.effective_date",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movements.employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movements.from_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movements.from_position_title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movements.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movements.initiated_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movements.metadata",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movements.movement_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movements.new_supervisor_employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movements.previous_supervisor_employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movements.reason",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movements.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movements.to_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movements.to_position_title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employee_movements.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.appointment_date",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.biometric_external_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.contract_end_date",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.date_of_birth",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.emergency_contact_name",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.emergency_contact_phone",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.emergency_contact_relationship",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.employee_number",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.employment_start_date",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.employment_status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.employment_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.full_name",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.gsis_number",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.home_address",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.mobile_number",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.pagibig_number",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.personal_email",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.philhealth_number",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.position_title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.separation_date",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.supervisor_employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.tin_number",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.employees.work_email",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.initial_admin_bootstraps.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.initial_admin_bootstraps.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.initial_admin_bootstraps.user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_client_credentials.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_client_credentials.expires_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_client_credentials.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_client_credentials.integration_client_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_client_credentials.issued_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_client_credentials.issued_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_client_credentials.last_used_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_client_credentials.public_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_client_credentials.revoked_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_client_credentials.scopes",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_client_credentials.secret_hash",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_client_credentials.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_clients.contact_email",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_clients.contact_name",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_clients.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_clients.created_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_clients.description",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_clients.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_clients.is_active",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_clients.name",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_clients.public_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_clients.requests_per_minute",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_clients.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_idempotency_records.completed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_idempotency_records.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_idempotency_records.execution_attempts",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_idempotency_records.failed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_idempotency_records.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_idempotency_records.idempotency_key_hash",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_idempotency_records.integration_client_credential_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_idempotency_records.integration_client_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_idempotency_records.operation",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_idempotency_records.processing_token",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_idempotency_records.request_fingerprint",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_idempotency_records.response_body",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_idempotency_records.response_status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_idempotency_records.started_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_idempotency_records.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_idempotency_records.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_proof_writes.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_proof_writes.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_proof_writes.integration_client_credential_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_proof_writes.integration_client_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_proof_writes.operation",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_proof_writes.public_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_proof_writes.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.integration_proof_writes.value",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  }
+]

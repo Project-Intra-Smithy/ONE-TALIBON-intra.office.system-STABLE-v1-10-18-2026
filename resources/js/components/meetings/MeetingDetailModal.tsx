@@ -28,7 +28,7 @@ export default function MeetingDetailModal({ meeting, onClose }: { meeting: Muni
                 <header className="flex items-start justify-between gap-3 border-b border-[var(--municipal-border)] px-3 py-2.5">
                     <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-[10px] font-bold uppercase tracking-wide text-[var(--municipal-brand)]">{meeting.id}</span>
+                            <span className="text-[10px] font-bold uppercase tracking-wide text-[var(--brand-ink)]">{meeting.id}</span>
                             <span className={'whitespace-nowrap rounded-full border px-2 py-1 text-[9px] font-bold uppercase leading-none ' + statusTone[meeting.status]}>{meeting.status}</span>
                         </div>
                         <h2 id="meeting-detail-title" className="mt-1 text-base font-bold text-[var(--municipal-text)]">{meeting.title}</h2>

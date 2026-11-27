@@ -1,0 +1,1277 @@
+[
+  {
+    "name": "public.audit_logs_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.audit_logs_outcome_index.outcome",
+    "type": "character varying(20)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.audit_logs_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.action_url",
+    "type": "character varying(1024)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.all_day",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "false",
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.created_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.created_by_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.department_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.description",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.ends_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.event_key",
+    "type": "character varying(190)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.event_type",
+    "type": "character varying(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('calendar_events_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.location",
+    "type": "character varying(255)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.priority",
+    "type": "character varying(32)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'normal'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.scope",
+    "type": "character varying(32)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'department'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.source_domain",
+    "type": "character varying(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.source_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.source_type",
+    "type": "character varying(160)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.starts_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.status",
+    "type": "character varying(32)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'scheduled'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.title",
+    "type": "character varying(255)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.updated_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events.user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events_department_id_starts_at_index.department_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events_department_id_starts_at_index.starts_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events_event_key_unique.event_key",
+    "type": "character varying(190)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events_event_type_index.event_type",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events_priority_index.priority",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events_scope_index.scope",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events_source_domain_index.source_domain",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events_source_domain_source_id_index.source_domain",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events_source_domain_source_id_index.source_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events_starts_at_index.starts_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events_status_index.status",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events_user_id_starts_at_index.starts_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.calendar_events_user_id_starts_at_index.user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_events.actor_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_events.correlation_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_events.correspondence_record_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_events.event",
+    "type": "character varying(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_events.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('correspondence_events_id_seq'::regclass)",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_events.integration_client_actor_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_events.metadata",
+    "type": "json",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_events.n03_municipal_actor",
+    "type": "boolean",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "s",
+    "default_expression": "(integration_client_actor_id IS NULL)",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_events.new_lifecycle_state",
+    "type": "character varying(32)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_events.occurred_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_events.office_department_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_events.previous_lifecycle_state",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_events.remarks",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_events_correlation_id_index.correlation_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_events_correspondence_record_id_occurred_at_inde.correspondence_record_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_events_correspondence_record_id_occurred_at_inde.occurred_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_events_event_index.event",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_events_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_events_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_events_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_events_occurred_at_index.occurred_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_events_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_records.action_started_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "UPDATE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records.action_started_by_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "UPDATE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records.channel",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_records.classification",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "UPDATE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records.classified_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "UPDATE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records.classified_by_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "UPDATE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records.created_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records.external_reference_no",
+    "type": "character varying(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('correspondence_records_id_seq'::regclass)",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records.lifecycle_state",
+    "type": "character varying(32)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "UPDATE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records.municipal_reference_no",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "UPDATE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records.originating_external_reference",
+    "type": "character varying(128)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_records.public_id",
+    "type": "uuid",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records.received_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_records.received_source_identity",
+    "type": "character varying(128)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_records.receiving_department_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "UPDATE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records.receiving_integration_client_credential_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_records.receiving_integration_client_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_records.registered_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "UPDATE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records.registered_by_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "UPDATE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records.routed_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "UPDATE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records.routed_by_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "UPDATE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records.sender_contact",
+    "type": "json",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_records.sender_name",
+    "type": "character varying(255)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_records.sender_organization",
+    "type": "character varying(255)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_records.source",
+    "type": "character varying(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_records.subject",
+    "type": "character varying(255)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records.summary",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records.updated_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "UPDATE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records.workflow_transaction_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "UPDATE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.correspondence_records_classification_index.classification",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_records_external_reference_no_unique.external_reference_no",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_records_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_records_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_records_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_records_lifecycle_state_index.lifecycle_state",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.correspondence_records_municipal_reference_no_unique.municipal_reference_no",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  }
+]

@@ -1,0 +1,502 @@
+[
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.leave_types.code",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.leave_types.created_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.leave_types.entitlement_label",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.leave_types.id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.leave_types.is_active",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.leave_types.name",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.leave_types.tracks_balance",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.leave_types.updated_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_agenda_items.created_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_agenda_items.description",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_agenda_items.disposition",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_agenda_items.id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_agenda_items.legislative_record_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_agenda_items.legislative_session_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_agenda_items.sequence_no",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_agenda_items.status",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_agenda_items.title",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_agenda_items.transaction_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_agenda_items.updated_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_records.approved_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_records.created_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_records.created_by_user_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_records.id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_records.issuing_body",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_records.keywords",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_records.record_number",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_records.record_type",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_records.source_file_name",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_records.source_path",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_records.status",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_records.summary",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_records.title",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_records.updated_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_records.year",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_sessions.created_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_sessions.created_by_user_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_sessions.id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_sessions.location",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_sessions.notes",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_sessions.scheduled_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_sessions.session_code",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_sessions.session_type",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_sessions.status",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_sessions.title",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.legislative_sessions.updated_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memo_recipients.acknowledged_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memo_recipients.delivered_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memo_recipients.id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memo_recipients.memorandum_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memo_recipients.user_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memo_recipients.viewed_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memoranda.audience_type",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memoranda.body",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memoranda.classification",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memoranda.created_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memoranda.expires_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memoranda.id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memoranda.issued_by_department_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memoranda.issued_by_user_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memoranda.memo_number",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memoranda.published_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memoranda.requires_acknowledgement",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memoranda.status",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memoranda.title",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.memoranda.updated_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.migrations.batch",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.migrations.id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.migrations.migration",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_cases.account_deactivated_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_cases.archived_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_cases.completed_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_cases.completed_by_user_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_cases.created_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_cases.effective_date",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_cases.employee_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_cases.id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_cases.initiated_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_cases.initiated_by_user_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_cases.reason",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_cases.separation_type",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_cases.status",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_cases.updated_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_tasks.completed_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_tasks.completed_by_user_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_tasks.created_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_tasks.due_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_tasks.id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_tasks.is_required",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_tasks.notes",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_tasks.offboarding_case_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_tasks.owner_department_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_tasks.status",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_tasks.task_key",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_tasks.title",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.offboarding_tasks.updated_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.onboarding_cases.appointment_reference",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.onboarding_cases.completed_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.onboarding_cases.completed_by_user_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.onboarding_cases.created_at",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  },
+  {
+    "rolname": "kirion_g1b_owner",
+    "name": "public.onboarding_cases.employee_id",
+    "rights": "{t,t,t,t,t,t,t,t}"
+  }
+]

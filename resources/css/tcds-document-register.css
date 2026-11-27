@@ -1,0 +1,41 @@
+@layer components {
+  @container (width < 960px) {
+    .document-register thead { display: none; }
+    .document-register table,
+    .document-register tbody,
+    .document-register tr,
+    .document-register th,
+    .document-register td { display: block; width: 100%; }
+    .document-register tbody {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+      gap: 1rem;
+      padding: 1rem;
+    }
+    .document-register tr {
+      padding: 1rem;
+      border: 1px solid var(--border-default);
+      border-radius: .75rem;
+      background: var(--surface-card);
+    }
+    .document-register tbody th { padding: 0 0 .75rem !important; border: 0; text-align: start; }
+    .document-register td {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .75rem;
+      padding: .4rem 0 !important;
+      border: 0;
+      text-align: end;
+      white-space: normal !important;
+    }
+    .document-register td[data-label]::before {
+      content: attr(data-label);
+      color: var(--ink-secondary);
+      font-size: .75rem;
+      font-weight: 600;
+      text-align: start;
+      flex-shrink: 0;
+    }
+  }
+}

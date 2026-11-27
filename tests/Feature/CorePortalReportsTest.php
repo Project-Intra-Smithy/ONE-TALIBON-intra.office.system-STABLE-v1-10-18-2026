@@ -188,6 +188,7 @@ class CorePortalReportsTest extends TestCase
             'created_at' => now()->subHour(),
         ]);
         $document = Document::query()->create(['title' => 'Route evidence']);
+        DB::table('documents')->where('id', $document->id)->update(['security_domain' => 'LEGACY_CTW']);
         DocumentLink::query()->create([
             'document_id' => $document->id, 'linkable_type' => $submitted->getMorphClass(),
             'linkable_id' => $submitted->id, 'relationship' => 'route_evidence', 'created_by_user_id' => $head->id,
@@ -200,11 +201,55 @@ class CorePortalReportsTest extends TestCase
         $this->assertFalse($rows->contains('id', 'workflow:'.$submitted->id));
         $this->assertSame('MOVE-FROM', $routeRow['fromOffice']);
         $this->assertSame('MOVE-TO', $routeRow['toOffice']);
-        $this->assertSame('Yes', $routeRow['hasEvidence']);
+        $this->assertArrayNotHasKey('hasEvidence', $routeRow);
+        $this->assertArrayNotHasKey('hasEvidence', $forwardRow);
+        $catalog = collect($props['catalog'])->firstWhere('key', 'document-movement');
+        $this->assertNotContains('hasEvidence', array_column($catalog['columns'], 'key'));
+        $csv = $this->get('/reports/export/document-movement')->assertOk()->streamedContent();
+        $filteredPath = '?classification=internal&office='.$origin->id;
+        $filtered = $this->props($this->get('/reports'.$filteredPath.'&report=document-movement')->assertOk());
+        $filteredCsv = $this->get('/reports/export/document-movement'.$filteredPath)->assertOk()->streamedContent();
+        $header = str_getcsv(explode("\n", $csv)[0]);
+        $this->assertNotContains('Evidence', $header);
         $this->assertSame('MOVE-TO', $forwardRow['fromOffice']);
         $this->assertSame('MOVE-FINAL', $forwardRow['toOffice']);
         $this->assertSame('Later forward.', $forwardRow['remarks']);
         $this->assertSame($head->name, $forwardRow['actor']);
+        // Internal predicate proof only, not an independently granted HTTP field.
+        $movement = app(\App\Services\Reports\DocumentMovementReportQuery::class);
+        $this->assertTrue($movement->eligibleEventEvidence($head, 'correspondence', $route->id));
+        $this->assertFalse($movement->eligibleEventEvidence($head, 'workflow', $forward->id));
+        $document->links()->delete();
+        $this->assertFalse($movement->eligibleEventEvidence($head, 'correspondence', $route->id));
+        $plan = Document::query()->create(['title' => 'R3 report quarantined marker']);
+        DB::table('documents')->where('id', $plan->id)->update(['security_domain' => 'EVER_PLAN']);
+        DB::statement('ALTER TABLE document_links DISABLE TRIGGER kirion_plan_generic_link_guard_trigger');
+        try {
+            foreach ([$route, $submitted, $forward] as $event) {
+                DocumentLink::query()->create([
+                    'document_id' => $plan->id, 'linkable_type' => $event->getMorphClass(),
+                    'linkable_id' => $event->id, 'relationship' => 'synthetic_corrupt_evidence',
+                ]);
+            }
+        } finally {
+            DB::statement('ALTER TABLE document_links ENABLE TRIGGER kirion_plan_generic_link_guard_trigger');
+        }
+        $this->assertFalse($movement->eligibleEventEvidence($head, 'correspondence', $route->id));
+        $this->assertFalse($movement->eligibleEventEvidence($head, 'workflow', $forward->id));
+        $after = $this->props($this->get('/reports?report=document-movement')->assertOk());
+        $this->assertSame($props['result']['data'], $after['result']['data']);
+        $this->assertSame($props['result']['total'], $after['result']['total']);
+        $this->assertSame($csv, $this->get('/reports/export/document-movement')->assertOk()->streamedContent());
+        $afterFiltered = $this->props($this->get('/reports'.$filteredPath.'&report=document-movement')->assertOk());
+        $this->assertSame($filtered['result']['data'], $afterFiltered['result']['data']);
+        $this->assertSame($filtered['result']['total'], $afterFiltered['result']['total']);
+        $this->assertSame($filteredCsv, $this->get('/reports/export/document-movement'.$filteredPath)->assertOk()->streamedContent());
+        DocumentLink::query()->create([
+            'document_id' => $document->id, 'linkable_type' => $submitted->getMorphClass(),
+            'linkable_id' => $submitted->id, 'relationship' => 'route_evidence',
+        ]);
+        $this->assertTrue($movement->eligibleEventEvidence($head, 'correspondence', $route->id));
+        $this->assertFalse($movement->eligibleEventEvidence($head, 'workflow', $forward->id));
     }
 
     public function test_document_movement_route_fallback_and_equal_time_order_match_detail_trace(): void

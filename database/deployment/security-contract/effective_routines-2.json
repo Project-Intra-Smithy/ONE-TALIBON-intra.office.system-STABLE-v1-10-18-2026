@@ -1,0 +1,98 @@
+[
+  {
+    "rolname": "n03_stage",
+    "name": "legacy_custody.command_complete()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "legacy_custody.expected_links(uuid)",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "legacy_custody.g3_extensions_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "legacy_custody.k2_compensation_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "legacy_custody.lock_pending(uuid,bigint,text)",
+    "execute": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "legacy_custody.private_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "legacy_custody.public_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "legacy_custody.reservation_complete()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "legacy_custody.zero_artifacts(uuid)",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "ops009_deny_exception_mutation()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "ops009_guard_close_notice()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "ops009_guard_delivery_action()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "ops009_guard_delivery_exception()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "ops009_verify_close_audit()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "planning_ppa_identifiers_immutable()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "planning_reconciliation_immutable()",
+    "execute": false,
+    "grantable": false
+  }
+]

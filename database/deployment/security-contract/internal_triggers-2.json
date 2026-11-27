@@ -1,0 +1,1002 @@
+[
+  {
+    "relation": "public.correspondence_events",
+    "constraint_relation": "correspondence_events",
+    "conname": "correspondence_events_integration_client_actor_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_events",
+    "constraint_relation": "correspondence_events",
+    "conname": "correspondence_events_integration_client_actor_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_events",
+    "constraint_relation": "correspondence_events",
+    "conname": "correspondence_events_office_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_events",
+    "constraint_relation": "correspondence_events",
+    "conname": "correspondence_events_office_department_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_events",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_correspondence_event_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_events",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_correspondence_event_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_events",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_correspondence_event_id_correspondence_id__fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_events",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_correspondence_event_id_correspondence_id__fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "correspondence_events",
+    "conname": "correspondence_events_correspondence_record_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "correspondence_events",
+    "conname": "correspondence_events_correspondence_record_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "correspondence_records",
+    "conname": "correspondence_records_action_started_by_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "correspondence_records",
+    "conname": "correspondence_records_action_started_by_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "correspondence_records",
+    "conname": "correspondence_records_classified_by_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "correspondence_records",
+    "conname": "correspondence_records_classified_by_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "correspondence_records",
+    "conname": "correspondence_records_receiving_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "correspondence_records",
+    "conname": "correspondence_records_receiving_department_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "correspondence_records",
+    "conname": "correspondence_records_receiving_integration_client_credential_",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "correspondence_records",
+    "conname": "correspondence_records_receiving_integration_client_credential_",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "correspondence_records",
+    "conname": "correspondence_records_receiving_integration_client_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "correspondence_records",
+    "conname": "correspondence_records_receiving_integration_client_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "correspondence_records",
+    "conname": "correspondence_records_registered_by_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "correspondence_records",
+    "conname": "correspondence_records_registered_by_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "correspondence_records",
+    "conname": "correspondence_records_routed_by_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "correspondence_records",
+    "conname": "correspondence_records_routed_by_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "correspondence_records",
+    "conname": "correspondence_records_workflow_transaction_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "correspondence_records",
+    "conname": "correspondence_records_workflow_transaction_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_correspondence_record_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_correspondence_record_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_correspondence_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.correspondence_records",
+    "constraint_relation": "legacy_custody.command_results",
+    "conname": "command_results_correspondence_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "asset_assignments",
+    "conname": "asset_assignments_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "asset_assignments",
+    "conname": "asset_assignments_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "asset_events",
+    "conname": "asset_events_from_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "asset_events",
+    "conname": "asset_events_from_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "asset_events",
+    "conname": "asset_events_to_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "asset_events",
+    "conname": "asset_events_to_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "asset_inventory_sessions",
+    "conname": "asset_inventory_sessions_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "asset_inventory_sessions",
+    "conname": "asset_inventory_sessions_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "assets",
+    "conname": "assets_current_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "assets",
+    "conname": "assets_current_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "audit_logs",
+    "conname": "audit_logs_actor_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "audit_logs",
+    "conname": "audit_logs_actor_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "calendar_events",
+    "conname": "calendar_events_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "calendar_events",
+    "conname": "calendar_events_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "correspondence_events",
+    "conname": "correspondence_events_office_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "correspondence_events",
+    "conname": "correspondence_events_office_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "correspondence_records",
+    "conname": "correspondence_records_receiving_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "correspondence_records",
+    "conname": "correspondence_records_receiving_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "departments",
+    "conname": "departments_parent_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "departments",
+    "conname": "departments_parent_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "departments",
+    "conname": "departments_parent_department_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "departments",
+    "conname": "departments_parent_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "designated_planning_staff",
+    "conname": "designated_planning_staff_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "designated_planning_staff",
+    "conname": "designated_planning_staff_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_cascade_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "development_plans",
+    "conname": "development_plans_lead_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "development_plans",
+    "conname": "development_plans_lead_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "documents",
+    "conname": "documents_owner_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "documents",
+    "conname": "documents_owner_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "employee_movement_tasks",
+    "conname": "employee_movement_tasks_owner_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "employee_movement_tasks",
+    "conname": "employee_movement_tasks_owner_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "employee_movements",
+    "conname": "employee_movements_from_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "employee_movements",
+    "conname": "employee_movements_from_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "employee_movements",
+    "conname": "employee_movements_to_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "employee_movements",
+    "conname": "employee_movements_to_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "employees",
+    "conname": "employees_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "employees",
+    "conname": "employees_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_office_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "legacy_custody.classification_events",
+    "conname": "classification_events_office_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "legacy_custody.operations",
+    "conname": "operations_office_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "legacy_custody.operations",
+    "conname": "operations_office_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "memoranda",
+    "conname": "memoranda_issued_by_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "memoranda",
+    "conname": "memoranda_issued_by_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "offboarding_tasks",
+    "conname": "offboarding_tasks_owner_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "offboarding_tasks",
+    "conname": "offboarding_tasks_owner_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "onboarding_cases",
+    "conname": "onboarding_cases_target_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "onboarding_cases",
+    "conname": "onboarding_cases_target_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "onboarding_tasks",
+    "conname": "onboarding_tasks_owner_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "onboarding_tasks",
+    "conname": "onboarding_tasks_owner_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "operational_items",
+    "conname": "operational_items_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "operational_items",
+    "conname": "operational_items_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "ops009_origin_delivery_exception_actions",
+    "conname": "ops009_origin_delivery_exception_actio_actor_department_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "ops009_origin_delivery_exception_actions",
+    "conname": "ops009_origin_delivery_exception_actio_actor_department_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "ops009_origin_delivery_exceptions",
+    "conname": "ops009_origin_delivery_exceptions_origin_department_id_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "ops009_origin_delivery_exceptions",
+    "conname": "ops009_origin_delivery_exceptions_origin_department_id_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "planning_attachments",
+    "conname": "planning_attachments_owner_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "planning_attachments",
+    "conname": "planning_attachments_owner_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "planning_maps",
+    "conname": "planning_maps_lead_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "planning_maps",
+    "conname": "planning_maps_lead_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "platform_notifications",
+    "conname": "platform_notifications_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "platform_notifications",
+    "conname": "platform_notifications_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "ppa_records",
+    "conname": "ppa_records_implementing_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "ppa_records",
+    "conname": "ppa_records_implementing_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "staff_activation_invitations",
+    "conname": "staff_activation_invitations_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "staff_activation_invitations",
+    "conname": "staff_activation_invitations_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "tasks",
+    "conname": "tasks_owning_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "tasks",
+    "conname": "tasks_owning_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "transaction_events",
+    "conname": "transaction_events_from_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "transaction_events",
+    "conname": "transaction_events_from_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "transaction_events",
+    "conname": "transaction_events_to_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "transaction_events",
+    "conname": "transaction_events_to_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  }
+]

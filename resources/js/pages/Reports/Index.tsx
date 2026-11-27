@@ -3,6 +3,7 @@ import { ArrowRight, Download, FileBarChart, LoaderCircle, RotateCcw, Search } f
 import type { FormEvent, ReactNode } from 'react';
 import ProgressiveFilterBar from '../../components/filters/ProgressiveFilterBar';
 import PageHeader from '../../components/PageHeader';
+import { DateInput } from '../../components/ui';
 import AppLayout from '../../layouts/AppLayout';
 
 type Column = { key: string; label: string };
@@ -54,7 +55,7 @@ type Props = {
 };
 
 const headline = (value: string) => value.replaceAll('_', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
-const fieldClass = 'mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 dark:bg-[#142236] dark:text-slate-100 dark:border-slate-700';
+const fieldClass = 'mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 dark:bg-[var(--surface-card)] dark:text-[var(--ink-primary)] dark:border-[var(--border-control)]';
 const leadKeys: Record<string, string[]> = {
     'office-workload': ['office'],
     'transaction-aging': ['reference', 'title'],
@@ -109,8 +110,8 @@ export default function ReportsIndex({ catalog, activeReport, filters, filterOpt
             <PageHeader eyebrow="Municipal operational reporting" title="Operational Reports" icon={FileBarChart}
                 description="Generated summaries and export views over authorized operational data. Use Records Register for authoritative individual records; this is not a separate archive."
                 aside={
-                <label className="block min-w-64 text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-slate-300 sm:text-xs">Report view
-                    <select value={activeReport} onChange={(event) => selectReport(event.target.value)} className="mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm normal-case tracking-normal text-slate-900 dark:bg-[#142236] dark:text-slate-100 dark:border-slate-700">
+                <label className="block min-w-64 text-xs font-bold uppercase tracking-wide text-[var(--ink-secondary)] sm:text-xs">Report view
+                    <select value={activeReport} onChange={(event) => selectReport(event.target.value)} className="mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm normal-case tracking-normal text-slate-900 dark:bg-[var(--surface-card)] dark:text-[var(--ink-primary)] dark:border-[var(--border-control)]">
                         {catalog.map((item) => <option key={item.key} value={item.key}>{item.label}</option>)}
                     </select>
                 </label>
@@ -119,17 +120,29 @@ export default function ReportsIndex({ catalog, activeReport, filters, filterOpt
 
             <form onSubmit={apply} className="space-y-3">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                    <div className="min-w-0"><div className="text-[10px] font-bold uppercase tracking-[0.13em] text-blue-700 dark:text-blue-300">Selected report</div><h2 className="mt-0.5 font-bold text-slate-950 dark:text-white">{report.label}</h2><p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500 dark:text-slate-300">{report.description}</p></div>
-                    <a href={exportUrl} className="inline-flex w-fit items-center gap-2 rounded-lg bg-[#0b2852] px-3 py-2 text-xs font-semibold text-white"><Download size={15} /> Export CSV</a>
+                    <div className="min-w-0"><div className="text-xs font-bold uppercase tracking-[0.13em] text-[var(--brand-ink)]">Selected report</div><h2 className="mt-0.5 font-bold text-[var(--ink-primary)]">{report.label}</h2><p className="mt-1 max-w-3xl text-xs leading-5 text-[var(--ink-secondary)]">{report.description}</p></div>
+                    {errors.export ? (
+                        <button
+                            type="button"
+                            disabled
+                            title={errors.export}
+                            className="inline-flex min-h-10 w-fit cursor-not-allowed items-center gap-2 rounded-lg border border-[var(--border-control)] bg-[var(--surface-recessed)] px-3.5 py-2 text-xs font-semibold text-[var(--ink-secondary)] opacity-80"
+                        >
+                            <Download size={15} aria-hidden="true" />
+                            <span>CSV export disabled (preview)</span>
+                        </button>
+                    ) : (
+                        <a href={exportUrl} className="inline-flex min-h-10 w-fit items-center gap-2 rounded-lg bg-[var(--brand-primary)] px-3.5 py-2 text-xs font-semibold text-white hover:bg-[var(--brand-primary-hover)]"><Download size={15} aria-hidden="true" /> Export CSV</a>
+                    )}
                 </div>
 
                 <ProgressiveFilterBar
                     title="Filter scope"
                     activeFilters={activeFilters}
                     primary={(
-                        <div className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 dark:bg-slate-900/40 dark:border-slate-700">
-                            <div className="text-xs font-bold uppercase tracking-[0.14em] text-blue-700 sm:text-xs">Filter scope</div>
-                            <div className="mt-0.5 text-[13px] font-semibold text-slate-800 sm:text-xs dark:text-slate-100">Filters apply to {report.label} only.</div>
+                        <div className="rounded-xl border border-[var(--border-default)] bg-[var(--surface-recessed)] px-3 py-2.5">
+                            <div className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--brand-ink)]">Filter scope</div>
+                            <div className="mt-0.5 text-xs font-semibold text-[var(--ink-primary)]">Filters apply to {report.label} only.</div>
                         </div>
                     )}
                     common={hasCommonFilters ? (
@@ -140,8 +153,8 @@ export default function ReportsIndex({ catalog, activeReport, filters, filterOpt
                     ) : undefined}
                     advanced={hasAdvancedFilters ? (
                         <>
-                            {supports('date_from') && <Field label="Date from" error={errors.date_from}><input type="date" value={data.date_from} onChange={(event) => setData('date_from', event.target.value)} className={fieldClass} /></Field>}
-                            {supports('date_to') && <Field label="Date to" error={errors.date_to}><input type="date" value={data.date_to} onChange={(event) => setData('date_to', event.target.value)} className={fieldClass} /></Field>}
+                            {supports('date_from') && <Field label="Date from" error={errors.date_from}><DateInput value={data.date_from} onChange={(next) => setData('date_from', next)} presets="range_start" className="mt-1.5" /></Field>}
+                            {supports('date_to') && <Field label="Date to" error={errors.date_to}><DateInput value={data.date_to} onChange={(next) => setData('date_to', next)} className="mt-1.5" /></Field>}
                             {supports('priority') && <Choice label="Priority" value={data.priority} values={filterOptions.priorities} onChange={(value) => setData('priority', value)} error={errors.priority} />}
                             {supports('transaction_type') && <Choice label="Transaction type" value={data.transaction_type} values={filterOptions.transactionTypes} onChange={(value) => setData('transaction_type', value)} error={errors.transaction_type} />}
                             {supports('lifecycle') && <Choice label="Lifecycle" value={data.lifecycle} values={filterOptions.lifecycles} onChange={(value) => setData('lifecycle', value)} error={errors.lifecycle} />}
@@ -150,66 +163,111 @@ export default function ReportsIndex({ catalog, activeReport, filters, filterOpt
                     ) : undefined}
                     actions={(
                         <>
-                            <button disabled={processing} className="inline-flex items-center gap-2 rounded-xl bg-blue-700 px-4 py-2.5 text-xs font-semibold text-white disabled:opacity-60">{processing ? <LoaderCircle className="animate-spin" size={15} /> : <Search size={15} />} Apply</button>
-                            <button type="button" onClick={reset} className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 dark:bg-[#142236] dark:text-slate-300 dark:border-slate-700"><RotateCcw size={14} /> Reset</button>
+                            <button disabled={processing} className="municipal-primary-button disabled:opacity-60">{processing ? <LoaderCircle className="animate-spin" size={15} /> : <Search size={15} />} Apply</button>
+                            <button type="button" onClick={reset} className="municipal-secondary-button"><RotateCcw size={14} /> Reset</button>
                         </>
                     )}
                 />
             </form>
 
-            <section aria-label={`${report.label} results`} className="overflow-hidden rounded-xl border border-slate-200 bg-white text-slate-900  dark:bg-[#142236] dark:text-slate-100 dark:border-slate-700">
-                <div className="flex flex-col gap-1 border-b border-slate-200 bg-slate-50 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5 dark:bg-slate-900/40 dark:border-slate-700">
+            <section aria-label={`${report.label} results`} className="tcds-card overflow-hidden">
+                <div className="flex flex-col gap-1 border-b border-[var(--border-default)] bg-[var(--surface-recessed)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5">
                     <div>
-                        <div className="text-[13px] font-bold text-slate-800 sm:text-sm dark:text-slate-100">Results · {report.kind === 'aggregate' ? 'Office summary' : 'Detailed results'}</div>
-                        <div className="mt-0.5 text-xs text-slate-500 sm:text-xs dark:text-slate-400">{report.label}</div>
+                        <div className="text-sm font-bold text-[var(--ink-primary)]">Results · {report.kind === 'aggregate' ? 'Office summary' : 'Detailed results'}</div>
+                        <div className="mt-0.5 text-xs text-[var(--ink-secondary)]">{report.label}</div>
                     </div>
-                    <span className="text-xs font-semibold text-slate-500 sm:text-xs dark:text-slate-400">{result.total.toLocaleString()} {result.total === 1 ? 'result' : 'results'}</span>
+                    <span className="text-xs font-semibold text-[var(--ink-secondary)]">{result.total.toLocaleString('en-PH')} {result.total === 1 ? 'result' : 'results'}</span>
                 </div>
 
                 {result.data.length === 0 ? (
                     <div className="px-5 py-8 text-center">
-                        <div className="text-sm font-semibold text-slate-700 dark:text-slate-300">No authorized report results match these filters.</div>
-                        <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">Adjust the report criteria or reset the filters.</div>
+                        <div className="text-sm font-semibold text-[var(--ink-secondary)]">No authorized report results match these filters.</div>
+                        <div className="mt-1 text-xs text-[var(--ink-secondary)]">Adjust the report criteria or reset the filters.</div>
                     </div>
                 ) : <ReportResultList report={report} rows={result.data} />}
 
-                {result.last_page > 1 && <nav aria-label="Report result pages" className="flex flex-wrap gap-1 border-t border-slate-200 px-4 py-2.5 dark:border-slate-700">{result.links.map((link, index) => link.url ? <Link key={`${link.label}-${index}`} href={link.url} preserveScroll className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${link.active ? 'bg-blue-700 text-white' : 'border border-slate-200 text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:border-slate-700'}`} dangerouslySetInnerHTML={{ __html: link.label }} /> : <span key={`${link.label}-${index}`} className="rounded-lg px-3 py-1.5 text-xs text-slate-300" dangerouslySetInnerHTML={{ __html: link.label }} />)}</nav>}
+                {result.last_page > 1 && <nav aria-label="Report result pages" className="flex flex-wrap gap-1 border-t border-[var(--border-default)] px-4 py-2.5">{result.links.map((link, index) => { const text = link.label.replace(/&laquo;/g, '«').replace(/&raquo;/g, '»').replace(/&amp;/g, '&').replace(/<[^>]+>/g, '').trim(); return link.url ? <Link key={`${text}-${index}`} href={link.url} preserveScroll className={`inline-flex min-h-10 items-center rounded-lg px-3 py-1.5 text-xs font-semibold ${link.active ? 'bg-[var(--brand-primary)] text-white' : 'border border-[var(--border-control)] text-[var(--ink-primary)] hover:bg-[var(--surface-hover)]'}`}>{text}</Link> : <span key={`${text}-${index}`} className="inline-flex min-h-10 items-center rounded-lg px-3 py-1.5 text-xs text-[var(--ink-secondary)] opacity-60">{text}</span>; })}</nav>}
             </section>
         </div>
     </AppLayout>;
 }
 
 function ReportResultList({ report, rows }: { report: Report; rows: Row[] }) {
+    if (report.kind === 'aggregate' && report.columns.length <= 6) {
+        return (
+            <div tabIndex={0} role="region" aria-label={`${report.label} summary table`} className="overflow-x-auto">
+                <table className="tcds-table" data-stack-mobile="true">
+                    <thead>
+                        <tr>
+                            {report.columns.map((column, idx) => (
+                                <th key={column.key} scope="col" className={idx > 0 ? 'text-right' : ''}>
+                                    {column.label}
+                                </th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {rows.map((row) => (
+                            <tr key={row.id}>
+                                {report.columns.map((column, idx) =>
+                                    idx === 0 ? (
+                                        <th key={column.key} scope="row" className="font-semibold text-[var(--ink-primary)]">
+                                            {display(row[column.key])}
+                                        </th>
+                                    ) : (
+                                        <td
+                                            key={column.key}
+                                            data-label={column.label}
+                                            className={`tabular-nums sm:text-right ${
+                                                column.key === 'overdue' && Number(row[column.key]) > 0
+                                                    ? 'font-bold text-[var(--status-danger-fg)]'
+                                                    : column.key === 'due_soon' && Number(row[column.key]) > 0
+                                                      ? 'font-semibold text-[var(--status-warn-fg)]'
+                                                      : 'font-semibold text-[var(--ink-primary)]'
+                                            }`}
+                                        >
+                                            {display(row[column.key])}
+                                        </td>
+                                    ),
+                                )}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        );
+    }
+
     const leads = leadKeys[report.key] ?? report.columns.slice(0, 2).map((column) => column.key);
     const leadColumns = report.columns.filter((column) => leads.includes(column.key));
     const metaColumns = report.columns.filter((column) => !leads.includes(column.key));
     const primary = leadColumns[0];
     const secondary = leadColumns[1];
 
-    return <div className="divide-y divide-slate-100 dark:divide-slate-700">
+    return <div className="divide-y divide-[var(--border-default)]">
         {rows.map((row) => (
             <article key={row.id} className="px-4 py-3 sm:px-5">
                 <div className="grid gap-4 lg:grid-cols-[minmax(220px,0.8fr)_minmax(0,2.2fr)_auto] lg:items-start">
                     <div className="min-w-0">
                         {primary && <>
-                            <div className="text-xs font-bold uppercase tracking-[0.12em] text-slate-400 sm:text-xs dark:text-slate-400">{primary.label}</div>
+                            <div className="text-xs font-bold uppercase tracking-[0.12em] text-[var(--ink-secondary)]">{primary.label}</div>
                             {row.detailUrl ? (
-                                <Link href={row.detailUrl} className="mt-1 block w-fit max-w-full break-words text-xs font-bold text-blue-700 hover:underline sm:text-xs">{display(row[primary.key])}</Link>
+                                <Link href={row.detailUrl} className="mt-1 block w-fit max-w-full break-words text-xs font-bold text-[var(--brand-ink)] hover:underline">{display(row[primary.key])}</Link>
                             ) : (
-                                <div className="mt-1 break-words text-[12px] font-bold text-slate-900 sm:text-sm dark:text-slate-100">{display(row[primary.key])}</div>
+                                <div className="mt-1 break-words text-sm font-bold text-[var(--ink-primary)]">{display(row[primary.key])}</div>
                             )}
                         </>}
                         {secondary && <>
-                            <div className="mt-2 text-xs font-bold uppercase tracking-[0.12em] text-slate-400 sm:text-xs dark:text-slate-400">{secondary.label}</div>
-                            <h3 className="mt-1 break-words text-[12px] font-semibold leading-5 text-slate-950 sm:text-sm dark:text-slate-100">{display(row[secondary.key])}</h3>
+                            <div className="mt-2 text-xs font-bold uppercase tracking-[0.12em] text-[var(--ink-secondary)]">{secondary.label}</div>
+                            <h3 className="mt-1 break-words text-sm font-semibold leading-5 text-[var(--ink-primary)]">{display(row[secondary.key])}</h3>
                         </>}
                     </div>
 
                     <dl className="grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-3 xl:grid-cols-4">
                         {metaColumns.map((column) => (
                             <div key={column.key} className="min-w-0">
-                                <dt className="text-xs font-bold uppercase tracking-[0.12em] text-slate-400 sm:text-xs dark:text-slate-400">{column.label}</dt>
-                                <dd className="mt-1 break-words text-xs font-medium leading-4 text-slate-700 sm:text-xs dark:text-slate-300">
+                                <dt className="text-xs font-bold uppercase tracking-[0.12em] text-[var(--ink-secondary)]">{column.label}</dt>
+                                <dd className="mt-1 break-words text-xs font-medium leading-4 text-[var(--ink-secondary)]">
                                     {emphasisKeys.has(column.key) ? (
                                         <span className={resultEmphasisClass(column.key, row[column.key])}>{display(row[column.key])}</span>
                                     ) : display(row[column.key])}
@@ -219,7 +277,7 @@ function ReportResultList({ report, rows }: { report: Report; rows: Row[] }) {
                     </dl>
 
                     {row.detailUrl && (
-                        <Link href={row.detailUrl} aria-label={`Open ${report.label} result ${display(row[primary?.key ?? 'id'])}`} className="inline-flex w-fit items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 sm:text-xs lg:justify-self-end dark:bg-[#142236] dark:text-slate-300 dark:border-slate-700">
+                        <Link href={row.detailUrl} aria-label={`Open ${report.label} result ${display(row[primary?.key ?? 'id'])}`} className="municipal-secondary-button w-fit px-3 text-xs lg:justify-self-end">
                             Open <ArrowRight size={14} />
                         </Link>
                     )}
@@ -231,7 +289,7 @@ function ReportResultList({ report, rows }: { report: Report; rows: Row[] }) {
 
 function resultEmphasisClass(key: string, value: string | number | null | undefined) {
     const overdue = key === 'dueState' && String(value).toLowerCase() === 'overdue';
-    return `inline-flex max-w-full rounded-md border px-1.5 py-0.5 text-xs font-bold sm:text-xs ${overdue ? 'border-rose-200 bg-rose-50 text-rose-700' : 'border-slate-200 bg-slate-50 text-slate-700 dark:bg-slate-900/40 dark:text-slate-300 dark:border-slate-700'}`;
+    return `inline-flex max-w-full rounded-md border px-1.5 py-0.5 text-xs font-bold sm:text-xs ${overdue ? 'border-[var(--status-danger-border)] bg-[var(--status-danger-bg)] text-rose-700' : 'border-slate-200 bg-slate-50 text-slate-700 dark:bg-[var(--surface-card)] dark:text-[var(--ink-secondary)] dark:border-[var(--border-control)]'}`;
 }
 
 function display(value: string | number | null | undefined) {
@@ -239,7 +297,7 @@ function display(value: string | number | null | undefined) {
 }
 
 function Field({ label, error, children }: { label: string; error?: string; children: ReactNode }) {
-    return <label className="block min-w-40 text-xs font-semibold text-slate-600 dark:text-slate-300">{label}{children}{error && <span className="mt-1 block text-xs text-rose-700">{error}</span>}</label>;
+    return <label className="block min-w-40 text-xs font-semibold text-[var(--ink-secondary)]">{label}{children}{error && <span className="mt-1 block text-xs text-rose-700">{error}</span>}</label>;
 }
 
 function Choice({ label, value, values, onChange, error }: { label: string; value: string; values: string[]; onChange: (value: string) => void; error?: string }) {

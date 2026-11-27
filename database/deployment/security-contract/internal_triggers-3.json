@@ -1,0 +1,1002 @@
+[
+  {
+    "relation": "public.departments",
+    "constraint_relation": "transactions",
+    "conname": "transactions_current_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "transactions",
+    "conname": "transactions_current_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "transactions",
+    "conname": "transactions_origin_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "transactions",
+    "conname": "transactions_origin_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "travel_orders",
+    "conname": "travel_orders_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.departments",
+    "constraint_relation": "travel_orders",
+    "conname": "travel_orders_department_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_noaction_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.designated_planning_staff",
+    "constraint_relation": "designated_planning_staff",
+    "conname": "designated_planning_staff_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.designated_planning_staff",
+    "constraint_relation": "designated_planning_staff",
+    "conname": "designated_planning_staff_department_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.designated_planning_staff",
+    "constraint_relation": "designated_planning_staff",
+    "conname": "designated_planning_staff_designated_by_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.designated_planning_staff",
+    "constraint_relation": "designated_planning_staff",
+    "conname": "designated_planning_staff_designated_by_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.designated_planning_staff",
+    "constraint_relation": "designated_planning_staff",
+    "conname": "designated_planning_staff_employee_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.designated_planning_staff",
+    "constraint_relation": "designated_planning_staff",
+    "conname": "designated_planning_staff_employee_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.designated_planning_staff",
+    "constraint_relation": "designated_planning_staff",
+    "conname": "designated_planning_staff_revoked_by_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.designated_planning_staff",
+    "constraint_relation": "designated_planning_staff",
+    "conname": "designated_planning_staff_revoked_by_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.designated_planning_staff",
+    "constraint_relation": "designated_planning_staff",
+    "conname": "designated_planning_staff_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.designated_planning_staff",
+    "constraint_relation": "designated_planning_staff",
+    "conname": "designated_planning_staff_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.development_plans",
+    "constraint_relation": "development_plans",
+    "conname": "development_plans_created_by_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.development_plans",
+    "constraint_relation": "development_plans",
+    "conname": "development_plans_created_by_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.development_plans",
+    "constraint_relation": "development_plans",
+    "conname": "development_plans_lead_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.development_plans",
+    "constraint_relation": "development_plans",
+    "conname": "development_plans_lead_department_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.development_plans",
+    "constraint_relation": "development_plans",
+    "conname": "development_plans_updated_by_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.development_plans",
+    "constraint_relation": "development_plans",
+    "conname": "development_plans_updated_by_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.development_plans",
+    "constraint_relation": "planning_maps",
+    "conname": "planning_maps_development_plan_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.development_plans",
+    "constraint_relation": "planning_maps",
+    "conname": "planning_maps_development_plan_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.development_plans",
+    "constraint_relation": "planning_plan_map_links",
+    "conname": "planning_plan_map_links_development_plan_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.development_plans",
+    "constraint_relation": "planning_plan_map_links",
+    "conname": "planning_plan_map_links_development_plan_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.development_plans",
+    "constraint_relation": "ppa_records",
+    "conname": "ppa_records_development_plan_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.development_plans",
+    "constraint_relation": "ppa_records",
+    "conname": "ppa_records_development_plan_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.document_links",
+    "constraint_relation": "document_links",
+    "conname": "document_links_created_by_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.document_links",
+    "constraint_relation": "document_links",
+    "conname": "document_links_created_by_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.document_links",
+    "constraint_relation": "document_links",
+    "conname": "document_links_document_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.document_links",
+    "constraint_relation": "document_links",
+    "conname": "document_links_document_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.document_links",
+    "constraint_relation": "legacy_custody.ownership_links",
+    "conname": "ownership_links_public_document_link_id_binding_document_i_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.document_links",
+    "constraint_relation": "legacy_custody.ownership_links",
+    "conname": "ownership_links_public_document_link_id_binding_document_i_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.documents",
+    "constraint_relation": "audit_logs",
+    "conname": "n03_audit_document",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.documents",
+    "constraint_relation": "audit_logs",
+    "conname": "n03_audit_document",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.documents",
+    "constraint_relation": "document_links",
+    "conname": "document_links_document_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.documents",
+    "constraint_relation": "document_links",
+    "conname": "document_links_document_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_cascade_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.documents",
+    "constraint_relation": "documents",
+    "conname": "documents_owner_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.documents",
+    "constraint_relation": "documents",
+    "conname": "documents_owner_department_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.documents",
+    "constraint_relation": "documents",
+    "conname": "documents_uploaded_by_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.documents",
+    "constraint_relation": "documents",
+    "conname": "documents_uploaded_by_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.documents",
+    "constraint_relation": "documents",
+    "conname": "n03_document_item",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.documents",
+    "constraint_relation": "documents",
+    "conname": "n03_document_item",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.documents",
+    "constraint_relation": "legacy_custody.bindings",
+    "conname": "bindings_document_id_document_public_id_operation_id_ordin_fkey",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.documents",
+    "constraint_relation": "legacy_custody.bindings",
+    "conname": "bindings_document_id_document_public_id_operation_id_ordin_fkey",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.documents",
+    "constraint_relation": "plan_document_bindings",
+    "conname": "plan_document_bindings_document_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.documents",
+    "constraint_relation": "plan_document_bindings",
+    "conname": "plan_document_bindings_document_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.documents",
+    "constraint_relation": "plan_document_origin_receipts",
+    "conname": "plan_document_origin_receipts_document_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.documents",
+    "constraint_relation": "plan_document_origin_receipts",
+    "conname": "plan_document_origin_receipts_document_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_restrict_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.dtr_daily_summaries",
+    "constraint_relation": "dtr_daily_summaries",
+    "conname": "dtr_daily_summaries_dtr_period_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.dtr_daily_summaries",
+    "constraint_relation": "dtr_daily_summaries",
+    "conname": "dtr_daily_summaries_dtr_period_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.dtr_daily_summaries",
+    "constraint_relation": "dtr_daily_summaries",
+    "conname": "dtr_daily_summaries_employee_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.dtr_daily_summaries",
+    "constraint_relation": "dtr_daily_summaries",
+    "conname": "dtr_daily_summaries_employee_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.dtr_periods",
+    "constraint_relation": "dtr_daily_summaries",
+    "conname": "dtr_daily_summaries_dtr_period_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.dtr_periods",
+    "constraint_relation": "dtr_daily_summaries",
+    "conname": "dtr_daily_summaries_dtr_period_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_cascade_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.dtr_periods",
+    "constraint_relation": "dtr_periods",
+    "conname": "dtr_periods_generated_by_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.dtr_periods",
+    "constraint_relation": "dtr_periods",
+    "conname": "dtr_periods_generated_by_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.dtr_periods",
+    "constraint_relation": "dtr_periods",
+    "conname": "dtr_periods_locked_by_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.dtr_periods",
+    "constraint_relation": "dtr_periods",
+    "conname": "dtr_periods_locked_by_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.dtr_periods",
+    "constraint_relation": "payroll_periods",
+    "conname": "payroll_periods_dtr_period_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.dtr_periods",
+    "constraint_relation": "payroll_periods",
+    "conname": "payroll_periods_dtr_period_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_development_records",
+    "constraint_relation": "employee_development_records",
+    "conname": "employee_development_records_created_by_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_development_records",
+    "constraint_relation": "employee_development_records",
+    "conname": "employee_development_records_created_by_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_development_records",
+    "constraint_relation": "employee_development_records",
+    "conname": "employee_development_records_employee_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_development_records",
+    "constraint_relation": "employee_development_records",
+    "conname": "employee_development_records_employee_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_health_access_grants",
+    "constraint_relation": "employee_health_access_grants",
+    "conname": "employee_health_access_grants_employee_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_health_access_grants",
+    "constraint_relation": "employee_health_access_grants",
+    "conname": "employee_health_access_grants_employee_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_health_access_grants",
+    "constraint_relation": "employee_health_access_grants",
+    "conname": "employee_health_access_grants_granted_by_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_health_access_grants",
+    "constraint_relation": "employee_health_access_grants",
+    "conname": "employee_health_access_grants_granted_by_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_health_access_grants",
+    "constraint_relation": "employee_health_access_grants",
+    "conname": "employee_health_access_grants_revoked_by_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_health_access_grants",
+    "constraint_relation": "employee_health_access_grants",
+    "conname": "employee_health_access_grants_revoked_by_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_health_access_grants",
+    "constraint_relation": "employee_health_access_grants",
+    "conname": "employee_health_access_grants_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_health_access_grants",
+    "constraint_relation": "employee_health_access_grants",
+    "conname": "employee_health_access_grants_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_health_records",
+    "constraint_relation": "employee_health_records",
+    "conname": "employee_health_records_created_by_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_health_records",
+    "constraint_relation": "employee_health_records",
+    "conname": "employee_health_records_created_by_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_health_records",
+    "constraint_relation": "employee_health_records",
+    "conname": "employee_health_records_employee_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_health_records",
+    "constraint_relation": "employee_health_records",
+    "conname": "employee_health_records_employee_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movement_tasks",
+    "constraint_relation": "employee_movement_tasks",
+    "conname": "employee_movement_tasks_completed_by_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movement_tasks",
+    "constraint_relation": "employee_movement_tasks",
+    "conname": "employee_movement_tasks_completed_by_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movement_tasks",
+    "constraint_relation": "employee_movement_tasks",
+    "conname": "employee_movement_tasks_employee_movement_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movement_tasks",
+    "constraint_relation": "employee_movement_tasks",
+    "conname": "employee_movement_tasks_employee_movement_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movement_tasks",
+    "constraint_relation": "employee_movement_tasks",
+    "conname": "employee_movement_tasks_owner_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movement_tasks",
+    "constraint_relation": "employee_movement_tasks",
+    "conname": "employee_movement_tasks_owner_department_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movements",
+    "constraint_relation": "employee_movement_tasks",
+    "conname": "employee_movement_tasks_employee_movement_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movements",
+    "constraint_relation": "employee_movement_tasks",
+    "conname": "employee_movement_tasks_employee_movement_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_cascade_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movements",
+    "constraint_relation": "employee_movements",
+    "conname": "employee_movements_employee_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movements",
+    "constraint_relation": "employee_movements",
+    "conname": "employee_movements_employee_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movements",
+    "constraint_relation": "employee_movements",
+    "conname": "employee_movements_from_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movements",
+    "constraint_relation": "employee_movements",
+    "conname": "employee_movements_from_department_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movements",
+    "constraint_relation": "employee_movements",
+    "conname": "employee_movements_initiated_by_user_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movements",
+    "constraint_relation": "employee_movements",
+    "conname": "employee_movements_initiated_by_user_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movements",
+    "constraint_relation": "employee_movements",
+    "conname": "employee_movements_new_supervisor_employee_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movements",
+    "constraint_relation": "employee_movements",
+    "conname": "employee_movements_new_supervisor_employee_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movements",
+    "constraint_relation": "employee_movements",
+    "conname": "employee_movements_previous_supervisor_employee_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movements",
+    "constraint_relation": "employee_movements",
+    "conname": "employee_movements_previous_supervisor_employee_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movements",
+    "constraint_relation": "employee_movements",
+    "conname": "employee_movements_to_department_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_check_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employee_movements",
+    "constraint_relation": "employee_movements",
+    "conname": "employee_movements_to_department_id_foreign",
+    "tgtype": 5,
+    "function": "\"RI_FKey_check_ins\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employees",
+    "constraint_relation": "asset_assignments",
+    "conname": "asset_assignments_employee_id_foreign",
+    "tgtype": 17,
+    "function": "\"RI_FKey_noaction_upd\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  },
+  {
+    "relation": "public.employees",
+    "constraint_relation": "asset_assignments",
+    "conname": "asset_assignments_employee_id_foreign",
+    "tgtype": 9,
+    "function": "\"RI_FKey_setnull_del\"()",
+    "tgenabled": "O",
+    "tgdeferrable": false,
+    "tginitdeferred": false
+  }
+]

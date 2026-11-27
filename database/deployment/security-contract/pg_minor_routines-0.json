@@ -1,0 +1,25 @@
+[
+  {
+    "name": "binary_upgrade_set_next_attribute_versions(pg_lsn[])",
+    "owner": "@bootstrap",
+    "prosrc": "binary_upgrade_set_next_attribute_versions",
+    "probin": null,
+    "prosecdef": false,
+    "proleakproof": false,
+    "proconfig": null,
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "EXECUTE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "EXECUTE",
+        false
+      ]
+    ]
+  }
+]

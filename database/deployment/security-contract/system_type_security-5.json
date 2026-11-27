@@ -1,0 +1,1802 @@
+[
+  {
+    "name": "pg_catalog.pg_sequences",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_settings",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_shadow",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_shdepend",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_shdescription",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_shmem_allocations",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_shseclabel",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_snapshot",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_activity",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_all_indexes",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_all_tables",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_archiver",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_bgwriter",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_database",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_database_conflicts",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_gssapi",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_io",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_progress_analyze",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_progress_basebackup",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_progress_cluster",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_progress_copy",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_progress_create_index",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_progress_vacuum",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_recovery_prefetch",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_replication",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_replication_slots",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_slru",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_ssl",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_subscription",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_subscription_stats",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_sys_indexes",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_sys_tables",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_user_functions",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_user_indexes",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_user_tables",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_wal",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_wal_receiver",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_xact_all_tables",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_xact_sys_tables",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_xact_user_functions",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stat_xact_user_tables",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_statio_all_indexes",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_statio_all_sequences",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_statio_all_tables",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_statio_sys_indexes",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_statio_sys_sequences",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_statio_sys_tables",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_statio_user_indexes",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_statio_user_sequences",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_statio_user_tables",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_statistic",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_statistic_ext",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_statistic_ext_data",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stats",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stats_ext",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_stats_ext_exprs",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_subscription",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_subscription_rel",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_tables",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_tablespace",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_timezone_abbrevs",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_timezone_names",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_transform",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_trigger",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_ts_config",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_ts_config_map",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_ts_dict",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_ts_parser",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_ts_template",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_type",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_user",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_user_mapping",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_user_mappings",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.pg_views",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.point",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.polygon",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.record",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.refcursor",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.regclass",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.regcollation",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.regconfig",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.regdictionary",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.regnamespace",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.regoper",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.regoperator",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.regproc",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.regprocedure",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.regrole",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.regtype",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.table_am_handler",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.text",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.tid",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.time",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.timestamp",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.timestamptz",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.timetz",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.trigger",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.tsm_handler",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.tsmultirange",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "pg_catalog.tsquery",
+    "owner": "@bootstrap",
+    "acl": [
+      [
+        "@bootstrap",
+        "@bootstrap",
+        "USAGE",
+        false
+      ],
+      [
+        "@bootstrap",
+        "PUBLIC",
+        "USAGE",
+        false
+      ]
+    ]
+  }
+]

@@ -1,0 +1,602 @@
+[
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "kirion_plan_generic_link_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "kirion_plan_origin_receipt_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "kirion_plan_stamp_origin()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "kirion_plan_typed_binding_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "legacy_custody.command_complete()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "legacy_custody.expected_links(uuid)",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "legacy_custody.g3_extensions_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "legacy_custody.k2_compensation_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "legacy_custody.lock_pending(uuid,bigint,text)",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "legacy_custody.private_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "legacy_custody.public_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "legacy_custody.reservation_complete()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "legacy_custody.zero_artifacts(uuid)",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "ops009_deny_exception_mutation()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "ops009_guard_close_notice()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "ops009_guard_delivery_action()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "ops009_guard_delivery_exception()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "ops009_verify_close_audit()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "planning_ppa_identifiers_immutable()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "planning_reconciliation_immutable()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "kirion_plan_custody_append_only_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "kirion_plan_custody_generation_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "kirion_plan_custody_scan_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "kirion_plan_document_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "kirion_plan_generic_link_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "kirion_plan_origin_receipt_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "kirion_plan_stamp_origin()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "kirion_plan_typed_binding_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.command_complete()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.expected_links(uuid)",
+    "execute": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.g3_extensions_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.k2_compensation_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.lock_pending(uuid,bigint,text)",
+    "execute": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.private_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.public_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.reservation_complete()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "legacy_custody.zero_artifacts(uuid)",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "ops009_deny_exception_mutation()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "ops009_guard_close_notice()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "ops009_guard_delivery_action()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "ops009_guard_delivery_exception()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "ops009_verify_close_audit()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "planning_ppa_identifiers_immutable()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_command",
+    "name": "planning_reconciliation_immutable()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "kirion_plan_custody_append_only_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "kirion_plan_custody_generation_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "kirion_plan_custody_scan_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "kirion_plan_document_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "kirion_plan_generic_link_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "kirion_plan_origin_receipt_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "kirion_plan_stamp_origin()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "kirion_plan_typed_binding_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.command_complete()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.expected_links(uuid)",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.g3_extensions_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.k2_compensation_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.lock_pending(uuid,bigint,text)",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.private_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.public_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.reservation_complete()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "legacy_custody.zero_artifacts(uuid)",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "ops009_deny_exception_mutation()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "ops009_guard_close_notice()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "ops009_guard_delivery_action()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "ops009_guard_delivery_exception()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "ops009_verify_close_audit()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "planning_ppa_identifiers_immutable()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reader",
+    "name": "planning_reconciliation_immutable()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "kirion_plan_custody_append_only_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "kirion_plan_custody_generation_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "kirion_plan_custody_scan_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "kirion_plan_document_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "kirion_plan_generic_link_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "kirion_plan_origin_receipt_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "kirion_plan_stamp_origin()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "kirion_plan_typed_binding_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.command_complete()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.expected_links(uuid)",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.g3_extensions_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.k2_compensation_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.lock_pending(uuid,bigint,text)",
+    "execute": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.private_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.public_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.reservation_complete()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "legacy_custody.zero_artifacts(uuid)",
+    "execute": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "ops009_deny_exception_mutation()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "ops009_guard_close_notice()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "ops009_guard_delivery_action()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "ops009_guard_delivery_exception()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "ops009_verify_close_audit()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "planning_ppa_identifiers_immutable()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "planning_reconciliation_immutable()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "kirion_plan_custody_append_only_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "kirion_plan_custody_generation_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "kirion_plan_custody_scan_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "kirion_plan_document_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "kirion_plan_generic_link_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "kirion_plan_origin_receipt_guard()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "kirion_plan_stamp_origin()",
+    "execute": false,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "kirion_plan_typed_binding_guard()",
+    "execute": false,
+    "grantable": false
+  }
+]

@@ -1,0 +1,170 @@
+[
+  {
+    "rolname": "n03_stage",
+    "name": "public.payroll_periods",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.performance_records",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_custody_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_custody_generations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_custody_scan_evidence",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_document_bindings",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_document_origin_receipts",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_editions",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.plan_families",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.planning_attachment_reconciliations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.planning_attachments",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.planning_maps",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.planning_plan_map_links",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.planning_ppa_identifiers",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.planning_reference_counters",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.platform_notifications",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.portal_presence_sessions",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.ppa_records",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.prototype_messages",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.staff_activation_invitations",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.task_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.tasks",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.transaction_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.transactions",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.travel_order_employee",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.travel_order_events",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.travel_orders",
+    "usage": true,
+    "grantable": false
+  },
+  {
+    "rolname": "n03_stage",
+    "name": "public.users",
+    "usage": true,
+    "grantable": false
+  }
+]

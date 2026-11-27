@@ -18,7 +18,10 @@ class PrototypeAuthenticationTest extends TestCase
     {
         $source = file_get_contents(resource_path('js/pages/Auth/Login.tsx'));
         $this->assertIsString($source);
-        $this->assertStringContainsString('type="email"', $source);
+        $this->assertStringContainsString('name="login"', $source);
+        $this->assertStringContainsString('Username or email', $source);
+        $this->assertStringContainsString('type="text"', $source);
+        $this->assertStringContainsString('autoComplete="username"', $source);
         $this->assertStringContainsString("type={passwordVisible ? 'text' : 'password'}", $source);
         $this->assertStringContainsString('Remember me', $source);
         $this->assertStringContainsString("post('/login'", $source);

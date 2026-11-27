@@ -5,6 +5,8 @@ return [
     'env' => env('APP_ENV', 'production'),
     'debug' => (bool) env('APP_DEBUG', false),
     'url' => env('APP_URL', 'http://localhost'),
+    'trusted_proxies' => env('TRUSTED_PROXY_CIDRS', ''),
+    'integration_ingress_per_minute' => (int) env('INTEGRATION_INGRESS_PER_MINUTE', 12000),
     'timezone' => 'Asia/Manila',
     'locale' => env('APP_LOCALE', 'en'),
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),

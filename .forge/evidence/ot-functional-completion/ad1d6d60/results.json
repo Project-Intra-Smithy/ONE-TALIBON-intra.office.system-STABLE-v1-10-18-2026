@@ -1,0 +1,1681 @@
+{
+  "completed": true,
+  "coverage": "responsive-route-and-interaction-matrix",
+  "sourceSha": "ad1d6d60e31e06a49c7eb15fdfbc192dc776179d",
+  "buildManifestSha256": "966b423cbb8d50991679071b1d62cd9353f298564c2fefebaa4a3ff0630d5e10",
+  "sourceWorktreeDirty": false,
+  "results": [
+    {
+      "path": "/my-tasks",
+      "renderedComponent": "Tasks/Index",
+      "role": "employee",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions",
+      "renderedComponent": "Transactions/Index",
+      "role": "employee",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions/create",
+      "renderedComponent": "Transactions/Create",
+      "role": "employee",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/calendar",
+      "renderedComponent": "Calendar/Index",
+      "role": "employee",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/documents",
+      "renderedComponent": "Documents/Index",
+      "role": "employee",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/planning/attachment-custody",
+      "renderedComponent": "PlanningCustody/Index",
+      "role": "employee",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/my-tasks",
+      "renderedComponent": "Tasks/Index",
+      "role": "employee",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions",
+      "renderedComponent": "Transactions/Index",
+      "role": "employee",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions/create",
+      "renderedComponent": "Transactions/Create",
+      "role": "employee",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/calendar",
+      "renderedComponent": "Calendar/Index",
+      "role": "employee",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/documents",
+      "renderedComponent": "Documents/Index",
+      "role": "employee",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/planning/attachment-custody",
+      "renderedComponent": "PlanningCustody/Index",
+      "role": "employee",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/my-tasks",
+      "renderedComponent": "Tasks/Index",
+      "role": "employee",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions",
+      "renderedComponent": "Transactions/Index",
+      "role": "employee",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions/create",
+      "renderedComponent": "Transactions/Create",
+      "role": "employee",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/calendar",
+      "renderedComponent": "Calendar/Index",
+      "role": "employee",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/documents",
+      "renderedComponent": "Documents/Index",
+      "role": "employee",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/planning/attachment-custody",
+      "renderedComponent": "PlanningCustody/Index",
+      "role": "employee",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/my-tasks",
+      "renderedComponent": "Tasks/Index",
+      "role": "employee",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions",
+      "renderedComponent": "Transactions/Index",
+      "role": "employee",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions/create",
+      "renderedComponent": "Transactions/Create",
+      "role": "employee",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/calendar",
+      "renderedComponent": "Calendar/Index",
+      "role": "employee",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/documents",
+      "renderedComponent": "Documents/Index",
+      "role": "employee",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/planning/attachment-custody",
+      "renderedComponent": "PlanningCustody/Index",
+      "role": "employee",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/my-tasks",
+      "renderedComponent": "Tasks/Index",
+      "role": "employee",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions",
+      "renderedComponent": "Transactions/Index",
+      "role": "employee",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions/create",
+      "renderedComponent": "Transactions/Create",
+      "role": "employee",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/calendar",
+      "renderedComponent": "Calendar/Index",
+      "role": "employee",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/documents",
+      "renderedComponent": "Documents/Index",
+      "role": "employee",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/planning/attachment-custody",
+      "renderedComponent": "PlanningCustody/Index",
+      "role": "employee",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/my-tasks",
+      "renderedComponent": "Tasks/Index",
+      "role": "employee",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions",
+      "renderedComponent": "Transactions/Index",
+      "role": "employee",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions/create",
+      "renderedComponent": "Transactions/Create",
+      "role": "employee",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/calendar",
+      "renderedComponent": "Calendar/Index",
+      "role": "employee",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/documents",
+      "renderedComponent": "Documents/Index",
+      "role": "employee",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/planning/attachment-custody",
+      "renderedComponent": "PlanningCustody/Index",
+      "role": "employee",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/my-tasks",
+      "renderedComponent": "Tasks/Index",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions",
+      "renderedComponent": "Transactions/Index",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions/create",
+      "renderedComponent": "Transactions/Create",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/calendar",
+      "renderedComponent": "Calendar/Index",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/documents",
+      "renderedComponent": "Documents/Index",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/planning/attachment-custody",
+      "renderedComponent": "PlanningCustody/Index",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/my-department",
+      "renderedComponent": "Departments/Workspace",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/development-plans",
+      "renderedComponent": "Plans/Index",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/ppas",
+      "renderedComponent": "PPAs/Index",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/planning-maps",
+      "renderedComponent": "PlanningMaps/Index",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/my-tasks",
+      "renderedComponent": "Tasks/Index",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions",
+      "renderedComponent": "Transactions/Index",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions/create",
+      "renderedComponent": "Transactions/Create",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/calendar",
+      "renderedComponent": "Calendar/Index",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/documents",
+      "renderedComponent": "Documents/Index",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/planning/attachment-custody",
+      "renderedComponent": "PlanningCustody/Index",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/my-department",
+      "renderedComponent": "Departments/Workspace",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/development-plans",
+      "renderedComponent": "Plans/Index",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/ppas",
+      "renderedComponent": "PPAs/Index",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/planning-maps",
+      "renderedComponent": "PlanningMaps/Index",
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/my-tasks",
+      "renderedComponent": "Tasks/Index",
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions",
+      "renderedComponent": "Transactions/Index",
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions/create",
+      "renderedComponent": "Transactions/Create",
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/calendar",
+      "renderedComponent": "Calendar/Index",
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/documents",
+      "renderedComponent": "Documents/Index",
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/planning/attachment-custody",
+      "renderedComponent": "PlanningCustody/Index",
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/my-department",
+      "renderedComponent": "Departments/Workspace",
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/development-plans",
+      "renderedComponent": "Plans/Index",
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/ppas",
+      "renderedComponent": "PPAs/Index",
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/planning-maps",
+      "renderedComponent": "PlanningMaps/Index",
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/my-tasks",
+      "renderedComponent": "Tasks/Index",
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions",
+      "renderedComponent": "Transactions/Index",
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions/create",
+      "renderedComponent": "Transactions/Create",
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/calendar",
+      "renderedComponent": "Calendar/Index",
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/documents",
+      "renderedComponent": "Documents/Index",
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/planning/attachment-custody",
+      "renderedComponent": "PlanningCustody/Index",
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/my-department",
+      "renderedComponent": "Departments/Workspace",
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/development-plans",
+      "renderedComponent": "Plans/Index",
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/ppas",
+      "renderedComponent": "PPAs/Index",
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/planning-maps",
+      "renderedComponent": "PlanningMaps/Index",
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/my-tasks",
+      "renderedComponent": "Tasks/Index",
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions",
+      "renderedComponent": "Transactions/Index",
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions/create",
+      "renderedComponent": "Transactions/Create",
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/calendar",
+      "renderedComponent": "Calendar/Index",
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/documents",
+      "renderedComponent": "Documents/Index",
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/planning/attachment-custody",
+      "renderedComponent": "PlanningCustody/Index",
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/my-department",
+      "renderedComponent": "Departments/Workspace",
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/development-plans",
+      "renderedComponent": "Plans/Index",
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/ppas",
+      "renderedComponent": "PPAs/Index",
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/planning-maps",
+      "renderedComponent": "PlanningMaps/Index",
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/my-tasks",
+      "renderedComponent": "Tasks/Index",
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions",
+      "renderedComponent": "Transactions/Index",
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/transactions/create",
+      "renderedComponent": "Transactions/Create",
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/calendar",
+      "renderedComponent": "Calendar/Index",
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/documents",
+      "renderedComponent": "Documents/Index",
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/planning/attachment-custody",
+      "renderedComponent": "PlanningCustody/Index",
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/my-department",
+      "renderedComponent": "Departments/Workspace",
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/development-plans",
+      "renderedComponent": "Plans/Index",
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/ppas",
+      "renderedComponent": "PPAs/Index",
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    },
+    {
+      "path": "/planning-maps",
+      "renderedComponent": "PlanningMaps/Index",
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "runtime": "authenticated Laravel with disposable PG16; real Inertia entry",
+      "errors": []
+    }
+  ],
+  "interactions": [
+    {
+      "role": "employee",
+      "label": "real-task-create-start-complete",
+      "instructions": true,
+      "dueAt": true
+    },
+    {
+      "role": "employee",
+      "width": 1440,
+      "theme": "light",
+      "label": "work-request-register-drawer",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "employee",
+      "label": "real-register-drawer-work-request-persisted",
+      "actualReceivingOfficeId": 2,
+      "serverRecordId": 5
+    },
+    {
+      "role": "employee",
+      "width": 1440,
+      "theme": "light",
+      "label": "work-request-form",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "employee",
+      "width": 1440,
+      "theme": "dark",
+      "label": "work-request-register-drawer",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "employee",
+      "width": 1440,
+      "theme": "dark",
+      "label": "work-request-form",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "employee",
+      "width": 768,
+      "theme": "light",
+      "label": "work-request-register-drawer",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "employee",
+      "width": 768,
+      "theme": "light",
+      "label": "work-request-form",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "employee",
+      "width": 768,
+      "theme": "dark",
+      "label": "work-request-register-drawer",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "employee",
+      "width": 768,
+      "theme": "dark",
+      "label": "work-request-form",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "employee",
+      "width": 390,
+      "theme": "light",
+      "label": "work-request-register-drawer",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "employee",
+      "width": 390,
+      "theme": "light",
+      "label": "work-request-form",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "employee",
+      "width": 390,
+      "theme": "dark",
+      "label": "work-request-register-drawer",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "employee",
+      "width": 390,
+      "theme": "dark",
+      "label": "work-request-form",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "label": "work-request-register-drawer",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "label": "work-request-form",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "label": "plan-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "label": "plan-dossier",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "label": "document-upload-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "label": "staff-scopes",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "label": "ppa-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "label": "ppa-dossier",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "label": "map-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "light",
+      "label": "map-plate",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "label": "work-request-register-drawer",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "label": "work-request-form",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "label": "plan-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "label": "plan-dossier",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "label": "document-upload-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "label": "staff-scopes",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "label": "ppa-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "label": "ppa-dossier",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "label": "map-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 1440,
+      "theme": "dark",
+      "label": "map-plate",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "label": "work-request-register-drawer",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "label": "work-request-form",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "label": "plan-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "label": "plan-dossier",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "label": "document-upload-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "label": "staff-scopes",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "label": "ppa-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "label": "ppa-dossier",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "label": "map-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "light",
+      "label": "map-plate",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "label": "work-request-register-drawer",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "label": "work-request-form",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "label": "plan-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "label": "plan-dossier",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "label": "document-upload-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "label": "staff-scopes",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "label": "ppa-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "label": "ppa-dossier",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "label": "map-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 768,
+      "theme": "dark",
+      "label": "map-plate",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "label": "work-request-register-drawer",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "label": "work-request-form",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "label": "plan-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "label": "plan-dossier",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "label": "document-upload-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "label": "staff-scopes",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "label": "ppa-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "label": "ppa-dossier",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "label": "map-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "light",
+      "label": "map-plate",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "label": "work-request-register-drawer",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "label": "work-request-form",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "label": "plan-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "label": "plan-dossier",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "label": "document-upload-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "label": "staff-scopes",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "label": "ppa-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "label": "ppa-dossier",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "label": "map-studio",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "width": 390,
+      "theme": "dark",
+      "label": "map-plate",
+      "contained": true,
+      "namedControls": true
+    },
+    {
+      "role": "department_head",
+      "label": "cross-account-task-denial",
+      "status": 404
+    },
+    {
+      "role": "department_head",
+      "label": "real-plan-create-edit-delete",
+      "immutableCode": true,
+      "fullCoverageRange": true
+    },
+    {
+      "role": "department_head",
+      "label": "real-ppa-create-edit-delete",
+      "customYearAndFunding": true,
+      "independentLegacyAndCoveredBarangays": true
+    },
+    {
+      "role": "department_head",
+      "label": "real-map-create-edit-delete",
+      "independentNullableCoordinates": true
+    },
+    {
+      "role": "department_head",
+      "label": "real-staff-management-navigation"
+    }
+  ]
+}

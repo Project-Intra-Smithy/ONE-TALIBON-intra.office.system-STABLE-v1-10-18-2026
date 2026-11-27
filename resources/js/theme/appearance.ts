@@ -4,6 +4,7 @@ export type ResolvedAppearance = 'light' | 'dark';
 const STORAGE_KEY = 'talibon.appearance';
 const validPreferences: AppearancePreference[] = ['system', 'light', 'dark'];
 let memoryPreference: AppearancePreference = 'system';
+let systemListenerAttached = false;
 
 export function readAppearance(): AppearancePreference {
     if (typeof window === 'undefined') return 'system';
@@ -27,6 +28,10 @@ export function applyAppearance(preference: AppearancePreference): void {
 
     const resolved = resolveAppearance(preference);
     const root = document.documentElement;
+    const meta = document.querySelector('meta[name="color-scheme"]');
+    if (meta) {
+        meta.setAttribute('content', preference === 'system' ? 'light dark' : preference);
+    }
     root.classList.toggle('dark', resolved === 'dark');
     root.dataset.appearance = preference;
     root.style.colorScheme = resolved;
@@ -43,6 +48,12 @@ export function saveAppearance(preference: AppearancePreference): void {
 
 export function initializeAppearance(): void {
     applyAppearance(readAppearance());
+    if (typeof window !== 'undefined' && !systemListenerAttached) {
+        systemListenerAttached = true;
+        subscribeToSystemAppearance(() => {
+            if (readAppearance() === 'system') applyAppearance('system');
+        });
+    }
 }
 
 export function subscribeToSystemAppearance(callback: () => void): () => void {

@@ -1,0 +1,779 @@
+[
+  {
+    "name": "public.travel_orders.created_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.travel_orders.department_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.travel_orders.destination",
+    "type": "character varying(255)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.travel_orders.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('travel_orders_id_seq'::regclass)",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.travel_orders.issuance_date",
+    "type": "date",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.travel_orders.public_id",
+    "type": "uuid",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.travel_orders.purpose",
+    "type": "text",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.travel_orders.recorded_by_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.travel_orders.reference_number",
+    "type": "character varying(80)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.travel_orders.status",
+    "type": "character varying(32)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'approved'::character varying",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "UPDATE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.travel_orders.status_updated_by_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "UPDATE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.travel_orders.travel_end_date",
+    "type": "date",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.travel_orders.travel_start_date",
+    "type": "date",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.travel_orders.updated_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "UPDATE",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.travel_orders_department_id_status_index.department_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.travel_orders_department_id_status_index.status",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.travel_orders_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.travel_orders_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.travel_orders_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.travel_orders_issuance_date_index.issuance_date",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.travel_orders_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.travel_orders_public_id_unique.public_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.travel_orders_reference_number_unique.reference_number",
+    "type": "character varying(80)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users.account_status",
+    "type": "character varying(32)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'active'::character varying",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.users.created_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users.email",
+    "type": "character varying(255)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users.email_verified_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('users_id_seq'::regclass)",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.users.is_active",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "true",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.users.last_seen_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users.mfa_confirmed_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users.mfa_recovery_codes",
+    "type": "json",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users.mfa_recovery_codes_generated_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users.mfa_secret",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users.mfa_version",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'0'::bigint",
+    "acl": []
+  },
+  {
+    "name": "public.users.name",
+    "type": "character varying(255)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.users.password",
+    "type": "character varying(255)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users.remember_token",
+    "type": "character varying(100)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users.role",
+    "type": "character varying(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'employee'::character varying",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.users.session_version",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'1'::bigint",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.users.suspended_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.users.suspended_by_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users.updated_at",
+    "type": "timestamp(0) without time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users.username",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users_account_status_index.account_status",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users_email_unique.email",
+    "type": "character varying(255)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users_iam_email_normalized_unique.lower",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users_iam_username_normalized_unique.lower",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users_is_active_index.is_active",
+    "type": "boolean",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users_last_seen_at_index.last_seen_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users_role_index.role",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.users_username_unique.username",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  }
+]

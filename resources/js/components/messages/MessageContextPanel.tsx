@@ -24,7 +24,7 @@ function ContextDetails({ conversation, idPrefix }: ContextDetailsProps) {
                 <ul className="mt-3 space-y-2.5">
                     {conversation.offices.map((office) => (
                         <li key={office} className="flex items-center gap-2.5 text-xs text-[var(--municipal-text)]">
-                            <Building2 size={14} className="shrink-0 text-[var(--municipal-brand)]" aria-hidden="true" />
+                            <Building2 size={14} className="shrink-0 text-[var(--brand-ink)]" aria-hidden="true" />
                             <span className="min-w-0 break-words">{office}</span>
                         </li>
                     ))}

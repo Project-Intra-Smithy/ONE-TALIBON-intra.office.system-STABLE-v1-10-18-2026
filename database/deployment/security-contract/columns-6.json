@@ -1,0 +1,1469 @@
+[
+  {
+    "name": "public.document_links_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.document_links_linkable_type_linkable_id_index.linkable_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.document_links_linkable_type_linkable_id_index.linkable_type",
+    "type": "character varying(160)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.document_links_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.document_links_unique.document_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.document_links_unique.linkable_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.document_links_unique.linkable_type",
+    "type": "character varying(160)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.document_links_unique.relationship",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.documents.checksum_sha256",
+    "type": "character(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.classification",
+    "type": "character varying(32)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'internal'::character varying",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.created_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.custody_mode",
+    "type": "text",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'LEGACY_PATH'::text",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reconcile",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.custody_operation_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reconcile",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.custody_ordinal",
+    "type": "integer",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reconcile",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.document_type",
+    "type": "character varying(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'supporting_document'::character varying",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('documents_id_seq'::regclass)",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reconcile",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.metadata",
+    "type": "jsonb",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.mime_type",
+    "type": "character varying(160)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.original_name",
+    "type": "character varying(255)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.owner_department_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.public_id",
+    "type": "uuid",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.retention_code",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.security_domain",
+    "type": "character varying(16)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_custody",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.size_bytes",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.storage_disk",
+    "type": "character varying(64)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'local'::character varying",
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.storage_path",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.title",
+    "type": "character varying(255)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.updated_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents.uploaded_by_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": [
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "kirion_g1b_app",
+        "UPDATE",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "INSERT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_command",
+        "SELECT",
+        false
+      ],
+      [
+        "kirion_g1b_owner",
+        "n03_reader",
+        "SELECT",
+        false
+      ]
+    ]
+  },
+  {
+    "name": "public.documents_classification_index.classification",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.documents_document_type_index.document_type",
+    "type": "character varying(64)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.documents_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.documents_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.documents_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.documents_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.documents_public_id_unique.public_id",
+    "type": "uuid",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_employee_date_unique.dtr_period_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_employee_date_unique.employee_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_employee_date_unique.work_date",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries.created_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries.dtr_period_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries.employee_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries.first_in_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries.generated_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('dtr_daily_summaries_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries.last_out_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries.leave_status",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries.raw_event_count",
+    "type": "integer",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "0",
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries.source_status",
+    "type": "character varying(32)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries.updated_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries.work_date",
+    "type": "date",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries_employee_id_work_date_index.employee_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries_employee_id_work_date_index.work_date",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries_source_status_index.source_status",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_daily_summaries_work_date_index.work_date",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods.created_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods.generated_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods.generated_by_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('dtr_periods_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods.label",
+    "type": "character varying(255)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods.locked_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods.locked_by_user_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods.period_end",
+    "type": "date",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods.period_start",
+    "type": "date",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods.status",
+    "type": "character varying(32)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'generated'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods.updated_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods_period_end_index.period_end",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods_period_start_index.period_start",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods_period_start_period_end_unique.period_end",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods_period_start_period_end_unique.period_start",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.dtr_periods_status_index.status",
+    "type": "character varying(32)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records.attained_at",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records.created_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records.created_by_user_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records.employee_id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records.expires_at",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records.id",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "nextval('employee_development_records_id_seq'::regclass)",
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records.notes",
+    "type": "text",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records.provider",
+    "type": "character varying(255)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records.record_type",
+    "type": "character varying(48)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records.reference_no",
+    "type": "character varying(180)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records.status",
+    "type": "character varying(40)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": "'active'::character varying",
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records.title",
+    "type": "character varying(255)",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records.updated_at",
+    "type": "timestamp(0) with time zone",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records_employee_id_record_type_index.employee_id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records_employee_id_record_type_index.record_type",
+    "type": "character varying(48)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records_expires_at_index.expires_at",
+    "type": "date",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records_id_seq.is_called",
+    "type": "boolean",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records_id_seq.last_value",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records_id_seq.log_cnt",
+    "type": "bigint",
+    "attnotnull": true,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records_pkey.id",
+    "type": "bigint",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  },
+  {
+    "name": "public.employee_development_records_record_type_index.record_type",
+    "type": "character varying(48)",
+    "attnotnull": false,
+    "attidentity": "",
+    "attgenerated": "",
+    "default_expression": null,
+    "acl": []
+  }
+]

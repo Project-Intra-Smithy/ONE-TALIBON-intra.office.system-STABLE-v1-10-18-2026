@@ -1,0 +1,11 @@
+[
+  {
+    "name": "plpgsql",
+    "owner": "@bootstrap",
+    "schema": "pg_catalog",
+    "extrelocatable": false,
+    "extversion": "1.0",
+    "extconfig": null,
+    "extcondition": null
+  }
+]

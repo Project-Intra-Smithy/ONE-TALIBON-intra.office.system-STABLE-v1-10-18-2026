@@ -1,0 +1,502 @@
+[
+  {
+    "name": "public.plan_custody_scan_evidence.plan_custody_scan_size_check",
+    "convalidated": true,
+    "definition": "CHECK (scanned_size_bytes > 0)"
+  },
+  {
+    "name": "public.plan_custody_scan_evidence.plan_custody_scan_trusted_check",
+    "convalidated": true,
+    "definition": "CHECK (trusted = true)"
+  },
+  {
+    "name": "public.plan_document_bindings.plan_bindings_edition_role_revision_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (plan_edition_id, role, revision_no)"
+  },
+  {
+    "name": "public.plan_document_bindings.plan_bindings_quarantine_check",
+    "convalidated": true,
+    "definition": "CHECK (binding_state::text = 'QUARANTINED'::text)"
+  },
+  {
+    "name": "public.plan_document_bindings.plan_bindings_revision_check",
+    "convalidated": true,
+    "definition": "CHECK (revision_no > 0)"
+  },
+  {
+    "name": "public.plan_document_bindings.plan_bindings_role_check",
+    "convalidated": true,
+    "definition": "CHECK (role::text = ANY (ARRAY['master'::character varying, 'annex'::character varying]::text[]))"
+  },
+  {
+    "name": "public.plan_document_bindings.plan_document_bindings_document_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (document_id) REFERENCES documents(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.plan_document_bindings.plan_document_bindings_document_id_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (document_id)"
+  },
+  {
+    "name": "public.plan_document_bindings.plan_document_bindings_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.plan_document_bindings.plan_document_bindings_plan_edition_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (plan_edition_id) REFERENCES plan_editions(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.plan_document_origin_receipts.plan_document_origin_receipts_document_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (document_id) REFERENCES documents(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.plan_document_origin_receipts.plan_document_origin_receipts_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (document_id)"
+  },
+  {
+    "name": "public.plan_document_origin_receipts.plan_origin_receipt_only_check",
+    "convalidated": true,
+    "definition": "CHECK (origin::text = 'EVER_PLAN'::text)"
+  },
+  {
+    "name": "public.plan_editions.plan_editions_family_label_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (plan_family_id, edition_label)"
+  },
+  {
+    "name": "public.plan_editions.plan_editions_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.plan_editions.plan_editions_plan_family_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (plan_family_id) REFERENCES plan_families(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.plan_editions.plan_editions_public_id_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (public_id)"
+  },
+  {
+    "name": "public.plan_families.plan_families_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.plan_families.plan_families_public_id_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (public_id)"
+  },
+  {
+    "name": "public.planning_attachment_reconciliations.planning_attachment_reconciliations_actor_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (actor_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.planning_attachment_reconciliations.planning_attachment_reconciliations_attachment_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (attachment_id) REFERENCES planning_attachments(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.planning_attachment_reconciliations.planning_attachment_reconciliations_attachment_id_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (attachment_id)"
+  },
+  {
+    "name": "public.planning_attachment_reconciliations.planning_attachment_reconciliations_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.planning_attachments.planning_attachments_owner_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (owner_department_id) REFERENCES departments(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.planning_attachments.planning_attachments_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.planning_attachments.planning_attachments_public_id_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (public_id)"
+  },
+  {
+    "name": "public.planning_attachments.planning_attachments_uploaded_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (uploaded_by_user_id) REFERENCES users(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.planning_maps.planning_maps_created_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.planning_maps.planning_maps_development_plan_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (development_plan_id) REFERENCES development_plans(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.planning_maps.planning_maps_lead_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (lead_department_id) REFERENCES departments(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.planning_maps.planning_maps_map_code_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (map_code)"
+  },
+  {
+    "name": "public.planning_maps.planning_maps_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.planning_maps.planning_maps_plate_attachment_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (plate_attachment_id) REFERENCES planning_attachments(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.planning_maps.planning_maps_updated_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (updated_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.planning_plan_map_links.planning_plan_map_links_development_plan_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (development_plan_id) REFERENCES development_plans(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.planning_plan_map_links.planning_plan_map_links_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (development_plan_id, planning_map_id)"
+  },
+  {
+    "name": "public.planning_plan_map_links.planning_plan_map_links_planning_map_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (planning_map_id) REFERENCES planning_maps(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.planning_ppa_identifiers.planning_ppa_identifiers_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (code)"
+  },
+  {
+    "name": "public.planning_reference_counters.planning_reference_counters_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (year)"
+  },
+  {
+    "name": "public.platform_notifications.platform_notifications_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.platform_notifications.platform_notifications_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.platform_notifications.platform_notifications_user_id_event_key_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (user_id, event_key)"
+  },
+  {
+    "name": "public.platform_notifications.platform_notifications_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.portal_presence_sessions.portal_presence_sessions_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.portal_presence_sessions.portal_presence_sessions_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.portal_presence_sessions.portal_presence_sessions_user_id_session_hash_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (user_id, session_hash)"
+  },
+  {
+    "name": "public.ppa_records.ppa_records_created_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.ppa_records.ppa_records_development_plan_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (development_plan_id) REFERENCES development_plans(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.ppa_records.ppa_records_implementing_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (implementing_department_id) REFERENCES departments(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.ppa_records.ppa_records_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.ppa_records.ppa_records_planning_map_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (planning_map_id) REFERENCES planning_maps(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.ppa_records.ppa_records_ppa_code_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (ppa_code)"
+  },
+  {
+    "name": "public.ppa_records.ppa_records_updated_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (updated_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.prototype_messages.prototype_messages_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.prototype_messages.prototype_messages_public_id_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (public_id)"
+  },
+  {
+    "name": "public.prototype_messages.prototype_messages_sender_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (sender_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.staff_activation_invitations.staff_activation_invitations_code_digest_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (code_digest)"
+  },
+  {
+    "name": "public.staff_activation_invitations.staff_activation_invitations_created_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.staff_activation_invitations.staff_activation_invitations_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.staff_activation_invitations.staff_activation_invitations_employee_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.staff_activation_invitations.staff_activation_invitations_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.staff_activation_invitations.staff_activation_invitations_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.task_events.task_events_actor_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (actor_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.task_events.task_events_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.task_events.task_events_task_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.tasks.tasks_assigned_to_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (assigned_to_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.tasks.tasks_created_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.tasks.tasks_owning_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (owning_department_id) REFERENCES departments(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.tasks.tasks_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.transaction_events.n03_transaction_event_tuple",
+    "convalidated": true,
+    "definition": "UNIQUE (id, transaction_id, actor_user_id, action)"
+  },
+  {
+    "name": "public.transaction_events.transaction_events_actor_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (actor_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.transaction_events.transaction_events_from_assigned_employee_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (from_assigned_employee_id) REFERENCES employees(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.transaction_events.transaction_events_from_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (from_department_id) REFERENCES departments(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.transaction_events.transaction_events_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.transaction_events.transaction_events_to_assigned_employee_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (to_assigned_employee_id) REFERENCES employees(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.transaction_events.transaction_events_to_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (to_department_id) REFERENCES departments(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.transaction_events.transaction_events_transaction_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.transactions.transactions_assigned_employee_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (assigned_employee_id) REFERENCES employees(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.transactions.transactions_assigned_to_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (assigned_to_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.transactions.transactions_created_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (created_by_user_id) REFERENCES users(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.transactions.transactions_current_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (current_department_id) REFERENCES departments(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.transactions.transactions_origin_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (origin_department_id) REFERENCES departments(id) ON DELETE RESTRICT"
+  },
+  {
+    "name": "public.transactions.transactions_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.transactions.transactions_reference_no_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (reference_no)"
+  },
+  {
+    "name": "public.travel_order_employee.travel_order_employee_employee_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (employee_id) REFERENCES employees(id)"
+  },
+  {
+    "name": "public.travel_order_employee.travel_order_employee_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.travel_order_employee.travel_order_employee_travel_order_id_employee_id_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (travel_order_id, employee_id)"
+  },
+  {
+    "name": "public.travel_order_employee.travel_order_employee_travel_order_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (travel_order_id) REFERENCES travel_orders(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.travel_order_events.n03_travel_event_tuple",
+    "convalidated": true,
+    "definition": "UNIQUE (id, travel_order_id, actor_user_id, event)"
+  },
+  {
+    "name": "public.travel_order_events.travel_order_events_actor_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (actor_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.travel_order_events.travel_order_events_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.travel_order_events.travel_order_events_travel_order_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (travel_order_id) REFERENCES travel_orders(id) ON DELETE CASCADE"
+  },
+  {
+    "name": "public.travel_orders.travel_orders_department_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (department_id) REFERENCES departments(id)"
+  },
+  {
+    "name": "public.travel_orders.travel_orders_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  },
+  {
+    "name": "public.travel_orders.travel_orders_public_id_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (public_id)"
+  },
+  {
+    "name": "public.travel_orders.travel_orders_recorded_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (recorded_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.travel_orders.travel_orders_reference_number_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (reference_number)"
+  },
+  {
+    "name": "public.travel_orders.travel_orders_status_updated_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (status_updated_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.users.users_email_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (email)"
+  },
+  {
+    "name": "public.users.users_pkey",
+    "convalidated": true,
+    "definition": "PRIMARY KEY (id)"
+  }
+]

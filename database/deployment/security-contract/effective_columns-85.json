@@ -1,0 +1,502 @@
+[
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_credit_accounts.balance",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_credit_accounts.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_credit_accounts.employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_credit_accounts.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_credit_accounts.leave_type_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_credit_accounts.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_credit_transactions.actor_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_credit_transactions.amount",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_credit_transactions.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_credit_transactions.entry_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_credit_transactions.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_credit_transactions.leave_credit_account_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_credit_transactions.notes",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_credit_transactions.source_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_credit_transactions.source_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_requests.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_requests.employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_requests.end_date",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_requests.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_requests.leave_type_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_requests.reason",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_requests.review_notes",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_requests.reviewed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_requests.reviewed_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_requests.start_date",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_requests.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_requests.units",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_requests.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_types.code",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_types.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_types.entitlement_label",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_types.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_types.is_active",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_types.name",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_types.tracks_balance",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.leave_types.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_agenda_items.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_agenda_items.description",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_agenda_items.disposition",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_agenda_items.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_agenda_items.legislative_record_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_agenda_items.legislative_session_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_agenda_items.sequence_no",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_agenda_items.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_agenda_items.title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_agenda_items.transaction_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_agenda_items.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_records.approved_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_records.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_records.created_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_records.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_records.issuing_body",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_records.keywords",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_records.record_number",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_records.record_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_records.source_file_name",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_records.source_path",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_records.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_records.summary",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_records.title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_records.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_records.year",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_sessions.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_sessions.created_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_sessions.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_sessions.location",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_sessions.notes",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_sessions.scheduled_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_sessions.session_code",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_sessions.session_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_sessions.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_sessions.title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.legislative_sessions.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memo_recipients.acknowledged_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memo_recipients.delivered_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memo_recipients.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memo_recipients.memorandum_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memo_recipients.user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memo_recipients.viewed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memoranda.audience_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memoranda.body",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memoranda.classification",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memoranda.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memoranda.expires_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memoranda.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memoranda.issued_by_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memoranda.issued_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memoranda.memo_number",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memoranda.published_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memoranda.requires_acknowledgement",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memoranda.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memoranda.title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.memoranda.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.migrations.batch",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.migrations.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.migrations.migration",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.offboarding_cases.account_deactivated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.offboarding_cases.archived_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.offboarding_cases.completed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "n03_reconcile",
+    "name": "public.offboarding_cases.completed_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  }
+]

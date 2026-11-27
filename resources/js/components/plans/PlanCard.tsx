@@ -1,30 +1,101 @@
-import { ArrowUpRight, BookOpen, Map, Building2 } from 'lucide-react';
+import { ArrowUpRight, BookOpen, Building2, FolderKanban, Map, Paperclip } from 'lucide-react';
+const formatPhpCompact = (value:number)=>new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP',notation:'compact',maximumFractionDigits:1}).format(value);
 import type { MunicipalPlan } from '../../data/municipal/plans';
+import { StatusBadge } from '../ui';
 
 type Props = {
-    plan: MunicipalPlan;
+    plan: Omit<MunicipalPlan,'status'> & {status:string;sbResolutionNo?:string};
     selected: boolean;
+    linkedPpaCount?: number;
+    linkedPpaBudget?: number;
+    docCount?: number;
     onSelect: () => void;
 };
 
-export default function PlanCard({ plan, selected, onSelect }: Props) {
+export default function PlanCard({
+    plan,
+    selected,
+    linkedPpaCount,
+    linkedPpaBudget,
+    docCount,
+    onSelect,
+}: Props) {
     const identity = plan.code.replace(/\s+\d{4}.*$/, '');
     const coverage = plan.coverageStart === plan.coverageEnd ? String(plan.coverageStart) : `${plan.coverageStart}\u2013${plan.coverageEnd}`;
 
     return (
-        <article className="municipal-panel ot-r6-plan-card r8-plans-card flex min-w-0 flex-col rounded-lg p-3" aria-label={plan.code}>
-            <div aria-hidden="true" className="ot-r6-plan-cover r8-plans-cover relative flex w-full flex-col justify-between overflow-hidden rounded border border-[var(--municipal-border)] bg-[var(--municipal-brand-soft)] p-3 text-[var(--municipal-brand)]">
-                <Map size={100} strokeWidth={1} className="pointer-events-none absolute -right-2 top-2 opacity-15" />
-                <span className="relative flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wide"><BookOpen size={16} /> Municipality of Talibon</span>
-                <span className="relative break-words text-xl font-bold leading-6">{identity}</span>
-                <span className="relative text-[10px]">Illustrative library cover · Not an official document</span>
+        <article
+            className="tcds-card flex min-w-0 flex-col p-3.5 transition-colors hover:border-[var(--brand-primary)]"
+            aria-label={plan.code}
+        >
+            <div
+                aria-hidden="true"
+                className="relative flex min-h-32 w-full flex-col justify-between overflow-hidden rounded-lg border border-[var(--brand-soft-border)] bg-[var(--brand-soft)] p-3.5 text-[var(--brand-ink)]"
+            >
+                <Map size={92} strokeWidth={1.1} className="pointer-events-none absolute -right-2 top-2 opacity-15" />
+                <span className="relative flex items-center gap-2 text-xs font-bold uppercase tracking-wider">
+                    <BookOpen size={15} />
+                    <span>Municipality of Talibon</span>
+                </span>
+                <span className="relative text-2xl font-extrabold tracking-tight text-[var(--ink-primary)]">{identity}</span>
+                <span className="relative truncate font-mono text-xs font-medium text-[var(--ink-secondary)]">
+                    {plan.sbResolutionNo || plan.documentRef}
+                </span>
             </div>
-            <div className="r8-plans-card-body mt-2 flex flex-1 flex-col gap-1">
-                <h2 className="break-words text-[11px] font-bold uppercase tracking-wide text-[var(--municipal-brand)]">{plan.code}</h2>
-                <p className="break-words text-[13px] font-medium leading-5 text-[var(--municipal-text)]">{plan.title}</p>
-                <div className="flex flex-wrap items-center gap-2 text-xs text-[var(--municipal-muted)]"><span>{coverage}</span><span className="ot-r6-plan-status rounded border border-[var(--municipal-border)] px-2 py-0.5 text-[11px] font-semibold">{plan.status}</span><span>{plan.horizon}</span></div>
-                <p className="r8-plans-lead break-words text-[11px] leading-4 text-[var(--municipal-muted)]"><Building2 size={14} aria-hidden="true" className="shrink-0" /><span>{plan.leadOffice}</span></p>
+
+            <p className="mt-1 text-xs text-[var(--ink-secondary)]">Illustrative library cover · Not an official document</p>
+            <div className="mt-3 flex flex-1 flex-col gap-1.5">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h2 className="font-mono text-xs font-bold uppercase tracking-wide text-[var(--brand-ink)]">
+                        {plan.code}
+                    </h2>
+                    <StatusBadge
+                        tone={
+                            plan.status === 'In force' || plan.status === 'Adopted'
+                                ? 'ok'
+                                : plan.status === 'For review' || plan.status === 'Updating' || plan.status === 'Due this year'
+                                  ? 'warn'
+                                  : 'neutral'
+                        }
+                    >
+                        {plan.status}
+                    </StatusBadge>
+                </div>
+                <p className="text-sm font-bold leading-snug text-[var(--ink-primary)]">{plan.title}</p>
+                <div className="flex flex-wrap items-center gap-2 text-xs text-[var(--ink-secondary)]">
+                    <span>{coverage}</span>
+                    <span>·</span>
+                    <span>{plan.horizon}</span>
+                </div>
+
+                <div className="mt-1 flex flex-wrap items-center gap-1.5 text-xs">
+                    <span className="inline-flex items-center gap-1 rounded-full border border-[var(--border-default)] bg-[var(--surface-recessed)] px-2 py-0.5 font-medium text-[var(--ink-primary)]">
+                        <FolderKanban size={11} aria-hidden="true" className="text-[var(--brand-ink)]" />
+                        <span>
+                            {linkedPpaCount === undefined ? 'PPA links unavailable' : `${linkedPpaCount} ${linkedPpaCount === 1 ? 'PPA' : 'PPAs'}`}
+                            {linkedPpaBudget !== undefined && linkedPpaBudget > 0 ? ` · ${formatPhpCompact(linkedPpaBudget)}` : ''}
+                        </span>
+                    </span>
+                    <span
+                        className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 font-medium ${
+                            docCount !== undefined && docCount > 0
+                                ? 'border-[var(--brand-soft-border)] bg-[var(--brand-soft)] text-[var(--brand-ink)]'
+                                : 'border-[var(--border-default)] bg-[var(--surface-recessed)] text-[var(--ink-secondary)]'
+                        }`}
+                    >
+                        <Paperclip size={11} aria-hidden="true" />
+                        <span>
+                            {docCount === undefined ? 'Document count unavailable' : `${docCount} ${docCount === 1 ? 'doc' : 'docs'}`}
+                        </span>
+                    </span>
+                </div>
+
+                <p className="mt-auto flex items-center gap-1.5 pt-2 text-xs text-[var(--ink-secondary)]">
+                    <Building2 size={14} aria-hidden="true" className="shrink-0" />
+                    <span className="truncate">{plan.leadOffice}</span>
+                </p>
             </div>
+
             <button
                 id={`plan-trigger-${plan.id}`}
                 type="button"
@@ -32,9 +103,10 @@ export default function PlanCard({ plan, selected, onSelect }: Props) {
                 aria-controls={selected ? 'selected-plan-details' : undefined}
                 aria-label={`${selected ? 'Hide' : 'View'} details for ${plan.code}`}
                 onClick={onSelect}
-                className="mt-2 flex min-h-11 w-full items-center border-t border-[var(--municipal-border)] text-left text-xs font-semibold text-[var(--municipal-brand)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                className="mt-3 flex min-h-11 w-full items-center justify-between border-t border-[var(--border-default)] pt-2 text-left text-xs font-bold text-[var(--brand-ink)] hover:underline"
             >
-                {selected ? 'Hide plan details' : 'View plan details'} <ArrowUpRight size={15} aria-hidden="true" className="ml-auto" />
+                <span>{selected ? 'Hide plan dossier' : 'View plan dossier'}</span>
+                <ArrowUpRight size={15} aria-hidden="true" />
             </button>
         </article>
     );

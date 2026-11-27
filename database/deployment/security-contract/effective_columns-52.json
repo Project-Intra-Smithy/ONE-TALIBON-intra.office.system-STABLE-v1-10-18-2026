@@ -1,0 +1,502 @@
+[
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_cases.account_deactivated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_cases.archived_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_cases.completed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_cases.completed_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_cases.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_cases.effective_date",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_cases.employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_cases.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_cases.initiated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_cases.initiated_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_cases.reason",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_cases.separation_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_cases.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_cases.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_tasks.completed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_tasks.completed_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_tasks.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_tasks.due_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_tasks.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_tasks.is_required",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_tasks.notes",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_tasks.offboarding_case_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_tasks.owner_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_tasks.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_tasks.task_key",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_tasks.title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.offboarding_tasks.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_cases.appointment_reference",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_cases.completed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_cases.completed_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_cases.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_cases.employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_cases.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_cases.planned_start_date",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_cases.started_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_cases.started_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_cases.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_cases.supervisor_employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_cases.target_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_cases.target_position_title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_cases.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_tasks.category",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_tasks.completed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_tasks.completed_by_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_tasks.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_tasks.due_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_tasks.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_tasks.is_required",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_tasks.notes",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_tasks.onboarding_case_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_tasks.owner_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_tasks.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_tasks.task_key",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_tasks.title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.onboarding_tasks.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.operational_items.allocated_amount",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.operational_items.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.operational_items.department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.operational_items.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.operational_items.item_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.operational_items.priority",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.operational_items.progress_percent",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.operational_items.reference_no",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.operational_items.remarks",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.operational_items.responsible_employee_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.operational_items.status",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.operational_items.target_date",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.operational_items.title",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.operational_items.updated_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.operational_items.utilized_amount",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.ops009_close_audit_bindings.audit_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.ops009_close_audit_bindings.operation_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.ops009_close_audit_bindings.transaction_event_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.ops009_close_audit_bindings.transaction_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.ops009_origin_delivery_exception_actions.action",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.ops009_origin_delivery_exception_actions.actor_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.ops009_origin_delivery_exception_actions.actor_user_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.ops009_origin_delivery_exception_actions.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.ops009_origin_delivery_exception_actions.exception_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.ops009_origin_delivery_exception_actions.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.ops009_origin_delivery_exception_actions.note",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.ops009_origin_delivery_exceptions.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.ops009_origin_delivery_exceptions.custodian_role",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.ops009_origin_delivery_exceptions.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.ops009_origin_delivery_exceptions.operation_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.ops009_origin_delivery_exceptions.origin_department_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.ops009_origin_delivery_exceptions.reason",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.ops009_origin_delivery_exceptions.transaction_event_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.ops009_origin_delivery_exceptions.transaction_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.outbox_messages.aggregate_id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.outbox_messages.aggregate_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.outbox_messages.attempt_count",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.outbox_messages.available_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.outbox_messages.claimed_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.outbox_messages.claimed_by",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.outbox_messages.created_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.outbox_messages.event_type",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.outbox_messages.id",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.outbox_messages.last_error",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  },
+  {
+    "rolname": "kirion_g1b_repair",
+    "name": "public.outbox_messages.occurred_at",
+    "rights": "{f,f,f,f,f,f,f,f}"
+  }
+]

@@ -6,17 +6,19 @@ use App\Http\Requests\StoreWorkRequestRequest;
 use App\Http\Requests\TransactionIndexRequest;
 use App\Http\Requests\TransitionWorkRequestRequest;
 use App\Models\Department;
-use App\Models\Employee;
 use App\Models\WorkflowTransaction;
 use App\Services\DocumentEvidenceQuery;
 use App\Services\TransactionEvidenceService;
 use App\Services\TransactionLiveQuery;
 use App\Services\TransactionVisibilityQuery;
 use App\Services\WorkQueueQuery;
+use App\Services\WorkRequestCreationOptions;
 use App\Support\ValidatedListReturn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -25,39 +27,25 @@ class TransactionController extends Controller
     public function index(
         TransactionIndexRequest $request,
         WorkQueueQuery $queue,
+        WorkRequestCreationOptions $creationOptions,
     ): Response {
         $this->authorize('viewAny', WorkflowTransaction::class);
 
-        return Inertia::render(
-            'Transactions/Index',
-            $queue->workspace($request->user(), $request->validated()),
-        );
+        $workspace = $queue->workspace($request->user(), $request->validated());
+        $workspace['originDeliveryQueueAvailable'] = $request->user()->isRole('department_head')
+            && Schema::hasTable('ops009_origin_delivery_exceptions')
+            && Schema::hasTable('ops009_origin_delivery_exception_actions');
+
+        $workspace['creationOptions'] = $request->user()->can('create', WorkflowTransaction::class)
+            ? $creationOptions->for($request->user())
+            : null;
+
+        return Inertia::render('Transactions/Index', $workspace);
     }
 
-    public function create(Request $request): Response
+    public function create(Request $request, WorkRequestCreationOptions $creationOptions): Response
     {
-        $this->authorize('create', WorkflowTransaction::class);
-        $departmentId = $request->user()->employee?->department_id;
-
-        $departments = Department::query()
-            ->activeRoutable()
-            ->when($departmentId, fn ($query) => $query->where('id', '!=', $departmentId))
-            ->orderBy('branch')
-            ->orderBy('sort_order')
-            ->orderBy('name')
-            ->get(['id', 'code', 'name', 'short_name', 'branch', 'office_type']);
-
-        return Inertia::render('Transactions/Create', [
-            'departments' => $departments,
-            'assignableEmployees' => Employee::query()
-                ->whereIn('department_id', $departments->pluck('id'))
-                ->where('employment_status', 'active')
-                ->orderBy('department_id')
-                ->orderBy('full_name')
-                ->get(['id', 'employee_number', 'full_name', 'department_id', 'position_title']),
-            'requestCategories' => config('work_requests.categories', []),
-            'actionOptions' => config('work_requests.actions', []),
-        ]);
+        return Inertia::render('Transactions/Create', $creationOptions->for($request->user()));
     }
 
     public function store(StoreWorkRequestRequest $request, TransactionEvidenceService $evidence): RedirectResponse
@@ -95,8 +83,15 @@ class TransactionController extends Controller
             includeEvents: false,
         );
 
+        // Navigation context is never authority; only a short, same-path validated list URL can return.
+        $candidate = $request->query('return_to');
+        $returnTo = is_string($candidate) && strlen($candidate) <= 2048
+            ? ValidatedListReturn::validate($candidate, '/transactions')
+            : '/transactions';
+
         return Inertia::render('Transactions/Show', [
             'transaction' => $transaction,
+            'returnTo' => $returnTo,
             'departments' => Department::query()
                 ->activeRoutable()
                 ->orderBy('branch')
@@ -106,6 +101,7 @@ class TransactionController extends Controller
             'assignableEmployees' => $mutable['assignableEmployees'],
             'accountability' => $mutable['accountability'],
             'transactionPermissions' => $mutable['permissions'],
+            'allowedActions' => $mutable['allowedActions'],
             'evidence' => $evidence->forTransaction($transaction),
             'relatedWork' => $this->relatedWork($request, $transaction, $visibility),
         ]);
@@ -173,7 +169,7 @@ class TransactionController extends Controller
             ->all();
     }
 
-    /** @return array<int, \Illuminate\Http\UploadedFile> */
+    /** @return array<int, UploadedFile> */
     private function evidenceFiles(Request $request): array
     {
         $files = $request->file('evidence', []);

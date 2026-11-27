@@ -23,8 +23,7 @@ final class MfaEnrollmentController extends Controller
         private readonly MfaRecoveryCodeBroker $recoveryBroker,
         private readonly AuditLogger $audit,
         private readonly SensitiveInertiaResponse $sensitiveResponse,
-    ) {
-    }
+    ) {}
 
     public function create(Request $request): Response|RedirectResponse
     {
@@ -40,8 +39,7 @@ final class MfaEnrollmentController extends Controller
         }
 
         $newEnrollment = blank($user->mfa_secret);
-        $secret = $this->mfa->ensureEnrollmentSecret($user);
-        $user->refresh();
+        $secret = $this->mfa->ensureEnrollmentSecret($user, $request);
 
         if ($newEnrollment) {
             $this->audit->record($user, 'auth.mfa.enrollment.started', 'Privileged MFA enrollment was initialized.');
@@ -49,7 +47,7 @@ final class MfaEnrollmentController extends Controller
 
         return $this->sensitiveResponse->render($request, 'Auth/MfaEnrollment', [
             'secret' => $secret,
-            'provisioningUri' => $this->mfa->provisioningUri($user),
+            'provisioningUri' => $this->mfa->provisioningUri($user, $secret),
             'issuer' => config('identity.mfa.issuer'),
         ]);
     }
@@ -69,7 +67,7 @@ final class MfaEnrollmentController extends Controller
 
         $data = $request->validate(['code' => ['required', 'digits:6']]);
         $this->rejectLimitedAttempt($request);
-        $confirmation = $this->mfa->confirmEnrollment($user, $data['code']);
+        $confirmation = $this->mfa->confirmEnrollment($user, $data['code'], $request);
 
         if ($confirmation === null) {
             $this->limiter->hitMfa($request, $user);

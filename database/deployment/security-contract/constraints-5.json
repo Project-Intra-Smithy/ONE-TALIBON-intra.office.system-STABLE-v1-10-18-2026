@@ -1,0 +1,12 @@
+[
+  {
+    "name": "public.users.users_suspended_by_user_id_foreign",
+    "convalidated": true,
+    "definition": "FOREIGN KEY (suspended_by_user_id) REFERENCES users(id) ON DELETE SET NULL"
+  },
+  {
+    "name": "public.users.users_username_unique",
+    "convalidated": true,
+    "definition": "UNIQUE (username)"
+  }
+]

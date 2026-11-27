@@ -1,0 +1,50 @@
+[
+  {
+    "width": 1440,
+    "theme": "light",
+    "errors": [],
+    "consoleErrors": [],
+    "externalRequests": [],
+    "overflow": false
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "errors": [],
+    "consoleErrors": [],
+    "externalRequests": [],
+    "overflow": false
+  },
+  {
+    "width": 768,
+    "theme": "light",
+    "errors": [],
+    "consoleErrors": [],
+    "externalRequests": [],
+    "overflow": false
+  },
+  {
+    "width": 768,
+    "theme": "dark",
+    "errors": [],
+    "consoleErrors": [],
+    "externalRequests": [],
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "errors": [],
+    "consoleErrors": [],
+    "externalRequests": [],
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "errors": [],
+    "consoleErrors": [],
+    "externalRequests": [],
+    "overflow": false
+  }
+]

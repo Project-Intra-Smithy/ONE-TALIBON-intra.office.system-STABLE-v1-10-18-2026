@@ -1,0 +1,502 @@
+[
+  {
+    "object": "constraint ops009_origin_delivery_exception_actions_note_check on table ops009_origin_delivery_exception_actions",
+    "reference": "column note of table ops009_origin_delivery_exception_actions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exception_actions_note_check on table ops009_origin_delivery_exception_actions",
+    "reference": "column note of table ops009_origin_delivery_exception_actions",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exception_actions_pkey on table ops009_origin_delivery_exception_actions",
+    "reference": "column id of table ops009_origin_delivery_exception_actions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_custodian_role_check on table ops009_origin_delivery_exceptions",
+    "reference": "column custodian_role of table ops009_origin_delivery_exceptions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_custodian_role_check on table ops009_origin_delivery_exceptions",
+    "reference": "column custodian_role of table ops009_origin_delivery_exceptions",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_operation_id_fkey on table ops009_origin_delivery_exceptions",
+    "reference": "column operation_id of table legacy_custody.operations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_operation_id_fkey on table ops009_origin_delivery_exceptions",
+    "reference": "column operation_id of table ops009_origin_delivery_exceptions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_operation_id_fkey on table ops009_origin_delivery_exceptions",
+    "reference": "index legacy_custody.operations_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_operation_id_key on table ops009_origin_delivery_exceptions",
+    "reference": "column operation_id of table ops009_origin_delivery_exceptions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_origin_department_id_fkey on table ops009_origin_delivery_exceptions",
+    "reference": "column id of table departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_origin_department_id_fkey on table ops009_origin_delivery_exceptions",
+    "reference": "column origin_department_id of table ops009_origin_delivery_exceptions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_origin_department_id_fkey on table ops009_origin_delivery_exceptions",
+    "reference": "index departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_pkey on table ops009_origin_delivery_exceptions",
+    "reference": "column id of table ops009_origin_delivery_exceptions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_reason_check on table ops009_origin_delivery_exceptions",
+    "reference": "column reason of table ops009_origin_delivery_exceptions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_reason_check on table ops009_origin_delivery_exceptions",
+    "reference": "column reason of table ops009_origin_delivery_exceptions",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_transaction_event_id_fkey on table ops009_origin_delivery_exceptions",
+    "reference": "column id of table transaction_events",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_transaction_event_id_fkey on table ops009_origin_delivery_exceptions",
+    "reference": "column transaction_event_id of table ops009_origin_delivery_exceptions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_transaction_event_id_fkey on table ops009_origin_delivery_exceptions",
+    "reference": "index transaction_events_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_transaction_event_id_key on table ops009_origin_delivery_exceptions",
+    "reference": "column transaction_event_id of table ops009_origin_delivery_exceptions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_transaction_id_fkey on table ops009_origin_delivery_exceptions",
+    "reference": "column id of table transactions",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_transaction_id_fkey on table ops009_origin_delivery_exceptions",
+    "reference": "column transaction_id of table ops009_origin_delivery_exceptions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_transaction_id_fkey on table ops009_origin_delivery_exceptions",
+    "reference": "index transactions_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ops009_origin_delivery_exceptions_transaction_id_key on table ops009_origin_delivery_exceptions",
+    "reference": "column transaction_id of table ops009_origin_delivery_exceptions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint outbox_messages_pkey on table outbox_messages",
+    "reference": "column id of table outbox_messages",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint outbox_messages_public_id_unique on table outbox_messages",
+    "reference": "column public_id of table outbox_messages",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ownership_links_binding_document_id_fkey on table legacy_custody.ownership_links",
+    "reference": "column binding_document_id of table legacy_custody.ownership_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ownership_links_binding_document_id_fkey on table legacy_custody.ownership_links",
+    "reference": "column document_id of table legacy_custody.bindings",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ownership_links_binding_document_id_fkey on table legacy_custody.ownership_links",
+    "reference": "index legacy_custody.bindings_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ownership_links_pkey on table legacy_custody.ownership_links",
+    "reference": "column binding_document_id of table legacy_custody.ownership_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ownership_links_pkey on table legacy_custody.ownership_links",
+    "reference": "column linkable_type of table legacy_custody.ownership_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ownership_links_pkey on table legacy_custody.ownership_links",
+    "reference": "column relationship of table legacy_custody.ownership_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ownership_links_pkey on table legacy_custody.ownership_links",
+    "reference": "column source_id of table legacy_custody.ownership_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ownership_links_public_document_link_id_binding_document_i_fkey on table legacy_custody.ownership_links",
+    "reference": "column binding_document_id of table legacy_custody.ownership_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ownership_links_public_document_link_id_binding_document_i_fkey on table legacy_custody.ownership_links",
+    "reference": "column created_by_user_id of table document_links",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ownership_links_public_document_link_id_binding_document_i_fkey on table legacy_custody.ownership_links",
+    "reference": "column created_by_user_id of table legacy_custody.ownership_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ownership_links_public_document_link_id_binding_document_i_fkey on table legacy_custody.ownership_links",
+    "reference": "column document_id of table document_links",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ownership_links_public_document_link_id_binding_document_i_fkey on table legacy_custody.ownership_links",
+    "reference": "column id of table document_links",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ownership_links_public_document_link_id_binding_document_i_fkey on table legacy_custody.ownership_links",
+    "reference": "column linkable_id of table document_links",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ownership_links_public_document_link_id_binding_document_i_fkey on table legacy_custody.ownership_links",
+    "reference": "column linkable_type of table document_links",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ownership_links_public_document_link_id_binding_document_i_fkey on table legacy_custody.ownership_links",
+    "reference": "column linkable_type of table legacy_custody.ownership_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ownership_links_public_document_link_id_binding_document_i_fkey on table legacy_custody.ownership_links",
+    "reference": "column public_document_link_id of table legacy_custody.ownership_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ownership_links_public_document_link_id_binding_document_i_fkey on table legacy_custody.ownership_links",
+    "reference": "column relationship of table document_links",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ownership_links_public_document_link_id_binding_document_i_fkey on table legacy_custody.ownership_links",
+    "reference": "column relationship of table legacy_custody.ownership_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ownership_links_public_document_link_id_binding_document_i_fkey on table legacy_custody.ownership_links",
+    "reference": "column source_id of table legacy_custody.ownership_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ownership_links_public_document_link_id_binding_document_i_fkey on table legacy_custody.ownership_links",
+    "reference": "index n03_link_tuple",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ownership_links_public_document_link_id_key on table legacy_custody.ownership_links",
+    "reference": "column public_document_link_id of table legacy_custody.ownership_links",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint password_reset_tokens_pkey on table password_reset_tokens",
+    "reference": "column email of table password_reset_tokens",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint payroll_entries_employee_id_foreign on table payroll_entries",
+    "reference": "column employee_id of table payroll_entries",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint payroll_entries_employee_id_foreign on table payroll_entries",
+    "reference": "column id of table employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint payroll_entries_employee_id_foreign on table payroll_entries",
+    "reference": "index employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint payroll_entries_payroll_period_id_employee_id_unique on table payroll_entries",
+    "reference": "column employee_id of table payroll_entries",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint payroll_entries_payroll_period_id_employee_id_unique on table payroll_entries",
+    "reference": "column payroll_period_id of table payroll_entries",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint payroll_entries_payroll_period_id_foreign on table payroll_entries",
+    "reference": "column id of table payroll_periods",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint payroll_entries_payroll_period_id_foreign on table payroll_entries",
+    "reference": "column payroll_period_id of table payroll_entries",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint payroll_entries_payroll_period_id_foreign on table payroll_entries",
+    "reference": "index payroll_periods_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint payroll_entries_pkey on table payroll_entries",
+    "reference": "column id of table payroll_entries",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint payroll_periods_dtr_period_id_foreign on table payroll_periods",
+    "reference": "column dtr_period_id of table payroll_periods",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint payroll_periods_dtr_period_id_foreign on table payroll_periods",
+    "reference": "column id of table dtr_periods",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint payroll_periods_dtr_period_id_foreign on table payroll_periods",
+    "reference": "index dtr_periods_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint payroll_periods_pkey on table payroll_periods",
+    "reference": "column id of table payroll_periods",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint performance_records_created_by_user_id_foreign on table performance_records",
+    "reference": "column created_by_user_id of table performance_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint performance_records_created_by_user_id_foreign on table performance_records",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint performance_records_created_by_user_id_foreign on table performance_records",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint performance_records_employee_id_foreign on table performance_records",
+    "reference": "column employee_id of table performance_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint performance_records_employee_id_foreign on table performance_records",
+    "reference": "column id of table employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint performance_records_employee_id_foreign on table performance_records",
+    "reference": "index employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint performance_records_evaluator_user_id_foreign on table performance_records",
+    "reference": "column evaluator_user_id of table performance_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint performance_records_evaluator_user_id_foreign on table performance_records",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint performance_records_evaluator_user_id_foreign on table performance_records",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint performance_records_pkey on table performance_records",
+    "reference": "column id of table performance_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_bindings_edition_role_revision_unique on table plan_document_bindings",
+    "reference": "column plan_edition_id of table plan_document_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_bindings_edition_role_revision_unique on table plan_document_bindings",
+    "reference": "column revision_no of table plan_document_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_bindings_edition_role_revision_unique on table plan_document_bindings",
+    "reference": "column role of table plan_document_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_bindings_quarantine_check on table plan_document_bindings",
+    "reference": "column binding_state of table plan_document_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_bindings_quarantine_check on table plan_document_bindings",
+    "reference": "column binding_state of table plan_document_bindings",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_bindings_revision_check on table plan_document_bindings",
+    "reference": "column revision_no of table plan_document_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_bindings_revision_check on table plan_document_bindings",
+    "reference": "column revision_no of table plan_document_bindings",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_bindings_role_check on table plan_document_bindings",
+    "reference": "column role of table plan_document_bindings",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_bindings_role_check on table plan_document_bindings",
+    "reference": "column role of table plan_document_bindings",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_custody_events_event_id_unique on table plan_custody_events",
+    "reference": "column event_id of table plan_custody_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_events_pkey on table plan_custody_events",
+    "reference": "column id of table plan_custody_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_events_plan_custody_generation_id_foreign on table plan_custody_events",
+    "reference": "column id of table plan_custody_generations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_custody_events_plan_custody_generation_id_foreign on table plan_custody_events",
+    "reference": "column plan_custody_generation_id of table plan_custody_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_events_plan_custody_generation_id_foreign on table plan_custody_events",
+    "reference": "index plan_custody_generations_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_custody_generation_integrity_check on table plan_custody_generations",
+    "reference": "column integrity_status of table plan_custody_generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_generation_integrity_check on table plan_custody_generations",
+    "reference": "column integrity_status of table plan_custody_generations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_custody_generation_media_check on table plan_custody_generations",
+    "reference": "column media_type of table plan_custody_generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_generation_media_check on table plan_custody_generations",
+    "reference": "column media_type of table plan_custody_generations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_custody_generation_sha_check on table plan_custody_generations",
+    "reference": "column sha256 of table plan_custody_generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_generation_sha_check on table plan_custody_generations",
+    "reference": "column sha256 of table plan_custody_generations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_custody_generation_size_check on table plan_custody_generations",
+    "reference": "column size_bytes of table plan_custody_generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_generation_size_check on table plan_custody_generations",
+    "reference": "column size_bytes of table plan_custody_generations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_custody_generation_state_check on table plan_custody_generations",
+    "reference": "column custody_state of table plan_custody_generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_generation_state_check on table plan_custody_generations",
+    "reference": "column custody_state of table plan_custody_generations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint plan_custody_generations_generation_id_unique on table plan_custody_generations",
+    "reference": "column generation_id of table plan_custody_generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_generations_idempotency_key_hash_unique on table plan_custody_generations",
+    "reference": "column idempotency_key_hash of table plan_custody_generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_generations_pkey on table plan_custody_generations",
+    "reference": "column id of table plan_custody_generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_generations_storage_locator_unique on table plan_custody_generations",
+    "reference": "column storage_locator of table plan_custody_generations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_scan_decision_check on table plan_custody_scan_evidence",
+    "reference": "column decision of table plan_custody_scan_evidence",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint plan_custody_scan_decision_check on table plan_custody_scan_evidence",
+    "reference": "column decision of table plan_custody_scan_evidence",
+    "deptype": "n"
+  }
+]

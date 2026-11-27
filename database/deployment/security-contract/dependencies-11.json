@@ -1,0 +1,502 @@
+[
+  {
+    "object": "constraint ppa_records_implementing_department_id_foreign on table ppa_records",
+    "reference": "column id of table departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ppa_records_implementing_department_id_foreign on table ppa_records",
+    "reference": "column implementing_department_id of table ppa_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ppa_records_implementing_department_id_foreign on table ppa_records",
+    "reference": "index departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ppa_records_pkey on table ppa_records",
+    "reference": "column id of table ppa_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ppa_records_planning_map_id_foreign on table ppa_records",
+    "reference": "column id of table planning_maps",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ppa_records_planning_map_id_foreign on table ppa_records",
+    "reference": "column planning_map_id of table ppa_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ppa_records_planning_map_id_foreign on table ppa_records",
+    "reference": "index planning_maps_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ppa_records_ppa_code_unique on table ppa_records",
+    "reference": "column ppa_code of table ppa_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ppa_records_updated_by_user_id_foreign on table ppa_records",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint ppa_records_updated_by_user_id_foreign on table ppa_records",
+    "reference": "column updated_by_user_id of table ppa_records",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint ppa_records_updated_by_user_id_foreign on table ppa_records",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint prototype_messages_pkey on table prototype_messages",
+    "reference": "column id of table prototype_messages",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint prototype_messages_public_id_unique on table prototype_messages",
+    "reference": "column public_id of table prototype_messages",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint prototype_messages_sender_user_id_foreign on table prototype_messages",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint prototype_messages_sender_user_id_foreign on table prototype_messages",
+    "reference": "column sender_user_id of table prototype_messages",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint prototype_messages_sender_user_id_foreign on table prototype_messages",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint staff_activation_invitations_code_digest_unique on table staff_activation_invitations",
+    "reference": "column code_digest of table staff_activation_invitations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint staff_activation_invitations_created_by_user_id_foreign on table staff_activation_invitations",
+    "reference": "column created_by_user_id of table staff_activation_invitations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint staff_activation_invitations_created_by_user_id_foreign on table staff_activation_invitations",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint staff_activation_invitations_created_by_user_id_foreign on table staff_activation_invitations",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint staff_activation_invitations_department_id_foreign on table staff_activation_invitations",
+    "reference": "column department_id of table staff_activation_invitations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint staff_activation_invitations_department_id_foreign on table staff_activation_invitations",
+    "reference": "column id of table departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint staff_activation_invitations_department_id_foreign on table staff_activation_invitations",
+    "reference": "index departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint staff_activation_invitations_employee_id_foreign on table staff_activation_invitations",
+    "reference": "column employee_id of table staff_activation_invitations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint staff_activation_invitations_employee_id_foreign on table staff_activation_invitations",
+    "reference": "column id of table employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint staff_activation_invitations_employee_id_foreign on table staff_activation_invitations",
+    "reference": "index employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint staff_activation_invitations_pkey on table staff_activation_invitations",
+    "reference": "column id of table staff_activation_invitations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint staff_activation_invitations_user_id_foreign on table staff_activation_invitations",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint staff_activation_invitations_user_id_foreign on table staff_activation_invitations",
+    "reference": "column user_id of table staff_activation_invitations",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint staff_activation_invitations_user_id_foreign on table staff_activation_invitations",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint task_events_actor_user_id_foreign on table task_events",
+    "reference": "column actor_user_id of table task_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint task_events_actor_user_id_foreign on table task_events",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint task_events_actor_user_id_foreign on table task_events",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint task_events_pkey on table task_events",
+    "reference": "column id of table task_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint task_events_task_id_foreign on table task_events",
+    "reference": "column id of table tasks",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint task_events_task_id_foreign on table task_events",
+    "reference": "column task_id of table task_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint task_events_task_id_foreign on table task_events",
+    "reference": "index tasks_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint tasks_assigned_to_user_id_foreign on table tasks",
+    "reference": "column assigned_to_user_id of table tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint tasks_assigned_to_user_id_foreign on table tasks",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint tasks_assigned_to_user_id_foreign on table tasks",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint tasks_created_by_user_id_foreign on table tasks",
+    "reference": "column created_by_user_id of table tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint tasks_created_by_user_id_foreign on table tasks",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint tasks_created_by_user_id_foreign on table tasks",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint tasks_owning_department_id_foreign on table tasks",
+    "reference": "column id of table departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint tasks_owning_department_id_foreign on table tasks",
+    "reference": "column owning_department_id of table tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint tasks_owning_department_id_foreign on table tasks",
+    "reference": "index departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint tasks_pkey on table tasks",
+    "reference": "column id of table tasks",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint terminal_receipts_actor_user_id_fkey on table legacy_custody.terminal_receipts",
+    "reference": "column actor_user_id of table legacy_custody.terminal_receipts",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint terminal_receipts_actor_user_id_fkey on table legacy_custody.terminal_receipts",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint terminal_receipts_actor_user_id_fkey on table legacy_custody.terminal_receipts",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint terminal_receipts_check on table legacy_custody.terminal_receipts",
+    "reference": "column fence_no of table legacy_custody.terminal_receipts",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint terminal_receipts_check on table legacy_custody.terminal_receipts",
+    "reference": "column fence_no of table legacy_custody.terminal_receipts",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint terminal_receipts_check on table legacy_custody.terminal_receipts",
+    "reference": "column outcome of table legacy_custody.terminal_receipts",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint terminal_receipts_check on table legacy_custody.terminal_receipts",
+    "reference": "column outcome of table legacy_custody.terminal_receipts",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint terminal_receipts_evidence_ref_check on table legacy_custody.terminal_receipts",
+    "reference": "column evidence_ref of table legacy_custody.terminal_receipts",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint terminal_receipts_evidence_ref_check on table legacy_custody.terminal_receipts",
+    "reference": "column evidence_ref of table legacy_custody.terminal_receipts",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint terminal_receipts_manifest_digest_check on table legacy_custody.terminal_receipts",
+    "reference": "column manifest_digest of table legacy_custody.terminal_receipts",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint terminal_receipts_manifest_digest_check on table legacy_custody.terminal_receipts",
+    "reference": "column manifest_digest of table legacy_custody.terminal_receipts",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint terminal_receipts_operation_id_fkey on table legacy_custody.terminal_receipts",
+    "reference": "column operation_id of table legacy_custody.operations",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint terminal_receipts_operation_id_fkey on table legacy_custody.terminal_receipts",
+    "reference": "column operation_id of table legacy_custody.terminal_receipts",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint terminal_receipts_operation_id_fkey on table legacy_custody.terminal_receipts",
+    "reference": "index legacy_custody.operations_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint terminal_receipts_pkey on table legacy_custody.terminal_receipts",
+    "reference": "column operation_id of table legacy_custody.terminal_receipts",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint terminal_receipts_receipt_uuid_key on table legacy_custody.terminal_receipts",
+    "reference": "column receipt_uuid of table legacy_custody.terminal_receipts",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint terminal_receipts_service_identity_check on table legacy_custody.terminal_receipts",
+    "reference": "column service_identity of table legacy_custody.terminal_receipts",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint terminal_receipts_service_identity_check on table legacy_custody.terminal_receipts",
+    "reference": "column service_identity of table legacy_custody.terminal_receipts",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transaction_events_actor_user_id_foreign on table transaction_events",
+    "reference": "column actor_user_id of table transaction_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint transaction_events_actor_user_id_foreign on table transaction_events",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transaction_events_actor_user_id_foreign on table transaction_events",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transaction_events_from_assigned_employee_id_foreign on table transaction_events",
+    "reference": "column from_assigned_employee_id of table transaction_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint transaction_events_from_assigned_employee_id_foreign on table transaction_events",
+    "reference": "column id of table employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transaction_events_from_assigned_employee_id_foreign on table transaction_events",
+    "reference": "index employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transaction_events_from_department_id_foreign on table transaction_events",
+    "reference": "column from_department_id of table transaction_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint transaction_events_from_department_id_foreign on table transaction_events",
+    "reference": "column id of table departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transaction_events_from_department_id_foreign on table transaction_events",
+    "reference": "index departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transaction_events_pkey on table transaction_events",
+    "reference": "column id of table transaction_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint transaction_events_to_assigned_employee_id_foreign on table transaction_events",
+    "reference": "column id of table employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transaction_events_to_assigned_employee_id_foreign on table transaction_events",
+    "reference": "column to_assigned_employee_id of table transaction_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint transaction_events_to_assigned_employee_id_foreign on table transaction_events",
+    "reference": "index employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transaction_events_to_department_id_foreign on table transaction_events",
+    "reference": "column id of table departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transaction_events_to_department_id_foreign on table transaction_events",
+    "reference": "column to_department_id of table transaction_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint transaction_events_to_department_id_foreign on table transaction_events",
+    "reference": "index departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transaction_events_transaction_id_foreign on table transaction_events",
+    "reference": "column id of table transactions",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transaction_events_transaction_id_foreign on table transaction_events",
+    "reference": "column transaction_id of table transaction_events",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint transaction_events_transaction_id_foreign on table transaction_events",
+    "reference": "index transactions_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transactions_assigned_employee_id_foreign on table transactions",
+    "reference": "column assigned_employee_id of table transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint transactions_assigned_employee_id_foreign on table transactions",
+    "reference": "column id of table employees",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transactions_assigned_employee_id_foreign on table transactions",
+    "reference": "index employees_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transactions_assigned_to_user_id_foreign on table transactions",
+    "reference": "column assigned_to_user_id of table transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint transactions_assigned_to_user_id_foreign on table transactions",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transactions_assigned_to_user_id_foreign on table transactions",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transactions_created_by_user_id_foreign on table transactions",
+    "reference": "column created_by_user_id of table transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint transactions_created_by_user_id_foreign on table transactions",
+    "reference": "column id of table users",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transactions_created_by_user_id_foreign on table transactions",
+    "reference": "index users_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transactions_current_department_id_foreign on table transactions",
+    "reference": "column current_department_id of table transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint transactions_current_department_id_foreign on table transactions",
+    "reference": "column id of table departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transactions_current_department_id_foreign on table transactions",
+    "reference": "index departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transactions_origin_department_id_foreign on table transactions",
+    "reference": "column id of table departments",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transactions_origin_department_id_foreign on table transactions",
+    "reference": "column origin_department_id of table transactions",
+    "deptype": "a"
+  },
+  {
+    "object": "constraint transactions_origin_department_id_foreign on table transactions",
+    "reference": "index departments_pkey",
+    "deptype": "n"
+  },
+  {
+    "object": "constraint transactions_pkey on table transactions",
+    "reference": "column id of table transactions",
+    "deptype": "a"
+  }
+]
