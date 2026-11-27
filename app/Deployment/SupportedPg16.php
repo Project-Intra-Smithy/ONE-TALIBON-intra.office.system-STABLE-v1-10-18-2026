@@ -11,6 +11,7 @@ use RuntimeException;
 final class SupportedPg16
 {
     public const UNSUPPORTED = [
+        'reserved_namespaces' => "SELECT * FROM pg_namespace WHERE nspname ~ '^pg_' AND nspname NOT IN ('pg_catalog','pg_toast') AND nspname !~ '^pg_(toast_)?temp_[0-9]+$'",
         'large_objects' => 'SELECT * FROM pg_largeobject_metadata',
         'large_object_pages' => 'SELECT loid,pageno,md5(data::text) AS digest FROM pg_largeobject',
         'foreign_wrappers' => 'SELECT * FROM pg_foreign_data_wrapper',

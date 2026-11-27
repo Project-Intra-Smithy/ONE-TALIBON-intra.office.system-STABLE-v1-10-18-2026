@@ -66,7 +66,7 @@ final class PersistentSecurity
         }
         $expected = SecurityCatalog::contract();
         $actual = app(SecurityCatalog::class)->snapshot($target['bootstrap_role']);
-        foreach (['system_schema_security', 'system_column_acl', 'system_type_security', 'system_routine_security', 'system_relation_security'] as $family) {
+        foreach (['system_language_security', 'system_extension_security', 'system_schema_security', 'system_column_acl', 'system_type_security', 'system_routine_security', 'system_relation_security'] as $family) {
             if ($actual[$family] !== $expected[$family]) {
                 throw new RuntimeException('Unsupported stock system-catalog deviation.');
             }

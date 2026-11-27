@@ -14,6 +14,8 @@ Laravel13.44.1 path resolution was inspected in Application.php, LoadEnvironment
 
 Supported canonical schemas, tables/indexes/sequences/columns/row types, routines, constraints, explicit and internal RI triggers, policies, dependencies, ACL/default ACL/grant options, ownership, managed roles/memberships/SET paths/startup settings and effective permissions are compared to the independently derived policy contract. Built-in pg_catalog/information_schema schema/routine/relation/type security is also compared. allow_system_table_mods must remain off; normal-OID definitions in system schemas are rejected. Trusted stock PG16 binaries and bootstrap-owned built-ins are the implementation trust boundary; hostile root/server-binary replacement is outside it.
 
+The stock language owner/ACL/trust/handler/validator configuration and plpgsql extension owner/namespace/version/configuration are independently derived sections too. Unexpected reserved `pg_` namespaces refuse; only pg_catalog, pg_toast and PostgreSQL's numbered temporary namespace families are recognized. This prevents arbitrary application objects from hiding behind the catalog's reserved-name exclusions.
+
 `SupportedPg16::UNSUPPORTED` enumerates target-local object families that ONE TALIBON does not use. Every family is checked before installer mutation and is included in independent rollback observations as bounded count+semantic digest (never plaintext foreign/subscription options):
 
 | Catalog family | Disposition |

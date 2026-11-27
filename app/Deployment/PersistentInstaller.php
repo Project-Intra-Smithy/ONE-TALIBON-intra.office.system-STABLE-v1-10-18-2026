@@ -112,6 +112,11 @@ final class PersistentInstaller
                 $migrator = app('migrator');
                 $files = $migrator->getMigrationFiles([database_path('migrations')]);
                 $repository = $migrator->getRepository();
+                // Lock before ledger writes: autovacuum can otherwise wait on our inserts
+                // while ownership finalization waits on its relation lock.
+                if ($repository->repositoryExists()) {
+                    DB::statement('LOCK TABLE public.migrations IN ACCESS EXCLUSIVE MODE');
+                }
                 $existing = $repository->repositoryExists() ? $repository->getRan() : [];
                 $expected = $target['expected_migrations'];
                 sort($existing);

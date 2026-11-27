@@ -233,7 +233,19 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
             # Ordinary migrate created only its repository, not application schema.
             target['expected_migrations'] = []
         invalid = dict(target)
+        locker=subprocess.Popen([str(args.pg_bin/'psql'),'-X','-v','ON_ERROR_STOP=1','-At'],cwd=app_cwd,env=env,text=True,
+                                stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        try:
+            locker.stdin.write("BEGIN;\nLOCK TABLE public.migrations IN SHARE UPDATE EXCLUSIVE MODE;\nSELECT 'LOCKED';\n")
+            locker.stdin.flush()
+            check(mode+'_migration_maintenance_lock_held','LOCKED' in ''.join(locker.stdout.readline() for _ in range(3)))
+            blocked=install(target,1)
+            check(mode+'_migration_maintenance_lock_refused',blocked.returncode==1 and '55P03' in blocked.stdout)
+            check(mode+'_migration_maintenance_lock_rollback',sql("SELECT (SELECT count(*) FROM migrations)="+str(len(ledger))+" AND (SELECT count(*) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%')=0").stdout.strip()=='t')
+        finally:
+            locker.communicate('ROLLBACK;\n\\q\n',timeout=30)
         system_cases=[
+            ('system_language_acl','REVOKE USAGE ON LANGUAGE plpgsql FROM PUBLIC','GRANT USAGE ON LANGUAGE plpgsql TO PUBLIC'),
             ('system_schema_acl','GRANT CREATE ON SCHEMA pg_catalog TO PUBLIC','REVOKE CREATE ON SCHEMA pg_catalog FROM PUBLIC'),
             ('system_column_acl','REVOKE SELECT(oid) ON pg_catalog.pg_subscription FROM PUBLIC','GRANT SELECT(oid) ON pg_catalog.pg_subscription TO PUBLIC'),
             ('system_type_acl','REVOKE USAGE ON TYPE pg_catalog.pg_lsn FROM PUBLIC','GRANT USAGE ON TYPE pg_catalog.pg_lsn TO PUBLIC'),
@@ -354,6 +366,7 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
             # Only this disposable fixture session enables system-object creation; installer
             # connections retain allow_system_table_mods=off and must reject the resulting object.
             ('system_object','SET allow_system_table_mods=on; CREATE TABLE pg_catalog.qa_untrusted(id int); SET allow_system_table_mods=off','SET allow_system_table_mods=on; DROP TABLE pg_catalog.qa_untrusted; SET allow_system_table_mods=off'),
+            ('reserved_namespace','SET allow_system_table_mods=on; CREATE SCHEMA pg_qa_untrusted; SET allow_system_table_mods=off','DROP SCHEMA pg_qa_untrusted'),
             ('user_collation',"CREATE COLLATION public.qa_collation (provider=libc,locale='C')",'DROP COLLATION public.qa_collation'),
         ]
         drift_cases.extend(unsupported_cases)

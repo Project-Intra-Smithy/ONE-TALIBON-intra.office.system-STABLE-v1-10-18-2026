@@ -2,6 +2,26 @@
   "format": 3,
   "sections": [
     {
+      "name": "system_language_security",
+      "rows": 4,
+      "parts": [
+        {
+          "file": "security-contract/system_language_security-0.json",
+          "sha256": "8e5b8b16a150a0f09e4b201266e5712de8ae26d44e7c30d7dabdb6f3e977f585"
+        }
+      ]
+    },
+    {
+      "name": "system_extension_security",
+      "rows": 1,
+      "parts": [
+        {
+          "file": "security-contract/system_extension_security-0.json",
+          "sha256": "1cf5721c3589af3663917f4b334f15561b5b6d9d2dbbcbe017c31c530f44e85a"
+        }
+      ]
+    },
+    {
       "name": "system_schema_security",
       "rows": 2,
       "parts": [
