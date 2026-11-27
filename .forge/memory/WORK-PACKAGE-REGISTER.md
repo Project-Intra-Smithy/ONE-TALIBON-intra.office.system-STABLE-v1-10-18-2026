@@ -1291,3 +1291,6 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 ## OT-VPS-OPERATIONAL-QA-R1 — BLOCKED preflight checkpoint / 2026-11-27
 - Accepted source ad1d6d60 unchanged. Existing staging target lacks required custody schema/protected roles; exact-source migrations/installers require disposable testing DB. No VPS mutations or fixtures. [Receipt](../evidence/ot-vps-operational-qa-r1/REPORT.md); [memory](OT-FUNCTIONAL-COMPLETION-R1.md).
 - NEXT owner Maintainer/Engineer: qualify supported persistent upgrade route before execution resumes. Not CLOSED, not READY_FOR_SIRIS_QA; no canonical-main propagation.
+
+## OT-VPS-OPERATIONAL-QA-R1 — corrective continuation START
+- [Engineer-authorized continuation7218647858](https://github.com/Project-Intra-Smithy/engineering-hub/issues/197#issuecomment-7218647858); candidate/ot-persistent-deployment-r1, frozen PR78 preserved. Codex sole executor, Kirch accountable; persistent PG16 install/upgrade and protected-role controls + fresh/upgrade/negative qualification. [Mission memory](OT-FUNCTIONAL-COMPLETION-R1.md). NEXT implement, qualify and obtain targeted acceptance, then resume direct deployment. No main propagation under existing exception.
