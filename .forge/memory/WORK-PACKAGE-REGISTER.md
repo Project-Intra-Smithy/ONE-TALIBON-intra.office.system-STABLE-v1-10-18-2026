@@ -1297,3 +1297,6 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 
 ## OT-VPS-OPERATIONAL-QA-R1 — N79 corrective continuation
 - [START7220269319](https://github.com/Project-Intra-Smithy/engineering-hub/issues/197#issuecomment-7220269319); candidate/ot-persistent-deployment-r2 from frozen34116e7e. Nox HOLD N79-01..04 sustained. [Mission memory](OT-FUNCTIONAL-COMPLETION-R1.md). Codex sole executor; NEXT comprehensive bounded correction/qualification and Nox targeted reacceptance. No VPS mutation or main propagation.
+
+## OT-VPS-OPERATIONAL-QA-R1 — resumed after user safe stop
+- [Checkpoint7221732593](https://github.com/Project-Intra-Smithy/engineering-hub/issues/197#issuecomment-7221732593), corrective PR80 b8657ee3, original N79-01..04 authority retained; qualification in progress, VPS untouched. [Mission memory](OT-FUNCTIONAL-COMPLETION-R1.md). NEXT Codex full corrective qualification then Nox reacceptance/Maintainer disposition. No readiness or closure.
