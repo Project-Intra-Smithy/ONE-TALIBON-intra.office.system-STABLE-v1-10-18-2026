@@ -12,6 +12,7 @@ import subprocess
 import sys
 import tempfile
 import stat
+from concurrent.futures import ThreadPoolExecutor
 
 _windows_actor = None
 
@@ -83,15 +84,21 @@ def verify(package, manifest_file, digest):
     if Path(manifest_file).resolve().is_relative_to(package) or Path(__file__).resolve().is_relative_to(package):
         refuse('Trust anchor must be outside the executable package')
     secure_path(package)
-    found = {}
+    files_to_hash = []
     for directory, dirs, files in os.walk(package, followlinks=False):
         for name in dirs+files:
             path = Path(directory)/name
-            secure_path(path)
             if path.is_file():
-                found[path.relative_to(package).as_posix()] = hashlib.sha256(path.read_bytes()).hexdigest()
-            elif not path.is_dir():
+                files_to_hash.append(path)
+            elif path.is_dir():
+                secure_path(path)
+            else:
                 refuse('Unexpected executable filesystem object')
+    def verify_file(path):
+        secure_path(path)
+        return path.relative_to(package).as_posix(),hashlib.sha256(path.read_bytes()).hexdigest()
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        found=dict(pool.map(verify_file,files_to_hash))
     if found != manifest['files']:
         refuse('Tampered, missing or unexpected package content')
     for required in ['artisan','vendor/autoload.php','vendor/composer/installed.json','composer.lock','package-lock.json','public/build/manifest.json','database/deployment/security-contract.json']:

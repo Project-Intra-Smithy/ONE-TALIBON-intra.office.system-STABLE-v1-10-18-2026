@@ -28,6 +28,9 @@ final class SecurityCatalog
             'types' => 'SELECT n.nspname||\'.\'||t.typname AS name,t.typtype,pg_get_userbyid(t.typowner) AS owner,'.$acl("coalesce(t.typacl,acldefault('T',t.typowner))").' AS acl FROM pg_type t JOIN pg_namespace n ON n.oid=t.typnamespace WHERE '.self::SCHEMAS.' ORDER BY name',
             'constraints' => "SELECT n.nspname||'.'||c.relname||'.'||k.conname AS name,k.convalidated,pg_get_constraintdef(k.oid,true) AS definition FROM pg_constraint k JOIN pg_class c ON c.oid=k.conrelid JOIN pg_namespace n ON n.oid=c.relnamespace WHERE ".self::SCHEMAS.' ORDER BY name',
             'triggers' => "SELECT n.nspname||'.'||c.relname||'.'||t.tgname AS name,t.tgenabled,pg_get_triggerdef(t.oid,true) AS definition FROM pg_trigger t JOIN pg_class c ON c.oid=t.tgrelid JOIN pg_namespace n ON n.oid=c.relnamespace WHERE ".self::SCHEMAS.' AND NOT t.tgisinternal ORDER BY name',
+            // RI trigger names contain installation-specific OIDs; bind their semantic identity instead.
+            'internal_triggers' => "SELECT n.nspname||'.'||c.relname AS relation,k.conrelid::regclass::text AS constraint_relation,k.conname,t.tgtype,p.oid::regprocedure::text AS function,t.tgenabled,t.tgdeferrable,t.tginitdeferred
+                FROM pg_trigger t JOIN pg_class c ON c.oid=t.tgrelid JOIN pg_namespace n ON n.oid=c.relnamespace JOIN pg_constraint k ON k.oid=t.tgconstraint JOIN pg_proc p ON p.oid=t.tgfoid WHERE ".self::SCHEMAS.' AND t.tgisinternal',
             'defaults' => "SELECT pg_get_userbyid(d.defaclrole) AS owner,coalesce(n.nspname,'*') AS schema,d.defaclobjtype,".$acl('d.defaclacl').' AS acl FROM pg_default_acl d LEFT JOIN pg_namespace n ON n.oid=d.defaclnamespace ORDER BY owner,schema,defaclobjtype',
             'policies' => 'SELECT * FROM pg_policies ORDER BY schemaname,tablename,policyname',
             'dependencies' => "SELECT pg_describe_object(d.classid,d.objid,d.objsubid) AS object,pg_describe_object(d.refclassid,d.refobjid,d.refobjsubid) AS reference,d.deptype
@@ -36,7 +39,7 @@ final class SecurityCatalog
                 OR (d.classid='pg_proc'::regclass AND d.objid IN (SELECT p.oid FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE ".self::SCHEMAS."))
                 OR (d.classid='pg_type'::regclass AND d.objid IN (SELECT t.oid FROM pg_type t JOIN pg_namespace n ON n.oid=t.typnamespace WHERE ".self::SCHEMAS."))
                 OR (d.classid='pg_constraint'::regclass AND d.objid IN (SELECT k.oid FROM pg_constraint k JOIN pg_class c ON c.oid=k.conrelid JOIN pg_namespace n ON n.oid=c.relnamespace WHERE ".self::SCHEMAS."))
-                OR (d.classid='pg_trigger'::regclass AND d.objid IN (SELECT t.oid FROM pg_trigger t JOIN pg_class c ON c.oid=t.tgrelid JOIN pg_namespace n ON n.oid=c.relnamespace WHERE ".self::SCHEMAS."))
+                OR (d.classid='pg_trigger'::regclass AND d.objid IN (SELECT t.oid FROM pg_trigger t JOIN pg_class c ON c.oid=t.tgrelid JOIN pg_namespace n ON n.oid=c.relnamespace WHERE ".self::SCHEMAS." AND NOT t.tgisinternal))
                 OR (d.classid='pg_attrdef'::regclass AND d.objid IN (SELECT a.oid FROM pg_attrdef a JOIN pg_class c ON c.oid=a.adrelid JOIN pg_namespace n ON n.oid=c.relnamespace WHERE ".self::SCHEMAS.'))',
         ];
         $out = [];

@@ -75,7 +75,7 @@ if not args.record_contract:
     if not extension_dir.is_absolute():
         extension_dir=Path(php).parent/extension_dir
     provisioning_ini=build/'provision.ini'
-    ini_lines=['display_errors=stderr','log_errors=Off','memory_limit=512M']
+    ini_lines=['display_errors=stderr','log_errors=On','error_log="php://stderr"','memory_limit=512M']
     for name in ['PDO','bcmath','ctype','curl','dom','fileinfo','intl','mbstring','openssl','pdo_pgsql','pgsql','session','tokenizer','xml','xmlreader','xmlwriter','zip']:
         if name.lower() not in builtin:
             library=extension_dir/(('php_'+name.lower()+'.dll') if os.name=='nt' else name.lower()+'.so')
@@ -193,7 +193,8 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
             target['expected_migrations'] = []
         invalid = dict(target)
         sql('ALTER TABLE migrations ENABLE ROW LEVEL SECURITY')
-        check(mode+'_late_failure_rolls_back', install(invalid, 1).returncode == 1)
+        late=install(invalid,1)
+        check(mode+'_late_failure_rolls_back',late.returncode==1 and 'complete security postflight' in late.stdout and 'drift: relations' in late.stdout)
         check(mode+'_rollback_roles', sql("SELECT count(*) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%'").stdout.strip() == '0')
         check(mode+'_rollback_custody', sql("SELECT to_regnamespace('legacy_custody') IS NULL").stdout.strip() == 't')
         check(mode+'_rollback_ledger', int(sql('SELECT count(*) FROM migrations').stdout.strip()) == len(ledger))
@@ -271,6 +272,7 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
             ('registry_table_owner','ALTER TABLE deployment_control.installations OWNER TO n03_reader','ALTER TABLE deployment_control.installations OWNER TO postgres'),
             ('sequence_owner','ALTER SEQUENCE users_id_seq OWNED BY NONE; ALTER SEQUENCE users_id_seq OWNER TO n03_reader','ALTER SEQUENCE users_id_seq OWNER TO kirion_g1b_owner; ALTER SEQUENCE users_id_seq OWNED BY users.id'),
             ('type_grant_option','GRANT USAGE ON TYPE users TO n03_reader WITH GRANT OPTION','REVOKE USAGE ON TYPE users FROM n03_reader'),
+            ('internal_trigger_state','ALTER TABLE users DISABLE TRIGGER ALL','ALTER TABLE users ENABLE TRIGGER ALL'),
             ('role_startup','ALTER ROLE n03_reader IN DATABASE '+db+" SET search_path='pg_catalog'",'ALTER ROLE n03_reader IN DATABASE '+db+' RESET ALL'),
             ('registry_shape','ALTER TABLE deployment_control.installations ADD COLUMN untrusted boolean','ALTER TABLE deployment_control.installations DROP COLUMN untrusted'),
         ]
@@ -320,7 +322,7 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
         private_values.extend(verifiers)
         server_log=(root/'postgres.log').read_text(encoding='utf-8',errors='replace')
         check(mode+'_no_secret_or_verifier_in_server_log',all(v not in server_log for v in [bootstrap,key,*credentials.values(),*verifiers]) and 'SCRAM-SHA-256$' not in server_log)
-        check(mode+'_no_secret_or_verifier_in_client_error_logs',all(v not in ''.join(client_chunks) for v in [bootstrap,key,*credentials.values(),*verifiers]))
+        check(mode+'_no_secret_or_verifier_in_client_error_logs',all(v not in ''.join(client_chunks) for v in [bootstrap,key,*credentials.values(),*verifiers]) and 'SCRAM-SHA-256$' not in ''.join(client_chunks))
         if mode=='upgrade':
             check(mode+'_unrelated_database_and_roles_unchanged',sql(unrelated_query,other_env).stdout==unrelated_before)
         check(mode+'_idempotent_rerun', '"status":"INSTALLED"' in install(target).stdout)
