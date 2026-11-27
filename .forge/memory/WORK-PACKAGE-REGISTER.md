@@ -1300,3 +1300,6 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 
 ## OT-VPS-OPERATIONAL-QA-R1 — resumed after user safe stop
 - [Checkpoint7221732593](https://github.com/Project-Intra-Smithy/engineering-hub/issues/197#issuecomment-7221732593), corrective PR80 b8657ee3, original N79-01..04 authority retained; qualification in progress, VPS untouched. [Mission memory](OT-FUNCTIONAL-COMPLETION-R1.md). NEXT Codex full corrective qualification then Nox reacceptance/Maintainer disposition. No readiness or closure.
+
+## OT-VPS-OPERATIONAL-QA-R1 — N79 corrective qualification / reacceptance pending
+- [Checkpoint7222620559](https://github.com/Project-Intra-Smithy/engineering-hub/issues/197#issuecomment-7222620559), draft PR80 frozenb8657ee3/tree87f14047. Exact15/15hosted and Linux303/303+Windows303/303 PASS; [receipt](../evidence/ot-vps-operational-qa-r1/b8657ee3/README.md). N79-01..04 implemented/qualified, not independently accepted. NEXT Nox targeted reacceptance then Maintainer disposition; only then Codex resumes VPS mission. VPS/PR78/PR79/main preserved, no mission CLOSE or readiness. Existing main-propagation exception retained.
