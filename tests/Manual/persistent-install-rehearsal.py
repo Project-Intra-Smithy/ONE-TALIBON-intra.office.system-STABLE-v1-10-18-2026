@@ -351,7 +351,9 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
             ('subscription',"CREATE SUBSCRIPTION qa_subscription CONNECTION 'host=127.0.0.1 password=synthetic-canary' PUBLICATION qa_publication WITH (connect=false,create_slot=false,enabled=false,slot_name=NONE)",'DROP SUBSCRIPTION qa_subscription'),
             ('domain','CREATE DOMAIN public.qa_domain AS integer CHECK(VALUE>0)','DROP DOMAIN public.qa_domain'),
             ('system_schema_acl','GRANT CREATE ON SCHEMA pg_catalog TO n03_reader','REVOKE CREATE ON SCHEMA pg_catalog FROM n03_reader'),
-            ('system_object','CREATE TABLE pg_catalog.qa_untrusted(id int)','DROP TABLE pg_catalog.qa_untrusted'),
+            # Only this disposable fixture session enables system-object creation; installer
+            # connections retain allow_system_table_mods=off and must reject the resulting object.
+            ('system_object','SET allow_system_table_mods=on; CREATE TABLE pg_catalog.qa_untrusted(id int); SET allow_system_table_mods=off','SET allow_system_table_mods=on; DROP TABLE pg_catalog.qa_untrusted; SET allow_system_table_mods=off'),
             ('user_collation',"CREATE COLLATION public.qa_collation (provider=libc,locale='C')",'DROP COLLATION public.qa_collation'),
         ]
         drift_cases.extend(unsupported_cases)
