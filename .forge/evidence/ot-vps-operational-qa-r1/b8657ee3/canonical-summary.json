@@ -1,0 +1,10 @@
+{
+  "completed": true,
+  "sourceSha": "b8657ee3fcc2840cd2fa9a6f0ea46ff1f49df64d",
+  "buildManifestSha256": "d5ea58086953f6e9dee07cafc65fc7dddb1cdd5e7ca48c52278a260394217c0e",
+  "sourceWorktreeDirty": false,
+  "route_observations": 96,
+  "interactions": 79,
+  "original_png_count": 168,
+  "runtime": "GitHub disposable PG16 canonical Laravel/Inertia; NOT VPS"
+}

@@ -1,0 +1,80 @@
+[
+  {
+    "id": 15210625017,
+    "name": "functional-work-request-roles-source-and-pg16-custody",
+    "digest": "sha256:21754193149e225840abd9393cc0ee0342d58934c78d6eca46ed5890dfc360b7",
+    "size_in_bytes": 6480
+  },
+  {
+    "id": 15210455132,
+    "name": "functional-work-request-p0-cross-session-source-and-pg16-custody",
+    "digest": "sha256:1b71db78b9853eeb85f5c7ed625cf96737b88e7ffad73798c0ed6b2918ccc83a",
+    "size_in_bytes": 6506
+  },
+  {
+    "id": 15210405296,
+    "name": "functional-work-request-junit",
+    "digest": "sha256:b4ab7b6076d90e4f16cdea8bd640e3bf6737f9fcf5bd8f4cb87a5a59aa70a153",
+    "size_in_bytes": 2923
+  },
+  {
+    "id": 15210255249,
+    "name": "functional-work-request-g2a-roles-source-and-pg16-custody",
+    "digest": "sha256:ac94ede52eb981f284c19d3dc863cb0a23138ca8e6bf7615a0ae0e23cb63454e",
+    "size_in_bytes": 6487
+  },
+  {
+    "id": 15209050827,
+    "name": "functional-work-request-c02-source-and-pg16-custody",
+    "digest": "sha256:635286a4f364d046090918979454010adf8f6b92659a0869f7edba7b2e38904e",
+    "size_in_bytes": 6475
+  },
+  {
+    "id": 15208467812,
+    "name": "functional-work-request-full-source-and-pg16-custody",
+    "digest": "sha256:c76bf37ae5b6f1d589da378e73fd40a1f0ac50156c849c2ca69ed74c5c8e8615",
+    "size_in_bytes": 6477
+  },
+  {
+    "id": 15208437610,
+    "name": "functional-work-request-c01-source-and-pg16-custody",
+    "digest": "sha256:c7758b477e0eb8a14e86333e045b413c3a2eb0ed757ebd9a032ced332e96ce5c",
+    "size_in_bytes": 6475
+  },
+  {
+    "id": 15208422567,
+    "name": "functional-work-request-broker-source-and-pg16-custody",
+    "digest": "sha256:b9817f11786376457ce54367d0606be109ae679623b4865ada536ef82f28382c",
+    "size_in_bytes": 6423
+  },
+  {
+    "id": 15208283742,
+    "name": "functional-work-request-iam-cross-session-source-and-pg16-custody",
+    "digest": "sha256:da29f8a4ae7ec1dc43c75c37648fe42e59f76b2db1262d7e7c3dd6bbceda8dd7",
+    "size_in_bytes": 6509
+  },
+  {
+    "id": 15208129545,
+    "name": "operationforge-traceability-core-native-pdf",
+    "digest": "sha256:9dc85e6b239bff5abf61a7f2ab6c59e849ff89e20c131f21e085912391e492b4",
+    "size_in_bytes": 16495
+  },
+  {
+    "id": 15207989699,
+    "name": "functional-work-request-focused-source-and-pg16-custody",
+    "digest": "sha256:797466191c453949ed2d6e47de65849403194813f7fde4b2f94b7f87d5d383fd",
+    "size_in_bytes": 6485
+  },
+  {
+    "id": 15207704516,
+    "name": "functional-work-request-browser-source-and-pg16-custody",
+    "digest": "sha256:5b4c98b31ef029dc99aef5f883628087ca4984c0af0fdbd038303f391d9777d9",
+    "size_in_bytes": 6483
+  },
+  {
+    "id": 15207684536,
+    "name": "functional-work-request-task-cross-session-source-and-pg16-custody",
+    "digest": "sha256:0517eaee73db0e63457ea5adc074f2156988bff85c5d8e04ca4642ea5cca83d0",
+    "size_in_bytes": 6512
+  }
+]

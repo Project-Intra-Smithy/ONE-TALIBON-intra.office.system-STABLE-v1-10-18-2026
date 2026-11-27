@@ -1,0 +1,89 @@
+[
+  {
+    "conclusion": "success",
+    "databaseId": 46021910772,
+    "headSha": "b8657ee3fcc2840cd2fa9a6f0ea46ff1f49df64d",
+    "status": "completed",
+    "url": "https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/46021910772",
+    "jobs": [
+      {
+        "name": "persistent",
+        "conclusion": "success"
+      }
+    ]
+  },
+  {
+    "conclusion": "success",
+    "databaseId": 46021910800,
+    "headSha": "b8657ee3fcc2840cd2fa9a6f0ea46ff1f49df64d",
+    "status": "completed",
+    "url": "https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/46021910800",
+    "jobs": [
+      {
+        "name": "Traceability Core browser",
+        "conclusion": "success"
+      },
+      {
+        "name": "Traceability Core p0-cross-session",
+        "conclusion": "success"
+      },
+      {
+        "name": "Traceability Core full",
+        "conclusion": "success"
+      },
+      {
+        "name": "Traceability Core iam-cross-session",
+        "conclusion": "success"
+      },
+      {
+        "name": "Traceability Core broker",
+        "conclusion": "success"
+      },
+      {
+        "name": "Traceability Core task-cross-session",
+        "conclusion": "success"
+      },
+      {
+        "name": "Traceability Core c01",
+        "conclusion": "success"
+      },
+      {
+        "name": "Traceability Core roles",
+        "conclusion": "success"
+      },
+      {
+        "name": "Traceability Core c02",
+        "conclusion": "success"
+      },
+      {
+        "name": "Traceability Core g2a-roles",
+        "conclusion": "success"
+      },
+      {
+        "name": "Traceability Core focused",
+        "conclusion": "success"
+      },
+      {
+        "name": "Traceability Core aggregate gate",
+        "conclusion": "success"
+      }
+    ]
+  },
+  {
+    "conclusion": "success",
+    "databaseId": 46022221857,
+    "headSha": "b8657ee3fcc2840cd2fa9a6f0ea46ff1f49df64d",
+    "status": "completed",
+    "url": "https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/46022221857",
+    "jobs": [
+      {
+        "name": "canonical-runtime",
+        "conclusion": "success"
+      },
+      {
+        "name": "presentation",
+        "conclusion": "success"
+      }
+    ]
+  }
+]
