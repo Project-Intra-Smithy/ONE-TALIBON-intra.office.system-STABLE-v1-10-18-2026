@@ -303,7 +303,7 @@ export default function PlansIndex({
                         <PlanCard
                             key={plan.id}
                             plan={plan}
-                            docCount={attachments.filter(attachment=>attachment.parentType==='plan'&&attachment.parentCode===plan.code).length}
+                            docCount={attachments.filter(attachment=>attachment.parentType==='plan'&&attachment.parentRecordId!=null&&attachment.parentRecordId===plan.dbId).length}
                             selected={selectedPlanId === plan.id}
                             onSelect={() => {
                                 setSelectedPlanId(plan.id);
@@ -348,7 +348,7 @@ export default function PlansIndex({
                         { key: 'profile', label: 'Profile & Adoption', content: <PlanProfile plan={selectedPlan} /> },
                         { key: 'ppas', label: 'Linked PPAs', content: <PlanLinkedPpas planCode={selectedPlan.code} registerHref={`/ppas?search=${encodeURIComponent(selectedPlan.code)}`} /> },
                         { key: 'chapters', label: 'Chapters & Maps', content: <PlanChaptersMaps plan={selectedPlan} linkedMaps={[]} linksUnavailable /> },
-                        { key: 'documents', label: 'Supporting Docs', content: <SupportingDocsPanel parentType="plan" parentCode={selectedPlan.code} attachments={attachments} canUpload={selectedPlan.canUploadAttachments ?? Boolean(planningPermissions?.canManagePlans)} canManageExecutive={Boolean(planningPermissions?.canViewExecutiveAttachments)} canDelete={Boolean(planningPermissions?.isMpdcHead)} /> },
+                        { key: 'documents', label: 'Supporting Docs', content: <SupportingDocsPanel parentType="plan" parentCode={selectedPlan.code} parentRecordId={selectedPlan.dbId} attachments={attachments} canUpload={selectedPlan.canUploadAttachments ?? Boolean(planningPermissions?.canManagePlans)} canManageExecutive={Boolean(planningPermissions?.canViewExecutiveAttachments)} canDelete={Boolean(planningPermissions?.isMpdcHead)} /> },
                     ]}
                     footer={<div className="flex flex-wrap gap-2">{(selectedPlan.canEdit ?? planningPermissions?.canManagePlans)&&selectedPlan.dbId&&<Button variant="secondary" onClick={()=>openPlanStudio(selectedPlan)}>Edit Plan</Button>}{selectedPlan.canDelete&&selectedPlan.dbId&&<PlanningDeleteAction title={selectedPlan.code} busy={busy} disabledReason={selectedPlan.provenanceStatus==='reference_sample'||['In force','Adopted'].includes(selectedPlan.status)?'Official and reference plans cannot be deleted.':undefined} onDelete={()=>{setBusy(true);setSubmissionError('');router.delete(`/development-plans/${selectedPlan.dbId}`,{preserveScroll:true,onSuccess:closePlanDetails,onError:errors=>setSubmissionError(Object.values(errors).join(' ')),onFinish:()=>setBusy(false)});}} />}{submissionError&&<p role="alert" className="text-xs text-[var(--status-danger-fg)]">{submissionError}</p>}<Button variant="secondary" onClick={closePlanDetails}>Close</Button></div>}
                 />

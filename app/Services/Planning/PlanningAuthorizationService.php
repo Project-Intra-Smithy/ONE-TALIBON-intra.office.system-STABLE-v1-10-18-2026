@@ -345,10 +345,12 @@ final class PlanningAuthorizationService
             throw new AuthorizationException('You are not authorized to upload executive-restricted planning attachments.');
         }
 
+        $parent = app(PlanningAttachmentCustody::class)->parent($parentType, $parentCode);
+
         return match ($parentType) {
-            'plan' => $this->authorizePlanMutation($user, existing: DevelopmentPlan::query()->where(fn ($query) => $query->where('code', $parentCode)->orWhere('plan_key', $parentCode))->when(DB::transactionLevel() > 0, fn ($query) => $query->lockForUpdate())->firstOrFail()),
-            'ppa' => $this->authorizePpaMutation($user, existing: PpaRecord::query()->where('ppa_code', $parentCode)->when(DB::transactionLevel() > 0, fn ($query) => $query->lockForUpdate())->firstOrFail()),
-            'map' => $this->authorizeMapMutation($user, existing: PlanningMap::query()->where('map_code', $parentCode)->when(DB::transactionLevel() > 0, fn ($query) => $query->lockForUpdate())->firstOrFail()),
+            'plan' => $this->authorizePlanMutation($user, existing: $parent),
+            'ppa' => $this->authorizePpaMutation($user, existing: $parent),
+            'map' => $this->authorizeMapMutation($user, existing: $parent),
             default => throw new AuthorizationException('Unsupported planning attachment parent type.'),
         };
     }
@@ -371,5 +373,9 @@ final class PlanningAuthorizationService
         }
 
         $this->authorizeAttachmentUpload($user, $attachment->parent_type, $attachment->parent_code, $attachment->visibility);
+        $parent = app(PlanningAttachmentCustody::class)->parent($attachment->parent_type, $attachment->parent_code);
+        if ($attachment->parent_record_id === null || (int) $parent->getKey() !== $attachment->parent_record_id) {
+            throw new AuthorizationException('Historical or mismatched attachment identity requires explicit reconciliation.');
     }
+}
 }

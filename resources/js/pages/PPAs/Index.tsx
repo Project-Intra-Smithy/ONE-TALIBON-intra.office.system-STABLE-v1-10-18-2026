@@ -239,7 +239,7 @@ export default function Index({
                         </div>
                         <PPARegister
                             records={records}
-                            docCountsByPpa={Object.fromEntries(records.map(record=>[record.id,attachments.filter(attachment=>attachment.parentType==='ppa'&&attachment.parentCode===record.id).length]))}
+                            docCountsByPpa={Object.fromEntries(records.map(record=>[record.id,attachments.filter(attachment=>attachment.parentType==='ppa'&&attachment.parentRecordId!=null&&attachment.parentRecordId===record.dbId).length]))}
                             selectedId={selected?.id}
                             onSelect={setSelected}
                         />

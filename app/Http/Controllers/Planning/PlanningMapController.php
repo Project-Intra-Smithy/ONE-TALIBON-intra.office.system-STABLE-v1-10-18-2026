@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PlanningAttachment;
 use App\Models\PlanningMap;
 use App\Services\AuditLogger;
+use App\Services\Planning\PlanningAttachmentCustody;
 use App\Services\Planning\PlanningAuthorizationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -76,6 +77,7 @@ final class PlanningMapController extends Controller
                 'publicId' => $attachment->public_id,
                 'parentType' => $attachment->parent_type,
                 'parentCode' => $attachment->parent_code,
+                'parentRecordId' => $attachment->parent_record_id,
                 'title' => $attachment->title,
                 'fileName' => $attachment->file_name,
                 'mimeType' => $attachment->mime_type,
@@ -124,6 +126,7 @@ final class PlanningMapController extends Controller
             ]);
 
             $perms = $this->authorization->authorizeMapMutation($user, $data['status']);
+            app(PlanningAttachmentCustody::class)->assertIdentifiersAvailable('map', [trim($data['map_code'])], 'map_code');
 
             $map = PlanningMap::query()->create([
                 'map_code' => trim($data['map_code']),
@@ -269,6 +272,7 @@ final class PlanningMapController extends Controller
 
             $code = $planningMap->map_code;
             $id = $planningMap->id;
+            app(PlanningAttachmentCustody::class)->assertDeletable('map', $planningMap, [$planningMap->map_code]);
             $planningMap->delete();
 
             $this->audit->record(

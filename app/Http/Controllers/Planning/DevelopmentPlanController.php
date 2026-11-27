@@ -10,6 +10,7 @@ use App\Models\DevelopmentPlan;
 use App\Models\Employee;
 use App\Models\PlanningAttachment;
 use App\Services\AuditLogger;
+use App\Services\Planning\PlanningAttachmentCustody;
 use App\Services\Planning\PlanningAuthorizationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -118,6 +119,7 @@ final class DevelopmentPlanController extends Controller
 
             $office = $this->authorization->officeIdentity($data['lead_office'], 'lead_office');
             $planKey = 'plan-'.Str::slug($data['code']).'-'.Str::lower(Str::random(4));
+            app(PlanningAttachmentCustody::class)->assertIdentifiersAvailable('plan', [trim($data['code']), $planKey], 'code');
             $plan = DevelopmentPlan::query()->create([
                 'plan_key' => $planKey,
                 'code' => trim($data['code']),
@@ -300,6 +302,7 @@ final class DevelopmentPlanController extends Controller
 
             $code = $plan->code;
             $id = $plan->id;
+            app(PlanningAttachmentCustody::class)->assertDeletable('plan', $plan, [$plan->code, $plan->plan_key]);
             $plan->delete();
 
             $this->audit->record(
@@ -321,6 +324,7 @@ final class DevelopmentPlanController extends Controller
             'publicId' => $attachment->public_id,
             'parentType' => $attachment->parent_type,
             'parentCode' => $attachment->parent_code,
+            'parentRecordId' => $attachment->parent_record_id,
             'title' => $attachment->title,
             'fileName' => $attachment->file_name,
             'mimeType' => $attachment->mime_type,
