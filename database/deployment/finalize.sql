@@ -26,7 +26,15 @@ BEGIN
 END $functions$;
 DO $verify$
 BEGIN
- IF EXISTS(SELECT 1 FROM pg_roles WHERE rolname IN
+ IF (SELECT count(*) FROM pg_roles WHERE rolname IN
+ ('kirion_g1b_owner','kirion_g1b_migrator','kirion_g1b_app','kirion_g1b_custody','kirion_g1b_repair','n03_stage','n03_command','n03_reconcile','n03_reader'))<>9
+ OR EXISTS(SELECT 1 FROM pg_roles WHERE rolname IN ('kirion_g1b_owner','kirion_g1b_repair') AND rolcanlogin)
+ OR EXISTS(SELECT 1 FROM pg_roles WHERE rolname IN ('kirion_g1b_migrator','kirion_g1b_app','kirion_g1b_custody','n03_stage','n03_command','n03_reconcile','n03_reader') AND NOT rolcanlogin)
+ OR NOT pg_has_role('kirion_g1b_migrator','kirion_g1b_owner','MEMBER')
+ OR has_column_privilege('n03_reader','public.users','password','SELECT')
+ OR has_column_privilege('n03_reader','public.users','mfa_secret','SELECT')
+ OR has_column_privilege('n03_command','public.users','password','SELECT')
+ OR EXISTS(SELECT 1 FROM pg_roles WHERE rolname IN
  ('kirion_g1b_owner','kirion_g1b_migrator','kirion_g1b_app','kirion_g1b_custody','kirion_g1b_repair','n03_stage','n03_command','n03_reconcile','n03_reader')
  AND (rolsuper OR rolcreatedb OR rolcreaterole OR rolreplication OR rolbypassrls OR rolinherit))
  OR EXISTS(SELECT 1 FROM pg_auth_members m JOIN pg_roles r ON r.oid=m.member
