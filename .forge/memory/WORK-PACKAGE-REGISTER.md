@@ -1,5 +1,13 @@
 # KIRION FORGE — WORK PACKAGE MEMORY REGISTER
 
+## 27 November 2026 — Financial corrective qualification checkpoint
+
+Engineer-directed Maintainer6086736521 correction is implemented in draft PR78 exact ad1d6d60e31e06a49c7eb15fdfbc192dc776179d. Frozen PR77 c979de73 and all accepted candidates remain unchanged. Omitted initial appropriation requires all components known; unknowns/explicit zeroes/existing totals preserved. Hosted14/14 PASS, full914/12,836, Planning45/777; clean local96routes/79interactions PASS. [Complete exact-source evidence](../evidence/ot-functional-completion/ad1d6d60/README.md). Targeted independent Nox disposition pending: actual in-chat browser unavailable. Maintainer final technical disposition, Siris QA and release held. No main merge, production mutation, deployment, general audit or closure.
+
+## 2026-11-27 — consolidated successor evidence checkpoint
+
+[Completion memory](OT-FUNCTIONAL-COMPLETION-R1.md): exact executable c979de739120fff357e6f2bdbd79afe9c67ab402, draft PR77; all remaining authorized implementation present, hosted14/14 and clean local96routes/79interactions PASS. [Evidence](../evidence/ot-functional-completion/c979de73/README.md). Independent targeted Nox successor review pending: resumed in-chat browser unavailable. Maintainer source review and all existing human/release gates held. No canonical-main sync or CLOSE claimed.
+
 ## 2026-11-27 — Engineer-approved autonomous completion
 
 PR76 a869f426 is explicitly Engineer-approved. [Continuation7210511242](https://github.com/Project-Intra-Smithy/engineering-hub/issues/197#issuecomment-7210511242), [owning memory](OT-FUNCTIONAL-COMPLETION-R1.md). Codex sole writer, Kirch accountable; candidate/ot-functional-completion-r1 from evidence45fb3f64 (same executable as approved a869). Complete remaining N11/history/dossier/N13 and authorized integration/validation autonomously; no routine audit/approval stops. Preserve accepted/reviewed sources, exclusions and release holds. Canonical-main propagation remains held by explicit no-merge authority. NEXT: exact persistence and custody implementation.

@@ -1,5 +1,13 @@
 # ONE TALIBON — ACTIVE WORK LEDGER
 
+## 27 November 2026 — Final bounded financial correction
+
+Engineer-directed Maintainer6086736521 correction is implemented in draft PR78 exact ad1d6d60e31e06a49c7eb15fdfbc192dc776179d. Frozen PR77 c979de73 and all accepted candidates remain unchanged. Omitted initial appropriation requires all components known; unknowns/explicit zeroes/existing totals preserved. Hosted14/14 PASS, full914/12,836, Planning45/777; clean local96routes/79interactions PASS. [Complete exact-source evidence](evidence/ot-functional-completion/ad1d6d60/README.md). Targeted independent Nox disposition pending: actual in-chat browser unavailable. Maintainer final technical disposition, Siris QA and release held. No main merge, production mutation, deployment, general audit or closure.
+
+## 27 November 2026 — functional implementation and qualification return
+
+Kirch accountable; Codex sole source writer. Draft PR77 exact c979de739120fff357e6f2bdbd79afe9c67ab402 implements remaining N11/history/dossier/N13. Hosted14/14 PASS; clean local canonical96/79 PASS, complete raw captures published in [receipt](evidence/ot-functional-completion/c979de73/README.md). Targeted independent Nox follow-up blocked by unavailable in-chat browser; no independent PASS inferred. Maintainer source review next, no package CLOSE or release.
+
 ## 27 November 2026 — active functional corrective continuation
 
 Kirch accountable; Codex source writer; actual independent browser Nox ID339503629. [Receipt](memory/OT-FUNCTIONAL-ENGINEERING-20261127.md), Hub197 checkpoint7209476631 / memory191341c3 / crosslink7209480434. Draft PR76 exact executable a869f4261ef171b6ac09632f773c6c72edbbfee1 fixes the review finding; Nox R2 source RESOLVED and final bounded independent security acceptance PASS. Protected PG16 SUCCESS12/12; presentation/canonical SUCCESS2/2; actual browser Nox final evidence-completion PASS. NEXT: Engineer bounded disposition, preserving open historical reconciliation and broader N11/dossier/N13. No closure, merge, production or broader N11/dossier/N13 completion. Historical ledger below retained. Canonical-main memory propagation remains held by explicit user instruction.
