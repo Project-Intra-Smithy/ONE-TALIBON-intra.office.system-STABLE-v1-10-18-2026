@@ -167,6 +167,13 @@ final class PersistentInstaller
                         REVOKE ALL ON ALL SEQUENCES IN SCHEMA public,legacy_custody FROM '.$retired.';
                         REVOKE ALL ON ALL FUNCTIONS IN SCHEMA public,legacy_custody FROM '.$retired.';
                         REVOKE ALL ON SCHEMA public,legacy_custody FROM '.$retired);
+                    if (DB::selectOne("SELECT EXISTS(SELECT 1 FROM pg_auth_members m JOIN pg_roles r ON r.oid=m.member WHERE r.rolname=?)
+                        OR EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
+                        WHERE n.nspname IN ('public','legacy_custody') AND c.relkind='r'
+                        AND (has_any_column_privilege(?,c.oid,'SELECT,INSERT,UPDATE,REFERENCES') OR has_table_privilege(?,c.oid,'DELETE,TRUNCATE,TRIGGER')))
+                        AS remaining", [$retired, $retired, $retired])->remaining) {
+                        throw new RuntimeException('Retired runtime retains inherited, column or owner authority; rolling back.');
+                    }
                 }
                 if ($before !== $this->identityDigest()) {
                     throw new RuntimeException('Existing identity/account/office preservation failed; rolling back.');

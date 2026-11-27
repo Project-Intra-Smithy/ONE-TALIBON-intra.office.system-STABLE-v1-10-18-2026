@@ -92,12 +92,13 @@ for mode in ['fresh', 'upgrade']:
             baseline = [p for p in all_paths if p.stem <= '2026_11_20_000200_enforce_iam_identity_integrity' and 'legacy_custody' not in p.name]
             run([php, 'artisan', 'migrate', '--force', '--no-interaction']+['--path=database/migrations/'+p.name for p in baseline], env)
             # The synthetic account contains real password and encrypted MFA representations.
-            seed = """<?php require 'vendor/autoload.php'; $a=require 'bootstrap/app.php'; $a->make(Illuminate\\Contracts\\Console\\Kernel::class)->bootstrap();
+            seed = """<?php require 'vendor/autoload.php'; $a=require 'bootstrap/app.php'; $a->make(Illuminate\\Contracts\\Console\\Kernel::class)->bootstrap(); try {
             $d=Illuminate\\Support\\Facades\\DB::table('departments')->insertGetId(['code'=>'SYNTH_QA','name'=>'Synthetic QA Office','is_active'=>true,'created_at'=>now(),'updated_at'=>now()]);
-            $u=Illuminate\\Support\\Facades\\DB::table('users')->insertGetId(['name'=>'Synthetic Preserved Administrator','username'=>'synthetic_preserved_admin','email'=>'admin@rehearsal.invalid','password'=>Illuminate\\Support\\Facades\\Hash::make('synthetic-local-only-credential'),'role'=>'system_admin','is_active'=>true,'account_status'=>'active','mfa_secret'=>encrypt('SYNTHETIC_MFA_SECRET'),'mfa_confirmed_at'=>now(),'mfa_recovery_codes'=>encrypt(['synthetic-recovery']),'created_at'=>now(),'updated_at'=>now()]);
+            $user=new App\\Models\\User; $user->forceFill(['name'=>'Synthetic Preserved Administrator','username'=>'synthetic_preserved_admin','email'=>'admin@rehearsal.invalid','password'=>Illuminate\\Support\\Facades\\Hash::make('synthetic-local-only-credential'),'role'=>'system_admin','is_active'=>true,'account_status'=>'active','mfa_secret'=>'JBSWY3DPEHPK3PXPJBSWY3DPEHPK3PXP','mfa_confirmed_at'=>now(),'mfa_recovery_codes'=>[Illuminate\\Support\\Facades\\Hash::make('synthetic-recovery')],'created_at'=>now(),'updated_at'=>now()])->save(); $u=$user->id;
             Illuminate\\Support\\Facades\\DB::table('employees')->insert(['employee_number'=>'SYNTH_ADMIN','user_id'=>$u,'department_id'=>$d,'position_title'=>'Synthetic evaluator','employment_status'=>'active','created_at'=>now(),'updated_at'=>now()]);
-            """
-            run([php], env, input=seed)
+            echo 'SYNTH_SEEDED'; } catch(Throwable $e) { fwrite(STDERR,get_class($e)); exit(1); } """
+            check(mode+'_nonempty_admin_fixture', run([php], env, input=seed).stdout.strip() == 'SYNTH_SEEDED')
+            check(mode+'_admin_and_employee_present', sql('SELECT (SELECT count(*) FROM users)=1 AND (SELECT count(*) FROM employees)=1').stdout.strip() == 't')
             sql('CREATE ROLE legacy_runtime LOGIN NOSUPERUSER; GRANT USAGE ON SCHEMA public TO legacy_runtime; GRANT ALL ON ALL TABLES IN SCHEMA public TO legacy_runtime;')
             check(mode+'_exact_54_migration_baseline', sql('SELECT count(*) FROM migrations').stdout.strip() == '54')
         ledger = sql('SELECT migration FROM migrations ORDER BY migration').stdout.splitlines() if mode == 'upgrade' else []
@@ -139,10 +140,17 @@ for mode in ['fresh', 'upgrade']:
         check(mode+'_complete_ledger', int(sql('SELECT count(*) FROM migrations').stdout.strip()) == len(all_paths))
         if before is not None:
             check(mode+'_admin_password_mfa_employee_preserved', before == sql(fingerprint_sql).stdout)
-            auth = "<?php require 'vendor/autoload.php'; $a=require 'bootstrap/app.php'; $a->make(Illuminate\\Contracts\\Console\\Kernel::class)->bootstrap(); $u=App\\Models\\User::where('username','synthetic_preserved_admin')->firstOrFail(); assert(Illuminate\\Support\\Facades\\Hash::check('synthetic-local-only-credential',$u->password)); assert(decrypt($u->getRawOriginal('mfa_secret'))==='SYNTHETIC_MFA_SECRET'); echo 'PRESERVED';"
-            check(mode+'_password_and_mfa_decrypt', run([php,'-d','zend.assertions=1','-d','assert.exception=1'],env,input=auth).stdout.strip()=='PRESERVED')
+            auth = "<?php require 'vendor/autoload.php'; $a=require 'bootstrap/app.php'; $a->make(Illuminate\\Contracts\\Console\\Kernel::class)->bootstrap(); try { $u=App\\Models\\User::where('username','synthetic_preserved_admin')->firstOrFail(); $g=new PragmaRX\\Google2FA\\Google2FA; if (!Illuminate\\Support\\Facades\\Hash::check('synthetic-local-only-credential',$u->password) || $u->mfa_secret!=='JBSWY3DPEHPK3PXPJBSWY3DPEHPK3PXP' || !$g->verifyKey($u->mfa_secret,$g->getCurrentOtp($u->mfa_secret))) { exit(19); } echo 'PRESERVED'; } catch(Throwable $e) { fwrite(STDERR,get_class($e)); exit(1); }"
+            auth_result = run([php],env,input=auth)
+            check(mode+'_password_and_mfa_decrypt', auth_result.stdout.strip()=='PRESERVED')
         runtime = dict(env, PGUSER='kirion_g1b_app', PGPASSWORD=credentials['kirion_g1b_app'])
         check(mode+'_real_runtime_connection', sql('SELECT current_user', runtime).stdout.strip() == 'kirion_g1b_app')
+        app_env = dict(env, DB_USERNAME='kirion_g1b_app', DB_PASSWORD=credentials['kirion_g1b_app'])
+        for suffix in ['STAGE','COMMAND','RECONCILE','READER']:
+            app_env['N03_'+suffix+'_PASSWORD'] = credentials['n03_'+suffix.lower()]
+        connections = "<?php require 'vendor/autoload.php'; $a=require 'bootstrap/app.php'; $a->make(Illuminate\\Contracts\\Console\\Kernel::class)->bootstrap(); $out=[]; foreach (['pgsql','n03_stage','n03_command','n03_reconcile','n03_reader'] as $name) { $out[$name]=Illuminate\\Support\\Facades\\DB::connection($name)->selectOne('SELECT current_user AS role')->role; } echo json_encode($out);"
+        check(mode+'_laravel_runtime_connections', json.loads(run([php],app_env,input=connections).stdout) ==
+              {'pgsql':'kirion_g1b_app', **{name:name for name in ['n03_stage','n03_command','n03_reconcile','n03_reader']}})
         for name, query in [('ddl','CREATE TABLE public.forbidden(id int)'), ('audit_update','UPDATE public.audit_logs SET action=action WHERE false'), ('custody_read','SELECT * FROM legacy_custody.operations'), ('migration_write',"DELETE FROM public.migrations WHERE false"), ('owner_escalation','SET ROLE kirion_g1b_owner')]:
             check(mode+'_runtime_denies_'+name, sql(query, runtime, allowed=(3,)).returncode == 3)
         reader = dict(env, PGUSER='n03_reader', PGPASSWORD=credentials['n03_reader'])
