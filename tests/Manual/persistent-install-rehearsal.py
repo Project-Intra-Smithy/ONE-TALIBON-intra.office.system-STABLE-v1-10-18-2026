@@ -194,6 +194,8 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
         invalid = dict(target)
         sql('ALTER TABLE migrations ENABLE ROW LEVEL SECURITY')
         late=install(invalid,1)
+        if 'complete security postflight' not in late.stdout:
+            raise RuntimeError('Late rollback witness refused before postflight: '+late.stdout[-800:]+late.stderr[-800:])
         check(mode+'_late_failure_rolls_back',late.returncode==1 and 'complete security postflight' in late.stdout and 'drift: relations' in late.stdout)
         check(mode+'_rollback_roles', sql("SELECT count(*) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%'").stdout.strip() == '0')
         check(mode+'_rollback_custody', sql("SELECT to_regnamespace('legacy_custody') IS NULL").stdout.strip() == 't')
@@ -242,10 +244,16 @@ for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
             check(mode+'_legacy_runtime_revoked', sql("SELECT NOT has_table_privilege('legacy_runtime','public.users','UPDATE')").stdout.strip() == 't')
         target['expected_migrations'] = sql('SELECT migration FROM migrations ORDER BY migration').stdout.splitlines()
         target['previous_installation'] = json.loads(sql('SELECT row_to_json(i) FROM deployment_control.installations i').stdout)
-        def metadata_fingerprint():
-            return sql("SELECT md5(concat_ws('|',(SELECT string_agg(row_to_json(c)::text,',' ORDER BY c.oid) FROM pg_class c),(SELECT string_agg(row_to_json(n)::text,',' ORDER BY n.oid) FROM pg_namespace n),(SELECT string_agg(row_to_json(a)::text,',' ORDER BY a.attrelid,a.attnum) FROM pg_attribute a),(SELECT string_agg(row_to_json(p)::text,',' ORDER BY p.oid) FROM pg_proc p),(SELECT string_agg(row_to_json(d)::text,',' ORDER BY d.oid) FROM pg_default_acl d),(SELECT string_agg(row_to_json(m)::text,',' ORDER BY m.roleid,m.member) FROM pg_auth_members m),(SELECT string_agg(row_to_json(r)::text,',' ORDER BY r.oid) FROM pg_roles r),(SELECT string_agg(row_to_json(d)::text,',' ORDER BY d.oid) FROM pg_database d)))").stdout
 
         catalog_probe="<?php require 'vendor/autoload.php'; $a=require 'bootstrap/app.php'; $a->make(Illuminate\\Contracts\\Console\\Kernel::class)->bootstrap(); echo hash('sha256',json_encode(app(App\\Deployment\\SecurityCatalog::class)->snapshot('postgres')));"
+        def metadata_fingerprint():
+            # Compare security semantics, not autovacuum/statistics/relfilenode bookkeeping.
+            # SecurityCatalog includes unknown objects, ACLs, owners, definitions, constraints,
+            # RI triggers, memberships, defaults and effective rights; registry rows are separate.
+            semantic=run([php],env,input=catalog_probe).stdout
+            assert len(semantic.strip())==64 and all(c in '0123456789abcdef' for c in semantic.strip())
+            registry=sql('SELECT row_to_json(i) FROM deployment_control.installations i ORDER BY singleton').stdout
+            return semantic,registry
         canonical_fingerprint=run([php],env,input=catalog_probe).stdout
         drift_cases=[
             ('reader_delete','GRANT DELETE ON transactions TO n03_reader','REVOKE DELETE ON transactions FROM n03_reader'),

@@ -49,7 +49,8 @@ def secure_path(path, secret=False):
         if _windows_actor is None:
             _windows_actor = subprocess.check_output(['whoami', '/user', '/fo', 'csv', '/nh'], text=True).strip().split(',')[-1].strip('"')
         allowed = {_windows_actor, 'S-1-5-18', 'S-1-5-32-544'}
-        if sid_text(owner) not in allowed:
+        owner_sid = sid_text(owner)
+        if owner_sid not in allowed:
             refuse('Untrusted Windows deployment owner')
         count = ctypes.c_ushort.from_address(dacl.value+4).value
         for index in range(count):
@@ -63,6 +64,9 @@ def secure_path(path, secret=False):
                 refuse('Unsupported Windows deployment ACE')
             mask = ctypes.c_uint32.from_address(ace.value+4).value
             trustee = sid_text(ctypes.c_void_p(ace.value+8))
+            # OWNER RIGHTS applies to the already-verified object owner, not an arbitrary user.
+            if trustee == 'S-1-3-4':
+                trustee = owner_sid
             if trustee not in allowed and (secret or mask & 0x500d0156):
                 refuse('Untrusted Windows deployment access')
     finally:
