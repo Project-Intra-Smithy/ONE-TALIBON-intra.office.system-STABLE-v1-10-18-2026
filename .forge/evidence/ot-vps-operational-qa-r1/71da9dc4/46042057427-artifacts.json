@@ -1,0 +1,45 @@
+{
+  "total_count": 2,
+  "artifacts": [
+    {
+      "id": 15221456628,
+      "node_id": "MDg6QXJ0aWZhY3QxNTIyMTQ1NjYyOA==",
+      "name": "tcds-phase-a-71da9dc4d12e4fc77de9d5f4eb98efed151fb46f",
+      "size_in_bytes": 99022908,
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15221456628",
+      "archive_download_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15221456628/zip",
+      "expired": false,
+      "digest": "sha256:bf67fcee5888e9c16bc68862438314211f8ba3dd1d621f4ec8f6b7404ad7ced6",
+      "created_at": "2026-11-27T17:34:37Z",
+      "updated_at": "2026-11-27T17:34:37Z",
+      "expires_at": "2027-02-25T17:28:05Z",
+      "workflow_run": {
+        "id": 46042057427,
+        "repository_id": 1424461325,
+        "head_repository_id": 1424461325,
+        "head_branch": "candidate/ot-persistent-deployment-r3",
+        "head_sha": "71da9dc4d12e4fc77de9d5f4eb98efed151fb46f"
+      }
+    },
+    {
+      "id": 15221311048,
+      "node_id": "MDg6QXJ0aWZhY3QxNTIyMTMxMTA0OA==",
+      "name": "tcds-canonical-71da9dc4d12e4fc77de9d5f4eb98efed151fb46f",
+      "size_in_bytes": 59321278,
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15221311048",
+      "archive_download_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/artifacts/15221311048/zip",
+      "expired": false,
+      "digest": "sha256:57a1c2d638c22d8896ae8450751a3d4c5f22918101d999b1e76b1a9c8e59bb8e",
+      "created_at": "2026-11-27T17:30:27Z",
+      "updated_at": "2026-11-27T17:30:27Z",
+      "expires_at": "2027-02-25T17:28:05Z",
+      "workflow_run": {
+        "id": 46042057427,
+        "repository_id": 1424461325,
+        "head_repository_id": 1424461325,
+        "head_branch": "candidate/ot-persistent-deployment-r3",
+        "head_sha": "71da9dc4d12e4fc77de9d5f4eb98efed151fb46f"
+      }
+    }
+  ]
+}

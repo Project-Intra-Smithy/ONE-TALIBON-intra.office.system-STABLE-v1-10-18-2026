@@ -1,0 +1,1845 @@
+{
+  "source_sha": "71da9dc4d12e4fc77de9d5f4eb98efed151fb46f",
+  "checks": [
+    {
+      "case": "trusted_builder_source",
+      "pass": true
+    },
+    {
+      "case": "fresh_refuses_database",
+      "pass": true
+    },
+    {
+      "case": "fresh_refuses_system_identifier",
+      "pass": true
+    },
+    {
+      "case": "fresh_refuses_source_sha",
+      "pass": true
+    },
+    {
+      "case": "fresh_refuses_bootstrap_role",
+      "pass": true
+    },
+    {
+      "case": "fresh_refuses_app_key_sha256",
+      "pass": true
+    },
+    {
+      "case": "fresh_refuses_expected_migrations",
+      "pass": true
+    },
+    {
+      "case": "fresh_persistent_refuses_testing",
+      "pass": true
+    },
+    {
+      "case": "fresh_ordinary_migrate_still_denied",
+      "pass": true
+    },
+    {
+      "case": "fresh_migration_maintenance_lock_held",
+      "pass": true
+    },
+    {
+      "case": "fresh_migration_maintenance_lock_refused",
+      "pass": true
+    },
+    {
+      "case": "fresh_migration_maintenance_lock_rollback",
+      "pass": true
+    },
+    {
+      "case": "fresh_initial_system_language_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_initial_system_language_acl_rollback",
+      "pass": true
+    },
+    {
+      "case": "fresh_initial_system_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_initial_system_schema_acl_rollback",
+      "pass": true
+    },
+    {
+      "case": "fresh_initial_system_column_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_initial_system_column_acl_rollback",
+      "pass": true
+    },
+    {
+      "case": "fresh_initial_system_type_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_initial_system_type_acl_rollback",
+      "pass": true
+    },
+    {
+      "case": "fresh_initial_system_routine_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_initial_system_routine_acl_rollback",
+      "pass": true
+    },
+    {
+      "case": "fresh_late_failure_rolls_back",
+      "pass": true
+    },
+    {
+      "case": "fresh_rollback_roles",
+      "pass": true
+    },
+    {
+      "case": "fresh_rollback_custody",
+      "pass": true
+    },
+    {
+      "case": "fresh_rollback_ledger",
+      "pass": true
+    },
+    {
+      "case": "fresh_install",
+      "pass": true
+    },
+    {
+      "case": "fresh_all_migrations_once",
+      "pass": true
+    },
+    {
+      "case": "fresh_complete_ledger",
+      "pass": true
+    },
+    {
+      "case": "fresh_real_runtime_connection",
+      "pass": true
+    },
+    {
+      "case": "fresh_laravel_runtime_connections",
+      "pass": true
+    },
+    {
+      "case": "fresh_positive_runtime_directory",
+      "pass": true
+    },
+    {
+      "case": "fresh_runtime_denies_ddl",
+      "pass": true
+    },
+    {
+      "case": "fresh_runtime_denies_audit_update",
+      "pass": true
+    },
+    {
+      "case": "fresh_runtime_denies_custody_read",
+      "pass": true
+    },
+    {
+      "case": "fresh_runtime_denies_migration_write",
+      "pass": true
+    },
+    {
+      "case": "fresh_runtime_denies_owner_escalation",
+      "pass": true
+    },
+    {
+      "case": "fresh_reader_denies_mfa",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_reader_delete",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_reader_delete",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_reader_delete",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_column_grant",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_column_grant",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_column_grant",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_sequence_update",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_sequence_update",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_sequence_update",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_schema_create",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_schema_create",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_schema_create",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_database_temp",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_database_temp",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_database_temp",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_grant_option",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_grant_option",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_grant_option",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_public_table",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_public_table",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_public_table",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_public_schema",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_public_schema",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_public_schema",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_public_database",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_public_database",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_public_database",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_set_role",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_set_role",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_set_role",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_migrator_extra_path",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_migrator_extra_path",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_migrator_extra_path",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_migrator_admin_option",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_migrator_admin_option",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_migrator_admin_option",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_role_attribute",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_role_attribute",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_role_attribute",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_owner_db",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_owner_db",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_owner_db",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_owner_schema",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_owner_schema",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_owner_schema",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_routine_owner",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_routine_owner",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_routine_owner",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_unknown_view",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_unknown_view",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_unknown_view",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_unknown_partition",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_unknown_partition",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_unknown_partition",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_default_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_default_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_default_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_registry_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_registry_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_registry_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_registry_table_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_registry_table_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_registry_table_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_registry_identity",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_registry_identity",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_registry_identity",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_registry_schema_owner",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_registry_schema_owner",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_registry_schema_owner",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_registry_table_owner",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_registry_table_owner",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_registry_table_owner",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_sequence_owner",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_sequence_owner",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_sequence_owner",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_type_grant_option",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_type_grant_option",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_type_grant_option",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_internal_trigger_state",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_internal_trigger_state",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_internal_trigger_state",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_role_startup",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_role_startup",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_role_startup",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_registry_shape",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_registry_shape",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_registry_shape",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_large_object",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_large_object",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_large_object",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_foreign_server",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_foreign_server",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_foreign_server",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_publication",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_publication",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_publication",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_subscription",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_subscription",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_subscription",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_domain",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_domain",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_domain",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_system_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_system_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_system_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_system_object",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_system_object",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_system_object",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_reserved_namespace",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_reserved_namespace",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_reserved_namespace",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_user_collation",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_user_collation",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_user_collation",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_catalog_system_language_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_catalog_system_language_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_catalog_system_language_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_catalog_system_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_catalog_system_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_catalog_system_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_catalog_system_column_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_catalog_system_column_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_catalog_system_column_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_catalog_system_type_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_catalog_system_type_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_catalog_system_type_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_catalog_system_routine_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_drift_rollback_catalog_system_routine_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_fixture_cleanup_catalog_system_routine_acl",
+      "pass": true
+    },
+    {
+      "case": "fresh_registered_wrong_password_kirion_g1b_migrator",
+      "pass": true
+    },
+    {
+      "case": "fresh_registered_wrong_password_kirion_g1b_app",
+      "pass": true
+    },
+    {
+      "case": "fresh_registered_wrong_password_kirion_g1b_custody",
+      "pass": true
+    },
+    {
+      "case": "fresh_registered_wrong_password_n03_stage",
+      "pass": true
+    },
+    {
+      "case": "fresh_registered_wrong_password_n03_command",
+      "pass": true
+    },
+    {
+      "case": "fresh_registered_wrong_password_n03_reconcile",
+      "pass": true
+    },
+    {
+      "case": "fresh_registered_wrong_password_n03_reader",
+      "pass": true
+    },
+    {
+      "case": "fresh_refuses_nonpassword_HBA",
+      "pass": true
+    },
+    {
+      "case": "fresh_untrusted_php_configuration_rejected_before_execution",
+      "pass": true
+    },
+    {
+      "case": "fresh_external_executable_paths_contained",
+      "pass": true
+    },
+    {
+      "case": "fresh_outer_runtime_environment_contained",
+      "pass": true
+    },
+    {
+      "case": "fresh_relative_php_refused",
+      "pass": true
+    },
+    {
+      "case": "fresh_server_logging_refusal_log_statement",
+      "pass": true
+    },
+    {
+      "case": "fresh_server_logging_refusal_log_min_error_statement",
+      "pass": true
+    },
+    {
+      "case": "fresh_server_logging_refusal_log_parameter_max_length",
+      "pass": true
+    },
+    {
+      "case": "fresh_server_logging_refusal_pgaudit.log",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_forged_lineage",
+      "pass": true
+    },
+    {
+      "case": "fresh_logging_refusal_log_statement",
+      "pass": true
+    },
+    {
+      "case": "fresh_logging_refusal_log_duration",
+      "pass": true
+    },
+    {
+      "case": "fresh_logging_refusal_log_min_duration_statement",
+      "pass": true
+    },
+    {
+      "case": "fresh_logging_refusal_log_parameter_max_length",
+      "pass": true
+    },
+    {
+      "case": "fresh_logging_refusal_log_min_error_statement",
+      "pass": true
+    },
+    {
+      "case": "fresh_logging_refusal_debug_print_parse",
+      "pass": true
+    },
+    {
+      "case": "fresh_logging_refusal_pgaudit.log",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_unencrypted_transport",
+      "pass": true
+    },
+    {
+      "case": "fresh_rejects_wrong_credentials",
+      "pass": true
+    },
+    {
+      "case": "fresh_tamper_app/Deployment/PersistentInstaller.php",
+      "pass": true
+    },
+    {
+      "case": "fresh_tamper_database/deployment/finalize.sql",
+      "pass": true
+    },
+    {
+      "case": "fresh_tamper_database/deployment/security-contract.json",
+      "pass": true
+    },
+    {
+      "case": "fresh_tamper_vendor/autoload.php",
+      "pass": true
+    },
+    {
+      "case": "fresh_tamper_composer.lock",
+      "pass": true
+    },
+    {
+      "case": "fresh_tamper_public/build/manifest.json",
+      "pass": true
+    },
+    {
+      "case": "fresh_mutable_marker_not_authority",
+      "pass": true
+    },
+    {
+      "case": "fresh_missing_executable",
+      "pass": true
+    },
+    {
+      "case": "fresh_runtime_instrumentation_PHPRC",
+      "pass": true
+    },
+    {
+      "case": "fresh_runtime_instrumentation_PHP_INI_SCAN_DIR",
+      "pass": true
+    },
+    {
+      "case": "fresh_runtime_instrumentation_LD_PRELOAD",
+      "pass": true
+    },
+    {
+      "case": "fresh_runtime_instrumentation_OTEL_TRACES_EXPORTER",
+      "pass": true
+    },
+    {
+      "case": "fresh_wrong_independent_pin",
+      "pass": true
+    },
+    {
+      "case": "fresh_tampered_trust_anchor",
+      "pass": true
+    },
+    {
+      "case": "fresh_private_acl_required",
+      "pass": true
+    },
+    {
+      "case": "fresh_no_secret_or_verifier_in_server_log",
+      "pass": true
+    },
+    {
+      "case": "fresh_no_secret_or_verifier_in_client_error_logs",
+      "pass": true
+    },
+    {
+      "case": "fresh_idempotent_rerun",
+      "pass": true
+    },
+    {
+      "case": "fresh_no_credential_rotation",
+      "pass": true
+    },
+    {
+      "case": "fresh_all_tables_owner",
+      "pass": true
+    },
+    {
+      "case": "upgrade_nonempty_admin_fixture",
+      "pass": true
+    },
+    {
+      "case": "upgrade_admin_and_employee_present",
+      "pass": true
+    },
+    {
+      "case": "upgrade_exact_54_migration_baseline",
+      "pass": true
+    },
+    {
+      "case": "upgrade_refuses_database",
+      "pass": true
+    },
+    {
+      "case": "upgrade_refuses_system_identifier",
+      "pass": true
+    },
+    {
+      "case": "upgrade_refuses_source_sha",
+      "pass": true
+    },
+    {
+      "case": "upgrade_refuses_bootstrap_role",
+      "pass": true
+    },
+    {
+      "case": "upgrade_refuses_app_key_sha256",
+      "pass": true
+    },
+    {
+      "case": "upgrade_refuses_expected_migrations",
+      "pass": true
+    },
+    {
+      "case": "upgrade_persistent_refuses_testing",
+      "pass": true
+    },
+    {
+      "case": "upgrade_ordinary_migrate_still_denied",
+      "pass": true
+    },
+    {
+      "case": "upgrade_migration_maintenance_lock_held",
+      "pass": true
+    },
+    {
+      "case": "upgrade_migration_maintenance_lock_refused",
+      "pass": true
+    },
+    {
+      "case": "upgrade_migration_maintenance_lock_rollback",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_system_language_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_system_language_acl_rollback",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_system_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_system_schema_acl_rollback",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_system_column_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_system_column_acl_rollback",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_system_type_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_system_type_acl_rollback",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_system_routine_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_system_routine_acl_rollback",
+      "pass": true
+    },
+    {
+      "case": "upgrade_late_failure_rolls_back",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rollback_roles",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rollback_custody",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rollback_ledger",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_unknown_view",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_unknown_view_rollback",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_unknown_routine",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_unknown_routine_rollback",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_runtime_owned_table",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_runtime_owned_table_rollback",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_default_drift",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_default_drift_rollback",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_shared_global_read",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_shared_global_read_rollback",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_unregistered_control",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_unregistered_control_rollback",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_large_object",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_large_object_rollback",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_foreign_wrapper",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_foreign_wrapper_rollback",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_publication",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_publication_rollback",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_domain",
+      "pass": true
+    },
+    {
+      "case": "upgrade_initial_domain_rollback",
+      "pass": true
+    },
+    {
+      "case": "upgrade_install",
+      "pass": true
+    },
+    {
+      "case": "upgrade_all_migrations_once",
+      "pass": true
+    },
+    {
+      "case": "upgrade_complete_ledger",
+      "pass": true
+    },
+    {
+      "case": "upgrade_admin_password_mfa_employee_preserved",
+      "pass": true
+    },
+    {
+      "case": "upgrade_password_and_mfa_decrypt",
+      "pass": true
+    },
+    {
+      "case": "upgrade_real_runtime_connection",
+      "pass": true
+    },
+    {
+      "case": "upgrade_laravel_runtime_connections",
+      "pass": true
+    },
+    {
+      "case": "upgrade_positive_runtime_directory",
+      "pass": true
+    },
+    {
+      "case": "upgrade_positive_runtime_task_write",
+      "pass": true
+    },
+    {
+      "case": "upgrade_runtime_denies_ddl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_runtime_denies_audit_update",
+      "pass": true
+    },
+    {
+      "case": "upgrade_runtime_denies_custody_read",
+      "pass": true
+    },
+    {
+      "case": "upgrade_runtime_denies_migration_write",
+      "pass": true
+    },
+    {
+      "case": "upgrade_runtime_denies_owner_escalation",
+      "pass": true
+    },
+    {
+      "case": "upgrade_reader_denies_mfa",
+      "pass": true
+    },
+    {
+      "case": "upgrade_legacy_runtime_revoked",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_reader_delete",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_reader_delete",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_reader_delete",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_column_grant",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_column_grant",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_column_grant",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_sequence_update",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_sequence_update",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_sequence_update",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_schema_create",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_schema_create",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_schema_create",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_database_temp",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_database_temp",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_database_temp",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_grant_option",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_grant_option",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_grant_option",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_public_table",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_public_table",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_public_table",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_public_schema",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_public_schema",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_public_schema",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_public_database",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_public_database",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_public_database",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_set_role",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_set_role",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_set_role",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_migrator_extra_path",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_migrator_extra_path",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_migrator_extra_path",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_migrator_admin_option",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_migrator_admin_option",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_migrator_admin_option",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_role_attribute",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_role_attribute",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_role_attribute",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_owner_db",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_owner_db",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_owner_db",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_owner_schema",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_owner_schema",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_owner_schema",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_routine_owner",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_routine_owner",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_routine_owner",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_unknown_view",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_unknown_view",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_unknown_view",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_unknown_partition",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_unknown_partition",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_unknown_partition",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_default_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_default_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_default_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_registry_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_registry_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_registry_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_registry_table_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_registry_table_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_registry_table_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_registry_identity",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_registry_identity",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_registry_identity",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_registry_schema_owner",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_registry_schema_owner",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_registry_schema_owner",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_registry_table_owner",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_registry_table_owner",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_registry_table_owner",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_sequence_owner",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_sequence_owner",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_sequence_owner",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_type_grant_option",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_type_grant_option",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_type_grant_option",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_internal_trigger_state",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_internal_trigger_state",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_internal_trigger_state",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_role_startup",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_role_startup",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_role_startup",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_registry_shape",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_registry_shape",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_registry_shape",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_large_object",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_large_object",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_large_object",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_foreign_server",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_foreign_server",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_foreign_server",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_publication",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_publication",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_publication",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_subscription",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_subscription",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_subscription",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_domain",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_domain",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_domain",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_system_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_system_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_system_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_system_object",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_system_object",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_system_object",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_reserved_namespace",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_reserved_namespace",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_reserved_namespace",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_user_collation",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_user_collation",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_user_collation",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_catalog_system_language_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_catalog_system_language_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_catalog_system_language_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_catalog_system_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_catalog_system_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_catalog_system_schema_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_catalog_system_column_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_catalog_system_column_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_catalog_system_column_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_catalog_system_type_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_catalog_system_type_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_catalog_system_type_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_catalog_system_routine_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_drift_rollback_catalog_system_routine_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_fixture_cleanup_catalog_system_routine_acl",
+      "pass": true
+    },
+    {
+      "case": "upgrade_bound_identity_omission_legacy_owner_roles",
+      "pass": true
+    },
+    {
+      "case": "upgrade_bound_identity_omission_retired_runtime_roles",
+      "pass": true
+    },
+    {
+      "case": "upgrade_bound_identity_reclassification",
+      "pass": true
+    },
+    {
+      "case": "upgrade_omission_with_retired_authority_drift",
+      "pass": true
+    },
+    {
+      "case": "upgrade_bound_identity_substitution",
+      "pass": true
+    },
+    {
+      "case": "upgrade_registered_wrong_password_kirion_g1b_migrator",
+      "pass": true
+    },
+    {
+      "case": "upgrade_registered_wrong_password_kirion_g1b_app",
+      "pass": true
+    },
+    {
+      "case": "upgrade_registered_wrong_password_kirion_g1b_custody",
+      "pass": true
+    },
+    {
+      "case": "upgrade_registered_wrong_password_n03_stage",
+      "pass": true
+    },
+    {
+      "case": "upgrade_registered_wrong_password_n03_command",
+      "pass": true
+    },
+    {
+      "case": "upgrade_registered_wrong_password_n03_reconcile",
+      "pass": true
+    },
+    {
+      "case": "upgrade_registered_wrong_password_n03_reader",
+      "pass": true
+    },
+    {
+      "case": "upgrade_refuses_nonpassword_HBA",
+      "pass": true
+    },
+    {
+      "case": "upgrade_untrusted_php_configuration_rejected_before_execution",
+      "pass": true
+    },
+    {
+      "case": "upgrade_external_executable_paths_contained",
+      "pass": true
+    },
+    {
+      "case": "upgrade_outer_runtime_environment_contained",
+      "pass": true
+    },
+    {
+      "case": "upgrade_relative_php_refused",
+      "pass": true
+    },
+    {
+      "case": "upgrade_server_logging_refusal_log_statement",
+      "pass": true
+    },
+    {
+      "case": "upgrade_server_logging_refusal_log_min_error_statement",
+      "pass": true
+    },
+    {
+      "case": "upgrade_server_logging_refusal_log_parameter_max_length",
+      "pass": true
+    },
+    {
+      "case": "upgrade_server_logging_refusal_pgaudit.log",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_forged_lineage",
+      "pass": true
+    },
+    {
+      "case": "upgrade_logging_refusal_log_statement",
+      "pass": true
+    },
+    {
+      "case": "upgrade_logging_refusal_log_duration",
+      "pass": true
+    },
+    {
+      "case": "upgrade_logging_refusal_log_min_duration_statement",
+      "pass": true
+    },
+    {
+      "case": "upgrade_logging_refusal_log_parameter_max_length",
+      "pass": true
+    },
+    {
+      "case": "upgrade_logging_refusal_log_min_error_statement",
+      "pass": true
+    },
+    {
+      "case": "upgrade_logging_refusal_debug_print_parse",
+      "pass": true
+    },
+    {
+      "case": "upgrade_logging_refusal_pgaudit.log",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_unencrypted_transport",
+      "pass": true
+    },
+    {
+      "case": "upgrade_rejects_wrong_credentials",
+      "pass": true
+    },
+    {
+      "case": "upgrade_tamper_app/Deployment/PersistentInstaller.php",
+      "pass": true
+    },
+    {
+      "case": "upgrade_tamper_database/deployment/finalize.sql",
+      "pass": true
+    },
+    {
+      "case": "upgrade_tamper_database/deployment/security-contract.json",
+      "pass": true
+    },
+    {
+      "case": "upgrade_tamper_vendor/autoload.php",
+      "pass": true
+    },
+    {
+      "case": "upgrade_tamper_composer.lock",
+      "pass": true
+    },
+    {
+      "case": "upgrade_tamper_public/build/manifest.json",
+      "pass": true
+    },
+    {
+      "case": "upgrade_mutable_marker_not_authority",
+      "pass": true
+    },
+    {
+      "case": "upgrade_missing_executable",
+      "pass": true
+    },
+    {
+      "case": "upgrade_runtime_instrumentation_PHPRC",
+      "pass": true
+    },
+    {
+      "case": "upgrade_runtime_instrumentation_PHP_INI_SCAN_DIR",
+      "pass": true
+    },
+    {
+      "case": "upgrade_runtime_instrumentation_LD_PRELOAD",
+      "pass": true
+    },
+    {
+      "case": "upgrade_runtime_instrumentation_OTEL_TRACES_EXPORTER",
+      "pass": true
+    },
+    {
+      "case": "upgrade_wrong_independent_pin",
+      "pass": true
+    },
+    {
+      "case": "upgrade_tampered_trust_anchor",
+      "pass": true
+    },
+    {
+      "case": "upgrade_private_acl_required",
+      "pass": true
+    },
+    {
+      "case": "upgrade_no_secret_or_verifier_in_server_log",
+      "pass": true
+    },
+    {
+      "case": "upgrade_no_secret_or_verifier_in_client_error_logs",
+      "pass": true
+    },
+    {
+      "case": "upgrade_unrelated_database_and_roles_unchanged",
+      "pass": true
+    },
+    {
+      "case": "upgrade_idempotent_rerun",
+      "pass": true
+    },
+    {
+      "case": "upgrade_no_credential_rotation",
+      "pass": true
+    },
+    {
+      "case": "upgrade_all_tables_owner",
+      "pass": true
+    }
+  ],
+  "package": {
+    "source_sha": "71da9dc4d12e4fc77de9d5f4eb98efed151fb46f",
+    "tree_sha": "92b62162670f43bf88c63a49a28299375fe84d94",
+    "package_manifest_sha256": "1d83ec72047dd2142e4d17583a57fbbea0577b20b0152b3765795b201dbe6374",
+    "launcher_sha256": "800849047fe4ea4cd5cf26f1308fe7aa42046642dba1ad82d6b081a724e1bef1",
+    "files": 10334
+  },
+  "server_version_num": "160015"
+}

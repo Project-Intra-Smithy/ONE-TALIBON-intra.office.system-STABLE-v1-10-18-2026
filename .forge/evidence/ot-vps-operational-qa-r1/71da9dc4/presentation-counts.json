@@ -1,0 +1,11 @@
+[
+  "presentation\tRun npm run test:contracts && npm run test:ux\t2026-11-27T17:29:15.0612163Z # tests 129",
+  "presentation\tRun npm run test:contracts && npm run test:ux\t2026-11-27T17:29:15.0613123Z # pass 129",
+  "presentation\tRun npm run test:contracts && npm run test:ux\t2026-11-27T17:29:15.0613575Z # fail 0",
+  "presentation\tRun npm run test:contracts && npm run test:ux\t2026-11-27T17:29:31.2070271Z # tests 9",
+  "presentation\tRun npm run test:contracts && npm run test:ux\t2026-11-27T17:29:31.2071228Z # pass 9",
+  "presentation\tRun npm run test:contracts && npm run test:ux\t2026-11-27T17:29:31.2071757Z # fail 0",
+  "presentation\tRun npm run test:aj-home-auth\t2026-11-27T17:29:58.9600618Z # tests 10",
+  "presentation\tRun npm run test:aj-home-auth\t2026-11-27T17:29:58.9601205Z # pass 10",
+  "presentation\tRun npm run test:aj-home-auth\t2026-11-27T17:29:58.9601433Z # fail 0"
+]

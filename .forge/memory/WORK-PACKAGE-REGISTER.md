@@ -1303,3 +1303,6 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 
 ## OT-VPS-OPERATIONAL-QA-R1 — R3 executor transition (Codex -> Antigravity)
 - [Transition7226741955](https://github.com/Project-Intra-Smithy/engineering-hub/issues/197#issuecomment-7226741955); Antigravity sole executor on exact unchanged candidate/ot-persistent-deployment-r3@71da9dc4d12e4fc77de9d5f4eb98efed151fb46f (evidence/ot-persistent-r3-71da9dc4). Prior 410/458 Windows stop proven Modern Standby timeout; NEXT complete uninterrupted 458/458 Windows qualification, publish redacted evidence packet and return for Nox N79-01..04 reacceptance. VPS, frozen PR78/79/80 and main unchanged; canonical-main exception retained.
+
+## OT-VPS-OPERATIONAL-QA-R1 — R3 qualified return pending Nox reacceptance
+- Frozen PR81 `71da9dc4d12e4fc77de9d5f4eb98efed151fb46f`: hosted 15/15 PASS, Linux 468/468 PASS (PG16.16), Windows 458/458 PASS (PG16.15), 303/303 R2 containment both platforms, 914/12,836 backend, 96/79/168 canonical browser. [Redacted evidence](../evidence/ot-vps-operational-qa-r1/71da9dc4/README.md); [mission memory](OT-FUNCTIONAL-COMPLETION-R1.md). NEXT Kirion-Nox bounded N79-01..04 reacceptance then Maintainer/Engineer disposition; VPS, frozen PR78/79/80 and main unchanged.
