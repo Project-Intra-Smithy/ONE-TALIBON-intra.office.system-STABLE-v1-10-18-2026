@@ -30,8 +30,8 @@ Implementation: app/Deployment/PersistentInstaller.php, app/Console/Commands/Ins
 | Protected disposable PG16 matrix | 12/12 jobs PASS; full 914 tests / 12,836 assertions | [run46004497443](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/46004497443) |
 | Planning regression | 45 tests / 777 assertions PASS | [planning-junit.xml](planning-junit.xml) |
 | Persistent fresh + exact 54-migration synthetic upgrade | 58/58 checks PASS on Linux PG16 | [run46004497475](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/46004497475), [raw check receipt](hosted-persistent-rehearsal.json) |
-| Independent-platform local rehearsal | 58/58 checks PASS on Windows local PG16 | [raw check receipt](windows-persistent-rehearsal.json) |
-| Canonical Laravel/Inertia browser + presentation | 2/2 jobs PASS | [run46004650421](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/46004650421) |
+| Local Windows rehearsal | 58/58 checks PASS on local PG16 | [raw check receipt](windows-persistent-rehearsal.json) |
+| Canonical Laravel/Inertia browser + presentation | 2/2 jobs PASS;96 route observations/79interactions/168original PNGs; clean source | [run46004650421](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/46004650421), [summary](canonical-summary.json) |
 | Locked local production assets, TypeScript, frontend contracts | build/types PASS; 129/129 contracts PASS | local execution logs retained under C:/dev/TAL/artifacts/OT-VPS-PERSISTENT-R1 |
 
 Total **15/15 hosted jobs PASS**, all at exact frozen source. [Run/job metadata](hosted-runs.json) and per-run artifact ID/digest/size JSON files are retained here. Artifact digests are GitHub-reported; no independent ZIP rehash is claimed. Original raw artifacts remain in those runs. Local rehearsals are synthetic source qualification, not independent evaluation or deployed VPS browser evidence.
