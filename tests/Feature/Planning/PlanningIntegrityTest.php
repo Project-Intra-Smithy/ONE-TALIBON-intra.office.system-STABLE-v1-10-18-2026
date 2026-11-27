@@ -11,6 +11,9 @@ use App\Models\PlanningAttachment;
 use App\Models\PpaRecord;
 use App\Models\User;
 use App\Services\AuditLogger;
+use App\Services\Planning\PlanningAuthorizationService;
+use App\Services\Planning\PlanningSuiteInitializer;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -38,6 +41,74 @@ final class PlanningIntegrityTest extends TestCase
         ])->assertRedirect();
 
         return PpaRecord::query()->where('ppa_code', 'INTEGRITY-001')->firstOrFail();
+    }
+
+    public function test_retained_attachment_blocks_parent_deletion_and_identifier_reuse_even_after_archival(): void
+    {
+        $this->seed();
+        Storage::fake('documents');
+        $owner = $this->actor('engineering@talibon.demo');
+        $ppa = $this->proposal($owner);
+        $this->actingAs($owner)->post('/planning/attachments', [
+            'parent_type' => 'ppa', 'parent_code' => $ppa->ppa_code,
+            'title' => 'Custody evidence', 'category' => 'working_draft', 'visibility' => 'lgu_internal',
+            'file' => UploadedFile::fake()->createWithContent('custody.pdf', "%PDF-1.4\n%%EOF"),
+        ])->assertRedirect();
+        $attachment = PlanningAttachment::query()->firstOrFail();
+        $this->assertSame($ppa->id, $attachment->parent_record_id);
+        $this->actingAs($owner)->delete("/ppas/{$ppa->id}")->assertSessionHasErrors('attachment');
+        $this->assertNotNull($ppa->fresh());
+        $this->actingAs($owner)->delete("/planning/attachments/{$attachment->public_id}")->assertRedirect();
+        $this->actingAs($owner)->delete("/ppas/{$ppa->id}")->assertSessionHasErrors('attachment');
+        // Simulate historical out-of-band parent loss; application writes must not reassociate it.
+        $ppa->delete();
+        $this->actingAs($owner)->post('/ppas', [
+            'ppa_code' => $ppa->ppa_code, 'title' => 'Replacement', 'sector' => 'Infrastructure',
+            'year' => 2027, 'related_development_plan' => 'Synthetic', 'funding_source' => 'Synthetic', 'status' => 'Draft',
+        ])->assertSessionHasErrors('ppa_code');
+        Storage::disk('documents')->assertExists($attachment->storage_path);
+    }
+
+    public function test_replacement_parent_cannot_archive_bound_or_unreconciled_historical_attachment(): void
+    {
+        $this->seed();
+        Storage::fake('documents');
+        $owner = $this->actor('engineering@talibon.demo');
+        $ppa = $this->proposal($owner);
+        $this->actingAs($owner)->post('/planning/attachments', [
+            'parent_type' => 'ppa', 'parent_code' => $ppa->ppa_code,
+            'title' => 'Original evidence', 'category' => 'working_draft', 'visibility' => 'lgu_internal',
+            'file' => UploadedFile::fake()->createWithContent('custody.pdf', "%PDF-1.4\n%%EOF"),
+        ])->assertRedirect();
+        $attachment = PlanningAttachment::query()->firstOrFail();
+        $ppa->delete();
+        $replacement = $ppa->replicate();
+        $replacement->implementing_department_id = $this->actor('budget@talibon.demo')->employee->department_id;
+        $replacement->save();
+        $this->actingAs($this->actor('budget@talibon.demo'))->delete("/planning/attachments/{$attachment->public_id}")->assertForbidden();
+        $this->assertNull($attachment->fresh()->archived_at);
+        // Legacy associations are preserved for reads, never silently upgraded by code match.
+        DB::table('planning_attachments')->where('id', $attachment->id)->update(['parent_record_id' => null]);
+        $this->actingAs($this->actor('budget@talibon.demo'))->delete("/planning/attachments/{$attachment->public_id}")->assertForbidden();
+        $this->actingAs($owner)->get("/planning/attachments/{$attachment->public_id}/download")->assertOk();
+    }
+
+    public function test_plan_code_and_key_collision_fails_closed_for_upload_and_creation(): void
+    {
+        $this->seed();
+        app(PlanningSuiteInitializer::class)->seedReferenceSamples(true);
+        $head = $this->actor('planning@talibon.demo');
+        $plans = DevelopmentPlan::query()->limit(2)->get();
+        $this->assertCount(2, $plans);
+        $this->actingAs($head)->post('/development-plans', [
+            'code' => $plans[0]->plan_key, 'title' => 'Alias replacement', 'horizon' => 'Annual',
+            'lead_office' => $head->employee->department->name,
+            'coverage_start' => 2027, 'coverage_end' => 2027, 'status' => 'Draft',
+        ])->assertSessionHasErrors('code');
+        $plans[1]->update(['code' => $plans[0]->plan_key]);
+        $this->actingAs($head);
+        $this->expectException(AuthorizationException::class);
+        app(PlanningAuthorizationService::class)->authorizeAttachmentUpload($head, 'plan', $plans[0]->plan_key, 'lgu_internal');
     }
 
     public function test_matching_office_text_never_overrides_a_foreign_or_missing_department_id(): void

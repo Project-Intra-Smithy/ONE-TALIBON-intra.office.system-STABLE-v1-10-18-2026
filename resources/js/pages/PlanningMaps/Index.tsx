@@ -436,7 +436,7 @@ export default function PlanningMapsIndex({
 
                                 <SupportingDocsPanel
                                     parentType="map"
-                                    parentCode={selectedMap.code}
+                                    parentCode={selectedMap.code} parentRecordId={selectedMap.dbId}
                                     attachments={attachments}
                                     canUpload={Boolean(selectedMap?.canUploadAttachments)}
                                     canManageExecutive={Boolean(

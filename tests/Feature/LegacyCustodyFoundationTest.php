@@ -436,6 +436,7 @@ final class LegacyCustodyFoundationTest extends TestCase
             '2026_11_20_000200_enforce_iam_identity_integrity',
             '2026_11_24_010000_create_local_development_planning_suite_tables',
             '2026_11_27_000001_enforce_one_active_planning_designation',
+            '2026_11_27_000002_bind_new_planning_attachment_parents',
         ];
         $actual = $this->root->query('SELECT migration FROM public.migrations')->fetchAll(PDO::FETCH_COLUMN);
         sort($actual, SORT_STRING);

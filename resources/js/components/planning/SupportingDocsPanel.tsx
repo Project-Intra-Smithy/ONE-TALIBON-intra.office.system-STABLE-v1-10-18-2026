@@ -10,6 +10,7 @@ export type ServerPlanningAttachment = {
     publicId: string;
     parentType: 'plan' | 'ppa' | 'map';
     parentCode: string;
+    parentRecordId?: number | null;
     title: string;
     fileName: string;
     mimeType: string;
@@ -25,6 +26,7 @@ export type ServerPlanningAttachment = {
 type Props = {
     parentType: 'plan' | 'ppa' | 'map';
     parentCode: string;
+    parentRecordId?: number | null;
     attachments: ServerPlanningAttachment[];
     canUpload: boolean;
     canManageExecutive: boolean;
@@ -50,6 +52,7 @@ const visibilityLabels: Record<string, string> = {
 export default function SupportingDocsPanel({
     parentType,
     parentCode,
+    parentRecordId,
     attachments,
     canUpload,
     canManageExecutive,
@@ -65,8 +68,9 @@ export default function SupportingDocsPanel({
     const [inspectingId,setInspectingId]=useState<string|null>(null);
 
     const matching = attachments.filter(
-        (item) => item.parentType === parentType && item.parentCode === parentCode,
+        (item) => item.parentType === parentType && item.parentRecordId != null && item.parentRecordId === parentRecordId,
     );
+    const historical = attachments.filter(item => item.parentType === parentType && item.parentRecordId == null);
     const inspecting=matching.find(attachment=>attachment.publicId===inspectingId)??null;
 
     const handleUpload = (event: FormEvent<HTMLFormElement>) => {
@@ -143,7 +147,7 @@ export default function SupportingDocsPanel({
 
             {matching.length === 0 ? (
                 <p className="mt-2.5 text-xs text-[var(--municipal-muted)]">
-                    No authorized supporting documents attached for {parentCode}.
+                    No verified supporting documents attached for {parentCode}.
                 </p>
             ) : (
                 <ul className="mt-2.5 space-y-2">
@@ -182,6 +186,7 @@ export default function SupportingDocsPanel({
                 </ul>
             )}
 
+            {historical.length > 0 && <section aria-label="Historical documents requiring reconciliation"><h4>Historical documents — parent association requires reconciliation</h4>{historical.map(doc => <p key={doc.publicId}>{doc.title} ({doc.parentCode}) <a href={doc.previewUrl} target="_blank" rel="noopener noreferrer">Preview</a> <a href={doc.downloadUrl}>Download</a></p>)}</section>}
             {inspecting && <DocumentPreviewPresentation key={inspecting.publicId} metadataOnly attachment={{title:inspecting.title,controlRef:inspecting.publicId,filename:inspecting.fileName,formatLabel:inspecting.fileName.split('.').pop()?.toUpperCase()??inspecting.mimeType,sizeLabel:`${new Intl.NumberFormat('en-PH').format(inspecting.sizeBytes)} bytes`,visibility:inspecting.visibility,uploadedAt:inspecting.createdAt??'',uploadedBy:'Not supplied by current record',previewFields:[['Parent reference',inspecting.parentCode],['MIME type',inspecting.mimeType],['Category',categoryLabels[inspecting.category]??inspecting.category]]}} onClose={()=>setInspectingId(null)} categoryMeta={{label:categoryLabels[inspecting.category]??inspecting.category,tone:'info'}} visibilityMeta={{label:visibilityLabels[inspecting.visibility]??inspecting.visibility,shortLabel:visibilityLabels[inspecting.visibility]??inspecting.visibility}} nativePreviewUrl={inspecting.previewUrl} onDownload={()=>window.location.assign(inspecting.downloadUrl)} />}
         </section>
     );

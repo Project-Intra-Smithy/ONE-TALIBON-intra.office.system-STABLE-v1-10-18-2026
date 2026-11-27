@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PlanningAttachment;
 use App\Models\PpaRecord;
 use App\Services\AuditLogger;
+use App\Services\Planning\PlanningAttachmentCustody;
 use App\Services\Planning\PlanningAuthorizationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -81,6 +82,7 @@ final class PpaController extends Controller
                 'publicId' => $attachment->public_id,
                 'parentType' => $attachment->parent_type,
                 'parentCode' => $attachment->parent_code,
+                'parentRecordId' => $attachment->parent_record_id,
                 'title' => $attachment->title,
                 'fileName' => $attachment->file_name,
                 'mimeType' => $attachment->mime_type,
@@ -153,6 +155,7 @@ final class PpaController extends Controller
                 ? trim($data['ppa_code'])
                 : sprintf('PPA-%d-%03d', (int) $data['year'], PpaRecord::query()->where('year', (int) $data['year'])->count() + 101);
 
+            app(PlanningAttachmentCustody::class)->assertIdentifiersAvailable('ppa', [$code], 'ppa_code');
             $ppa = PpaRecord::query()->create([
                 'ppa_code' => $code,
                 'title' => trim($data['title']),
@@ -330,6 +333,7 @@ final class PpaController extends Controller
 
             $code = $ppa->ppa_code;
             $id = $ppa->id;
+            app(PlanningAttachmentCustody::class)->assertDeletable('ppa', $ppa, [$ppa->ppa_code]);
             $ppa->delete();
 
             $this->audit->record(

@@ -12,6 +12,7 @@ class PlanningAttachment extends Model
         'public_id',
         'parent_type',
         'parent_code',
+        'parent_record_id',
         'title',
         'file_name',
         'mime_type',
@@ -33,12 +34,18 @@ class PlanningAttachment extends Model
                 $attachment->public_id = (string) Str::uuid();
             }
         });
+        static::updating(function (self $attachment): void {
+            if ($attachment->isDirty(['parent_type', 'parent_code', 'parent_record_id'])) {
+                throw new \LogicException('Planning attachment parent identity is immutable.');
+            }
+        });
     }
 
     protected function casts(): array
     {
         return [
             'size_bytes' => 'integer',
+            'parent_record_id' => 'integer',
             'archived_at' => 'datetime',
         ];
     }

@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Planning;
 use App\Http\Controllers\Controller;
 use App\Models\PlanningAttachment;
 use App\Services\AuditLogger;
+use App\Services\Planning\PlanningAttachmentCustody;
 use App\Services\Planning\PlanningAuthorizationService;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
@@ -86,11 +87,13 @@ final class PlanningAttachmentController extends Controller
         try {
             return DB::transaction(function () use ($user, $data, $uploadedFile, $rawBytes, $checksum, $publicId, $safeOriginal, $storagePath): RedirectResponse {
                 $perms = $this->authorization->authorizeAttachmentUpload($user, $data['parent_type'], $data['parent_code'], $data['visibility']);
+                $parent = app(PlanningAttachmentCustody::class)->parent($data['parent_type'], $data['parent_code']);
 
                 $attachment = PlanningAttachment::query()->create([
                     'public_id' => $publicId,
                     'parent_type' => $data['parent_type'],
                     'parent_code' => trim($data['parent_code']),
+                    'parent_record_id' => $parent->getKey(),
                     'title' => trim($data['title']),
                     'file_name' => $safeOriginal,
                     'mime_type' => (string) ($uploadedFile->getMimeType() ?: 'application/pdf'),
