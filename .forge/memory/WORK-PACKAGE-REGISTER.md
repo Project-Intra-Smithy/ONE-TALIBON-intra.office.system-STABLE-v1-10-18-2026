@@ -1300,3 +1300,6 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 
 ## OT-VPS-OPERATIONAL-QA-R1 — R3 bounded continuation
 - [START7223421087](https://github.com/Project-Intra-Smithy/engineering-hub/issues/197#issuecomment-7223421087); separate candidate/ot-persistent-deployment-r3 fromb8657ee3, four residuals under7223309777. [Mission memory](OT-FUNCTIONAL-COMPLETION-R1.md). NEXT Codex dependency-ordered correction/qualification then Nox/Maintainer; VPS and frozen candidates preserved, canonical-main exception retained.
+
+## OT-VPS-OPERATIONAL-QA-R1 — R3 executor transition (Codex -> Antigravity)
+- [Transition7226741955](https://github.com/Project-Intra-Smithy/engineering-hub/issues/197#issuecomment-7226741955); Antigravity sole executor on exact unchanged candidate/ot-persistent-deployment-r3@71da9dc4d12e4fc77de9d5f4eb98efed151fb46f (evidence/ot-persistent-r3-71da9dc4). Prior 410/458 Windows stop proven Modern Standby timeout; NEXT complete uninterrupted 458/458 Windows qualification, publish redacted evidence packet and return for Nox N79-01..04 reacceptance. VPS, frozen PR78/79/80 and main unchanged; canonical-main exception retained.
