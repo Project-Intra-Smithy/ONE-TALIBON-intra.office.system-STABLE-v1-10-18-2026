@@ -1,3 +1,5 @@
+> R3 controlling refinement: [finite supported boundary](PG16-SUPPORTED-BOUNDARY.md). Registry format3, sectioned contract and explicit runtime/configuration pins supersede the earlier format2/inherited-environment descriptions below.
+
 # Persistent PG16 installation — corrective security contract
 
 PR78 and PR79 are preserved. The N79 corrective successor requires independent targeted reacceptance and final Maintainer disposition before any VPS mutation. No backups/snapshots, reset, redundant deployed instance, public rollout or main integration are authorized. An installer PASS is not deployed operational readiness.

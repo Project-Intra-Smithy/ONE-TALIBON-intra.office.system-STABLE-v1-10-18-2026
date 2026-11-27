@@ -29,6 +29,10 @@ final class SupportedPg16
         'extensions' => "SELECT * FROM pg_extension WHERE extname<>'plpgsql'",
         'languages' => "SELECT * FROM pg_language WHERE lanname NOT IN ('internal','c','sql','plpgsql') OR (lanname='plpgsql' AND (NOT lanpltrusted OR lanispl IS FALSE))",
         'user_domains_enums_ranges' => "SELECT * FROM pg_type WHERE oid>=16384 AND typtype IN ('d','e','r','m')",
+        'partitioned_relations' => 'SELECT * FROM pg_partitioned_table',
+        'inheritance' => 'SELECT * FROM pg_inherits',
+        'user_aggregates' => 'SELECT a.* FROM pg_aggregate a WHERE a.aggfnoid>=16384',
+        'extended_statistics' => 'SELECT * FROM pg_statistic_ext',
         'transforms' => 'SELECT * FROM pg_transform',
         'user_access_methods' => 'SELECT * FROM pg_am WHERE oid>=16384',
         'user_tablespaces' => "SELECT * FROM pg_tablespace WHERE spcname NOT IN ('pg_default','pg_global') AND oid IN (SELECT reltablespace FROM pg_class WHERE reltablespace<>0)",
@@ -64,6 +68,9 @@ final class SupportedPg16
 
     public function verify(): void
     {
+        if (DB::selectOne("SELECT current_setting('allow_system_table_mods') AS value")->value !== 'off') {
+            throw new RuntimeException('System catalog modification mode is unsupported.');
+        }
         foreach ($this->snapshot() as $name => $state) {
             if ($state[0] !== 0) {
                 throw new RuntimeException('Unsupported ONE TALIBON PG16 object family: '.$name);

@@ -14,7 +14,7 @@ allowed = {
     'app/Deployment/PersistentInstaller.php', 'app/Console/Commands/InstallPersistent.php',
     'scripts/ci/verify-persistent-successor.py', 'tests/Manual/persistent-install-rehearsal.py',
     '.github/workflows/functional-completion-pg16.yml', '.github/workflows/persistent-install-pg16.yml',
-    'docs/deployment/PERSISTENT-PG16.md',
+    'docs/deployment/PERSISTENT-PG16.md', 'docs/deployment/PG16-SUPPORTED-BOUNDARY.md',
     'app/Deployment/SupportedPg16.php', 'app/Deployment/SecurityCatalog.php', 'app/Deployment/PersistentSecurity.php', 'app/Deployment/CredentialBoundary.php',
     'scripts/deployment/verified-install.py', 'scripts/deployment/build-package.py',
     'tests/Manual/build-security-contract.php', 'config/database.php',

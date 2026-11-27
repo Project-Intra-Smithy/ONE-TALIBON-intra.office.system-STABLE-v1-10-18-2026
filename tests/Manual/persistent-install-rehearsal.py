@@ -85,6 +85,8 @@ if not (args.record_contract or args.compare_contract):
             ini_lines.append('extension="'+library.as_posix()+'"')
     provisioning_ini.write_text('\n'.join(ini_lines)+'\n',encoding='utf-8')
     provisioning_ini.chmod(0o600)
+    php_digest=hashlib.sha256(Path(php).read_bytes()).hexdigest()
+    ini_digest=hashlib.sha256(provisioning_ini.read_bytes()).hexdigest()
 
 for mode in (['contract'] if (args.record_contract or args.compare_contract) else ['fresh', 'upgrade']):
     env = {k: v for k, v in os.environ.items() if not k.startswith(('PG', 'DB_', 'APP_', 'N03_', 'LEGACY_CUSTODY_', 'KIRION_'))}
@@ -195,7 +197,7 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
         def invocation(target_file=manifest_file, credential_file=credentials_file, pin=manifest_digest, package_path=package):
             return [sys.executable,'-c',TRUSTED_BOOT,str(launcher),build_receipt['launcher_sha256'],
                     '--package',str(package_path),'--manifest',str(build/'package-manifest.json'),'--sha256',pin,
-                    '--target',str(target_file),'--credentials',str(credential_file),'--php',php,'--ini',str(provisioning_ini),'--php-sha256',hashlib.sha256(Path(php).read_bytes()).hexdigest(),'--ini-sha256',hashlib.sha256(provisioning_ini.read_bytes()).hexdigest()]
+                    '--target',str(target_file),'--credentials',str(credential_file),'--php',php,'--ini',str(provisioning_ini),'--php-sha256',php_digest,'--ini-sha256',ini_digest]
 
         def install(manifest, expected=0, extra_env=None):
             manifest_file.write_text(json.dumps(manifest))
@@ -318,6 +320,7 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
             ('publication','CREATE PUBLICATION qa_publication FOR TABLE users','DROP PUBLICATION qa_publication'),
             ('subscription',"CREATE SUBSCRIPTION qa_subscription CONNECTION 'host=127.0.0.1 password=synthetic-canary' PUBLICATION qa_publication WITH (connect=false,create_slot=false,enabled=false)",'DROP SUBSCRIPTION qa_subscription'),
             ('domain','CREATE DOMAIN public.qa_domain AS integer CHECK(VALUE>0)','DROP DOMAIN public.qa_domain'),
+            ('system_schema_acl','GRANT CREATE ON SCHEMA pg_catalog TO n03_reader','REVOKE CREATE ON SCHEMA pg_catalog FROM n03_reader'),
             ('system_object','CREATE TABLE pg_catalog.qa_untrusted(id int)','DROP TABLE pg_catalog.qa_untrusted'),
             ('user_collation',"CREATE COLLATION public.qa_collation (provider=libc,locale='C')",'DROP COLLATION public.qa_collation'),
         ]
@@ -357,6 +360,10 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
         payload.write_text("<?php file_put_contents("+json.dumps(canary.as_posix())+",'EXECUTED'); return [];",encoding='utf-8')
         cache_vars={name:str(payload) for name in ['APP_SERVICES_CACHE','APP_PACKAGES_CACHE','APP_CONFIG_CACHE','APP_ROUTES_CACHE','APP_EVENTS_CACHE']}
         cache_vars.update(APP_BASE_PATH=str(root),LARAVEL_STORAGE_PATH=str(root),COMPOSER_HOME=str(root),APP_ENV_FILE=str(payload),PGSERVICE='unverified',PGPASSFILE=str(root/'unverified-passwords'))
+        ini_original=provisioning_ini.read_bytes()
+        provisioning_ini.write_bytes(ini_original+('auto_prepend_file="'+payload.as_posix()+'"\n').encode())
+        check(mode+'_untrusted_php_configuration_rejected_before_execution',install(target,1).returncode==1 and not canary.exists())
+        provisioning_ini.write_bytes(ini_original)
         normalized=install(target,0,dict(env,**cache_vars))
         check(mode+'_external_executable_paths_contained', '"status":"INSTALLED"' in normalized.stdout and not canary.exists())
         for setting in ['log_statement=all','log_min_error_statement=error','log_parameter_max_length=-1','pgaudit.log=all']:
