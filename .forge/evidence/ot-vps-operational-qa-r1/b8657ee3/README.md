@@ -21,11 +21,11 @@ See [operator procedure](../../../../docs/deployment/PERSISTENT-PG16.md) for exa
 
 All **15/15 hosted jobs PASS** at the exact source:
 
-- [Protected PG1646021910800](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/46021910800):12 successful jobs, original protected and regression coverage retained.
+- [Protected PG1646021910800](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/46021910800):12 successful jobs; full914tests/12,836assertions and Planning45/777, original protected and regression coverage retained.
 - [Persistent fresh/upgrade46021910772](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/46021910772): **303 unique passing cases**; [original check receipt](linux-persistent-rehearsal.json).
 - [Canonical/presentation46022221857](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/46022221857):2 successful jobs. [Clean-source summary](canonical-summary.json):96routes/79interactions, original capture count and CI manifest hash. These are disposable GitHub browser observations, not actual VPS qualification.
 - Source-scope/shared-policy/guard verification and PHP Pint PASS. Dependencies, original disposable guards, canonical SQL migration bodies and unrelated application functionality preserved.
-- **Windows exact-source rehearsal: still in progress when this draft receipt was written. No Windows303/303 claim yet.**
+- **Windows exact-source rehearsal:303/303 unique checks PASS**, including the142-case fresh phase and realistic54-migration upgrade. [Original Windows receipt](windows-persistent-rehearsal.json). Normalized case inventories match Linux exactly (native private ACL versus Unix private mode labels). Platform-specific package file counts/digests differ as recorded; source/tree and authenticated launcher digest match. Both synthetic clusters were stopped by the harness.
 
 Original run/job metadata and artifact IDs/digests/sizes accompany this receipt. Digests are GitHub-reported; no independent ZIP rehash is claimed. Full raw logs and captures remain in the linked runs; local downloaded evidence is retained under C:/dev/TAL/artifacts/OT-VPS-PERSISTENT-R2. No secret values/verifiers/private input files are published.
 
@@ -37,4 +37,4 @@ The 303-case Linux suite retains original account/password/encrypted MFA/TOTP/em
 
 ## Current disposition
 
-**HOSTED_QUALIFICATION_PASS / WINDOWS_QUALIFICATION_IN_PROGRESS / NONAUTHOR_REACCEPTANCE_NOT_AWARDED.** No independent Nox review of this corrective frozen SHA has been received in this record. Writer/same-context source checks are non-accepting. After final Windows qualification and evidence reconciliation, request Nox's bounded reacceptance of N79-01..04, then Maintainer/Engineer final disposition. Only after both gates may Codex resume the existing authorized VPS deployment, real data classification/admin preservation, additive fixtures, actual HTTPS/MFA multi-role smoke and private Siris access preparation. No READY_FOR_SIRIS_QA, deployment or municipal release is claimed.
+**EXACT_SOURCE_QUALIFICATION_PASS / LINUX303_303 / WINDOWS303_303 / NONAUTHOR_REACCEPTANCE_PENDING.** No independent Nox review of this corrective frozen SHA has been received in this record. Writer/same-context source checks are non-accepting. With final Windows qualification and evidence reconciled, request Nox's bounded reacceptance of N79-01..04, then Maintainer/Engineer final disposition. Only after both gates may Codex resume the existing authorized VPS deployment, real data classification/admin preservation, additive fixtures, actual HTTPS/MFA multi-role smoke and private Siris access preparation. No READY_FOR_SIRIS_QA, deployment or municipal release is claimed.
