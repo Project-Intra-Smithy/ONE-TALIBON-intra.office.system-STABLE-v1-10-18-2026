@@ -8,10 +8,16 @@ const read = (path) => readFileSync(fileURLToPath(new URL(path, import.meta.url)
 test('AJ PR44 presentation preserves canonical Task write controls and mutation-to-read refresh', () => {
     const dashboard = read('../../resources/js/pages/Dashboard.tsx');
     const taskPanel = read('../../resources/js/components/dashboard/r7/lower/R7TaskPanel.tsx');
+    const dedicatedTasks = read('../../resources/js/pages/Tasks/Index.tsx');
     const workspace = read('../../resources/js/components/tasks/PersonalTaskWorkspace.tsx');
-    assert.match(dashboard, /<R7LowerRegion actions=\{experience\.quickActions\}\s*\/>/);
-    assert.match(taskPanel, /<PersonalTaskWorkspace\s*\/>/);
-    assert.match(taskPanel, /<PersonalTaskMutationPanel\s*\/>/);
+    assert.ok(dashboard.includes('href="/my-tasks"'));
+    assert.doesNotMatch(dashboard, /<PersonalTaskWorkspace\s*\/>/);
+    assert.doesNotMatch(dashboard, /<PersonalTaskMutationPanel\s*\/>/);
+    assert.match(dedicatedTasks, /<PersonalTaskWorkspace\s*\/>/);
+    assert.match(dedicatedTasks, /<PersonalTaskMutationPanel\s+confirmationLabel=\{taskConfirmationLabel\}\s*\/>/);
+    assert.doesNotMatch(taskPanel, /<PersonalTaskWorkspace\s*\/>/);
+    assert.doesNotMatch(taskPanel, /<PersonalTaskMutationPanel\s*\/>/);
+    assert.ok(taskPanel.includes('href="/my-tasks"'));
     assert.match(workspace, /one-talibon:personal-task-confirmed/);
     assert.match(workspace, /window\.addEventListener\(TASK_SYNC_EVENT,synchronize\)/);
     assert.match(workspace, /detail\.userId!==userId/);
@@ -21,13 +27,20 @@ test('AJ PR44 presentation preserves canonical Task write controls and mutation-
     assert.match(workspace, /Overdue/);
 });
 
-test('Department overview is a dashboard anchor, not an invented route or authority', () => {
+test('My Department has an authorized dedicated route and keeps directory separate', () => {
     const dashboard = read('../../resources/js/pages/Dashboard.tsx');
     const nav = read('../../resources/js/navigation/portalNavigation.ts');
-    assert.match(dashboard, /id="department-overview" tabIndex=\{-1\}/);
-    assert.match(dashboard, /<OfficeOverview overview=\{officeOverview\}/);
-    assert.match(nav, /myDepartment: '\/dashboard#department-overview'/);
+    const route = read('../../routes/web.php');
+    const controller = read('../../app/Http/Controllers/DepartmentController.php');
+    const department = read('../../resources/js/pages/Departments/Workspace.tsx');
+    assert.ok(dashboard.includes('href="/my-department"'));
+    assert.doesNotMatch(dashboard, /<OfficeOverview/);
+    assert.ok(nav.includes("myDepartment: '/my-department'"));
     assert.match(nav, /experiences: \['department_head'\]/);
+    assert.ok(route.includes("Route::get('/my-department'"));
+    assert.match(controller, /public function myWorkspace/);
+    assert.match(department, /<OfficeOverview/);
+    assert.ok(department.includes('/departments?view=directory'));
 });
 
 test('visible appearance controls persist and apply light dark and system preferences', () => {

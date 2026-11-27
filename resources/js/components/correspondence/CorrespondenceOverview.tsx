@@ -80,7 +80,7 @@ function PreviewPanel({ title, subtitle, view, items, onSelect }: {
                     <h2 className="text-xs font-bold leading-4 text-[var(--municipal-text)]">{title}</h2>
                     <p className="truncate text-[9px] leading-3.5 text-[var(--municipal-muted)]">{subtitle}</p>
                 </div>
-                <button type="button" onClick={() => onSelect(view)} className="shrink-0 text-[10px] font-bold text-[var(--municipal-brand)]">View all</button>
+                <button type="button" onClick={() => onSelect(view)} className="shrink-0 text-[10px] font-bold text-[var(--brand-ink)]">View all</button>
             </header>
             <div className="divide-y divide-[var(--municipal-border)]">
                 {items.map((item) => (
@@ -89,7 +89,7 @@ function PreviewPanel({ title, subtitle, view, items, onSelect }: {
                         href={`/correspondence/${item.publicId}/workspace`}
                         className="flex min-h-10 items-center gap-2 px-2.5 py-1.5 hover:bg-[var(--municipal-hover)]"
                     >
-                        <Inbox size={14} className="shrink-0 text-[var(--municipal-brand)]" aria-hidden="true" />
+                        <Inbox size={14} className="shrink-0 text-[var(--brand-ink)]" aria-hidden="true" />
                         <div className="min-w-0 flex-1">
                             <div className="truncate text-[11px] font-semibold leading-4 text-[var(--municipal-text)]">{item.subject}</div>
                             <div className="truncate text-[9px] leading-3.5 text-[var(--municipal-muted)]">

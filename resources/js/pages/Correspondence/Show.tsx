@@ -1,10 +1,14 @@
-import '../../../css/portal-visual-redesign.css';
 import { Link, usePage } from '@inertiajs/react';
 import { ArrowLeft, Building2, CalendarClock, FileText, GitBranch, UserRound } from 'lucide-react';
-import CorrespondenceActionPanel, { type CorrespondenceCapabilities, type CorrespondenceRouteOption } from '../../components/correspondence/CorrespondenceActionPanel';
+import CorrespondenceActionPanel, {
+    type CorrespondenceCapabilities,
+    type CorrespondenceRouteOption,
+} from '../../components/correspondence/CorrespondenceActionPanel';
 import EvidenceList, { type EvidenceItem, type EvidencePayload } from '../../components/documents/EvidenceList';
+import { StatusBadge, toneForWorkState } from '../../components/ui';
 import RelatedWorkPanel from '../../components/workflow/RelatedWorkPanel';
 import AppLayout from '../../layouts/AppLayout';
+import { formatDateTimePH, humanizeSlug } from '../../lib/format';
 import { returnTargetFromDetailUrl } from '../../navigation/returnContext';
 
 type Office = { code: string; name: string; shortName?: string | null };
@@ -64,36 +68,16 @@ type Props = {
     evidence: EvidencePayload;
 };
 
-const humanize = (value?: string | null) => value
-    ? value.replaceAll('_', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase())
-    : 'Not yet completed';
-
-const formatDate = (value?: string | null) => value
-    ? new Date(value).toLocaleString()
-    : 'Not yet completed';
-
-const officeLabel = (office?: Office | null) => office?.shortName || office?.name || 'Not recorded';
-
-const lifecycleTone: Record<string, string> = {
-    received: 'bg-blue-50 text-blue-800 dark:bg-blue-950/40',
-    registered: 'bg-slate-100 text-slate-700 dark:bg-slate-900/40 dark:text-slate-300',
-    classified: 'bg-violet-50 text-violet-800',
-    routed: 'bg-amber-50 text-amber-800',
-    in_action: 'bg-emerald-50 text-emerald-800',
-};
-
-const classificationTone: Record<string, string> = {
-    public: 'border-emerald-200 bg-emerald-50 text-emerald-800',
-    internal: 'border-slate-200 bg-slate-50 text-slate-700 dark:bg-slate-900/40 dark:text-slate-300 dark:border-slate-700',
-    confidential: 'border-amber-200 bg-amber-50 text-amber-800',
-    restricted: 'border-rose-200 bg-rose-50 text-rose-800',
-};
+const officeLabel = (office?: Office | null) => office?.shortName || office?.name || '—';
 
 function DetailRow({ label, value }: { label: string; value?: string | null }) {
+    const empty = !value || value === '—';
     return (
-        <div className="grid gap-1 border-b border-slate-100 py-2.5 last:border-b-0 sm:grid-cols-[140px_1fr] sm:gap-3 dark:border-slate-700">
-            <div className="text-[10px] font-bold uppercase tracking-wide text-slate-400 dark:text-slate-400">{label}</div>
-            <div className="text-xs font-medium text-slate-800 sm:text-sm dark:text-slate-100">{value || 'Not yet completed'}</div>
+        <div className="grid gap-1 border-b border-[var(--border-default)] py-2 last:border-b-0 sm:grid-cols-[132px_minmax(0,1fr)] sm:gap-3">
+            <div className="text-xs font-bold uppercase tracking-wide text-[var(--ink-secondary)]">{label}</div>
+            <div className={`text-xs font-semibold sm:text-sm ${empty ? 'font-normal text-[var(--ink-secondary)] opacity-70' : 'text-[var(--ink-primary)]'}`}>
+                {value || '—'}
+            </div>
         </div>
     );
 }
@@ -104,41 +88,62 @@ export default function CorrespondenceShow({ correspondence, timeline, capabilit
     const workflow = correspondence.accountability.workflow;
     const currentOffice = correspondence.accountability.currentOffice;
     const receivingOffice = correspondence.accountability.receivingOffice;
+    const hasActions = capabilities.canRegister || capabilities.canClassify || capabilities.canRoute || capabilities.canAct;
+
     const relatedWork = [
-        { label: 'Back to Inbox & Routing', detail: 'Return to the authorized Correspondence list and filter context that opened this record.', href: returnTarget },
-        ...(workflow?.detailUrl ? [{ label: `Linked workflow ${workflow.reference}`, detail: `${humanize(workflow.status)} · ${officeLabel(workflow.currentOffice)}`, href: workflow.detailUrl }] : []),
-        { label: 'Search this reference in Records', detail: 'Check other municipal records using this exact correspondence reference.', href: `/records?search=${encodeURIComponent(correspondence.reference)}` },
-        { label: 'Open Work Queue', detail: 'Move directly to work currently requiring your action.', href: '/transactions?view=needs_my_action' },
+        { label: 'Back to Inbox & Routing', detail: 'Return to the authorized Correspondence queue.', href: returnTarget },
+        ...(workflow?.detailUrl
+            ? [{ label: `Linked workflow ${workflow.reference}`, detail: `${humanizeSlug(workflow.status)} · ${officeLabel(workflow.currentOffice)}`, href: workflow.detailUrl }]
+            : []),
+        { label: 'Search reference in Records', detail: 'Locate related municipal records using this exact reference.', href: `/records?search=${encodeURIComponent(correspondence.reference)}` },
+        { label: 'Open Work Queue', detail: 'Move to inter-office work requiring your action.', href: '/transactions?view=needs_my_action' },
     ];
 
     return (
         <AppLayout title={`Correspondence · ${correspondence.reference}`}>
-            <div className="civic-page mx-auto max-w-7xl space-y-3">
-                <div className="flex items-center justify-between gap-3">
-                    <Link href={returnTarget} className="inline-flex items-center gap-2 text-xs font-semibold text-blue-700 hover:text-blue-900 dark:text-blue-300">
-                        <ArrowLeft size={15} /> Back to Inbox & Routing
+            <div className="mx-auto max-w-[1440px] space-y-4 px-4 py-4 sm:px-6">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                    <Link
+                        href={returnTarget}
+                        className="inline-flex min-h-9 items-center gap-1.5 text-sm font-semibold text-[var(--brand-ink)] hover:underline"
+                    >
+                        <ArrowLeft size={15} aria-hidden="true" />
+                        <span>Back to Inbox &amp; Routing</span>
                     </Link>
-                    <div className="text-[11px] text-slate-500 dark:text-slate-400">Correspondence review workspace</div>
+                    <span className="text-xs font-medium text-[var(--ink-secondary)]">Correspondence review workspace</span>
                 </div>
 
-                <section className="rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-700 dark:bg-[#142236] sm:px-5">
+                {/* Compact TCDS header card */}
+                <section className="tcds-card p-4 sm:p-5">
                     <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                         <div className="min-w-0">
-                            <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-blue-700 dark:text-blue-300">Municipal correspondence</div>
-                            <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                                <h1 className="break-words text-xl font-bold text-slate-950 dark:text-slate-100">{correspondence.reference}</h1>
-                                <span className="text-xs text-slate-500 dark:text-slate-400">{officeLabel(currentOffice)}</span>
+                            <div className="flex flex-wrap items-center gap-2 text-xs">
+                                <span className="font-bold uppercase tracking-wider text-[var(--brand-ink)]">
+                                    Municipal correspondence
+                                </span>
+                                <span className="text-[var(--ink-secondary)]">· {officeLabel(currentOffice)}</span>
                             </div>
-                            <p className="mt-1.5 max-w-4xl text-sm font-semibold leading-5 text-slate-800 dark:text-slate-100">{correspondence.content.subject}</p>
+                            <h1 className="mt-1 break-words font-mono text-xl font-extrabold text-[var(--ink-primary)] sm:text-2xl">
+                                {correspondence.reference}
+                            </h1>
+                            <p className="mt-1 max-w-4xl text-sm font-semibold leading-5 text-[var(--ink-primary)]">
+                                {correspondence.content.subject}
+                            </p>
                         </div>
-                        <div className="flex flex-wrap gap-1.5">
-                            <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${lifecycleTone[correspondence.lifecycleState] || 'bg-slate-100 text-slate-700 dark:bg-slate-900/40 dark:text-slate-300'}`}>{humanize(correspondence.lifecycleState)}</span>
-                            {correspondence.classification && <span className={`rounded-full border px-2.5 py-1 text-[10px] font-bold ${classificationTone[correspondence.classification] || 'border-slate-200 bg-white text-slate-700 dark:border-slate-700 dark:bg-[#142236] dark:text-slate-300'}`}>{humanize(correspondence.classification)}</span>}
+                        <div className="flex shrink-0 flex-wrap items-center gap-1.5">
+                            <StatusBadge tone={toneForWorkState(correspondence.lifecycleState)}>
+                                {humanizeSlug(correspondence.lifecycleState)}
+                            </StatusBadge>
+                            {correspondence.classification && (
+                                <StatusBadge tone={correspondence.classification === 'restricted' ? 'danger' : correspondence.classification === 'confidential' ? 'warn' : 'neutral'}>
+                                    {humanizeSlug(correspondence.classification)}
+                                </StatusBadge>
+                            )}
                         </div>
                     </div>
                 </section>
 
-                <div className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1fr)_320px] xl:items-start">
+                {hasActions && (
                     <CorrespondenceActionPanel
                         publicId={correspondence.publicId}
                         lifecycleState={correspondence.lifecycleState}
@@ -146,87 +151,134 @@ export default function CorrespondenceShow({ correspondence, timeline, capabilit
                         routeOptions={routeOptions}
                         linkedWorkflowUrl={workflow?.detailUrl}
                     />
-                    <RelatedWorkPanel items={relatedWork} />
-                </div>
+                )}
 
-                <div className="grid gap-3 lg:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.65fr)]">
-                    <div className="space-y-3">
-                        <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-[#142236]">
-                            <div className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-slate-100"><FileText size={17} /> Correspondence details</div>
-                            <div className="mt-3 rounded-lg bg-slate-50 p-3 dark:bg-slate-900/40">
-                                <div className="text-[10px] font-bold uppercase tracking-wide text-slate-400">Summary</div>
-                                <p className="mt-1.5 whitespace-pre-wrap text-xs leading-5 text-slate-700 sm:text-sm dark:text-slate-300">{correspondence.content.summary || 'No summary recorded.'}</p>
+                {/* 2-Column Content Grid — Correspondence Details & Timeline immediately above the fold */}
+                <div className="grid gap-4 lg:grid-cols-[minmax(0,1.45fr)_340px] lg:items-start">
+                    <div className="min-w-0 space-y-4">
+                        <section className="tcds-card p-4 sm:p-5">
+                            <div className="flex items-center gap-2 text-sm font-bold text-[var(--ink-primary)]">
+                                <FileText size={16} aria-hidden="true" className="text-[var(--brand-ink)]" />
+                                <span>Correspondence details</span>
+                            </div>
+                            <div className="mt-3 rounded-lg border border-[var(--border-default)] bg-[var(--surface-recessed)] p-3">
+                                <div className="text-xs font-bold uppercase tracking-wide text-[var(--ink-secondary)]">Summary</div>
+                                <p className="mt-1 whitespace-pre-wrap text-sm leading-6 text-[var(--ink-primary)]">
+                                    {correspondence.content.summary || 'No summary recorded.'}
+                                </p>
                             </div>
                             <div className="mt-2">
                                 <DetailRow label="Sender" value={correspondence.source.senderName} />
-                                <DetailRow label="Organization" value={correspondence.source.senderOrganization || 'Not specified'} />
-                                <DetailRow label="Source" value={humanize(correspondence.source.source)} />
-                                <DetailRow label="Channel" value={correspondence.source.channel ? humanize(correspondence.source.channel) : 'Not specified'} />
+                                <DetailRow label="Organization" value={correspondence.source.senderOrganization || '—'} />
+                                <DetailRow label="Source" value={humanizeSlug(correspondence.source.source)} />
+                                <DetailRow label="Channel" value={correspondence.source.channel ? humanizeSlug(correspondence.source.channel) : '—'} />
                             </div>
                         </section>
 
-                        {evidence.record.length > 0 && <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-[#142236]"><div className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-slate-100"><FileText size={17} /> Record evidence</div><div className="mt-3"><EvidenceList items={evidence.record} /></div></section>}
+                        {evidence.record.length > 0 && (
+                            <section className="tcds-card p-4 sm:p-5">
+                                <div className="flex items-center gap-2 text-sm font-bold text-[var(--ink-primary)]">
+                                    <FileText size={16} aria-hidden="true" />
+                                    <span>Record evidence</span>
+                                </div>
+                                <div className="mt-3"><EvidenceList items={evidence.record} /></div>
+                            </section>
+                        )}
 
-                        <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-[#142236]">
-                            <div className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-slate-100"><CalendarClock size={17} /> Routing and lifecycle trace</div>
+                        <section className="tcds-card p-4 sm:p-5">
+                            <div className="flex items-center gap-2 text-sm font-bold text-[var(--ink-primary)]">
+                                <CalendarClock size={16} aria-hidden="true" className="text-[var(--brand-ink)]" />
+                                <span>Routing &amp; lifecycle trace</span>
+                            </div>
                             <div className="mt-4 space-y-0">
                                 {timeline.map((event, index) => (
                                     <div key={event.id} className="relative pb-4 pl-7 last:pb-0">
-                                        {index < timeline.length - 1 && <div className="absolute left-[7px] top-3 h-full w-px bg-slate-200 dark:bg-slate-700" />}
-                                        <div className="absolute left-0 top-1.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-blue-700 shadow-sm ring-1 ring-blue-200 dark:border-[#142236]" />
+                                        {index < timeline.length - 1 && (
+                                            <div className="absolute left-[6px] top-3 h-full w-px bg-[var(--border-default)]" />
+                                        )}
+                                        <div className="absolute left-0 top-1.5 h-3.5 w-3.5 rounded-full border-2 border-[var(--surface-card)] bg-[var(--brand-primary)] ring-1 ring-[var(--brand-soft-border)]" />
                                         <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                                             <div>
-                                                <div className="text-xs font-bold text-slate-900 sm:text-sm dark:text-slate-100">{humanize(event.event)}{event.source === 'workflow' && <span className="ml-2 text-[9px] font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-300">Workflow</span>}</div>
-                                                <div className="mt-0.5 text-[10px] text-slate-500 sm:text-xs dark:text-slate-400">{event.previousState ? `${humanize(event.previousState)} → ` : ''}{humanize(event.newState)}</div>
+                                                <div className="text-sm font-bold text-[var(--ink-primary)]">
+                                                    {humanizeSlug(event.event)}
+                                                    {event.source === 'workflow' && (
+                                                        <span className="ml-2 text-xs font-semibold uppercase tracking-wide text-[var(--brand-ink)]">
+                                                            Workflow
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <div className="mt-0.5 text-xs text-[var(--ink-secondary)]">
+                                                    {event.previousState ? `${humanizeSlug(event.previousState)} → ` : ''}
+                                                    {humanizeSlug(event.newState)}
+                                                </div>
                                             </div>
-                                            <div className="shrink-0 text-[10px] text-slate-400 sm:text-xs">{formatDate(event.occurredAt)}</div>
+                                            <time className="shrink-0 whitespace-nowrap text-xs text-[var(--ink-secondary)]">
+                                                {event.occurredAt ? formatDateTimePH(event.occurredAt) : '—'}
+                                            </time>
                                         </div>
-                                        {(event.fromOffice || event.toOffice) && <div className="mt-2 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2 text-[11px] text-slate-600 dark:border-slate-700 dark:bg-slate-900/40 dark:text-slate-300"><span className="font-semibold">Movement:</span> {officeLabel(event.fromOffice)} → {officeLabel(event.toOffice)}</div>}
-                                        <div className="mt-2 text-[11px] text-slate-600 dark:text-slate-300"><span className="font-semibold">{event.actor?.name || 'System event'}</span>{event.office && <span> · {event.office.shortName || event.office.name}</span>}</div>
-                                        {event.remarks && <p className="mt-2 rounded-lg bg-slate-50 px-3 py-2 text-[11px] leading-5 text-slate-600 dark:bg-slate-900/40 dark:text-slate-300">{event.remarks}</p>}
+                                        {(event.fromOffice || event.toOffice) && (
+                                            <div className="mt-2 rounded-lg border border-[var(--border-default)] bg-[var(--surface-recessed)] px-3 py-1.5 text-xs text-[var(--ink-secondary)]">
+                                                <span className="font-semibold text-[var(--ink-primary)]">Movement:</span> {officeLabel(event.fromOffice)} → {officeLabel(event.toOffice)}
+                                            </div>
+                                        )}
+                                        <div className="mt-1.5 text-xs text-[var(--ink-secondary)]">
+                                            <span className="font-semibold text-[var(--ink-primary)]">{event.actor?.name || 'System event'}</span>
+                                            {event.office && <span> · {event.office.shortName || event.office.name}</span>}
+                                        </div>
+                                        {event.remarks && (
+                                            <p className="mt-2 rounded-lg bg-[var(--surface-recessed)] px-3 py-2 text-xs leading-5 text-[var(--ink-secondary)]">
+                                                {event.remarks}
+                                            </p>
+                                        )}
                                         <EvidenceList items={event.evidence ?? []} compact />
                                     </div>
                                 ))}
-                                {timeline.length === 0 && <div className="py-6 text-center text-xs text-slate-400">No routing or lifecycle events recorded yet.</div>}
+                                {timeline.length === 0 && (
+                                    <div className="py-6 text-center text-xs text-[var(--ink-secondary)]">No routing or lifecycle events recorded yet.</div>
+                                )}
                             </div>
                         </section>
                     </div>
 
-                    <div className="space-y-3">
-                        <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-[#142236]">
-                            <div className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-slate-100"><UserRound size={17} /> Current accountability</div>
-                            <div className="mt-2">
-                                <DetailRow label="Receiving office" value={receivingOffice?.shortName || receivingOffice?.name || 'Not yet assigned'} />
-                                <DetailRow label="Current office" value={currentOffice?.shortName || currentOffice?.name || 'Unregistered intake'} />
-                                <DetailRow label="Workflow reference" value={workflow?.reference} />
-                                <DetailRow label="Workflow status" value={workflow ? humanize(workflow.status) : null} />
-                                <DetailRow label="Responsible employee" value={workflow?.assignedEmployee?.name || 'Unassigned'} />
-                                <DetailRow label="Position" value={workflow?.assignedEmployee?.position} />
+                    <aside className="space-y-4">
+                        <section className="tcds-card p-4">
+                            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--brand-ink)]">
+                                <UserRound size={15} aria-hidden="true" />
+                                <span>Current accountability</span>
                             </div>
-                            {workflow?.detailUrl && <Link href={workflow.detailUrl} className="mt-3 inline-flex items-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300"><GitBranch size={14} /> Open linked workflow</Link>}
+                            <div className="mt-2">
+                                <DetailRow label="Receiving office" value={officeLabel(receivingOffice)} />
+                                <DetailRow label="Current office" value={officeLabel(currentOffice)} />
+                                <DetailRow label="Workflow ref" value={workflow?.reference || '—'} />
+                                <DetailRow label="Workflow status" value={workflow ? humanizeSlug(workflow.status) : '—'} />
+                                <DetailRow label="Assignee" value={workflow?.assignedEmployee?.name || 'Unassigned'} />
+                            </div>
+                            {workflow?.detailUrl && (
+                                <Link href={workflow.detailUrl} className="municipal-secondary-button mt-3 w-full">
+                                    <GitBranch size={14} aria-hidden="true" />
+                                    <span>Open linked workflow</span>
+                                </Link>
+                            )}
                         </section>
 
-                        <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-[#142236]">
-                            <div className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-slate-100"><Building2 size={17} /> Record identity</div>
+                        <section className="tcds-card p-4">
+                            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--brand-ink)]">
+                                <Building2 size={15} aria-hidden="true" />
+                                <span>Record identity &amp; dates</span>
+                            </div>
                             <div className="mt-2">
-                                <DetailRow label="Municipal reference" value={correspondence.municipalReference} />
-                                <DetailRow label="External reference" value={correspondence.externalReference} />
-                                <DetailRow label="Lifecycle" value={humanize(correspondence.lifecycleState)} />
-                                <DetailRow label="Classification" value={correspondence.classification ? humanize(correspondence.classification) : 'Not yet completed'} />
+                                <DetailRow label="Municipal ref" value={correspondence.municipalReference} />
+                                <DetailRow label="External ref" value={correspondence.externalReference} />
+                                <DetailRow label="Received" value={correspondence.dates.receivedAt ? formatDateTimePH(correspondence.dates.receivedAt) : '—'} />
+                                <DetailRow label="Registered" value={correspondence.dates.registeredAt ? formatDateTimePH(correspondence.dates.registeredAt) : '—'} />
+                                {correspondence.dates.classifiedAt && <DetailRow label="Classified" value={formatDateTimePH(correspondence.dates.classifiedAt)} />}
+                                {correspondence.dates.routedAt && <DetailRow label="Routed" value={formatDateTimePH(correspondence.dates.routedAt)} />}
+                                {correspondence.dates.actionStartedAt && <DetailRow label="Action started" value={formatDateTimePH(correspondence.dates.actionStartedAt)} />}
                             </div>
                         </section>
 
-                        <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-[#142236]">
-                            <div className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-slate-100"><CalendarClock size={17} /> Record dates</div>
-                            <div className="mt-2">
-                                <DetailRow label="Received" value={formatDate(correspondence.dates.receivedAt)} />
-                                <DetailRow label="Registered" value={formatDate(correspondence.dates.registeredAt)} />
-                                <DetailRow label="Classified" value={formatDate(correspondence.dates.classifiedAt)} />
-                                <DetailRow label="Routed" value={formatDate(correspondence.dates.routedAt)} />
-                                <DetailRow label="Action started" value={formatDate(correspondence.dates.actionStartedAt)} />
-                            </div>
-                        </section>
-                    </div>
+                        <RelatedWorkPanel items={relatedWork} />
+                    </aside>
                 </div>
             </div>
         </AppLayout>

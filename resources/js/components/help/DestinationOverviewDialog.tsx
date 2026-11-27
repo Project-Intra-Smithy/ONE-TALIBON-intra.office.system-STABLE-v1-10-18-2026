@@ -74,7 +74,7 @@ export default function DestinationOverviewDialog({ overview }: Props) {
                 ref={triggerRef}
                 type="button"
                 onClick={() => setOpen(true)}
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--municipal-muted)] transition hover:bg-[var(--municipal-hover)] hover:text-[var(--municipal-brand)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--municipal-muted)] transition hover:bg-[var(--municipal-hover)] hover:text-[var(--brand-ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]"
                 aria-label={`About ${overview.title}`}
                 title={`About ${overview.title}`}
             >
@@ -99,7 +99,7 @@ export default function DestinationOverviewDialog({ overview }: Props) {
                     >
                         <div className="flex items-start justify-between gap-4 border-b border-[var(--municipal-border)] px-4 py-4 sm:px-5">
                             <div className="min-w-0">
-                                <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[var(--municipal-brand)]">ONE TALIBON overview</p>
+                                <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[var(--brand-ink)]">ONE TALIBON overview</p>
                                 <h2 id="destination-overview-title" className="mt-1 break-words text-xl font-extrabold tracking-[-0.02em] sm:text-2xl">{overview.title}</h2>
                             </div>
                             <button

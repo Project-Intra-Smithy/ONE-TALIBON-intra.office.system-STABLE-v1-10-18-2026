@@ -15,6 +15,6 @@ export default function ProjectFilters({ filters, onChange }: { filters: Filters
             <select className={field} value={filters.funding} onChange={(event) => set('funding', event.target.value)} aria-label="Funding source"><option value="">All funding</option>{projectOptions.funding.map((value) => <option key={value}>{value}</option>)}</select>
             <select className={field} value={filters.location} onChange={(event) => set('location', event.target.value)} aria-label="Location"><option value="">All locations</option>{projectOptions.locations.map((value) => <option key={value}>{value}</option>)}</select>
         </div>
-        {Object.values(filters).some(Boolean) && <button type="button" onClick={reset} className="mt-2 inline-flex min-h-11 items-center gap-1.5 rounded-md px-2 text-xs font-bold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30"><X size={14} /> Clear filters</button>}
+        {Object.values(filters).some(Boolean) && <button type="button" onClick={reset} className="mt-2 inline-flex min-h-11 items-center gap-1.5 rounded-md px-2 text-xs font-bold text-[var(--brand-ink)] hover:bg-[var(--municipal-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30"><X size={14} /> Clear filters</button>}
     </section>;
 }

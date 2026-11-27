@@ -19,7 +19,7 @@ export default function PageHeader({ eyebrow, title, description, aside, icon: I
                         <span>{eyebrow}</span>
                     </div>
                     <h1
-                        className="mt-2 text-[clamp(1.5rem,3.2vw,2.25rem)] font-extrabold leading-tight tracking-[-0.035em] text-[#0b2852] dark:text-slate-100"
+                        className="mt-2 text-[clamp(1.5rem,3.2vw,2.25rem)] font-extrabold leading-tight tracking-[-0.035em] text-[var(--ink-primary)]"
                         style={{ overflowWrap: 'break-word', wordBreak: 'normal', hyphens: 'manual' }}
                     >
                         {title}

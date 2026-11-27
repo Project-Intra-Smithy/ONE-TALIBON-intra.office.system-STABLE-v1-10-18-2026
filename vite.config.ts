@@ -16,6 +16,15 @@ const vitePort = Number(process.env.VITE_PORT ?? 5173);
 
 export default defineConfig({
     plugins: [
+        {
+            name: 'exclude-synthetic-preview',
+            load(id) {
+                const path = id.replaceAll('\\', '/');
+                if (path.includes('/preview/') || path.includes('/standalone/')) {
+                    this.error(`Synthetic preview module cannot enter the operational build: ${id}`);
+                }
+            },
+        },
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.tsx'],
             refresh: true,

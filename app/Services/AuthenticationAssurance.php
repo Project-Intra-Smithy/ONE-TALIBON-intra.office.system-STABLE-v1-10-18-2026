@@ -18,9 +18,7 @@ final class AuthenticationAssurance
 
     public const SESSION_VERSION_KEY = 'auth.assurance.mfa_version';
 
-    public function __construct(private readonly PrivilegedRolePolicy $roles)
-    {
-    }
+    public function __construct(private readonly PrivilegedRolePolicy $roles) {}
 
     public function requiresMfa(User $user): bool
     {
@@ -45,12 +43,7 @@ final class AuthenticationAssurance
 
         $current = $user->fresh();
 
-        $satisfied = $current !== null
-            && (! $this->requiresMfa($current)
-                || ($this->enrollmentExists($current)
-                    && (int) $request->session()->get(self::SESSION_USER_KEY) === (int) $current->id
-                    && (int) $request->session()->get(self::SESSION_VERSION_KEY, -1) === (int) $current->mfa_version
-                    && $request->session()->has(self::SESSION_VERIFIED_AT_KEY)));
+        $satisfied = $current !== null && $this->isSatisfiedAgainst($request, $current);
 
         if ($request->isMethodSafe()) {
             $request->attributes->set(self::REQUEST_SATISFIED_ATTRIBUTE, [
@@ -60,6 +53,16 @@ final class AuthenticationAssurance
         }
 
         return $satisfied;
+    }
+
+    /** Compare against a caller-locked model without refreshing or caching. */
+    public function isSatisfiedAgainst(Request $request, User $current): bool
+    {
+        return ! $this->requiresMfa($current)
+            || ($this->enrollmentExists($current)
+                && $request->session()->get(self::SESSION_USER_KEY) === (int) $current->id
+                && $request->session()->get(self::SESSION_VERSION_KEY) === (int) $current->mfa_version
+                && is_int($request->session()->get(self::SESSION_VERIFIED_AT_KEY)));
     }
 
     public function markSatisfied(Request $request, User $user, ConfirmedMfaEnrollment $proof): void

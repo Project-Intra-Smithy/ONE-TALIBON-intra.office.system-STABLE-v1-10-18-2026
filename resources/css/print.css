@@ -1,0 +1,95 @@
+/* ==========================================================================
+ * Talibon Civic Design System (TCDS v1) — Official Municipal Print Stylesheet
+ * Ensures Memoranda, Work Requests, Travel Orders, DTRs, Payslips, and
+ * Ordinances print cleanly on A4 / Letter municipal bond paper.
+ * ========================================================================== */
+
+@media print {
+  @page {
+    size: auto;
+    margin: 14mm 15mm;
+  }
+
+  :root,
+  :root.dark {
+    color-scheme: light;
+    --surface-canvas: #ffffff;
+    --surface-card: #ffffff;
+    --surface-recessed: #f5f5f5;
+    --ink-primary: #000000;
+    --ink-secondary: #333333;
+    --border-default: #cccccc;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+    line-height: 1.45 !important;
+  }
+
+  /* Hide interactive shell chrome, isolation banner, and filter toolbars */
+  .isolation-toolbar,
+  .isolation-write-boundary,
+  .tcds-skip-link,
+  .tcds-sidebar-rail,
+  .tcds-topbar,
+  .tcds-mobile-nav,
+  .no-print,
+  [data-no-print="true"],
+  nav[aria-label="Primary navigation"],
+  nav[aria-label="Mobile workspace navigation"] {
+    display: none !important;
+  }
+
+  /* Expand main content full width */
+  main,
+  #portal-content,
+  .civic-page {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Official LGU letterhead printed at top of authenticated records */
+  #portal-content::before {
+    content: "REPUBLIC OF THE PHILIPPINES · PROVINCE OF BOHOL · MUNICIPALITY OF TALIBON — ONE TALIBON OFFICIAL RECORD";
+    display: block;
+    margin-bottom: 10pt;
+    padding-bottom: 6pt;
+    border-bottom: 1.5pt solid #000000;
+    font-size: 8.5pt;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #000000;
+  }
+
+  .tcds-card,
+  .municipal-panel,
+  .tcds-table-region {
+    box-shadow: none !important;
+    border-color: #999999 !important;
+    break-inside: avoid;
+  }
+
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr,
+  img {
+    break-inside: avoid;
+  }
+
+  a[href]::after {
+    content: none;
+  }
+}

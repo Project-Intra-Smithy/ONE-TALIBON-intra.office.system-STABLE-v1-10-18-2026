@@ -1,0 +1,233 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require dirname(__DIR__).'/vendor/autoload.php';
+
+use App\Domain\Custody\Exceptions\CustodyFenceClosedException;
+use App\Domain\Custody\Exceptions\CustodyViolationException;
+use App\Services\Custody\Broker\LocalImmutableBrokerEngine;
+
+$emit = static function (array $payload, int $exitCode, ?string $hmacKey = null): never {
+    if ($hmacKey !== null && strlen($hmacKey) >= 32) {
+        $unsigned = $payload;
+        unset($unsigned['hmac']);
+        $canonical = json_encode($unsigned, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES);
+        $payload['hmac'] = hash_hmac('sha256', $canonical, $hmacKey);
+    }
+
+    fwrite(STDOUT, json_encode($payload, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES)."\n");
+    exit($exitCode);
+};
+
+$hmacKey = getenv('LEGACY_CUSTODY_BROKER_HMAC_KEY');
+$brokerRoot = getenv('LEGACY_CUSTODY_BROKER_ROOT');
+
+if (! is_string($hmacKey) || strlen($hmacKey) < 32) {
+    $emit([
+        'ok' => false,
+        'error_code' => 'BROKER_CONFIG_INVALID',
+        'error_class' => CustodyViolationException::class,
+        'message' => 'LEGACY_CUSTODY_BROKER_HMAC_KEY is missing or shorter than 32 bytes.',
+    ], 1);
+}
+
+if (! is_string($brokerRoot) || trim($brokerRoot) === '') {
+    $emit([
+        'ok' => false,
+        'error_code' => 'BROKER_CONFIG_INVALID',
+        'error_class' => CustodyViolationException::class,
+        'message' => 'LEGACY_CUSTODY_BROKER_ROOT is missing or empty.',
+    ], 1, $hmacKey);
+}
+
+$disallowedJson = getenv('LEGACY_CUSTODY_DISALLOWED_ROOTS_JSON');
+if (! is_string($disallowedJson) || trim($disallowedJson) === '') {
+    $emit([
+        'ok' => false,
+        'error_code' => 'BROKER_CONFIG_INVALID',
+        'error_class' => CustodyViolationException::class,
+        'message' => 'LEGACY_CUSTODY_DISALLOWED_ROOTS_JSON is missing or empty.',
+    ], 1, $hmacKey);
+}
+
+$disallowedRoots = [];
+try {
+    $decodedDisallowed = json_decode($disallowedJson, true, 8, JSON_THROW_ON_ERROR);
+    if (! is_array($decodedDisallowed) || ! array_is_list($decodedDisallowed) || $decodedDisallowed === []) {
+        throw new CustodyViolationException('LEGACY_CUSTODY_DISALLOWED_ROOTS_JSON must decode to a non-empty list.');
+    }
+    foreach ($decodedDisallowed as $entry) {
+        if (! is_string($entry) || trim($entry) === '') {
+            throw new CustodyViolationException('LEGACY_CUSTODY_DISALLOWED_ROOTS_JSON entries must be non-empty strings.');
+        }
+        $disallowedRoots[] = $entry;
+    }
+} catch (Throwable $e) {
+    $emit([
+        'ok' => false,
+        'error_code' => 'BROKER_CONFIG_INVALID',
+        'error_class' => CustodyViolationException::class,
+        'message' => 'Invalid LEGACY_CUSTODY_DISALLOWED_ROOTS_JSON: '.$e->getMessage(),
+    ], 1, $hmacKey);
+}
+
+$disallowedRoots = array_values(array_unique(array_merge(
+    $disallowedRoots,
+    [dirname(__DIR__).'/storage', dirname(__DIR__).'/public'],
+)));
+
+$maxUploadBytesEnv = getenv('LEGACY_CUSTODY_MAX_UPLOAD_BYTES');
+$maxUploadBytes = is_string($maxUploadBytesEnv) && ctype_digit($maxUploadBytesEnv)
+    ? (int) $maxUploadBytesEnv
+    : LocalImmutableBrokerEngine::DEFAULT_MAX_UPLOAD_BYTES;
+
+$allowedMimesEnv = getenv('LEGACY_CUSTODY_ALLOWED_MIMES_JSON');
+$allowedMimes = LocalImmutableBrokerEngine::DEFAULT_ALLOWED_MIMES;
+if (is_string($allowedMimesEnv) && trim($allowedMimesEnv) !== '') {
+    try {
+        $decodedMimes = json_decode($allowedMimesEnv, true, 8, JSON_THROW_ON_ERROR);
+        if (is_array($decodedMimes) && $decodedMimes !== []) {
+            $allowedMimes = array_values(array_map(static fn (mixed $v): string => (string) $v, $decodedMimes));
+        }
+    } catch (Throwable) {
+        $emit([
+            'ok' => false,
+            'error_code' => 'BROKER_CONFIG_INVALID',
+            'error_class' => CustodyViolationException::class,
+            'message' => 'Invalid LEGACY_CUSTODY_ALLOWED_MIMES_JSON.',
+        ], 1, $hmacKey);
+    }
+}
+
+$rawInput = stream_get_contents(STDIN);
+if (! is_string($rawInput) || trim($rawInput) === '') {
+    $emit([
+        'ok' => false,
+        'error_code' => 'IPC_EMPTY_REQUEST',
+        'error_class' => CustodyViolationException::class,
+        'message' => 'Broker received an empty STDIN request envelope.',
+    ], 1, $hmacKey);
+}
+
+$nonce = '';
+try {
+    $envelope = json_decode($rawInput, true, 16, JSON_THROW_ON_ERROR);
+    if (! is_array($envelope)) {
+        throw new CustodyViolationException('Broker request envelope must be a JSON object.');
+    }
+
+    $method = isset($envelope['method']) && is_string($envelope['method']) ? $envelope['method'] : '';
+    $params = isset($envelope['params']) && is_array($envelope['params']) ? $envelope['params'] : null;
+    $nonce = isset($envelope['nonce']) && is_string($envelope['nonce']) ? $envelope['nonce'] : '';
+    $timestamp = isset($envelope['timestamp']) && is_string($envelope['timestamp']) ? $envelope['timestamp'] : '';
+    $providedHmac = isset($envelope['hmac']) && is_string($envelope['hmac']) ? $envelope['hmac'] : '';
+
+    if ($method === '' || $params === null || $nonce === '' || $timestamp === '' || $providedHmac === '') {
+        throw new CustodyViolationException('Broker request envelope missing required authenticated fields.');
+    }
+
+    if (preg_match('/\A[0-9a-f]{32,64}\z/', $nonce) !== 1) {
+        throw new CustodyViolationException('Broker IPC request nonce format is invalid.');
+    }
+
+    $parsedTs = DateTimeImmutable::createFromFormat(DateTimeInterface::RFC3339, $timestamp);
+    if ($parsedTs === false || abs($parsedTs->getTimestamp() - time()) > 60) {
+        throw new CustodyViolationException('Broker IPC request timestamp is invalid or outside the +-60s replay window.');
+    }
+
+    $canonicalRequest = json_encode([
+        'method' => $method,
+        'params' => $params,
+        'nonce' => $nonce,
+        'timestamp' => $timestamp,
+    ], JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES);
+
+    $expectedHmac = hash_hmac('sha256', $canonicalRequest, $hmacKey);
+    if (! hash_equals($expectedHmac, $providedHmac)) {
+        throw new CustodyViolationException('Broker IPC request HMAC authentication failed.');
+    }
+
+    if (isset($params['fault_injection']) && $params['fault_injection'] !== null && $params['fault_injection'] !== '') {
+        if (getenv('APP_ENV') !== 'testing' && getenv('LEGACY_CUSTODY_ALLOW_FAULT_INJECTION') !== '1') {
+            throw new CustodyViolationException('Broker fault_injection is disabled outside testing environments.');
+        }
+    }
+
+    $engine = new LocalImmutableBrokerEngine(
+        brokerRoot: $brokerRoot,
+        hmacKey: $hmacKey,
+        disallowedRoots: $disallowedRoots,
+        maxUploadBytes: $maxUploadBytes,
+        allowedMimes: $allowedMimes,
+    );
+
+    $result = match ($method) {
+        'attestRoot' => $engine->attestRoot(
+            namespaceId: (string) ($params['namespace_id'] ?? ''),
+            expectedBackendKind: (string) ($params['expected_backend_kind'] ?? 'local_broker_v1'),
+        ),
+        'stageWrite' => $engine->stageWrite(
+            namespaceId: (string) ($params['namespace_id'] ?? ''),
+            operationId: (string) ($params['operation_id'] ?? ''),
+            ordinal: (int) ($params['ordinal'] ?? 0),
+            generationId: (string) ($params['generation_id'] ?? ''),
+            locator: (string) ($params['locator'] ?? ''),
+            sourceTempPath: (string) ($params['source_temp_path'] ?? ''),
+            expectedSize: (int) ($params['expected_size'] ?? 0),
+            expectedSha256: (string) ($params['expected_sha256'] ?? ''),
+            mimeType: (string) ($params['mime_type'] ?? ''),
+            fenceNo: (int) ($params['fence_no'] ?? 1),
+            faultInjection: isset($params['fault_injection']) && is_string($params['fault_injection'])
+                ? $params['fault_injection']
+                : null,
+        )->toArray(),
+        'closeFence' => $engine->closeFence(
+            namespaceId: (string) ($params['namespace_id'] ?? ''),
+            operationId: (string) ($params['operation_id'] ?? ''),
+            fenceNo: (int) ($params['fence_no'] ?? 2),
+        )->toArray(),
+        'conditionalDispose' => $engine->conditionalDispose(
+            namespaceId: (string) ($params['namespace_id'] ?? ''),
+            operationId: (string) ($params['operation_id'] ?? ''),
+            generationId: (string) ($params['generation_id'] ?? ''),
+            locator: (string) ($params['locator'] ?? ''),
+            providerObjectIdentity: (string) ($params['provider_object_identity'] ?? ''),
+            closeAckId: (string) ($params['close_ack_id'] ?? ''),
+            tombstoneId: (string) ($params['tombstone_id'] ?? ''),
+        )->toArray(),
+        'readGeneration' => $engine->readGeneration(
+            namespaceId: (string) ($params['namespace_id'] ?? ''),
+            generationId: (string) ($params['generation_id'] ?? ''),
+            locator: (string) ($params['locator'] ?? ''),
+            expectedProviderObjectIdentity: (string) ($params['expected_provider_object_identity'] ?? ''),
+            expectedSize: (int) ($params['expected_size'] ?? 0),
+            expectedSha256: (string) ($params['expected_sha256'] ?? ''),
+        )->toArray(),
+        default => throw new CustodyViolationException("Unsupported broker IPC method [{$method}]."),
+    };
+
+    $emit([
+        'ok' => true,
+        'nonce' => $nonce,
+        'pid' => getmypid(),
+        'result' => $result,
+    ], 0, $hmacKey);
+} catch (CustodyFenceClosedException $e) {
+    $emit([
+        'ok' => false,
+        'nonce' => $nonce,
+        'error_code' => 'FENCE_CLOSED',
+        'error_class' => CustodyFenceClosedException::class,
+        'message' => $e->getMessage(),
+    ], 2, $hmacKey);
+} catch (Throwable $e) {
+    $emit([
+        'ok' => false,
+        'nonce' => $nonce,
+        'error_code' => 'CUSTODY_VIOLATION',
+        'error_class' => $e::class,
+        'message' => $e->getMessage(),
+    ], 1, $hmacKey);
+}

@@ -38,13 +38,24 @@ final class DocumentAccessService
             return false;
         }
 
+        $custodyMode = $document->getAttribute('custody_mode');
+        if (($custodyMode !== null && $custodyMode !== 'LEGACY_PATH')
+            || $document->getAttribute('custody_operation_id') !== null) {
+            return false;
+        }
+
         if ($document->storage_disk !== (string) config('documents.disk', 'documents')
             || ! $document->storage_path) {
             return false;
         }
 
+        return $this->allLinkedParentsAuthorized($verified, $document);
+    }
+
+    public function allLinkedParentsAuthorized(VerifiedMunicipalActor $verified, Document $document): bool
+    {
         // Collect all links without truncation. All recognized source parents
-        // must authorize download; one visible sibling cannot overrule a
+        // must authorize access; one visible sibling cannot overrule a
         // restricted or deleted linked source. The queries are bounded by
         // source family, not by the number of document links.
         $families = [

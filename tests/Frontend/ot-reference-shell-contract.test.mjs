@@ -9,7 +9,9 @@ const dialog = source('resources/js/components/shell/MobileNavigation.tsx');
 const styles = source('resources/css/ot-reference-shell.css');
 
 test('reference stylesheet is activated only through the authenticated shell', () => {
-    assert.match(layout, /import ['"]\.\.\/\.\.\/css\/ot-reference-shell\.css['"]/);
+    assert.doesNotMatch(layout, /ot-reference-shell\.css/);
+    assert.match(layout, /tcds-topbar/);
+    assert.match(layout, /tcds-sidebar-rail/);
     assert.match(styles, /\[data-workspace-shell\] \.portal-sidebar/);
     assert.doesNotMatch(styles, /(?:^|\n)\s*(?:html|body|:root)\s*\{/);
 });
@@ -31,12 +33,12 @@ test('collapsible navigation and preference persistence remain connected', () =>
 
 test('mobile dialog retains focus trap, escape, scroll lock and focus return', () => {
     assert.match(dialog, /showModal\(\)/);
-    assert.match(dialog, /event\.key !== 'Tab'/);
-    assert.match(dialog, /onCancel=\{/);
-    assert.match(dialog, /previousFocus\?\.focus\(\)/);
-    assert.match(dialog, /document\.body\.style\.overflow = 'hidden'/);
+    assert.match(dialog, /tcds-drawer-left/);
+    assert.match(dialog, /closedby: 'any'/);
+    assert.match(dialog, /autoFocus/);
+    assert.match(dialog, /element\.close\(\)/);
     assert.match(layout, /lg:hidden/);
-    assert.match(layout, /<aside className="hidden/);
+    assert.match(layout, /tcds-sidebar-rail hidden/);
 });
 
 test('live shell controls and semantic colors are not replaced by mock controls', () => {

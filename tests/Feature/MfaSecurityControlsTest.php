@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Domain\Identity\ConfirmedMfaEnrollment;
 use App\Models\AuditLog;
 use App\Models\User;
+use App\Services\AuditLogger;
 use App\Services\AuthenticationAssurance;
 use App\Services\MfaRecoveryCodeBroker;
 use App\Services\MfaService;
@@ -50,6 +51,7 @@ class MfaSecurityControlsTest extends TestCase
         $user = $this->configuredPrivilegedUser();
 
         Auth::guard('web')->login($user);
+        $this->withSession(['auth_session_version' => (int) $user->session_version]);
         $this->get('/transactions')->assertRedirect(route('mfa.challenge'));
 
         $this->assertDatabaseHas('audit_logs', [
@@ -74,6 +76,7 @@ class MfaSecurityControlsTest extends TestCase
         Cache::flush();
         $privileged = $this->configuredPrivilegedUser();
         Auth::guard('web')->login($privileged);
+        $this->withSession(['auth_session_version' => (int) $privileged->session_version]);
         $current = $this->totp()->getCurrentOtp($privileged->mfa_secret);
         $invalid = $current === '000000' ? '000001' : '000000';
 
@@ -162,6 +165,9 @@ class MfaSecurityControlsTest extends TestCase
         $this->assertDatabaseHas('audit_logs', ['actor_user_id' => $user->id, 'action' => 'auth.mfa.reset']);
         $this->get('/dashboard')->assertRedirect(route('mfa.enroll'));
 
+        // The guard now receives a distinct fresh actor model on each request.
+        // Refresh this fixture before explicitly simulating re-enrollment.
+        $user = $user->fresh();
         $this->configure($user);
         $beforeDisable = $user->fresh();
         $this->withSession($this->assuredSession($beforeDisable))
@@ -180,6 +186,7 @@ class MfaSecurityControlsTest extends TestCase
         $user = $this->configuredPrivilegedUser();
         $secret = $user->mfa_secret;
         Auth::guard('web')->login($user);
+        $this->withSession(['auth_session_version' => (int) $user->session_version]);
 
         $invalid = $this->totp()->getCurrentOtp($secret) === '000000' ? '000001' : '000000';
         $this->post('/security/mfa/challenge', ['code' => $invalid]);
@@ -208,6 +215,7 @@ class MfaSecurityControlsTest extends TestCase
         $this->assertGreaterThan($oldVersion, (int) $afterReset->mfa_version);
 
         Auth::guard('web')->login($afterReset);
+        $this->withSession(['auth_session_version' => (int) $afterReset->session_version]);
         $this->withSession($sessionA)
             ->get('/dashboard')
             ->assertRedirect(route('mfa.enroll'));
@@ -222,6 +230,7 @@ class MfaSecurityControlsTest extends TestCase
         $this->assertNotNull($reenrolled->mfa_confirmed_at);
 
         Auth::guard('web')->login($reenrolled);
+        $this->withSession(['auth_session_version' => (int) $reenrolled->session_version]);
         $this->withSession($sessionA)
             ->get('/dashboard')
             ->assertRedirect(route('mfa.challenge'));
@@ -249,6 +258,7 @@ class MfaSecurityControlsTest extends TestCase
     {
         $user = $this->user('system_admin');
         Auth::guard('web')->login($user);
+        $this->withSession(['auth_session_version' => (int) $user->session_version]);
 
         $response = $this->get('https://localhost/security/mfa/enroll');
 
@@ -269,6 +279,7 @@ class MfaSecurityControlsTest extends TestCase
         $codes = ['ONETIME-ALPHA1', 'ONETIME-BRAVO2'];
         $sealed = app(MfaRecoveryCodeBroker::class)->seal($codes);
         Auth::guard('web')->login($user);
+        $this->withSession(['auth_session_version' => (int) $user->session_version]);
 
         $response = $this->withSession([
             ...$this->assuredSession($user),
@@ -296,6 +307,7 @@ class MfaSecurityControlsTest extends TestCase
         $codes = ['ONETIME-CHARLIE3', 'ONETIME-DELTA4'];
         $sealed = app(MfaRecoveryCodeBroker::class)->seal($codes);
         Auth::guard('web')->login($user);
+        $this->withSession(['auth_session_version' => (int) $user->session_version]);
 
         $response = $this->withSession([
             ...$this->assuredSession($user),
@@ -321,6 +333,7 @@ class MfaSecurityControlsTest extends TestCase
     {
         $user = $this->user('system_admin');
         Auth::guard('web')->login($user);
+        $this->withSession(['auth_session_version' => (int) $user->session_version]);
 
         $this->get('https://localhost/security/mfa/enroll')
             ->assertInertia(function (Assert $page): void {
@@ -334,6 +347,7 @@ class MfaSecurityControlsTest extends TestCase
     {
         $user = $this->user('system_admin');
         Auth::guard('web')->login($user);
+        $this->withSession(['auth_session_version' => (int) $user->session_version]);
 
         $this->get('/security/mfa/enroll')
             ->assertInertia(function (Assert $page): void {
@@ -341,6 +355,51 @@ class MfaSecurityControlsTest extends TestCase
             });
 
         $this->assertOrdinaryResponseDoesNotEncryptHistory(false);
+    }
+
+    public function test_mfa_security_mutations_rollback_on_success_audit_failure(): void
+    {
+        foreach ([
+            ['POST', '/security/mfa/recovery-codes', 'auth.mfa.recovery_codes.regenerated'],
+            ['POST', '/security/mfa/reset', 'auth.mfa.reset'],
+            ['DELETE', '/security/mfa', 'auth.mfa.disabled'],
+        ] as [$method, $path, $action]) {
+            $user = $this->configuredPrivilegedUser();
+            $this->actingAs($user)->withSession($this->assuredSession($user));
+            $before = $user->fresh()->getAttributes();
+            $beforeAudits = AuditLog::query()->where('actor_user_id', $user->id)->where('action', $action)->count();
+            $audit = \Mockery::mock(AuditLogger::class)->makePartial();
+            $audit->shouldReceive('record')->withArgs(fn ($actor, $event) => $event === $action)
+                ->once()->andThrow(new \RuntimeException('Synthetic MFA audit failure'));
+            $this->app->instance(AuditLogger::class, $audit);
+            $this->withoutExceptionHandling();
+            try {
+                $this->call($method, $path);
+                $this->fail('MFA mutation returned despite injected audit failure.');
+            } catch (\RuntimeException $exception) {
+                $this->assertSame('Synthetic MFA audit failure', $exception->getMessage());
+            }
+            $this->assertSame($before, $user->fresh()->getAttributes());
+            $this->assertSame($beforeAudits, AuditLog::query()->where('actor_user_id', $user->id)->where('action', $action)->count());
+            $this->assertFalse(session()->has('mfa_recovery_codes_sealed'));
+            $this->app->forgetInstance(AuditLogger::class);
+            $this->get('/security/mfa')->assertOk();
+        }
+    }
+
+    public function test_mfa_security_mutations_record_exactly_one_success_audit(): void
+    {
+        foreach ([
+            ['POST', '/security/mfa/recovery-codes', 'auth.mfa.recovery_codes.regenerated'],
+            ['POST', '/security/mfa/reset', 'auth.mfa.reset'],
+            ['DELETE', '/security/mfa', 'auth.mfa.disabled'],
+        ] as [$method, $path, $action]) {
+            $user = $this->configuredPrivilegedUser();
+            $this->actingAs($user)->withSession($this->assuredSession($user));
+            $this->call($method, $path)->assertRedirect();
+            $this->assertSame(1, AuditLog::query()->where('actor_user_id', $user->id)->where('action', $action)->where('outcome', 'allowed')->count());
+            session()->forget('mfa_recovery_codes_sealed');
+        }
     }
 
     private function configuredPrivilegedUser(): User

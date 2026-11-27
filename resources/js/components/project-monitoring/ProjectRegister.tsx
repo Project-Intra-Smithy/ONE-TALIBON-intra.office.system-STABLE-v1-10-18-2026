@@ -27,12 +27,12 @@ export default function ProjectRegister({ projects, selectedId, onSelect }: Prop
                 const active = selectedId === project.id;
                 return <article key={project.id} className={`municipal-panel p-3 ${active ? 'border-[var(--municipal-selected-border)] bg-[var(--municipal-selected-bg)]' : ''}`}>
                     <div className="flex items-start justify-between gap-3">
-                        <div className="min-w-0"><div className="text-[11px] font-bold uppercase tracking-wide text-[var(--municipal-brand)]">{project.id} · Updated {project.lastUpdate}</div><h2 className="mt-0.5 text-sm font-semibold leading-5">{project.title}</h2><p className="mt-1 text-xs text-[var(--municipal-muted)]">{project.responsibleOffice} · {project.location}</p></div>
+                        <div className="min-w-0"><div className="text-[11px] font-bold uppercase tracking-wide text-[var(--brand-ink)]">{project.id} · Updated {project.lastUpdate}</div><h2 className="mt-0.5 text-sm font-semibold leading-5">{project.title}</h2><p className="mt-1 text-xs text-[var(--municipal-muted)]">{project.responsibleOffice} · {project.location}</p></div>
                         <span className={`shrink-0 rounded-full px-2 py-1 text-[11px] font-bold ${statusClass[project.status]}`}>{project.status}</span>
                     </div>
                     <div className="mt-2 grid gap-2 sm:grid-cols-2"><Progress value={project.physicalProgress} label="Physical" /><Progress value={project.financialProgress} label="Financial" /></div>
                     <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-[var(--municipal-muted)]"><span>{peso.format(project.budget)}</span><span>Target {project.targetCompletion}</span></div>
-                    <button type="button" onClick={() => onSelect(active ? null : project)} className="mt-2 inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-md border border-[var(--municipal-border)] px-3 text-xs font-bold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]" aria-expanded={active}>
+                    <button type="button" onClick={() => onSelect(active ? null : project)} className="mt-2 inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-md border border-[var(--municipal-border)] px-3 text-xs font-bold text-[var(--brand-ink)] hover:bg-[var(--municipal-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--municipal-focus)]" aria-expanded={active}>
                         {active ? 'Close details' : 'View details'} <ChevronRight size={14} aria-hidden="true" className={active ? 'rotate-90' : ''} />
                     </button>
                 </article>;
@@ -49,7 +49,7 @@ export default function ProjectRegister({ projects, selectedId, onSelect }: Prop
                         <td className="px-3 py-2 align-top"><Progress value={project.physicalProgress} label="Physical" /></td>
                         <td className="px-3 py-2 align-top"><Progress value={project.financialProgress} label="Financial" /></td>
                         <td className="px-3 py-2 align-top"><span className={`inline-flex rounded-full px-2 py-1 text-[11px] font-bold ${statusClass[project.status]}`}>{project.status}</span></td>
-                        <td className="px-2 py-1 text-right align-top"><button type="button" onClick={() => onSelect(project)} className="inline-flex min-h-11 items-center gap-1 rounded-md px-2 text-xs font-bold text-[var(--municipal-brand)] hover:bg-[var(--municipal-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30">View <ChevronRight size={14} aria-hidden="true" /></button></td>
+                        <td className="px-2 py-1 text-right align-top"><button type="button" onClick={() => onSelect(project)} className="inline-flex min-h-11 items-center gap-1 rounded-md px-2 text-xs font-bold text-[var(--brand-ink)] hover:bg-[var(--municipal-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--municipal-focus)]/30">View <ChevronRight size={14} aria-hidden="true" /></button></td>
                     </tr>)}</tbody>
                 </table>
             </div>

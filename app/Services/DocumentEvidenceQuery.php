@@ -85,18 +85,17 @@ final class DocumentEvidenceQuery
             return ['record' => $record, 'events' => $events];
         }
 
-        $authorizedIds = $this->authorizedArchive->visibleDocumentIds(
+        $allowed = $this->authorizedArchive->visibleDocumentPreviewEligibility(
             $actor,
             $links->pluck('document_id')->map(static fn ($id): int => (int) $id)->unique()->values()->all(),
         );
-        $allowed = array_fill_keys($authorizedIds, true);
 
         foreach ($links as $link) {
             if (! $link->document || ! isset($allowed[(int) $link->document_id])) {
                 continue;
             }
 
-            $item = $this->item($link);
+            $item = $this->item($link, $allowed[(int) $link->document_id]);
             if ($link->linkable_type === $parentType && (int) $link->linkable_id === (int) $parent->getKey()) {
                 $record[] = $item;
                 continue;
@@ -111,7 +110,7 @@ final class DocumentEvidenceQuery
     }
 
     /** @return array<string, mixed> */
-    private function item(DocumentLink $link): array
+    private function item(DocumentLink $link, bool $previewEligible): array
     {
         $document = $link->document;
 
@@ -125,6 +124,7 @@ final class DocumentEvidenceQuery
             'uploadedAt' => $document->created_at?->toISOString(),
             'uploadedBy' => $document->uploader?->name,
             'downloadUrl' => route('documents.download', $document, false),
+            'previewUrl' => $previewEligible ? route('documents.preview', $document, false) : null,
         ];
     }
 }
