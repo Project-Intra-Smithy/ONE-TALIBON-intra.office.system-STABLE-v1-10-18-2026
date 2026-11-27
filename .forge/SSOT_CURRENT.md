@@ -1,5 +1,9 @@
 # ONE TALIBON — CURRENT SSOT
 
+## 27 November 2026 — functional successor checkpoint
+
+Current source/evidence: [functional engineering receipt](memory/OT-FUNCTIONAL-ENGINEERING-20261127.md) and [custody continuation](memory/OT-FUNCTIONAL-CUSTODY-R2.md). Accepted dependency a944fe34 and frozen Phase A 9ea015a8 preserved; reviewed PR74 f7cb98b2 / PR75 ea4e144c preserved. Corrective PR76 executable a869f4261ef171b6ac09632f773c6c72edbbfee1; actual browser Nox R2 source finding resolved and final bounded independent security acceptance PASS. PG16 run45938354438 SUCCESS12/12, full896/12,482 and focused27/423. Presentation run45938356087 SUCCESS2/2, canonical runtime included; all14 hosted jobs PASS. Engineer/Siris/integration/production gates remain held. Historical A01 anchors below do not supersede these verified functional records. Docs-only evidence branch; canonical-main propagation held by explicit no-main-merge directive.
+
 ## Authority
 
 Technical Authority: Kirch Ivan Balite

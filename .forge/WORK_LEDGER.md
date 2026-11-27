@@ -1,5 +1,9 @@
 # ONE TALIBON — ACTIVE WORK LEDGER
 
+## 27 November 2026 — active functional corrective continuation
+
+Kirch accountable; Codex source writer; actual independent browser Nox ID339503629. [Receipt](memory/OT-FUNCTIONAL-ENGINEERING-20261127.md), Hub197 checkpoint7209476631 / memory191341c3 / crosslink7209480434. Draft PR76 exact executable a869f4261ef171b6ac09632f773c6c72edbbfee1 fixes the review finding; Nox R2 source RESOLVED and final bounded independent security acceptance PASS. Protected PG16 SUCCESS12/12; presentation/canonical SUCCESS2/2; actual browser Nox final evidence-completion PASS. NEXT: Engineer bounded disposition, preserving open historical reconciliation and broader N11/dossier/N13. No closure, merge, production or broader N11/dossier/N13 completion. Historical ledger below retained. Canonical-main memory propagation remains held by explicit user instruction.
+
 ## Authority
 
 Technical Authority: Kirch Ivan Balite
