@@ -6,10 +6,9 @@ export function planningAmount(value: string | null | undefined): string {
 }
 
 export function planningTotal(values: string[]): string {
-    if (values.every(value => value === '')) return 'Not supplied';
+    if (values.length === 0 || values.some(value => value === '')) return 'Not supplied';
     let cents = 0n;
     for (const value of values) {
-        if (value === '') continue;
         if (!/^\d{1,13}(?:\.\d{1,2})?$/.test(value)) return 'Invalid amount';
         const [whole, fraction = ''] = value.split('.');
         cents += BigInt(whole) * 100n + BigInt(fraction.padEnd(2, '0'));

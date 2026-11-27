@@ -9,7 +9,12 @@ test('Planning monetary display preserves exact cents, large amounts, zero and u
     assert.equal(planningAmount('9999999999999.99'),'₱9,999,999,999,999.99');
     assert.equal(planningAmount('0.00'),'₱0.00');
     assert.equal(planningAmount(null),'Not supplied');
-    assert.equal(planningTotal(['0.10','0.20','']),'₱0.30');
+    assert.equal(planningTotal(['0.10','0.20','']),'Not supplied');
+    assert.equal(planningTotal(['100000','','']),'Not supplied');
+    assert.equal(planningTotal(['0.00','','']),'Not supplied');
+    assert.equal(planningTotal(['0.10','0.20','0.00']),'₱0.30');
+    assert.equal(planningTotal(['0.00','0.00','0.00']),'₱0.00');
+    assert.equal(planningTotal([]),'Not supplied');
     assert.equal(planningTotal(['','','']),'Not supplied');
     assert.equal(planningTotal(['9999999999999.98','0.01']),'₱9,999,999,999,999.99');
     assert.equal(planningTotal(['9999999999999.99','9999999999999.99']),'₱19,999,999,999,999.98');

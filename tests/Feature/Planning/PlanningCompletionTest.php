@@ -81,6 +81,43 @@ final class PlanningCompletionTest extends TestCase
         $this->assertSame('0.30', $ppa->fresh()->appropriation_amount);
     }
 
+    public function test_partial_components_remain_unknown_in_persistence_presentation_and_csv(): void
+    {
+        $this->seed();
+        foreach ([
+            ['ps_amount' => '100000.00'],
+            ['ps_amount' => '0.00', 'mooe_amount' => '0.00'],
+            ['ps_amount' => '0.10', 'mooe_amount' => '0.20', 'co_amount' => '0.00'],
+            ['ps_amount' => '0.00', 'mooe_amount' => '0.00', 'co_amount' => '0.00'],
+            ['ps_amount' => '100000.00', 'appropriation_amount' => '0.00'],
+            ['ps_amount' => '0.10', 'appropriation_amount' => '12.34'],
+            ['ps_amount' => '9999999999999.99', 'mooe_amount' => '0.01'],
+            ['ps_amount' => '0.10', 'mooe_amount' => '0.20', 'co_amount' => '0.00', 'appropriation_amount' => null],
+        ] as $index => $components) {
+            $code = 'SYN-MONEY-'.$index;
+            $this->actingAs($this->actor('engineering'))->post('/ppas', $this->proposal($components + ['ppa_code' => $code]))
+                ->assertRedirect()->assertSessionHasNoErrors();
+            $ppa = PpaRecord::query()->where('ppa_code', $code)->firstOrFail();
+            $expected = [null, null, '0.30', '0.00', '0.00', '12.34', null, null][$index];
+            $this->assertSame($expected, $ppa->appropriation_amount);
+            foreach (['ps_amount', 'mooe_amount', 'co_amount'] as $field) {
+                $this->assertSame($components[$field] ?? null, $ppa->{$field});
+            }
+            $this->get('/ppas')->assertInertia(fn ($page) => $page->component('PPAs/Index')
+                ->where('ppaRecords', fn ($records) => collect($records)->contains(fn ($record) => $record['id'] === $code
+                    && $record['amounts']['appropriation_amount'] === $expected)));
+            $lines = preg_split('/\r?\n/', trim($this->get('/ppas/export/csv')->streamedContent()));
+            $rows = array_map(fn ($line) => str_getcsv($line, escape: ''), $lines);
+            $row = collect($rows)->first(fn ($row) => $row[0] === $code);
+            $this->assertNotNull($row);
+            $this->assertSame($expected ?? '', $row[12]);
+            $this->assertSame($components['co_amount'] ?? '', $row[11]);
+            $this->put('/ppas/'.$ppa->id, $this->proposal(['ps_amount' => '5.00', 'mooe_amount' => '6.00', 'co_amount' => '7.00']))
+                ->assertRedirect()->assertSessionHasNoErrors();
+            $this->assertSame($expected, $ppa->fresh()->appropriation_amount);
+        }
+    }
+
     public function test_invalid_precision_overflow_and_exponents_fail_atomically(): void
     {
         $this->seed();
@@ -89,7 +126,7 @@ final class PlanningCompletionTest extends TestCase
             $this->actingAs($this->actor('engineering'))->post('/ppas', $this->proposal(['ps_amount' => $amount]))
                 ->assertSessionHasErrors('ps_amount');
         }
-        $this->post('/ppas', $this->proposal(['ps_amount' => '9999999999999.99', 'mooe_amount' => '0.01']))
+        $this->post('/ppas', $this->proposal(['ps_amount' => '9999999999999.99', 'mooe_amount' => '0.01', 'co_amount' => '0.00']))
             ->assertSessionHasErrors('appropriation_amount');
         $this->assertSame(0, PpaRecord::count());
         $this->assertSame($before, AuditLog::count());
