@@ -1300,3 +1300,6 @@ Both P2/P3 `EXPLAIN (ANALYZE, BUFFERS)` probes executed **after test fixture rol
 
 ## OT-VPS-OPERATIONAL-QA-R1 — R3 bounded continuation
 - [START7223421087](https://github.com/Project-Intra-Smithy/engineering-hub/issues/197#issuecomment-7223421087); separate candidate/ot-persistent-deployment-r3 fromb8657ee3, four residuals under7223309777. [Mission memory](OT-FUNCTIONAL-COMPLETION-R1.md). NEXT Codex dependency-ordered correction/qualification then Nox/Maintainer; VPS and frozen candidates preserved, canonical-main exception retained.
+
+## OT-VPS-OPERATIONAL-QA-R1 — R4 bounded N79-01-only continuation
+- [START7228476910](https://github.com/Project-Intra-Smithy/engineering-hub/issues/197#issuecomment-7228476910); separate `candidate/ot-persistent-deployment-r4` from frozen PR81 `71da9dc4`, closing only two N79-01 residuals (system view/rewrite security and `pg_database.dattablespace`) under 7228448263 while preserving accepted N79-02..04. [Mission memory](OT-FUNCTIONAL-COMPLETION-R1.md). NEXT Antigravity bounded fix, discriminating tests, complete qualification and Nox N79-01 reacceptance; VPS, frozen PR78/79/80/81 and `main` preserved, canonical-main exception retained.
