@@ -16,7 +16,7 @@ The existing office-authorization test now supplies PS0 explicitly to establish 
 
 [Presentation/canonical run45985231932](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985231932): completed/success, attempt1, exact same executable, both jobs PASS. This is mandatory existing workflow execution, no new preview walkthrough or workforce activation.
 
-PG16 original13ZIP digests matched GitHub metadata; original logs and ZIPs retained privately. Presentation original-byte retention is in progress and will be reconciled separately; terminal run success is independently retrieved metadata, not a claim of completed byte custody.
+All15 original hosted artifact ZIPs were downloaded, their SHA-256 values matched GitHub digest metadata, and the retained bytes were rehashed before publication. Original ZIPs and logs remain private. [PG16 custody manifest](hosted/45985224932/custody.json) and [presentation custody manifest](hosted/45985231932/custody.json) publish complete reconciliation; run/job/artifact metadata are included beside each manifest. Author byte verification is not independent Nox acceptance.
 
 First d537d5a9 attempt: [PG16](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45984518879) rejected the old incomplete fixture; [canonical](https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45984526109) exposed cent input step. Its new financial assertions passed. Failed logs and local failed captures retained; no failed or predecessor receipt is inherited as final PASS.
 

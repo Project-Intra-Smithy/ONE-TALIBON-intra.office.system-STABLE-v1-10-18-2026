@@ -1,0 +1,3365 @@
+{
+  "total_count": 12,
+  "jobs": [
+    {
+      "id": 140459009645,
+      "run_id": 45985224932,
+      "workflow_name": "Functional completion - Protected PG16",
+      "head_branch": "candidate/ot-functional-money-r2",
+      "run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVOeODc8AAAAgtAJmbQ",
+      "head_sha": "ad1d6d60e31e06a49c7eb15fdfbc192dc776179d",
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/jobs/140459009645",
+      "html_url": "https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932/job/140459009645",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-27T10:48:42Z",
+      "started_at": "2026-11-27T10:48:44Z",
+      "completed_at": "2026-11-27T10:49:50Z",
+      "name": "Traceability Core broker",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-27T10:48:45Z",
+          "completed_at": "2026-11-27T10:48:47Z"
+        },
+        {
+          "name": "Initialize containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-27T10:48:47Z",
+          "completed_at": "2026-11-27T10:49:00Z"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-27T10:49:00Z",
+          "completed_at": "2026-11-27T10:49:17Z"
+        },
+        {
+          "name": "Verify accepted dependency baseline and bounded functional delta",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-27T10:49:17Z",
+          "completed_at": "2026-11-27T10:49:25Z"
+        },
+        {
+          "name": "Run shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-27T10:49:25Z",
+          "completed_at": "2026-11-27T10:49:27Z"
+        },
+        {
+          "name": "Verify exact candidate and isolated empty PG16 database",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-27T10:49:27Z",
+          "completed_at": "2026-11-27T10:49:27Z"
+        },
+        {
+          "name": "Run composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-27T10:49:28Z",
+          "completed_at": "2026-11-27T10:49:31Z"
+        },
+        {
+          "name": "Validate dependency security and behavior",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-27T10:49:31Z",
+          "completed_at": "2026-11-27T10:49:32Z"
+        },
+        {
+          "name": "Run set -euo pipefail",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-27T10:49:32Z",
+          "completed_at": "2026-11-27T10:49:45Z"
+        },
+        {
+          "name": "Stage 3 (K3) isolated subprocess broker suite",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-11-27T10:49:45Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Provision Stage 0 (G2A) isolated role cluster and run 61 G2A real-role tests",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Provision baseline + G1B/G2 + G2A + G2B + K2 + G3-G5 real-role cluster",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 12,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Complete protected OPS009 migrations and prove fail-closed leases",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 13,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Negative SQL authorization — N03 staging cannot rewrite audit",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 14,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Run G2B + K2 + G3-G5 real-role Feature suites",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 15,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C02 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 16,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C01 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 17,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Verify pre-provisioned protected schema test bootstrap",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 18,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Targeted Work Request creation and Planning regressions",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Preserve Planning JUnit result",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 20,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Focused custody, P07 quarantine & whole-system traceability regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 21,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Full canonical PG16 Feature regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 22,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Dedicated permanent IAM cross-session role and password concurrency methods",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 23,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Dedicated two-connection individual task contention proof",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 24,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Dedicated six P0 destination revocation methods with guarded PG16 schema",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 25,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 26,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Frontend types, contracts, UX and production build",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 27,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Playwright native PDF browser verification",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 28,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Upload browser verification receipt and screenshot",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 29,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Record exact-SHA PG16 and phase custody receipt",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 30,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Upload original per-phase custody evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 31,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:48Z"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 61,
+          "started_at": "2026-11-27T10:49:48Z",
+          "completed_at": "2026-11-27T10:49:48Z"
+        },
+        {
+          "name": "Stop containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 62,
+          "started_at": "2026-11-27T10:49:48Z",
+          "completed_at": "2026-11-27T10:49:49Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 63,
+          "started_at": "2026-11-27T10:49:49Z",
+          "completed_at": "2026-11-27T10:49:49Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/check-runs/140459009645",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000001540,
+      "runner_name": "GitHub Actions 1000001540",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 140459010133,
+      "run_id": 45985224932,
+      "workflow_name": "Functional completion - Protected PG16",
+      "head_branch": "candidate/ot-functional-money-r2",
+      "run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVOeODc8AAAAgtAJoVQ",
+      "head_sha": "ad1d6d60e31e06a49c7eb15fdfbc192dc776179d",
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/jobs/140459010133",
+      "html_url": "https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932/job/140459010133",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-27T10:48:42Z",
+      "started_at": "2026-11-27T10:48:44Z",
+      "completed_at": "2026-11-27T10:49:56Z",
+      "name": "Traceability Core p0-cross-session",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-27T10:48:45Z",
+          "completed_at": "2026-11-27T10:48:46Z"
+        },
+        {
+          "name": "Initialize containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-27T10:48:46Z",
+          "completed_at": "2026-11-27T10:48:59Z"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-27T10:48:59Z",
+          "completed_at": "2026-11-27T10:49:13Z"
+        },
+        {
+          "name": "Verify accepted dependency baseline and bounded functional delta",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-27T10:49:13Z",
+          "completed_at": "2026-11-27T10:49:14Z"
+        },
+        {
+          "name": "Run shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-27T10:49:14Z",
+          "completed_at": "2026-11-27T10:49:17Z"
+        },
+        {
+          "name": "Verify exact candidate and isolated empty PG16 database",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-27T10:49:17Z",
+          "completed_at": "2026-11-27T10:49:17Z"
+        },
+        {
+          "name": "Run composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-27T10:49:17Z",
+          "completed_at": "2026-11-27T10:49:23Z"
+        },
+        {
+          "name": "Validate dependency security and behavior",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-27T10:49:23Z",
+          "completed_at": "2026-11-27T10:49:25Z"
+        },
+        {
+          "name": "Run set -euo pipefail",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-27T10:49:25Z",
+          "completed_at": "2026-11-27T10:49:39Z"
+        },
+        {
+          "name": "Stage 3 (K3) isolated subprocess broker suite",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-11-27T10:49:39Z",
+          "completed_at": "2026-11-27T10:49:39Z"
+        },
+        {
+          "name": "Provision Stage 0 (G2A) isolated role cluster and run 61 G2A real-role tests",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11,
+          "started_at": "2026-11-27T10:49:39Z",
+          "completed_at": "2026-11-27T10:49:39Z"
+        },
+        {
+          "name": "Provision baseline + G1B/G2 + G2A + G2B + K2 + G3-G5 real-role cluster",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-27T10:49:39Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Complete protected OPS009 migrations and prove fail-closed leases",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:44Z"
+        },
+        {
+          "name": "Negative SQL authorization — N03 staging cannot rewrite audit",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 14,
+          "started_at": "2026-11-27T10:49:44Z",
+          "completed_at": "2026-11-27T10:49:44Z"
+        },
+        {
+          "name": "Run G2B + K2 + G3-G5 real-role Feature suites",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 15,
+          "started_at": "2026-11-27T10:49:44Z",
+          "completed_at": "2026-11-27T10:49:44Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C02 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 16,
+          "started_at": "2026-11-27T10:49:44Z",
+          "completed_at": "2026-11-27T10:49:44Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C01 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 17,
+          "started_at": "2026-11-27T10:49:44Z",
+          "completed_at": "2026-11-27T10:49:44Z"
+        },
+        {
+          "name": "Verify pre-provisioned protected schema test bootstrap",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 18,
+          "started_at": "2026-11-27T10:49:44Z",
+          "completed_at": "2026-11-27T10:49:44Z"
+        },
+        {
+          "name": "Targeted Work Request creation and Planning regressions",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19,
+          "started_at": "2026-11-27T10:49:44Z",
+          "completed_at": "2026-11-27T10:49:44Z"
+        },
+        {
+          "name": "Preserve Planning JUnit result",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 20,
+          "started_at": "2026-11-27T10:49:44Z",
+          "completed_at": "2026-11-27T10:49:44Z"
+        },
+        {
+          "name": "Focused custody, P07 quarantine & whole-system traceability regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 21,
+          "started_at": "2026-11-27T10:49:44Z",
+          "completed_at": "2026-11-27T10:49:44Z"
+        },
+        {
+          "name": "Full canonical PG16 Feature regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 22,
+          "started_at": "2026-11-27T10:49:44Z",
+          "completed_at": "2026-11-27T10:49:44Z"
+        },
+        {
+          "name": "Dedicated permanent IAM cross-session role and password concurrency methods",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 23,
+          "started_at": "2026-11-27T10:49:44Z",
+          "completed_at": "2026-11-27T10:49:44Z"
+        },
+        {
+          "name": "Dedicated two-connection individual task contention proof",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 24,
+          "started_at": "2026-11-27T10:49:44Z",
+          "completed_at": "2026-11-27T10:49:44Z"
+        },
+        {
+          "name": "Dedicated six P0 destination revocation methods with guarded PG16 schema",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25,
+          "started_at": "2026-11-27T10:49:44Z",
+          "completed_at": "2026-11-27T10:49:52Z"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 26,
+          "started_at": "2026-11-27T10:49:52Z",
+          "completed_at": "2026-11-27T10:49:52Z"
+        },
+        {
+          "name": "Frontend types, contracts, UX and production build",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 27,
+          "started_at": "2026-11-27T10:49:52Z",
+          "completed_at": "2026-11-27T10:49:52Z"
+        },
+        {
+          "name": "Playwright native PDF browser verification",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 28,
+          "started_at": "2026-11-27T10:49:52Z",
+          "completed_at": "2026-11-27T10:49:52Z"
+        },
+        {
+          "name": "Upload browser verification receipt and screenshot",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 29,
+          "started_at": "2026-11-27T10:49:52Z",
+          "completed_at": "2026-11-27T10:49:52Z"
+        },
+        {
+          "name": "Record exact-SHA PG16 and phase custody receipt",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 30,
+          "started_at": "2026-11-27T10:49:52Z",
+          "completed_at": "2026-11-27T10:49:53Z"
+        },
+        {
+          "name": "Upload original per-phase custody evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 31,
+          "started_at": "2026-11-27T10:49:53Z",
+          "completed_at": "2026-11-27T10:49:54Z"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 61,
+          "started_at": "2026-11-27T10:49:54Z",
+          "completed_at": "2026-11-27T10:49:54Z"
+        },
+        {
+          "name": "Stop containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 62,
+          "started_at": "2026-11-27T10:49:54Z",
+          "completed_at": "2026-11-27T10:49:54Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 63,
+          "started_at": "2026-11-27T10:49:54Z",
+          "completed_at": "2026-11-27T10:49:54Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/check-runs/140459010133",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000001541,
+      "runner_name": "GitHub Actions 1000001541",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 140459010144,
+      "run_id": 45985224932,
+      "workflow_name": "Functional completion - Protected PG16",
+      "head_branch": "candidate/ot-functional-money-r2",
+      "run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVOeODc8AAAAgtAJoYA",
+      "head_sha": "ad1d6d60e31e06a49c7eb15fdfbc192dc776179d",
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/jobs/140459010144",
+      "html_url": "https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932/job/140459010144",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-27T10:48:42Z",
+      "started_at": "2026-11-27T10:48:44Z",
+      "completed_at": "2026-11-27T10:49:56Z",
+      "name": "Traceability Core c01",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-27T10:48:45Z",
+          "completed_at": "2026-11-27T10:48:46Z"
+        },
+        {
+          "name": "Initialize containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-27T10:48:46Z",
+          "completed_at": "2026-11-27T10:49:06Z"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-27T10:49:06Z",
+          "completed_at": "2026-11-27T10:49:21Z"
+        },
+        {
+          "name": "Verify accepted dependency baseline and bounded functional delta",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-27T10:49:21Z",
+          "completed_at": "2026-11-27T10:49:22Z"
+        },
+        {
+          "name": "Run shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-27T10:49:22Z",
+          "completed_at": "2026-11-27T10:49:24Z"
+        },
+        {
+          "name": "Verify exact candidate and isolated empty PG16 database",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-27T10:49:24Z",
+          "completed_at": "2026-11-27T10:49:24Z"
+        },
+        {
+          "name": "Run composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-27T10:49:24Z",
+          "completed_at": "2026-11-27T10:49:29Z"
+        },
+        {
+          "name": "Validate dependency security and behavior",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-27T10:49:29Z",
+          "completed_at": "2026-11-27T10:49:30Z"
+        },
+        {
+          "name": "Run set -euo pipefail",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-27T10:49:30Z",
+          "completed_at": "2026-11-27T10:49:44Z"
+        },
+        {
+          "name": "Stage 3 (K3) isolated subprocess broker suite",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-11-27T10:49:44Z",
+          "completed_at": "2026-11-27T10:49:44Z"
+        },
+        {
+          "name": "Provision Stage 0 (G2A) isolated role cluster and run 61 G2A real-role tests",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11,
+          "started_at": "2026-11-27T10:49:44Z",
+          "completed_at": "2026-11-27T10:49:44Z"
+        },
+        {
+          "name": "Provision baseline + G1B/G2 + G2A + G2B + K2 + G3-G5 real-role cluster",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-27T10:49:44Z",
+          "completed_at": "2026-11-27T10:49:46Z"
+        },
+        {
+          "name": "Complete protected OPS009 migrations and prove fail-closed leases",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-27T10:49:46Z",
+          "completed_at": "2026-11-27T10:49:49Z"
+        },
+        {
+          "name": "Negative SQL authorization — N03 staging cannot rewrite audit",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 14,
+          "started_at": "2026-11-27T10:49:49Z",
+          "completed_at": "2026-11-27T10:49:49Z"
+        },
+        {
+          "name": "Run G2B + K2 + G3-G5 real-role Feature suites",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 15,
+          "started_at": "2026-11-27T10:49:49Z",
+          "completed_at": "2026-11-27T10:49:49Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C02 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 16,
+          "started_at": "2026-11-27T10:49:49Z",
+          "completed_at": "2026-11-27T10:49:49Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C01 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-11-27T10:49:49Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Verify pre-provisioned protected schema test bootstrap",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 18,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Targeted Work Request creation and Planning regressions",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Preserve Planning JUnit result",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 20,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Focused custody, P07 quarantine & whole-system traceability regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 21,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Full canonical PG16 Feature regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 22,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Dedicated permanent IAM cross-session role and password concurrency methods",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 23,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Dedicated two-connection individual task contention proof",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 24,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Dedicated six P0 destination revocation methods with guarded PG16 schema",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 25,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 26,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Frontend types, contracts, UX and production build",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 27,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Playwright native PDF browser verification",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 28,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Upload browser verification receipt and screenshot",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 29,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Record exact-SHA PG16 and phase custody receipt",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 30,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Upload original per-phase custody evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 31,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:52Z"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 61,
+          "started_at": "2026-11-27T10:49:52Z",
+          "completed_at": "2026-11-27T10:49:52Z"
+        },
+        {
+          "name": "Stop containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 62,
+          "started_at": "2026-11-27T10:49:52Z",
+          "completed_at": "2026-11-27T10:49:54Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 63,
+          "started_at": "2026-11-27T10:49:54Z",
+          "completed_at": "2026-11-27T10:49:54Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/check-runs/140459010144",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000001544,
+      "runner_name": "GitHub Actions 1000001544",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 140459010165,
+      "run_id": 45985224932,
+      "workflow_name": "Functional completion - Protected PG16",
+      "head_branch": "candidate/ot-functional-money-r2",
+      "run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVOeODc8AAAAgtAJodQ",
+      "head_sha": "ad1d6d60e31e06a49c7eb15fdfbc192dc776179d",
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/jobs/140459010165",
+      "html_url": "https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932/job/140459010165",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-27T10:48:42Z",
+      "started_at": "2026-11-27T10:48:45Z",
+      "completed_at": "2026-11-27T10:50:14Z",
+      "name": "Traceability Core iam-cross-session",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-27T10:48:45Z",
+          "completed_at": "2026-11-27T10:48:47Z"
+        },
+        {
+          "name": "Initialize containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-27T10:48:47Z",
+          "completed_at": "2026-11-27T10:49:02Z"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-27T10:49:02Z",
+          "completed_at": "2026-11-27T10:49:18Z"
+        },
+        {
+          "name": "Verify accepted dependency baseline and bounded functional delta",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-27T10:49:18Z",
+          "completed_at": "2026-11-27T10:49:19Z"
+        },
+        {
+          "name": "Run shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-27T10:49:19Z",
+          "completed_at": "2026-11-27T10:49:22Z"
+        },
+        {
+          "name": "Verify exact candidate and isolated empty PG16 database",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-27T10:49:22Z",
+          "completed_at": "2026-11-27T10:49:23Z"
+        },
+        {
+          "name": "Run composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-27T10:49:23Z",
+          "completed_at": "2026-11-27T10:49:28Z"
+        },
+        {
+          "name": "Validate dependency security and behavior",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-27T10:49:28Z",
+          "completed_at": "2026-11-27T10:49:29Z"
+        },
+        {
+          "name": "Run set -euo pipefail",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-27T10:49:29Z",
+          "completed_at": "2026-11-27T10:49:48Z"
+        },
+        {
+          "name": "Stage 3 (K3) isolated subprocess broker suite",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-11-27T10:49:48Z",
+          "completed_at": "2026-11-27T10:49:48Z"
+        },
+        {
+          "name": "Provision Stage 0 (G2A) isolated role cluster and run 61 G2A real-role tests",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11,
+          "started_at": "2026-11-27T10:49:48Z",
+          "completed_at": "2026-11-27T10:49:48Z"
+        },
+        {
+          "name": "Provision baseline + G1B/G2 + G2A + G2B + K2 + G3-G5 real-role cluster",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-27T10:49:48Z",
+          "completed_at": "2026-11-27T10:49:52Z"
+        },
+        {
+          "name": "Complete protected OPS009 migrations and prove fail-closed leases",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-27T10:49:52Z",
+          "completed_at": "2026-11-27T10:49:55Z"
+        },
+        {
+          "name": "Negative SQL authorization — N03 staging cannot rewrite audit",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 14,
+          "started_at": "2026-11-27T10:49:55Z",
+          "completed_at": "2026-11-27T10:49:55Z"
+        },
+        {
+          "name": "Run G2B + K2 + G3-G5 real-role Feature suites",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 15,
+          "started_at": "2026-11-27T10:49:55Z",
+          "completed_at": "2026-11-27T10:49:55Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C02 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 16,
+          "started_at": "2026-11-27T10:49:55Z",
+          "completed_at": "2026-11-27T10:49:55Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C01 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 17,
+          "started_at": "2026-11-27T10:49:55Z",
+          "completed_at": "2026-11-27T10:49:55Z"
+        },
+        {
+          "name": "Verify pre-provisioned protected schema test bootstrap",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 18,
+          "started_at": "2026-11-27T10:49:55Z",
+          "completed_at": "2026-11-27T10:49:55Z"
+        },
+        {
+          "name": "Targeted Work Request creation and Planning regressions",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19,
+          "started_at": "2026-11-27T10:49:55Z",
+          "completed_at": "2026-11-27T10:49:55Z"
+        },
+        {
+          "name": "Preserve Planning JUnit result",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 20,
+          "started_at": "2026-11-27T10:49:55Z",
+          "completed_at": "2026-11-27T10:49:55Z"
+        },
+        {
+          "name": "Focused custody, P07 quarantine & whole-system traceability regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 21,
+          "started_at": "2026-11-27T10:49:55Z",
+          "completed_at": "2026-11-27T10:49:55Z"
+        },
+        {
+          "name": "Full canonical PG16 Feature regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 22,
+          "started_at": "2026-11-27T10:49:55Z",
+          "completed_at": "2026-11-27T10:49:55Z"
+        },
+        {
+          "name": "Dedicated permanent IAM cross-session role and password concurrency methods",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23,
+          "started_at": "2026-11-27T10:49:55Z",
+          "completed_at": "2026-11-27T10:50:09Z"
+        },
+        {
+          "name": "Dedicated two-connection individual task contention proof",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 24,
+          "started_at": "2026-11-27T10:50:09Z",
+          "completed_at": "2026-11-27T10:50:09Z"
+        },
+        {
+          "name": "Dedicated six P0 destination revocation methods with guarded PG16 schema",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 25,
+          "started_at": "2026-11-27T10:50:09Z",
+          "completed_at": "2026-11-27T10:50:09Z"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 26,
+          "started_at": "2026-11-27T10:50:09Z",
+          "completed_at": "2026-11-27T10:50:09Z"
+        },
+        {
+          "name": "Frontend types, contracts, UX and production build",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 27,
+          "started_at": "2026-11-27T10:50:09Z",
+          "completed_at": "2026-11-27T10:50:09Z"
+        },
+        {
+          "name": "Playwright native PDF browser verification",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 28,
+          "started_at": "2026-11-27T10:50:09Z",
+          "completed_at": "2026-11-27T10:50:09Z"
+        },
+        {
+          "name": "Upload browser verification receipt and screenshot",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 29,
+          "started_at": "2026-11-27T10:50:09Z",
+          "completed_at": "2026-11-27T10:50:09Z"
+        },
+        {
+          "name": "Record exact-SHA PG16 and phase custody receipt",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 30,
+          "started_at": "2026-11-27T10:50:09Z",
+          "completed_at": "2026-11-27T10:50:10Z"
+        },
+        {
+          "name": "Upload original per-phase custody evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 31,
+          "started_at": "2026-11-27T10:50:10Z",
+          "completed_at": "2026-11-27T10:50:11Z"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 61,
+          "started_at": "2026-11-27T10:50:11Z",
+          "completed_at": "2026-11-27T10:50:11Z"
+        },
+        {
+          "name": "Stop containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 62,
+          "started_at": "2026-11-27T10:50:11Z",
+          "completed_at": "2026-11-27T10:50:12Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 63,
+          "started_at": "2026-11-27T10:50:12Z",
+          "completed_at": "2026-11-27T10:50:12Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/check-runs/140459010165",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000001550,
+      "runner_name": "GitHub Actions 1000001550",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 140459010176,
+      "run_id": 45985224932,
+      "workflow_name": "Functional completion - Protected PG16",
+      "head_branch": "candidate/ot-functional-money-r2",
+      "run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVOeODc8AAAAgtAJogA",
+      "head_sha": "ad1d6d60e31e06a49c7eb15fdfbc192dc776179d",
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/jobs/140459010176",
+      "html_url": "https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932/job/140459010176",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-27T10:48:42Z",
+      "started_at": "2026-11-27T10:48:44Z",
+      "completed_at": "2026-11-27T10:51:13Z",
+      "name": "Traceability Core focused",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-27T10:48:45Z",
+          "completed_at": "2026-11-27T10:48:46Z"
+        },
+        {
+          "name": "Initialize containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-27T10:48:46Z",
+          "completed_at": "2026-11-27T10:49:01Z"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-27T10:49:01Z",
+          "completed_at": "2026-11-27T10:49:17Z"
+        },
+        {
+          "name": "Verify accepted dependency baseline and bounded functional delta",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-27T10:49:17Z",
+          "completed_at": "2026-11-27T10:49:18Z"
+        },
+        {
+          "name": "Run shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-27T10:49:18Z",
+          "completed_at": "2026-11-27T10:49:21Z"
+        },
+        {
+          "name": "Verify exact candidate and isolated empty PG16 database",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-27T10:49:21Z",
+          "completed_at": "2026-11-27T10:49:21Z"
+        },
+        {
+          "name": "Run composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-27T10:49:21Z",
+          "completed_at": "2026-11-27T10:49:26Z"
+        },
+        {
+          "name": "Validate dependency security and behavior",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-27T10:49:26Z",
+          "completed_at": "2026-11-27T10:49:27Z"
+        },
+        {
+          "name": "Run set -euo pipefail",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-27T10:49:27Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Stage 3 (K3) isolated subprocess broker suite",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Provision Stage 0 (G2A) isolated role cluster and run 61 G2A real-role tests",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Provision baseline + G1B/G2 + G2A + G2B + K2 + G3-G5 real-role cluster",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:43Z"
+        },
+        {
+          "name": "Complete protected OPS009 migrations and prove fail-closed leases",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-27T10:49:43Z",
+          "completed_at": "2026-11-27T10:49:46Z"
+        },
+        {
+          "name": "Negative SQL authorization — N03 staging cannot rewrite audit",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 14,
+          "started_at": "2026-11-27T10:49:46Z",
+          "completed_at": "2026-11-27T10:49:46Z"
+        },
+        {
+          "name": "Run G2B + K2 + G3-G5 real-role Feature suites",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 15,
+          "started_at": "2026-11-27T10:49:46Z",
+          "completed_at": "2026-11-27T10:49:46Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C02 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 16,
+          "started_at": "2026-11-27T10:49:46Z",
+          "completed_at": "2026-11-27T10:49:46Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C01 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 17,
+          "started_at": "2026-11-27T10:49:46Z",
+          "completed_at": "2026-11-27T10:49:46Z"
+        },
+        {
+          "name": "Verify pre-provisioned protected schema test bootstrap",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-27T10:49:46Z",
+          "completed_at": "2026-11-27T10:49:46Z"
+        },
+        {
+          "name": "Targeted Work Request creation and Planning regressions",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-27T10:49:46Z",
+          "completed_at": "2026-11-27T10:50:25Z"
+        },
+        {
+          "name": "Preserve Planning JUnit result",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-11-27T10:50:25Z",
+          "completed_at": "2026-11-27T10:50:26Z"
+        },
+        {
+          "name": "Focused custody, P07 quarantine & whole-system traceability regression",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-11-27T10:50:26Z",
+          "completed_at": "2026-11-27T10:51:09Z"
+        },
+        {
+          "name": "Full canonical PG16 Feature regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 22,
+          "started_at": "2026-11-27T10:51:09Z",
+          "completed_at": "2026-11-27T10:51:09Z"
+        },
+        {
+          "name": "Dedicated permanent IAM cross-session role and password concurrency methods",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 23,
+          "started_at": "2026-11-27T10:51:09Z",
+          "completed_at": "2026-11-27T10:51:09Z"
+        },
+        {
+          "name": "Dedicated two-connection individual task contention proof",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 24,
+          "started_at": "2026-11-27T10:51:09Z",
+          "completed_at": "2026-11-27T10:51:09Z"
+        },
+        {
+          "name": "Dedicated six P0 destination revocation methods with guarded PG16 schema",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 25,
+          "started_at": "2026-11-27T10:51:09Z",
+          "completed_at": "2026-11-27T10:51:09Z"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 26,
+          "started_at": "2026-11-27T10:51:09Z",
+          "completed_at": "2026-11-27T10:51:09Z"
+        },
+        {
+          "name": "Frontend types, contracts, UX and production build",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 27,
+          "started_at": "2026-11-27T10:51:09Z",
+          "completed_at": "2026-11-27T10:51:09Z"
+        },
+        {
+          "name": "Playwright native PDF browser verification",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 28,
+          "started_at": "2026-11-27T10:51:09Z",
+          "completed_at": "2026-11-27T10:51:09Z"
+        },
+        {
+          "name": "Upload browser verification receipt and screenshot",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 29,
+          "started_at": "2026-11-27T10:51:09Z",
+          "completed_at": "2026-11-27T10:51:09Z"
+        },
+        {
+          "name": "Record exact-SHA PG16 and phase custody receipt",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 30,
+          "started_at": "2026-11-27T10:51:09Z",
+          "completed_at": "2026-11-27T10:51:09Z"
+        },
+        {
+          "name": "Upload original per-phase custody evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 31,
+          "started_at": "2026-11-27T10:51:09Z",
+          "completed_at": "2026-11-27T10:51:11Z"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 61,
+          "started_at": "2026-11-27T10:51:11Z",
+          "completed_at": "2026-11-27T10:51:11Z"
+        },
+        {
+          "name": "Stop containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 62,
+          "started_at": "2026-11-27T10:51:11Z",
+          "completed_at": "2026-11-27T10:51:11Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 63,
+          "started_at": "2026-11-27T10:51:11Z",
+          "completed_at": "2026-11-27T10:51:11Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/check-runs/140459010176",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000001545,
+      "runner_name": "GitHub Actions 1000001545",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 140459010179,
+      "run_id": 45985224932,
+      "workflow_name": "Functional completion - Protected PG16",
+      "head_branch": "candidate/ot-functional-money-r2",
+      "run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVOeODc8AAAAgtAJogw",
+      "head_sha": "ad1d6d60e31e06a49c7eb15fdfbc192dc776179d",
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/jobs/140459010179",
+      "html_url": "https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932/job/140459010179",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-27T10:48:42Z",
+      "started_at": "2026-11-27T10:48:44Z",
+      "completed_at": "2026-11-27T10:49:45Z",
+      "name": "Traceability Core task-cross-session",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-27T10:48:45Z",
+          "completed_at": "2026-11-27T10:48:47Z"
+        },
+        {
+          "name": "Initialize containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-27T10:48:47Z",
+          "completed_at": "2026-11-27T10:48:59Z"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-27T10:48:59Z",
+          "completed_at": "2026-11-27T10:49:15Z"
+        },
+        {
+          "name": "Verify accepted dependency baseline and bounded functional delta",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-27T10:49:15Z",
+          "completed_at": "2026-11-27T10:49:16Z"
+        },
+        {
+          "name": "Run shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-27T10:49:16Z",
+          "completed_at": "2026-11-27T10:49:18Z"
+        },
+        {
+          "name": "Verify exact candidate and isolated empty PG16 database",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-27T10:49:18Z",
+          "completed_at": "2026-11-27T10:49:19Z"
+        },
+        {
+          "name": "Run composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-27T10:49:19Z",
+          "completed_at": "2026-11-27T10:49:23Z"
+        },
+        {
+          "name": "Validate dependency security and behavior",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-27T10:49:23Z",
+          "completed_at": "2026-11-27T10:49:24Z"
+        },
+        {
+          "name": "Run set -euo pipefail",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-27T10:49:24Z",
+          "completed_at": "2026-11-27T10:49:37Z"
+        },
+        {
+          "name": "Stage 3 (K3) isolated subprocess broker suite",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-11-27T10:49:37Z",
+          "completed_at": "2026-11-27T10:49:37Z"
+        },
+        {
+          "name": "Provision Stage 0 (G2A) isolated role cluster and run 61 G2A real-role tests",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11,
+          "started_at": "2026-11-27T10:49:37Z",
+          "completed_at": "2026-11-27T10:49:37Z"
+        },
+        {
+          "name": "Provision baseline + G1B/G2 + G2A + G2B + K2 + G3-G5 real-role cluster",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-27T10:49:37Z",
+          "completed_at": "2026-11-27T10:49:39Z"
+        },
+        {
+          "name": "Complete protected OPS009 migrations and prove fail-closed leases",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-27T10:49:39Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Negative SQL authorization — N03 staging cannot rewrite audit",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 14,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Run G2B + K2 + G3-G5 real-role Feature suites",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 15,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C02 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 16,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C01 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 17,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Verify pre-provisioned protected schema test bootstrap",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 18,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Targeted Work Request creation and Planning regressions",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Preserve Planning JUnit result",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 20,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Focused custody, P07 quarantine & whole-system traceability regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 21,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Full canonical PG16 Feature regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 22,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Dedicated permanent IAM cross-session role and password concurrency methods",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 23,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Dedicated two-connection individual task contention proof",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 24,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:42Z"
+        },
+        {
+          "name": "Dedicated six P0 destination revocation methods with guarded PG16 schema",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 25,
+          "started_at": "2026-11-27T10:49:42Z",
+          "completed_at": "2026-11-27T10:49:42Z"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 26,
+          "started_at": "2026-11-27T10:49:42Z",
+          "completed_at": "2026-11-27T10:49:42Z"
+        },
+        {
+          "name": "Frontend types, contracts, UX and production build",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 27,
+          "started_at": "2026-11-27T10:49:42Z",
+          "completed_at": "2026-11-27T10:49:42Z"
+        },
+        {
+          "name": "Playwright native PDF browser verification",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 28,
+          "started_at": "2026-11-27T10:49:42Z",
+          "completed_at": "2026-11-27T10:49:42Z"
+        },
+        {
+          "name": "Upload browser verification receipt and screenshot",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 29,
+          "started_at": "2026-11-27T10:49:42Z",
+          "completed_at": "2026-11-27T10:49:42Z"
+        },
+        {
+          "name": "Record exact-SHA PG16 and phase custody receipt",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 30,
+          "started_at": "2026-11-27T10:49:42Z",
+          "completed_at": "2026-11-27T10:49:42Z"
+        },
+        {
+          "name": "Upload original per-phase custody evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 31,
+          "started_at": "2026-11-27T10:49:42Z",
+          "completed_at": "2026-11-27T10:49:43Z"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 61,
+          "started_at": "2026-11-27T10:49:43Z",
+          "completed_at": "2026-11-27T10:49:43Z"
+        },
+        {
+          "name": "Stop containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 62,
+          "started_at": "2026-11-27T10:49:43Z",
+          "completed_at": "2026-11-27T10:49:44Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 63,
+          "started_at": "2026-11-27T10:49:44Z",
+          "completed_at": "2026-11-27T10:49:44Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/check-runs/140459010179",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000001543,
+      "runner_name": "GitHub Actions 1000001543",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 140459010203,
+      "run_id": 45985224932,
+      "workflow_name": "Functional completion - Protected PG16",
+      "head_branch": "candidate/ot-functional-money-r2",
+      "run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVOeODc8AAAAgtAJomw",
+      "head_sha": "ad1d6d60e31e06a49c7eb15fdfbc192dc776179d",
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/jobs/140459010203",
+      "html_url": "https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932/job/140459010203",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-27T10:48:42Z",
+      "started_at": "2026-11-27T10:48:44Z",
+      "completed_at": "2026-11-27T10:53:06Z",
+      "name": "Traceability Core full",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-27T10:48:45Z",
+          "completed_at": "2026-11-27T10:48:47Z"
+        },
+        {
+          "name": "Initialize containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-27T10:48:47Z",
+          "completed_at": "2026-11-27T10:49:03Z"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-27T10:49:03Z",
+          "completed_at": "2026-11-27T10:49:23Z"
+        },
+        {
+          "name": "Verify accepted dependency baseline and bounded functional delta",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-27T10:49:23Z",
+          "completed_at": "2026-11-27T10:49:24Z"
+        },
+        {
+          "name": "Run shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-27T10:49:24Z",
+          "completed_at": "2026-11-27T10:49:27Z"
+        },
+        {
+          "name": "Verify exact candidate and isolated empty PG16 database",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-27T10:49:27Z",
+          "completed_at": "2026-11-27T10:49:27Z"
+        },
+        {
+          "name": "Run composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-27T10:49:27Z",
+          "completed_at": "2026-11-27T10:49:34Z"
+        },
+        {
+          "name": "Validate dependency security and behavior",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-27T10:49:34Z",
+          "completed_at": "2026-11-27T10:49:37Z"
+        },
+        {
+          "name": "Run set -euo pipefail",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-27T10:49:37Z",
+          "completed_at": "2026-11-27T10:49:55Z"
+        },
+        {
+          "name": "Stage 3 (K3) isolated subprocess broker suite",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-11-27T10:49:55Z",
+          "completed_at": "2026-11-27T10:49:55Z"
+        },
+        {
+          "name": "Provision Stage 0 (G2A) isolated role cluster and run 61 G2A real-role tests",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11,
+          "started_at": "2026-11-27T10:49:55Z",
+          "completed_at": "2026-11-27T10:49:55Z"
+        },
+        {
+          "name": "Provision baseline + G1B/G2 + G2A + G2B + K2 + G3-G5 real-role cluster",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-27T10:49:55Z",
+          "completed_at": "2026-11-27T10:50:00Z"
+        },
+        {
+          "name": "Complete protected OPS009 migrations and prove fail-closed leases",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-27T10:50:00Z",
+          "completed_at": "2026-11-27T10:50:03Z"
+        },
+        {
+          "name": "Negative SQL authorization — N03 staging cannot rewrite audit",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 14,
+          "started_at": "2026-11-27T10:50:03Z",
+          "completed_at": "2026-11-27T10:50:03Z"
+        },
+        {
+          "name": "Run G2B + K2 + G3-G5 real-role Feature suites",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 15,
+          "started_at": "2026-11-27T10:50:03Z",
+          "completed_at": "2026-11-27T10:50:03Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C02 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 16,
+          "started_at": "2026-11-27T10:50:03Z",
+          "completed_at": "2026-11-27T10:50:03Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C01 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 17,
+          "started_at": "2026-11-27T10:50:03Z",
+          "completed_at": "2026-11-27T10:50:03Z"
+        },
+        {
+          "name": "Verify pre-provisioned protected schema test bootstrap",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-27T10:50:03Z",
+          "completed_at": "2026-11-27T10:50:03Z"
+        },
+        {
+          "name": "Targeted Work Request creation and Planning regressions",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19,
+          "started_at": "2026-11-27T10:50:03Z",
+          "completed_at": "2026-11-27T10:50:03Z"
+        },
+        {
+          "name": "Preserve Planning JUnit result",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 20,
+          "started_at": "2026-11-27T10:50:03Z",
+          "completed_at": "2026-11-27T10:50:03Z"
+        },
+        {
+          "name": "Focused custody, P07 quarantine & whole-system traceability regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 21,
+          "started_at": "2026-11-27T10:50:03Z",
+          "completed_at": "2026-11-27T10:50:03Z"
+        },
+        {
+          "name": "Full canonical PG16 Feature regression",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 22,
+          "started_at": "2026-11-27T10:50:03Z",
+          "completed_at": "2026-11-27T10:53:02Z"
+        },
+        {
+          "name": "Dedicated permanent IAM cross-session role and password concurrency methods",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 23,
+          "started_at": "2026-11-27T10:53:02Z",
+          "completed_at": "2026-11-27T10:53:02Z"
+        },
+        {
+          "name": "Dedicated two-connection individual task contention proof",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 24,
+          "started_at": "2026-11-27T10:53:02Z",
+          "completed_at": "2026-11-27T10:53:02Z"
+        },
+        {
+          "name": "Dedicated six P0 destination revocation methods with guarded PG16 schema",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 25,
+          "started_at": "2026-11-27T10:53:02Z",
+          "completed_at": "2026-11-27T10:53:02Z"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 26,
+          "started_at": "2026-11-27T10:53:02Z",
+          "completed_at": "2026-11-27T10:53:02Z"
+        },
+        {
+          "name": "Frontend types, contracts, UX and production build",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 27,
+          "started_at": "2026-11-27T10:53:02Z",
+          "completed_at": "2026-11-27T10:53:02Z"
+        },
+        {
+          "name": "Playwright native PDF browser verification",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 28,
+          "started_at": "2026-11-27T10:53:02Z",
+          "completed_at": "2026-11-27T10:53:02Z"
+        },
+        {
+          "name": "Upload browser verification receipt and screenshot",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 29,
+          "started_at": "2026-11-27T10:53:02Z",
+          "completed_at": "2026-11-27T10:53:02Z"
+        },
+        {
+          "name": "Record exact-SHA PG16 and phase custody receipt",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 30,
+          "started_at": "2026-11-27T10:53:02Z",
+          "completed_at": "2026-11-27T10:53:02Z"
+        },
+        {
+          "name": "Upload original per-phase custody evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 31,
+          "started_at": "2026-11-27T10:53:02Z",
+          "completed_at": "2026-11-27T10:53:03Z"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 61,
+          "started_at": "2026-11-27T10:53:03Z",
+          "completed_at": "2026-11-27T10:53:03Z"
+        },
+        {
+          "name": "Stop containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 62,
+          "started_at": "2026-11-27T10:53:03Z",
+          "completed_at": "2026-11-27T10:53:03Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 63,
+          "started_at": "2026-11-27T10:53:03Z",
+          "completed_at": "2026-11-27T10:53:03Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/check-runs/140459010203",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000001546,
+      "runner_name": "GitHub Actions 1000001546",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 140459010223,
+      "run_id": 45985224932,
+      "workflow_name": "Functional completion - Protected PG16",
+      "head_branch": "candidate/ot-functional-money-r2",
+      "run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVOeODc8AAAAgtAJorw",
+      "head_sha": "ad1d6d60e31e06a49c7eb15fdfbc192dc776179d",
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/jobs/140459010223",
+      "html_url": "https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932/job/140459010223",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-27T10:48:42Z",
+      "started_at": "2026-11-27T10:48:45Z",
+      "completed_at": "2026-11-27T10:51:25Z",
+      "name": "Traceability Core browser",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-27T10:48:46Z",
+          "completed_at": "2026-11-27T10:48:48Z"
+        },
+        {
+          "name": "Initialize containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-27T10:48:48Z",
+          "completed_at": "2026-11-27T10:49:02Z"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-27T10:49:02Z",
+          "completed_at": "2026-11-27T10:49:19Z"
+        },
+        {
+          "name": "Verify accepted dependency baseline and bounded functional delta",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-27T10:49:19Z",
+          "completed_at": "2026-11-27T10:49:20Z"
+        },
+        {
+          "name": "Run shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-27T10:49:20Z",
+          "completed_at": "2026-11-27T10:49:23Z"
+        },
+        {
+          "name": "Verify exact candidate and isolated empty PG16 database",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-27T10:49:23Z",
+          "completed_at": "2026-11-27T10:49:23Z"
+        },
+        {
+          "name": "Run composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-27T10:49:23Z",
+          "completed_at": "2026-11-27T10:49:28Z"
+        },
+        {
+          "name": "Validate dependency security and behavior",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-27T10:49:28Z",
+          "completed_at": "2026-11-27T10:49:30Z"
+        },
+        {
+          "name": "Run set -euo pipefail",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-27T10:49:30Z",
+          "completed_at": "2026-11-27T10:49:43Z"
+        },
+        {
+          "name": "Stage 3 (K3) isolated subprocess broker suite",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-11-27T10:49:43Z",
+          "completed_at": "2026-11-27T10:49:43Z"
+        },
+        {
+          "name": "Provision Stage 0 (G2A) isolated role cluster and run 61 G2A real-role tests",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11,
+          "started_at": "2026-11-27T10:49:43Z",
+          "completed_at": "2026-11-27T10:49:43Z"
+        },
+        {
+          "name": "Provision baseline + G1B/G2 + G2A + G2B + K2 + G3-G5 real-role cluster",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-27T10:49:43Z",
+          "completed_at": "2026-11-27T10:49:45Z"
+        },
+        {
+          "name": "Complete protected OPS009 migrations and prove fail-closed leases",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-27T10:49:45Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Negative SQL authorization — N03 staging cannot rewrite audit",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 14,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Run G2B + K2 + G3-G5 real-role Feature suites",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 15,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C02 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 16,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C01 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 17,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Verify pre-provisioned protected schema test bootstrap",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 18,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Targeted Work Request creation and Planning regressions",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Preserve Planning JUnit result",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 20,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Focused custody, P07 quarantine & whole-system traceability regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 21,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Full canonical PG16 Feature regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 22,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Dedicated permanent IAM cross-session role and password concurrency methods",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 23,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Dedicated two-connection individual task contention proof",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 24,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Dedicated six P0 destination revocation methods with guarded PG16 schema",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 25,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:47Z"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-11-27T10:49:47Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Frontend types, contracts, UX and production build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:50:26Z"
+        },
+        {
+          "name": "Playwright native PDF browser verification",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 28,
+          "started_at": "2026-11-27T10:50:26Z",
+          "completed_at": "2026-11-27T10:51:16Z"
+        },
+        {
+          "name": "Upload browser verification receipt and screenshot",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 29,
+          "started_at": "2026-11-27T10:51:16Z",
+          "completed_at": "2026-11-27T10:51:18Z"
+        },
+        {
+          "name": "Record exact-SHA PG16 and phase custody receipt",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 30,
+          "started_at": "2026-11-27T10:51:18Z",
+          "completed_at": "2026-11-27T10:51:18Z"
+        },
+        {
+          "name": "Upload original per-phase custody evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 31,
+          "started_at": "2026-11-27T10:51:18Z",
+          "completed_at": "2026-11-27T10:51:19Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 60,
+          "started_at": "2026-11-27T10:51:19Z",
+          "completed_at": "2026-11-27T10:51:20Z"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 61,
+          "started_at": "2026-11-27T10:51:20Z",
+          "completed_at": "2026-11-27T10:51:20Z"
+        },
+        {
+          "name": "Stop containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 62,
+          "started_at": "2026-11-27T10:51:20Z",
+          "completed_at": "2026-11-27T10:51:23Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 63,
+          "started_at": "2026-11-27T10:51:23Z",
+          "completed_at": "2026-11-27T10:51:23Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/check-runs/140459010223",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000001542,
+      "runner_name": "GitHub Actions 1000001542",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 140459010226,
+      "run_id": 45985224932,
+      "workflow_name": "Functional completion - Protected PG16",
+      "head_branch": "candidate/ot-functional-money-r2",
+      "run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVOeODc8AAAAgtAJosg",
+      "head_sha": "ad1d6d60e31e06a49c7eb15fdfbc192dc776179d",
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/jobs/140459010226",
+      "html_url": "https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932/job/140459010226",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-27T10:48:42Z",
+      "started_at": "2026-11-27T10:48:45Z",
+      "completed_at": "2026-11-27T10:50:17Z",
+      "name": "Traceability Core roles",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-27T10:48:45Z",
+          "completed_at": "2026-11-27T10:48:47Z"
+        },
+        {
+          "name": "Initialize containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-27T10:48:47Z",
+          "completed_at": "2026-11-27T10:49:02Z"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-27T10:49:02Z",
+          "completed_at": "2026-11-27T10:49:17Z"
+        },
+        {
+          "name": "Verify accepted dependency baseline and bounded functional delta",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-27T10:49:17Z",
+          "completed_at": "2026-11-27T10:49:18Z"
+        },
+        {
+          "name": "Run shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-27T10:49:18Z",
+          "completed_at": "2026-11-27T10:49:21Z"
+        },
+        {
+          "name": "Verify exact candidate and isolated empty PG16 database",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-27T10:49:21Z",
+          "completed_at": "2026-11-27T10:49:21Z"
+        },
+        {
+          "name": "Run composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-27T10:49:21Z",
+          "completed_at": "2026-11-27T10:49:27Z"
+        },
+        {
+          "name": "Validate dependency security and behavior",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-27T10:49:27Z",
+          "completed_at": "2026-11-27T10:49:29Z"
+        },
+        {
+          "name": "Run set -euo pipefail",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-27T10:49:29Z",
+          "completed_at": "2026-11-27T10:49:52Z"
+        },
+        {
+          "name": "Stage 3 (K3) isolated subprocess broker suite",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-11-27T10:49:52Z",
+          "completed_at": "2026-11-27T10:49:52Z"
+        },
+        {
+          "name": "Provision Stage 0 (G2A) isolated role cluster and run 61 G2A real-role tests",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11,
+          "started_at": "2026-11-27T10:49:52Z",
+          "completed_at": "2026-11-27T10:49:52Z"
+        },
+        {
+          "name": "Provision baseline + G1B/G2 + G2A + G2B + K2 + G3-G5 real-role cluster",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-27T10:49:52Z",
+          "completed_at": "2026-11-27T10:49:55Z"
+        },
+        {
+          "name": "Complete protected OPS009 migrations and prove fail-closed leases",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-27T10:49:55Z",
+          "completed_at": "2026-11-27T10:49:59Z"
+        },
+        {
+          "name": "Negative SQL authorization — N03 staging cannot rewrite audit",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-11-27T10:49:59Z",
+          "completed_at": "2026-11-27T10:49:59Z"
+        },
+        {
+          "name": "Run G2B + K2 + G3-G5 real-role Feature suites",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-11-27T10:49:59Z",
+          "completed_at": "2026-11-27T10:50:13Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C02 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 16,
+          "started_at": "2026-11-27T10:50:13Z",
+          "completed_at": "2026-11-27T10:50:13Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C01 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 17,
+          "started_at": "2026-11-27T10:50:13Z",
+          "completed_at": "2026-11-27T10:50:13Z"
+        },
+        {
+          "name": "Verify pre-provisioned protected schema test bootstrap",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 18,
+          "started_at": "2026-11-27T10:50:13Z",
+          "completed_at": "2026-11-27T10:50:13Z"
+        },
+        {
+          "name": "Targeted Work Request creation and Planning regressions",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19,
+          "started_at": "2026-11-27T10:50:13Z",
+          "completed_at": "2026-11-27T10:50:13Z"
+        },
+        {
+          "name": "Preserve Planning JUnit result",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 20,
+          "started_at": "2026-11-27T10:50:13Z",
+          "completed_at": "2026-11-27T10:50:13Z"
+        },
+        {
+          "name": "Focused custody, P07 quarantine & whole-system traceability regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 21,
+          "started_at": "2026-11-27T10:50:13Z",
+          "completed_at": "2026-11-27T10:50:13Z"
+        },
+        {
+          "name": "Full canonical PG16 Feature regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 22,
+          "started_at": "2026-11-27T10:50:13Z",
+          "completed_at": "2026-11-27T10:50:13Z"
+        },
+        {
+          "name": "Dedicated permanent IAM cross-session role and password concurrency methods",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 23,
+          "started_at": "2026-11-27T10:50:13Z",
+          "completed_at": "2026-11-27T10:50:13Z"
+        },
+        {
+          "name": "Dedicated two-connection individual task contention proof",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 24,
+          "started_at": "2026-11-27T10:50:13Z",
+          "completed_at": "2026-11-27T10:50:13Z"
+        },
+        {
+          "name": "Dedicated six P0 destination revocation methods with guarded PG16 schema",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 25,
+          "started_at": "2026-11-27T10:50:13Z",
+          "completed_at": "2026-11-27T10:50:13Z"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 26,
+          "started_at": "2026-11-27T10:50:13Z",
+          "completed_at": "2026-11-27T10:50:13Z"
+        },
+        {
+          "name": "Frontend types, contracts, UX and production build",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 27,
+          "started_at": "2026-11-27T10:50:13Z",
+          "completed_at": "2026-11-27T10:50:13Z"
+        },
+        {
+          "name": "Playwright native PDF browser verification",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 28,
+          "started_at": "2026-11-27T10:50:13Z",
+          "completed_at": "2026-11-27T10:50:13Z"
+        },
+        {
+          "name": "Upload browser verification receipt and screenshot",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 29,
+          "started_at": "2026-11-27T10:50:13Z",
+          "completed_at": "2026-11-27T10:50:13Z"
+        },
+        {
+          "name": "Record exact-SHA PG16 and phase custody receipt",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 30,
+          "started_at": "2026-11-27T10:50:13Z",
+          "completed_at": "2026-11-27T10:50:13Z"
+        },
+        {
+          "name": "Upload original per-phase custody evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 31,
+          "started_at": "2026-11-27T10:50:13Z",
+          "completed_at": "2026-11-27T10:50:14Z"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 61,
+          "started_at": "2026-11-27T10:50:14Z",
+          "completed_at": "2026-11-27T10:50:15Z"
+        },
+        {
+          "name": "Stop containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 62,
+          "started_at": "2026-11-27T10:50:15Z",
+          "completed_at": "2026-11-27T10:50:15Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 63,
+          "started_at": "2026-11-27T10:50:15Z",
+          "completed_at": "2026-11-27T10:50:15Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/check-runs/140459010226",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000001547,
+      "runner_name": "GitHub Actions 1000001547",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 140459010296,
+      "run_id": 45985224932,
+      "workflow_name": "Functional completion - Protected PG16",
+      "head_branch": "candidate/ot-functional-money-r2",
+      "run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVOeODc8AAAAgtAJo-A",
+      "head_sha": "ad1d6d60e31e06a49c7eb15fdfbc192dc776179d",
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/jobs/140459010296",
+      "html_url": "https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932/job/140459010296",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-27T10:48:42Z",
+      "started_at": "2026-11-27T10:48:45Z",
+      "completed_at": "2026-11-27T10:49:56Z",
+      "name": "Traceability Core g2a-roles",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-27T10:48:46Z",
+          "completed_at": "2026-11-27T10:48:49Z"
+        },
+        {
+          "name": "Initialize containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-27T10:48:49Z",
+          "completed_at": "2026-11-27T10:49:01Z"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-27T10:49:01Z",
+          "completed_at": "2026-11-27T10:49:18Z"
+        },
+        {
+          "name": "Verify accepted dependency baseline and bounded functional delta",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-27T10:49:18Z",
+          "completed_at": "2026-11-27T10:49:19Z"
+        },
+        {
+          "name": "Run shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-27T10:49:19Z",
+          "completed_at": "2026-11-27T10:49:22Z"
+        },
+        {
+          "name": "Verify exact candidate and isolated empty PG16 database",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-27T10:49:22Z",
+          "completed_at": "2026-11-27T10:49:22Z"
+        },
+        {
+          "name": "Run composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-27T10:49:22Z",
+          "completed_at": "2026-11-27T10:49:27Z"
+        },
+        {
+          "name": "Validate dependency security and behavior",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-27T10:49:27Z",
+          "completed_at": "2026-11-27T10:49:28Z"
+        },
+        {
+          "name": "Run set -euo pipefail",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-27T10:49:28Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Stage 3 (K3) isolated subprocess broker suite",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Provision Stage 0 (G2A) isolated role cluster and run 61 G2A real-role tests",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Provision baseline + G1B/G2 + G2A + G2B + K2 + G3-G5 real-role cluster",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 12,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Complete protected OPS009 migrations and prove fail-closed leases",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 13,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Negative SQL authorization — N03 staging cannot rewrite audit",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 14,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Run G2B + K2 + G3-G5 real-role Feature suites",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 15,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C02 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 16,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C01 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 17,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Verify pre-provisioned protected schema test bootstrap",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 18,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Targeted Work Request creation and Planning regressions",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Preserve Planning JUnit result",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 20,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Focused custody, P07 quarantine & whole-system traceability regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 21,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Full canonical PG16 Feature regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 22,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Dedicated permanent IAM cross-session role and password concurrency methods",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 23,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Dedicated two-connection individual task contention proof",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 24,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Dedicated six P0 destination revocation methods with guarded PG16 schema",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 25,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 26,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Frontend types, contracts, UX and production build",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 27,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Playwright native PDF browser verification",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 28,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Upload browser verification receipt and screenshot",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 29,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Record exact-SHA PG16 and phase custody receipt",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 30,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:51Z"
+        },
+        {
+          "name": "Upload original per-phase custody evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 31,
+          "started_at": "2026-11-27T10:49:51Z",
+          "completed_at": "2026-11-27T10:49:52Z"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 61,
+          "started_at": "2026-11-27T10:49:52Z",
+          "completed_at": "2026-11-27T10:49:53Z"
+        },
+        {
+          "name": "Stop containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 62,
+          "started_at": "2026-11-27T10:49:53Z",
+          "completed_at": "2026-11-27T10:49:53Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 63,
+          "started_at": "2026-11-27T10:49:53Z",
+          "completed_at": "2026-11-27T10:49:53Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/check-runs/140459010296",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000001548,
+      "runner_name": "GitHub Actions 1000001548",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 140459010307,
+      "run_id": 45985224932,
+      "workflow_name": "Functional completion - Protected PG16",
+      "head_branch": "candidate/ot-functional-money-r2",
+      "run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVOeODc8AAAAgtAJpAw",
+      "head_sha": "ad1d6d60e31e06a49c7eb15fdfbc192dc776179d",
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/jobs/140459010307",
+      "html_url": "https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932/job/140459010307",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-27T10:48:42Z",
+      "started_at": "2026-11-27T10:48:44Z",
+      "completed_at": "2026-11-27T10:49:47Z",
+      "name": "Traceability Core c02",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-27T10:48:45Z",
+          "completed_at": "2026-11-27T10:48:46Z"
+        },
+        {
+          "name": "Initialize containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-27T10:48:46Z",
+          "completed_at": "2026-11-27T10:48:59Z"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-27T10:48:59Z",
+          "completed_at": "2026-11-27T10:49:16Z"
+        },
+        {
+          "name": "Verify accepted dependency baseline and bounded functional delta",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-27T10:49:16Z",
+          "completed_at": "2026-11-27T10:49:17Z"
+        },
+        {
+          "name": "Run shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-27T10:49:17Z",
+          "completed_at": "2026-11-27T10:49:19Z"
+        },
+        {
+          "name": "Verify exact candidate and isolated empty PG16 database",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-27T10:49:19Z",
+          "completed_at": "2026-11-27T10:49:19Z"
+        },
+        {
+          "name": "Run composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-27T10:49:19Z",
+          "completed_at": "2026-11-27T10:49:23Z"
+        },
+        {
+          "name": "Validate dependency security and behavior",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-27T10:49:23Z",
+          "completed_at": "2026-11-27T10:49:24Z"
+        },
+        {
+          "name": "Run set -euo pipefail",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-11-27T10:49:24Z",
+          "completed_at": "2026-11-27T10:49:37Z"
+        },
+        {
+          "name": "Stage 3 (K3) isolated subprocess broker suite",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10,
+          "started_at": "2026-11-27T10:49:37Z",
+          "completed_at": "2026-11-27T10:49:37Z"
+        },
+        {
+          "name": "Provision Stage 0 (G2A) isolated role cluster and run 61 G2A real-role tests",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11,
+          "started_at": "2026-11-27T10:49:37Z",
+          "completed_at": "2026-11-27T10:49:37Z"
+        },
+        {
+          "name": "Provision baseline + G1B/G2 + G2A + G2B + K2 + G3-G5 real-role cluster",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-27T10:49:37Z",
+          "completed_at": "2026-11-27T10:49:39Z"
+        },
+        {
+          "name": "Complete protected OPS009 migrations and prove fail-closed leases",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-27T10:49:39Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Negative SQL authorization — N03 staging cannot rewrite audit",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 14,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Run G2B + K2 + G3-G5 real-role Feature suites",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 15,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:41Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C02 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-11-27T10:49:41Z",
+          "completed_at": "2026-11-27T10:49:45Z"
+        },
+        {
+          "name": "Dedicated protected OPS009 C01 on independently fresh PG16",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 17,
+          "started_at": "2026-11-27T10:49:45Z",
+          "completed_at": "2026-11-27T10:49:45Z"
+        },
+        {
+          "name": "Verify pre-provisioned protected schema test bootstrap",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 18,
+          "started_at": "2026-11-27T10:49:45Z",
+          "completed_at": "2026-11-27T10:49:45Z"
+        },
+        {
+          "name": "Targeted Work Request creation and Planning regressions",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19,
+          "started_at": "2026-11-27T10:49:45Z",
+          "completed_at": "2026-11-27T10:49:45Z"
+        },
+        {
+          "name": "Preserve Planning JUnit result",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 20,
+          "started_at": "2026-11-27T10:49:45Z",
+          "completed_at": "2026-11-27T10:49:45Z"
+        },
+        {
+          "name": "Focused custody, P07 quarantine & whole-system traceability regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 21,
+          "started_at": "2026-11-27T10:49:45Z",
+          "completed_at": "2026-11-27T10:49:45Z"
+        },
+        {
+          "name": "Full canonical PG16 Feature regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 22,
+          "started_at": "2026-11-27T10:49:45Z",
+          "completed_at": "2026-11-27T10:49:45Z"
+        },
+        {
+          "name": "Dedicated permanent IAM cross-session role and password concurrency methods",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 23,
+          "started_at": "2026-11-27T10:49:45Z",
+          "completed_at": "2026-11-27T10:49:45Z"
+        },
+        {
+          "name": "Dedicated two-connection individual task contention proof",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 24,
+          "started_at": "2026-11-27T10:49:45Z",
+          "completed_at": "2026-11-27T10:49:45Z"
+        },
+        {
+          "name": "Dedicated six P0 destination revocation methods with guarded PG16 schema",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 25,
+          "started_at": "2026-11-27T10:49:45Z",
+          "completed_at": "2026-11-27T10:49:45Z"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 26,
+          "started_at": "2026-11-27T10:49:45Z",
+          "completed_at": "2026-11-27T10:49:45Z"
+        },
+        {
+          "name": "Frontend types, contracts, UX and production build",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 27,
+          "started_at": "2026-11-27T10:49:45Z",
+          "completed_at": "2026-11-27T10:49:45Z"
+        },
+        {
+          "name": "Playwright native PDF browser verification",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 28,
+          "started_at": "2026-11-27T10:49:45Z",
+          "completed_at": "2026-11-27T10:49:45Z"
+        },
+        {
+          "name": "Upload browser verification receipt and screenshot",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 29,
+          "started_at": "2026-11-27T10:49:45Z",
+          "completed_at": "2026-11-27T10:49:45Z"
+        },
+        {
+          "name": "Record exact-SHA PG16 and phase custody receipt",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 30,
+          "started_at": "2026-11-27T10:49:45Z",
+          "completed_at": "2026-11-27T10:49:45Z"
+        },
+        {
+          "name": "Upload original per-phase custody evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 31,
+          "started_at": "2026-11-27T10:49:45Z",
+          "completed_at": "2026-11-27T10:49:46Z"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 61,
+          "started_at": "2026-11-27T10:49:46Z",
+          "completed_at": "2026-11-27T10:49:46Z"
+        },
+        {
+          "name": "Stop containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 62,
+          "started_at": "2026-11-27T10:49:46Z",
+          "completed_at": "2026-11-27T10:49:46Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 63,
+          "started_at": "2026-11-27T10:49:46Z",
+          "completed_at": "2026-11-27T10:49:46Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/check-runs/140459010307",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000001549,
+      "runner_name": "GitHub Actions 1000001549",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 140461095690,
+      "run_id": 45985224932,
+      "workflow_name": "Functional completion - Protected PG16",
+      "head_branch": "candidate/ot-functional-money-r2",
+      "run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVOeODc8AAAAgtCI7Cg",
+      "head_sha": "ad1d6d60e31e06a49c7eb15fdfbc192dc776179d",
+      "url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/jobs/140461095690",
+      "html_url": "https://github.com/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/actions/runs/45985224932/job/140461095690",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-27T10:53:06Z",
+      "started_at": "2026-11-27T10:53:08Z",
+      "completed_at": "2026-11-27T10:53:10Z",
+      "name": "Traceability Core aggregate gate",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-27T10:53:08Z",
+          "completed_at": "2026-11-27T10:53:09Z"
+        },
+        {
+          "name": "Require original six phases plus five dedicated protected cross-session jobs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-27T10:53:09Z",
+          "completed_at": "2026-11-27T10:53:09Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-27T10:53:09Z",
+          "completed_at": "2026-11-27T10:53:09Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Project-Intra-Smithy/ONE-TALIBON-intra.office.system-STABLE-v1-10-18-2026/check-runs/140461095690",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000001553,
+      "runner_name": "GitHub Actions 1000001553",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}
