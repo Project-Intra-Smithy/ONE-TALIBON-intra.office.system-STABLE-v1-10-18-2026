@@ -71,7 +71,10 @@ for mode in ['fresh', 'upgrade']:
     try:
         run([args.pg_bin/'initdb', '-D', data, '-U', 'ot_bootstrap', '--auth=scram-sha-256', '--pwfile='+str(pwfile), '--encoding=UTF8', '--no-locale'], env)
         pwfile.unlink()
-        run([args.pg_bin/'pg_ctl', '-D', data, '-l', root/'postgres.log', '-o', '-h 127.0.0.1 -p '+str(port), '-w', 'start'], env)
+        options = '-h 127.0.0.1 -p '+str(port)
+        if os.name != 'nt':
+            options += ' -k '+str(root)
+        run([args.pg_bin/'pg_ctl', '-D', data, '-l', root/'postgres.log', '-o', options, '-w', 'start'], env)
         started = True
         db = 'ot_persistent_'+mode
         env.update(PGHOST='127.0.0.1', PGPORT=str(port), PGUSER='ot_bootstrap', PGPASSWORD=bootstrap, PGDATABASE='postgres',

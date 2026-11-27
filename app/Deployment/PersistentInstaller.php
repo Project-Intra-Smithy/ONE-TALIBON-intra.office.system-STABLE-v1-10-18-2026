@@ -10,6 +10,8 @@ use RuntimeException;
 /** Offline, target-bound bootstrap authority. Never enabled by a web/runtime env flag. */
 final class PersistentInstaller
 {
+    public string $phase = 'preflight';
+
     private static ?array $target = null;
 
     private const GUARDED = [
@@ -129,18 +131,21 @@ final class PersistentInstaller
                     $repository->createRepository();
                 }
                 $baseline = array_diff_key($files, array_flip(self::GUARDED));
+                $this->phase = 'baseline migrations';
                 $migrator->run(array_values($baseline), ['force' => true]);
                 if (! $installed) {
                     $this->policy('g1b');
                     $this->policy('g2');
                 }
                 foreach (array_slice(self::GUARDED, 0, 4) as $i => $migration) {
+                    $this->phase = $migration;
                     $migrator->run([$files[$migration]], ['force' => true]);
                     if (! $installed) {
                         $this->policy(['n03', 'g2b', 'k2', 'g3'][$i]);
                     }
                 }
                 foreach (array_slice(self::GUARDED, 4) as $migration) {
+                    $this->phase = $migration;
                     $migrator->run([$files[$migration]], ['force' => true]);
                 }
                 if (! $installed) {
@@ -150,6 +155,7 @@ final class PersistentInstaller
                     }
                 }
                 DB::unprepared(file_get_contents(database_path('deployment/finalize.sql')));
+                $this->phase = 'postflight';
                 foreach ($target['retired_runtime_roles'] as $retired) {
                     if (! is_string($retired) || ! preg_match('/^[a-z][a-z0-9_]{2,62}$/D', $retired)
                         || str_starts_with($retired, 'kirion_') || str_starts_with($retired, 'n03_')
@@ -183,6 +189,7 @@ final class PersistentInstaller
 
     private function policy(string $stage): void
     {
+        $this->phase = 'privilege policy '.$stage;
         DB::unprepared(file_get_contents(database_path('deployment/'.$stage.'.sql')));
     }
 

@@ -31,6 +31,7 @@ final class InstallPersistent extends Command
         } catch (Throwable $e) {
             // Database diagnostics may include password-bearing SQL; never print them.
             $this->error('Persistent installation refused or rolled back. Inspect with a privileged operator; no credential diagnostics are emitted.');
+            $this->line('Phase: '.$installer->phase.'; error code: '.(string) $e->getCode());
             if (get_class($e) === \RuntimeException::class) {
                 $this->error($e->getMessage());
             }

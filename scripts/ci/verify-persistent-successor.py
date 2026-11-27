@@ -20,7 +20,7 @@ changed = set(git('diff', '--name-only', BASE, 'HEAD').decode().splitlines())
 guarded = set()
 for p in Path('database/migrations').glob('*.php'):
     old = git('show', BASE+':'+p.as_posix()).decode()
-    current = p.read_text()
+    current = p.read_text(encoding='utf-8')
     if 'N03_DISPOSABLE_LEASE' in old:
         guarded.add(p.as_posix())
         # Every SQL heredoc, including canonical expected function/constraint definitions, stays exact.
@@ -28,6 +28,12 @@ for p in Path('database/migrations').glob('*.php'):
         assert re.findall(pattern, old, re.S) == re.findall(pattern, current, re.S), p
         assert "getenv('N03_DISPOSABLE_LEASE') !== 'EXCLUSIVE_PG16_SYNTHETIC_ONLY'" in current
         assert "! PersistentInstaller::active() &&" in current
+        restored = current.replace('use App\\Deployment\\PersistentInstaller;\n', '')
+        restored = restored.replace('if (! PersistentInstaller::active() && (', 'if (', 1)
+        restored = restored.replace("!== 'talibon_portal_test'))", "!== 'talibon_portal_test')", 1)
+        restored = restored.replace('PersistentInstaller::database()', "'talibon_portal_test'")
+        restored = restored.replace('PersistentInstaller::bootstrapRole()', "'postgres'")
+        assert re.sub(r'\s+', '', old) == re.sub(r'\s+', '', restored), 'Unexpected migration change: '+str(p)
     else:
         assert old == current, p
 
@@ -49,10 +55,11 @@ for name, stage in policies.items():
     body = re.sub(r"^SELECT format\('ALTER ROLE.*\\gexec\n", '', body, flags=re.M)
     body = re.sub(r'^(GRANT|REVOKE) (.*) ON DATABASE talibon_portal_test (.*);$',
                   lambda m: "DO $database_acl$ BEGIN EXECUTE format('"+m[1]+' '+m[2]+" ON DATABASE %I "+m[3]+"', current_database()); END $database_acl$;", body, flags=re.M)
-    assert Path('database/deployment/'+stage+'.sql').read_text() == '-- Shared privilege policy; entrypoints validate target and prerequisites.\n'+body.lstrip()
-    assert Path(path).read_text() == prefix+'END $guard$;\n\n\\ir ../../../database/deployment/'+stage+'.sql\n'+''.join(passwords)+'\nCOMMIT;'+suffix
+    assert Path('database/deployment/'+stage+'.sql').read_text(encoding='utf-8') == '-- Shared privilege policy; entrypoints validate target and prerequisites.\n'+body.lstrip()
+    assert Path(path).read_text(encoding='utf-8') == prefix+'END $guard$;\n\n\\ir ../../../database/deployment/'+stage+'.sql\n'+''.join(passwords)+'\nCOMMIT;'+suffix
 
-assert changed <= allowed | guarded | {p for p in changed if p.startswith(('.forge/', 'database/deployment/'))}, changed-allowed-guarded
+allowed.update('database/deployment/'+stage+'.sql' for stage in [*policies.values(), 'finalize'])
+assert changed <= allowed | guarded | {p for p in changed if p.startswith('.forge/')}, changed-allowed-guarded
 for path in ['composer.json','composer.lock','package.json','package-lock.json']:
     assert git('show', BASE+':'+path) == Path(path).read_bytes(), path
 print('Persistent successor: bounded paths, unchanged SQL contracts/disposable guards and locked dependencies PASS')
