@@ -148,6 +148,13 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
                         assert hashlib.sha256(blob).hexdigest()==part['sha256']
                         rows.extend(json.loads(blob))
                     assert len(rows)==section['rows'];reproduced[section['name']]=rows
+                if canonical!=json.dumps(reproduced,separators=(',',':')):
+                    differences=[]
+                    for name,rows in contract.items():
+                        if rows!=reproduced.get(name):
+                            differences.append({'section':name,'actual_rows':len(rows),'expected_rows':len(reproduced.get(name,[])),'sample_actual':next((row for row in rows if row not in reproduced.get(name,[])),None),'sample_expected':next((row for row in reproduced.get(name,[]) if row not in rows),None)})
+                    (args.output/'contract-difference.json').write_text(json.dumps(differences,indent=2),encoding='utf-8')
+                    print('Independent policy differences:',','.join(x['section'] for x in differences))
                 check('independent_canonical_contract_matches',canonical==json.dumps(reproduced,separators=(',',':')))
                 (args.output/'contract-comparison.json').write_text(json.dumps({'source_sha':report['source_sha'],'canonical_sha256':hashlib.sha256(canonical.encode()).hexdigest(),'independently_regenerated':True,'matches':True},indent=2))
             else:
