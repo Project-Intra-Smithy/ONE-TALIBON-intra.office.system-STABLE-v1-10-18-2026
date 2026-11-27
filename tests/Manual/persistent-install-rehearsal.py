@@ -348,7 +348,7 @@ for mode in (['contract'] if (args.record_contract or args.compare_contract) els
             ('large_object',"SELECT lo_create(900001)","SELECT lo_unlink(900001)"),
             ('foreign_server',"CREATE FOREIGN DATA WRAPPER qa_fdw; CREATE SERVER qa_server FOREIGN DATA WRAPPER qa_fdw; CREATE USER MAPPING FOR CURRENT_USER SERVER qa_server OPTIONS (password 'synthetic-canary')","DROP SERVER qa_server CASCADE; DROP FOREIGN DATA WRAPPER qa_fdw"),
             ('publication','CREATE PUBLICATION qa_publication FOR TABLE users','DROP PUBLICATION qa_publication'),
-            ('subscription',"CREATE SUBSCRIPTION qa_subscription CONNECTION 'host=127.0.0.1 password=synthetic-canary' PUBLICATION qa_publication WITH (connect=false,create_slot=false,enabled=false)",'DROP SUBSCRIPTION qa_subscription'),
+            ('subscription',"CREATE SUBSCRIPTION qa_subscription CONNECTION 'host=127.0.0.1 password=synthetic-canary' PUBLICATION qa_publication WITH (connect=false,create_slot=false,enabled=false,slot_name=NONE)",'DROP SUBSCRIPTION qa_subscription'),
             ('domain','CREATE DOMAIN public.qa_domain AS integer CHECK(VALUE>0)','DROP DOMAIN public.qa_domain'),
             ('system_schema_acl','GRANT CREATE ON SCHEMA pg_catalog TO n03_reader','REVOKE CREATE ON SCHEMA pg_catalog FROM n03_reader'),
             ('system_object','CREATE TABLE pg_catalog.qa_untrusted(id int)','DROP TABLE pg_catalog.qa_untrusted'),
