@@ -374,7 +374,7 @@ export default function PlansIndex({
                 chapterNotes={recordFields.chapters??''} onChapterNotesChange={value=>setRecordFields(fields=>({...fields,chapters:value}))}
                 onSubmit={handleCreatePlan} maps={mapOptions.map(m=>({...m,id:String(m.id)}))} horizons={['Annual', 'Three-year', 'Six-year', 'Long-term', 'Sectoral']}
                 statuses={['Draft','For review', 'Updating', 'Due this year', ...(planningPermissions?.canPublishOrArchive ? ['Archived',...(editingPlan?.provenanceStatus==='reference_sample'?[]:['In force', 'Adopted'])] : [])]}
-                unavailable={[...(editingPlan?['code' as const]:[]),...(editingPlan?.provenanceStatus==='reference_sample'?['authority' as const]:[]),...(!planningPermissions?.canPublishOrArchive?['sbResolutionNo' as const, 'sbAdoptedDate' as const, 'mdcResolutionNo' as const, 'higherReviewRef' as const]:[])]}
+                unavailable={[...(editingPlan?['code' as const]:[]),...(editingPlan?.provenanceStatus==='reference_sample'?['authority' as const]:[]),...(!planningPermissions?.canPublishOrArchive||editingPlan?.provenanceStatus==='reference_sample'?['sbResolutionNo' as const, 'sbAdoptedDate' as const, 'mdcResolutionNo' as const, 'higherReviewRef' as const]:[])]}
             />
 
             <DesignatedStaffModal

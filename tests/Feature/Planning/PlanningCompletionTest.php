@@ -12,6 +12,7 @@ use App\Models\PpaRecord;
 use App\Models\User;
 use App\Services\AuditLogger;
 use App\Services\Planning\PlanningReferences;
+use App\Services\Planning\PlanningSuiteInitializer;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -75,6 +76,8 @@ final class PlanningCompletionTest extends TestCase
         $this->assertSame('0.00', $ppa->fresh()->appropriation_amount);
         $this->put('/ppas/'.$ppa->id, $this->proposal(['ps_amount' => '0.10', 'mooe_amount' => '0.20', 'co_amount' => '0.00']))
             ->assertRedirect()->assertSessionHasNoErrors();
+        $this->assertSame('0.00', $ppa->fresh()->appropriation_amount);
+        $this->put('/ppas/'.$ppa->id, $this->proposal(['appropriation_amount' => '0.30']))->assertRedirect()->assertSessionHasNoErrors();
         $this->assertSame('0.30', $ppa->fresh()->appropriation_amount);
     }
 
@@ -211,5 +214,36 @@ final class PlanningCompletionTest extends TestCase
         } finally {
             $second->rollBack();
         }
+    }
+
+    public function test_typed_links_do_not_require_a_fabricated_legacy_text_reference(): void
+    {
+        $this->seed();
+        $plan = $this->plan();
+        $data = $this->proposal(['development_plan_id' => $plan->id]);
+        unset($data['related_development_plan']);
+        $this->post('/ppas', $data)->assertRedirect()->assertSessionHasNoErrors();
+        $this->assertSame($plan->code, PpaRecord::query()->firstOrFail()->related_development_plan);
+        $this->post('/planning-maps', ['map_code' => 'SYN-TYPED-MAP', 'title' => 'Synthetic typed map',
+            'development_plan_id' => $plan->id, 'category' => 'Macro & Spatial', 'status' => 'Draft'])
+            ->assertRedirect()->assertSessionHasNoErrors();
+        $map = PlanningMap::query()->firstOrFail();
+        $this->assertSame($plan->id, $map->development_plan_id);
+        $this->assertSame($plan->code, $map->plan_code);
+    }
+
+    public function test_new_adoption_metadata_cannot_turn_reference_samples_into_official_evidence(): void
+    {
+        $this->seed();
+        app(PlanningSuiteInitializer::class)->seedReferenceSamples(true);
+        $sample = DevelopmentPlan::query()->firstOrFail();
+        $before = AuditLog::count();
+        $this->actingAs($this->actor())->put('/development-plans/'.$sample->id, [
+            'title' => $sample->title, 'horizon' => $sample->horizon, 'lead_office' => $sample->lead_office,
+            'coverage_start' => $sample->coverage_start, 'coverage_end' => $sample->coverage_end,
+            'status' => 'Draft', 'adoption_reference' => 'Forged legal reference',
+        ])->assertForbidden();
+        $this->assertNull($sample->fresh()->adoption_reference);
+        $this->assertSame($before, AuditLog::count());
     }
 }

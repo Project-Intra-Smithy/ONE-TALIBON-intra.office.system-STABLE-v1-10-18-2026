@@ -17,6 +17,7 @@ export default function Index({records,parents,canReconcile}:{records:{data:Row[
         <Link href="/development-plans" className="municipal-secondary-button">Development Plans</Link>
         <ul className="space-y-3">{records.data.map(row=><li key={row.publicId} className="municipal-panel p-4">
             <h2 className="font-semibold">{row.title}</h2><p>{row.parentType}: {row.parentCode} · {row.archived?'Archived retained record':row.parentExists?'Parent verified':'Parent reconciliation required'}</p>
+            {row.parentRecordId!==null&&!row.parentExists&&<p>The original bound record is missing. Request recovery of that record; this document cannot be reassigned.</p>}
             {row.previewUrl&&<a className="municipal-secondary-button" href={row.previewUrl} target="_blank" rel="noopener noreferrer">Preview document</a>}
             {canReconcile&&row.parentRecordId===null&&<button className="municipal-secondary-button" onClick={()=>{setSelected(row);setParentId('');setEvidence('');setError('');}}>Reconcile {row.title}</button>}
             {selected?.publicId===row.publicId&&<form className="mt-3 space-y-3" onSubmit={event=>{event.preventDefault();if(busy)return;setBusy(true);setError('');router.post(`/planning/attachment-custody/${row.publicId}/reconcile`,{parent_record_id:Number(parentId),evidence_reference:evidence},{preserveScroll:true,onSuccess:()=>setSelected(null),onError:errors=>setError(Object.values(errors).join(' ')),onFinish:()=>setBusy(false)});}}>

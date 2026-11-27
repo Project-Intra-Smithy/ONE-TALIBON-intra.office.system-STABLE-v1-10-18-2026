@@ -27,9 +27,9 @@ final class PlanningAmounts
             }
             $values[$field] = (string) BigDecimal::of((string) $raw)->toScale(2);
         }
-        // Derive only a missing total; an explicit zero is an actual supplied value.
+        // Derive only an initially missing total. Updates preserve the recorded total unless explicitly supplied.
         if (! array_key_exists('appropriation_amount', $data)
-            && ($existing === null || array_intersect_key($data, array_flip(['ps_amount', 'mooe_amount', 'co_amount'])))
+            && $existing === null
             && array_filter(array_intersect_key($values, array_flip(['ps_amount', 'mooe_amount', 'co_amount'])), fn ($v) => $v !== null)) {
             $sum = BigDecimal::zero()->toScale(2);
             foreach (['ps_amount', 'mooe_amount', 'co_amount'] as $field) {

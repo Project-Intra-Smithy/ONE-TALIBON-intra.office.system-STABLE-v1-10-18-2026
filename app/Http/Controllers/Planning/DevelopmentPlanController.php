@@ -433,7 +433,7 @@ final class DevelopmentPlanController extends Controller
         $fields = array_intersect_key($data, array_flip(['chapters', 'adoption_date', 'adoption_reference', 'mdc_reference', 'higher_review_reference']));
         foreach (['adoption_date', 'adoption_reference', 'mdc_reference', 'higher_review_reference'] as $field) {
             if (array_key_exists($field, $fields) && (string) $fields[$field] !== (string) ($existing?->{$field} instanceof \DateTimeInterface ? $existing->{$field}->format('Y-m-d') : $existing?->{$field})
-                && ! $permissions['canPublishOrArchive']) {
+                && ($existing?->provenance_status === 'reference_sample' || ! $permissions['canPublishOrArchive'])) {
                 throw new AuthorizationException('Only the authorized Planning Head may record adoption and review references.');
             }
         }

@@ -116,9 +116,9 @@ export default function Index({
         setResponsibleOffice(record?.responsibleOffice??planningPermissions?.actorDepartmentName??'');
         setYear(String(record?.year??2027));setRelatedPlan(record?.relatedDevelopmentPlan??'');
         setFundingSource(record?.fundingSource??'');setStatus(record?.rawStatus??record?.status??'Planned');
-        setMooeAmount(String(record?.amounts?.mooe_amount??record?.mooeAmount??''));setCoAmount(String(record?.amounts?.co_amount??record?.coAmount??''));setBarangay(record?.barangay??'');
+        setMooeAmount(String(record?.amounts ? record.amounts.mooe_amount??'' : record?.mooeAmount??''));setCoAmount(String(record?.amounts ? record.amounts.co_amount??'' : record?.coAmount??''));setBarangay(record?.coveredBarangays?.join(', ')??record?.barangay??'');
         setAipCode(record?.aipReferenceCode??'');setGadAttributed(record?.gadAttributed??false);setDrrmTagged(record?.drrmTagged??false);setContext(record?.implementationContext??'');
-        setRecordFields(record?{development_plan_id:String(record.developmentPlanId??''),planning_map_id:String(record.planningMapId??''),schedule_start:record.scheduleStart??'',schedule_end:record.scheduleEnd??'',expected_outputs:record.expectedOutputs??'',covered_barangays:(record.coveredBarangays??[]).join(', '),ps_amount:String(record.amounts?.ps_amount??record.psAmount??''),climate_adaptation_amount:String(record.amounts?.climate_adaptation_amount??record.climateAdaptationAmount??''),climate_mitigation_amount:String(record.amounts?.climate_mitigation_amount??record.climateMitigationAmount??''),priority:record.priority,map_code:record.mapCode??'',target_quarter:record.targetQuarter??''}:{});
+        setRecordFields(record?{appropriation_amount:record.amounts?.appropriation_amount??'',development_plan_id:String(record.developmentPlanId??''),planning_map_id:String(record.planningMapId??''),schedule_start:record.scheduleStart??'',schedule_end:record.scheduleEnd??'',expected_outputs:record.expectedOutputs??'',covered_barangays:(record.coveredBarangays??[]).join(', '),ps_amount:String(record.amounts ? record.amounts.ps_amount??'' : record.psAmount??''),climate_adaptation_amount:String(record.amounts ? record.amounts.climate_adaptation_amount??'' : record.climateAdaptationAmount??''),climate_mitigation_amount:String(record.amounts ? record.amounts.climate_mitigation_amount??'' : record.climateMitigationAmount??''),priority:record.priority,map_code:record.mapCode??'',target_quarter:record.targetQuarter??''}:{});
         setShowCreateModal(true);
     };
 
@@ -139,6 +139,7 @@ export default function Index({
                 related_development_plan: relatedPlan.trim(),
                 funding_source: fundingSource.trim(),
                 status,
+                appropriation_amount: recordFields.appropriation_amount || (editingPpa?null:undefined),
                 mooe_amount: mooeAmount || null,
                 co_amount: coAmount || null,
                 barangay: barangay.trim() || null,
@@ -308,8 +309,8 @@ export default function Index({
                 statuses={planningPermissions?.canManagePpas ? ['Draft','Planned','For Procurement','Ongoing',...(planningPermissions?.canPublishOrArchive ? ['Completed','On Hold'] : [])] : ['Draft','Planned']}
                 unavailable={[]}
                 referenceFields={<div className="grid gap-3 sm:grid-cols-2">
-                    <label className="text-xs font-semibold">Related Development Plan Reference<input required value={relatedPlan} onChange={event=>setRelatedPlan(event.target.value)} className="tcds-input mt-1" /></label>
-                    {([['map_code','Map Reference Code'],['target_quarter','Target Quarter'],['climate_mitigation_amount','Climate Mitigation Amount']] as const).map(([name,label])=><label key={name} className="text-xs font-semibold">{label}<input type={name==='climate_mitigation_amount'?'number':'text'} min={0} step={name==='climate_mitigation_amount'?'0.01':undefined} value={recordFields[name]??''} onChange={event=>setRecordFields(fields=>({...fields,[name]:event.target.value}))} className="tcds-input mt-1" /></label>)}
+                    <label className="text-xs font-semibold">Related Development Plan Reference<input required={!recordFields.development_plan_id} value={relatedPlan} onChange={event=>setRelatedPlan(event.target.value)} className="tcds-input mt-1" /></label>
+                    {([['appropriation_amount','Total Appropriation (PHP)'],['map_code','Map Reference Code'],['target_quarter','Target Quarter'],['climate_mitigation_amount','Climate Mitigation Amount']] as const).map(([name,label])=><label key={name} className="text-xs font-semibold">{label}<input type={name==='climate_mitigation_amount'||name==='appropriation_amount'?'number':'text'} min={0} step={name==='climate_mitigation_amount'||name==='appropriation_amount'?'0.01':undefined} value={recordFields[name]??''} onChange={event=>setRecordFields(fields=>({...fields,[name]:event.target.value}))} className="tcds-input mt-1" /></label>)}
                 </div>}
             />
         </AppLayout>
