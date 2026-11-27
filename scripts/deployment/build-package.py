@@ -26,7 +26,7 @@ root=args.output.resolve()
 root.mkdir(mode=0o700,parents=True,exist_ok=False)
 package=root/'package'
 package.mkdir()
-with tarfile.open(fileobj=io.BytesIO(git('archive',sha))) as archive:
+with tarfile.open(fileobj=io.BytesIO(git('archive',sha,'app','bootstrap','config','database','routes','resources','public','bin','artisan','composer.json','composer.lock','package.json','package-lock.json'))) as archive:
     for member in archive:
         name=member.name
         if not (name in ['artisan','composer.json','composer.lock','package.json','package-lock.json'] or name.startswith(('app/','bootstrap/','config/','database/','routes/','resources/','public/','bin/'))):
@@ -40,7 +40,7 @@ with tarfile.open(fileobj=io.BytesIO(git('archive',sha))) as archive:
 for rel in ['vendor','public/build','bootstrap/cache']:
     if not (source/rel).is_dir():
         raise RuntimeError('Missing independently installed dependencies/assets')
-    shutil.copytree(source/rel,package/rel,dirs_exist_ok=True)
+    shutil.copytree(source/rel,package/rel,dirs_exist_ok=True,copy_function=shutil.copyfile)
 # A previous config/route cache is executable drift, not a deployable dependency.
 for name in ['config.php','routes-v7.php','events.php']:
     if (package/'bootstrap/cache'/name).exists():

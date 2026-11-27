@@ -35,7 +35,7 @@ def check(name, condition):
         raise RuntimeError('Failed: ' + name)
 
 
-def run(argv, env, input=None, allowed=(0,), private_result=False):
+def run(argv, env, input=None, allowed=(0,), private_result=False, timeout=240):
     with tempfile.TemporaryFile(mode='w+t', encoding='utf8') as log:
         if Path(str(argv[0])).stem == 'pg_ctl':
             result = subprocess.run([str(v) for v in argv], cwd=app_cwd, env=env, text=True,
@@ -44,7 +44,7 @@ def run(argv, env, input=None, allowed=(0,), private_result=False):
             result.stdout, result.stderr = log.read(), ''
         else:
             result = subprocess.run([str(v) for v in argv], cwd=app_cwd, env=env, text=True,
-                                    input=input, capture_output=True, timeout=240)
+                                    input=input, capture_output=True, timeout=timeout)
     if not private_result:
         client_chunks.append(result.stdout + result.stderr)
     if result.returncode not in allowed:
@@ -63,7 +63,7 @@ if not args.record_contract:
         actor = run(['whoami'],os.environ).stdout.strip()
         run(['icacls',build_parent,'/inheritance:r','/grant:r',actor+':(OI)(CI)F'],os.environ)
     build = build_parent/'build'
-    build_receipt = json.loads(run([sys.executable,source/'scripts/deployment/build-package.py','--output',build],os.environ).stdout)
+    build_receipt = json.loads(run([sys.executable,source/'scripts/deployment/build-package.py','--output',build],os.environ,timeout=1200).stdout)
     check('trusted_builder_source',build_receipt['source_sha']==report['source_sha'])
     report['package'] = build_receipt
     package = build/'package'
