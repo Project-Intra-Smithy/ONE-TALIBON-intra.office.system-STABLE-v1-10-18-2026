@@ -18,6 +18,7 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => env('DB_SSLMODE', 'prefer'),
+            'sslrootcert' => env('DB_SSLROOTCERT'),
             'timezone' => env('DB_TIMEZONE', 'Asia/Manila'),
         ],
         'n03_stage' => [
@@ -32,6 +33,7 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => env('DB_SSLMODE', 'prefer'),
+            'sslrootcert' => env('DB_SSLROOTCERT'),
             'timezone' => env('DB_TIMEZONE', 'Asia/Manila'),
         ],
         'n03_command' => [
@@ -46,6 +48,7 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => env('DB_SSLMODE', 'prefer'),
+            'sslrootcert' => env('DB_SSLROOTCERT'),
             'timezone' => env('DB_TIMEZONE', 'Asia/Manila'),
         ],
         'n03_reconcile' => [
@@ -60,6 +63,7 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => env('DB_SSLMODE', 'prefer'),
+            'sslrootcert' => env('DB_SSLROOTCERT'),
             'timezone' => env('DB_TIMEZONE', 'Asia/Manila'),
         ],
         'n03_reader' => [
@@ -74,6 +78,7 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => env('DB_SSLMODE', 'prefer'),
+            'sslrootcert' => env('DB_SSLROOTCERT'),
             'timezone' => env('DB_TIMEZONE', 'Asia/Manila'),
         ],
         'sqlite' => [

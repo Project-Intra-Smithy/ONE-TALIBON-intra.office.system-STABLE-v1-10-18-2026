@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Deployment;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use RuntimeException;
 
 /** Offline, target-bound bootstrap authority. Never enabled by a web/runtime env flag. */
@@ -50,13 +51,13 @@ final class PersistentInstaller
         return self::active() ? self::$target['bootstrap_role'] : 'postgres';
     }
 
-    public function install(array $target, array $passwords): array
+    public function install(array $target, string $credentialPath): array
     {
         if (PHP_SAPI !== 'cli' || ! app()->environment(['staging', 'production']) || config('app.debug')
             || DB::getDriverName() !== 'pgsql' || app()->configurationIsCached()) {
             throw new RuntimeException('Persistent installer requires uncached staging/production CLI, debug off and PG16.');
         }
-        foreach (['database', 'host', 'port', 'system_identifier', 'bootstrap_role', 'source_sha', 'app_key_sha256', 'expected_migrations', 'retired_runtime_roles'] as $field) {
+        foreach (['database', 'host', 'port', 'system_identifier', 'bootstrap_role', 'source_sha', 'app_key_sha256', 'expected_migrations', 'retired_runtime_roles', 'legacy_owner_roles', 'package_sha256', 'tree_sha'] as $field) {
             if (! isset($target[$field])) {
                 throw new RuntimeException('Incomplete persistent target manifest.');
             }
@@ -71,10 +72,11 @@ final class PersistentInstaller
             || strlen((string) config('app.key')) < 32) {
             throw new RuntimeException('Persistent target, source or application-key mismatch.');
         }
-        $source = is_file(base_path('DEPLOYMENT_SHA')) ? trim(file_get_contents(base_path('DEPLOYMENT_SHA')))
-            : trim((string) shell_exec('git -C '.escapeshellarg(base_path()).' rev-parse HEAD'));
-        if ($source !== $target['source_sha']) {
-            throw new RuntimeException('Persistent source SHA mismatch.');
+        $package = defined('ONE_TALIBON_VERIFIED_PACKAGE') ? ONE_TALIBON_VERIFIED_PACKAGE : null;
+        if (! is_array($package) || realpath($package['root']) !== realpath(base_path())
+            || $package['source_sha'] !== $target['source_sha'] || $package['tree_sha'] !== $target['tree_sha']
+            || $package['package_sha256'] !== $target['package_sha256'] || ! array_key_exists('previous_installation', $target)) {
+            throw new RuntimeException('Independently verified executable package is required.');
         }
         $identity = DB::selectOne("SELECT current_database() AS db, session_user AS role, current_user AS execution,
             current_setting('server_version_num')::int AS version, current_setting('is_superuser') AS superuser,
@@ -85,9 +87,11 @@ final class PersistentInstaller
             || $identity->system_identifier !== (string) $target['system_identifier']) {
             throw new RuntimeException('Persistent cluster or bootstrap identity mismatch.');
         }
+        CredentialBoundary::verify();
+        $passwords = json_decode(file_get_contents($credentialPath), true, 32, JSON_THROW_ON_ERROR);
         $roles = ['kirion_g1b_migrator', 'kirion_g1b_app', 'kirion_g1b_custody', 'n03_stage', 'n03_command', 'n03_reconcile', 'n03_reader'];
         foreach ($roles as $role) {
-            if (! isset($passwords[$role]) || ! is_string($passwords[$role]) || strlen($passwords[$role]) < 32) {
+            if (! isset($passwords[$role]) || ! is_string($passwords[$role]) || ! preg_match('/^[A-Za-z0-9_-]{32,128}$/D', $passwords[$role])) {
                 throw new RuntimeException('Missing private deployment role credential.');
             }
         }
@@ -95,7 +99,8 @@ final class PersistentInstaller
             throw new RuntimeException('Deployment roles require distinct credentials.');
         }
         try {
-            return DB::transaction(function () use ($target, $passwords, $roles): array {
+            return DB::transaction(function () use ($target, $passwords, $roles, $package): array {
+                CredentialBoundary::pinSession();
                 DB::statement("SET LOCAL lock_timeout='5s'");
                 DB::statement("SET LOCAL statement_timeout='120s'");
                 $lock = DB::selectOne("SELECT pg_try_advisory_xact_lock(hashtextextended('one-talibon-persistent-install',0)) AS acquired");
@@ -114,17 +119,44 @@ final class PersistentInstaller
                     throw new RuntimeException('Unexpected migration ledger; refusing target drift.');
                 }
                 $installed = DB::selectOne("SELECT to_regclass('deployment_control.installations') IS NOT NULL AS ready")->ready;
-                if ($installed && ! DB::selectOne("SELECT
-                    (SELECT count(*)=1 FROM deployment_control.installations WHERE singleton AND source_sha ~ '^[a-f0-9]{40}$')
-                    AND (SELECT pg_get_userbyid(relowner)=session_user FROM pg_class WHERE oid='deployment_control.installations'::regclass)
-                    AS valid")->valid) {
-                    throw new RuntimeException('Untrusted persistent installation registry.');
+                $security = app(PersistentSecurity::class);
+                $legacy = $security->preflight($target, $installed);
+                if ($installed) {
+                    $rows = DB::select('SELECT * FROM deployment_control.installations');
+                    $row = count($rows) === 1 ? (array) $rows[0] : null;
+                    $previous = $target['previous_installation'];
+                    if (! is_array($previous) || $row === null || $row != $previous
+                        || $row['source_sha'] !== $package['source_sha'] || $row['tree_sha'] !== $package['tree_sha']
+                        || $row['package_sha256'] !== $package['package_sha256']
+                        || $row['ledger_sha256'] !== hash('sha256', json_encode($existing, JSON_THROW_ON_ERROR))) {
+                        throw new RuntimeException('Untrusted installation identity, package or ledger lineage.');
+                    }
+                    foreach ($roles as $role) {
+                        $config = config('database.connections.'.config('database.default'));
+                        $config['username'] = $role;
+                        $config['password'] = $passwords[$role];
+                        $connection = DB::build($config);
+                        if ($connection->selectOne('SELECT current_user AS role')->role !== $role) {
+                            throw new RuntimeException('Registered credential authentication failed.');
+                        }
+                        $connection->disconnect();
+                    }
+                } elseif ($target['previous_installation'] !== null) {
+                    throw new RuntimeException('Unexpected prior installation lineage.');
                 }
                 if (! $installed && DB::selectOne("SELECT count(*) AS n FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%'")->n > 0) {
                     throw new RuntimeException('Protected role collision outside registered installation.');
                 }
                 if (! $installed && array_intersect($existing, self::GUARDED)) {
                     throw new RuntimeException('Unregistered protected migration state.');
+                }
+                if (! $installed) {
+                    $supported = array_values(array_filter(array_keys($files), static fn ($name) => $name <= '2026_11_20_000200_enforce_iam_identity_integrity' && ! in_array($name, self::GUARDED, true)));
+                    sort($supported);
+                    if ($existing !== [] && $existing !== $supported) {
+                        throw new RuntimeException('Unsupported unregistered upgrade baseline.');
+                    }
+                    $security->clearLegacyGrants($legacy);
                 }
                 $before = $this->identityDigest();
                 if (! $repository->repositoryExists()) {
@@ -150,30 +182,13 @@ final class PersistentInstaller
                 }
                 if (! $installed) {
                     foreach ($roles as $role) {
-                        // Fixed role identifiers; PDO quotes the secret, never console output.
-                        DB::unprepared('ALTER ROLE '.$role.' PASSWORD '.DB::getPdo()->quote($passwords[$role]));
+                        // Plaintext never enters SQL. Verifiers remain sensitive: verified logging/transport is mandatory.
+                        DB::unprepared('ALTER ROLE '.$role.' PASSWORD '.DB::getPdo()->quote(CredentialBoundary::scram($passwords[$role])));
                     }
                 }
-                DB::unprepared(file_get_contents(database_path('deployment/finalize.sql')));
-                $this->phase = 'postflight';
-                foreach ($target['retired_runtime_roles'] as $retired) {
-                    if (! is_string($retired) || ! preg_match('/^[a-z][a-z0-9_]{2,62}$/D', $retired)
-                        || str_starts_with($retired, 'kirion_') || str_starts_with($retired, 'n03_')
-                        || ! DB::selectOne('SELECT EXISTS(SELECT 1 FROM pg_roles WHERE rolname=? AND NOT rolsuper AND NOT rolcreatedb AND NOT rolcreaterole) AS safe', [$retired])->safe) {
-                        throw new RuntimeException('Unsafe retired runtime role; refusing privilege changes.');
-                    }
-                    // Revoke on this database only; do not disable a cluster role used by another service.
-                    DB::unprepared('REVOKE ALL ON ALL TABLES IN SCHEMA public,legacy_custody FROM '.$retired.';
-                        REVOKE ALL ON ALL SEQUENCES IN SCHEMA public,legacy_custody FROM '.$retired.';
-                        REVOKE ALL ON ALL FUNCTIONS IN SCHEMA public,legacy_custody FROM '.$retired.';
-                        REVOKE ALL ON SCHEMA public,legacy_custody FROM '.$retired);
-                    if (DB::selectOne("SELECT EXISTS(SELECT 1 FROM pg_auth_members m JOIN pg_roles r ON r.oid=m.member WHERE r.rolname=?)
-                        OR EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
-                        WHERE n.nspname IN ('public','legacy_custody') AND c.relkind='r'
-                        AND (has_any_column_privilege(?,c.oid,'SELECT,INSERT,UPDATE,REFERENCES') OR has_table_privilege(?,c.oid,'DELETE,TRUNCATE,TRIGGER')))
-                        AS remaining", [$retired, $retired, $retired])->remaining) {
-                        throw new RuntimeException('Retired runtime retains inherited, column or owner authority; rolling back.');
-                    }
+                $this->phase = 'complete security postflight';
+                if (! $installed) {
+                    $security->finalize($legacy);
                 }
                 if ($before !== $this->identityDigest()) {
                     throw new RuntimeException('Existing identity/account/office preservation failed; rolling back.');
@@ -182,11 +197,18 @@ final class PersistentInstaller
                 if (count($ran) !== count($files) || array_diff(array_keys($files), $ran)) {
                     throw new RuntimeException('Persistent migration postcondition failed.');
                 }
-                DB::unprepared('CREATE SCHEMA IF NOT EXISTS deployment_control; REVOKE ALL ON SCHEMA deployment_control FROM PUBLIC;
-                    CREATE TABLE IF NOT EXISTS deployment_control.installations (singleton boolean PRIMARY KEY CHECK(singleton), source_sha text NOT NULL)');
-                DB::statement('INSERT INTO deployment_control.installations VALUES (true,?) ON CONFLICT(singleton) DO UPDATE SET source_sha=EXCLUDED.source_sha', [$target['source_sha']]);
+                $ledger = $ran;
+                sort($ledger);
+                if (! $installed) {
+                    DB::unprepared(file_get_contents(database_path('deployment/registry.sql')));
+                    DB::statement('INSERT INTO deployment_control.installations VALUES (true,?::uuid,2,?,?,?,?)', [
+                        (string) Str::uuid(), $package['source_sha'], $package['tree_sha'], $package['package_sha256'], hash('sha256', json_encode($ledger, JSON_THROW_ON_ERROR)),
+                    ]);
+                }
+                app(SecurityCatalog::class)->verify($target['bootstrap_role']);
+                $security->verifyRetired($legacy);
 
-                return ['status' => 'INSTALLED', 'migration_count' => count($ran), 'existing_identity_preserved' => true,
+                return ['status' => 'INSTALLED', 'installation' => (array) DB::selectOne('SELECT * FROM deployment_control.installations'), 'migration_count' => count($ran), 'existing_identity_preserved' => true,
                     'app_key_preserved' => hash_equals($target['app_key_sha256'], hash('sha256', (string) config('app.key')))];
             });
         } finally {

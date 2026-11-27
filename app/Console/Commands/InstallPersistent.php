@@ -23,7 +23,7 @@ final class InstallPersistent extends Command
                 if (! is_file($path) || is_link($path) || (PHP_OS_FAMILY !== 'Windows' && (fileperms($path) & 0077) !== 0)) {
                     throw new \RuntimeException('Deployment inputs must be private regular files.');
                 }
-                $inputs[$name] = json_decode(file_get_contents($path), true, 32, JSON_THROW_ON_ERROR);
+                $inputs[$name] = $name === 'manifest' ? json_decode(file_get_contents($path), true, 32, JSON_THROW_ON_ERROR) : $path;
             }
             $this->line(json_encode($installer->install($inputs['manifest'], $inputs['credentials']), JSON_THROW_ON_ERROR));
 

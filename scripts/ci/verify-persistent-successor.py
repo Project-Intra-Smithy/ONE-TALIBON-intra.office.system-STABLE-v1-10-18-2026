@@ -15,6 +15,9 @@ allowed = {
     'scripts/ci/verify-persistent-successor.py', 'tests/Manual/persistent-install-rehearsal.py',
     '.github/workflows/functional-completion-pg16.yml', '.github/workflows/persistent-install-pg16.yml',
     'docs/deployment/PERSISTENT-PG16.md',
+    'app/Deployment/SecurityCatalog.php', 'app/Deployment/PersistentSecurity.php', 'app/Deployment/CredentialBoundary.php',
+    'scripts/deployment/verified-install.py', 'scripts/deployment/build-package.py',
+    'tests/Manual/build-security-contract.php', 'config/database.php',
 }
 changed = set(git('diff', '--name-only', BASE, 'HEAD').decode().splitlines())
 guarded = set()
@@ -58,7 +61,8 @@ for name, stage in policies.items():
     assert Path('database/deployment/'+stage+'.sql').read_text(encoding='utf-8') == '-- Shared privilege policy; entrypoints validate target and prerequisites.\n'+body.lstrip()
     assert Path(path).read_text(encoding='utf-8') == prefix+'END $guard$;\n\n\\ir ../../../database/deployment/'+stage+'.sql\n'+''.join(passwords)+'\nCOMMIT;'+suffix
 
-allowed.update('database/deployment/'+stage+'.sql' for stage in [*policies.values(), 'finalize'])
+allowed.update('database/deployment/'+stage+'.sql' for stage in [*policies.values(), 'finalize', 'registry'])
+allowed.add('database/deployment/security-contract.json')
 assert changed <= allowed | guarded | {p for p in changed if p.startswith('.forge/')}, changed-allowed-guarded
 for path in ['composer.json','composer.lock','package.json','package-lock.json']:
     assert git('show', BASE+':'+path) == Path(path).read_bytes(), path

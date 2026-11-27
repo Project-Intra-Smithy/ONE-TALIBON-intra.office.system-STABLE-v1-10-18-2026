@@ -1,55 +1,61 @@
-# Persistent PostgreSQL 16 installation and forward upgrade
+# Persistent PG16 installation — corrective security contract
 
-Scope: supported installation of this successor, including N03/G1B/OPS009. It is not municipal policy/adoption, production rollout, a data reset, or authorization to enable held modules. PR78 remains frozen. Existing disposable CI entrypoints retain their original target/lease/prerequisite checks and use the same shared privilege policies as this installer.
+PR78 and PR79 are preserved. The N79 corrective successor requires independent targeted reacceptance and final Maintainer disposition before any VPS mutation. No backups/snapshots, reset, redundant deployed instance, public rollout or main integration are authorized. An installer PASS is not deployed operational readiness.
 
-## Execution model
+## Independent executable trust (N79-04)
 
-`php artisan deploy:persistent /private/target.json /private/roles.json`
+The supported entrypoint is the independently authenticated, external `scripts/deployment/verified-install.py` launcher. Ordinary `php artisan deploy:persistent` has no verified-package authority and refuses. A marker file, Git HEAD, adjacent manifest, or registry declaration is not a trust root.
 
-Use a maintenance window, a verified source package/commit, installed locked Composer dependencies, uncached Laravel configuration, APP_ENV=staging or production, debug off, and the existing APP_KEY. Read it from the existing protected environment; never regenerate or print it. A fresh installation uses a newly generated private key before initial deployment; the installer never generates one. Do not use composer setup or DatabaseSeeder.
+In a trusted CI/build checkout at the exact accepted successor: install locked Composer dependencies, build locked frontend assets, verify source/qualification and run `python scripts/deployment/build-package.py --output /private/release-build`. This constructs a runtime projection from Git archive, includes every installed dependency and build byte plus Composer caches, and publishes an external complete SHA256 inventory, Git source/tree/ancestor, package-manifest digest and launcher digest. The builder refuses dirty tracked source or cached runtime configuration. Inspect/reconcile dependency provenance in that trusted locked build; do not run the builder against an untrusted downloaded/running package to create its own authority.
 
-The offline bootstrap connection needs PG16 superuser authority for role creation and transfer of existing legacy object ownership. Its credentials must not be installed in the web/worker environment. The application uses kirion_g1b_app; N03 stage, command, reconcile and reader have separate real connections as already defined in config/database.php. No application role is superuser/createdb/createrole/bypassrls/replication or a member of the owner. kirion_g1b_owner remains NOLOGIN; the migrator alone may explicitly assume it. Maintain restricted DB ingress and SCRAM authentication. Runtime failure to read the migration ledger is intentional.
+The independent acceptance/evidence channel supplies both digest pins. Transfer the approved package, external manifest and external launcher; authenticate the launcher bytes using a trusted OS/Python hash check before consuming them. The following outer trust step consumes the same bytes it hashes, avoiding a check/re-read race:
 
-Inputs must be private regular JSON files (0600 on Unix, private ACL on Windows). The target manifest contains:
-
-```json
-{
-  "database": "explicit_existing_database",
-  "host": "explicit_connection_host",
-  "port": "5432",
-  "system_identifier": "verified_pg_control_system_identifier",
-  "bootstrap_role": "explicit_offline_bootstrap_role",
-  "source_sha": "exact_40_character_git_commit_sha",
-  "app_key_sha256": "private_existing_app_key_fingerprint",
-  "expected_migrations": ["exact_existing_migration_names"],
-  "retired_runtime_roles": ["prior_runtime_role"]
-}
+```python
+# Executed by the operator's trusted Python, with independently obtained literal pins.
+blob = external_launcher.read_bytes()
+assert hashlib.sha256(blob).hexdigest() == independently_accepted_launcher_sha256
+sys.argv = [str(external_launcher), '--package', str(package), '--manifest', str(external_manifest),
+            '--sha256', independently_accepted_package_manifest_sha256,
+            '--target', str(private_target), '--credentials', str(private_credentials), '--php', trusted_php]
+exec(compile(blob, str(external_launcher), 'exec'), {'__name__': '__main__', '__file__': str(external_launcher)})
 ```
 
-For a fresh empty target expected_migrations is empty. For upgrade, independently read the live ledger and reconcile it to the installed source history; unknown/duplicate/missing expected entries are a refusal, not permission to forge the ledger. Obtain system_identifier from pg_control_system() through the offline bootstrap session. The manifest binds connection host/port/database, actual database/cluster, bootstrap identity, APP_KEY and source (Git HEAD or packaged DEPLOYMENT_SHA). postgres/template databases and talibon_portal_test are rejected. No config/env flag enables persistent migration authority: it exists only inside this command's checked transaction and disappears in finally. Ordinary artisan migrate retains its original disposable-only refusals for protected migrations.
+The external launcher verifies complete file inventory and hashes before vendor/autoload or Laravel executes: source, migrations, deployment SQL/security contract, dependencies, lockfiles, frontend manifest/assets and Composer bootstrap caches. Missing/extra content, symlinks, mutable marker additions and modifications are refused. Pins and manifests must reside outside the package, controlled independently of the runtime service. The operator owns the trust anchor, trusted Python/PHP/PG16 binaries and a read-only/exclusively held package during the entire invocation; concurrent privileged modification or a compromised build/operator is outside this mechanism's trust boundary. Do not expose package write authority to application users. Installer storage/cache/log activity uses a fresh private external bootstrap directory, never the existing application's document volume.
 
-roles.json maps each of kirion_g1b_migrator, kirion_g1b_app, kirion_g1b_custody, n03_stage, n03_command, n03_reconcile and n03_reader to a distinct randomly generated password of at least 32 characters. Do not put credentials or the private manifest in Git, issue comments, shell history or command arguments. Initial provisioning sets them within the transaction; a rerun does not rotate existing credentials. Verify actual role authentication before runtime cutover. Retired runtime roles lose grants in public/legacy_custody on this target only; they are not globally disabled, dropped or modified on unrelated databases. Independently verify they have no inherited/owner access before claiming retirement complete.
+Private target/credential files require actual private ownership/permissions. Unix checks reject symlinks, untrusted owners and group/other access. Windows native SID/DACL inspection enforces private inputs and rejects untrusted package write authority; documentation alone is insufficient. Certificate trust material must also have trusted ownership and no untrusted write access. Ambient APM enrollment, unapproved PHP extensions and PHP prepend/preload hooks are unsupported; no such process receives deployment credentials.
 
-## Order and atomicity
+## Target and registry lineage
 
-One transaction and target advisory lock cover:
+Private target JSON includes `database`, `host`, `port`, `system_identifier`, `bootstrap_role`, `source_sha`, `tree_sha`, `package_sha256`, `app_key_sha256`, exact `expected_migrations`, separate `legacy_owner_roles` and `retired_runtime_roles`, and `previous_installation` (null on initial installation). The package/source/tree fields must match the externally verified artifact. Use staging/production CLI with debug off, uncached configuration and the unchanged existing APP_KEY. Never run composer setup/key:generate/default seeding.
 
-1. Exact ledger/collision preflight and in-memory existing users/employees/departments preservation digest.
-2. Supported ordinary baseline migrations, excluding the nine guarded migrations. This includes the current Planning/IAM prerequisites, mirroring the accepted protected CI ordering.
-3. Shared G1B ownership/app/custody policy and G2 custody extension.
-4. N03 foundation, G2B, K2 and G3-G5 migrations, each followed by its corresponding shared role policy.
-5. Five OPS009 migrations in their canonical order, retaining all schema/function/constraint/role checks.
-6. Final object ownership, trigger execution and audit/ledger boundaries; explicitly scoped retirement of prior runtime grants.
-7. Exact migration completeness, identity/credential/MFA/office preservation, APP_KEY preservation and private installation registry.
+Supported initial states are an empty target or the qualified canonical 54-migration legacy schema. Unknown ledger/object/executable/owner/grantee/default-ACL state refuses. Existing roles that own target objects must be explicitly classified separately from runtime logins; privileged bootstrap identity is an offline administrative identity, never a replacement runtime connection. Existing users/employees/offices are compared in memory without dumps; password hashes, encrypted MFA and key values never enter receipts.
 
-The shared SQL files in database/deployment are internal policy fragments, not standalone installation entrypoints. Disposable tests invoke them only after their unchanged SQL guards. The persistent command invokes them only after its target/schema preflight and canonical migration sequence. There is no text replacement of guards or ledger fabrication at deployment time.
+Registry format2 has exact schema/table/constraint/column/ACL/default ownership and one singleton row with installation UUID, source/tree/package/ledger digests. A preexisting unregistered control schema is refused, not adopted. For registered rerun, the operator supplies the complete prior installation receipt independently retained from the successful deployment. The row must match that exact identity, current approved source/tree/package and actual ledger. Arbitrary prior SHA/UUID/extra rows/ACL/owner/shape/default drift refuses. This version supports its registered exact-package rerun; a different future schema/package lineage requires separately qualified migration contracts, not arbitrary source blessing.
 
-Any failure rolls back DDL, role creation/grants, application migrations and ledger writes together. Existing accounts and data are never replaced. Error output omits database query text/bindings that might carry credentials. A refusal is not success; inspect the exact failing phase in an isolated synthetic rehearsal. Never retry using testing-env spoofing or relaxed guards.
+## Complete authority postconditions (N79-01 / N79-02)
 
-Successful rerun requires a newly verified manifest reflecting the now-current ledger, registered installation and intact roles. It applies only pending migrations and verifies preservation again. A protected-role collision without this target's registered installation is refused, even if roles have matching names.
+`database/deployment/security-contract.json` is a reviewable, secret-free canonical catalog derived by `tests/Manual/build-security-contract.php` only in the original exclusive disposable PG16 testing lane, from the six accepted shared policies and canonical migrations. That fixture cannot run on a persistent target and is not packaged. Qualification must independently compare the derived contract and required positive operations, not regenerate a trusted contract from the installation target.
 
-## Qualification and deployment completion
+The contract compares full database/schema/relation/column/sequence/routine/type/default ACL entries (including PUBLIC, grantor and grant options), object inventories/definitions/owners, constraints/triggers/RLS/policies, role attributes/login capability, memberships and PG16 ADMIN/INHERIT/SET options. It also exhaustively checks effective positive and negative access across managed roles, relations, columns, sequences, routines, schemas and database. Original disposable guards and SQL policy bodies remain preserved by the source verifier.
 
-Run tests/Manual/persistent-install-rehearsal.py with local PG16 binaries and an evidence output directory. It accepts no external DSN, creates loopback-only synthetic clusters, tests fresh and exact 54-migration upgrade, password/MFA decryption, late rollback, target/cluster/source/ledger/key refusal, least privilege using authenticated connections, old runtime grant revocation and idempotent rerun. These tests are not hosted operational QA.
+Initial reconciliation is limited to known canonical objects and explicitly classified legacy/PUBLIC grants. Unknown objects, routines, principals with target grants, unsafe owner topology and unknown defaults refuse. Database ownership transfers to the verified offline bootstrap administrator and public-schema ownership to the managed NOLOGIN owner; all canonical relation/sequence/routine ownership is verified. Retired identities and every role they can SET ROLE into must have no remaining target connection/create/temp/schema/object/column/sequence/routine/ownership authority. No role is globally disabled/dropped and no unrelated database, grants, membership or role attributes are changed. Shared/ambiguous authority that cannot be removed target-locally fails rather than affecting another service. Unknown view/partition/routine examples are refusals, not permission to adopt unapproved objects.
 
-After exact-source CI and targeted independent deployment-control acceptance, classify/preserve existing VPS records and administrator, build locked PHP/frontend assets, run the supported command against the explicitly verified target, privately configure the runtime role connections, private storage and existing custody broker/namespace prerequisites, and perform authenticated HTTPS/MFA multi-role workflow smoke tests. Do not claim deployment readiness from an installer PASS or /login 200. Record asset identity, services/queues/scheduler, synthetic provenance/counts, administrator preservation and evaluator access privately. Existing mission forbids backups/snapshots/redundant deployed instances, main integration and public rollout. Siris activation remains with Maintainer/Engineer.
+On registered rerun the entire contract and retired authority are verified before migration/provisioning and again afterward. Unexpected DELETE, column/sequence/schema/database grants, grant/admin/SET options, PUBLIC/default ACLs, missing roles and executable/ownership changes fail closed. Policies are not blindly skipped and unauthorized drift is not silently blessed. Accepted runtime positive access remains intact. No registered rerun rotates credentials.
+
+## Credential, transport and monitoring boundary (N79-03)
+
+Provide distinct randomly generated ASCII base64url/hex passwords of32–128characters for kirion_g1b_migrator/app/custody and n03_stage/command/reconcile/reader. Values stay in private files/process memory; only locally derived SCRAM-SHA-256 verifiers enter role provisioning SQL. Plaintext passwords never enter SQL, logs, arguments, Git, receipts or notifications. Verifiers are also sensitive.
+
+Provisioning requires verified TLS (`DB_SSLMODE=verify-full`, protected `DB_SSLROOTCERT`, actual pg_stat_ssl SSL) or a private trusted local Unix socket directory. There is no plaintext TCP exception for Docker/loopback. Credentials are loaded only after the runtime connection/logging boundary is verified. Registered credentials must authenticate on real connections before any change; absence of rotation is not a claim that arbitrary supplied passwords work.
+
+Supported monitoring is stock PG16/plpgsql and the accepted PHP runtime without SQL auditing/tracing extensions, event triggers, QueryExecuted listeners or query recording. The connection must already have log_statement=none, duration/sample logging disabled, log_min_error_statement=panic, parameter logging0, debug parse/rewrite/plan off, and all preload library settings empty. pgaudit/auto_explain settings/extensions and unverifiable hooks are refused. The installer never disables global security monitoring; after verifying a dedicated safe bootstrap session it pins those same safe session-local values for its transaction, preventing SIGHUP from enabling logging midway. An operator whose mandatory auditing cannot support this narrow credential-safe bootstrap boundary must use a separately reviewed provisioning mechanism; do not relax safeguards.
+
+Trust includes administrator-controlled PG/PHP/Python binaries/configuration, TLS/OS socket endpoint, private log/core/packet/process-memory access and no out-of-band root-level capture. Stock SQL settings cannot attest a compromised kernel, malicious administrator, altered database binary or external memory/core collector. Such conditions are unsupported; no universal no-capture guarantee is claimed. The exact rehearsal scans synthetic plaintext canaries and actual SCRAM verifiers against client/error/server logs on success and late rollback, and exercises refusal under verbose logging/audit settings. Only booleans, never canaries/verifiers, are published.
+
+## Execution and qualification
+
+One transaction/advisory lock covers supported baseline, G1B/G2, four N03 stages with role prerequisites, five OPS009 stages, ownership/ACL finalization, account/key preservation, complete security verification and registry creation. Failure rolls back role/DDL/ledger changes. Existing APP_KEY and administrator credentials/MFA are never reset. Offline bootstrap credentials do not enter web/worker configuration; normal runtime uses kirion_g1b_app and separate least-privilege N03 connections.
+
+Run the exact-source persistent rehearsal on Linux and Windows, plus original protected PG16 and canonical/presentation matrices. It uses new private synthetic clusters only; fresh and realistic split legacy owner/runtime54-migration upgrade; unrelated database/roles unchanged; credential/MFA/TOTP/account/office preservation; full registered drift matrix; tampered executable/dependency/build/registry cases; logging canaries/refusals; true runtime authentication; positive access and late rollback. The canonical contract derivation fixture is separate from production authority. Preserve failed attempts and exact source/tree/run/artifact identities.
+
+After Nox targeted reacceptance and final Maintainer disposition, resume the original VPS mission: private data classification and preservation, exact package deployment, storage/broker/runtime/scheduler/queue configuration, controlled ingress/mail, realistic additive fixtures, actual authenticated HTTPS/MFA multi-role operational smoke and private Siris access. These remain separate from source qualification. See [PostgreSQL16 privilege/revocation semantics](https://www.postgresql.org/docs/16/sql-revoke.html) for PUBLIC, column grants and membership behavior.

@@ -13,16 +13,20 @@ import shutil
 import socket
 import subprocess
 import tempfile
+import sys
 
 ap = argparse.ArgumentParser(description=__doc__)
 ap.add_argument('--pg-bin', type=Path, required=True)
 ap.add_argument('--output', type=Path, required=True)
+ap.add_argument('--record-contract', action='store_true', help='Developer fixture on an exclusive disposable database only; never a persistent-install option')
 args = ap.parse_args()
 source = Path(__file__).resolve().parents[2]
 args.output.mkdir(parents=True, exist_ok=True)
 php = shutil.which('php')
 report = {'source_sha': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=source, text=True).strip(), 'checks': []}
 private_values = []
+app_cwd = source
+client_chunks = []
 
 
 def check(name, condition):
@@ -31,16 +35,18 @@ def check(name, condition):
         raise RuntimeError('Failed: ' + name)
 
 
-def run(argv, env, input=None, allowed=(0,)):
+def run(argv, env, input=None, allowed=(0,), private_result=False):
     with tempfile.TemporaryFile(mode='w+t', encoding='utf8') as log:
         if Path(str(argv[0])).stem == 'pg_ctl':
-            result = subprocess.run([str(v) for v in argv], cwd=source, env=env, text=True,
+            result = subprocess.run([str(v) for v in argv], cwd=app_cwd, env=env, text=True,
                                     stdout=log, stderr=subprocess.STDOUT, timeout=90)
             log.seek(0)
             result.stdout, result.stderr = log.read(), ''
         else:
-            result = subprocess.run([str(v) for v in argv], cwd=source, env=env, text=True,
+            result = subprocess.run([str(v) for v in argv], cwd=app_cwd, env=env, text=True,
                                     input=input, capture_output=True, timeout=240)
+    if not private_result:
+        client_chunks.append(result.stdout + result.stderr)
     if result.returncode not in allowed:
         message = (result.stdout + result.stderr)[-5000:]
         for secret in private_values:
@@ -49,7 +55,23 @@ def run(argv, env, input=None, allowed=(0,)):
     return result
 
 
-for mode in ['fresh', 'upgrade']:
+# The authenticated launcher consumes the same verified bytes it hashes (no check/exec reread).
+TRUSTED_BOOT = "import hashlib,sys; p=sys.argv[1]; b=open(p,'rb').read(); assert hashlib.sha256(b).hexdigest()==sys.argv[2]; sys.argv=[p]+sys.argv[3:]; exec(compile(b,p,'exec'),{'__name__':'__main__','__file__':p})"
+if not args.record_contract:
+    build_parent = Path(tempfile.mkdtemp(prefix='ot-trusted-package-'))
+    if os.name == 'nt':
+        actor = run(['whoami'],os.environ).stdout.strip()
+        run(['icacls',build_parent,'/inheritance:r','/grant:r',actor+':(OI)(CI)F'],os.environ)
+    build = build_parent/'build'
+    build_receipt = json.loads(run([sys.executable,source/'scripts/deployment/build-package.py','--output',build],os.environ).stdout)
+    check('trusted_builder_source',build_receipt['source_sha']==report['source_sha'])
+    report['package'] = build_receipt
+    package = build/'package'
+    app_cwd = package
+    launcher = build/'verified-install.py'
+    manifest_digest = build_receipt['package_manifest_sha256']
+
+for mode in (['contract'] if args.record_contract else ['fresh', 'upgrade']):
     env = {k: v for k, v in os.environ.items() if not k.startswith(('PG', 'DB_', 'APP_', 'N03_', 'LEGACY_CUSTODY_', 'KIRION_'))}
     root = Path(tempfile.mkdtemp(prefix='ot-persistent-'+mode+'-'))
     if os.name == 'nt':
@@ -69,24 +91,38 @@ for mode in ['fresh', 'upgrade']:
     data = root/'data'
     started = False
     try:
-        run([args.pg_bin/'initdb', '-D', data, '-U', 'ot_bootstrap', '--auth=scram-sha-256', '--pwfile='+str(pwfile), '--encoding=UTF8', '--no-locale'], env)
+        run([args.pg_bin/'initdb', '-D', data, '-U', 'postgres', '--auth=scram-sha-256', '--pwfile='+str(pwfile), '--encoding=UTF8', '--no-locale'], env)
         pwfile.unlink()
+        openssl = shutil.which('openssl') or ('C:/Program Files/Git/usr/bin/openssl.exe' if os.name == 'nt' else 'openssl')
+        run([openssl,'req','-x509','-newkey','rsa:2048','-nodes','-days','2','-subj','/CN=127.0.0.1','-addext','subjectAltName=IP:127.0.0.1','-keyout',root/'server.key','-out',root/'server.crt'],env)
+        (root/'server.key').chmod(0o600)
+        with (data/'postgresql.conf').open('a') as config:
+            config.write("\nssl=on\nssl_cert_file='"+(root/'server.crt').as_posix().replace('\\','/')+"'\nssl_key_file='"+str(root/'server.key').replace('\\','/')+"'\nlog_min_error_statement='panic'\nlog_parameter_max_length=0\nlog_parameter_max_length_on_error=0\n")
         options = '-h 127.0.0.1 -p '+str(port)
         if os.name != 'nt':
             options += ' -k '+str(root)
         run([args.pg_bin/'pg_ctl', '-D', data, '-l', root/'postgres.log', '-o', options, '-w', 'start'], env)
         started = True
-        db = 'ot_persistent_'+mode
-        env.update(PGHOST='127.0.0.1', PGPORT=str(port), PGUSER='ot_bootstrap', PGPASSWORD=bootstrap, PGDATABASE='postgres',
+        db = 'talibon_portal_test' if mode == 'contract' else 'ot_persistent_'+mode
+        env.update(PGHOST='127.0.0.1', PGPORT=str(port), PGUSER='postgres', PGPASSWORD=bootstrap, PGDATABASE='postgres',
                    APP_ENV='staging', APP_DEBUG='false', APP_KEY=key, APP_URL='https://rehearsal.invalid',
-                   DB_CONNECTION='pgsql', DB_HOST='127.0.0.1', DB_PORT=str(port), DB_DATABASE=db, DB_USERNAME='ot_bootstrap', DB_PASSWORD=bootstrap,
-                   CACHE_STORE='array', SESSION_DRIVER='array', LOG_CHANNEL='stderr')
+                   DB_CONNECTION='pgsql', DB_HOST='127.0.0.1', DB_PORT=str(port), DB_DATABASE=db, DB_USERNAME='postgres', DB_PASSWORD=bootstrap,
+                   CACHE_STORE='array', SESSION_DRIVER='array', LOG_CHANNEL='stderr', PGSSLMODE='verify-full', PGSSLROOTCERT=(root/'server.crt').as_posix(), DB_SSLMODE='verify-full', DB_SSLROOTCERT=(root/'server.crt').as_posix())
 
-        def sql(query, connection_env=None, allowed=(0,)):
-            return run([args.pg_bin/'psql', '-X', '-v', 'ON_ERROR_STOP=1', '-At'], connection_env or env, input=query, allowed=allowed)
+        def sql(query, connection_env=None, allowed=(0,), private_result=False):
+            return run([args.pg_bin/'psql', '-X', '-v', 'ON_ERROR_STOP=1', '-At'], connection_env or env, input=query, allowed=allowed, private_result=private_result)
 
         sql('CREATE DATABASE '+db)
         env['PGDATABASE'] = db
+        if mode == 'contract':
+            fixture_env = dict(env, APP_ENV='testing', N03_DISPOSABLE_LEASE='EXCLUSIVE_PG16_SYNTHETIC_ONLY')
+            result = run([php,'tests/Manual/build-security-contract.php'],fixture_env)
+            if not result.stdout.lstrip().startswith('{'):
+                raise RuntimeError('Contract fixture did not return JSON: '+result.stdout[-1000:]+result.stderr[-1000:])
+            contract = json.loads(result.stdout)
+            (source/'database/deployment/security-contract.json').write_text(json.dumps(contract,separators=(',',':')),encoding='utf-8')
+            check('canonical_disposable_contract_derived',len(contract['roles'])==9 and len(contract['effective_columns'])>1000)
+            continue
         all_paths = sorted((source/'database/migrations').glob('*.php'))
         if mode == 'upgrade':
             baseline = [p for p in all_paths if p.stem <= '2026_11_20_000200_enforce_iam_identity_integrity' and 'legacy_custody' not in p.name]
@@ -99,14 +135,20 @@ for mode in ['fresh', 'upgrade']:
             echo 'SYNTH_SEEDED'; } catch(Throwable $e) { fwrite(STDERR,get_class($e)); exit(1); } """
             check(mode+'_nonempty_admin_fixture', run([php], env, input=seed).stdout.strip() == 'SYNTH_SEEDED')
             check(mode+'_admin_and_employee_present', sql('SELECT (SELECT count(*) FROM users)=1 AND (SELECT count(*) FROM employees)=1').stdout.strip() == 't')
-            sql('CREATE ROLE legacy_runtime LOGIN NOSUPERUSER; GRANT USAGE ON SCHEMA public TO legacy_runtime; GRANT ALL ON ALL TABLES IN SCHEMA public TO legacy_runtime;')
+            sql("CREATE ROLE legacy_owner NOLOGIN; CREATE ROLE legacy_runtime LOGIN NOINHERIT; CREATE DATABASE unrelated_service OWNER legacy_owner; ALTER DATABASE "+db+" OWNER TO legacy_owner; ALTER SCHEMA public OWNER TO legacy_owner;")
+            sql("DO $o$ DECLARE x record; BEGIN FOR x IN SELECT tablename FROM pg_tables WHERE schemaname='public' LOOP EXECUTE format('ALTER TABLE public.%I OWNER TO legacy_owner',x.tablename); END LOOP; END $o$; GRANT USAGE,CREATE ON SCHEMA public TO legacy_runtime; GRANT ALL ON ALL TABLES IN SCHEMA public TO legacy_runtime; GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO legacy_runtime;")
+            other_env=dict(env,PGDATABASE='unrelated_service')
+            sql('CREATE TABLE unrelated_marker(id int PRIMARY KEY); ALTER TABLE unrelated_marker OWNER TO legacy_owner; GRANT SELECT ON unrelated_marker TO legacy_runtime;',other_env)
+            unrelated_query="SELECT row_to_json(d) FROM pg_database d WHERE datname='unrelated_service'; SELECT row_to_json(r) FROM pg_roles r WHERE rolname IN ('legacy_owner','legacy_runtime') ORDER BY rolname; SELECT relacl::text,relowner::regrole FROM pg_class WHERE relname='unrelated_marker';"
+            unrelated_before=sql(unrelated_query,other_env).stdout
             check(mode+'_exact_54_migration_baseline', sql('SELECT count(*) FROM migrations').stdout.strip() == '54')
         ledger = sql('SELECT migration FROM migrations ORDER BY migration').stdout.splitlines() if mode == 'upgrade' else []
         fingerprint_sql = "SELECT md5(coalesce(string_agg(to_jsonb(t)::text,'|' ORDER BY id),'')) FROM users t; SELECT md5(coalesce(string_agg(to_jsonb(t)::text,'|' ORDER BY id),'')) FROM employees t;"
         before = sql(fingerprint_sql).stdout if mode == 'upgrade' else None
         target = dict(database=db, host='127.0.0.1', port=str(port), system_identifier=sql('SELECT system_identifier FROM pg_control_system()').stdout.strip(),
-                      bootstrap_role='ot_bootstrap', source_sha=report['source_sha'], app_key_sha256=hashlib.sha256(key.encode()).hexdigest(), expected_migrations=ledger,
-                      retired_runtime_roles=['legacy_runtime'] if mode == 'upgrade' else [])
+                      bootstrap_role='postgres', source_sha=report['source_sha'], app_key_sha256=hashlib.sha256(key.encode()).hexdigest(), expected_migrations=ledger,
+                      retired_runtime_roles=['legacy_runtime'] if mode == 'upgrade' else [], legacy_owner_roles=['legacy_owner'] if mode == 'upgrade' else [],
+                      package_sha256=manifest_digest, tree_sha=build_receipt['tree_sha'], previous_installation=None)
         roles = ['kirion_g1b_migrator', 'kirion_g1b_app', 'kirion_g1b_custody', 'n03_stage', 'n03_command', 'n03_reconcile', 'n03_reader']
         credentials = {role: secrets.token_hex(32) for role in roles}
         private_values.extend(credentials.values())
@@ -114,10 +156,15 @@ for mode in ['fresh', 'upgrade']:
         credentials_file.write_text(json.dumps(credentials))
         credentials_file.chmod(0o600)
 
+        def invocation(target_file=manifest_file, credential_file=credentials_file, pin=manifest_digest, package_path=package):
+            return [sys.executable,'-c',TRUSTED_BOOT,str(launcher),build_receipt['launcher_sha256'],
+                    '--package',str(package_path),'--manifest',str(build/'package-manifest.json'),'--sha256',pin,
+                    '--target',str(target_file),'--credentials',str(credential_file),'--php',php]
+
         def install(manifest, expected=0, extra_env=None):
             manifest_file.write_text(json.dumps(manifest))
             manifest_file.chmod(0o600)
-            return run([php, 'artisan', 'deploy:persistent', manifest_file, credentials_file], extra_env or env, allowed=(expected,))
+            return run(invocation(),extra_env or env,allowed=(expected,))
 
         for field, value in [('database','unauthorized_target'), ('system_identifier','0'), ('source_sha','0'*40), ('bootstrap_role','unauthorized_role'), ('app_key_sha256','0'*64), ('expected_migrations',['unknown_migration'])]:
             invalid = dict(target, **{field:value})
@@ -130,11 +177,13 @@ for mode in ['fresh', 'upgrade']:
         if mode == 'fresh':
             # Ordinary migrate created only its repository, not application schema.
             target['expected_migrations'] = []
-        invalid = dict(target, retired_runtime_roles=['ot_bootstrap'])
+        invalid = dict(target)
+        sql('ALTER TABLE migrations ENABLE ROW LEVEL SECURITY')
         check(mode+'_late_failure_rolls_back', install(invalid, 1).returncode == 1)
         check(mode+'_rollback_roles', sql("SELECT count(*) FROM pg_roles WHERE rolname LIKE 'kirion_g1b_%' OR rolname LIKE 'n03_%'").stdout.strip() == '0')
         check(mode+'_rollback_custody', sql("SELECT to_regnamespace('legacy_custody') IS NULL").stdout.strip() == 't')
         check(mode+'_rollback_ledger', int(sql('SELECT count(*) FROM migrations').stdout.strip()) == len(ledger))
+        sql('ALTER TABLE migrations DISABLE ROW LEVEL SECURITY')
         check(mode+'_install', '"status":"INSTALLED"' in install(target).stdout)
         check(mode+'_all_migrations_once', sql('SELECT count(*)=count(DISTINCT migration) FROM migrations').stdout.strip() == 't')
         check(mode+'_complete_ledger', int(sql('SELECT count(*) FROM migrations').stdout.strip()) == len(all_paths))
@@ -158,6 +207,84 @@ for mode in ['fresh', 'upgrade']:
         if mode == 'upgrade':
             check(mode+'_legacy_runtime_revoked', sql("SELECT NOT has_table_privilege('legacy_runtime','public.users','UPDATE')").stdout.strip() == 't')
         target['expected_migrations'] = sql('SELECT migration FROM migrations ORDER BY migration').stdout.splitlines()
+        target['previous_installation'] = json.loads(sql('SELECT row_to_json(i) FROM deployment_control.installations i').stdout)
+        def metadata_fingerprint():
+            return sql("SELECT md5(concat_ws('|',(SELECT string_agg(row_to_json(c)::text,',' ORDER BY c.oid) FROM pg_class c),(SELECT string_agg(row_to_json(n)::text,',' ORDER BY n.oid) FROM pg_namespace n),(SELECT string_agg(row_to_json(a)::text,',' ORDER BY a.attrelid,a.attnum) FROM pg_attribute a),(SELECT string_agg(row_to_json(p)::text,',' ORDER BY p.oid) FROM pg_proc p),(SELECT string_agg(row_to_json(d)::text,',' ORDER BY d.oid) FROM pg_default_acl d),(SELECT string_agg(row_to_json(m)::text,',' ORDER BY m.roleid,m.member) FROM pg_auth_members m),(SELECT string_agg(row_to_json(r)::text,',' ORDER BY r.oid) FROM pg_roles r),(SELECT string_agg(row_to_json(d)::text,',' ORDER BY d.oid) FROM pg_database d)))").stdout
+
+        drift_cases=[
+            ('reader_delete','GRANT DELETE ON transactions TO n03_reader','REVOKE DELETE ON transactions FROM n03_reader'),
+            ('column_grant','GRANT UPDATE(name) ON users TO n03_reader','REVOKE UPDATE(name) ON users FROM n03_reader'),
+            ('sequence_update','GRANT UPDATE ON SEQUENCE users_id_seq TO n03_reader','REVOKE UPDATE ON SEQUENCE users_id_seq FROM n03_reader'),
+            ('schema_create','GRANT CREATE ON SCHEMA public TO kirion_g1b_app','REVOKE CREATE ON SCHEMA public FROM kirion_g1b_app'),
+            ('database_temp','GRANT TEMPORARY ON DATABASE '+db+' TO kirion_g1b_app','REVOKE TEMPORARY ON DATABASE '+db+' FROM kirion_g1b_app'),
+            ('grant_option','GRANT SELECT ON transactions TO kirion_g1b_app WITH GRANT OPTION','REVOKE GRANT OPTION FOR SELECT ON transactions FROM kirion_g1b_app'),
+            ('public_table','GRANT SELECT ON users TO PUBLIC','REVOKE SELECT ON users FROM PUBLIC'),
+            ('public_schema','GRANT CREATE ON SCHEMA public TO PUBLIC','REVOKE CREATE ON SCHEMA public FROM PUBLIC'),
+            ('public_database','GRANT CREATE ON DATABASE '+db+' TO PUBLIC','REVOKE CREATE ON DATABASE '+db+' FROM PUBLIC'),
+            ('set_role','GRANT kirion_g1b_owner TO n03_reader','REVOKE kirion_g1b_owner FROM n03_reader'),
+            ('migrator_extra_path','GRANT pg_read_all_data TO kirion_g1b_migrator WITH INHERIT FALSE, SET TRUE','REVOKE pg_read_all_data FROM kirion_g1b_migrator'),
+            ('migrator_admin_option','GRANT kirion_g1b_owner TO kirion_g1b_migrator WITH ADMIN TRUE','GRANT kirion_g1b_owner TO kirion_g1b_migrator WITH ADMIN FALSE'),
+            ('role_attribute','ALTER ROLE n03_reader INHERIT','ALTER ROLE n03_reader NOINHERIT'),
+            ('owner_db','ALTER DATABASE '+db+' OWNER TO n03_reader','ALTER DATABASE '+db+' OWNER TO postgres'),
+            ('owner_schema','ALTER SCHEMA public OWNER TO n03_reader','ALTER SCHEMA public OWNER TO kirion_g1b_owner'),
+            ('routine_owner','ALTER FUNCTION legacy_custody.lock_pending(uuid,bigint,text) OWNER TO n03_reader','ALTER FUNCTION legacy_custody.lock_pending(uuid,bigint,text) OWNER TO kirion_g1b_owner'),
+            ('unknown_view','CREATE VIEW public.unapproved_view AS SELECT id FROM users; ALTER VIEW public.unapproved_view OWNER TO n03_reader','DROP VIEW public.unapproved_view'),
+            ('unknown_partition','CREATE TABLE public.unapproved_parent(id int) PARTITION BY RANGE(id); CREATE TABLE public.unapproved_child PARTITION OF public.unapproved_parent FOR VALUES FROM (0) TO (10)','DROP TABLE public.unapproved_parent'),
+            ('default_acl','ALTER DEFAULT PRIVILEGES GRANT EXECUTE ON FUNCTIONS TO PUBLIC','ALTER DEFAULT PRIVILEGES REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC'),
+            ('registry_schema_acl','GRANT CREATE ON SCHEMA deployment_control TO PUBLIC','REVOKE CREATE ON SCHEMA deployment_control FROM PUBLIC'),
+            ('registry_table_acl','GRANT SELECT ON deployment_control.installations TO n03_reader','REVOKE SELECT ON deployment_control.installations FROM n03_reader'),
+            ('registry_identity',"UPDATE deployment_control.installations SET installation_id='00000000-0000-4000-8000-000000000001'","UPDATE deployment_control.installations SET installation_id='"+target['previous_installation']['installation_id']+"'"),
+            ('registry_schema_owner','ALTER SCHEMA deployment_control OWNER TO n03_reader','ALTER SCHEMA deployment_control OWNER TO postgres'),
+            ('registry_table_owner','ALTER TABLE deployment_control.installations OWNER TO n03_reader','ALTER TABLE deployment_control.installations OWNER TO postgres'),
+            ('registry_shape','ALTER TABLE deployment_control.installations ADD COLUMN untrusted boolean','ALTER TABLE deployment_control.installations DROP COLUMN untrusted'),
+        ]
+        for name,change,undo in drift_cases:
+            sql(change)
+            drift_before=metadata_fingerprint()
+            check(mode+'_rejects_'+name,install(target,1).returncode==1)
+            check(mode+'_drift_rollback_'+name,metadata_fingerprint()==drift_before)
+            sql(undo)
+        # Even an externally declared matching arbitrary previous SHA cannot bless an unqualified lineage.
+        sql("UPDATE deployment_control.installations SET source_sha='"+'f'*40+"'")
+        forged=dict(target,previous_installation=dict(target['previous_installation'],source_sha='f'*40))
+        check(mode+'_rejects_forged_lineage',install(forged,1).returncode==1)
+        sql("UPDATE deployment_control.installations SET source_sha='"+report['source_sha']+"'")
+        for setting in ['log_statement=all','log_duration=on','log_min_duration_statement=0','log_parameter_max_length=-1','log_min_error_statement=error','debug_print_parse=on','pgaudit.log=all']:
+            check(mode+'_logging_refusal_'+setting.split('=')[0],install(target,1,dict(env,PGOPTIONS='-c '+setting)).returncode==1)
+        check(mode+'_rejects_unencrypted_transport',install(target,1,dict(env,DB_SSLMODE='disable',PGSSLMODE='disable')).returncode==1)
+        check(mode+'_rejects_wrong_credentials',install(target,1,dict(env,DB_PASSWORD=secrets.token_hex(32))).returncode==1)
+        # Content tampering is rejected BEFORE vendor/autoload or application bootstrap executes.
+        tamper_paths=['app/Deployment/PersistentInstaller.php','database/deployment/finalize.sql','database/deployment/security-contract.json','vendor/autoload.php','composer.lock','public/build/manifest.json']
+        for relative in tamper_paths:
+            file=package/relative
+            original=file.read_bytes()
+            file.write_bytes(original+b'\nUNTRUSTED-CANARY\n')
+            check(mode+'_tamper_'+relative,install(target,1).returncode==1)
+            file.write_bytes(original)
+        extra=package/'DEPLOYMENT_SHA'; extra.write_text(report['source_sha'])
+        check(mode+'_mutable_marker_not_authority',install(target,1).returncode==1)
+        extra.unlink()
+        missing=package/'bin/legacy-custody-broker'; original=missing.read_bytes(); missing.unlink()
+        check(mode+'_missing_executable',install(target,1).returncode==1); missing.write_bytes(original)
+        check(mode+'_wrong_independent_pin',run(invocation(pin='0'*64),env,allowed=(1,)).returncode==1)
+        trusted_launcher=launcher.read_bytes(); launcher.write_bytes(trusted_launcher+b'\nraise RuntimeError("UNTRUSTED")\n')
+        check(mode+'_tampered_trust_anchor',run(invocation(),env,allowed=(1,)).returncode==1); launcher.write_bytes(trusted_launcher)
+        if os.name=='nt':
+            run(['icacls',credentials_file,'/grant','*S-1-1-0:R'],env)
+            check(mode+'_private_acl_required',install(target,1).returncode==1)
+            run(['icacls',credentials_file,'/remove:g','*S-1-1-0'],env)
+        else:
+            credentials_file.chmod(0o644)
+            check(mode+'_private_mode_required',install(target,1).returncode==1)
+            credentials_file.chmod(0o600)
+        # Canary scanning includes BOTH plaintext and actual sensitive SCRAM verifiers, success and failures.
+        verifiers=sql("SELECT rolpassword FROM pg_authid WHERE rolname IN ('kirion_g1b_migrator','kirion_g1b_app','kirion_g1b_custody','n03_stage','n03_command','n03_reconcile','n03_reader')",private_result=True).stdout.splitlines()
+        private_values.extend(verifiers)
+        server_log=(root/'postgres.log').read_text(encoding='utf-8',errors='replace')
+        check(mode+'_no_secret_or_verifier_in_server_log',all(v not in server_log for v in [bootstrap,key,*credentials.values(),*verifiers]) and 'SCRAM-SHA-256$' not in server_log)
+        check(mode+'_no_secret_or_verifier_in_client_error_logs',all(v not in ''.join(client_chunks) for v in [bootstrap,key,*credentials.values(),*verifiers]))
+        if mode=='upgrade':
+            check(mode+'_unrelated_database_and_roles_unchanged',sql(unrelated_query,other_env).stdout==unrelated_before)
         check(mode+'_idempotent_rerun', '"status":"INSTALLED"' in install(target).stdout)
         check(mode+'_no_credential_rotation', sql('SELECT 1', runtime).stdout.strip() == '1')
         check(mode+'_all_tables_owner', sql("SELECT count(*)=0 FROM pg_tables t JOIN pg_class c ON c.oid=to_regclass(format('%I.%I',t.schemaname,t.tablename)) WHERE t.schemaname IN ('public','legacy_custody') AND c.relowner<>'kirion_g1b_owner'::regrole").stdout.strip()=='t')
@@ -168,4 +295,4 @@ for mode in ['fresh', 'upgrade']:
             path.unlink(missing_ok=True)
         (args.output/'persistent-rehearsal.json').write_text(json.dumps(report,indent=2))
 
-print('Persistent fresh/upgrade qualification PASS:',len(report['checks']),'checks')
+print('Canonical policy contract derived:' if args.record_contract else 'Persistent fresh/upgrade qualification PASS:',len(report['checks']),'checks')

@@ -1,7 +1,7 @@
 name: Persistent installation - PG16 fresh and upgrade
 on:
   push:
-    branches: [candidate/ot-persistent-deployment-r1]
+    branches: [candidate/ot-persistent-deployment-r1, candidate/ot-persistent-deployment-r2]
   workflow_dispatch:
 permissions:
   contents: read
@@ -21,6 +21,12 @@ jobs:
           coverage: none
           tools: composer:v2
       - run: composer install --no-interaction --prefer-dist --no-progress
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build
       - name: Bounded deployment source and shared policy integrity
         run: python3 scripts/ci/verify-persistent-successor.py
       - name: PostgreSQL 16 installation
